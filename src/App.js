@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { hot } from 'react-hot-loader/root';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import GraphForm from './pages/GraphForm';
+import SignIn from './pages/sign/SignIn';
+import SignUp from './pages/sign/SignUp';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" exact component={GraphForm} />
+
+          <Route path="/sign/sign-in" component={SignIn} />
+          <Route path="/sign/sign-up" component={SignUp} />
+          <Route path="/sign/forgot-password" component={SignIn} />
+          <Route path="/sign/reset-password" component={SignIn} />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
 }
 
-export default App;
+export default hot(App);

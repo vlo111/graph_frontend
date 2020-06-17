@@ -1,0 +1,862 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;900&display=swap');
+
+$color-red: #f44336;
+$color-green: #48897a;
+$color-orange: #FF9800;
+$color-gray: #ced0d4;
+$color-gray2: #777777;
+$color-blue: #2196f3;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*, html {
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: #fafbfc;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $color-blue;
+  border-radius: 4px;
+}
+
+
+body {
+  font-family: Roboto, sans-serif;
+  color: #333333;
+}
+
+a {
+  text-decoration: none;
+  color: #333333;
+}
+
+ul {
+  list-style: none;
+}
+
+input[type="search"] {
+  -webkit-appearance: textfield;
+
+  &::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+}
+
+input {
+  font-family: Roboto, sans-serif;
+}
+
+
+button {
+  cursor: pointer;
+  outline: none;
+  font-family: Roboto, sans-serif;
+}
+
+main {
+  background-color: #fafbfc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.ghFormField {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0;
+  position: relative;
+
+  label,
+  .label {
+    font-size: 15px;
+    margin-bottom: 1px;
+  }
+
+  .ghSelectContent {
+    width: 100%;
+
+    .gh__control {
+      border: 1px solid $color-gray;
+
+      &:hover {
+      }
+
+      &--is-focused {
+        border-color: $color-blue;
+        box-shadow: 0 0 0 1px $color-blue;
+      }
+    }
+
+    .gh__indicator {
+      cursor: pointer;
+    }
+  }
+
+  .icon {
+    position: absolute;
+    bottom: 6px;
+    left: 4px;
+
+    + input {
+      padding-left: 30px;
+    }
+  }
+
+
+  .error {
+    color: $color-red;
+    font-size: 14px;
+    padding: 1px;
+  }
+}
+
+.ghInput {
+
+  textarea,
+  input {
+    width: 100%;
+    height: 38px;
+    border: 1px solid $color-gray;
+    border-radius: 4px;
+    padding: 0 5px;
+
+    &:focus {
+      outline: none;
+      border-color: $color-blue;
+      box-shadow: 0 0 0 1px $color-blue;
+    }
+  }
+
+  textarea {
+    height: auto;
+    min-height: 38px;
+    max-width: 100%;
+    padding: 5px;
+  }
+}
+
+.ghFileInput {
+  position: relative;
+
+  [type="file"] {
+    display: none;
+  }
+
+  .ghInput input {
+    padding-right: 80px;
+  }
+
+  .clear {
+    color: $color-gray;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    margin-top: 4px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .buttons {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+  }
+
+  .fileLabel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    cursor: pointer;
+    background-color: $color-gray;
+    height: 36px;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+
+    &:hover {
+      background-color: rgba($color-gray, 0.8);
+    }
+  }
+}
+
+.ghButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: $color-blue;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 5px 0;
+
+  .icon,
+  .icon i {
+    font-size: 18px;
+    width: 22px;
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &.red {
+    background-color: $color-red;
+  }
+}
+
+#graph {
+  background-image: url("../images/graph-bg.png");
+  background-position: center;
+  overflow: hidden;
+  max-height: 100vh;
+  max-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  flex: 1;
+  position: relative;
+
+  svg {
+    user-select: none;
+  }
+
+  .links {
+    line:hover {
+      opacity: 1;
+    }
+  }
+
+  &.create {
+    cursor: crosshair;
+  }
+
+  &.delete {
+
+  }
+
+  line {
+    cursor: pointer;
+
+  }
+
+  .node {
+    stroke: #ffffff;
+    stroke-width: 1.5;
+    cursor: pointer;
+
+    text {
+      font-family: Roboto, sans-serif;
+      dominant-baseline: central;
+      font-size: 22px;
+      stroke: #fafbfc;
+      stroke-width: 0.5;
+    }
+  }
+
+  #addNewLink {
+    pointer-events: none;
+    stroke-width: 2;
+    stroke-dasharray: 4;
+    stroke: $color-blue;
+  }
+
+
+}
+
+.chartCrop {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  cursor: default;
+
+  &.ReactCrop--invisible-crop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .content {
+    user-select: none;
+  }
+
+  > div:first-child {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    div {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+
+    .buttons {
+      margin-right: 15px;
+    }
+  }
+}
+
+header {
+  position: fixed;
+  z-index: 3;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.85);
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+}
+
+#toolBar {
+  height: 100%;
+  background-color: #e2e2e2;
+  width: 62px;
+  min-width: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  padding-top: 60px;
+  z-index: 2;
+
+  .top {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .bottom {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .ghButton {
+    height: 44px;
+    margin-top: 16px;
+    flex-direction: column;
+    background-color: transparent;
+    color: #333333;
+    font-weight: 400;
+
+    &.active {
+      opacity: 0.6;
+    }
+  }
+}
+
+#offline {
+  position: fixed;
+  width: 100%;
+  background: #FF9800;
+  color: #ffffff;
+  top: 0;
+  right: 0;
+  left: auto;
+  z-index: 99;
+  text-align: center;
+  padding: 2px 15px;
+  animation-name: offline;
+  animation-duration: 500ms;
+  @keyframes offline {
+    from {
+      top: -20px;
+    }
+    to {
+      top: 0;
+    }
+  }
+}
+
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  max-width: 450px;
+  min-width: 320px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+
+  a {
+    color: $color-blue;
+  }
+
+  h1 {
+    font-weight: 500;
+    font-size: 24px;
+    margin: 15px;
+  }
+}
+
+.Toastify {
+  &__toast {
+    border-radius: 5px;
+  }
+}
+
+.ghModalOverlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  .ghModal {
+    outline: none;
+    position: relative;
+    top: 16%;
+    margin: 0 auto;
+    max-width: 460px;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    max-height: 80%;
+    overflow-y: auto;
+  }
+
+
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+
+  .ghButton {
+    margin-left: 10px;
+  }
+}
+
+.contextmenuOverlay {
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.contextmenu {
+  z-index: 999;
+  position: fixed;
+  background-color: white;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+
+  button {
+    background-color: transparent;
+    border-radius: 0;
+    color: #333333;
+    text-align: left;
+    justify-content: flex-start;
+    padding: 10px;
+    position: relative;
+    margin: 0;
+    font-weight: 400;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      bottom: 0;
+      width: calc(100% - 10px);
+      height: 1px;
+      background-color: #f2f2f2;
+    }
+
+    &:last-child:after {
+      content: none;
+    }
+
+    &:hover {
+      background-color: #f2f2f2;
+    }
+
+    .icon {
+      width: 30px;
+      font-size: 18px;
+
+      i {
+        font-size: 18px;
+      }
+    }
+
+    sub {
+      margin-left: auto;
+      opacity: 0.8;
+    }
+  }
+}
+
+.graphWrapper {
+  display: flex;
+}
+
+#dataTable {
+  flex: 1;
+  width: 50%;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 0 0 0 65px;
+
+  .contentWrapper {
+    padding: 70px 0 10px 0;
+    background-color: white;
+    max-width: 100%;
+    height: 100%;
+
+    &.fullWidth {
+      position: absolute;
+      width: calc(100% - 65px);
+      height: 100%;
+      z-index: 1;
+    }
+  }
+
+  .header {
+    display: flex;
+    padding: 0 5px;
+
+    .buttons {
+      margin-left: auto;
+      margin-top: 0;
+
+      .ghButton {
+        background-color: transparent;
+        color: #333333;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        border: 2px solid #333333;
+
+        .icon,
+        .icon i {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .ghFileInput {
+    height: 30px;
+
+    .ghInput {
+      margin: 0;
+
+      input {
+        position: static;
+      }
+    }
+
+    .buttons {
+      z-index: 2;
+      margin: 0;
+      bottom: 0;
+      right: 0;
+
+      .fileLabel {
+        border-radius: 0;
+        height: 30px;
+      }
+    }
+  }
+
+  .ghFormField {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #ffffff;
+    width: max-content !important;
+    min-width: 100%;
+    margin: 0;
+
+    textarea,
+    input {
+      height: 29px;
+      text-align: left;
+      font-size: 15px;
+      padding: 5px;
+      border-radius: 0;
+      width: 100%;
+      z-index: 1;
+      border: 1px solid $color-blue;
+      box-shadow: none !important;
+    }
+
+    textarea {
+      height: auto;
+      min-height: 40px;
+      min-width: 200px;
+    }
+
+    .gh__control {
+      min-height: 29px;
+      height: 29px;
+      border-radius: 0;
+      border: none;
+      align-items: flex-start;
+
+      .gh__indicators{
+        height: 100%;
+      }
+      .gh__value-container {
+        height: 100%;
+        padding: 2px 3px;
+      }
+      .gh__indicator-separator{
+        display: none;
+      }
+      .gh__single-value {
+        top: 65%
+      }
+    }
+
+    .gh__menu{
+      margin-top: 3px;
+      border-radius: 0;
+    }
+  }
+
+  .ghGridTableWrapper {
+    overflow-x: auto;
+    height: calc(100% - 70px);
+    border-bottom: 1px solid $color-gray;
+  }
+
+  .ghGridTable {
+    width: 100%;
+    min-width: 640px;
+
+    thead {
+      .cell {
+        text-align: left !important;
+        font-weight: normal;
+        padding: 5px;
+        color: $color-gray2;
+
+        &.name > span {
+          padding: 5px;
+        }
+      }
+    }
+
+    &.ghGridTableLinks {
+      .cell.name,
+      .cell.index {
+        position: static;
+      }
+    }
+
+    tbody {
+      tr {
+        background-color: white;
+
+        &:last-child {
+          border-bottom: 1px solid #dddddd;
+        }
+
+        &:hover {
+          td {
+            background-color: #fafafa !important;
+          }
+        }
+      }
+    }
+
+
+    .cell {
+      position: relative;
+      text-align: left;
+      vertical-align: middle;
+      min-height: 30px;
+
+      .value-viewer {
+        height: 100%;
+        white-space: nowrap;
+        padding: 5px 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+      }
+
+      &.index {
+        label {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          padding: 0 5px;
+          height: 100%;
+
+          input {
+            margin-right: 2px;
+          }
+        }
+      }
+
+      &.name,
+      &.index {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        border: none;
+        padding: 0;
+        background-color: white;
+
+        > * {
+          height: 100%;
+          width: 100%;
+          display: block;
+          border: 1px solid #dddddd;
+          border-bottom: none;
+        }
+      }
+
+
+      &.index {
+        > * {
+          border-right: none;
+        }
+      }
+
+      &.name {
+        left: 60px;
+      }
+
+      //&.value,
+      //&.type {
+      //  text-align: right;
+      //  .data-editor {
+      //    text-align: right;
+      //  }
+      //}
+    }
+
+    .data-editor {
+      height: 29px;
+      text-align: left;
+      font-size: 15px;
+      border: none;
+      box-shadow: 0 0 0 1px $color-blue inset;
+      padding: 0 5px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: max-content;
+      background-color: #ffffff;
+      z-index: 1;
+    }
+  }
+
+
+  .tabs {
+    display: flex;
+    align-items: center;
+
+    button {
+      margin: 5px 15px;
+      background-color: transparent;
+      padding: 5px 5px 1px;
+      color: #333333;
+      border-bottom: 1px solid transparent;
+      border-radius: 0;
+
+      &.active {
+        border-bottom-color: #333333;
+      }
+    }
+  }
+}
+
+.ghTableModal {
+  min-width: 365px;
+
+  .description {
+    textarea {
+      height: 250px;
+    }
+  }
+
+  h3 {
+    margin: 5px 0 10px;
+    text-align: center;
+    font-weight: normal;
+    font-size: 20px;
+  }
+
+  .list {
+    .addNewItem {
+      padding: 5px;
+    }
+
+    .listItem {
+      position: relative;
+      border: 1px solid $color-gray;
+      border-radius: 5px;
+      padding: 5px;
+      margin-bottom: 15px;
+
+      .close {
+        background-color: #ffffff;
+        padding: 0;
+        position: absolute;
+        right: 5px;
+        z-index: 2;
+        top: -17px;
+
+        .icon {
+          color: $color-red;
+        }
+      }
+
+      .legend {
+        position: absolute;
+        top: -12px;
+        left: 5px;
+        padding: 2px;
+        background-color: #ffffff;
+      }
+    }
+  }
+}
