@@ -9,6 +9,7 @@ import FileInput from '../form/FileInput';
 import DataEditorDescription from './DataEditorDescription';
 import DataEditorFiles from './DataEditorFiles';
 import DataEditorLinks from './DataEditorLinks';
+import Convert from "../../helpers/Convert";
 
 class DataTableNodes extends Component {
   static propTypes = {
@@ -24,32 +25,8 @@ class DataTableNodes extends Component {
     super(props);
     const nodes = Chart.getNodes();
     this.state = {
-      grid: this.nodeDataToGrid(nodes),
+      grid: Convert.nodeDataToGrid(nodes),
     };
-  }
-
-  nodeDataToGrid = (nodes) => nodes.map((d, i) => ([
-    { value: i, key: 'index' },
-    { value: d.name, key: 'name' },
-    { value: d.value, key: 'value' },
-    { value: d.description, key: 'description' },
-    { value: d.files, key: 'files' },
-    { value: d.links, key: 'links' },
-    { value: d.icon, key: 'icon' },
-  ]))
-
-
-  gridDataToNode = (grid) => {
-    const nodes = Chart.getNodes();
-    return grid.map((g, i) => ({
-      ...nodes[i],
-      name: g[1]?.value || '',
-      value: g[2]?.value || '',
-      description: g[3]?.value || '',
-      links: g[4]?.value || '',
-      files: g[5]?.files || '',
-      icon: g[6]?.value || '',
-    }));
   }
 
   handleDataChange = (changes) => {
@@ -57,7 +34,7 @@ class DataTableNodes extends Component {
     changes.forEach((d) => {
       grid[d.row][d.col] = { ...grid[d.row][d.col], value: d.value };
     });
-    const nodes = this.gridDataToNode(grid);
+    const nodes = Convert.gridDataToNode(grid);
     Chart.render({ nodes });
   }
 

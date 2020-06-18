@@ -291,9 +291,9 @@ class Chart {
           type: d.type || od.type,
           value: d.value || od.value,
           icon: d.icon || od.icon,
-          description: od.description,
-          files: od.files,
-          urls: od.urls,
+          description: d.description || od.description,
+          files: d.files || od.files,
+          links: d.links || od.links,
         };
       });
     }

@@ -6,6 +6,7 @@ import { setActiveButton, setGridIndexes, toggledGrid } from '../../store/action
 import Chart from '../../Chart';
 import Input from '../form/Input';
 import Select from '../form/Select';
+import Convert from '../../helpers/Convert';
 
 class DataTableLinks extends Component {
   static propTypes = {
@@ -21,27 +22,10 @@ class DataTableLinks extends Component {
     super(props);
     const links = Chart.getLinks();
     this.state = {
-      grid: this.linkDataToGrid(links),
+      grid: Convert.linkDataToGrid(links),
     };
   }
 
-  linkDataToGrid = (links) => links.map((d, i) => ([
-    { value: i, key: 'index' },
-    { value: d.source, key: 'source' },
-    { value: d.target, key: 'target' },
-    { value: d.value, key: 'value' },
-  ]))
-
-
-  gridDataToLink = (grid) => {
-    const links = Chart.getLinks();
-    return grid.map((g, i) => ({
-      ...links[i],
-      source: g[1]?.value || '',
-      target: g[2]?.value || '',
-      value: g[3]?.value || '',
-    }));
-  }
 
   handleDataChange = (changes) => {
     const { grid } = this.state;
@@ -49,7 +33,7 @@ class DataTableLinks extends Component {
       grid[d.row][d.col] = { ...grid[d.row][d.col], value: d.value };
     });
     this.setState({ grid });
-    const links = this.gridDataToLink(grid);
+    const links = Convert.gridDataToLink(grid);
     Chart.render({ links });
   }
 

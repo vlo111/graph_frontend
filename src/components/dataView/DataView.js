@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setActiveButton } from '../../store/actions/app';
+import _ from 'lodash';
+import Downloader from 'js-file-downloader';
+import { setActiveButton, setGridIndexes } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Button from '../form/Button';
 import HeaderPortal from '../form/HeaderPortal';
 import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
-
+import Convert from '../../helpers/Convert';
+import moment from 'moment';
 
 class DataView extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
+    setGridIndexes: PropTypes.func.isRequired,
+    selectedGrid: PropTypes.objectOf(PropTypes.array).isRequired,
   }
 
   constructor(props) {
@@ -23,13 +28,32 @@ class DataView extends Component {
   }
 
   componentDidMount() {
+    this.checkAllGrids();
     Chart.svgSize();
   }
 
   componentWillUnmount() {
+    this.unCheckAllGrids();
     setTimeout(() => {
       Chart.svgSize();
     }, 100);
+  }
+
+  unCheckAllGrids = () => {
+    this.props.setGridIndexes('nodes', []);
+    this.props.setGridIndexes('links', []);
+  }
+
+  checkAllGrids = () => {
+    const { selectedGrid } = this.props;
+    if (_.isEmpty(selectedGrid.nodes)) {
+      const nodes = Chart.getNodes();
+      this.props.setGridIndexes('nodes', _.range(nodes.length));
+    }
+    if (_.isEmpty(selectedGrid.links)) {
+      const links = Chart.getLinks();
+      this.props.setGridIndexes('links', _.range(links.length));
+    }
   }
 
   toggleFullWidth = () => {
@@ -45,12 +69,23 @@ class DataView extends Component {
     this.setState({ activeTab });
   }
 
-  handleSelectChange = (selectedNodes) => {
-
-  }
-
   exportCsv = () => {
+    const nodes = Chart.getNodes();
+    const nodesCsv = Convert.nodeDataToCsv(nodes);
+    const now = moment().format('YY-MM-DDThh-mm-ss');
+    new Downloader({
+      url: `data:text/csv;charset=utf-8,${nodesCsv}`,
+      filename: `nodes-${now}.csv`,
+    });
 
+    const links = Chart.getLinks();
+    if (links.length) {
+      const linksCsv = Convert.linkDataToCsv(links);
+      new Downloader({
+        url: `data:text/csv;charset=utf-8,${linksCsv}`,
+        filename: `links-${now}.csv`,
+      });
+    }
   }
 
   render() {
@@ -100,9 +135,11 @@ class DataView extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
+  selectedGrid: state.app.selectedGrid,
 });
 const mapDespatchToProps = {
   setActiveButton,
+  setGridIndexes,
 };
 
 const Container = connect(
