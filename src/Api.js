@@ -5,7 +5,7 @@ import Account from './helpers/Account';
 import { objectToFormData } from 'object-to-formdata';
 
 const { REACT_APP_DEV } = process.env;
-const apiUrl = REACT_APP_DEV ? 'http://graphs-backend.ghost-services.com' : 'http://localhost:5000';
+const apiUrl = REACT_APP_DEV ? 'http://localhost:5000' : 'http://graphs-backend.ghost-services.com';
 
 const api = axios.create({
   baseURL: apiUrl,
