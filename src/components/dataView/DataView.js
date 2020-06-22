@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import Downloader from 'js-file-downloader';
 import { setActiveButton, setGridIndexes } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Button from '../form/Button';
@@ -11,6 +10,7 @@ import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
 import Convert from '../../helpers/Convert';
 import moment from 'moment';
+import Api from "../../Api";
 
 class DataView extends Component {
   static propTypes = {
@@ -69,23 +69,17 @@ class DataView extends Component {
     this.setState({ activeTab });
   }
 
-  exportCsv = () => {
+  export = (type) => {
     const nodes = Chart.getNodes();
-    const nodesCsv = Convert.nodeDataToCsv(nodes);
-    const now = moment().format('YY-MM-DDThh-mm-ss');
-    new Downloader({
-      url: `data:text/csv;charset=utf-8,${nodesCsv}`,
-      filename: `nodes-${now}.csv`,
-    });
-
     const links = Chart.getLinks();
-    if (links.length) {
-      const linksCsv = Convert.linkDataToCsv(links);
-      new Downloader({
-        url: `data:text/csv;charset=utf-8,${linksCsv}`,
-        filename: `links-${now}.csv`,
-      });
+    if (type === 'csv') {
+      Api.download('csv-nodes', { nodes });
+      if (!_.isEmpty(links)) {
+        Api.download('csv-links', { links });
+      }
+      return;
     }
+    Api.download(type, { nodes, links });
   }
 
   render() {
@@ -96,7 +90,9 @@ class DataView extends Component {
     return (
       <div id="dataTable">
         <HeaderPortal>
-          <Button onClick={this.exportCsv}>Export Csv</Button>
+          <Button onClick={() => this.export('csv')}>Export csv</Button>
+          <Button onClick={() => this.export('csv-zip')}>Export zip</Button>
+          <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
         </HeaderPortal>
         <div className={`contentWrapper ${fullWidth ? 'fullWidth' : ''}`}>
           <div className="header">

@@ -102,6 +102,7 @@ class DataTableLinks extends Component {
         <Select
           {...defaultProps}
           options={nodes}
+          isSearchable={false}
           value={nodes.find((d) => d.name === props.value)}
           getOptionLabel={(d) => d.name}
           getOptionValue={(d) => d.name}

@@ -1,9 +1,11 @@
 import axios from 'axios';
 // import { stringify as qs } from 'query-string';
+import fileDownload from 'js-file-download';
 import Account from './helpers/Account';
+import { objectToFormData } from 'object-to-formdata';
 
 const { REACT_APP_DEV } = process.env;
-const apiUrl = REACT_APP_DEV ? 'http://localhost:5000' : 'http://localhost:5000';
+const apiUrl = REACT_APP_DEV ? 'http://graphs-backend.ghost-services.com' : 'http://localhost:5000';
 
 const api = axios.create({
   baseURL: apiUrl,
@@ -20,6 +22,9 @@ api.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
+function toFormData(data) {
+  return objectToFormData({ ...data }, { indices: true });
+}
 
 class Api {
   static url = apiUrl;
@@ -30,6 +35,20 @@ class Api {
 
   static singUp(data) {
     return api.post('/users/sign-up', data);
+  }
+
+  static download(type, requestData) {
+    (async () => {
+      const { data, headers } = await api.post(`/convert/graph/to/${type}`, requestData, {
+        responseType: 'arraybuffer',
+      });
+      const [, fileName] = headers['content-disposition'].match(/\sfilename=([^;]+)/i);
+      fileDownload(data, fileName);
+    })();
+  }
+
+  static convert(type, requestData) {
+    return api.post(`/convert/${type}/to/graph`, toFormData(requestData));
   }
 }
 

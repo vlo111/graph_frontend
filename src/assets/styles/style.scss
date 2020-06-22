@@ -125,6 +125,13 @@ main {
   }
 }
 
+.ghFile {
+
+  input {
+    display: none;
+  }
+}
+
 .ghInput {
 
   textarea,
@@ -636,23 +643,24 @@ header {
       border-radius: 0;
       border: none;
       align-items: flex-start;
+      z-index: 2;
 
-      .gh__indicators{
+      .gh__indicators {
         height: 100%;
       }
+
       .gh__value-container {
         height: 100%;
         padding: 2px 3px;
       }
-      .gh__indicator-separator{
+
+      .gh__indicator-separator {
         display: none;
       }
-      .gh__single-value {
-        top: 65%
-      }
+
     }
 
-    .gh__menu{
+    .gh__menu {
       margin-top: 3px;
       border-radius: 0;
     }

@@ -8,6 +8,7 @@ import AddNodeModal from '../components/chart/AddNodeModal';
 import Crop from '../components/chart/Crop';
 import ContextMenu from '../components/ContextMenu';
 import DataView from '../components/dataView/DataView';
+import DataImport from '../components/DataImport';
 
 class GraphForm extends Component {
   render() {
@@ -18,11 +19,12 @@ class GraphForm extends Component {
         <ToolBar />
         <div className="graphWrapper">
           {activeButton === 'data' ? <DataView /> : null}
-          {<ReactChart />}
+          <ReactChart />
         </div>
         <Crop />
         <AddNodeModal />
         <ContextMenu />
+        <DataImport />
       </Wrapper>
     );
   }

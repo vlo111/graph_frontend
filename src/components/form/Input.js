@@ -68,10 +68,10 @@ class Input extends Component {
         ) : (
           <input {...props} id={inputId} onChange={this.handleChange} />
         )}
+        {children}
         {error ? (
           <div className="error">{error}</div>
         ) : null}
-        {children}
       </div>
     );
   }
