@@ -25,7 +25,9 @@
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
     "react-toastify": "^6.0.5",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "save-svg-as-png": "^1.4.17",
+    "svg-to-img": "^2.0.9"
   },
   "scripts": {
     "start": "react-scripts start",

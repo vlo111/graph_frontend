@@ -9,6 +9,7 @@ import Crop from '../components/chart/Crop';
 import ContextMenu from '../components/ContextMenu';
 import DataView from '../components/dataView/DataView';
 import DataImport from '../components/DataImport';
+import NodeDescription from "../components/NodeDescription";
 
 class GraphForm extends Component {
   render() {
@@ -25,6 +26,7 @@ class GraphForm extends Component {
         <AddNodeModal />
         <ContextMenu />
         <DataImport />
+        <NodeDescription />
       </Wrapper>
     );
   }

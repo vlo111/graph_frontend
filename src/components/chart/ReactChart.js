@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import Chart from '../../Chart';
-import { showNodeInfo, toggleNodeModal } from '../../store/actions/app';
+import { showNodeDescription, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../ContextMenu';
 
 class ReactChart extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
-    showNodeInfo: PropTypes.func.isRequired,
+    showNodeDescription: PropTypes.func.isRequired,
+    nodeDescription: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
   }
 
@@ -21,6 +22,9 @@ class ReactChart extends Component {
       type: '2',
       fx: 250,
       fy: 250,
+      links: '[link url="https://developer.mozilla.org/en-US/docs/Web/API/Screen_Capture_API/Using_Screen_Capture"]asdasdasd[/link] [link url="https://developer.mozilla.org/en-US/docs/Web/API/Screen_Capture_API/Using_Screen_Capture"]asdasdada213131313[/link]',
+      description: 'Asdasd asdasdsad asd asd as dasdsa da s',
+      files: '[file url="blob:http://localhost:3000/bc48f756-96ae-4f92-9914-21a8362253e7"]asdasdasdasd[/file]',
       icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1024px-Instagram_logo_2016.svg.png',
     });
 
@@ -37,9 +41,10 @@ class ReactChart extends Component {
     Chart.event.on('node.click', this.deleteNode);
     ContextMenu.event.on('node.delete', this.deleteNode);
 
-    Chart.event.on('node.mouseenter', this.handleNodeMouseEnter);
+    Chart.event.on('node.mouseenter', this.showNodeInfo);
+    Chart.event.on('node.mouseleave', this.cancelNodeInfo);
+    document.addEventListener('mousedown', this.hideInfo, true);
 
-    Chart.event.on('node.mouseleave', this.handleNodeMouseLeave);
 
     Chart.event.on('link.click', this.deleteLink);
     ContextMenu.event.on('link.delete', this.deleteLink);
@@ -51,18 +56,25 @@ class ReactChart extends Component {
 
   componentWillUnmount() {
     Chart.unmount();
+    document.removeEventListener('mousedown', this.hideInfo, true);
   }
 
-  handleNodeMouseEnter = async (d) => {
-    this.showInfo = d.name;
+  showNodeInfo = async (d) => {
     clearTimeout(this.showInfoTimout);
     this.showInfoTimout = setTimeout(() => {
-      this.props.showNodeInfo(this.showInfo);
-    }, 1000);
+      this.props.showNodeDescription(d.name);
+    }, 800);
   }
 
-  handleNodeMouseLeave = () => {
-    this.showInfo = '';
+  hideInfo = async () => {
+    const { nodeDescription } = this.props;
+    clearTimeout(this.showInfoTimout);
+    if (nodeDescription) {
+      this.props.showNodeDescription();
+    }
+  }
+
+  cancelNodeInfo = () => {
     clearTimeout(this.showInfoTimout);
   }
 
@@ -127,9 +139,10 @@ class ReactChart extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
+  nodeDescription: state.app.nodeDescription,
 });
 const mapDespatchToProps = {
-  showNodeInfo,
+  showNodeDescription,
   toggleNodeModal,
 };
 

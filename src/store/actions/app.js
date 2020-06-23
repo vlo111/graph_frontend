@@ -9,13 +9,13 @@ export function setActiveButton(button) {
   };
 }
 
-export const SHOW_NODE_INFO = 'SHOW_NODE_INFO';
+export const SHOW_NODE_DESCRIPTION = 'SHOW_NODE_DESCRIPTION';
 
-export function showNodeInfo(nodeName) {
+export function showNodeDescription(node = '') {
   return {
-    type: SHOW_NODE_INFO,
+    type: SHOW_NODE_DESCRIPTION,
     payload: {
-      nodeName,
+      node,
     },
   };
 }

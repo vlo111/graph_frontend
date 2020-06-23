@@ -8,9 +8,7 @@ import Button from '../form/Button';
 import HeaderPortal from '../form/HeaderPortal';
 import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
-import Convert from '../../helpers/Convert';
-import moment from 'moment';
-import Api from "../../Api";
+import Api from '../../Api';
 
 class DataView extends Component {
   static propTypes = {
@@ -82,6 +80,11 @@ class DataView extends Component {
     Api.download(type, { nodes, links });
   }
 
+  exportPng = async () => {
+    const svg = document.querySelector('#graph svg').outerHTML;
+    Api.download('png', { svg });
+  }
+
   render() {
     const { fullWidth, activeTab } = this.state;
     const links = Chart.getLinks();
@@ -93,6 +96,7 @@ class DataView extends Component {
           <Button onClick={() => this.export('csv')}>Export csv</Button>
           <Button onClick={() => this.export('csv-zip')}>Export zip</Button>
           <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
+          <Button onClick={() => this.exportPng()}>Export png</Button>
         </HeaderPortal>
         <div className={`contentWrapper ${fullWidth ? 'fullWidth' : ''}`}>
           <div className="header">

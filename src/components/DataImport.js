@@ -16,7 +16,7 @@ class DataImport extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     convertGraphRequest: PropTypes.func.isRequired,
-    importData: PropTypes.array.isRequired,
+    importData: PropTypes.object.isRequired,
     activeButton: PropTypes.string.isRequired,
   }
 

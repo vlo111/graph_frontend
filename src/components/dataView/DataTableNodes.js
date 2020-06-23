@@ -13,9 +13,7 @@ import Convert from "../../helpers/Convert";
 
 class DataTableNodes extends Component {
   static propTypes = {
-    children: PropTypes.any.isRequired,
     setActiveButton: PropTypes.func.isRequired,
-    onChangeSelect: PropTypes.func.isRequired,
     toggledGrid: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
     selectedNodes: PropTypes.array.isRequired,
@@ -75,14 +73,23 @@ class DataTableNodes extends Component {
   cellRenderer = (props) => {
     const { selectedNodes } = this.props;
     const {
-      cell, children, ...p
+      cell, children,
+      onContextMenu, onDoubleClick, onKeyUp, onMouseOver,
     } = props;
+    let { onMouseDown } = props;
     if (['description', 'files', 'links'].includes(props.cell.key)) {
-      this.onMouseDown = p.onMouseDown;
-      delete p.onMouseDown;
+      this.onMouseDown = onMouseDown;
+      onMouseDown = undefined;
     }
     return (
-      <td {...p} className={`cell ${cell.key || ''}`}>
+      <td
+        onContextMenu={onContextMenu}
+        onDoubleClick={onDoubleClick}
+        onKeyUp={onKeyUp}
+        onMouseDown={onMouseDown}
+        onMouseOver={onMouseOver}
+        className={`cell ${cell.key || ''}`}
+      >
         {cell.key === 'index' ? (
           <label>
             <input

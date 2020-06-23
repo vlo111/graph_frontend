@@ -6,6 +6,7 @@ import memoizeOne from 'memoize-one';
 import Button from '../form/Button';
 import FileInput from '../form/FileInput';
 import Input from '../form/Input';
+import ShortCode from "../../helpers/ShortCode";
 
 class DataEditorFiles extends Component {
   static propTypes = {
@@ -20,16 +21,7 @@ class DataEditorFiles extends Component {
 
   initValues = memoizeOne((valuesText) => {
     if (valuesText) {
-      const regex = /\[file[^\]]+url="([^"]*)"[^\]]*]([^[\]]*)/ig;
-      const values = [];
-      let match;
-      // eslint-disable-next-line no-cond-assign
-      while (match = regex.exec(valuesText)) {
-        values.push({
-          url: match[1],
-          name: match[2],
-        });
-      }
+      const values = ShortCode.fileParse(valuesText);
       this.setState({ values });
     } else {
       this.setState({ values: [{ url: '', name: '' }] });
@@ -79,7 +71,7 @@ class DataEditorFiles extends Component {
 
   setValue = (values) => {
     this.setState({ values });
-    const valuesText = values.map((f) => `[file url="${f.url || ''}"]${f.name || ''}[/file]`).join(' ');
+    const valuesText = ShortCode.fileStringify(values);
     this.props.onChangeText(valuesText);
   }
 

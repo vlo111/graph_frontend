@@ -1,13 +1,13 @@
 import {
   NEW_NODE_MODAL,
   SET_ACTIVE_BUTTON, SET_GRID_INDEXES,
-  SHOW_NODE_INFO,
-  TOGGLE_GRID
+  SHOW_NODE_DESCRIPTION,
+  TOGGLE_GRID,
 } from '../actions/app';
 
 const initialState = {
   activeButton: 'create',
-  showNodeInfo: '',
+  nodeDescription: '',
   addNodeParams: {},
   selectedGrid: {
     nodes: [],
@@ -22,10 +22,10 @@ export default function reducer(state = initialState, action) {
         activeButton: action.payload.button,
       };
     }
-    case SHOW_NODE_INFO: {
+    case SHOW_NODE_DESCRIPTION: {
       return {
         ...state,
-        showNodeInfo: action.payload.nodeName,
+        nodeDescription: action.payload.node,
       };
     }
     case NEW_NODE_MODAL: {

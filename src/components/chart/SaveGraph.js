@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import html2canvas from 'html2canvas';
 import _ from 'lodash';
 import Modal from 'react-modal';
 import Button from '../form/Button';
@@ -22,7 +21,7 @@ class SaveGraphModal extends Component {
     const { requestData } = this.state;
     const nodes = Chart.getNodes();
     const links = Chart.getLinks();
-    const thumbnail = await this.generateThumbnail();
+    const thumbnail = await Utils.graphToPng();
     const icons = await Promise.all(nodes.map((d) => {
       if (d.icon && d.icon.startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);
@@ -39,17 +38,6 @@ class SaveGraphModal extends Component {
       links,
       thumbnail,
     }), null, 2);
-  }
-
-  generateThumbnail = async () => {
-    const svg = document.querySelector('#graph svg');
-    const canvas = await html2canvas(svg);
-    canvas.style.display = 'none';
-    document.body.appendChild(canvas);
-    const img = canvas.toDataURL('image/png');
-    document.body.removeChild(canvas);
-
-    return img;
   }
 
   handleChange = (path, value) => {

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import Button from '../form/Button';
-import FileInput from '../form/FileInput';
-import Input from "../form/Input";
+import Input from '../form/Input';
+import ShortCode from '../../helpers/ShortCode';
 
 class DataEditorLinks extends Component {
   static propTypes = {
@@ -20,16 +20,7 @@ class DataEditorLinks extends Component {
 
   initValues = memoizeOne((valuesText) => {
     if (valuesText) {
-      const regex = /\[link[^\]]+url="([^"]*)"[^\]]*]([^[\]]*)/ig;
-      const values = [];
-      let match;
-      // eslint-disable-next-line no-cond-assign
-      while (match = regex.exec(valuesText)) {
-        values.push({
-          url: match[1],
-          name: match[2],
-        });
-      }
+      const values = ShortCode.linkParse(valuesText);
       this.setState({ values });
     } else {
       this.setState({ values: [{ url: '', name: '' }] });
@@ -69,7 +60,7 @@ class DataEditorLinks extends Component {
 
   setValue = (values) => {
     this.setState({ values });
-    const valuesText = values.map((f) => `[link url="${f.url || ''}"]${f.name || ''}[/file]`).join(' ');
+    const valuesText = ShortCode.linkStringify(values);
     this.props.onChangeText(valuesText);
   }
 

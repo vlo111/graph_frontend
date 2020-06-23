@@ -10,20 +10,11 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
-import Utils from '../../helpers/Utils';
 
 class AddNodeModal extends Component {
   static propTypes = {
     toggleNodeModal: PropTypes.func.isRequired,
     addNodeParams: PropTypes.object.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      nodeData: {},
-      errors: {},
-    };
   }
 
 
@@ -50,6 +41,14 @@ class AddNodeModal extends Component {
 
     return _.uniqBy(types, 'value');
   }, _.isEqual)
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      nodeData: {},
+      errors: {},
+    };
+  }
 
   closeModal = () => {
     this.props.toggleNodeModal();

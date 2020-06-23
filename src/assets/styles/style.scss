@@ -241,8 +241,22 @@ main {
   flex: 1;
   position: relative;
 
+  &.capture {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+
+    svg {
+      background-color: white;
+    }
+  }
+
   svg {
     user-select: none;
+
   }
 
   .links {
@@ -865,6 +879,85 @@ header {
         padding: 2px;
         background-color: #ffffff;
       }
+    }
+  }
+}
+
+#nodeDescription {
+  position: fixed;
+  z-index: 9999;
+  max-width: 320px;
+  width: 300px;
+  background-color: white;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  display: flex;
+
+  .close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    cursor: pointer;
+  }
+
+  .left {
+    width: 50px;
+    min-width: 50px;
+
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      background: $color-blue;
+      color: #ffffff;
+      font-size: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+  }
+
+  .right {
+    width: calc(100% - 50px);
+    padding-left: 15px;
+  }
+
+  .title {
+    font-weight: normal;
+    font-size: 20px;
+  }
+
+  a.title {
+    color: $color-blue;
+  }
+
+  .description {
+    padding-top: 5px;
+  }
+
+  .sub-title {
+    margin-top: 10px;
+    font-weight: normal;
+    font-size: 17px;
+    color: #666666;
+  }
+
+
+  .list {
+    a {
+      text-decoration: underline;
+      color: $color-blue;
+      display: inline-block;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
     }
   }
 }
