@@ -7,12 +7,14 @@ import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Button from "../components/form/Button";
+import { Link } from "react-router-dom";
 
 class GraphView extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -34,26 +36,30 @@ class GraphView extends Component {
   }
 
   render() {
+    const { singleGraph } = this.props;
     const { preview } = this.state;
     return (
-      <Wrapper showFooter={false}>
+      <Wrapper className="graphView" showHeader={!preview} showFooter={false}>
         <div className="graphWrapper">
           <ReactChart />
         </div>
         {preview ? (
           <div className="graphPreview">
-            <h1 className="title">Hello</h1>
+            <h1 className="title">{singleGraph.title}</h1>
             <p className="description">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium alias
-              aut blanditiis cum debitis ea, ex id laborum minima minus modi necessitatibus nulla numquam provident quae
-              quaerat rem sed.
+              {singleGraph.description}
             </p>
-            <Button className="white" onClick={this.viwGraph}>
+            <Button className="white view" onClick={this.viwGraph}>
               View Graph
             </Button>
           </div>
         ) : (
-          <NodeDescription />
+          <>
+            <Link to={`/graphs/update/${singleGraph.id}`}>
+              <Button icon="fa-pencil" className="transparent edit" />
+            </Link>
+            <NodeDescription />
+          </>
         )}
       </Wrapper>
     );
@@ -62,6 +68,7 @@ class GraphView extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
+  singleGraph: state.graphs.singleGraph,
 });
 const mapDespatchToProps = {
   setActiveButton,

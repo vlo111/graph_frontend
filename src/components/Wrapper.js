@@ -15,20 +15,22 @@ class Wrapper extends Component {
     token: PropTypes.string.isRequired,
     showHeader: PropTypes.bool,
     showFooter: PropTypes.bool,
+    className: PropTypes.string,
   }
 
   static defaultProps = {
     showHeader: true,
     showFooter: true,
+    className: undefined,
   }
 
   render() {
-    const { children, token, showHeader } = this.props;
+    const { className, children, token, showHeader } = this.props;
     if (!token) {
       return (<Redirect to="/sign/sign-in" />);
     }
     return (
-      <main>
+      <main className={className}>
         {showHeader ? <Header /> : null}
         {children}
         <OfflineIndicator />
