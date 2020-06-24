@@ -1,8 +1,8 @@
 import axios from 'axios';
-// import { stringify as qs } from 'query-string';
+import { stringify as qs } from 'query-string';
 import fileDownload from 'js-file-download';
-import Account from './helpers/Account';
 import { objectToFormData } from 'object-to-formdata';
+import Account from './helpers/Account';
 
 const { REACT_APP_DEV } = process.env;
 const apiUrl = REACT_APP_DEV ? 'http://localhost:5000' : 'http://graphs-backend.ghost-services.com';
@@ -49,6 +49,26 @@ class Api {
 
   static convert(type, requestData) {
     return api.post(`/convert/${type}/to/graph`, toFormData(requestData));
+  }
+
+  static createGraph(requestData) {
+    return api.post('/graphs/create', requestData);
+  }
+
+  static updateGraph(id, requestData) {
+    return api.put(`/graphs/update/${id}`, requestData);
+  }
+
+  static getGraphsList(page, requestData = {}) {
+    const query = qs({
+      page,
+      ...requestData,
+    });
+    return api.get(`/graphs?${query}`);
+  }
+
+  static getSingleGraph(getSingleGraph) {
+    return api.get(`/graphs/single/${getSingleGraph}`);
   }
 }
 

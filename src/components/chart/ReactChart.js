@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
+import memoizeOne from 'memoize-one';
 import Chart from '../../Chart';
 import { showNodeDescription, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../ContextMenu';
@@ -12,31 +13,15 @@ class ReactChart extends Component {
     showNodeDescription: PropTypes.func.isRequired,
     nodeDescription: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
+    singleGraph: PropTypes.object.isRequired,
   }
 
-  async componentDidMount() {
-    const data = { nodes: [], links: [] };
-    data.nodes.push({
-      name: 'Instagram',
-      value: 5,
-      type: '2',
-      fx: 250,
-      fy: 250,
-      links: '[link url="https://developer.mozilla.org/en-US/docs/Web/API/Screen_Capture_API/Using_Screen_Capture"]asdasdasd[/link] [link url="https://developer.mozilla.org/en-US/docs/Web/API/Screen_Capture_API/Using_Screen_Capture"]asdasdada213131313[/link]',
-      description: 'Asdasd asdasdsad asd asd as dasdsa da s',
-      files: '[file url="blob:http://localhost:3000/bc48f756-96ae-4f92-9914-21a8362253e7"]asdasdasdasd[/file]',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1024px-Instagram_logo_2016.svg.png',
-    });
+  renderChart = memoizeOne((nodes, links) => {
+    Chart.render({ nodes, links });
+  });
 
-    data.nodes.push({
-      name: 'Hell',
-      value: 5,
-      type: '2',
-      fx: 500,
-      fy: 250,
-    });
-
-    Chart.render(data);
+  componentDidMount() {
+    Chart.render({ nodes: [], links: [] });
 
     Chart.event.on('node.click', this.deleteNode);
     ContextMenu.event.on('node.delete', this.deleteNode);
@@ -130,7 +115,8 @@ class ReactChart extends Component {
   }
 
   render() {
-    const { activeButton } = this.props;
+    const { activeButton, singleGraph: { nodes, links } } = this.props;
+    this.renderChart(nodes, links);
     return (
       <div id="graph" data-active={activeButton} className={activeButton} />
     );
@@ -140,6 +126,7 @@ class ReactChart extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   nodeDescription: state.app.nodeDescription,
+  singleGraph: state.graphs.singleGraph,
 });
 const mapDespatchToProps = {
   showNodeDescription,

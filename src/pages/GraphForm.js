@@ -2,21 +2,29 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Wrapper from '../components/Wrapper';
 import ToolBar from '../components/ToolBar';
-import Header from '../components/Header';
+import GraphHeader from '../components/GraphHeader';
 import ReactChart from '../components/chart/ReactChart';
 import AddNodeModal from '../components/chart/AddNodeModal';
 import Crop from '../components/chart/Crop';
 import ContextMenu from '../components/ContextMenu';
 import DataView from '../components/dataView/DataView';
 import DataImport from '../components/DataImport';
-import NodeDescription from "../components/NodeDescription";
+import NodeDescription from '../components/NodeDescription';
+import { setActiveButton } from "../store/actions/app";
+import { getSingleGraphRequest } from "../store/actions/graphs";
 
 class GraphForm extends Component {
+  componentDidMount() {
+    const { match: { params: { graphId } } } = this.props;
+    this.props.setActiveButton('create');
+    this.props.getSingleGraphRequest(graphId);
+  }
+
   render() {
     const { activeButton } = this.props;
     return (
-      <Wrapper>
-        <Header />
+      <Wrapper showHeader={false} showFooter={false}>
+        <GraphHeader />
         <ToolBar />
         <div className="graphWrapper">
           {activeButton === 'data' ? <DataView /> : null}
@@ -35,7 +43,10 @@ class GraphForm extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
 });
-const mapDespatchToProps = {};
+const mapDespatchToProps = {
+  setActiveButton,
+  getSingleGraphRequest,
+};
 const Container = connect(
   mapStateToProps,
   mapDespatchToProps,

@@ -76,7 +76,22 @@ class Chart {
         }
       }, 100);
     }
-  })
+  });
+
+  static autoPosition() {
+    if (this.originalData.nodes[0] && this.originalData.nodes[0].fx === undefined) {
+      const graph = document.querySelector('#graph');
+      if (!graph) {
+        return null;
+      }
+      const { width, height } = graph.getBoundingClientRect();
+      this.simulation = this.simulation
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('charge', d3.forceManyBody())
+        .force('x', d3.forceX((d) => d.x * d.value * 50))
+        .force('y', d3.forceY((d) => d.y * d.value * 50));
+    }
+  }
 
   static render(data) {
     try {
@@ -88,15 +103,17 @@ class Chart {
       this.originalData = data;
       this.data = this.normalizeData(data);
 
-
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(this.data.links).id((d) => d.name));
+
+      this.autoPosition();
 
       this.svg = d3.select('#graph svg');
 
       if (this.svg.empty()) {
         this.svg = d3.select('#graph').append('svg');
       }
+
 
       this.svg = this.svg
         .call(d3.zoom().on('zoom', () => {
@@ -160,7 +177,6 @@ class Chart {
       this.nodes.selectAll('.circle')
         .append('circle')
         .attr('r', (d) => d.value * 5)
-        .attr('href', (d) => d.icon);
 
       this.nodes.selectAll('.node')
         .append('text')
@@ -177,7 +193,8 @@ class Chart {
           .attr('x2', (d) => d.target.x)
           .attr('y2', (d) => d.target.y);
         this.node
-          .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`);
+          .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
+          .attr('class', (d) => `node ${d.icon ? 'image' : 'circle'} ${d.vx !== 0 ? 'auto' : ''}`.trim())
         this._dataNodes = null;
         this._dataLinks = null;
       });
@@ -297,8 +314,8 @@ class Chart {
       this._dataNodes = this.data.nodes.map((d) => {
         const od = this.originalData.nodes.find((o) => o.name === d.name);
         return {
-          fx: d.fx || od.fx || '',
-          fy: d.fy || od.fx || '',
+          fx: d.fx || od.fx || d.x || '',
+          fy: d.fy || od.fx || d.y || '',
           name: d.name || od.name || '',
           type: d.type || od.type || '',
           value: d.value || od.value || '',

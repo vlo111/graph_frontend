@@ -6,6 +6,8 @@ $color-orange: #FF9800;
 $color-gray: #ced0d4;
 $color-gray2: #777777;
 $color-blue: #2196f3;
+$color-white: #ffffff;
+$color-text: #333333;
 
 * {
   margin: 0;
@@ -31,12 +33,12 @@ $color-blue: #2196f3;
 
 body {
   font-family: Roboto, sans-serif;
-  color: #333333;
+  color: $color-text;
 }
 
 a {
   text-decoration: none;
-  color: #333333;
+  color: $color-text;
 }
 
 ul {
@@ -228,6 +230,11 @@ main {
   &.red {
     background-color: $color-red;
   }
+
+  &.white {
+    background-color: $color-white;
+    color: $color-text;
+  }
 }
 
 #graph {
@@ -278,8 +285,9 @@ main {
 
   }
 
+
   .node {
-    stroke: #ffffff;
+    stroke: $color-white;
     stroke-width: 1.5;
     cursor: pointer;
 
@@ -289,6 +297,24 @@ main {
       font-size: 22px;
       stroke: #fafbfc;
       stroke-width: 0.5;
+    }
+
+    &.auto {
+      image,
+      circle {
+        stroke-width: 2;
+        stroke: #a09b9b;
+        stroke-dasharray: 2;
+        animation: dashAutoAnim 80s linear;
+        animation-iteration-count: infinite;
+
+        @keyframes dashAutoAnim {
+          to {
+            stroke-dashoffset: 1000;
+          }
+        }
+
+      }
     }
   }
 
@@ -340,7 +366,7 @@ main {
   }
 }
 
-header {
+#graphHeader {
   position: fixed;
   z-index: 3;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -351,6 +377,10 @@ header {
   width: 100%;
   height: 60px;
   display: flex;
+}
+
+#header {
+
 }
 
 #toolBar {
@@ -382,7 +412,7 @@ header {
     margin-top: 16px;
     flex-direction: column;
     background-color: transparent;
-    color: #333333;
+    color: $color-text;
     font-weight: 400;
 
     &.active {
@@ -395,7 +425,7 @@ header {
   position: fixed;
   width: 100%;
   background: #FF9800;
-  color: #ffffff;
+  color: $color-white;
   top: 0;
   right: 0;
   left: auto;
@@ -507,7 +537,7 @@ header {
   button {
     background-color: transparent;
     border-radius: 0;
-    color: #333333;
+    color: $color-text;
     text-align: left;
     justify-content: flex-start;
     padding: 10px;
@@ -584,12 +614,12 @@ header {
 
       .ghButton {
         background-color: transparent;
-        color: #333333;
+        color: $color-text;
         border-radius: 50%;
         width: 30px;
         height: 30px;
         padding: 0;
-        border: 2px solid #333333;
+        border: 2px solid $color-text;
 
         .icon,
         .icon i {
@@ -627,7 +657,7 @@ header {
     position: absolute;
     left: 0;
     top: 0;
-    background-color: #ffffff;
+    background-color: $color-white;
     width: max-content !important;
     min-width: 100%;
     margin: 0;
@@ -806,7 +836,7 @@ header {
       left: 0;
       top: 0;
       width: max-content;
-      background-color: #ffffff;
+      background-color: $color-white;
       z-index: 1;
     }
   }
@@ -820,12 +850,12 @@ header {
       margin: 5px 15px;
       background-color: transparent;
       padding: 5px 5px 1px;
-      color: #333333;
+      color: $color-text;
       border-bottom: 1px solid transparent;
       border-radius: 0;
 
       &.active {
-        border-bottom-color: #333333;
+        border-bottom-color: $color-text;
       }
     }
   }
@@ -860,7 +890,7 @@ header {
       margin-bottom: 15px;
 
       .close {
-        background-color: #ffffff;
+        background-color: $color-white;
         padding: 0;
         position: absolute;
         right: 5px;
@@ -877,7 +907,7 @@ header {
         top: -12px;
         left: 5px;
         padding: 2px;
-        background-color: #ffffff;
+        background-color: $color-white;
       }
     }
   }
@@ -914,7 +944,7 @@ header {
       width: 50px;
       height: 50px;
       background: $color-blue;
-      color: #ffffff;
+      color: $color-white;
       font-size: 30px;
       display: flex;
       align-items: center;
@@ -959,5 +989,185 @@ header {
       overflow: hidden;
       width: 100%;
     }
+  }
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid $color-white;
+}
+
+.graphsList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 940px;
+  padding: 0 20px;
+  margin: 25px auto;
+
+  .graphsItem {
+    display: flex;
+    border-top: 1px solid $color-gray;
+    flex-direction: column;
+
+    a {
+      transition: all 300ms;
+
+      &:hover {
+        color: $color-blue;
+      }
+    }
+
+
+    .top {
+      display: flex;
+      margin-top: 20px;
+
+      .avatar {
+        margin-right: 15px;
+      }
+
+      .author {
+        font-size: 16px;
+      }
+
+      .info {
+        font-size: 14px;
+        color: $color-gray2;
+        display: flex;
+        margin-top: 5px;
+
+        span {
+          margin-right: 15px;
+          position: relative;
+
+          &:after {
+            content: '・';
+            position: absolute;
+            top: -4px;
+            right: -14px;
+          }
+
+          &:last-child:after {
+            content: none;
+          }
+        }
+      }
+    }
+
+    .thumbnail {
+      border: 1px solid $color-gray;
+      width: 100%;
+      height: 325px;
+      max-height: 34vw;
+      min-height: 130px;
+      object-fit: cover;
+      margin-top: 10px;
+    }
+
+    .title {
+      font-size: 28px;
+      margin-top: 20px;
+      font-weight: 500;
+    }
+
+    .description {
+      margin: 20px 0;
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+
+  li {
+    a {
+      cursor: pointer;
+      min-width: 25px;
+      height: 25px;
+      margin: 5px;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      border-radius: 2px;
+      padding: 5px;
+      border: 1px solid transparent;
+      outline: none;
+      transition: all 200ms;
+      line-height: 1em;
+    }
+
+    &.selected {
+      a {
+        background-color: $color-blue;
+        color: $color-white;
+      }
+    }
+
+
+    &:hover {
+      a {
+        border-color: $color-blue;
+      }
+    }
+
+    &.break {
+      a {
+        border: none;
+        cursor: default;
+        line-height: 0.5em;
+      }
+    }
+
+    &.next,
+    &.previous {
+      i {
+        line-height: 0.7em;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.graphPreview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: $color-white;
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  .title {
+    font-weight: 500;
+    font-size: 35px;
+    text-shadow: 0 0 5px #555555;
+  }
+
+  .description {
+    margin-top: 20px;
+    font-size: 20px;
+    text-shadow: 0 0 5px #555555;
+  }
+
+  .ghButton {
+    margin-top: 25px;
+    font-size: 16px;
+    text-transform: uppercase;
+    padding: 15px 35px;
+    box-shadow: 0 0 5px #555555;
   }
 }

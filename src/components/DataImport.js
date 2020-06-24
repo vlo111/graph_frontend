@@ -9,7 +9,7 @@ import { setActiveButton } from '../store/actions/app';
 import File from './form/File';
 import Button from './form/Button';
 import Utils from '../helpers/Utils';
-import { convertGraphRequest } from '../store/actions/graph';
+import { convertGraphRequest } from '../store/actions/graphs';
 import Chart from '../Chart';
 
 class DataImport extends Component {
@@ -148,7 +148,7 @@ class DataImport extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
-  importData: state.graph.importData,
+  importData: state.graphs.importData,
 });
 const mapDespatchToProps = {
   setActiveButton,

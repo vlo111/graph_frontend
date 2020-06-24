@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import app from './app';
 import account from './account';
-import graph from './graph';
+import graphs from './graphs';
 
 export default combineReducers({
   app,
   account,
-  graph,
+  graphs,
 });

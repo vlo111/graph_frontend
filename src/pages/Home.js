@@ -1,0 +1,103 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import ReactPaginate from 'react-paginate';
+import queryString from 'query-string';
+import memoizeOne from 'memoize-one';
+import moment from 'moment';
+import { Link } from 'react-router-dom';
+import { getGraphsListRequest } from '../store/actions/graphs';
+import Wrapper from '../components/Wrapper';
+
+class Home extends Component {
+  static propTypes = {
+    getGraphsListRequest: PropTypes.func.isRequired,
+    graphsList: PropTypes.array.isRequired,
+    graphsListInfo: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+  }
+
+  getGraphsList = memoizeOne((page) => {
+    this.props.getGraphsListRequest(page);
+  })
+
+  componentDidMount() {
+  }
+
+  handlePageChange = (page) => {
+    const queryObj = queryString.parse(window.location.search);
+    queryObj.page = page.selected + 1;
+    const query = queryString.stringify(queryObj);
+    this.props.history.push(`?${query}`);
+  }
+
+  render() {
+    const { graphsList, graphsListInfo: { totalPages } } = this.props;
+    const { page = 1 } = queryString.parse(window.location.search);
+    this.getGraphsList(page);
+    return (
+      <Wrapper>
+
+        <div className="graphsList">
+          {graphsList.map((graph) => (
+            <article className="graphsItem">
+              <div className="top">
+                <img
+                  className="avatar"
+                  src={graph.user.avatar}
+                  alt={graph.user.name}
+                />
+                <div className="infoWrapper">
+                  <a href="#">
+                    <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
+                  </a>
+                  <div className="info">
+                    <span>{moment(graph.updatedAt).calendar()}</span>
+                    <span>{`${graph.nodes.length} nodes`}</span>
+                  </div>
+                </div>
+              </div>
+              <Link to={`/graphs/view/${graph.id}`}>
+                <img
+                  className="thumbnail"
+                  src="https://d3cnky5llnzyoo.cloudfront.net/graphs/images/4ec2e5c1-80db-454f-bae3-7dc73c92110e/original/Firefox_Developer_EditionScreenSnapz331.png"
+                  alt=""
+                />
+              </Link>
+              <Link to={`/graphs/view/${graph.id}`}>
+                <h3 className="title">{graph.title}</h3>
+              </Link>
+              <Link to={`/graphs/view/${graph.id}`}>
+                <p className="description">{graph.description}</p>
+              </Link>
+            </article>
+          ))}
+        </div>
+        <ReactPaginate
+          containerClassName="pagination"
+          forcePage={page - 1}
+          pageCount={totalPages}
+          previousLabel={<i className="fa fa-angle-left" />}
+          nextLabel={<i className="fa fa-angle-right" />}
+          onPageChange={this.handlePageChange}
+        />
+      </Wrapper>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  graphsList: state.graphs.graphsList,
+  graphsListInfo: state.graphs.graphsListInfo,
+});
+
+const mapDespatchToProps = {
+  getGraphsListRequest,
+};
+
+const Container = connect(
+  mapStateToProps,
+  mapDespatchToProps,
+)(Home);
+
+export default Container;

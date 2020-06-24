@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
+import Chart from "../Chart";
 
 class ToolBar extends Component {
   componentDidMount() {
@@ -13,8 +14,18 @@ class ToolBar extends Component {
       this.undo()
     }
   }
+
   handleClick = (button) => {
     this.props.setActiveButton(button);
+  }
+
+  reset = () => {
+    const nodes = Chart.getNodes();
+    nodes.forEach((d, i) => {
+      delete nodes[i].fx;
+      delete nodes[i].fy;
+    });
+    Chart.render({ nodes });
   }
 
   undo = () => {
@@ -51,7 +62,7 @@ class ToolBar extends Component {
           <Button
             className={activeButton === 'reset' ? 'active' : undefined}
             icon="fa-repeat"
-            onClick={() => this.handleClick('reset')}
+            onClick={this.reset}
           >
             Reset
           </Button>
