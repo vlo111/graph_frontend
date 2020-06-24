@@ -8,6 +8,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
 import Wrapper from '../components/Wrapper';
+import Button from '../components/form/Button';
 
 class Home extends Component {
   static propTypes = {
@@ -37,7 +38,9 @@ class Home extends Component {
     this.getGraphsList(page);
     return (
       <Wrapper>
-
+        <Link to="/graphs/create" style={{ marginTop: 65 }}>
+          <Button icon="fa-pencil" className=" edit">New Graph (//todo)</Button>
+        </Link>
         <div className="graphsList">
           {graphsList.map((graph) => (
             <article className="graphsItem">
