@@ -48,7 +48,7 @@ class DataImport extends Component {
     if (path === 'file') {
       if (firstFile.type === 'text/csv') {
         const data = await Utils.fileToString(file);
-        if (data.includes('"Name","Value","Description","Files","Links"')) {
+        if (data.includes('"Name","Description","Icon",')) {
           fileType = 'nodes';
         } else {
           fileType = 'links';
