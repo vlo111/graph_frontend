@@ -1221,3 +1221,9 @@ main {
     }
   }
 }
+.exportButtons{
+  display: flex;
+  .ghButton{
+    margin: 0 5px;
+  }
+}

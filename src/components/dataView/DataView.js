@@ -93,10 +93,12 @@ class DataView extends Component {
     return (
       <div id="dataTable">
         <HeaderPortal>
-          <Button onClick={() => this.export('csv')}>Export csv</Button>
-          <Button onClick={() => this.export('csv-zip')}>Export zip</Button>
-          <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
-          <Button onClick={() => this.exportPng()}>Export png</Button>
+          <div className="exportButtons">
+            <Button onClick={() => this.export('csv')}>Export csv</Button>
+            <Button onClick={() => this.export('csv-zip')}>Export zip</Button>
+            <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
+            <Button onClick={() => this.exportPng()}>Export png</Button>
+          </div>
         </HeaderPortal>
         <div className={`contentWrapper ${fullWidth ? 'fullWidth' : ''}`}>
           <div className="header">
