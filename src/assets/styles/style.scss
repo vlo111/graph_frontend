@@ -1189,13 +1189,35 @@ main {
     box-shadow: 0 0 5px #555555;
   }
 }
-.graphView{
-  .edit{
+
+.graphView {
+  .edit {
     position: absolute;
     left: 15px;
     top: 75px;
-    .icon{
+
+    .icon {
       font-size: 25px;
+    }
+  }
+}
+
+.gh-jodit-popup {
+  .hidden {
+    display: none;
+  }
+
+  .jodit-ui-button {
+    max-width: 250px;
+  }
+}
+
+.jodit {
+  .jodit-wysiwyg {
+    a {
+      color: $color-blue;
+      text-decoration: underline;
+      padding-right:  4px;
     }
   }
 }

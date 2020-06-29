@@ -40,14 +40,6 @@ class SaveGraphModal extends Component {
     };
   }
 
-  componentDidMount() {
-    const { match: { params: { graphId } } } = this.props;
-    if (graphId) {
-      this.props.createGraphRequest(graphId);
-    }
-  }
-
-
   saveGraph = async () => {
     const { requestData } = this.state;
     const { match: { params: { graphId } } } = this.props;

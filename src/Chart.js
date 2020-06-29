@@ -167,20 +167,22 @@ class Chart {
 
       this.node.selectAll('*').remove();
 
+      const radiusList = this.data.nodes.map((d) => this.getNodeLinks(d.name).sources.length * 2 + 10);
+
       this.nodes.selectAll('.image')
         .append('image')
-        .attr('width', (d) => d.value * 10)
-        .attr('height', (d) => d.value * 10)
-        .attr('transform', (d) => `translate(${d.value * -5}, ${d.value * -5})`)
+        .attr('width', (d) => radiusList[d.index] * 2)
+        .attr('height', (d) => radiusList[d.index] * 2)
+        .attr('transform', (d) => `translate(${radiusList[d.index] * -1}, ${radiusList[d.index] * -1})`)
         .attr('href', (d) => d.icon);
 
       this.nodes.selectAll('.circle')
         .append('circle')
-        .attr('r', (d) => d.value * 5)
+        .attr('r', (d) => radiusList[d.index]);
 
       this.nodes.selectAll('.node')
         .append('text')
-        .attr('x', (d) => d.value * 5 + 10)
+        .attr('x', (d, i) => radiusList[i] + 5)
         .text((d) => d.name);
 
       this.node.selectAll('._new *').remove();
@@ -194,7 +196,7 @@ class Chart {
           .attr('y2', (d) => d.target.y);
         this.node
           .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
-          .attr('class', (d) => `node ${d.icon ? 'image' : 'circle'} ${d.vx !== 0 ? 'auto' : ''}`.trim())
+          .attr('class', (d) => `node ${d.icon ? 'image' : 'circle'} ${d.vx !== 0 ? 'auto' : ''}`.trim());
         this._dataNodes = null;
         this._dataLinks = null;
       });
@@ -209,7 +211,7 @@ class Chart {
   }
 
   static renderNewLink() {
-    if (!this.wrapper.select('#addNewLink').empty()) {
+    if (this.wrapper.empty() || !this.wrapper.select('#addNewLink').empty()) {
       return;
     }
     this.newLink = this.wrapper.append('line')
@@ -298,6 +300,15 @@ class Chart {
     return node.getBoundingClientRect();
   }
 
+  static getNodeLinks(name) {
+    const links = this.getLinks();
+    const sources = links.filter((d) => d.source === name);
+    const targets = links.filter((d) => d.target === name);
+    return {
+      sources,
+      targets,
+    };
+  }
 
   static pathCircle(d) {
     return `M ${d.x || d.fx || 0}, ${d.y || d.fx || 0}
@@ -318,11 +329,8 @@ class Chart {
           fy: d.fy || od.fx || d.y || '',
           name: d.name || od.name || '',
           type: d.type || od.type || '',
-          value: d.value || od.value || '',
-          icon: d.icon || od.icon || '',
           description: d.description || od.description || '',
-          files: d.files || od.files || '',
-          links: d.links || od.links || '',
+          icon: d.icon || od.icon || '',
         };
       });
     }

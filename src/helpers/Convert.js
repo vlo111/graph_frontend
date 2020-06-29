@@ -23,10 +23,7 @@ class Convert {
     return nodes.map((d, i) => ([
       { value: i, key: 'index' },
       { value: d.name, key: 'name' },
-      { value: d.value, key: 'value' },
       { value: d.description, key: 'description' },
-      { value: d.files, key: 'files' },
-      { value: d.links, key: 'links' },
       { value: d.icon, key: 'icon' },
     ]));
   }
@@ -35,11 +32,8 @@ class Convert {
     return grid.map((g, i) => ({
       ...nodes[i],
       name: g[1]?.value || '',
-      value: g[2]?.value || '',
-      description: g[3]?.value || '',
-      files: g[4]?.value || '',
-      links: g[5]?.value || '',
-      icon: g[6]?.value || '',
+      description: g[2]?.value || '',
+      icon: g[3]?.value || '',
     }));
   }
 

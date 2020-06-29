@@ -23,7 +23,6 @@ class AddNodeModal extends Component {
     const { nodeData: { type } } = this.state;
     this.setState({
       nodeData: {
-        value: 1,
         name: '',
         icon: '',
         type: type || _.last(nodes)?.type || '',
@@ -115,14 +114,6 @@ class AddNodeModal extends Component {
           value={nodeData.name}
           error={errors.name}
           onChangeText={(v) => this.handleChange('name', v)}
-        />
-        <Input
-          label="Value"
-          value={nodeData.value}
-          onChangeText={(v) => this.handleChange('value', v)}
-          type="number"
-          min={1}
-          autoComplete="off"
         />
         <FileInput
           label="Icon"

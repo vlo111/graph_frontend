@@ -9,8 +9,8 @@ import FileInput from '../form/FileInput';
 import DataEditorDescription from './DataEditorDescription';
 import DataEditorFiles from './DataEditorFiles';
 import DataEditorLinks from './DataEditorLinks';
-import Convert from "../../helpers/Convert";
-
+import Convert from '../../helpers/Convert';
+import stripHtml from "string-strip-html";
 class DataTableNodes extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -56,10 +56,7 @@ class DataTableNodes extends Component {
               </label>
             </th>
             <th className="cell name" width="150"><span>Name</span></th>
-            <th className="cell value" width="100">Size</th>
             <th className="cell description" width="200">Description</th>
-            <th className="cell files" width="200">Files</th>
-            <th className="cell links" width="200">Links</th>
             <th className="cell icon" width="272">Icon</th>
           </tr>
         </thead>

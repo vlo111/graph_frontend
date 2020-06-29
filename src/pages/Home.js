@@ -43,7 +43,7 @@ class Home extends Component {
         </Link>
         <div className="graphsList">
           {graphsList.map((graph) => (
-            <article className="graphsItem">
+            <article key={graph.id} className="graphsItem">
               <div className="top">
                 <img
                   className="avatar"

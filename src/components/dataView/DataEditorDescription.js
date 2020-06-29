@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import Input from '../form/Input';
 import Button from '../form/Button';
+import Editor from "../form/Editor";
 
 class DataEditorDescription extends Component {
   static propTypes = {
@@ -21,7 +22,7 @@ class DataEditorDescription extends Component {
   }
 
   render() {
-    const { onClose, ...props } = this.props;
+    const { onClose, onChangeText, ...props } = this.props;
     return (
       <div>
         <Modal
@@ -31,7 +32,7 @@ class DataEditorDescription extends Component {
           onRequestClose={this.closeModal}
         >
           <h3>Description</h3>
-          <Input {...props} textArea containerClassName="description" />
+          <Editor {...props} onChange={onChangeText} />
           <Button onMouseDown={this.closeModal}>Save</Button>
         </Modal>
         {props.value}
