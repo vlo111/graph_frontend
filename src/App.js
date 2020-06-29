@@ -20,7 +20,7 @@ class App extends Component {
           <Route path="/graphs/author/:authorId" component={GraphForm} />
 
           <Route path="/sign/sign-in" component={SignIn} />
-          <Route path="/sign/sign-up" component={SignUp} />
+          {/*<Route path="/sign/sign-up" component={SignUp} />*/}
           <Route path="/sign/forgot-password" component={SignIn} />
           <Route path="/sign/reset-password" component={SignIn} />
         </Switch>
