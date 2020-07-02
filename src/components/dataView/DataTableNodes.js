@@ -10,7 +10,7 @@ import DataEditorDescription from './DataEditorDescription';
 import DataEditorFiles from './DataEditorFiles';
 import DataEditorLinks from './DataEditorLinks';
 import Convert from '../../helpers/Convert';
-import stripHtml from "string-strip-html";
+
 class DataTableNodes extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -37,7 +37,7 @@ class DataTableNodes extends Component {
   }
 
 
-  sheetRenderer = (props) => {
+  renderSheet = (props) => {
     const { selectedNodes } = this.props;
     const { grid } = this.state;
     const allChecked = grid.length === selectedNodes.length;
@@ -56,8 +56,10 @@ class DataTableNodes extends Component {
               </label>
             </th>
             <th className="cell name" width="150"><span>Name</span></th>
-            <th className="cell description" width="200">Description</th>
+            <th className="cell description" width="272">Description</th>
             <th className="cell icon" width="272">Icon</th>
+            <th className="cell color" width="120">Color</th>
+            <th className="cell link" width="272">Link</th>
           </tr>
         </thead>
         <tbody>
@@ -67,7 +69,7 @@ class DataTableNodes extends Component {
     );
   }
 
-  cellRenderer = (props) => {
+  renderCell = (props) => {
     const { selectedNodes } = this.props;
     const {
       cell, children,
@@ -101,6 +103,20 @@ class DataTableNodes extends Component {
     );
   }
 
+  renderView = (props) => {
+    const { cell } = props;
+    const { value } = props;
+    if (cell.key === 'description') {
+      return (
+        <span className="value-viewer" dangerouslySetInnerHTML={{ __html: value }} />
+      );
+    }
+    return (
+      <span className="value-viewer">
+        {props.value}
+      </span>
+    );
+  }
 
   renderDataEditor = (props) => {
     const defaultProps = {
@@ -109,22 +125,15 @@ class DataTableNodes extends Component {
       onKeyDown: props.onKeyDown,
       onChangeText: props.onChange,
     };
-    if (['value'].includes(props.cell.key)) {
+    if (props.cell.key === 'value') {
       defaultProps.type = 'number';
+    }
+    if (props.cell.key === 'link') {
+      defaultProps.type = 'url';
     }
     if (props.cell.key === 'icon') {
       return (
         <FileInput {...defaultProps} onChangeFile={props.onChange} />
-      );
-    }
-    if (props.cell.key === 'files') {
-      return (
-        <DataEditorFiles {...defaultProps} onClose={this.onMouseDown} />
-      );
-    }
-    if (props.cell.key === 'links') {
-      return (
-        <DataEditorLinks {...defaultProps} onClose={this.onMouseDown} />
       );
     }
     if (props.cell.key === 'description') {
@@ -142,10 +151,11 @@ class DataTableNodes extends Component {
       <ReactDataSheet
         className="ghGridTable ghGridTableNodes"
         data={this.state.grid}
-        valueRenderer={(cell) => cell.value}
-        cellRenderer={this.cellRenderer}
+        valueRenderer={(cell) => String(cell.value || '')}
+        valueViewer={this.renderView}
+        cellRenderer={this.renderCell}
         onCellsChanged={this.handleDataChange}
-        sheetRenderer={this.sheetRenderer}
+        sheetRenderer={this.renderSheet}
         dataEditor={this.renderDataEditor}
       />
     );

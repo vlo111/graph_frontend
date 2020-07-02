@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import OfflineIndicator from './OfflineIndicator';
-import Header from "./Header";
+import Header from './Header';
 
 Modal.setAppElement(document.body);
 
@@ -25,7 +25,9 @@ class Wrapper extends Component {
   }
 
   render() {
-    const { className, children, token, showHeader } = this.props;
+    const {
+      className, children, token, showHeader,
+    } = this.props;
     if (!token) {
       return (<Redirect to="/sign/sign-in" />);
     }
@@ -34,7 +36,7 @@ class Wrapper extends Component {
         {showHeader ? <Header /> : null}
         {children}
         <OfflineIndicator />
-        <ToastContainer hideProgressBar />
+        <ToastContainer hideProgressBar transition={ToastSlide} />
       </main>
     );
   }

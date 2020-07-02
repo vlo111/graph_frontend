@@ -9,14 +9,18 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import Input from '../form/Input';
 import Utils from '../../helpers/Utils';
-import { createGraphRequest, updateGraphRequest } from '../../store/actions/graphs';
-import ShortCode from '../../helpers/ShortCode';
+import { createGraphRequest, getSingleGraphRequest, updateGraphRequest } from '../../store/actions/graphs';
+import { setActiveButton } from '../../store/actions/app';
 
 class SaveGraphModal extends Component {
   static propTypes = {
     createGraphRequest: PropTypes.func.isRequired,
+    getSingleGraphRequest: PropTypes.func.isRequired,
+    setActiveButton: PropTypes.func.isRequired,
     updateGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
+    history: PropTypes.array.isRequired,
   }
 
   initValues = memoizeOne((singleGraph) => {
@@ -44,41 +48,51 @@ class SaveGraphModal extends Component {
     const { requestData } = this.state;
     const { match: { params: { graphId } } } = this.props;
 
-    const nodes = Chart.getNodes();
+    let nodes = Chart.getNodes();
     const links = Chart.getLinks();
     const thumbnail = await Utils.graphToPng();
     const icons = await Promise.all(nodes.map((d) => {
       if (d.icon && d.icon.startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);
       }
-      let files = ShortCode.fileParse(d.files);
-      files = files.map((file) => {
-        if (file.url.startsWith('blob:')) {
-          file.url = Utils.blobToBase64(file.url);
-        }
-        return file;
-      }).filter((f) => f.url);
-      d.files = ShortCode.fileStringify(files);
       return d.icon;
     }));
-    nodes.forEach((d, k) => {
-      nodes[k].icon = icons[k];
+    let files = {};
+    let fIndex = new Date().getTime();
+    nodes = nodes.map((d, i) => {
+      d.icon = icons[i];
+      d.description = d.description.replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
+        fIndex += 1;
+        files[fIndex] = Utils.blobToBase64(url);
+        return ` href="<%= file_${fIndex} %>"`;
+      });
+      return d;
     });
+    files = await Promise.allValues(files);
+
     if (graphId) {
-      this.props.updateGraphRequest(graphId, {
+      await this.props.updateGraphRequest(graphId, {
         ...requestData,
         nodes,
         links,
+        files,
         thumbnail,
       });
+      this.props.getSingleGraphRequest(graphId);
     } else {
-      this.props.createGraphRequest({
+      const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
         nodes,
         links,
+        files,
         thumbnail,
       });
+      if (data.graph?.id) {
+        this.props.history.replace(`/graphs/update/${data.graph?.id}`);
+      }
     }
+    this.setState({ showModal: false });
+    this.props.setActiveButton('create');
   }
 
   handleChange = (path, value) => {
@@ -139,6 +153,8 @@ const mapStateToProps = (state) => ({
 const mapDespatchToProps = {
   createGraphRequest,
   updateGraphRequest,
+  getSingleGraphRequest,
+  setActiveButton,
 };
 const Container = connect(
   mapStateToProps,

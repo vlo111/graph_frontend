@@ -23,8 +23,12 @@ class Utils {
 
   static blobToBase64 = async (blob) => {
     try {
-      const { data } = await axios.get(blob);
-      return Buffer.from(data, 'binary').toString('base64');
+      const {
+        data,
+        headers: { 'content-type': type },
+      } = await axios.get(blob, { responseType: 'arraybuffer' });
+      const base64 = Buffer.from(data, 'binary').toString('base64');
+      return `data:${type};base64,${base64}`;
     } catch (e) {
       return null;
     }

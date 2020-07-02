@@ -9,18 +9,6 @@ export function setActiveButton(button) {
   };
 }
 
-export const SHOW_NODE_DESCRIPTION = 'SHOW_NODE_DESCRIPTION';
-
-export function showNodeDescription(node = '') {
-  return {
-    type: SHOW_NODE_DESCRIPTION,
-    payload: {
-      node,
-    },
-  };
-}
-
-
 export const NEW_NODE_MODAL = 'NEW_NODE_MODAL';
 
 export function toggleNodeModal(params = {}) {

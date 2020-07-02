@@ -28,6 +28,6 @@ export function getGraphsListRequest(page = 1, requestData = {}) {
 
 export const GET_SINGLE_GRAPH = define('GET_SINGLE_GRAPH');
 
-export function getSingleGraphRequest(grhapId) {
-  return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(grhapId));
+export function getSingleGraphRequest(graphId) {
+  return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId));
 }

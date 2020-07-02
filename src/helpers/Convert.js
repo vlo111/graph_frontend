@@ -5,7 +5,7 @@ class Convert {
     const nodesArr = nodes.map((d) => ([
       d.name, d.value, d.description, d.files, d.links, d.icon,
     ]));
-    nodesArr.unshift(['Name', 'Value', 'Description', 'files', 'Links', 'Icon']);
+    nodesArr.unshift(['Name', 'Value', 'Description', 'files', 'Links', 'Icon', 'Color', 'Link']);
     const csv = nodesArr.map((v) => v.map((d) => `"${d}"`).join(',')).join('\n');
     return csv;
   }
@@ -25,6 +25,8 @@ class Convert {
       { value: d.name, key: 'name' },
       { value: d.description, key: 'description' },
       { value: d.icon, key: 'icon' },
+      { value: d.color, key: 'color' },
+      { value: d.link, key: 'link' },
     ]));
   }
 
@@ -34,6 +36,8 @@ class Convert {
       name: g[1]?.value || '',
       description: g[2]?.value || '',
       icon: g[3]?.value || '',
+      color: g[4]?.value || '',
+      link: g[5]?.value || '',
     }));
   }
 

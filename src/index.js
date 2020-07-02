@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { compose, createStore, applyMiddleware } from 'redux';
+import './helpers/Promise.allValues';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reducers from './store/reducers';

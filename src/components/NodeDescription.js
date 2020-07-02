@@ -1,38 +1,64 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import memoizeOne from 'memoize-one';
-import _ from 'lodash';
 import Chart from '../Chart';
 import Icon from './form/Icon';
-import ShortCode from '../helpers/ShortCode';
+import Outside from './Outside';
 
 const MODAL_WIDTH = 300;
 
 class NodeDescription extends Component {
-  static propTypes = {
-    nodeDescription: PropTypes.string.isRequired,
+  constructor(props) {
+    super(props);
+    this.showInfoTimout = null;
+    this.state = {
+      node: null,
+    };
   }
 
-  getNode = memoizeOne((name) => {
+  componentDidMount() {
+    Chart.event.on('node.mouseenter', this.showNodeInfo);
+    Chart.event.on('node.mouseleave', this.cancelNodeInfo);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.showInfoTimout);
+  }
+
+  getNode = (name) => {
     const nodes = Chart.getNodes();
     const node = nodes.find((n) => n.name === name);
     if (node) {
       node.index = nodes.findIndex((n) => n.name === name);
     }
     return node;
-  })
+  }
+
+  cancelNodeInfo = () => {
+    clearTimeout(this.showInfoTimout);
+  }
+
+  showNodeInfo = async (d) => {
+    clearTimeout(this.showInfoTimout);
+    this.showInfoTimout = setTimeout(() => {
+      this.setState({
+        node: this.getNode(d.name),
+      });
+    }, 800);
+  }
+
+  hideInfo = () => {
+    this.setState({ node: null });
+  }
+
 
   render() {
-    const { nodeDescription } = this.props;
-    const node = this.getNode(nodeDescription);
+    const { node } = this.state;
     if (!node) {
       return null;
     }
     const { x, y } = Chart.getDocumentPosition(node.index);
     const { scale } = Chart.calcScaledPosition();
-    const nodeWidth = Chart.getNodeLinks(node.name).sources.length * 2 + 25;
-    
+    const nodeWidth = Chart.getNodeLinksNested(node.name).length * 2 + 25;
+
     const top = y + (nodeWidth * scale) + 5;
     let left = x * scale;
 
@@ -40,76 +66,34 @@ class NodeDescription extends Component {
       left = window.innerWidth - MODAL_WIDTH - 5;
     }
 
-    const files = ShortCode.fileParse(node.files);
-    const links = ShortCode.linkParse(node.links);
-    const mainLink = links.shift();
+    const mainLink = '';
     return (
-      <div data-node-info={node.index} id="nodeDescription" style={{ top, left }}>
-        <Icon className="close" value="fa-close" />
-        <div className="left">
-          {node.icon ? (
-            <img src={node.icon} alt="icon" width={50} height={50} />
-          ) : (
-            <span style={{ background: Chart.color()(node) }} className="icon">{node.name[0]}</span>
-          )}
-        </div>
-        <div className="right">
-          {mainLink ? (
-            <a className="title" href={mainLink.url} title={mainLink.name}>
-              {node.name}
-            </a>
-          ) : (
-            <h3 className="title">{node.name}</h3>
-          )}
-          {!!node.description && (
-            node.description.length < 200 ? (
-              <p className="description">{node.description}</p>
+      <Outside onClick={this.hideInfo}>
+        <div data-node-info={node.index} id="nodeDescription" style={{ top, left }}>
+          <Icon className="close" value="fa-close" onClick={this.hideInfo} />
+          <div className="left">
+            {node.icon ? (
+              <img src={node.icon} alt="icon" width={50} height={50} />
             ) : (
-              <p className="description">
-                {node.description.slice(0, 200)}
-                ...
-                <button>show more</button>
-              </p>
-            )
-          )}
-          {!_.isEmpty(files) ? (
-            <div className="files list">
-              <h4 className="sub-title">Files</h4>
-              <ul>
-                {files.map((file) => (
-                  <li key={file.url}>
-                    <a href={file.url} download>{file.name}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-          {!_.isEmpty(links) ? (
-            <div className="links list">
-              <h4 className="sub-title">Links</h4>
-              <ul>
-                {files.map((file) => (
-                  <li key={file.url}>
-                    <a href={file.url} rel="noopener noreferrer" target="_blank">{file.name}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+              <span style={{ background: Chart.color()(node) }} className="icon">{node.name[0]}</span>
+            )}
+          </div>
+          <div className="right">
+            {node.link ? (
+              <a className="title" href={node.link} title={mainLink.name} target="_blank" rel="noreferrer">
+                {node.name}
+              </a>
+            ) : (
+              <h3 className="title">{node.name}</h3>
+            )}
+            {!!node.description && (
+              <p className="description" dangerouslySetInnerHTML={{ __html: node.description }} />
+            )}
+          </div>
         </div>
-      </div>
+      </Outside>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  nodeDescription: state.app.nodeDescription,
-});
-const mapDespatchToProps = {};
-
-const Container = connect(
-  mapStateToProps,
-  mapDespatchToProps,
-)(NodeDescription);
-
-export default Container;
+export default NodeDescription;

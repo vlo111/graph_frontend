@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Wrapper from '../components/Wrapper';
 import ToolBar from '../components/ToolBar';
 import GraphHeader from '../components/GraphHeader';
@@ -10,14 +11,23 @@ import ContextMenu from '../components/ContextMenu';
 import DataView from '../components/dataView/DataView';
 import DataImport from '../components/DataImport';
 import NodeDescription from '../components/NodeDescription';
-import { setActiveButton } from "../store/actions/app";
-import { getSingleGraphRequest } from "../store/actions/graphs";
+import { setActiveButton } from '../store/actions/app';
+import { getSingleGraphRequest } from '../store/actions/graphs';
 
 class GraphForm extends Component {
+  static propTypes = {
+    getSingleGraphRequest: PropTypes.func.isRequired,
+    setActiveButton: PropTypes.func.isRequired,
+    activeButton: PropTypes.string.isRequired,
+    match: PropTypes.object.isRequired,
+  }
+
   componentDidMount() {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('create');
-    this.props.getSingleGraphRequest(graphId);
+    if (graphId) {
+      this.props.getSingleGraphRequest(graphId);
+    }
   }
 
   render() {

@@ -4,14 +4,12 @@ import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import memoizeOne from 'memoize-one';
 import Chart from '../../Chart';
-import { showNodeDescription, toggleNodeModal } from '../../store/actions/app';
+import { toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../ContextMenu';
 
 class ReactChart extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
-    showNodeDescription: PropTypes.func.isRequired,
-    nodeDescription: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
   }
@@ -26,11 +24,6 @@ class ReactChart extends Component {
     Chart.event.on('node.click', this.deleteNode);
     ContextMenu.event.on('node.delete', this.deleteNode);
 
-    Chart.event.on('node.mouseenter', this.showNodeInfo);
-    Chart.event.on('node.mouseleave', this.cancelNodeInfo);
-    document.addEventListener('mousedown', this.hideInfo, true);
-
-
     Chart.event.on('link.click', this.deleteLink);
     ContextMenu.event.on('link.delete', this.deleteLink);
 
@@ -41,28 +34,7 @@ class ReactChart extends Component {
 
   componentWillUnmount() {
     Chart.unmount();
-    document.removeEventListener('mousedown', this.hideInfo, true);
   }
-
-  showNodeInfo = async (d) => {
-    clearTimeout(this.showInfoTimout);
-    this.showInfoTimout = setTimeout(() => {
-      this.props.showNodeDescription(d.name);
-    }, 800);
-  }
-
-  hideInfo = async () => {
-    const { nodeDescription } = this.props;
-    clearTimeout(this.showInfoTimout);
-    if (nodeDescription) {
-      this.props.showNodeDescription();
-    }
-  }
-
-  cancelNodeInfo = () => {
-    clearTimeout(this.showInfoTimout);
-  }
-
 
   addNewItem = () => {
     const { target } = d3.event;
@@ -125,11 +97,9 @@ class ReactChart extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
-  nodeDescription: state.app.nodeDescription,
   singleGraph: state.graphs.singleGraph,
 });
 const mapDespatchToProps = {
-  showNodeDescription,
   toggleNodeModal,
 };
 

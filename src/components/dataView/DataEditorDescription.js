@@ -24,7 +24,7 @@ class DataEditorDescription extends Component {
   render() {
     const { onClose, onChangeText, ...props } = this.props;
     return (
-      <div>
+      <>
         <Modal
           isOpen
           className="ghModal ghTableModal"
@@ -35,8 +35,8 @@ class DataEditorDescription extends Component {
           <Editor {...props} onChange={onChangeText} />
           <Button onMouseDown={this.closeModal}>Save</Button>
         </Modal>
-        {props.value}
-      </div>
+        <span className="value-viewer" dangerouslySetInnerHTML={{ __html: props.value }} />
+      </>
     );
   }
 }

@@ -1,7 +1,6 @@
 import {
   NEW_NODE_MODAL,
   SET_ACTIVE_BUTTON, SET_GRID_INDEXES,
-  SHOW_NODE_DESCRIPTION,
   TOGGLE_GRID,
 } from '../actions/app';
 
@@ -20,12 +19,6 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         activeButton: action.payload.button,
-      };
-    }
-    case SHOW_NODE_DESCRIPTION: {
-      return {
-        ...state,
-        nodeDescription: action.payload.node,
       };
     }
     case NEW_NODE_MODAL: {

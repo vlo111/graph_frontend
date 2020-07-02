@@ -10,6 +10,8 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
+import Outside from '../Outside';
+import ColorPicker from '../form/ColorPicker';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -25,6 +27,7 @@ class AddNodeModal extends Component {
       nodeData: {
         name: '',
         icon: '',
+        color: '#0693e3',
         type: type || _.last(nodes)?.type || '',
       },
       errors: {},
@@ -46,6 +49,7 @@ class AddNodeModal extends Component {
     this.state = {
       nodeData: {},
       errors: {},
+      showColorPicker: null,
     };
   }
 
@@ -66,6 +70,9 @@ class AddNodeModal extends Component {
     if (!nodeData.type) {
       errors.type = 'Type is required';
     }
+    if (!nodeData.color) {
+      errors.type = 'Color is required';
+    }
 
     if (_.isEmpty(errors)) {
       nodes.push({ ...addNodeParams, ...nodeData });
@@ -82,9 +89,14 @@ class AddNodeModal extends Component {
     this.setState({ nodeData, errors });
   }
 
+  toggleColorPicker = (ev) => {
+    const { showColorPicker } = this.state;
+    this.setState({ showColorPicker: !showColorPicker ? ev.target : null });
+  }
+
 
   render() {
-    const { nodeData, errors } = this.state;
+    const { nodeData, errors, showColorPicker } = this.state;
     const { addNodeParams } = this.props;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
@@ -98,10 +110,15 @@ class AddNodeModal extends Component {
         onRequestClose={this.closeModal}
       >
         <h2>Add new node</h2>
-        <img src="" id="hello" alt="" />
+        <Input
+          label="Name"
+          value={nodeData.name}
+          error={errors.name}
+          onChangeText={(v) => this.handleChange('name', v)}
+        />
         <Select
           isClearable
-          label="Type"
+          label="Group"
           value={[
             types.find((t) => t.value === nodeData.type) || { value: nodeData.type, label: nodeData.type },
           ]}
@@ -109,17 +126,17 @@ class AddNodeModal extends Component {
           error={errors.type}
           onChange={(v) => this.handleChange('type', v?.value || '')}
         />
-        <Input
-          label="Name"
-          value={nodeData.name}
-          error={errors.name}
-          onChangeText={(v) => this.handleChange('name', v)}
-        />
         <FileInput
           label="Icon"
           accept=".png,.jpg,.svg"
           value={nodeData.icon}
           onChangeFile={(v) => this.handleChange('icon', v)}
+        />
+        <ColorPicker
+          label="Color"
+          value={nodeData.color}
+          style={{ color: nodeData.color }}
+          onChangeText={(v) => this.handleChange('color', v)}
         />
         <div className="buttons">
           <Button onClick={this.closeModal}>

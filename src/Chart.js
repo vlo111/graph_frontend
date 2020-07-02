@@ -158,7 +158,7 @@ class Chart {
         .data(this.data.nodes)
         .join('g')
         .attr('class', (d) => `node ${d.icon ? 'image' : 'circle'}`.trim())
-        .attr('fill', this.color())
+        .attr('fill', (d) => d.color || this.color()(d))
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
         .on('click', (d) => this.event.emit('node.click', d))
@@ -167,14 +167,14 @@ class Chart {
 
       this.node.selectAll('*').remove();
 
-      const radiusList = this.data.nodes.map((d) => this.getNodeLinks(d.name).sources.length * 2 + 10);
+      const radiusList = this.data.nodes.map((d) => this.getNodeLinksNested(d.name).length * 2 + 10);
 
       this.nodes.selectAll('.image')
         .append('image')
         .attr('width', (d) => radiusList[d.index] * 2)
         .attr('height', (d) => radiusList[d.index] * 2)
         .attr('transform', (d) => `translate(${radiusList[d.index] * -1}, ${radiusList[d.index] * -1})`)
-        .attr('href', (d) => d.icon);
+        .attr('href', (d) => d.icon)
 
       this.nodes.selectAll('.circle')
         .append('circle')
@@ -303,11 +303,17 @@ class Chart {
   static getNodeLinks(name) {
     const links = this.getLinks();
     const sources = links.filter((d) => d.source === name);
-    const targets = links.filter((d) => d.target === name);
-    return {
-      sources,
-      targets,
-    };
+    return sources;
+  }
+
+  static getNodeLinksNested(name) {
+    let links = this.getNodeLinks(name);
+    if (links.length) {
+      links.forEach((d) => {
+        links = [...links, ...this.getNodeLinksNested(d.target)];
+      });
+    }
+    return links;
   }
 
   static pathCircle(d) {
@@ -331,6 +337,8 @@ class Chart {
           type: d.type || od.type || '',
           description: d.description || od.description || '',
           icon: d.icon || od.icon || '',
+          color: d.color || od.color || '',
+          link: d.link || od.link || '',
         };
       });
     }
