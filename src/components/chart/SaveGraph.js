@@ -20,15 +20,16 @@ class SaveGraphModal extends Component {
     updateGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
-    history: PropTypes.array.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   initValues = memoizeOne((singleGraph) => {
-    const { title, description } = singleGraph;
+    const { title, description, tags } = singleGraph;
     this.setState({
       requestData: {
         title,
         description,
+        tags,
       },
     });
   })
@@ -40,6 +41,7 @@ class SaveGraphModal extends Component {
       requestData: {
         title: '',
         description: '',
+        tags: '',
       },
     };
   }

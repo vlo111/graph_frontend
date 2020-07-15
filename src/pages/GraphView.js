@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
 import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
-import Button from "../components/form/Button";
-import { Link } from "react-router-dom";
+import Button from '../components/form/Button';
 
 class GraphView extends Component {
   static propTypes = {
@@ -21,9 +21,8 @@ class GraphView extends Component {
     super(props);
     this.state = {
       preview: true,
-    }
+    };
   }
-
 
   componentDidMount() {
     const { match: { params: { graphId } } } = this.props;

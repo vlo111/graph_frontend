@@ -5,10 +5,12 @@ import _ from 'lodash';
 import { setActiveButton, setGridIndexes } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Button from '../form/Button';
-import HeaderPortal from '../form/HeaderPortal';
+import HeaderPortal from '../HeaderPortal';
 import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
 import Api from '../../Api';
+import Utils from '../../helpers/Utils';
+import FiltersButton from "../filters/FiltersButton";
 
 class DataView extends Component {
   static propTypes = {
@@ -80,9 +82,11 @@ class DataView extends Component {
     Api.download(type, { nodes, links });
   }
 
-  exportPng = async () => {
+  download = async (type) => {
+    const reset = Chart.printMode(1900, 1060);
     const svg = document.querySelector('#graph svg').outerHTML;
-    Api.download('png', { svg });
+    reset();
+    Api.download(type, { svg });
   }
 
   render() {
@@ -97,7 +101,8 @@ class DataView extends Component {
             <Button onClick={() => this.export('csv')}>Export csv</Button>
             <Button onClick={() => this.export('csv-zip')}>Export zip</Button>
             <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
-            <Button onClick={() => this.exportPng()}>Export png</Button>
+            <Button onClick={() => this.download('pdf')}>Export pdf</Button>
+            <Button onClick={() => this.download('png')}>Export png</Button>
           </div>
         </HeaderPortal>
         <div className={`contentWrapper ${fullWidth ? 'fullWidth' : ''}`}>

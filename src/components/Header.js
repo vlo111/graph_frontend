@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SaveGraph from './chart/SaveGraph';
+import Filters from './filters/Filters';
 
 class Header extends Component {
   render() {

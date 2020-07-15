@@ -28,12 +28,26 @@ class ReactChart extends Component {
     ContextMenu.event.on('link.delete', this.deleteLink);
 
     Chart.event.on('click', this.addNewItem);
-
-    Chart.event.on('line.new', this.handleAddNewLine);
+    // Chart.event.on('node.mouseenter', this.filterNode);
+    // Chart.event.on('node.mouseleave', this.cancelFilterNode);
   }
 
   componentWillUnmount() {
     Chart.unmount();
+  }
+
+  filterNode = (d) => {
+    const links = Chart.getNodeLinksNested(d.name);
+    Chart.nodes.selectAll('g')
+      .style('opacity', (n) => (links.some((link) => link.target === n.name) || d.name === n.name ? 1 : 0.5));
+
+    Chart.links.selectAll('line')
+      .style('opacity', (l) => links.some((link) => link.target === l.target || link.source === l.source) ? 1 : 0.5)
+  }
+
+  cancelFilterNode = () => {
+    Chart.nodes.selectAll('g').attr('style', undefined);
+    Chart.links.selectAll('line').attr('style', undefined);
   }
 
   addNewItem = () => {
@@ -60,7 +74,6 @@ class ReactChart extends Component {
     Chart.render({ links });
   }
 
-
   deleteNode = (d) => {
     if (Chart.activeButton !== 'delete' && !d.contextMenu) {
       return;
@@ -75,16 +88,6 @@ class ReactChart extends Component {
     Chart.render({ links, nodes });
   }
 
-  handleAddNewLine = (d) => {
-    const { source, target } = d;
-    const links = Chart.getLinks();
-    links.push({
-      source,
-      target,
-      value: 2,
-    });
-    Chart.render({ links });
-  }
 
   render() {
     const { activeButton, singleGraph: { nodes, links } } = this.props;

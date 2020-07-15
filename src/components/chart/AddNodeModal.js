@@ -10,7 +10,6 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
-import Outside from '../Outside';
 import ColorPicker from '../form/ColorPicker';
 
 class AddNodeModal extends Component {
@@ -49,9 +48,9 @@ class AddNodeModal extends Component {
     this.state = {
       nodeData: {},
       errors: {},
-      showColorPicker: null,
     };
   }
+
 
   closeModal = () => {
     this.props.toggleNodeModal();
@@ -89,14 +88,9 @@ class AddNodeModal extends Component {
     this.setState({ nodeData, errors });
   }
 
-  toggleColorPicker = (ev) => {
-    const { showColorPicker } = this.state;
-    this.setState({ showColorPicker: !showColorPicker ? ev.target : null });
-  }
-
 
   render() {
-    const { nodeData, errors, showColorPicker } = this.state;
+    const { nodeData, errors } = this.state;
     const { addNodeParams } = this.props;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();

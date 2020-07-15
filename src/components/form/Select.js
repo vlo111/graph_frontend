@@ -58,6 +58,7 @@ class Select extends Component {
             {...props}
             id={inputId}
             classNamePrefix="gh"
+
             className={classNames('ghSelectContent', props.className)}
           />
         ) : (
