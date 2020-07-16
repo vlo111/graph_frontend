@@ -29,13 +29,13 @@ class DataView extends Component {
 
   componentDidMount() {
     this.checkAllGrids();
-    Chart.svgSize();
+    Chart.resizeSvg();
   }
 
   componentWillUnmount() {
     this.unCheckAllGrids();
     setTimeout(() => {
-      Chart.svgSize();
+      Chart.resizeSvg();
     }, 100);
   }
 
