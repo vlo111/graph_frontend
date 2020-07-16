@@ -38,7 +38,7 @@ class Chart {
 
   static color() {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
-    return (d) => scale(d.type);
+    return (d) => scale(d.source?.type || d.type);
   }
 
   static normalizeData(data) {
@@ -98,6 +98,19 @@ class Chart {
         .attr('class', 'directions')
         .attr('stroke-opacity', 1);
     }
+
+    if (this.wrapper.select('#arrow').empty()) {
+      directions = this.wrapper.append('path')
+        .attr('id', 'arrow')
+        .attr('stroke-opacity', 1)
+        .attr('stroke-width', 0)
+        .attr('stroke-opacity', 1)
+        .attr('transform-origin', 'top left')
+        // eslint-disable-next-line max-len
+        .attr('d', 'M 4.980469 2.421875 C 4.964844 2.386719 4.9375 2.359375 4.902344 2.339844 L 0.257812 0.0195312 C 0.171875 -0.0234375 0.0625 0.0117188 0.0195312 0.0976562 C 0.0078125 0.125 0 0.152344 0 0.179688 L 0 4.820312 C 0 4.921875 0.078125 5 0.179688 5 C 0.207031 5 0.234375 4.992188 0.257812 4.980469 L 4.902344 2.660156 C 4.988281 2.617188 5.023438 2.507812 4.980469 2.421875 Z M 4.980469 2.421875');
+
+    }
+
     const defs = directions.selectAll('defs')
       .data(this.data.links.filter((d) => d.direction))
       .join('defs');
@@ -109,14 +122,17 @@ class Chart {
       .attr('markerWidth', 5)
       .attr('markerHeight', 5)
       .attr('refY', 2.5)
-      .append('path')
-      .attr('stroke-width', 0)
-      .attr('stroke-opacity', 1)
+      .append('use')
+      .attr('href', '#arrow')
       .attr('fill', this.color())
       .attr('stroke', this.color())
-      .attr('transform-origin', 'top left')
-      // eslint-disable-next-line max-len
-      .attr('d', 'M 4.980469 2.421875 C 4.964844 2.386719 4.9375 2.359375 4.902344 2.339844 L 0.257812 0.0195312 C 0.171875 -0.0234375 0.0625 0.0117188 0.0195312 0.0976562 C 0.0078125 0.125 0 0.152344 0 0.179688 L 0 4.820312 C 0 4.921875 0.078125 5 0.179688 5 C 0.207031 5 0.234375 4.992188 0.257812 4.980469 L 4.902344 2.660156 C 4.988281 2.617188 5.023438 2.507812 4.980469 2.421875 Z M 4.980469 2.421875');
+
+    // .append('path')
+    // .attr('stroke-width', 0)
+    // .attr('stroke-opacity', 1)
+    // .attr('transform-origin', 'top left')
+    // // eslint-disable-next-line max-len
+    // .attr('d', 'M 4.980469 2.421875 C 4.964844 2.386719 4.9375 2.359375 4.902344 2.339844 L 0.257812 0.0195312 C 0.171875 -0.0234375 0.0625 0.0117188 0.0195312 0.0976562 C 0.0078125 0.125 0 0.152344 0 0.179688 L 0 4.820312 C 0 4.921875 0.078125 5 0.179688 5 C 0.207031 5 0.234375 4.992188 0.257812 4.980469 L 4.902344 2.660156 C 4.988281 2.617188 5.023438 2.507812 4.980469 2.421875 Z M 4.980469 2.421875');
 
     return defs;
   }
@@ -194,7 +210,7 @@ class Chart {
         .data(this.data.nodes)
         .join('g')
         .attr('class', (d) => `node ${d.icon ? 'image' : 'circle'}`.trim())
-        .attr('fill', (d) => d.color || this.color()(d))
+        .attr('fill', this.color())
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
         .on('click', (d) => this.event.emit('node.click', d))

@@ -41,6 +41,8 @@ class Utils {
     return data;
   }
 
+
+  // deprecated
   static graphToPng = async () => {
     const svg = document.querySelector('#graph svg');
     svg.classList.add('capture');

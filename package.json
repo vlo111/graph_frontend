@@ -18,7 +18,7 @@
     "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-color": "^2.18.1",
-    "react-datasheet": "^1.4.6",
+    "react-datasheet": "^1.4.7",
     "react-dom": "^16.13.1",
     "react-hot-loader": "^4.12.21",
     "react-image-crop": "^8.6.4",
@@ -31,7 +31,6 @@
     "react-toastify": "^6.0.5",
     "redux": "^4.0.5",
     "save-svg-as-png": "^1.4.17",
-    "string-replace-async": "^1.2.1",
     "string-strip-html": "^4.5.0",
     "svg-to-img": "^2.0.9"
   },
