@@ -113,7 +113,6 @@ class Chart {
       .append('use')
       .attr('href', '#arrow')
       .attr('fill', this.color())
-      .attr('stroke', this.color());
 
     return defs;
   }

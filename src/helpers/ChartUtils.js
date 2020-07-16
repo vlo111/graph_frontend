@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
+import Chart from "../Chart";
 
 class ChartUtils {
   static filter(data, params = {}) {
@@ -45,9 +46,9 @@ class ChartUtils {
   }
 
   static calcScaledPosition(x = 0, y = 0) {
-    const moveX = +this.wrapper?.attr('data-x') || 0;
-    const moveY = +this.wrapper?.attr('data-y') || 0;
-    const scale = +this.wrapper?.attr('data-scale') || 1;
+    const moveX = +Chart.wrapper?.attr('data-x') || 0;
+    const moveY = +Chart.wrapper?.attr('data-y') || 0;
+    const scale = +Chart.wrapper?.attr('data-scale') || 1;
     const _x = (x - moveX) / scale;
     const _y = (y - moveY) / scale;
     return {
