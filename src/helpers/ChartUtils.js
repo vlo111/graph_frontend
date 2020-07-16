@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import * as d3 from 'd3';
 
 class ChartUtils {
   static filter(data, params = {}) {
@@ -23,7 +24,7 @@ class ChartUtils {
       return undefined;
     }
 
-    return types[type].map((d) => _.isNumber(d) ? d * value : d);
+    return types[type].map((d) => (_.isNumber(d) ? d * value : d));
   }
 
   static dashLinecap(type) {
@@ -31,6 +32,31 @@ class ChartUtils {
       b: 'round',
     };
     return types[type];
+  }
+
+  static color() {
+    const scale = d3.scaleOrdinal(d3.schemeCategory10);
+    return (d) => scale(d.type);
+  }
+
+  static getNodeDocumentPosition(i) {
+    const node = document.querySelector(`#graph .node:nth-child(${i + 1})`);
+    return node.getBoundingClientRect();
+  }
+
+  static calcScaledPosition(x = 0, y = 0) {
+    const moveX = +this.wrapper?.attr('data-x') || 0;
+    const moveY = +this.wrapper?.attr('data-y') || 0;
+    const scale = +this.wrapper?.attr('data-scale') || 1;
+    const _x = (x - moveX) / scale;
+    const _y = (y - moveY) / scale;
+    return {
+      x: _x,
+      y: _y,
+      moveX,
+      moveY,
+      scale,
+    };
   }
 }
 

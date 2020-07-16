@@ -117,7 +117,7 @@ class AddLinkModal extends Component {
         <Checkbox
           label="Show Direction"
           checked={linkData.direction}
-          onChangeText={() => this.handleChange('direction', !linkData.direction)}
+          onChange={() => this.handleChange('direction', !linkData.direction)}
         />
         <div className="buttons">
           <Button onClick={this.closeModal}>

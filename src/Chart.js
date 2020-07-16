@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
-import ChartUtils from "./helpers/ChartUtils";
+import ChartUtils from './helpers/ChartUtils';
 
 class Chart {
   static event = new EventEmitter();
@@ -47,7 +47,7 @@ class Chart {
     return { links, nodes };
   }
 
-  static svgSize = () => {
+  static resizeSvg = () => {
     if (!this.svg) {
       return null;
     }
@@ -90,19 +90,35 @@ class Chart {
     return null;
   }
 
-  static renderDirection() {
-    if (d3.select('#graphDirection').empty()) {
-      d3.select('#graph svg')
-        .append('path')
-        .attr('id', 'graphDirection')
-        .attr('stroke-width', 1)
-        .attr('stroke', 'black')
-        .attr('stroke-opacity', 1)
-        .attr('transform-origin', 'top left')
-        //.attr('d', 'M388.425,241.951L151.609,5.79c-7.759-7.733-20.321-7.72-28.067,0.04c-7.74,7.759-7.72,20.328,0.04,28.067l222.72,222.105    L123.574,478.106c-7.759,7.74-7.779,20.301-0.04,28.061c3.883,3.89,8.97,5.835,14.057,5.835c5.074,0,10.141-1.932,14.017-5.795    l236.817-236.155c3.737-3.718,5.834-8.778,5.834-14.05S392.156,245.676,388.425,241.951z')
-        // eslint-disable-next-line max-len
-        .attr('d', 'M 11.378906 7.089844 L 4.441406 0.167969 C 4.214844 -0.0585938 3.847656 -0.0546875 3.621094 0.171875 C 3.394531 0.398438 3.394531 0.765625 3.621094 0.992188 L 10.144531 7.5 L 3.621094 14.007812 C 3.394531 14.234375 3.390625 14.601562 3.621094 14.828125 C 3.734375 14.941406 3.882812 15 4.03125 15 C 4.179688 15 4.328125 14.945312 4.441406 14.832031 L 11.378906 7.910156 C 11.488281 7.800781 11.550781 7.65625 11.550781 7.5 C 11.550781 7.34375 11.488281 7.199219 11.378906 7.089844 Z M 11.378906 7.089844 ');
+  static renderDefs() {
+    let directions = this.wrapper.select('.directions');
+
+    if (directions.empty()) {
+      directions = this.wrapper.append('g')
+        .attr('class', 'directions')
+        .attr('stroke-opacity', 1);
     }
+    const defs = directions.selectAll('defs')
+      .data(this.data.links.filter((d) => d.direction))
+      .join('defs');
+
+    defs.selectAll('marker').remove();
+    defs.append('marker')
+      .attr('id', (d) => `m${d.index}`)
+      .attr('orient', 'auto')
+      .attr('markerWidth', 5)
+      .attr('markerHeight', 5)
+      .attr('refY', 2.5)
+      .append('path')
+      .attr('stroke-width', 0)
+      .attr('stroke-opacity', 1)
+      .attr('fill', this.color())
+      .attr('stroke', this.color())
+      .attr('transform-origin', 'top left')
+      // eslint-disable-next-line max-len
+      .attr('d', 'M 4.980469 2.421875 C 4.964844 2.386719 4.9375 2.359375 4.902344 2.339844 L 0.257812 0.0195312 C 0.171875 -0.0234375 0.0625 0.0117188 0.0195312 0.0976562 C 0.0078125 0.125 0 0.152344 0 0.179688 L 0 4.820312 C 0 4.921875 0.078125 5 0.179688 5 C 0.207031 5 0.234375 4.992188 0.257812 4.980469 L 4.902344 2.660156 C 4.988281 2.617188 5.023438 2.507812 4.980469 2.421875 Z M 4.980469 2.421875');
+
+    return defs;
   }
 
   static render(data = {}, params = {}) {
@@ -112,11 +128,15 @@ class Chart {
       data.nodes = data.nodes || Chart.getNodes();
       data.links = data.links || Chart.getLinks();
 
+      // eslint-disable-next-line no-new
       new Promise(() => {
         this.originalData = _.cloneDeep(data);
       });
+
       this.data = this.normalizeData(data);
       this.data = ChartUtils.filter(data, params.filters);
+
+      const radiusList = this.data.nodes.map((d) => this.getNodeLinksNested(d.name).length * 2 + 10);
 
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(this.data.links).id((d) => d.name));
@@ -140,50 +160,37 @@ class Chart {
         .on('click', (d) => this.event.emit('click', d))
         .on('mousemove', (d) => this.event.emit('mousemove', d));
 
-      this.svgSize();
+      this.resizeSvg();
 
       this.wrapper = this.svg.select('.wrapper');
       if (this.wrapper.empty()) {
         this.wrapper = this.svg.append('g').attr('class', 'wrapper').attr('transform-origin', 'top left');
       }
 
-      this.links = this.svg.select('.links');
-      if (this.links.empty()) {
-        this.links = this.wrapper.append('g')
-          .attr('class', 'links')
-          .attr('stroke-opacity', 0.6);
+      this.linksWrapper = this.svg.select('.links');
+      if (this.linksWrapper.empty()) {
+        this.linksWrapper = this.wrapper.append('g')
+          .attr('class', 'links');
       }
-
-      this.link = this.links.selectAll('g')
+      this.link = this.linksWrapper.selectAll('line')
         .data(this.data.links)
-        .join('g')
-        .attr('class', 'link');
-
-      this.links.selectAll('.link')
-        .append('line')
+        .join('line')
+        .attr('data-i', (d) => d.index)
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.type, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.type))
-        .attr('data-i', (d) => d.index)
         .attr('stroke', this.color())
+        .attr('marker-end', (d) => `url(#m${d.index})`)
         .attr('stroke-width', (d) => d.value || 1)
         .on('click', (d) => this.event.emit('link.click', d));
 
+      this.defs = this.renderDefs();
 
-      this.links.selectAll('.link')
-        .append('g')
-        .attr('class', 'direction');
-
-      this.links.selectAll('.direction')
-        .append('use')
-        .attr('href', '#graphDirection');
-
-
-      this.nodes = this.svg.select('.nodes');
-      if (this.nodes.empty()) {
-        this.nodes = this.wrapper.append('g').attr('class', 'nodes');
+      this.nodesWrapper = this.svg.select('.nodes');
+      if (this.nodesWrapper.empty()) {
+        this.nodesWrapper = this.wrapper.append('g').attr('class', 'nodes');
       }
 
-      this.node = this.nodes.selectAll('g')
+      this.node = this.nodesWrapper.selectAll('g')
         .data(this.data.nodes)
         .join('g')
         .attr('class', (d) => `node ${d.icon ? 'image' : 'circle'}`.trim())
@@ -196,54 +203,44 @@ class Chart {
 
       this.node.selectAll('*').remove();
 
-      const radiusList = this.data.nodes.map((d) => this.getNodeLinksNested(d.name).length * 2 + 10);
-
-      this.nodes.selectAll('.image')
+      this.nodesWrapper.selectAll('.image')
         .append('image')
         .attr('width', (d) => radiusList[d.index] * 2)
         .attr('height', (d) => radiusList[d.index] * 2)
         .attr('transform', (d) => `translate(${radiusList[d.index] * -1}, ${radiusList[d.index] * -1})`)
         .attr('href', (d) => d.icon);
 
-      this.nodes.selectAll('.circle')
+      this.nodesWrapper.selectAll('.circle')
         .append('circle')
         .attr('r', (d) => radiusList[d.index]);
 
-      this.nodes.selectAll('.node')
+      this.nodesWrapper.selectAll('.node')
         .append('text')
         .attr('x', (d, i) => radiusList[i] + 5)
         .text((d) => d.name);
 
-      this.node.selectAll('._new *').remove();
-
       this.simulation.on('tick', () => {
-        this.link.selectAll('line')
+        this.link
           .attr('x1', (d) => d.source.x)
           .attr('y1', (d) => d.source.y)
           .attr('x2', (d) => d.target.x)
           .attr('y2', (d) => d.target.y);
-
-        this.link.selectAll('.direction')
-          .attr('transform', (d) => {
-            return `translate(${d.target.x - 50 || 0}, ${d.target.y - 10 || 0 })`
-          })
-
-        this.link.selectAll('use')
-          .attr('transform', (d) => {
-            const rad = Math.atan2(d.target.x - d.source.x, d.target.y - d.source.y);
-            const deg = rad * (180 / Math.PI) * -1 + 90
-            return `rotate(${deg})`
-          });
-
         this.node
           .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
           .attr('class', (d) => `node ${d.icon ? 'image' : 'circle'} ${d.vx !== 0 ? 'auto' : ''}`.trim());
+        this.defs.selectAll('marker')
+          .attr('refX', (d) => {
+            const xDist = d.source.x - d.target.x;
+            const yDist = d.source.y - d.target.y;
+            const pos1 = Math.sqrt(xDist * xDist + yDist * yDist) / 6 / d.value;
+            const pos2 = radiusList[d.target.index] / d.value + 5.5;
+            return Math.max(pos1, pos2) || 0;
+          });
         this._dataNodes = null;
         this._dataLinks = null;
       });
 
       this.renderNewLink();
-      this.renderDirection();
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
@@ -319,27 +316,7 @@ class Chart {
 
   static getScaledPosition() {
     const { x, y } = d3.event;
-    return this.calcScaledPosition(x, y);
-  }
-
-  static calcScaledPosition(x = 0, y = 0) {
-    const moveX = +this.wrapper?.attr('data-x') || 0;
-    const moveY = +this.wrapper?.attr('data-y') || 0;
-    const scale = +this.wrapper?.attr('data-scale') || 1;
-    const _x = (x - moveX) / scale;
-    const _y = (y - moveY) / scale;
-    return {
-      x: _x,
-      y: _y,
-      moveX,
-      moveY,
-      scale,
-    };
-  }
-
-  static getDocumentPosition(i) {
-    const node = document.querySelector(`#graph .node:nth-child(${i + 1})`);
-    return node.getBoundingClientRect();
+    return ChartUtils.calcScaledPosition(x, y);
   }
 
   static getNodeLinks(name) {
@@ -355,13 +332,6 @@ class Chart {
       });
     }
     return links;
-  }
-
-  static pathCircle(d) {
-    return `M ${d.x || d.fx || 0}, ${d.y || d.fx || 0}
-          m -${d.value}, 0
-          a ${d.value},${d.value} 0 1,1 ${d.value * 2},0
-          a ${d.value},${d.value} 0 1,1 -${d.value * 2},0`.replace(/\n/g, ' ');
   }
 
   static getNodes() {
@@ -400,7 +370,7 @@ class Chart {
           target: pd.target || d.target || od.target || '',
           value: pd.value || d.value || od.value || '',
           type: pd.type || d.type || od.type || '',
-          description: pd.description || d.description || od.description || '',
+          direction: pd.direction || d.direction || od.direction || '',
         };
       });
     }
@@ -451,17 +421,16 @@ class Chart {
       .attr('data-x', x)
       .attr('data-y', y);
 
-    this.nodes.selectAll('.node text')
+    this.nodesWrapper.selectAll('.node text')
       .attr('font-family', 'Roboto')
       .attr('dominant-baseline', 'middle')
       .attr('font-size', 20)
       .attr('stroke', 'white')
       .attr('stroke-width', 0.5);
 
-    this.nodes.selectAll('.node circle')
+    this.nodesWrapper.selectAll('.node circle')
       .attr('stroke', 'white')
       .attr('stroke-width', 1.5);
-
 
     return () => {
       // eslint-disable-next-line no-shadow
@@ -471,22 +440,22 @@ class Chart {
         .attr('data-x', x)
         .attr('data-y', y);
 
-      this.nodes.selectAll('.node text')
+      this.nodesWrapper.selectAll('.node text')
         .attr('font-family', undefined)
         .attr('dominant-baseline', undefined)
         .attr('font-size', undefined)
         .attr('stroke', undefined)
         .attr('stroke-width', undefined);
 
-      this.nodes.selectAll('.node circle')
+      this.nodesWrapper.selectAll('.node circle')
         .attr('stroke', undefined)
         .attr('stroke-width', undefined);
 
-      this.svgSize();
+      this.resizeSvg();
     };
   }
 }
 
-window.addEventListener('resize', Chart.svgSize);
+window.addEventListener('resize', Chart.resizeSvg);
 
 export default Chart;

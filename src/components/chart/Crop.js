@@ -6,6 +6,7 @@ import ContextMenu from '../ContextMenu';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton, setGridIndexes } from '../../store/actions/app';
+import ChartUtils from "../../helpers/ChartUtils";
 
 class Crop extends Component {
   static propTypes = {
@@ -53,8 +54,8 @@ class Crop extends Component {
     const {
       x, y, width, height,
     } = crop;
-    const { x: x1, y: y1 } = Chart.calcScaledPosition(x, y);
-    const { x: x2, y: y2 } = Chart.calcScaledPosition(x + width, y + height);
+    const { x: x1, y: y1 } = ChartUtils.calcScaledPosition(x, y);
+    const { x: x2, y: y2 } = ChartUtils.calcScaledPosition(x + width, y + height);
 
     nodes = nodes.map((d, i) => {
       d.index = i;

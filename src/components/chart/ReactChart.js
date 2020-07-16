@@ -36,20 +36,6 @@ class ReactChart extends Component {
     Chart.unmount();
   }
 
-  filterNode = (d) => {
-    const links = Chart.getNodeLinksNested(d.name);
-    Chart.nodes.selectAll('g')
-      .style('opacity', (n) => (links.some((link) => link.target === n.name) || d.name === n.name ? 1 : 0.5));
-
-    Chart.links.selectAll('line')
-      .style('opacity', (l) => links.some((link) => link.target === l.target || link.source === l.source) ? 1 : 0.5)
-  }
-
-  cancelFilterNode = () => {
-    Chart.nodes.selectAll('g').attr('style', undefined);
-    Chart.links.selectAll('line').attr('style', undefined);
-  }
-
   addNewItem = () => {
     const { target } = d3.event;
     if (target.tagName !== 'svg'

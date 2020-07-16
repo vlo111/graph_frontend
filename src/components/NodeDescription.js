@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Chart from '../Chart';
 import Icon from './form/Icon';
 import Outside from './Outside';
+import ChartUtils from "../helpers/ChartUtils";
 
 const MODAL_WIDTH = 300;
 
@@ -49,14 +50,13 @@ class NodeDescription extends Component {
     this.setState({ node: null });
   }
 
-
   render() {
     const { node } = this.state;
     if (!node) {
       return null;
     }
-    const { x, y } = Chart.getDocumentPosition(node.index);
-    const { scale } = Chart.calcScaledPosition();
+    const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
+    const { scale } = ChartUtils.calcScaledPosition();
     const nodeWidth = Chart.getNodeLinksNested(node.name).length * 2 + 25;
 
     const top = y + (nodeWidth * scale) + 5;
