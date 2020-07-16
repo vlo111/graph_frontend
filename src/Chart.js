@@ -90,25 +90,13 @@ class Chart {
     return null;
   }
 
-  static renderDefs() {
+  static renderDirections() {
     let directions = this.wrapper.select('.directions');
 
     if (directions.empty()) {
       directions = this.wrapper.append('g')
         .attr('class', 'directions')
         .attr('stroke-opacity', 1);
-    }
-
-    if (this.wrapper.select('#arrow').empty()) {
-      directions = this.wrapper.append('path')
-        .attr('id', 'arrow')
-        .attr('stroke-opacity', 1)
-        .attr('stroke-width', 0)
-        .attr('stroke-opacity', 1)
-        .attr('transform-origin', 'top left')
-        // eslint-disable-next-line max-len
-        .attr('d', 'M 4.980469 2.421875 C 4.964844 2.386719 4.9375 2.359375 4.902344 2.339844 L 0.257812 0.0195312 C 0.171875 -0.0234375 0.0625 0.0117188 0.0195312 0.0976562 C 0.0078125 0.125 0 0.152344 0 0.179688 L 0 4.820312 C 0 4.921875 0.078125 5 0.179688 5 C 0.207031 5 0.234375 4.992188 0.257812 4.980469 L 4.902344 2.660156 C 4.988281 2.617188 5.023438 2.507812 4.980469 2.421875 Z M 4.980469 2.421875');
-
     }
 
     const defs = directions.selectAll('defs')
@@ -125,14 +113,7 @@ class Chart {
       .append('use')
       .attr('href', '#arrow')
       .attr('fill', this.color())
-      .attr('stroke', this.color())
-
-    // .append('path')
-    // .attr('stroke-width', 0)
-    // .attr('stroke-opacity', 1)
-    // .attr('transform-origin', 'top left')
-    // // eslint-disable-next-line max-len
-    // .attr('d', 'M 4.980469 2.421875 C 4.964844 2.386719 4.9375 2.359375 4.902344 2.339844 L 0.257812 0.0195312 C 0.171875 -0.0234375 0.0625 0.0117188 0.0195312 0.0976562 C 0.0078125 0.125 0 0.152344 0 0.179688 L 0 4.820312 C 0 4.921875 0.078125 5 0.179688 5 C 0.207031 5 0.234375 4.992188 0.257812 4.980469 L 4.902344 2.660156 C 4.988281 2.617188 5.023438 2.507812 4.980469 2.421875 Z M 4.980469 2.421875');
+      .attr('stroke', this.color());
 
     return defs;
   }
@@ -161,9 +142,9 @@ class Chart {
 
       this.svg = d3.select('#graph svg');
 
-      if (this.svg.empty()) {
-        this.svg = d3.select('#graph').append('svg');
-      }
+      // if (this.svg.empty()) {
+      //   this.svg = d3.select('#graph').append('svg');
+      // }
 
       this.svg = this.svg
         .call(d3.zoom().on('zoom', () => {
@@ -179,15 +160,18 @@ class Chart {
       this.resizeSvg();
 
       this.wrapper = this.svg.select('.wrapper');
-      if (this.wrapper.empty()) {
-        this.wrapper = this.svg.append('g').attr('class', 'wrapper').attr('transform-origin', 'top left');
-      }
+
+      // if (this.wrapper.empty()) {
+      //   this.wrapper = this.svg.append('g').attr('class', 'wrapper').attr('transform-origin', 'top left');
+      // }
 
       this.linksWrapper = this.svg.select('.links');
-      if (this.linksWrapper.empty()) {
-        this.linksWrapper = this.wrapper.append('g')
-          .attr('class', 'links');
-      }
+
+      // if (this.linksWrapper.empty()) {
+      //   this.linksWrapper = this.wrapper.append('g')
+      //     .attr('class', 'links');
+      // }
+
       this.link = this.linksWrapper.selectAll('line')
         .data(this.data.links)
         .join('line')
@@ -195,11 +179,11 @@ class Chart {
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.type, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.type))
         .attr('stroke', this.color())
-        .attr('marker-end', (d) => `url(#m${d.index})`)
         .attr('stroke-width', (d) => d.value || 1)
+        .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
         .on('click', (d) => this.event.emit('link.click', d));
 
-      this.defs = this.renderDefs();
+      this.directions = this.renderDirections();
 
       this.nodesWrapper = this.svg.select('.nodes');
       if (this.nodesWrapper.empty()) {
@@ -244,7 +228,7 @@ class Chart {
         this.node
           .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
           .attr('class', (d) => `node ${d.icon ? 'image' : 'circle'} ${d.vx !== 0 ? 'auto' : ''}`.trim());
-        this.defs.selectAll('marker')
+        this.directions.selectAll('marker')
           .attr('refX', (d) => {
             const xDist = d.source.x - d.target.x;
             const yDist = d.source.y - d.target.y;
@@ -269,7 +253,8 @@ class Chart {
     if (this.wrapper.empty() || !this.wrapper.select('#addNewLink').empty()) {
       return;
     }
-    this.newLink = this.wrapper.append('line')
+    this.newLink = this.wrapper
+      .append('line')
       .attr('id', 'addNewLink')
       .attr('data-source', '')
       .attr('x1', 0)

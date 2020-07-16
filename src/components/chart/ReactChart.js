@@ -74,12 +74,28 @@ class ReactChart extends Component {
     Chart.render({ links, nodes });
   }
 
-
   render() {
     const { activeButton, singleGraph: { nodes, links } } = this.props;
     this.renderChart(nodes, links);
     return (
-      <div id="graph" data-active={activeButton} className={activeButton} />
+      <div id="graph" data-active={activeButton} className={activeButton}>
+        <svg>
+          <g className="wrapper" transform-origin="top left">
+            <g className="links" />
+            <g className="nodes" />
+            <g className="directions" />
+            <defs>
+              <path
+                id="arrow"
+                strokeOpacity="1"
+                strokeWidth="0"
+                transform-origin="top left"
+                d="M 4.980469 2.421875 C 4.964844 2.386719 4.9375 2.359375 4.902344 2.339844 L 0.257812 0.0195312 C 0.171875 -0.0234375 0.0625 0.0117188 0.0195312 0.0976562 C 0.0078125 0.125 0 0.152344 0 0.179688 L 0 4.820312 C 0 4.921875 0.078125 5 0.179688 5 C 0.207031 5 0.234375 4.992188 0.257812 4.980469 L 4.902344 2.660156 C 4.988281 2.617188 5.023438 2.507812 4.980469 2.421875 Z M 4.980469 2.421875"
+              />
+            </defs>
+          </g>
+        </svg>
+      </div>
     );
   }
 }
