@@ -10,6 +10,7 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
+import { nodeTypes } from "../../data/node";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -24,6 +25,7 @@ class AddNodeModal extends Component {
       nodeData: {
         name: '',
         icon: '',
+        type: 'circle',
         group: group || _.last(nodes)?.group || '',
       },
       errors: {},
@@ -113,11 +115,13 @@ class AddNodeModal extends Component {
           error={errors.group}
           onChange={(v) => this.handleChange('group', v?.value || '')}
         />
-        <Input
-          label="Name"
-          value={nodeData.name}
-          error={errors.name}
-          onChangeText={(v) => this.handleChange('name', v)}
+        <Select
+          label="Type"
+          options={nodeTypes}
+          isSearchable={false}
+          value={nodeTypes.find(t => t.value === nodeData.type)}
+          error={errors.type}
+          onChange={(v) => this.handleChange('type', v.value)}
         />
         <FileInput
           label="Icon"
