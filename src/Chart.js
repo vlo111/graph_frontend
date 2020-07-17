@@ -230,8 +230,8 @@ class Chart {
           return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
         })
         .attr('transform', (d) => {
-          const r = radiusList[d.index] * -1 - 2;
-          return `translate(${r}, ${r})`;
+          const r = radiusList[d.index] * -1.15;
+          return `translate(${r * 1.15}, ${r})`;
         });
 
       this.nodesWrapper.selectAll('.node')
