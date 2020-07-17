@@ -10,7 +10,6 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
-import ColorPicker from '../form/ColorPicker';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -18,26 +17,24 @@ class AddNodeModal extends Component {
     addNodeParams: PropTypes.object.isRequired,
   }
 
-
   initNodeData = memoizeOne(() => {
     const nodes = Chart.getNodes();
-    const { nodeData: { type } } = this.state;
+    const { nodeData: { group } } = this.state;
     this.setState({
       nodeData: {
         name: '',
         icon: '',
-        color: '#0693e3',
-        type: type || _.last(nodes)?.type || '',
+        group: group || _.last(nodes)?.group || '',
       },
       errors: {},
     });
   }, _.isEqual)
 
-  getTypes = memoizeOne((nodes) => {
-    const types = nodes.filter((d) => d.type)
+  getGroups = memoizeOne((nodes) => {
+    const types = nodes.filter((d) => d.group)
       .map((d) => ({
-        value: d.type,
-        label: d.type,
+        value: d.group,
+        label: d.group,
       }));
 
     return _.uniqBy(types, 'value');
@@ -50,7 +47,6 @@ class AddNodeModal extends Component {
       errors: {},
     };
   }
-
 
   closeModal = () => {
     this.props.toggleNodeModal();
@@ -66,11 +62,8 @@ class AddNodeModal extends Component {
     } else if (nodes.some((d) => d.name === nodeData.name)) {
       errors.name = 'Already exists';
     }
-    if (!nodeData.type) {
-      errors.type = 'Type is required';
-    }
-    if (!nodeData.color) {
-      errors.type = 'Color is required';
+    if (!nodeData.group) {
+      errors.group = 'Group is required';
     }
 
     if (_.isEmpty(errors)) {
@@ -94,7 +87,7 @@ class AddNodeModal extends Component {
     const { addNodeParams } = this.props;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
-    const types = this.getTypes(nodes);
+    const groups = this.getGroups(nodes);
 
     return (
       <Modal
@@ -114,23 +107,23 @@ class AddNodeModal extends Component {
           isClearable
           label="Group"
           value={[
-            types.find((t) => t.value === nodeData.type) || { value: nodeData.type, label: nodeData.type },
+            groups.find((t) => t.value === nodeData.group) || { value: nodeData.group, label: nodeData.group },
           ]}
-          options={types}
-          error={errors.type}
-          onChange={(v) => this.handleChange('type', v?.value || '')}
+          options={groups}
+          error={errors.group}
+          onChange={(v) => this.handleChange('group', v?.value || '')}
+        />
+        <Input
+          label="Name"
+          value={nodeData.name}
+          error={errors.name}
+          onChangeText={(v) => this.handleChange('name', v)}
         />
         <FileInput
           label="Icon"
           accept=".png,.jpg,.svg"
           value={nodeData.icon}
           onChangeFile={(v) => this.handleChange('icon', v)}
-        />
-        <ColorPicker
-          label="Color"
-          value={nodeData.color}
-          style={{ color: nodeData.color }}
-          onChangeText={(v) => this.handleChange('color', v)}
         />
         <div className="buttons">
           <Button onClick={this.closeModal}>

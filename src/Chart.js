@@ -38,7 +38,7 @@ class Chart {
 
   static color() {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
-    return (d) => scale(d.source?.type || d.type);
+    return (d) => scale(d.source?.group || d.group);
   }
 
   static normalizeData(data) {
@@ -100,7 +100,7 @@ class Chart {
     }
 
     const defs = directions.selectAll('defs')
-      .data(this.data.links.filter((d) => d.direction))
+      .data(this.data.links)
       .join('defs');
 
     defs.selectAll('marker').remove();
@@ -112,7 +112,7 @@ class Chart {
       .attr('refY', 2.5)
       .append('use')
       .attr('href', '#arrow')
-      .attr('fill', this.color())
+      .attr('fill', '#94b7d7')
 
     return defs;
   }
@@ -177,7 +177,7 @@ class Chart {
         .attr('data-i', (d) => d.index)
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.type, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.type))
-        .attr('stroke', this.color())
+        .attr('stroke', '#94b7d7')
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
         .on('click', (d) => this.event.emit('link.click', d));
@@ -345,6 +345,7 @@ class Chart {
           fx: d.fx || od.fx || d.x || 0,
           fy: d.fy || od.fx || d.y || 0,
           name: d.name || od.name || '',
+          group: d.group || od.group || '',
           type: d.type || od.type || '',
           description: d.description || od.description || '',
           icon: d.icon || od.icon || '',
