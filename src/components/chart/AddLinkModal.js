@@ -2,14 +2,26 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import memoizeOne from 'memoize-one';
 import Select from '../form/Select';
 import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
-import ChartUtils from "../../helpers/ChartUtils";
-import Checkbox from "../form/Checkbox";
+import ChartUtils from '../../helpers/ChartUtils';
+import Checkbox from '../form/Checkbox';
 
 class AddLinkModal extends Component {
+  getGroups = memoizeOne((links) => {
+    console.log(links)
+    const types = links.filter((d) => d.group)
+      .map((d) => ({
+        value: d.group,
+        label: d.group,
+      }));
+
+    return _.uniqBy(types, 'value');
+  }, _.isEqual)
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,12 +37,16 @@ class AddLinkModal extends Component {
 
   handleAddNewLine = (d) => {
     const { source, target } = d;
+    const links = Chart.getLinks();
+    const groups = this.getGroups(links);
+
     const linkData = {
       source,
       target,
       value: 2,
       type: 'a',
       direction: true,
+      group: groups[0]?.value || null,
       description: '',
     };
     this.setState({ linkData, show: true });
@@ -43,8 +59,12 @@ class AddLinkModal extends Component {
   addLink = async () => {
     const { linkData } = this.state;
     const errors = {};
-    const links = Chart.getLinks();
+    if (!linkData.group) {
+      errors.group = 'Group is required';
+    }
+
     if (_.isEmpty(errors)) {
+      const links = Chart.getLinks();
       links.push(linkData);
 
       this.setState({ show: false });
@@ -62,6 +82,8 @@ class AddLinkModal extends Component {
 
   render() {
     const { linkData, errors, show } = this.state;
+    const links = Chart.getLinks();
+    const groups = this.getGroups(links);
     return (
       <Modal
         className="ghModal"
@@ -72,7 +94,7 @@ class AddLinkModal extends Component {
         <h2>Add new Link</h2>
 
         <Select
-          label="Type"
+          label="Link Type"
           value={[linkData.type]}
           error={errors.type}
           onChange={(v) => this.handleChange('type', v)}
@@ -96,6 +118,17 @@ class AddLinkModal extends Component {
           )}
         />
 
+        <Select
+          label="Relation Type"
+          placeholder=""
+          value={[
+            groups.find((t) => t.value === linkData.group) || { value: linkData.group, label: linkData.group },
+          ]}
+          error={errors.group}
+          onChange={(v) => this.handleChange('group', v.value)}
+          options={groups}
+          isClearable
+        />
 
         <Input
           label="Value"

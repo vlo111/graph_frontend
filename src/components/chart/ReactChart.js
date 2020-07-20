@@ -6,6 +6,7 @@ import memoizeOne from 'memoize-one';
 import Chart from '../../Chart';
 import { toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../ContextMenu';
+import Loading from "../Loading";
 
 class ReactChart extends Component {
   static propTypes = {
@@ -84,6 +85,7 @@ class ReactChart extends Component {
             <g className="links" />
             <g className="nodes" />
             <g className="directions" />
+            <g className="icons" />
             <defs>
               <path
                 id="arrow"

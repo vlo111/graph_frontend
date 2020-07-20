@@ -2,20 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { setActiveButton, setGridIndexes } from '../../store/actions/app';
+import { setActiveButton, setGridIndexes, setLoading } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Button from '../form/Button';
 import HeaderPortal from '../HeaderPortal';
 import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
 import Api from '../../Api';
-import Utils from '../../helpers/Utils';
-import FiltersButton from "../filters/FiltersButton";
 
 class DataView extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
+    setLoading: PropTypes.func.isRequired,
     selectedGrid: PropTypes.objectOf(PropTypes.array).isRequired,
   }
 
@@ -83,10 +82,12 @@ class DataView extends Component {
   }
 
   download = async (type) => {
+    this.props.setLoading(true);
     const reset = Chart.printMode(1900, 1060);
     const svg = document.querySelector('#graph svg').outerHTML;
     reset();
-    Api.download(type, { svg });
+    await Api.download(type, { svg });
+    this.props.setLoading(false);
   }
 
   render() {
@@ -144,8 +145,10 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   selectedGrid: state.app.selectedGrid,
 });
+
 const mapDespatchToProps = {
   setActiveButton,
+  setLoading,
   setGridIndexes,
 };
 

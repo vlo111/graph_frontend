@@ -1,4 +1,5 @@
 import {
+  LOADING,
   NEW_NODE_MODAL,
   SET_ACTIVE_BUTTON, SET_GRID_INDEXES,
   TOGGLE_GRID,
@@ -8,6 +9,7 @@ const initialState = {
   activeButton: 'create',
   nodeDescription: '',
   addNodeParams: {},
+  isLoading: false,
   selectedGrid: {
     nodes: [],
     links: [],
@@ -49,6 +51,13 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         selectedGrid,
+      };
+    }
+    case LOADING: {
+      const { isLoading } = action.payload;
+      return {
+        ...state,
+        isLoading,
       };
     }
     default: {

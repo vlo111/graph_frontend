@@ -37,14 +37,12 @@ class Api {
     return api.post('/users/sign-up', data);
   }
 
-  static download(type, requestData) {
-    (async () => {
-      const { data, headers } = await api.post(`/convert/graph/to/${type}`, requestData, {
-        responseType: 'arraybuffer',
-      });
-      const [, fileName] = headers['content-disposition'].match(/\sfilename=([^;]+)/i);
-      fileDownload(data, fileName);
-    })();
+  static async download(type, requestData) {
+    const { data, headers } = await api.post(`/convert/graph/to/${type}`, requestData, {
+      responseType: 'arraybuffer',
+    });
+    const [, fileName] = headers['content-disposition'].match(/\sfilename=([^;]+)/i);
+    fileDownload(data, fileName);
   }
 
   static convert(type, requestData) {

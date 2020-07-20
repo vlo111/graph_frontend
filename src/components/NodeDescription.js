@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import * as d3 from 'd3';
 import Chart from '../Chart';
 import Icon from './form/Icon';
 import Outside from './Outside';
-import ChartUtils from "../helpers/ChartUtils";
+import ChartUtils from '../helpers/ChartUtils';
 
 const MODAL_WIDTH = 300;
 
@@ -17,11 +18,24 @@ class NodeDescription extends Component {
 
   componentDidMount() {
     Chart.event.on('node.mouseenter', this.showNodeInfo);
-    Chart.event.on('node.mouseleave', this.cancelNodeInfo);
+    Chart.event.on('node.mouseleave', this.handleMouseLeave);
+    // Chart.event.on('node.click', this.handleClick);
   }
 
   componentWillUnmount() {
     clearTimeout(this.showInfoTimout);
+  }
+  handleClick = () => {
+    console.log(d3.event)
+  }
+  handleMouseUp = () => {
+    console.log('handleMouseUp')
+    this.mouseDown = false;
+  }
+
+  handleMouseDown = () => {
+    console.log('handleMouseDown')
+    this.mouseDown = true;
   }
 
   getNode = (name) => {
@@ -33,7 +47,13 @@ class NodeDescription extends Component {
     return node;
   }
 
-  cancelNodeInfo = () => {
+  handleMouseMove = (ev) => {
+    if (this.mouseDown && ev.target.closest('.node')) {
+      this.handleMouseLeave();
+    }
+  }
+
+  handleMouseLeave = () => {
     clearTimeout(this.showInfoTimout);
   }
 
@@ -43,7 +63,7 @@ class NodeDescription extends Component {
       this.setState({
         node: this.getNode(d.name),
       });
-    }, 800);
+    }, 1500);
   }
 
   hideInfo = () => {

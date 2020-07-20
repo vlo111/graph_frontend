@@ -41,3 +41,11 @@ export function setGridIndexes(grid, indexes = []) {
   };
 }
 
+export const LOADING = 'LOADING';
+
+export function setLoading(isLoading = true) {
+  return {
+    type: LOADING,
+    payload: { isLoading },
+  };
+}

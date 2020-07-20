@@ -107,7 +107,7 @@ class AddNodeModal extends Component {
         />
         <Select
           isClearable
-          label="Group"
+          label="Type"
           value={[
             groups.find((t) => t.value === nodeData.group) || { value: nodeData.group, label: nodeData.group },
           ]}
@@ -116,10 +116,10 @@ class AddNodeModal extends Component {
           onChange={(v) => this.handleChange('group', v?.value || '')}
         />
         <Select
-          label="Type"
+          label="Node Type"
           options={nodeTypes}
           isSearchable={false}
-          value={nodeTypes.find(t => t.value === nodeData.type)}
+          value={nodeTypes.find((t) => t.value === nodeData.type)}
           error={errors.type}
           onChange={(v) => this.handleChange('type', v.value)}
         />

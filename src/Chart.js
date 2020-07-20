@@ -91,16 +91,10 @@ class Chart {
   }
 
   static renderDirections() {
-    let directions = this.wrapper.select('.directions');
-
-    if (directions.empty()) {
-      directions = this.wrapper.append('g')
-        .attr('class', 'directions')
-        .attr('stroke-opacity', 1);
-    }
+    const directions = this.wrapper.select('.directions');
 
     const defs = directions.selectAll('defs')
-      .data(this.data.links.filter(d => d.direction))
+      .data(this.data.links.filter((d) => d.direction))
       .join('defs');
 
     defs.selectAll('marker').remove();
@@ -114,6 +108,50 @@ class Chart {
       .attr('href', '#arrow')
       .attr('fill', '#94b7d7');
 
+    return defs;
+  }
+
+  static renderIcons(radiusList) {
+    const icons = this.wrapper.select('.icons');
+
+    const defs = icons.selectAll('defs')
+      .data(this.data.nodes.filter((d) => d.icon))
+      .join('defs');
+
+    defs.selectAll('pattern').remove();
+
+    defs.append('pattern')
+      .attr('id', (d) => `i${d.index}`)
+      .attr('patternUnits', 'objectBoundingBox')
+      .attr('height', 1)
+      .attr('width', 1)
+      .append('image')
+      .attr('height', (d) => {
+        let i = 2;
+        if (d.type === 'hexagon') {
+          i = 2.3;
+        } else if (d.type === 'triangle') {
+          i = 3.1;
+        }
+        return radiusList[d.index] * i;
+      })
+      .attr('width', (d) => {
+        let i = 2;
+        if (d.type === 'hexagon') {
+          i = 2.3;
+        } else if (d.type === 'triangle') {
+          i = 3.1;
+        }
+        return radiusList[d.index] * i;
+      })
+      .attr('transform', (d) => {
+        const r = radiusList[d.index] * -1;
+        if (d.type === 'triangle') {
+          return `translate(${r / 3.1}, 0)`;
+        }
+        return undefined;
+      })
+      .attr('xlink:href', (d) => d.icon);
     return defs;
   }
 
@@ -158,7 +196,10 @@ class Chart {
 
       this.linksWrapper = this.svg.select('.links');
 
-      this.link = this.linksWrapper.selectAll('line')
+      const link = d3.linkHorizontal()
+        .x((d) => d.x)
+        .y((d) => d.y);
+      this.link = this.linksWrapper.selectAll('path')
         .data(this.data.links)
         .join('line')
         .attr('data-i', (d) => d.index)
@@ -170,6 +211,7 @@ class Chart {
         .on('click', (d) => this.event.emit('link.click', d));
 
       this.directions = this.renderDirections();
+      this.icons = this.renderIcons(radiusList);
 
       this.nodesWrapper = this.svg.select('.nodes');
 
@@ -180,63 +222,66 @@ class Chart {
       this.node = this.nodesWrapper.selectAll('g')
         .data(this.data.nodes)
         .join('g')
-        // .attr('class', (d) => `node ${d.icon ? 'image' : 'circle'}`.trim())
         .attr('class', (d) => `node ${d.type || 'circle'}`)
         .attr('fill', this.color())
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
-        .on('click', (d) => this.event.emit('node.click', d))
         .on('mouseenter', (d) => this.event.emit('node.mouseenter', d))
-        .on('mouseleave', (d) => this.event.emit('node.mouseleave', d));
+        .on('mouseleave', (d) => this.event.emit('node.mouseleave', d))
+        .on('click', (d) => this.event.emit('node.click', d));
 
       this.node.selectAll('*').remove();
 
-      this.nodesWrapper.selectAll('.image')
-        .append('image')
-        .attr('width', (d) => radiusList[d.index] * 2)
-        .attr('height', (d) => radiusList[d.index] * 2)
-        .attr('x', (d) => radiusList[d.index] * -1)
-        .attr('y', (d) => radiusList[d.index] * -1)
-        .attr('href', (d) => d.icon);
-
       this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
         .append('circle')
+        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('r', (d) => radiusList[d.index]);
 
       this.nodesWrapper.selectAll('.square')
         .append('rect')
+        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('width', (d) => radiusList[d.index] * 2)
         .attr('height', (d) => radiusList[d.index] * 2)
+        // .attr('rx', (d) => radiusList[d.index] / 10)
         .attr('x', (d) => radiusList[d.index] * -1)
         .attr('y', (d) => radiusList[d.index] * -1);
 
-
       this.nodesWrapper.selectAll('.triangle')
         .append('path')
+        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('d', (d) => {
           const s = radiusList[d.index] * 2.5;
           return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
         })
         .attr('transform', (d) => {
           const r = radiusList[d.index] * -1 - 2;
-          return `translate(${r}, ${r})`;
+          return `translate(${r * 1.2}, ${r})`;
         });
 
       this.nodesWrapper.selectAll('.hexagon')
         .append('polygon')
+        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('points', (d) => {
           const s = radiusList[d.index];
           // eslint-disable-next-line max-len
           return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
         })
         .attr('transform', (d) => {
-          const r = radiusList[d.index] * -1.15;
-          return `translate(${r * 1.15}, ${r})`;
+          const r = radiusList[d.index] * -1.13;
+          return `translate(${r}, ${r})`;
         });
 
       this.nodesWrapper.selectAll('.node')
         .append('text')
-        .attr('x', (d, i) => radiusList[i] + 5)
+        .attr('x', (d) => {
+          let i = 5;
+          if (d.type === 'hexagon') {
+            i += radiusList[d.index] / 5;
+          } else if (d.type === 'triangle') {
+            i += radiusList[d.index] / 5;
+          }
+          return radiusList[d.index] + i;
+        })
         .text((d) => d.name);
 
       this.simulation.on('tick', () => {
@@ -300,11 +345,7 @@ class Chart {
           .attr('y1', 0)
           .attr('x2', 0)
           .attr('y2', 0);
-        const links = this.getLinks();
-        const linkExists = links.some((l) => (l.source === source && l.target === target)
-          || (l.source === target && l.target === source));
-
-        if (source !== target && !linkExists) {
+        if (source !== target) {
           this.event.emit('line.new', {
             source,
             target: d.name,
@@ -392,6 +433,7 @@ class Chart {
           target: pd.target || d.target || od.target || '',
           value: pd.value || d.value || od.value || '',
           type: pd.type || d.type || od.type || '',
+          group: pd.group || d.group || od.group || '',
           direction: pd.direction || d.direction || od.direction || '',
         };
       });
