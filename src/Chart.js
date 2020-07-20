@@ -73,14 +73,14 @@ class Chart {
         .force('center', d3.forceCenter(width / 2, height / 2))
         .force('charge', d3.forceManyBody())
         .force('x', d3.forceX((d) => {
-          const { length } = this.getNodeLinksNested(d.name);
+          const { length } = this.getNodeLinks(d.name);
           if (length) {
             return d.x * length * 18;
           }
           return d.x + 4;
         }))
         .force('y', d3.forceY((d) => {
-          const { length } = this.getNodeLinksNested(d.name);
+          const { length } = this.getNodeLinks(d.name);
           if (length) {
             return d.y * length * 8;
           }
@@ -90,7 +90,7 @@ class Chart {
     return null;
   }
 
-  static renderDirections() {
+  static renderDirections(radiusList) {
     const directions = this.wrapper.select('.directions');
 
     const defs = directions.selectAll('defs')
@@ -104,6 +104,10 @@ class Chart {
       .attr('markerWidth', 5)
       .attr('markerHeight', 5)
       .attr('refY', 2.5)
+      .attr('refX', (d) => {
+        const pos = radiusList[d.target.index] / d.value + 4.5;
+        return pos || 0;
+      })
       .append('use')
       .attr('href', '#arrow')
       .attr('fill', '#94b7d7');
@@ -170,7 +174,7 @@ class Chart {
       this.data = this.normalizeData(data);
       this.data = ChartUtils.filter(data, params.filters);
 
-      const radiusList = this.data.nodes.map((d) => this.getNodeLinksNested(d.name).length * 2 + 10);
+      const radiusList = this.data.nodes.map((d) => this.getNodeLinks(d.name).length * 2 + 10);
 
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(this.data.links).id((d) => d.name));
@@ -196,10 +200,8 @@ class Chart {
 
       this.linksWrapper = this.svg.select('.links');
 
-      const link = d3.linkHorizontal()
-        .x((d) => d.x)
-        .y((d) => d.y);
-      this.link = this.linksWrapper.selectAll('path')
+
+      this.link = this.linksWrapper.selectAll('line')
         .data(this.data.links)
         .join('line')
         .attr('data-i', (d) => d.index)
@@ -210,7 +212,7 @@ class Chart {
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
         .on('click', (d) => this.event.emit('link.click', d));
 
-      this.directions = this.renderDirections();
+      this.directions = this.renderDirections(radiusList);
       this.icons = this.renderIcons(radiusList);
 
       this.nodesWrapper = this.svg.select('.nodes');
@@ -293,14 +295,6 @@ class Chart {
         this.node
           .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
           .attr('class', (d) => `node ${d.type || 'circle'} ${d.vx !== 0 ? 'auto' : ''}`);
-        this.directions.selectAll('marker')
-          .attr('refX', (d) => {
-            const xDist = d.source.x - d.target.x;
-            const yDist = d.source.y - d.target.y;
-            const pos1 = Math.sqrt(xDist * xDist + yDist * yDist) / 6 / d.value;
-            const pos2 = radiusList[d.target.index] / d.value + 5.5;
-            return Math.max(pos1, pos2) || 0;
-          });
         this._dataNodes = null;
         this._dataLinks = null;
       });
