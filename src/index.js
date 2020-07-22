@@ -23,7 +23,6 @@ const store = createStore(
 );
 window.store = store;
 
-
 requestMiddleware.on.fail = ((err) => {
   if (err.response) {
     return err.response;

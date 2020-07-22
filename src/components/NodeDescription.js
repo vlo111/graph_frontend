@@ -25,6 +25,7 @@ class NodeDescription extends Component {
   componentWillUnmount() {
     clearTimeout(this.showInfoTimout);
   }
+
   handleClick = () => {
     console.log(d3.event)
   }
@@ -77,10 +78,9 @@ class NodeDescription extends Component {
     }
     const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
     const { scale } = ChartUtils.calcScaledPosition();
-    const nodeWidth = Chart.getNodeLinks(node.name).length * 2 + 25;
-
+    const nodeWidth = Chart.getNodeLinks(node.name).length * 5 + 25;
     const top = y + (nodeWidth * scale) + 5;
-    let left = x * scale;
+    let left = x;
 
     if (left + MODAL_WIDTH > window.innerWidth) {
       left = window.innerWidth - MODAL_WIDTH - 5;

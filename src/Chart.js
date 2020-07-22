@@ -27,7 +27,7 @@ class Chart {
         name: d.name,
         type: d.type,
       }));
-      sessionStorage.setItem('d3Data', JSON.stringify(this.data));
+      // sessionStorage.setItem('d3Data', JSON.stringify(this.data));
     };
 
     return d3.drag()
@@ -41,9 +41,52 @@ class Chart {
     return (d) => scale(d.source?.group || d.group);
   }
 
+  static getSource(l) {
+    return l.source.name || l.source || Symbol('');
+  }
+
+  static getTarget(l) {
+    return l.target.name || l.target || Symbol('');
+  }
+
   static normalizeData(data) {
-    const links = data.links.map((d) => Object.create(d));
     const nodes = data.nodes.map((d) => Object.create(d));
+
+    _.forEach(data.links, (link) => {
+      const sameLinks = data.links.filter((l) => (
+        (this.getSource(l) === this.getSource(link) && this.getTarget(l) === this.getTarget(link))
+        || (this.getSource(l) === this.getTarget(link) && this.getTarget(l) === this.getSource(link))
+      ));
+
+      if (sameLinks.length > 1) {
+        _.forEach(sameLinks, (l, i) => {
+          const totalHalf = sameLinks.length / 2;
+          const index = i + 1;
+          const even = sameLinks.length % 2 === 0;
+          const half = Math.floor(sameLinks.length / 2);
+          const middleLink = !even && Math.ceil(totalHalf) === index;
+          let arcDirection = index <= totalHalf ? 0 : 1;
+          const indexCorrected = index <= totalHalf ? index : index - Math.ceil(totalHalf);
+
+          if (this.getSource(l) === this.getTarget(link)) {
+            arcDirection = arcDirection === 1 ? 0 : 1;
+          }
+          let arc = half / (indexCorrected - (even ? 0.5 : 0));
+
+          if (middleLink) {
+            arc = 0;
+          }
+
+          l.same = {
+            arcDirection,
+            arc,
+          };
+        });
+      }
+    });
+
+    const links = data.links.map((d) => Object.create(d));
+
     return { links, nodes };
   }
 
@@ -105,8 +148,13 @@ class Chart {
       .attr('markerHeight', 5)
       .attr('refY', 2.5)
       .attr('refX', (d) => {
-        const pos = radiusList[d.target.index] / d.value + 4.5;
-        return pos || 0;
+        let i = 7;
+        if (d.type === 'triangle') {
+          i += 5;
+        } else if (d.type === 'hexagon') {
+          i += 5;
+        }
+        return radiusList[d.target.index] / d.value + i || 0;
       })
       .append('use')
       .attr('href', '#arrow')
@@ -174,7 +222,7 @@ class Chart {
       this.data = this.normalizeData(data);
       this.data = ChartUtils.filter(data, params.filters);
 
-      const radiusList = this.data.nodes.map((d) => this.getNodeLinks(d.name).length * 2 + 10);
+      const radiusList = this.data.nodes.map((d) => this.getNodeLinks(d.name).length * 5 + 10);
 
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(this.data.links).id((d) => d.name));
@@ -200,10 +248,9 @@ class Chart {
 
       this.linksWrapper = this.svg.select('.links');
 
-
-      this.link = this.linksWrapper.selectAll('line')
+      this.link = this.linksWrapper.selectAll('path')
         .data(this.data.links)
-        .join('line')
+        .join('path')
         .attr('data-i', (d) => d.index)
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.type, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.type))
@@ -217,11 +264,7 @@ class Chart {
 
       this.nodesWrapper = this.svg.select('.nodes');
 
-      // if (this.nodesWrapper.empty()) {
-      //   this.nodesWrapper = this.wrapper.append('g').attr('class', 'nodes');
-      // }
-
-      this.node = this.nodesWrapper.selectAll('g')
+      this.node = this.nodesWrapper.selectAll('.node')
         .data(this.data.nodes)
         .join('g')
         .attr('class', (d) => `node ${d.type || 'circle'}`)
@@ -244,7 +287,6 @@ class Chart {
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('width', (d) => radiusList[d.index] * 2)
         .attr('height', (d) => radiusList[d.index] * 2)
-        // .attr('rx', (d) => radiusList[d.index] / 10)
         .attr('x', (d) => radiusList[d.index] * -1)
         .attr('y', (d) => radiusList[d.index] * -1);
 
@@ -284,17 +326,23 @@ class Chart {
           }
           return radiusList[d.index] + i;
         })
+        .attr('font-size', (d) => 17 + radiusList[d.index] / 2)
         .text((d) => d.name);
 
       this.simulation.on('tick', () => {
-        this.link
-          .attr('x1', (d) => d.source.x)
-          .attr('y1', (d) => d.source.y)
-          .attr('x2', (d) => d.target.x)
-          .attr('y2', (d) => d.target.y);
+        this.link.attr('d', (d) => {
+          const dx = d.target.x - d.source.x;
+          const dy = d.target.y - d.source.y;
+          const dr = Math.sqrt(dx * dx + dy * dy);
+          const arc = d.same ? d.same.arc * dr : 0;
+          const arcDirection = d.same ? d.same.arcDirection : 0;
+
+          return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${arcDirection} ${d.target.x},${d.target.y}`;
+        });
         this.node
           .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
           .attr('class', (d) => `node ${d.type || 'circle'} ${d.vx !== 0 ? 'auto' : ''}`);
+
         this._dataNodes = null;
         this._dataLinks = null;
       });
@@ -482,7 +530,6 @@ class Chart {
     this.nodesWrapper.selectAll('.node text')
       .attr('font-family', 'Roboto')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', 20)
       .attr('stroke', 'white')
       .attr('stroke-width', 0.5);
 
@@ -501,7 +548,6 @@ class Chart {
       this.nodesWrapper.selectAll('.node text')
         .attr('font-family', undefined)
         .attr('dominant-baseline', undefined)
-        .attr('font-size', undefined)
         .attr('stroke', undefined)
         .attr('stroke-width', undefined);
 
