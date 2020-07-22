@@ -3,6 +3,7 @@ import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
 import ChartUtils from './helpers/ChartUtils';
+const color2 = ['#82abd1', '#fb8039', '#7cc27f', '#e4716f', '#bd9bd7', '#b99892', '#efb4e0', '#b2b2b2', '#d9d270','#6ed7e2']
 
 class Chart {
   static event = new EventEmitter();
@@ -41,6 +42,11 @@ class Chart {
     return (d) => scale(d.source?.group || d.group);
   }
 
+  static color2() {
+    const scale = d3.scaleOrdinal(color2);
+    return (d) => scale(d.source?.group || d.group);
+  }
+
   static getSource(l) {
     return l.source.name || l.source || Symbol('');
   }
@@ -60,17 +66,19 @@ class Chart {
 
       if (sameLinks.length > 1) {
         _.forEach(sameLinks, (l, i) => {
+          const reverse = this.getSource(l) === this.getTarget(link);
           const totalHalf = sameLinks.length / 2;
           const index = i + 1;
           const even = sameLinks.length % 2 === 0;
           const half = Math.floor(sameLinks.length / 2);
           const middleLink = !even && Math.ceil(totalHalf) === index;
-          let arcDirection = index <= totalHalf ? 0 : 1;
           const indexCorrected = index <= totalHalf ? index : index - Math.ceil(totalHalf);
 
-          if (this.getSource(l) === this.getTarget(link)) {
+          let arcDirection = index <= totalHalf ? 0 : 1;
+          if (reverse) {
             arcDirection = arcDirection === 1 ? 0 : 1;
           }
+
           let arc = half / (indexCorrected - (even ? 0.5 : 0));
 
           if (middleLink) {
@@ -78,8 +86,10 @@ class Chart {
           }
 
           l.same = {
+            even,
             arcDirection,
             arc,
+            reverse,
           };
         });
       }
@@ -146,7 +156,20 @@ class Chart {
       .attr('orient', 'auto')
       .attr('markerWidth', 5)
       .attr('markerHeight', 5)
-      .attr('refY', 2.5)
+      .attr('refY', (d) => {
+        let i = 0
+        // if (d.same && d.same.arc) {
+        //   if (d.same.reverse) {
+        //     i = d.same.arc;
+        //   } else {
+        //     i = d.same.arc + 1.5;
+        //   }
+        //   if (d.same.even) {
+        //     i -= 2.8
+        //   }
+        // }
+        return 2.5 - i;
+      })
       .attr('refX', (d) => {
         let i = 7;
         if (d.type === 'triangle') {
@@ -158,7 +181,7 @@ class Chart {
       })
       .append('use')
       .attr('href', '#arrow')
-      .attr('fill', '#94b7d7');
+      .attr('fill', this.color2())
 
     return defs;
   }
@@ -254,7 +277,8 @@ class Chart {
         .attr('data-i', (d) => d.index)
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.type, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.type))
-        .attr('stroke', '#94b7d7')
+        // .attr('stroke', '#94b7d7')
+        .attr('stroke', this.color2())
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
         .on('click', (d) => this.event.emit('link.click', d));
@@ -331,11 +355,17 @@ class Chart {
 
       this.simulation.on('tick', () => {
         this.link.attr('d', (d) => {
-          const dx = d.target.x - d.source.x;
-          const dy = d.target.y - d.source.y;
-          const dr = Math.sqrt(dx * dx + dy * dy);
-          const arc = d.same ? d.same.arc * dr : 0;
-          const arcDirection = d.same ? d.same.arcDirection : 0;
+          let arc = 0;
+          let arcDirection = 0;
+
+          if (d.same) {
+            const dx = d.target.x - d.source.x;
+            const dy = d.target.y - d.source.y;
+            const dr = Math.sqrt(dx * dx + dy * dy);
+
+            arc = d.same.arc * dr;
+            arcDirection = d.same.arcDirection;
+          }
 
           return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${arcDirection} ${d.target.x},${d.target.y}`;
         });
@@ -563,3 +593,6 @@ class Chart {
 window.addEventListener('resize', Chart.resizeSvg);
 
 export default Chart;
+
+console.log(d3.schemeCategory10)
+

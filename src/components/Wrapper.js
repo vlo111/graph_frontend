@@ -14,7 +14,7 @@ class Wrapper extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     token: PropTypes.string.isRequired,
-    isLoading: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     showHeader: PropTypes.bool,
     showFooter: PropTypes.bool,
     className: PropTypes.string,
