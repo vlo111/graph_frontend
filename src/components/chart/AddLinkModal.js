@@ -9,14 +9,15 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 import Checkbox from '../form/Checkbox';
+import { DASH_TYPES } from "../../data/link";
 
 class AddLinkModal extends Component {
   getGroups = memoizeOne((links) => {
     console.log(links)
-    const types = links.filter((d) => d.group)
+    const types = links.filter((d) => d.type)
       .map((d) => ({
-        value: d.group,
-        label: d.group,
+        value: d.type,
+        label: d.type,
       }));
 
     return _.uniqBy(types, 'value');
@@ -59,8 +60,8 @@ class AddLinkModal extends Component {
   addLink = async () => {
     const { linkData } = this.state;
     const errors = {};
-    if (!linkData.group) {
-      errors.group = 'Group is required';
+    if (!linkData.type) {
+      errors.type = 'Type is required';
     }
 
     if (_.isEmpty(errors)) {
@@ -95,10 +96,10 @@ class AddLinkModal extends Component {
 
         <Select
           label="Link Type"
-          value={[linkData.type]}
-          error={errors.type}
-          onChange={(v) => this.handleChange('type', v)}
-          options={['a', 'b', 'c', 'd', 'e']}
+          value={[linkData.linkType]}
+          error={errors.linkType}
+          onChange={(v) => this.handleChange('linkType', v)}
+          options={Object.keys(DASH_TYPES)}
           isSearchable={false}
           containerClassName="lineTypeSelect"
           getOptionValue={(v) => v}
@@ -122,10 +123,10 @@ class AddLinkModal extends Component {
           label="Relation Type"
           placeholder=""
           value={[
-            groups.find((t) => t.value === linkData.group) || { value: linkData.group, label: linkData.group },
+            groups.find((t) => t.value === linkData.type) || { value: linkData.type, label: linkData.type },
           ]}
-          error={errors.group}
-          onChange={(v) => this.handleChange('group', v.value)}
+          error={errors.type}
+          onChange={(v) => this.handleChange('type', v.value)}
           options={groups}
           isClearable
         />

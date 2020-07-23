@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import ReactDataSheet from 'react-datasheet';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import memoizeOne from 'memoize-one';
+import _ from 'lodash';
 import { setActiveButton, setGridIndexes, toggledGrid } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Input from '../form/Input';
 import FileInput from '../form/FileInput';
 import DataEditorDescription from './DataEditorDescription';
-import DataEditorFiles from './DataEditorFiles';
-import DataEditorLinks from './DataEditorLinks';
 import Convert from '../../helpers/Convert';
 
 class DataTableNodes extends Component {
@@ -19,11 +19,17 @@ class DataTableNodes extends Component {
     selectedNodes: PropTypes.array.isRequired,
   }
 
+  initGridValues = memoizeOne((nodes) => {
+    if (!_.isEmpty(nodes)) {
+      const grid = Convert.nodeDataToGrid(nodes);
+      this.setState({ grid });
+    }
+  }, _.isEqual)
+
   constructor(props) {
     super(props);
-    const nodes = Chart.getNodes();
     this.state = {
-      grid: Convert.nodeDataToGrid(nodes),
+      grid: []
     };
   }
 
@@ -35,7 +41,6 @@ class DataTableNodes extends Component {
     const nodes = Convert.gridDataToNode(grid);
     Chart.render({ nodes });
   }
-
 
   renderSheet = (props) => {
     const { selectedNodes } = this.props;
@@ -147,10 +152,13 @@ class DataTableNodes extends Component {
   }
 
   render() {
+    const { grid } = this.state;
+    const { nodes } = this.props;
+    this.initGridValues(nodes);
     return (
       <ReactDataSheet
         className="ghGridTable ghGridTableNodes"
-        data={this.state.grid}
+        data={grid || []}
         valueRenderer={(cell) => String(cell.value || '')}
         valueViewer={this.renderView}
         cellRenderer={this.renderCell}

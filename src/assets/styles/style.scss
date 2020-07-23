@@ -27,7 +27,7 @@ $color-text: #333333;
 
 ::-webkit-scrollbar-thumb {
   background-color: $color-blue;
-  border-radius: 4px;
+  border-radius: 3.5px;
 }
 
 
@@ -299,9 +299,10 @@ main {
   }
 
   .links {
-    path{
+    path {
       fill: transparent;
     }
+
     line:hover {
       opacity: 1;
     }
@@ -639,6 +640,29 @@ main {
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   background-color: white;
   padding: 0 0 0 65px;
+  max-height: 100vh;
+
+  h3 {
+    font-weight: normal;
+
+    .circle {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background-color: red;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .line {
+      display: inline-block;
+      width: 15px;
+      height: 3px;
+      background-color: red;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+  }
 
   .contentWrapper {
     padding: 70px 0 10px 0;
@@ -899,6 +923,15 @@ main {
   .tabs {
     display: flex;
     align-items: center;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    user-select: none;
+
+    .empty {
+      min-width: 1px;
+      height: 1px;
+      scroll-snap-align: start;
+    }
 
     button {
       margin: 5px 15px;
@@ -907,9 +940,14 @@ main {
       color: $color-text;
       border-bottom: 1px solid transparent;
       border-radius: 0;
-
+      scroll-snap-align: start;
       &.active {
         border-bottom-color: $color-text;
+      }
+
+      sub {
+        color: $color-gray2;
+        padding-left: 5px;
       }
     }
   }
@@ -1346,7 +1384,7 @@ main {
     }
   }
 
-  &.mainLoading{
+  &.mainLoading {
     position: absolute;
     right: 50px;
     top: 50px;

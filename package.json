@@ -20,6 +20,7 @@
     "react-color": "^2.18.1",
     "react-datasheet": "^1.4.7",
     "react-dom": "^16.13.1",
+    "react-helmet": "^6.1.0",
     "react-hot-loader": "^4.12.21",
     "react-image-crop": "^8.6.4",
     "react-modal": "^3.11.2",

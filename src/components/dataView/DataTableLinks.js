@@ -7,6 +7,8 @@ import Chart from '../../Chart';
 import Input from '../form/Input';
 import Select from '../form/Select';
 import Convert from '../../helpers/Convert';
+import memoizeOne from "memoize-one";
+import _ from "lodash";
 
 class DataTableLinks extends Component {
   static propTypes = {
@@ -17,6 +19,13 @@ class DataTableLinks extends Component {
     selectedLinks: PropTypes.array.isRequired,
     toggledGrid: PropTypes.func.isRequired,
   }
+
+  initGridValues = memoizeOne((links) => {
+    if (!_.isEmpty(links)) {
+      const grid = Convert.linkDataToGrid(links);
+      this.setState({ grid });
+    }
+  }, _.isEqual)
 
   constructor(props) {
     super(props);
@@ -88,7 +97,6 @@ class DataTableLinks extends Component {
     );
   }
 
-
   renderDataEditor = (props) => {
     const defaultProps = {
       autoFocus: true,
@@ -116,10 +124,13 @@ class DataTableLinks extends Component {
   }
 
   render() {
+    const { grid } = this.state;
+    const { links } = this.props;
+    this.initGridValues(links);
     return (
       <ReactDataSheet
         className="ghGridTable ghGridTableLinks"
-        data={this.state.grid}
+        data={grid}
         valueRenderer={(cell) => cell.value}
         cellRenderer={this.cellRenderer}
         onCellsChanged={this.handleDataChange}

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
 import ChartUtils from './helpers/ChartUtils';
-const color2 = ['#82abd1', '#fb8039', '#7cc27f', '#e4716f', '#bd9bd7', '#b99892', '#efb4e0', '#b2b2b2', '#d9d270','#6ed7e2']
+import { LINK_COLORS } from './data/link';
 
 class Chart {
   static event = new EventEmitter();
@@ -22,12 +22,12 @@ class Chart {
 
     const dragended = () => {
       if (!d3.event.active) simulation.alphaTarget(0);
-      this.data.nodes = simulation.nodes().map((d) => ({
-        fx: d.fx || d.x,
-        fy: d.fy || d.y,
-        name: d.name,
-        type: d.type,
-      }));
+      // this.data.nodes = simulation.nodes().map((d) => ({
+      //   fx: d.fx || d.x,
+      //   fy: d.fy || d.y,
+      //   name: d.name,
+      //   type: d.type,
+      // }));
       // sessionStorage.setItem('d3Data', JSON.stringify(this.data));
     };
 
@@ -39,12 +39,12 @@ class Chart {
 
   static color() {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
-    return (d) => scale(d.source?.group || d.group);
+    return (d) => scale(d.source?.type || d.type);
   }
 
-  static color2() {
-    const scale = d3.scaleOrdinal(color2);
-    return (d) => scale(d.source?.group || d.group);
+  static LINK_COLORS() {
+    const scale = d3.scaleOrdinal(LINK_COLORS);
+    return (d) => scale(d.source?.type || d.type);
   }
 
   static getSource(l) {
@@ -147,7 +147,8 @@ class Chart {
     const directions = this.wrapper.select('.directions');
 
     const defs = directions.selectAll('defs')
-      .data(this.data.links.filter((d) => d.direction))
+      // .data(this.data.links.filter((d) => d.direction))
+      .data(this.data.links)
       .join('defs');
 
     defs.selectAll('marker').remove();
@@ -156,32 +157,20 @@ class Chart {
       .attr('orient', 'auto')
       .attr('markerWidth', 5)
       .attr('markerHeight', 5)
-      .attr('refY', (d) => {
-        let i = 0
-        // if (d.same && d.same.arc) {
-        //   if (d.same.reverse) {
-        //     i = d.same.arc;
-        //   } else {
-        //     i = d.same.arc + 1.5;
-        //   }
-        //   if (d.same.even) {
-        //     i -= 2.8
-        //   }
-        // }
-        return 2.5 - i;
-      })
+      .attr('refY', 2.5)
       .attr('refX', (d) => {
         let i = 7;
-        if (d.type === 'triangle') {
+        if (d.nodeType === 'triangle') {
           i += 5;
-        } else if (d.type === 'hexagon') {
+        } else if (d.nodeType === 'hexagon') {
           i += 5;
         }
         return radiusList[d.target.index] / d.value + i || 0;
       })
       .append('use')
       .attr('href', '#arrow')
-      .attr('fill', this.color2())
+      .attr('fill', this.LINK_COLORS())
+      .attr('stroke', this.LINK_COLORS());
 
     return defs;
   }
@@ -201,27 +190,28 @@ class Chart {
       .attr('height', 1)
       .attr('width', 1)
       .append('image')
+      .attr('preserveAspectRatio', 'xMidYMid slice')
       .attr('height', (d) => {
         let i = 2;
-        if (d.type === 'hexagon') {
+        if (d.nodeType === 'hexagon') {
           i = 2.3;
-        } else if (d.type === 'triangle') {
+        } else if (d.nodeType === 'triangle') {
           i = 3.1;
         }
         return radiusList[d.index] * i;
       })
       .attr('width', (d) => {
         let i = 2;
-        if (d.type === 'hexagon') {
+        if (d.nodeType === 'hexagon') {
           i = 2.3;
-        } else if (d.type === 'triangle') {
+        } else if (d.nodeType === 'triangle') {
           i = 3.1;
         }
         return radiusList[d.index] * i;
       })
       .attr('transform', (d) => {
         const r = radiusList[d.index] * -1;
-        if (d.type === 'triangle') {
+        if (d.nodeType === 'triangle') {
           return `translate(${r / 3.1}, 0)`;
         }
         return undefined;
@@ -275,10 +265,10 @@ class Chart {
         .data(this.data.links)
         .join('path')
         .attr('data-i', (d) => d.index)
-        .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.type, d.value || 1))
-        .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.type))
+        .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
+        .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
         // .attr('stroke', '#94b7d7')
-        .attr('stroke', this.color2())
+        .attr('stroke', this.LINK_COLORS())
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
         .on('click', (d) => this.event.emit('link.click', d));
@@ -291,7 +281,7 @@ class Chart {
       this.node = this.nodesWrapper.selectAll('.node')
         .data(this.data.nodes)
         .join('g')
-        .attr('class', (d) => `node ${d.type || 'circle'}`)
+        .attr('class', (d) => `node ${d.nodeType || 'circle'}`)
         .attr('fill', this.color())
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
@@ -343,9 +333,9 @@ class Chart {
         .append('text')
         .attr('x', (d) => {
           let i = 5;
-          if (d.type === 'hexagon') {
+          if (d.nodeType === 'hexagon') {
             i += radiusList[d.index] / 5;
-          } else if (d.type === 'triangle') {
+          } else if (d.nodeType === 'triangle') {
             i += radiusList[d.index] / 5;
           }
           return radiusList[d.index] + i;
@@ -371,7 +361,24 @@ class Chart {
         });
         this.node
           .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
-          .attr('class', (d) => `node ${d.type || 'circle'} ${d.vx !== 0 ? 'auto' : ''}`);
+          .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.vx !== 0 ? 'auto' : ''}`);
+
+        //
+        // this.directions.selectAll('marker')
+        //   .attr('refY', (d) => {
+        //     let i = 0
+        //     if (d.same && d.same.arc) {
+        //       const dx = d.target.x - d.source.x;
+        //       const dy = d.target.y - d.source.y;
+        //       const dr = Math.sqrt(dx * dx + dy * dy) / 100;
+        //       if (d.same.reverse) {
+        //         i = dr;
+        //       } else {
+        //         i = dr;
+        //       }
+        //     }
+        //     return 2.5 - i;
+        //   })
 
         this._dataNodes = null;
         this._dataLinks = null;
@@ -479,11 +486,10 @@ class Chart {
           fx: d.fx || od.fx || d.x || 0,
           fy: d.fy || od.fx || d.y || 0,
           name: d.name || od.name || '',
-          group: d.group || od.group || '',
-          type: d.type || od.type || 'circle',
+          type: d.type || od.type || '',
+          nodeType: d.nodeType || od.nodeType || 'circle',
           description: d.description || od.description || '',
           icon: d.icon || od.icon || '',
-          color: d.color || od.color || '',
           link: d.link || od.link || '',
         };
       });
@@ -504,8 +510,8 @@ class Chart {
           source: pd.source || d.source || od.source || '',
           target: pd.target || d.target || od.target || '',
           value: pd.value || d.value || od.value || '',
+          linkType: pd.linkType || d.linkType || od.linkType || '',
           type: pd.type || d.type || od.type || '',
-          group: pd.group || d.group || od.group || '',
           direction: pd.direction || d.direction || od.direction || '',
         };
       });
@@ -593,6 +599,3 @@ class Chart {
 window.addEventListener('resize', Chart.resizeSvg);
 
 export default Chart;
-
-console.log(d3.schemeCategory10)
-

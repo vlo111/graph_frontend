@@ -20,9 +20,14 @@ class DataView extends Component {
 
   constructor(props) {
     super(props);
+    const nodes = Chart.getNodes();
+
     this.state = {
       fullWidth: false,
-      activeTab: 'nodes',
+      activeTab: {
+        group: 'nodes',
+        type: nodes[0]?.type || '',
+      },
     };
   }
 
@@ -64,8 +69,12 @@ class DataView extends Component {
     this.props.setActiveButton('create');
   }
 
-  setActiveTab = (activeTab) => {
-    this.setState({ activeTab });
+  setActiveTab = (group, type) => {
+    this.setState({
+      activeTab: {
+        type, group,
+      },
+    });
   }
 
   export = (type) => {
@@ -94,13 +103,12 @@ class DataView extends Component {
     const { fullWidth, activeTab } = this.state;
     const links = Chart.getLinks();
     const nodes = Chart.getNodes();
-
+    const linksGrouped = _.groupBy(links, 'type');
+    const nodesGrouped = _.groupBy(nodes, 'type');
     return (
       <div id="dataTable">
         <HeaderPortal>
           <div className="exportButtons">
-            <Button onClick={() => this.export('csv')}>Export csv</Button>
-            <Button onClick={() => this.export('csv-zip')}>Export zip</Button>
             <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
             <Button onClick={() => this.download('pdf')}>Export pdf</Button>
             <Button onClick={() => this.download('png')}>Export png</Button>
@@ -109,7 +117,8 @@ class DataView extends Component {
         <div className={`contentWrapper ${fullWidth ? 'fullWidth' : ''}`}>
           <div className="header">
             <h3>
-              {activeTab === 'links' ? 'Links' : 'Nodes'}
+              <span className={activeTab.type === 'nodes' ? 'circle' : 'line'} />
+              {activeTab.type}
             </h3>
             <div className="buttons">
               <Button icon="fa-expand" onClick={this.toggleFullWidth} />
@@ -117,23 +126,33 @@ class DataView extends Component {
             </div>
           </div>
           <div className="ghGridTableWrapper">
-            {activeTab === 'links' ? (
-              <DataTableLinks />
+            {activeTab.group === 'nodes' ? (
+              <DataTableNodes title={activeTab.type} nodes={nodesGrouped[activeTab.type]} />
             ) : (
-              <DataTableNodes />
+              <DataTableLinks title={activeTab.type} links={linksGrouped[activeTab.type]} />
             )}
           </div>
           <div className="tabs">
-            <Button className={activeTab === 'nodes' ? 'active' : ''} onClick={() => this.setActiveTab('nodes')}>
-              Nodes
-              <sub>{`[${nodes.length}]`}</sub>
-            </Button>
-            {links.length ? (
-              <Button className={activeTab === 'links' ? 'active' : ''} onClick={() => this.setActiveTab('links')}>
-                Links
-                <sub>{`[${links.length}]`}</sub>
+            <span className="empty" />
+            {_.map(nodesGrouped, (n, type) => (
+              <Button
+                className={activeTab.type === type && activeTab.group === 'nodes' ? 'active' : ''}
+                onClick={() => this.setActiveTab('nodes', type)}
+              >
+                {type || '__empty__'}
+                <sub>{`[${n.length}]`}</sub>
               </Button>
-            ) : null}
+            ))}
+            {_.map(linksGrouped, (n, type) => (
+              <Button
+                className={activeTab.type === type && activeTab.group === 'links' ? 'active' : ''}
+                onClick={() => this.setActiveTab('links', type)}
+              >
+                {type || '__empty__'}
+                <sub>{`[${n.length}]`}</sub>
+              </Button>
+            ))}
+            <span className="empty" />
           </div>
         </div>
       </div>

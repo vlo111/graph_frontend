@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { stringify as qs } from 'query-string';
 import fileDownload from 'js-file-download';
-import { objectToFormData } from 'object-to-formdata';
+import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
 
 const { REACT_APP_DEV } = process.env;
@@ -23,7 +23,7 @@ api.interceptors.request.use((config) => {
 }, (error) => Promise.reject(error));
 
 function toFormData(data) {
-  return objectToFormData({ ...data }, { indices: true });
+  return serialize({ ...data }, { indices: true });
 }
 
 class Api {

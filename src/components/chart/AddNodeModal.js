@@ -10,7 +10,7 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
-import { nodeTypes } from "../../data/node";
+import { NODE_TYPES } from "../../data/node";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -25,18 +25,18 @@ class AddNodeModal extends Component {
       nodeData: {
         name: '',
         icon: '',
-        type: 'circle',
-        group: group || _.last(nodes)?.group || '',
+        nodeType: 'circle',
+        type: group || _.last(nodes)?.type || '',
       },
       errors: {},
     });
   }, _.isEqual)
 
   getGroups = memoizeOne((nodes) => {
-    const types = nodes.filter((d) => d.group)
+    const types = nodes.filter((d) => d.type)
       .map((d) => ({
-        value: d.group,
-        label: d.group,
+        value: d.type,
+        label: d.type,
       }));
 
     return _.uniqBy(types, 'value');
@@ -64,8 +64,8 @@ class AddNodeModal extends Component {
     } else if (nodes.some((d) => d.name === nodeData.name)) {
       errors.name = 'Already exists';
     }
-    if (!nodeData.group) {
-      errors.group = 'Group is required';
+    if (!nodeData.type) {
+      errors.type = 'Type is required';
     }
 
     if (_.isEmpty(errors)) {
@@ -99,6 +99,16 @@ class AddNodeModal extends Component {
         onRequestClose={this.closeModal}
       >
         <h2>Add new node</h2>
+        <Select
+          isClearable
+          label="Type"
+          value={[
+            groups.find((t) => t.value === nodeData.type) || { value: nodeData.type, label: nodeData.type },
+          ]}
+          options={groups}
+          error={errors.type}
+          onChange={(v) => this.handleChange('type', v?.value || '')}
+        />
         <Input
           label="Name"
           value={nodeData.name}
@@ -106,22 +116,12 @@ class AddNodeModal extends Component {
           onChangeText={(v) => this.handleChange('name', v)}
         />
         <Select
-          isClearable
-          label="Type"
-          value={[
-            groups.find((t) => t.value === nodeData.group) || { value: nodeData.group, label: nodeData.group },
-          ]}
-          options={groups}
-          error={errors.group}
-          onChange={(v) => this.handleChange('group', v?.value || '')}
-        />
-        <Select
           label="Node Type"
-          options={nodeTypes}
+          options={NODE_TYPES}
           isSearchable={false}
-          value={nodeTypes.find((t) => t.value === nodeData.type)}
-          error={errors.type}
-          onChange={(v) => this.handleChange('type', v.value)}
+          value={NODE_TYPES.find((t) => t.value === nodeData.nodeType)}
+          error={errors.nodeType}
+          onChange={(v) => this.handleChange('nodeType', v.value)}
         />
         <FileInput
           label="Icon"

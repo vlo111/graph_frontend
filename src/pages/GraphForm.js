@@ -13,7 +13,7 @@ import DataImport from '../components/DataImport';
 import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
-import AddLinkModal from "../components/chart/AddLinkModal";
+import AddLinkModal from '../components/chart/AddLinkModal';
 
 class GraphForm extends Component {
   static propTypes = {

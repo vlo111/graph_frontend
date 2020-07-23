@@ -76,7 +76,7 @@ class DataImport extends Component {
     }
     this.setState({ loading: true });
     const { payload: { data } } = await this.props.convertGraphRequest(convertType, requestData);
-    if (data?.nodes?.length) {
+    if (data.nodes?.length) {
       this.setState({ loading: false, step: 2 });
     } else {
       this.toast = toast.error('Invalid File');
@@ -114,7 +114,7 @@ class DataImport extends Component {
           <>
             <File
               onChangeFile={(file) => this.handleChange('file', file)}
-              accept=".xlsx, .csv, .zip"
+              accept=".xlsx"
               label={file1Label}
             />
             {['nodes', 'links'].includes(fileType) ? (
@@ -137,6 +137,12 @@ class DataImport extends Component {
               <strong>Links: </strong>
               {importData.links?.length || 0}
             </div>
+            {importData.warnings?.length ? (
+              <div>
+                <span>Warnings: </span>
+                {importData.warnings?.length}
+              </div>
+            ) : null}
             <Button onClick={this.import} loading={loading}>Import</Button>
           </>
         ) : null}

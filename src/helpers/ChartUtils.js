@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
-import Chart from "../Chart";
+import Chart from '../Chart';
+import { DASH_TYPES } from '../data/link';
 
 class ChartUtils {
   static filter(data, params = {}) {
@@ -11,21 +12,11 @@ class ChartUtils {
   }
 
   static dashType(type, value) {
-    if (!type || type === 'a') {
-      return undefined;
-    }
-    const types = {
-      b: ['0.0001', 2],
-      c: [3, 3],
-      d: [6, 6],
-      e: [5, 2.5, 1.2, 1.2, 1.2, 2.5],
-    };
-
-    if (!types[type]) {
+    if (!type || type === 'a' || !DASH_TYPES[type]) {
       return undefined;
     }
 
-    return types[type].map((d) => (_.isNumber(d) ? d * value : d));
+    return DASH_TYPES[type].map((d) => (_.isNumber(d) ? d * value : d));
   }
 
   static dashLinecap(type) {
@@ -37,7 +28,7 @@ class ChartUtils {
 
   static color() {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
-    return (d) => scale(d.type);
+    return (d) => scale(d.nodeType);
   }
 
   static getNodeDocumentPosition(i) {
@@ -58,6 +49,11 @@ class ChartUtils {
       moveY,
       scale,
     };
+  }
+
+  static getNodesGrouped() {
+    const nodes = Chart.getNodes();
+    return _.groupBy(nodes, 'type');
   }
 }
 
