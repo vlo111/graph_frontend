@@ -330,7 +330,6 @@ main {
     text {
       font-family: Roboto, sans-serif;
       dominant-baseline: central;
-      font-size: 22px;
       stroke: #fafbfc;
       stroke-width: 0.5;
     }
@@ -941,6 +940,8 @@ main {
       border-bottom: 1px solid transparent;
       border-radius: 0;
       scroll-snap-align: start;
+      white-space: nowrap;
+
       &.active {
         border-bottom-color: $color-text;
       }
@@ -1018,8 +1019,8 @@ main {
 
   .close {
     position: absolute;
-    right: 15px;
-    top: 10px;
+    right: 10px;
+    top: 5px;
     cursor: pointer;
   }
 
@@ -1053,7 +1054,7 @@ main {
 
   .title {
     font-weight: normal;
-    font-size: 20px;
+    font-size: 17px;
   }
 
   a.title {

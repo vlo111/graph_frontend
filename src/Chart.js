@@ -235,7 +235,7 @@ class Chart {
       this.data = this.normalizeData(data);
       this.data = ChartUtils.filter(data, params.filters);
 
-      const radiusList = this.data.nodes.map((d) => this.getNodeLinks(d.name).length * 5 + 10);
+      const radiusList = ChartUtils.getRadiusList();
 
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(this.data.links).id((d) => d.name));
@@ -340,8 +340,8 @@ class Chart {
           }
           return radiusList[d.index] + i;
         })
-        .attr('font-size', (d) => 17 + radiusList[d.index] / 2)
-        .text((d) => d.name);
+        .attr('font-size', (d) => 17 + radiusList[d.index] / 3)
+        .text((d) => (d.name.length > 18 ? `${d.name.substring(0, 15)}...` : d.name));
 
       this.simulation.on('tick', () => {
         this.link.attr('d', (d) => {
@@ -462,7 +462,7 @@ class Chart {
 
   static getNodeLinks(name) {
     const links = this.getLinks();
-    return links.filter((d) => d.source === name);
+    return links.filter((d) => d.target === name);
   }
 
   static getNodeLinksNested(name) {

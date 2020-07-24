@@ -136,6 +136,7 @@ class DataView extends Component {
             <span className="empty" />
             {_.map(nodesGrouped, (n, type) => (
               <Button
+                key={type}
                 className={activeTab.type === type && activeTab.group === 'nodes' ? 'active' : ''}
                 onClick={() => this.setActiveTab('nodes', type)}
               >
@@ -145,6 +146,7 @@ class DataView extends Component {
             ))}
             {_.map(linksGrouped, (n, type) => (
               <Button
+                key={type}
                 className={activeTab.type === type && activeTab.group === 'links' ? 'active' : ''}
                 onClick={() => this.setActiveTab('links', type)}
               >
