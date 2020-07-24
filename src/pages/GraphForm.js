@@ -34,7 +34,7 @@ class GraphForm extends Component {
   render() {
     const { activeButton } = this.props;
     return (
-      <Wrapper showHeader={false} showFooter={false}>
+      <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
         <GraphHeader />
         <ToolBar />
         <div className="graphWrapper">

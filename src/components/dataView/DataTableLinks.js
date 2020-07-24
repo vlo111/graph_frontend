@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import ReactDataSheet from 'react-datasheet';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import memoizeOne from 'memoize-one';
+import _ from 'lodash';
 import { setActiveButton, setGridIndexes, toggledGrid } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Input from '../form/Input';
 import Select from '../form/Select';
 import Convert from '../../helpers/Convert';
-import memoizeOne from "memoize-one";
-import _ from "lodash";
 
 class DataTableLinks extends Component {
   static propTypes = {
     children: PropTypes.any.isRequired,
     setActiveButton: PropTypes.func.isRequired,
-    onChangeSelect: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.array.isRequired,
     selectedLinks: PropTypes.array.isRequired,
+    links: PropTypes.array.isRequired,
     toggledGrid: PropTypes.func.isRequired,
   }
 
@@ -34,7 +34,6 @@ class DataTableLinks extends Component {
       grid: Convert.linkDataToGrid(links),
     };
   }
-
 
   handleDataChange = (changes) => {
     const { grid } = this.state;
