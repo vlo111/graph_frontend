@@ -9,32 +9,27 @@ class Chart {
   static event = new EventEmitter();
 
   static drag(simulation) {
-    function dragstarted(d) {
+    const dragstart = (d) => {
+      this.event.emit('node.dragstart', d);
       if (!d3.event.active) simulation.alphaTarget(0.3).restart();
       d.fx = d.x;
       d.fy = d.y;
-    }
+    };
 
-    function dragged(d) {
+    const dragged = (d) => {
       d.fx = d3.event.x;
       d.fy = d3.event.y;
-    }
+    };
 
-    const dragended = () => {
+    const dragend = (d) => {
+      this.event.emit('node.dragend', d);
       if (!d3.event.active) simulation.alphaTarget(0);
-      // this.data.nodes = simulation.nodes().map((d) => ({
-      //   fx: d.fx || d.x,
-      //   fy: d.fy || d.y,
-      //   name: d.name,
-      //   type: d.type,
-      // }));
-      // sessionStorage.setItem('d3Data', JSON.stringify(this.data));
     };
 
     return d3.drag()
-      .on('start', dragstarted)
+      .on('start', dragstart)
       .on('drag', dragged)
-      .on('end', dragended);
+      .on('end', dragend);
   }
 
   static color() {
@@ -42,7 +37,7 @@ class Chart {
     return (d) => scale(d.source?.type || d.type);
   }
 
-  static LINK_COLORS() {
+  static linkColor() {
     const scale = d3.scaleOrdinal(LINK_COLORS);
     return (d) => scale(d.source?.type || d.type);
   }
@@ -169,8 +164,8 @@ class Chart {
       })
       .append('use')
       .attr('href', '#arrow')
-      .attr('fill', this.LINK_COLORS())
-      .attr('stroke', this.LINK_COLORS());
+      .attr('fill', this.linkColor())
+      .attr('stroke', this.linkColor());
 
     return defs;
   }
@@ -263,7 +258,7 @@ class Chart {
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
         // .attr('stroke', '#94b7d7')
-        .attr('stroke', this.LINK_COLORS())
+        .attr('stroke', this.linkColor())
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
         .on('click', (d) => this.event.emit('link.click', d));
@@ -356,7 +351,7 @@ class Chart {
         });
         this.node
           .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
-          .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.vx !== 0 ? 'auto' : ''}`);
+          .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
         //
         // this.directions.selectAll('marker')
@@ -380,12 +375,45 @@ class Chart {
       });
 
       this.renderNewLink();
+      this.nodeFilter();
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
       console.error(e);
       return false;
     }
+  }
+
+  static #nodeFilter = false;
+
+  static nodeFilter() {
+    if (this.#nodeFilter) return;
+    this.#nodeFilter = true;
+    let dragActive = false;
+
+    this.event.on('node.dragstart', () => {
+      dragActive = true;
+    });
+    this.event.on('node.dragend', () => {
+      dragActive = false;
+    });
+
+    this.event.on('node.mouseenter', (d) => {
+      if (dragActive) return;
+      const links = this.getNodeLinks(d.name, 'all');
+      links.push({ source: d.name, target: d.name });
+      const hideNodes = this.node.filter((n) => !links.some((l) => l.source === n.name || l.target === n.name));
+      hideNodes.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+
+      const hideLinks = this.link.filter((n) => !links.some((l) => l.index === n.index));
+      hideLinks.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+    });
+
+    this.event.on('node.mouseleave', async () => {
+      if (dragActive) return;
+      this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+      this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+    });
   }
 
   static renderNewLink() {
@@ -455,9 +483,9 @@ class Chart {
     return ChartUtils.calcScaledPosition(x, y);
   }
 
-  static getNodeLinks(name) {
+  static getNodeLinks(name, type = 'target') {
     const links = this.getLinks();
-    return links.filter((d) => d.target === name);
+    return links.filter((d) => (type === 'all' ? d.source === name || d.target === name : d[type] === name));
   }
 
   static getNodeLinksNested(name) {
@@ -557,7 +585,7 @@ class Chart {
       .attr('data-y', y);
 
     this.nodesWrapper.selectAll('.node text')
-      .attr('font-family', 'Roboto')
+      .attr('font-family', 'Open Sans')
       .attr('dominant-baseline', 'middle')
       .attr('stroke', 'white')
       .attr('stroke-width', 0.5);

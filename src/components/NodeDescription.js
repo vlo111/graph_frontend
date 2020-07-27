@@ -19,24 +19,11 @@ class NodeDescription extends Component {
   componentDidMount() {
     Chart.event.on('node.mouseenter', this.showNodeInfo);
     Chart.event.on('node.mouseleave', this.handleMouseLeave);
-    // Chart.event.on('node.click', this.handleClick);
+    Chart.event.on('node.dragstart', this.handleDragStart);
   }
 
   componentWillUnmount() {
     clearTimeout(this.showInfoTimout);
-  }
-
-  handleClick = () => {
-    console.log(d3.event)
-  }
-  handleMouseUp = () => {
-    console.log('handleMouseUp')
-    this.mouseDown = false;
-  }
-
-  handleMouseDown = () => {
-    console.log('handleMouseDown')
-    this.mouseDown = true;
   }
 
   getNode = (name) => {
@@ -48,10 +35,9 @@ class NodeDescription extends Component {
     return node;
   }
 
-  handleMouseMove = (ev) => {
-    if (this.mouseDown && ev.target.closest('.node')) {
-      this.handleMouseLeave();
-    }
+  handleDragStart = () => {
+    clearTimeout(this.showInfoTimout);
+    this.setState({ node: null });
   }
 
   handleMouseLeave = () => {
@@ -89,13 +75,13 @@ class NodeDescription extends Component {
     const mainLink = '';
     return (
       <Outside onClick={this.hideInfo}>
-        <div data-node-info={node.index} id="nodeDescription" style={{ top, left }}>
+        <div onMouseLeave={this.hideInfo} data-node-info={node.index} id="nodeDescription" style={{ top, left }}>
           <Icon className="close" value="fa-close" onClick={this.hideInfo} />
           <div className="left">
             {node.icon ? (
               <img src={node.icon} alt="icon" width={50} height={50} />
             ) : (
-              <span style={{ background: Chart.color()(node) }} className="icon">{node.name[0]}</span>
+              <span style={{ background: Chart.color()(node) }} className="icon">{node.type[0]}</span>
             )}
           </div>
           <div className="right">
@@ -106,6 +92,9 @@ class NodeDescription extends Component {
             ) : (
               <h3 className="title">{node.name}</h3>
             )}
+            <h4 className="type">
+              {node.type}
+            </h4>
             {!!node.description && (
               <p className="description" dangerouslySetInnerHTML={{ __html: node.description }} />
             )}

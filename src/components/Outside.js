@@ -44,10 +44,10 @@ class Outside extends Component {
   eventHandle = (ev) => {
     const { id, exclude } = this.props;
     const dataId = id || this.id;
-    const eventName = `on${_.upperFirst(ev.type)}`;
     if ('closest' in ev.target && !ev.target.closest(`#${dataId}`)) {
       if (!exclude || !ev.target.closest(exclude)) {
-        this.props[eventName](ev);
+        const callback = _.find(this.props, (fn, key) => key.toLowerCase() === `on${ev.type}`);
+        callback(ev);
       }
     }
   }

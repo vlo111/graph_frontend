@@ -63,6 +63,21 @@ class ChartUtils {
 
     return radiusList.map((d) => d / r + 10 || 10);
   }
+
+  static setClass = (fn) => (d, index, g) => {
+    const classObj = fn(d, index, g);
+    const remove = [];
+    const add = [];
+    _.forEach(classObj, (val, key) => {
+      if (val) {
+        add.push(key);
+      } else {
+        remove.push(key);
+      }
+    });
+    const classArr = [...g[index].classList].filter((str) => !remove.includes(str));
+    return _.union([...classArr, ...add]).join(' ');
+  }
 }
 
 export default ChartUtils;

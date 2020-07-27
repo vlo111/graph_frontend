@@ -80,7 +80,7 @@ class ReactChart extends Component {
     this.renderChart(nodes, links);
     return (
       <div id="graph" data-active={activeButton} className={activeButton}>
-        <svg>
+        <svg xmlns="http://www.w3.org/2000/svg">
           <g className="wrapper" transform-origin="top left">
             <g className="links" />
             <g className="nodes" />
