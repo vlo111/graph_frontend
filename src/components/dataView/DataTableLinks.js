@@ -29,9 +29,8 @@ class DataTableLinks extends Component {
 
   constructor(props) {
     super(props);
-    const links = Chart.getLinks();
     this.state = {
-      grid: Convert.linkDataToGrid(links),
+      grid: [],
     };
   }
 
@@ -41,7 +40,8 @@ class DataTableLinks extends Component {
       grid[d.row][d.col] = { ...grid[d.row][d.col], value: d.value };
     });
     this.setState({ grid });
-    const links = Convert.gridDataToLink(grid);
+    const linksChanged = Convert.gridDataToLink(grid);
+    const links = _.uniqBy([...linksChanged, ...Chart.getLinks()], 'index');
     Chart.render({ links });
   }
 
@@ -89,7 +89,7 @@ class DataTableLinks extends Component {
               checked={selectedLinks.includes(cell.value)}
               onChange={() => this.props.toggledGrid('links', cell.value)}
             />
-            {cell.value + 1}
+            {props.row + 1}
           </label>
         ) : children}
       </td>

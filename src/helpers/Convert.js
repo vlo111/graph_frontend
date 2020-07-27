@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Chart from '../Chart';
 
 class Convert {
@@ -19,43 +20,58 @@ class Convert {
     return csv;
   }
 
+  static chartDataToGridData(data) {
+    return data.map((d) => {
+      const arr = [];
+      _.forEach(d, (value, key) => {
+        arr.push({ value, key });
+      });
+      return arr;
+    });
+  }
+
   static nodeDataToGrid(nodes) {
-    return nodes.map((d, i) => ([
-      { value: i, key: 'index' },
+    return nodes.map((d) => ([
+      { value: d.index, key: 'index' },
       { value: d.name, key: 'name' },
       { value: d.description, key: 'description' },
       { value: d.icon, key: 'icon' },
-      { value: d.color, key: 'color' },
       { value: d.link, key: 'link' },
     ]));
   }
 
-  static gridDataToNode(grid, nodes = Chart.getNodes()) {
-    return grid.map((g, i) => ({
-      ...nodes[i],
-      name: g[1]?.value || '',
-      description: g[2]?.value || '',
-      icon: g[3]?.value || '',
-      color: g[4]?.value || '',
-      link: g[5]?.value || '',
-    }));
-  }
-
   static linkDataToGrid(links) {
-    return links.map((d, i) => ([
-      { value: i, key: 'index' },
+    return links.map((d) => ([
+      { value: d.index, key: 'index' },
       { value: d.source, key: 'source' },
       { value: d.target, key: 'target' },
       { value: d.value, key: 'value' },
     ]));
   }
 
+  static gridDataToChartData(data) {
+    return data.map((d) => {
+      const obj = {};
+      d.forEach((item) => {
+        obj[item.key] = item.value;
+      });
+      return obj;
+    });
+  }
+
+  static gridDataToNode(grid, nodes = Chart.getNodes()) {
+    const gridObj = this.gridDataToChartData(grid);
+    return gridObj.map((g) => ({
+      ...nodes.find((d) => +d.index === +g.index),
+      ...g,
+    }));
+  }
+
   static gridDataToLink(grid, links = Chart.getLinks()) {
-    return grid.map((g, i) => ({
-      ...links[i],
-      source: g[1]?.value || '',
-      target: g[2]?.value || '',
-      value: g[3]?.value || '',
+    const gridObj = this.gridDataToChartData(grid);
+    return gridObj.map((g) => ({
+      ...links.find((d) => +d.index === +g.index),
+      ...g,
     }));
   }
 }

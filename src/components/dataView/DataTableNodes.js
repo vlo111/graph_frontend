@@ -29,7 +29,7 @@ class DataTableNodes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      grid: []
+      grid: [],
     };
   }
 
@@ -38,8 +38,25 @@ class DataTableNodes extends Component {
     changes.forEach((d) => {
       grid[d.row][d.col] = { ...grid[d.row][d.col], value: d.value };
     });
-    const nodes = Convert.gridDataToNode(grid);
-    Chart.render({ nodes });
+    const nodesChanged = Convert.gridDataToNode(grid);
+    let links = Chart.getLinks();
+    const nodes = Chart.getNodes().map((d) => {
+      const changed = nodesChanged.find((c) => c.index === d.index);
+      if (changed) {
+        links = links.map((l) => {
+          if (l.source === d.name) {
+            l.source = changed.name;
+          } else if (l.target === d.name) {
+            l.target = changed.name;
+          }
+          return l;
+        });
+        // eslint-disable-next-line no-param-reassign
+        d = changed;
+      }
+      return d;
+    });
+    Chart.render({ nodes, links });
   }
 
   renderSheet = (props) => {
@@ -101,7 +118,7 @@ class DataTableNodes extends Component {
               checked={selectedNodes.includes(cell.value)}
               onChange={() => this.props.toggledGrid('nodes', cell.value)}
             />
-            {cell.value + 1}
+            {props.row + 1}
           </label>
         ) : children}
       </td>

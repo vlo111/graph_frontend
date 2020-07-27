@@ -668,10 +668,12 @@ main {
   }
 
   .contentWrapper {
-    padding: 70px 0 10px 0;
+    padding: 70px 0 0 0;
     background-color: white;
     max-width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 
     &.fullWidth {
       position: absolute;
@@ -789,10 +791,13 @@ main {
 
   .ghGridTableWrapper {
     overflow-x: auto;
-    height: calc(100% - 70px);
+    height: calc(100% - 82px);
     border-bottom: 1px solid $color-gray;
   }
 
+  .tabs{
+    min-height: 41px;
+  }
   .ghGridTable {
     width: 100%;
     min-width: 640px;

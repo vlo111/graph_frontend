@@ -48,11 +48,11 @@ class Chart {
   }
 
   static getSource(l) {
-    return l.source.name || l.source || Symbol('');
+    return l.source?.name || l.source || NaN;
   }
 
   static getTarget(l) {
-    return l.target.name || l.target || Symbol('');
+    return l.target?.name || l.target || NaN;
   }
 
   static normalizeData(data) {
@@ -116,7 +116,7 @@ class Chart {
   }
 
   static autoPosition() {
-    if (this.originalData.nodes[0] && this.originalData.nodes[0].fx === undefined) {
+    if (this.data.nodes[0] && this.data.nodes[0].fx === undefined) {
       const graph = document.querySelector('#graph');
       if (!graph) {
         return null;
@@ -124,21 +124,21 @@ class Chart {
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('charge', d3.forceManyBody())
-        // .force('x', d3.forceX((d) => {
-        //   const length = ChartUtils.getRadiusList()[d.index];
-        //   if (length) {
-        //     return d.x * length;
-        //   }
-        //   return d.x + 4;
-        // }))
-        // .force('y', d3.forceY((d) => {
-        //   const length = ChartUtils.getRadiusList()[d.index];
-        //   if (length) {
-        //     return d.y * length;
-        //   }
-        //   return d.y + 4;
-        // }));
+        .force('charge', d3.forceManyBody());
+      // .force('x', d3.forceX((d) => {
+      //   const length = ChartUtils.getRadiusList()[d.index];
+      //   if (length) {
+      //     return d.x * length;
+      //   }
+      //   return d.x + 4;
+      // }))
+      // .force('y', d3.forceY((d) => {
+      //   const length = ChartUtils.getRadiusList()[d.index];
+      //   if (length) {
+      //     return d.y * length;
+      //   }
+      //   return d.y + 4;
+      // }));
     }
     return null;
   }
@@ -226,11 +226,6 @@ class Chart {
       this._dataLinks = null;
       data.nodes = data.nodes || Chart.getNodes();
       data.links = data.links || Chart.getLinks();
-
-      // eslint-disable-next-line no-new
-      new Promise(() => {
-        this.originalData = _.cloneDeep(data);
-      });
 
       this.data = this.normalizeData(data);
       this.data = ChartUtils.filter(data, params.filters);
@@ -480,19 +475,17 @@ class Chart {
       return [];
     }
     if (!this._dataNodes) {
-      this._dataNodes = this.originalData.nodes.map((od) => {
-        const d = this.data.nodes.find((o) => o.name === od.name) || {};
-        return {
-          fx: d.fx || od.fx || d.x || 0,
-          fy: d.fy || od.fx || d.y || 0,
-          name: d.name || od.name || '',
-          type: d.type || od.type || '',
-          nodeType: d.nodeType || od.nodeType || 'circle',
-          description: d.description || od.description || '',
-          icon: d.icon || od.icon || '',
-          link: d.link || od.link || '',
-        };
-      });
+      this._dataNodes = this.data.nodes.map((d) => ({
+        index: d.index,
+        fx: d.fx || d.x || 0,
+        fy: d.fy || d.y || 0,
+        name: d.name || '',
+        type: d.type || '',
+        nodeType: d.nodeType || 'circle',
+        description: d.description || '',
+        icon: d.icon || '',
+        link: d.link || '',
+      }));
     }
 
     return this._dataNodes;
@@ -503,16 +496,16 @@ class Chart {
       return [];
     }
     if (!this._dataLinks) {
-      this._dataLinks = this.originalData.links.map((od) => {
-        const d = this.data.links.find((o) => o.source === od.source && o.target === od.target) || {};
+      this._dataLinks = this.data.links.map((d) => {
         const pd = Object.getPrototypeOf(d);
         return {
-          source: pd.source || d.source || od.source || '',
-          target: pd.target || d.target || od.target || '',
-          value: pd.value || d.value || od.value || '',
-          linkType: pd.linkType || d.linkType || od.linkType || '',
-          type: pd.type || d.type || od.type || '',
-          direction: pd.direction || d.direction || od.direction || '',
+          index: d.index,
+          source: Chart.getSource(pd) || Chart.getSource(d) || '',
+          target: Chart.getTarget(pd) || Chart.getTarget(d) || '',
+          value: pd.value || d.value || '',
+          linkType: pd.linkType || d.linkType || '',
+          type: pd.type || d.type || '',
+          direction: pd.direction || d.direction || '',
         };
       });
     }
