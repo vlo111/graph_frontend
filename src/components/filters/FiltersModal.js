@@ -24,6 +24,8 @@ class FiltersModal extends Component {
 
   render() {
     const { filters } = this.state;
+    const nodes = Chart.getNodes().length;
+    const links = Chart.getLinks().length;
     return (
       <Modal
         className="ghModal ghModalFilters"
@@ -40,7 +42,7 @@ class FiltersModal extends Component {
         </div>
         <div className="row resetAll">
           <Button transparent>RESET ALL</Button>
-          Showing 10 nodes out of 14
+          {`Showing ${nodes} nodes out of ${links}`}
         </div>
       </Modal>
     );
