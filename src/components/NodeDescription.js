@@ -50,7 +50,7 @@ class NodeDescription extends Component {
       this.setState({
         node: this.getNode(d.name),
       });
-    }, 1500);
+    }, 900);
   }
 
   hideInfo = () => {

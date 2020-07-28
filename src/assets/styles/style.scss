@@ -1,14 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
 
-$color-red: #f44336;
+
+$color-main: #7166F8;
+$color-main2: #FE794F;
+$color-accent: #0062FF;
+
+$color-error: #FE5C4F;
+$color-warning: #FED300;
+
+$color-light-blue: #C6E6FF;
+$color-gray: #9BA6B4;
+$color-dark: #0D0905;
+$color-dark-blue: #717EA0;
+
 $color-green: #48897a;
-$color-orange: #FF9800;
-$color-gray: #ced0d4;
-$color-gray2: #777777;
-$color-blue: #2196f3;
 $color-white: #ffffff;
-$color-text: #333333;
+
 $font-family: 'Open Sans', sans-serif;
+
+
 * {
   margin: 0;
   padding: 0;
@@ -26,19 +36,27 @@ $font-family: 'Open Sans', sans-serif;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: $color-blue;
+  background-color: $color-main;
   border-radius: 3.5px;
 }
 
 
 body {
   font-family: $font-family;
-  color: $color-text;
+  color: $color-dark;
 }
 
 a {
   text-decoration: none;
-  color: $color-text;
+  color: $color-accent;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: #003FA3;
+  }
 }
 
 ul {
@@ -79,6 +97,30 @@ main {
   }
 }
 
+h1 {
+  font-weight: 700;
+  font-size: 42px;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 36px;
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 26px;
+}
+
+p {
+  font-weight: 400;
+  font-size: 14px;
+
+  &.big {
+    font-size: 16px;
+  }
+}
+
 
 .ghFormField {
   width: 320px;
@@ -103,8 +145,8 @@ main {
       }
 
       &--is-focused {
-        border-color: $color-blue;
-        box-shadow: 0 0 0 1px $color-blue;
+        border-color: $color-main;
+        box-shadow: 0 0 0 1px $color-main;
       }
     }
 
@@ -129,7 +171,7 @@ main {
 
 
   .error {
-    color: $color-red;
+    color: $color-error;
     font-size: 14px;
     padding: 1px;
   }
@@ -156,8 +198,8 @@ main {
 
     &:focus {
       outline: none;
-      border-color: $color-blue;
-      box-shadow: 0 0 0 1px $color-blue;
+      border-color: $color-main;
+      box-shadow: 0 0 0 1px $color-main;
     }
   }
 
@@ -216,17 +258,83 @@ main {
 }
 
 .ghButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
   border: none;
-  background-color: $color-blue;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
+  color: $color-dark;
+  background-color: $color-light-blue;
+  padding: 5px 10px;
+  border-radius: 4px;
   font-size: 14px;
-  font-weight: 500;
-  margin: 5px 0;
+
+  &:hover {
+    box-shadow: 0 2px 9px rgba(2, 47, 119, 0.1);
+  }
+  &:active{
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+  }
+
+  &.alt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 9px 22px;
+    line-height: 1em;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 5px 0;
+    text-transform: uppercase;
+    border-radius: 9px;
+    position: relative;
+  }
+
+  &.alt:active:after {
+    content: '';
+    background: #0578FF1A;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 9px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    box-shadow: none !important;
+    cursor: default;
+  }
+
+  &.blue {
+    background-color: $color-main;
+
+    &:hover {
+      box-shadow: 0 3px 6px rgba($color-main, 0.4);
+    }
+  }
+
+  &.orange {
+    background-color: $color-main2;
+
+    &:hover {
+      box-shadow: 0 3px 6px rgba($color-main2, 0.4);
+    }
+  }
+
+  &.light {
+    background-color: $color-light-blue;
+    color: $color-dark;
+
+    &:hover {
+      box-shadow: 0 3px 6px rgba($color-light-blue, 0.4);
+    }
+  }
+
+  &.transparent {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    color: $color-main;
+  }
 
   .icon,
   .icon i {
@@ -234,23 +342,6 @@ main {
     width: 22px;
   }
 
-  &:hover {
-    opacity: 0.9;
-  }
-
-  &.red {
-    background-color: $color-red;
-  }
-
-  &.white {
-    background-color: $color-white;
-    color: $color-text;
-  }
-
-  &.transparent {
-    background-color: transparent;
-    color: $color-text;
-  }
 }
 
 .ghCheckbox {
@@ -308,7 +399,7 @@ main {
       cursor: pointer;
 
       &.hidden {
-        opacity: 0.3 !important;
+        opacity: 0.2 !important;
         pointer-events: none;
       }
     }
@@ -337,8 +428,11 @@ main {
     }
 
     &.hidden {
-      opacity: 0.5 !important;
+      opacity: 0.2 !important;
       pointer-events: none;
+      text{
+        opacity: 0.4 !important;
+      }
     }
 
     &.auto {
@@ -366,7 +460,7 @@ main {
     pointer-events: none;
     stroke-width: 2;
     stroke-dasharray: 4;
-    stroke: $color-blue;
+    stroke: $color-main;
   }
 
 
@@ -470,7 +564,7 @@ main {
     margin-top: 16px;
     flex-direction: column;
     background-color: transparent;
-    color: $color-text;
+    color: $color-dark;
     font-weight: 400;
 
     &.active {
@@ -516,7 +610,7 @@ main {
   padding: 15px;
 
   a {
-    color: $color-blue;
+    color: $color-main;
   }
 
   h1 {
@@ -538,7 +632,7 @@ main {
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba($color-dark, 0.1);
   z-index: 99;
   display: flex;
   justify-content: center;
@@ -595,7 +689,7 @@ main {
   button {
     background-color: transparent;
     border-radius: 0;
-    color: $color-text;
+    color: $color-dark;
     text-align: left;
     justify-content: flex-start;
     padding: 10px;
@@ -697,12 +791,12 @@ main {
 
       .ghButton {
         background-color: transparent;
-        color: $color-text;
+        color: $color-dark;
         border-radius: 50%;
         width: 30px;
         height: 30px;
         padding: 0;
-        border: 2px solid $color-text;
+        border: 2px solid $color-dark;
 
         .icon,
         .icon i {
@@ -754,7 +848,7 @@ main {
       border-radius: 0;
       width: 100%;
       z-index: 1;
-      border: 1px solid $color-blue;
+      border: 1px solid $color-main;
       box-shadow: none !important;
     }
 
@@ -812,7 +906,7 @@ main {
         text-align: left !important;
         font-weight: normal;
         padding: 5px;
-        color: $color-gray2;
+        color: $color-dark-blue;
 
         &.name > span {
           padding: 5px;
@@ -921,7 +1015,7 @@ main {
       text-align: left;
       font-size: 15px;
       border: none;
-      box-shadow: 0 0 0 1px $color-blue inset;
+      box-shadow: 0 0 0 1px $color-main inset;
       padding: 0 5px;
       position: absolute;
       left: 0;
@@ -950,18 +1044,18 @@ main {
       margin: 5px 15px;
       background-color: transparent;
       padding: 5px 5px 1px;
-      color: $color-text;
+      color: $color-dark;
       border-bottom: 1px solid transparent;
       border-radius: 0;
       scroll-snap-align: start;
       white-space: nowrap;
 
       &.active {
-        border-bottom-color: $color-text;
+        border-bottom-color: $color-dark;
       }
 
       sub {
-        color: $color-gray2;
+        color: $color-dark-blue;
         padding-left: 5px;
       }
     }
@@ -1005,7 +1099,7 @@ main {
         top: -17px;
 
         .icon {
-          color: $color-red;
+          color: $color-error;
         }
       }
 
@@ -1050,7 +1144,7 @@ main {
     .icon {
       width: 50px;
       height: 50px;
-      background: $color-blue;
+      background: $color-main;
       color: $color-white;
       font-size: 30px;
       display: flex;
@@ -1072,13 +1166,13 @@ main {
   }
 
   a.title {
-    color: $color-blue;
+    color: $color-main;
   }
 
   .type {
     font-weight: normal;
     font-size: 14px;
-    color: $color-gray2;
+    color: $color-dark-blue;
     padding-top: 5px;
   }
 
@@ -1086,7 +1180,7 @@ main {
     padding-top: 5px;
 
     a {
-      color: $color-blue;
+      color: $color-main;
       text-decoration: underline;
       padding-right: 4px;
     }
@@ -1103,7 +1197,7 @@ main {
   .list {
     a {
       text-decoration: underline;
-      color: $color-blue;
+      color: $color-main;
       display: inline-block;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -1137,7 +1231,7 @@ main {
       transition: all 300ms;
 
       &:hover {
-        color: $color-blue;
+        color: $color-main;
       }
     }
 
@@ -1156,7 +1250,7 @@ main {
 
       .info {
         font-size: 14px;
-        color: $color-gray2;
+        color: $color-dark-blue;
         display: flex;
         margin-top: 5px;
 
@@ -1225,7 +1319,7 @@ main {
 
     &.selected {
       a {
-        background-color: $color-blue;
+        background-color: $color-main;
         color: $color-white;
       }
     }
@@ -1233,7 +1327,7 @@ main {
 
     &:hover {
       a {
-        border-color: $color-blue;
+        border-color: $color-main;
       }
     }
 
@@ -1318,7 +1412,7 @@ main {
 .jodit {
   .jodit-wysiwyg {
     a {
-      color: $color-blue;
+      color: $color-main;
       text-decoration: underline;
       padding-right: 4px;
     }
@@ -1392,8 +1486,8 @@ main {
   position: relative;
   width: 50px;
   height: 50px;
-  border: 5px solid rgba($color-blue, .2);
-  border-top-color: $color-blue;
+  border: 5px solid rgba($color-main, .2);
+  border-top-color: $color-main;
   animation: ghLoading 1s linear infinite;
   border-radius: 50%;
   pointer-events: none;
@@ -1411,5 +1505,11 @@ main {
     right: 50px;
     top: 50px;
     z-index: 99999;
+  }
+}
+
+.Toastify__toast {
+  &--info {
+    background-color: $color-main;
   }
 }

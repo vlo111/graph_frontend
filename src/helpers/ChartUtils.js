@@ -57,9 +57,9 @@ class ChartUtils {
   }
 
   static getRadiusList() {
-    const radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.name).length * 2);
+    const radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.name).length * 5);
     const max = Math.max(...radiusList);
-    const r = max > 50 ? Math.max(...radiusList) / 50 : 1;
+    const r = max > 20 ? Math.max(...radiusList) / 20 : 1;
 
     return radiusList.map((d) => d / r + 10 || 10);
   }

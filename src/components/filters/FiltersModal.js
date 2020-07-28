@@ -39,7 +39,7 @@ class FiltersModal extends Component {
           />
         </div>
         <div className="row resetAll">
-          <Button className="transparent">RESET ALL</Button>
+          <Button transparent>RESET ALL</Button>
           Showing 10 nodes out of 14
         </div>
       </Modal>

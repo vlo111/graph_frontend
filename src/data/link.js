@@ -5,6 +5,7 @@ export const LINK_COLORS = [
 ];
 
 export const DASH_TYPES = {
+  a: null,
   b: ['0.0001', 2],
   c: [3, 3],
   d: [6, 6],

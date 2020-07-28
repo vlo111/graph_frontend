@@ -9,11 +9,10 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 import Checkbox from '../form/Checkbox';
-import { DASH_TYPES } from "../../data/link";
+import { DASH_TYPES } from '../../data/link';
 
 class AddLinkModal extends Component {
-  getGroups = memoizeOne((links) => {
-    console.log(links)
+  getTypes = memoizeOne((links) => {
     const types = links.filter((d) => d.type)
       .map((d) => ({
         value: d.type,
@@ -39,15 +38,14 @@ class AddLinkModal extends Component {
   handleAddNewLine = (d) => {
     const { source, target } = d;
     const links = Chart.getLinks();
-    const groups = this.getGroups(links);
-
+    const types = this.getTypes(links);
     const linkData = {
       source,
       target,
       value: 2,
-      type: 'a',
-      direction: true,
-      group: groups[0]?.value || null,
+      direction: false,
+      type: types[0]?.value || null,
+      linkType: 'a',
       description: '',
     };
     this.setState({ linkData, show: true });
@@ -84,7 +82,7 @@ class AddLinkModal extends Component {
   render() {
     const { linkData, errors, show } = this.state;
     const links = Chart.getLinks();
-    const groups = this.getGroups(links);
+    const types = this.getTypes(links);
     return (
       <Modal
         className="ghModal"
@@ -108,7 +106,7 @@ class AddLinkModal extends Component {
               <line
                 strokeLinecap={ChartUtils.dashLinecap(v)}
                 strokeDasharray={ChartUtils.dashType(v, 2)}
-                stroke="#1f77b4"
+                stroke="#7166F8"
                 strokeWidth="2"
                 x1="0"
                 y1="10"
@@ -123,11 +121,11 @@ class AddLinkModal extends Component {
           label="Relation Type"
           placeholder=""
           value={[
-            groups.find((t) => t.value === linkData.type) || { value: linkData.type, label: linkData.type },
+            types.find((t) => t.value === linkData.type) || { value: linkData.type, label: linkData.type },
           ]}
           error={errors.type}
           onChange={(v) => this.handleChange('type', v.value)}
-          options={groups}
+          options={types}
           isClearable
         />
 

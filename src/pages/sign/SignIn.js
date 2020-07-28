@@ -71,22 +71,18 @@ class Login extends Component {
             value={requestData.password}
             onChangeText={this.handleTextChange}
           />
-          {false && (
-            <p>
-              <Link to="/forgot-password">Forgot password?</Link>
-            </p>
-          )}
+          <p>
+            <Link to="/forgot-password">Forgot password?</Link>
+          </p>
 
 
-          <Button type="submit">
+          <Button type="submit" color="blue">
             Sign In
           </Button>
-          {false && (
-            <p>
-              {"Don't have an admin yet? "}
-              <Link to="/sign/sign-up">Register now</Link>
-            </p>
-          )}
+          <p>
+            {"Don't have an admin yet? "}
+            <Link to="/sign/sign-up">Register now</Link>
+          </p>
         </form>
       </WrapperSign>
     );

@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import memoizeOne from 'memoize-one';
+import { toast } from 'react-toastify';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import Input from '../form/Input';
 import Utils from '../../helpers/Utils';
 import { createGraphRequest, getSingleGraphRequest, updateGraphRequest } from '../../store/actions/graphs';
-import { setActiveButton } from '../../store/actions/app';
+import { setActiveButton, setLoading } from '../../store/actions/app';
 
 class SaveGraphModal extends Component {
   static propTypes = {
@@ -21,6 +22,7 @@ class SaveGraphModal extends Component {
     match: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    setLoading: PropTypes.func.isRequired,
   }
 
   initValues = memoizeOne((singleGraph) => {
@@ -49,6 +51,7 @@ class SaveGraphModal extends Component {
   saveGraph = async () => {
     const { requestData } = this.state;
     const { match: { params: { graphId } } } = this.props;
+    this.props.setLoading(true);
 
     let nodes = Chart.getNodes();
     const links = Chart.getLinks();
@@ -73,7 +76,7 @@ class SaveGraphModal extends Component {
     files = await Promise.allValues(files);
 
     if (graphId) {
-      await this.props.updateGraphRequest(graphId, {
+      const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
         ...requestData,
         nodes,
         links,
@@ -81,6 +84,11 @@ class SaveGraphModal extends Component {
         thumbnail,
       });
       this.props.getSingleGraphRequest(graphId);
+      if (data.graph?.id) {
+        toast.info('Successfully saved');
+      } else {
+        toast.error('Something went wrong. Please try again');
+      }
     } else {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
@@ -90,9 +98,13 @@ class SaveGraphModal extends Component {
         thumbnail,
       });
       if (data.graph?.id) {
+        toast.info('Successfully saved');
         this.props.history.replace(`/graphs/update/${data.graph?.id}`);
+      } else {
+        toast.error('Something went wrong. Please try again');
       }
     }
+    this.props.setLoading(false);
     this.setState({ showModal: false });
     this.props.setActiveButton('create');
   }
@@ -113,7 +125,7 @@ class SaveGraphModal extends Component {
     this.initValues(singleGraph);
     return (
       <>
-        <Button onClick={() => this.toggleModal(true)}>
+        <Button color="blue" onClick={() => this.toggleModal(true)}>
           Save
         </Button>
         <Modal
@@ -157,6 +169,7 @@ const mapDespatchToProps = {
   updateGraphRequest,
   getSingleGraphRequest,
   setActiveButton,
+  setLoading,
 };
 const Container = connect(
   mapStateToProps,

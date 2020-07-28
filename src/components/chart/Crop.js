@@ -91,7 +91,7 @@ class Crop extends Component {
       >
         <div className="content">
           <div className="buttons">
-            <Button icon="fa-times" className="red" onClick={this.cancel}>Cancel</Button>
+            <Button icon="fa-times" className="warning" onClick={this.cancel}>Cancel</Button>
             <Button icon="fa-save" onClick={this.crop}>Crop</Button>
           </div>
 

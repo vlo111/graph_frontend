@@ -384,21 +384,10 @@ class Chart {
     }
   }
 
-  static #nodeFilter = false;
-
   static nodeFilter() {
-    if (this.#nodeFilter) return;
-    this.#nodeFilter = true;
     let dragActive = false;
 
-    this.event.on('node.dragstart', () => {
-      dragActive = true;
-    });
-    this.event.on('node.dragend', () => {
-      dragActive = false;
-    });
-
-    this.event.on('node.mouseenter', (d) => {
+    const handleMouseEnter = (d) => {
       if (dragActive) return;
       const links = this.getNodeLinks(d.name, 'all');
       links.push({ source: d.name, target: d.name });
@@ -407,13 +396,29 @@ class Chart {
 
       const hideLinks = this.link.filter((n) => !links.some((l) => l.index === n.index));
       hideLinks.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
-    });
+    };
 
-    this.event.on('node.mouseleave', async () => {
+    const handleMouseLeave = () => {
       if (dragActive) return;
       this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
       this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+    };
+
+    if (this.event.rawListeners('node.mouseenter').includes(handleMouseEnter)) {
+      return;
+    }
+
+    this.event.on('node.dragstart', () => {
+      dragActive = true;
     });
+
+    this.event.on('node.dragend', () => {
+      dragActive = false;
+    });
+
+    this.event.on('node.mouseenter', handleMouseEnter);
+
+    this.event.on('node.mouseleave', handleMouseLeave);
   }
 
   static renderNewLink() {

@@ -88,7 +88,7 @@ class SignUp extends Component {
             error={errors.password}
             onChangeText={this.handleChange}
           />
-          <Button type="submit" loading={loading}>
+          <Button color="blue" type="submit" loading={loading}>
             Sign Up
           </Button>
           <p>
