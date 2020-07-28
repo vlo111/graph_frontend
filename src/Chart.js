@@ -154,7 +154,7 @@ class Chart {
       .attr('markerHeight', 5)
       .attr('refY', 2.5)
       .attr('refX', (d) => {
-        let i = 7;
+        let i = 5.08;
         if (d.nodeType === 'triangle') {
           i += 5;
         } else if (d.nodeType === 'hexagon') {
