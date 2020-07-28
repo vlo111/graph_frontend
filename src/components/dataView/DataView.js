@@ -92,9 +92,7 @@ class DataView extends Component {
 
   download = async (type) => {
     this.props.setLoading(true);
-    const reset = Chart.printMode(1900, 1060);
-    const svg = document.querySelector('#graph svg').outerHTML;
-    reset();
+    const svg = Chart.printMode(1900, 1060);
     await Api.download(type, { svg });
     this.props.setLoading(false);
   }
@@ -116,10 +114,10 @@ class DataView extends Component {
         </HeaderPortal>
         <div className={`contentWrapper ${fullWidth ? 'fullWidth' : ''}`}>
           <div className="header">
-            <h3>
-              <span className={activeTab.type === 'nodes' ? 'circle' : 'line'} />
+            <h4>
+              <span className={activeTab.group === 'nodes' ? 'circle' : 'line'} />
               {activeTab.type}
-            </h3>
+            </h4>
             <div className="buttons">
               <Button icon="fa-expand" onClick={this.toggleFullWidth} />
               <Button icon="fa-times" onClick={this.close} />

@@ -39,7 +39,7 @@ class Chart {
 
   static linkColor() {
     const scale = d3.scaleOrdinal(LINK_COLORS);
-    return (d) => scale(d.source?.type || d.type);
+    return (d) => scale(d.type);
   }
 
   static getSource(l) {
@@ -121,14 +121,14 @@ class Chart {
         .force('center', d3.forceCenter(width / 2, height / 2))
         .force('charge', d3.forceManyBody());
       // .force('x', d3.forceX((d) => {
-      //   const length = ChartUtils.getRadiusList()[d.index];
+      //   const length = ChartUtils.getthis.radiusList()[d.index];
       //   if (length) {
       //     return d.x * length;
       //   }
       //   return d.x + 4;
       // }))
       // .force('y', d3.forceY((d) => {
-      //   const length = ChartUtils.getRadiusList()[d.index];
+      //   const length = ChartUtils.getthis.radiusList()[d.index];
       //   if (length) {
       //     return d.y * length;
       //   }
@@ -138,7 +138,7 @@ class Chart {
     return null;
   }
 
-  static renderDirections(radiusList) {
+  static renderDirections() {
     const directions = this.wrapper.select('.directions');
 
     const defs = directions.selectAll('defs')
@@ -160,7 +160,7 @@ class Chart {
         } else if (d.nodeType === 'hexagon') {
           i += 5;
         }
-        return radiusList[d.target.index] / d.value + i || 0;
+        return this.radiusList[d.target.index] / d.value + i || 0;
       })
       .append('use')
       .attr('href', '#arrow')
@@ -170,7 +170,7 @@ class Chart {
     return defs;
   }
 
-  static renderIcons(radiusList) {
+  static renderIcons() {
     const icons = this.wrapper.select('.icons');
 
     const defs = icons.selectAll('defs')
@@ -193,7 +193,7 @@ class Chart {
         } else if (d.nodeType === 'triangle') {
           i = 3.1;
         }
-        return radiusList[d.index] * i;
+        return this.radiusList[d.index] * i;
       })
       .attr('width', (d) => {
         let i = 2;
@@ -202,10 +202,10 @@ class Chart {
         } else if (d.nodeType === 'triangle') {
           i = 3.1;
         }
-        return radiusList[d.index] * i;
+        return this.radiusList[d.index] * i;
       })
       .attr('transform', (d) => {
-        const r = radiusList[d.index] * -1;
+        const r = this.radiusList[d.index] * -1;
         if (d.nodeType === 'triangle') {
           return `translate(${r / 3.1}, 0)`;
         }
@@ -213,6 +213,15 @@ class Chart {
       })
       .attr('xlink:href', (d) => d.icon);
     return defs;
+  }
+
+  static handleZoom = () => {
+    const { transform } = d3.event;
+    this.wrapper.attr('transform', transform)
+      .attr('data-scale', transform.k)
+      .attr('data-x', transform.x)
+      .attr('data-y', transform.y);
+    this.renderNodeText(transform.k);
   }
 
   static render(data = {}, params = {}) {
@@ -225,7 +234,7 @@ class Chart {
       this.data = this.normalizeData(data);
       this.data = ChartUtils.filter(data, params.filters);
 
-      const radiusList = ChartUtils.getRadiusList();
+      this.radiusList = ChartUtils.getRadiusList();
 
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(this.data.links).id((d) => d.name));
@@ -235,13 +244,7 @@ class Chart {
       this.svg = d3.select('#graph svg');
 
       this.svg = this.svg
-        .call(d3.zoom().on('zoom', () => {
-          const { transform } = d3.event;
-          this.wrapper.attr('transform', transform)
-            .attr('data-scale', transform.k)
-            .attr('data-x', transform.x)
-            .attr('data-y', transform.y);
-        }))
+        .call(d3.zoom().on('zoom', this.handleZoom))
         .on('click', (d) => this.event.emit('click', d))
         .on('mousemove', (d) => this.event.emit('mousemove', d));
 
@@ -257,14 +260,13 @@ class Chart {
         .attr('data-i', (d) => d.index)
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
-        // .attr('stroke', '#94b7d7')
         .attr('stroke', this.linkColor())
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
         .on('click', (d) => this.event.emit('link.click', d));
 
-      this.directions = this.renderDirections(radiusList);
-      this.icons = this.renderIcons(radiusList);
+      this.directions = this.renderDirections();
+      this.icons = this.renderIcons();
 
       this.nodesWrapper = this.svg.select('.nodes');
 
@@ -284,25 +286,25 @@ class Chart {
       this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
         .append('circle')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
-        .attr('r', (d) => radiusList[d.index]);
+        .attr('r', (d) => this.radiusList[d.index]);
 
       this.nodesWrapper.selectAll('.square')
         .append('rect')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
-        .attr('width', (d) => radiusList[d.index] * 2)
-        .attr('height', (d) => radiusList[d.index] * 2)
-        .attr('x', (d) => radiusList[d.index] * -1)
-        .attr('y', (d) => radiusList[d.index] * -1);
+        .attr('width', (d) => this.radiusList[d.index] * 2)
+        .attr('height', (d) => this.radiusList[d.index] * 2)
+        .attr('x', (d) => this.radiusList[d.index] * -1)
+        .attr('y', (d) => this.radiusList[d.index] * -1);
 
       this.nodesWrapper.selectAll('.triangle')
         .append('path')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('d', (d) => {
-          const s = radiusList[d.index] * 2.5;
+          const s = this.radiusList[d.index] * 2.5;
           return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
         })
         .attr('transform', (d) => {
-          const r = radiusList[d.index] * -1 - 2;
+          const r = this.radiusList[d.index] * -1 - 2;
           return `translate(${r * 1.2}, ${r})`;
         });
 
@@ -310,28 +312,14 @@ class Chart {
         .append('polygon')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('points', (d) => {
-          const s = radiusList[d.index];
+          const s = this.radiusList[d.index];
           // eslint-disable-next-line max-len
           return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
         })
         .attr('transform', (d) => {
-          const r = radiusList[d.index] * -1.13;
+          const r = this.radiusList[d.index] * -1.13;
           return `translate(${r}, ${r})`;
         });
-
-      this.nodesWrapper.selectAll('.node')
-        .append('text')
-        .attr('x', (d) => {
-          let i = 5;
-          if (d.nodeType === 'hexagon') {
-            i += radiusList[d.index] / 5;
-          } else if (d.nodeType === 'triangle') {
-            i += radiusList[d.index] / 5;
-          }
-          return radiusList[d.index] + i;
-        })
-        .attr('font-size', (d) => 17 + radiusList[d.index] / 3)
-        .text((d) => (d.name.length > 18 ? `${d.name.substring(0, 15)}...` : d.name));
 
       this.simulation.on('tick', () => {
         this.link.attr('d', (d) => {
@@ -353,35 +341,49 @@ class Chart {
           .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
           .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
-        //
-        // this.directions.selectAll('marker')
-        //   .attr('refY', (d) => {
-        //     let i = 0
-        //     if (d.same && d.same.arc) {
-        //       const dx = d.target.x - d.source.x;
-        //       const dy = d.target.y - d.source.y;
-        //       const dr = Math.sqrt(dx * dx + dy * dy) / 100;
-        //       if (d.same.reverse) {
-        //         i = dr;
-        //       } else {
-        //         i = dr;
-        //       }
-        //     }
-        //     return 2.5 - i;
-        //   })
-
         this._dataNodes = null;
         this._dataLinks = null;
       });
-
+      this.renderNodeText();
       this.renderNewLink();
       this.nodeFilter();
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
       console.error(e);
-      return false;
+      return this;
     }
+  }
+
+  static renderNodeText(scale) {
+    if (!scale && !this.wrapper.empty()) {
+      // eslint-disable-next-line no-param-reassign
+      scale = +this.wrapper.attr('data-scale') || 1;
+    }
+
+    this.nodesWrapper.selectAll('.node text').remove();
+    this.nodesWrapper.selectAll('.node')
+      .filter((d) => {
+        if (scale >= 0.8) {
+          return true;
+        }
+        if (this.radiusList[d.index] < 11) {
+          return false
+        }
+        return true;
+      })
+      .append('text')
+      .attr('x', (d) => {
+        let i = 5;
+        if (d.nodeType === 'hexagon') {
+          i += this.radiusList[d.index] / 5;
+        } else if (d.nodeType === 'triangle') {
+          i += this.radiusList[d.index] / 5;
+        }
+        return this.radiusList[d.index] + i;
+      })
+      .attr('font-size', (d) => 17 + this.radiusList[d.index] / 3)
+      .text((d) => (d.name.length > 18 ? `${d.name.substring(0, 15)}...` : d.name));
   }
 
   static nodeFilter() {
@@ -552,6 +554,7 @@ class Chart {
   static unmount() {
     this.svg.remove();
     this.event.removeAllListeners();
+    window.removeEventListener('resize', Chart.resizeSvg);
   }
 
   static printMode(svgWidth, svgHeight) {
@@ -589,6 +592,9 @@ class Chart {
       .attr('data-x', x)
       .attr('data-y', y);
 
+    this.linksWrapper.selectAll('path')
+      .attr('fill', 'transparent');
+
     this.nodesWrapper.selectAll('.node text')
       .attr('font-family', 'Open Sans')
       .attr('dominant-baseline', 'middle')
@@ -599,13 +605,17 @@ class Chart {
       .attr('stroke', 'white')
       .attr('stroke-width', 1.5);
 
-    return () => {
+    const html = document.querySelector('#graph svg').outerHTML;
+    (() => {
       // eslint-disable-next-line no-shadow
       const { x, y, scale } = originalDimensions;
       this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`)
         .attr('data-scale', scale)
         .attr('data-x', x)
         .attr('data-y', y);
+
+      this.linksWrapper.selectAll('path')
+        .attr('fill', undefined);
 
       this.nodesWrapper.selectAll('.node text')
         .attr('font-family', undefined)
@@ -618,7 +628,8 @@ class Chart {
         .attr('stroke-width', undefined);
 
       this.resizeSvg();
-    };
+    })();
+    return html;
   }
 }
 

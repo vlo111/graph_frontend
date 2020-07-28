@@ -95,6 +95,9 @@ main {
   &.graphsPage {
     overflow: hidden;
   }
+  &.homePage {
+    background-color: $color-white;
+  }
 }
 
 h1 {
@@ -110,6 +113,10 @@ h2 {
 h3 {
   font-weight: 700;
   font-size: 26px;
+}
+h4 {
+  font-weight: 700;
+  font-size: 18px;
 }
 
 p {
@@ -265,6 +272,7 @@ p {
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 14px;
+  margin: 5px 5px;
 
   &:hover {
     box-shadow: 0 2px 9px rgba(2, 47, 119, 0.1);
@@ -560,8 +568,8 @@ p {
   }
 
   .ghButton {
+    margin: 16px 0 0 0;
     height: 44px;
-    margin-top: 16px;
     flex-direction: column;
     background-color: transparent;
     color: $color-dark;
@@ -743,7 +751,7 @@ p {
   padding: 0 0 0 65px;
   max-height: 100vh;
 
-  h3 {
+  h4 {
     font-weight: normal;
 
     .circle {
@@ -894,7 +902,7 @@ p {
   }
 
   .tabs {
-    min-height: 41px;
+    min-height: 46px;
   }
 
   .ghGridTable {

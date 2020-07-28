@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
 import Wrapper from '../components/Wrapper';
 import Button from '../components/form/Button';
+import Utils from "../helpers/Utils";
 
 class Home extends Component {
   static propTypes = {
@@ -37,9 +38,9 @@ class Home extends Component {
     const { page = 1 } = queryString.parse(window.location.search);
     this.getGraphsList(page);
     return (
-      <Wrapper>
+      <Wrapper className="homePage">
         <Link to="/graphs/create" style={{ marginTop: 65 }}>
-          <Button icon="fa-pencil" className=" edit">New Graph (//todo)</Button>
+          <Button icon="fa-pencil" className=" edit">New Graph</Button>
         </Link>
         <div className="graphsList">
           {graphsList.map((graph) => (
@@ -63,8 +64,8 @@ class Home extends Component {
               <Link to={`/graphs/view/${graph.id}`}>
                 <img
                   className="thumbnail"
-                  src="https://d3cnky5llnzyoo.cloudfront.net/graphs/images/4ec2e5c1-80db-454f-bae3-7dc73c92110e/original/Firefox_Developer_EditionScreenSnapz331.png"
-                  alt=""
+                  src={Utils.fileSrc(`/uploads/thumbnails/${graph.id}.png`)}
+                  alt={graph.title}
                 />
               </Link>
               <Link to={`/graphs/view/${graph.id}`}>

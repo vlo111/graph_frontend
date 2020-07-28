@@ -1,5 +1,5 @@
 import axios from 'axios';
-import html2canvas from 'html2canvas';
+import Api from '../Api';
 
 class Utils {
   static sleep = (ms) => new Promise((resolve) => {
@@ -41,19 +41,12 @@ class Utils {
     return data;
   }
 
+  static fileSrc(src) {
+    if (/^https?:\/\//.test(src) || src.toString().includes('base64,')) {
+      return src;
+    }
 
-  // deprecated
-  static graphToPng = async () => {
-    const svg = document.querySelector('#graph svg');
-    svg.classList.add('capture');
-    const canvas = await html2canvas(svg, { allowTaint: true });
-    svg.classList.remove('capture');
-    canvas.style.display = 'none';
-    document.body.appendChild(canvas);
-    const img = canvas.toDataURL('image/png');
-    document.body.removeChild(canvas);
-
-    return img;
+    return `${Api.url}${src}`;
   }
 }
 

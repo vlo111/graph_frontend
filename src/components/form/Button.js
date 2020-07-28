@@ -13,7 +13,7 @@ class Button extends Component {
     orange: PropTypes.bool,
     light: PropTypes.bool,
     transparent: PropTypes.bool,
-    color: PropTypes.oneOf('main', 'blue', 'orange', 'transparent', 'light'),
+    color: PropTypes.oneOf(['main', 'blue', 'orange', 'transparent', 'light']),
   }
 
   static defaultProps = {

@@ -52,10 +52,8 @@ class SaveGraphModal extends Component {
     const { requestData } = this.state;
     const { match: { params: { graphId } } } = this.props;
     this.props.setLoading(true);
-
     let nodes = Chart.getNodes();
     const links = Chart.getLinks();
-    const thumbnail = await Utils.graphToPng();
     const icons = await Promise.all(nodes.map((d) => {
       if (d.icon && d.icon.startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);
@@ -75,17 +73,19 @@ class SaveGraphModal extends Component {
     });
     files = await Promise.allValues(files);
 
+    const svg = Chart.printMode(1900, 1060);
     if (graphId) {
       const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
         ...requestData,
         nodes,
         links,
         files,
-        thumbnail,
+        svg
       });
       this.props.getSingleGraphRequest(graphId);
       if (data.graph?.id) {
         toast.info('Successfully saved');
+        this.props.history.push('/');
       } else {
         toast.error('Something went wrong. Please try again');
       }
@@ -95,11 +95,12 @@ class SaveGraphModal extends Component {
         nodes,
         links,
         files,
-        thumbnail,
+        svg,
       });
       if (data.graph?.id) {
         toast.info('Successfully saved');
-        this.props.history.replace(`/graphs/update/${data.graph?.id}`);
+        this.props.history.push('/');
+        // this.props.history.replace(`/graphs/update/${data.graph?.id}`);
       } else {
         toast.error('Something went wrong. Please try again');
       }
