@@ -117,6 +117,7 @@ class AddNodeModal extends Component {
         />
         <Select
           label="Node Type"
+          portal
           options={NODE_TYPES}
           isSearchable={false}
           value={NODE_TYPES.find((t) => t.value === nodeData.nodeType)}

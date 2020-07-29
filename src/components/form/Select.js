@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ReactSelect from 'react-select';
@@ -38,12 +39,37 @@ class Select extends Component {
     this.id = this.constructor.id;
   }
 
+  renderMenu = (props) => {
+    if (!this.menuOrientation) {
+      return null;
+    }
+    const {
+      children, className, cx, innerRef, innerProps,
+    } = props;
+    const { left, top, width } = this.menuOrientation.getBoundingClientRect();
+    return ReactDOM.createPortal((
+      <div
+        style={{ left, top, width }}
+        className={cx({ menu: true, selectPortal: true }, className)}
+        {...innerProps}
+        ref={innerRef}
+      >
+        {children}
+      </div>
+    ), document.body);
+  }
+
+
   render() {
     const {
       id, label, containerClassName, containerId, children,
-      error, icon, ...props
+      error, icon, portal, ...props
     } = this.props;
     const inputId = id || `select_${this.id}`;
+    const components = {};
+    if (portal) {
+      components.Menu = this.renderMenu;
+    }
     return (
       <div
         id={containerId}
@@ -58,7 +84,7 @@ class Select extends Component {
             {...props}
             id={inputId}
             classNamePrefix="gh"
-
+            components={components}
             className={classNames('ghSelectContent', props.className)}
           />
         ) : (
@@ -66,9 +92,13 @@ class Select extends Component {
             {...props}
             id={inputId}
             classNamePrefix="gh"
+            components={components}
             className={classNames('ghSelectContent', props.className)}
           />
         )}
+        {portal ? (
+          <div className="menuOrientation" ref={ref => this.menuOrientation = ref} />
+        ) : null}
         {error ? (
           <div className="error">{error}</div>
         ) : null}

@@ -29,6 +29,7 @@
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
     "react-toastify": "^6.0.5",
+    "react-visibility-sensor": "^5.1.1",
     "redux": "^4.0.5",
     "save-svg-as-png": "^1.4.17",
     "string-strip-html": "^4.5.0",
