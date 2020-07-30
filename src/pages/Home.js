@@ -64,7 +64,7 @@ class Home extends Component {
               <Link to={`/graphs/view/${graph.id}`}>
                 <img
                   className="thumbnail"
-                  src={Utils.fileSrc(`/uploads/thumbnails/${graph.id}.png`)}
+                  src={Utils.fileSrc(`/public/uploads/thumbnails/${graph.id}.png`)}
                   alt={graph.title}
                 />
               </Link>

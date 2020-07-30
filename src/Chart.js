@@ -138,6 +138,172 @@ class Chart {
     return null;
   }
 
+  static handleZoom = () => {
+    const { transform } = d3.event;
+    this.wrapper.attr('transform', transform)
+      .attr('data-scale', transform.k)
+      .attr('data-x', transform.x)
+      .attr('data-y', transform.y);
+    this.renderNodeText(transform.k);
+  }
+
+  static render(data = {}, params = {}) {
+    try {
+      this._dataNodes = null;
+      this._dataLinks = null;
+      data.nodes = data.nodes || Chart.getNodes();
+      data.links = data.links || Chart.getLinks();
+
+      this.data = this.normalizeData(data);
+      this.data = ChartUtils.filter(data, params.filters);
+
+      this.radiusList = ChartUtils.getRadiusList();
+
+      this.simulation = d3.forceSimulation(this.data.nodes)
+        .force('link', d3.forceLink(this.data.links).id((d) => d.name));
+
+      this.autoPosition();
+
+      this.svg = d3.select('#graph svg');
+
+      this.svg = this.svg
+        .call(d3.zoom().on('zoom', this.handleZoom))
+        .on('click', (d) => this.event.emit('click', d))
+        .on('mousemove', (d) => this.event.emit('mousemove', d));
+
+      this.resizeSvg();
+
+      this.wrapper = this.svg.select('.wrapper');
+
+      this.linksWrapper = this.svg.select('.links');
+
+      this.link = this.linksWrapper.selectAll('path')
+        .data(this.data.links)
+        .join('path')
+        .attr('data-i', (d) => d.index)
+        .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
+        .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
+        .attr('stroke', this.linkColor())
+        .attr('stroke-width', (d) => d.value || 1)
+        .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
+        .on('click', (d) => this.event.emit('link.click', d));
+      // .on('mouseenter')
+      // .on('mouseleave')
+
+      this.directions = this.renderDirections();
+      this.icons = this.renderIcons();
+
+      this.nodesWrapper = this.svg.select('.nodes');
+
+      this.node = this.nodesWrapper.selectAll('.node')
+        .data(this.data.nodes)
+        .join('g')
+        .attr('class', (d) => `node ${d.nodeType || 'circle'}`)
+        .attr('fill', this.color())
+        .attr('data-i', (d) => d.index)
+        .call(this.drag(this.simulation))
+        .on('mouseenter', (d) => this.event.emit('node.mouseenter', d))
+        .on('mouseleave', (d) => this.event.emit('node.mouseleave', d))
+        .on('click', (d) => this.event.emit('node.click', d));
+
+      this.node.selectAll('*').remove();
+
+      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
+        .append('circle')
+        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
+        .attr('r', (d) => this.radiusList[d.index]);
+
+      this.nodesWrapper.selectAll('.square')
+        .append('rect')
+        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
+        .attr('width', (d) => this.radiusList[d.index] * 2)
+        .attr('height', (d) => this.radiusList[d.index] * 2)
+        .attr('x', (d) => this.radiusList[d.index] * -1)
+        .attr('y', (d) => this.radiusList[d.index] * -1);
+
+      this.nodesWrapper.selectAll('.triangle')
+        .append('path')
+        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
+        .attr('d', (d) => {
+          const s = this.radiusList[d.index] * 2.5;
+          return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
+        })
+        .attr('transform', (d) => {
+          const r = this.radiusList[d.index] * -1 - 2;
+          return `translate(${r * 1.2}, ${r})`;
+        });
+
+      this.nodesWrapper.selectAll('.hexagon')
+        .append('polygon')
+        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
+        .attr('points', (d) => {
+          const s = this.radiusList[d.index];
+          // eslint-disable-next-line max-len
+          return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
+        })
+        .attr('transform', (d) => {
+          const r = this.radiusList[d.index] * -1.13;
+          return `translate(${r}, ${r})`;
+        });
+
+      this.renderLinkText();
+
+      this.simulation.on('tick', () => {
+        this.link.attr('d', (d) => {
+          let arc = 0;
+          let arcDirection = 0;
+
+          if (d.same) {
+            const dr = ChartUtils.nodesDistance(d);
+
+            arc = d.same.arc * dr;
+            arcDirection = d.same.arcDirection;
+          }
+
+          return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${arcDirection} ${d.target.x},${d.target.y}`;
+        });
+        this.node
+          .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
+          .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
+
+        this.linkText
+          .attr('dx', (d, i, g) => {
+            const t = g[i].innerHTML;
+            return t.length > 1 ? g[i].getAttribute('data-w') * -0.5 : -5;
+          })
+          .text((d, i, g) => {
+            const w = +g[i].getAttribute('data-w');
+            const dr = ChartUtils.nodesDistance(d);
+            if (w > dr) {
+              return d.type[0];
+            }
+            return d.type;
+          })
+          .attr('transform', (d) => {
+            const dx = d.source.x - d.target.x;
+            const dy = d.source.y - d.target.y;
+            const radians = Math.atan2(dy, dx);
+            let degrees = (radians * 180 / Math.PI) + 180;
+            const [cx, cy] = ChartUtils.nodesCenter(d);
+            if (degrees > 90 && degrees < 270) {
+              degrees -= 180;
+            }
+            return `translate(${cx} ${cy}) rotate(${degrees})`;
+          });
+        this._dataNodes = null;
+        this._dataLinks = null;
+      });
+      this.renderNodeText();
+      this.renderNewLink();
+      this.nodeFilter();
+      return this;
+    } catch (e) {
+      toast.error(`Chart Error :: ${e.message}`);
+      console.error(e);
+      return this;
+    }
+  }
+
   static renderDirections() {
     const directions = this.wrapper.select('.directions');
 
@@ -215,146 +381,6 @@ class Chart {
     return defs;
   }
 
-  static handleZoom = () => {
-    const { transform } = d3.event;
-    this.wrapper.attr('transform', transform)
-      .attr('data-scale', transform.k)
-      .attr('data-x', transform.x)
-      .attr('data-y', transform.y);
-    this.renderNodeText(transform.k);
-  }
-
-  static render(data = {}, params = {}) {
-    try {
-      this._dataNodes = null;
-      this._dataLinks = null;
-      data.nodes = data.nodes || Chart.getNodes();
-      data.links = data.links || Chart.getLinks();
-
-      this.data = this.normalizeData(data);
-      this.data = ChartUtils.filter(data, params.filters);
-
-      this.radiusList = ChartUtils.getRadiusList();
-
-      this.simulation = d3.forceSimulation(this.data.nodes)
-        .force('link', d3.forceLink(this.data.links).id((d) => d.name));
-
-      this.autoPosition();
-
-      this.svg = d3.select('#graph svg');
-
-      this.svg = this.svg
-        .call(d3.zoom().on('zoom', this.handleZoom))
-        .on('click', (d) => this.event.emit('click', d))
-        .on('mousemove', (d) => this.event.emit('mousemove', d));
-
-      this.resizeSvg();
-
-      this.wrapper = this.svg.select('.wrapper');
-
-      this.linksWrapper = this.svg.select('.links');
-
-      this.link = this.linksWrapper.selectAll('path')
-        .data(this.data.links)
-        .join('path')
-        .attr('data-i', (d) => d.index)
-        .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
-        .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
-        .attr('stroke', this.linkColor())
-        .attr('stroke-width', (d) => d.value || 1)
-        .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
-        .on('click', (d) => this.event.emit('link.click', d));
-
-      this.directions = this.renderDirections();
-      this.icons = this.renderIcons();
-
-      this.nodesWrapper = this.svg.select('.nodes');
-
-      this.node = this.nodesWrapper.selectAll('.node')
-        .data(this.data.nodes)
-        .join('g')
-        .attr('class', (d) => `node ${d.nodeType || 'circle'}`)
-        .attr('fill', this.color())
-        .attr('data-i', (d) => d.index)
-        .call(this.drag(this.simulation))
-        .on('mouseenter', (d) => this.event.emit('node.mouseenter', d))
-        .on('mouseleave', (d) => this.event.emit('node.mouseleave', d))
-        .on('click', (d) => this.event.emit('node.click', d));
-
-      this.node.selectAll('*').remove();
-
-      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
-        .append('circle')
-        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
-        .attr('r', (d) => this.radiusList[d.index]);
-
-      this.nodesWrapper.selectAll('.square')
-        .append('rect')
-        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
-        .attr('width', (d) => this.radiusList[d.index] * 2)
-        .attr('height', (d) => this.radiusList[d.index] * 2)
-        .attr('x', (d) => this.radiusList[d.index] * -1)
-        .attr('y', (d) => this.radiusList[d.index] * -1);
-
-      this.nodesWrapper.selectAll('.triangle')
-        .append('path')
-        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
-        .attr('d', (d) => {
-          const s = this.radiusList[d.index] * 2.5;
-          return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
-        })
-        .attr('transform', (d) => {
-          const r = this.radiusList[d.index] * -1 - 2;
-          return `translate(${r * 1.2}, ${r})`;
-        });
-
-      this.nodesWrapper.selectAll('.hexagon')
-        .append('polygon')
-        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
-        .attr('points', (d) => {
-          const s = this.radiusList[d.index];
-          // eslint-disable-next-line max-len
-          return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
-        })
-        .attr('transform', (d) => {
-          const r = this.radiusList[d.index] * -1.13;
-          return `translate(${r}, ${r})`;
-        });
-
-      this.simulation.on('tick', () => {
-        this.link.attr('d', (d) => {
-          let arc = 0;
-          let arcDirection = 0;
-
-          if (d.same) {
-            const dx = d.target.x - d.source.x;
-            const dy = d.target.y - d.source.y;
-            const dr = Math.sqrt(dx * dx + dy * dy);
-
-            arc = d.same.arc * dr;
-            arcDirection = d.same.arcDirection;
-          }
-
-          return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${arcDirection} ${d.target.x},${d.target.y}`;
-        });
-        this.node
-          .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
-          .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
-
-        this._dataNodes = null;
-        this._dataLinks = null;
-      });
-      this.renderNodeText();
-      this.renderNewLink();
-      this.nodeFilter();
-      return this;
-    } catch (e) {
-      toast.error(`Chart Error :: ${e.message}`);
-      console.error(e);
-      return this;
-    }
-  }
-
   static renderNodeText(scale) {
     if (!scale && !this.wrapper.empty()) {
       // eslint-disable-next-line no-param-reassign
@@ -368,7 +394,7 @@ class Chart {
           return true;
         }
         if (this.radiusList[d.index] < 11) {
-          return false
+          return false;
         }
         return true;
       })
@@ -386,29 +412,43 @@ class Chart {
       .text((d) => (d.name.length > 18 ? `${d.name.substring(0, 15)}...` : d.name));
   }
 
+  static renderLinkText(links = []) {
+    const wrapper = this.svg.select('.linkText');
+    const linksData = this.data.links.filter((d) => links.some((l) => l.index === d.index));
+    this.linkText = wrapper.selectAll('text')
+      .data(linksData)
+      .join('text')
+      .text((d) => d.type)
+      .attr('dy', -5)
+      .attr('opacity', 0)
+      .attr('transform', (d) => {
+        const dx = d.source.x - d.target.x;
+        const dy = d.source.y - d.target.y;
+        const radians = Math.atan2(dy, dx);
+        let degrees = (radians * 180 / Math.PI) + 180;
+        const [cx, cy] = ChartUtils.nodesCenter(d);
+        if (degrees > 90 && degrees < 270) {
+          degrees -= 180;
+        }
+        return `translate(${cx} ${cy}) rotate(${degrees})`;
+      });
+    clearTimeout(this.renderLinkTextTimeout);
+    this.renderLinkTextTimeout = setTimeout(() => {
+      this.linkText
+        .attr('data-w', (d, i, g) => g[i].clientWidth)
+        .attr('dx', (d, i, g) => g[i].clientWidth * -0.5)
+        .attr('opacity', undefined);
+    }, 100);
+  }
+
+  static #nodeFilterEvents = false;
+
   static nodeFilter() {
-    let dragActive = false;
-
-    const handleMouseEnter = (d) => {
-      if (dragActive) return;
-      const links = this.getNodeLinks(d.name, 'all');
-      links.push({ source: d.name, target: d.name });
-      const hideNodes = this.node.filter((n) => !links.some((l) => l.source === n.name || l.target === n.name));
-      hideNodes.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
-
-      const hideLinks = this.link.filter((n) => !links.some((l) => l.index === n.index));
-      hideLinks.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
-    };
-
-    const handleMouseLeave = () => {
-      if (dragActive) return;
-      this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
-      this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
-    };
-
-    if (this.event.rawListeners('node.mouseenter').includes(handleMouseEnter)) {
+    if (this.#nodeFilterEvents) {
       return;
     }
+    this.#nodeFilterEvents = true;
+    let dragActive = false;
 
     this.event.on('node.dragstart', () => {
       dragActive = true;
@@ -418,9 +458,24 @@ class Chart {
       dragActive = false;
     });
 
-    this.event.on('node.mouseenter', handleMouseEnter);
+    this.event.on('node.mouseenter', (d) => {
+      if (dragActive) return;
+      const links = this.getNodeLinks(d.name, 'all');
+      links.push({ source: d.name, target: d.name });
+      const hideNodes = this.node.filter((n) => !links.some((l) => l.source === n.name || l.target === n.name));
+      hideNodes.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
 
-    this.event.on('node.mouseleave', handleMouseLeave);
+      const hideLinks = this.link.filter((n) => !links.some((l) => l.index === n.index));
+      hideLinks.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+      this.renderLinkText(links);
+    });
+
+    this.event.on('node.mouseleave', () => {
+      if (dragActive) return;
+      this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+      this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+      this.renderLinkText();
+    });
   }
 
   static renderNewLink() {
@@ -606,29 +661,28 @@ class Chart {
       .attr('stroke-width', 1.5);
 
     const html = document.querySelector('#graph svg').outerHTML;
-    (() => {
-      // eslint-disable-next-line no-shadow
-      const { x, y, scale } = originalDimensions;
-      this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`)
-        .attr('data-scale', scale)
-        .attr('data-x', x)
-        .attr('data-y', y);
 
-      this.linksWrapper.selectAll('path')
-        .attr('fill', undefined);
+    const { x: oX, y: oY, scale: oScale } = originalDimensions;
+    this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`)
+      .attr('data-scale', oScale)
+      .attr('data-x', oX)
+      .attr('data-y', oY);
 
-      this.nodesWrapper.selectAll('.node text')
-        .attr('font-family', undefined)
-        .attr('dominant-baseline', undefined)
-        .attr('stroke', undefined)
-        .attr('stroke-width', undefined);
+    this.linksWrapper.selectAll('path')
+      .attr('fill', undefined);
 
-      this.nodesWrapper.selectAll('.node circle')
-        .attr('stroke', undefined)
-        .attr('stroke-width', undefined);
+    this.nodesWrapper.selectAll('.node text')
+      .attr('font-family', undefined)
+      .attr('dominant-baseline', undefined)
+      .attr('stroke', undefined)
+      .attr('stroke-width', undefined);
 
-      this.resizeSvg();
-    })();
+    this.nodesWrapper.selectAll('.node circle')
+      .attr('stroke', undefined)
+      .attr('stroke-width', undefined);
+
+    this.resizeSvg();
+
     return html;
   }
 }

@@ -431,7 +431,13 @@ p {
   &.delete {
 
   }
-
+.linkText{
+  text{
+    display: flex;
+    height: 40px;
+    line-height: 999;
+  }
+}
 
   .node {
     stroke: $color-white;

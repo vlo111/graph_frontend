@@ -56,6 +56,18 @@ class ChartUtils {
     return _.groupBy(nodes, 'type');
   }
 
+  static center = ([x1, y1], [x2, y2]) => ([(x1 + x2) / 2, (y1 + y2) / 2])
+
+  static nodesCenter = (d) => this.center([d.source.x, d.source.y], [d.target.x, d.target.y])
+
+  static distance = ([x1, y1], [x2, y2]) => {
+    const dx = x1 - x2;
+    const dy = y1 - y2;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  static nodesDistance = (d) => this.distance([d.target.x, d.target.y], [d.source.x, d.source.y])
+
   static getRadiusList() {
     let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.name).length * 2);
     let max = Math.max(...radiusList);
