@@ -81,10 +81,10 @@ class ReactChart extends Component {
       <div id="graph" data-active={activeButton} className={activeButton}>
         <svg xmlns="http://www.w3.org/2000/svg">
           <g className="wrapper" transform-origin="top left">
+            <g className="directions" />
             <g className="links" />
             <g className="linkText" />
             <g className="nodes" />
-            <g className="directions" />
             <g className="icons" />
             <defs>
               <path

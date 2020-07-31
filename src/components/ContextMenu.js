@@ -41,7 +41,7 @@ class ContextMenu extends Component {
       params = { index };
       element = 'node';
     } else if (ev.target.tagName === 'line') {
-      const index = +ev.target.getAttribute('data-i');
+      const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
     } else if (ev.target.tagName === 'svg') {

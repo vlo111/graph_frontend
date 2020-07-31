@@ -77,11 +77,12 @@ class DataTableNodes extends Component {
                 All
               </label>
             </th>
-            <th className="cell name" width="150"><span>Name</span></th>
-            <th className="cell description" width="272">Description</th>
-            <th className="cell icon" width="272">Icon</th>
-            <th className="cell color" width="120">Color</th>
-            <th className="cell link" width="272">Link</th>
+            <th className="cell name" width="180"><span>Name</span></th>
+            <th className="cell type" width="150"><span>Type</span></th>
+            <th className="cell description" width="272"><span>Description</span></th>
+            <th className="cell nodeType" width="130"><span>Node Type</span></th>
+            <th className="cell icon" width="272"><span>Icon</span></th>
+            <th className="cell link" width="272"><span>Link</span></th>
           </tr>
         </thead>
         <tbody>
@@ -98,7 +99,7 @@ class DataTableNodes extends Component {
       onContextMenu, onDoubleClick, onKeyUp, onMouseOver,
     } = props;
     let { onMouseDown } = props;
-    if (['description', 'files', 'links'].includes(props.cell.key)) {
+    if (['description'].includes(props.cell.key)) {
       this.onMouseDown = onMouseDown;
       onMouseDown = undefined;
     }
@@ -128,7 +129,7 @@ class DataTableNodes extends Component {
   renderView = (props) => {
     const { cell } = props;
     const { value } = props;
-    if (cell.key === 'description') {
+    if (['description'].includes(cell.key)) {
       return (
         <span className="value-viewer" dangerouslySetInnerHTML={{ __html: value }} />
       );

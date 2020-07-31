@@ -63,9 +63,12 @@ class DataTableLinks extends Component {
                 All
               </label>
             </th>
-            <th className="cell source" width="150">Source</th>
-            <th className="cell target" width="150">Target</th>
-            <th className="cell value" width="100">Value</th>
+            <th className="cell type" width="150"><span>Type</span></th>
+            <th className="cell source" width="150"><span>Source</span></th>
+            <th className="cell target" width="150"><span>Target</span></th>
+            <th className="cell value" width="50"><span>Value</span></th>
+            <th className="cell linkType" width="100"><span>Link Type</span></th>
+            <th className="cell direction" width="50"><span>Direction</span></th>
           </tr>
         </thead>
         <tbody>

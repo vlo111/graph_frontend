@@ -81,7 +81,7 @@ class NodeDescription extends Component {
             {node.icon ? (
               <img src={node.icon} alt="icon" width={50} height={50} />
             ) : (
-              <span style={{ background: Chart.color()(node) }} className="icon">{node.type[0]}</span>
+              <span style={{ background: ChartUtils.nodeColor()(node) }} className="icon">{node.type[0]}</span>
             )}
           </div>
           <div className="right">

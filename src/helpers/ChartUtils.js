@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
 import Chart from '../Chart';
-import { DASH_TYPES } from '../data/link';
+import { DASH_TYPES, LINK_COLORS } from '../data/link';
 
 class ChartUtils {
   static filter(data, params = {}) {
@@ -83,6 +83,32 @@ class ChartUtils {
     const r = max > 20 ? Math.max(...radiusList) / 20 : 1;
 
     return radiusList.map((d) => d / r + 10 || 10);
+  }
+
+  static linkColorObj = {};
+
+  static linkColorIndex = 0;
+
+  static linkColor = () => (d) => {
+    if (!(d.type in this.linkColorObj)) {
+      const i = LINK_COLORS[this.linkColorIndex] ? this.linkColorIndex : 0;
+      this.linkColorObj[d.type] = LINK_COLORS[i];
+      this.linkColorIndex += 1;
+    }
+    return this.linkColorObj[d.type];
+  }
+
+  static nodeColorObj = {};
+
+  static nodeColorIndex = 0;
+
+  static nodeColor = () => (d) => {
+    if (!(d.type in this.nodeColorObj)) {
+      const i = d3.schemeCategory10[this.nodeColorIndex] ? this.nodeColorIndex : 0;
+      this.nodeColorObj[d.type] = d3.schemeCategory10[i];
+      this.nodeColorIndex += 1;
+    }
+    return this.nodeColorObj[d.type];
   }
 
   static setClass = (fn) => (d, index, g) => {

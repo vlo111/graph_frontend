@@ -3,7 +3,6 @@ import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
 import ChartUtils from './helpers/ChartUtils';
-import { LINK_COLORS } from './data/link';
 
 class Chart {
   static event = new EventEmitter();
@@ -30,16 +29,6 @@ class Chart {
       .on('start', dragstart)
       .on('drag', dragged)
       .on('end', dragend);
-  }
-
-  static color() {
-    const scale = d3.scaleOrdinal(d3.schemeCategory10);
-    return (d) => scale(d.source?.type || d.type);
-  }
-
-  static linkColor() {
-    const scale = d3.scaleOrdinal(LINK_COLORS);
-    return (d) => scale(d.type);
   }
 
   static getSource(l) {
@@ -180,17 +169,15 @@ class Chart {
       this.link = this.linksWrapper.selectAll('path')
         .data(this.data.links)
         .join('path')
-        .attr('data-i', (d) => d.index)
+        .attr('id', (d) => `l${d.index}`)
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
-        .attr('stroke', this.linkColor())
+        .attr('stroke', ChartUtils.linkColor())
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
         .on('click', (d) => this.event.emit('link.click', d));
-      // .on('mouseenter')
-      // .on('mouseleave')
 
-      this.directions = this.renderDirections();
+      this.renderDirections();
       this.icons = this.renderIcons();
 
       this.nodesWrapper = this.svg.select('.nodes');
@@ -199,22 +186,20 @@ class Chart {
         .data(this.data.nodes)
         .join('g')
         .attr('class', (d) => `node ${d.nodeType || 'circle'}`)
-        .attr('fill', this.color())
+        .attr('fill', ChartUtils.nodeColor())
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
         .on('mouseenter', (d) => this.event.emit('node.mouseenter', d))
         .on('mouseleave', (d) => this.event.emit('node.mouseleave', d))
         .on('click', (d) => this.event.emit('node.click', d));
 
-      this.node.selectAll('*').remove();
-
       this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
-        .append('circle')
+        .insert('circle')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('r', (d) => this.radiusList[d.index]);
 
       this.nodesWrapper.selectAll('.square')
-        .append('rect')
+        .insert('rect')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('width', (d) => this.radiusList[d.index] * 2)
         .attr('height', (d) => this.radiusList[d.index] * 2)
@@ -222,7 +207,7 @@ class Chart {
         .attr('y', (d) => this.radiusList[d.index] * -1);
 
       this.nodesWrapper.selectAll('.triangle')
-        .append('path')
+        .insert('path')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('d', (d) => {
           const s = this.radiusList[d.index] * 2.5;
@@ -234,7 +219,7 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.hexagon')
-        .append('polygon')
+        .insert('polygon')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('points', (d) => {
           const s = this.radiusList[d.index];
@@ -267,29 +252,28 @@ class Chart {
           .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
         this.linkText
-          .attr('dx', (d, i, g) => {
-            const t = g[i].innerHTML;
-            return t.length > 1 ? g[i].getAttribute('data-w') * -0.5 : -5;
-          })
-          .text((d, i, g) => {
-            const w = +g[i].getAttribute('data-w');
-            const dr = ChartUtils.nodesDistance(d);
-            if (w > dr) {
-              return d.type[0];
-            }
-            return d.type;
-          })
-          .attr('transform', (d) => {
+          .attr('rotate', (d) => {
             const dx = d.source.x - d.target.x;
             const dy = d.source.y - d.target.y;
             const radians = Math.atan2(dy, dx);
-            let degrees = (radians * 180 / Math.PI) + 180;
-            const [cx, cy] = ChartUtils.nodesCenter(d);
+            const degrees = (radians * 180 / Math.PI) + 180;
             if (degrees > 90 && degrees < 270) {
-              degrees -= 180;
+              return 180;
             }
-            return `translate(${cx} ${cy}) rotate(${degrees})`;
+            return undefined;
           });
+
+        this.directions
+          .attr('dx', (d) => {
+            let i = this.radiusList[d.target.index] - d.value;
+            if (d.target.nodeType === 'triangle') {
+              i += 5;
+            } else if (d.target.nodeType === 'hexagon') {
+              i += 5;
+            }
+            return i * -1;
+          });
+
         this._dataNodes = null;
         this._dataLinks = null;
       });
@@ -307,33 +291,29 @@ class Chart {
   static renderDirections() {
     const directions = this.wrapper.select('.directions');
 
-    const defs = directions.selectAll('defs')
-      // .data(this.data.links.filter((d) => d.direction))
-      .data(this.data.links)
-      .join('defs');
-
-    defs.selectAll('marker').remove();
-    defs.append('marker')
-      .attr('id', (d) => `m${d.index}`)
-      .attr('orient', 'auto')
-      .attr('markerWidth', 5)
-      .attr('markerHeight', 5)
-      .attr('refY', 2.5)
-      .attr('refX', (d) => {
-        let i = 5.08;
-        if (d.nodeType === 'triangle') {
+    this.directions = directions.selectAll('text')
+      .data(this.data.links.filter((d) => d.direction))
+      // .data(this.data.links)
+      .join('text')
+      .attr('dy', (d) => d.value * 1.6 + 1.5)
+      .attr('dx', (d) => {
+        let i = this.radiusList[d.target.index] - d.value;
+        if (d.target.nodeType === 'triangle') {
           i += 5;
-        } else if (d.nodeType === 'hexagon') {
+        } else if (d.target.nodeType === 'hexagon') {
           i += 5;
         }
-        return this.radiusList[d.target.index] / d.value + i || 0;
+        return i * -1;
       })
-      .append('use')
-      .attr('href', '#arrow')
-      .attr('fill', this.linkColor())
-      .attr('stroke', this.linkColor());
+      .attr('text-anchor', 'end')
+      .attr('font-size', (d) => 5 + (d.value * 5))
+      .attr('fill', ChartUtils.linkColor())
+      .join('text');
 
-    return defs;
+    this.directions.insert('textPath')
+      .attr('startOffset', '100%')
+      .attr('href', (d) => `#l${d.index}`)
+      .text('➤');
   }
 
   static renderIcons() {
@@ -343,14 +323,12 @@ class Chart {
       .data(this.data.nodes.filter((d) => d.icon))
       .join('defs');
 
-    defs.selectAll('pattern').remove();
-
-    defs.append('pattern')
+    defs.insert('pattern')
       .attr('id', (d) => `i${d.index}`)
       .attr('patternUnits', 'objectBoundingBox')
       .attr('height', 1)
       .attr('width', 1)
-      .append('image')
+      .insert('image')
       .attr('preserveAspectRatio', 'xMidYMid slice')
       .attr('height', (d) => {
         let i = 2;
@@ -387,7 +365,6 @@ class Chart {
       scale = +this.wrapper.attr('data-scale') || 1;
     }
 
-    this.nodesWrapper.selectAll('.node text').remove();
     this.nodesWrapper.selectAll('.node')
       .filter((d) => {
         if (scale >= 0.8) {
@@ -398,7 +375,7 @@ class Chart {
         }
         return true;
       })
-      .append('text')
+      .insert('text')
       .attr('x', (d) => {
         let i = 5;
         if (d.nodeType === 'hexagon') {
@@ -415,41 +392,45 @@ class Chart {
   static renderLinkText(links = []) {
     const wrapper = this.svg.select('.linkText');
     const linksData = this.data.links.filter((d) => links.some((l) => l.index === d.index));
+
     this.linkText = wrapper.selectAll('text')
       .data(linksData)
       .join('text')
-      .text((d) => d.type)
-      .attr('dy', -5)
-      .attr('opacity', 0)
-      .attr('transform', (d) => {
+      .attr('text-anchor', 'middle')
+      .attr('dy', (d) => (3 + d.value / 2) * -1)
+      .attr('fill', ChartUtils.linkColor())
+      .attr('rotate', (d) => {
         const dx = d.source.x - d.target.x;
         const dy = d.source.y - d.target.y;
         const radians = Math.atan2(dy, dx);
-        let degrees = (radians * 180 / Math.PI) + 180;
-        const [cx, cy] = ChartUtils.nodesCenter(d);
+        const degrees = (radians * 180 / Math.PI) + 180;
         if (degrees > 90 && degrees < 270) {
-          degrees -= 180;
+          return '180';
         }
-        return `translate(${cx} ${cy}) rotate(${degrees})`;
+        return undefined;
       });
-    clearTimeout(this.renderLinkTextTimeout);
-    this.renderLinkTextTimeout = setTimeout(() => {
-      this.linkText
-        .attr('data-w', (d, i, g) => g[i].clientWidth)
-        .attr('dx', (d, i, g) => g[i].clientWidth * -0.5)
-        .attr('opacity', undefined);
-    }, 100);
+
+    this.linkText.insert('textPath')
+      .attr('startOffset', '50%')
+      .attr('href', (d) => `#l${d.index}`)
+      .text((d) => d.type);
   }
 
-  static #nodeFilterEvents = false;
+  static #calledFunctions = [];
+
+  static isCalled = (fn) => {
+    if (this.#calledFunctions.includes(fn)) {
+      return true;
+    }
+    this.#calledFunctions.push(fn);
+    return false;
+  }
 
   static nodeFilter() {
-    if (this.#nodeFilterEvents) {
+    if (this.isCalled('nodeFilter')) {
       return;
     }
-    this.#nodeFilterEvents = true;
     let dragActive = false;
-
     this.event.on('node.dragstart', () => {
       dragActive = true;
     });
@@ -462,11 +443,21 @@ class Chart {
       if (dragActive) return;
       const links = this.getNodeLinks(d.name, 'all');
       links.push({ source: d.name, target: d.name });
-      const hideNodes = this.node.filter((n) => !links.some((l) => l.source === n.name || l.target === n.name));
+      const nodeNames = new Set();
+      links.forEach((l) => {
+        nodeNames.add(l.source);
+        nodeNames.add(l.target);
+      });
+
+      const hideNodes = this.node.filter((n) => !nodeNames.has(n.name));
       hideNodes.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
 
       const hideLinks = this.link.filter((n) => !links.some((l) => l.index === n.index));
       hideLinks.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+
+      const hideDirections = this.directions.filter((n) => !links.some((l) => l.index === n.index));
+      hideDirections.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+
       this.renderLinkText(links);
     });
 
@@ -474,6 +465,7 @@ class Chart {
       if (dragActive) return;
       this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
       this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+      this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
       this.renderLinkText();
     });
   }
@@ -483,7 +475,7 @@ class Chart {
       return;
     }
     this.newLink = this.wrapper
-      .append('line')
+      .insert('line')
       .attr('id', 'addNewLink')
       .attr('data-source', '')
       .attr('x1', 0)
@@ -608,6 +600,7 @@ class Chart {
 
   static unmount() {
     this.svg.remove();
+    this.#calledFunctions = [];
     this.event.removeAllListeners();
     window.removeEventListener('resize', Chart.resizeSvg);
   }

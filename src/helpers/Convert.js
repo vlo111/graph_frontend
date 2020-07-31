@@ -34,7 +34,9 @@ class Convert {
     return nodes.map((d) => ([
       { value: d.index, key: 'index' },
       { value: d.name, key: 'name' },
+      { value: d.type, key: 'type' },
       { value: d.description, key: 'description' },
+      { value: d.nodeType, key: 'nodeType' },
       { value: d.icon, key: 'icon' },
       { value: d.link, key: 'link' },
     ]));
@@ -43,9 +45,12 @@ class Convert {
   static linkDataToGrid(links) {
     return links.map((d) => ([
       { value: d.index, key: 'index' },
+      { value: d.type, key: 'type' },
       { value: d.source, key: 'source' },
       { value: d.target, key: 'target' },
       { value: d.value, key: 'value' },
+      { value: d.linkType, key: 'linkType' },
+      { value: d.direction, key: 'direction' },
     ]));
   }
 

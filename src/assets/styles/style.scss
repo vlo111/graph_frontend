@@ -421,7 +421,13 @@ p {
         pointer-events: none;
       }
     }
+  }
 
+  .directions {
+    .hidden {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
   }
 
   &.create {
@@ -431,13 +437,14 @@ p {
   &.delete {
 
   }
-.linkText{
-  text{
-    display: flex;
-    height: 40px;
-    line-height: 999;
+
+  .linkText {
+    text {
+      display: flex;
+      height: 40px;
+      line-height: 999;
+    }
   }
-}
 
   .node {
     stroke: $color-white;
@@ -773,6 +780,7 @@ p {
   padding: 0 0 0 65px;
   max-height: 100vh;
 
+
   h4 {
     font-weight: normal;
 
@@ -928,15 +936,35 @@ p {
   }
 
   .ghGridTable {
-    width: 100%;
+    //width: 100%;
+    width: calc(100% - 2px);
     min-width: 640px;
 
     thead {
       .cell {
         text-align: left !important;
         font-weight: normal;
-        padding: 5px;
         color: $color-dark-blue;
+        position: sticky !important;
+        top: 0;
+        border: none;
+        z-index: 2;
+        overflow: hidden;
+
+        &.index,
+        &.name {
+          z-index: 3;
+        }
+
+        > * {
+          padding: 5px;
+          height: 100%;
+          width: 100%;
+          display: block;
+          border: 1px solid #dddddd;
+          border-bottom: 1px solid #dddddd !important;
+          background-color: $color-white;
+        }
 
         &.name > span {
           padding: 5px;
