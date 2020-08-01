@@ -193,6 +193,8 @@ class Chart {
         .on('mouseleave', (d) => this.event.emit('node.mouseleave', d))
         .on('click', (d) => this.event.emit('node.click', d));
 
+      this.nodesWrapper.selectAll('.node > *').remove();
+
       this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
         .insert('circle')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
@@ -364,6 +366,8 @@ class Chart {
       // eslint-disable-next-line no-param-reassign
       scale = +this.wrapper.attr('data-scale') || 1;
     }
+
+    this.nodesWrapper.selectAll('.node text').remove();
 
     this.nodesWrapper.selectAll('.node')
       .filter((d) => {

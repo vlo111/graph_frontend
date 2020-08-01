@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import EventEmitter from 'events';
 import Button from './form/Button';
+import Chart from "../Chart";
 
 const contextEvent = new EventEmitter();
 
@@ -38,7 +39,7 @@ class ContextMenu extends Component {
     let params = {};
     if (ev.target.parentNode.classList.contains('node')) {
       const index = +ev.target.parentNode.getAttribute('data-i');
-      params = { index };
+      params = Chart.getNodes().find((d) => d.index === index);
       element = 'node';
     } else if (ev.target.tagName === 'line') {
       const index = +ev.target.getAttribute('id').replace('l', '');
