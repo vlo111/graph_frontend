@@ -48,7 +48,7 @@ class AddLinkModal extends Component {
       linkType: 'a',
       description: '',
     };
-    this.setState({ linkData, show: true });
+    this.setState({ linkData, show: true, errors: {} });
   }
 
   closeModal = () => {
@@ -57,13 +57,17 @@ class AddLinkModal extends Component {
 
   addLink = async () => {
     const { linkData } = this.state;
+    const links = Chart.getLinks();
     const errors = {};
     if (!linkData.type) {
       errors.type = 'Type is required';
     }
 
+    if (links.find((d) => linkData.source === d.source && linkData.target === d.target && linkData.type === d.type)) {
+      errors.type = 'Already exists';
+    }
+
     if (_.isEmpty(errors)) {
-      const links = Chart.getLinks();
       links.push(linkData);
 
       this.setState({ show: false });
@@ -121,7 +125,10 @@ class AddLinkModal extends Component {
           label="Relation Type"
           placeholder=""
           value={[
-            types.find((t) => t.value === linkData.type) || { value: linkData.type, label: linkData.type },
+            types.find((t) => t.value === linkData.type) || {
+              value: linkData.type,
+              label: linkData.type
+            },
           ]}
           error={errors.type}
           onChange={(v) => this.handleChange('type', v?.value)}

@@ -10,7 +10,7 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
-import { NODE_TYPES } from "../../data/node";
+import { NODE_TYPES } from '../../data/node';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -83,7 +83,6 @@ class AddNodeModal extends Component {
     this.setState({ nodeData, errors });
   }
 
-
   render() {
     const { nodeData, errors } = this.state;
     const { addNodeParams } = this.props;
@@ -103,7 +102,10 @@ class AddNodeModal extends Component {
           isClearable
           label="Type"
           value={[
-            groups.find((t) => t.value === nodeData.type) || { value: nodeData.type, label: nodeData.type },
+            groups.find((t) => t.value === nodeData.type) || {
+              value: nodeData.type,
+              label: nodeData.type
+            },
           ]}
           options={groups}
           error={errors.type}
@@ -122,11 +124,11 @@ class AddNodeModal extends Component {
           isSearchable={false}
           value={NODE_TYPES.find((t) => t.value === nodeData.nodeType)}
           error={errors.nodeType}
-          onChange={(v) => this.handleChange('nodeType', v.value)}
+          onChange={(v) => this.handleChange('nodeType', v?.value || '')}
         />
         <FileInput
           label="Icon"
-          accept=".png,.jpg,.svg"
+          accept=".png,.jpg"
           value={nodeData.icon}
           onChangeFile={(v) => this.handleChange('icon', v)}
         />
