@@ -252,16 +252,8 @@ class Chart {
           .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
         this.linkText
-          .attr('rotate', (d) => {
-            const dx = d.source.x - d.target.x;
-            const dy = d.source.y - d.target.y;
-            const radians = Math.atan2(dy, dx);
-            const degrees = (radians * 180 / Math.PI) + 180;
-            if (degrees > 90 && degrees < 270) {
-              return 180;
-            }
-            return undefined;
-          });
+          .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + d.value / 2 : (3 + d.value / 2) * -1))
+          .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
         this.directions
           .attr('dx', (d) => {
@@ -399,18 +391,9 @@ class Chart {
       .data(linksData)
       .join('text')
       .attr('text-anchor', 'middle')
-      .attr('dy', (d) => (3 + d.value / 2) * -1)
       .attr('fill', ChartUtils.linkColor())
-      .attr('rotate', (d) => {
-        const dx = d.source.x - d.target.x;
-        const dy = d.source.y - d.target.y;
-        const radians = Math.atan2(dy, dx);
-        const degrees = (radians * 180 / Math.PI) + 180;
-        if (degrees > 90 && degrees < 270) {
-          return '180';
-        }
-        return undefined;
-      });
+      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + d.value / 2 : (3 + d.value / 2) * -1))
+      .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
     this.linkText.insert('textPath')
       .attr('startOffset', '50%')

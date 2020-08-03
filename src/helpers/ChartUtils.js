@@ -125,6 +125,14 @@ class ChartUtils {
     const classArr = [...g[index].classList].filter((str) => !remove.includes(str));
     return _.union([...classArr, ...add]).join(' ');
   }
+
+  static linkTextLeft(d) {
+    const dx = d.source.x - d.target.x;
+    const dy = d.source.y - d.target.y;
+    const radians = Math.atan2(dy, dx);
+    const degrees = (radians * 180 / Math.PI) + 180;
+    return degrees > 90 && degrees < 270;
+  }
 }
 
 export default ChartUtils;
