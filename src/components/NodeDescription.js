@@ -65,7 +65,7 @@ class NodeDescription extends Component {
     let left = x;
 
     if (left + MODAL_WIDTH > window.innerWidth) {
-      left = window.innerWidth - MODAL_WIDTH - 5;
+      left = window.innerWidth - MODAL_WIDTH - 15;
     }
 
     let description = stripHtml(node.description);

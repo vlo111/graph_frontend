@@ -37,7 +37,7 @@ class GraphView extends Component {
   render() {
     const { singleGraph } = this.props;
     const { preview } = this.state;
-    console.log(singleGraph)
+    console.log(singleGraph);
     return (
       <Wrapper className="graphView" showHeader={!preview} showFooter={false}>
         <div className="graphWrapper">
@@ -50,10 +50,12 @@ class GraphView extends Component {
               {singleGraph.description}
             </p>
             <div>
-              <strong>Nodes:</strong> {singleGraph.links?.length}
+              <strong>{'Nodes: '}</strong>
+              {singleGraph.nodes?.length}
             </div>
             <div>
-              <strong>Links:</strong> {singleGraph.links?.length}
+              <strong>{'Links: '}</strong>
+              {singleGraph.links?.length}
             </div>
             <Button className="white view" onClick={this.viwGraph}>
               View Graph
