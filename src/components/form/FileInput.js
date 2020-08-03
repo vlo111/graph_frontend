@@ -67,7 +67,7 @@ class FileInput extends Component {
           {localFile ? (
             <Icon value="fa-close" className="clear" onClick={this.clearFile} />
           ) : null}
-          <label className="fileLabel">
+          <label className="fileLabel ghButton">
             {selectLabel}
             <input type="file" accept={accept} onChange={this.handleFileSelect} />
           </label>

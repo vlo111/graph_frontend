@@ -33,6 +33,11 @@ class DataTableNodes extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log(222)
+  }
+
+
   handleDataChange = (changes) => {
     const { grid } = this.state;
     changes.forEach((d) => {

@@ -14,6 +14,7 @@ import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
+import Zoom from "../components/Zoom";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -47,6 +48,7 @@ class GraphForm extends Component {
         <ContextMenu />
         <DataImport />
         <NodeDescription />
+        <Zoom />
       </Wrapper>
     );
   }

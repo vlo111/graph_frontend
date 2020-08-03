@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as d3 from 'd3';
+import stripHtml from 'string-strip-html';
 import Chart from '../Chart';
 import Icon from './form/Icon';
 import Outside from './Outside';
@@ -19,7 +19,7 @@ class NodeDescription extends Component {
   componentDidMount() {
     Chart.event.on('node.mouseenter', this.showNodeInfo);
     Chart.event.on('node.mouseleave', this.handleMouseLeave);
-    Chart.event.on('node.dragstart', this.handleDragStart);
+    Chart.event.on('node.dragstart', this.hideInfo);
   }
 
   componentWillUnmount() {
@@ -33,11 +33,6 @@ class NodeDescription extends Component {
       node.index = nodes.findIndex((n) => n.name === name);
     }
     return node;
-  }
-
-  handleDragStart = () => {
-    clearTimeout(this.showInfoTimout);
-    this.setState({ node: null });
   }
 
   handleMouseLeave = () => {
@@ -54,6 +49,7 @@ class NodeDescription extends Component {
   }
 
   hideInfo = () => {
+    clearTimeout(this.showInfoTimout);
     this.setState({ node: null });
   }
 
@@ -72,21 +68,24 @@ class NodeDescription extends Component {
       left = window.innerWidth - MODAL_WIDTH - 5;
     }
 
-    const mainLink = '';
+    let description = stripHtml(node.description);
+    description = description.length > 130 ? `${description.substr(0, 120)}... ` : description;
     return (
       <Outside onClick={this.hideInfo}>
         <div onMouseLeave={this.hideInfo} data-node-info={node.index} id="nodeDescription" style={{ top, left }}>
           <Icon className="close" value="fa-close" onClick={this.hideInfo} />
           <div className="left">
-            {node.icon ? (
-              <img src={node.icon} alt="icon" width={50} height={50} />
-            ) : (
-              <span style={{ background: ChartUtils.nodeColor()(node) }} className="icon">{node.type[0]}</span>
-            )}
+            <span className={`node ${node.nodeType}`}>
+              {node.icon ? (
+                <img src={node.icon} alt="icon" width={50} height={50} />
+              ) : (
+                <span style={{ background: ChartUtils.nodeColor()(node) }} className="text">{node.type[0]}</span>
+              )}
+            </span>
           </div>
           <div className="right">
             {node.link ? (
-              <a className="title" href={node.link} title={mainLink.name} target="_blank" rel="noreferrer">
+              <a className="title" href={node.link} target="_blank" rel="noreferrer">
                 {node.name}
               </a>
             ) : (
@@ -95,9 +94,14 @@ class NodeDescription extends Component {
             <h4 className="type">
               {node.type}
             </h4>
-            {!!node.description && (
-              <p className="description" dangerouslySetInnerHTML={{ __html: node.description }} />
-            )}
+            <div className="description paragraph">
+              {node.description ? (
+                <span dangerouslySetInnerHTML={{ __html: description }} />
+              ) : null}
+              {node.description.length > 130 ? (
+                <span className="link">more</span>
+              ) : null}
+            </div>
           </div>
         </div>
       </Outside>

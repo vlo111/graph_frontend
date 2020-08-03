@@ -120,6 +120,10 @@ class DataTableLinks extends Component {
         />
       );
     }
+    if (['value'].includes(props.cell.key)) {
+      defaultProps.type = 'number';
+      defaultProps.min = '1';
+    }
     return (
       <Input {...defaultProps} />
     );

@@ -153,8 +153,9 @@ class Chart {
 
       this.svg = d3.select('#graph svg');
 
+      this.zoom = d3.zoom().on('zoom', this.handleZoom);
       this.svg = this.svg
-        .call(d3.zoom().on('zoom', this.handleZoom))
+        .call(this.zoom)
         .on('click', (d) => this.event.emit('click', d))
         .on('mousemove', (d) => this.event.emit('mousemove', d));
 
@@ -252,7 +253,7 @@ class Chart {
           .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
         this.linkText
-          .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + d.value / 2 : (3 + d.value / 2) * -1))
+          .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + +d.value / 2 : (3 + +d.value / 2) * -1))
           .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
         this.directions
@@ -396,14 +397,13 @@ class Chart {
       .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + d.value / 2 : (3 + d.value / 2) * -1))
       .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
-
-    this.link
-      .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? d.value + 1.5 : d.value || 1));
-
     this.linkText.insert('textPath')
       .attr('startOffset', '50%')
       .attr('href', (d) => `#l${d.index}`)
       .text((d) => d.type);
+
+    this.link
+      .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
   }
 
   static #calledFunctions = [];
@@ -574,7 +574,7 @@ class Chart {
           index: d.index,
           source: Chart.getSource(pd) || Chart.getSource(d) || '',
           target: Chart.getTarget(pd) || Chart.getTarget(d) || '',
-          value: pd.value || d.value || '',
+          value: +pd.value || +d.value || 1,
           linkType: pd.linkType || d.linkType || '',
           type: pd.type || d.type || '',
           direction: pd.direction || d.direction || '',
