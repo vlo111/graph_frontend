@@ -385,7 +385,8 @@ class Chart {
 
   static renderLinkText(links = []) {
     const wrapper = this.svg.select('.linkText');
-    const linksData = this.data.links.filter((d) => links.some((l) => l.index === d.index));
+    const linkIndexes = links.map((d) => d.index);
+    const linksData = this.data.links.filter((d) => linkIndexes.includes(d.index));
 
     this.linkText = wrapper.selectAll('text')
       .data(linksData)
@@ -394,6 +395,10 @@ class Chart {
       .attr('fill', ChartUtils.linkColor())
       .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + d.value / 2 : (3 + d.value / 2) * -1))
       .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
+
+
+    this.link
+      .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? d.value + 1.5 : d.value || 1));
 
     this.linkText.insert('textPath')
       .attr('startOffset', '50%')
