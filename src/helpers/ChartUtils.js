@@ -111,6 +111,14 @@ class ChartUtils {
     return this.nodeColorObj[d.type];
   }
 
+  static resetColors() {
+    this.linkColorObj = {};
+    this.nodeColorObj = {};
+    this.linkColorIndex = 0;
+    this.nodeColorIndex = 0;
+  }
+
+
   static setClass = (fn) => (d, index, g) => {
     const classObj = fn(d, index, g);
     const remove = [];

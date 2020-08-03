@@ -37,7 +37,6 @@ class GraphView extends Component {
   render() {
     const { singleGraph } = this.props;
     const { preview } = this.state;
-    console.log(singleGraph);
     return (
       <Wrapper className="graphView" showHeader={!preview} showFooter={false}>
         <div className="graphWrapper">

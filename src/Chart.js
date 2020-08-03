@@ -273,6 +273,7 @@ class Chart {
       this.renderNodeText();
       this.renderNewLink();
       this.nodeFilter();
+      this.windowResize();
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
@@ -592,6 +593,7 @@ class Chart {
     this.svg.remove();
     this.#calledFunctions = [];
     this.event.removeAllListeners();
+    ChartUtils.resetColors();
     window.removeEventListener('resize', Chart.resizeSvg);
   }
 
@@ -668,8 +670,13 @@ class Chart {
 
     return html;
   }
-}
 
-window.addEventListener('resize', Chart.resizeSvg);
+  static windowResize() {
+    if (this.isCalled('windowResize')) {
+      return;
+    }
+    window.addEventListener('resize', Chart.resizeSvg);
+  }
+}
 
 export default Chart;
