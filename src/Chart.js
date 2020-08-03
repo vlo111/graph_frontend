@@ -70,10 +70,8 @@ class Chart {
           }
 
           l.same = {
-            even,
             arcDirection,
             arc,
-            reverse,
           };
         });
       }
