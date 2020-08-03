@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
-import Input from '../form/Input';
 import Button from '../form/Button';
-import Editor from "../form/Editor";
+import Editor from '../form/Editor';
 
 class DataEditorDescription extends Component {
   static propTypes = {

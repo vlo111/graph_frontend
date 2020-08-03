@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import ReactDOM from 'react-dom';
 import { Jodit } from 'jodit';
 import 'jodit/build/jodit.min.css';
 import PropTypes from 'prop-types';
@@ -208,9 +207,5 @@ class Editor extends Component {
   }
 }
 
-
-const RenderFileSelect = () => {
-  ReactDOM.createPortal(<div>asdasd</div>, document.querySelector('.jodit-toolbar-button_file'));
-};
 
 export default Editor;

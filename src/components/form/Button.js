@@ -10,18 +10,12 @@ class Button extends Component {
     className: PropTypes.string,
     type: PropTypes.string,
     onClick: PropTypes.func,
-    orange: PropTypes.bool,
-    light: PropTypes.bool,
-    transparent: PropTypes.bool,
     color: PropTypes.oneOf(['main', 'blue', 'orange', 'transparent', 'light']),
   }
 
   static defaultProps = {
     icon: undefined,
     onClick: undefined,
-    orange: false,
-    transparent: false,
-    light: false,
     children: '',
     type: 'button',
     className: '',
