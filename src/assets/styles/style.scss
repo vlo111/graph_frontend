@@ -1425,17 +1425,17 @@ p {
   align-items: center;
   justify-content: center;
   text-align: center;
+  text-shadow: 0 0 5px #555555;
 
   .title {
     font-weight: 400;
     font-size: 35px;
-    text-shadow: 0 0 5px #555555;
+    margin-bottom: 20px;
   }
 
   .description {
-    margin-top: 20px;
+    margin-bottom: 20px;
     font-size: 20px;
-    text-shadow: 0 0 5px #555555;
   }
 
   .ghButton.view {

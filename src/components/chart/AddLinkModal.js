@@ -124,7 +124,7 @@ class AddLinkModal extends Component {
             types.find((t) => t.value === linkData.type) || { value: linkData.type, label: linkData.type },
           ]}
           error={errors.type}
-          onChange={(v) => this.handleChange('type', v.value)}
+          onChange={(v) => this.handleChange('type', v?.value)}
           options={types}
           isClearable
         />
