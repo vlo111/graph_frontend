@@ -4,8 +4,13 @@ import fileDownload from 'js-file-download';
 import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
 
-const { REACT_APP_DEV } = process.env;
-const apiUrl = REACT_APP_DEV ? 'http://localhost:5000' : 'https://graphs-backend.ghost-services.com';
+const { REACT_APP_URL } = process.env;
+const urls = [
+  'https://api.analysed.ai',
+  'http://localhost:5000',
+  'https://graphs-backend.ghost-services.com',
+];
+const apiUrl = urls[REACT_APP_URL] || urls[0];
 
 const api = axios.create({
   baseURL: apiUrl,
@@ -22,12 +27,12 @@ api.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
-function toFormData(data) {
-  return serialize({ ...data }, { indices: true });
-}
-
 class Api {
   static url = apiUrl;
+
+  static toFormData(data) {
+    return serialize({ ...data }, { indices: true });
+  }
 
   static singIn(email, password) {
     return api.post('/users/sign-in', { email, password });
@@ -46,7 +51,7 @@ class Api {
   }
 
   static convert(type, requestData) {
-    return api.post(`/convert/${type}/to/graph`, toFormData(requestData));
+    return api.post(`/convert/${type}/to/graph`, this.toFormData(requestData));
   }
 
   static createGraph(requestData) {
