@@ -68,7 +68,7 @@ class DataTableLinks extends Component {
             <th className="cell target" width="150"><span>Target</span></th>
             <th className="cell value" width="50"><span>Value</span></th>
             <th className="cell linkType" width="100"><span>Link Type</span></th>
-            <th className="cell direction" width="50"><span>Direction</span></th>
+            <th className="cell direction" width="90"><span>Direction</span></th>
           </tr>
         </thead>
         <tbody>

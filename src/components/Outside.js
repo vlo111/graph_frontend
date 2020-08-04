@@ -24,7 +24,6 @@ class Outside extends Component {
     this.id = `outside_${this.constructor.id}`;
   }
 
-
   componentDidMount() {
     const { children, ...events } = this.props;
     _.forEach(events, (cb, ev) => {

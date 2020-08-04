@@ -10,6 +10,8 @@ import Input from '../form/Input';
 import FileInput from '../form/FileInput';
 import DataEditorDescription from './DataEditorDescription';
 import Convert from '../../helpers/Convert';
+import Select from '../form/Select';
+import { NODE_TYPES } from '../../data/node';
 
 class DataTableNodes extends Component {
   static propTypes = {
@@ -34,9 +36,8 @@ class DataTableNodes extends Component {
   }
 
   componentDidMount() {
-    console.log(222)
+    console.log(222);
   }
-
 
   handleDataChange = (changes) => {
     const { grid } = this.state;
@@ -167,6 +168,17 @@ class DataTableNodes extends Component {
     if (props.cell.key === 'description') {
       return (
         <DataEditorDescription {...defaultProps} onClose={this.onMouseDown} />
+      );
+    }
+    if (props.cell.key === 'nodeType') {
+      return (
+        <Select
+          {...defaultProps}
+          options={NODE_TYPES}
+          isSearchable={false}
+          value={NODE_TYPES.find((t) => t.value === props.value)}
+          onChange={(v) => props.onChange(v?.value || '')}
+        />
       );
     }
     return (

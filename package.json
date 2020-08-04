@@ -36,8 +36,10 @@
     "svg-to-img": "^2.0.9"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "dev": "REACT_APP_DEV=1 react-scripts start",
+    "prod": "react-scripts start",
+    "dev": "PORT=3001 react-scripts start",
+    "start": "REACT_APP_DEV=1 react-scripts start",
+
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

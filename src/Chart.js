@@ -401,7 +401,7 @@ class Chart {
     this.linkText.insert('textPath')
       .attr('startOffset', '50%')
       .attr('href', (d) => `#l${d.index}`)
-      .text((d) => d.type);
+      .text((d) => ` ${d.type} `);
 
     this.link
       .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
@@ -641,12 +641,13 @@ class Chart {
       .attr('stroke', 'white')
       .attr('stroke-width', 0.5);
 
-    this.nodesWrapper.selectAll('.node circle')
+    this.nodesWrapper.selectAll('.node :not(text)')
       .attr('stroke', 'white')
       .attr('stroke-width', 1.5);
 
     const html = document.querySelector('#graph svg').outerHTML;
 
+    // reset original styles
     const { x: oX, y: oY, scale: oScale } = originalDimensions;
     this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`)
       .attr('data-scale', oScale)
@@ -662,7 +663,7 @@ class Chart {
       .attr('stroke', undefined)
       .attr('stroke-width', undefined);
 
-    this.nodesWrapper.selectAll('.node circle')
+    this.nodesWrapper.selectAll('.node :not(text)')
       .attr('stroke', undefined)
       .attr('stroke-width', undefined);
 
