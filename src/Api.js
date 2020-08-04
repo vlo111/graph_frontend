@@ -6,7 +6,7 @@ import Account from './helpers/Account';
 
 const { REACT_APP_URL } = process.env;
 const urls = [
-  'https://api.analysed.ai',
+  'http://api.analysed.ai',
   'http://localhost:5000',
   'https://graphs-backend.ghost-services.com',
 ];
