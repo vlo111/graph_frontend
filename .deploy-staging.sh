@@ -8,6 +8,6 @@ array=(${string//,/ })
 # Iterate servers for deploy and pull last commit
 for i in "${!array[@]}"; do
     echo "Deploy project on server ${array[i]}"
-    ssh root@${array[i]} "cd /var/www/graphs-project && git pull && npm install && pm2 restart Frontend-dev"
+    ssh root@${array[i]} "cd /var/www/graphs-project && git pull && yarn && pm2 restart Frontend-dev"
 done
 
