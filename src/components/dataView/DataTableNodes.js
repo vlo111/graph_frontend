@@ -72,27 +72,27 @@ class DataTableNodes extends Component {
     return (
       <table className={props.className}>
         <thead>
-          <tr>
-            <th className="cell index" width="60">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={allChecked}
-                  onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))}
-                />
-                All
-              </label>
-            </th>
-            <th className="cell name" width="180"><span>Name</span></th>
-            <th className="cell type" width="150"><span>Type</span></th>
-            <th className="cell description" width="272"><span>Description</span></th>
-            <th className="cell nodeType" width="130"><span>Node Type</span></th>
-            <th className="cell icon" width="272"><span>Icon</span></th>
-            <th className="cell link" width="272"><span>Link</span></th>
-          </tr>
+        <tr>
+          <th className="cell index" width="60">
+            <label>
+              <input
+                type="checkbox"
+                checked={allChecked}
+                onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))}
+              />
+              All
+            </label>
+          </th>
+          <th className="cell name" width="180"><span>Name</span></th>
+          <th className="cell type" width="150"><span>Type</span></th>
+          <th className="cell description" width="272"><span>Description</span></th>
+          <th className="cell nodeType" width="130"><span>Node Type</span></th>
+          <th className="cell icon" width="272"><span>Icon</span></th>
+          <th className="cell link" width="272"><span>Link</span></th>
+        </tr>
         </thead>
         <tbody>
-          {props.children}
+        {props.children}
         </tbody>
       </table>
     );
@@ -109,6 +109,20 @@ class DataTableNodes extends Component {
       this.onMouseDown = onMouseDown;
       onMouseDown = undefined;
     }
+    if (cell.key === 'index') {
+      return (
+        <td className="cell index">
+          <label>
+            <input
+              type="checkbox"
+              checked={selectedNodes.includes(cell.value)}
+              onChange={() => this.props.toggledGrid('nodes', cell.value)}
+            />
+            {props.row + 1}
+          </label>
+        </td>
+      );
+    }
     return (
       <td
         onContextMenu={onContextMenu}
@@ -118,16 +132,7 @@ class DataTableNodes extends Component {
         onMouseOver={onMouseOver}
         className={`cell ${cell.key || ''}`}
       >
-        {cell.key === 'index' ? (
-          <label>
-            <input
-              type="checkbox"
-              checked={selectedNodes.includes(cell.value)}
-              onChange={() => this.props.toggledGrid('nodes', cell.value)}
-            />
-            {props.row + 1}
-          </label>
-        ) : children}
+        {children}
       </td>
     );
   }
@@ -174,6 +179,7 @@ class DataTableNodes extends Component {
       return (
         <Select
           {...defaultProps}
+          menuIsOpen
           options={NODE_TYPES}
           isSearchable={false}
           value={NODE_TYPES.find((t) => t.value === props.value)}

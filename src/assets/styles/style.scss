@@ -1015,6 +1015,9 @@ p {
         a {
           pointer-events: none;
         }
+        svg{
+          max-width: 100%;
+        }
       }
 
       &.index {
@@ -1558,6 +1561,9 @@ p {
     }
   }
 
+}
+.lineDirectionSelect{
+  max-width: 100%;
 }
 
 .ghLoading {

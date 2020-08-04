@@ -10,6 +10,8 @@ import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 import Checkbox from '../form/Checkbox';
 import { DASH_TYPES } from '../../data/link';
+import Validate from "../../helpers/Validate";
+import SvgLine from "../SvgLine";
 
 class AddLinkModal extends Component {
   getTypes = memoizeOne((links) => {
@@ -60,15 +62,10 @@ class AddLinkModal extends Component {
     const { linkData } = this.state;
     const links = Chart.getLinks();
     const errors = {};
-    if (!linkData.type) {
-      errors.type = 'Type is required';
-    }
+    [errors.type, linkData.type] = Validate.linkType(linkData.type, linkData.source, linkData.target);
+    [errors.value, linkData.value] = Validate.linkValue(linkData.value);
 
-    if (links.find((d) => linkData.source === d.source && linkData.target === d.target && linkData.type === d.type)) {
-      errors.type = 'Already exists';
-    }
-
-    if (_.isEmpty(errors)) {
+    if (!Validate.hasError(errors)) {
       links.push(linkData);
 
       this.setState({ show: false });
@@ -106,20 +103,7 @@ class AddLinkModal extends Component {
           isSearchable={false}
           containerClassName="lineTypeSelect"
           getOptionValue={(v) => v}
-          getOptionLabel={(v) => (
-            <svg height="18" width="310">
-              <line
-                strokeLinecap={ChartUtils.dashLinecap(v)}
-                strokeDasharray={ChartUtils.dashType(v, 2)}
-                stroke="#7166F8"
-                strokeWidth="2"
-                x1="0"
-                y1="10"
-                x2="310 "
-                y2="10"
-              />
-            </svg>
-          )}
+          getOptionLabel={(v) => <SvgLine type={v} />}
         />
 
         <Select
