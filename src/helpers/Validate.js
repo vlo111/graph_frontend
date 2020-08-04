@@ -38,14 +38,13 @@ class Validate {
   }
 
   static linkValue(val) {
-    const value = +val;
-    let error = null;
+    let value = +val;
     if (value < 1) {
-      error = 'Value can\'t be less than 1';
+      value = 1;
     } else if (value > 15) {
-      error = 'Value can\'t be more than 15';
+      value = 15;
     }
-    return [error, value];
+    return [null, value];
   }
 
   static node(key, value) {

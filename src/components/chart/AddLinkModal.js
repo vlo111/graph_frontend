@@ -126,6 +126,14 @@ class AddLinkModal extends Component {
           value={linkData.value}
           error={errors.value}
           type="number"
+          onBlur={() => {
+            if (linkData.value < 1) {
+              linkData.value = 1;
+            } else if (linkData.value > 15) {
+              linkData.value = 15;
+            }
+            this.handleChange('value', linkData.value);
+          }}
           onChangeText={(v) => this.handleChange('value', v)}
         />
 

@@ -75,7 +75,8 @@ class NodeDescription extends Component {
         <div onMouseLeave={this.hideInfo} data-node-info={node.index} id="nodeDescription" style={{ top, left }}>
           <Icon className="close" value="fa-close" onClick={this.hideInfo} />
           <div className="left">
-            <span className={`node ${node.nodeType}`} style={{ background: ChartUtils.nodeColor()(node) }}>
+            <span className={`node ${node.nodeType}`}
+                  style={{ background: !node.icon ? ChartUtils.nodeColor()(node) : undefined }}>
               {node.icon ? (
                 <img src={node.icon} alt="icon" width={50} height={50} />
               ) : (

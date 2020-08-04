@@ -64,12 +64,12 @@ class AddNodeModal extends Component {
     [errors.name, nodeData.name] = Validate.nodeName(nodeData.name);
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
 
-    if (Validate.hasError(errors)) {
+    if (!Validate.hasError(errors)) {
       nodes.push({ ...addNodeParams, ...nodeData });
       Chart.render({ nodes });
       this.props.toggleNodeModal();
     }
-    this.setState({ errors,nodeData });
+    this.setState({ errors, nodeData });
   }
 
   handleChange = (path, value) => {
