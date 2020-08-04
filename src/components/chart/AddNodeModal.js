@@ -11,6 +11,7 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
 import { NODE_TYPES } from '../../data/node';
+import Validate from "../../helpers/Validate";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -59,21 +60,16 @@ class AddNodeModal extends Component {
     const { nodeData } = this.state;
     const errors = {};
     const nodes = Chart.getNodes();
-    if (!nodeData.name) {
-      errors.name = 'Name is required';
-    } else if (nodes.some((d) => d.name === nodeData.name)) {
-      errors.name = 'Already exists';
-    }
-    if (!nodeData.type) {
-      errors.type = 'Type is required';
-    }
 
-    if (_.isEmpty(errors)) {
+    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name);
+    [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
+
+    if (Validate.hasError(errors)) {
       nodes.push({ ...addNodeParams, ...nodeData });
       Chart.render({ nodes });
       this.props.toggleNodeModal();
     }
-    this.setState({ errors });
+    this.setState({ errors,nodeData });
   }
 
   handleChange = (path, value) => {
