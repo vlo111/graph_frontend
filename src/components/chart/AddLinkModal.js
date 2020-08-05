@@ -39,7 +39,7 @@ class AddLinkModal extends Component {
 
   handleAddNewLine = (d) => {
     const { source, target } = d;
-    const { linkData: { type } } = this.state;
+    // const { linkData: { type } } = this.state;
     const links = Chart.getLinks();
     const types = this.getTypes(links);
     const linkData = {
@@ -47,7 +47,7 @@ class AddLinkModal extends Component {
       target,
       value: 2,
       direction: false,
-      type: type || types[0]?.value || null,
+      type: types[0]?.value || null,
       linkType: 'a',
       description: '',
     };

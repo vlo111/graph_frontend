@@ -21,13 +21,13 @@ class AddNodeModal extends Component {
 
   initNodeData = memoizeOne(() => {
     const nodes = Chart.getNodes();
-    const { nodeData: { type } } = this.state;
+    // const { nodeData: { type } } = this.state;
     this.setState({
       nodeData: {
         name: '',
         icon: '',
         nodeType: 'circle',
-        type: type || _.last(nodes)?.type || '',
+        type:  _.last(nodes)?.type || '',
       },
       errors: {},
     });
