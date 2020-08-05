@@ -10,13 +10,18 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import Input from '../form/Input';
 import Utils from '../../helpers/Utils';
-import { createGraphRequest, getSingleGraphRequest, updateGraphRequest } from '../../store/actions/graphs';
+import {
+  createGraphRequest,
+  getSingleGraphRequest,
+  updateGraphRequest,
+  updateGraphThumbnailRequest
+} from '../../store/actions/graphs';
 import { setActiveButton, setLoading } from '../../store/actions/app';
 
 class SaveGraphModal extends Component {
   static propTypes = {
     createGraphRequest: PropTypes.func.isRequired,
-    getSingleGraphRequest: PropTypes.func.isRequired,
+    updateGraphThumbnailRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     updateGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
@@ -73,22 +78,17 @@ class SaveGraphModal extends Component {
     });
     files = await Promise.allValues(files);
 
-    const svg = Chart.printMode(1900, 1060);
+    const svg = Chart.printMode(200, 112);
+    let resGraphId;
     if (graphId) {
       const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
         ...requestData,
         nodes,
         links,
         files,
-        svg
+        svg,
       });
-      this.props.getSingleGraphRequest(graphId);
-      if (data.graph?.id) {
-        toast.info('Successfully saved');
-        this.props.history.push('/');
-      } else {
-        toast.error('Something went wrong. Please try again');
-      }
+      resGraphId = data.graph?.id;
     } else {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
@@ -97,17 +97,19 @@ class SaveGraphModal extends Component {
         files,
         svg,
       });
-      if (data.graph?.id) {
-        toast.info('Successfully saved');
-        this.props.history.push('/');
-        // this.props.history.replace(`/graphs/update/${data.graph?.id}`);
-      } else {
-        toast.error('Something went wrong. Please try again');
-      }
+      resGraphId = data.graph?.id;
+    }
+    if (resGraphId) {
+      toast.info('Successfully saved');
+      const svgBig = Chart.printMode(800, 446);
+      this.props.updateGraphThumbnailRequest(resGraphId, svgBig);
+    } else {
+      toast.error('Something went wrong. Please try again');
     }
     this.props.setLoading(false);
     this.setState({ showModal: false });
     this.props.setActiveButton('create');
+    this.props.history.push('/');
   }
 
   handleChange = (path, value) => {
@@ -165,16 +167,17 @@ class SaveGraphModal extends Component {
 const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
 });
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   createGraphRequest,
   updateGraphRequest,
+  updateGraphThumbnailRequest,
   getSingleGraphRequest,
   setActiveButton,
   setLoading,
 };
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(SaveGraphModal);
 
 export default withRouter(Container);

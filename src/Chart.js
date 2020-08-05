@@ -406,6 +406,10 @@ class Chart {
 
     this.link
       .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
+
+    this.directions
+      .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? 0.8 : undefined))
+      .attr('stroke', (d) => (linkIndexes.includes(d.index) ? ChartUtils.linkColor()(d) : undefined));
   }
 
   static #calledFunctions = [];

@@ -19,6 +19,11 @@ export function updateGraphRequest(id, requestData) {
   return UPDATE_GRAPH.request(() => Api.updateGraph(id, requestData));
 }
 
+export const UPDATE_GRAPH_THUMBNAIL = define('UPDATE_GRAPH_THUMBNAIL');
+
+export function updateGraphThumbnailRequest(id, svg) {
+  return UPDATE_GRAPH_THUMBNAIL.request(() => Api.updateGraphThumbnail(id, svg));
+}
 
 export const GET_GRAPHS_LIST = define('GET_GRAPHS_LIST');
 

@@ -17,6 +17,7 @@ class Select extends Component {
     children: PropTypes.node,
     icon: PropTypes.any,
     isClearable: PropTypes.bool,
+    portal: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -29,6 +30,7 @@ class Select extends Component {
     error: undefined,
     icon: undefined,
     isClearable: false,
+    portal: false,
   }
 
   static id = 0;

@@ -108,11 +108,12 @@ class AddLinkModal extends Component {
 
         <Select
           label="Relation Type"
+          portal
           placeholder=""
           value={[
             types.find((t) => t.value === linkData.type) || {
               value: linkData.type,
-              label: linkData.type
+              label: linkData.type,
             },
           ]}
           error={errors.type}
@@ -137,15 +138,6 @@ class AddLinkModal extends Component {
           onChangeText={(v) => this.handleChange('value', v)}
         />
 
-        <Input
-          label="Description"
-          value={linkData.description}
-          error={errors.description}
-          textArea
-          rows={4}
-          type="number"
-          onChangeText={(v) => this.handleChange('description', v)}
-        />
         <Checkbox
           label="Show Direction"
           checked={linkData.direction}

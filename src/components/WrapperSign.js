@@ -20,7 +20,6 @@ class WrapperSign extends Component {
       <main>
         {children}
         <OfflineIndicator />
-        <ToastContainer hideProgressBar />
       </main>
     );
   }

@@ -62,6 +62,10 @@ class Api {
     return api.put(`/graphs/update/${id}`, requestData);
   }
 
+  static updateGraphThumbnail(id, svg) {
+    return api.patch(`/graphs/thumbnail/${id}`, { svg });
+  }
+
   static getGraphsList(page, requestData = {}) {
     const query = qs({
       page,

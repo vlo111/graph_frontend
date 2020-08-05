@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -41,7 +40,6 @@ class Wrapper extends Component {
           <Loading className="mainLoading" size={50} />
         ) : null}
         <OfflineIndicator />
-        <ToastContainer hideProgressBar transition={ToastSlide} />
       </main>
     );
   }
