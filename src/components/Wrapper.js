@@ -45,7 +45,6 @@ class Wrapper extends Component {
   }
 }
 
-
 const mapStateToProps = (state) => ({
   token: state.account.token,
   isLoading: state.app.isLoading,

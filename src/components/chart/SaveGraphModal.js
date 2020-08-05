@@ -48,6 +48,7 @@ class SaveGraphModal extends Component {
       requestData: {
         title: '',
         description: '',
+        status: 'active',
         tags: '',
       },
     };
