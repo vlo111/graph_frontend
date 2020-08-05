@@ -285,11 +285,12 @@ class Chart {
   static renderDirections() {
     const directions = this.wrapper.select('.directions');
 
+    directions.selectAll('text textPath').remove();
+
     this.directions = directions.selectAll('text')
       .data(this.data.links.filter((d) => d.direction))
-      // .data(this.data.links)
       .join('text')
-      .attr('dy', (d) => d.value * 1.6 + 1.5)
+      .attr('dy', (d) => d.value * 1.8 + 1.55)
       .attr('dx', (d) => {
         let i = this.radiusList[d.target.index] - d.value;
         if (d.target.nodeType === 'triangle') {

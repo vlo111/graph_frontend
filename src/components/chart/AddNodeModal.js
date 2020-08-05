@@ -11,7 +11,7 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
 import { NODE_TYPES } from '../../data/node';
-import Validate from "../../helpers/Validate";
+import Validate from '../../helpers/Validate';
 
 class AddNodeModal extends Component {
   static propTypes = {

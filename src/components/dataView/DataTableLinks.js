@@ -4,16 +4,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
-import Modal from 'react-modal';
+import { toast } from 'react-toastify';
 import { setActiveButton, setGridIndexes, toggledGrid } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Input from '../form/Input';
 import Select from '../form/Select';
 import Convert from '../../helpers/Convert';
 import { DASH_TYPES } from '../../data/link';
-import ChartUtils from '../../helpers/ChartUtils';
 import SvgLine from '../SvgLine';
-import Checkbox from '../form/Checkbox';
+import Validate from '../../helpers/Validate';
 
 class DataTableLinks extends Component {
   static propTypes = {
@@ -42,7 +41,11 @@ class DataTableLinks extends Component {
   handleDataChange = (changes) => {
     const { grid } = this.state;
     changes.forEach((d) => {
-      grid[d.row][d.col] = { ...grid[d.row][d.col], value: d.value };
+      const [error, value] = Validate.link(d.cell.key, d.value);
+      if (error) {
+        toast.error(error);
+      }
+      grid[d.row][d.col] = { ...grid[d.row][d.col], value };
     });
     this.setState({ grid });
     const linksChanged = Convert.gridDataToLink(grid);
@@ -65,27 +68,27 @@ class DataTableLinks extends Component {
     return (
       <table className={props.className}>
         <thead>
-        <tr>
-          <th className="cell index" width="60">
-            <label>
-              <input
-                type="checkbox"
-                checked={grid.length === selectedLinks.length}
-                onChange={() => this.props.setGridIndexes('links', allChecked ? [] : grid.map((g) => g[0].value))}
-              />
-              All
-            </label>
-          </th>
-          <th className="cell type" width="150"><span>Type</span></th>
-          <th className="cell source" width="150"><span>Source</span></th>
-          <th className="cell target" width="150"><span>Target</span></th>
-          <th className="cell value" width="50"><span>Value</span></th>
-          <th className="cell linkType" width="100"><span>Link Type</span></th>
-          <th className="cell direction" width="90"><span>Direction</span></th>
-        </tr>
+          <tr>
+            <th className="cell index" width="60">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={grid.length === selectedLinks.length}
+                  onChange={() => this.props.setGridIndexes('links', allChecked ? [] : grid.map((g) => g[0].value))}
+                />
+                All
+              </label>
+            </th>
+            <th className="cell type" width="150"><span>Type</span></th>
+            <th className="cell source" width="150"><span>Source</span></th>
+            <th className="cell target" width="150"><span>Target</span></th>
+            <th className="cell value" width="50"><span>Value</span></th>
+            <th className="cell linkType" width="100"><span>Link Type</span></th>
+            <th className="cell direction" width="90"><span>Direction</span></th>
+          </tr>
         </thead>
         <tbody>
-        {props.children}
+          {props.children}
         </tbody>
       </table>
     );

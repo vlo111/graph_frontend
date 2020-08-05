@@ -2,8 +2,8 @@ import _ from 'lodash';
 import Chart from '../Chart';
 
 class Validate {
-  static nodeName(val = '') {
-    const value = val.trim();
+  static nodeName(val) {
+    const value = (val || '').trim();
     let error = null;
     const nodes = Chart.getNodes();
     if (!value) {
@@ -14,8 +14,8 @@ class Validate {
     return [error, value];
   }
 
-  static nodeType(val = '') {
-    const value = val.trim();
+  static nodeType(val) {
+    const value = (val || '').trim();
     let error = null;
     if (!value) {
       error = 'Type is required';
@@ -23,8 +23,8 @@ class Validate {
     return [error, value];
   }
 
-  static linkType(val = '', source, target) {
-    const value = val.trim();
+  static linkType(val, source, target) {
+    let value = (val || '').trim();
     const links = Chart.getLinks();
 
     let error = null;
@@ -32,6 +32,7 @@ class Validate {
       error = 'Type is required';
     } else if (links.find((d) => source === d.source && target === d.target && value === d.type)) {
       error = 'Already exists';
+      value = '';
     }
 
     return [error, value];
@@ -39,17 +40,25 @@ class Validate {
 
   static linkValue(val) {
     let value = +val;
+    let error = null;
     if (value < 1) {
+      error = 'Value can\'t be less than 1';
       value = 1;
     } else if (value > 15) {
+      error = 'Value can\'t be more than 15';
       value = 15;
     }
-    return [null, value];
+    return [error, value];
   }
 
   static node(key, value) {
     switch (key) {
-
+      case 'name': {
+        return this.nodeName(value);
+      }
+      case 'type': {
+        return this.nodeType(value);
+      }
       default: {
         return [null, value];
       }
@@ -58,7 +67,12 @@ class Validate {
 
   static link(key, value) {
     switch (key) {
-
+      case 'value': {
+        return this.linkValue(value);
+      }
+      case 'type': {
+        return this.linkType(value);
+      }
       default: {
         return [null, value];
       }

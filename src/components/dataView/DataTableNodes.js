@@ -12,6 +12,8 @@ import DataEditorDescription from './DataEditorDescription';
 import Convert from '../../helpers/Convert';
 import Select from '../form/Select';
 import { NODE_TYPES } from '../../data/node';
+import Validate from "../../helpers/Validate";
+import { toast } from "react-toastify";
 
 class DataTableNodes extends Component {
   static propTypes = {
@@ -35,14 +37,15 @@ class DataTableNodes extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log(222);
-  }
 
   handleDataChange = (changes) => {
     const { grid } = this.state;
     changes.forEach((d) => {
-      grid[d.row][d.col] = { ...grid[d.row][d.col], value: d.value };
+      const [error, value] = Validate.link(d.cell.key, d.value);
+      if (error) {
+        toast.error(error);
+      }
+      grid[d.row][d.col] = { ...grid[d.row][d.col], value };
     });
     const nodesChanged = Convert.gridDataToNode(grid);
     let links = Chart.getLinks();

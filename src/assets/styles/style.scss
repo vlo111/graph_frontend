@@ -1208,8 +1208,6 @@ p {
     .node {
       width: 50px;
       height: 50px;
-      //box-shadow: 0 0 2px $color-gray;
-      border: 2px solid $color-gray;
       overflow: hidden;
       color: $color-white;
       font-size: 30px;
@@ -1227,6 +1225,7 @@ p {
 
       &.triangle {
         border-radius: 0;
+        position: relative;
         clip-path: polygon(50% 0%, 0% 80%, 100% 80%);
       }
 
