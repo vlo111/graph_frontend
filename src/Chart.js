@@ -195,12 +195,12 @@ class Chart {
       this.nodesWrapper.selectAll('.node > *').remove();
 
       this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
-        .insert('circle')
+        .append('circle')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('r', (d) => this.radiusList[d.index]);
 
       this.nodesWrapper.selectAll('.square')
-        .insert('rect')
+        .append('rect')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('width', (d) => this.radiusList[d.index] * 2)
         .attr('height', (d) => this.radiusList[d.index] * 2)
@@ -208,7 +208,7 @@ class Chart {
         .attr('y', (d) => this.radiusList[d.index] * -1);
 
       this.nodesWrapper.selectAll('.triangle')
-        .insert('path')
+        .append('path')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('d', (d) => {
           const s = this.radiusList[d.index] * 2.5;
@@ -220,7 +220,7 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.hexagon')
-        .insert('polygon')
+        .append('polygon')
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('points', (d) => {
           const s = this.radiusList[d.index];
@@ -305,7 +305,7 @@ class Chart {
       .attr('fill', ChartUtils.linkColor())
       .join('text');
 
-    this.directions.insert('textPath')
+    this.directions.append('textPath')
       .attr('startOffset', '100%')
       .attr('href', (d) => `#l${d.index}`)
       .text('➤');
@@ -314,16 +314,18 @@ class Chart {
   static renderIcons() {
     const icons = this.wrapper.select('.icons');
 
+    icons.selectAll('defs pattern').remove();
+
     const defs = icons.selectAll('defs')
       .data(this.data.nodes.filter((d) => d.icon))
       .join('defs');
 
-    defs.insert('pattern')
+    defs.append('pattern')
       .attr('id', (d) => `i${d.index}`)
       .attr('patternUnits', 'objectBoundingBox')
       .attr('height', 1)
       .attr('width', 1)
-      .insert('image')
+      .append('image')
       .attr('preserveAspectRatio', 'xMidYMid slice')
       .attr('height', (d) => {
         let i = 2;
@@ -372,7 +374,7 @@ class Chart {
         }
         return true;
       })
-      .insert('text')
+      .append('text')
       .attr('x', (d) => {
         let i = 5;
         if (d.nodeType === 'hexagon') {
@@ -391,6 +393,8 @@ class Chart {
     const linkIndexes = links.map((d) => d.index);
     const linksData = this.data.links.filter((d) => linkIndexes.includes(d.index));
 
+    wrapper.selectAll('text textPath').remove();
+
     this.linkText = wrapper.selectAll('text')
       .data(linksData)
       .join('text')
@@ -399,7 +403,7 @@ class Chart {
       .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + d.value / 2 : (3 + d.value / 2) * -1))
       .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
-    this.linkText.insert('textPath')
+    this.linkText.append('textPath')
       .attr('startOffset', '50%')
       .attr('href', (d) => `#l${d.index}`)
       .text((d) => ` ${d.type} `);
@@ -471,7 +475,7 @@ class Chart {
       return;
     }
     this.newLink = this.wrapper
-      .insert('line')
+      .append('line')
       .attr('id', 'addNewLink')
       .attr('data-source', '')
       .attr('x1', 0)
