@@ -62,8 +62,8 @@ class AddLinkModal extends Component {
     const { linkData } = this.state;
     const links = Chart.getLinks();
     const errors = {};
-    [, linkData.type] = Validate.linkType(linkData.type, linkData.source, linkData.target);
-    [errors.value, linkData.value] = Validate.linkValue(linkData.value);
+    [errors.type, linkData.type] = Validate.linkType(linkData.type, linkData.source, linkData.target);
+    [, linkData.value] = Validate.linkValue(linkData.value);
 
     if (!Validate.hasError(errors)) {
       links.push(linkData);
