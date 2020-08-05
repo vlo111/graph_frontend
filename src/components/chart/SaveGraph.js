@@ -88,7 +88,7 @@ class SaveGraphModal extends Component {
         files,
         svg,
       });
-      resGraphId = data.graph?.id;
+      resGraphId = data.graphId;
     } else {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
@@ -97,7 +97,7 @@ class SaveGraphModal extends Component {
         files,
         svg,
       });
-      resGraphId = data.graph?.id;
+      resGraphId = data.graphId;
     }
     if (resGraphId) {
       toast.info('Successfully saved');
