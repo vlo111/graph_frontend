@@ -29,7 +29,7 @@ class App extends Component {
             <Route path="/sign/reset-password" component={SignIn} />
           </Switch>
         </BrowserRouter>
-        <ToastContainer hideProgressBar transition={ToastSlide} />
+        <ToastContainer hideProgressBar transition={ToastSlide} autoClose={3000} />
       </>
     );
   }
