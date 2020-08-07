@@ -6,6 +6,7 @@ import {
   TOGGLE_GRID,
 } from '../actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
+import { DEFAULT_FILTERS } from "../../data/filter";
 
 const initialState = {
   activeButton: 'create',
@@ -75,7 +76,7 @@ export default function reducer(state = initialState, action) {
     case RESET_FILTER: {
       return {
         ...state,
-        filters: {},
+        filters: { ...DEFAULT_FILTERS },
       };
     }
     default: {

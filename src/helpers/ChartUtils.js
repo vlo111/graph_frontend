@@ -5,6 +5,7 @@ import memoizeOne from 'memoize-one';
 import Chart from '../Chart';
 import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
+import { DEFAULT_FILTERS } from '../data/filter';
 
 class ChartUtils {
   static filter = memoizeOne((data, params = {}) => {
@@ -18,7 +19,7 @@ class ChartUtils {
     });
 
     data.nodes = data.nodes.map((d) => {
-      if (data.links.some((l) => l.hidden && d.name === l.source)) {
+      if (data.links.some((l) => l.hidden && (d.name === l.source || d.name === d.target))) {
         d.hidden = true;
         return d;
       }
@@ -59,13 +60,8 @@ class ChartUtils {
     } catch (e) {
       filters = {};
     }
-    const defaultFilters = {
-      hideIsolated: '',
-      nodeTypes: [],
-      linkTypes: [],
-    };
 
-    return { ...defaultFilters, ...filters };
+    return { ...DEFAULT_FILTERS, ...filters };
   }
 
   static dashType(type, value) {
