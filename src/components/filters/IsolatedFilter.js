@@ -17,6 +17,7 @@ class IsolatedFilter extends Component {
         <Checkbox
           label="Hide isolated nodes"
           checked={filters.hideIsolated}
+          labelReverse
           onChange={() => this.props.setFilter('hideIsolated', !filters.hideIsolated)}
         />
       </div>

@@ -42,10 +42,10 @@ class Checkbox extends Component {
         id={containerId}
         className={classNames(containerClassName, 'ghFormField', 'ghCheckbox', { labelReverse })}
       >
+        <input {...props} id={inputId} type="checkbox" />
         {label ? (
           <label htmlFor={inputId}>{label}</label>
         ) : null}
-        <input {...props} id={inputId} type="checkbox" />
         {children}
         {error ? (
           <div className="error">{error}</div>

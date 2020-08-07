@@ -368,7 +368,7 @@ p {
   user-select: none;
 
   label {
-    padding-right: 10px;
+    padding-left: 10px;
   }
 
   input[type="checkbox"] {
@@ -377,9 +377,9 @@ p {
 
   &.labelReverse {
     label {
-      padding-right: 0;
-      padding-left: 10px;
-      order: 1;
+      padding-right: 10px;
+      padding-left: 0;
+      order: -1;
     }
   }
 }
@@ -1640,10 +1640,13 @@ p {
 
 }
 
-.nodesTypesFilter {
+.graphFilter {
   .list {
     .item {
       text-shadow: 0 0 1px #fafbfc;
+      .badge{
+        margin-left: auto;
+      }
     }
   }
 }

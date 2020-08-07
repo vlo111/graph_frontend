@@ -14,10 +14,13 @@ class LinkTypesFilter extends Component {
     links: PropTypes.array.isRequired,
   }
 
-  getLinkTypes = memoizeOne((links) => {
-    const types = links.filter((d) => d.type).map((d) => d.type);
-    return _.uniq(types);
-  }, _.isEqual)
+  getLinkTypes = memoizeOne((links) => _.chain(links)
+    .groupBy('type')
+    .map((d, key) => ({
+      length: d.length,
+      type: key,
+    }))
+    .value(), _.isEqual)
 
   handleChange = (value) => {
     const { links, filters } = this.props;
@@ -44,14 +47,17 @@ class LinkTypesFilter extends Component {
       <div className="linkTypesFilter graphFilter">
         <h4 className="title">Link Types</h4>
         <ul className="list">
-          {types.map((type) => (
-            <li key={type} className="item" style={{ color: ChartUtils.linkColor()({ type }) }}>
+          {types.map((item) => (
+            <li key={item.type} className="item" style={{ color: ChartUtils.linkColor()(item) }}>
               <Checkbox
-                label={type}
-                labelReverse
-                checked={_.isEmpty(filters.linkTypes) || filters.linkTypes.includes(type)}
-                onChange={() => this.handleChange(type)}
-              />
+                label={item.type}
+                checked={_.isEmpty(filters.linkTypes) || filters.linkTypes.includes(item.type)}
+                onChange={() => this.handleChange(item.type)}
+              >
+                <span className="badge">
+                  {item.length}
+                </span>
+              </Checkbox>
             </li>
           ))}
         </ul>

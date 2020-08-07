@@ -15,8 +15,13 @@ class nodeTypessFilter extends Component {
   }
 
   getNodeTypes = memoizeOne((nodes) => {
-    const types = nodes.filter((d) => d.type).map((d) => d.type);
-    return _.uniq(types);
+    return _.chain(nodes)
+      .groupBy('type')
+      .map((d, key) => ({
+        length: d.length,
+        type: key,
+      }))
+      .value();
   }, _.isEqual)
 
   handleChange = (value) => {
@@ -44,14 +49,17 @@ class nodeTypessFilter extends Component {
       <div className="nodesTypesFilter graphFilter">
         <h4 className="title">Node Types</h4>
         <ul className="list">
-          {types.map((type) => (
-            <li key={type} className="item" style={{ color: ChartUtils.nodeColor()({ type }) }}>
+          {types.map((item) => (
+            <li key={item.type} className="item" style={{ color: ChartUtils.nodeColor()(item) }}>
               <Checkbox
-                label={type}
-                labelReverse
-                checked={_.isEmpty(filters.nodeTypes) || filters.nodeTypes.includes(type)}
-                onChange={() => this.handleChange(type)}
-              />
+                label={item.type}
+                checked={_.isEmpty(filters.nodeTypes) || filters.nodeTypes.includes(item.type)}
+                onChange={() => this.handleChange(item.type)}
+              >
+                <span className="badge">
+                  {item.length}
+                </span>
+              </Checkbox>
             </li>
           ))}
         </ul>
