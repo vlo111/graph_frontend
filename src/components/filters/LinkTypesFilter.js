@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
 import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
+import Button from '../form/Button';
 
 class LinkTypesFilter extends Component {
   static propTypes = {
@@ -14,24 +15,36 @@ class LinkTypesFilter extends Component {
     links: PropTypes.array.isRequired,
   }
 
-  getLinkTypes = memoizeOne((links) => _.chain(links)
-    .groupBy('type')
-    .map((d, key) => ({
-      length: d.length,
-      type: key,
-    }))
-    .value(), _.isEqual)
+  getLinkTypes = memoizeOne((links) => {
+    const types = _.chain(links)
+      .groupBy('type')
+      .map((d, key) => ({
+        length: d.length,
+        type: key,
+      }))
+      .orderBy('length', 'desc')
+      .value();
+
+    return types;
+  }, _.isEqual);
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showMore: false,
+    };
+  }
 
   handleChange = (value) => {
     const { links, filters } = this.props;
     if (!filters.linkTypes.length) {
-      filters.linkTypes = this.getLinkTypes(links);
+      filters.linkTypes = this.getLinkTypes(links).map((d) => d.type);
     }
     const i = filters.linkTypes.indexOf(value);
     if (i > -1) {
       filters.linkTypes.splice(i, 1);
       if (!filters.linkTypes.length) {
-        filters.linkTypes = this.getLinkTypes(links).filter((d) => d !== value);
+        filters.linkTypes = this.getLinkTypes(links).map((d) => d.type).filter((d) => d !== value);
       }
     } else {
       filters.linkTypes.push(value);
@@ -40,9 +53,16 @@ class LinkTypesFilter extends Component {
     this.props.setFilter('linkTypes', filters.linkTypes);
   }
 
+  toggleMore = () => {
+    const { showMore } = this.state;
+    this.setState({ showMore: !showMore });
+  }
+
   render() {
+    const { showMore } = this.state;
     const { links, filters } = this.props;
-    const types = this.getLinkTypes(links);
+    const typesFull = this.getLinkTypes(links);
+    const types = showMore ? typesFull : _.chunk(typesFull, 5)[0] || [];
     return (
       <div className="linkTypesFilter graphFilter">
         <h4 className="title">Link Types</h4>
@@ -61,6 +81,11 @@ class LinkTypesFilter extends Component {
             </li>
           ))}
         </ul>
+        {typesFull.length > types.length || showMore ? (
+          <Button onClick={this.toggleMore}>
+            {showMore ? '- Less' : '+ More'}
+          </Button>
+        ) : null}
       </div>
     );
   }

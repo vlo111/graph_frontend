@@ -1643,7 +1643,7 @@ p {
 .graphFilter {
   .list {
     .item {
-      text-shadow: 0 0 1px #fafbfc;
+      text-shadow: 0 0 1px rgba($color-dark, 0.4);
       .badge{
         margin-left: auto;
       }
