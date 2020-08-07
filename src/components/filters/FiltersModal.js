@@ -1,52 +1,75 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import Checkbox from '../form/Checkbox';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Button from '../form/Button';
-import Chart from "../../Chart";
+import Chart from '../../Chart';
+import NodesFilter from './NodesTypesFilter';
+import IsolatedFilter from './IsolatedFilter';
+import { resetFilter } from '../../store/actions/app';
 
 class FiltersModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filters: {
-        hideIsolated: false,
-      },
-    }
+  static propTypes = {
+    resetFilter: PropTypes.func.isRequired,
   }
 
-  handleChange = (key, value) => {
-    const { filters } = this.state;
-    filters[key] = value;
-    this.setState({ filters });
+  constructor(props) {
+    super(props);
+    const nodes = Chart.getNodes();
+    const links = Chart.getLinks();
+    this.state = {
+      nodes,
+      links,
+    };
+  }
 
-    Chart.render(undefined, { filters });
+  componentDidMount() {
+    Chart.event.on('render', this.handleChartRender);
+  }
+
+  componentWillUnmount() {
+    Chart.event.removeListener('render', this.handleChartRender);
+  }
+
+  handleChartRender = () => {
+    const nodes = Chart.getNodes();
+    const links = Chart.getLinks();
+    this.setState({ nodes, links });
   }
 
   render() {
-    const { filters } = this.state;
-    const nodes = Chart.getNodes().length;
-    const links = Chart.getLinks().length;
+    const { nodes, links } = this.state;
     return (
       <Modal
         className="ghModal ghModalFilters"
         overlayClassName="ghModalOverlay ghModalFiltersOverlay"
         isOpen
       >
-
-        <div className="row hideIsolated">
-          <Checkbox
-            label="Hide isolated nodes"
-            checked={filters.hideIsolated}
-            onChange={() => this.handleChange('hideIsolated', !filters.hideIsolated)}
-          />
-        </div>
         <div className="row resetAll">
-          <Button transparent>RESET ALL</Button>
-          {`Showing ${nodes} nodes out of ${links}`}
+          <Button transparent onClick={this.props.resetFilter}>RESET ALL</Button>
+          {`Showing ${nodes.filter((d) => !d.hidden).length} nodes out of ${nodes.length}`}
         </div>
+
+        <IsolatedFilter />
+
+        <NodesFilter nodes={nodes} />
+
       </Modal>
     );
   }
 }
 
-export default FiltersModal;
+const mapStateToProps = (state) => ({
+  singleGraph: state.graphs.singleGraph,
+});
+
+const mapDispatchToProps = {
+  resetFilter,
+};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FiltersModal);
+
+export default Container;

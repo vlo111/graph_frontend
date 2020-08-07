@@ -49,3 +49,21 @@ export function setLoading(isLoading = true) {
     payload: { isLoading },
   };
 }
+
+export const SET_FILTER = 'SET_FILTER';
+
+export function setFilter(key, value) {
+  return {
+    type: SET_FILTER,
+    payload: { key, value },
+  };
+}
+
+export const RESET_FILTER = 'RESET_FILTER';
+
+export function resetFilter() {
+  return {
+    type: RESET_FILTER,
+    payload: {},
+  };
+}

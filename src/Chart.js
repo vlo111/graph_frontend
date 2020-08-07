@@ -146,8 +146,11 @@ class Chart {
 
       this.radiusList = ChartUtils.getRadiusList();
 
+      const filteredLinks = this.data.links.filter((d) => !d.hidden);
+      const filteredNodes = this.data.nodes.filter((d) => !d.hidden);
+
       this.simulation = d3.forceSimulation(this.data.nodes)
-        .force('link', d3.forceLink(this.data.links).id((d) => d.name));
+        .force('link', d3.forceLink(filteredLinks).id((d) => d.name));
 
       this.autoPosition();
 
@@ -166,7 +169,7 @@ class Chart {
       this.linksWrapper = this.svg.select('.links');
 
       this.link = this.linksWrapper.selectAll('path')
-        .data(this.data.links)
+        .data(filteredLinks)
         .join('path')
         .attr('id', (d) => `l${d.index}`)
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
@@ -180,9 +183,8 @@ class Chart {
       this.icons = this.renderIcons();
 
       this.nodesWrapper = this.svg.select('.nodes');
-
       this.node = this.nodesWrapper.selectAll('.node')
-        .data(this.data.nodes)
+        .data(filteredNodes)
         .join('g')
         .attr('class', (d) => `node ${d.nodeType || 'circle'}`)
         .attr('fill', ChartUtils.nodeColor())
@@ -274,6 +276,8 @@ class Chart {
       this.renderNewLink();
       this.nodeFilter();
       this.windowResize();
+
+      this.event.emit('render', this);
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
@@ -288,7 +292,7 @@ class Chart {
     directions.selectAll('text textPath').remove();
 
     this.directions = directions.selectAll('text')
-      .data(this.data.links.filter((d) => d.direction))
+      .data(this.data.links.filter((d) => d.direction && !d.hidden))
       .join('text')
       .attr('dy', (d) => d.value * 1.8 + 1.55)
       .attr('dx', (d) => {
@@ -567,6 +571,7 @@ class Chart {
         description: d.description || '',
         icon: d.icon || '',
         link: d.link || '',
+        hidden: d.hidden,
       }));
     }
 
@@ -588,6 +593,7 @@ class Chart {
           linkType: pd.linkType || d.linkType || '',
           type: pd.type || d.type || '',
           direction: pd.direction || d.direction || '',
+          hidden: pd.hidden || d.hidden,
         };
       });
     }

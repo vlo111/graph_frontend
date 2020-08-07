@@ -374,6 +374,14 @@ p {
   input[type="checkbox"] {
     cursor: pointer;
   }
+
+  &.labelReverse {
+    label {
+      padding-right: 0;
+      padding-left: 10px;
+      order: 1;
+    }
+  }
 }
 
 #graph {
@@ -1016,7 +1024,8 @@ p {
         a {
           pointer-events: none;
         }
-        svg{
+
+        svg {
           max-width: 100%;
         }
       }
@@ -1564,7 +1573,8 @@ p {
   }
 
 }
-.lineDirectionSelect{
+
+.lineDirectionSelect {
   max-width: 100%;
 }
 
@@ -1621,10 +1631,19 @@ p {
 
   .button {
     margin: 0 10px 10px;
+
     .icon {
       font-size: 25px;
       cursor: pointer;
     }
   }
 
+}
+
+.nodesTypesFilter {
+  .list {
+    .item {
+      text-shadow: 0 0 1px #fafbfc;
+    }
+  }
 }

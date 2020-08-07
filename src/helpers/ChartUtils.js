@@ -1,14 +1,54 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
+import queryString from 'query-string';
 import Chart from '../Chart';
+import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
 
 class ChartUtils {
   static filter(data, params = {}) {
-    if (params.hideIsolated) {
-      data.nodes = data.nodes.filter((d) => data.links.some((l) => d.name === l.source || d.name === l.target));
-    }
+    data.nodes = data.nodes.map((d) => {
+      d.hidden = false;
+      if (params.hideIsolated && !data.links.some((l) => d.name === l.source || d.name === l.target)) {
+        d.hidden = true;
+      }
+      if (!d.hidden && !_.isEmpty(params.nodeType) && !params.nodeType.includes(d.type)) {
+        d.hidden = true;
+      }
+      return d;
+    });
+
+    data.links = data.links.map((d) => {
+      d.hidden = data.nodes.some((n) => n.hidden && (d.target === n.name || d.source === n.name));
+      return d;
+    });
+
     return data;
+  }
+
+  static setFilter(key, value) {
+    const query = queryString.parse(window.location.search);
+    const filters = this.getFilters();
+    filters[key] = value;
+    query.filters = JSON.stringify(filters);
+    const search = queryString.stringify(query);
+    history.replace(`?${search}`);
+  }
+
+  static getFilters() {
+    const query = queryString.parse(window.location.search);
+    let filters;
+    try {
+      filters = JSON.parse(query.filters) || {};
+    } catch (e) {
+      filters = {};
+    }
+    const defaultFilters = {
+      hideIsolated: '',
+      nodeType: [],
+    };
+
+    return { ...defaultFilters, ...filters };
   }
 
   static dashType(type, value) {
@@ -33,6 +73,9 @@ class ChartUtils {
 
   static getNodeDocumentPosition(i) {
     const node = document.querySelector(`#graph .node:nth-child(${i + 1})`);
+    if (!node) {
+      return {};
+    }
     return node.getBoundingClientRect();
   }
 
@@ -117,7 +160,6 @@ class ChartUtils {
     this.linkColorIndex = 0;
     this.nodeColorIndex = 0;
   }
-
 
   static setClass = (fn) => (d, index, g) => {
     const classObj = fn(d, index, g);

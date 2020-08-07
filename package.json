@@ -6,7 +6,7 @@
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
     "d3": "^5.16.0",
-    "file-saver": "^2.0.2",
+    "history": "^5.0.0",
     "jodit": "^3.4.15",
     "js-file-download": "^0.4.12",
     "lodash": "^4.17.19",
@@ -29,17 +29,13 @@
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
     "react-toastify": "^6.0.8",
-    "react-visibility-sensor": "^5.1.1",
     "redux": "^4.0.5",
-    "save-svg-as-png": "^1.4.17",
-    "string-strip-html": "^4.5.0",
-    "svg-to-img": "^2.0.9"
+    "string-strip-html": "^4.5.0"
   },
   "scripts": {
     "prod": "react-scripts start",
     "dev": "PORT=3001 REACT_APP_URL=2 react-scripts start",
     "start": "REACT_APP_URL=1 react-scripts start",
-
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

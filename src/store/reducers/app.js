@@ -1,15 +1,18 @@
+import _ from 'lodash';
 import {
   LOADING,
-  NEW_NODE_MODAL,
-  SET_ACTIVE_BUTTON, SET_GRID_INDEXES,
+  NEW_NODE_MODAL, RESET_FILTER,
+  SET_ACTIVE_BUTTON, SET_FILTER, SET_GRID_INDEXES,
   TOGGLE_GRID,
 } from '../actions/app';
+import ChartUtils from '../../helpers/ChartUtils';
 
 const initialState = {
   activeButton: 'create',
   nodeDescription: '',
   addNodeParams: {},
   isLoading: false,
+  filters: ChartUtils.getFilters(),
   selectedGrid: {
     nodes: [],
     links: [],
@@ -58,6 +61,21 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         isLoading,
+      };
+    }
+    case SET_FILTER: {
+      const { key, value } = action.payload;
+      const filters = { ...state.filters };
+      _.set(filters, key, value);
+      return {
+        ...state,
+        filters,
+      };
+    }
+    case RESET_FILTER: {
+      return {
+        ...state,
+        filters: {},
       };
     }
     default: {

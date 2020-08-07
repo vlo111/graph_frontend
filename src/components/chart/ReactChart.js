@@ -12,6 +12,11 @@ class ReactChart extends Component {
     activeButton: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
+    unmount: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    unmount: true,
   }
 
   renderChart = memoizeOne((nodes, links) => {
@@ -33,6 +38,8 @@ class ReactChart extends Component {
   }
 
   componentWillUnmount() {
+    const { unmount } = this.props;
+
     Chart.unmount();
   }
 

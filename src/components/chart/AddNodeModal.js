@@ -27,13 +27,13 @@ class AddNodeModal extends Component {
         name: '',
         icon: '',
         nodeType: 'circle',
-        type:  _.last(nodes)?.type || '',
+        type: _.last(nodes)?.type || '',
       },
       errors: {},
     });
   }, _.isEqual)
 
-  getGroups = memoizeOne((nodes) => {
+  getTypes = memoizeOne((nodes) => {
     const types = nodes.filter((d) => d.type)
       .map((d) => ({
         value: d.type,
@@ -84,7 +84,7 @@ class AddNodeModal extends Component {
     const { addNodeParams } = this.props;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
-    const groups = this.getGroups(nodes);
+    const groups = this.getTypes(nodes);
 
     return (
       <Modal
