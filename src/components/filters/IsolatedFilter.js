@@ -13,7 +13,7 @@ class IsolatedFilter extends Component {
   render() {
     const { filters } = this.props;
     return (
-      <div className="row hideIsolated">
+      <div className="row hideIsolated graphFilter">
         <Checkbox
           label="Hide isolated nodes"
           checked={filters.hideIsolated}

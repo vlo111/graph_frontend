@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '../form/Button';
 import Chart from '../../Chart';
-import NodesFilter from './NodesTypesFilter';
+import NodesFilter from './NodeTypesFilter';
 import IsolatedFilter from './IsolatedFilter';
 import { resetFilter } from '../../store/actions/app';
+import LinkTypesFilter from "./LinkTypesFilter";
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -53,6 +54,8 @@ class FiltersModal extends Component {
         <IsolatedFilter />
 
         <NodesFilter nodes={nodes} />
+
+        <LinkTypesFilter links={links} />
 
       </Modal>
     );

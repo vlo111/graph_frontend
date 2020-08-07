@@ -255,7 +255,7 @@ class Chart {
           .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
         this.linkText
-          .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + +d.value / 2 : (3 + +d.value / 2) * -1))
+          .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + +d.value / 2 : (5 + +d.value / 2) * -1))
           .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
         this.directions
@@ -400,11 +400,11 @@ class Chart {
     wrapper.selectAll('text textPath').remove();
 
     this.linkText = wrapper.selectAll('text')
-      .data(linksData)
+      .data(linksData.filter((d) => !d.hidden))
       .join('text')
       .attr('text-anchor', 'middle')
       .attr('fill', ChartUtils.linkColor())
-      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + d.value / 2 : (3 + d.value / 2) * -1))
+      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + d.value / 2 : (5 + d.value / 2) * -1))
       .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
     this.linkText.append('textPath')

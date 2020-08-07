@@ -1,20 +1,36 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
 import queryString from 'query-string';
+import memoizeOne from 'memoize-one';
 import Chart from '../Chart';
 import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
 
 class ChartUtils {
-  static filter(data, params = {}) {
-    data.nodes = data.nodes.map((d) => {
+  static filter = memoizeOne((data, params = {}) => {
+    data.links = data.links.map((d) => {
+      if (!_.isEmpty(params.linkTypes) && !params.linkTypes.includes(d.type)) {
+        d.hidden = true;
+        return d;
+      }
       d.hidden = false;
+      return d;
+    });
+
+    data.nodes = data.nodes.map((d) => {
+      if (data.links.some((l) => l.hidden && d.name === l.source)) {
+        d.hidden = true;
+        return d;
+      }
       if (params.hideIsolated && !data.links.some((l) => d.name === l.source || d.name === l.target)) {
         d.hidden = true;
+        return d;
       }
-      if (!d.hidden && !_.isEmpty(params.nodeType) && !params.nodeType.includes(d.type)) {
+      if (!_.isEmpty(params.nodeTypes) && !params.nodeTypes.includes(d.type)) {
         d.hidden = true;
+        return d;
       }
+      d.hidden = false;
       return d;
     });
 
@@ -24,7 +40,7 @@ class ChartUtils {
     });
 
     return data;
-  }
+  })
 
   static setFilter(key, value) {
     const query = queryString.parse(window.location.search);
@@ -45,7 +61,8 @@ class ChartUtils {
     }
     const defaultFilters = {
       hideIsolated: '',
-      nodeType: [],
+      nodeTypes: [],
+      linkTypes: [],
     };
 
     return { ...defaultFilters, ...filters };
