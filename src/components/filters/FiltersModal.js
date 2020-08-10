@@ -7,7 +7,8 @@ import Chart from '../../Chart';
 import NodesFilter from './NodeTypesFilter';
 import IsolatedFilter from './IsolatedFilter';
 import { resetFilter } from '../../store/actions/app';
-import LinkTypesFilter from "./LinkTypesFilter";
+import LinkTypesFilter from './LinkTypesFilter';
+import LinkValueFilter from './LinkValueFilter';
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -56,6 +57,8 @@ class FiltersModal extends Component {
         <NodesFilter nodes={nodes} />
 
         <LinkTypesFilter links={links} />
+
+        <LinkValueFilter links={links} />
 
       </Modal>
     );

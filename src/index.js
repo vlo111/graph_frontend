@@ -10,6 +10,7 @@ import reducers from './store/reducers';
 import { requestMiddleware } from './helpers/redux-request';
 
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-input-range/lib/css/index.css';
 import 'react-datasheet/lib/react-datasheet.css';
 import 'react-image-crop/lib/ReactCrop.scss';
 import './assets/styles/font-awesome.css';

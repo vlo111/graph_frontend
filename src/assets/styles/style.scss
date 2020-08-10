@@ -384,6 +384,24 @@ p {
   }
 }
 
+.ghRangeSelect {
+  .input-range__slider {
+    background: $color-main2;
+    border: 1px solid $color-main2;
+  }
+
+  .input-range__track--active {
+    background-color: $color-main2;
+  }
+
+  .input-range__label--value {
+    .input-range__label-container {
+      color: $color-main;
+    }
+  }
+
+}
+
 #graph {
   background-image: url("../images/graph-bg.png");
   background-position: center;
@@ -558,10 +576,8 @@ p {
   height: 60px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
-  .toggleFilter {
-    margin-left: auto;
-  }
 }
 
 #header {
@@ -1655,5 +1671,26 @@ p {
         align-self: flex-start;
       }
     }
+  }
+}
+
+.rangeDataChart {
+  display: flex;
+  align-items: flex-end;
+  height: 90px;
+  margin-bottom: -10px;
+
+  .item {
+    flex: 1;
+    background-color: $color-gray;
+    margin: 0 0.5px;
+  }
+}
+
+.linkValueFilter {
+  .ghRangeSelect {
+    padding: 0 19px;
+    position: relative;
+    z-index: 2;
   }
 }

@@ -14,15 +14,24 @@ class ChartUtils {
         d.hidden = true;
         return d;
       }
+      if (params.linkValue?.min > -1) {
+        console.log(d.value, params.linkValue.min, params.linkValue.max)
+        if (d.value < params.linkValue.min || d.value > params.linkValue.max) {
+          d.hidden = true;
+          return d;
+        }
+      }
       d.hidden = false;
       return d;
     });
 
+    //todo fix link filter
+
     data.nodes = data.nodes.map((d) => {
-      if (data.links.some((l) => l.hidden && (d.name === l.source || d.name === d.target))) {
-        d.hidden = true;
-        return d;
-      }
+      // if (data.links.some((l) => l.hidden && (d.name === l.source ))) {
+      //   d.hidden = true;
+      //   return d;
+      // }
       if (params.hideIsolated && !data.links.some((l) => d.name === l.source || d.name === l.target)) {
         d.hidden = true;
         return d;

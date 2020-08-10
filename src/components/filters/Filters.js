@@ -24,6 +24,9 @@ class Filters extends Component {
     const show = pathname.startsWith('/graphs/filter/');
     const replace = pathname.startsWith('/graphs/view/') || pathname.startsWith('/graphs/filter/');
     this.renderChart(filters);
+    if (!graphId) {
+      return null;
+    }
     return (
       <>
         {show ? (

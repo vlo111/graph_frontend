@@ -22,7 +22,9 @@ class GraphView extends Component {
   componentDidMount() {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('view');
-    this.props.getSingleGraphRequest(graphId);
+    if(+graphId){
+      this.props.getSingleGraphRequest(graphId);
+    }
   }
 
   render() {
