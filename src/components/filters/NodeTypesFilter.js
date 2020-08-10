@@ -6,9 +6,9 @@ import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
 import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
-import Button from "../form/Button";
+import Button from '../form/Button';
 
-class nodeTypessFilter extends Component {
+class NodeTypesFilter extends Component {
   static propTypes = {
     filters: PropTypes.object.isRequired,
     setFilter: PropTypes.func.isRequired,
@@ -32,7 +32,7 @@ class nodeTypessFilter extends Component {
     super(props);
     this.state = {
       showMore: false,
-    }
+    };
   }
 
   handleChange = (value) => {
@@ -102,6 +102,6 @@ const mapDispatchToProps = {
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(nodeTypessFilter);
+)(NodeTypesFilter);
 
 export default Container;
