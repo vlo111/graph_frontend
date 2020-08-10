@@ -76,7 +76,7 @@ class NodeDescription extends Component {
           <Icon className="close" value="fa-close" onClick={this.hideInfo} />
           <div className="left">
             <span
-              className={`node ${node.nodeType}`}
+              className={`node ${node.nodeType} ${node.icon ? 'hasImage' : ''}`}
               style={{ background: !node.icon ? ChartUtils.nodeColor()(node) : undefined }}
             >
               {node.icon ? (
