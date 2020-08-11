@@ -385,6 +385,8 @@ p {
 }
 
 .ghRangeSelect {
+  padding-bottom: 20px;
+
   .input-range__slider {
     background: $color-main2;
     border: 1px solid $color-main2;
@@ -1677,7 +1679,7 @@ p {
 .rangeDataChart {
   display: flex;
   align-items: flex-end;
-  height: 90px;
+  height: 80px;
   margin-bottom: -10px;
 
   .item {
@@ -1689,7 +1691,7 @@ p {
 
 .linkValueFilter {
   .ghRangeSelect {
-    padding: 0 19px;
+    padding: 0 19px 20px;
     position: relative;
     z-index: 2;
   }

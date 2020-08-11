@@ -139,7 +139,7 @@ class Chart {
       this._dataNodes = null;
       this._dataLinks = null;
       data.nodes = data.nodes || Chart.getNodes();
-      data.links = data.links || Chart.getLinks();
+      data.links = data.links || _.cloneDeep(Chart.getLinks());
 
       this.data = this.normalizeData(data);
       this.data = ChartUtils.filter(data, params.filters);
@@ -167,7 +167,6 @@ class Chart {
       this.wrapper = this.svg.select('.wrapper');
 
       this.linksWrapper = this.svg.select('.links');
-
       this.link = this.linksWrapper.selectAll('path')
         .data(filteredLinks)
         .join('path')

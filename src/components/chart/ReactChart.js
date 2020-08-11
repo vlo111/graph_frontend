@@ -38,8 +38,6 @@ class ReactChart extends Component {
   }
 
   componentWillUnmount() {
-    const { unmount } = this.props;
-
     Chart.unmount();
   }
 

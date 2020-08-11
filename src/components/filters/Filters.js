@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import { connect } from 'react-redux';
 import FiltersModal from './FiltersModal';

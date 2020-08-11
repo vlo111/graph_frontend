@@ -8,7 +8,6 @@ import SignUp from './pages/sign/SignUp';
 import Home from './pages/Home';
 import GraphView from './pages/GraphView';
 import SignOut from './pages/sign/SignOut';
-import history from './helpers/history';
 
 class App extends Component {
   render() {

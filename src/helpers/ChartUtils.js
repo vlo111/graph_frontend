@@ -9,13 +9,15 @@ import { DEFAULT_FILTERS } from '../data/filter';
 
 class ChartUtils {
   static filter = memoizeOne((data, params = {}) => {
+    if (_.isEmpty(params)) {
+      return data;
+    }
     data.links = data.links.map((d) => {
       if (!_.isEmpty(params.linkTypes) && !params.linkTypes.includes(d.type)) {
         d.hidden = true;
         return d;
       }
       if (params.linkValue?.min > -1) {
-        console.log(d.value, params.linkValue.min, params.linkValue.max)
         if (d.value < params.linkValue.min || d.value > params.linkValue.max) {
           d.hidden = true;
           return d;
@@ -25,13 +27,19 @@ class ChartUtils {
       return d;
     });
 
-    //todo fix link filter
-
     data.nodes = data.nodes.map((d) => {
-      // if (data.links.some((l) => l.hidden && (d.name === l.source ))) {
-      //   d.hidden = true;
-      //   return d;
-      // }
+      if (data.links.some((l) => l.hidden && d.name === l.source)) {
+        d.hidden = true;
+        return d;
+      }
+      if (params.linkConnection?.min > -1) {
+        console.log(data.links.filter((l) => l.source === d.name || l.target === d.name))
+        if (length < params.linkConnection.min || length > params.linkConnection.max) {
+          console.log(length)
+          d.hidden = true;
+          return d;
+        }
+      }
       if (params.hideIsolated && !data.links.some((l) => d.name === l.source || d.name === l.target)) {
         d.hidden = true;
         return d;
@@ -45,7 +53,7 @@ class ChartUtils {
     });
 
     data.links = data.links.map((d) => {
-      d.hidden = data.nodes.some((n) => n.hidden && (d.target === n.name || d.source === n.name));
+      d.hidden = d.hidden || data.nodes.some((n) => n.hidden && (d.target === n.name || d.source === n.name));
       return d;
     });
 

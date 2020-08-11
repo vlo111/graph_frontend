@@ -6,4 +6,8 @@ export const DEFAULT_FILTERS = {
     min: -1,
     max: -1,
   },
+  linkConnection: {
+    min: -1,
+    max: -1,
+  },
 };

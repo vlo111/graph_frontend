@@ -9,6 +9,7 @@ import IsolatedFilter from './IsolatedFilter';
 import { resetFilter } from '../../store/actions/app';
 import LinkTypesFilter from './LinkTypesFilter';
 import LinkValueFilter from './LinkValueFilter';
+import NodeConnectionFilter from "./NodeConnectionFilter";
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -59,6 +60,8 @@ class FiltersModal extends Component {
         <LinkTypesFilter links={links} />
 
         <LinkValueFilter links={links} />
+
+        <NodeConnectionFilter links={links} />
 
       </Modal>
     );
