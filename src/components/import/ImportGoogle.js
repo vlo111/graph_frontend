@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
-import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { setActiveButton } from '../../store/actions/app';
-import File from '../form/File';
 import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
-import Chart from '../../Chart';
+import Input from '../form/Input';
+import ImportStep2 from './ImportStep2';
 
 class DataImportModal extends Component {
   static propTypes = {
     convertGraphRequest: PropTypes.func.isRequired,
     importData: PropTypes.object.isRequired,
-    activeButton: PropTypes.string.isRequired,
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -57,20 +54,9 @@ class DataImportModal extends Component {
 
   convert = async () => {
     const { requestData } = this.state;
-    const { file } = requestData;
-    toast.dismiss(this.toast);
-    if (!file) {
-      this.toast = toast.warn('Please Select File');
-      return;
-    }
-    let convertType = 'xlsx';
-    if (file.type === 'text/csv') {
-      convertType = 'csv';
-    } else if (file.type === 'application/zip') {
-      convertType = 'csv-zip';
-    }
+
     this.setState({ loading: true });
-    const { payload: { data } } = await this.props.convertGraphRequest(convertType, requestData);
+    const { payload: { data } } = await this.props.convertGraphRequest('google-sheets', requestData);
     if (data.nodes?.length) {
       this.setState({ loading: false, step: 2 });
     } else {
@@ -79,63 +65,31 @@ class DataImportModal extends Component {
     }
   }
 
-  import = () => {
-    const { importData: { nodes = [], links = [] } } = this.props;
-    Chart.render({ nodes, links });
-    this.closeModal();
+  handleChange = async (path, value) => {
+    const { requestData } = this.state;
+    _.set(requestData, path, value);
+    this.setState({ requestData });
   }
 
   render() {
-    const { activeButton, importData } = this.props;
-    const { fileType, step, loading } = this.state;
-    this.resetStep(activeButton === 'import');
-    let file1Label = 'Select File';
-    let file2Label = 'Select File';
-    if (fileType === 'nodes') {
-      file1Label = 'Select File (nodes)';
-      file2Label = 'Select File (links)';
-    } else if (fileType === 'links') {
-      file1Label = 'Select File (links)';
-      file2Label = 'Select File (nodes)';
-    }
+    const { importData } = this.props;
+    const { step, loading } = this.state;
+
     return (
       <>
         {step === 1 ? (
           <>
-            <File
-              onChangeFile={(file) => this.handleChange('file', file)}
-              accept=".xlsx"
-              label={file1Label}
+            <Input
+              value={importData.url}
+              onChangeText={(value) => this.handleChange('url', value)}
+              type="url"
+              label="Google Sheets URL"
+              placeholder="Paste URL from your Google Sheets"
             />
-            {['nodes', 'links'].includes(fileType) ? (
-              <File
-                onChangeFile={(file) => this.handleChange('file_2', file)}
-                accept=".csv"
-                label={file2Label}
-              />
-            ) : null}
             <Button onClick={this.convert} loading={loading}>Next</Button>
           </>
         ) : null}
-        {step === 2 ? (
-          <>
-            <div>
-              <strong>Nodes: </strong>
-              {importData.nodes?.length || 0}
-            </div>
-            <div>
-              <strong>Links: </strong>
-              {importData.links?.length || 0}
-            </div>
-            {importData.warnings?.length ? (
-              <div>
-                <span>Warnings: </span>
-                {importData.warnings?.length}
-              </div>
-            ) : null}
-            <Button onClick={this.import} loading={loading}>Import</Button>
-          </>
-        ) : null}
+        {step === 2 ? <ImportStep2 /> : null}
       </>
     );
   }

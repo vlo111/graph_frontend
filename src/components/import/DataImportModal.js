@@ -7,6 +7,7 @@ import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportXlsx from './ImportXlsx';
 import Button from '../form/Button';
 import ImportGoogle from "./ImportGoogle";
+import Chart from "../../Chart";
 
 class DataImportModal extends Component {
   static propTypes = {

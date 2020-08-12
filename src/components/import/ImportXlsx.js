@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { setActiveButton } from '../../store/actions/app';
 import File from '../form/File';
 import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import Chart from '../../Chart';
+import ImportStep2 from "./ImportStep2";
 
 class DataImportModal extends Component {
   static propTypes = {
     convertGraphRequest: PropTypes.func.isRequired,
+    import: PropTypes.func.isRequired,
     importData: PropTypes.object.isRequired,
     activeButton: PropTypes.string.isRequired,
   }
@@ -86,9 +86,8 @@ class DataImportModal extends Component {
   }
 
   render() {
-    const { activeButton, importData } = this.props;
+    const { importData } = this.props;
     const { fileType, step, loading } = this.state;
-    this.resetStep(activeButton === 'import');
     let file1Label = 'Select File';
     let file2Label = 'Select File';
     if (fileType === 'nodes') {
@@ -117,25 +116,7 @@ class DataImportModal extends Component {
             <Button onClick={this.convert} loading={loading}>Next</Button>
           </>
         ) : null}
-        {step === 2 ? (
-          <>
-            <div>
-              <strong>Nodes: </strong>
-              {importData.nodes?.length || 0}
-            </div>
-            <div>
-              <strong>Links: </strong>
-              {importData.links?.length || 0}
-            </div>
-            {importData.warnings?.length ? (
-              <div>
-                <span>Warnings: </span>
-                {importData.warnings?.length}
-              </div>
-            ) : null}
-            <Button onClick={this.import} loading={loading}>Import</Button>
-          </>
-        ) : null}
+        {step === 2 ? <ImportStep2 /> : null}
       </>
     );
   }
