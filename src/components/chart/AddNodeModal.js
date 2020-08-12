@@ -145,13 +145,13 @@ class AddNodeModal extends Component {
 const mapStateToProps = (state) => ({
   addNodeParams: state.app.addNodeParams,
 });
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   toggleNodeModal,
 };
 
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(AddNodeModal);
 
 export default Container;

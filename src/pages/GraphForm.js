@@ -9,7 +9,7 @@ import AddNodeModal from '../components/chart/AddNodeModal';
 import Crop from '../components/chart/Crop';
 import ContextMenu from '../components/ContextMenu';
 import DataView from '../components/dataView/DataView';
-import DataImport from '../components/DataImport';
+import DataImport from '../components/import/DataImportModal';
 import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
@@ -60,13 +60,13 @@ class GraphForm extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
 });
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
 };
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(GraphForm);
 
 export default Container;

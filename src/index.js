@@ -1,3 +1,4 @@
+import 'react-app-polyfill/ie11';
 import 'react-hot-loader';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -43,3 +44,7 @@ ReactDOM.render((
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+window.graphs = {
+  version: '0.0.2',
+};

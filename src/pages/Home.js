@@ -95,13 +95,13 @@ const mapStateToProps = (state) => ({
   graphsListInfo: state.graphs.graphsListInfo,
 });
 
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   getGraphsListRequest,
 };
 
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(Home);
 
 export default Container;

@@ -71,13 +71,13 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
 });
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
 };
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(GraphView);
 
 export default Container;

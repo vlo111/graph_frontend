@@ -157,11 +157,11 @@ class AddLinkModal extends Component {
 }
 
 const mapStateToProps = () => ({});
-const mapDespatchToProps = {};
+const mapDispatchToProps = {};
 
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(AddLinkModal);
 
 export default Container;

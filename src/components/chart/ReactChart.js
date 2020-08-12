@@ -102,13 +102,13 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
 });
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   toggleNodeModal,
 };
 
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(ReactChart);
 
 export default Container;

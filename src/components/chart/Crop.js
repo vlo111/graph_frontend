@@ -102,14 +102,14 @@ class Crop extends Component {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   setGridIndexes,
   setActiveButton,
 };
 
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(Crop);
 
 export default Container;
