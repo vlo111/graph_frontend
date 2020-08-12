@@ -53,25 +53,46 @@ class NodeConnectionFilter extends Component {
     };
   }, _.isEqual);
 
+  setPadding = memoizeOne((item) => {
+    if (item) {
+      const { width } = item.getBoundingClientRect();
+      this.setState({ padding: width / 2 });
+    }
+  });
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      padding: 0,
+    };
+  }
+
+  componentDidUpdate() {
+    this.setPadding(this.item);
+  }
+
   handleChange = (values) => {
     this.props.setFilter('linkConnection', values);
   }
 
+
   render() {
+    const { padding } = this.state;
     const { links, nodes, linkConnection } = this.props;
     const { connections, max, min } = this.getNodeConnections(nodes, links);
     if (min === max) {
       return null;
     }
     return (
-      <div className="nodeConnectionFilter graphFilter">
+      <div className="nodeConnectionFilter graphFilter graphFilterChart">
         <h4 className="title">Node Connections</h4>
         <div className="rangeDataChart">
-          {_.range(min, max + 1).map((num) => {
+          {_.range(min, max + 1).map((num, i) => {
             const connection = connections.find((v) => v.count === num);
             return (
               <div
                 key={num}
+                ref={i === 0 ? (ref) => this.item = ref : undefined}
                 style={{ height: connection ? `${connection.percentage}%` : 0 }}
                 className="item"
                 title={connection?.value}
@@ -79,7 +100,7 @@ class NodeConnectionFilter extends Component {
             );
           })}
         </div>
-        <div className="ghRangeSelect">
+        <div className="ghRangeSelect" style={{ padding }}>
           <InputRange
             minValue={min}
             maxValue={max}

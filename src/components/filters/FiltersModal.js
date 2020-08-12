@@ -49,7 +49,7 @@ class FiltersModal extends Component {
         isOpen
       >
         <div className="row resetAll">
-          <Button transparent onClick={this.props.resetFilter}>RESET ALL</Button>
+          <Button onClick={this.props.resetFilter}>RESET ALL</Button>
           {`Showing ${nodes.filter((d) => !d.hidden).length} nodes out of ${nodes.length}`}
         </div>
 

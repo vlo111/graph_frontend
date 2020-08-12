@@ -41,25 +41,45 @@ class LinkValueFilter extends Component {
     };
   }, _.isEqual);
 
+  setPadding = memoizeOne((item) => {
+    if (item) {
+      const { width } = item.getBoundingClientRect();
+      this.setState({ padding: width / 2 });
+    }
+  });
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      padding: 0,
+    };
+  }
+
+  componentDidUpdate() {
+    this.setPadding(this.item);
+  }
+
   handleChange = (values) => {
     this.props.setFilter('linkValue', values);
   }
 
   render() {
+    const { padding } = this.state;
     const { links, linkValue } = this.props;
     const { values, max, min } = this.getLinkValue(links);
     if (min === max) {
       return null;
     }
     return (
-      <div className="linkValueFilter graphFilter">
+      <div className="linkValueFilter graphFilter graphFilterChart">
         <h4 className="title">Link Values</h4>
         <div className="rangeDataChart">
-          {_.range(min, max + 1).map((num) => {
+          {_.range(min, max + 1).map((num, i) => {
             const value = values.find((v) => v.value === num);
             return (
               <div
                 key={num}
+                ref={i === 0 ? (ref) => this.item = ref : undefined}
                 style={{ height: value ? `${value.percentage}%` : 0 }}
                 className="item"
                 title={value?.value}
@@ -67,7 +87,7 @@ class LinkValueFilter extends Component {
             );
           })}
         </div>
-        <div className="ghRangeSelect">
+        <div className="ghRangeSelect" style={{ padding }}>
           <InputRange
             minValue={min}
             maxValue={max}
