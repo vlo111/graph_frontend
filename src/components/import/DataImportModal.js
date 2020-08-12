@@ -5,12 +5,12 @@ import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { setActiveButton } from '../store/actions/app';
-import File from './form/File';
-import Button from './form/Button';
-import Utils from '../helpers/Utils';
-import { convertGraphRequest } from '../store/actions/graphs';
-import Chart from '../Chart';
+import { setActiveButton } from '../../store/actions/app';
+import File from '../form/File';
+import Button from '../form/Button';
+import Utils from '../../helpers/Utils';
+import { convertGraphRequest } from '../../store/actions/graphs';
+import Chart from '../../Chart';
 
 class DataImport extends Component {
   static propTypes = {
