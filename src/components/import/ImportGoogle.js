@@ -60,7 +60,7 @@ class DataImportModal extends Component {
     if (data.nodes?.length) {
       this.setState({ loading: false, step: 2 });
     } else {
-      this.toast = toast.error('Invalid File');
+      this.toast = toast.error(data.errors?.url || 'something went wrong');
       this.setState({ loading: false });
     }
   }
