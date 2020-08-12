@@ -165,7 +165,7 @@ const mapStateToProps = (state) => ({
   selectedGrid: state.app.selectedGrid,
 });
 
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   setActiveButton,
   setLoading,
   setGridIndexes,
@@ -173,7 +173,7 @@ const mapDespatchToProps = {
 
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(DataView);
 
 export default Container;

@@ -12,6 +12,11 @@ class ReactChart extends Component {
     activeButton: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
+    unmount: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    unmount: true,
   }
 
   renderChart = memoizeOne((nodes, links) => {
@@ -97,13 +102,13 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
 });
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   toggleNodeModal,
 };
 
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(ReactChart);
 
 export default Container;

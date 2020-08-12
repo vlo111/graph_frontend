@@ -17,6 +17,8 @@ class App extends Component {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/graphs/view/:graphId" component={GraphView} />
+            <Route path="/graphs/preview/:graphId" component={GraphView} />
+            <Route path="/graphs/filter/:graphId" component={GraphView} />
             <Route path="/graphs/create" component={GraphForm} />
             <Route path="/graphs/update/:graphId" component={GraphForm} />
 

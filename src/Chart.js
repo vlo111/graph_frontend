@@ -139,15 +139,18 @@ class Chart {
       this._dataNodes = null;
       this._dataLinks = null;
       data.nodes = data.nodes || Chart.getNodes();
-      data.links = data.links || Chart.getLinks();
+      data.links = data.links || _.cloneDeep(Chart.getLinks());
 
       this.data = this.normalizeData(data);
       this.data = ChartUtils.filter(data, params.filters);
 
       this.radiusList = ChartUtils.getRadiusList();
 
+      const filteredLinks = this.data.links.filter((d) => !d.hidden);
+      const filteredNodes = this.data.nodes.filter((d) => !d.hidden);
+
       this.simulation = d3.forceSimulation(this.data.nodes)
-        .force('link', d3.forceLink(this.data.links).id((d) => d.name));
+        .force('link', d3.forceLink(filteredLinks).id((d) => d.name));
 
       this.autoPosition();
 
@@ -164,9 +167,8 @@ class Chart {
       this.wrapper = this.svg.select('.wrapper');
 
       this.linksWrapper = this.svg.select('.links');
-
       this.link = this.linksWrapper.selectAll('path')
-        .data(this.data.links)
+        .data(filteredLinks)
         .join('path')
         .attr('id', (d) => `l${d.index}`)
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
@@ -180,9 +182,8 @@ class Chart {
       this.icons = this.renderIcons();
 
       this.nodesWrapper = this.svg.select('.nodes');
-
       this.node = this.nodesWrapper.selectAll('.node')
-        .data(this.data.nodes)
+        .data(filteredNodes)
         .join('g')
         .attr('class', (d) => `node ${d.nodeType || 'circle'}`)
         .attr('fill', ChartUtils.nodeColor())
@@ -253,7 +254,7 @@ class Chart {
           .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
         this.linkText
-          .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + +d.value / 2 : (3 + +d.value / 2) * -1))
+          .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + +d.value / 2 : (5 + +d.value / 2) * -1))
           .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
         this.directions
@@ -274,6 +275,8 @@ class Chart {
       this.renderNewLink();
       this.nodeFilter();
       this.windowResize();
+
+      this.event.emit('render', this);
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
@@ -288,7 +291,7 @@ class Chart {
     directions.selectAll('text textPath').remove();
 
     this.directions = directions.selectAll('text')
-      .data(this.data.links.filter((d) => d.direction))
+      .data(this.data.links.filter((d) => d.direction && !d.hidden))
       .join('text')
       .attr('dy', (d) => d.value * 1.8 + 1.55)
       .attr('dx', (d) => {
@@ -396,11 +399,11 @@ class Chart {
     wrapper.selectAll('text textPath').remove();
 
     this.linkText = wrapper.selectAll('text')
-      .data(linksData)
+      .data(linksData.filter((d) => !d.hidden))
       .join('text')
       .attr('text-anchor', 'middle')
       .attr('fill', ChartUtils.linkColor())
-      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 15 + d.value / 2 : (3 + d.value / 2) * -1))
+      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + d.value / 2 : (5 + d.value / 2) * -1))
       .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
     this.linkText.append('textPath')
@@ -567,6 +570,7 @@ class Chart {
         description: d.description || '',
         icon: d.icon || '',
         link: d.link || '',
+        hidden: d.hidden,
       }));
     }
 
@@ -588,6 +592,7 @@ class Chart {
           linkType: pd.linkType || d.linkType || '',
           type: pd.type || d.type || '',
           direction: pd.direction || d.direction || '',
+          hidden: pd.hidden || d.hidden,
         };
       });
     }

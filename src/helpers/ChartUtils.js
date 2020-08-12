@@ -1,14 +1,83 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
+import queryString from 'query-string';
+import memoizeOne from 'memoize-one';
 import Chart from '../Chart';
+import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
+import { DEFAULT_FILTERS } from '../data/filter';
 
 class ChartUtils {
-  static filter(data, params = {}) {
-    if (params.hideIsolated) {
-      data.nodes = data.nodes.filter((d) => data.links.some((l) => d.name === l.source || d.name === l.target));
+  static filter = memoizeOne((data, params = {}) => {
+    if (_.isEmpty(params)) {
+      return data;
     }
+    data.links = data.links.map((d) => {
+      if (!_.isEmpty(params.linkTypes) && !params.linkTypes.includes(d.type)) {
+        d.hidden = true;
+        return d;
+      }
+      if (params.linkValue?.min > -1) {
+        if (d.value < params.linkValue.min || d.value > params.linkValue.max) {
+          d.hidden = true;
+          return d;
+        }
+      }
+      d.hidden = false;
+      return d;
+    });
+
+    data.nodes = data.nodes.map((d) => {
+      if (data.links.some((l) => l.hidden && d.name === l.source)) {
+        d.hidden = true;
+        return d;
+      }
+      if (params.linkConnection?.min > -1) {
+        const { length = 0 } = data.links.filter((l) => l.source === d.name || l.target === d.name) || {};
+        if (length < params.linkConnection.min || length > params.linkConnection.max) {
+          d.hidden = true;
+          return d;
+        }
+      }
+      if (params.hideIsolated && !data.links.some((l) => d.name === l.source || d.name === l.target)) {
+        d.hidden = true;
+        return d;
+      }
+      if (!_.isEmpty(params.nodeTypes) && !params.nodeTypes.includes(d.type)) {
+        d.hidden = true;
+        return d;
+      }
+      d.hidden = false;
+      return d;
+    });
+
+    data.links = data.links.map((d) => {
+      d.hidden = d.hidden || data.nodes.some((n) => n.hidden && (d.target === n.name || d.source === n.name));
+      return d;
+    });
+
     return data;
+  })
+
+  static setFilter(key, value) {
+    const query = queryString.parse(window.location.search);
+    const filters = this.getFilters();
+    filters[key] = value;
+    query.filters = JSON.stringify(filters);
+    const search = queryString.stringify(query);
+    history.replace(`?${search}`);
+  }
+
+  static getFilters() {
+    const query = queryString.parse(window.location.search);
+    let filters;
+    try {
+      filters = JSON.parse(query.filters) || {};
+    } catch (e) {
+      filters = {};
+    }
+
+    return { ...DEFAULT_FILTERS, ...filters };
   }
 
   static dashType(type, value) {
@@ -33,6 +102,9 @@ class ChartUtils {
 
   static getNodeDocumentPosition(i) {
     const node = document.querySelector(`#graph .node:nth-child(${i + 1})`);
+    if (!node) {
+      return {};
+    }
     return node.getBoundingClientRect();
   }
 
@@ -117,7 +189,6 @@ class ChartUtils {
     this.linkColorIndex = 0;
     this.nodeColorIndex = 0;
   }
-
 
   static setClass = (fn) => (d, index, g) => {
     const classObj = fn(d, index, g);

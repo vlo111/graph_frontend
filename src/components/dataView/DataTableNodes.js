@@ -218,7 +218,7 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   selectedNodes: state.app.selectedGrid.nodes,
 });
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   setActiveButton,
   toggledGrid,
   setGridIndexes,
@@ -226,7 +226,7 @@ const mapDespatchToProps = {
 
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(DataTableNodes);
 
 export default Container;

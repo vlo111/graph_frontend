@@ -92,12 +92,12 @@ class ToolBar extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
 });
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   setActiveButton,
 };
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(ToolBar);
 
 export default Container;

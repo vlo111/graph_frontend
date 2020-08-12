@@ -5,16 +5,15 @@ import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { setActiveButton } from '../store/actions/app';
-import File from './form/File';
-import Button from './form/Button';
-import Utils from '../helpers/Utils';
-import { convertGraphRequest } from '../store/actions/graphs';
-import Chart from '../Chart';
+import { setActiveButton } from '../../store/actions/app';
+import File from '../form/File';
+import Button from '../form/Button';
+import Utils from '../../helpers/Utils';
+import { convertGraphRequest } from '../../store/actions/graphs';
+import Chart from '../../Chart';
 
-class DataImport extends Component {
+class DataImportModal extends Component {
   static propTypes = {
-    setActiveButton: PropTypes.func.isRequired,
     convertGraphRequest: PropTypes.func.isRequired,
     importData: PropTypes.object.isRequired,
     activeButton: PropTypes.string.isRequired,
@@ -33,10 +32,6 @@ class DataImport extends Component {
       loading: false,
       requestData: [],
     };
-  }
-
-  closeModal = () => {
-    this.props.setActiveButton('create');
   }
 
   handleChange = async (path, file) => {
@@ -104,12 +99,7 @@ class DataImport extends Component {
       file2Label = 'Select File (nodes)';
     }
     return (
-      <Modal
-        isOpen={activeButton === 'import'}
-        className="ghModal ghImportModal"
-        overlayClassName="ghModalOverlay"
-        onRequestClose={this.closeModal}
-      >
+      <>
         {step === 1 ? (
           <>
             <File
@@ -146,8 +136,7 @@ class DataImport extends Component {
             <Button onClick={this.import} loading={loading}>Import</Button>
           </>
         ) : null}
-
-      </Modal>
+      </>
     );
   }
 }
@@ -156,13 +145,12 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   importData: state.graphs.importData,
 });
-const mapDespatchToProps = {
-  setActiveButton,
+const mapDispatchToProps = {
   convertGraphRequest,
 };
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
-)(DataImport);
+  mapDispatchToProps,
+)(DataImportModal);
 
 export default Container;

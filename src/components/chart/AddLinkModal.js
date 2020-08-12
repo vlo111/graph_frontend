@@ -7,11 +7,10 @@ import Select from '../form/Select';
 import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
-import ChartUtils from '../../helpers/ChartUtils';
 import Checkbox from '../form/Checkbox';
 import { DASH_TYPES } from '../../data/link';
-import Validate from "../../helpers/Validate";
-import SvgLine from "../SvgLine";
+import Validate from '../../helpers/Validate';
+import SvgLine from '../SvgLine';
 
 class AddLinkModal extends Component {
   getTypes = memoizeOne((links) => {
@@ -158,11 +157,11 @@ class AddLinkModal extends Component {
 }
 
 const mapStateToProps = () => ({});
-const mapDespatchToProps = {};
+const mapDispatchToProps = {};
 
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(AddLinkModal);
 
 export default Container;

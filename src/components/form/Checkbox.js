@@ -10,6 +10,7 @@ class Checkbox extends Component {
     label: PropTypes.string,
     error: PropTypes.string,
     children: PropTypes.node,
+    labelReverse: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -19,6 +20,7 @@ class Checkbox extends Component {
     label: undefined,
     children: undefined,
     error: undefined,
+    labelReverse: undefined,
   }
 
   static id = 0;
@@ -32,18 +34,18 @@ class Checkbox extends Component {
   render() {
     const {
       id, label, containerClassName, containerId, children,
-      error, ...props
+      error, labelReverse, ...props
     } = this.props;
     const inputId = id || `checkbox_${this.id}`;
     return (
       <div
         id={containerId}
-        className={classNames(containerClassName, 'ghFormField', 'ghCheckbox')}
+        className={classNames(containerClassName, 'ghFormField', 'ghCheckbox', { labelReverse })}
       >
+        <input {...props} id={inputId} type="checkbox" />
         {label ? (
           <label htmlFor={inputId}>{label}</label>
         ) : null}
-        <input {...props} id={inputId} type="checkbox" />
         {children}
         {error ? (
           <div className="error">{error}</div>

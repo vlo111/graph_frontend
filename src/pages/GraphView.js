@@ -8,6 +8,7 @@ import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Button from '../components/form/Button';
+import GraphHeader from "../components/GraphHeader";
 
 class GraphView extends Component {
   static propTypes = {
@@ -15,30 +16,23 @@ class GraphView extends Component {
     getSingleGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      preview: true,
-    };
+    location: PropTypes.object.isRequired,
   }
 
   componentDidMount() {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('view');
-    this.props.getSingleGraphRequest(graphId);
-  }
-
-  viwGraph = () => {
-    this.setState({ preview: false });
+    if(+graphId){
+      this.props.getSingleGraphRequest(graphId);
+    }
   }
 
   render() {
-    const { singleGraph } = this.props;
-    const { preview } = this.state;
+    const { singleGraph, location: { pathname } } = this.props;
+    const preview = pathname.startsWith('/graphs/preview/');
     return (
       <Wrapper className="graphView" showHeader={!preview} showFooter={false}>
+        <GraphHeader />
         <div className="graphWrapper">
           <ReactChart />
         </div>
@@ -56,9 +50,9 @@ class GraphView extends Component {
               <strong>{'Links: '}</strong>
               {singleGraph.links?.length}
             </div>
-            <Button className="white view" onClick={this.viwGraph}>
+            <Link className="ghButton view" to={`/graphs/view/${singleGraph.id}`} replace>
               View Graph
-            </Button>
+            </Link>
           </div>
         ) : (
           <>
@@ -77,13 +71,13 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
 });
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
 };
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(GraphView);
 
 export default Container;

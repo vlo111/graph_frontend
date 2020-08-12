@@ -61,17 +61,17 @@ class Home extends Component {
                   </div>
                 </div>
               </div>
-              <Link to={`/graphs/view/${graph.id}`}>
+              <Link to={`/graphs/preview/${graph.id}`}>
                 <img
                   className="thumbnail"
                   src={Utils.fileSrc(`/public/uploads/thumbnails/${graph.id}.png`)}
                   alt={graph.title}
                 />
               </Link>
-              <Link to={`/graphs/view/${graph.id}`}>
+              <Link to={`/graphs/preview/${graph.id}`}>
                 <h3 className="title">{graph.title}</h3>
               </Link>
-              <Link to={`/graphs/view/${graph.id}`}>
+              <Link to={`/graphs/preview/${graph.id}`}>
                 <p className="description">{graph.description}</p>
               </Link>
             </article>
@@ -95,13 +95,13 @@ const mapStateToProps = (state) => ({
   graphsListInfo: state.graphs.graphsListInfo,
 });
 
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   getGraphsListRequest,
 };
 
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(Home);
 
 export default Container;

@@ -9,12 +9,13 @@ import AddNodeModal from '../components/chart/AddNodeModal';
 import Crop from '../components/chart/Crop';
 import ContextMenu from '../components/ContextMenu';
 import DataView from '../components/dataView/DataView';
-import DataImport from '../components/DataImport';
+import DataImport from '../components/import/DataImportModal';
 import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
-import Zoom from "../components/Zoom";
+import Zoom from '../components/Zoom';
+import SaveGraph from "../components/chart/SaveGraph";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -27,7 +28,7 @@ class GraphForm extends Component {
   componentDidMount() {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('create');
-    if (graphId) {
+    if (+graphId) {
       this.props.getSingleGraphRequest(graphId);
     }
   }
@@ -36,7 +37,9 @@ class GraphForm extends Component {
     const { activeButton } = this.props;
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
-        <GraphHeader />
+        <GraphHeader
+          left={<SaveGraph />}
+        />
         <ToolBar />
         <div className="graphWrapper">
           {activeButton === 'data' ? <DataView /> : null}
@@ -57,13 +60,13 @@ class GraphForm extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
 });
-const mapDespatchToProps = {
+const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
 };
 const Container = connect(
   mapStateToProps,
-  mapDespatchToProps,
+  mapDispatchToProps,
 )(GraphForm);
 
 export default Container;

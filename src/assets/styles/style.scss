@@ -368,12 +368,40 @@ p {
   user-select: none;
 
   label {
-    padding-right: 10px;
+    padding-left: 10px;
   }
 
   input[type="checkbox"] {
     cursor: pointer;
   }
+
+  &.labelReverse {
+    label {
+      padding-right: 10px;
+      padding-left: 0;
+      order: -1;
+    }
+  }
+}
+
+.ghRangeSelect {
+  padding-bottom: 20px;
+
+  .input-range__slider {
+    background: $color-main2;
+    border: 1px solid $color-main2;
+  }
+
+  .input-range__track--active {
+    background-color: $color-main2;
+  }
+
+  .input-range__label--value {
+    .input-range__label-container {
+      color: $color-main;
+    }
+  }
+
 }
 
 #graph {
@@ -550,10 +578,8 @@ p {
   height: 60px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
-  .toggleFilter {
-    margin-left: auto;
-  }
 }
 
 #header {
@@ -1016,7 +1042,8 @@ p {
         a {
           pointer-events: none;
         }
-        svg{
+
+        svg {
           max-width: 100%;
         }
       }
@@ -1203,6 +1230,7 @@ p {
 
     img {
       width: 100%;
+      height: 100%;
       object-fit: cover;
     }
 
@@ -1218,6 +1246,10 @@ p {
       line-height: 0;
       border-radius: 50%;
       padding-bottom: 5px;
+
+      &.hasImage {
+        padding-bottom: 0;
+      }
 
       &.square {
         border-radius: 1px;
@@ -1564,7 +1596,8 @@ p {
   }
 
 }
-.lineDirectionSelect{
+
+.lineDirectionSelect {
   max-width: 100%;
 }
 
@@ -1621,10 +1654,71 @@ p {
 
   .button {
     margin: 0 10px 10px;
+
     .icon {
       font-size: 25px;
       cursor: pointer;
     }
   }
 
+}
+
+.graphFilter {
+  .list {
+    .item {
+      text-shadow: 0 0 1px rgba($color-dark, 0.4);
+
+      .badge {
+        margin-left: auto;
+        align-self: flex-start;
+      }
+    }
+  }
+}
+
+.rangeDataChart {
+  display: flex;
+  align-items: flex-end;
+  height: 80px;
+  margin-bottom: -10px;
+
+  .item {
+    flex: 1;
+    background-color: $color-gray;
+    margin: 0 0.5px;
+  }
+}
+
+.graphFilterChart {
+  .ghRangeSelect {
+    padding-top: 0 !important;
+    padding-bottom: 20px !important;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.ghTabs {
+  display: flex;
+
+  .ghButton {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 3px 0 3px;
+    margin: 0 25px 0 0;
+    position: relative;
+
+    &.active{
+      &:after {
+        content: '';
+        height: 2px;
+        width: 100%;
+        background-color: $color-gray;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+    }
+
+  }
 }

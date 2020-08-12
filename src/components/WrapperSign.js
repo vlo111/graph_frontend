@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
 import PropTypes from 'prop-types';
 import OfflineIndicator from './OfflineIndicator';
 
