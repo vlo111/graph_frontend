@@ -61,7 +61,7 @@ class FiltersModal extends Component {
 
         <LinkValueFilter links={links} />
 
-        <NodeConnectionFilter links={links} />
+        <NodeConnectionFilter links={links} nodes={nodes} />
 
       </Modal>
     );

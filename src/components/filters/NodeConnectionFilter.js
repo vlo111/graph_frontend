@@ -11,29 +11,33 @@ class NodeConnectionFilter extends Component {
     linkConnection: PropTypes.object.isRequired,
     setFilter: PropTypes.func.isRequired,
     links: PropTypes.array.isRequired,
+    nodes: PropTypes.array.isRequired,
   }
 
-  getNodeConnections = memoizeOne((links) => {
-    let connections = _.chain(links)
-      .groupBy((l) => _.orderBy([l.source, l.target]).join('_'))
-      .map((d, group) => ({
-        count: d.length,
-        group,
+  getNodeConnections = memoizeOne((nodes, links) => {
+    let connections = {};
+    links.forEach((l) => {
+      connections[l.source] = l.source in connections ? connections[l.source] + 1 : 1;
+      connections[l.target] = l.target in connections ? connections[l.target] + 1 : 1;
+    });
+
+    connections = _.chain(connections)
+      .map((count, name) => ({
+        count,
+        name,
       }))
       .groupBy('count')
       .map((d, count) => ({
         count: +count,
         length: d.length,
       }))
-      .orderBy('length', 'desc')
+      .orderBy('count')
       .value();
-
     const max = _.maxBy(connections, (v) => v.count)?.count || 1;
     const maxLength = _.maxBy(connections, (v) => v.length)?.length || 1;
 
-    //todo
-    // const min = _.minBy(connections, (v) => v.count)?.count || 1;
-    const min = 0;
+    const hasNoConnected = nodes.some((n) => !links.some((l) => l.source === n.name || l.target === n.name));
+    const min = hasNoConnected ? 0 : _.minBy(connections, (v) => v.count)?.count || 1;
     const minLength = _.minBy(connections, (v) => v.length)?.length || 1;
 
     connections = connections.map((v) => {
@@ -49,14 +53,13 @@ class NodeConnectionFilter extends Component {
     };
   }, _.isEqual);
 
-
   handleChange = (values) => {
     this.props.setFilter('linkConnection', values);
   }
 
   render() {
-    const { links, linkConnection } = this.props;
-    const { connections, max, min } = this.getNodeConnections(links);
+    const { links, nodes, linkConnection } = this.props;
+    const { connections, max, min } = this.getNodeConnections(nodes, links);
     if (min === max) {
       return null;
     }

@@ -35,7 +35,6 @@ class ChartUtils {
       if (params.linkConnection?.min > -1) {
         const { length = 0 } = data.links.filter((l) => l.source === d.name || l.target === d.name) || {};
         if (length < params.linkConnection.min || length > params.linkConnection.max) {
-          console.log(length)
           d.hidden = true;
           return d;
         }
