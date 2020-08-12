@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import { setActiveButton } from '../../store/actions/app';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportXlsx from './ImportXlsx';
-import _ from "lodash";
-import Button from "../form/Button";
+import Button from '../form/Button';
 
 class DataImportModal extends Component {
   static propTypes = {
