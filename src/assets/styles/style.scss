@@ -707,7 +707,6 @@ p {
     outline: none;
     position: relative;
     top: 16%;
-    margin: 0 auto;
     max-width: 460px;
     background-color: white;
     border-radius: 2px;
@@ -715,6 +714,7 @@ p {
     padding: 15px;
     max-height: 80%;
     overflow-y: auto;
+    overflow-x: hidden;
   }
 
 
