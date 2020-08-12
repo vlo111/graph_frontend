@@ -1697,3 +1697,28 @@ p {
     z-index: 2;
   }
 }
+
+.ghTabs {
+  display: flex;
+
+  .ghButton {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 3px 0 3px;
+    margin: 0 25px 0 0;
+    position: relative;
+
+    &.active{
+      &:after {
+        content: '';
+        height: 2px;
+        width: 100%;
+        background-color: $color-gray;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+    }
+
+  }
+}

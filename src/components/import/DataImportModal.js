@@ -6,6 +6,7 @@ import { setActiveButton } from '../../store/actions/app';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportXlsx from './ImportXlsx';
 import Button from '../form/Button';
+import ImportGoogle from "./ImportGoogle";
 
 class DataImportModal extends Component {
   static propTypes = {
@@ -13,11 +14,23 @@ class DataImportModal extends Component {
     activeButton: PropTypes.string.isRequired,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTab: 'xlsx',
+    }
+  }
+
   closeModal = () => {
     this.props.setActiveButton('create');
   }
 
+  setActiveTab = (activeTab) => {
+    this.setState({ activeTab })
+  }
+
   render() {
+    const { activeTab } = this.state;
     const { activeButton } = this.props;
     return (
       <Modal
@@ -27,15 +40,15 @@ class DataImportModal extends Component {
         onRequestClose={this.closeModal}
       >
         <div className="ghTabs">
-          <Button>
-            GOOGLE SHEETS
-          </Button>
-          <Button>
+          <Button className={activeTab === 'xlsx' ? 'active' : undefined} onClick={() => this.setActiveTab('xlsx')}>
             EXCEL XLSX
           </Button>
+          <Button className={activeTab === 'google' ? 'active' : undefined} onClick={() => this.setActiveTab('google')}>
+            GOOGLE SHEETS
+          </Button>
         </div>
-        <ImportXlsx />
-
+        {activeTab === 'xlsx' ? <ImportXlsx /> : null}
+        {activeTab === 'google' ? <ImportGoogle /> : null}
       </Modal>
     );
   }
