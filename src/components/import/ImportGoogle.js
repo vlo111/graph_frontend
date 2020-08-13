@@ -60,7 +60,7 @@ class DataImportModal extends Component {
     if (data.nodes?.length) {
       this.setState({ loading: false, step: 2 });
     } else {
-      this.toast = toast.error('Invalid File');
+      this.toast = toast.error(data.errors?.url || 'something went wrong');
       this.setState({ loading: false });
     }
   }
@@ -83,6 +83,7 @@ class DataImportModal extends Component {
               value={importData.url}
               onChangeText={(value) => this.handleChange('url', value)}
               type="url"
+              name="google_sheets_url"
               label="Google Sheets URL"
               placeholder="Paste URL from your Google Sheets"
             />

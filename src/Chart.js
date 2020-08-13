@@ -42,13 +42,15 @@ class Chart {
   static normalizeData(data) {
     const nodes = data.nodes.map((d) => Object.create(d));
 
-    _.forEach(data.links, (link) => {
+    _.forEach(data.links, (link, linkIndex) => {
       const sameLinks = data.links.filter((l) => (
         (this.getSource(l) === this.getSource(link) && this.getTarget(l) === this.getTarget(link))
         || (this.getSource(l) === this.getTarget(link) && this.getTarget(l) === this.getSource(link))
       ));
 
-      if (sameLinks.length > 1) {
+      if (!sameLinks.length) {
+        delete data.links[linkIndex];
+      } else if (sameLinks.length > 1) {
         _.forEach(sameLinks, (l, i) => {
           const reverse = this.getSource(l) === this.getTarget(link);
           const totalHalf = sameLinks.length / 2;
@@ -77,7 +79,7 @@ class Chart {
       }
     });
 
-    const links = data.links.map((d) => Object.create(d));
+    const links = Object.values(data.links).map((d) => Object.create(d));
 
     return { links, nodes };
   }
