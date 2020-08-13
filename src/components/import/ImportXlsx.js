@@ -9,14 +9,12 @@ import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import Chart from '../../Chart';
-import ImportStep2 from "./ImportStep2";
+import ImportStep2 from './ImportStep2';
 
 class DataImportModal extends Component {
   static propTypes = {
     convertGraphRequest: PropTypes.func.isRequired,
-    import: PropTypes.func.isRequired,
     importData: PropTypes.object.isRequired,
-    activeButton: PropTypes.string.isRequired,
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -86,7 +84,6 @@ class DataImportModal extends Component {
   }
 
   render() {
-    const { importData } = this.props;
     const { fileType, step, loading } = this.state;
     let file1Label = 'Select File';
     let file2Label = 'Select File';
@@ -123,7 +120,6 @@ class DataImportModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  activeButton: state.app.activeButton,
   importData: state.graphs.importData,
 });
 const mapDispatchToProps = {

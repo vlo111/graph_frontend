@@ -608,6 +608,8 @@ class Chart {
   static unmount() {
     this.svg.remove();
     this.#calledFunctions = [];
+    this.data.nodes = [];
+    this.data.links = [];
     this.event.removeAllListeners();
     ChartUtils.resetColors();
     window.removeEventListener('resize', Chart.resizeSvg);
