@@ -6,8 +6,7 @@ import { setActiveButton } from '../../store/actions/app';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportXlsx from './ImportXlsx';
 import Button from '../form/Button';
-import ImportGoogle from "./ImportGoogle";
-import Chart from "../../Chart";
+import ImportGoogle from './ImportGoogle';
 
 class DataImportModal extends Component {
   static propTypes = {
@@ -19,7 +18,7 @@ class DataImportModal extends Component {
     super(props);
     this.state = {
       activeTab: 'xlsx',
-    }
+    };
   }
 
   closeModal = () => {
@@ -27,7 +26,7 @@ class DataImportModal extends Component {
   }
 
   setActiveTab = (activeTab) => {
-    this.setState({ activeTab })
+    this.setState({ activeTab });
   }
 
   render() {
