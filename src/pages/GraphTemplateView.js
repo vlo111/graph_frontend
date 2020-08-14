@@ -8,7 +8,6 @@ import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Button from '../components/form/Button';
-import GraphHeader from "../components/GraphHeader";
 
 class GraphView extends Component {
   static propTypes = {
@@ -32,7 +31,6 @@ class GraphView extends Component {
     const preview = pathname.startsWith('/graphs/preview/');
     return (
       <Wrapper className="graphView" showFooter={false}>
-        <GraphHeader />
         <div className="graphWrapper">
           <ReactChart />
         </div>

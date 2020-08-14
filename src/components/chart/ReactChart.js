@@ -85,6 +85,9 @@ class ReactChart extends Component {
     this.renderChart(nodes, links);
     return (
       <div id="graph" data-active={activeButton} className={activeButton}>
+        <div className="borderCircle">
+          {_.range(0, 6).map((k) => <div key={k} />)}
+        </div>
         <svg xmlns="http://www.w3.org/2000/svg">
           <g className="wrapper" transform-origin="top left">
             <g className="directions" />
@@ -94,9 +97,6 @@ class ReactChart extends Component {
             <g className="icons" />
           </g>
         </svg>
-        <div className="borderCircle">
-          {_.range(0, 6).map((k) => <div key={k} />)}
-        </div>
       </div>
     );
   }
