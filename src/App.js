@@ -8,6 +8,8 @@ import SignUp from './pages/sign/SignUp';
 import Home from './pages/Home';
 import GraphView from './pages/GraphView';
 import SignOut from './pages/sign/SignOut';
+import GraphDrafts from './pages/profile/GraphDrafts';
+import GraphTemplates from './pages/profile/GraphTemplates';
 
 class App extends Component {
   render() {
@@ -15,7 +17,9 @@ class App extends Component {
       <>
         <BrowserRouter>
           <Switch>
-            <Route path="/" exact component={Home} />
+            <Route path="/drifts" exact component={GraphDrafts} />
+            <Route path="/templates" exact component={GraphTemplates} />
+
             <Route path="/graphs/view/:graphId" component={GraphView} />
             <Route path="/graphs/preview/:graphId" component={GraphView} />
             <Route path="/graphs/filter/:graphId" component={GraphView} />
@@ -29,6 +33,8 @@ class App extends Component {
             <Route path="/sign/sign-out" component={SignOut} />
             <Route path="/sign/forgot-password" component={SignIn} />
             <Route path="/sign/reset-password" component={SignIn} />
+
+            <Route path="/" component={Home} />
           </Switch>
         </BrowserRouter>
         <ToastContainer hideProgressBar transition={ToastSlide} autoClose={3000} pauseOnFocusLoss={false} />

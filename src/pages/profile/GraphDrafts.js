@@ -5,12 +5,11 @@ import queryString from 'query-string';
 import memoizeOne from 'memoize-one';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { getGraphsListRequest } from '../store/actions/graphs';
-import Wrapper from '../components/Wrapper';
-import Button from '../components/form/Button';
-import Utils from '../helpers/Utils';
-import Pagination from '../components/Pagination';
-import Header from "../components/Header";
+import { getGraphsListRequest } from '../../store/actions/graphs';
+import Wrapper from '../../components/Wrapper';
+import Button from '../../components/form/Button';
+import Pagination from '../../components/Pagination';
+import Header from '../../components/Header';
 
 class Home extends Component {
   static propTypes = {
@@ -21,7 +20,7 @@ class Home extends Component {
   }
 
   getGraphsList = memoizeOne((page) => {
-    this.props.getGraphsListRequest(page);
+    this.props.getGraphsListRequest(page, { status: 'draft' });
   })
 
 
@@ -55,11 +54,7 @@ class Home extends Component {
                 </div>
               </div>
               <Link to={`/graphs/preview/${graph.id}`}>
-                <img
-                  className="thumbnail"
-                  src={graph.thumbnail || Utils.fileSrc(`/public/uploads/thumbnails/${graph.id}.png`)}
-                  alt={graph.title}
-                />
+                <img className="thumbnail" src={graph.thumbnail} alt={graph.title} />
               </Link>
               <Link to={`/graphs/preview/${graph.id}`}>
                 <h3 className="title">{graph.title}</h3>

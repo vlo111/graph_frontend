@@ -27,14 +27,13 @@ class Wrapper extends Component {
 
   render() {
     const {
-      className, children, token, showHeader, isLoading
+      className, children, token, isLoading
     } = this.props;
     if (!token) {
       return (<Redirect to="/sign/sign-in" />);
     }
     return (
       <main className={className}>
-        {showHeader ? <Header /> : null}
         {children}
         {isLoading ? (
           <Loading className="mainLoading" size={50} />

@@ -5,7 +5,8 @@ class Header extends Component {
   render() {
     return (
       <header id="header">
-        <div id="headerPortal" />
+        <Link className="ghButton" to="/">Home</Link>
+        <Link className="ghButton" to="/templates">Templates</Link>
         <Link className="ghButton signOut" to="/sign/sign-out">Sign Out</Link>
       </header>
     );
