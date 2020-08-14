@@ -41,6 +41,11 @@ class Select extends Component {
     this.id = this.constructor.id;
   }
 
+  componentDidMount() {
+    console.log(this.ref)
+  }
+
+
   renderMenu = (props) => {
     if (!this.menuOrientation) {
       return null;
@@ -60,7 +65,6 @@ class Select extends Component {
       </div>
     ), document.body);
   }
-
 
   render() {
     const {
@@ -87,6 +91,14 @@ class Select extends Component {
             id={inputId}
             classNamePrefix="gh"
             components={components}
+            onInputChange={(value) => {
+              this.inputValue = value;
+            }}
+            onBlur={() => {
+              if (this.value && props.value[0]?.value !== this.inputValue) {
+                this.props.onChange({ value: this.inputValue, label: this.inputValue });
+              }
+            }}
             className={classNames('ghSelectContent', props.className)}
           />
         ) : (
@@ -99,7 +111,7 @@ class Select extends Component {
           />
         )}
         {portal ? (
-          <div className="menuOrientation" ref={ref => this.menuOrientation = ref} />
+          <div className="menuOrientation" ref={(ref) => this.menuOrientation = ref} />
         ) : null}
         {error ? (
           <div className="error">{error}</div>
