@@ -9,6 +9,7 @@ import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Button from '../components/form/Button';
 import editImg from '../assets/images/icons/pencil.svg';
+import Filters from "../components/filters/Filters";
 
 class GraphView extends Component {
   static propTypes = {
@@ -61,6 +62,7 @@ class GraphView extends Component {
             <NodeDescription />
           </>
         )}
+        <Filters />
       </Wrapper>
     );
   }

@@ -14,7 +14,6 @@ class GraphHeader extends Component {
         <div className="right">
           {right}
           <div id="headerPortalRight" />
-          <Filters />
           <Link className="ghButton" to="/">graphs list</Link>
         </div>
       </header>

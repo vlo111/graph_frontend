@@ -21,21 +21,11 @@ class Filters extends Component {
   render() {
     const { filters, match: { params: { graphId } }, location: { pathname } } = this.props;
     const show = pathname.startsWith('/graphs/filter/');
-    const replace = pathname.startsWith('/graphs/view/') || pathname.startsWith('/graphs/filter/');
     this.renderChart(filters);
-    if (!graphId) {
+    if (!graphId || !show) {
       return null;
     }
-    return (
-      <>
-        {show ? (
-          <Link to={`/graphs/view/${graphId}`} replace={replace} className="toggleFilter">filters</Link>
-        ) : (
-          <Link to={`/graphs/filter/${graphId}`} replace className="toggleFilter">filters</Link>
-        )}
-        {show ? <FiltersModal /> : null}
-      </>
-    );
+    return <FiltersModal />;
   }
 }
 
