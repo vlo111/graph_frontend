@@ -28,10 +28,10 @@ class ChartUtils {
     });
 
     data.nodes = data.nodes.map((d) => {
-      if (data.links.some((l) => l.hidden && d.name === l.source)) {
-        d.hidden = true;
-        return d;
-      }
+      // if (data.links.some((l) => l.hidden && d.name === l.source)) {
+      //   d.hidden = true;
+      //   return d;
+      // }
       if (params.linkConnection?.min > -1) {
         const { length = 0 } = data.links.filter((l) => l.source === d.name || l.target === d.name) || {};
         if (length < params.linkConnection.min || length > params.linkConnection.max) {

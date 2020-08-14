@@ -9,6 +9,7 @@ import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Button from '../components/form/Button';
 import GraphHeader from "../components/GraphHeader";
+import editImg from '../assets/images/icons/pencil.svg';
 
 class GraphView extends Component {
   static propTypes = {
@@ -57,7 +58,7 @@ class GraphView extends Component {
         ) : (
           <>
             <Link to={`/graphs/update/${singleGraph.id}`}>
-              <Button icon="fa-pencil" className="transparent edit" />
+              <Button icon={editImg} className="transparent edit" />
             </Link>
             <NodeDescription />
           </>

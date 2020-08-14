@@ -660,7 +660,7 @@ class Chart {
       .attr('stroke', 'white')
       .attr('fill', '#0D0905')
       .attr('text-anchor', 'middle')
-      .attr('stroke-width', 0.5);
+      .attr('stroke-width', 0);
 
     this.nodesWrapper.selectAll('.node :not(text)')
       .attr('stroke', 'white')

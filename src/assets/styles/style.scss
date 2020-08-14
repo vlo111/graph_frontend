@@ -380,6 +380,9 @@ p {
     width: 16px;
     margin-right: 8px;
     vertical-align: middle;
+    img{
+      width: 16px;
+    }
   }
 
 }
@@ -648,6 +651,8 @@ p {
   justify-content: space-between;
   height: 100vh;
   padding-top: 15px;
+  position: fixed;
+  z-index: 1;
 
   .logo {
     margin: 0 30px;
@@ -1674,7 +1679,10 @@ p {
     top: 75px;
 
     .icon {
-      font-size: 25px;
+      width: 40px;
+      img{
+        width: 40px;
+      }
     }
   }
 }
@@ -1721,7 +1729,6 @@ p {
   right: 0;
   left: auto;
   z-index: 2;
-  padding-top: 60px;
   background-color: transparent;
 
   .ghModalFilters {

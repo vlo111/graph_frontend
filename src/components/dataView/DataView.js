@@ -105,13 +105,11 @@ class DataView extends Component {
     const nodesGrouped = _.groupBy(nodes, 'type');
     return (
       <div id="dataTable">
-        <HeaderPortal>
-          <div className="exportButtons">
-            <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
-            <Button onClick={() => this.download('pdf')}>Export pdf</Button>
-            <Button onClick={() => this.download('png')}>Export png</Button>
-          </div>
-        </HeaderPortal>
+        <div className="exportButtons">
+          <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
+          <Button onClick={() => this.download('pdf')}>Export pdf</Button>
+          <Button onClick={() => this.download('png')}>Export png</Button>
+        </div>
         <div className={`contentWrapper ${fullWidth ? 'fullWidth' : ''}`}>
           <div className="header">
             <h4>

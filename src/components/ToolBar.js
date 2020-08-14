@@ -8,6 +8,7 @@ import SaveGraph from "./chart/SaveGraph";
 import Undo from "./Undo";
 import undoImg from "../assets/images/icons/undo.svg";
 import infoImg from "../assets/images/icons/info.svg";
+import { Link } from "react-router-dom";
 
 class ToolBar extends Component {
   componentDidMount() {
@@ -42,7 +43,9 @@ class ToolBar extends Component {
     return (
       <div id="toolBar">
         <div className="top">
-          <Logo className="logo" />
+          <Link to="/">
+            <Logo className="logo" />
+          </Link>
           <SaveGraph />
           <Undo />
           <div className="actionButtons">
