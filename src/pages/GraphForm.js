@@ -15,7 +15,8 @@ import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
-import SaveGraph from "../components/chart/SaveGraph";
+import SaveGraph from '../components/chart/SaveGraph';
+import AccountDropDown from '../components/account/AccountDropDown';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -40,11 +41,12 @@ class GraphForm extends Component {
         <GraphHeader
           left={<SaveGraph />}
         />
-        <ToolBar />
         <div className="graphWrapper">
           {activeButton === 'data' ? <DataView /> : null}
           <ReactChart />
         </div>
+        <ToolBar />
+        <AccountDropDown />
         <Crop />
         <AddNodeModal />
         <AddLinkModal />

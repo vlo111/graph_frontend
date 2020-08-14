@@ -5,7 +5,6 @@ import _ from 'lodash';
 import { setActiveButton, setGridIndexes, setLoading } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Button from '../form/Button';
-import HeaderPortal from '../HeaderPortal';
 import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
 import Api from '../../Api';

@@ -65,7 +65,9 @@ class Home extends Component {
                 <h3 className="title">{graph.title}</h3>
               </Link>
               <Link to={`/graphs/preview/${graph.id}`}>
-                <p className="description">{graph.description}</p>
+                <p className="description">
+                  {graph.description.length > 600 ? `${graph.description.substr(0, 600)}... ` : graph.description}
+                </p>
               </Link>
             </article>
           ))}

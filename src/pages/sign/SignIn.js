@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Link, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { ReactComponent as Logo, ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
+import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
 import { signInRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
-import signInImg from '../../assets/images/sign.png';
 
 class Login extends Component {
   static propTypes = {
