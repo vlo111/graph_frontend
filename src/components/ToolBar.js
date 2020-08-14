@@ -3,6 +3,11 @@ import { connect } from 'react-redux';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
 import Chart from "../Chart";
+import { ReactComponent as Logo } from "../assets/images/logo.svg";
+import SaveGraph from "./chart/SaveGraph";
+import Undo from "./Undo";
+import undoImg from "../assets/images/icons/undo.svg";
+import infoImg from "../assets/images/icons/info.svg";
 
 class ToolBar extends Component {
   componentDidMount() {
@@ -37,52 +42,51 @@ class ToolBar extends Component {
     return (
       <div id="toolBar">
         <div className="top">
-          <Button
-            className={activeButton === 'create' ? 'active' : undefined}
-            icon="fa-pencil"
-            onClick={() => this.handleClick('create')}
-          >
-            Create
-          </Button>
-          <Button
-            className={activeButton === 'delete' ? 'active' : undefined}
-            icon="fa-eraser"
-            onClick={() => this.handleClick('delete')}
-          >
-            Delete
-          </Button>
-          <Button
-            className={activeButton === 'undo' ? 'active' : undefined}
-            title="Undo: Click to undo (Ctrl+Z)"
-            icon="fa-long-arrow-left"
-            onClick={this.undo}
-          >
-            Undo
-          </Button>
-          <Button
-            className={activeButton === 'reset' ? 'active' : undefined}
-            icon="fa-repeat"
-            onClick={this.reset}
-          >
-            Reset
-          </Button>
-          <Button
-            className={activeButton === 'data' ? 'active' : undefined}
-            icon="fa-table"
-            onClick={() => this.handleClick('data')}
-          >
-            Data
-          </Button>
-          <Button
-            className={activeButton === 'import' ? 'active' : undefined}
-            icon="fa-upload"
-            onClick={() => this.handleClick('import')}
-          >
-            Import
-          </Button>
+          <Logo className="logo" />
+          <SaveGraph />
+          <Undo />
+          <div className="actionButtons">
+            <Button
+              className={activeButton === 'create' ? 'active' : undefined}
+              icon={undoImg}
+              onClick={() => this.handleClick('create')}
+            >
+              Add
+            </Button>
+            <Button
+              icon={undoImg}
+              className={activeButton === 'delete' ? 'active' : undefined}
+              onClick={() => this.handleClick('delete')}
+            >
+              Remove
+            </Button>
+            <Button
+              className={activeButton === 'reset' ? 'active' : undefined}
+              icon={undoImg}
+              onClick={this.reset}
+            >
+              Reset project
+            </Button>
+            <Button
+              className={activeButton === 'data' ? 'active' : undefined}
+              icon={undoImg}
+              onClick={() => this.handleClick('data')}
+            >
+              Data sheet
+            </Button>
+            <Button
+              className={activeButton === 'import' ? 'active' : undefined}
+              icon={undoImg}
+              onClick={() => this.handleClick('import')}
+            >
+              Import data
+            </Button>
+          </div>
         </div>
-        <div className="bottom">
-          <Button icon="fa-question-circle" />
+        <div className="bottom helpWrapper">
+          <Button icon={infoImg}>
+            Help
+          </Button>
         </div>
       </div>
     );

@@ -90,7 +90,7 @@ class Select extends Component {
               this.inputValue = value;
             }}
             onBlur={() => {
-              if (this.value && props.value[0]?.value !== this.inputValue) {
+              if (this.inputValue && props.value[0]?.value !== this.inputValue) {
                 this.props.onChange({ value: this.inputValue, label: this.inputValue });
               }
             }}

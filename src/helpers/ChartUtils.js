@@ -141,7 +141,7 @@ class ChartUtils {
   static nodesDistance = (d) => this.distance([d.target.x, d.target.y], [d.source.x, d.source.y])
 
   static getRadiusList() {
-    let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.name).length * 2);
+    let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.name).length * 2 + (d.icon ? 6.5 : 2));
     let max = Math.max(...radiusList);
     if (max > 40) {
       radiusList = radiusList.map((d) => {

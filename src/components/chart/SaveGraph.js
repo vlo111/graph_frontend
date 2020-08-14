@@ -17,14 +17,14 @@ class SaveGraph extends Component {
   render() {
     const { showModal } = this.state;
     return (
-      <>
-        <Button color="blue" onClick={() => this.toggleModal(true)}>
-          Save
+      <div className="saveGraphWrapper">
+        <Button className="saveGraph" onClick={() => this.toggleModal(true)}>
+          Save Graph
         </Button>
         {showModal ? (
           <SaveGraphModal toggleModal={this.toggleModal} />
         ) : null}
-      </>
+      </div>
     );
   }
 }

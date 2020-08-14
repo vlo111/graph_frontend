@@ -96,6 +96,7 @@ main {
 
   &.graphsPage {
     overflow: hidden;
+    flex-direction: row;
   }
 
   &.homePage {
@@ -133,6 +134,29 @@ p {
   }
 }
 
+.logo {
+  max-width: 100%;
+
+  &.orange {
+    text {
+      fill: $color-main2;
+    }
+
+    circle {
+      fill: $color-main;
+    }
+  }
+
+  &.white {
+    text {
+      fill: $color-white;
+    }
+
+    circle {
+      fill: $color-white;
+    }
+  }
+}
 
 .ghFormField {
   width: 320px;
@@ -143,7 +167,7 @@ p {
 
   label,
   .label {
-    font-size: 15px;
+    font-size: 16px;
     margin-bottom: 1px;
   }
 
@@ -152,8 +176,7 @@ p {
 
     ~ .menuOrientation {
       width: 100%;
-      height: 1px;
-      position: absolute;
+      height: 0;
       bottom: 0;
     }
 
@@ -208,8 +231,8 @@ p {
   textarea,
   input {
     width: 100%;
-    height: 38px;
-    border: 1px solid $color-gray;
+    height: 35px;
+    border: 1px solid #E2E7EB;
     border-radius: 4px;
     padding: 0 8px;
     font-size: 15px;
@@ -353,10 +376,10 @@ p {
     color: $color-main;
   }
 
-  .icon,
-  .icon i {
-    font-size: 18px;
-    width: 22px;
+  .icon {
+    width: 16px;
+    margin-right: 8px;
+    vertical-align: middle;
   }
 
 }
@@ -405,15 +428,13 @@ p {
 }
 
 #graph {
-  background-image: url("../images/graph-bg.png");
   background-position: center;
-  overflow: hidden;
-  max-height: 100vh;
-  max-width: 100vw;
-  width: 100vw;
-  height: 100vh;
   flex: 1;
+  overflow: hidden;
+  height: 100vh;
+  max-height: 100vh;
   position: relative;
+  z-index: 1;
 
   &.capture {
     position: fixed;
@@ -477,15 +498,27 @@ p {
   }
 
   .node {
-    stroke: $color-white;
-    stroke-width: 1.5;
     cursor: pointer;
+
+
+    :not(text) {
+      stroke: $color-white;
+      stroke-width: 10;
+    }
+
+    &.withIcon {
+      :not(text) {
+        stroke-width: 1;
+      }
+    }
 
     text {
       font-family: $font-family;
       dominant-baseline: central;
+      fill: $color-dark;
       stroke: #fafbfc;
       stroke-width: 0.3;
+      text-anchor: middle;
     }
 
     &.hidden {
@@ -579,6 +612,7 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  display: none;
 
   .left {
     display: flex;
@@ -605,21 +639,26 @@ p {
 }
 
 #toolBar {
-  height: 100%;
-  background-color: #e2e2e2;
-  width: 62px;
-  min-width: 62px;
+  background-color: $color-white;
+  width: 10.5%;
+  max-width: 201px;
+  min-width: 160px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: fixed;
-  padding-top: 60px;
-  z-index: 2;
+  height: 100vh;
+  padding-top: 15px;
+
+  .logo {
+    margin: 0 30px;
+    width: calc(100% - 60px);
+  }
 
   .top {
     display: flex;
     flex-direction: column;
     width: 100%;
+    align-items: center;
   }
 
   .bottom {
@@ -628,21 +667,95 @@ p {
     width: 100%;
   }
 
-  .ghButton {
-    margin: 16px 0 0 0;
-    height: 44px;
-    flex-direction: column;
-    background-color: transparent;
-    color: $color-dark;
-    font-weight: 400;
-
+  .saveGraphWrapper {
+    width: 100%;
+    display: flex;
     justify-content: center;
-    align-items: center;
+    padding-top: 5px;
+    margin-top: 5px;
+    border-top: 1px solid #E2E7EB;
+  }
 
-    &.active {
-      opacity: 0.6;
+  .helpWrapper,
+  .actionButtons {
+    margin-top: 5px;
+    border-top: 1px solid #E2E7EB;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 12px;
+
+    .ghButton {
+      box-shadow: none;
+      background-color: transparent;
+      text-align: start;
+      border: 1px solid transparent;
+
+      &.active {
+        border-color: $color-light-blue;
+      }
     }
   }
+
+  .undoWrapper {
+    display: flex;
+    padding-top: 5px;
+    margin-top: 5px;
+    border-top: 1px solid #E2E7EB;
+    width: 100%;
+    justify-content: center;
+
+    .ghButton {
+      background-color: #F2F5F7;
+      border-radius: 10px;
+      margin-right: 7.5px;
+      margin-left: 7.5px;
+      color: $color-dark-blue;
+      font-size: 14px;
+      font-weight: normal;
+
+      .icon {
+        width: 16px;
+      }
+    }
+
+    .undo {
+      margin: 12px 9px 14px;
+      display: flex;
+      align-items: center;
+
+      .icon {
+        margin-right: 8px;
+      }
+    }
+
+    .undoBack {
+      margin: 12px 9px 14px;
+      flex-direction: row-reverse;
+      align-items: center;
+      display: flex;
+
+      .icon {
+        margin-left: 8px;
+      }
+    }
+  }
+
+  //.ghButton {
+  //  margin: 16px 0 0 0;
+  //  height: 44px;
+  //  flex-direction: column;
+  //  background-color: transparent;
+  //  color: $color-dark;
+  //  font-weight: 400;
+  //
+  //  justify-content: center;
+  //  align-items: center;
+  //
+  //  &.active {
+  //    opacity: 0.6;
+  //  }
+  //}
 }
 
 #offline {
@@ -668,6 +781,49 @@ p {
   }
 }
 
+.signPage {
+  flex-direction: row;
+  background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
+
+  .left {
+    width: 56.54%;
+    height: 100vh;
+    max-width: 1081px;
+
+    &.signIn {
+      background-image: url("../images/sign.png");
+      background-size: cover;
+      position: relative;
+      &:after{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent linear-gradient(135deg, #5E5FBD 0%, #FE794F 100%) 0% 0% no-repeat padding-box;
+        opacity: 0.5;
+      }
+
+      .logo {
+        margin: 30px 70px;
+      }
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .right {
+    width: 43.46%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
 
 .authForm {
   display: flex;
@@ -677,7 +833,6 @@ p {
   max-width: 450px;
   min-width: 320px;
   width: 100%;
-  background-color: #fff;
   border-radius: 10px;
   padding: 15px;
 
@@ -805,7 +960,9 @@ p {
 
 .graphWrapper {
   display: flex;
-  //background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
+  width: 100%;
+  position: relative;
+  z-index: 0;
 }
 
 #dataTable {
@@ -1479,6 +1636,7 @@ p {
   bottom: 0;
   width: 100%;
   height: 100%;
+  z-index: 2;
   background-color: rgba(0, 0, 0, 0.5);
   color: $color-white;
   padding: 5%;
@@ -1656,6 +1814,7 @@ p {
   position: fixed;
   right: 0;
   bottom: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
 
@@ -1775,3 +1934,44 @@ p {
 //    }
 //  }
 //}
+
+.borderCircle {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F2F4FF;
+  z-index: -1;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
+  }
+
+  div {
+    position: absolute;
+    width: 99vw;
+    height: 99vw;
+    border-radius: 50%;
+    margin: auto;
+    border: 2px dashed #9BA6B4;
+    opacity: 0.3;
+  }
+
+  @for $i from 1 through 5 {
+    div:nth-child(#{$i + 1}) {
+      width: #{99 - $i * 16.5}vw;
+      height: #{99 - $i * 16.5}vw;
+    }
+  }
+}
+
+

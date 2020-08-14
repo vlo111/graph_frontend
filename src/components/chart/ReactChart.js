@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import memoizeOne from 'memoize-one';
@@ -93,6 +94,9 @@ class ReactChart extends Component {
             <g className="icons" />
           </g>
         </svg>
+        <div className="borderCircle">
+          {_.range(0, 6).map((k) => <div key={k} />)}
+        </div>
       </div>
     );
   }

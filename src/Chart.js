@@ -187,8 +187,7 @@ class Chart {
       this.node = this.nodesWrapper.selectAll('.node')
         .data(filteredNodes)
         .join('g')
-        .attr('class', (d) => `node ${d.nodeType || 'circle'}`)
-        .attr('fill', ChartUtils.nodeColor())
+        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''}`)
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
         .on('mouseenter', (d) => this.event.emit('node.mouseenter', d))
@@ -199,12 +198,10 @@ class Chart {
 
       this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
         .append('circle')
-        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('r', (d) => this.radiusList[d.index]);
 
       this.nodesWrapper.selectAll('.square')
         .append('rect')
-        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('width', (d) => this.radiusList[d.index] * 2)
         .attr('height', (d) => this.radiusList[d.index] * 2)
         .attr('x', (d) => this.radiusList[d.index] * -1)
@@ -212,7 +209,6 @@ class Chart {
 
       this.nodesWrapper.selectAll('.triangle')
         .append('path')
-        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('d', (d) => {
           const s = this.radiusList[d.index] * 2.5;
           return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
@@ -224,7 +220,6 @@ class Chart {
 
       this.nodesWrapper.selectAll('.hexagon')
         .append('polygon')
-        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : undefined))
         .attr('points', (d) => {
           const s = this.radiusList[d.index];
           // eslint-disable-next-line max-len
@@ -234,6 +229,9 @@ class Chart {
           const r = this.radiusList[d.index] * -1.13;
           return `translate(${r}, ${r})`;
         });
+
+      this.nodesWrapper.selectAll('.node :not(text)')
+        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : ChartUtils.nodeColor()(d)));
 
       this.renderLinkText();
 
@@ -380,8 +378,11 @@ class Chart {
         return true;
       })
       .append('text')
-      .attr('x', (d) => {
-        let i = 5;
+      .attr('y', (d) => {
+        let i = 11;
+        if (!d.icon) {
+          i += 4;
+        }
         if (d.nodeType === 'hexagon') {
           i += this.radiusList[d.index] / 5;
         } else if (d.nodeType === 'triangle') {
@@ -389,7 +390,7 @@ class Chart {
         }
         return this.radiusList[d.index] + i;
       })
-      .attr('font-size', (d) => 17 + this.radiusList[d.index] / 3)
+      .attr('font-size', (d) => 13.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
       .text((d) => (d.name.length > 18 ? `${d.name.substring(0, 15)}...` : d.name));
   }
 
@@ -657,10 +658,15 @@ class Chart {
       .attr('font-family', 'Open Sans')
       .attr('dominant-baseline', 'middle')
       .attr('stroke', 'white')
+      .attr('fill', '#0D0905')
+      .attr('text-anchor', 'middle')
       .attr('stroke-width', 0.5);
 
     this.nodesWrapper.selectAll('.node :not(text)')
       .attr('stroke', 'white')
+      .attr('stroke-width', 10);
+
+    this.nodesWrapper.selectAll('.node.withIcon :not(text)')
       .attr('stroke-width', 1.5);
 
     const html = document.querySelector('#graph svg').outerHTML;
@@ -679,7 +685,9 @@ class Chart {
       .attr('font-family', undefined)
       .attr('dominant-baseline', undefined)
       .attr('stroke', undefined)
-      .attr('stroke-width', undefined);
+      .attr('stroke-width', undefined)
+      .attr('fill', undefined)
+      .attr('text-anchor', undefined);
 
     this.nodesWrapper.selectAll('.node :not(text)')
       .attr('stroke', undefined)

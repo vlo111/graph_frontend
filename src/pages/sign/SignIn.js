@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Link, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
+import { ReactComponent as Logo, ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
 import { signInRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
+import signInImg from '../../assets/images/sign.png';
 
 class Login extends Component {
   static propTypes = {
@@ -55,35 +56,41 @@ class Login extends Component {
     }
     return (
       <WrapperSign>
-        <form onSubmit={this.signIn} id="login" className="authForm">
-          <LogoSvg width={150} height={150} />
-          <Input
-            name="email"
-            type="email"
-            label="Email"
-            value={requestData.email}
-            onChangeText={this.handleTextChange}
-          />
-          <Input
-            name="password"
-            type="password"
-            label="Password"
-            value={requestData.password}
-            onChangeText={this.handleTextChange}
-          />
-          <p>
-            <Link to="/forgot-password">Forgot password?</Link>
-          </p>
+        <div className="left signIn">
+          <LogoSvg className="logo white" />
+        </div>
+        <div className="right">
+          <form onSubmit={this.signIn} id="login" className="authForm">
+            <LogoSvg className="logo orange" />
+            <Input
+              name="email"
+              type="email"
+              label="Email address"
+              value={requestData.email}
+              onChangeText={this.handleTextChange}
+            />
+            <Input
+              name="password"
+              type="password"
+              label="Password"
+              value={requestData.password}
+              onChangeText={this.handleTextChange}
+            />
+            <p>
+              <Link to="/forgot-password">Forgot password?</Link>
+            </p>
 
 
-          <Button type="submit" color="blue">
-            Sign In
-          </Button>
-          <p>
-            {"Don't have an admin yet? "}
-            <Link to="/sign/sign-up">Register now</Link>
-          </p>
-        </form>
+            <Button type="submit" color="blue">
+              Sign In
+            </Button>
+            <p>
+              {"Don't have an admin yet? "}
+              <Link to="/sign/sign-up">Register now</Link>
+            </p>
+          </form>
+        </div>
+
       </WrapperSign>
     );
   }

@@ -16,7 +16,7 @@ class WrapperSign extends Component {
       return (<Redirect to="/" />);
     }
     return (
-      <main>
+      <main className="signPage">
         {children}
         <OfflineIndicator />
       </main>

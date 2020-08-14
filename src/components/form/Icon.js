@@ -20,7 +20,7 @@ class Icon extends Component {
     }
     return (
       <span className={`icon ${className}`} {...props}>
-        {_.isString(value) ? (<span className={`icon fa ${value}`} />) : null}
+        {_.isString(value) ? (<img src={value} alt="icon" />) : null}
         {_.isObjectLike(value) ? value : null}
       </span>
     );
