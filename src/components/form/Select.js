@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ReactSelect from 'react-select';
@@ -40,11 +40,6 @@ class Select extends Component {
     this.constructor.id += 1;
     this.id = this.constructor.id;
   }
-
-  componentDidMount() {
-    console.log(this.ref)
-  }
-
 
   renderMenu = (props) => {
     if (!this.menuOrientation) {

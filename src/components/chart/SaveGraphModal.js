@@ -18,7 +18,6 @@ import {
 } from '../../store/actions/graphs';
 import { setActiveButton, setLoading } from '../../store/actions/app';
 import Select from '../form/Select';
-import Outside from '../Outside';
 import { GRAPH_STATUS } from '../../data/graph';
 
 class SaveGraphModal extends Component {

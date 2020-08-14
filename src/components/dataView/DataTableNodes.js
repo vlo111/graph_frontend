@@ -170,7 +170,7 @@ class DataTableNodes extends Component {
     }
     if (props.cell.key === 'icon') {
       return (
-        <FileInput {...defaultProps} onChangeFile={props.onChange} />
+        <FileInput {...defaultProps} accept=".png,.jpg,.gif" onChangeFile={props.onChange} />
       );
     }
     if (props.cell.key === 'description') {

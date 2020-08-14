@@ -63,6 +63,9 @@ class NodeTypesFilter extends Component {
     const { nodes, filters } = this.props;
     const typesFull = this.getNodeTypes(nodes);
     const types = showMore ? typesFull : _.chunk(typesFull, 5)[0] || [];
+    if (!typesFull.length) {
+      return null;
+    }
     return (
       <div className="nodesTypesFilter graphFilter">
         <h4 className="title">Node Types</h4>
