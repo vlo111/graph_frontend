@@ -1,30 +1,21 @@
 import Chart from '../Chart';
 
+const MAX_COUNT = 10;
+
 class ChartUndoManager {
   constructor() {
     this.pointer = 0;
     this.data = [];
   }
 
-  get data() {
-    let data;
-    try {
-      data = JSON.parse(sessionStorage.getItem('chartUndoManager'));
-    } catch (e) {
-      //
-    }
-    return data || [];
-  }
-
-  set data(data) {
-    sessionStorage.setItem('chartUndoManager', JSON.stringify(data));
-  }
-
   async add(datum) {
     if (!datum.nodes?.length && !datum.links?.length) {
       return;
     }
-    this.data = [...this.data, datum];
+    if (this.data.length > MAX_COUNT - 1) {
+      this.data.shift();
+    }
+    this.data.push(datum);
   }
 
   undoCount() {
@@ -41,7 +32,7 @@ class ChartUndoManager {
     if (this.pointer + 1 < this.data.length) {
       this.pointer += 1;
     }
-    const datum = this.data.reverse()[this.pointer];
+    const datum = this.data[this.data.length - this.pointer - 1];
     if (datum) {
       Chart.render(datum, { dontRemember: true });
     }
@@ -51,7 +42,7 @@ class ChartUndoManager {
     if (this.pointer > 0) {
       this.pointer -= 1;
     }
-    const datum = this.data.reverse()[this.pointer];
+    const datum = this.data[this.data.length - this.pointer - 1];
     if (datum) {
       Chart.render(datum, { dontRemember: true });
     }
