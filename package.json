@@ -38,6 +38,7 @@
     "prod": "react-scripts start",
     "dev": "PORT=3001 REACT_APP_URL=2 react-scripts start",
     "start": "REACT_APP_URL=1 react-scripts start",
+    "svg": "svgo -f src/assets/images/icons --config='{\"plugins\":[{\"removeAttrs\":{\"attrs\":\"data.*\"}},{\"removeNonInheritableGroupAttrs\":true},{\"collapseGroups\":true}]}'",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

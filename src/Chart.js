@@ -3,6 +3,7 @@ import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
 import ChartUtils from './helpers/ChartUtils';
+import ChartUndoManager from './helpers/ChartUndoManager';
 
 class Chart {
   static event = new EventEmitter();
@@ -138,6 +139,9 @@ class Chart {
 
   static render(data = {}, params = {}) {
     try {
+      if (!this.isCalled('render')) {
+        this.undoManager = new ChartUndoManager();
+      }
       this._dataNodes = null;
       this._dataLinks = null;
       data.nodes = data.nodes || Chart.getNodes();
@@ -145,6 +149,10 @@ class Chart {
 
       this.data = this.normalizeData(data);
       this.data = ChartUtils.filter(data, params.filters);
+
+      if (!params.dontRemember && _.isEmpty(params.filters)) {
+        this.undoManager.add(this.data);
+      }
 
       this.radiusList = ChartUtils.getRadiusList();
 

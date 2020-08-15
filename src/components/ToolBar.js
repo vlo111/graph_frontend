@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
-import Chart from "../Chart";
-import { ReactComponent as Logo } from "../assets/images/logo.svg";
-import SaveGraph from "./chart/SaveGraph";
-import Undo from "./Undo";
-import undoImg from "../assets/images/icons/undo.svg";
-import infoImg from "../assets/images/icons/info.svg";
-import { Link } from "react-router-dom";
+import Chart from '../Chart';
+import { ReactComponent as Logo } from '../assets/images/logo.svg';
+import SaveGraph from './chart/SaveGraph';
+import Undo from './Undo';
+import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
+import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
+import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
+import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 
 class ToolBar extends Component {
   componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyDown)
+    document.addEventListener('keydown', this.handleKeyDown);
   }
 
   handleKeyDown = (ev) => {
     if (ev.ctrlKey && ev.key === 'z') {
-      this.undo()
+      this.undo();
     }
   }
 
@@ -35,7 +37,7 @@ class ToolBar extends Component {
   }
 
   undo = () => {
-    console.log(555)
+    console.log(555);
   }
 
   render() {
@@ -51,35 +53,35 @@ class ToolBar extends Component {
           <div className="actionButtons">
             <Button
               className={activeButton === 'create' ? 'active' : undefined}
-              icon={undoImg}
+              icon={<AddSvg />}
               onClick={() => this.handleClick('create')}
             >
               Add
             </Button>
             <Button
-              icon={undoImg}
+              icon={<CloseSvg style={{ width: 10, margin: '0 2px' }} />}
               className={activeButton === 'delete' ? 'active' : undefined}
               onClick={() => this.handleClick('delete')}
             >
               Remove
             </Button>
             <Button
+              icon={<LoopSvg />}
               className={activeButton === 'reset' ? 'active' : undefined}
-              icon={undoImg}
               onClick={this.reset}
             >
               Reset project
             </Button>
             <Button
               className={activeButton === 'data' ? 'active' : undefined}
-              icon={undoImg}
+              icon={<LoopSvg />}
               onClick={() => this.handleClick('data')}
             >
               Data sheet
             </Button>
             <Button
               className={activeButton === 'import' ? 'active' : undefined}
-              icon={undoImg}
+              icon={<LoopSvg />}
               onClick={() => this.handleClick('import')}
             >
               Import data
@@ -87,7 +89,7 @@ class ToolBar extends Component {
           </div>
         </div>
         <div className="bottom helpWrapper">
-          <Button icon={infoImg}>
+          <Button icon={<InfoSvg />}>
             Help
           </Button>
         </div>
