@@ -25,7 +25,7 @@ class Undo extends Component {
     this.setState({
       undoCount: Chart.undoManager.undoCount(),
       redoCount: Chart.undoManager.redoCount(),
-    })
+    });
   }
 
   render() {
@@ -36,6 +36,7 @@ class Undo extends Component {
           onClick={() => Chart.undoManager.undo()}
           className="undo"
           icon={<UndoSvg fill="#717ea0" />}
+          disabled={!undoCount}
         >
           {undoCount}
         </Button>
@@ -43,6 +44,7 @@ class Undo extends Component {
           onClick={() => Chart.undoManager.redo()}
           className="undoBack"
           icon={<UndoBackSvg fill="#717ea0" />}
+          disabled={!redoCount}
         >
           {redoCount}
         </Button>

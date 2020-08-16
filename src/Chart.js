@@ -151,7 +151,7 @@ class Chart {
       this.data = ChartUtils.filter(data, params.filters);
 
       if (!params.dontRemember && _.isEmpty(params.filters)) {
-        this.undoManager.add(this.data);
+        this.undoManager.push(this.data);
       }
 
       this.radiusList = ChartUtils.getRadiusList();

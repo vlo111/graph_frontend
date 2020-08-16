@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Chart from '../Chart';
 
 const MAX_COUNT = 10;
@@ -8,8 +9,8 @@ class ChartUndoManager {
     this.data = [];
   }
 
-  async add(datum) {
-    if (!datum.nodes?.length && !datum.links?.length) {
+  async push(datum) {
+    if (_.isEqual(_.last(this.data), datum)) {
       return;
     }
     if (this.data.length > MAX_COUNT - 1) {
