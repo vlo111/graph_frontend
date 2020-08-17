@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import OfflineIndicator from './OfflineIndicator';
 import Loading from './Loading';
+import { getMyAccountRequest } from "../store/actions/account";
 
 Modal.setAppElement(document.body);
 
@@ -19,6 +20,11 @@ class Wrapper extends Component {
   static defaultProps = {
     className: undefined,
   }
+
+  componentDidMount() {
+    this.props.getMyAccountRequest();
+  }
+
 
   render() {
     const {
@@ -44,7 +50,9 @@ const mapStateToProps = (state) => ({
   isLoading: state.app.isLoading,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getMyAccountRequest
+};
 
 const Container = connect(
   mapStateToProps,

@@ -6,6 +6,7 @@ import Chart from '../Chart';
 import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
 import { DEFAULT_FILTERS } from '../data/filter';
+import Api from "../Api";
 
 class ChartUtils {
   static filter = memoizeOne((data, params = {}) => {
@@ -58,6 +59,13 @@ class ChartUtils {
 
     return data;
   })
+
+  static normalizeIcon = (icon) => {
+    if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {
+      return icon;
+    }
+    return Api.url + icon;
+  }
 
   static setFilter(key, value) {
     const query = queryString.parse(window.location.search);

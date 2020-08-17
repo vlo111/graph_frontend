@@ -372,7 +372,7 @@ class Chart {
         }
         return undefined;
       })
-      .attr('xlink:href', (d) => d.icon);
+      .attr('xlink:href', (d) => ChartUtils.normalizeIcon(d.icon));
     return defs;
   }
 
