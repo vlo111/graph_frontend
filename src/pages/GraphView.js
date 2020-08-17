@@ -29,7 +29,7 @@ class GraphView extends Component {
   }
 
   render() {
-    const { singleGraph, location: { pathname } } = this.props;
+    const { singleGraph, location: { pathname }, match: { params: { graphId = '' } } } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
     return (
       <Wrapper className="graphView" showFooter={false}>
@@ -50,13 +50,13 @@ class GraphView extends Component {
               <strong>{'Links: '}</strong>
               {singleGraph.links?.length}
             </div>
-            <Link className="ghButton view" to={`/graphs/view/${singleGraph.id}`} replace>
+            <Link className="ghButton view" to={`/graphs/view/${graphId}`} replace>
               View Graph
             </Link>
           </div>
         ) : (
           <>
-            <Link to={`/graphs/update/${singleGraph.id}`}>
+            <Link to={`/graphs/update/${graphId}`}>
               <Button icon={editImg} className="transparent edit" />
             </Link>
             <NodeDescription />
