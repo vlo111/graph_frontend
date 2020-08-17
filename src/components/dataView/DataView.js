@@ -5,7 +5,6 @@ import _ from 'lodash';
 import { setActiveButton, setGridIndexes, setLoading } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Button from '../form/Button';
-import HeaderPortal from '../HeaderPortal';
 import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
 import Api from '../../Api';
@@ -105,13 +104,11 @@ class DataView extends Component {
     const nodesGrouped = _.groupBy(nodes, 'type');
     return (
       <div id="dataTable">
-        <HeaderPortal>
-          <div className="exportButtons">
-            <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
-            <Button onClick={() => this.download('pdf')}>Export pdf</Button>
-            <Button onClick={() => this.download('png')}>Export png</Button>
-          </div>
-        </HeaderPortal>
+        <div className="exportButtons">
+          <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
+          <Button onClick={() => this.download('pdf')}>Export pdf</Button>
+          <Button onClick={() => this.download('png')}>Export png</Button>
+        </div>
         <div className={`contentWrapper ${fullWidth ? 'fullWidth' : ''}`}>
           <div className="header">
             <h4>

@@ -17,6 +17,8 @@ import {
   updateGraphThumbnailRequest,
 } from '../../store/actions/graphs';
 import { setActiveButton, setLoading } from '../../store/actions/app';
+import Select from '../form/Select';
+import { GRAPH_STATUS } from '../../data/graph';
 
 class SaveGraphModal extends Component {
   static propTypes = {
@@ -29,15 +31,19 @@ class SaveGraphModal extends Component {
     history: PropTypes.object.isRequired,
     toggleModal: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
   }
 
   initValues = memoizeOne((singleGraph) => {
-    const { title, description, tags } = singleGraph;
+    const {
+      title, description, tags, status,
+    } = singleGraph;
     this.setState({
       requestData: {
         title,
         description,
         tags,
+        status: status === 'template' ? 'active' : status,
       },
     });
   })
@@ -54,9 +60,10 @@ class SaveGraphModal extends Component {
     };
   }
 
-  saveGraph = async () => {
+  saveGraph = async (status, forceCreate) => {
     const { requestData } = this.state;
     const { match: { params: { graphId } } } = this.props;
+
     this.props.setLoading(true);
     let nodes = Chart.getNodes();
     const links = Chart.getLinks();
@@ -81,22 +88,24 @@ class SaveGraphModal extends Component {
 
     const svg = Chart.printMode(400, 223);
     let resGraphId;
-    if (graphId) {
-      const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
-        ...requestData,
-        nodes,
-        links,
-        files,
-        svg,
-      });
-      resGraphId = data.graphId;
-    } else {
+    if (forceCreate || !graphId) {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
         nodes,
         links,
         files,
         svg,
+        status,
+      });
+      resGraphId = data.graphId;
+    } else {
+      const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
+        ...requestData,
+        nodes,
+        links,
+        files,
+        svg,
+        status,
       });
       resGraphId = data.graphId;
     }
@@ -104,7 +113,7 @@ class SaveGraphModal extends Component {
       toast.info('Successfully saved');
       const svgBig = Chart.printMode(800, 446);
       this.props.updateGraphThumbnailRequest(resGraphId, svgBig);
-      this.props.history.push('/');
+      this.props.onSave(resGraphId);
     } else {
       toast.error('Something went wrong. Please try again');
     }
@@ -124,6 +133,10 @@ class SaveGraphModal extends Component {
     const { singleGraph } = this.props;
     const nodes = Chart.getNodes();
     this.initValues(singleGraph);
+
+    const canSave = nodes.length && requestData.title;
+    const isUpdate = !!singleGraph.id;
+    const isTemplate = singleGraph.status === 'template';
     return (
       <Modal
         className="ghModal"
@@ -131,7 +144,9 @@ class SaveGraphModal extends Component {
         isOpen
         onRequestClose={() => this.props.toggleModal(false)}
       >
-        <h2>Save this graph</h2>
+        <h2>
+          {isTemplate ? 'Save this template' : 'Save this graph'}
+        </h2>
         <Input
           label="Title"
           value={requestData.title}
@@ -143,13 +158,39 @@ class SaveGraphModal extends Component {
           textArea
           onChangeText={(v) => this.handleChange('description', v)}
         />
+        {false ? (
+          <Select
+            isSearchable={false}
+            label="Status"
+            value={GRAPH_STATUS.find((o) => o.value === requestData.status)}
+            options={GRAPH_STATUS}
+            onChange={(v) => this.handleChange('status', v?.value || 'active')}
+          />
+        ) : null}
         <div className="buttons">
-          <Button onClick={() => this.props.toggleModal(false)}>
-            Cancel
-          </Button>
-          <Button onClick={this.saveGraph} disabled={!nodes.length || !requestData.title}>
-            Save
-          </Button>
+          {isTemplate ? (
+            <>
+              <Button onClick={() => this.saveGraph('active', true)} disabled={!canSave}>
+                Save as Graph
+              </Button>
+              <Button onClick={() => this.saveGraph('template', false)} disabled={!canSave}>
+                Save
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button onClick={() => this.saveGraph('template', true)}>
+                Save as Template
+              </Button>
+              <Button
+                className="saveNode"
+                onClick={() => this.saveGraph(requestData.status, false)}
+                disabled={!canSave}
+              >
+                {isUpdate ? 'Save' : 'Create'}
+              </Button>
+            </>
+          )}
         </div>
 
       </Modal>

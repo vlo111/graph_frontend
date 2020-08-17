@@ -6,6 +6,7 @@ import Chart from '../Chart';
 import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
 import { DEFAULT_FILTERS } from '../data/filter';
+import Api from "../Api";
 
 class ChartUtils {
   static filter = memoizeOne((data, params = {}) => {
@@ -28,10 +29,10 @@ class ChartUtils {
     });
 
     data.nodes = data.nodes.map((d) => {
-      if (data.links.some((l) => l.hidden && d.name === l.source)) {
-        d.hidden = true;
-        return d;
-      }
+      // if (data.links.some((l) => l.hidden && d.name === l.source)) {
+      //   d.hidden = true;
+      //   return d;
+      // }
       if (params.linkConnection?.min > -1) {
         const { length = 0 } = data.links.filter((l) => l.source === d.name || l.target === d.name) || {};
         if (length < params.linkConnection.min || length > params.linkConnection.max) {
@@ -58,6 +59,13 @@ class ChartUtils {
 
     return data;
   })
+
+  static normalizeIcon = (icon) => {
+    if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {
+      return icon;
+    }
+    return Api.url + icon;
+  }
 
   static setFilter(key, value) {
     const query = queryString.parse(window.location.search);
@@ -141,7 +149,7 @@ class ChartUtils {
   static nodesDistance = (d) => this.distance([d.target.x, d.target.y], [d.source.x, d.source.y])
 
   static getRadiusList() {
-    let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.name).length * 2);
+    let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.name).length * 2 + (d.icon ? 6.5 : 2));
     let max = Math.max(...radiusList);
     if (max > 40) {
       radiusList = radiusList.map((d) => {

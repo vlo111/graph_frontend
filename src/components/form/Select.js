@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ReactSelect from 'react-select';
@@ -61,7 +61,6 @@ class Select extends Component {
     ), document.body);
   }
 
-
   render() {
     const {
       id, label, containerClassName, containerId, children,
@@ -87,6 +86,14 @@ class Select extends Component {
             id={inputId}
             classNamePrefix="gh"
             components={components}
+            onInputChange={(value) => {
+              this.inputValue = value;
+            }}
+            onBlur={() => {
+              if (this.inputValue && props.value[0]?.value !== this.inputValue) {
+                this.props.onChange({ value: this.inputValue, label: this.inputValue });
+              }
+            }}
             className={classNames('ghSelectContent', props.className)}
           />
         ) : (
@@ -99,7 +106,7 @@ class Select extends Component {
           />
         )}
         {portal ? (
-          <div className="menuOrientation" ref={ref => this.menuOrientation = ref} />
+          <div className="menuOrientation" ref={(ref) => this.menuOrientation = ref} />
         ) : null}
         {error ? (
           <div className="error">{error}</div>

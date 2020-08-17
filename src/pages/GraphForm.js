@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Wrapper from '../components/Wrapper';
 import ToolBar from '../components/ToolBar';
-import GraphHeader from '../components/GraphHeader';
 import ReactChart from '../components/chart/ReactChart';
 import AddNodeModal from '../components/chart/AddNodeModal';
 import Crop from '../components/chart/Crop';
@@ -15,7 +14,8 @@ import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
-import SaveGraph from "../components/chart/SaveGraph";
+import AccountDropDown from '../components/account/AccountDropDown';
+import { Prompt } from "react-router-dom";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -37,14 +37,12 @@ class GraphForm extends Component {
     const { activeButton } = this.props;
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
-        <GraphHeader
-          left={<SaveGraph />}
-        />
-        <ToolBar />
         <div className="graphWrapper">
           {activeButton === 'data' ? <DataView /> : null}
           <ReactChart />
         </div>
+        <ToolBar />
+        <AccountDropDown />
         <Crop />
         <AddNodeModal />
         <AddLinkModal />

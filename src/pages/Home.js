@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ReactPaginate from 'react-paginate';
 import queryString from 'query-string';
 import memoizeOne from 'memoize-one';
 import moment from 'moment';
@@ -10,6 +9,8 @@ import { getGraphsListRequest } from '../store/actions/graphs';
 import Wrapper from '../components/Wrapper';
 import Button from '../components/form/Button';
 import Utils from '../helpers/Utils';
+import Pagination from '../components/Pagination';
+import Header from "../components/Header";
 
 class Home extends Component {
   static propTypes = {
@@ -23,15 +24,6 @@ class Home extends Component {
     this.props.getGraphsListRequest(page);
   })
 
-  componentDidMount() {
-  }
-
-  handlePageChange = (page) => {
-    const queryObj = queryString.parse(window.location.search);
-    queryObj.page = page.selected + 1;
-    const query = queryString.stringify(queryObj);
-    this.props.history.push(`?${query}`);
-  }
 
   render() {
     const { graphsList, graphsListInfo: { totalPages } } = this.props;
@@ -39,6 +31,7 @@ class Home extends Component {
     this.getGraphsList(page);
     return (
       <Wrapper className="homePage">
+        <Header />
         <Link to="/graphs/create" style={{ marginTop: 65 }}>
           <Button icon="fa-pencil" className=" edit">New Graph</Button>
         </Link>
@@ -72,19 +65,14 @@ class Home extends Component {
                 <h3 className="title">{graph.title}</h3>
               </Link>
               <Link to={`/graphs/preview/${graph.id}`}>
-                <p className="description">{graph.description}</p>
+                <p className="description">
+                  {graph.description.length > 600 ? `${graph.description.substr(0, 600)}... ` : graph.description}
+                </p>
               </Link>
             </article>
           ))}
         </div>
-        <ReactPaginate
-          containerClassName="pagination"
-          forcePage={page - 1}
-          pageCount={totalPages}
-          previousLabel={<i className="fa fa-angle-left" />}
-          nextLabel={<i className="fa fa-angle-right" />}
-          onPageChange={this.handlePageChange}
-        />
+        <Pagination totalPages={totalPages} />
       </Wrapper>
     );
   }

@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
-import Chart from "../Chart";
+import Chart from '../Chart';
+import { ReactComponent as Logo } from '../assets/images/logo.svg';
+import SaveGraph from './chart/SaveGraph';
+import Undo from './Undo';
+import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
+import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
+import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
+import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 
 class ToolBar extends Component {
   componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyDown)
+    document.addEventListener('keydown', this.handleKeyDown);
   }
 
   handleKeyDown = (ev) => {
     if (ev.ctrlKey && ev.key === 'z') {
-      this.undo()
+      this.undo();
     }
   }
 
@@ -29,7 +37,7 @@ class ToolBar extends Component {
   }
 
   undo = () => {
-    console.log(555)
+    console.log(555);
   }
 
   render() {
@@ -37,52 +45,53 @@ class ToolBar extends Component {
     return (
       <div id="toolBar">
         <div className="top">
-          <Button
-            className={activeButton === 'create' ? 'active' : undefined}
-            icon="fa-pencil"
-            onClick={() => this.handleClick('create')}
-          >
-            Create
-          </Button>
-          <Button
-            className={activeButton === 'delete' ? 'active' : undefined}
-            icon="fa-eraser"
-            onClick={() => this.handleClick('delete')}
-          >
-            Delete
-          </Button>
-          <Button
-            className={activeButton === 'undo' ? 'active' : undefined}
-            title="Undo: Click to undo (Ctrl+Z)"
-            icon="fa-long-arrow-left"
-            onClick={this.undo}
-          >
-            Undo
-          </Button>
-          <Button
-            className={activeButton === 'reset' ? 'active' : undefined}
-            icon="fa-repeat"
-            onClick={this.reset}
-          >
-            Reset
-          </Button>
-          <Button
-            className={activeButton === 'data' ? 'active' : undefined}
-            icon="fa-table"
-            onClick={() => this.handleClick('data')}
-          >
-            Data
-          </Button>
-          <Button
-            className={activeButton === 'import' ? 'active' : undefined}
-            icon="fa-upload"
-            onClick={() => this.handleClick('import')}
-          >
-            Import
-          </Button>
+          <Link to="/">
+            <Logo className="logo" />
+          </Link>
+          <SaveGraph />
+          <Undo />
+          <div className="actionButtons">
+            <Button
+              className={activeButton === 'create' ? 'active' : undefined}
+              icon={<AddSvg />}
+              onClick={() => this.handleClick('create')}
+            >
+              Add
+            </Button>
+            <Button
+              icon={<CloseSvg style={{ width: 10, margin: '0 2px' }} />}
+              className={activeButton === 'delete' ? 'active' : undefined}
+              onClick={() => this.handleClick('delete')}
+            >
+              Remove
+            </Button>
+            <Button
+              icon={<LoopSvg />}
+              className={activeButton === 'reset' ? 'active' : undefined}
+              onClick={this.reset}
+            >
+              Reset project
+            </Button>
+            <Button
+              className={activeButton === 'data' ? 'active' : undefined}
+              icon={<LoopSvg />}
+              onClick={() => this.handleClick('data')}
+            >
+              Data sheet
+            </Button>
+            <Button
+              className={activeButton === 'import' ? 'active' : undefined}
+              icon={<LoopSvg />}
+              onClick={() => this.handleClick('import')}
+            >
+              Import data
+            </Button>
+          </div>
         </div>
-        <div className="bottom">
-          <Button icon="fa-question-circle" />
+        <div className="bottom helpWrapper">
+          <Button icon={<InfoSvg />}>
+            Help
+          </Button>
         </div>
       </div>
     );

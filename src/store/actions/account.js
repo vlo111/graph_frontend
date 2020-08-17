@@ -16,5 +16,5 @@ export function signUpRequest(requestData) {
 export const GET_MY_ACCOUNT = define('GET_MY_ACCOUNT');
 
 export function getMyAccountRequest() {
-  return GET_MY_ACCOUNT.request(() => Api.getAccount());
+  return GET_MY_ACCOUNT.request(() => Api.getMyAccount());
 }

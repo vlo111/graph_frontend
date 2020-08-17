@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
-import { getSingleGraphRequest } from '../store/actions/graphs';
 import Button from '../components/form/Button';
-import GraphHeader from "../components/GraphHeader";
+import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
+import Filters from '../components/filters/Filters';
+import AccountDropDown from '../components/account/AccountDropDown';
+import NodeDescription from '../components/NodeDescription';
+import { getSingleGraphRequest } from '../store/actions/graphs';
 
 class GraphView extends Component {
   static propTypes = {
@@ -22,17 +24,16 @@ class GraphView extends Component {
   componentDidMount() {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('view');
-    if(+graphId){
+    if (+graphId) {
       this.props.getSingleGraphRequest(graphId);
     }
   }
 
   render() {
-    const { singleGraph, location: { pathname } } = this.props;
+    const { singleGraph, location: { pathname }, match: { params: { graphId = '' } } } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
     return (
-      <Wrapper className="graphView" showHeader={!preview} showFooter={false}>
-        <GraphHeader />
+      <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
           <ReactChart />
         </div>
@@ -50,18 +51,20 @@ class GraphView extends Component {
               <strong>{'Links: '}</strong>
               {singleGraph.links?.length}
             </div>
-            <Link className="ghButton view" to={`/graphs/view/${singleGraph.id}`} replace>
+            <Link className="ghButton view" to={`/graphs/view/${graphId}`} replace>
               View Graph
             </Link>
           </div>
         ) : (
           <>
-            <Link to={`/graphs/update/${singleGraph.id}`}>
-              <Button icon="fa-pencil" className="transparent edit" />
+            <Link to={`/graphs/update/${graphId}`}>
+              <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
             </Link>
             <NodeDescription />
           </>
         )}
+        <Filters />
+        <AccountDropDown />
       </Wrapper>
     );
   }

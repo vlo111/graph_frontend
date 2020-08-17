@@ -3,10 +3,9 @@ import EventEmitter from 'events';
 import Button from './form/Button';
 import Chart from "../Chart";
 
-const contextEvent = new EventEmitter();
 
 class ContextMenu extends Component {
-  static event = contextEvent;
+  static event = new EventEmitter();
 
   constructor(props) {
     super(props);
@@ -23,7 +22,7 @@ class ContextMenu extends Component {
   }
 
   componentWillUnmount() {
-    contextEvent.removeAllListeners();
+    this.constructor.event.removeAllListeners();
     document.removeEventListener('contextmenu', this.onHandleClick);
   }
 
@@ -61,7 +60,7 @@ class ContextMenu extends Component {
   handleClick = (type) => {
     const { params } = this.state;
     params.contextMenu = true;
-    contextEvent.emit(type, params);
+    this.constructor.event.emit(type, params);
   }
 
   render() {

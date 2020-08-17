@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import OfflineIndicator from './OfflineIndicator';
-import Header from './Header';
-import Loading from "./Loading";
+import Loading from './Loading';
+import { getMyAccountRequest } from "../store/actions/account";
 
 Modal.setAppElement(document.body);
 
@@ -14,27 +14,27 @@ class Wrapper extends Component {
     children: PropTypes.node.isRequired,
     token: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    showHeader: PropTypes.bool,
-    showFooter: PropTypes.bool,
     className: PropTypes.string,
   }
 
   static defaultProps = {
-    showHeader: true,
-    showFooter: true,
     className: undefined,
   }
 
+  componentDidMount() {
+    this.props.getMyAccountRequest();
+  }
+
+
   render() {
     const {
-      className, children, token, showHeader, isLoading
+      className, children, token, isLoading,
     } = this.props;
     if (!token) {
       return (<Redirect to="/sign/sign-in" />);
     }
     return (
       <main className={className}>
-        {showHeader ? <Header /> : null}
         {children}
         {isLoading ? (
           <Loading className="mainLoading" size={50} />
@@ -50,7 +50,9 @@ const mapStateToProps = (state) => ({
   isLoading: state.app.isLoading,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getMyAccountRequest
+};
 
 const Container = connect(
   mapStateToProps,

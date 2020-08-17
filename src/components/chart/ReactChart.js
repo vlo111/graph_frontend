@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import memoizeOne from 'memoize-one';
@@ -31,14 +32,13 @@ class ReactChart extends Component {
 
     Chart.event.on('link.click', this.deleteLink);
     ContextMenu.event.on('link.delete', this.deleteLink);
-
     Chart.event.on('click', this.addNewItem);
-    // Chart.event.on('node.mouseenter', this.filterNode);
-    // Chart.event.on('node.mouseleave', this.cancelFilterNode);
   }
 
   componentWillUnmount() {
     Chart.unmount();
+    ContextMenu.event.removeListener('link.delete', this.deleteLink);
+    ContextMenu.event.removeListener('node.delete', this.deleteNode);
   }
 
   addNewItem = () => {
@@ -74,9 +74,9 @@ class ReactChart extends Component {
 
     nodes = nodes.filter((n) => n.index !== d.index);
 
-    links = links.filter((l) => l.source !== d.name && l.target !== d.name);
+    links = links.filter((l) => !(l.source === d.name || l.target === d.name));
 
-    Chart.render({ links, nodes });
+    Chart.render({ nodes, links });
   }
 
   render() {
@@ -84,6 +84,9 @@ class ReactChart extends Component {
     this.renderChart(nodes, links);
     return (
       <div id="graph" data-active={activeButton} className={activeButton}>
+        <div className="borderCircle">
+          {_.range(0, 6).map((k) => <div key={k} />)}
+        </div>
         <svg xmlns="http://www.w3.org/2000/svg">
           <g className="wrapper" transform-origin="top left">
             <g className="directions" />

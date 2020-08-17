@@ -24,6 +24,7 @@ class SignUp extends Component {
         firstName: '',
         email: '',
         password: '',
+        passwordConfirm: '',
       },
       errors: {},
     };
@@ -56,47 +57,60 @@ class SignUp extends Component {
     const { requestData, errors, loading } = this.state;
     return (
       <WrapperSign>
-        <form onSubmit={this.signUp} id="registration" className="authForm">
-          <LogoSvg width={150} height={150} />
-          <Input
-            name="firstName"
-            label="First Name"
-            value={requestData.firstName}
-            error={errors.firstName}
-            onChangeText={this.handleChange}
-          />
-          <Input
-            name="lastName"
-            label="Last Name"
-            value={requestData.lastName}
-            error={errors.lastName}
-            onChangeText={this.handleChange}
-          />
-          <Input
-            name="email"
-            type="email"
-            label="Email"
-            value={requestData.email}
-            error={errors.email}
-            onChangeText={this.handleChange}
-          />
-          <Input
-            name="password"
-            type="password"
-            label="Password"
-            value={requestData.password}
-            error={errors.password}
-            onChangeText={this.handleChange}
-          />
-          <Button color="blue" type="submit" loading={loading}>
-            Sign Up
-          </Button>
-          <p>
-            {'Already have an admin? '}
-            <Link to="/sign/sign-in">Sign in</Link>
-          </p>
-
-        </form>
+        <div className="left signIn">
+          <Link to="/">
+            <LogoSvg className="logo white" />
+          </Link>
+        </div>
+        <div className="right">
+          <div>
+            <form onSubmit={this.signUp} id="registration" className="authForm">
+              <h1>Sign up to</h1>
+              <LogoSvg className="logo orange" />
+              <Input
+                name="firstName"
+                label="First Name"
+                value={requestData.firstName}
+                error={errors.firstName}
+                onChangeText={this.handleChange}
+              />
+              <Input
+                name="lastName"
+                label="Last Name"
+                value={requestData.lastName}
+                error={errors.lastName}
+                onChangeText={this.handleChange}
+              />
+              <Input
+                name="email"
+                type="email"
+                label="Email address"
+                value={requestData.email}
+                error={errors.email}
+                onChangeText={this.handleChange}
+              />
+              <Input
+                name="password"
+                type="password"
+                label="Password"
+                value={requestData.password}
+                error={errors.password}
+                onChangeText={this.handleChange}
+              />
+              <Input
+                name="passwordConfirm"
+                type="password"
+                label="Confirm Password"
+                value={requestData.passwordConfirm}
+                error={errors.passwordConfirm}
+                onChangeText={this.handleChange}
+              />
+              <Button color="orange" className="submit" type="submit" loading={loading}>
+                Sign Up
+              </Button>
+            </form>
+          </div>
+        </div>
       </WrapperSign>
     );
   }

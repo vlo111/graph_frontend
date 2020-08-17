@@ -1,0 +1,69 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withRouter, Link } from 'react-router-dom';
+import Outside from '../Outside';
+
+class AccountDropDown extends Component {
+  static propTypes = {
+    myAccount: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showDropDown: false,
+    }
+  }
+
+  toggleDropDown = () => {
+    const { showDropDown } = this.state;
+    this.setState({ showDropDown: !showDropDown });
+  }
+
+  render() {
+    const { showDropDown } = this.state;
+    const { myAccount: { firstName, lastName, avatar }, match: { params: { graphId = '' } } } = this.props;
+    const name = [firstName, lastName].map((n) => n).join(' ');
+    return (
+      <div id="accountDropDown">
+        <div className="accountInfo" onClick={this.toggleDropDown}>
+          <img src={avatar} className="avatar" alt={name} />
+          <span className="name">{name}</span>
+        </div>
+        {showDropDown ? (
+          <Outside onClick={this.toggleDropDown} exclude="#accountDropDown">
+            <div className="dropdown">
+              <ul>
+                <li className="item">
+                  <Link to="/">Account</Link>
+                </li>
+                <li className="item">
+                  <Link to={`/graphs/filter/${graphId}`}>Filters</Link>
+                </li>
+                <li className="item">
+                  <Link to="/sign/sign-out">Sign Out</Link>
+                </li>
+              </ul>
+            </div>
+          </Outside>
+        ) : null}
+
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  myAccount: state.account.myAccount,
+});
+
+const mapDispatchToProps = {};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AccountDropDown);
+
+export default withRouter(Container);

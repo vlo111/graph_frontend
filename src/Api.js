@@ -42,6 +42,10 @@ class Api {
     return api.post('/users/sign-up', data);
   }
 
+  static getMyAccount() {
+    return api.get('/users/me');
+  }
+
   static async download(type, requestData) {
     const { data, headers } = await api.post(`/convert/graph/to/${type}`, requestData, {
       responseType: 'arraybuffer',
