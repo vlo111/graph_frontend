@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { connect } from 'react-redux';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
 import fbImg from '../../assets/images/icons/fb.svg';
 import googleImg from '../../assets/images/icons/google.png';
@@ -10,7 +11,6 @@ import { signInRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
-import { connect } from "react-redux";
 
 class Login extends Component {
   static propTypes = {
@@ -34,7 +34,6 @@ class Login extends Component {
     _.set(requestData, path, value);
     this.setState({ requestData });
   }
-
 
   signIn = async (ev) => {
     ev.preventDefault();
@@ -98,7 +97,6 @@ class Login extends Component {
               />
               <Link to="/forgot-password" className="forgotPassword">Forgot password?</Link>
 
-
               <Button type="submit" className="submit" color="orange">
                 Sign In
               </Button>
@@ -114,7 +112,6 @@ class Login extends Component {
     );
   }
 }
-
 
 const mapStateToProps = (state) => ({
   token: state.account.token,
