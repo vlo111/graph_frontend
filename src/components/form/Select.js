@@ -94,6 +94,7 @@ class Select extends Component {
                 this.props.onChange({ value: this.inputValue, label: this.inputValue });
               }
             }}
+            menuIsOpen
             className={classNames('ghSelectContent', props.className)}
           />
         ) : (

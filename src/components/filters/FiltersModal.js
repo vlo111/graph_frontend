@@ -10,6 +10,8 @@ import { resetFilter } from '../../store/actions/app';
 import LinkTypesFilter from './LinkTypesFilter';
 import LinkValueFilter from './LinkValueFilter';
 import NodeConnectionFilter from "./NodeConnectionFilter";
+import { ReactComponent as CloseIcon } from "../../assets/images/icons/close.svg";
+import { withRouter, Link } from "react-router-dom";
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -39,15 +41,18 @@ class FiltersModal extends Component {
     const links = Chart.getLinks();
     this.setState({ nodes, links });
   }
-
   render() {
     const { nodes, links } = this.state;
+    const { match: { params: { graphId = '' } } } = this.props;
     return (
       <Modal
         className="ghModal ghModalFilters"
         overlayClassName="ghModalOverlay ghModalFiltersOverlay"
         isOpen
       >
+        <Link to={`/graphs/update/${graphId}`} replace>
+          <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
+        </Link>
         <div className="row resetAll">
           <Button onClick={this.props.resetFilter}>RESET ALL</Button>
           {`Showing ${nodes.filter((d) => !d.hidden).length} nodes out of ${nodes.length}`}
@@ -81,4 +86,4 @@ const Container = connect(
   mapDispatchToProps,
 )(FiltersModal);
 
-export default Container;
+export default withRouter(Container);

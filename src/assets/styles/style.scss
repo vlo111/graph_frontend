@@ -1777,6 +1777,12 @@ p {
   z-index: 2;
   background-color: transparent;
 
+  .close {
+    background-color: transparent;
+    box-shadow: none;
+    margin-top: 0;
+  }
+
   .ghModalFilters {
     width: 100%;
     height: 100%;
@@ -1785,6 +1791,7 @@ p {
     max-height: 100vh;
     top: 0;
     border-radius: 0;
+    overflow-y: auto;
   }
 
   .resetAll {
@@ -1891,6 +1898,13 @@ p {
         margin-left: auto;
         align-self: flex-start;
       }
+    }
+  }
+  &.linkTypesFilter{
+    label{
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 }
