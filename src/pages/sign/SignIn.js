@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Link, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
+import fbImg from '../../assets/images/icons/fb.svg';
+import googleImg from '../../assets/images/icons/google.png';
 import { signInRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
+import { connect } from "react-redux";
 
 class Login extends Component {
   static propTypes = {
@@ -56,38 +58,56 @@ class Login extends Component {
     return (
       <WrapperSign>
         <div className="left signIn">
-          <LogoSvg className="logo white" />
+          <Link to="/">
+            <LogoSvg className="logo white" />
+          </Link>
         </div>
         <div className="right">
-          <form onSubmit={this.signIn} id="login" className="authForm">
-            <LogoSvg className="logo orange" />
-            <Input
-              name="email"
-              type="email"
-              label="Email address"
-              value={requestData.email}
-              onChangeText={this.handleTextChange}
-            />
-            <Input
-              name="password"
-              type="password"
-              label="Password"
-              value={requestData.password}
-              onChangeText={this.handleTextChange}
-            />
-            <p>
-              <Link to="/forgot-password">Forgot password?</Link>
-            </p>
+          <div>
+            <form onSubmit={this.signIn} id="login" className="authForm">
+              <h1>Sign in to</h1>
+              <LogoSvg className="logo orange" />
+              <div className="socialLogin">
+                <h4>Sign in using</h4>
+                <div className="socialButtons">
+                  <a href="https://www.facebook.com/" className="button">
+                    <img src={fbImg} alt="facebook" />
+                    <span>Facebook</span>
+                  </a>
+                  <a href="/https://www.google.com/" className="button">
+                    <img src={googleImg} alt="google" />
+                    <span>Google</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="hr">or</div>
+              <Input
+                name="email"
+                type="email"
+                label="Email address"
+                value={requestData.email}
+                onChangeText={this.handleTextChange}
+              />
+              <Input
+                name="password"
+                type="password"
+                label="Password"
+                value={requestData.password}
+                onChangeText={this.handleTextChange}
+              />
+              <Link to="/forgot-password" className="forgotPassword">Forgot password?</Link>
 
 
-            <Button type="submit" color="blue">
-              Sign In
-            </Button>
-            <p>
+              <Button type="submit" className="submit" color="orange">
+                Sign In
+              </Button>
+            </form>
+            <p className="switchSignMode">
               {"Don't have an admin yet? "}
-              <Link to="/sign/sign-up">Register now</Link>
+              <Link to="/sign/sign-up">Get started</Link>
             </p>
-          </form>
+          </div>
         </div>
 
       </WrapperSign>
