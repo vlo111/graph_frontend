@@ -59,7 +59,7 @@ class SaveGraph extends Component {
           message={() => 'Changes you made may not be saved.'}
         />
         {showModal ? (
-          <SaveGraphModal toggleModal={this.toggleModal} onSave={() => this.handleDataSave} />
+          <SaveGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
         ) : null}
       </div>
     );
