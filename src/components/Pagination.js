@@ -37,8 +37,8 @@ class Pagination extends Component {
     return (
       <ReactPaginate
         containerClassName="pagination"
-        forcePage={(currentPage || queryObj.page) - 1}
-        pageCount={totalPages}
+        forcePage={(currentPage || queryObj.page || 1) - 1}
+        pageCount={totalPages || 1}
         previousLabel={<i className="fa fa-angle-left" />}
         nextLabel={<i className="fa fa-angle-right" />}
         onPageChange={this.handleChange}
