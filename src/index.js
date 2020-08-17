@@ -47,5 +47,5 @@ ReactDOM.render((
 serviceWorker.unregister();
 
 window.graphs = {
-  version: '0.0.3',
+  version: '0.1.1',
 };
