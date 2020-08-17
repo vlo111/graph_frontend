@@ -32,14 +32,13 @@ class ReactChart extends Component {
 
     Chart.event.on('link.click', this.deleteLink);
     ContextMenu.event.on('link.delete', this.deleteLink);
-
     Chart.event.on('click', this.addNewItem);
-    // Chart.event.on('node.mouseenter', this.filterNode);
-    // Chart.event.on('node.mouseleave', this.cancelFilterNode);
   }
 
   componentWillUnmount() {
     Chart.unmount();
+    ContextMenu.event.removeListener('link.delete', this.deleteLink);
+    ContextMenu.event.removeListener('node.delete', this.deleteNode);
   }
 
   addNewItem = () => {
@@ -75,9 +74,9 @@ class ReactChart extends Component {
 
     nodes = nodes.filter((n) => n.index !== d.index);
 
-    links = links.filter((l) => l.source !== d.name && l.target !== d.name);
+    links = links.filter((l) => !(l.source === d.name || l.target === d.name));
 
-    Chart.render({ links, nodes });
+    Chart.render({ nodes, links });
   }
 
   render() {

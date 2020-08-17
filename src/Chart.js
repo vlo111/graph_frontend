@@ -399,7 +399,7 @@ class Chart {
         return this.radiusList[d.index] + i;
       })
       .attr('font-size', (d) => 13.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
-      .text((d) => (d.name.length > 18 ? `${d.name.substring(0, 15)}...` : d.name));
+      .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
   }
 
   static renderLinkText(links = []) {
