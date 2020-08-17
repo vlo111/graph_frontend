@@ -31,6 +31,7 @@ class SaveGraphModal extends Component {
     history: PropTypes.object.isRequired,
     toggleModal: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
   }
 
   initValues = memoizeOne((singleGraph) => {
@@ -112,7 +113,7 @@ class SaveGraphModal extends Component {
       toast.info('Successfully saved');
       const svgBig = Chart.printMode(800, 446);
       this.props.updateGraphThumbnailRequest(resGraphId, svgBig);
-      this.props.history.push('/');
+      this.props.onSave(resGraphId);
     } else {
       toast.error('Something went wrong. Please try again');
     }

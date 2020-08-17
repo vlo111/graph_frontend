@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
-import Outside from "../Outside";
+import Outside from '../Outside';
 
 class AccountDropDown extends Component {
   static propTypes = {
@@ -24,7 +24,7 @@ class AccountDropDown extends Component {
 
   render() {
     const { showDropDown } = this.state;
-    const { myAccount: { firstName, lastName, avatar }, match: { params: { graphId } } } = this.props;
+    const { myAccount: { firstName, lastName, avatar }, match: { params: { graphId = '' } } } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
     return (
       <div id="accountDropDown">

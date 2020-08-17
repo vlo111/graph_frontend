@@ -139,7 +139,8 @@ class Chart {
 
   static render(data = {}, params = {}) {
     try {
-      if (!this.isCalled('render')) {
+      const firstCall = this.isCalled('render');
+      if (!firstCall) {
         this.undoManager = new ChartUndoManager();
       }
       this._dataNodes = null;
@@ -147,12 +148,20 @@ class Chart {
       data.nodes = data.nodes || Chart.getNodes();
       data.links = data.links || _.cloneDeep(Chart.getLinks());
 
-      this.data = this.normalizeData(data);
-      this.data = ChartUtils.filter(data, params.filters);
+      data = this.normalizeData(data);
+      data = ChartUtils.filter(data, params.filters);
 
       if (!params.dontRemember && _.isEmpty(params.filters)) {
-        this.undoManager.push(this.data);
+        if (!_.isEmpty(data?.nodes) || !_.isEmpty(data?.links)) {
+          this.undoManager.push(data);
+        }
+        if (!_.isEmpty(this.data?.nodes) || !_.isEmpty(this.data?.links)) {
+          if (!_.isEqual(data, this.data)) {
+            this.event.emit('dataChange', this);
+          }
+        }
       }
+      this.data = data;
 
       this.radiusList = ChartUtils.getRadiusList();
 
@@ -639,6 +648,10 @@ class Chart {
       .attr('height', svgHeight)
       .attr('viewBox', [0, 0, svgWidth, svgHeight]);
 
+    if (!document.querySelector('#graph svg')) {
+      console.error('graph error');
+      return;
+    }
     const {
       left: svgLeft, top: svgTop,
     } = document.querySelector('#graph svg').getBoundingClientRect();

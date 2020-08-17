@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
-import { getSingleGraphRequest } from '../store/actions/graphs';
 import Button from '../components/form/Button';
-import editImg from '../assets/images/icons/pencil.svg';
-import Filters from "../components/filters/Filters";
+import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
+import Filters from '../components/filters/Filters';
+import AccountDropDown from '../components/account/AccountDropDown';
+import NodeDescription from '../components/NodeDescription';
+import { getSingleGraphRequest } from '../store/actions/graphs';
 
 class GraphView extends Component {
   static propTypes = {
@@ -57,12 +58,13 @@ class GraphView extends Component {
         ) : (
           <>
             <Link to={`/graphs/update/${graphId}`}>
-              <Button icon={editImg} className="transparent edit" />
+              <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
             </Link>
             <NodeDescription />
           </>
         )}
         <Filters />
+        <AccountDropDown />
       </Wrapper>
     );
   }

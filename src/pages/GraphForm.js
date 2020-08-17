@@ -14,8 +14,8 @@ import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
-import SaveGraph from '../components/chart/SaveGraph';
 import AccountDropDown from '../components/account/AccountDropDown';
+import { Prompt } from "react-router-dom";
 
 class GraphForm extends Component {
   static propTypes = {
