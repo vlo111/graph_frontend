@@ -82,9 +82,10 @@ class Select extends Component {
   }
 
   handleInputBlur = () => {
+    const { inputValue } = this.state;
     const { value } = this.props;
-    if (this.inputValue && value[0]?.value !== this.inputValue) {
-      this.props.onChange({ value: this.inputValue, label: this.inputValue });
+    if (inputValue && value[0]?.value !== inputValue) {
+      this.props.onChange({ value: inputValue, label: inputValue });
     }
   }
 

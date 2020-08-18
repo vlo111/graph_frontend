@@ -282,6 +282,9 @@ class Chart {
             } else if (d.target.nodeType === 'hexagon') {
               i += 5;
             }
+            if (!d.target.icon) {
+              i += 4;
+            }
             return i * -1;
           });
 
@@ -317,6 +320,9 @@ class Chart {
           i += 5;
         } else if (d.target.nodeType === 'hexagon') {
           i += 5;
+        }
+        if (!d.target.icon) {
+          i += 4;
         }
         return i * -1;
       })
