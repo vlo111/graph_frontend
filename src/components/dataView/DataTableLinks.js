@@ -134,7 +134,6 @@ class DataTableLinks extends Component {
           {...defaultProps}
           options={nodes}
           menuIsOpen
-          isSearchable={false}
           value={nodes.find((d) => d.name === props.value)}
           getOptionLabel={(d) => d.name}
           getOptionValue={(d) => d.name}
@@ -150,7 +149,6 @@ class DataTableLinks extends Component {
           menuIsOpen
           onChange={(v) => props.onChange(v)}
           options={Object.keys(DASH_TYPES)}
-          isSearchable={false}
           containerClassName="lineTypeSelect"
           getOptionValue={(v) => v}
           getOptionLabel={(v) => <SvgLine type={v} />}
@@ -166,7 +164,6 @@ class DataTableLinks extends Component {
           placeholder="No"
           onChange={(v) => props.onChange(v)}
           options={[false, true]}
-          isSearchable={false}
           containerClassName="lineDirectionSelect"
           getOptionValue={(v) => v}
           getOptionLabel={(v) => (v ? 'Yes' : 'No')}

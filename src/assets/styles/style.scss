@@ -10,6 +10,7 @@ $color-warning: #FED300;
 
 $color-light-blue: #C6E6FF;
 $color-gray: #9BA6B4;
+$color-light-gray: #E2E7EB;
 $color-dark: #0D0905;
 $color-dark-blue: #717EA0;
 
@@ -171,24 +172,57 @@ p {
     margin-bottom: 1px;
   }
 
+
   .ghSelectContent {
     width: 100%;
 
-    ~ .menuOrientation {
-      width: 100%;
-      height: 0;
-      bottom: 0;
-    }
-
     .gh__control {
-      border: 1px solid $color-gray;
+      border: 1px solid $color-light-gray;
+      border-radius: 8px;
 
       &:hover {
       }
 
-      &--is-focused {
-        border-color: $color-main;
-        box-shadow: 0 0 0 1px $color-main;
+      .gh__indicator-separator {
+        display: none;
+      }
+      .gh__clear-indicator,
+      .gh__dropdown-indicator {
+        padding-right: 15px;
+
+        svg {
+          background: $color-light-gray;
+          border-radius: 4px;
+
+          path {
+            fill: $color-gray;
+          }
+        }
+      }
+
+      &.gh__control--is-focused {
+        border: 1px solid $color-light-gray;
+        box-shadow: none;
+      }
+
+      &.gh__control--menu-is-open {
+        border-radius: 8px 8px 0 0;
+        border-bottom: transparent;
+
+        .gh__dropdown-indicator {
+          svg {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      .gh__clear-indicator {
+        padding-right: 1px;
+
+        svg {
+          height: 13px;
+          width: 13px;
+        }
       }
     }
 
@@ -198,6 +232,33 @@ p {
 
     .gh__indicator {
       cursor: pointer;
+    }
+  }
+
+  &.ghIsSearchable {
+    .ghSelectContent {
+      .gh__control {
+        .gh__dropdown-indicator {
+          padding: 5px;
+
+          &:after {
+            width: 25px;
+            height: 25px;
+            content: '';
+            background-color: $color-light-gray;
+            border-radius: 4px;
+            background-image: url("../images/icons/search.svg");
+            background-size: 13px;
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+
+          svg {
+            display: none;
+
+          }
+        }
+      }
     }
   }
 
@@ -211,11 +272,17 @@ p {
     }
   }
 
+  .limit {
+    font-size: 14px;
+    padding: 0 8px;
+    text-align: right;
+    color: $color-gray;
+  }
 
   .error {
     color: $color-error;
     font-size: 14px;
-    padding: 1px;
+    padding: 0 8px;
   }
 }
 
@@ -232,7 +299,7 @@ p {
   input {
     width: 100%;
     height: 35px;
-    border: 1px solid #E2E7EB;
+    border: 1px solid $color-light-gray;
     padding: 0 8px;
     font-size: 15px;
     color: #333333;
@@ -683,13 +750,13 @@ p {
     justify-content: center;
     padding-top: 9px;
     margin-top: 5px;
-    border-top: 1px solid #E2E7EB;
+    border-top: 1px solid $color-light-gray;
   }
 
   .helpWrapper,
   .actionButtons {
     margin-top: 5px;
-    border-top: 1px solid #E2E7EB;
+    border-top: 1px solid $color-light-gray;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -721,12 +788,12 @@ p {
     display: flex;
     padding-top: 6px;
     margin-top: 13px;
-    border-top: 1px solid #E2E7EB;
+    border-top: 1px solid $color-light-gray;
     width: 100%;
     justify-content: center;
 
     .ghButton {
-      background-color: #F2F5F7;
+      background-color: $color-light-gray;
       border-radius: 10px;
       margin-right: 7.5px;
       margin-left: 7.5px;
@@ -1019,7 +1086,7 @@ p {
   max-height: 100vh;
   z-index: 3;
   margin-left: 202px;
-  border-left: 1px solid #E2E7EB;
+  border-left: 1px solid $color-light-gray;
   padding-left: 4px;
 
 
@@ -1858,18 +1925,6 @@ p {
   }
 }
 
-.gh__selectPortal {
-  position: fixed;
-  z-index: 99;
-  background-color: hsl(0, 0%, 100%);
-  border-radius: 4px;
-  box-shadow: 0 0 0 1px hsla(0, 0%, 0%, 0.1), 0 4px 11px hsla(0, 0%, 0%, 0.1);
-  margin-bottom: 8px;
-  margin-top: 8px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
 #chartZoom {
   position: fixed;
   right: 0;
@@ -1900,8 +1955,9 @@ p {
       }
     }
   }
-  &.linkTypesFilter{
-    label{
+
+  &.linkTypesFilter {
+    label {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
@@ -2030,7 +2086,7 @@ p {
     height: 99vw;
     border-radius: 50%;
     margin: auto;
-    border: 2px dashed #9BA6B4;
+    border: 2px dashed $color-gray;
     opacity: 0.3;
   }
 
@@ -2058,7 +2114,7 @@ p {
   .accountInfo {
     display: flex;
     align-items: center;
-    border: 1px solid #E2E7EB;
+    border: 1px solid $color-light-gray;
     border-radius: 15px;
     background-color: #F8FAFC;
     padding-right: 45px;
@@ -2155,6 +2211,20 @@ p {
     content: "";
     height: 1px;
     flex: 1;
-    background: #E2E7EB;
+    background: $color-light-gray;
+  }
+}
+
+
+body .gh__menu {
+  margin-top: 0;
+  border-radius: 0 0 8px 7px;
+  border: 1px solid $color-light-gray;
+  border-top: 0;
+  box-shadow: none;
+
+  .gh__option--is-selected {
+    background-color: #668DF81A;
+    color: $color-dark;
   }
 }

@@ -160,7 +160,6 @@ class SaveGraphModal extends Component {
         />
         {false ? (
           <Select
-            isSearchable={false}
             label="Status"
             value={GRAPH_STATUS.find((o) => o.value === requestData.status)}
             options={GRAPH_STATUS}

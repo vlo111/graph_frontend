@@ -184,7 +184,6 @@ class DataTableNodes extends Component {
           {...defaultProps}
           menuIsOpen
           options={NODE_TYPES}
-          isSearchable={false}
           value={NODE_TYPES.find((t) => t.value === props.value)}
           onChange={(v) => props.onChange(v?.value || '')}
         />

@@ -15,6 +15,7 @@ class Input extends Component {
     children: PropTypes.node,
     icon: PropTypes.any,
     textArea: PropTypes.bool,
+    limit: PropTypes.number,
   }
 
   static defaultProps = {
@@ -28,6 +29,7 @@ class Input extends Component {
     error: undefined,
     icon: undefined,
     textArea: false,
+    limit: undefined,
   }
 
   static id = 0;
@@ -39,18 +41,19 @@ class Input extends Component {
   }
 
   handleChange = (ev) => {
-    const { onChangeText, onChange } = this.props;
-
+    const { onChangeText, onChange, limit } = this.props;
+    if (limit && ev.target.value.length > limit) {
+      ev.target.value = ev.target.value.substr(0, limit);
+    }
     if (onChange) onChange(ev);
 
     if (onChangeText) onChangeText(ev.target.value, ev.target.name);
   }
 
-
   render() {
     const {
       id, label, containerClassName, containerId, children,
-      textArea,
+      textArea, limit,
       error, onChangeText, icon, ...props
     } = this.props;
     const inputId = id || `input_${this.id}`;
@@ -68,6 +71,9 @@ class Input extends Component {
         ) : (
           <input {...props} id={inputId} onChange={this.handleChange} />
         )}
+        {!error && limit ? (
+          <div className="limit">{`${limit - props.value.length} / ${limit} characters`}</div>
+        ) : null}
         {children}
         {error ? (
           <div className="error">{error}</div>

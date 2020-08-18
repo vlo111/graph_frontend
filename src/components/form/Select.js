@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ReactSelect from 'react-select';
+import _ from 'lodash';
 import ReactSelectCreatable from 'react-select/creatable';
 import Icon from './Icon';
 
@@ -18,6 +18,10 @@ class Select extends Component {
     icon: PropTypes.any,
     isClearable: PropTypes.bool,
     portal: PropTypes.bool,
+    isSearchable: PropTypes.bool,
+    limit: PropTypes.number,
+    value: PropTypes.array,
+    getOptionValue: PropTypes.func,
   }
 
   static defaultProps = {
@@ -28,9 +32,13 @@ class Select extends Component {
     label: undefined,
     children: undefined,
     error: undefined,
+    getOptionValue: undefined,
     icon: undefined,
     isClearable: false,
+    isSearchable: false,
+    limit: undefined,
     portal: false,
+    value: undefined,
   }
 
   static id = 0;
@@ -39,42 +47,64 @@ class Select extends Component {
     super(props);
     this.constructor.id += 1;
     this.id = this.constructor.id;
+    this.state = {
+      inputValue: undefined,
+    };
   }
 
   renderMenu = (props) => {
-    if (!this.menuOrientation) {
-      return null;
-    }
     const {
       children, className, cx, innerRef, innerProps,
     } = props;
-    const { left, top, width } = this.menuOrientation.getBoundingClientRect();
-    return ReactDOM.createPortal((
+    return (
       <div
-        style={{ left, top, width }}
-        className={cx({ menu: true, selectPortal: true }, className)}
+        className={cx({ menu: true }, className)}
         {...innerProps}
         ref={innerRef}
       >
         {children}
       </div>
-    ), document.body);
+    );
+  }
+
+  getValue = () => {
+    const { value, getOptionValue } = this.props;
+    const val = _.isArray(value) ? value[0] : value;
+    return getOptionValue ? getOptionValue(val) : val.value;
+  }
+
+  handleInputChange = (inputValue) => {
+    const { limit } = this.props;
+    if (limit && inputValue.length > limit) {
+      inputValue = inputValue.substr(0, limit);
+    }
+    this.setState({ inputValue });
+  }
+
+  handleInputBlur = () => {
+    const { value } = this.props;
+    if (this.inputValue && value[0]?.value !== this.inputValue) {
+      this.props.onChange({ value: this.inputValue, label: this.inputValue });
+    }
   }
 
   render() {
+    const { inputValue } = this.state;
     const {
       id, label, containerClassName, containerId, children,
-      error, icon, portal, ...props
+      error, icon, portal, limit, ...props
     } = this.props;
     const inputId = id || `select_${this.id}`;
-    const components = {};
+    const params = {};
     if (portal) {
-      components.Menu = this.renderMenu;
+      params.styles = { menuPortal: (base) => ({ ...base, zIndex: 9999 }) };
+      params.menuPlacement = 'bottom';
+      params.menuPortalTarget = document.body;
     }
     return (
       <div
         id={containerId}
-        className={classNames(containerClassName, 'ghFormField', 'ghSelect')}
+        className={classNames(containerClassName, 'ghFormField', 'ghSelect', { ghIsSearchable: props.isSearchable })}
       >
         {label ? (
           <label htmlFor={inputId}>{label}</label>
@@ -83,35 +113,30 @@ class Select extends Component {
         {props.isClearable ? (
           <ReactSelectCreatable
             {...props}
+            {...params}
             id={inputId}
             classNamePrefix="gh"
-            components={components}
-            onInputChange={(value) => {
-              this.inputValue = value;
-            }}
-            onBlur={() => {
-              if (this.inputValue && props.value[0]?.value !== this.inputValue) {
-                this.props.onChange({ value: this.inputValue, label: this.inputValue });
-              }
-            }}
+            inputValue={inputValue}
+            onInputChange={this.handleInputChange}
+            onBlur={this.handleInputBlur}
             className={classNames('ghSelectContent', props.className)}
           />
         ) : (
           <ReactSelect
             {...props}
+            {...params}
             id={inputId}
             classNamePrefix="gh"
-            components={components}
             className={classNames('ghSelectContent', props.className)}
           />
         )}
-        {portal ? (
-          <div className="menuOrientation" ref={(ref) => this.menuOrientation = ref} />
+        {!error && limit ? (
+          <div className="limit">{`${limit - this.getValue().length} / ${limit} characters`}</div>
         ) : null}
+        {children}
         {error ? (
           <div className="error">{error}</div>
         ) : null}
-        {children}
       </div>
     );
   }

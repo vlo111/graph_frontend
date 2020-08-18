@@ -99,7 +99,6 @@ class AddLinkModal extends Component {
           error={errors.linkType}
           onChange={(v) => this.handleChange('linkType', v)}
           options={Object.keys(DASH_TYPES)}
-          isSearchable={false}
           containerClassName="lineTypeSelect"
           getOptionValue={(v) => v}
           getOptionLabel={(v) => <SvgLine type={v} />}
@@ -107,6 +106,7 @@ class AddLinkModal extends Component {
 
         <Select
           label="Relation Type"
+          isSearchable
           portal
           placeholder=""
           value={[

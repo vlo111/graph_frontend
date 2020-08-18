@@ -96,6 +96,7 @@ class AddNodeModal extends Component {
         <h2>Add new node</h2>
         <Select
           isClearable
+          isSearchable
           label="Type"
           value={[
             groups.find((t) => t.value === nodeData.type) || {
@@ -103,6 +104,7 @@ class AddNodeModal extends Component {
               label: nodeData.type
             },
           ]}
+          limit={250}
           options={groups}
           error={errors.type}
           onChange={(v) => this.handleChange('type', v?.value || '')}
@@ -111,13 +113,13 @@ class AddNodeModal extends Component {
           label="Name"
           value={nodeData.name}
           error={errors.name}
+          limit={250}
           onChangeText={(v) => this.handleChange('name', v)}
         />
         <Select
           label="Node Type"
           portal
           options={NODE_TYPES}
-          isSearchable={false}
           value={NODE_TYPES.find((t) => t.value === nodeData.nodeType)}
           error={errors.nodeType}
           onChange={(v) => this.handleChange('nodeType', v?.value || '')}
