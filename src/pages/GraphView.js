@@ -36,9 +36,11 @@ class GraphView extends Component {
 
   deleteGraph = async () => {
     const { match: { params: { graphId = '' } } } = this.props;
-    await this.props.deleteGraphRequest(graphId);
-    this.props.history.push('/');
-    toast.info('Successfully deleted');
+    if (window.confirm('Are you sure?')) {
+      await this.props.deleteGraphRequest(graphId);
+      this.props.history.push('/');
+      toast.info('Successfully deleted');
+    }
   }
 
   render() {
