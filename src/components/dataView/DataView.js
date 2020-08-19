@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { setActiveButton, setGridIndexes, setLoading } from '../../store/actions/app';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
+import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
 import Chart from '../../Chart';
 import Button from '../form/Button';
 import DataTableNodes from './DataTableNodes';
@@ -103,21 +106,21 @@ class DataView extends Component {
     const linksGrouped = _.groupBy(links, 'type');
     const nodesGrouped = _.groupBy(nodes, 'type');
     return (
-      <div id="dataTable">
+      <div id="dataTable" className={fullWidth ? 'fullWidth' : undefined}>
         <div className="exportButtons">
           <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
           <Button onClick={() => this.download('pdf')}>Export pdf</Button>
           <Button onClick={() => this.download('png')}>Export png</Button>
         </div>
-        <div className={`contentWrapper ${fullWidth ? 'fullWidth' : ''}`}>
+        <div className="contentWrapper">
           <div className="header">
             <h4>
               <span className={activeTab.group === 'nodes' ? 'circle' : 'line'} />
               {activeTab.type}
             </h4>
             <div className="buttons">
-              <Button icon="fa-expand" onClick={this.toggleFullWidth} />
-              <Button icon="fa-times" onClick={this.close} />
+              <Button icon={fullWidth ? <CompressScreen /> : <FullScreen />} onClick={this.toggleFullWidth} />
+              <Button icon={<CloseSvg />} onClick={this.close} />
             </div>
           </div>
           <div className="ghGridTableWrapper">

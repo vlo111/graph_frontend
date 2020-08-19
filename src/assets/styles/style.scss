@@ -186,6 +186,7 @@ p {
       .gh__indicator-separator {
         display: none;
       }
+
       .gh__clear-indicator,
       .gh__dropdown-indicator {
         padding-right: 15px;
@@ -1090,6 +1091,15 @@ p {
   padding-left: 4px;
 
 
+  &.fullWidth {
+    position: absolute;
+    width: calc(100% - 202px);
+    height: 100%;
+    z-index: 3;
+    overflow: hidden;
+  }
+
+
   h4 {
     font-weight: normal;
 
@@ -1119,12 +1129,6 @@ p {
     display: flex;
     flex-direction: column;
 
-    &.fullWidth {
-      position: absolute;
-      width: calc(100% - 65px);
-      height: 100%;
-      z-index: 1;
-    }
   }
 
   .header {
@@ -1144,9 +1148,10 @@ p {
         padding: 0;
         border: 2px solid $color-dark;
 
-        .icon,
-        .icon i {
-          font-size: 14px;
+        .icon {
+          margin: 0;
+          display: flex;
+          margin: auto;
         }
       }
     }
@@ -1789,13 +1794,21 @@ p {
     position: absolute;
     left: 15px;
     top: 75px;
+    margin-right: 0;
+    padding-right: 0;
+    .icon{
+      margin: 0;
+    }
+  }
 
-    .icon {
-      width: 40px;
-
-      img {
-        width: 40px;
-      }
+  .delete {
+    position: absolute;
+    left: 15px;
+    top: 150px;
+    margin-right: 0;
+    padding-right: 0;
+    .icon{
+      margin: 0;
     }
   }
 }

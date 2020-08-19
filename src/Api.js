@@ -66,6 +66,10 @@ class Api {
     return api.put(`/graphs/update/${id}`, requestData);
   }
 
+  static deleteGraph(id) {
+    return api.delete(`/graphs/delete/${id}`);
+  }
+
   static updateGraphThumbnail(id, svg) {
     return api.patch(`/graphs/thumbnail/${id}`, { svg });
   }

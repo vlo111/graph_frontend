@@ -11,6 +11,7 @@ import * as serviceWorker from './serviceWorker';
 import reducers from './store/reducers';
 import { requestMiddleware } from './helpers/redux-request';
 
+import 'rc-tooltip/assets/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-input-range/lib/css/index.css';
 import 'react-datasheet/lib/react-datasheet.css';

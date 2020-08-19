@@ -19,6 +19,12 @@ export function updateGraphRequest(id, requestData) {
   return UPDATE_GRAPH.request(() => Api.updateGraph(id, requestData));
 }
 
+export const DELETE_GRAPH = define('DELETE_GRAPH');
+
+export function deleteGraphRequest(id) {
+  return DELETE_GRAPH.request(() => Api.deleteGraph(id));
+}
+
 export const UPDATE_GRAPH_THUMBNAIL = define('UPDATE_GRAPH_THUMBNAIL');
 
 export function updateGraphThumbnailRequest(id, svg) {

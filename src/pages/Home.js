@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import memoizeOne from 'memoize-one';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { getGraphsListRequest } from '../store/actions/graphs';
+import { deleteGraphRequest, getGraphsListRequest } from '../store/actions/graphs';
 import Wrapper from '../components/Wrapper';
 import Button from '../components/form/Button';
 import Utils from '../helpers/Utils';
@@ -17,7 +17,6 @@ class Home extends Component {
     getGraphsListRequest: PropTypes.func.isRequired,
     graphsList: PropTypes.array.isRequired,
     graphsListInfo: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
   }
 
   getGraphsList = memoizeOne((page) => {
@@ -45,7 +44,7 @@ class Home extends Component {
                   alt={graph.user.name}
                 />
                 <div className="infoWrapper">
-                  <a href="/">
+                  <a href="#">
                     <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
                   </a>
                   <div className="info">
