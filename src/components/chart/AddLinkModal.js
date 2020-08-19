@@ -97,7 +97,6 @@ class AddLinkModal extends Component {
           label="Link Type"
           value={[linkData.linkType]}
           error={errors.linkType}
-          menuIsOpen
           onChange={(v) => this.handleChange('linkType', v)}
           options={Object.keys(DASH_TYPES)}
           containerClassName="lineTypeSelect"
