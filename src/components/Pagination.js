@@ -23,7 +23,7 @@ class Pagination extends Component {
       return;
     }
     const queryObj = queryString.parse(window.location.search);
-    queryObj.page = page;
+    queryObj.page = page.selected + 1;
     const query = queryString.stringify(queryObj);
     this.props.history.push(`?${query}`);
   }

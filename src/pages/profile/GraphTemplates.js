@@ -49,7 +49,7 @@ class Home extends Component {
                   </a>
                   <div className="info">
                     <span>{moment(graph.updatedAt).calendar()}</span>
-                    <span>{`${graph.nodes.length} nodes`}</span>
+                    <span>{`${graph.nodesCount} nodes`}</span>
                   </div>
                 </div>
               </div>
