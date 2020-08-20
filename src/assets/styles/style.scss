@@ -236,32 +236,32 @@ p {
     }
   }
 
-  &.ghIsSearchable {
-    .ghSelectContent {
-      .gh__control {
-        .gh__dropdown-indicator {
-          padding: 5px;
-
-          &:after {
-            width: 25px;
-            height: 25px;
-            content: '';
-            background-color: $color-light-gray;
-            border-radius: 4px;
-            background-image: url("../images/icons/search.svg");
-            background-size: 13px;
-            background-repeat: no-repeat;
-            background-position: center;
-          }
-
-          svg {
-            display: none;
-
-          }
-        }
-      }
-    }
-  }
+  //&.ghIsSearchable {
+  //  .ghSelectContent {
+  //    .gh__control {
+  //      .gh__dropdown-indicator {
+  //        padding: 5px;
+  //
+  //        &:after {
+  //          width: 25px;
+  //          height: 25px;
+  //          content: '';
+  //          background-color: $color-light-gray;
+  //          border-radius: 4px;
+  //          background-image: url("../images/icons/search.svg");
+  //          background-size: 13px;
+  //          background-repeat: no-repeat;
+  //          background-position: center;
+  //        }
+  //
+  //        svg {
+  //          display: none;
+  //
+  //        }
+  //      }
+  //    }
+  //  }
+  //}
 
   .icon {
     position: absolute;
@@ -288,6 +288,21 @@ p {
 }
 
 .ghFile {
+  display: flex;
+  align-items: flex-start;
+
+  label {
+    border-radius: 8px;
+    border: 1px solid $color-gray;
+    color: $color-accent;
+    cursor: pointer;
+    padding: 5.5px 18px 5.5px 8px;
+    margin-top: 5px;
+
+    &:hover {
+      border-color: $color-main;
+    }
+  }
 
   input {
     display: none;
@@ -309,7 +324,6 @@ p {
     &:focus {
       outline: none;
       border-color: $color-main;
-      box-shadow: 0 0 0 1px $color-main;
     }
   }
 
@@ -334,14 +348,25 @@ p {
   }
 
   .clear {
-    color: $color-gray;
     cursor: pointer;
-    width: 25px;
-    height: 25px;
-    margin-top: 4px;
+    width: 13px;
+    height: 13px;
+    margin-top: 11px;
     align-items: center;
     display: flex;
     justify-content: center;
+    background: $color-light-gray;
+    border-radius: 3px;
+    margin-right: 8px;
+
+    svg {
+      width: 6.8px;
+      height: 6.8px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
   }
 
   .buttons {
@@ -354,12 +379,21 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2px 8px;
+    padding: 8px 18px;
     margin: 0;
     cursor: pointer;
-    height: 36px;
-    border-radius: 0 4px 4px 0;
+    height: 33px;
+    border-radius: 8px;
+    border-left: 1px solid $color-light-gray;
+    color: $color-accent;
     font-size: 14px;
+    background-color: $color-white;
+  }
+
+  &.focused {
+    .fileLabel {
+      border-left-color: $color-main;
+    }
   }
 }
 
@@ -1177,6 +1211,7 @@ p {
       .fileLabel {
         border-radius: 0;
         height: 30px;
+        border-left-color: $color-main;
       }
     }
   }
@@ -1267,6 +1302,7 @@ p {
         &.index,
         &.name {
           z-index: 3;
+
           > * {
             height: 32px !important;
           }

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 class HeaderPortal extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    position: PropTypes.oneOf(['left', 'right']).isRequired,
+    position: PropTypes.oneOf(['left', 'right']),
   }
 
   static defaultProps = {

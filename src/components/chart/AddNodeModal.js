@@ -21,7 +21,6 @@ class AddNodeModal extends Component {
 
   initNodeData = memoizeOne(() => {
     const nodes = Chart.getNodes();
-    // const { nodeData: { type } } = this.state;
     this.setState({
       nodeData: {
         name: '',
@@ -55,7 +54,8 @@ class AddNodeModal extends Component {
     this.props.toggleNodeModal();
   }
 
-  addNode = async () => {
+  addNode = async (ev) => {
+    ev.preventDefault();
     const { addNodeParams } = this.props;
     const { nodeData } = this.state;
     const errors = {};
@@ -85,7 +85,6 @@ class AddNodeModal extends Component {
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
     const groups = this.getTypes(nodes);
-
     return (
       <Modal
         className="ghModal"
@@ -93,52 +92,54 @@ class AddNodeModal extends Component {
         isOpen={!_.isEmpty(addNodeParams)}
         onRequestClose={this.closeModal}
       >
-        <h2>Add new node</h2>
-        <Select
-          isClearable
-          isSearchable
-          label="Type"
-          value={[
-            groups.find((t) => t.value === nodeData.type) || {
-              value: nodeData.type,
-              label: nodeData.type
-            },
-          ]}
-          limit={250}
-          options={groups}
-          error={errors.type}
-          onChange={(v) => this.handleChange('type', v?.value || '')}
-        />
-        <Input
-          label="Name"
-          value={nodeData.name}
-          error={errors.name}
-          limit={250}
-          onChangeText={(v) => this.handleChange('name', v)}
-        />
-        <Select
-          label="Node Type"
-          portal
-          options={NODE_TYPES}
-          value={NODE_TYPES.find((t) => t.value === nodeData.nodeType)}
-          error={errors.nodeType}
-          onChange={(v) => this.handleChange('nodeType', v?.value || '')}
-        />
-        <FileInput
-          label="Icon"
-          accept=".png,.jpg,.gif"
-          value={nodeData.icon}
-          onChangeFile={(v) => this.handleChange('icon', v)}
-        />
-        <div className="buttons">
-          <Button onClick={this.closeModal}>
-            Cancel
-          </Button>
-          <Button onClick={this.addNode}>
-            Add
-          </Button>
-        </div>
-
+        <form onSubmit={this.addNode}>
+          <h2>Add new node</h2>
+          <Select
+            isClearable
+            isSearchable
+            label="Type"
+            value={[
+              groups.find((t) => t.value === nodeData.type) || {
+                value: nodeData.type,
+                label: nodeData.type,
+              },
+            ]}
+            limit={250}
+            options={groups}
+            error={errors.type}
+            onChange={(v) => this.handleChange('type', v?.value || '')}
+          />
+          <Input
+            label="Name"
+            value={nodeData.name}
+            error={errors.name}
+            limit={250}
+            autoFocus
+            onChangeText={(v) => this.handleChange('name', v)}
+          />
+          <Select
+            label="Node Type"
+            portal
+            options={NODE_TYPES}
+            value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
+            error={errors.nodeType}
+            onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+          />
+          <FileInput
+            label="Icon"
+            accept=".png,.jpg,.gif"
+            value={nodeData.icon}
+            onChangeFile={(v) => this.handleChange('icon', v)}
+          />
+          <div className="buttons">
+            <Button onClick={this.closeModal}>
+              Cancel
+            </Button>
+            <Button type="submit">
+              Add
+            </Button>
+          </div>
+        </form>
       </Modal>
     );
   }

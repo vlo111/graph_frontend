@@ -1,5 +1,8 @@
 import axios from 'axios';
 import Api from '../Api';
+import Bowser from "bowser";
+
+const browser = Bowser.getParser(window.navigator.userAgent);
 
 class Utils {
   static sleep = (ms) => new Promise((resolve) => {
@@ -9,8 +12,12 @@ class Utils {
   })
 
   static fileToBlob = (file) => {
-    const URL = window.URL || window.webkitURL;
-    return URL.createObjectURL(file);
+    try {
+      const URL = window.URL || window.webkitURL;
+      return URL.createObjectURL(file);
+    } catch (e) {
+      return null;
+    }
   }
 
   static fileToString = (file) => new Promise((resolve) => {
@@ -47,6 +54,14 @@ class Utils {
     }
 
     return `${Api.url}${src}`;
+  }
+
+  static getOS() {
+    return browser.getOS().name.toLowerCase();
+  }
+
+  static getBrowser() {
+    return browser.getBrowserName().toLowerCase();
   }
 }
 

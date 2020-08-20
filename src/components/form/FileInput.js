@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Input from './Input';
 import Icon from './Icon';
 import Utils from '../../helpers/Utils';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class FileInput extends Component {
   static propTypes = {
@@ -25,6 +26,7 @@ class FileInput extends Component {
     super(props);
     this.state = {
       file: {},
+      focused: false,
     };
   }
 
@@ -49,9 +51,18 @@ class FileInput extends Component {
     });
   }
 
+  handleInputFocus = () => {
+    this.setState({ focused: true })
+  }
+  handleInputBlur = () => {
+    this.setState({ focused: false })
+  }
+
   render() {
-    const { file } = this.state;
-    const { accept, selectLabel, onChangeFile, ...props } = this.props;
+    const { file, focused } = this.state;
+    const {
+      accept, selectLabel, onChangeFile, ...props
+    } = this.props;
     let value = props.value || file.name || '';
     let localFile = file instanceof File;
     if (_.isObject(value) && 'name' in value) {
@@ -61,13 +72,20 @@ class FileInput extends Component {
       value = this.constructor.blobs[value] || 'Selected';
     }
     return (
-      <div className="ghFileInput">
-        <Input {...props} value={value} disabled={localFile} onChangeText={this.handleTextChange} />
+      <div className={`ghFileInput ${focused ? 'focused' : ''}`}>
+        <Input
+          {...props}
+          onFocus={this.handleInputFocus}
+          onBlur={this.handleInputBlur}
+          value={value}
+          disabled={localFile}
+          onChangeText={this.handleTextChange}
+        />
         <div className="buttons">
           {localFile ? (
-            <Icon value="fa-close" className="clear" onClick={this.clearFile} />
+            <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
           ) : null}
-          <label className="fileLabel ghButton">
+          <label className="fileLabel">
             {selectLabel}
             <input type="file" accept={accept} onChange={this.handleFileSelect} />
           </label>

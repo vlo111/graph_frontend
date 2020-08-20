@@ -22,13 +22,15 @@ class File extends Component {
     multiple: false,
   }
 
-
   static id = 0;
 
   constructor(props) {
     super(props);
     this.constructor.id += 1;
     this.id = this.constructor.id;
+    this.state = {
+      fileName: '',
+    }
   }
 
 
@@ -41,6 +43,7 @@ class File extends Component {
     if (this.props.onChange) {
       this.props.onChange(ev);
     }
+    this.setState({ fileName: files[0]?.name || '' })
   }
 
 
@@ -48,8 +51,8 @@ class File extends Component {
     const {
       id, containerId, label, containerClassName, onChangeFile, ...props
     } = this.props;
+    const { fileName } = this.state;
     const inputId = id || `file_${this.id}`;
-    console.log(props)
     return (
       <div
         id={containerId}
@@ -58,7 +61,7 @@ class File extends Component {
         {label ? (
           <span className="label">{label}</span>
         ) : null}
-        <label htmlFor={inputId}>Select</label>
+        <label htmlFor={inputId}>{fileName || 'Select...'}</label>
         <input {...props} id={inputId} type="file" onChange={this.handleChange} />
       </div>
     );

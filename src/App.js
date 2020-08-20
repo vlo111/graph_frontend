@@ -10,8 +10,13 @@ import GraphView from './pages/GraphView';
 import SignOut from './pages/sign/SignOut';
 import GraphDrafts from './pages/profile/GraphDrafts';
 import GraphTemplates from './pages/profile/GraphTemplates';
+import Utils from './helpers/Utils';
 
 class App extends Component {
+  componentDidMount() {
+    document.body.classList.add(`${Utils.getOS()}_${Utils.getBrowser()}`);
+  }
+
   render() {
     return (
       <>

@@ -20,6 +20,7 @@ class Select extends Component {
     portal: PropTypes.bool,
     isSearchable: PropTypes.bool,
     limit: PropTypes.number,
+    options: PropTypes.array,
     value: PropTypes.array,
     getOptionValue: PropTypes.func,
   }
@@ -39,6 +40,7 @@ class Select extends Component {
     limit: undefined,
     portal: false,
     value: undefined,
+    options: [],
   }
 
   static id = 0;
