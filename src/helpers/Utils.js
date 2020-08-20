@@ -61,7 +61,7 @@ class Utils {
   }
 
   static getBrowser() {
-    browser.getBrowserName().toLowerCase();
+    return browser.getBrowserName().toLowerCase();
   }
 }
 
