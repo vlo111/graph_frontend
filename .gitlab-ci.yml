@@ -25,7 +25,7 @@ production_job:
     before_script:
         # Generate SSH Key
         - mkdir -p ~/.ssh
-        - echo "$STAGE_SSH_PRIVATE" | tr -d '\r' > ~/.ssh/id_rsa
+        - echo "$PROD_SSH_PRIVATE" | tr -d '\r' > ~/.ssh/id_rsa
         - chmod 600 ~/.ssh/id_rsa
         - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
         
