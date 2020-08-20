@@ -5,12 +5,12 @@ import queryString from 'query-string';
 import memoizeOne from 'memoize-one';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { deleteGraphRequest, getGraphsListRequest } from '../store/actions/graphs';
+import { getGraphsListRequest } from '../store/actions/graphs';
 import Wrapper from '../components/Wrapper';
 import Button from '../components/form/Button';
 import Utils from '../helpers/Utils';
 import Pagination from '../components/Pagination';
-import Header from "../components/Header";
+import Header from '../components/Header';
 
 class Home extends Component {
   static propTypes = {
@@ -22,7 +22,6 @@ class Home extends Component {
   getGraphsList = memoizeOne((page) => {
     this.props.getGraphsListRequest(page);
   })
-
 
   render() {
     const { graphsList, graphsListInfo: { totalPages } } = this.props;
@@ -44,7 +43,7 @@ class Home extends Component {
                   alt={graph.user.name}
                 />
                 <div className="infoWrapper">
-                  <a href="#">
+                  <a href="/">
                     <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
                   </a>
                   <div className="info">

@@ -3,6 +3,7 @@ import { withRouter, Prompt } from 'react-router-dom';
 import Button from '../form/Button';
 import SaveGraphModal from './SaveGraphModal';
 import Chart from '../../Chart';
+import Utils from "../../helpers/Utils";
 
 class SaveGraph extends Component {
   constructor(props) {
@@ -16,11 +17,22 @@ class SaveGraph extends Component {
   componentDidMount() {
     Chart.event.on('dataChange', this.handleChartChange);
     window.addEventListener('beforeunload', this.handleUnload);
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
     Chart.event.removeListener('dataChange', this.handleChartChange);
     window.removeEventListener('beforeunload', this.handleUnload);
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+
+  handleKeyDown = (ev) => {
+    const ctrl = Utils.getOS() === 'macos' ? ev.metaKey : ev.ctrlKey;
+    if (ctrl && ev.keyCode === 83) {
+      ev.preventDefault();
+      this.setState({ showModal: true });
+    }
   }
 
   handleUnload = (ev) => {

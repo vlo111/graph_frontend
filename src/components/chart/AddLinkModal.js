@@ -57,7 +57,8 @@ class AddLinkModal extends Component {
     this.setState({ show: false });
   }
 
-  addLink = async () => {
+  addLink = async (ev) => {
+    ev.preventDefault();
     const { linkData } = this.state;
     const links = Chart.getLinks();
     const errors = {};
@@ -91,66 +92,66 @@ class AddLinkModal extends Component {
         isOpen={show}
         onRequestClose={this.closeModal}
       >
-        <h2>Add new Link</h2>
+        <form onSubmit={this.addLink}>
+          <h2>Add new Link</h2>
+          <Select
+            label="Link Type"
+            value={[linkData.linkType]}
+            error={errors.linkType}
+            onChange={(v) => this.handleChange('linkType', v)}
+            options={Object.keys(DASH_TYPES)}
+            containerClassName="lineTypeSelect"
+            getOptionValue={(v) => v}
+            getOptionLabel={(v) => <SvgLine type={v} />}
+          />
 
-        <Select
-          label="Link Type"
-          value={[linkData.linkType]}
-          error={errors.linkType}
-          onChange={(v) => this.handleChange('linkType', v)}
-          options={Object.keys(DASH_TYPES)}
-          containerClassName="lineTypeSelect"
-          getOptionValue={(v) => v}
-          getOptionLabel={(v) => <SvgLine type={v} />}
-        />
+          <Select
+            label="Relation Type"
+            isSearchable
+            portal
+            placeholder=""
+            value={[
+              types.find((t) => t.value === linkData.type) || {
+                value: linkData.type,
+                label: linkData.type,
+              },
+            ]}
+            error={errors.type}
+            onChange={(v) => this.handleChange('type', v?.value)}
+            options={types}
+            isClearable
+          />
 
-        <Select
-          label="Relation Type"
-          isSearchable
-          portal
-          placeholder=""
-          value={[
-            types.find((t) => t.value === linkData.type) || {
-              value: linkData.type,
-              label: linkData.type,
-            },
-          ]}
-          error={errors.type}
-          onChange={(v) => this.handleChange('type', v?.value)}
-          options={types}
-          isClearable
-        />
+          <Input
+            label="Value"
+            value={linkData.value}
+            error={errors.value}
+            type="number"
+            onBlur={() => {
+              if (linkData.value < 1) {
+                linkData.value = 1;
+              } else if (linkData.value > 15) {
+                linkData.value = 15;
+              }
+              this.handleChange('value', linkData.value);
+            }}
+            onChangeText={(v) => this.handleChange('value', v)}
+          />
 
-        <Input
-          label="Value"
-          value={linkData.value}
-          error={errors.value}
-          type="number"
-          onBlur={() => {
-            if (linkData.value < 1) {
-              linkData.value = 1;
-            } else if (linkData.value > 15) {
-              linkData.value = 15;
-            }
-            this.handleChange('value', linkData.value);
-          }}
-          onChangeText={(v) => this.handleChange('value', v)}
-        />
-
-        <Checkbox
-          label="Show Direction"
-          checked={linkData.direction}
-          onChange={() => this.handleChange('direction', !linkData.direction)}
-        />
-        <div className="buttons">
-          <Button onClick={this.closeModal}>
-            Cancel
-          </Button>
-          <Button onClick={this.addLink}>
-            Add
-          </Button>
-        </div>
-
+          <Checkbox
+            label="Show Direction"
+            checked={linkData.direction}
+            onChange={() => this.handleChange('direction', !linkData.direction)}
+          />
+          <div className="buttons">
+            <Button onClick={this.closeModal}>
+              Cancel
+            </Button>
+            <Button type="submit">
+              Add
+            </Button>
+          </div>
+        </form>
       </Modal>
     );
   }

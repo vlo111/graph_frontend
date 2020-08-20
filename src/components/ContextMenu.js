@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import EventEmitter from 'events';
 import Button from './form/Button';
-import Chart from "../Chart";
-
+import Chart from '../Chart';
 
 class ContextMenu extends Component {
   static event = new EventEmitter();
@@ -68,6 +67,7 @@ class ContextMenu extends Component {
     if (!show) {
       return null;
     }
+    const undoCount = Chart.undoManager.undoCount();
     return (
       <div className="contextmenuOverlay" onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
@@ -89,7 +89,7 @@ class ContextMenu extends Component {
           <Button icon="fa-crop" onClick={() => this.handleClick('crop')}>
             Crop
           </Button>
-          <Button icon="fa-undo" onClick={() => this.handleClick('undo')}>
+          <Button disabled={!undoCount} icon="fa-undo" onClick={() => this.handleClick('undo')}>
             Undo
             <sub>(Ctrl+Z)</sub>
           </Button>

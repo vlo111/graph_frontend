@@ -8,7 +8,7 @@ class Button extends Component {
     icon: PropTypes.any,
     children: PropTypes.any,
     className: PropTypes.string,
-    type: PropTypes.string,
+    type: PropTypes.oneOf(['button', 'submit']),
     onClick: PropTypes.func,
     color: PropTypes.oneOf(['main', 'blue', 'orange', 'transparent', 'light']),
   }
