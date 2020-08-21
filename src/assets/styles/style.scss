@@ -90,7 +90,6 @@ button {
 }
 
 main {
-  background-color: #fafbfc;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -447,12 +446,16 @@ p {
     cursor: default;
   }
 
-  &.blue {
+  &.main {
     background-color: $color-main;
 
     &:hover {
       box-shadow: 0 3px 6px rgba($color-main, 0.4);
     }
+  }
+
+  &.blue {
+    color: $color-dark;
   }
 
   &.orange {
@@ -565,7 +568,6 @@ p {
   }
 
   svg {
-    position: relative;
     user-select: none;
     left: 0;
     top: 0;
@@ -913,6 +915,7 @@ p {
     height: 100vh;
     max-width: 1081px;
 
+    &.forgotPassword,
     &.signIn {
       background-image: url("../images/sign.png");
       background-size: cover;
@@ -934,6 +937,10 @@ p {
       .logo {
         margin: 30px 70px;
       }
+    }
+
+    &.forgotPassword {
+      background-image: url("../images/forgot-password.png");
     }
 
     img {
@@ -961,10 +968,14 @@ p {
   min-width: 320px;
   width: 100%;
   border-radius: 10px;
-  padding: 15px;
+  padding: 15px 0;
 
   a {
     color: $color-main;
+  }
+
+  .ghFormField {
+    width: 100%;
   }
 
   h1 {
@@ -975,6 +986,16 @@ p {
 
   .hr {
     margin-bottom: 32px;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+
+    .forgotPasswordBack {
+      margin: 32px 38px 0 0;
+    }
+
   }
 
   .forgotPassword {
@@ -988,6 +1009,22 @@ p {
   .submit {
     align-self: flex-end;
     margin-top: 32px;
+  }
+
+  .forgotPasswordText {
+    text-align: center;
+
+    h4 {
+      font-weight: 600;
+      font-size: 20px;
+      margin-top: 32px;
+    }
+
+    p {
+      font-weight: normal;
+      font-size: 16px;
+      margin: 32px 0;
+    }
   }
 }
 
@@ -2117,7 +2154,7 @@ p {
   justify-content: center;
   align-items: center;
   background-color: #F2F4FF;
-  z-index: 0;
+  z-index: -1;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

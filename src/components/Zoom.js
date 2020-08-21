@@ -2,8 +2,33 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import Icon from './form/Icon';
 import Chart from '../Chart';
+import ChartUtils from '../helpers/ChartUtils';
 
 class Zoom extends Component {
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = (ev) => {
+    ChartUtils.keyEvent(ev);
+    if (ev.chartEvent && ev.ctrlPress) {
+      if (ev.keyCode === 187) {
+        ev.preventDefault();
+        this.zoomIn();
+      } else if (ev.keyCode === 189) {
+        ev.preventDefault();
+        this.zoomOut();
+      } else if (ev.keyCode === 48) {
+        ev.preventDefault();
+        this.zoom();
+      }
+    }
+  }
+
   zoom = (scale = 1, x = 0, y = 0) => {
     Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
   }
