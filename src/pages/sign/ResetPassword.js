@@ -59,7 +59,7 @@ class ResetPassword extends Component {
     }
     return (
       <WrapperSign>
-        <div className="left signIn">
+        <div className="left forgotPassword">
           <Link to="/">
             <LogoSvg className="logo white" />
           </Link>

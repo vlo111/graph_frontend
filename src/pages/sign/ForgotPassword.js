@@ -42,8 +42,10 @@ class ForgotPassword extends Component {
     const { data = {} } = payload;
     if (data.status !== 'ok') {
       toast.dismiss(this.toast);
-      this.toast = toast.error('Invalid email or password');
+      this.toast = toast.error('Invalid email');
+      return;
     }
+    this.toast = toast.info('Please check your email');
   }
 
   render() {
@@ -54,7 +56,7 @@ class ForgotPassword extends Component {
     }
     return (
       <WrapperSign>
-        <div className="left signIn">
+        <div className="left forgotPassword">
           <Link to="/">
             <LogoSvg className="logo white" />
           </Link>
@@ -77,7 +79,7 @@ class ForgotPassword extends Component {
               />
 
               <div className="row">
-                <Link to="/sign/sign-in">Back</Link>
+                <Link to="/sign/sign-in" className="forgotPasswordBack">Back</Link>
                 <Button type="submit" className="submit" color="blue">
                   Reset Password
                 </Button>
