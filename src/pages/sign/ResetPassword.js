@@ -4,18 +4,17 @@ import _ from 'lodash';
 import { Link, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
+import queryString from 'query-string';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
-import fbImg from '../../assets/images/icons/fb.svg';
-import googleImg from '../../assets/images/icons/google.png';
-import { signInRequest } from '../../store/actions/account';
+import { resetPasswordRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
 
-class Login extends Component {
+class ResetPassword extends Component {
   static propTypes = {
-    signInRequest: PropTypes.func.isRequired,
-    token: PropTypes.string.isRequired,
+    resetPasswordRequest: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -23,9 +22,9 @@ class Login extends Component {
     this.state = {
       loading: false,
       requestData: {
-        email: '',
         password: '',
       },
+      errors: {},
     };
   }
 
@@ -38,20 +37,24 @@ class Login extends Component {
   signIn = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
+    const { token } = queryString.parse(window.location.search);
     this.setState({ loading: true });
-    const { payload } = await this.props.signInRequest(requestData.email, requestData.password);
+    const { payload } = await this.props.resetPasswordRequest(token, requestData.password);
     this.setState({ loading: false });
     const { data = {} } = payload;
     if (data.status !== 'ok') {
       toast.dismiss(this.toast);
-      this.toast = toast.error('Invalid email or password');
+      this.setState({ errors: data.errors || {} });
+      this.toast = toast.error(data.message);
+      return;
     }
+    this.props.history.push('/');
   }
 
   render() {
-    const { token } = this.props;
-    const { requestData } = this.state;
-    if (token) {
+    const { token } = queryString.parse(window.location.search);
+    const { requestData, errors } = this.state;
+    if (!token) {
       return (<Redirect to="/" />);
     }
     return (
@@ -64,41 +67,19 @@ class Login extends Component {
         <div className="right">
           <div>
             <form onSubmit={this.signIn} id="login" className="authForm">
-              <h1>Sign in to</h1>
+              <h1>Reset Password</h1>
               <LogoSvg className="logo orange" />
-              <div className="socialLogin">
-                <h4>Sign in using</h4>
-                <div className="socialButtons">
-                  <a href="https://www.facebook.com/" className="button">
-                    <img src={fbImg} alt="facebook" />
-                    <span>Facebook</span>
-                  </a>
-                  <a href="/https://www.google.com/" className="button">
-                    <img src={googleImg} alt="google" />
-                    <span>Google</span>
-                  </a>
-                </div>
-              </div>
-
-              <div className="hr">or</div>
-              <Input
-                name="email"
-                type="email"
-                label="Email address"
-                value={requestData.email}
-                onChangeText={this.handleTextChange}
-              />
               <Input
                 name="password"
                 type="password"
-                label="Password"
+                label="New password"
                 value={requestData.password}
                 onChangeText={this.handleTextChange}
+                error={errors.password}
               />
-              <Link to="/sign/forgot-password" className="forgotPassword">Forgot password?</Link>
 
-              <Button type="submit" className="submit" color="orange">
-                Sign In
+              <Button disabled={requestData.password.length < 5} type="submit" className="submit" color="blue">
+                Set Password
               </Button>
             </form>
             <p className="switchSignMode">
@@ -113,17 +94,15 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  token: state.account.token,
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {
-  signInRequest,
+  resetPasswordRequest,
 };
 
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Login);
+)(ResetPassword);
 
 export default Container;

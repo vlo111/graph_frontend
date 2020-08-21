@@ -13,15 +13,6 @@ import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 
 class ToolBar extends Component {
-  componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyDown);
-  }
-
-  handleKeyDown = (ev) => {
-    if (ev.ctrlKey && ev.key === 'z') {
-      this.undo();
-    }
-  }
 
   handleClick = (button) => {
     this.props.setActiveButton(button);
@@ -36,9 +27,6 @@ class ToolBar extends Component {
     Chart.render({ nodes });
   }
 
-  undo = () => {
-    console.log(555);
-  }
 
   render() {
     const { activeButton } = this.props;

@@ -44,7 +44,6 @@ class ChartUndoManager {
       this.pointer -= 1;
     }
     const datum = this.data[this.data.length - this.pointer - 1];
-    console.log(datum)
     if (datum) {
       Chart.render(datum, { dontRemember: true });
     }

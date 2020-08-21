@@ -4,6 +4,7 @@ import Button from '../form/Button';
 import SaveGraphModal from './SaveGraphModal';
 import Chart from '../../Chart';
 import Utils from "../../helpers/Utils";
+import ChartUtils from "../../helpers/ChartUtils";
 
 class SaveGraph extends Component {
   constructor(props) {
@@ -26,10 +27,9 @@ class SaveGraph extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-
   handleKeyDown = (ev) => {
-    const ctrl = Utils.getOS() === 'macos' ? ev.metaKey : ev.ctrlKey;
-    if (ctrl && ev.keyCode === 83) {
+    ChartUtils.keyEvent(ev);
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 83) {
       ev.preventDefault();
       this.setState({ showModal: true });
     }

@@ -18,3 +18,15 @@ export const GET_MY_ACCOUNT = define('GET_MY_ACCOUNT');
 export function getMyAccountRequest() {
   return GET_MY_ACCOUNT.request(() => Api.getMyAccount());
 }
+
+export const FORGOT_PASSWORD = define('FORGOT_PASSWORD');
+
+export function forgotPasswordRequest(email, callback) {
+  return FORGOT_PASSWORD.request(() => Api.forgotPassword(email, callback));
+}
+
+export const RESET_PASSWORD = define('RESET_PASSWORD');
+
+export function resetPasswordRequest(token, password) {
+  return RESET_PASSWORD.request(() => Api.resetPassword(token, password));
+}

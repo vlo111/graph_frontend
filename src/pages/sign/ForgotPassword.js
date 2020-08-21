@@ -5,16 +5,14 @@ import { Link, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
-import fbImg from '../../assets/images/icons/fb.svg';
-import googleImg from '../../assets/images/icons/google.png';
-import { signInRequest } from '../../store/actions/account';
+import { forgotPasswordRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
 
-class Login extends Component {
+class ForgotPassword extends Component {
   static propTypes = {
-    signInRequest: PropTypes.func.isRequired,
+    forgotPasswordRequest: PropTypes.func.isRequired,
     token: PropTypes.string.isRequired,
   }
 
@@ -24,7 +22,6 @@ class Login extends Component {
       loading: false,
       requestData: {
         email: '',
-        password: '',
       },
     };
   }
@@ -38,8 +35,9 @@ class Login extends Component {
   signIn = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
+    const { origin } = window.location;
     this.setState({ loading: true });
-    const { payload } = await this.props.signInRequest(requestData.email, requestData.password);
+    const { payload } = await this.props.forgotPasswordRequest(requestData.email, `${origin}/sign/reset-password`);
     this.setState({ loading: false });
     const { data = {} } = payload;
     if (data.status !== 'ok') {
@@ -66,21 +64,10 @@ class Login extends Component {
             <form onSubmit={this.signIn} id="login" className="authForm">
               <h1>Sign in to</h1>
               <LogoSvg className="logo orange" />
-              <div className="socialLogin">
-                <h4>Sign in using</h4>
-                <div className="socialButtons">
-                  <a href="https://www.facebook.com/" className="button">
-                    <img src={fbImg} alt="facebook" />
-                    <span>Facebook</span>
-                  </a>
-                  <a href="/https://www.google.com/" className="button">
-                    <img src={googleImg} alt="google" />
-                    <span>Google</span>
-                  </a>
-                </div>
+              <div className="forgotPasswordText">
+                <h4>Forgot your password?</h4>
+                <p>We’ll help you reset it and get back on track.?</p>
               </div>
-
-              <div className="hr">or</div>
               <Input
                 name="email"
                 type="email"
@@ -88,18 +75,13 @@ class Login extends Component {
                 value={requestData.email}
                 onChangeText={this.handleTextChange}
               />
-              <Input
-                name="password"
-                type="password"
-                label="Password"
-                value={requestData.password}
-                onChangeText={this.handleTextChange}
-              />
-              <Link to="/sign/forgot-password" className="forgotPassword">Forgot password?</Link>
 
-              <Button type="submit" className="submit" color="orange">
-                Sign In
-              </Button>
+              <div className="row">
+                <Link to="/sign/sign-in">Back</Link>
+                <Button type="submit" className="submit" color="blue">
+                  Reset Password
+                </Button>
+              </div>
             </form>
             <p className="switchSignMode">
               {"Don't have an admin yet? "}
@@ -118,12 +100,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  signInRequest,
+  forgotPasswordRequest,
 };
 
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Login);
+)(ForgotPassword);
 
 export default Container;

@@ -7,6 +7,7 @@ import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
 import { DEFAULT_FILTERS } from '../data/filter';
 import Api from "../Api";
+import Utils from "./Utils";
 
 class ChartUtils {
   static filter = memoizeOne((data, params = {}) => {
@@ -109,7 +110,7 @@ class ChartUtils {
   }
 
   static getNodeDocumentPosition(i) {
-    const node = document.querySelector(`#graph .node:nth-child(${i + 1})`);
+    const node = document.querySelector(`#graph .node[data-i="${i}"]`);
     if (!node) {
       return {};
     }
@@ -211,6 +212,11 @@ class ChartUtils {
     });
     const classArr = [...g[index].classList].filter((str) => !remove.includes(str));
     return _.union([...classArr, ...add]).join(' ');
+  }
+
+  static keyEvent(ev) {
+    ev.ctrlPress = Utils.getOS() === 'macos' ? ev.metaKey : ev.ctrlKey;
+    ev.chartEvent = !['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase());
   }
 
   static linkTextLeft(d) {

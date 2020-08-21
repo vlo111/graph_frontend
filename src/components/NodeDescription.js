@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as d3 from 'd3';
 import stripHtml from 'string-strip-html';
 import Chart from '../Chart';
 import Icon from './form/Icon';
@@ -58,16 +59,16 @@ class NodeDescription extends Component {
     if (!node) {
       return null;
     }
-    const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
+    const { x, y, } = ChartUtils.getNodeDocumentPosition(node.index);
+
     const { scale } = ChartUtils.calcScaledPosition();
     const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
     const top = y + (nodeWidth * scale) + 5;
-    let left = x;
+    let left = x + (nodeWidth * scale) + 5;
 
     if (left + MODAL_WIDTH > window.innerWidth) {
       left = window.innerWidth - MODAL_WIDTH - 15;
     }
-
     let description = stripHtml(node.description);
     description = description.length > 130 ? `${description.substr(0, 120)}... ` : description;
     return (

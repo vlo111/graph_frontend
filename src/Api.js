@@ -42,6 +42,14 @@ class Api {
     return api.post('/users/sign-up', data);
   }
 
+  static forgotPassword(email, callback) {
+    return api.post('/users/forgot-password', { email, callback });
+  }
+
+  static resetPassword(token, password) {
+    return api.post('/users/reset-password', { token, password });
+  }
+
   static getMyAccount() {
     return api.get('/users/me');
   }
