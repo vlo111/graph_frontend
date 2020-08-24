@@ -59,7 +59,7 @@ class NodeDescription extends Component {
     if (!node) {
       return null;
     }
-    const { x, y, } = ChartUtils.getNodeDocumentPosition(node.index);
+    const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
 
     const { scale } = ChartUtils.calcScaledPosition();
     const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
@@ -71,6 +71,8 @@ class NodeDescription extends Component {
     }
     let description = stripHtml(node.description);
     description = description.length > 130 ? `${description.substr(0, 120)}... ` : description;
+
+    const nodeLinks = Chart.getNodeLinks(node.name, 'all');
     return (
       <Outside onClick={this.hideInfo}>
         <div onMouseLeave={this.hideInfo} data-node-info={node.index} id="nodeDescription" style={{ top, left }}>
@@ -106,6 +108,10 @@ class NodeDescription extends Component {
                 <span className="link">more</span>
               ) : null}
             </div>
+            <p className="connections">
+              <strong>{'Connections: '}</strong>
+              {nodeLinks.length}
+            </p>
           </div>
         </div>
       </Outside>
