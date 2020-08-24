@@ -69,7 +69,7 @@ class NodeDescription extends Component {
     if (left + MODAL_WIDTH > window.innerWidth) {
       left = window.innerWidth - MODAL_WIDTH - 15;
     }
-    let description = stripHtml(node.description);
+    let { result: description } = stripHtml(node.description);
     description = description.length > 130 ? `${description.substr(0, 120)}... ` : description;
 
     const nodeLinks = Chart.getNodeLinks(node.name, 'all');
