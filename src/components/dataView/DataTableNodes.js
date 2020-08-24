@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
+import { toast } from 'react-toastify';
 import { setActiveButton, setGridIndexes, toggledGrid } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Input from '../form/Input';
@@ -12,8 +13,7 @@ import DataEditorDescription from './DataEditorDescription';
 import Convert from '../../helpers/Convert';
 import Select from '../form/Select';
 import { NODE_TYPES } from '../../data/node';
-import Validate from "../../helpers/Validate";
-import { toast } from "react-toastify";
+import Validate from '../../helpers/Validate';
 
 class DataTableNodes extends Component {
   static propTypes = {
@@ -36,7 +36,6 @@ class DataTableNodes extends Component {
       grid: [],
     };
   }
-
 
   handleDataChange = (changes) => {
     const { grid } = this.state;
@@ -181,11 +180,29 @@ class DataTableNodes extends Component {
     if (props.cell.key === 'nodeType') {
       return (
         <Select
-          {...defaultProps}
           menuIsOpen
           options={NODE_TYPES}
           value={NODE_TYPES.find((t) => t.value === props.value)}
           onChange={(v) => props.onChange(v?.value || '')}
+        />
+      );
+    }
+    if (props.cell.key === 'type') {
+      let types = Chart.getNodes()
+        .filter((d) => d.type)
+        .map((d) => ({
+          value: d.type,
+          label: d.type,
+        }));
+      types = _.uniqBy(types, 'value');
+      return (
+        <Select
+          menuIsOpen
+          isClearable
+          autoFocus
+          options={types}
+          value={types.find((t) => t.value === props.value)}
+          onChange={(v) => props.onChange(v?.value || props.value)}
         />
       );
     }

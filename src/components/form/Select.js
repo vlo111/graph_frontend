@@ -5,6 +5,7 @@ import ReactSelect from 'react-select';
 import _ from 'lodash';
 import ReactSelectCreatable from 'react-select/creatable';
 import Icon from './Icon';
+import Outside from "../Outside";
 
 class Select extends Component {
   static propTypes = {
@@ -114,16 +115,19 @@ class Select extends Component {
         ) : null}
         <Icon value={icon} />
         {props.isClearable ? (
-          <ReactSelectCreatable
-            {...props}
-            {...params}
-            id={inputId}
-            classNamePrefix="gh"
-            inputValue={inputValue}
-            onInputChange={this.handleInputChange}
-            onBlur={this.handleInputBlur}
-            className={classNames('ghSelectContent', props.className)}
-          />
+          <Outside onMouseDown={this.handleInputBlur}>
+            <ReactSelectCreatable
+              {...props}
+              {...params}
+              isSearchable
+              id={inputId}
+              classNamePrefix="gh"
+              inputValue={inputValue}
+              onInputChange={this.handleInputChange}
+              // onBlur={this.handleInputBlur}
+              className={classNames('ghSelectContent', props.className)}
+            />
+          </Outside>
         ) : (
           <ReactSelect
             {...props}

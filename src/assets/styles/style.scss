@@ -1262,8 +1262,8 @@ p {
     min-width: 100%;
     margin: 0;
 
-    textarea,
-    input {
+    > textarea,
+    > input {
       height: 32px;
       text-align: left;
       font-size: 15px;
@@ -1281,28 +1281,23 @@ p {
       min-width: 200px;
     }
 
-    .gh__control {
-      min-height: 32px;
-      height: 32px;
-      border-radius: 0;
-      border: none;
-      align-items: flex-start;
-      z-index: 2;
 
-      .gh__indicators {
-        height: 100%;
+    &.ghSelect {
+      width: 320px !important;
+      .gh__control {
+        min-height: 32px;
+        height: 32px;
+        border-radius: 0;
+        border: none;
+        z-index: 2;
+        border-right: 1px solid $color-light-gray;
       }
 
-      .gh__value-container {
-        height: 100%;
-        padding: 2px 3px;
+      .gh__menu {
+        margin-top: 0;
       }
-
-      .gh__indicator-separator {
-        display: none;
-      }
-
     }
+
 
     .gh__menu {
       margin-top: 3px;
