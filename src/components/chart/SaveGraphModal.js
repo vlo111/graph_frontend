@@ -86,8 +86,8 @@ class SaveGraphModal extends Component {
     });
     files = await Promise.allValues(files);
 
-    const svg = Chart.printMode(400, 223);
     let resGraphId;
+    const svg = Chart.printMode(400, 223);
     if (forceCreate || !graphId) {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,

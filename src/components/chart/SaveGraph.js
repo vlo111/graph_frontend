@@ -3,8 +3,7 @@ import { withRouter, Prompt } from 'react-router-dom';
 import Button from '../form/Button';
 import SaveGraphModal from './SaveGraphModal';
 import Chart from '../../Chart';
-import Utils from "../../helpers/Utils";
-import ChartUtils from "../../helpers/ChartUtils";
+import ChartUtils from '../../helpers/ChartUtils';
 
 class SaveGraph extends Component {
   constructor(props) {
