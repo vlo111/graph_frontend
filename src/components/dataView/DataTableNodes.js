@@ -198,7 +198,7 @@ class DataTableNodes extends Component {
       return (
         <Select
           menuIsOpen
-          isClearable
+          isCreatable
           autoFocus
           options={types}
           value={types.find((t) => t.value === props.value)}

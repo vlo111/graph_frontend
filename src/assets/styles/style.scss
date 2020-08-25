@@ -235,6 +235,20 @@ p {
     }
   }
 
+  &.ghIsMulti {
+    .gh__clear-indicator {
+      display: none;
+    }
+    .gh__dropdown-indicator{
+      display: none;
+    }
+    .gh__value-container{
+      max-height: 200px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  }
+
   //&.ghIsSearchable {
   //  .ghSelectContent {
   //    .gh__control {

@@ -17,7 +17,7 @@ class Select extends Component {
     error: PropTypes.string,
     children: PropTypes.node,
     icon: PropTypes.any,
-    isClearable: PropTypes.bool,
+    isCreatable: PropTypes.bool,
     portal: PropTypes.bool,
     isSearchable: PropTypes.bool,
     limit: PropTypes.number,
@@ -36,7 +36,7 @@ class Select extends Component {
     error: undefined,
     getOptionValue: undefined,
     icon: undefined,
-    isClearable: false,
+    isCreatable: false,
     isSearchable: false,
     limit: undefined,
     portal: false,
@@ -84,12 +84,22 @@ class Select extends Component {
     this.setState({ inputValue });
   }
 
+  handleKeyDown = (ev) => {
+    if (['Enter', 'Tab'].includes(ev.key)) {
+      this.handleInputBlur();
+    }
+  }
   handleInputBlur = () => {
     const { inputValue } = this.state;
-    const { value } = this.props;
-    if (inputValue && value[0]?.value !== inputValue) {
+    const { value, isMulti } = this.props;
+    if (!inputValue) return;
+    if (isMulti) {
+      const valueArr = _.isArray(value) ? value : [value];
+      this.props.onChange(_.uniqBy([...valueArr, { value: inputValue, label: inputValue }], 'value'));
+    } else if (!value || value[0]?.value !== inputValue) {
       this.props.onChange({ value: inputValue, label: inputValue });
     }
+    this.setState({ inputValue: '' });
   }
 
   render() {
@@ -108,13 +118,16 @@ class Select extends Component {
     return (
       <div
         id={containerId}
-        className={classNames(containerClassName, 'ghFormField', 'ghSelect', { ghIsSearchable: props.isSearchable })}
+        className={classNames(containerClassName, 'ghFormField', 'ghSelect', {
+          ghIsSearchable: props.isSearchable,
+          ghIsMulti: props.isMulti
+        })}
       >
         {label ? (
           <label htmlFor={inputId}>{label}</label>
         ) : null}
         <Icon value={icon} />
-        {props.isClearable ? (
+        {props.isCreatable ? (
           <Outside onMouseDown={this.handleInputBlur}>
             <ReactSelectCreatable
               {...props}
@@ -123,6 +136,7 @@ class Select extends Component {
               id={inputId}
               classNamePrefix="gh"
               inputValue={inputValue}
+              onKeyDown={this.handleKeyDown}
               onInputChange={this.handleInputChange}
               // onBlur={this.handleInputBlur}
               className={classNames('ghSelectContent', props.className)}

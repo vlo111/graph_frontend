@@ -42,7 +42,7 @@ class SaveGraphModal extends Component {
       requestData: {
         title,
         description,
-        tags,
+        tags: tags || [],
         status: status === 'template' ? 'active' : status,
       },
     });
@@ -55,7 +55,7 @@ class SaveGraphModal extends Component {
         title: '',
         description: '',
         status: 'active',
-        tags: '',
+        tags: [],
       },
     };
   }
@@ -137,6 +137,7 @@ class SaveGraphModal extends Component {
     const canSave = nodes.length && requestData.title;
     const isUpdate = !!singleGraph.id;
     const isTemplate = singleGraph.status === 'template';
+    console.log(requestData.tags)
     return (
       <Modal
         className="ghModal"
@@ -166,6 +167,15 @@ class SaveGraphModal extends Component {
             onChange={(v) => this.handleChange('status', v?.value || 'active')}
           />
         ) : null}
+        <Select
+          label="Tags"
+          isCreatable
+          isMulti
+          value={requestData.tags.map((v) => ({ value: v, label: v }))}
+          menuIsOpen={false}
+          placeholder="Add..."
+          onChange={(value) => this.handleChange('tags', value.map((v) => v.value))}
+        />
         <div className="buttons">
           {isTemplate ? (
             <>

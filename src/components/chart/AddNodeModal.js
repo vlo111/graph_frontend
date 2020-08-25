@@ -95,7 +95,7 @@ class AddNodeModal extends Component {
         <form onSubmit={this.addNode}>
           <h2>Add new node</h2>
           <Select
-            isClearable
+            isCreatable
             label="Type"
             value={[
               groups.find((t) => t.value === nodeData.type) || {
