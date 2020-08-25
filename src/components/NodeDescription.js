@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import * as d3 from 'd3';
 import stripHtml from 'string-strip-html';
 import Chart from '../Chart';
 import Icon from './form/Icon';
 import Outside from './Outside';
 import ChartUtils from '../helpers/ChartUtils';
+import NodeIcon from './NodeIcon';
 
 const MODAL_WIDTH = 300;
 
@@ -63,7 +63,7 @@ class NodeDescription extends Component {
 
     const { scale } = ChartUtils.calcScaledPosition();
     const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
-    const top = y + (nodeWidth * scale) + 5;
+    const top = y;
     let left = x + (nodeWidth * scale) + 5;
 
     if (left + MODAL_WIDTH > window.innerWidth) {
@@ -78,16 +78,7 @@ class NodeDescription extends Component {
         <div onMouseLeave={this.hideInfo} data-node-info={node.index} id="nodeDescription" style={{ top, left }}>
           <Icon className="close" value="fa-close" onClick={this.hideInfo} />
           <div className="left">
-            <span
-              className={`node ${node.nodeType} ${node.icon ? 'hasImage' : ''}`}
-              style={{ background: !node.icon ? ChartUtils.nodeColor()(node) : undefined }}
-            >
-              {node.icon ? (
-                <img src={node.icon} alt="icon" width={50} height={50} />
-              ) : (
-                <span className="text">{node.type[0]}</span>
-              )}
-            </span>
+            <NodeIcon node={node} />
           </div>
           <div className="right">
             {node.link ? (

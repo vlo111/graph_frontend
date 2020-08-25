@@ -1,4 +1,4 @@
-import { CONVERT_GRAPH, CREATE_GRAPH, GET_GRAPHS_LIST, GET_SINGLE_GRAPH, UPDATE_GRAPH } from '../actions/graphs';
+import { CONVERT_GRAPH, GET_GRAPHS_LIST, GET_SINGLE_GRAPH } from '../actions/graphs';
 
 const initialState = {
   importData: {},

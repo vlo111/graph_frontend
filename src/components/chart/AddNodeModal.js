@@ -96,7 +96,6 @@ class AddNodeModal extends Component {
           <h2>Add new node</h2>
           <Select
             isClearable
-            isSearchable
             label="Type"
             value={[
               groups.find((t) => t.value === nodeData.type) || {

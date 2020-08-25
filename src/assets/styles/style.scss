@@ -1284,6 +1284,7 @@ p {
 
     &.ghSelect {
       width: 320px !important;
+
       .gh__control {
         min-height: 32px;
         height: 32px;
@@ -1583,40 +1584,6 @@ p {
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-
-    .node {
-      width: 50px;
-      height: 50px;
-      overflow: hidden;
-      color: $color-white;
-      font-size: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 0;
-      border-radius: 50%;
-      padding-bottom: 5px;
-
-      &.hasImage {
-        padding-bottom: 0;
-      }
-
-      &.square {
-        border-radius: 1px;
-        border: 1px solid transparent;
-      }
-
-      &.triangle {
-        border-radius: 0;
-        position: relative;
-        clip-path: polygon(50% 0%, 0% 80%, 100% 80%);
-      }
-
-      &.hexagon {
-        border-radius: 0;
-        clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
-      }
     }
   }
 
@@ -2309,5 +2276,94 @@ body .gh__menu {
   .gh__option--is-selected {
     background-color: #668DF81A;
     color: $color-dark;
+  }
+}
+
+.nodeIcon {
+  width: 50px;
+  min-width: 50px;
+  height: 50px;
+  overflow: hidden;
+  color: $color-white;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  border-radius: 50%;
+  padding-bottom: 5px;
+
+  &.hasImage {
+    padding-bottom: 0;
+  }
+
+  &.square {
+    border-radius: 1px;
+    border: 1px solid transparent;
+  }
+
+  &.triangle {
+    border-radius: 0;
+    position: relative;
+    clip-path: polygon(50% 0%, 0% 80%, 100% 80%);
+  }
+
+  &.hexagon {
+    border-radius: 0;
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+  }
+}
+
+.ghModalSearch {
+  width: 460px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+
+  .graphSearch {
+    width: 100%;
+
+    label {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .list {
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .item {
+      display: flex;
+      padding: 10px;
+
+      .ghButton {
+        width: 100%;
+        margin: 0;
+        padding: 10px 5px;
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        text-align: left;
+
+        > span {
+          margin-right: 10px;
+          overflow: hidden;
+        }
+
+        .name {
+          font-size: 15px;
+          max-width: 50%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .type {
+          max-width: calc(50% - 70px);
+          color: $color-dark-blue;
+        }
+      }
+    }
   }
 }

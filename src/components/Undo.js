@@ -4,8 +4,7 @@ import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as UndoBackSvg } from '../assets/images/icons/undo-back.svg';
 import Chart from '../Chart';
 import ContextMenu from './ContextMenu';
-import Utils from "../helpers/Utils";
-import ChartUtils from "../helpers/ChartUtils";
+import ChartUtils from '../helpers/ChartUtils';
 
 class Undo extends Component {
   constructor(props) {
@@ -13,7 +12,7 @@ class Undo extends Component {
     this.state = {
       undoCount: 0,
       redoCount: 0,
-    }
+    };
   }
 
   componentDidMount() {

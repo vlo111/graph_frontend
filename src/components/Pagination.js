@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 class Pagination extends Component {
   static propTypes = {
     onPageChange: PropTypes.func,
-    history: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
     currentPage: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     totalPages: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   }

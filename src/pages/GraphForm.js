@@ -15,6 +15,7 @@ import { getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
 import AccountDropDown from '../components/account/AccountDropDown';
+import SearchModal from '../components/search/SearchModal';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -44,6 +45,7 @@ class GraphForm extends Component {
         <AccountDropDown />
         <Crop />
         <AddNodeModal />
+        {activeButton === 'search' && <SearchModal />}
         <AddLinkModal />
         <ContextMenu />
         <DataImport />

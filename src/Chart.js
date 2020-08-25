@@ -300,7 +300,12 @@ class Chart {
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
-      console.error(e);
+      console.error(e.message);
+      // if (e.message.startsWith('missing: ')) {
+      //   const name = e.message.replace('missing: ', '');
+      //   const links = this.getLinks().filter(d => d.source !== name && d.target !== name);
+      //   this.render({ links });
+      // }
       return this;
     }
   }

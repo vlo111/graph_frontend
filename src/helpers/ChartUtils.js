@@ -109,8 +109,12 @@ class ChartUtils {
     return (d) => scale(d.nodeType);
   }
 
+  static getNodeDocument(i) {
+    return document.querySelector(`#graph .node[data-i="${i}"] :not(text)`);
+  }
+
   static getNodeDocumentPosition(i) {
-    const node = document.querySelector(`#graph .node[data-i="${i}"]`);
+    const node = this.getNodeDocument(i);
     if (!node) {
       return {};
     }
