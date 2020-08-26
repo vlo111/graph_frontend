@@ -1463,6 +1463,19 @@ p {
         left: 60px;
       }
 
+      &.tags {
+        .ghFormField{
+          //max-width: 100% !important;
+          //width: 100% !important;
+          left: auto;
+          right: 0;
+          .gh__control{
+            height: auto;
+            border: 1px solid $color-main;
+          }
+        }
+
+      }
       //&.value,
       //&.type {
       //  text-align: right;

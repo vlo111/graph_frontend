@@ -21,6 +21,7 @@ class DataTableNodes extends Component {
     toggledGrid: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
     selectedNodes: PropTypes.array.isRequired,
+    nodes: PropTypes.array.isRequired,
   }
 
   initGridValues = memoizeOne((nodes) => {
@@ -91,6 +92,7 @@ class DataTableNodes extends Component {
           <th className="cell nodeType" width="130"><span>Node Type</span></th>
           <th className="cell icon" width="272"><span>Icon</span></th>
           <th className="cell link" width="272"><span>Link</span></th>
+          <th className="cell tags" width="272"><span>Tags</span></th>
         </tr>
         </thead>
         <tbody>
@@ -203,6 +205,20 @@ class DataTableNodes extends Component {
           options={types}
           value={types.find((t) => t.value === props.value)}
           onChange={(v) => props.onChange(v?.value || props.value)}
+        />
+      );
+    }
+    if (props.cell.key === 'tags') {
+      console.log(props.value);
+      const value  = !_.isArray(props.value) ? props.value.split(',') : props.value
+      return (
+        <Select
+          isCreatable
+          isMulti
+          value={value.map((v) => ({ value: v, label: v }))}
+          menuIsOpen={false}
+          placeholder=""
+          onChange={(value) => props.onChange(value.map((v) => v.value))}
         />
       );
     }
