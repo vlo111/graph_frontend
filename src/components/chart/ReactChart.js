@@ -29,19 +29,25 @@ class ReactChart extends Component {
 
     Chart.event.on('node.click', this.deleteNode);
     ContextMenu.event.on('node.delete', this.deleteNode);
+    ContextMenu.event.on('node.edit', this.editNode);
 
     Chart.event.on('link.click', this.deleteLink);
     ContextMenu.event.on('link.delete', this.deleteLink);
-    Chart.event.on('click', this.addNewItem);
+    Chart.event.on('click', this.addNewNode);
   }
 
   componentWillUnmount() {
     Chart.unmount();
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
     ContextMenu.event.removeListener('node.delete', this.deleteNode);
+    ContextMenu.event.removeListener('node.edit', this.editNode);
   }
 
-  addNewItem = () => {
+  editNode = (node) => {
+    this.props.toggleNodeModal(node);
+  }
+
+  addNewNode = () => {
     const { target } = d3.event;
     if (target.tagName !== 'svg'
       || Chart.activeButton !== 'create'

@@ -5,7 +5,7 @@ import ReactSelect from 'react-select';
 import _ from 'lodash';
 import ReactSelectCreatable from 'react-select/creatable';
 import Icon from './Icon';
-import Outside from "../Outside";
+import Outside from '../Outside';
 
 class Select extends Component {
   static propTypes = {
@@ -24,6 +24,7 @@ class Select extends Component {
     options: PropTypes.array,
     value: PropTypes.array,
     getOptionValue: PropTypes.func,
+    isMulti: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -36,6 +37,7 @@ class Select extends Component {
     error: undefined,
     getOptionValue: undefined,
     icon: undefined,
+    isMulti: false,
     isCreatable: false,
     isSearchable: false,
     limit: undefined,
@@ -89,6 +91,7 @@ class Select extends Component {
       this.handleInputBlur();
     }
   }
+
   handleInputBlur = () => {
     const { inputValue } = this.state;
     const { value, isMulti } = this.props;
@@ -120,7 +123,7 @@ class Select extends Component {
         id={containerId}
         className={classNames(containerClassName, 'ghFormField', 'ghSelect', {
           ghIsSearchable: props.isSearchable,
-          ghIsMulti: props.isMulti
+          ghIsMulti: props.isMulti,
         })}
       >
         {label ? (

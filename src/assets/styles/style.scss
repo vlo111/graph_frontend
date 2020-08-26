@@ -239,10 +239,12 @@ p {
     .gh__clear-indicator {
       display: none;
     }
-    .gh__dropdown-indicator{
+
+    .gh__dropdown-indicator {
       display: none;
     }
-    .gh__value-container{
+
+    .gh__value-container {
       max-height: 200px;
       overflow-y: auto;
       overflow-x: hidden;
@@ -1080,7 +1082,10 @@ p {
     //overflow-x: hidden;
   }
 
-
+  .ghModalSave {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 }
 
 .buttons {

@@ -140,7 +140,7 @@ class SaveGraphModal extends Component {
     console.log(requestData.tags)
     return (
       <Modal
-        className="ghModal"
+        className="ghModal ghModalSave"
         overlayClassName="ghModalOverlay"
         isOpen
         onRequestClose={() => this.props.toggleModal(false)}

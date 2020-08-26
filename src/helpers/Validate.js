@@ -2,13 +2,13 @@ import _ from 'lodash';
 import Chart from '../Chart';
 
 class Validate {
-  static nodeName(val) {
+  static nodeName(val, edit) {
     const value = (val || '').trim();
     let error = null;
     const nodes = Chart.getNodes();
     if (!value) {
       error = 'Name is required';
-    } else if (nodes.some((d) => d.name === value)) {
+    } else if (!edit && nodes.some((d) => d.name === value)) {
       error = 'Already exists';
     }
     return [error, value];

@@ -19,15 +19,21 @@ class AddNodeModal extends Component {
     addNodeParams: PropTypes.object.isRequired,
   }
 
-  initNodeData = memoizeOne(() => {
+  initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
+    const {
+      fx, fy, name, icon, nodeType, type, index,
+    } = addNodeParams;
     this.setState({
       nodeData: {
-        name: '',
-        icon: '',
-        nodeType: 'circle',
-        type: _.last(nodes)?.type || '',
+        fx,
+        fy,
+        name: name || '',
+        icon: icon || '',
+        nodeType: nodeType || 'circle',
+        type: type || _.last(nodes)?.type || '',
       },
+      index,
       errors: {},
     });
   }, _.isEqual)
@@ -47,6 +53,7 @@ class AddNodeModal extends Component {
     this.state = {
       nodeData: {},
       errors: {},
+      index: null,
     };
   }
 
@@ -54,19 +61,33 @@ class AddNodeModal extends Component {
     this.props.toggleNodeModal();
   }
 
-  addNode = async (ev) => {
+  saveNode = async (ev) => {
     ev.preventDefault();
-    const { addNodeParams } = this.props;
-    const { nodeData } = this.state;
+    const { nodeData, index } = this.state;
     const errors = {};
     const nodes = Chart.getNodes();
+    let links;
 
-    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name);
+    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, !_.isNull(index));
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
 
     if (!Validate.hasError(errors)) {
-      nodes.push({ ...addNodeParams, ...nodeData });
-      Chart.render({ nodes });
+      if (_.isNull(index)) {
+        nodes.push(nodeData);
+      } else {
+        const { name: oldName } = nodes[index];
+        links = Chart.getLinks().map((d) => {
+          if (d.source === oldName) {
+            d.source = nodeData.name;
+          } else if (d.target === oldName) {
+            d.target = nodeData.name;
+          }
+          return d;
+        });
+
+        nodes[index] = nodeData;
+      }
+      Chart.render({ nodes, links });
       this.props.toggleNodeModal();
     }
     this.setState({ errors, nodeData });
@@ -92,7 +113,7 @@ class AddNodeModal extends Component {
         isOpen={!_.isEmpty(addNodeParams)}
         onRequestClose={this.closeModal}
       >
-        <form onSubmit={this.addNode}>
+        <form onSubmit={this.saveNode}>
           <h2>Add new node</h2>
           <Select
             isCreatable

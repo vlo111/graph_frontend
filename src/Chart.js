@@ -661,7 +661,7 @@ class Chart {
 
     if (!document.querySelector('#graph svg')) {
       console.error('graph error');
-      return;
+      return '';
     }
     const {
       left: svgLeft, top: svgTop,
