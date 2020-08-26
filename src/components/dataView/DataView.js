@@ -11,6 +11,7 @@ import Button from '../form/Button';
 import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
 import Api from '../../Api';
+import ChartUtils from '../../helpers/ChartUtils';
 
 class DataView extends Component {
   static propTypes = {
@@ -80,8 +81,10 @@ class DataView extends Component {
   }
 
   export = (type) => {
-    const nodes = Chart.getNodes();
-    const links = Chart.getLinks();
+    const { selectedGrid } = this.props;
+    const nodes = Chart.getNodes().filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
+    const links = Chart.getLinks().filter((d) => ChartUtils.isCheckedLink(selectedGrid, d));
+
     if (type === 'csv') {
       Api.download('csv-nodes', { nodes });
       if (!_.isEmpty(links)) {
@@ -94,7 +97,7 @@ class DataView extends Component {
 
   download = async (type) => {
     this.props.setLoading(true);
-    const svg = Chart.printMode(1900, 1060);
+    const svg = Chart.printMode(1900, 1060, true);
     await Api.download(type, { svg });
     this.props.setLoading(false);
   }

@@ -598,6 +598,10 @@ p {
         opacity: 0.2 !important;
         pointer-events: none;
       }
+      &.unChecked{
+        opacity: 0.1 !important;
+        pointer-events: none;
+      }
     }
   }
 
@@ -658,6 +662,11 @@ p {
       text {
         opacity: 0.4 !important;
       }
+    }
+
+    &.unChecked{
+      opacity: 0.1 !important;
+      pointer-events: none;
     }
 
     &.auto {

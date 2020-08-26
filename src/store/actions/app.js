@@ -22,7 +22,7 @@ export function toggleNodeModal(params = {}) {
 
 export const TOGGLE_GRID = 'TOGGLE_GRID';
 
-export function toggledGrid(grid, index) {
+export function toggleGrid(grid, index) {
   return {
     type: TOGGLE_GRID,
     payload: {

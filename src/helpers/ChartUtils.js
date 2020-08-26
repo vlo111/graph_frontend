@@ -6,8 +6,8 @@ import Chart from '../Chart';
 import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
 import { DEFAULT_FILTERS } from '../data/filter';
-import Api from "../Api";
-import Utils from "./Utils";
+import Api from '../Api';
+import Utils from './Utils';
 
 class ChartUtils {
   static filter = memoizeOne((data, params = {}) => {
@@ -28,7 +28,7 @@ class ChartUtils {
       d.hidden = false;
       return d;
     });
-    console.log(params)
+    console.log(params);
     data.nodes = data.nodes.map((d) => {
       // if (data.links.some((l) => l.hidden && d.name === l.source)) {
       //   d.hidden = true;
@@ -67,6 +67,22 @@ class ChartUtils {
 
     return data;
   })
+
+  static isCheckedNode = (selectedGrid, d) => selectedGrid.nodes.includes(d.index)
+
+  static isCheckedLink = (selectedGrid, d) => {
+    const { index: sourceIndex } = this.getNodeByName(d.source.name || d.source);
+    const { index: targetIndex } = this.getNodeByName(d.target.name || d.target);
+    if (!selectedGrid.nodes.includes(sourceIndex) || !selectedGrid.nodes.includes(targetIndex)) {
+      return false;
+    }
+    return selectedGrid.links.includes(d.index);
+  }
+
+  static getNodeByName(name) {
+    const nodes = Chart.getNodes();
+    return nodes.find((d) => d.name === name);
+  }
 
   static normalizeIcon = (icon) => {
     if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {

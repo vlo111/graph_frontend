@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import { setActiveButton, setGridIndexes, toggledGrid } from '../../store/actions/app';
+import { setActiveButton, setGridIndexes, toggleGrid } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Input from '../form/Input';
 import FileInput from '../form/FileInput';
@@ -14,11 +14,12 @@ import Convert from '../../helpers/Convert';
 import Select from '../form/Select';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
+import ChartUtils from "../../helpers/ChartUtils";
 
 class DataTableNodes extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
-    toggledGrid: PropTypes.func.isRequired,
+    toggleGrid: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
     selectedNodes: PropTypes.array.isRequired,
     nodes: PropTypes.array.isRequired,
@@ -68,6 +69,10 @@ class DataTableNodes extends Component {
     Chart.render({ nodes, links });
   }
 
+  toggleGrid = async (index) => {
+    await this.props.toggleGrid('nodes', index);
+  }
+
   renderSheet = (props) => {
     const { selectedNodes } = this.props;
     const { grid } = this.state;
@@ -75,28 +80,28 @@ class DataTableNodes extends Component {
     return (
       <table className={props.className}>
         <thead>
-          <tr>
-            <th className="cell index" width="60">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={allChecked}
-                  onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))}
-                />
-                All
-              </label>
-            </th>
-            <th className="cell name" width="180"><span>Name</span></th>
-            <th className="cell type" width="150"><span>Type</span></th>
-            <th className="cell description" width="272"><span>Description</span></th>
-            <th className="cell nodeType" width="130"><span>Node Type</span></th>
-            <th className="cell icon" width="272"><span>Icon</span></th>
-            <th className="cell link" width="272"><span>Link</span></th>
-            <th className="cell keywords" width="272"><span>Keywords</span></th>
-          </tr>
+        <tr>
+          <th className="cell index" width="60">
+            <label>
+              {/*<input*/}
+              {/*  type="checkbox"*/}
+              {/*  checked={allChecked}*/}
+              {/*  onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))}*/}
+              {/*/>*/}
+              {/*All*/}
+            </label>
+          </th>
+          <th className="cell name" width="180"><span>Name</span></th>
+          <th className="cell type" width="150"><span>Type</span></th>
+          <th className="cell description" width="272"><span>Description</span></th>
+          <th className="cell nodeType" width="130"><span>Node Type</span></th>
+          <th className="cell icon" width="272"><span>Icon</span></th>
+          <th className="cell link" width="272"><span>Link</span></th>
+          <th className="cell keywords" width="272"><span>Keywords</span></th>
+        </tr>
         </thead>
         <tbody>
-          {props.children}
+        {props.children}
         </tbody>
       </table>
     );
@@ -120,7 +125,7 @@ class DataTableNodes extends Component {
             <input
               type="checkbox"
               checked={selectedNodes.includes(cell.value)}
-              onChange={() => this.props.toggledGrid('nodes', cell.value)}
+              onChange={() => this.toggleGrid(cell.value)}
             />
             {props.row + 1}
           </label>
@@ -251,7 +256,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   setActiveButton,
-  toggledGrid,
+  toggleGrid,
   setGridIndexes,
 };
 

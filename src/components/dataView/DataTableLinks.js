@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import { setActiveButton, setGridIndexes, toggledGrid } from '../../store/actions/app';
+import { setActiveButton, setGridIndexes, toggleGrid } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Input from '../form/Input';
 import Select from '../form/Select';
@@ -21,7 +21,7 @@ class DataTableLinks extends Component {
     setGridIndexes: PropTypes.array.isRequired,
     selectedLinks: PropTypes.array.isRequired,
     links: PropTypes.array.isRequired,
-    toggledGrid: PropTypes.func.isRequired,
+    toggleGrid: PropTypes.func.isRequired,
   }
 
   initGridValues = memoizeOne((links) => {
@@ -71,12 +71,12 @@ class DataTableLinks extends Component {
           <tr>
             <th className="cell index" width="60">
               <label>
-                <input
-                  type="checkbox"
-                  checked={grid.length === selectedLinks.length}
-                  onChange={() => this.props.setGridIndexes('links', allChecked ? [] : grid.map((g) => g[0].value))}
-                />
-                All
+                {/*<input*/}
+                {/*  type="checkbox"*/}
+                {/*  checked={grid.length === selectedLinks.length}*/}
+                {/*  onChange={() => this.props.setGridIndexes('links', allChecked ? [] : grid.map((g) => g[0].value))}*/}
+                {/*/>*/}
+                {/*All*/}
               </label>
             </th>
             <th className="cell type" width="150"><span>Type</span></th>
@@ -106,7 +106,7 @@ class DataTableLinks extends Component {
             <input
               type="checkbox"
               checked={selectedLinks.includes(cell.value)}
-              onChange={() => this.props.toggledGrid('links', cell.value)}
+              onChange={() => this.props.toggleGrid('links', cell.value)}
             />
             {props.row + 1}
           </label>
@@ -226,7 +226,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   setActiveButton,
-  toggledGrid,
+  toggleGrid,
   setGridIndexes,
 };
 

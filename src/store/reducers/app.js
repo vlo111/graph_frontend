@@ -7,6 +7,7 @@ import {
 } from '../actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
 import { DEFAULT_FILTERS } from "../../data/filter";
+import Chart from "../../Chart";
 
 const initialState = {
   activeButton: 'create',
@@ -43,6 +44,9 @@ export default function reducer(state = initialState, action) {
       } else {
         selectedGrid[grid].push(index);
       }
+      Chart.node.attr('class', ChartUtils.setClass((d) => ({ unChecked: !ChartUtils.isCheckedNode(selectedGrid, d) })));
+      Chart.link.attr('class', ChartUtils.setClass((d) => ({ unChecked: !ChartUtils.isCheckedLink(selectedGrid, d) })));
+
       return {
         ...state,
         selectedGrid,
@@ -52,6 +56,8 @@ export default function reducer(state = initialState, action) {
       const { indexes, grid } = action.payload;
       const selectedGrid = { ...state.selectedGrid };
       selectedGrid[grid] = indexes;
+      Chart.node.attr('class', ChartUtils.setClass((d) => ({ unChecked: !ChartUtils.isCheckedNode(selectedGrid, d) })));
+      Chart.link.attr('class', ChartUtils.setClass((d) => ({ unChecked: !ChartUtils.isCheckedLink(selectedGrid, d) })));
       return {
         ...state,
         selectedGrid,

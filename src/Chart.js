@@ -645,7 +645,7 @@ class Chart {
     window.removeEventListener('resize', Chart.resizeSvg);
   }
 
-  static printMode(svgWidth, svgHeight) {
+  static printMode(svgWidth, svgHeight, crop = false) {
     const originalDimensions = {
       scale: this.wrapper.attr('data-scale') || 1,
       x: this.wrapper.attr('data-x') || 0,
@@ -664,6 +664,13 @@ class Chart {
       console.error('graph error');
       return '';
     }
+
+    if (crop) {
+      this.wrapper.selectAll('.unChecked')
+        .attr('style', 'display:none');
+    }
+
+
     const {
       left: svgLeft, top: svgTop,
     } = document.querySelector('#graph svg').getBoundingClientRect();
@@ -713,6 +720,9 @@ class Chart {
 
     this.linksWrapper.selectAll('path')
       .attr('fill', undefined);
+
+    this.wrapper.selectAll('.unChecked')
+      .attr('style', undefined);
 
     this.nodesWrapper.selectAll('.node text')
       .attr('font-family', undefined)
