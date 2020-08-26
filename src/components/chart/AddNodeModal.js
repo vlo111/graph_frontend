@@ -161,7 +161,7 @@ class AddNodeModal extends Component {
             value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
             menuIsOpen={false}
             placeholder="Add..."
-            onChange={(value) => this.handleChange('keywords', value.map((v) => v.value))}
+            onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
           />
           <div className="buttons">
             <Button onClick={this.closeModal}>

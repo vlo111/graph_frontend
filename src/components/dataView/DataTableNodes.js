@@ -217,7 +217,7 @@ class DataTableNodes extends Component {
           value={values.map((v) => ({ value: v, label: v }))}
           menuIsOpen={false}
           placeholder=""
-          onChange={(value) => props.onChange(value.map((v) => v.value))}
+          onChange={(value) => props.onChange((value || []).map((v) => v.value))}
         />
       );
     }
