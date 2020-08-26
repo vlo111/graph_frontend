@@ -68,9 +68,12 @@ class ChartUtils {
     return data;
   })
 
-  static isCheckedNode = (selectedGrid, d) => selectedGrid.nodes.includes(d.index)
+  static isCheckedNode = (selectedGrid, d) => _.isEmpty(selectedGrid.nodes) || selectedGrid.nodes.includes(d.index)
 
   static isCheckedLink = (selectedGrid, d) => {
+    if (_.isEmpty(selectedGrid.nodes)) {
+      return true;
+    }
     const { index: sourceIndex } = this.getNodeByName(d.source.name || d.source);
     const { index: targetIndex } = this.getNodeByName(d.target.name || d.target);
     if (!selectedGrid.nodes.includes(sourceIndex) || !selectedGrid.nodes.includes(targetIndex)) {
