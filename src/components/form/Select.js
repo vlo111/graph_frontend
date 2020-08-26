@@ -88,6 +88,7 @@ class Select extends Component {
 
   handleKeyDown = (ev) => {
     if (['Enter', 'Tab'].includes(ev.key)) {
+      ev.preventDefault();
       this.handleInputBlur();
     }
   }

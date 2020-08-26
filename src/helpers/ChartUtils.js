@@ -28,7 +28,7 @@ class ChartUtils {
       d.hidden = false;
       return d;
     });
-
+    console.log(params)
     data.nodes = data.nodes.map((d) => {
       // if (data.links.some((l) => l.hidden && d.name === l.source)) {
       //   d.hidden = true;
@@ -46,6 +46,10 @@ class ChartUtils {
         return d;
       }
       if (!_.isEmpty(params.nodeTypes) && !params.nodeTypes.includes(d.type)) {
+        d.hidden = true;
+        return d;
+      }
+      if (!_.isEmpty(params.nodeTags) && !params.nodeTags.some((t) => d.tags.includes(t))) {
         d.hidden = true;
         return d;
       }

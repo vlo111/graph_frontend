@@ -602,6 +602,7 @@ class Chart {
         icon: d.icon || '',
         link: d.link || '',
         hidden: d.hidden,
+        tags: d.tags || [],
       }));
     }
 

@@ -22,7 +22,7 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, type, index = null,
+      fx, fy, name, icon, nodeType, type, tags, index = null,
     } = addNodeParams;
     this.setState({
       nodeData: {
@@ -32,6 +32,7 @@ class AddNodeModal extends Component {
         icon: icon || '',
         nodeType: nodeType || 'circle',
         type: type || _.last(nodes)?.type || '',
+        tags: tags || [],
       },
       index,
       errors: {},
@@ -51,7 +52,9 @@ class AddNodeModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodeData: {},
+      nodeData: {
+        tags: [],
+      },
       errors: {},
       index: null,
     };
@@ -150,6 +153,15 @@ class AddNodeModal extends Component {
             accept=".png,.jpg,.gif"
             value={nodeData.icon}
             onChangeFile={(v) => this.handleChange('icon', v)}
+          />
+          <Select
+            label="Tags"
+            isCreatable
+            isMulti
+            value={nodeData.tags.map((v) => ({ value: v, label: v }))}
+            menuIsOpen={false}
+            placeholder="Add..."
+            onChange={(value) => this.handleChange('tags', value.map((v) => v.value))}
           />
           <div className="buttons">
             <Button onClick={this.closeModal}>
