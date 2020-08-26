@@ -675,8 +675,8 @@ class Chart {
     const scaleH = svgHeight / height;
     const scale = Math.min(scaleW, scaleH);
 
-    const y = -1 * (top - svgTop) * scale + (svgHeight - height * scale);
-    const x = -1 * (left - svgLeft) * scale + (svgWidth - width * scale);
+    const x = -1 * (left - svgLeft) * scale + ((svgWidth - width * scale) / 2);
+    const y = -1 * (top - svgTop) * scale + ((svgHeight - height * scale) / 2);
 
     Chart.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`)
       .attr('data-scale', scale)
