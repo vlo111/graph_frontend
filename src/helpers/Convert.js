@@ -39,7 +39,7 @@ class Convert {
       { value: d.nodeType, key: 'nodeType' },
       { value: d.icon, key: 'icon' },
       { value: d.link, key: 'link' },
-      { value: d.tags, key: 'tags' },
+      { value: d.keywords, key: 'keywords' },
     ]));
   }
 

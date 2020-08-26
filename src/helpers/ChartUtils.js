@@ -49,8 +49,11 @@ class ChartUtils {
         d.hidden = true;
         return d;
       }
-      if (!_.isEmpty(params.nodeTags) && !params.nodeTags.some((t) => d.tags.includes(t))) {
+      if (!_.isEmpty(params.nodeKeywords) && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
         d.hidden = true;
+        if (params.nodeKeywords.includes('[ Empty ]') && _.isEmpty(d.keyword)) {
+          d.hidden = false;
+        }
         return d;
       }
       d.hidden = false;

@@ -7,25 +7,32 @@ import { setFilter } from '../../store/actions/app';
 import Checkbox from '../form/Checkbox';
 import Button from '../form/Button';
 
-class TagsFilter extends Component {
+class KeywordsFilter extends Component {
   static propTypes = {
     filters: PropTypes.object.isRequired,
     setFilter: PropTypes.func.isRequired,
     nodes: PropTypes.array.isRequired,
   }
 
-  getTags = memoizeOne((nodes) => {
-    const tags = _.chain(nodes)
-      .map((d) => d.tags)
+  getKeywords = memoizeOne((nodes) => {
+    const keywords = _.chain(nodes)
+      .map((d) => d.keywords)
       .flatten(1)
       .groupBy()
       .map((d, key) => ({
         length: d.length,
-        tag: key,
+        keyword: key,
       }))
-      .orderBy('length', 'desc')
       .value();
-    return tags;
+
+    const empty = nodes.filter((d) => _.isEmpty(d.keywords))?.length;
+    if (empty && keywords.length) {
+      keywords.push({
+        length: empty,
+        keyword: '[ Empty ]',
+      });
+    }
+    return _.orderBy(keywords, 'length', 'desc');
   }, _.isEqual);
 
   constructor(props) {
@@ -37,20 +44,20 @@ class TagsFilter extends Component {
 
   handleChange = (value) => {
     const { nodes, filters } = this.props;
-    if (!filters.nodeTags.length) {
-      filters.nodeTags = this.getTags(nodes).map((d) => d.tag);
+    if (!filters.nodeKeywords.length) {
+      filters.nodeKeywords = this.getKeywords(nodes).map((d) => d.keyword);
     }
-    const i = filters.nodeTags.indexOf(value);
+    const i = filters.nodeKeywords.indexOf(value);
     if (i > -1) {
-      filters.nodeTags.splice(i, 1);
-      if (!filters.nodeTags.length) {
-        filters.nodeTags = this.getTags(nodes).map((d) => d.tag).filter((d) => d !== value);
+      filters.nodeKeywords.splice(i, 1);
+      if (!filters.nodeKeywords.length) {
+        filters.nodeKeywords = this.getKeywords(nodes).map((d) => d.keyword).filter((d) => d !== value);
       }
     } else {
-      filters.nodeTags.push(value);
+      filters.nodeKeywords.push(value);
     }
 
-    this.props.setFilter('nodeTags', filters.nodeTags);
+    this.props.setFilter('nodeKeywords', filters.nodeKeywords);
   }
 
   toggleMore = () => {
@@ -61,21 +68,21 @@ class TagsFilter extends Component {
   render() {
     const { showMore } = this.state;
     const { nodes, filters } = this.props;
-    const typesFull = this.getTags(nodes);
+    const typesFull = this.getKeywords(nodes);
     const types = showMore ? typesFull : _.chunk(typesFull, 5)[0] || [];
     if (!typesFull.length) {
       return null;
     }
     return (
       <div className="tagsFilter graphFilter">
-        <h4 className="title">Node Tags</h4>
+        <h4 className="title">Node Keywords</h4>
         <ul className="list">
           {types.map((item) => (
-            <li key={item.tag} className="item">
+            <li key={item.keyword} className="item">
               <Checkbox
-                label={item.tag}
-                checked={_.isEmpty(filters.nodeTags) || filters.nodeTags.includes(item.tag)}
-                onChange={() => this.handleChange(item.tag)}
+                label={item.keyword}
+                checked={_.isEmpty(filters.nodeKeywords) || filters.nodeKeywords.includes(item.keyword)}
+                onChange={() => this.handleChange(item.keyword)}
               >
                 <span className="badge">
                   {item.length}
@@ -105,6 +112,6 @@ const mapDispatchToProps = {
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(TagsFilter);
+)(KeywordsFilter);
 
 export default Container;

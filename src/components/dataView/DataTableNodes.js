@@ -92,7 +92,7 @@ class DataTableNodes extends Component {
             <th className="cell nodeType" width="130"><span>Node Type</span></th>
             <th className="cell icon" width="272"><span>Icon</span></th>
             <th className="cell link" width="272"><span>Link</span></th>
-            <th className="cell tags" width="272"><span>Tags</span></th>
+            <th className="cell keywords" width="272"><span>Keywords</span></th>
           </tr>
         </thead>
         <tbody>
@@ -208,7 +208,7 @@ class DataTableNodes extends Component {
         />
       );
     }
-    if (props.cell.key === 'tags') {
+    if (props.cell.key === 'keywords') {
       const values = _.isString(props.value) ? props.value.split(',').filter((v) => v) : props.value;
       return (
         <Select

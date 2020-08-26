@@ -12,7 +12,7 @@ import LinkTypesFilter from './LinkTypesFilter';
 import LinkValueFilter from './LinkValueFilter';
 import NodeConnectionFilter from './NodeConnectionFilter';
 import { ReactComponent as CloseIcon } from '../../assets/images/icons/close.svg';
-import TagsFilter from './TagsFilter';
+import KeywordsFilter from './KeywordsFilter';
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -70,7 +70,7 @@ class FiltersModal extends Component {
 
         <NodeConnectionFilter links={links} nodes={nodes} />
 
-        <TagsFilter nodes={nodes} />
+        <KeywordsFilter nodes={nodes} />
 
       </Modal>
     );

@@ -1280,6 +1280,7 @@ p {
     width: max-content !important;
     min-width: 100%;
     margin: 0;
+    z-index: 5;
 
     > textarea,
     > input {
@@ -1463,7 +1464,7 @@ p {
         left: 60px;
       }
 
-      &.tags {
+      &.keywords {
         .ghFormField{
           //max-width: 100% !important;
           //width: 100% !important;

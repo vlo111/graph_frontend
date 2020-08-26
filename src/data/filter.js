@@ -2,7 +2,7 @@ export const DEFAULT_FILTERS = {
   hideIsolated: '',
   nodeTypes: [],
   linkTypes: [],
-  nodeTags: [],
+  nodeKeywords: [],
   linkValue: {
     min: -1,
     max: -1,

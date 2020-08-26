@@ -41,7 +41,6 @@ class Editor extends Component {
     if (this.editor) {
       this.editor.destruct();
     }
-    console.log(Jodit.defaultOptions);
     const buttons = ['bold', 'italic', 'link', 'file'];
     options.buttons = options.buttons || buttons;
 
