@@ -22,7 +22,7 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, type, index,
+      fx, fy, name, icon, nodeType, type, index = null,
     } = addNodeParams;
     this.setState({
       nodeData: {
@@ -101,7 +101,7 @@ class AddNodeModal extends Component {
   }
 
   render() {
-    const { nodeData, errors } = this.state;
+    const { nodeData, errors, index } = this.state;
     const { addNodeParams } = this.props;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
@@ -114,7 +114,7 @@ class AddNodeModal extends Component {
         onRequestClose={this.closeModal}
       >
         <form onSubmit={this.saveNode}>
-          <h2>Add new node</h2>
+          <h2>{_.isNull(index) ? 'Add new node' : 'Edit node'}</h2>
           <Select
             isCreatable
             label="Type"
