@@ -63,7 +63,7 @@ class LinkTypesFilter extends Component {
     const { links, filters } = this.props;
     const typesFull = this.getLinkTypes(links);
     const types = showMore ? typesFull : _.chunk(typesFull, 5)[0] || [];
-    if (!typesFull.length) {
+    if (typesFull.length < 2) {
       return null;
     }
     return (

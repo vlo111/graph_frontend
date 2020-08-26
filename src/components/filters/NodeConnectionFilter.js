@@ -37,8 +37,8 @@ class NodeConnectionFilter extends Component {
     const maxLength = _.maxBy(connections, (v) => v.length)?.length || 1;
 
     const hasNoConnected = nodes.some((n) => !links.some((l) => l.source === n.name || l.target === n.name));
-    const min = hasNoConnected ? 0 : _.minBy(connections, (v) => v.count)?.count || 1;
-    const minLength = _.minBy(connections, (v) => v.length)?.length || 1;
+    const min = hasNoConnected ? 0 : _.minBy(connections, (v) => v.count)?.count || 0;
+    const minLength = _.minBy(connections, (v) => v.length)?.length || 0;
 
     connections = connections.map((v) => {
       v.percentage = (v.length / maxLength) * 100;
@@ -80,6 +80,7 @@ class NodeConnectionFilter extends Component {
     const { padding } = this.state;
     const { links, nodes, linkConnection } = this.props;
     const { connections, max, min } = this.getNodeConnections(nodes, links);
+    console.log(min, max);
     if (min === max) {
       return null;
     }

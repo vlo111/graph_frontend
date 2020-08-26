@@ -70,7 +70,7 @@ class KeywordsFilter extends Component {
     const { nodes, filters } = this.props;
     const typesFull = this.getKeywords(nodes);
     const types = showMore ? typesFull : _.chunk(typesFull, 5)[0] || [];
-    if (!typesFull.length) {
+    if (typesFull.length < 2) {
       return null;
     }
     return (
