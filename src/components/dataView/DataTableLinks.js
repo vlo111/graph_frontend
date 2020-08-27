@@ -62,9 +62,9 @@ class DataTableLinks extends Component {
   }
 
   sheetRenderer = (props) => {
-    const { grid } = this.state;
-    const { selectedLinks } = this.props;
-    const allChecked = grid.length === selectedLinks.length;
+    // const { grid } = this.state;
+    // const { selectedLinks } = this.props;
+    // const allChecked = grid.length === selectedLinks.length;
     return (
       <table className={props.className}>
         <thead>

@@ -11,8 +11,8 @@ import SignOut from './pages/sign/SignOut';
 import GraphDrafts from './pages/profile/GraphDrafts';
 import GraphTemplates from './pages/profile/GraphTemplates';
 import Utils from './helpers/Utils';
-import ForgotPassword from "./pages/sign/ForgotPassword";
-import ResetPassword from "./pages/sign/ResetPassword";
+import ForgotPassword from './pages/sign/ForgotPassword';
+import ResetPassword from './pages/sign/ResetPassword';
 
 class App extends Component {
   componentDidMount() {

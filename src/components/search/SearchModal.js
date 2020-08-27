@@ -16,7 +16,6 @@ import ChartUtils from '../../helpers/ChartUtils';
 class SearchModal extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
-    activeButton: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -37,6 +36,7 @@ class SearchModal extends Component {
       return;
     }
     let nodes = Chart.getNodes().map((d) => {
+      d.priority = undefined;
       if (d.name.toLowerCase() === s) {
         d.priority = 1;
       } else if (d.type.toLowerCase() === s) {
@@ -49,8 +49,10 @@ class SearchModal extends Component {
         d.priority = 5;
       } else if (d.type.toLowerCase().includes(s)) {
         d.priority = 6;
-      } else if (stripHtml(d.description).result.toLowerCase().includes(s)) {
+      } else if (d.keywords.some((k) => k.toLowerCase().includes(s))) {
         d.priority = 7;
+      } else if (stripHtml(d.description).result.toLowerCase().includes(s)) {
+        d.priority = 8;
       }
       return d;
     }).filter((d) => d.priority);
@@ -60,9 +62,7 @@ class SearchModal extends Component {
 
   formatHtml = (text) => {
     const { search } = this.state;
-    return {
-      __html: text.replace(new RegExpEscape(search, 'ig'), `<b>${search}</b>`),
-    };
+    return text.replace(new RegExpEscape(search, 'ig'), `<b>${search}</b>`);
   }
 
   findNode = async (node) => {
@@ -95,17 +95,32 @@ class SearchModal extends Component {
         <ul className="list">
           {nodes.map((d) => (
             <li className="item" key={d.index}>
-              <Button onClick={() => this.findNode(d)}>
-                <NodeIcon node={d} />
-                <span
-                  className="name"
-                  dangerouslySetInnerHTML={this.formatHtml(d.name)}
-                />
-                <span
-                  className="type"
-                  dangerouslySetInnerHTML={this.formatHtml(d.type)}
-                />
-              </Button>
+              <div tabIndex="0" role="button" className="ghButton" onClick={() => this.findNode(d)}>
+                <div className="left">
+                  <NodeIcon node={d} />
+                </div>
+                <div className="right">
+                  <span className="row">
+                    <span
+                      className="name"
+                      dangerouslySetInnerHTML={{ __html: this.formatHtml(d.name) }}
+                    />
+                    <span
+                      className="type"
+                      dangerouslySetInnerHTML={{ __html: this.formatHtml(d.type) }}
+                    />
+                  </span>
+
+                  {!d.name.toLowerCase().includes(search) && !d.type.toLowerCase().includes(search) ? (
+                    <span
+                      className="keywords"
+                      dangerouslySetInnerHTML={{ __html: d.keywords.map((k) => this.formatHtml(k)).join(', ') }}
+                    />
+                  ) : null}
+
+                </div>
+
+              </div>
             </li>
           ))}
         </ul>

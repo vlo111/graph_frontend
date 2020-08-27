@@ -29,7 +29,7 @@ class KeywordsFilter extends Component {
     if (empty && keywords.length) {
       keywords.push({
         length: empty,
-        keyword: '[ Empty ]',
+        keyword: '[ No Keyword ]',
       });
     }
     return _.orderBy(keywords, 'length', 'desc');

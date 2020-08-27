@@ -50,6 +50,7 @@ class GraphForm extends Component {
         <ContextMenu />
         <DataImport />
         <NodeDescription />
+        {/*<AutoPlay />*/}
         <Zoom />
       </Wrapper>
     );

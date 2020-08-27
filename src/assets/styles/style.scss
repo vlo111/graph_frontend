@@ -2388,11 +2388,31 @@ body .gh__menu {
         align-items: center;
         background-color: transparent;
         text-align: left;
+        display: flex;
+        flex-direction: row;
 
-        > span {
-          margin-right: 10px;
-          overflow: hidden;
+        .right{
+          display: flex;
+          flex-direction: column;
+          margin-left: 10px;
+          width: calc(100% - 60px);
+          .row{
+            display: flex;
+          }
+          .name{
+            margin-right: 10px;
+            overflow: hidden;
+          }
+          .keywords{
+            font-size: 12px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
         }
+
+
 
         .name {
           font-size: 15px;

@@ -14,7 +14,6 @@ import Convert from '../../helpers/Convert';
 import Select from '../form/Select';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
-import ChartUtils from "../../helpers/ChartUtils";
 
 class DataTableNodes extends Component {
   static propTypes = {
@@ -74,9 +73,9 @@ class DataTableNodes extends Component {
   }
 
   renderSheet = (props) => {
-    const { selectedNodes } = this.props;
-    const { grid } = this.state;
-    const allChecked = grid.length === selectedNodes.length;
+    // const { selectedNodes } = this.props;
+    // const { grid } = this.state;
+    // const allChecked = grid.length === selectedNodes.length;
     return (
       <table className={props.className}>
         <thead>

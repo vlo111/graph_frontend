@@ -28,7 +28,6 @@ class ChartUtils {
       d.hidden = false;
       return d;
     });
-    console.log(params);
     data.nodes = data.nodes.map((d) => {
       // if (data.links.some((l) => l.hidden && d.name === l.source)) {
       //   d.hidden = true;
@@ -51,7 +50,7 @@ class ChartUtils {
       }
       if (!_.isEmpty(params.nodeKeywords) && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
         d.hidden = true;
-        if (params.nodeKeywords.includes('[ Empty ]') && _.isEmpty(d.keyword)) {
+        if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keyword)) {
           d.hidden = false;
         }
         return d;

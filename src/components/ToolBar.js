@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
@@ -13,14 +13,25 @@ import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
+import { getSingleGraphRequest } from '../store/actions/graphs';
 
 class ToolBar extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
+    getSingleGraphRequest: PropTypes.func.isRequired,
+    activeButton: PropTypes.string.isRequired,
+    match: PropTypes.object.isRequired,
   }
 
   handleClick = (button) => {
     this.props.setActiveButton(button);
+  }
+
+  resetGraph = () => {
+    const { match: { params: { graphId } } } = this.props;
+    if (window.confirm('Are you sure?')) {
+      this.props.getSingleGraphRequest(graphId);
+    }
   }
 
   reset = () => {
@@ -67,7 +78,7 @@ class ToolBar extends Component {
             <Button
               icon={<LoopSvg />}
               className={activeButton === 'reset' ? 'active' : undefined}
-              onClick={this.reset}
+              onClick={this.resetGraph}
             >
               Reset project
             </Button>
@@ -102,10 +113,11 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   setActiveButton,
+  getSingleGraphRequest,
 };
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(ToolBar);
 
-export default Container;
+export default withRouter(Container);

@@ -63,7 +63,7 @@ class NodeDescription extends Component {
 
     const { scale } = ChartUtils.calcScaledPosition();
     const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
-    const top = y;
+    const top = y + (nodeWidth * scale) + 5;
     let left = x + (nodeWidth * scale) + 5;
 
     if (left + MODAL_WIDTH > window.innerWidth) {
