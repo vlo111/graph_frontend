@@ -8,10 +8,9 @@ import stripHtml from 'string-strip-html';
 import { setActiveButton } from '../../store/actions/app';
 import Input from '../form/Input';
 import Chart from '../../Chart';
-import Button from '../form/Button';
-import RegExpEscape from '../RegExpEscape';
 import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
+import Utils from '../../helpers/Utils';
 
 class SearchModal extends Component {
   static propTypes = {
@@ -62,7 +61,7 @@ class SearchModal extends Component {
 
   formatHtml = (text) => {
     const { search } = this.state;
-    return text.replace(new RegExpEscape(search, 'ig'), `<b>${search}</b>`);
+    return text.replace(new RegExp(Utils.escRegExp(search), 'ig'), '<b>$&</b>');
   }
 
   findNode = async (node) => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
+import Bowser from 'bowser';
 import Api from '../Api';
-import Bowser from "bowser";
 
 const browser = Bowser.getParser(window.navigator.userAgent);
 
@@ -62,6 +62,10 @@ class Utils {
 
   static getBrowser() {
     return browser.getBrowserName().toLowerCase();
+  }
+
+  static escRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 }
 

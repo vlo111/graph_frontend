@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
 import queryString from 'query-string';
+import randomColor from 'randomcolor';
 import memoizeOne from 'memoize-one';
 import Chart from '../Chart';
 import history from './history';
@@ -201,8 +202,9 @@ class ChartUtils {
 
   static linkColor = () => (d) => {
     if (!(d.type in this.linkColorObj)) {
-      const i = LINK_COLORS[this.linkColorIndex] ? this.linkColorIndex : 0;
-      this.linkColorObj[d.type] = LINK_COLORS[i];
+      this.linkColorObj[d.type] = LINK_COLORS[this.nodeColorIndex] || randomColor({
+        luminosity: 'light',
+      });
       this.linkColorIndex += 1;
     }
     return this.linkColorObj[d.type];
@@ -214,8 +216,7 @@ class ChartUtils {
 
   static nodeColor = () => (d) => {
     if (!(d.type in this.nodeColorObj)) {
-      const i = d3.schemeCategory10[this.nodeColorIndex] ? this.nodeColorIndex : 0;
-      this.nodeColorObj[d.type] = d3.schemeCategory10[i];
+      this.nodeColorObj[d.type] = d3.schemeCategory10[this.nodeColorIndex] || randomColor();
       this.nodeColorIndex += 1;
     }
     return this.nodeColorObj[d.type];

@@ -586,7 +586,7 @@ class Chart {
     return links;
   }
 
-  static getNodes() {
+  static getNodes(show = null) {
     if (_.isEmpty(this.data)) {
       return [];
     }
@@ -604,6 +604,14 @@ class Chart {
         hidden: d.hidden,
         keywords: d.keywords || [],
       }));
+    }
+    if (show) {
+      this._dataNodes = this._dataNodes.map((d, i) => {
+        show.forEach((s) => {
+          d[s] = this.data.nodes[i][s];
+        });
+        return d;
+      });
     }
 
     return this._dataNodes;
@@ -669,7 +677,6 @@ class Chart {
       this.wrapper.selectAll('.unChecked')
         .attr('style', 'display:none');
     }
-
 
     const {
       left: svgLeft, top: svgTop,

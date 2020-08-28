@@ -33,16 +33,6 @@ class ToolBar extends Component {
       this.props.getSingleGraphRequest(graphId);
     }
   }
-
-  reset = () => {
-    const nodes = Chart.getNodes();
-    nodes.forEach((d, i) => {
-      delete nodes[i].fx;
-      delete nodes[i].fy;
-    });
-    Chart.render({ nodes });
-  }
-
   render() {
     const { activeButton } = this.props;
     return (

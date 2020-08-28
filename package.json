@@ -15,6 +15,7 @@
     "object-to-formdata": "^4.1.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.1",
+    "randomcolor": "^0.6.2",
     "rc-tooltip": "^4.2.1",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
@@ -39,7 +40,7 @@
     "prod": "react-scripts start",
     "dev": "PORT=3001 REACT_APP_URL=2 react-scripts start",
     "start": "REACT_APP_URL=1 react-scripts start",
-    "svg": "svgo -f src/assets/images/icons --config='{\"plugins\":[{\"removeAttrs\":{\"attrs\":\"data.*\"}},{\"removeNonInheritableGroupAttrs\":true},{\"collapseGroups\":true}]}'",
+    "svg": "svgo -f src/assets/images/icons --config='{\"plugins\":[{\"removeViewBox\":false,\"removeAttrs\":{\"attrs\":\"data.*\"}},{\"removeNonInheritableGroupAttrs\":true},{\"collapseGroups\":true}]}'",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -16,6 +16,7 @@ import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
 import AccountDropDown from '../components/account/AccountDropDown';
 import SearchModal from '../components/search/SearchModal';
+import AutoPlay from "../components/AutoPlay";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -50,7 +51,7 @@ class GraphForm extends Component {
         <ContextMenu />
         <DataImport />
         <NodeDescription />
-        {/*<AutoPlay />*/}
+        <AutoPlay />
         <Zoom />
       </Wrapper>
     );

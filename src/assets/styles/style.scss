@@ -598,7 +598,8 @@ p {
         opacity: 0.2 !important;
         pointer-events: none;
       }
-      &.unChecked{
+
+      &.unChecked {
         opacity: 0.1 !important;
         pointer-events: none;
       }
@@ -664,7 +665,7 @@ p {
       }
     }
 
-    &.unChecked{
+    &.unChecked {
       opacity: 0.1 !important;
       pointer-events: none;
     }
@@ -1474,18 +1475,20 @@ p {
       }
 
       &.keywords {
-        .ghFormField{
+        .ghFormField {
           //max-width: 100% !important;
           //width: 100% !important;
           left: auto;
           right: 0;
-          .gh__control{
+
+          .gh__control {
             height: auto;
             border: 1px solid $color-main;
           }
         }
 
       }
+
       //&.value,
       //&.type {
       //  text-align: right;
@@ -2019,7 +2022,7 @@ p {
 
 #chartZoom {
   position: fixed;
-  right: 0;
+  right: 10px;
   bottom: 0;
   z-index: 2;
   display: flex;
@@ -2391,19 +2394,22 @@ body .gh__menu {
         display: flex;
         flex-direction: row;
 
-        .right{
+        .right {
           display: flex;
           flex-direction: column;
           margin-left: 10px;
           width: calc(100% - 60px);
-          .row{
+
+          .row {
             display: flex;
           }
-          .name{
+
+          .name {
             margin-right: 10px;
             overflow: hidden;
           }
-          .keywords{
+
+          .keywords {
             font-size: 12px;
             max-width: 100%;
             overflow: hidden;
@@ -2411,7 +2417,6 @@ body .gh__menu {
             white-space: nowrap;
           }
         }
-
 
 
         .name {
@@ -2428,4 +2433,20 @@ body .gh__menu {
       }
     }
   }
+}
+
+#autoPlay {
+  position: absolute;
+  bottom: 130px;
+  right: 10px;
+  background-color: $color-white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }

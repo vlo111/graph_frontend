@@ -80,7 +80,6 @@ class NodeConnectionFilter extends Component {
     const { padding } = this.state;
     const { links, nodes, linkConnection } = this.props;
     const { connections, max, min } = this.getNodeConnections(nodes, links);
-    console.log(min, max);
     if (min === max) {
       return null;
     }

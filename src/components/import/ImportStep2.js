@@ -5,6 +5,7 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton } from '../../store/actions/app';
 import { convertGraphRequest } from '../../store/actions/graphs';
+import ChartUtils from "../../helpers/ChartUtils";
 
 class ImportStep2 extends Component {
   static propTypes = {
@@ -14,6 +15,7 @@ class ImportStep2 extends Component {
 
   import = () => {
     const { importData: { nodes = [], links = [] } } = this.props;
+    ChartUtils.resetColors();
     Chart.render({ nodes, links });
     this.props.setActiveButton('create');
   }
