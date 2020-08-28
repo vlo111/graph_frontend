@@ -1,4 +1,4 @@
-import { CONVERT_GRAPH, GET_GRAPHS_LIST, GET_SINGLE_GRAPH } from '../actions/graphs';
+import { CLEAR_SINGLE_GRAPH, CONVERT_GRAPH, GET_GRAPHS_LIST, GET_SINGLE_GRAPH } from '../actions/graphs';
 
 const initialState = {
   importData: {},
@@ -48,6 +48,12 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         singleGraph,
+      };
+    }
+    case CLEAR_SINGLE_GRAPH: {
+      return {
+        ...state,
+        singleGraph: {},
       };
     }
     default: {

@@ -11,17 +11,18 @@ import DataView from '../components/dataView/DataView';
 import DataImport from '../components/import/DataImportModal';
 import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
-import { getSingleGraphRequest } from '../store/actions/graphs';
+import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
 import AccountDropDown from '../components/account/AccountDropDown';
 import SearchModal from '../components/search/SearchModal';
-import AutoPlay from "../components/AutoPlay";
+import AutoPlay from '../components/AutoPlay';
 
 class GraphForm extends Component {
   static propTypes = {
     getSingleGraphRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
+    clearSingleGraph: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
   }
@@ -31,6 +32,8 @@ class GraphForm extends Component {
     this.props.setActiveButton('create');
     if (+graphId) {
       this.props.getSingleGraphRequest(graphId);
+    } else {
+      this.props.clearSingleGraph();
     }
   }
 
@@ -64,6 +67,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
+  clearSingleGraph,
 };
 const Container = connect(
   mapStateToProps,

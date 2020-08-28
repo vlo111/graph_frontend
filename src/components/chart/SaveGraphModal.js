@@ -28,7 +28,6 @@ class SaveGraphModal extends Component {
     updateGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
     toggleModal: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,

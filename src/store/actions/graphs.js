@@ -42,3 +42,12 @@ export const GET_SINGLE_GRAPH = define('GET_SINGLE_GRAPH');
 export function getSingleGraphRequest(graphId) {
   return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId));
 }
+
+export const CLEAR_SINGLE_GRAPH = 'CLEAR_SINGLE_GRAPH';
+
+export function clearSingleGraph() {
+  return {
+    type: CLEAR_SINGLE_GRAPH,
+    payload: {},
+  };
+}
