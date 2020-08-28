@@ -1140,6 +1140,11 @@ p {
     margin: 0;
     font-weight: 400;
 
+    a {
+      color: $color-dark;
+      text-decoration: none;
+    }
+
     &:after {
       content: '';
       position: absolute;
@@ -1269,7 +1274,7 @@ p {
     }
 
     .buttons {
-      z-index: 2;
+      z-index: 10;
       margin: 0;
       bottom: 1px;
       right: 1px;

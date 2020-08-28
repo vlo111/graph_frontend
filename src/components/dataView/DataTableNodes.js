@@ -14,6 +14,7 @@ import Convert from '../../helpers/Convert';
 import Select from '../form/Select';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
+import ChartUtils from "../../helpers/ChartUtils";
 
 class DataTableNodes extends Component {
   static propTypes = {
@@ -145,12 +146,26 @@ class DataTableNodes extends Component {
     );
   }
 
+  handleLinkClick = (ev) => {
+    ChartUtils.keyEvent(ev);
+    if (!ev.ctrlPress) {
+      ev.preventDefault();
+    }
+  }
+  
   renderView = (props) => {
     const { cell } = props;
     const { value } = props;
     if (['description'].includes(cell.key)) {
       return (
         <span className="value-viewer" dangerouslySetInnerHTML={{ __html: value }} />
+      );
+    }
+    if (cell.key === 'link') {
+      return (
+        <a href={value} className="value-viewer" onClick={this.handleLinkClick}>
+          {value}
+        </a>
       );
     }
     return (

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import EventEmitter from 'events';
 import Button from './form/Button';
 import Chart from '../Chart';
+import { Link } from "react-router-dom";
 
 class ContextMenu extends Component {
   static event = new EventEmitter();
@@ -63,7 +64,7 @@ class ContextMenu extends Component {
   }
 
   render() {
-    const { x, y, show } = this.state;
+    const { x, y, show, params } = this.state;
     if (!show) {
       return null;
     }
@@ -74,6 +75,13 @@ class ContextMenu extends Component {
           {show === 'node' ? (
             <Button icon="fa-pencil-square-o" onClick={() => this.handleClick('node.edit')}>
               Edit
+            </Button>
+          ) : null}
+          {params.link ? (
+            <Button icon="fa-link">
+              <a href={params.link} target="_blank" rel="noreferrer">
+                Open Link
+              </a>
             </Button>
           ) : null}
           {show === 'node' ? (

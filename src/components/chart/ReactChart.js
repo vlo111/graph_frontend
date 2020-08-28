@@ -27,7 +27,7 @@ class ReactChart extends Component {
   componentDidMount() {
     Chart.render({ nodes: [], links: [] });
 
-    Chart.event.on('node.click', this.deleteNode);
+    Chart.event.on('node.click', this.handleNodeClick);
     ContextMenu.event.on('node.delete', this.deleteNode);
     ContextMenu.event.on('node.edit', this.editNode);
 
@@ -39,7 +39,7 @@ class ReactChart extends Component {
   componentWillUnmount() {
     Chart.unmount();
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
-    ContextMenu.event.removeListener('node.delete', this.deleteNode);
+    ContextMenu.event.removeListener('node.delete', this.handleNodeClick);
     ContextMenu.event.removeListener('node.edit', this.editNode);
   }
 
@@ -71,10 +71,15 @@ class ReactChart extends Component {
     Chart.render({ links });
   }
 
-  deleteNode = (d) => {
-    if (Chart.activeButton !== 'delete' && !d.contextMenu) {
-      return;
+  handleNodeClick = (d) => {
+    if (Chart.activeButton === 'delete') {
+      this.deleteNode(d);
+    } else if (1) {
+      
     }
+  }
+
+  deleteNode = (d) => {
     let nodes = Chart.getNodes();
     let links = Chart.getLinks();
 
