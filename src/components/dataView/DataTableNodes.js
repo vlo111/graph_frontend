@@ -14,7 +14,7 @@ import Convert from '../../helpers/Convert';
 import Select from '../form/Select';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
-import ChartUtils from "../../helpers/ChartUtils";
+import ChartUtils from '../../helpers/ChartUtils';
 
 class DataTableNodes extends Component {
   static propTypes = {
@@ -73,39 +73,38 @@ class DataTableNodes extends Component {
     await this.props.toggleGrid('nodes', index);
   }
 
-  renderSheet = (props) => {
+  renderSheet = (props) =>
     // const { selectedNodes } = this.props;
     // const { grid } = this.state;
     // const allChecked = grid.length === selectedNodes.length;
-    return (
+    (
       <table className={props.className}>
         <thead>
-        <tr>
-          <th className="cell index" width="60">
-            <label>
-              {/*<input*/}
-              {/*  type="checkbox"*/}
-              {/*  checked={allChecked}*/}
-              {/*  onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))}*/}
-              {/*/>*/}
-              {/*All*/}
-            </label>
-          </th>
-          <th className="cell name" width="180"><span>Name</span></th>
-          <th className="cell type" width="150"><span>Type</span></th>
-          <th className="cell description" width="272"><span>Description</span></th>
-          <th className="cell nodeType" width="130"><span>Node Type</span></th>
-          <th className="cell icon" width="272"><span>Icon</span></th>
-          <th className="cell link" width="272"><span>Link</span></th>
-          <th className="cell keywords" width="272"><span>Keywords</span></th>
-        </tr>
+          <tr>
+            <th className="cell index" width="60">
+              <label>
+                {/* <input */}
+                {/*  type="checkbox" */}
+                {/*  checked={allChecked} */}
+                {/*  onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))} */}
+                {/* /> */}
+                {/* All */}
+              </label>
+            </th>
+            <th className="cell name" width="180"><span>Name</span></th>
+            <th className="cell type" width="150"><span>Type</span></th>
+            <th className="cell description" width="272"><span>Description</span></th>
+            <th className="cell nodeType" width="130"><span>Node Type</span></th>
+            <th className="cell icon" width="272"><span>Icon</span></th>
+            <th className="cell link" width="272"><span>Link</span></th>
+            <th className="cell keywords" width="272"><span>Keywords</span></th>
+          </tr>
         </thead>
         <tbody>
-        {props.children}
+          {props.children}
         </tbody>
       </table>
-    );
-  }
+    )
 
   renderCell = (props) => {
     const { selectedNodes } = this.props;
@@ -152,7 +151,7 @@ class DataTableNodes extends Component {
       ev.preventDefault();
     }
   }
-  
+
   renderView = (props) => {
     const { cell } = props;
     const { value } = props;

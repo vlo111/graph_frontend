@@ -78,7 +78,7 @@ class ContextMenu extends Component {
             </Button>
           ) : null}
           {params.link ? (
-            <Button icon="fa-link">
+            <Button icon="fa-link" title={params.link}>
               <a href={params.link} target="_blank" rel="noreferrer">
                 Open Link
               </a>
