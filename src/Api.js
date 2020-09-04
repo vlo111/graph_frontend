@@ -4,7 +4,7 @@ import fileDownload from 'js-file-download';
 import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
 
-const { REACT_APP_MODE } = process.env;
+const { REACT_APP_MODE = 0 } = process.env;
 const urls = [
   'http://api.analysed.ai',
   'https://graphs-backend.ghost-services.com',

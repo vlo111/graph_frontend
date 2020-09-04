@@ -13,7 +13,7 @@ import ChartUtils from '../../helpers/ChartUtils';
 import Api from '../../Api';
 import NodeIcon from '../NodeIcon';
 
-const { REACT_APP_MODE } = process.env;
+const { REACT_APP_MODE = 0 } = process.env;
 
 class MapsGraph extends Component {
   static propTypes = {
@@ -124,8 +124,8 @@ const Container = connect(
 
 export default GoogleApiWrapper({
   apiKey: [
-    '',
-    '',
+    'AIzaSyD8vtVHmvI-4Di943POZgrQhTgISa5dXxI',
+    'AIzaSyD8vtVHmvI-4Di943POZgrQhTgISa5dXxI',
     'AIzaSyCGLfX2f4XIiVnntmDwojFRih_rwOUe2b8',
   ][REACT_APP_MODE],
 })(Container);

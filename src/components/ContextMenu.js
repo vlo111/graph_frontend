@@ -105,7 +105,7 @@ class ContextMenu extends Component {
             Crop
           </Button>
           <Button disabled={!undoCount} icon="fa-undo" onClick={() => this.handleClick('undo')}>
-            Undo
+            {'Undo '}
             <sub>(Ctrl+Z)</sub>
           </Button>
         </div>
