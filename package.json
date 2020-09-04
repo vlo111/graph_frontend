@@ -40,9 +40,9 @@
     "string-strip-html": "^5.0.1"
   },
   "scripts": {
-    "prod": "react-scripts start",
-    "dev": "PORT=3001 REACT_APP_URL=2 react-scripts start",
-    "start": "REACT_APP_URL=1 react-scripts start",
+    "prod": "REACT_APP_MODE=0 react-scripts start",
+    "dev": "PORT=3001 REACT_APP_MODE=1 react-scripts start",
+    "start": "REACT_APP_MODE=2 react-scripts start",
     "svg": "svgo -f src/assets/images/icons --config='{\"plugins\":[{\"removeViewBox\":false,\"removeAttrs\":{\"attrs\":\"data.*\"}},{\"removeNonInheritableGroupAttrs\":true},{\"collapseGroups\":true}]}'",
     "build": "react-scripts build",
     "test": "react-scripts test",

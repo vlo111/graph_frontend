@@ -11,7 +11,9 @@ import { previousActiveButton } from '../../store/actions/app';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 import Api from '../../Api';
-import NodeIcon from "../NodeIcon";
+import NodeIcon from '../NodeIcon';
+
+const { REACT_APP_MODE } = process.env;
 
 class MapsGraph extends Component {
   static propTypes = {
@@ -121,5 +123,9 @@ const Container = connect(
 )(MapsGraph);
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyCGLfX2f4XIiVnntmDwojFRih_rwOUe2b8',
+  apiKey: [
+    '',
+    '',
+    'AIzaSyCGLfX2f4XIiVnntmDwojFRih_rwOUe2b8',
+  ][REACT_APP_MODE],
 })(Container);

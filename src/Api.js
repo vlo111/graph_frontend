@@ -4,13 +4,13 @@ import fileDownload from 'js-file-download';
 import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
 
-const { REACT_APP_URL } = process.env;
+const { REACT_APP_MODE } = process.env;
 const urls = [
   'http://api.analysed.ai',
-  'http://localhost:5000',
   'https://graphs-backend.ghost-services.com',
+  'http://localhost:5000',
 ];
-const apiUrl = urls[REACT_APP_URL] || urls[0];
+const apiUrl = urls[REACT_APP_MODE] || urls[0];
 
 const api = axios.create({
   baseURL: apiUrl,
