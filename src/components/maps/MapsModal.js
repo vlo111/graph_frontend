@@ -13,6 +13,8 @@ import { toggleNodeModal } from '../../store/actions/app';
 import Utils from '../../helpers/Utils';
 import Loading from '../Loading';
 
+const { REACT_APP_MODE = 0 } = process.env;
+
 class MapsModal extends Component {
   static propTypes = {
     google: PropTypes.object.isRequired,
@@ -210,5 +212,9 @@ const Container = connect(
 )(MapsModal);
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyCGLfX2f4XIiVnntmDwojFRih_rwOUe2b8',
+  apiKey: [
+    'AIzaSyBFUTsZRhUqYmEtXNoWuWHOMVDGGm0VgGw',
+    'AIzaSyBFUTsZRhUqYmEtXNoWuWHOMVDGGm0VgGw',
+    'AIzaSyCGLfX2f4XIiVnntmDwojFRih_rwOUe2b8',
+  ][REACT_APP_MODE],
 })(Container);
