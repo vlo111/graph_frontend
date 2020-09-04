@@ -9,6 +9,15 @@ export function setActiveButton(button) {
   };
 }
 
+export const PREVIOUS_ACTIVE_BUTTON = 'PREVIOUS_ACTIVE_BUTTON';
+
+export function previousActiveButton() {
+  return {
+    type: PREVIOUS_ACTIVE_BUTTON,
+    payload: {},
+  };
+}
+
 export const NEW_NODE_MODAL = 'NEW_NODE_MODAL';
 
 export function toggleNodeModal(params = {}) {

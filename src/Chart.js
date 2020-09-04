@@ -148,9 +148,6 @@ class Chart {
       data.nodes = data.nodes || Chart.getNodes();
       data.links = data.links || _.cloneDeep(Chart.getLinks());
 
-      data = this.normalizeData(data);
-      data = ChartUtils.filter(data, params.filters);
-
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         if (!_.isEmpty(data?.nodes) || !_.isEmpty(data?.links)) {
           this.undoManager.push(data);
@@ -161,6 +158,9 @@ class Chart {
           }
         }
       }
+
+      data = this.normalizeData(data);
+      data = ChartUtils.filter(data, params.filters);
       this.data = data;
 
       this.radiusList = ChartUtils.getRadiusList();
@@ -174,7 +174,6 @@ class Chart {
       this.autoPosition();
 
       this.svg = d3.select('#graph svg');
-
       this.zoom = d3.zoom().on('zoom', this.handleZoom);
       this.svg = this.svg
         .call(this.zoom)
@@ -603,6 +602,7 @@ class Chart {
         link: d.link || '',
         hidden: d.hidden,
         keywords: d.keywords || [],
+        location: d.location || undefined,
       }));
     }
     if (show) {

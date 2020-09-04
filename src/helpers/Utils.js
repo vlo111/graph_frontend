@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Bowser from 'bowser';
 import Api from '../Api';
+import memoizeOne from "memoize-one";
 
 const browser = Bowser.getParser(window.navigator.userAgent);
 
@@ -67,6 +68,16 @@ class Utils {
   static escRegExp(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
+
+  static getCurrentPosition = memoizeOne(() => new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error("Error: Your browser doesn't support geolocation."));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition((position) => {
+      resolve(position);
+    }, reject);
+  }))
 }
 
 export default Utils;

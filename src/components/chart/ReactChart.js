@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import memoizeOne from 'memoize-one';
 import Chart from '../../Chart';
-import { toggleNodeModal } from '../../store/actions/app';
+import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../ContextMenu';
 
 class ReactChart extends Component {
@@ -14,6 +14,7 @@ class ReactChart extends Component {
     toggleNodeModal: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
     unmount: PropTypes.bool,
+    setActiveButton: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -30,6 +31,8 @@ class ReactChart extends Component {
     Chart.event.on('node.click', this.handleNodeClick);
     ContextMenu.event.on('node.delete', this.deleteNode);
     ContextMenu.event.on('node.edit', this.editNode);
+
+    ContextMenu.event.on('active-button', this.setActiveButton);
 
     Chart.event.on('link.click', this.deleteLink);
     ContextMenu.event.on('link.delete', this.deleteLink);
@@ -74,8 +77,6 @@ class ReactChart extends Component {
   handleNodeClick = (d) => {
     if (Chart.activeButton === 'delete') {
       this.deleteNode(d);
-    } else if (1) {
-      
     }
   }
 
@@ -88,6 +89,10 @@ class ReactChart extends Component {
     links = links.filter((l) => !(l.source === d.name || l.target === d.name));
 
     Chart.render({ nodes, links });
+  }
+
+  setActiveButton = (params) => {
+    this.props.setActiveButton(params.button);
   }
 
   render() {
@@ -118,6 +123,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   toggleNodeModal,
+  setActiveButton,
 };
 
 const Container = connect(

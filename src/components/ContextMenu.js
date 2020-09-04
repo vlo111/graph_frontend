@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import EventEmitter from 'events';
 import Button from './form/Button';
 import Chart from '../Chart';
-import { Link } from "react-router-dom";
 
 class ContextMenu extends Component {
   static event = new EventEmitter();
@@ -57,18 +56,21 @@ class ContextMenu extends Component {
     this.setState({ show: false });
   }
 
-  handleClick = (type) => {
+  handleClick = (type, additionalParams) => {
     const { params } = this.state;
     params.contextMenu = true;
-    this.constructor.event.emit(type, params);
+    this.constructor.event.emit(type, { ...params, ...additionalParams });
   }
 
   render() {
-    const { x, y, show, params } = this.state;
+    const {
+      x, y, show, params,
+    } = this.state;
     if (!show) {
       return null;
     }
     const undoCount = Chart.undoManager.undoCount();
+    const showInMap = Chart.getNodes().some(d => d.location);
     return (
       <div className="contextmenuOverlay" onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
@@ -92,6 +94,11 @@ class ContextMenu extends Component {
           {show === 'link' ? (
             <Button icon="fa-eraser" onClick={() => this.handleClick('link.delete')}>
               Delete
+            </Button>
+          ) : null}
+          {showInMap ? (
+            <Button icon="fa-globe" onClick={() => this.handleClick('active-button', { button: 'maps-view' })}>
+              Show in map
             </Button>
           ) : null}
           <Button icon="fa-crop" onClick={() => this.handleClick('crop')}>

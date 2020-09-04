@@ -8,6 +8,7 @@ class Button extends Component {
     icon: PropTypes.any,
     children: PropTypes.any,
     className: PropTypes.string,
+    loading: PropTypes.bool,
     type: PropTypes.oneOf(['button', 'submit']),
     onClick: PropTypes.func,
     color: PropTypes.oneOf(['main', 'blue', 'orange', 'transparent', 'light', 'main']),
@@ -15,11 +16,12 @@ class Button extends Component {
 
   static defaultProps = {
     icon: undefined,
+    loading: undefined,
     onClick: undefined,
     children: '',
     type: 'button',
     className: '',
-    color: 'main'
+    color: 'main',
   }
 
   render() {

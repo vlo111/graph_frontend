@@ -1,16 +1,17 @@
 import _ from 'lodash';
 import {
   LOADING,
-  NEW_NODE_MODAL, RESET_FILTER,
+  NEW_NODE_MODAL, PREVIOUS_ACTIVE_BUTTON, RESET_FILTER,
   SET_ACTIVE_BUTTON, SET_FILTER, SET_GRID_INDEXES,
   TOGGLE_GRID,
 } from '../actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
-import { DEFAULT_FILTERS } from "../../data/filter";
-import Chart from "../../Chart";
+import { DEFAULT_FILTERS } from '../../data/filter';
+import Chart from '../../Chart';
 
 const initialState = {
   activeButton: 'create',
+  _activeButtonPrev: 'create',
   nodeDescription: '',
   addNodeParams: {},
   isLoading: false,
@@ -23,9 +24,19 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_ACTIVE_BUTTON: {
+      if (state.activeButton === action.payload.button) {
+        return state;
+      }
       return {
         ...state,
+        _activeButtonPrev: state.activeButton,
         activeButton: action.payload.button,
+      };
+    }
+    case PREVIOUS_ACTIVE_BUTTON: {
+      return {
+        ...state,
+        activeButton: state._activeButtonPrev || 'create',
       };
     }
     case NEW_NODE_MODAL: {

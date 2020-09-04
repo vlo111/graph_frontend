@@ -17,6 +17,8 @@ import Zoom from '../components/Zoom';
 import AccountDropDown from '../components/account/AccountDropDown';
 import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
+import Maps from '../components/maps/Maps';
+import MapsGraph from '../components/maps/MapsGraph';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -50,12 +52,14 @@ class GraphForm extends Component {
         <Crop />
         <AddNodeModal />
         {activeButton === 'search' && <SearchModal />}
+        {activeButton === 'maps-view' && <MapsGraph />}
         <AddLinkModal />
         <ContextMenu />
         <DataImport />
         <NodeDescription />
         <AutoPlay />
         <Zoom />
+        <Maps />
       </Wrapper>
     );
   }

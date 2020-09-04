@@ -22,7 +22,7 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, type, keywords, index = null,
+      fx, fy, name, icon, nodeType, type, keywords, location, index = null,
     } = addNodeParams;
     this.setState({
       nodeData: {
@@ -33,6 +33,7 @@ class AddNodeModal extends Component {
         nodeType: nodeType || 'circle',
         type: type || _.last(nodes)?.type || '',
         keywords: keywords || [],
+        location: location || undefined,
       },
       index,
       errors: {},
