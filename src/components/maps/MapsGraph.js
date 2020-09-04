@@ -124,8 +124,8 @@ const Container = connect(
 
 export default GoogleApiWrapper({
   apiKey: [
-    'AIzaSyD8vtVHmvI-4Di943POZgrQhTgISa5dXxI',
-    'AIzaSyD8vtVHmvI-4Di943POZgrQhTgISa5dXxI',
+    'AIzaSyBFUTsZRhUqYmEtXNoWuWHOMVDGGm0VgGw',
+    'AIzaSyBFUTsZRhUqYmEtXNoWuWHOMVDGGm0VgGw',
     'AIzaSyCGLfX2f4XIiVnntmDwojFRih_rwOUe2b8',
   ][REACT_APP_MODE],
 })(Container);
