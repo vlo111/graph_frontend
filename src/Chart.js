@@ -646,6 +646,7 @@ class Chart {
     this.data.nodes = [];
     this.data.links = [];
     this.event.removeAllListeners();
+    this.undoManager.reset();
     ChartUtils.resetColors();
     window.removeEventListener('resize', Chart.resizeSvg);
   }
