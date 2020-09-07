@@ -12,8 +12,9 @@ class Chart {
     const dragstart = (d) => {
       this.event.emit('node.dragstart', d);
       if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
+      d.fixed = !!d.fx;
+      // d.fx = d.x;
+      // d.fy = d.y;
     };
 
     const dragged = (d) => {
@@ -24,6 +25,12 @@ class Chart {
     const dragend = (d) => {
       this.event.emit('node.dragend', d);
       if (!d3.event.active) simulation.alphaTarget(0);
+      if (!d.fixed) {
+        d.x = d.fx;
+        d.y = d.fy;
+        delete d.fx;
+        delete d.fy;
+      }
     };
 
     return d3.drag()
