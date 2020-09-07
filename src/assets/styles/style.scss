@@ -722,7 +722,7 @@ p {
     user-select: none;
   }
 
-  .buttons{
+  .buttons {
     justify-content: flex-start;
     margin-left: 250px;
   }
@@ -2277,28 +2277,6 @@ p {
     margin: 32px 0;
 
   }
-
-  .socialButtons {
-    display: flex;
-  }
-
-  .button {
-    background-color: #4285F4;
-    color: $color-white;
-    display: flex;
-    border-radius: 8px;
-    margin-right: 15px;
-    padding: 6px 7px 5px;
-    align-items: center;
-
-    img {
-      width: 30px;
-      height: 30px;
-      border-radius: 5px;
-      object-fit: cover;
-      margin-right: 10px;
-    }
-  }
 }
 
 .hr {
@@ -2578,20 +2556,61 @@ body .gh__menu {
   }
 }
 
-#mapsSearch{
+#mapsSearch {
   position: absolute;
   right: 10px;
   top: 5px;
   width: 50%;
   min-width: 296px;
-  .ghFormField{
+
+  .ghFormField {
     width: 100%;
-    input{
+
+    input {
       width: 100%;
       border-radius: 2px;
       box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
       height: 40px;
       font-size: 17px;
+    }
+  }
+}
+
+
+.socialButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .button {
+    background-color: #4285F4;
+    color: $color-white;
+    display: flex;
+    border-radius: 8px;
+    margin: 5px 7.5px;
+    padding: 6px 7px 5px;
+    align-items: center;
+    outline: none;
+    border: none;
+    font-size: 14px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      width: 30px;
+      height: 30px;
+      object-fit: cover;
+      margin-right: 10px;
+      //background-color: $color-white;
+      border-radius: 5px;
+
+      &.whiteBg {
+        background-color: $color-white;
+        padding: 4px;
+        border-radius: 4px;
+      }
     }
   }
 }

@@ -40,11 +40,11 @@
     "string-strip-html": "^5.0.1"
   },
   "scripts": {
-    "prod": "REACT_APP_MODE=0 react-scripts start",
-    "dev": "PORT=3001 REACT_APP_MODE=1 react-scripts start",
-    "start": "REACT_APP_MODE=2 react-scripts start",
+    "prod": "react-scripts start",
+    "dev": "PORT=3001 react-scripts start",
+    "start": "react-scripts start",
     "svg": "svgo -f src/assets/images/icons --config='{\"plugins\":[{\"removeViewBox\":false,\"removeAttrs\":{\"attrs\":\"data.*\"}},{\"removeNonInheritableGroupAttrs\":true},{\"collapseGroups\":true}]}'",
-    "build": "REACT_APP_MODE=0 react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -110,20 +110,20 @@ class Chart {
       this.simulation = this.simulation
         .force('center', d3.forceCenter(width / 2, height / 2))
         .force('charge', d3.forceManyBody())
-        .force('x', d3.forceX((d) => {
-          const { length } = this.getNodeLinks(d.name);
-          if (length) {
-            return d.x * length ** length * 50;
-          }
-          return d.x + 4;
-        }))
-        .force('y', d3.forceY((d) => {
-          const { length } = this.getNodeLinks(d.name);
-          if (length) {
-            return d.y * length ** length * 50;
-          }
-          return d.y + 4;
-        }));
+        // .force('x', d3.forceX((d) => {
+        //   const { length } = this.getNodeLinks(d.name);
+        //   if (length) {
+        //     return d.x * length ** length * 50;
+        //   }
+        //   return d.x + 4;
+        // }))
+        // .force('y', d3.forceY((d) => {
+        //   const { length } = this.getNodeLinks(d.name);
+        //   if (length) {
+        //     return d.y * length ** length * 50;
+        //   }
+        //   return d.y + 4;
+        // }));
     }
     return null;
   }

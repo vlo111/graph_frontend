@@ -4,16 +4,10 @@ import fileDownload from 'js-file-download';
 import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
 
-const { REACT_APP_MODE = 0 } = process.env;
-const urls = [
-  'http://api.analysed.ai',
-  'https://graphs-backend.ghost-services.com',
-  'http://localhost:5000',
-];
-const apiUrl = urls[REACT_APP_MODE] || urls[0];
+const { REACT_APP_API_URL } = process.env;
 
 const api = axios.create({
-  baseURL: apiUrl,
+  baseURL: REACT_APP_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -28,7 +22,7 @@ api.interceptors.request.use((config) => {
 }, (error) => Promise.reject(error));
 
 class Api {
-  static url = apiUrl;
+  static url = REACT_APP_API_URL;
 
   static toFormData(data) {
     return serialize({ ...data }, { indices: true });
@@ -92,6 +86,11 @@ class Api {
 
   static getSingleGraph(getSingleGraph) {
     return api.get(`/graphs/single/${getSingleGraph}`);
+  }
+
+  static oAuthV2(type, params) {
+    const query = qs(params);
+    return api.get(`/users/oauth/v2/redirect/${type}?${query}`);
   }
 }
 

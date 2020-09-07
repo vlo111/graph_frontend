@@ -13,7 +13,7 @@ import { toggleNodeModal } from '../../store/actions/app';
 import Utils from '../../helpers/Utils';
 import Loading from '../Loading';
 
-const { REACT_APP_MODE = 0 } = process.env;
+const { REACT_APP_GOOGLE_MAP_API_KEY } = process.env;
 
 class MapsModal extends Component {
   static propTypes = {
@@ -212,9 +212,5 @@ const Container = connect(
 )(MapsModal);
 
 export default GoogleApiWrapper({
-  apiKey: [
-    'AIzaSyBFUTsZRhUqYmEtXNoWuWHOMVDGGm0VgGw',
-    'AIzaSyBFUTsZRhUqYmEtXNoWuWHOMVDGGm0VgGw',
-    'AIzaSyCGLfX2f4XIiVnntmDwojFRih_rwOUe2b8',
-  ][REACT_APP_MODE],
+  apiKey: REACT_APP_GOOGLE_MAP_API_KEY
 })(Container);

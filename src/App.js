@@ -13,6 +13,7 @@ import GraphTemplates from './pages/profile/GraphTemplates';
 import Utils from './helpers/Utils';
 import ForgotPassword from './pages/sign/ForgotPassword';
 import ResetPassword from './pages/sign/ResetPassword';
+import OAuth from "./pages/sign/OAuth";
 
 class App extends Component {
   componentDidMount() {
@@ -40,6 +41,7 @@ class App extends Component {
             <Route path="/sign/sign-out" component={SignOut} />
             <Route path="/sign/forgot-password" component={ForgotPassword} />
             <Route path="/sign/reset-password" component={ResetPassword} />
+            <Route path="/sign/oauth/:type" component={OAuth} />
 
             <Route path="/" component={Home} />
           </Switch>

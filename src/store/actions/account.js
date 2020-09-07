@@ -30,3 +30,9 @@ export const RESET_PASSWORD = define('RESET_PASSWORD');
 export function resetPasswordRequest(token, password) {
   return RESET_PASSWORD.request(() => Api.resetPassword(token, password));
 }
+
+export const OAUTH = define('OAUTH');
+
+export function oAuthRequest(type, params) {
+  return OAUTH.request(() => Api.oAuthV2(type, params));
+}

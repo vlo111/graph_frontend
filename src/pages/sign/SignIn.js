@@ -11,6 +11,7 @@ import { signInRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
+import OAuthButtons from "../../components/account/OAuthButtons";
 
 class Login extends Component {
   static propTypes = {
@@ -68,16 +69,7 @@ class Login extends Component {
               <LogoSvg className="logo orange" />
               <div className="socialLogin">
                 <h4>Sign in using</h4>
-                <div className="socialButtons">
-                  <a href="https://www.facebook.com/" className="button">
-                    <img src={fbImg} alt="facebook" />
-                    <span>Facebook</span>
-                  </a>
-                  <a href="/https://www.google.com/" className="button">
-                    <img src={googleImg} alt="google" />
-                    <span>Google</span>
-                  </a>
-                </div>
+                <OAuthButtons />
               </div>
 
               <div className="hr">or</div>

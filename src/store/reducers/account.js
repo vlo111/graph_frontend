@@ -1,5 +1,5 @@
 import {
-  SIGN_IN, GET_MY_ACCOUNT,
+  SIGN_IN, GET_MY_ACCOUNT, OAUTH,
 } from '../actions/account';
 import Account from '../../helpers/Account';
 
@@ -16,14 +16,15 @@ export default function reducer(state = initialState, action) {
       Account.delete();
       return state;
     }
+    case OAUTH.SUCCESS:
     case SIGN_IN.SUCCESS: {
-      const { token, user } = action.payload.data;
-      Account.set(user);
+      const { token, user: myAccount } = action.payload.data;
+      Account.set(myAccount);
       Account.setToken(token);
       return {
         ...state,
         token,
-        user,
+        myAccount,
       };
     }
     case GET_MY_ACCOUNT.SUCCESS: {
