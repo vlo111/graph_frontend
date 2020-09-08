@@ -5,18 +5,18 @@ import { Link, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
-import fbImg from '../../assets/images/icons/fb.svg';
-import googleImg from '../../assets/images/icons/google.png';
 import { signInRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
-import OAuthButtons from "../../components/account/OAuthButtons";
+import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
+import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
+import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
+import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
 
 class Login extends Component {
   static propTypes = {
     signInRequest: PropTypes.func.isRequired,
-    token: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -50,11 +50,7 @@ class Login extends Component {
   }
 
   render() {
-    const { token } = this.props;
     const { requestData } = this.state;
-    if (token) {
-      return (<Redirect to="/" />);
-    }
     return (
       <WrapperSign>
         <div className="left signIn">
@@ -69,7 +65,12 @@ class Login extends Component {
               <LogoSvg className="logo orange" />
               <div className="socialLogin">
                 <h4>Sign in using</h4>
-                <OAuthButtons />
+                <div className="socialButtons">
+                  <OAuthButtonFacebook />
+                  <OAuthButtonGoogle />
+                  <OAuthButtonLinkedin />
+                  <OAuthButtonTwitter />
+                </div>
               </div>
 
               <div className="hr">or</div>
@@ -105,9 +106,7 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  token: state.account.token,
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {
   signInRequest,

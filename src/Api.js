@@ -90,7 +90,13 @@ class Api {
 
   static oAuthV2(type, params) {
     const query = qs(params);
-    return api.get(`/users/oauth/v2/redirect/${type}?${query}`);
+    const version = type === 'twitter' ? 'v1' : 'v2';
+    return api.get(`/users/oauth/${version}/redirect/${type}?${query}`);
+  }
+
+  static getTwitterToken(params) {
+    const query = qs(params);
+    return api.get(`/users/oauth/v1/token/twitter?${query}`);
   }
 }
 
