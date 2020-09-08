@@ -20,7 +20,7 @@ class OAuthButtonTwitter extends Component {
       toast.error('Something went wrong');
       return;
     }
-    const win = Utils.popupWindow(`https://api.twitter.com/oauth/authenticate?oauth_token=${oAuthToken}`, 'Linkedin', 450, 600);
+    const win = Utils.popupWindow(`https://api.twitter.com/oauth/authenticate?oauth_token=${oAuthToken}`, 'Twitter', 450, 600);
     this.timeout = setInterval(() => {
       try {
         const { search, pathname } = win.location;
