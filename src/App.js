@@ -41,7 +41,7 @@ class App extends Component {
             <Route path="/sign/sign-out" component={SignOut} />
             <Route path="/sign/forgot-password" component={ForgotPassword} />
             <Route path="/sign/reset-password" component={ResetPassword} />
-            <Route path="/sign/oauth/:type" component={SignIn} />
+            <Route path="/sign/oauth/:type" component={OAuth} />
 
             <Route path="/" component={Home} />
           </Switch>

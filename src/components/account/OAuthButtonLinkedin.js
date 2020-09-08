@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { oAuthRequest } from '../../store/actions/account';
 import linkedinImg from '../../assets/images/icons/linkedin.svg';
+import Utils from "../../helpers/Utils";
 
 const { REACT_APP_LINKEDIN_CLIENT_ID } = process.env;
 
@@ -20,7 +21,7 @@ class OAuthButtonLinkedin extends Component {
     }
   }
 
-  render() {
+  handleClick = () => {
     const query = queryString.stringify({
       client_id: REACT_APP_LINKEDIN_CLIENT_ID,
       redirect_uri: `${window.location.origin}/sign/oauth/linkedin`,
@@ -28,11 +29,30 @@ class OAuthButtonLinkedin extends Component {
       state: 'fooobar',
       scope: ['r_liteprofile', 'r_emailaddress'].join(' '),
     });
+    const win = Utils.popupWindow(`https://www.linkedin.com/oauth/v2/authorization?${query}`, 'Linkedin', 450, 600);
+    this.timeout = setInterval(() => {
+      try {
+        const { search, pathname, origin } = win.location;
+        const { code } = queryString.parse(search);
+        if (pathname.endsWith('/linkedin') && code) {
+          const redirectUri = origin + pathname;
+          win.close();
+          clearTimeout(this.timeout);
+
+          this.props.oAuthRequest('linkedin', { code, redirectUri });
+        }
+      } catch (e) {
+        //
+      }
+    }, 1000);
+  }
+
+  render() {
     return (
-      <a href={`https://www.linkedin.com/oauth/v2/authorization?${query}`} className="button">
+      <button type="button" onClick={this.handleClick} className="button">
         <img src={linkedinImg} alt="Linkedin" />
         <span>Linkedin</span>
-      </a>
+      </button>
     );
   }
 }

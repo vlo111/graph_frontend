@@ -1,7 +1,8 @@
 import axios from 'axios';
+import _ from 'lodash';
 import Bowser from 'bowser';
+import memoizeOne from 'memoize-one';
 import Api from '../Api';
-import memoizeOne from "memoize-one";
 
 const browser = Bowser.getParser(window.navigator.userAgent);
 
@@ -78,6 +79,26 @@ class Utils {
       resolve(position);
     }, reject);
   }))
+
+  static popupWindow = (url, title, width, height) => {
+    const left = (window.screen.width / 2) - (width / 2);
+    const top = (window.screen.height / 2) - (height / 2);
+    const params = {
+      toolbar: 'no',
+      location: 'no',
+      directories: 'no',
+      status: 'no',
+      menubar: 'no',
+      scrollbars: 'no',
+      resizable: 'no',
+      copyhistory: 'no',
+      width,
+      height,
+      top,
+      left,
+    };
+    return window.open(url, title, _.map(params, (v, k) => `${k}=${v}`).join(', '));
+  }
 }
 
 export default Utils;
