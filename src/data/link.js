@@ -1,5 +1,9 @@
 export const LINK_COLORS = [
-  '#82abd1', '#ffa564', '#7cc27f', '#e4716f', '#bd9bd7', '#b99892', '#efb4e0', '#b2b2b2', '#d9d270', '#6ed7e2',
+  '#82abd1', '#ffa564', '#7cc27f', '#e4716f',
+  '#bd9bd7', '#b99892', '#efb4e0', '#b2b2b2',
+  '#d9d270', '#6ed7e2', '#d17a9b', '#8577bf',
+  '#ca93d5', '#a9c8ef', '#7db9b0', '#87d7e5',
+  '#b2d292', '#ffcd94',
 
   '#a1a7ed', '#a2f9c9', '#edc27d', '#8bff87', '#ffe9c4', '#719ef7', '#c7e1fc', '#747cf7', '#d19df9', '#ff9572',
   '#f9c9b6', '#8ef28e', '#8af2ed', '#fc8fae', '#ab84ed', '#7e7ae2', '#fcf0b5', '#ff9996', '#f77e86', '#abf48d',

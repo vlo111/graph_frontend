@@ -5,18 +5,12 @@ export const NODE_TYPES = [
   { value: 'hexagon', label: 'Hexagon' },
 ];
 
-export const NODE_VIEW_COLUMNS = [
-  { key: 'index', label: 'Index', width: 60 },
-  { key: 'type', label: 'Type', width: 60 },
-  { key: 'name', label: 'Name' },
-  { key: 'description', label: 'Description' },
-  { key: 'nodeType', label: 'NodeType' },
-  { key: 'icon', label: 'Icon' },
-  { key: 'link', label: 'Link' },
-];
-
 export const NODE_COLOR = [
-  '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
+  '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
+  '#9467bd', '#8c564b', '#e377c2', '#7f7f7f',
+  '#bcbd22', '#17becf', '#ad1457', '#311b92',
+  '#8e24aa', '#1976d2', '#00897b', '#00bcd4',
+  '#7cb342', '#ff9800',
 
   '#de6ded', '#84f9ca', '#c63ffc', '#ab6fc4', '#c1691d', '#2aaa11', '#3b09ef', '#e2f727', '#ffe2cc', '#aefcd7',
   '#5470bf', '#e2db51', '#5ec8db', '#d664ea', '#ffbce4', '#b2c4ff', '#c4322d', '#fc80f8', '#1ed872', '#f9e1bd',
