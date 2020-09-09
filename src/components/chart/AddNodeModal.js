@@ -12,6 +12,7 @@ import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
+import LocationInputs from './LocationInputs';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -165,24 +166,11 @@ class AddNodeModal extends Component {
             placeholder="Add..."
             onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
           />
-          <div className="locationInputsWrapper">
-            <Input
-              label="Geolocation"
-              placeholder="latitude"
-              type="number"
-              onWheel={(ev) => ev.target.blur()}
-              value={_.get((nodeData.location || '').split(','), '0', '')}
-              error={errors.location}
-              onChangeText={(v) => this.handleChange('location[0]', v)}
-            />
-            <Input
-              placeholder="longitude"
-              type="number"
-              onWheel={(ev) => ev.target.blur()}
-              value={_.get((nodeData.location || '').split(','), '1', '')}
-              onChangeText={(v) => this.handleChange('location[1]', v)}
-            />
-          </div>
+          <LocationInputs
+            error={errors.location}
+            value={nodeData.location}
+            onChange={(v) => this.handleChange('location', v)}
+          />
           <div className="buttons">
             <Button onClick={this.closeModal}>
               Cancel

@@ -4,7 +4,6 @@ import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
-import Chart from '../Chart';
 import { ReactComponent as Logo } from '../assets/images/logo.svg';
 import SaveGraph from './chart/SaveGraph';
 import Undo from './Undo';

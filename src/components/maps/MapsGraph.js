@@ -60,7 +60,6 @@ class MapsGraph extends Component {
       return d;
     }).filter((d) => d.locations);
     nodes = _.uniqBy(nodes, 'name');
-    console.log(activeNode);
     return (
       <div id="mapsGraph">
         <Map
@@ -73,6 +72,7 @@ class MapsGraph extends Component {
         >
           {links.map((d) => (
             <Polyline
+              key={d.index}
               path={d.locations}
               strokeColor={ChartUtils.linkColor()(d)}
               strokeWeight={d.value * 2 || 2}
@@ -80,6 +80,7 @@ class MapsGraph extends Component {
           ))}
           {nodes.map((d) => (
             <Marker
+              key={d.name}
               name={d.name}
               position={d.locationObj}
               title={d.name}
@@ -102,7 +103,7 @@ class MapsGraph extends Component {
                   <h4>{activeNode.node.type}</h4>
                 </div>
               </div>
-            ) : null}
+            ) : <span />}
           </InfoWindow>
         </Map>
         <Button className="closeMap" icon={<CloseSvg />} onClick={this.props.previousActiveButton} />

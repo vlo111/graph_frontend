@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
