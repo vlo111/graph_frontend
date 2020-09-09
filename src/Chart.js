@@ -15,6 +15,8 @@ class Chart {
       d.fixed = !!d.fx;
       // d.fx = d.x;
       // d.fy = d.y;
+      // d.x = d3.event.x;
+      // d.y = d3.event.y;
     };
 
     const dragged = (d) => {
@@ -26,8 +28,8 @@ class Chart {
       this.event.emit('node.dragend', d);
       if (!d3.event.active) simulation.alphaTarget(0);
       if (!d.fixed) {
-        d.x = d.fx;
-        d.y = d.fy;
+        d.x = d.fx || d.x;
+        d.y = d.fy || d.y;
         delete d.fx;
         delete d.fy;
       }
@@ -252,7 +254,6 @@ class Chart {
         this.link.attr('d', (d) => {
           let arc = 0;
           let arcDirection = 0;
-
           if (d.same) {
             const dr = ChartUtils.nodesDistance(d);
 
@@ -518,12 +519,15 @@ class Chart {
         return;
       }
       const source = this.newLink.attr('data-source');
+      if (d.fx === undefined || d.fy === undefined) {
+        return;
+      }
       if (!source) {
         this.newLink.attr('data-source', d.name)
-          .attr('x1', d.fx)
-          .attr('y1', d.fy)
-          .attr('x2', d.fx)
-          .attr('y2', d.fy);
+          .attr('x1', d.fx || d.x)
+          .attr('y1', d.fy || d.y)
+          .attr('x2', d.fx || d.x)
+          .attr('y2', d.fy || d.y);
       } else {
         const target = d.name;
         this.newLink.attr('data-source', '')
