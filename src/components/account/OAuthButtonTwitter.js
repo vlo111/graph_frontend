@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import queryString from 'query-string';
 import { oAuthRequest } from '../../store/actions/account';
 import twitterImg from '../../assets/images/icons/twitter.svg';
 import Api from '../../Api';
-import Utils from "../../helpers/Utils";
-import queryString from "query-string";
+import Utils from '../../helpers/Utils';
 
 class OAuthButtonTwitter extends Component {
   static propTypes = {
@@ -20,7 +20,7 @@ class OAuthButtonTwitter extends Component {
       toast.error('Something went wrong');
       return;
     }
-    const win = Utils.popupWindow(`https://api.twitter.com/oauth/authenticate?oauth_token=${oAuthToken}`, 'Twitter', 450, 600);
+    const win = Utils.popupWindow(`https://api.twitter.com/oauth/authenticate?oauth_token=${oAuthToken}`, 'Twitter', 350, 600);
     this.timeout = setInterval(() => {
       try {
         const { search, pathname } = win.location;

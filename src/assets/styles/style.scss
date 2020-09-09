@@ -1491,8 +1491,8 @@ p {
         .ghFormField {
           //max-width: 100% !important;
           //width: 100% !important;
-          left: auto;
-          right: 0;
+          //left: auto;
+          //right: 0;
 
           .gh__control {
             height: auto;
@@ -2610,6 +2610,39 @@ body .gh__menu {
         background-color: $color-white;
         padding: 4px;
         border-radius: 4px;
+      }
+    }
+  }
+}
+
+.locationInputsWrapper {
+  display: flex;
+  width: 320px;
+
+  .ghFormField {
+    width: 50%;
+
+    input {
+      -moz-appearance:textfield;
+      -webkit-appearance: textfield;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+
+    &:first-child {
+      input {
+        border-radius: 8px 0 0 8px;
+      }
+    }
+
+    &:last-child {
+      input {
+        border-radius: 0 8px 8px 0;
+        margin-top: 23px;
       }
     }
   }

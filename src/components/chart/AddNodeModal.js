@@ -33,7 +33,7 @@ class AddNodeModal extends Component {
         nodeType: nodeType || 'circle',
         type: type || _.last(nodes)?.type || '',
         keywords: keywords || [],
-        location: location || undefined,
+        location,
       },
       index,
       errors: {},
@@ -74,6 +74,7 @@ class AddNodeModal extends Component {
 
     [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, !_.isNull(index));
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
+    [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
 
     if (!Validate.hasError(errors)) {
       if (_.isNull(index)) {
@@ -164,6 +165,24 @@ class AddNodeModal extends Component {
             placeholder="Add..."
             onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
           />
+          <div className="locationInputsWrapper">
+            <Input
+              label="Geolocation"
+              placeholder="latitude"
+              type="number"
+              onWheel={(ev) => ev.target.blur()}
+              value={_.get((nodeData.location || '').split(','), '0', '')}
+              error={errors.location}
+              onChangeText={(v) => this.handleChange('location[0]', v)}
+            />
+            <Input
+              placeholder="longitude"
+              type="number"
+              onWheel={(ev) => ev.target.blur()}
+              value={_.get((nodeData.location || '').split(','), '1', '')}
+              onChangeText={(v) => this.handleChange('location[1]', v)}
+            />
+          </div>
           <div className="buttons">
             <Button onClick={this.closeModal}>
               Cancel

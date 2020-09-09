@@ -98,6 +98,7 @@ class DataTableNodes extends Component {
             <th className="cell icon" width="272"><span>Icon</span></th>
             <th className="cell link" width="272"><span>Link</span></th>
             <th className="cell keywords" width="272"><span>Keywords</span></th>
+            <th className="cell location" width="272"><span>Location</span></th>
           </tr>
         </thead>
         <tbody>

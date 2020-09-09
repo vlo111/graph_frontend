@@ -23,6 +23,24 @@ class Validate {
     return [error, value];
   }
 
+  static nodeLocation(val) {
+    if (!val) {
+      return [null, undefined];
+    }
+    let value = val;
+    let error = null;
+    if (_.isString(val)) {
+      value = value.split(',');
+    }
+    if (!value[0] && !value[1]) {
+      return [null, undefined];
+    }
+    if (!value[0] || !value[1]) {
+      error = 'Invalid location';
+    }
+    return [error, value.join(',')];
+  }
+
   static linkType(val, source, target) {
     let value = (val || '').trim();
     const links = Chart.getLinks();
