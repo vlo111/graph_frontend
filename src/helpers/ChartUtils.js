@@ -6,6 +6,7 @@ import memoizeOne from 'memoize-one';
 import Chart from '../Chart';
 import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
+import { NODE_COLOR } from '../data/node';
 import { DEFAULT_FILTERS } from '../data/filter';
 import Api from '../Api';
 import Utils from './Utils';
@@ -216,7 +217,7 @@ class ChartUtils {
 
   static nodeColor = () => (d) => {
     if (!(d.type in this.nodeColorObj)) {
-      this.nodeColorObj[d.type] = d3.schemeCategory10[this.nodeColorIndex] || randomColor();
+      this.nodeColorObj[d.type] = NODE_COLOR[this.nodeColorIndex] || randomColor();
       this.nodeColorIndex += 1;
     }
     return this.nodeColorObj[d.type];

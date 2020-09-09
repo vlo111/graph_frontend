@@ -1,8 +1,10 @@
 import axios from 'axios';
+import _ from 'lodash';
 import { stringify as qs } from 'query-string';
 import fileDownload from 'js-file-download';
 import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
+import randomColor from 'randomcolor';
 
 const { REACT_APP_API_URL } = process.env;
 
@@ -88,7 +90,7 @@ class Api {
     return api.get(`/graphs/single/${getSingleGraph}`);
   }
 
-  static oAuthV2(type, params) {
+  static oAuth(type, params) {
     const query = qs(params);
     const version = type === 'twitter' ? 'v1' : 'v2';
     return api.get(`/users/oauth/${version}/redirect/${type}?${query}`);
