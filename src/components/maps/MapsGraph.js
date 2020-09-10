@@ -43,22 +43,27 @@ class MapsGraph extends Component {
   render() {
     const { activeNode } = this.state;
     const { google } = this.props;
-    let nodes = [];
+    let nodes = Chart.getNodes().filter((d) => d.location).map((d) => {
+      const l = d.location.split(',');
+      d.locationObj = { lat: +l[0], lng: +l[1] };
+      return d;
+    });
     const links = Chart.getLinks().map((d) => {
       const source = ChartUtils.getNodeByName(d.source);
       const target = ChartUtils.getNodeByName(d.target);
       if (source.location && target.location) {
         const l1 = source.location.split(',');
         const l2 = target.location.split(',');
-        source.locationObj = { lat: +l1[0], lng: +l1[1] };
-        target.locationObj = { lat: +l2[0], lng: +l2[1] };
-        d.locations = [source.locationObj, target.locationObj];
-        nodes.push(source);
-        nodes.push(target);
+        const locationObj1 = { lat: +l1[0], lng: +l1[1] };
+        const locationObj2 = { lat: +l2[0], lng: +l2[1] };
+        d.locations = [locationObj1, locationObj2];
       }
       return d;
     }).filter((d) => d.locations);
     nodes = _.uniqBy(nodes, 'name');
+    if (_.isEmpty(nodes)) {
+      return null;
+    }
     return (
       <div id="mapsGraph">
         <Map
