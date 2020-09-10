@@ -1,10 +1,8 @@
 import axios from 'axios';
-import _ from 'lodash';
 import { stringify as qs } from 'query-string';
 import fileDownload from 'js-file-download';
 import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
-import randomColor from 'randomcolor';
 
 const { REACT_APP_API_URL } = process.env;
 

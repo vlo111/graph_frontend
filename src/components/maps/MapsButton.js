@@ -5,7 +5,7 @@ import MapImg from '../../assets/images/icons/google-maps.svg';
 import MapsModal from './MapsModal';
 import { setActiveButton } from '../../store/actions/app';
 
-class Maps extends Component {
+class MapsButton extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
     setActiveButton: PropTypes.func.isRequired,
@@ -40,6 +40,6 @@ const mapDispatchToProps = {
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Maps);
+)(MapsButton);
 
 export default Container;

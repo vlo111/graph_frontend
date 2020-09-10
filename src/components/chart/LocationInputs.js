@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Input from '../form/Input';
+import Tooltip from 'rc-tooltip';
+import withGoogleMap from '../../helpers/withGoogleMap';
+import MapsLocationPicker from '../maps/MapsLocationPicker';
+import MapImg from '../../assets/images/icons/google-maps.svg';
 
 class LocationInputs extends Component {
   static propTypes = {
@@ -14,39 +17,47 @@ class LocationInputs extends Component {
     error: undefined,
   }
 
-  handleChange = (i, val) => {
-    const { value } = this.props;
-    const valueArr = value.split(',');
-    valueArr[i] = val;
-    this.props.onChange(valueArr.join(','));
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+    };
+  }
+
+  handleChange = (value) => {
+    this.props.onChange(value);
+    this.setState({ open: false });
+  }
+
+  toggleMap = () => {
+    const { open } = this.state;
+    this.setState({ open: !open });
   }
 
   render() {
+    const { open } = this.state;
     const { value, error } = this.props;
-    const [lat, lng] = value.split(',');
     return (
       <div className="locationInputsWrapper">
-        <Input
-          label="Geolocation"
-          placeholder="latitude"
-          type="number"
-          name="longitude"
-          onWheel={(ev) => ev.target.blur()}
-          value={lat}
-          error={error}
-          onChangeText={(v) => this.handleChange(0, v)}
-        />
-        <Input
-          placeholder="longitude"
-          type="number"
-          name="latitude"
-          onWheel={(ev) => ev.target.blur()}
-          value={lng}
-          onChangeText={(v) => this.handleChange(1, v)}
-        />
+        <Tooltip overlay="Select Location">
+          <img
+            onClick={this.toggleMap}
+            className={`button ${value ? 'selected' : ''}`}
+            src={MapImg}
+            alt="google map"
+            width="35"
+          />
+        </Tooltip>
+        {open ? (
+          <MapsLocationPicker
+            onClose={this.toggleMap}
+            value={value}
+            onChange={this.handleChange}
+          />
+        ) : null}
       </div>
     );
   }
 }
 
-export default LocationInputs;
+export default withGoogleMap(LocationInputs);

@@ -1198,8 +1198,10 @@ p {
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   background-color: white;
   max-height: 100vh;
+  height: 100vh;
+  position: absolute;
   z-index: 3;
-  margin-left: 202px;
+  left: 202px;
   border-left: 1px solid $color-light-gray;
   padding-left: 4px;
 
@@ -1208,7 +1210,7 @@ p {
     position: absolute;
     width: calc(100% - 202px);
     height: 100%;
-    z-index: 3;
+    z-index: 10;
     overflow: hidden;
   }
 
@@ -1238,7 +1240,7 @@ p {
   .contentWrapper {
     background-color: white;
     max-width: 100%;
-    height: 100%;
+    height: calc(100% - 32px);
     display: flex;
     flex-direction: column;
 
@@ -1351,7 +1353,7 @@ p {
 
   .ghGridTableWrapper {
     overflow-x: auto;
-    height: calc(100% - 118px);
+    height: calc(100% - 87px);
     border-bottom: 1px solid $color-gray;
   }
 
@@ -1550,6 +1552,7 @@ p {
       border-radius: 0;
       scroll-snap-align: start;
       white-space: nowrap;
+      box-shadow: none;
 
       &.active {
         border-bottom-color: $color-dark;
@@ -2506,6 +2509,22 @@ body .gh__menu {
     }
   }
 
+  .selectLocation {
+    border-radius: 2px;
+    background-color: $color-white;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
+    z-index: 2;
+    position: absolute;
+    bottom: 25px;
+    left: 5px;
+    padding: 8px 22px;
+    font-size: 18px;
+
+    &:hover {
+      background-color: rgb(235, 235, 235);
+    }
+  }
+
 }
 
 #mapsGraph {
@@ -2619,31 +2638,24 @@ body .gh__menu {
   display: flex;
   width: 320px;
 
-  .ghFormField {
-    width: 50%;
+  .button {
+    filter: grayscale(90%);
+    cursor: pointer;
+    width: 35px;
+    margin-top: 10px;
 
-    input {
-      -moz-appearance:textfield;
-      -webkit-appearance: textfield;
-
-      &::-webkit-outer-spin-button,
-      &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-    }
-
-    &:first-child {
-      input {
-        border-radius: 8px 0 0 8px;
-      }
-    }
-
-    &:last-child {
-      input {
-        border-radius: 0 8px 8px 0;
-        margin-top: 23px;
-      }
+    &.selected {
+      filter: none;
     }
   }
+}
+
+#nodeFullInfo {
+  background: red;
+  position: fixed;
+  width: 40%;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  z-index: 22;
 }

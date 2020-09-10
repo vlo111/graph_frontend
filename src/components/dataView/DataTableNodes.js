@@ -15,6 +15,7 @@ import Select from '../form/Select';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
+import MapsLocationPicker from "../maps/MapsLocationPicker";
 
 class DataTableNodes extends Component {
   static propTypes = {
@@ -80,29 +81,29 @@ class DataTableNodes extends Component {
     (
       <table className={props.className}>
         <thead>
-          <tr>
-            <th className="cell index" width="60">
-              <label>
-                {/* <input */}
-                {/*  type="checkbox" */}
-                {/*  checked={allChecked} */}
-                {/*  onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))} */}
-                {/* /> */}
-                {/* All */}
-              </label>
-            </th>
-            <th className="cell name" width="180"><span>Name</span></th>
-            <th className="cell type" width="150"><span>Type</span></th>
-            <th className="cell description" width="272"><span>Description</span></th>
-            <th className="cell nodeType" width="130"><span>Node Type</span></th>
-            <th className="cell icon" width="272"><span>Icon</span></th>
-            <th className="cell link" width="272"><span>Link</span></th>
-            <th className="cell keywords" width="272"><span>Keywords</span></th>
-            <th className="cell location" width="272"><span>Location</span></th>
-          </tr>
+        <tr>
+          <th className="cell index" width="60">
+            <label>
+              {/* <input */}
+              {/*  type="checkbox" */}
+              {/*  checked={allChecked} */}
+              {/*  onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))} */}
+              {/* /> */}
+              {/* All */}
+            </label>
+          </th>
+          <th className="cell name" width="180"><span>Name</span></th>
+          <th className="cell type" width="150"><span>Type</span></th>
+          <th className="cell description" width="272"><span>Description</span></th>
+          <th className="cell nodeType" width="130"><span>Node Type</span></th>
+          <th className="cell icon" width="272"><span>Icon</span></th>
+          <th className="cell link" width="272"><span>Link</span></th>
+          <th className="cell keywords" width="272"><span>Keywords</span></th>
+          <th className="cell location" width="272"><span>Location</span></th>
+        </tr>
         </thead>
         <tbody>
-          {props.children}
+        {props.children}
         </tbody>
       </table>
     )
@@ -114,7 +115,7 @@ class DataTableNodes extends Component {
       onContextMenu, onDoubleClick, onKeyUp, onMouseOver,
     } = props;
     let { onMouseDown } = props;
-    if (['description'].includes(props.cell.key)) {
+    if (['description', 'location'].includes(props.cell.key)) {
       this.onMouseDown = onMouseDown;
       onMouseDown = undefined;
     }
@@ -196,6 +197,19 @@ class DataTableNodes extends Component {
     if (props.cell.key === 'description') {
       return (
         <DataEditorDescription {...defaultProps} onClose={this.onMouseDown} />
+      );
+    }
+    if (props.cell.key === 'location') {
+      return (
+        <MapsLocationPicker
+          onClose={() => {
+            this.onMouseDown(new Event('mousedown'));
+            document.dispatchEvent(new Event('mousedown'));
+            document.dispatchEvent(new Event('mouseup'));
+          }}
+          value={props.value}
+          onChange={props.onChange}
+        />
       );
     }
     if (props.cell.key === 'nodeType') {

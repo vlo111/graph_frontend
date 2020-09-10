@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  GoogleApiWrapper, Map, Polyline, Marker, InfoWindow,
+  Map, Polyline, Marker, InfoWindow,
 } from 'google-maps-react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -12,8 +12,7 @@ import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 import Api from '../../Api';
 import NodeIcon from '../NodeIcon';
-
-const { REACT_APP_GOOGLE_MAP_API_KEY } = process.env;
+import withGoogleMap from '../../helpers/withGoogleMap';
 
 class MapsGraph extends Component {
   static propTypes = {
@@ -123,6 +122,4 @@ const Container = connect(
   mapDispatchToProps,
 )(MapsGraph);
 
-export default GoogleApiWrapper({
-  apiKey: REACT_APP_GOOGLE_MAP_API_KEY,
-})(Container);
+export default withGoogleMap(Container);

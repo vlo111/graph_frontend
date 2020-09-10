@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import {
-  GoogleApiWrapper, Marker, Map,
-} from 'google-maps-react';
+import { Marker, Map } from 'google-maps-react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
@@ -12,8 +10,7 @@ import ChartUtils from '../../helpers/ChartUtils';
 import { toggleNodeModal } from '../../store/actions/app';
 import Utils from '../../helpers/Utils';
 import Loading from '../Loading';
-
-const { REACT_APP_GOOGLE_MAP_API_KEY } = process.env;
+import withGoogleMap from '../../helpers/withGoogleMap';
 
 class MapsModal extends Component {
   static propTypes = {
@@ -211,6 +208,4 @@ const Container = connect(
   mapDispatchToProps,
 )(MapsModal);
 
-export default GoogleApiWrapper({
-  apiKey: REACT_APP_GOOGLE_MAP_API_KEY
-})(Container);
+export default withGoogleMap(Container);

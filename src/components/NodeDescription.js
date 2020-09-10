@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import stripHtml from 'string-strip-html';
 import Chart from '../Chart';
 import Icon from './form/Icon';
 import Outside from './Outside';
 import ChartUtils from '../helpers/ChartUtils';
 import NodeIcon from './NodeIcon';
+import Button from './form/Button';
+import { toggleNodeFullInfo, toggleNodeModal } from "../store/actions/app";
+import { connect } from "react-redux";
 
 const MODAL_WIDTH = 300;
 
 class NodeDescription extends Component {
+  static propTypes = {
+    toggleNodeFullInfo: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.showInfoTimout = null;
@@ -103,6 +111,7 @@ class NodeDescription extends Component {
               <strong>{'Connections: '}</strong>
               {nodeLinks.length}
             </p>
+            {/* <Button onClick={() => this.props.toggleNodeFullInfo(node.name)}>more</Button> */}
           </div>
         </div>
       </Outside>
@@ -110,4 +119,14 @@ class NodeDescription extends Component {
   }
 }
 
-export default NodeDescription;
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = {
+  toggleNodeFullInfo,
+};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NodeDescription);
+
+export default Container;

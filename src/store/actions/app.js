@@ -76,3 +76,14 @@ export function resetFilter() {
     payload: {},
   };
 }
+
+export const TOGGLE_NODE_FULL_INFO = 'TOGGLE_NODE_FULL_INFO';
+
+export function toggleNodeFullInfo(nodeName = '') {
+  return {
+    type: TOGGLE_NODE_FULL_INFO,
+    payload: {
+      nodeName,
+    },
+  };
+}

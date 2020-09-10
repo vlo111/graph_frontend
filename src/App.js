@@ -13,7 +13,7 @@ import GraphTemplates from './pages/profile/GraphTemplates';
 import Utils from './helpers/Utils';
 import ForgotPassword from './pages/sign/ForgotPassword';
 import ResetPassword from './pages/sign/ResetPassword';
-import OAuth from "./pages/sign/OAuth";
+import OAuth from './pages/sign/OAuth';
 
 class App extends Component {
   componentDidMount() {
