@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import Api from '../../Api';
 import Account from '../../helpers/Account';
+import Utils from "../../helpers/Utils";
 
 class NodeTabsContent extends Component {
   static propTypes = {
@@ -37,11 +38,10 @@ class NodeTabsContent extends Component {
     if (['text/html', 'application/pdf'].includes(contentType)) {
       const query = queryString.stringify({
         url: content,
-        token: Account.getToken(),
       });
       return (
         <div className="previewWrapper">
-          <img src={`${Api.url}/helpers/content-thumbnail?${query}`} alt="thumbnail" />
+          <img src={Utils.fileSrc(`/helpers/content-thumbnail?${query}`, true)} alt="thumbnail" />
           <a href={content} target="_blank" rel="noopener noreferrer">{content}</a>
         </div>
       );

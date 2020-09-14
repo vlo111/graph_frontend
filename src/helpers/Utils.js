@@ -3,6 +3,7 @@ import _ from 'lodash';
 import Bowser from 'bowser';
 import memoizeOne from 'memoize-one';
 import Api from '../Api';
+import Account from './Account';
 
 const browser = Bowser.getParser(window.navigator.userAgent);
 
@@ -50,9 +51,14 @@ class Utils {
     return data;
   }
 
-  static fileSrc(src) {
+  static fileSrc(src, withToken = false) {
     if (/^https?:\/\//.test(src) || src.toString().includes('base64,')) {
       return src;
+    }
+
+    if (withToken) {
+      const separator = src.includes('?') ? '&' : '?';
+      src += `${separator}token=${Account.getToken()}`;
     }
 
     return `${Api.url}${src}`;

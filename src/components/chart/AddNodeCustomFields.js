@@ -26,7 +26,7 @@ class AddNodeCustomFields extends Component {
 
   render() {
     const { data, node, customFields } = this.props;
-    const customFieldKey = [...CustomFields.getKeys(customFields, node.type), ...Object.keys(data)];
+    const customFieldKey = _.uniq([...CustomFields.getKeys(customFields, node.type), ...Object.keys(data)]);
     return (
       <div>
         {customFieldKey.map((key) => (
