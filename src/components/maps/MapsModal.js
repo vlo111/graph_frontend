@@ -11,10 +11,12 @@ import { toggleNodeModal } from '../../store/actions/app';
 import Utils from '../../helpers/Utils';
 import Loading from '../Loading';
 import withGoogleMap from '../../helpers/withGoogleMap';
+import CustomFields from "../../helpers/CustomFields";
 
 class MapsModal extends Component {
   static propTypes = {
     google: PropTypes.object.isRequired,
+    customFields: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
   }
@@ -89,6 +91,7 @@ class MapsModal extends Component {
   })
 
   handleMouseUp = async (ev) => {
+    const { customFields } = this.props;
     const { markerDrag } = this.state;
     let { selected } = this.state;
     if (!markerDrag) return;
@@ -101,6 +104,16 @@ class MapsModal extends Component {
     if (!selected.name) {
       selected = await this.getPlaceInformation(selected.location);
     }
+    const customField = CustomFields.get(customFields, selected.type);
+    if (selected.address) {
+      customField.Address = selected.address;
+    }
+    if (selected.website) {
+      customField.Website = selected.website;
+    }
+    if (selected.phone) {
+      customField.Phone = selected.phone;
+    }
     this.props.toggleNodeModal({
       fx: x,
       fy: y,
@@ -108,6 +121,7 @@ class MapsModal extends Component {
       icon: selected.photo,
       type: selected.type,
       location: [selected.location.lat, selected.location.lng].join(','),
+      customField,
     });
   }
 
@@ -197,7 +211,9 @@ class MapsModal extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  customFields: state.graphs.singleGraph.customFields || {},
+});
 
 const mapDispatchToProps = {
   toggleNodeModal,

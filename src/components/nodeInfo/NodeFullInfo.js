@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Chart from "../../Chart";
+import Chart from '../../Chart';
+import TextEllipsis from '../TextEllipsis';
+import { toggleNodeFullInfo } from '../../store/actions/app';
+import Outside from '../Outside';
+import NodeTabs from './NodeTabs';
 
 class NodeFullInfo extends Component {
   static propTypes = {
     infoNodeName: PropTypes.string.isRequired,
+    toggleNodeFullInfo: PropTypes.func.isRequired,
+  }
+
+  closeNodeInfo = () => {
+    this.props.toggleNodeFullInfo('');
   }
 
   render() {
@@ -18,14 +27,21 @@ class NodeFullInfo extends Component {
       return null;
     }
     return (
-      <div id="nodeFullInfo">
-        <h2>{node.name}</h2>
-        <h3>{node.type}</h3>
-        <p>{node.description}</p>
-        <div className="collaborate">
-          <h4 className="collaborateTitle">Collaborate (24)</h4>
+      <Outside onClick={this.closeNodeInfo}>
+        <div id="nodeFullInfo">
+          <div className="mainContent">
+            <h2 className="name">{node.name}</h2>
+            <h3 className="type">{node.type}</h3>
+            <TextEllipsis maxLength={140} className="description" more="EXPEND" less="SHOW LESS">
+              {node.description}
+            </TextEllipsis>
+            <NodeTabs node={node} />
+            <div className="collaborate">
+              <h4 className="collaborateTitle">Collaborate (24)</h4>
+            </div>
+          </div>
         </div>
-      </div>
+      </Outside>
     );
   }
 }
@@ -34,7 +50,9 @@ const mapStateToProps = (state) => ({
   infoNodeName: state.app.infoNodeName,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  toggleNodeFullInfo,
+};
 
 const Container = connect(
   mapStateToProps,

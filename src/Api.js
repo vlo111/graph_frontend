@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { stringify as qs } from 'query-string';
 import fileDownload from 'js-file-download';
 import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
@@ -77,11 +76,8 @@ class Api {
   }
 
   static getGraphsList(page, requestData = {}) {
-    const query = qs({
-      page,
-      ...requestData,
-    });
-    return api.get(`/graphs?${query}`);
+    const params = { page, ...requestData };
+    return api.get('/graphs', { params });
   }
 
   static getSingleGraph(getSingleGraph) {
@@ -89,14 +85,16 @@ class Api {
   }
 
   static oAuth(type, params) {
-    const query = qs(params);
     const version = type === 'twitter' ? 'v1' : 'v2';
-    return api.get(`/users/oauth/${version}/redirect/${type}?${query}`);
+    return api.get(`/users/oauth/${version}/redirect/${type}`, { params });
   }
 
   static getTwitterToken(params) {
-    const query = qs(params);
-    return api.get(`/users/oauth/v1/token/twitter?${query}`);
+    return api.get('/users/oauth/v1/token/twitter', { params });
+  }
+
+  static getContentType(url) {
+    return api.get('/helpers/content-type', { params: { url } });
   }
 }
 

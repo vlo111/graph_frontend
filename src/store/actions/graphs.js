@@ -51,3 +51,21 @@ export function clearSingleGraph() {
     payload: {},
   };
 }
+
+export const SET_NODE_CUSTOM_FIELD = 'SET_NODE_CUSTOM_FIELD';
+
+export function setNodeCustomField(type, name, customField) {
+  return {
+    type: SET_NODE_CUSTOM_FIELD,
+    payload: { type, name, customField },
+  };
+}
+
+export const ADD_NODE_CUSTOM_FIELD_KEY = 'ADD_NODE_CUSTOM_FIELD_KEY';
+
+export function addNodeCustomFieldKey(type, key) {
+  return {
+    type: ADD_NODE_CUSTOM_FIELD_KEY,
+    payload: { type, key },
+  };
+}

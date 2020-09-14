@@ -7,18 +7,16 @@ import memoizeOne from 'memoize-one';
 import Chart from '../../Chart';
 import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../ContextMenu';
+import ChartUtils from "../../helpers/ChartUtils";
+import CustomFields from "../../helpers/CustomFields";
 
 class ReactChart extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
-    unmount: PropTypes.bool,
+    customFields: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
-  }
-
-  static defaultProps = {
-    unmount: true,
   }
 
   renderChart = memoizeOne((nodes, links) => {
@@ -47,7 +45,9 @@ class ReactChart extends Component {
   }
 
   editNode = (node) => {
-    this.props.toggleNodeModal(node);
+    const { customFields } = this.props;
+    const customField = CustomFields.get(customFields, node.type, node.name);
+    this.props.toggleNodeModal({ ...node, customField });
   }
 
   addNewNode = () => {
@@ -120,6 +120,7 @@ class ReactChart extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
+  customFields: state.graphs.singleGraph.customFields || {},
 });
 const mapDispatchToProps = {
   toggleNodeModal,

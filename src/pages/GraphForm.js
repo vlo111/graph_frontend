@@ -19,6 +19,7 @@ import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
 import MapsButton from '../components/maps/MapsButton';
 import MapsGraph from '../components/maps/MapsGraph';
+import NodeFullInfo from "../components/nodeInfo/NodeFullInfo";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -57,7 +58,7 @@ class GraphForm extends Component {
         <ContextMenu />
         <DataImport />
         <NodeDescription />
-        {/* <NodeFullInfo /> */}
+        <NodeFullInfo />
         <AutoPlay />
         <Zoom />
         <MapsButton />

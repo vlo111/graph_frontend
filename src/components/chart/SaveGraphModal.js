@@ -35,12 +35,14 @@ class SaveGraphModal extends Component {
 
   initValues = memoizeOne((singleGraph) => {
     const {
-      title, description, status,
+      title, description, status, customFields,
     } = singleGraph;
+
     this.setState({
       requestData: {
         title,
         description,
+        customFields,
         status: status === 'template' ? 'active' : status,
       },
     });
@@ -130,7 +132,6 @@ class SaveGraphModal extends Component {
     const { singleGraph } = this.props;
     const nodes = Chart.getNodes();
     this.initValues(singleGraph);
-
     const canSave = nodes.length && requestData.title;
     const isUpdate = !!singleGraph.id;
     const isTemplate = singleGraph.status === 'template';

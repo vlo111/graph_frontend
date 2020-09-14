@@ -1,4 +1,12 @@
-import { CLEAR_SINGLE_GRAPH, CONVERT_GRAPH, GET_GRAPHS_LIST, GET_SINGLE_GRAPH } from '../actions/graphs';
+import {
+  CLEAR_SINGLE_GRAPH,
+  CONVERT_GRAPH,
+  GET_GRAPHS_LIST,
+  GET_SINGLE_GRAPH,
+  SET_NODE_CUSTOM_FIELD, ADD_NODE_CUSTOM_FIELD_KEY
+} from '../actions/graphs';
+import _ from 'lodash';
+import CustomFields from "../../helpers/CustomFields";
 
 const initialState = {
   importData: {},
@@ -45,6 +53,7 @@ export default function reducer(state = initialState, action) {
     }
     case GET_SINGLE_GRAPH.SUCCESS: {
       const { graph: singleGraph } = action.payload.data;
+      singleGraph.customFields = { ...singleGraph.customFields };
       return {
         ...state,
         singleGraph,
@@ -54,6 +63,24 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         singleGraph: {},
+      };
+    }
+    case SET_NODE_CUSTOM_FIELD: {
+      const singleGraph = { ...state.singleGraph };
+      const { type, name, customField } = action.payload;
+      singleGraph.customFields = CustomFields.setValue(singleGraph.customFields, type, name, customField);
+      return {
+        ...state,
+        singleGraph,
+      };
+    }
+    case ADD_NODE_CUSTOM_FIELD_KEY: {
+      const singleGraph = { ...state.singleGraph };
+      const { type, key } = action.payload;
+      singleGraph.customFields = CustomFields.setKey(singleGraph.customFields, type, key);
+      return {
+        ...state,
+        singleGraph,
       };
     }
     default: {

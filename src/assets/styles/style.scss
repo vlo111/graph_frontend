@@ -2651,11 +2651,82 @@ body .gh__menu {
 }
 
 #nodeFullInfo {
-  background: red;
   position: fixed;
+  background: $color-white;
   width: 40%;
-  top: 0;
-  right: 0;
   height: 100vh;
   z-index: 22;
+  box-shadow: 0px 6px 20px #0D090526;
+  right: 0;
+  top: 0;
+
+  .mainContent {
+    padding: 65px 14.6%;
+
+    .name {
+      font-size: 26px;
+    }
+
+    .type {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .description {
+      margin-top: 19px;
+      font-size: 15px;
+
+      p {
+        font-size: 15px;
+      }
+    }
+  }
+
+  .collaborate {
+    margin-top: 27px;
+  }
+}
+
+.textEllipsis {
+  p {
+    font-size: inherit;
+  }
+
+  .ghButton {
+    padding: 0;
+    margin-left: auto;
+    margin-top: 27px;
+    color: $color-dark-blue;
+  }
+}
+
+.nodeTabs {
+  .previewWrapper {
+    position: relative;
+    overflow: hidden;
+
+    iframe {
+      width: 300%;
+      height: 1010px;
+      transform: scale(0.3);
+      transform-origin: 0 0;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      max-height: 450px;
+      object-position: center center;
+      object-fit: contain;
+    }
+
+    a {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      position: absolute;
+      font-size: 0 !important;
+    }
+  }
 }

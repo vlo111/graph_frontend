@@ -62,6 +62,12 @@ class NodeDescription extends Component {
     this.setState({ node: null });
   }
 
+  showFullInfo = () => {
+    const { node } = this.state;
+    this.hideInfo();
+    this.props.toggleNodeFullInfo(node.name)
+  }
+
   render() {
     const { node } = this.state;
     if (!node) {
@@ -111,7 +117,7 @@ class NodeDescription extends Component {
               <strong>{'Connections: '}</strong>
               {nodeLinks.length}
             </p>
-            {/* <Button onClick={() => this.props.toggleNodeFullInfo(node.name)}>more</Button> */}
+            <Button onClick={this.showFullInfo}>more</Button>
           </div>
         </div>
       </Outside>
