@@ -39,7 +39,7 @@ class CustomFields {
   }
 
   static getKeys(customFields, type) {
-    return Object.keys(customFields[type]);
+    return Object.keys(customFields[type] || {});
   }
 }
 
