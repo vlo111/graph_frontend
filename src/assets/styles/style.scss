@@ -495,6 +495,7 @@ p {
     background-color: transparent !important;
     box-shadow: none !important;
     color: $color-main;
+    box-shadow: none;
   }
 
   .icon {
@@ -2671,6 +2672,13 @@ body .gh__menu {
   box-shadow: 0px 6px 20px #0D090526;
   right: 0;
   top: 0;
+
+  .closeInfo {
+    position: absolute;
+    right: 25px;
+    padding: 15px;
+    background-color: transparent;
+  }
 
   .mainContent {
     padding: 65px 14.6%;

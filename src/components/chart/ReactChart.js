@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import memoizeOne from 'memoize-one';
 import Chart from '../../Chart';
-import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
+import { setActiveButton, toggleNodeFullInfo, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../ContextMenu';
 import ChartUtils from "../../helpers/ChartUtils";
 import CustomFields from "../../helpers/CustomFields";
@@ -27,6 +27,8 @@ class ReactChart extends Component {
     Chart.render({ nodes: [], links: [] });
 
     Chart.event.on('node.click', this.handleNodeClick);
+    Chart.event.on('node.dblclick', this.handleDbNodeClick);
+
     ContextMenu.event.on('node.delete', this.deleteNode);
     ContextMenu.event.on('node.edit', this.editNode);
 
@@ -42,6 +44,10 @@ class ReactChart extends Component {
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
     ContextMenu.event.removeListener('node.delete', this.handleNodeClick);
     ContextMenu.event.removeListener('node.edit', this.editNode);
+  }
+
+  handleDbNodeClick = (d) => {
+    this.props.toggleNodeFullInfo(d.name);
   }
 
   editNode = (node) => {
@@ -125,6 +131,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   toggleNodeModal,
   setActiveButton,
+  toggleNodeFullInfo,
 };
 
 const Container = connect(

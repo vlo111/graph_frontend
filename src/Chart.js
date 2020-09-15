@@ -4,6 +4,7 @@ import EventEmitter from 'events';
 import { toast } from 'react-toastify';
 import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
+import Utils from "./helpers/Utils";
 
 class Chart {
   static event = new EventEmitter();
@@ -176,6 +177,7 @@ class Chart {
       this.zoom = d3.zoom().on('zoom', this.handleZoom);
       this.svg = this.svg
         .call(this.zoom)
+        .on('dblclick.zoom', null)
         .on('click', (d) => this.event.emit('click', d))
         .on('mousemove', (d) => this.event.emit('mousemove', d));
 
@@ -207,6 +209,7 @@ class Chart {
         .call(this.drag(this.simulation))
         .on('mouseenter', (d) => this.event.emit('node.mouseenter', d))
         .on('mouseleave', (d) => this.event.emit('node.mouseleave', d))
+        .on('dblclick', (d) => this.event.emit('node.dblclick', d))
         .on('click', (d) => this.event.emit('node.click', d));
 
       this.nodesWrapper.selectAll('.node > *').remove();
@@ -514,8 +517,21 @@ class Chart {
       .attr('x2', 0)
       .attr('y2', 0);
 
-    this.event.on('node.click', (d) => {
-      if (this.activeButton !== 'create') {
+    let cancel = false;
+    this.event.on('node.dblclick', () => {
+      cancel = true;
+      setTimeout(() => {
+        cancel = false;
+      }, 300);
+    });
+    this.event.on('node.click', async (d) => {
+      await Utils.sleep(10);
+      if (this.activeButton !== 'create' || cancel) {
+        this.newLink.attr('data-source', '')
+          .attr('x1', 0)
+          .attr('y1', 0)
+          .attr('x2', 0)
+          .attr('y2', 0);
         return;
       }
       const source = this.newLink.attr('data-source');

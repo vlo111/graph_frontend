@@ -6,6 +6,8 @@ import TextEllipsis from '../TextEllipsis';
 import { toggleNodeFullInfo } from '../../store/actions/app';
 import Outside from '../Outside';
 import NodeTabs from './NodeTabs';
+import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
+import Button from "../form/Button";
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -29,6 +31,7 @@ class NodeFullInfo extends Component {
     return (
       <Outside onClick={this.closeNodeInfo}>
         <div id="nodeFullInfo">
+          <Button className="closeInfo" color="transparent" icon={<CloseSvg width={15} />} onClick={this.closeNodeInfo} />
           <div className="mainContent">
             <h2 className="name">{node.name}</h2>
             <h3 className="type">{node.type}</h3>
