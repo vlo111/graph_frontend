@@ -20,8 +20,20 @@ api.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
+
 class Api {
   static url = REACT_APP_API_URL;
+
+  static #cancelSource = [];
+
+  static #cancel = (key) => {
+    if (this.#cancelSource[key]) {
+      this.#cancelSource[key].cancel('Operation canceled by the user.');
+    }
+    const source = axios.CancelToken.source();
+    this.#cancelSource[key] = source;
+    return source.token;
+  }
 
   static toFormData(data) {
     return serialize({ ...data }, { indices: true });
@@ -94,7 +106,10 @@ class Api {
   }
 
   static getContentType(url) {
-    return api.get('/helpers/content-type', { params: { url } });
+    return api.get('/helpers/content-type', {
+      params: { url },
+      cancelToken: this.#cancel('getContentType'),
+    });
   }
 }
 

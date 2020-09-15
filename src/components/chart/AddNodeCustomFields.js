@@ -92,21 +92,29 @@ class AddNodeCustomFields extends Component {
           </div>
         ))}
         {showNewField ? (
-          <Input disabled containerClassName="createCustomField">
+          <Input disabled containerClassName="createCustomField" limit={250}>
             <input
               type="text"
               className="inputName"
               placeholder="Name"
               value={newFieldName}
               autoFocus
+              onKeyDown={(ev) => {
+                if (ev.keyCode === 13) {
+                  ev.preventDefault();
+                  ev.target.blur();
+                }
+              }}
               onBlur={this.addNodeCustomFieldKey}
               onChange={this.handleNameChange}
             />
           </Input>
         ) : null}
-        <button type="button" onClick={this.toggleNewField}>
-          Add
-        </button>
+        {customFieldKey.length < 6 ? (
+          <Button onClick={this.toggleNewField}>
+            Add
+          </Button>
+        ) : null}
       </div>
     );
   }

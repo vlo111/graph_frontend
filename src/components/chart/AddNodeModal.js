@@ -115,7 +115,7 @@ class AddNodeModal extends Component {
   }
 
   handleCustomFieldsChange = (customField) => {
-    console.log(customField)
+    console.log(customField);
     this.setState({ customField: { ...customField } });
   }
 
@@ -141,8 +141,18 @@ class AddNodeModal extends Component {
         <form onSubmit={this.saveNode}>
           <h2>{_.isNull(index) ? 'Add new node' : 'Edit node'}</h2>
           <div className="tabs">
-            <Button onClick={() => this.setActiveTab('main')}>Main</Button>
-            <Button onClick={() => this.setActiveTab('customFields')}>Custom Fields</Button>
+            <Button
+              className={activeTab === 'main' ? 'active' : undefined}
+              onClick={() => this.setActiveTab('main')}
+            >
+              Main
+            </Button>
+            <Button
+              className={activeTab === 'customFields' ? 'active' : undefined}
+              onClick={() => this.setActiveTab('customFields')}
+            >
+              Custom Fields
+            </Button>
           </div>
           {activeTab === 'main' ? (
             <>

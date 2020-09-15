@@ -501,6 +501,13 @@ p {
     width: 14px;
     margin-right: 8px;
     vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      margin-right: 0;
+    }
 
     img {
       height: 14px;
@@ -513,6 +520,11 @@ p {
     }
   }
 
+  &.onlyIcon {
+    .icon {
+      margin-right: 0;
+    }
+  }
 }
 
 .ghCheckbox {
@@ -2729,6 +2741,10 @@ body .gh__menu {
       font-size: 0 !important;
     }
   }
+
+  .tabs {
+    margin-bottom: 10px;
+  }
 }
 
 .ghModalOverlay .ghModalCustomFieldName {
@@ -2773,19 +2789,22 @@ body .gh__menu {
   }
 
   button {
-    margin: 5px;
+    margin: 2px 0;
     background-color: transparent;
-    padding: 5px;
+    padding: 5px 10px;
     color: $color-dark;
-    border-bottom: 1px solid transparent;
-    border-right: 1px solid $color-dark;
+    border-left: 1px solid $color-dark;
     border-radius: 0;
     scroll-snap-align: start;
     white-space: nowrap;
-    box-shadow: none;
+    box-shadow: none !important;
+
+    &:first-child {
+      border-left: none;
+    }
 
     &.active {
-      border-bottom-color: $color-dark;
+      background-color: #dddddd;
     }
 
     sub {

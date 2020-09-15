@@ -29,7 +29,10 @@ class Button extends Component {
       icon, children, className, loading, color, ...props
     } = this.props;
     return (
-      <button className={classNames('ghButton', className, color, { alt: color !== 'main' })} {...props}>
+      <button
+        className={classNames('ghButton', className, color, { alt: color !== 'main', onlyIcon: !children })}
+        {...props}
+      >
         <Icon value={icon} />
         {children}
       </button>

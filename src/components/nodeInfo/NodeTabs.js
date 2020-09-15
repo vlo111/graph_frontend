@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Button from '../form/Button';
 import NodeTabsContent from './NodeTabsContent';
-import CustomFields from "../../helpers/CustomFields";
+import CustomFields from '../../helpers/CustomFields';
+import memoizeOne from "memoize-one";
+import Tooltip from "rc-tooltip";
+import { Link } from "react-router-dom";
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -19,6 +22,10 @@ class NodeTabs extends Component {
     };
   }
 
+  setFirstTab = memoizeOne((customField) => {
+    this.setState({ activeTab: Object.keys(customField)[0] });
+  }, _.isEqual);
+
   setActiveTab = (activeTab) => {
     this.setState({ activeTab });
   }
@@ -28,12 +35,22 @@ class NodeTabs extends Component {
     const { node: { type, name }, customFields } = this.props;
     const customField = CustomFields.get(customFields, type, name);
     const content = customField[activeTab];
+    this.setFirstTab(customField);
     return (
       <div className="nodeTabs">
         <div className="tabs">
           {_.map(customField, (val, key) => (
-            <Button key={key} onClick={() => this.setActiveTab(key)}>{key}</Button>
+            <Button
+              className={activeTab === key ? 'active' : undefined}
+              key={key}
+              onClick={() => this.setActiveTab(key)}
+            >
+              {key}
+            </Button>
           ))}
+          <Tooltip overlay="Add New Tab" placement="top">
+            <Button icon="fa-plus" onClick={this.toggleNewField} />
+          </Tooltip>
         </div>
         <NodeTabsContent content={content} />
       </div>
