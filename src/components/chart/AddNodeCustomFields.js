@@ -105,7 +105,7 @@ class AddNodeCustomFields extends Component {
           </Input>
         ) : null}
         <button type="button" onClick={this.toggleNewField}>
-          Add test Key
+          Add
         </button>
       </div>
     );

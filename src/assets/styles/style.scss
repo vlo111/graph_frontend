@@ -2760,3 +2760,37 @@ body .gh__menu {
     }
   }
 }
+
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+
+  .empty {
+    min-width: 1px;
+    height: 1px;
+    scroll-snap-align: start;
+  }
+
+  button {
+    margin: 5px;
+    background-color: transparent;
+    padding: 5px;
+    color: $color-dark;
+    border-bottom: 1px solid transparent;
+    border-right: 1px solid $color-dark;
+    border-radius: 0;
+    scroll-snap-align: start;
+    white-space: nowrap;
+    box-shadow: none;
+
+    &.active {
+      border-bottom-color: $color-dark;
+    }
+
+    sub {
+      color: $color-dark-blue;
+      padding-left: 5px;
+    }
+  }
+}
