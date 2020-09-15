@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { oAuthRequest } from '../../store/actions/account';
 import googleImg from '../../assets/images/icons/google.svg';
+import { toast } from "react-toastify";
 
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 
@@ -26,8 +27,13 @@ class OAuthButtonGoogle extends Component {
       });
       auth.attachClickHandler(this.button, {}, (googleUser) => {
         const { wc: { access_token: accessToken } } = googleUser;
+        if (!accessToken) {
+          toast.error('Something went wrong');
+          return;
+        }
         this.props.oAuthRequest('google', { accessToken });
       }, (error) => {
+        toast.error(`Something went wrong: ${error.error}`);
         console.warn(error);
       });
     });
