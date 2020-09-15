@@ -51,14 +51,9 @@ class Utils {
     return data;
   }
 
-  static fileSrc(src, withToken = false) {
+  static fileSrc(src) {
     if (/^https?:\/\//.test(src) || src.toString().includes('base64,')) {
       return src;
-    }
-
-    if (withToken) {
-      const separator = src.includes('?') ? '&' : '?';
-      src += `${separator}token=${Account.getToken()}`;
     }
 
     return `${Api.url}${src}`;

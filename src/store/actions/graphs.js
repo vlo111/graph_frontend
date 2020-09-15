@@ -69,3 +69,12 @@ export function addNodeCustomFieldKey(type, key) {
     payload: { type, key },
   };
 }
+
+export const REMOVE_NODE_CUSTOM_FIELD_KEY = 'REMOVE_NODE_CUSTOM_FIELD_KEY';
+
+export function removeNodeCustomFieldKey(type, key) {
+  return {
+    type: REMOVE_NODE_CUSTOM_FIELD_KEY,
+    payload: { type, key },
+  };
+}

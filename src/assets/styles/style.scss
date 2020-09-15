@@ -2730,3 +2730,33 @@ body .gh__menu {
     }
   }
 }
+
+.ghModalOverlay .ghModalCustomFieldName {
+  top: 5%;
+}
+
+.createCustomField {
+  .inputName {
+    order: -1;
+    height: 20px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    width: 50%;
+  }
+}
+
+.customFieldRow {
+  position: relative;
+
+  .close {
+    position: absolute;
+    background-color: transparent;
+    padding: 0;
+    top: -5px;
+    right: 0;
+
+    span {
+      margin: 0;
+    }
+  }
+}

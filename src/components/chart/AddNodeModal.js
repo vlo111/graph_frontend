@@ -115,6 +115,7 @@ class AddNodeModal extends Component {
   }
 
   handleCustomFieldsChange = (customField) => {
+    console.log(customField)
     this.setState({ customField: { ...customField } });
   }
 

@@ -3,10 +3,9 @@ import {
   CONVERT_GRAPH,
   GET_GRAPHS_LIST,
   GET_SINGLE_GRAPH,
-  SET_NODE_CUSTOM_FIELD, ADD_NODE_CUSTOM_FIELD_KEY
+  SET_NODE_CUSTOM_FIELD, ADD_NODE_CUSTOM_FIELD_KEY, REMOVE_NODE_CUSTOM_FIELD_KEY
 } from '../actions/graphs';
-import _ from 'lodash';
-import CustomFields from "../../helpers/CustomFields";
+import CustomFields from '../../helpers/CustomFields';
 
 const initialState = {
   importData: {},
@@ -78,6 +77,15 @@ export default function reducer(state = initialState, action) {
       const singleGraph = { ...state.singleGraph };
       const { type, key } = action.payload;
       singleGraph.customFields = CustomFields.setKey(singleGraph.customFields, type, key);
+      return {
+        ...state,
+        singleGraph,
+      };
+    }
+    case REMOVE_NODE_CUSTOM_FIELD_KEY: {
+      const singleGraph = { ...state.singleGraph };
+      const { type, key } = action.payload;
+      singleGraph.customFields = CustomFields.removeKey(singleGraph.customFields, type, key);
       return {
         ...state,
         singleGraph,

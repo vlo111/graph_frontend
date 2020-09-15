@@ -2,15 +2,27 @@ import _ from 'lodash';
 
 class CustomFields {
   static setValue(customFields = {}, type, name, customField) {
+    let i = 0;
     _.forEach(customField, (value, key) => {
       _.set(customFields, [type, key, name], value);
+      if (customFields[type][key]._order === undefined) {
+        _.set(customFields, [type, key, '_order'], i);
+      }
+      i += 1;
     });
     return { ...customFields };
   }
 
   static setKey(customFields = {}, type, key) {
     if (!_.get(customFields, [type, key])) {
-      _.set(customFields, [type, key], {});
+      _.set(customFields, [type, key], { _order: Object.values(customFields[type] || {}).length });
+    }
+    return { ...customFields };
+  }
+
+  static removeKey(customFields = {}, type, key) {
+    if (customFields[type]) {
+      delete customFields[type][key];
     }
     return { ...customFields };
   }
@@ -39,7 +51,18 @@ class CustomFields {
   }
 
   static getKeys(customFields, type) {
-    return Object.keys(customFields[type] || {});
+    if (!customFields[type]) {
+      return [];
+    }
+    const customFieldType = _.chain(customFields[type])
+      .map((val, key) => ({
+        key,
+        order: val._order,
+      }))
+      .orderBy('order')
+      .map((d) => d.key)
+      .value();
+    return customFieldType;
   }
 }
 

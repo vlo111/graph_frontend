@@ -41,7 +41,7 @@ class NodeTabsContent extends Component {
       });
       return (
         <div className="previewWrapper">
-          <img src={Utils.fileSrc(`/helpers/content-thumbnail?${query}`, true)} alt="thumbnail" />
+          <img src={Utils.fileSrc(`/helpers/content-thumbnail?${query}`)} alt="thumbnail" />
           <a href={content} target="_blank" rel="noopener noreferrer">{content}</a>
         </div>
       );
