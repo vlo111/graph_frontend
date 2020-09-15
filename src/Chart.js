@@ -526,7 +526,10 @@ class Chart {
     });
     this.event.on('node.click', async (d) => {
       await Utils.sleep(10);
-      if (this.activeButton !== 'create' || cancel) {
+      if (this.activeButton !== 'create') {
+        return;
+      }
+      if (cancel) {
         this.newLink.attr('data-source', '')
           .attr('x1', 0)
           .attr('y1', 0)

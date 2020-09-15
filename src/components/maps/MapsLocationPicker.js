@@ -8,6 +8,7 @@ import MapsSearch from './MapsSearch';
 import markerImg from '../../assets/images/icons/marker.svg';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import Button from '../form/Button';
+import Utils from "../../helpers/Utils";
 
 class MapsLocationPicker extends Component {
   static propTypes = {
@@ -35,7 +36,24 @@ class MapsLocationPicker extends Component {
     super(props);
     this.state = {
       selected: {},
+      initialCenter: null,
     };
+  }
+
+  componentDidMount() {
+    this.setCurrentLocation();
+  }
+
+
+  setCurrentLocation = async () => {
+    try {
+      const { coords } = await Utils.getCurrentPosition();
+      const initialCenter = { lat: coords.latitude, lng: coords.longitude };
+
+      this.setState({ initialCenter });
+    } catch (e) {
+      this.setState({ initialCenter: undefined });
+    }
   }
 
   handleSearchSelect = (selected) => {
@@ -55,9 +73,10 @@ class MapsLocationPicker extends Component {
   }
 
   render() {
-    const { selected } = this.state;
+    const { selected, initialCenter } = this.state;
     const { google, value } = this.props;
     this.initPosition(value);
+    console.log(initialCenter)
     return (
       <Modal
         isOpen
@@ -65,30 +84,35 @@ class MapsLocationPicker extends Component {
         overlayClassName="ghModalOverlay ghMapsModalOverlay"
         onRequestClose={this.props.onClose}
       >
-        <Map
-          google={google}
-          zoom={17}
-          streetViewControl={false}
-          fullscreenControl={false}
-          onClick={this.handleClick}
-          center={selected.autoCenter ? selected.location : undefined}
-        >
-          {!_.isEmpty(selected) ? (
-            <Marker
-              title={selected.name}
-              name={selected.name}
-              position={selected.location}
-              draggable
-              icon={{
-                url: markerImg,
-                anchor: new google.maps.Point(25, 35),
-                scaledSize: new google.maps.Size(50, 50),
-              }}
-            />
-          ) : null}
-          <MapsSearch google={google} onSelect={this.handleSearchSelect} />
-        </Map>
-        <Button className="selectLocation" onClick={this.handleSelect}>Select</Button>
+        {!_.isNull(initialCenter) ? (
+          <>
+            <Map
+              google={google}
+              zoom={17}
+              streetViewControl={false}
+              fullscreenControl={false}
+              onClick={this.handleClick}
+              center={selected.autoCenter ? selected.location : undefined}
+              initialCenter={initialCenter}
+            >
+              {!_.isEmpty(selected) ? (
+                <Marker
+                  title={selected.name}
+                  name={selected.name}
+                  position={selected.location}
+                  draggable
+                  icon={{
+                    url: markerImg,
+                    anchor: new google.maps.Point(25, 35),
+                    scaledSize: new google.maps.Size(50, 50),
+                  }}
+                />
+              ) : null}
+              <MapsSearch google={google} onSelect={this.handleSearchSelect} />
+            </Map>
+            <Button className="selectLocation" onClick={this.handleSelect}>Select</Button>
+          </>
+        ) : null}
       </Modal>
     );
   }

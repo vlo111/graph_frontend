@@ -27,7 +27,7 @@ class MapsModal extends Component {
       // map: null,
       markerDrag: false,
       selected: null,
-      initialCenter: undefined,
+      initialCenter: null,
       virtualMarkerPos: [],
     };
     this.events = {};
@@ -55,7 +55,7 @@ class MapsModal extends Component {
 
       this.setState({ initialCenter });
     } catch (e) {
-      this.setState({ initialCenter: {} });
+      this.setState({ initialCenter: undefined });
     }
   }
 
@@ -169,7 +169,7 @@ class MapsModal extends Component {
           overlayClassName={`ghModalOverlay ghMapsModalOverlay ${markerDrag ? 'hidden' : ''}`}
           onRequestClose={this.props.onClose}
         >
-          {initialCenter ? (
+          {!_.isNull(initialCenter) ? (
             <Map
               google={google}
               zoom={17}
@@ -177,7 +177,7 @@ class MapsModal extends Component {
               fullscreenControl={false}
               onClick={this.handleClick}
               center={selected?.autoCenter ? selected.location : undefined}
-              initialCenter={!_.isEmpty(initialCenter) ? initialCenter : undefined}
+              initialCenter={initialCenter}
               onReady={this.handleMapReady}
             >
               {selected ? (
