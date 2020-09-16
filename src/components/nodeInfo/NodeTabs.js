@@ -57,6 +57,7 @@ class NodeTabs extends Component {
     const { node, customFields } = this.props;
     const customField = CustomFields.get(customFields, node.type, node.name);
     const content = customField[activeTab];
+    this.setFirstTab(customField);
     return (
       <div className="nodeTabs">
         <div className="tabs">

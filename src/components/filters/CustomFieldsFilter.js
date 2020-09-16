@@ -15,8 +15,11 @@ class NodeTypesFilter extends Component {
     nodes: PropTypes.array.isRequired,
   }
 
-  getNodeTypes = memoizeOne((nodes) => {
-    const types = _.chain(nodes)
+  getNodeTypes = memoizeOne((customFields) => {
+    console.log(customFields)
+
+    return [];
+    const types = _.chain(customFields)
       .groupBy('type')
       .map((d, key) => ({
         length: d.length,
@@ -28,19 +31,10 @@ class NodeTypesFilter extends Component {
     return types;
   }, _.isEqual);
 
-  getCustomFields = memoizeOne((customFields) => {
-    const keys = [];
-    _.forEach(customFields, (d) => {
-      keys.push(...Object.keys(d));
-    });
-    return _.uniq(keys);
-  }, _.isEqual);
-
   constructor(props) {
     super(props);
     this.state = {
       showMore: false,
-      openList: [],
     };
   }
 
@@ -62,82 +56,35 @@ class NodeTypesFilter extends Component {
     this.props.setFilter('nodeTypes', filters.nodeTypes);
   }
 
-  handleFilterChange = (value) => {
-    const { filters } = this.props;
-    const i = filters.nodeCustomFields.indexOf(value);
-    if (i > -1) {
-      filters.nodeCustomFields.splice(i, 1);
-    } else {
-      filters.nodeCustomFields.push(value);
-    }
-
-    this.props.setFilter('nodeCustomFields', filters.nodeCustomFields);
-  }
-
   toggleMore = () => {
     const { showMore } = this.state;
     this.setState({ showMore: !showMore });
   }
 
-  toggleDropdown = (key) => {
-    const { openList } = this.state;
-    const i = openList.indexOf(key);
-    if (i > -1) {
-      openList.splice(i, 1);
-    } else {
-      openList.push(key);
-    }
-    this.setState({ openList });
-  }
-
   render() {
-    const { showMore, openList } = this.state;
+    const { showMore } = this.state;
     const { nodes, filters, customFields } = this.props;
-    const typesFull = this.getNodeTypes(nodes);
-    const types = showMore ? typesFull : _.chunk(typesFull, 5)[0] || [];
-    if (typesFull.length < 2) {
-      return null;
-    }
-    console.log(filters.nodeCustomFields);
+    const fieldsFull = this.getNodeTypes(customFields);
+    const fields = [];
     return (
       <div className="nodesTypesFilter graphFilter">
-        <h4 className="title">Node Types</h4>
+        <h4 className="title">Node Custom Fields</h4>
         <ul className="list">
-          {types.map((item) => (
+          {fields.map((item) => (
             <li key={item.type} className="item" style={{ color: ChartUtils.nodeColor()(item) }}>
               <Checkbox
                 label={item.type}
                 checked={_.isEmpty(filters.nodeTypes) || filters.nodeTypes.includes(item.type)}
                 onChange={() => this.handleChange(item.type)}
               >
-                {!_.isEmpty(customFields[item.type]) ? (
-                  <Button
-                    className="dropdownArrow"
-                    icon="fa-chevron-down"
-                    onClick={() => this.toggleDropdown(item.type)}
-                  />
-                ) : null}
                 <span className="badge">
                   {item.length}
                 </span>
               </Checkbox>
-              {openList.includes(item.type) && customFields[item.type] ? (
-                <ul className="list subList">
-                  {_.map(customFields[item.type], (val, key) => (
-                    <li key={key} className="item">
-                      <Checkbox
-                        label={key}
-                        checked={filters.nodeCustomFields.includes(key)}
-                        onChange={() => this.handleFilterChange(key)}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
             </li>
           ))}
         </ul>
-        {typesFull.length > types.length || showMore ? (
+        {fieldsFull.length > fields.length || showMore ? (
           <Button onClick={this.toggleMore}>
             {showMore ? '- Less' : '+ More'}
           </Button>

@@ -50,6 +50,11 @@ class ChartUtils {
         d.hidden = true;
         return d;
       }
+
+      if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(data, ['customFields', d.type, k, 'values', d.name]))) {
+        d.hidden = true;
+        return d;
+      }
       if (!_.isEmpty(params.nodeKeywords) && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
         d.hidden = true;
         if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keyword)) {

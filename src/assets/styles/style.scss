@@ -157,9 +157,11 @@ p {
     }
   }
 }
-.contentEditor{
+
+.contentEditor {
   width: 320px;
 }
+
 .ghFormField {
   width: 320px;
   display: flex;
@@ -2086,6 +2088,33 @@ p {
     }
   }
 
+  .subList {
+    padding-left: 25px;
+  }
+
+  .ghCheckbox {
+    width: 100%;
+
+    label {
+      order: 1;
+    }
+
+    .badge {
+      order: 2;
+    }
+
+    .dropdownArrow {
+      padding: 0;
+      background-color: transparent;
+      margin: 0 0 3px 10px;
+      box-shadow: transparent;
+
+      .icon {
+        position: static;
+      }
+    }
+  }
+
   &.linkTypesFilter {
     label {
       text-overflow: ellipsis;
@@ -2789,10 +2818,12 @@ body .gh__menu {
       margin: 0;
     }
   }
-  .jodit-toolbar__box{
+
+  .jodit-toolbar__box {
     display: none;
   }
-  .jodit-status-bar{
+
+  .jodit-status-bar {
     display: none;
   }
 }

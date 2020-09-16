@@ -4,7 +4,7 @@ import EventEmitter from 'events';
 import { toast } from 'react-toastify';
 import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
-import Utils from "./helpers/Utils";
+import Utils from './helpers/Utils';
 
 class Chart {
   static event = new EventEmitter();
@@ -51,6 +51,7 @@ class Chart {
   }
 
   static normalizeData(data) {
+    const { customFields } = data;
     const nodes = data.nodes.map((d) => Object.create(d));
 
     _.forEach(data.links, (link, linkIndex) => {
@@ -92,7 +93,7 @@ class Chart {
 
     const links = Object.values(data.links).map((d) => Object.create(d));
 
-    return { links, nodes };
+    return { links, nodes, customFields };
   }
 
   static resizeSvg = () => {
@@ -119,9 +120,7 @@ class Chart {
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('charge', d3.forceManyBody().strength((d, i) => {
-          return i === 0 ? -2000 : -1000;
-        }).distanceMin(200).distanceMax(1000));
+        .force('charge', d3.forceManyBody().strength((d, i) => (i === 0 ? -2000 : -1000)).distanceMin(200).distanceMax(1000));
       // .force('y', d3.forceY(0.01))
       // .force('x', d3.forceX(0.01));
     }
@@ -147,6 +146,8 @@ class Chart {
       this._dataLinks = null;
       data.nodes = data.nodes || Chart.getNodes();
       data.links = data.links || _.cloneDeep(Chart.getLinks());
+      data.customFields = data.customFields || this.customFields || {};
+      this.customFields = data.customFields;
 
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         if (!_.isEmpty(data?.nodes) || !_.isEmpty(data?.links)) {

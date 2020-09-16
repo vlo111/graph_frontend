@@ -34,7 +34,7 @@ class NodeTabsContent extends Component {
   render() {
     const { contentType } = this.state;
     const { content, name } = this.props;
-    const html = String(content?.content || content);
+    const html = String(content?.content || content || '');
     this.getContentType(html);
     const { result: text } = stripHtml(html);
 
