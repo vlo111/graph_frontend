@@ -9,6 +9,7 @@ import { addNodeCustomFieldKey, removeNodeCustomFieldKey } from '../../store/act
 import CustomFields from '../../helpers/CustomFields';
 import Button from '../form/Button';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Editor from "../form/Editor";
 
 class AddNodeCustomFields extends Component {
   static propTypes = {
@@ -78,11 +79,12 @@ class AddNodeCustomFields extends Component {
       <div>
         {customFieldKey.map((key) => (
           <div key={key} className="customFieldRow">
-            <Input
+            <Editor
               label={key}
               value={data[key] || ''}
-              limit={250}
-              onChangeText={(v) => this.handleChange(key, v)}
+              buttons={[]}
+              minHeight={30}
+              onChange={(v) => this.handleChange(key, v)}
             />
             <Button
               className="close"
@@ -127,7 +129,6 @@ const mapDispatchToProps = {
   addNodeCustomFieldKey,
   removeNodeCustomFieldKey,
 };
-
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,

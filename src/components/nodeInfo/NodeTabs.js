@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import memoizeOne from 'memoize-one';
+import Tooltip from 'rc-tooltip';
+import { Link } from 'react-router-dom';
+import Modal from 'react-modal';
 import Button from '../form/Button';
 import NodeTabsContent from './NodeTabsContent';
 import CustomFields from '../../helpers/CustomFields';
-import memoizeOne from "memoize-one";
-import Tooltip from "rc-tooltip";
-import { Link } from "react-router-dom";
+import Editor from '../form/Editor';
+import Input from '../form/Input';
+import NodeTabsFormModal from './NodeTabsFormModal';
+import ContextMenu from '../ContextMenu';
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -19,6 +24,7 @@ class NodeTabs extends Component {
     super(props);
     this.state = {
       activeTab: '',
+      formModalOpen: null,
     };
   }
 
@@ -26,16 +32,31 @@ class NodeTabs extends Component {
     this.setState({ activeTab: Object.keys(customField)[0] });
   }, _.isEqual);
 
+  componentDidMount() {
+    ContextMenu.event.on('node.full_info', this.openFormModal);
+  }
+
+  componentWillUnmount() {
+    ContextMenu.event.removeListener('node.full_info', this.openFormModal);
+  }
+
   setActiveTab = (activeTab) => {
     this.setState({ activeTab });
   }
 
+  openFormModal = (key) => {
+    this.setState({ formModalOpen: key });
+  }
+
+  closeFormModal = () => {
+    this.setState({ formModalOpen: null });
+  }
+
   render() {
-    const { activeTab } = this.state;
-    const { node: { type, name }, customFields } = this.props;
-    const customField = CustomFields.get(customFields, type, name);
+    const { activeTab, formModalOpen } = this.state;
+    const { node, customFields } = this.props;
+    const customField = CustomFields.get(customFields, node.type, node.name);
     const content = customField[activeTab];
-    this.setFirstTab(customField);
     return (
       <div className="nodeTabs">
         <div className="tabs">
@@ -45,14 +66,18 @@ class NodeTabs extends Component {
               key={key}
               onClick={() => this.setActiveTab(key)}
             >
-              {key}
+              <p>{key}</p>
+              <sub>{_.get(customFields, [node.type, key, 'subtitle'], '')}</sub>
             </Button>
           ))}
           <Tooltip overlay="Add New Tab" placement="top">
-            <Button icon="fa-plus" onClick={this.toggleNewField} />
+            <Button icon="fa-plus" onClick={() => this.openFormModal('')} />
           </Tooltip>
         </div>
-        <NodeTabsContent content={content} />
+        {!_.isNull(formModalOpen) ? (
+          <NodeTabsFormModal node={node} customField={customField} onClose={this.closeFormModal} />
+        ) : null}
+        <NodeTabsContent name={activeTab} content={content} />
       </div>
     );
   }

@@ -75,8 +75,8 @@ export default function reducer(state = initialState, action) {
     }
     case ADD_NODE_CUSTOM_FIELD_KEY: {
       const singleGraph = { ...state.singleGraph };
-      const { type, key } = action.payload;
-      singleGraph.customFields = CustomFields.setKey(singleGraph.customFields, type, key);
+      const { type, key, subtitle } = action.payload;
+      singleGraph.customFields = CustomFields.setKey(singleGraph.customFields, type, key, subtitle);
       return {
         ...state,
         singleGraph,

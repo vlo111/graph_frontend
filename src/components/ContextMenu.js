@@ -45,8 +45,10 @@ class ContextMenu extends Component {
       element = 'link';
     } else if (ev.target.tagName === 'svg') {
       element = 'chart';
+    } else if (ev.target.closest('.contentWrapper')) {
+      element = 'nodeFullInfo';
+      params = { name: ev.target.closest('.contentWrapper').getAttribute('data-name') };
     }
-
     this.setState({
       x, y, show: element, params,
     });
@@ -62,6 +64,19 @@ class ContextMenu extends Component {
     this.constructor.event.emit(type, { ...params, ...additionalParams });
   }
 
+  nodeFullInfoContext = () => {
+    const { x, y, params } = this.state;
+    return (
+      <div className="contextmenuOverlay contextmenuOverlayFullInfo" onClick={this.closeMenu}>
+        <div className="contextmenu" style={{ left: x, top: y }}>
+          <Button icon="fa-pencil-square-o" onClick={() => this.handleClick('node.full_info', params.name)}>
+            Edit
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const {
       x, y, show, params,
@@ -69,8 +84,11 @@ class ContextMenu extends Component {
     if (!show) {
       return null;
     }
+    if (show === 'nodeFullInfo') {
+      return this.nodeFullInfoContext();
+    }
     const undoCount = Chart.undoManager.undoCount();
-    const showInMap = Chart.getNodes().some(d => d.location);
+    const showInMap = Chart.getNodes().some((d) => d.location);
     return (
       <div className="contextmenuOverlay" onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>

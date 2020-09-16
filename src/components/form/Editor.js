@@ -15,6 +15,7 @@ class Editor extends Component {
     label: PropTypes.string,
     placeholder: PropTypes.string,
     error: PropTypes.string,
+    buttons: PropTypes.array,
   }
 
   static defaultProps = {
@@ -23,6 +24,7 @@ class Editor extends Component {
     label: '',
     placeholder: '',
     error: '',
+    buttons: ['bold', 'italic', 'link', 'file'],
   }
 
   constructor(props) {
@@ -35,13 +37,12 @@ class Editor extends Component {
 
   componentDidMount() {
     const {
-      value, ref, className, onChange, label, error, ...options
+      value, ref, className, onChange, label, error, buttons, ...options
     } = this.props;
     if (this.editor) {
       this.editor.destruct();
     }
-    const buttons = ['bold', 'italic', 'link', 'file'];
-    options.buttons = options.buttons || buttons;
+    options.buttons = buttons;
 
     options.buttonsMD = options.buttonsMD || buttons;
 

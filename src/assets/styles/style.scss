@@ -157,7 +157,9 @@ p {
     }
   }
 }
-
+.contentEditor{
+  width: 320px;
+}
 .ghFormField {
   width: 320px;
   display: flex;
@@ -1256,7 +1258,11 @@ p {
     height: calc(100% - 32px);
     display: flex;
     flex-direction: column;
+    font-size: 15px;
 
+    p {
+      font-size: 15px;
+    }
   }
 
   .header {
@@ -2782,6 +2788,12 @@ body .gh__menu {
     span {
       margin: 0;
     }
+  }
+  .jodit-toolbar__box{
+    display: none;
+  }
+  .jodit-status-bar{
+    display: none;
   }
 }
 

@@ -63,10 +63,10 @@ export function setNodeCustomField(type, name, customField) {
 
 export const ADD_NODE_CUSTOM_FIELD_KEY = 'ADD_NODE_CUSTOM_FIELD_KEY';
 
-export function addNodeCustomFieldKey(type, key) {
+export function addNodeCustomFieldKey(type, key, subtitle) {
   return {
     type: ADD_NODE_CUSTOM_FIELD_KEY,
-    payload: { type, key },
+    payload: { type, key, subtitle },
   };
 }
 

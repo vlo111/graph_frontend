@@ -6,8 +6,8 @@ import TextEllipsis from '../TextEllipsis';
 import { toggleNodeFullInfo } from '../../store/actions/app';
 import Outside from '../Outside';
 import NodeTabs from './NodeTabs';
-import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
-import Button from "../form/Button";
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Button from '../form/Button';
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -29,9 +29,14 @@ class NodeFullInfo extends Component {
       return null;
     }
     return (
-      <Outside onClick={this.closeNodeInfo}>
+      <Outside onClick={this.closeNodeInfo} exclude=".nodeTabsFormModal,.contextmenuOverlayFullInfo">
         <div id="nodeFullInfo">
-          <Button className="closeInfo" color="transparent" icon={<CloseSvg width={15} />} onClick={this.closeNodeInfo} />
+          <Button
+            className="closeInfo"
+            color="transparent"
+            icon={<CloseSvg width={15} />}
+            onClick={this.closeNodeInfo}
+          />
           <div className="mainContent">
             <h2 className="name">{node.name}</h2>
             <h3 className="type">{node.type}</h3>
@@ -39,9 +44,9 @@ class NodeFullInfo extends Component {
               {node.description}
             </TextEllipsis>
             <NodeTabs node={node} />
-            <div className="collaborate">
-              <h4 className="collaborateTitle">Collaborate (24)</h4>
-            </div>
+            {/* <div className="collaborate"> */}
+            {/*  <h4 className="collaborateTitle">Collaborate (24)</h4> */}
+            {/* </div> */}
           </div>
         </div>
       </Outside>

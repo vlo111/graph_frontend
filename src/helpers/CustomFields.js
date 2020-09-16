@@ -4,18 +4,22 @@ class CustomFields {
   static setValue(customFields = {}, type, name, customField) {
     let i = 0;
     _.forEach(customField, (value, key) => {
-      _.set(customFields, [type, key, name], value);
-      if (customFields[type][key]._order === undefined) {
-        _.set(customFields, [type, key, '_order'], i);
+      _.set(customFields, [type, key, 'values', name], value);
+      if (customFields[type][key].order === undefined) {
+        _.set(customFields, [type, key, 'order'], i);
       }
       i += 1;
     });
     return { ...customFields };
   }
 
-  static setKey(customFields = {}, type, key) {
+  static setKey(customFields = {}, type, key, subtitle = '') {
     if (!_.get(customFields, [type, key])) {
-      _.set(customFields, [type, key], { _order: Object.values(customFields[type] || {}).length });
+      _.set(customFields, [type, key], {
+        order: Object.values(customFields[type] || {}).length,
+        values: {},
+        subtitle,
+      });
     }
     return { ...customFields };
   }
@@ -40,11 +44,9 @@ class CustomFields {
 
   static get(customFields, type, name) {
     const customFieldType = _.get(customFields, type, {});
-
     const data = {};
-
     _.forEach(customFieldType, (d, key) => {
-      data[key] = d[name] || undefined;
+      data[key] = d.values[name];
     });
 
     return data;
@@ -57,7 +59,7 @@ class CustomFields {
     const customFieldType = _.chain(customFields[type])
       .map((val, key) => ({
         key,
-        order: val._order,
+        order: val.order,
       }))
       .orderBy('order')
       .map((d) => d.key)
