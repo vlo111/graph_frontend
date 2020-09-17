@@ -9,6 +9,7 @@ import NodeTabs from './NodeTabs';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
 import bgImage from '../../assets/images/Colorful-Plait-Background.jpg'
+import HeaderMini from "../HeaderMini";
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -32,12 +33,7 @@ class NodeFullInfo extends Component {
     return (
       <Outside onClick={this.closeNodeInfo} exclude=".nodeTabsFormModalOverlay,.contextmenuOverlayFullInfo,.jodit">
         <div id="nodeFullInfo">
-          <Button
-            className="closeInfo"
-            color="transparent"
-            icon={<CloseSvg width={15} />}
-            onClick={this.closeNodeInfo}
-          />
+          <HeaderMini />
           <div className="mainContent">
             <div className="headerBanner">
               <img src={bgImage} alt="background" />

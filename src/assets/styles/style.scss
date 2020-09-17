@@ -899,6 +899,36 @@ p {
   align-items: center;
 }
 
+#headerMini {
+  display: flex;
+  padding: 4% 3%;
+  align-items: center;
+  height: 94px;
+
+  .links {
+    display: flex;
+    margin: 0 13px;
+    li{
+      margin: 0 10%;
+      a{
+        color: $color-dark;
+      }
+    }
+  }
+
+  .searchInputWrapper {
+    max-width: 33%;
+  }
+}
+
+.searchInputWrapper {
+  width: 249px;
+
+  .graphSearch {
+    width: 100%;
+  }
+}
+
 .signOut {
   margin-left: auto;
 }
@@ -2414,6 +2444,42 @@ p {
       }
     }
   }
+
+  .down {
+    position: absolute;
+    right: 15px;
+    width: 17px;
+    height: 17px;
+    background-color: #F2F5F7;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      color: $color-gray;
+      font-size: 11px;
+    }
+  }
+
+  &.mini {
+    position: relative;
+    padding: 0;
+    margin-left: auto;
+    .dropdown {
+      position: absolute;
+      min-width: 180px;
+      right: 0;
+      left: auto;
+
+      ul {
+        box-shadow: 0 5px 12px #E2E7EB29;
+        border: 1px solid #E2E7EB;
+        text-align: right;
+        padding: 5px 10px;
+      }
+    }
+  }
 }
 
 .socialLogin {
@@ -2810,16 +2876,7 @@ body .gh__menu {
   overflow-x: hidden;
   overflow-y: auto;
 
-  .closeInfo {
-    position: absolute;
-    right: 25px;
-    padding: 15px;
-    background-color: transparent;
-  }
-
   .mainContent {
-    padding: 65px 0;
-
     .name {
       font-size: 26px;
     }

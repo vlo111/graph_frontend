@@ -9,6 +9,7 @@ import { addNodeCustomFieldKey, setNodeCustomField } from "../../store/actions/g
 import Button from "../form/Button";
 import Validate from "../../helpers/Validate";
 import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
+import memoizeOne from "memoize-one";
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -18,6 +19,18 @@ class NodeTabsFormModal extends Component {
     customField: PropTypes.object.isRequired,
     addNodeCustomFieldKey: PropTypes.func.isRequired,
   }
+
+  initValues = memoizeOne((customFields, node, fieldName) => {
+    const customField = customFields[node.type][fieldName];
+    if (customField) {
+      const tabData = {
+        name: fieldName,
+        content: customField.values[node.name],
+        subtitle: customField.subtitle,
+      };
+      this.setState({ tabData });
+    }
+  }, _.isEqual)
 
   constructor(props) {
     super(props);
@@ -39,16 +52,21 @@ class NodeTabsFormModal extends Component {
   }
 
   save = async () => {
-    const { node, customField, customFields } = this.props;
+    const { node, customField, customFields, fieldName } = this.props;
+    const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
     const { name, subtitle, content } = tabData;
 
-    [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node.type, customFields);
+    if (!isUpdate) {
+      [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node.type, customFields);
+    }
     [errors.content, tabData.content] = Validate.customFieldContent(tabData.content);
     [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
 
     if (!Validate.hasError(errors)) {
-      await this.props.addNodeCustomFieldKey(node.type, name, subtitle);
+      if (!isUpdate) {
+        await this.props.addNodeCustomFieldKey(node.type, name, subtitle);
+      }
       customField[name] = content;
       this.props.setNodeCustomField(node.type, node.name, customField);
       this.props.onClose();
@@ -58,6 +76,8 @@ class NodeTabsFormModal extends Component {
 
   render() {
     const { tabData, errors } = this.state;
+    const { node, customFields, fieldName } = this.props;
+    this.initValues(customFields, node, fieldName);
     return (
       <Modal
         isOpen
@@ -72,6 +92,7 @@ class NodeTabsFormModal extends Component {
             value={tabData.name}
             error={errors.name}
             label="Name"
+            disabled={!!fieldName}
             onChangeText={(v) => this.handleChange('name', v)}
           />
           <Input

@@ -3,11 +3,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import Outside from '../Outside';
+import Icon from "../form/Icon";
 
 class AccountDropDown extends Component {
   static propTypes = {
     myAccount: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
+    mini: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    mini: false
   }
 
   constructor(props) {
@@ -24,13 +30,17 @@ class AccountDropDown extends Component {
 
   render() {
     const { showDropDown } = this.state;
-    const { myAccount: { firstName, lastName, avatar }, match: { params: { graphId = '' } } } = this.props;
+    const { mini, myAccount: { firstName, lastName, avatar }, match: { params: { graphId = '' } } } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
     return (
-      <div id="accountDropDown">
+      <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
           <img src={avatar} className="avatar" alt={name} />
-          <span className="name">{name}</span>
+          {mini ? (
+            <Icon value="fa-chevron-down" className="down" />
+          ) : (
+            <span className="name">{name}</span>
+          )}
         </div>
         {showDropDown ? (
           <Outside onClick={this.toggleDropDown} exclude="#accountDropDown">

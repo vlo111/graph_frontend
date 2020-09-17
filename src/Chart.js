@@ -154,7 +154,7 @@ class Chart {
           this.undoManager.push(data);
         }
         if (!_.isEmpty(this.data?.nodes) || !_.isEmpty(this.data?.links)) {
-          if (!_.isEqual(data, this.data)) {
+          if (!_.isEqual(data.nodes, this.data.nodes) || !_.isEqual(data.links, this.data.links)) {
             this.event.emit('dataChange', this);
           }
         }

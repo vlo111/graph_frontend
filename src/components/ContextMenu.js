@@ -47,7 +47,9 @@ class ContextMenu extends Component {
       element = 'chart';
     } else if (ev.target.closest('.contentWrapper')) {
       element = 'nodeFullInfo';
-      params = { name: ev.target.closest('.contentWrapper').getAttribute('data-name') };
+      const el = ev.target.closest('.contentWrapper');
+      const fieldName = el.getAttribute('data-field-name');
+      params = { fieldName };
     }
     this.setState({
       x, y, show: element, params,
@@ -69,8 +71,11 @@ class ContextMenu extends Component {
     return (
       <div className="contextmenuOverlay contextmenuOverlayFullInfo" onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
-          <Button icon="fa-pencil-square-o" onClick={() => this.handleClick('node.full_info', params.name)}>
+          <Button icon="fa-pencil-square-o" onClick={() => this.handleClick('node.fields-edit', params.name)}>
             Edit
+          </Button>
+          <Button icon="fa-trash" onClick={() => this.handleClick('node.fields-delete', params.name)}>
+            Delete
           </Button>
         </div>
       </div>

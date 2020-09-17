@@ -14,7 +14,6 @@ import Utils from '../../helpers/Utils';
 
 class SearchModal extends Component {
   static propTypes = {
-    setActiveButton: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -22,10 +21,6 @@ class SearchModal extends Component {
     this.state = {
       nodes: [],
     };
-  }
-
-  closeModal = () => {
-    this.props.setActiveButton('create');
   }
 
   handleChange = (search = '') => {
@@ -44,22 +39,17 @@ class SearchModal extends Component {
 
   findNode = (node) => {
     this.findNodeInDom(node);
-    this.closeModal();
   }
 
   render() {
     const { nodes, search } = this.state;
     return (
-      <Modal
-        isOpen
-        className="ghModal ghModalSearch"
-        overlayClassName="ghModalOverlay"
-        onRequestClose={this.closeModal}
-      >
+      <div className="searchInputWrapper">
         <Input
-          label="Search"
+          placeholder="Search ..."
           autoComplete="off"
           value={search}
+          icon="fa-search"
           containerClassName="graphSearch"
           onChangeText={this.handleChange}
         />
@@ -81,30 +71,25 @@ class SearchModal extends Component {
                       dangerouslySetInnerHTML={{ __html: this.formatHtml(d.type) }}
                     />
                   </span>
-
                   {!d.name.toLowerCase().includes(search) && !d.type.toLowerCase().includes(search) ? (
                     <span
                       className="keywords"
                       dangerouslySetInnerHTML={{ __html: d.keywords.map((k) => this.formatHtml(k)).join(', ') }}
                     />
                   ) : null}
-
                 </div>
-
               </div>
             </li>
           ))}
         </ul>
-      </Modal>
+      </div>
     );
   }
 }
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = {
-  setActiveButton,
-};
+const mapDispatchToProps = {};
 
 const Container = connect(
   mapStateToProps,

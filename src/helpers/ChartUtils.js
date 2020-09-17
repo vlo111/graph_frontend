@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import queryString from 'query-string';
 import randomColor from 'randomcolor';
 import memoizeOne from 'memoize-one';
+import stripHtml from 'string-strip-html';
 import Chart from '../Chart';
 import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
@@ -261,6 +262,42 @@ class ChartUtils {
     const radians = Math.atan2(dy, dx);
     const degrees = (radians * 180 / Math.PI) + 180;
     return degrees > 90 && degrees < 270;
+  }
+
+  static nodeSearch(search) {
+    const s = search.trim().toLowerCase();
+    const nodes = Chart.getNodes().map((d) => {
+      d.priority = undefined;
+      if (d.name.toLowerCase() === s) {
+        d.priority = 1;
+      } else if (d.type.toLowerCase() === s) {
+        d.priority = 2;
+      } else if (d.name.toLowerCase().startsWith(s)) {
+        d.priority = 3;
+      } else if (d.type.toLowerCase().startsWith(s)) {
+        d.priority = 4;
+      } else if (d.name.toLowerCase().includes(s)) {
+        d.priority = 5;
+      } else if (d.type.toLowerCase().includes(s)) {
+        d.priority = 6;
+      } else if (d.keywords.some((k) => k.toLowerCase().includes(s))) {
+        d.priority = 7;
+      } else if (stripHtml(d.description).result.toLowerCase().includes(s)) {
+        d.priority = 8;
+      }
+      return d;
+    }).filter((d) => d.priority);
+    return _.orderBy(nodes, 'priority').slice(0, 15);
+  }
+
+  static findNodeInDom(node) {
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(0, 0).scale(2));
+    const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
+    const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
+    const left = (x * -1) + (window.innerWidth / 2) - nodeWidth;
+    const top = (y * -1) + (window.innerHeight / 2) - nodeWidth;
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(2));
+    // Chart.event.emit('node.mouseenter', node);
   }
 }
 
