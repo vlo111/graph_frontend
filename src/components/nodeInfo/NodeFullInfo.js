@@ -8,6 +8,7 @@ import Outside from '../Outside';
 import NodeTabs from './NodeTabs';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
+import bgImage from '../../assets/images/Colorful-Plait-Background.jpg'
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -29,7 +30,7 @@ class NodeFullInfo extends Component {
       return null;
     }
     return (
-      <Outside onClick={this.closeNodeInfo} exclude=".nodeTabsFormModal,.contextmenuOverlayFullInfo,.jodit">
+      <Outside onClick={this.closeNodeInfo} exclude=".nodeTabsFormModalOverlay,.contextmenuOverlayFullInfo,.jodit">
         <div id="nodeFullInfo">
           <Button
             className="closeInfo"
@@ -38,11 +39,13 @@ class NodeFullInfo extends Component {
             onClick={this.closeNodeInfo}
           />
           <div className="mainContent">
-            <h2 className="name">{node.name}</h2>
-            <h3 className="type">{node.type}</h3>
-            <TextEllipsis maxLength={140} className="description" more="EXPAND" less="SHOW LESS">
-              {node.description}
-            </TextEllipsis>
+            <div className="headerBanner">
+              <img src={bgImage} alt="background" />
+              <div className="textWrapper">
+                <h2 className="name">{node.name}</h2>
+                <h3 className="type">{node.type}</h3>
+              </div>
+            </div>
             <NodeTabs node={node} />
             {/* <div className="collaborate"> */}
             {/*  <h4 className="collaborateTitle">Collaborate (24)</h4> */}

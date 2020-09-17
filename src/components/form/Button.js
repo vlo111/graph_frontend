@@ -11,7 +11,7 @@ class Button extends Component {
     loading: PropTypes.bool,
     type: PropTypes.oneOf(['button', 'submit']),
     onClick: PropTypes.func,
-    color: PropTypes.oneOf(['main', 'blue', 'orange', 'transparent', 'light', 'main']),
+    color: PropTypes.oneOf(['main', 'blue', 'accent', 'orange', 'transparent', 'light']),
   }
 
   static defaultProps = {

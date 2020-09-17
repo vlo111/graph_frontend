@@ -577,6 +577,14 @@ p {
     }
   }
 
+  &.accent {
+    background-color: $color-accent;
+
+    &:hover {
+      box-shadow: 0 3px 6px rgba($color-accent, 0.4);
+    }
+  }
+
   &.light {
     background-color: $color-light-blue;
     color: $color-dark;
@@ -1352,6 +1360,7 @@ p {
     display: flex;
     flex-direction: column;
     font-size: 15px;
+    position: relative;
 
     p {
       font-size: 15px;
@@ -2798,6 +2807,8 @@ body .gh__menu {
   box-shadow: 0px 6px 20px #0D090526;
   right: 0;
   top: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   .closeInfo {
     position: absolute;
@@ -2807,7 +2818,7 @@ body .gh__menu {
   }
 
   .mainContent {
-    padding: 65px 14.6%;
+    padding: 65px 0;
 
     .name {
       font-size: 26px;
@@ -2817,6 +2828,31 @@ body .gh__menu {
       font-weight: 600;
       font-size: 16px;
     }
+
+    .headerBanner {
+      position: relative;
+      height: 9.8vw;
+      min-height: 150px;
+      overflow: hidden;
+
+      img {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        z-index: -1;
+        object-fit: cover;
+        top: 0;
+        left: 0;
+      }
+
+      .textWrapper {
+        position: absolute;
+        bottom: 0;
+        padding: 5% 6%;
+        color: #ffffff;
+      }
+    }
+
 
     .description {
       margin-top: 19px;
@@ -2847,6 +2883,8 @@ body .gh__menu {
 }
 
 .nodeTabs {
+  padding: 19.5px 4.5%;
+
   .previewWrapper {
     position: relative;
     overflow: hidden;
@@ -2876,8 +2914,32 @@ body .gh__menu {
     }
   }
 
-  .tabs {
-    margin-bottom: 10px;
+  .contentWrapper {
+    box-shadow: 0 5px 12px #E2E7EB29;
+    border: 1px solid #E2E7EB;
+    border-radius: 13px 24px 24px 24px;
+    padding: 39px 4% 31px;
+    height: 380px;
+    position: relative;
+    z-index: 1;
+    background-color: $color-white;
+
+    .content {
+      overflow-x: hidden;
+      overflow-y: auto;
+      max-height: 100%;
+      padding: 0 10px;
+
+      &::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $color-light-gray;
+        border-radius: 3.5px;
+      }
+    }
   }
 }
 
@@ -2922,7 +2984,7 @@ body .gh__menu {
 
 .tabs {
   display: flex;
-  flex-wrap: wrap;
+  padding: 0 11px;
 
   .empty {
     min-width: 1px;
@@ -2931,23 +2993,54 @@ body .gh__menu {
   }
 
   button {
-    margin: 2px 0;
+    margin: 0 11px;
     background-color: transparent;
-    padding: 5px 10px;
-    color: $color-dark;
-    border-left: 1px solid $color-dark;
-    border-radius: 0;
+    padding: 12px 32px;
+    color: $color-dark-blue;
     scroll-snap-align: start;
     white-space: nowrap;
-    box-shadow: none !important;
-    min-width: 60px;
-
-    &:first-child {
-      border-left: none;
-    }
+    border: 1px solid $color-light-gray;
+    box-shadow: 0px 5px 12px #0D090526;
+    border-bottom: 0;
+    font-weight: 600;
+    width: max-content;
+    min-width: max-content;
+    border-radius: 24px 24px 0 0;
 
     &.active {
-      background-color: #dddddd;
+      color: $color-accent;
+      position: relative;
+      z-index: 2;
+
+      &:after {
+        content: '';
+        position: absolute;
+        display: inline-block;
+        width: 100%;
+        height: 10px;
+        background-color: $color-white;
+        left: 0;
+        bottom: -4px;
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        display: inline-block;
+        width: 120%;
+        height: 20px;
+        background-color: $color-white;
+        left: -10%;
+        bottom: -21px;
+      }
+    }
+
+    &.addTab {
+      background-color: $color-accent;
+
+      .icon {
+        color: $color-white;
+      }
     }
 
     sub {
@@ -2971,6 +3064,20 @@ body .gh__menu {
       &:last-child {
         margin-right: 0;
       }
+    }
+  }
+
+  .buttonsWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 7px;
+
+    .cancel {
+      font-size: 14px;
+      font-weight: 600;
+      color: $color-accent;
+      margin-right: 5px;
+      text-transform: none;
     }
   }
 

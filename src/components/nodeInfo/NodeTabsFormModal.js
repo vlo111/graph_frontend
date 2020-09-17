@@ -62,7 +62,7 @@ class NodeTabsFormModal extends Component {
       <Modal
         isOpen
         className="ghModal nodeTabsFormModal"
-        overlayClassName="ghModalOverlay"
+        overlayClassName="ghModalOverlay nodeTabsFormModalOverlay"
         onRequestClose={this.props.onClose}
       >
         <Button color="transparent" className="close" icon={<CloseSvg />} />
@@ -88,7 +88,10 @@ class NodeTabsFormModal extends Component {
           label="ContentTabs"
           onChange={(v) => this.handleChange('content', v)}
         />
-        <Button onClick={this.save}>Save</Button>
+        <div className="buttonsWrapper">
+          <Button color="transparent" className="cancel" onClick={this.props.onClose}>Cancel</Button>
+          <Button color="accent" onClick={this.save}>ADD</Button>
+        </div>
       </Modal>
     );
   }

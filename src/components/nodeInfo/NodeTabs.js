@@ -68,12 +68,11 @@ class NodeTabs extends Component {
               onClick={() => this.setActiveTab(key)}
             >
               <p>{key}</p>
-              <sub>{_.get(customFields, [node.type, key, 'subtitle'], '')}</sub>
             </Button>
           ))}
           {Object.values(customField).length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
-              <Button icon="fa-plus" onClick={() => this.openFormModal('')} />
+              <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal('')} />
             </Tooltip>
           ) : null}
         </div>
