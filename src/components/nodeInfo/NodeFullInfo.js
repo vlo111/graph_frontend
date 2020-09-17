@@ -29,7 +29,7 @@ class NodeFullInfo extends Component {
       return null;
     }
     return (
-      <Outside onClick={this.closeNodeInfo} exclude=".nodeTabsFormModal,.contextmenuOverlayFullInfo">
+      <Outside onClick={this.closeNodeInfo} exclude=".nodeTabsFormModal,.contextmenuOverlayFullInfo,.jodit">
         <div id="nodeFullInfo">
           <Button
             className="closeInfo"
@@ -40,7 +40,7 @@ class NodeFullInfo extends Component {
           <div className="mainContent">
             <h2 className="name">{node.name}</h2>
             <h3 className="type">{node.type}</h3>
-            <TextEllipsis maxLength={140} className="description" more="EXPEND" less="SHOW LESS">
+            <TextEllipsis maxLength={140} className="description" more="EXPAND" less="SHOW LESS">
               {node.description}
             </TextEllipsis>
             <NodeTabs node={node} />

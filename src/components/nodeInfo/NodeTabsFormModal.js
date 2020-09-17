@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { addNodeCustomFieldKey, setNodeCustomField } from "../../store/actions/graphs";
 import Button from "../form/Button";
 import Validate from "../../helpers/Validate";
+import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -60,26 +61,31 @@ class NodeTabsFormModal extends Component {
     return (
       <Modal
         isOpen
-        className="ghModal ghTableModal"
-        overlayClassName="ghModalOverlay nodeTabsFormModal"
+        className="ghModal nodeTabsFormModal"
+        overlayClassName="ghModalOverlay"
         onRequestClose={this.props.onClose}
       >
-        <Input
-          value={tabData.name}
-          error={errors.name}
-          label="Name"
-          onChangeText={(v) => this.handleChange('name', v)}
-        />
-        <Input
-          value={tabData.subtitle}
-          error={errors.subtitle}
-          label="Subtitle"
-          onChangeText={(v) => this.handleChange('subtitle', v)}
-        />
+        <Button color="transparent" className="close" icon={<CloseSvg />} />
+        <h3>Add New Tab</h3>
+        <div className="row">
+          <Input
+            value={tabData.name}
+            error={errors.name}
+            label="Name"
+            onChangeText={(v) => this.handleChange('name', v)}
+          />
+          <Input
+            value={tabData.subtitle}
+            error={errors.subtitle}
+            label="Subtitle"
+            onChangeText={(v) => this.handleChange('subtitle', v)}
+          />
+        </div>
+
         <Editor
           value={tabData.content}
           error={errors.content}
-          buttons={['bold', 'italic']}
+          label="ContentTabs"
           onChange={(v) => this.handleChange('content', v)}
         />
         <Button onClick={this.save}>Save</Button>

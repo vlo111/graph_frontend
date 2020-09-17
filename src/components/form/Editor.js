@@ -24,7 +24,7 @@ class Editor extends Component {
     label: '',
     placeholder: '',
     error: '',
-    buttons: ['bold', 'italic', 'link', 'file'],
+    buttons: ['bold', 'italic', 'underline', '|', 'file', '|', 'link'],
   }
 
   constructor(props) {

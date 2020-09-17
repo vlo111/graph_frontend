@@ -166,6 +166,91 @@ p {
     font-size: 14px;
     padding: 0 8px;
   }
+
+  .jodit-container {
+    border-radius: 8px;
+
+    .jodit-toolbar__box {
+      border-radius: 8px 8px 0 0;
+      background-color: white;
+    }
+
+    .jodit-status-bar {
+      border-radius: 0 0 8px 8px;
+      background-color: white;
+      display: none;
+    }
+
+
+    .jodit-toolbar-button {
+      border-radius: 11px;
+      background-color: transparent;
+      margin: 28px 6px 7px 6px;
+      position: relative;
+      overflow: visible;
+
+      &[aria-pressed="true"] {
+        background-color: #ECEFF7;
+
+        svg {
+          fill: #6291F7;
+        }
+      }
+
+      .jodit-toolbar-button__button {
+        border-radius: 11px;
+        min-height: 100%;
+        border: 1px solid #C2C9DE;
+
+        &:hover {
+          background-color: #ECEFF7;
+        }
+      }
+
+
+      svg {
+        fill: #9CA6C5;
+      }
+    }
+
+    .jodit-ui-separator {
+      margin: 28px 10px 6.5px 10px;
+    }
+
+    .jodit-toolbar-editor-collection_size_middle.jodit-toolbar-editor-collection_mode_horizontal {
+      background-image: repeating-linear-gradient(transparent, transparent 68px, #dadada 69px);
+    }
+
+    .jodit-toolbar-button_file {
+      margin: 28px 13px 6.5px 13px;
+    }
+
+    .jodit-toolbar-button_file:before,
+    .jodit-toolbar-button_link:before,
+    .jodit-toolbar-button_bold:before {
+      position: absolute;
+      font-size: 10px;
+      color: #9CA6C5;
+      white-space: nowrap;
+      top: -19px;
+      left: 0px;
+    }
+
+    .jodit-toolbar-button_bold:before {
+      content: 'Text Properties';
+    }
+
+    .jodit-toolbar-button_file:before {
+      content: 'Insert media';
+      left: -12px;
+    }
+
+    .jodit-toolbar-button_link:before {
+      content: 'Insert link';
+      left: -5px;
+    }
+  }
+
 }
 
 .ghFormField {
@@ -1116,12 +1201,12 @@ p {
     top: 16%;
     max-width: 460px;
     background-color: white;
-    border-radius: 2px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 6px 20px #0D090526;
     padding: 15px;
     max-height: 80%;
     overflow-y: auto;
     overflow-x: hidden;
+    border-radius: 15px;
   }
 
   .ghModalSave {
@@ -2868,6 +2953,62 @@ body .gh__menu {
     sub {
       color: $color-dark-blue;
       padding-left: 5px;
+    }
+  }
+}
+
+.ghModalOverlay .nodeTabsFormModal {
+  width: 31%;
+  max-width: unset !important;
+  padding: 1.6% 2.1%;
+
+  .row {
+    display: flex;
+
+    > * {
+      margin-right: 5%;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  h3 {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .contentEditor {
+    width: 100%;
+
+    .label {
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .ghFormField {
+    label {
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
     }
   }
 }
