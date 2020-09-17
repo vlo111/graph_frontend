@@ -1,12 +1,19 @@
 import _ from 'lodash';
 
 class CustomFields {
-  static setValue(customFields = {}, type, name, customField) {
+  static LIMIT = 6;
+
+  static setValue(customFields = {}, type, name, values) {
     let i = 0;
-    _.forEach(customField, (value, key) => {
-      _.set(customFields, [type, key, 'values', name], value);
-      if (customFields[type][key].order === undefined) {
-        _.set(customFields, [type, key, 'order'], i);
+    _.forEach(values, (value, key) => {
+      if (!customFields[type] || !customFields[type][key]) {
+        customFields = this.setKey(customFields, type, key, '');
+      }
+      if (customFields[type] && customFields[type][key]) {
+        customFields[type][key].values[name] = value;
+        if (customFields[type][key].order === undefined) {
+          customFields[type][key].order = i;
+        }
       }
       i += 1;
     });
@@ -14,6 +21,10 @@ class CustomFields {
   }
 
   static setKey(customFields = {}, type, key, subtitle = '') {
+    if (Object.keys(customFields[type] || {}).length >= this.LIMIT) {
+      console.warn('CustomFields limit');
+      return customFields;
+    }
     if (!_.get(customFields, [type, key])) {
       _.set(customFields, [type, key], {
         order: Object.values(customFields[type] || {}).length,
@@ -22,6 +33,14 @@ class CustomFields {
       });
     }
     return { ...customFields };
+  }
+
+  static canAddKey(customFields, type) {
+    return Object.keys(customFields[type] || {}).length < this.LIMIT;
+  }
+
+  static keyExists(customFields, type) {
+    return !!customFields[type];
   }
 
   static removeKey(customFields = {}, type, key) {

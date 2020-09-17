@@ -123,6 +123,7 @@ class Editor extends Component {
   render() {
     const { showPopUp, popUpData } = this.state;
     const { className, error, label } = this.props;
+    console.log(error)
     let top;
     let left;
     if (showPopUp) {

@@ -71,9 +71,11 @@ class NodeTabs extends Component {
               <sub>{_.get(customFields, [node.type, key, 'subtitle'], '')}</sub>
             </Button>
           ))}
-          <Tooltip overlay="Add New Tab" placement="top">
-            <Button icon="fa-plus" onClick={() => this.openFormModal('')} />
-          </Tooltip>
+          {Object.values(customField).length < CustomFields.LIMIT ? (
+            <Tooltip overlay="Add New Tab" placement="top">
+              <Button icon="fa-plus" onClick={() => this.openFormModal('')} />
+            </Tooltip>
+          ) : null}
         </div>
         {!_.isNull(formModalOpen) ? (
           <NodeTabsFormModal node={node} customField={customField} onClose={this.closeFormModal} />

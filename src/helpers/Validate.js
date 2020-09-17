@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import Chart from '../Chart';
+import CustomFields from "./CustomFields";
 
 class Validate {
   static nodeName(val, edit) {
@@ -99,6 +100,33 @@ class Validate {
 
   static hasError(errors) {
     return _.some(errors, (e) => e);
+  }
+
+  static customFieldType(val, nodeType, customFields) {
+    const value = (val || '').trim();
+    let error;
+    if (!value) {
+      error = 'Field is required';
+    } else if (customFields[nodeType] && customFields[nodeType][val]) {
+      error = 'Field already exists';
+    } else if (!CustomFields.canAddKey(customFields, nodeType)) {
+      error = 'You can\'t add more tabs';
+    }
+    return [error, value];
+  }
+
+  static customFieldContent(val) {
+    const value = (val || '').trim();
+    let error;
+    if (!value) {
+      error = 'Field is required';
+    }
+    return [error, value];
+  }
+
+  static customFieldSubtitle(val) {
+    const value = (val || '').trim();
+    return [null, value];
   }
 }
 

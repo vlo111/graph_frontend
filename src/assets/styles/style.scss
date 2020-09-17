@@ -160,6 +160,12 @@ p {
 
 .contentEditor {
   width: 320px;
+
+  .error {
+    color: #FE5C4F;
+    font-size: 14px;
+    padding: 0 8px;
+  }
 }
 
 .ghFormField {
@@ -2849,6 +2855,7 @@ body .gh__menu {
     scroll-snap-align: start;
     white-space: nowrap;
     box-shadow: none !important;
+    min-width: 60px;
 
     &:first-child {
       border-left: none;

@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import { toggleNodeModal } from '../../store/actions/app';
-import { setNodeCustomField } from '../../store/actions/graphs';
+import { addNodeCustomFieldKey, setNodeCustomField } from '../../store/actions/graphs';
 import Select from '../form/Select';
 import Input from '../form/Input';
 import Button from '../form/Button';
@@ -14,7 +14,6 @@ import FileInput from '../form/FileInput';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
-import AddNodeCustomFields from './AddNodeCustomFields';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -39,7 +38,6 @@ class AddNodeModal extends Component {
         keywords: keywords || [],
         location,
       },
-      activeTab: 'main',
       customField,
       index,
       errors: {},
@@ -65,7 +63,6 @@ class AddNodeModal extends Component {
       customField: null,
       errors: {},
       index: null,
-      activeTab: 'main',
     };
   }
 
@@ -118,14 +115,8 @@ class AddNodeModal extends Component {
     this.setState({ customField: { ...customField } });
   }
 
-  setActiveTab = (activeTab) => {
-    this.setState({ activeTab });
-  }
-
   render() {
-    const {
-      nodeData, errors, index, activeTab, customField,
-    } = this.state;
+    const { nodeData, errors, index } = this.state;
     const { addNodeParams } = this.props;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
@@ -139,77 +130,56 @@ class AddNodeModal extends Component {
       >
         <form onSubmit={this.saveNode}>
           <h2>{_.isNull(index) ? 'Add new node' : 'Edit node'}</h2>
-          <div className="tabs">
-            <Button
-              className={activeTab === 'main' ? 'active' : undefined}
-              onClick={() => this.setActiveTab('main')}
-            >
-              Main
-            </Button>
-            <Button
-              className={activeTab === 'customFields' ? 'active' : undefined}
-              onClick={() => this.setActiveTab('customFields')}
-            >
-              Custom Fields
-            </Button>
-          </div>
-          {activeTab === 'main' ? (
-            <>
-              <Select
-                isCreatable
-                label="Type"
-                value={[
-                  groups.find((t) => t.value === nodeData.type) || {
-                    value: nodeData.type,
-                    label: nodeData.type,
-                  },
-                ]}
-                limit={250}
-                options={groups}
-                error={errors.type}
-                onChange={(v) => this.handleChange('type', v?.value || '')}
-              />
-              <Input
-                label="Name"
-                value={nodeData.name}
-                error={errors.name}
-                limit={250}
-                autoFocus
-                onChangeText={(v) => this.handleChange('name', v)}
-              />
-              <Select
-                label="Node Type"
-                portal
-                options={NODE_TYPES}
-                value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
-                error={errors.nodeType}
-                onChange={(v) => this.handleChange('nodeType', v?.value || '')}
-              />
-              <FileInput
-                label="Icon"
-                accept=".png,.jpg,.gif"
-                value={nodeData.icon}
-                onChangeFile={(v) => this.handleChange('icon', v)}
-              />
-              <Select
-                label="keywords"
-                isCreatable
-                isMulti
-                value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
-                menuIsOpen={false}
-                placeholder="Add..."
-                onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
-              />
-              <LocationInputs
-                error={errors.location}
-                value={nodeData.location}
-                onChange={(v) => this.handleChange('location', v)}
-              />
-            </>
-          ) : null}
-          {activeTab === 'customFields' ? (
-            <AddNodeCustomFields node={nodeData} data={customField} onChange={this.handleCustomFieldsChange} />
-          ) : null}
+          <Select
+            isCreatable
+            label="Type"
+            value={[
+              groups.find((t) => t.value === nodeData.type) || {
+                value: nodeData.type,
+                label: nodeData.type,
+              },
+            ]}
+            limit={250}
+            options={groups}
+            error={errors.type}
+            onChange={(v) => this.handleChange('type', v?.value || '')}
+          />
+          <Input
+            label="Name"
+            value={nodeData.name}
+            error={errors.name}
+            limit={250}
+            autoFocus
+            onChangeText={(v) => this.handleChange('name', v)}
+          />
+          <Select
+            label="Node Type"
+            portal
+            options={NODE_TYPES}
+            value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
+            error={errors.nodeType}
+            onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+          />
+          <FileInput
+            label="Icon"
+            accept=".png,.jpg,.gif"
+            value={nodeData.icon}
+            onChangeFile={(v) => this.handleChange('icon', v)}
+          />
+          <Select
+            label="keywords"
+            isCreatable
+            isMulti
+            value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
+            menuIsOpen={false}
+            placeholder="Add..."
+            onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
+          />
+          <LocationInputs
+            error={errors.location}
+            value={nodeData.location}
+            onChange={(v) => this.handleChange('location', v)}
+          />
           <div className="buttons">
             <Button onClick={this.closeModal}>
               Cancel

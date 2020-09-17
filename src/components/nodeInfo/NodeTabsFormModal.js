@@ -7,6 +7,7 @@ import Editor from '../form/Editor';
 import { connect } from "react-redux";
 import { addNodeCustomFieldKey, setNodeCustomField } from "../../store/actions/graphs";
 import Button from "../form/Button";
+import Validate from "../../helpers/Validate";
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -14,11 +15,13 @@ class NodeTabsFormModal extends Component {
     setNodeCustomField: PropTypes.func.isRequired,
     node: PropTypes.object.isRequired,
     customField: PropTypes.object.isRequired,
+    addNodeCustomFieldKey: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.state = {
+      errors: {},
       tabData: {
         name: '',
         content: '',
@@ -28,25 +31,32 @@ class NodeTabsFormModal extends Component {
   }
 
   handleChange = (path, value) => {
-    const { tabData } = this.state;
+    const { tabData, errors } = this.state;
     _.set(tabData, path, value);
-    this.setState({ tabData });
+    _.remove(errors, path);
+    this.setState({ tabData, errors });
   }
 
-  save = () => {
-    const { node, customField } = this.props;
-    const { tabData } = this.state;
+  save = async () => {
+    const { node, customField, customFields } = this.props;
+    const { tabData, errors } = this.state;
     const { name, subtitle, content } = tabData;
-    if (name.trim() && content.trim()) {
-      this.props.addNodeCustomFieldKey(node.type, name, subtitle);
+
+    [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node.type, customFields);
+    [errors.content, tabData.content] = Validate.customFieldContent(tabData.content);
+    [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
+
+    if (!Validate.hasError(errors)) {
+      await this.props.addNodeCustomFieldKey(node.type, name, subtitle);
       customField[name] = content;
       this.props.setNodeCustomField(node.type, node.name, customField);
       this.props.onClose();
     }
+    this.setState({ errors, tabData });
   }
 
   render() {
-    const { tabData } = this.state;
+    const { tabData, errors } = this.state;
     return (
       <Modal
         isOpen
@@ -56,16 +66,19 @@ class NodeTabsFormModal extends Component {
       >
         <Input
           value={tabData.name}
+          error={errors.name}
           label="Name"
           onChangeText={(v) => this.handleChange('name', v)}
         />
         <Input
           value={tabData.subtitle}
+          error={errors.subtitle}
           label="Subtitle"
           onChangeText={(v) => this.handleChange('subtitle', v)}
         />
         <Editor
-          value={tabData.text}
+          value={tabData.content}
+          error={errors.content}
           buttons={['bold', 'italic']}
           onChange={(v) => this.handleChange('content', v)}
         />
@@ -76,7 +89,9 @@ class NodeTabsFormModal extends Component {
 }
 
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  customFields: state.graphs.singleGraph.customFields || {},
+});
 
 const mapDispatchToProps = {
   setNodeCustomField,
