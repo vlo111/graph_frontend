@@ -78,6 +78,7 @@ class NodeTabsFormModal extends Component {
     const { tabData, errors } = this.state;
     const { node, customFields, fieldName } = this.props;
     this.initValues(customFields, node, fieldName);
+    const isUpdate = !!fieldName;
     return (
       <Modal
         isOpen
@@ -85,8 +86,8 @@ class NodeTabsFormModal extends Component {
         overlayClassName="ghModalOverlay nodeTabsFormModalOverlay"
         onRequestClose={this.props.onClose}
       >
-        <Button color="transparent" className="close" icon={<CloseSvg />} />
-        <h3>Add New Tab</h3>
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.props.onClose} />
+        <h3>{isUpdate ? 'Update Tab' : 'Add New Tab'}</h3>
         <div className="row">
           <Input
             value={tabData.name}
@@ -111,7 +112,9 @@ class NodeTabsFormModal extends Component {
         />
         <div className="buttonsWrapper">
           <Button color="transparent" className="cancel" onClick={this.props.onClose}>Cancel</Button>
-          <Button color="accent" onClick={this.save}>ADD</Button>
+          <Button color="accent" onClick={this.save}>
+            {isUpdate ? 'Save' : 'Add'}
+          </Button>
         </div>
       </Modal>
     );
