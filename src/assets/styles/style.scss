@@ -2976,7 +2976,7 @@ body .gh__menu {
     border: 1px solid #E2E7EB;
     border-radius: 13px 24px 24px 24px;
     padding: 39px 4% 31px;
-    height: 380px;
+    max-height: 380px;
     position: relative;
     z-index: 1;
     background-color: $color-white;

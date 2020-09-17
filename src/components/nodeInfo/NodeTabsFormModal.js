@@ -21,7 +21,7 @@ class NodeTabsFormModal extends Component {
   }
 
   initValues = memoizeOne((customFields, node, fieldName) => {
-    const customField = customFields[node.type][fieldName];
+    const customField = _.get(customFields, [node.type, fieldName]);
     if (customField) {
       const tabData = {
         name: fieldName,
