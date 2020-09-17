@@ -908,9 +908,11 @@ p {
   .links {
     display: flex;
     margin: 0 13px;
-    li{
+
+    li {
       margin: 0 10%;
-      a{
+
+      a {
         color: $color-dark;
       }
     }
@@ -2466,6 +2468,7 @@ p {
     position: relative;
     padding: 0;
     margin-left: auto;
+
     .dropdown {
       position: absolute;
       min-width: 180px;
@@ -3172,6 +3175,47 @@ body .gh__menu {
 
       path {
         fill: $color-gray;
+      }
+    }
+  }
+}
+
+.connectionDetails {
+  padding: 0 10%;
+
+  .row {
+    h3 {
+      font-weight: 600;
+      font-size: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #E2E7EB;
+      margin: 20px 0;
+    }
+
+    .list {
+      .item {
+        display: flex;
+        margin-bottom: 30px;
+        cursor: pointer;
+
+        .left {
+          margin-right: 20px;
+        }
+
+        .right {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          .name {
+            font-weight: 600;
+            font-size: 16px;
+          }
+
+          .type {
+            font-size: 14px;
+          }
+        }
       }
     }
   }

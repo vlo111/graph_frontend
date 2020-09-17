@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Chart from '../../Chart';
 import _ from 'lodash';
+import memoizeOne from 'memoize-one';
+import Chart from '../../Chart';
 import { toggleNodeFullInfo } from '../../store/actions/app';
 import Outside from '../Outside';
 import NodeTabs from './NodeTabs';
-import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import Button from '../form/Button';
-import bgImage from '../../assets/images/Colorful-Plait-Background.jpg'
-import HeaderMini from "../HeaderMini";
-import memoizeOne from "memoize-one";
+import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
+import HeaderMini from '../HeaderMini';
+import NodeIcon from "../NodeIcon";
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -25,20 +24,21 @@ class NodeFullInfo extends Component {
   getGroupedConnections = memoizeOne((nodeName) => {
     const nodeLinks = Chart.getNodeLinks(nodeName, 'all');
     const nodes = Chart.getNodes();
-    const linksGrouped = {};
-    nodeLinks.forEach((l) => {
-      if (!linksGrouped[l.type]) {
-        linksGrouped[l.type] = [];
-      }
+    const connectedNodes = nodeLinks.map((l) => {
       let connected;
       if (l.source === nodeName) {
-        connected = nodes.find(d => d.name === l.target);
+        connected = nodes.find((d) => d.name === l.target);
       } else {
-        connected = nodes.find(d => d.name === l.source);
+        connected = nodes.find((d) => d.name === l.source);
       }
-      linksGrouped[l.type].push(connected);
-    })
-    return linksGrouped;
+      return {
+        linkType: l.type,
+        connected,
+      }
+    });
+
+    const connectedNodesGroup = Object.values(_.groupBy(connectedNodes, 'linkType'));
+    return _.orderBy(connectedNodesGroup, (d) => d.length, 'desc');
   })
 
   render() {
@@ -50,7 +50,8 @@ class NodeFullInfo extends Component {
     if (!node) {
       return null;
     }
-    const linksGrouped = this.getGroupedConnections(node.name);
+    const connectedNodes = this.getGroupedConnections(node.name);
+    console.log(connectedNodes)
     return (
       <Outside onClick={this.closeNodeInfo} exclude=".nodeTabsFormModalOverlay,.contextmenuOverlayFullInfo,.jodit">
         <div id="nodeFullInfo">
@@ -66,13 +67,19 @@ class NodeFullInfo extends Component {
             <NodeTabs node={node} />
           </div>
           <div className="connectionDetails">
-            {_.map(linksGrouped, (linkGroup, type) => (
+            {connectedNodes.map((nodeGroup) => (
               <div className="row">
-                <h3>{type}</h3>
+                <h3>{`${nodeGroup[0].linkType} (${nodeGroup.length})`}</h3>
                 <ul className="list">
-                  {linkGroup.map((link) => (
-                    <li>
-                      <p>{link.name}</p>
+                  {nodeGroup.map((d) => (
+                    <li className="item">
+                      <div className="left">
+                        <NodeIcon node={d.connected} />
+                      </div>
+                      <div className="right">
+                        <span className="name">{d.connected.name}</span>
+                        <span className="type">{d.connected.type}</span>
+                      </div>
                     </li>
                   ))}
                 </ul>

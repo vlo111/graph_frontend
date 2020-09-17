@@ -14,6 +14,7 @@ import Filters from '../components/filters/Filters';
 import AccountDropDown from '../components/account/AccountDropDown';
 import NodeDescription from '../components/NodeDescription';
 import { deleteGraphRequest, getSingleGraphRequest } from '../store/actions/graphs';
+import NodeFullInfo from "../components/nodeInfo/NodeFullInfo";
 
 class GraphView extends Component {
   static propTypes = {
@@ -87,7 +88,6 @@ class GraphView extends Component {
           </>
         )}
         <Filters />
-        <AccountDropDown />
       </Wrapper>
     );
   }
