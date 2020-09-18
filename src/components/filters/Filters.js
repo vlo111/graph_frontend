@@ -12,16 +12,19 @@ class Filters extends Component {
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     filters: PropTypes.object.isRequired,
+    customFields: PropTypes.object.isRequired,
   }
 
-  renderChart = memoizeOne((filters) => {
-    Chart.render(undefined, { filters });
+  renderChart = memoizeOne((filters, customFields) => {
+    Chart.render(undefined, { filters, customFields });
   })
 
   render() {
-    const { filters, match: { params: { graphId } }, location: { pathname } } = this.props;
+    const {
+      filters, customFields, match: { params: { graphId } }, location: { pathname },
+    } = this.props;
     const show = pathname.startsWith('/graphs/filter/');
-    this.renderChart(filters);
+    this.renderChart(filters, customFields);
     if (!graphId || !show) {
       return null;
     }
@@ -31,6 +34,7 @@ class Filters extends Component {
 
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
+  customFields: state.graphs.singleGraph.customFields || {},
 });
 
 const mapDispatchToProps = {

@@ -51,7 +51,9 @@ class Chart {
   }
 
   static normalizeData(data) {
-    const { customFields } = data;
+    data.nodes = data.nodes || Chart.getNodes();
+    data.links = data.links || _.cloneDeep(Chart.getLinks());
+
     const nodes = data.nodes.map((d) => Object.create(d));
 
     _.forEach(data.links, (link, linkIndex) => {
@@ -93,7 +95,7 @@ class Chart {
 
     const links = Object.values(data.links).map((d) => Object.create(d));
 
-    return { links, nodes, customFields };
+    return { links, nodes };
   }
 
   static resizeSvg = () => {
@@ -144,24 +146,19 @@ class Chart {
       }
       this._dataNodes = null;
       this._dataLinks = null;
-      data.nodes = data.nodes || Chart.getNodes();
-      data.links = data.links || _.cloneDeep(Chart.getLinks());
-      data.customFields = data.customFields || this.customFields || {};
-      this.customFields = data.customFields;
+      data = this.normalizeData(data);
 
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         if (!_.isEmpty(data?.nodes) || !_.isEmpty(data?.links)) {
           this.undoManager.push(data);
         }
         if (!_.isEmpty(this.data?.nodes) || !_.isEmpty(this.data?.links)) {
-          if (!_.isEqual(data.nodes, this.data.nodes) || !_.isEqual(data.links, this.data.links)) {
+          if (!_.isEqual(data, this.data)) {
             this.event.emit('dataChange', this);
           }
         }
       }
-
-      data = this.normalizeData(data);
-      data = ChartUtils.filter(data, params.filters);
+      data = ChartUtils.filter(data, params.filters, params.customFields);
       this.data = data;
 
       this.radiusList = ChartUtils.getRadiusList();

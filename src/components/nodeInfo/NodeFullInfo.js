@@ -51,7 +51,6 @@ class NodeFullInfo extends Component {
       return null;
     }
     const connectedNodes = this.getGroupedConnections(node.name);
-    console.log(connectedNodes)
     return (
       <Outside onClick={this.closeNodeInfo} exclude=".nodeTabsFormModalOverlay,.contextmenuOverlayFullInfo,.jodit">
         <div id="nodeFullInfo">

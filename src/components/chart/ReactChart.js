@@ -23,10 +23,6 @@ class ReactChart extends Component {
     Chart.render({ nodes, links });
   });
 
-  renderChartCustomFields = memoizeOne((customFields) => {
-    Chart.render({ customFields });
-  });
-
   componentDidMount() {
     Chart.render({ nodes: [], links: [] });
 
@@ -106,9 +102,8 @@ class ReactChart extends Component {
   }
 
   render() {
-    const { activeButton, singleGraph: { nodes, links, customFields } } = this.props;
+    const { activeButton, singleGraph: { nodes, links } } = this.props;
     this.renderChart(nodes, links);
-    this.renderChartCustomFields(customFields);
     return (
       <div id="graph" data-active={activeButton} className={activeButton}>
         <div className="borderCircle">

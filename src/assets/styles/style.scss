@@ -2048,6 +2048,10 @@ p {
 
     .icon {
       margin: 0;
+
+      svg {
+        min-width: 30px;
+      }
     }
   }
 
@@ -2060,6 +2064,9 @@ p {
 
     .icon {
       margin: 0;
+      svg {
+        min-width: 30px;
+      }
     }
   }
 }
@@ -2472,8 +2479,9 @@ p {
     .dropdown {
       position: absolute;
       min-width: 180px;
-      right: 0;
+      right: -27px;
       left: auto;
+      top: 105%;
 
       ul {
         box-shadow: 0 5px 12px #E2E7EB29;

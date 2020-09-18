@@ -4,12 +4,10 @@ import 'react-hot-loader';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { compose, createStore, applyMiddleware } from 'redux';
 import './helpers/Promise.allValues';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import reducers from './store/reducers';
-import { requestMiddleware } from './helpers/redux-request';
+import store from './store';
 
 import 'rc-tooltip/assets/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,21 +16,6 @@ import 'react-datasheet/lib/react-datasheet.css';
 import 'react-image-crop/lib/ReactCrop.scss';
 import './assets/styles/font-awesome.css';
 import './assets/styles/style.scss';
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const store = createStore(
-  reducers,
-  composeEnhancers(applyMiddleware(requestMiddleware)),
-);
-window.store = store;
-
-requestMiddleware.on.fail = ((err) => {
-  if (err.response) {
-    return err.response;
-  }
-  throw err;
-});
 
 ReactDOM.render((
   <Provider store={store}>

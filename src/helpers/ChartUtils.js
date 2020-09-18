@@ -13,7 +13,7 @@ import Api from '../Api';
 import Utils from './Utils';
 
 class ChartUtils {
-  static filter = memoizeOne((data, params = {}) => {
+  static filter = memoizeOne((data, params = {}, customFields = {}) => {
     if (_.isEmpty(params)) {
       return data;
     }
@@ -52,7 +52,7 @@ class ChartUtils {
         return d;
       }
 
-      if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(data, ['customFields', d.type, k, 'values', d.name]))) {
+      if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.name]))) {
         d.hidden = true;
         return d;
       }

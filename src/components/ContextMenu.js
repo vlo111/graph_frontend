@@ -46,10 +46,12 @@ class ContextMenu extends Component {
     } else if (ev.target.tagName === 'svg') {
       element = 'chart';
     } else if (ev.target.closest('.contentWrapper')) {
-      element = 'nodeFullInfo';
       const el = ev.target.closest('.contentWrapper');
       const fieldName = el.getAttribute('data-field-name');
-      params = { fieldName };
+      if (fieldName) {
+        element = 'nodeFullInfo';
+        params = { fieldName };
+      }
     }
     this.setState({
       x, y, show: element, params,
