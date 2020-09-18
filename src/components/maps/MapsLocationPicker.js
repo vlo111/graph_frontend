@@ -76,7 +76,6 @@ class MapsLocationPicker extends Component {
     const { selected, initialCenter } = this.state;
     const { google, value } = this.props;
     this.initPosition(value);
-    console.log(initialCenter)
     return (
       <Modal
         isOpen

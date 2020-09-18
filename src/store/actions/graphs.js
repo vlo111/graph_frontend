@@ -52,15 +52,6 @@ export function clearSingleGraph() {
   };
 }
 
-export const SET_GRAPH_DATA = 'SET_GRAPH_DATA';
-
-export function setGraphData(path, data) {
-  return {
-    type: SET_GRAPH_DATA,
-    payload: { path, data },
-  };
-}
-
 export const SET_NODE_CUSTOM_FIELD = 'SET_NODE_CUSTOM_FIELD';
 
 export function setNodeCustomField(type, name, customField) {

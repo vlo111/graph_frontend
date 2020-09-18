@@ -1,48 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
-import memoizeOne from 'memoize-one';
+import { Link, withRouter } from 'react-router-dom';
+import queryString from 'query-string';
 import Chart from '../../Chart';
-import { toggleNodeFullInfo } from '../../store/actions/app';
 import Outside from '../Outside';
 import NodeTabs from './NodeTabs';
 import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
 import HeaderMini from '../HeaderMini';
-import NodeIcon from "../NodeIcon";
+import ConnectionDetails from './ConnectionDetails';
+import NodeFullInfoModal from './NodeFullInfoModal';
 
 class NodeFullInfo extends Component {
   static propTypes = {
-    infoNodeName: PropTypes.string.isRequired,
-    toggleNodeFullInfo: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    editable: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    editable: true,
   }
 
   closeNodeInfo = () => {
-    this.props.toggleNodeFullInfo('');
+    const queryObj = queryString.parse(window.location.search);
+    delete queryObj.info;
+    const query = queryString.stringify(queryObj);
+    this.props.history.replace(`?${query}`);
   }
 
-  getGroupedConnections = memoizeOne((nodeName) => {
-    const nodeLinks = Chart.getNodeLinks(nodeName, 'all');
-    const nodes = Chart.getNodes();
-    const connectedNodes = nodeLinks.map((l) => {
-      let connected;
-      if (l.source === nodeName) {
-        connected = nodes.find((d) => d.name === l.target);
-      } else {
-        connected = nodes.find((d) => d.name === l.source);
-      }
-      return {
-        linkType: l.type,
-        connected,
-      }
-    });
-
-    const connectedNodesGroup = Object.values(_.groupBy(connectedNodes, 'linkType'));
-    return _.orderBy(connectedNodesGroup, (d) => d.length, 'desc');
-  })
-
   render() {
-    const { infoNodeName } = this.props;
+    const { editable } = this.props;
+    const queryObj = queryString.parse(window.location.search);
+    const { info: infoNodeName, expand } = queryObj;
     if (!infoNodeName) {
       return null;
     }
@@ -50,58 +39,42 @@ class NodeFullInfo extends Component {
     if (!node) {
       return null;
     }
-    const connectedNodes = this.getGroupedConnections(node.name);
     return (
-      <Outside onClick={this.closeNodeInfo} exclude=".nodeTabsFormModalOverlay,.contextmenuOverlayFullInfo,.jodit">
+      <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlayFullInfo,.jodit">
         <div id="nodeFullInfo">
           <HeaderMini />
-          <div className="mainContent">
+          <div className="nodeFullContent">
             <div className="headerBanner">
               <img src={bgImage} alt="background" />
               <div className="textWrapper">
                 <h2 className="name">{node.name}</h2>
                 <h3 className="type">{node.type}</h3>
               </div>
+              <Link replace to={`?${queryString.stringify({ ...queryObj, expand: '1' })}`}>
+                Expand
+              </Link>
             </div>
-            <NodeTabs node={node} />
+            <NodeTabs node={node} editable={editable} />
           </div>
-          <div className="connectionDetails">
-            {connectedNodes.map((nodeGroup) => (
-              <div className="row">
-                <h3>{`${nodeGroup[0].linkType} (${nodeGroup.length})`}</h3>
-                <ul className="list">
-                  {nodeGroup.map((d) => (
-                    <li className="item">
-                      <div className="left">
-                        <NodeIcon node={d.connected} />
-                      </div>
-                      <div className="right">
-                        <span className="name">{d.connected.name}</span>
-                        <span className="type">{d.connected.type}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          <ConnectionDetails nodeName={node.name} />
         </div>
+        {expand === '1' ? (
+          <NodeFullInfoModal node={node} />
+        ) : null}
       </Outside>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  infoNodeName: state.app.infoNodeName,
+  singleGraph: state.graphs.singleGraph, // rerender then data changed
 });
 
-const mapDispatchToProps = {
-  toggleNodeFullInfo,
-};
+const mapDispatchToProps = {};
 
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(NodeFullInfo);
 
-export default Container;
+export default withRouter(Container);

@@ -4,6 +4,7 @@ import { Marker, Map } from 'google-maps-react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import ReactDOMServer from 'react-dom/server';
 import MapsSearch from './MapsSearch';
 import markerImg from '../../assets/images/icons/marker.svg';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -11,7 +12,8 @@ import { toggleNodeModal } from '../../store/actions/app';
 import Utils from '../../helpers/Utils';
 import Loading from '../Loading';
 import withGoogleMap from '../../helpers/withGoogleMap';
-import CustomFields from "../../helpers/CustomFields";
+import CustomFields from '../../helpers/CustomFields';
+import MapsCustomField from './MapsCustomField';
 
 class MapsModal extends Component {
   static propTypes = {
@@ -105,15 +107,11 @@ class MapsModal extends Component {
       selected = await this.getPlaceInformation(selected.location);
     }
     const customField = CustomFields.get(customFields, selected.type);
-    if (selected.address) {
-      customField.Address = selected.address;
+    const contact = ReactDOMServer.renderToString(<MapsCustomField data={selected} />);
+    if (contact) {
+      customField.Contact = contact;
     }
-    if (selected.website) {
-      customField.Website = selected.website;
-    }
-    if (selected.phone) {
-      customField.Phone = selected.phone;
-    }
+
     this.props.toggleNodeModal({
       fx: x,
       fy: y,

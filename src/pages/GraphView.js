@@ -88,6 +88,7 @@ class GraphView extends Component {
           </>
         )}
         <Filters />
+        <NodeFullInfo editable={false} />
       </Wrapper>
     );
   }

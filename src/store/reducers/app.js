@@ -16,7 +16,6 @@ const initialState = {
   addNodeParams: {},
   isLoading: false,
   filters: ChartUtils.getFilters(),
-  infoNodeName: '',
   selectedGrid: {
     nodes: [],
     links: [],
@@ -95,13 +94,6 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         filters: { ...DEFAULT_FILTERS },
-      };
-    }
-    case TOGGLE_NODE_FULL_INFO: {
-      const { nodeName = '' } = action.payload;
-      return {
-        ...state,
-        infoNodeName: nodeName,
       };
     }
     default: {

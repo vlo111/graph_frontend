@@ -7,14 +7,15 @@ import Outside from './Outside';
 import ChartUtils from '../helpers/ChartUtils';
 import NodeIcon from './NodeIcon';
 import Button from './form/Button';
-import { toggleNodeFullInfo, toggleNodeModal } from "../store/actions/app";
 import { connect } from "react-redux";
+import queryString from "query-string";
+import { withRouter } from "react-router-dom";
 
 const MODAL_WIDTH = 300;
 
 class NodeDescription extends Component {
   static propTypes = {
-    toggleNodeFullInfo: PropTypes.func.isRequired,
+    history: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -65,7 +66,10 @@ class NodeDescription extends Component {
   showFullInfo = () => {
     const { node } = this.state;
     this.hideInfo();
-    this.props.toggleNodeFullInfo(node.name)
+    const queryObj = queryString.parse(window.location.search);
+    queryObj.info = node.name;
+    const query = queryString.stringify(queryObj);
+    this.props.history.replace(`?${query}`);
   }
 
   render() {
@@ -126,13 +130,11 @@ class NodeDescription extends Component {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {
-  toggleNodeFullInfo,
-};
+const mapDispatchToProps = {};
 
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(NodeDescription);
 
-export default Container;
+export default withRouter(Container);

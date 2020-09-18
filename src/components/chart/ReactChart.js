@@ -4,11 +4,12 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import memoizeOne from 'memoize-one';
+import queryString from 'query-string';
 import Chart from '../../Chart';
-import { setActiveButton, toggleNodeFullInfo, toggleNodeModal } from '../../store/actions/app';
+import { setActiveButton,  toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../ContextMenu';
-import ChartUtils from "../../helpers/ChartUtils";
-import CustomFields from "../../helpers/CustomFields";
+import CustomFields from '../../helpers/CustomFields';
+import { withRouter } from "react-router-dom";
 
 class ReactChart extends Component {
   static propTypes = {
@@ -17,6 +18,7 @@ class ReactChart extends Component {
     singleGraph: PropTypes.object.isRequired,
     customFields: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   renderChart = memoizeOne((nodes, links) => {
@@ -47,7 +49,10 @@ class ReactChart extends Component {
   }
 
   handleDbNodeClick = (d) => {
-    this.props.toggleNodeFullInfo(d.name);
+    const queryObj = queryString.parse(window.location.search);
+    queryObj.info = d.name;
+    const query = queryString.stringify(queryObj);
+    this.props.history.replace(`?${query}`);
   }
 
   editNode = (node) => {
@@ -131,7 +136,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   toggleNodeModal,
   setActiveButton,
-  toggleNodeFullInfo,
 };
 
 const Container = connect(
@@ -139,4 +143,4 @@ const Container = connect(
   mapDispatchToProps,
 )(ReactChart);
 
-export default Container;
+export default withRouter(Container);

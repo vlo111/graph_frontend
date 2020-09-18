@@ -62,7 +62,7 @@ class NodeTabs extends Component {
 
   render() {
     const { activeTab, formModalOpen } = this.state;
-    const { node, customFields } = this.props;
+    const { node, customFields, editable } = this.props;
     const customField = CustomFields.get(customFields, node.type, node.name);
     const content = customField[activeTab];
     this.setFirstTab(customField);
@@ -78,7 +78,7 @@ class NodeTabs extends Component {
               <p>{key}</p>
             </Button>
           ))}
-          {Object.values(customField).length < CustomFields.LIMIT ? (
+          {editable && Object.values(customField).length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
               <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
             </Tooltip>

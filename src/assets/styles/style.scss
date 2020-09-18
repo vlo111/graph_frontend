@@ -1247,6 +1247,17 @@ p {
     overflow-y: auto;
     overflow-x: hidden;
     border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+
+    .ghModalContent {
+      height: 100%;
+      width: calc(100% + 10px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin-right: -15px;
+      padding-right: 15px;
+    }
   }
 
   .ghModalSave {
@@ -1859,6 +1870,12 @@ p {
   height: 58px;
   border-radius: 15px;
   border: 1px solid $color-white;
+
+  &.circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+  }
 }
 
 .graphsList {
@@ -2064,6 +2081,7 @@ p {
 
     .icon {
       margin: 0;
+
       svg {
         min-width: 30px;
       }
@@ -2723,6 +2741,8 @@ body .gh__menu {
   .ghLoading {
     margin: auto;
     top: calc(50% - 30px);
+    position: absolute;
+    left: calc(50% - 30px);
   }
 
   &.hidden {
@@ -2887,55 +2907,57 @@ body .gh__menu {
   overflow-x: hidden;
   overflow-y: auto;
 
-  .mainContent {
-    .name {
-      font-size: 26px;
-    }
-
-    .type {
-      font-weight: 600;
-      font-size: 16px;
-    }
-
-    .headerBanner {
-      position: relative;
-      height: 9.8vw;
-      min-height: 150px;
-      overflow: hidden;
-
-      img {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        z-index: -1;
-        object-fit: cover;
-        top: 0;
-        left: 0;
-      }
-
-      .textWrapper {
-        position: absolute;
-        bottom: 0;
-        padding: 5% 6%;
-        color: #ffffff;
-      }
-    }
-
-
-    .description {
-      margin-top: 19px;
-      font-size: 15px;
-
-      p {
-        font-size: 15px;
-      }
-    }
-  }
 
   .collaborate {
     margin-top: 27px;
   }
 }
+
+.nodeFullContent {
+  .name {
+    font-size: 26px;
+  }
+
+  .type {
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .headerBanner {
+    position: relative;
+    height: 9.8vw;
+    min-height: 150px;
+    overflow: hidden;
+
+    img {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      z-index: 0;
+      object-fit: cover;
+      top: 0;
+      left: 0;
+    }
+
+    .textWrapper {
+      position: absolute;
+      bottom: 0;
+      padding: 5% 6%;
+      color: #ffffff;
+    }
+  }
+
+
+  .description {
+    margin-top: 19px;
+    font-size: 15px;
+
+    p {
+      font-size: 15px;
+    }
+  }
+}
+
 
 .textEllipsis {
   p {
@@ -3202,9 +3224,13 @@ body .gh__menu {
 
     .list {
       .item {
-        display: flex;
         margin-bottom: 30px;
-        cursor: pointer;
+
+        a {
+          display: flex;
+          color: $color-dark;
+          text-decoration: none;
+        }
 
         .left {
           margin-right: 20px;
@@ -3227,4 +3253,15 @@ body .gh__menu {
       }
     }
   }
+}
+
+.ghModalNodeFullInfoOverlay {
+  .ghModal {
+    top: 5%;
+    width: 77%;
+    height: 90%;
+    max-height: 90%;
+    max-width: 1476px;
+  }
+
 }
