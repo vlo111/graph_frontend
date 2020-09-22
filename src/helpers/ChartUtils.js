@@ -208,6 +208,9 @@ class ChartUtils {
   static linkColorIndex = 0;
 
   static linkColor = () => (d) => {
+    if (d.color) {
+      return d.color;
+    }
     if (!(d.type in this.linkColorObj)) {
       this.linkColorObj[d.type] = LINK_COLORS[this.linkColorIndex] || randomColor({
         luminosity: 'light',
@@ -222,6 +225,9 @@ class ChartUtils {
   static nodeColorIndex = 0;
 
   static nodeColor = () => (d) => {
+    if (d.color) {
+      return d.color;
+    }
     if (!(d.type in this.nodeColorObj)) {
       this.nodeColorObj[d.type] = NODE_COLOR[this.nodeColorIndex] || randomColor();
       this.nodeColorIndex += 1;

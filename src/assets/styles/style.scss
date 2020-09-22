@@ -2974,11 +2974,11 @@ body .gh__menu {
     .expand {
       color: $color-white;
       background-color: $color-main2;
-      padding: 12px 33px;
+      padding: 12px 28px;
       border-radius: 12px;
       text-transform: uppercase;
       position: absolute;
-      bottom: -23px;
+      bottom: -18px;
       right: 10%;
       font-size: 16px;
       font-weight: 600;
@@ -3312,11 +3312,13 @@ body .gh__menu {
       width: 69%;
       padding: 0 3%;
       border-right: 1px solid $color-light-gray;
+      overflow: auto;
     }
 
     > .right {
       padding: 0 3%;
       width: 30%;
+      overflow: auto;
     }
 
     .graphUser {
@@ -3324,7 +3326,7 @@ body .gh__menu {
       align-items: center;
       font-weight: 600;
       font-size: 20px;
-      margin: -15px 10px 10px;
+      margin: 0 10px 10px;
 
       .avatar {
         margin-right: 25px;
@@ -3334,6 +3336,9 @@ body .gh__menu {
 
     .connectionDetails {
       padding: 0;
+      h3{
+        margin-top: 0;
+      }
     }
 
     .headerBanner {
