@@ -36,7 +36,7 @@ class ConnectionDetails extends Component {
             <h3>{`${nodeGroup[0].linkType} (${nodeGroup.length})`}</h3>
             <ul className="list">
               {nodeGroup.map((d) => (
-                <li className="item">
+                <li className="item" key={d.connected.name}>
                   <Link replace to={`?info=${d.connected.name}`}>
                     <div className="left">
                       <NodeIcon node={d.connected} />

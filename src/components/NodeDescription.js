@@ -15,7 +15,7 @@ const MODAL_WIDTH = 300;
 
 class NodeDescription extends Component {
   static propTypes = {
-    history: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   constructor(props) {

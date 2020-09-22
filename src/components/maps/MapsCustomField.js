@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../form/Button';
 
 class MapsCustomField extends Component {
   static propTypes = {

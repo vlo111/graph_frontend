@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import Api from '../../Api';
 import stripHtml from 'string-strip-html';
-import Utils from "../../helpers/Utils";
+import Api from '../../Api';
+import Utils from '../../helpers/Utils';
 
 class NodeTabsContent extends Component {
   static propTypes = {
@@ -33,7 +33,7 @@ class NodeTabsContent extends Component {
 
   render() {
     const { contentType } = this.state;
-    const { content, node, name } = this.props;
+    const { content, name } = this.props;
     const html = String(content?.content || content || '');
     this.getContentType(html);
     const { result: text } = stripHtml(html);

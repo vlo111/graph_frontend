@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-modal';
+import queryString from 'query-string';
 import PropTypes from 'prop-types';
-import * as d3 from 'd3';
-import _ from 'lodash';
-import stripHtml from 'string-strip-html';
-import { setActiveButton } from '../../store/actions/app';
+import { withRouter } from 'react-router-dom';
 import Input from '../form/Input';
-import Chart from '../../Chart';
 import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
 import Utils from '../../helpers/Utils';
 
-class SearchModal extends Component {
+class SearchInput extends Component {
   static propTypes = {
+    history: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -28,7 +25,7 @@ class SearchModal extends Component {
       this.setState({ nodes: [], search });
       return;
     }
-    const nodes = ChartUtils.nodeSearch(search);
+    const nodes = ChartUtils.nodeSearch(search, 7);
     this.setState({ nodes, search });
   }
 
@@ -38,7 +35,12 @@ class SearchModal extends Component {
   }
 
   findNode = (node) => {
-    this.findNodeInDom(node);
+    ChartUtils.findNodeInDom(node);
+    const queryObj = queryString.parse(window.location.search);
+    queryObj.info = node.name;
+    const query = queryString.stringify(queryObj);
+    this.props.history.replace(`?${query}`);
+    this.setState({ nodes: [] });
   }
 
   render() {
@@ -51,6 +53,7 @@ class SearchModal extends Component {
           value={search}
           icon="fa-search"
           containerClassName="graphSearch"
+          onFocus={() => this.handleChange(search)}
           onChangeText={this.handleChange}
         />
         <ul className="list">
@@ -94,6 +97,6 @@ const mapDispatchToProps = {};
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(SearchModal);
+)(SearchInput);
 
-export default Container;
+export default withRouter(Container);

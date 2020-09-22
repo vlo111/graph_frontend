@@ -264,7 +264,7 @@ class ChartUtils {
     return degrees > 90 && degrees < 270;
   }
 
-  static nodeSearch(search) {
+  static nodeSearch(search, limit = 15) {
     const s = search.trim().toLowerCase();
     const nodes = Chart.getNodes().map((d) => {
       d.priority = undefined;
@@ -287,7 +287,7 @@ class ChartUtils {
       }
       return d;
     }).filter((d) => d.priority);
-    return _.orderBy(nodes, 'priority').slice(0, 15);
+    return _.orderBy(nodes, 'priority').slice(0, limit);
   }
 
   static findNodeInDom(node) {

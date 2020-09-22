@@ -920,6 +920,7 @@ p {
 
   .searchInputWrapper {
     max-width: 33%;
+
   }
 }
 
@@ -928,6 +929,15 @@ p {
 
   .graphSearch {
     width: 100%;
+  }
+
+
+  .list {
+    position: absolute;
+    z-index: 5;
+    background-color: $color-white;
+    box-shadow: 0px 6px 20px #0D090526;
+    border-radius: 5px;
   }
 }
 
@@ -2611,6 +2621,10 @@ body .gh__menu {
     }
   }
 
+}
+
+.searchInputWrapper,
+.ghModalSearch {
   .list {
     max-height: 100%;
     overflow-y: auto;
@@ -2927,7 +2941,18 @@ body .gh__menu {
     position: relative;
     height: 9.8vw;
     min-height: 150px;
-    overflow: hidden;
+
+    &:after {
+      content: '';
+      position: absolute;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      left: 0;
+      top: 0;
+      z-index: -1;
+    }
 
     img {
       height: 100%;
@@ -2944,6 +2969,20 @@ body .gh__menu {
       bottom: 0;
       padding: 5% 6%;
       color: #ffffff;
+    }
+
+    .expand {
+      color: $color-white;
+      background-color: $color-main2;
+      padding: 12px 33px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      position: absolute;
+      bottom: -23px;
+      right: 10%;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
     }
   }
 
@@ -3264,4 +3303,18 @@ body .gh__menu {
     max-width: 1476px;
   }
 
+  .ghModalContent {
+    padding: 2%;
+    .left {
+      width: 70%;
+    }
+
+    .right {
+      width: 30%;
+    }
+
+    .headerBanner {
+      height: 11vw;
+    }
+  }
 }

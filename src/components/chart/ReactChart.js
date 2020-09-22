@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import memoizeOne from 'memoize-one';
 import queryString from 'query-string';
+import { withRouter } from 'react-router-dom';
 import Chart from '../../Chart';
-import { setActiveButton,  toggleNodeModal } from '../../store/actions/app';
+import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
-import { withRouter } from "react-router-dom";
 
 class ReactChart extends Component {
   static propTypes = {
@@ -44,7 +44,7 @@ class ReactChart extends Component {
   componentWillUnmount() {
     Chart.unmount();
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
-    ContextMenu.event.removeListener('node.delete', this.handleNodeClick);
+    ContextMenu.event.removeListener('node.delete', this.deleteNode);
     ContextMenu.event.removeListener('node.edit', this.editNode);
   }
 
@@ -94,7 +94,6 @@ class ReactChart extends Component {
   deleteNode = (d) => {
     let nodes = Chart.getNodes();
     let links = Chart.getLinks();
-
     nodes = nodes.filter((n) => n.index !== d.index);
 
     links = links.filter((l) => !(l.source === d.name || l.target === d.name));

@@ -45,12 +45,20 @@ class NodeFullInfo extends Component {
           <HeaderMini />
           <div className="nodeFullContent">
             <div className="headerBanner">
-              <img src={bgImage} alt="background" />
+              <img
+                src={node.icon ? `${node.icon}.large` : bgImage}
+                onError={(ev) => {
+                  if (ev.target.src !== node.icon) {
+                    ev.target.src = node.icon;
+                  }
+                }}
+                alt="background"
+              />
               <div className="textWrapper">
                 <h2 className="name">{node.name}</h2>
                 <h3 className="type">{node.type}</h3>
               </div>
-              <Link replace to={`?${queryString.stringify({ ...queryObj, expand: '1' })}`}>
+              <Link replace className="expand" to={`?${queryString.stringify({ ...queryObj, expand: '1' })}`}>
                 Expand
               </Link>
             </div>
