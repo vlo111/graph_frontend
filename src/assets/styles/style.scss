@@ -3301,20 +3301,51 @@ body .gh__menu {
     height: 90%;
     max-height: 90%;
     max-width: 1476px;
+    padding: 0;
   }
 
   .ghModalContent {
-    padding: 2%;
-    .left {
-      width: 70%;
+    display: flex;
+    padding: 3% 0;
+
+    > .left {
+      width: 69%;
+      padding: 0 3%;
+      border-right: 1px solid $color-light-gray;
     }
 
-    .right {
+    > .right {
+      padding: 0 3%;
       width: 30%;
+    }
+
+    .graphUser {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 20px;
+      margin: -15px 10px 10px;
+
+      .avatar {
+        margin-right: 25px;
+      }
+
+    }
+
+    .connectionDetails {
+      padding: 0;
     }
 
     .headerBanner {
       height: 11vw;
+    }
+
+    .nodeDescription {
+      padding: 10px 15px;
+    }
+
+    .nodeTabs {
+      padding: 20px 0;
     }
   }
 }

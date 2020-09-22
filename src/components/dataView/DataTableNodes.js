@@ -16,6 +16,7 @@ import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from "../maps/MapsLocationPicker";
+import stripHtml from "string-strip-html";
 
 class DataTableNodes extends Component {
   static propTypes = {
@@ -158,8 +159,11 @@ class DataTableNodes extends Component {
     const { cell } = props;
     const { value } = props;
     if (['description'].includes(cell.key)) {
+      const { result: description } = stripHtml(value || '');
       return (
-        <span className="value-viewer" dangerouslySetInnerHTML={{ __html: value }} />
+        <span className="value-viewer">
+          {description}
+        </span>
       );
     }
     if (cell.key === 'link') {
@@ -171,7 +175,7 @@ class DataTableNodes extends Component {
     }
     return (
       <span className="value-viewer">
-        {props.value}
+        {value}
       </span>
     );
   }

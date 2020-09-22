@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import NodeIcon from "../NodeIcon";
-import memoizeOne from "memoize-one";
-import Chart from "../../Chart";
-import _ from "lodash";
+import memoizeOne from 'memoize-one';
+import _ from 'lodash';
 import { Link } from 'react-router-dom';
+import queryString from 'query-string';
+import Chart from '../../Chart';
+import NodeIcon from '../NodeIcon';
 
 class ConnectionDetails extends Component {
   getGroupedConnections = memoizeOne((nodeName) => {
@@ -28,16 +29,17 @@ class ConnectionDetails extends Component {
 
   render() {
     const { nodeName } = this.props;
+    const queryObj = queryString.parse(window.location.search);
     const connectedNodes = this.getGroupedConnections(nodeName);
     return (
       <div className="connectionDetails">
         {connectedNodes.map((nodeGroup) => (
-          <div className="row">
+          <div className="row" key={nodeGroup[0].linkType}>
             <h3>{`${nodeGroup[0].linkType} (${nodeGroup.length})`}</h3>
             <ul className="list">
               {nodeGroup.map((d) => (
                 <li className="item" key={d.connected.name}>
-                  <Link replace to={`?info=${d.connected.name}`}>
+                  <Link replace to={`?${queryString.stringify({ ...queryObj, info: d.connected.name })}`}>
                     <div className="left">
                       <NodeIcon node={d.connected} />
                     </div>

@@ -33,16 +33,13 @@ class NodeFullInfo extends Component {
       >
         <div className="ghModalContent">
           <div className="left">
-            <div className="nodeFullHeader">
-              <div className="graphUser">
-                <img
-                  className="avatar circle"
-                  src={singleGraph.user.avatar}
-                  alt={singleGraph.user.firstName}
-                />
-                <span className="userName">{[singleGraph.user.firstName, singleGraph.user.lastName].join(' ')}</span>
-              </div>
-
+            <div className="graphUser">
+              <img
+                className="avatar circle"
+                src={singleGraph.user.avatar}
+                alt={singleGraph.user.firstName}
+              />
+              <span className="userName">{[singleGraph.user.firstName, singleGraph.user.lastName].join(' ')}</span>
             </div>
             <div className="nodeFullContent">
               <div className="headerBanner">
@@ -60,6 +57,7 @@ class NodeFullInfo extends Component {
                   <h3 className="type">{node.type}</h3>
                 </div>
               </div>
+              <div className="nodeDescription" dangerouslySetInnerHTML={{ __html: node.description }} />
               <NodeTabs node={node} />
             </div>
           </div>
