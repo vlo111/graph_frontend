@@ -10,6 +10,7 @@ import CustomFields from '../../helpers/CustomFields';
 import NodeTabsFormModal from './NodeTabsFormModal';
 import ContextMenu from '../ContextMenu';
 import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
+import FlexTabs from "../FlexTabs";
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -68,7 +69,7 @@ class NodeTabs extends Component {
     this.setFirstTab(customField);
     return (
       <div className="nodeTabs">
-        <div className="tabs">
+        <FlexTabs>
           {_.map(customField, (val, key) => (
             <Button
               className={activeTab === key ? 'active' : undefined}
@@ -83,7 +84,7 @@ class NodeTabs extends Component {
               <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
             </Tooltip>
           ) : null}
-        </div>
+        </FlexTabs>
         {!_.isNull(formModalOpen) ? (
           <NodeTabsFormModal
             node={node}

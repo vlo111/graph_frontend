@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import Modal from 'react-modal';
@@ -24,6 +25,9 @@ class NodeFullInfo extends Component {
 
   render() {
     const { node, singleGraph } = this.props;
+    if (_.isEmpty(singleGraph)) {
+      return null;
+    }
     return (
       <Modal
         className="ghModal"
@@ -36,10 +40,10 @@ class NodeFullInfo extends Component {
             <div className="graphUser">
               <img
                 className="avatar circle"
-                src={singleGraph.user.avatar}
-                alt={singleGraph.user.firstName}
+                src={singleGraph.user?.avatar}
+                alt={singleGraph.user?.firstName}
               />
-              <span className="userName">{[singleGraph.user.firstName, singleGraph.user.lastName].join(' ')}</span>
+              <span className="userName">{[singleGraph.user?.firstName, singleGraph.user?.lastName].join(' ')}</span>
             </div>
             <div className="nodeFullContent">
               <div className="headerBanner">

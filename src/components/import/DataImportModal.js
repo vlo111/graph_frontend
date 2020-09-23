@@ -7,6 +7,7 @@ import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportXlsx from './ImportXlsx';
 import Button from '../form/Button';
 import ImportGoogle from './ImportGoogle';
+import ImportLinkedin from "./ImportLinkedin";
 
 class DataImportModal extends Component {
   static propTypes = {
@@ -46,9 +47,13 @@ class DataImportModal extends Component {
           <Button className={activeTab === 'google' ? 'active' : undefined} onClick={() => this.setActiveTab('google')}>
             GOOGLE SHEETS
           </Button>
+          <Button className={activeTab === 'linkedin' ? 'active' : undefined} onClick={() => this.setActiveTab('linkedin')}>
+            LINKEDIN
+          </Button>
         </div>
         {activeTab === 'xlsx' ? <ImportXlsx /> : null}
         {activeTab === 'google' ? <ImportGoogle /> : null}
+        {activeTab === 'linkedin' ? <ImportLinkedin /> : null}
       </Modal>
     );
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader/root';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
+  import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
 import GraphForm from './pages/GraphForm';
 import SignIn from './pages/sign/SignIn';
 import SignUp from './pages/sign/SignUp';

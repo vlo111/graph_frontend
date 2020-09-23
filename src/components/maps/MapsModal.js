@@ -13,7 +13,7 @@ import Utils from '../../helpers/Utils';
 import Loading from '../Loading';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import CustomFields from '../../helpers/CustomFields';
-import MapsCustomField from './MapsCustomField';
+import MapsContactCustomField from './MapsContactCustomField';
 
 class MapsModal extends Component {
   static propTypes = {
@@ -107,7 +107,7 @@ class MapsModal extends Component {
       selected = await this.getPlaceInformation(selected.location);
     }
     const customField = CustomFields.get(customFields, selected.type);
-    const contact = ReactDOMServer.renderToString(<MapsCustomField data={selected} />);
+    const contact = ReactDOMServer.renderToString(<MapsContactCustomField data={selected} />);
     if (contact) {
       customField.Contact = contact;
     }

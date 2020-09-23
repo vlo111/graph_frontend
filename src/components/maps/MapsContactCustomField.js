@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class MapsCustomField extends Component {
+class MapsContactCustomField extends Component {
   static propTypes = {
     data: PropTypes.oneOfType(PropTypes.string).isRequired,
   }
@@ -37,4 +37,4 @@ class MapsCustomField extends Component {
   }
 }
 
-export default MapsCustomField;
+export default MapsContactCustomField;

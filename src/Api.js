@@ -71,6 +71,10 @@ class Api {
     return api.post(`/convert/${type}/to/graph`, this.toFormData(requestData));
   }
 
+  static convertNode(type, requestData) {
+    return api.post(`/convert/${type}/to/node`, this.toFormData(requestData));
+  }
+
   static createGraph(requestData) {
     return api.post('/graphs/create', requestData);
   }
