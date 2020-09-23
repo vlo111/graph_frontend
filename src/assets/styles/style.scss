@@ -3122,7 +3122,7 @@ body .gh__menu {
   padding: 0 11px;
 
   .empty {
-    min-width: 1px;
+    min-width: 11px;
     height: 1px;
     scroll-snap-align: start;
   }
@@ -3166,10 +3166,10 @@ body .gh__menu {
         content: '';
         position: absolute;
         display: inline-block;
-        width: 120%;
+        width: 114%;
         height: 20px;
         background-color: $color-white;
-        left: -10%;
+        left: -7%;
         bottom: -21px;
       }
     }

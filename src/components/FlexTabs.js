@@ -35,7 +35,7 @@ class FlexTabs extends Component {
     return (
       <div className="tabs" ref={(ref) => this.ref = ref}>
         {Children.map(this.props.children, (child) => (
-          <span key={child.key} style={{ marginLeft }}>
+          <span key={child?.key} style={{ marginLeft: child?.props.className !== 'empty' ? marginLeft : undefined }}>
             {child}
           </span>
         ))}
