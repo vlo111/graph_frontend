@@ -3200,9 +3200,11 @@ body .gh__menu {
 
   .row {
     display: flex;
+    width: 100%;
 
     > * {
       margin-right: 5%;
+      width: 47.5%;
 
       &:last-child {
         margin-right: 0;
