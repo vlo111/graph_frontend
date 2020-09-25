@@ -2101,6 +2101,22 @@ p {
       }
     }
   }
+
+  .share {
+    position: absolute;
+    left: 15px;
+    top: 225px;
+    margin-right: 0;
+    padding-right: 0;
+
+    .icon {
+      margin: 0;
+
+      svg {
+        min-width: 30px;
+      }
+    }
+  }
 }
 
 .gh-jodit-popup {
@@ -3376,4 +3392,66 @@ body .gh__menu {
   .ghTabs {
     margin-bottom: 20px;
   }
+}
+
+.share-modal {
+  @mixin collaborators-list {
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid black;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__owner {
+    @include collaborators-list;
+    justify-content: flex-start;
+
+    &-logo {
+      margin-right: 16px;
+    }
+  }
+
+  &__collaborators {
+    @include collaborators-list;
+    justify-content: space-between;
+  }
+
+  &__search {
+    width: 30%;
+    &-user {
+      margin-top: 32px;
+    }
+
+    &--selected {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      &-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    &-data {
+      display: flex;
+      justify-items: center;
+      justify-content: flex-start;
+      padding: 8px 0;
+    }
+  }
+
+}
+#search-user {
+  border: 1px solid black !important;
+  border-radius: 0 0 5px 5px;
+  box-shadow: #0D0905;
+  padding: 5px 16px;
 }

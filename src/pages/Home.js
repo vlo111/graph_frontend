@@ -33,6 +33,9 @@ class Home extends Component {
         <Link to="/graphs/create" style={{ marginTop: 65 }}>
           <Button icon="fa-pencil" className=" edit">New Graph</Button>
         </Link>
+        <Link to="/graphs/shared" style={{ marginTop: 65 }}>
+          <Button icon="fa-pencil" className=" edit">Shared Graphs</Button>
+        </Link>
         <div className="graphsList">
           {graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">

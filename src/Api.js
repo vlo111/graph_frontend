@@ -20,7 +20,6 @@ api.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
-
 class Api {
   static url = REACT_APP_API_URL;
 
@@ -71,10 +70,6 @@ class Api {
     return api.post(`/convert/${type}/to/graph`, this.toFormData(requestData));
   }
 
-  static convertNode(type, requestData) {
-    return api.post(`/convert/${type}/to/node`, this.toFormData(requestData));
-  }
-
   static createGraph(requestData) {
     return api.post('/graphs/create', requestData);
   }
@@ -114,6 +109,30 @@ class Api {
       params: { url },
       cancelToken: this.#cancel('getContentType'),
     });
+  }
+
+  static getUsersByText(text) {
+    return api.get('/users/get-by-text', { params: { text } });
+  }
+
+  static createShareGraph(requestData) {
+    return api.post('/share-graphs/create', requestData);
+  }
+
+  static updateShareGraph(id, requestData) {
+    return api.put(`/share-graphs/update/${id}`, requestData);
+  }
+
+  static deleteShareGraph(id) {
+    return api.delete(`/share-graphs/delete/${id}`);
+  }
+
+  static listShareGraph(requestData) {
+    return api.post('/share-graphs/list/', requestData);
+  }
+
+  static userGraph() {
+    return api.get('/share-graphs/user-graphs');
   }
 }
 

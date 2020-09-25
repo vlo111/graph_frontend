@@ -621,7 +621,6 @@ class Chart {
         hidden: d.hidden,
         keywords: d.keywords || [],
         location: d.location || undefined,
-        color: ChartUtils.nodeColor()(d),
       }));
     }
     if (show) {
@@ -652,7 +651,6 @@ class Chart {
           type: pd.type || d.type || '',
           direction: pd.direction || d.direction || '',
           hidden: pd.hidden || d.hidden,
-          color: ChartUtils.linkColor()(d),
         };
       });
     }

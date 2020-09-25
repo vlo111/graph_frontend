@@ -36,3 +36,9 @@ export const OAUTH = define('OAUTH');
 export function oAuthRequest(type, params) {
   return OAUTH.request(() => Api.oAuth(type, params));
 }
+
+export const GET_USER_BY_TEXT = define('GET_USER_BY_TEXT');
+
+export function getUsersByTextRequest(text) {
+  return GET_USER_BY_TEXT.request(() => Api.getUsersByText(text), {}, true);
+}

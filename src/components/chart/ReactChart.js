@@ -8,18 +8,22 @@ import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import Chart from '../../Chart';
 import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
+import { updateSingleGraph } from '../../store/actions/graphs';
 import ContextMenu from '../ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
+import SocketContext from '../../context/Socket';
 
-class ReactChart extends Component {
+class ReactChartComp extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
+    updateSingleGraph: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
     customFields: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-  }
+    socket: PropTypes.object.isRequired,
+  };
 
   renderChart = memoizeOne((nodes, links) => {
     Chart.render({ nodes, links });
@@ -39,13 +43,18 @@ class ReactChart extends Component {
     Chart.event.on('link.click', this.deleteLink);
     ContextMenu.event.on('link.delete', this.deleteLink);
     Chart.event.on('click', this.addNewNode);
+
+    this.props.socket.on('graphUpdate', (data) => {
+      this.props.updateSingleGraph(data);
+    });
   }
 
   componentWillUnmount() {
     Chart.unmount();
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
-    ContextMenu.event.removeListener('node.delete', this.deleteNode);
+    ContextMenu.event.removeListener('node.delete', this.handleNodeClick);
     ContextMenu.event.removeListener('node.edit', this.editNode);
+    this.props.socket.disconnect();
   }
 
   handleDbNodeClick = (d) => {
@@ -94,6 +103,7 @@ class ReactChart extends Component {
   deleteNode = (d) => {
     let nodes = Chart.getNodes();
     let links = Chart.getLinks();
+
     nodes = nodes.filter((n) => n.index !== d.index);
 
     links = links.filter((l) => !(l.source === d.name || l.target === d.name));
@@ -127,6 +137,12 @@ class ReactChart extends Component {
   }
 }
 
+const ReactChart = (props) => (
+  <SocketContext.Consumer>
+    {(socket) => <ReactChartComp {...props} socket={socket} />}
+  </SocketContext.Consumer>
+);
+
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
@@ -135,6 +151,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   toggleNodeModal,
   setActiveButton,
+  updateSingleGraph,
 };
 
 const Container = connect(

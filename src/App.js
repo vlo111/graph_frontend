@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader/root';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-  import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
+import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
 import GraphForm from './pages/GraphForm';
 import SignIn from './pages/sign/SignIn';
 import SignUp from './pages/sign/SignUp';
@@ -14,6 +14,7 @@ import Utils from './helpers/Utils';
 import ForgotPassword from './pages/sign/ForgotPassword';
 import ResetPassword from './pages/sign/ResetPassword';
 import OAuth from './pages/sign/OAuth';
+import Shared from './pages/Shared';
 
 class App extends Component {
   componentDidMount() {
@@ -32,6 +33,7 @@ class App extends Component {
             <Route path="/graphs/preview/:graphId" component={GraphView} />
             <Route path="/graphs/filter/:graphId" component={GraphView} />
             <Route path="/graphs/create" component={GraphForm} />
+            <Route path="/graphs/shared" component={Shared} />
             <Route path="/graphs/update/:graphId" component={GraphForm} />
 
             <Route path="/graphs/author/:authorId" component={GraphForm} />

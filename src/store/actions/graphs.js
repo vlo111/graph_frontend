@@ -51,10 +51,19 @@ export function getSingleGraphRequest(graphId) {
 
 export const CLEAR_SINGLE_GRAPH = 'CLEAR_SINGLE_GRAPH';
 
+export const UPDATE_SINGLE_GRAPH = 'UPDATE_SINGLE_GRAPH';
+
 export function clearSingleGraph() {
   return {
     type: CLEAR_SINGLE_GRAPH,
     payload: {},
+  };
+}
+
+export function updateSingleGraph(graph) {
+  return {
+    type: UPDATE_SINGLE_GRAPH,
+    payload: graph,
   };
 }
 
