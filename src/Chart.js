@@ -130,6 +130,9 @@ class Chart {
   }
 
   static handleZoom = () => {
+    if (this.activeButton === 'create-label') {
+      return;
+    }
     const { transform } = d3.event;
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
