@@ -39,7 +39,7 @@ class DataImportModal extends Component {
     if (data?.status === 'ok') {
       this.props.setActiveButton('create');
     } else {
-      this.toast = toast.error(data.errors?.url || 'something went wrong');
+      this.toast = toast.error(data?.message || 'something went wrong');
     }
     const { node = {} } = data;
     const x = window.innerWidth / 2;
