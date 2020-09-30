@@ -160,7 +160,7 @@ class ChartUtils {
   }
 
   static calcScaledPosition(x = 0, y = 0) {
-    if (Chart.wrapper.empty()) {
+    if (!Chart.wrapper || Chart.wrapper.empty()) {
       return {
         x: 0,
         y: 0,
