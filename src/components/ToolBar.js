@@ -56,7 +56,7 @@ class ToolBar extends Component {
               icon={<TagSvg />}
               onClick={() => this.handleClick('create-label')}
             >
-              Add Label
+              Create Label
             </Button>
             <Button
               icon={<CloseSvg style={{ width: 10, margin: '0 2px' }} />}

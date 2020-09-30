@@ -52,6 +52,11 @@ class ChartUtils {
         return d;
       }
 
+      // if (!_.isEmpty(params.labels) && !d.labels.some((l) => params.labels.includes(l))) {
+      //   d.hidden = true;
+      //   return d;
+      // }
+
       if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.name]))) {
         d.hidden = true;
         return d;
@@ -205,41 +210,52 @@ class ChartUtils {
 
   static linkColorObj = {};
 
-  static linkColorIndex = 0;
+  static linkColorArr = _.clone(LINK_COLORS);
 
   static linkColor = () => (d) => {
-    if (d.color) {
-      return d.color;
-    }
-    if (!(d.type in this.linkColorObj)) {
-      this.linkColorObj[d.type] = LINK_COLORS[this.linkColorIndex] || randomColor({
-        luminosity: 'light',
-      });
-      this.linkColorIndex += 1;
+    if (!this.linkColorObj[d.type]) {
+      if (d.color) {
+        this.linkColorArr = this.linkColorArr.filter((c) => d.color !== c);
+        this.linkColorArr[d.type] = d.color;
+        return d.color;
+      }
+      this.linkColorObj[d.type] = this.linkColorArr.shift() || randomColor({ luminosity: 'light' });
     }
     return this.linkColorObj[d.type];
   }
 
   static nodeColorObj = {};
 
-  static nodeColorIndex = 0;
+  static nodeColorsArr = _.clone(NODE_COLOR);
 
   static nodeColor = () => (d) => {
-    if (d.color) {
-      return d.color;
-    }
-    if (!(d.type in this.nodeColorObj)) {
-      this.nodeColorObj[d.type] = NODE_COLOR[this.nodeColorIndex] || randomColor();
-      this.nodeColorIndex += 1;
+    if (!this.nodeColorObj[d.type]) {
+      if (d.color) {
+        this.nodeColorsArr = this.nodeColorsArr.filter((c) => d.color !== c);
+        this.nodeColorObj[d.type] = d.color;
+        return d.color;
+      }
+      this.nodeColorObj[d.type] = this.nodeColorsArr.shift() || randomColor();
     }
     return this.nodeColorObj[d.type];
+  }
+
+  static labelColorsArr = _.clone(LINK_COLORS);
+
+  static labelColors = () => (d = {}) => {
+    if (d.color) {
+      this.labelColorsArr = this.labelColorsArr.filter((c) => d.color !== c);
+      return d.color;
+    }
+    return this.labelColorsArr.shift() || randomColor({ luminosity: 'light' });
   }
 
   static resetColors() {
     this.linkColorObj = {};
     this.nodeColorObj = {};
-    this.linkColorIndex = 0;
-    this.nodeColorIndex = 0;
+    this.linkColorArr = _.clone(LINK_COLORS);
+    this.nodeColorsArr = _.clone(NODE_COLOR);
+    this.labelColorsArr = _.clone(LINK_COLORS);
   }
 
   static setClass = (fn) => (d, index, g) => {
@@ -304,6 +320,39 @@ class ChartUtils {
     const top = (y * -1) + (window.innerHeight / 2) - nodeWidth;
     Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(2));
     // Chart.event.emit('node.mouseenter', node);
+  }
+
+  static getLabelsByPosition(node) {
+    const { x, y } = ChartUtils.calcScaledPosition(node.fx || node.x, node.fy || node.y);
+    const elements = [];
+    const labels = document.querySelectorAll('#graph .labels .label');
+
+    document.body.style.pointerEvents = 'none';
+    labels.forEach((label) => {
+      label.style.pointerEvents = 'all';
+    });
+
+    while (true) {
+      const el = document.elementFromPoint(x, y);
+      if (!el || el.tagName.toLowerCase() === 'html') {
+        break;
+      }
+      elements.push(el);
+      el.style.pointerEvents = 'none';
+    }
+
+    document.body.style.pointerEvents = null;
+    labels.forEach((label) => {
+      label.style.pointerEvents = null;
+    });
+    elements.forEach((el) => {
+      el.style.pointerEvents = null;
+    });
+
+    const labelsName = elements
+      .filter((el) => el.classList.contains('label'))
+      .map((d) => d.getAttribute('data-name'));
+    return labelsName;
   }
 }
 

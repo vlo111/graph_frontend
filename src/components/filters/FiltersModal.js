@@ -13,6 +13,7 @@ import LinkValueFilter from './LinkValueFilter';
 import NodeConnectionFilter from './NodeConnectionFilter';
 import { ReactComponent as CloseIcon } from '../../assets/images/icons/close.svg';
 import KeywordsFilter from './KeywordsFilter';
+import LabelsFilter from './LabelsFilter';
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -23,9 +24,11 @@ class FiltersModal extends Component {
     super(props);
     const nodes = Chart.getNodes();
     const links = Chart.getLinks();
+    const labels = Chart.getLabels();
     this.state = {
       nodes,
       links,
+      labels,
     };
   }
 
@@ -40,11 +43,12 @@ class FiltersModal extends Component {
   handleChartRender = () => {
     const nodes = Chart.getNodes();
     const links = Chart.getLinks();
-    this.setState({ nodes, links });
+    const labels = Chart.getLabels();
+    this.setState({ nodes, links, labels });
   }
 
   render() {
-    const { nodes, links } = this.state;
+    const { nodes, links, labels } = this.state;
     const { match: { params: { graphId = '' } } } = this.props;
     return (
       <Modal
@@ -65,6 +69,8 @@ class FiltersModal extends Component {
         <NodesFilter nodes={nodes} />
 
         <LinkTypesFilter links={links} />
+
+        <LabelsFilter labels={labels} nodes={nodes} />
 
         <LinkValueFilter links={links} />
 

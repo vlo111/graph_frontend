@@ -49,7 +49,7 @@ class NodeDescription extends Component {
     clearTimeout(this.showInfoTimout);
   }
 
-  showNodeInfo = async (d) => {
+  showNodeInfo = async (ev, d) => {
     clearTimeout(this.showInfoTimout);
     this.showInfoTimout = setTimeout(() => {
       this.setState({

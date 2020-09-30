@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import { connect } from 'react-redux';
 import FiltersModal from './FiltersModal';
@@ -16,7 +17,9 @@ class Filters extends Component {
   }
 
   renderChart = memoizeOne((filters, customFields) => {
-    Chart.render(undefined, { filters, customFields });
+    if (!_.isEmpty(customFields)) {
+      Chart.render(undefined, { filters, customFields });
+    }
   })
 
   render() {

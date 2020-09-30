@@ -10,9 +10,9 @@ class Chart {
   static event = new EventEmitter();
 
   static drag(simulation) {
-    const dragstart = (d) => {
-      this.event.emit('node.dragstart', d);
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    const dragstart = (ev, d) => {
+      this.event.emit('node.dragstart', ev, d);
+      if (ev.active) simulation.alphaTarget(0.3).restart();
       d.fixed = !!d.fx;
       // d.fx = d.x;
       // d.fy = d.y;
@@ -20,14 +20,14 @@ class Chart {
       // d.y = d3.event.y;
     };
 
-    const dragged = (d) => {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
+    const dragged = (ev, d) => {
+      d.fx = ev.x;
+      d.fy = ev.y;
     };
 
-    const dragend = (d) => {
-      this.event.emit('node.dragend', d);
-      if (!d3.event.active) simulation.alphaTarget(0);
+    const dragend = (ev, d) => {
+      this.event.emit('node.dragend', ev, d);
+      if (!ev.active) simulation.alphaTarget(0);
       if (!d.fixed) {
         d.x = d.fx || d.x;
         d.y = d.fy || d.y;
@@ -53,6 +53,7 @@ class Chart {
   static normalizeData(data) {
     data.nodes = data.nodes || Chart.getNodes();
     data.links = data.links || _.cloneDeep(Chart.getLinks());
+    data.labels = data.labels || Chart.getLabels();
 
     const nodes = data.nodes.map((d) => Object.create(d));
 
@@ -95,7 +96,7 @@ class Chart {
 
     const links = Object.values(data.links).map((d) => Object.create(d));
 
-    return { links, nodes };
+    return { links, nodes, labels: data.labels };
   }
 
   static resizeSvg = () => {
@@ -129,16 +130,100 @@ class Chart {
     return null;
   }
 
-  static handleZoom = () => {
+  static handleZoom = (ev) => {
     if (this.activeButton === 'create-label') {
       return;
     }
-    const { transform } = d3.event;
+    const { transform } = ev;
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
       .attr('data-y', transform.y);
+
+    this.setLabelsBoardZoom(transform);
     this.renderNodeText(transform.k);
+  }
+
+  static setLabelsBoardZoom(transform) {
+    const scale = 1 / transform.k;
+    const size = 100 * scale;
+    const x = transform.x * -1 * scale;
+    const y = transform.y * -1 * scale;
+    this.wrapper.select('.labelsBoard')
+      .attr('width', `${size}%`)
+      .attr('height', `${size}%`)
+      .attr('x', x)
+      .attr('y', y);
+  }
+
+  static renderLabels() {
+    let activeLine;
+
+    const renderPath = d3.line()
+      .x((d) => d[0])
+      .y((d) => d[1])
+      .curve(d3.curveBasis);
+    const labels = d3.select('#graph .labels');
+
+    labels.selectAll('path')
+      .data(this.data.labels)
+      .join('path')
+      .attr('class', 'label')
+      .attr('opacity', '0.4')
+      .attr('data-name', ChartUtils.labelColors())
+      .attr('fill', ChartUtils.labelColors())
+      .attr('d', (d) => renderPath(d.d))
+      .on('click', (...p) => this.event.emit('label.click', ...p));
+
+    const handleDragStart = () => {
+      if (this.activeButton !== 'create-label') return;
+
+      activeLine = labels.append('path')
+        .datum({
+          color: ChartUtils.labelColors()(),
+          d: [],
+        })
+        .attr('class', 'label')
+        .attr('opacity', '0.4')
+        .attr('data-name', (d) => d.color)
+        .attr('fill', (d) => d.color);
+    };
+
+    const handleDrag = (ev) => {
+      if (this.activeButton !== 'create-label') return;
+      const [x, y] = d3.pointer(ev);
+      const datum = activeLine.datum();
+      datum.d.push([x, y]);
+      activeLine.datum(datum);
+      activeLine.attr('d', (d) => renderPath(d.d));
+    }
+
+    const handleDragEnd = () => {
+      if (this.activeButton !== 'create-label') return;
+      const datum = activeLine.datum();
+
+      datum.d = datum.d.filter((d, i) => i % 2 === 0);
+      // datum.test = [d[0]];
+      // let x = d[0];
+      // let y = d[1];
+      //
+      // datum.d.forEach(() => {})
+
+      activeLine.datum(datum);
+      activeLine.attr('d', (d) => renderPath(d.d));
+
+      this.data.labels.push(datum);
+
+      activeLine = null;
+      this._dataNodes = null;
+    };
+
+    labels.call(d3.drag()
+      .on('start', handleDragStart)
+      .on('drag', handleDrag)
+      .on('end', handleDragEnd));
+
+    this._dataNodes = null;
   }
 
   static render(data = {}, params = {}) {
@@ -163,7 +248,6 @@ class Chart {
       }
       data = ChartUtils.filter(data, params.filters, params.customFields);
       this.data = data;
-
       this.radiusList = ChartUtils.getRadiusList();
 
       const filteredLinks = this.data.links.filter((d) => !d.hidden);
@@ -179,8 +263,8 @@ class Chart {
       this.svg = this.svg
         .call(this.zoom)
         .on('dblclick.zoom', null)
-        .on('click', (d) => this.event.emit('click', d))
-        .on('mousemove', (d) => this.event.emit('mousemove', d));
+        .on('click', (...p) => this.event.emit('click', ...p))
+        .on('mousemove', (...p) => this.event.emit('mousemove', ...p));
 
       this.resizeSvg();
 
@@ -196,9 +280,10 @@ class Chart {
         .attr('stroke', ChartUtils.linkColor())
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
-        .on('click', (d) => this.event.emit('link.click', d));
+        .on('click', (...p) => this.event.emit('link.click', ...p));
 
       this.renderDirections();
+      this.renderLabels();
       this.icons = this.renderIcons();
 
       this.nodesWrapper = this.svg.select('.nodes');
@@ -208,10 +293,10 @@ class Chart {
         .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''}`)
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
-        .on('mouseenter', (d) => this.event.emit('node.mouseenter', d))
-        .on('mouseleave', (d) => this.event.emit('node.mouseleave', d))
-        .on('dblclick', (d) => this.event.emit('node.dblclick', d))
-        .on('click', (d) => this.event.emit('node.click', d));
+        .on('mouseenter', (...p) => this.event.emit('node.mouseenter', ...p))
+        .on('mouseleave', (...p) => this.event.emit('node.mouseleave', ...p))
+        .on('dblclick', (...p) => this.event.emit('node.dblclick', ...p))
+        .on('click', (...p) => this.event.emit('node.click', ...p));
 
       this.nodesWrapper.selectAll('.node > *').remove();
 
@@ -474,7 +559,7 @@ class Chart {
       dragActive = false;
     });
 
-    this.event.on('node.mouseenter', (d) => {
+    this.event.on('node.mouseenter', (ev, d) => {
       if (dragActive) return;
       const links = this.getNodeLinks(d.name, 'all');
       links.push({ source: d.name, target: d.name });
@@ -525,7 +610,7 @@ class Chart {
         cancel = false;
       }, 300);
     });
-    this.event.on('node.click', async (d) => {
+    this.event.on('node.click', async (ev, d) => {
       await Utils.sleep(10);
       if (this.activeButton !== 'create') {
         return;
@@ -556,7 +641,7 @@ class Chart {
           .attr('x2', 0)
           .attr('y2', 0);
         if (source !== target) {
-          this.event.emit('line.new', {
+          this.event.emit('line.new', ev, {
             source,
             target: d.name,
           });
@@ -564,8 +649,8 @@ class Chart {
       }
     });
 
-    this.event.on('click', () => {
-      if (d3.event.target.tagName !== 'svg') {
+    this.event.on('click', (ev) => {
+      if (ev.target.tagName !== 'svg') {
         return;
       }
       setTimeout(() => {
@@ -576,18 +661,18 @@ class Chart {
           .attr('y2', 0);
       }, 10);
     });
-    this.event.on('mousemove', () => {
+    this.event.on('mousemove', (ev) => {
       const source = this.newLink.attr('data-source');
       if (this.activeButton !== 'create' || !source) {
         return;
       }
-      const { x, y } = this.getScaledPosition();
+      const { x, y } = this.getScaledPosition(ev);
       this.newLink.attr('x2', x).attr('y2', y);
     });
   }
 
-  static getScaledPosition() {
-    const { x, y } = d3.event;
+  static getScaledPosition(ev) {
+    const { x, y } = ev;
     return ChartUtils.calcScaledPosition(x, y);
   }
 
@@ -624,6 +709,7 @@ class Chart {
         hidden: d.hidden,
         keywords: d.keywords || [],
         location: d.location || undefined,
+        labels: ChartUtils.getLabelsByPosition(d),
       }));
     }
     if (show) {
@@ -658,6 +744,13 @@ class Chart {
       });
     }
     return this._dataLinks;
+  }
+
+  static getLabels() {
+    if (_.isEmpty(this.data)) {
+      return [];
+    }
+    return this.data.labels || [];
   }
 
   static get activeButton() {
@@ -708,8 +801,8 @@ class Chart {
       left, top, width, height,
     } = document.querySelector('#graph .nodes').getBoundingClientRect();
 
-    const scaleW = svgWidth / width;
-    const scaleH = svgHeight / height;
+    const scaleW = svgWidth / (width + 20);
+    const scaleH = svgHeight / (height + 20);
     const scale = Math.min(scaleW, scaleH);
 
     const x = -1 * (left - svgLeft) * scale + ((svgWidth - width * scale) / 2);

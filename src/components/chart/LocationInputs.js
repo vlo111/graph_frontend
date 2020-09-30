@@ -36,7 +36,7 @@ class LocationInputs extends Component {
 
   render() {
     const { open } = this.state;
-    const { value, error } = this.props;
+    const { value } = this.props;
     return (
       <div className="locationInputsWrapper">
         <Tooltip overlay="Select Location">

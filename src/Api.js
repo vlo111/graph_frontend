@@ -66,11 +66,11 @@ class Api {
     fileDownload(data, fileName);
   }
 
-  static convert(type, requestData) {
+  static convertToGraph(type, requestData) {
     return api.post(`/convert/${type}/to/graph`, this.toFormData(requestData));
   }
 
-  static convertNode(type, requestData) {
+  static convertToNode(type, requestData) {
     return api.post(`/convert/${type}/to/node`, this.toFormData(requestData));
   }
 

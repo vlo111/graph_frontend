@@ -11,6 +11,7 @@ import Button from '../form/Button';
 class NodeTypesFilter extends Component {
   static propTypes = {
     filters: PropTypes.object.isRequired,
+    customFields: PropTypes.object.isRequired,
     setFilter: PropTypes.func.isRequired,
     nodes: PropTypes.array.isRequired,
   }
@@ -98,7 +99,6 @@ class NodeTypesFilter extends Component {
     if (typesFull.length < 2) {
       return null;
     }
-    console.log(filters.nodeCustomFields);
     return (
       <div className="nodesTypesFilter graphFilter">
         <h4 className="title">Node Types</h4>

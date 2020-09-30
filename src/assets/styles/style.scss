@@ -686,6 +686,26 @@ p {
     display: none !important;
   }
 
+  .labels {
+    .labelsBoard {
+      pointer-events: none;
+    }
+  }
+
+  &.create-label {
+    .labels {
+      pointer-events: all;
+
+      .labelsBoard {
+        pointer-events: all;
+      }
+    }
+
+    > * {
+      pointer-events: none;
+    }
+  }
+
   &.capture {
     position: fixed;
     width: 100vw;
@@ -2264,6 +2284,9 @@ p {
 }
 
 .graphFilter {
+  width: 100%;
+  margin-bottom: 15px;
+
   .list {
     .item {
       text-shadow: 0 0 1px rgba($color-dark, 0.4);
@@ -2308,6 +2331,64 @@ p {
       overflow: hidden;
       white-space: nowrap;
     }
+  }
+
+  &.labelsFilter {
+    .list {
+      flex-direction: revert;
+      flex-wrap: wrap;
+      display: flex;
+
+      .item {
+        margin-right: 10px;
+      }
+    }
+
+    .ghCheckbox {
+      cursor: pointer;
+
+      input {
+        display: none;
+      }
+
+      .badge {
+        position: absolute;
+        left: 50%;
+        top: 4px;
+        transform: translate(-50%);
+        color: $color-white;
+      }
+
+      input:not(:checked) ~ label {
+        .colorBox {
+          border-color: transparent !important;
+          filter: brightness(0.9);
+        }
+      }
+
+      label {
+        padding-left: 0;
+
+        .colorBox {
+          height: 30px;
+          width: 75px;
+          background-color: #f4f4ff;
+          border-radius: 7px;
+          overflow: hidden;
+          border: 3px solid;
+          pointer-events: none;
+
+          div {
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+          }
+        }
+
+      }
+
+    }
+
   }
 }
 
@@ -3424,6 +3505,7 @@ body .gh__menu {
 
   &__search {
     width: 30%;
+
     &-user {
       margin-top: 32px;
     }
@@ -3449,6 +3531,7 @@ body .gh__menu {
   }
 
 }
+
 #search-user {
   border: 1px solid black !important;
   border-radius: 0 0 5px 5px;

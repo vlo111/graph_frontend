@@ -36,7 +36,7 @@ class AddLinkModal extends Component {
     Chart.event.on('line.new', this.handleAddNewLine);
   }
 
-  handleAddNewLine = (d) => {
+  handleAddNewLine = (ev, d) => {
     const { source, target } = d;
     // const { linkData: { type } } = this.state;
     const links = Chart.getLinks();
