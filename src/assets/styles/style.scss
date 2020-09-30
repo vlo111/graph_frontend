@@ -158,6 +158,101 @@ p {
   }
 }
 
+.contentEditor {
+  width: 320px;
+
+  .error {
+    color: #FE5C4F;
+    font-size: 14px;
+    padding: 0 8px;
+  }
+
+  .jodit-container {
+    border-radius: 8px;
+
+    .jodit-toolbar__box {
+      border-radius: 8px 8px 0 0;
+      background-color: white;
+    }
+
+    .jodit-status-bar {
+      border-radius: 0 0 8px 8px;
+      background-color: white;
+      display: none;
+    }
+
+
+    .jodit-toolbar-button {
+      border-radius: 11px;
+      background-color: transparent;
+      margin: 28px 6px 7px 6px;
+      position: relative;
+      overflow: visible;
+
+      &[aria-pressed="true"] {
+        background-color: #ECEFF7;
+
+        svg {
+          fill: #6291F7;
+        }
+      }
+
+      .jodit-toolbar-button__button {
+        border-radius: 11px;
+        min-height: 100%;
+        border: 1px solid #C2C9DE;
+
+        &:hover {
+          background-color: #ECEFF7;
+        }
+      }
+
+
+      svg {
+        fill: #9CA6C5;
+      }
+    }
+
+    .jodit-ui-separator {
+      margin: 28px 10px 6.5px 10px;
+    }
+
+    .jodit-toolbar-editor-collection_size_middle.jodit-toolbar-editor-collection_mode_horizontal {
+      background-image: repeating-linear-gradient(transparent, transparent 68px, #dadada 69px);
+    }
+
+    .jodit-toolbar-button_file {
+      margin: 28px 13px 6.5px 13px;
+    }
+
+    .jodit-toolbar-button_file:before,
+    .jodit-toolbar-button_link:before,
+    .jodit-toolbar-button_bold:before {
+      position: absolute;
+      font-size: 10px;
+      color: #9CA6C5;
+      white-space: nowrap;
+      top: -19px;
+      left: 0px;
+    }
+
+    .jodit-toolbar-button_bold:before {
+      content: 'Text Properties';
+    }
+
+    .jodit-toolbar-button_file:before {
+      content: 'Insert media';
+      left: -12px;
+    }
+
+    .jodit-toolbar-button_link:before {
+      content: 'Insert link';
+      left: -5px;
+    }
+  }
+
+}
+
 .ghFormField {
   width: 320px;
   display: flex;
@@ -232,6 +327,22 @@ p {
 
     .gh__indicator {
       cursor: pointer;
+    }
+  }
+
+  &.ghIsMulti {
+    .gh__clear-indicator {
+      display: none;
+    }
+
+    .gh__dropdown-indicator {
+      display: none;
+    }
+
+    .gh__value-container {
+      max-height: 200px;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
   }
 
@@ -343,7 +454,7 @@ p {
   }
 
   .ghInput input {
-    padding-right: 80px;
+    padding-right: 100px;
   }
 
   .clear {
@@ -466,6 +577,14 @@ p {
     }
   }
 
+  &.accent {
+    background-color: $color-accent;
+
+    &:hover {
+      box-shadow: 0 3px 6px rgba($color-accent, 0.4);
+    }
+  }
+
   &.light {
     background-color: $color-light-blue;
     color: $color-dark;
@@ -479,12 +598,20 @@ p {
     background-color: transparent !important;
     box-shadow: none !important;
     color: $color-main;
+    box-shadow: none;
   }
 
   .icon {
     width: 14px;
     margin-right: 8px;
     vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      margin-right: 0;
+    }
 
     img {
       height: 14px;
@@ -497,6 +624,11 @@ p {
     }
   }
 
+  &.onlyIcon {
+    .icon {
+      margin-right: 0;
+    }
+  }
 }
 
 .ghCheckbox {
@@ -550,6 +682,10 @@ p {
   max-height: 100vh;
   position: relative;
 
+  &.maps-view {
+    display: none !important;
+  }
+
   &.capture {
     position: fixed;
     width: 100vw;
@@ -580,6 +716,11 @@ p {
 
       &.hidden {
         opacity: 0.2 !important;
+        pointer-events: none;
+      }
+
+      &.unChecked {
+        opacity: 0.1 !important;
         pointer-events: none;
       }
     }
@@ -644,6 +785,11 @@ p {
       }
     }
 
+    &.unChecked {
+      opacity: 0.1 !important;
+      pointer-events: none;
+    }
+
     &.auto {
       rect,
       path,
@@ -690,6 +836,11 @@ p {
 
   .content {
     user-select: none;
+  }
+
+  .buttons {
+    justify-content: flex-start;
+    margin-left: 250px;
   }
 
   > div:first-child {
@@ -745,7 +896,60 @@ p {
   width: 100%;
   height: 60px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+
+  .right-elements {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .signOut {
+      margin-left: 10px;
+    }
+  }
+}
+
+#headerMini {
+  display: flex;
+  padding: 4% 3%;
+  align-items: center;
+  height: 94px;
+
+  .links {
+    display: flex;
+    margin: 0 13px;
+
+    li {
+      margin: 0 10%;
+
+      a {
+        color: $color-dark;
+      }
+    }
+  }
+
+  .searchInputWrapper {
+    max-width: 33%;
+
+  }
+}
+
+.searchInputWrapper {
+  width: 249px;
+
+  .graphSearch {
+    width: 100%;
+  }
+
+
+  .list {
+    position: absolute;
+    z-index: 5;
+    background-color: $color-white;
+    box-shadow: 0px 6px 20px #0D090526;
+    border-radius: 5px;
+  }
 }
 
 .signOut {
@@ -1058,15 +1262,30 @@ p {
     top: 16%;
     max-width: 460px;
     background-color: white;
-    border-radius: 2px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 6px 20px #0D090526;
     padding: 15px;
     max-height: 80%;
-    //overflow-y: auto;
-    //overflow-x: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .ghModalContent {
+      height: 100%;
+      width: calc(100% + 10px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin-right: -15px;
+      padding-right: 15px;
+    }
   }
 
-
+  .ghModalSave {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 }
 
 .buttons {
@@ -1111,6 +1330,11 @@ p {
     margin: 0;
     font-weight: 400;
 
+    a {
+      color: $color-dark;
+      text-decoration: none;
+    }
+
     &:after {
       content: '';
       position: absolute;
@@ -1130,7 +1354,6 @@ p {
     }
 
     .icon {
-      width: 30px;
       font-size: 18px;
 
       i {
@@ -1156,8 +1379,10 @@ p {
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   background-color: white;
   max-height: 100vh;
+  height: 100vh;
+  position: absolute;
   z-index: 3;
-  margin-left: 202px;
+  left: 202px;
   border-left: 1px solid $color-light-gray;
   padding-left: 4px;
 
@@ -1166,7 +1391,7 @@ p {
     position: absolute;
     width: calc(100% - 202px);
     height: 100%;
-    z-index: 3;
+    z-index: 10;
     overflow: hidden;
   }
 
@@ -1196,10 +1421,15 @@ p {
   .contentWrapper {
     background-color: white;
     max-width: 100%;
-    height: 100%;
+    height: calc(100% - 32px);
     display: flex;
     flex-direction: column;
+    font-size: 15px;
+    position: relative;
 
+    p {
+      font-size: 15px;
+    }
   }
 
   .header {
@@ -1240,7 +1470,7 @@ p {
     }
 
     .buttons {
-      z-index: 2;
+      z-index: 10;
       margin: 0;
       bottom: 1px;
       right: 1px;
@@ -1261,9 +1491,10 @@ p {
     width: max-content !important;
     min-width: 100%;
     margin: 0;
+    z-index: 5;
 
-    textarea,
-    input {
+    > textarea,
+    > input {
       height: 32px;
       text-align: left;
       font-size: 15px;
@@ -1281,28 +1512,24 @@ p {
       min-width: 200px;
     }
 
-    .gh__control {
-      min-height: 32px;
-      height: 32px;
-      border-radius: 0;
-      border: none;
-      align-items: flex-start;
-      z-index: 2;
 
-      .gh__indicators {
-        height: 100%;
+    &.ghSelect {
+      width: 320px !important;
+
+      .gh__control {
+        min-height: 32px;
+        height: 32px;
+        border-radius: 0;
+        border: none;
+        z-index: 2;
+        border-right: 1px solid $color-light-gray;
       }
 
-      .gh__value-container {
-        height: 100%;
-        padding: 2px 3px;
+      .gh__menu {
+        margin-top: 0;
       }
-
-      .gh__indicator-separator {
-        display: none;
-      }
-
     }
+
 
     .gh__menu {
       margin-top: 3px;
@@ -1312,12 +1539,8 @@ p {
 
   .ghGridTableWrapper {
     overflow-x: auto;
-    height: calc(100% - 118px);
+    height: calc(100% - 87px);
     border-bottom: 1px solid $color-gray;
-  }
-
-  .tabs {
-    min-height: 46px;
   }
 
   .ghGridTable {
@@ -1448,6 +1671,21 @@ p {
         left: 60px;
       }
 
+      &.keywords {
+        .ghFormField {
+          //max-width: 100% !important;
+          //width: 100% !important;
+          //left: auto;
+          //right: 0;
+
+          .gh__control {
+            height: auto;
+            border: 1px solid $color-main;
+          }
+        }
+
+      }
+
       //&.value,
       //&.type {
       //  text-align: right;
@@ -1475,6 +1713,7 @@ p {
 
 
   .tabs {
+    min-height: 46px;
     display: flex;
     align-items: center;
     overflow-x: auto;
@@ -1489,6 +1728,7 @@ p {
 
     button {
       margin: 5px 15px;
+      border: 0;
       background-color: transparent;
       padding: 5px 5px 1px;
       color: $color-dark;
@@ -1496,6 +1736,12 @@ p {
       border-radius: 0;
       scroll-snap-align: start;
       white-space: nowrap;
+      box-shadow: none;
+
+      &:before,
+      &:after {
+        content: none;
+      }
 
       &.active {
         border-bottom-color: $color-dark;
@@ -1589,40 +1835,6 @@ p {
       height: 100%;
       object-fit: cover;
     }
-
-    .node {
-      width: 50px;
-      height: 50px;
-      overflow: hidden;
-      color: $color-white;
-      font-size: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 0;
-      border-radius: 50%;
-      padding-bottom: 5px;
-
-      &.hasImage {
-        padding-bottom: 0;
-      }
-
-      &.square {
-        border-radius: 1px;
-        border: 1px solid transparent;
-      }
-
-      &.triangle {
-        border-radius: 0;
-        position: relative;
-        clip-path: polygon(50% 0%, 0% 80%, 100% 80%);
-      }
-
-      &.hexagon {
-        border-radius: 0;
-        clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
-      }
-    }
   }
 
   .right {
@@ -1683,6 +1895,12 @@ p {
   height: 58px;
   border-radius: 15px;
   border: 1px solid $color-white;
+
+  &.circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+  }
 }
 
 .graphsList {
@@ -1872,6 +2090,10 @@ p {
 
     .icon {
       margin: 0;
+
+      svg {
+        min-width: 30px;
+      }
     }
   }
 
@@ -1884,6 +2106,42 @@ p {
 
     .icon {
       margin: 0;
+
+      svg {
+        min-width: 30px;
+      }
+    }
+  }
+
+  .share {
+    position: absolute;
+    left: 15px;
+    top: 225px;
+    margin-right: 0;
+    padding-right: 0;
+
+    .icon {
+      margin: 0;
+
+      svg {
+        min-width: 30px;
+      }
+    }
+  }
+
+  .back {
+    position: absolute;
+    left: 15px;
+    top: 290px;
+    margin-right: 0;
+    padding-right: 0;
+
+    .icon {
+      margin: 0;
+
+      svg {
+        min-width: 30px;
+      }
     }
   }
 }
@@ -1929,7 +2187,7 @@ p {
   width: 380px;
   right: 0;
   left: auto;
-  z-index: 2;
+  z-index: 10;
   background-color: transparent;
 
   .close {
@@ -2015,7 +2273,7 @@ p {
 
 #chartZoom {
   position: fixed;
-  right: 0;
+  right: 10px;
   bottom: 0;
   z-index: 2;
   display: flex;
@@ -2040,6 +2298,33 @@ p {
       .badge {
         margin-left: auto;
         align-self: flex-start;
+      }
+    }
+  }
+
+  .subList {
+    padding-left: 25px;
+  }
+
+  .ghCheckbox {
+    width: 100%;
+
+    label {
+      order: 1;
+    }
+
+    .badge {
+      order: 2;
+    }
+
+    .dropdownArrow {
+      padding: 0;
+      background-color: transparent;
+      margin: 0 0 3px 10px;
+      box-shadow: transparent;
+
+      .icon {
+        position: static;
       }
     }
   }
@@ -2197,7 +2482,7 @@ p {
   justify-content: center;
   flex-direction: column;
   padding: 18px 24px;
-  z-index: 2;
+  z-index: 9;
 
   .accountInfo {
     display: flex;
@@ -2243,6 +2528,44 @@ p {
       }
     }
   }
+
+  .down {
+    position: absolute;
+    right: 15px;
+    width: 17px;
+    height: 17px;
+    background-color: #F2F5F7;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      color: $color-gray;
+      font-size: 11px;
+    }
+  }
+
+  &.mini {
+    position: relative;
+    padding: 0;
+    margin-left: auto;
+
+    .dropdown {
+      position: absolute;
+      min-width: 180px;
+      right: -27px;
+      left: auto;
+      top: 105%;
+
+      ul {
+        box-shadow: 0 5px 12px #E2E7EB29;
+        border: 1px solid #E2E7EB;
+        text-align: right;
+        padding: 5px 10px;
+      }
+    }
+  }
 }
 
 .socialLogin {
@@ -2256,28 +2579,6 @@ p {
     text-align: center;
     margin: 32px 0;
 
-  }
-
-  .socialButtons {
-    display: flex;
-  }
-
-  .button {
-    background-color: #4285F4;
-    color: $color-white;
-    display: flex;
-    border-radius: 8px;
-    margin-right: 15px;
-    padding: 6px 7px 5px;
-    align-items: center;
-
-    img {
-      width: 30px;
-      height: 30px;
-      border-radius: 5px;
-      object-fit: cover;
-      margin-right: 10px;
-    }
   }
 }
 
@@ -2314,5 +2615,876 @@ body .gh__menu {
   .gh__option--is-selected {
     background-color: #668DF81A;
     color: $color-dark;
+  }
+}
+
+.nodeIcon {
+  width: 50px;
+  min-width: 50px;
+  height: 50px;
+  overflow: hidden;
+  color: $color-white;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  border-radius: 50%;
+  padding-bottom: 5px;
+
+  &.hasImage {
+    padding-bottom: 0;
+  }
+
+  &.square {
+    border-radius: 1px;
+    border: 1px solid transparent;
+  }
+
+  &.triangle {
+    border-radius: 0;
+    position: relative;
+    clip-path: polygon(50% 0%, 0% 80%, 100% 80%);
+  }
+
+  &.hexagon {
+    border-radius: 0;
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+  }
+}
+
+.ghModalSearch {
+  width: 460px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+
+  .graphSearch {
+    width: 100%;
+
+    label {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+  }
+
+}
+
+.searchInputWrapper,
+.ghModalSearch {
+  .list {
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .item {
+      display: flex;
+      padding: 10px;
+
+      .ghButton {
+        width: 100%;
+        margin: 0;
+        padding: 10px 5px;
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        text-align: left;
+        display: flex;
+        flex-direction: row;
+
+        .right {
+          display: flex;
+          flex-direction: column;
+          margin-left: 10px;
+          width: calc(100% - 60px);
+
+          .row {
+            display: flex;
+          }
+
+          .name {
+            margin-right: 10px;
+            overflow: hidden;
+          }
+
+          .keywords {
+            font-size: 12px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+
+        .name {
+          font-size: 15px;
+          max-width: 50%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .type {
+          max-width: calc(50% - 70px);
+          color: $color-dark-blue;
+        }
+      }
+    }
+  }
+}
+
+#autoPlay {
+  position: absolute;
+  bottom: 130px;
+  right: 10px;
+  background-color: $color-white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.mapButton {
+  position: fixed;
+  background: transparent;
+  border: none;
+  display: flex;
+  z-index: 2;
+  left: 210px;
+  top: 5px;
+
+  img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.ghMapsModalVirtualMarker {
+  object-fit: contain;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 9999;
+  pointer-events: none;
+  transform: translate(-50%, -70%);
+  height: 64px;
+  width: 64px;
+  animation-name: ghMapsModalVirtualMarkerScale;
+  animation-duration: 200ms;
+  @keyframes ghMapsModalVirtualMarkerScale {
+    from {
+      height: 50px;
+      width: 50px;
+    }
+    to {
+      height: 64px;
+      width: 64px;
+    }
+  }
+}
+
+.ghMapsModalOverlay {
+  transition: opacity 800ms;
+
+  .ghMapsModal {
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 60%;
+    max-height: 60%;
+  }
+
+  .ghLoading {
+    margin: auto;
+    top: calc(50% - 30px);
+    position: absolute;
+    left: calc(50% - 30px);
+  }
+
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+
+    .ghMapsModal {
+      opacity: 0;
+    }
+  }
+
+  .selectLocation {
+    border-radius: 2px;
+    background-color: $color-white;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
+    z-index: 2;
+    position: absolute;
+    bottom: 25px;
+    left: 5px;
+    padding: 8px 22px;
+    font-size: 18px;
+
+    &:hover {
+      background-color: rgb(235, 235, 235);
+    }
+  }
+
+}
+
+#mapsGraph {
+  position: absolute;
+  top: 0;
+  left: 202px;
+  z-index: 3;
+  width: calc(100% - 202px);
+  height: 100%;
+
+  .gmnoprint {
+    .gm-style-mtc:first-child {
+      margin-left: 60px;
+    }
+  }
+
+  .closeMap {
+    position: absolute;
+    left: 6px;
+    top: 5px;
+    background-color: $color-white;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
+    height: 40px;
+
+    .icon {
+      margin-right: 0;
+    }
+  }
+
+  .googleMapDescription {
+    display: flex;
+
+    .left {
+      margin-right: 15px;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: normal;
+      margin-bottom: 5px;
+    }
+
+    h4 {
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
+
+#mapsSearch {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  width: 50%;
+  min-width: 296px;
+
+  .ghFormField {
+    width: 100%;
+
+    input {
+      width: 100%;
+      border-radius: 2px;
+      box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
+      height: 40px;
+      font-size: 17px;
+    }
+  }
+}
+
+
+.socialButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .button {
+    background-color: #4285F4;
+    color: $color-white;
+    display: flex;
+    border-radius: 8px;
+    margin: 5px 7.5px;
+    padding: 6px 7px 5px;
+    align-items: center;
+    outline: none;
+    border: none;
+    font-size: 14px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      width: 30px;
+      height: 30px;
+      object-fit: cover;
+      margin-right: 10px;
+      //background-color: $color-white;
+      border-radius: 5px;
+
+      &.whiteBg {
+        background-color: $color-white;
+        padding: 4px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+.locationInputsWrapper {
+  display: flex;
+  width: 320px;
+
+  .button {
+    filter: grayscale(90%);
+    cursor: pointer;
+    width: 35px;
+    margin-top: 10px;
+
+    &.selected {
+      filter: none;
+    }
+  }
+}
+
+#nodeFullInfo {
+  position: fixed;
+  background: $color-white;
+  width: 40%;
+  height: 100vh;
+  z-index: 22;
+  box-shadow: 0px 6px 20px #0D090526;
+  right: 0;
+  top: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+
+  .collaborate {
+    margin-top: 27px;
+  }
+}
+
+.nodeFullContent {
+  .name {
+    font-size: 26px;
+  }
+
+  .type {
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .headerBanner {
+    position: relative;
+    height: 9.8vw;
+    min-height: 150px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      left: 0;
+      top: 0;
+      z-index: -1;
+    }
+
+    img {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      z-index: 0;
+      object-fit: cover;
+      top: 0;
+      left: 0;
+    }
+
+    .textWrapper {
+      position: absolute;
+      bottom: 0;
+      padding: 5% 6%;
+      color: #ffffff;
+    }
+
+    .expand {
+      color: $color-white;
+      background-color: $color-main2;
+      padding: 12px 28px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      position: absolute;
+      bottom: -18px;
+      right: 10%;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+  }
+
+
+  .description {
+    margin-top: 19px;
+    font-size: 15px;
+
+    p {
+      font-size: 15px;
+    }
+  }
+}
+
+
+.textEllipsis {
+  p {
+    font-size: inherit;
+  }
+
+  .ghButton {
+    padding: 0;
+    margin-left: auto;
+    margin-top: 27px;
+    color: $color-dark-blue;
+  }
+}
+
+.nodeTabs {
+  padding: 19.5px 4.5%;
+
+  .previewWrapper {
+    position: relative;
+    overflow: hidden;
+
+    iframe {
+      width: 300%;
+      height: 1010px;
+      transform: scale(0.3);
+      transform-origin: 0 0;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      max-height: 450px;
+      object-position: center center;
+      object-fit: contain;
+    }
+
+    a {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      position: absolute;
+      font-size: 0 !important;
+    }
+  }
+
+  .contentWrapper {
+    box-shadow: 0 5px 12px #E2E7EB29;
+    border: 1px solid #E2E7EB;
+    border-radius: 13px 24px 24px 24px;
+    padding: 39px 4% 31px;
+    max-height: 380px;
+    position: relative;
+    z-index: 1;
+    background-color: $color-white;
+    display: flex;
+
+    .content {
+      overflow-x: hidden;
+      overflow-y: auto;
+      max-height: 100%;
+      padding: 0 10px;
+      width: 100%;
+
+      &::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $color-light-gray;
+        border-radius: 3.5px;
+      }
+    }
+  }
+}
+
+.ghModalOverlay .ghModalCustomFieldName {
+  top: 5%;
+}
+
+.createCustomField {
+  .inputName {
+    order: -1;
+    height: 20px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    width: 50%;
+  }
+}
+
+.customFieldRow {
+  position: relative;
+
+  .close {
+    position: absolute;
+    background-color: transparent;
+    padding: 0;
+    top: -5px;
+    right: 0;
+
+    span {
+      margin: 0;
+    }
+  }
+
+  .jodit-toolbar__box {
+    display: none;
+  }
+
+  .jodit-status-bar {
+    display: none;
+  }
+}
+
+
+.tabs {
+  display: flex;
+  padding: 0 11px;
+
+  .empty {
+    min-width: 11px;
+    height: 1px;
+    scroll-snap-align: start;
+  }
+
+  > span:first-child {
+    margin-left: 0 !important;
+  }
+
+  button {
+    margin: 0 11px;
+    padding: 12px 32px;
+    color: $color-dark-blue;
+    scroll-snap-align: start;
+    white-space: nowrap;
+    border: 1px solid $color-light-gray;
+    box-shadow: 0px 5px 12px #0D090526;
+    background-color: $color-white;
+    border-bottom: 0;
+    font-weight: 600;
+    width: max-content;
+    min-width: max-content;
+    border-radius: 24px 24px 0 0;
+
+    &.active {
+      color: $color-accent;
+      position: relative;
+      z-index: 2;
+
+      &:after {
+        content: '';
+        position: absolute;
+        display: inline-block;
+        width: 100%;
+        height: 10px;
+        background-color: $color-white;
+        left: 0;
+        bottom: -4px;
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        display: inline-block;
+        width: 114%;
+        height: 20px;
+        background-color: $color-white;
+        left: -7%;
+        bottom: -21px;
+      }
+    }
+
+    &.addTab {
+      background-color: $color-accent;
+      position: relative;
+      //z-index: 3;
+      //padding: 12px 25px;
+
+      .icon {
+        color: $color-white;
+      }
+    }
+
+    sub {
+      color: $color-dark-blue;
+      padding-left: 5px;
+    }
+  }
+}
+
+.ghModalOverlay .nodeTabsFormModal {
+  width: 31%;
+  max-width: unset !important;
+  padding: 1.6% 2.1%;
+  min-width: 598px;
+
+  .row {
+    display: flex;
+    width: 100%;
+
+    > * {
+      margin-right: 5%;
+      width: 47.5%;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .buttonsWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 7px;
+
+    .cancel {
+      font-size: 14px;
+      font-weight: 600;
+      color: $color-accent;
+      margin-right: 5px;
+      text-transform: none;
+    }
+  }
+
+  h3 {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .contentEditor {
+    width: 100%;
+
+    .label {
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .ghFormField {
+    label {
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
+}
+
+.connectionDetails {
+  padding: 0 10%;
+
+  .row {
+    h3 {
+      font-weight: 600;
+      font-size: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #E2E7EB;
+      margin: 20px 0;
+    }
+
+    .list {
+      .item {
+        margin-bottom: 30px;
+
+        a {
+          display: flex;
+          color: $color-dark;
+          text-decoration: none;
+        }
+
+        .left {
+          margin-right: 20px;
+        }
+
+        .right {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          .name {
+            font-weight: 600;
+            font-size: 16px;
+          }
+
+          .type {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.ghModalNodeFullInfoOverlay {
+  .ghModal {
+    top: 5%;
+    width: 77%;
+    height: 90%;
+    max-height: 90%;
+    max-width: 1476px;
+    padding: 0;
+  }
+
+  .ghModalContent {
+    display: flex;
+    padding: 3% 0;
+
+    > .left {
+      width: 69%;
+      padding: 0 3%;
+      border-right: 1px solid $color-light-gray;
+      overflow: auto;
+    }
+
+    > .right {
+      padding: 0 3%;
+      width: 30%;
+      overflow: auto;
+    }
+
+    .graphUser {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 0 10px 10px;
+
+      .avatar {
+        margin-right: 25px;
+      }
+
+    }
+
+    .connectionDetails {
+      padding: 0;
+
+      h3 {
+        margin-top: 0;
+      }
+    }
+
+    .headerBanner {
+      height: 11vw;
+    }
+
+    .nodeDescription {
+      padding: 10px 15px;
+    }
+
+    .nodeTabs {
+      padding: 20px 0;
+    }
+  }
+}
+
+.ghImportModal {
+  .ghTabs {
+    margin-bottom: 20px;
+  }
+}
+
+.share-modal {
+  @mixin collaborators-list {
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid black;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__owner {
+    @include collaborators-list;
+    justify-content: flex-start;
+
+    &-logo {
+      margin-right: 16px;
+    }
+  }
+
+  &__collaborators {
+    @include collaborators-list;
+    justify-content: space-between;
+  }
+
+  &__search {
+    width: 30%;
+    &-user {
+      margin-top: 32px;
+    }
+
+    &--selected {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      &-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    &-data {
+      display: flex;
+      justify-items: center;
+      justify-content: flex-start;
+      padding: 8px 0;
+    }
+  }
+
+}
+#search-user {
+  border: 1px solid black !important;
+  border-radius: 0 0 5px 5px;
+  box-shadow: #0D0905;
+  padding: 5px 16px;
+}
+
+.ReactModal {
+  &__Overlay {
+    z-index: 9;
   }
 }

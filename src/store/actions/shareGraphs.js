@@ -1,0 +1,32 @@
+import { define } from '../../helpers/redux-request';
+import Api from '../../Api';
+
+export const CREATE_SHARE_GRAPH = define('CREATE_SHARE_GRAPH');
+
+export function createGraphRequest(requestData) {
+  return CREATE_SHARE_GRAPH.request(() => Api.createShareGraph(requestData));
+}
+
+export const UPDATE_SHARE_GRAPH = define('UPDATE_SHARE_GRAPH');
+
+export function updateGraphRequest(id, requestData) {
+  return UPDATE_SHARE_GRAPH.request(() => Api.updateShareGraph(id, requestData));
+}
+
+export const DELETE_SHARE_GRAPH = define('DELETE_SHARE_GRAPH');
+
+export function deleteGraphRequest(id) {
+  return DELETE_SHARE_GRAPH.request(() => Api.deleteShareGraph(id));
+}
+
+export const LIST_SHARE_GRAPH = define('LIST_SHARE_GRAPH');
+
+export function listGraphRequest(requestData) {
+  return LIST_SHARE_GRAPH.request(() => Api.listShareGraph(requestData));
+}
+
+export const USER_SHARE_GRAPH = define('USER_SHARE_GRAPH');
+
+export function userGraphRequest(requestData) {
+  return USER_SHARE_GRAPH.request(() => Api.userGraph(requestData));
+}

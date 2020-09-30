@@ -45,8 +45,14 @@ class ContextMenu extends Component {
       element = 'link';
     } else if (ev.target.tagName === 'svg') {
       element = 'chart';
+    } else if (ev.target.closest('.contentWrapper')) {
+      const el = ev.target.closest('.contentWrapper');
+      const fieldName = el.getAttribute('data-field-name');
+      if (fieldName) {
+        element = 'nodeFullInfo';
+        params = { fieldName };
+      }
     }
-
     this.setState({
       x, y, show: element, params,
     });
@@ -56,24 +62,53 @@ class ContextMenu extends Component {
     this.setState({ show: false });
   }
 
-  handleClick = (type) => {
+  handleClick = (type, additionalParams) => {
     const { params } = this.state;
     params.contextMenu = true;
-    this.constructor.event.emit(type, params);
+    this.constructor.event.emit(type, { ...params, ...additionalParams });
+  }
+
+  nodeFullInfoContext = () => {
+    const { x, y, params } = this.state;
+    return (
+      <div className="contextmenuOverlay contextmenuOverlayFullInfo" onClick={this.closeMenu}>
+        <div className="contextmenu" style={{ left: x, top: y }}>
+          <Button icon="fa-pencil-square-o" onClick={() => this.handleClick('node.fields-edit', params.name)}>
+            Edit
+          </Button>
+          <Button icon="fa-trash" onClick={() => this.handleClick('node.fields-delete', params.name)}>
+            Delete
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   render() {
-    const { x, y, show } = this.state;
+    const {
+      x, y, show, params,
+    } = this.state;
     if (!show) {
       return null;
     }
+    if (show === 'nodeFullInfo') {
+      return this.nodeFullInfoContext();
+    }
     const undoCount = Chart.undoManager.undoCount();
+    const showInMap = Chart.getNodes().some((d) => d.location);
     return (
       <div className="contextmenuOverlay" onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
           {show === 'node' ? (
             <Button icon="fa-pencil-square-o" onClick={() => this.handleClick('node.edit')}>
               Edit
+            </Button>
+          ) : null}
+          {params.link ? (
+            <Button icon="fa-link" title={params.link}>
+              <a href={params.link} target="_blank" rel="noopener noreferrer">
+                Open Link
+              </a>
             </Button>
           ) : null}
           {show === 'node' ? (
@@ -86,11 +121,16 @@ class ContextMenu extends Component {
               Delete
             </Button>
           ) : null}
+          {showInMap ? (
+            <Button icon="fa-globe" onClick={() => this.handleClick('active-button', { button: 'maps-view' })}>
+              Show in map
+            </Button>
+          ) : null}
           <Button icon="fa-crop" onClick={() => this.handleClick('crop')}>
             Crop
           </Button>
           <Button disabled={!undoCount} icon="fa-undo" onClick={() => this.handleClick('undo')}>
-            Undo
+            {'Undo '}
             <sub>(Ctrl+Z)</sub>
           </Button>
         </div>

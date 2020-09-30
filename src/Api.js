@@ -1,19 +1,12 @@
 import axios from 'axios';
-import { stringify as qs } from 'query-string';
 import fileDownload from 'js-file-download';
 import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
 
-const { REACT_APP_URL } = process.env;
-const urls = [
-  'http://api.analysed.ai',
-  'http://localhost:5000',
-  'https://graphs-backend.ghost-services.com',
-];
-const apiUrl = urls[REACT_APP_URL] || urls[0];
+const { REACT_APP_API_URL } = process.env;
 
 const api = axios.create({
-  baseURL: apiUrl,
+  baseURL: REACT_APP_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -28,7 +21,18 @@ api.interceptors.request.use((config) => {
 }, (error) => Promise.reject(error));
 
 class Api {
-  static url = apiUrl;
+  static url = REACT_APP_API_URL;
+
+  static #cancelSource = [];
+
+  static #cancel = (key) => {
+    if (this.#cancelSource[key]) {
+      this.#cancelSource[key].cancel('Operation canceled by the user.');
+    }
+    const source = axios.CancelToken.source();
+    this.#cancelSource[key] = source;
+    return source.token;
+  }
 
   static toFormData(data) {
     return serialize({ ...data }, { indices: true });
@@ -66,6 +70,10 @@ class Api {
     return api.post(`/convert/${type}/to/graph`, this.toFormData(requestData));
   }
 
+  static convertNode(type, requestData) {
+    return api.post(`/convert/${type}/to/node`, this.toFormData(requestData));
+  }
+
   static createGraph(requestData) {
     return api.post('/graphs/create', requestData);
   }
@@ -83,15 +91,60 @@ class Api {
   }
 
   static getGraphsList(page, requestData = {}) {
-    const query = qs({
-      page,
-      ...requestData,
-    });
-    return api.get(`/graphs?${query}`);
+    const params = { page, ...requestData };
+    return api.get('/graphs', { params });
   }
 
   static getSingleGraph(getSingleGraph) {
     return api.get(`/graphs/single/${getSingleGraph}`);
+  }
+
+  static oAuth(type, params) {
+    const version = type === 'twitter' ? 'v1' : 'v2';
+    return api.get(`/users/oauth/${version}/redirect/${type}`, { params });
+  }
+
+  static getTwitterToken(params) {
+    return api.get('/users/oauth/v1/token/twitter', { params });
+  }
+
+  static getContentType(url) {
+    return api.get('/helpers/content-type', {
+      params: { url },
+      cancelToken: this.#cancel('getContentType'),
+    });
+  }
+
+  static getUsersByText(text) {
+    return api.get('/users/get-by-text', { params: { text } });
+  }
+
+  static createShareGraph(requestData) {
+    return api.post('/share-graphs/create', requestData);
+  }
+
+  static updateShareGraph(id, requestData) {
+    return api.put(`/share-graphs/update/${id}`, requestData);
+  }
+
+  static deleteShareGraph(id) {
+    return api.delete(`/share-graphs/delete/${id}`);
+  }
+
+  static listShareGraph(requestData) {
+    return api.post('/share-graphs/list/', requestData);
+  }
+
+  static userGraph() {
+    return api.get('/share-graphs/user-graphs');
+  }
+
+  static listNotifications() {
+    return api.get('/notifications/list');
+  }
+
+  static notificationsUpdate() {
+    return api.get('/notifications/update');
   }
 }
 

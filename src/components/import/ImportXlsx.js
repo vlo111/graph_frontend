@@ -77,12 +77,6 @@ class DataImportModal extends Component {
     }
   }
 
-  import = () => {
-    const { importData: { nodes = [], links = [] } } = this.props;
-    Chart.render({ nodes, links });
-    this.closeModal();
-  }
-
   render() {
     const { fileType, step, loading } = this.state;
     let file1Label = 'Select File';

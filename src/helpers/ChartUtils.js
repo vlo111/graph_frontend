@@ -1,16 +1,19 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
 import queryString from 'query-string';
+import randomColor from 'randomcolor';
 import memoizeOne from 'memoize-one';
+import stripHtml from 'string-strip-html';
 import Chart from '../Chart';
 import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
+import { NODE_COLOR } from '../data/node';
 import { DEFAULT_FILTERS } from '../data/filter';
-import Api from "../Api";
-import Utils from "./Utils";
+import Api from '../Api';
+import Utils from './Utils';
 
 class ChartUtils {
-  static filter = memoizeOne((data, params = {}) => {
+  static filter = memoizeOne((data, params = {}, customFields = {}) => {
     if (_.isEmpty(params)) {
       return data;
     }
@@ -28,7 +31,6 @@ class ChartUtils {
       d.hidden = false;
       return d;
     });
-
     data.nodes = data.nodes.map((d) => {
       // if (data.links.some((l) => l.hidden && d.name === l.source)) {
       //   d.hidden = true;
@@ -49,6 +51,18 @@ class ChartUtils {
         d.hidden = true;
         return d;
       }
+
+      if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.name]))) {
+        d.hidden = true;
+        return d;
+      }
+      if (!_.isEmpty(params.nodeKeywords) && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
+        d.hidden = true;
+        if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keyword)) {
+          d.hidden = false;
+        }
+        return d;
+      }
       d.hidden = false;
       return d;
     });
@@ -60,6 +74,25 @@ class ChartUtils {
 
     return data;
   })
+
+  static isCheckedNode = (selectedGrid, d) => _.isEmpty(selectedGrid.nodes) || selectedGrid.nodes.includes(d.index)
+
+  static isCheckedLink = (selectedGrid, d) => {
+    if (_.isEmpty(selectedGrid.nodes)) {
+      return true;
+    }
+    const { index: sourceIndex } = this.getNodeByName(d.source.name || d.source);
+    const { index: targetIndex } = this.getNodeByName(d.target.name || d.target);
+    if (!selectedGrid.nodes.includes(sourceIndex) || !selectedGrid.nodes.includes(targetIndex)) {
+      return false;
+    }
+    return selectedGrid.links.includes(d.index);
+  }
+
+  static getNodeByName(name) {
+    const nodes = Chart.getNodes();
+    return nodes.find((d) => d.name === name);
+  }
 
   static normalizeIcon = (icon) => {
     if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {
@@ -109,8 +142,12 @@ class ChartUtils {
     return (d) => scale(d.nodeType);
   }
 
+  static getNodeDocument(i) {
+    return document.querySelector(`#graph .node[data-i="${i}"] :not(text)`);
+  }
+
   static getNodeDocumentPosition(i) {
-    const node = document.querySelector(`#graph .node[data-i="${i}"]`);
+    const node = this.getNodeDocument(i);
     if (!node) {
       return {};
     }
@@ -171,9 +208,13 @@ class ChartUtils {
   static linkColorIndex = 0;
 
   static linkColor = () => (d) => {
+    if (d.color) {
+      return d.color;
+    }
     if (!(d.type in this.linkColorObj)) {
-      const i = LINK_COLORS[this.linkColorIndex] ? this.linkColorIndex : 0;
-      this.linkColorObj[d.type] = LINK_COLORS[i];
+      this.linkColorObj[d.type] = LINK_COLORS[this.linkColorIndex] || randomColor({
+        luminosity: 'light',
+      });
       this.linkColorIndex += 1;
     }
     return this.linkColorObj[d.type];
@@ -184,9 +225,11 @@ class ChartUtils {
   static nodeColorIndex = 0;
 
   static nodeColor = () => (d) => {
+    if (d.color) {
+      return d.color;
+    }
     if (!(d.type in this.nodeColorObj)) {
-      const i = d3.schemeCategory10[this.nodeColorIndex] ? this.nodeColorIndex : 0;
-      this.nodeColorObj[d.type] = d3.schemeCategory10[i];
+      this.nodeColorObj[d.type] = NODE_COLOR[this.nodeColorIndex] || randomColor();
       this.nodeColorIndex += 1;
     }
     return this.nodeColorObj[d.type];
@@ -225,6 +268,42 @@ class ChartUtils {
     const radians = Math.atan2(dy, dx);
     const degrees = (radians * 180 / Math.PI) + 180;
     return degrees > 90 && degrees < 270;
+  }
+
+  static nodeSearch(search, limit = 15) {
+    const s = search.trim().toLowerCase();
+    const nodes = Chart.getNodes().map((d) => {
+      d.priority = undefined;
+      if (d.name.toLowerCase() === s) {
+        d.priority = 1;
+      } else if (d.type.toLowerCase() === s) {
+        d.priority = 2;
+      } else if (d.name.toLowerCase().startsWith(s)) {
+        d.priority = 3;
+      } else if (d.type.toLowerCase().startsWith(s)) {
+        d.priority = 4;
+      } else if (d.name.toLowerCase().includes(s)) {
+        d.priority = 5;
+      } else if (d.type.toLowerCase().includes(s)) {
+        d.priority = 6;
+      } else if (d.keywords.some((k) => k.toLowerCase().includes(s))) {
+        d.priority = 7;
+      } else if (stripHtml(d.description).result.toLowerCase().includes(s)) {
+        d.priority = 8;
+      }
+      return d;
+    }).filter((d) => d.priority);
+    return _.orderBy(nodes, 'priority').slice(0, limit);
+  }
+
+  static findNodeInDom(node) {
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(0, 0).scale(2));
+    const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
+    const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
+    const left = (x * -1) + (window.innerWidth / 2) - nodeWidth;
+    const top = (y * -1) + (window.innerHeight / 2) - nodeWidth;
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(2));
+    // Chart.event.emit('node.mouseenter', node);
   }
 }
 

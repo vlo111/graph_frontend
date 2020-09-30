@@ -15,6 +15,7 @@ class Editor extends Component {
     label: PropTypes.string,
     placeholder: PropTypes.string,
     error: PropTypes.string,
+    buttons: PropTypes.array,
   }
 
   static defaultProps = {
@@ -23,6 +24,7 @@ class Editor extends Component {
     label: '',
     placeholder: '',
     error: '',
+    buttons: ['bold', 'italic', 'underline', '|', 'file', '|', 'link'],
   }
 
   constructor(props) {
@@ -33,17 +35,14 @@ class Editor extends Component {
     };
   }
 
-
   componentDidMount() {
     const {
-      value, ref, className, onChange, label, error, ...options
+      value, ref, className, onChange, label, error, buttons, ...options
     } = this.props;
     if (this.editor) {
       this.editor.destruct();
     }
-    console.log(Jodit.defaultOptions);
-    const buttons = ['bold', 'italic', 'link', 'file'];
-    options.buttons = options.buttons || buttons;
+    options.buttons = buttons;
 
     options.buttonsMD = options.buttonsMD || buttons;
 
@@ -57,7 +56,7 @@ class Editor extends Component {
         const popUpData = {};
         const selected = window.getSelection().toString().trim();
 
-        if (anchor) {
+        if (anchor && anchor.getAttribute) {
           popUpData.file = anchor.getAttribute('href');
           popUpData.fileName = anchor.getAttribute('download');
           popUpData.text = anchor.innerText;
@@ -70,7 +69,6 @@ class Editor extends Component {
         this.setState({ showPopUp: 'file', popUpData });
       },
     };
-
 
     this.editor = new Jodit(this.textarea, options);
 
@@ -162,7 +160,7 @@ class Editor extends Component {
                   </div>
                   <div className="jodit-tabs__wrapper">
                     <div className="jodit-tab jodit-tab_active">
-                      <form onSubmit={this.insertFile} className="jodit-form">
+                      <form onSubmit={this.insertFile} className="jodit-form-2">
                         {!(popUpData.file || '').startsWith('blob:http') ? (
                           <div className="jodit-form__group">
                             <input
@@ -190,8 +188,11 @@ class Editor extends Component {
                           />
                         </div>
                         <div>
-                          <button className="jodit-button">
-                            {popUpData.update ? 'Update' : 'Insert'}
+                          <button className="jodit-button jodit-ui-button_status_primary">
+                            <span className="jodit-ui-button__icon" />
+                            <span className="jodit-ui-button__text">
+                              {popUpData.update ? 'Update' : 'Insert'}
+                            </span>
                           </button>
                         </div>
                       </form>
@@ -206,6 +207,5 @@ class Editor extends Component {
     );
   }
 }
-
 
 export default Editor;

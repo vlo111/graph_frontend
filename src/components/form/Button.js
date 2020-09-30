@@ -8,18 +8,20 @@ class Button extends Component {
     icon: PropTypes.any,
     children: PropTypes.any,
     className: PropTypes.string,
+    loading: PropTypes.bool,
     type: PropTypes.oneOf(['button', 'submit']),
     onClick: PropTypes.func,
-    color: PropTypes.oneOf(['main', 'blue', 'orange', 'transparent', 'light', 'main']),
+    color: PropTypes.oneOf(['main', 'blue', 'accent', 'orange', 'transparent', 'light']),
   }
 
   static defaultProps = {
     icon: undefined,
+    loading: undefined,
     onClick: undefined,
     children: '',
     type: 'button',
     className: '',
-    color: 'main'
+    color: 'main',
   }
 
   render() {
@@ -27,7 +29,10 @@ class Button extends Component {
       icon, children, className, loading, color, ...props
     } = this.props;
     return (
-      <button className={classNames('ghButton', className, color, { alt: color !== 'main' })} {...props}>
+      <button
+        className={classNames('ghButton', className, color, { alt: color !== 'main', onlyIcon: !children })}
+        {...props}
+      >
         <Icon value={icon} />
         {children}
       </button>

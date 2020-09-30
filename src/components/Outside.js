@@ -27,16 +27,20 @@ class Outside extends Component {
   componentDidMount() {
     const { children, ...events } = this.props;
     _.forEach(events, (cb, ev) => {
-      const event = ev.replace(/^on/, '').toLowerCase();
-      window.addEventListener(event, this.eventHandle, true);
+      if (ev.startsWith('on')) {
+        const event = ev.replace(/^on/, '').toLowerCase();
+        window.addEventListener(event, this.eventHandle, true);
+      }
     });
   }
 
   componentWillUnmount() {
     const { children, ...events } = this.props;
     _.forEach(events, (cb, ev) => {
-      const event = ev.replace(/^on/, '').toLowerCase();
-      window.removeEventListener(event, this.eventHandle, true);
+      if (ev.startsWith('on')) {
+        const event = ev.replace(/^on/, '').toLowerCase();
+        window.removeEventListener(event, this.eventHandle, true);
+      }
     });
   }
 

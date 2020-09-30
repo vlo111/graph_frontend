@@ -9,6 +9,15 @@ export function setActiveButton(button) {
   };
 }
 
+export const PREVIOUS_ACTIVE_BUTTON = 'PREVIOUS_ACTIVE_BUTTON';
+
+export function previousActiveButton() {
+  return {
+    type: PREVIOUS_ACTIVE_BUTTON,
+    payload: {},
+  };
+}
+
 export const NEW_NODE_MODAL = 'NEW_NODE_MODAL';
 
 export function toggleNodeModal(params = {}) {
@@ -22,7 +31,7 @@ export function toggleNodeModal(params = {}) {
 
 export const TOGGLE_GRID = 'TOGGLE_GRID';
 
-export function toggledGrid(grid, index) {
+export function toggleGrid(grid, index) {
   return {
     type: TOGGLE_GRID,
     payload: {
@@ -67,3 +76,5 @@ export function resetFilter() {
     payload: {},
   };
 }
+
+export const TOGGLE_NODE_FULL_INFO = 'TOGGLE_NODE_FULL_INFO';

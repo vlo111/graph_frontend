@@ -11,8 +11,10 @@ import SignOut from './pages/sign/SignOut';
 import GraphDrafts from './pages/profile/GraphDrafts';
 import GraphTemplates from './pages/profile/GraphTemplates';
 import Utils from './helpers/Utils';
-import ForgotPassword from "./pages/sign/ForgotPassword";
-import ResetPassword from "./pages/sign/ResetPassword";
+import ForgotPassword from './pages/sign/ForgotPassword';
+import ResetPassword from './pages/sign/ResetPassword';
+import OAuth from './pages/sign/OAuth';
+import Shared from './pages/Shared';
 
 class App extends Component {
   componentDidMount() {
@@ -31,6 +33,7 @@ class App extends Component {
             <Route path="/graphs/preview/:graphId" component={GraphView} />
             <Route path="/graphs/filter/:graphId" component={GraphView} />
             <Route path="/graphs/create" component={GraphForm} />
+            <Route path="/graphs/shared" component={Shared} />
             <Route path="/graphs/update/:graphId" component={GraphForm} />
 
             <Route path="/graphs/author/:authorId" component={GraphForm} />
@@ -40,6 +43,7 @@ class App extends Component {
             <Route path="/sign/sign-out" component={SignOut} />
             <Route path="/sign/forgot-password" component={ForgotPassword} />
             <Route path="/sign/reset-password" component={ResetPassword} />
+            <Route path="/sign/oauth/:type" component={OAuth} />
 
             <Route path="/" component={Home} />
           </Switch>

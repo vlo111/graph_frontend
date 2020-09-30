@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
-import * as d3 from 'd3';
+import PropTypes from 'prop-types';
 import stripHtml from 'string-strip-html';
 import Chart from '../Chart';
 import Icon from './form/Icon';
 import Outside from './Outside';
 import ChartUtils from '../helpers/ChartUtils';
+import NodeIcon from './NodeIcon';
+import Button from './form/Button';
+import { connect } from "react-redux";
+import queryString from "query-string";
+import { withRouter } from "react-router-dom";
 
 const MODAL_WIDTH = 300;
 
 class NodeDescription extends Component {
+  static propTypes = {
+    history: PropTypes.object.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.showInfoTimout = null;
@@ -54,6 +63,15 @@ class NodeDescription extends Component {
     this.setState({ node: null });
   }
 
+  showFullInfo = () => {
+    const { node } = this.state;
+    this.hideInfo();
+    const queryObj = queryString.parse(window.location.search);
+    queryObj.info = node.name;
+    const query = queryString.stringify(queryObj);
+    this.props.history.replace(`?${query}`);
+  }
+
   render() {
     const { node } = this.state;
     if (!node) {
@@ -69,7 +87,7 @@ class NodeDescription extends Component {
     if (left + MODAL_WIDTH > window.innerWidth) {
       left = window.innerWidth - MODAL_WIDTH - 15;
     }
-    let description = stripHtml(node.description);
+    let { result: description } = stripHtml(node.description);
     description = description.length > 130 ? `${description.substr(0, 120)}... ` : description;
 
     const nodeLinks = Chart.getNodeLinks(node.name, 'all');
@@ -78,16 +96,7 @@ class NodeDescription extends Component {
         <div onMouseLeave={this.hideInfo} data-node-info={node.index} id="nodeDescription" style={{ top, left }}>
           <Icon className="close" value="fa-close" onClick={this.hideInfo} />
           <div className="left">
-            <span
-              className={`node ${node.nodeType} ${node.icon ? 'hasImage' : ''}`}
-              style={{ background: !node.icon ? ChartUtils.nodeColor()(node) : undefined }}
-            >
-              {node.icon ? (
-                <img src={node.icon} alt="icon" width={50} height={50} />
-              ) : (
-                <span className="text">{node.type[0]}</span>
-              )}
-            </span>
+            <NodeIcon node={node} />
           </div>
           <div className="right">
             {node.link ? (
@@ -112,6 +121,7 @@ class NodeDescription extends Component {
               <strong>{'Connections: '}</strong>
               {nodeLinks.length}
             </p>
+            <Button onClick={this.showFullInfo}>more</Button>
           </div>
         </div>
       </Outside>
@@ -119,4 +129,12 @@ class NodeDescription extends Component {
   }
 }
 
-export default NodeDescription;
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = {};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NodeDescription);
+
+export default withRouter(Container);

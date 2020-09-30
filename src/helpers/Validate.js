@@ -1,14 +1,15 @@
 import _ from 'lodash';
 import Chart from '../Chart';
+import CustomFields from "./CustomFields";
 
 class Validate {
-  static nodeName(val) {
+  static nodeName(val, edit) {
     const value = (val || '').trim();
     let error = null;
     const nodes = Chart.getNodes();
     if (!value) {
       error = 'Name is required';
-    } else if (nodes.some((d) => d.name === value)) {
+    } else if (!edit && nodes.some((d) => d.name === value)) {
       error = 'Already exists';
     }
     return [error, value];
@@ -21,6 +22,24 @@ class Validate {
       error = 'Type is required';
     }
     return [error, value];
+  }
+
+  static nodeLocation(val) {
+    if (!val) {
+      return [null, undefined];
+    }
+    let value = val;
+    let error = null;
+    if (_.isString(val)) {
+      value = value.split(',');
+    }
+    if (!value[0] && !value[1]) {
+      return [null, undefined];
+    }
+    if (!value[0] || !value[1]) {
+      error = 'Invalid location';
+    }
+    return [error, value.join(',')];
   }
 
   static linkType(val, source, target) {
@@ -81,6 +100,33 @@ class Validate {
 
   static hasError(errors) {
     return _.some(errors, (e) => e);
+  }
+
+  static customFieldType(val, nodeType, customFields) {
+    const value = (val || '').trim();
+    let error;
+    if (!value) {
+      error = 'Field is required';
+    } else if (customFields[nodeType] && customFields[nodeType][val]) {
+      error = 'Field already exists';
+    } else if (!CustomFields.canAddKey(customFields, nodeType)) {
+      error = 'You can\'t add more tabs';
+    }
+    return [error, value];
+  }
+
+  static customFieldContent(val) {
+    const value = (val || '').trim();
+    let error;
+    if (!value) {
+      error = 'Field is required';
+    }
+    return [error, value];
+  }
+
+  static customFieldSubtitle(val) {
+    const value = (val || '').trim();
+    return [null, value];
   }
 }
 

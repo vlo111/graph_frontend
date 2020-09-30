@@ -4,21 +4,26 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import memoizeOne from 'memoize-one';
+import queryString from 'query-string';
+import { withRouter } from 'react-router-dom';
 import Chart from '../../Chart';
-import { toggleNodeModal } from '../../store/actions/app';
+import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
+import { updateSingleGraph } from '../../store/actions/graphs';
 import ContextMenu from '../ContextMenu';
+import CustomFields from '../../helpers/CustomFields';
+import SocketContext from '../../context/Socket';
 
-class ReactChart extends Component {
+class ReactChartComp extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
+    updateSingleGraph: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
-    unmount: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    unmount: true,
-  }
+    customFields: PropTypes.object.isRequired,
+    setActiveButton: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    socket: PropTypes.object.isRequired,
+  };
 
   renderChart = memoizeOne((nodes, links) => {
     Chart.render({ nodes, links });
@@ -27,21 +32,47 @@ class ReactChart extends Component {
   componentDidMount() {
     Chart.render({ nodes: [], links: [] });
 
-    Chart.event.on('node.click', this.deleteNode);
+    Chart.event.on('node.click', this.handleNodeClick);
+    Chart.event.on('node.dblclick', this.handleDbNodeClick);
+
     ContextMenu.event.on('node.delete', this.deleteNode);
+    ContextMenu.event.on('node.edit', this.editNode);
+
+    ContextMenu.event.on('active-button', this.setActiveButton);
 
     Chart.event.on('link.click', this.deleteLink);
     ContextMenu.event.on('link.delete', this.deleteLink);
-    Chart.event.on('click', this.addNewItem);
+    Chart.event.on('click', this.addNewNode);
+
+    this.props.socket.on('graphUpdate', (data) => {
+      data.id = +data.id;
+      return (data.id === this.props.singleGraph.id)
+        && this.props.updateSingleGraph(data);
+    });
   }
 
   componentWillUnmount() {
     Chart.unmount();
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
-    ContextMenu.event.removeListener('node.delete', this.deleteNode);
+    ContextMenu.event.removeListener('node.delete', this.handleNodeClick);
+    ContextMenu.event.removeListener('node.edit', this.editNode);
+    this.props.socket.disconnect();
   }
 
-  addNewItem = () => {
+  handleDbNodeClick = (d) => {
+    const queryObj = queryString.parse(window.location.search);
+    queryObj.info = d.name;
+    const query = queryString.stringify(queryObj);
+    this.props.history.replace(`?${query}`);
+  }
+
+  editNode = (node) => {
+    const { customFields } = this.props;
+    const customField = CustomFields.get(customFields, node.type, node.name);
+    this.props.toggleNodeModal({ ...node, customField });
+  }
+
+  addNewNode = () => {
     const { target } = d3.event;
     if (target.tagName !== 'svg'
       || Chart.activeButton !== 'create'
@@ -65,10 +96,13 @@ class ReactChart extends Component {
     Chart.render({ links });
   }
 
-  deleteNode = (d) => {
-    if (Chart.activeButton !== 'delete' && !d.contextMenu) {
-      return;
+  handleNodeClick = (d) => {
+    if (Chart.activeButton === 'delete') {
+      this.deleteNode(d);
     }
+  }
+
+  deleteNode = (d) => {
     let nodes = Chart.getNodes();
     let links = Chart.getLinks();
 
@@ -77,6 +111,10 @@ class ReactChart extends Component {
     links = links.filter((l) => !(l.source === d.name || l.target === d.name));
 
     Chart.render({ nodes, links });
+  }
+
+  setActiveButton = (params) => {
+    this.props.setActiveButton(params.button);
   }
 
   render() {
@@ -101,12 +139,21 @@ class ReactChart extends Component {
   }
 }
 
+const ReactChart = (props) => (
+  <SocketContext.Consumer>
+    {(socket) => <ReactChartComp {...props} socket={socket} />}
+  </SocketContext.Consumer>
+);
+
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
+  customFields: state.graphs.singleGraph.customFields || {},
 });
 const mapDispatchToProps = {
   toggleNodeModal,
+  setActiveButton,
+  updateSingleGraph,
 };
 
 const Container = connect(
@@ -114,4 +161,4 @@ const Container = connect(
   mapDispatchToProps,
 )(ReactChart);
 
-export default Container;
+export default withRouter(Container);

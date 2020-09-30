@@ -10,25 +10,31 @@ import { setActiveButton } from '../store/actions/app';
 import Button from '../components/form/Button';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
+import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import Filters from '../components/filters/Filters';
-import AccountDropDown from '../components/account/AccountDropDown';
 import NodeDescription from '../components/NodeDescription';
 import { deleteGraphRequest, getSingleGraphRequest } from '../store/actions/graphs';
+import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
+import { userGraphRequest } from '../store/actions/shareGraphs';
+import ShareGraph from '../components/ShareGraph';
 
 class GraphView extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     deleteGraphRequest: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
+    userGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
+    userGraphs: PropTypes.array.isRequired,
     location: PropTypes.object.isRequired,
   }
 
   componentDidMount() {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('view');
+    this.props.userGraphRequest();
     if (+graphId) {
       this.props.getSingleGraphRequest(graphId);
     }
@@ -44,8 +50,12 @@ class GraphView extends Component {
   }
 
   render() {
-    const { singleGraph, location: { pathname }, match: { params: { graphId = '' } } } = this.props;
+    const {
+      singleGraph, userGraphs, location: { pathname }, match: { params: { graphId = '' } },
+    } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
+    const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId);
+
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
@@ -71,23 +81,33 @@ class GraphView extends Component {
           </div>
         ) : (
           <>
-            <Link to={`/graphs/update/${graphId}`}>
-              <Tooltip overlay="Update">
-                <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
+            { (!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
+            <>
+              <Link to={`/graphs/update/${graphId}`}>
+                <Tooltip overlay="Update">
+                  <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
+                </Tooltip>
+              </Link>
+              <Tooltip overlay="Delete">
+                <Button
+                  icon={<TrashSvg style={{ height: 30 }} />}
+                  onClick={this.deleteGraph}
+                  className="transparent delete"
+                />
+              </Tooltip>
+            </>
+            )}
+            <ShareGraph graphId={+graphId} />
+            <NodeDescription />
+            <Link to="/">
+              <Tooltip overlay="Back">
+                <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
               </Tooltip>
             </Link>
-            <Tooltip overlay="Delete">
-              <Button
-                icon={<TrashSvg style={{ height: 30 }} />}
-                onClick={this.deleteGraph}
-                className="transparent delete"
-              />
-            </Tooltip>
-            <NodeDescription />
           </>
         )}
         <Filters />
-        <AccountDropDown />
+        <NodeFullInfo editable={false} />
       </Wrapper>
     );
   }
@@ -96,11 +116,13 @@ class GraphView extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
+  userGraphs: state.shareGraphs.userGraphs,
 });
 const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
   deleteGraphRequest,
+  userGraphRequest,
 };
 const Container = connect(
   mapStateToProps,

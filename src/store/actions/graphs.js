@@ -7,6 +7,12 @@ export function convertGraphRequest(type, requestData) {
   return CONVERT_GRAPH.request(() => Api.convert(type, requestData));
 }
 
+export const CONVERT_NODE_GRAPH = define('CONVERT_NODE_GRAPH');
+
+export function convertNodeRequest(type, requestData) {
+  return CONVERT_NODE_GRAPH.request(() => Api.convertNode(type, requestData));
+}
+
 export const CREATE_GRAPH = define('CREATE_GRAPH');
 
 export function createGraphRequest(requestData) {
@@ -41,4 +47,49 @@ export const GET_SINGLE_GRAPH = define('GET_SINGLE_GRAPH');
 
 export function getSingleGraphRequest(graphId) {
   return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId));
+}
+
+export const CLEAR_SINGLE_GRAPH = 'CLEAR_SINGLE_GRAPH';
+
+export const UPDATE_SINGLE_GRAPH = 'UPDATE_SINGLE_GRAPH';
+
+export function clearSingleGraph() {
+  return {
+    type: CLEAR_SINGLE_GRAPH,
+    payload: {},
+  };
+}
+
+export function updateSingleGraph(graph) {
+  return {
+    type: UPDATE_SINGLE_GRAPH,
+    payload: graph,
+  };
+}
+
+export const SET_NODE_CUSTOM_FIELD = 'SET_NODE_CUSTOM_FIELD';
+
+export function setNodeCustomField(type, name, customField) {
+  return {
+    type: SET_NODE_CUSTOM_FIELD,
+    payload: { type, name, customField },
+  };
+}
+
+export const ADD_NODE_CUSTOM_FIELD_KEY = 'ADD_NODE_CUSTOM_FIELD_KEY';
+
+export function addNodeCustomFieldKey(type, key, subtitle) {
+  return {
+    type: ADD_NODE_CUSTOM_FIELD_KEY,
+    payload: { type, key, subtitle },
+  };
+}
+
+export const REMOVE_NODE_CUSTOM_FIELD_KEY = 'REMOVE_NODE_CUSTOM_FIELD_KEY';
+
+export function removeNodeCustomFieldKey(type, key) {
+  return {
+    type: REMOVE_NODE_CUSTOM_FIELD_KEY,
+    payload: { type, key },
+  };
 }

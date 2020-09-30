@@ -1,5 +1,5 @@
 import {
-  SIGN_IN, GET_MY_ACCOUNT,
+  SIGN_IN, GET_MY_ACCOUNT, OAUTH, GET_USER_BY_TEXT
 } from '../actions/account';
 import Account from '../../helpers/Account';
 
@@ -9,6 +9,7 @@ const initialState = {
   myAccount: Account.get(),
   user: {},
   findUser: {},
+  userSearch: [],
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -16,14 +17,15 @@ export default function reducer(state = initialState, action) {
       Account.delete();
       return state;
     }
+    case OAUTH.SUCCESS:
     case SIGN_IN.SUCCESS: {
-      const { token, user } = action.payload.data;
-      Account.set(user);
+      const { token, user: myAccount } = action.payload.data;
+      Account.set(myAccount);
       Account.setToken(token);
       return {
         ...state,
         token,
-        user,
+        myAccount,
       };
     }
     case GET_MY_ACCOUNT.SUCCESS: {
@@ -41,6 +43,20 @@ export default function reducer(state = initialState, action) {
         window.location.reload();
       }
       return state;
+    }
+    case GET_USER_BY_TEXT.REQUEST:
+    case GET_USER_BY_TEXT.FAIL: {
+      return {
+        ...state,
+        userSearch: [],
+      };
+    }
+    case GET_USER_BY_TEXT.SUCCESS: {
+      const { data } = action.payload.data;
+      return {
+        ...state,
+        userSearch: data,
+      };
     }
     default: {
       return state;

@@ -5,6 +5,7 @@ import ReactSelect from 'react-select';
 import _ from 'lodash';
 import ReactSelectCreatable from 'react-select/creatable';
 import Icon from './Icon';
+import Outside from '../Outside';
 
 class Select extends Component {
   static propTypes = {
@@ -16,13 +17,14 @@ class Select extends Component {
     error: PropTypes.string,
     children: PropTypes.node,
     icon: PropTypes.any,
-    isClearable: PropTypes.bool,
+    isCreatable: PropTypes.bool,
     portal: PropTypes.bool,
     isSearchable: PropTypes.bool,
     limit: PropTypes.number,
     options: PropTypes.array,
     value: PropTypes.array,
     getOptionValue: PropTypes.func,
+    isMulti: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -35,7 +37,8 @@ class Select extends Component {
     error: undefined,
     getOptionValue: undefined,
     icon: undefined,
-    isClearable: false,
+    isMulti: false,
+    isCreatable: false,
     isSearchable: false,
     limit: undefined,
     portal: false,
@@ -83,12 +86,24 @@ class Select extends Component {
     this.setState({ inputValue });
   }
 
+  handleKeyDown = (ev) => {
+    if (['Enter', 'Tab'].includes(ev.key)) {
+      ev.preventDefault();
+      this.handleInputBlur();
+    }
+  }
+
   handleInputBlur = () => {
     const { inputValue } = this.state;
-    const { value } = this.props;
-    if (inputValue && value[0]?.value !== inputValue) {
+    const { value, isMulti } = this.props;
+    if (!inputValue) return;
+    if (isMulti) {
+      const valueArr = _.isArray(value) ? value : [value];
+      this.props.onChange(_.uniqBy([...valueArr, { value: inputValue, label: inputValue }], 'value'));
+    } else if (!value || value[0]?.value !== inputValue) {
       this.props.onChange({ value: inputValue, label: inputValue });
     }
+    this.setState({ inputValue: '' });
   }
 
   render() {
@@ -107,23 +122,30 @@ class Select extends Component {
     return (
       <div
         id={containerId}
-        className={classNames(containerClassName, 'ghFormField', 'ghSelect', { ghIsSearchable: props.isSearchable })}
+        className={classNames(containerClassName, 'ghFormField', 'ghSelect', {
+          ghIsSearchable: props.isSearchable,
+          ghIsMulti: props.isMulti,
+        })}
       >
         {label ? (
           <label htmlFor={inputId}>{label}</label>
         ) : null}
         <Icon value={icon} />
-        {props.isClearable ? (
-          <ReactSelectCreatable
-            {...props}
-            {...params}
-            id={inputId}
-            classNamePrefix="gh"
-            inputValue={inputValue}
-            onInputChange={this.handleInputChange}
-            onBlur={this.handleInputBlur}
-            className={classNames('ghSelectContent', props.className)}
-          />
+        {props.isCreatable ? (
+          <Outside onMouseDown={this.handleInputBlur}>
+            <ReactSelectCreatable
+              {...props}
+              {...params}
+              isSearchable
+              id={inputId}
+              classNamePrefix="gh"
+              inputValue={inputValue}
+              onKeyDown={this.handleKeyDown}
+              onInputChange={this.handleInputChange}
+              // onBlur={this.handleInputBlur}
+              className={classNames('ghSelectContent', props.className)}
+            />
+          </Outside>
         ) : (
           <ReactSelect
             {...props}

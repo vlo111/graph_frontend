@@ -28,7 +28,7 @@ class SaveGraphModal extends Component {
     updateGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
+    customFields: PropTypes.object.isRequired,
     toggleModal: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
@@ -36,13 +36,13 @@ class SaveGraphModal extends Component {
 
   initValues = memoizeOne((singleGraph) => {
     const {
-      title, description, tags, status,
+      title, description, status,
     } = singleGraph;
+
     this.setState({
       requestData: {
         title,
         description,
-        tags,
         status: status === 'template' ? 'active' : status,
       },
     });
@@ -55,14 +55,13 @@ class SaveGraphModal extends Component {
         title: '',
         description: '',
         status: 'active',
-        tags: '',
       },
     };
   }
 
   saveGraph = async (status, forceCreate) => {
     const { requestData } = this.state;
-    const { match: { params: { graphId } } } = this.props;
+    const { match: { params: { graphId } }, customFields } = this.props;
 
     this.props.setLoading(true);
     let nodes = Chart.getNodes();
@@ -86,8 +85,9 @@ class SaveGraphModal extends Component {
     });
     files = await Promise.allValues(files);
 
-    const svg = Chart.printMode(400, 223);
     let resGraphId;
+    const svg = Chart.printMode(400, 223);
+
     if (forceCreate || !graphId) {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
@@ -96,6 +96,7 @@ class SaveGraphModal extends Component {
         files,
         svg,
         status,
+        customFields,
       });
       resGraphId = data.graphId;
     } else {
@@ -106,6 +107,7 @@ class SaveGraphModal extends Component {
         files,
         svg,
         status,
+        customFields,
       });
       resGraphId = data.graphId;
     }
@@ -133,13 +135,12 @@ class SaveGraphModal extends Component {
     const { singleGraph } = this.props;
     const nodes = Chart.getNodes();
     this.initValues(singleGraph);
-
     const canSave = nodes.length && requestData.title;
     const isUpdate = !!singleGraph.id;
     const isTemplate = singleGraph.status === 'template';
     return (
       <Modal
-        className="ghModal"
+        className="ghModal ghModalSave"
         overlayClassName="ghModalOverlay"
         isOpen
         onRequestClose={() => this.props.toggleModal(false)}
@@ -199,6 +200,7 @@ class SaveGraphModal extends Component {
 
 const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
+  customFields: state.graphs.singleGraph.customFields || {},
 });
 const mapDispatchToProps = {
   createGraphRequest,

@@ -39,6 +39,8 @@ class Convert {
       { value: d.nodeType, key: 'nodeType' },
       { value: d.icon, key: 'icon' },
       { value: d.link, key: 'link' },
+      { value: d.keywords, key: 'keywords' },
+      { value: d.location, key: 'location' },
     ]));
   }
 

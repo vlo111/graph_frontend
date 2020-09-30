@@ -16,6 +16,7 @@ class Input extends Component {
     icon: PropTypes.any,
     textArea: PropTypes.bool,
     limit: PropTypes.number,
+    onRef: PropTypes.func,
   }
 
   static defaultProps = {
@@ -30,6 +31,7 @@ class Input extends Component {
     icon: undefined,
     textArea: false,
     limit: undefined,
+    onRef: undefined,
   }
 
   static id = 0;
@@ -53,7 +55,7 @@ class Input extends Component {
   render() {
     const {
       id, label, containerClassName, containerId, children,
-      textArea, limit,
+      textArea, limit, onRef,
       error, onChangeText, icon, ...props
     } = this.props;
     const inputId = id || `input_${this.id}`;
@@ -67,12 +69,12 @@ class Input extends Component {
         ) : null}
         <Icon value={icon} />
         {textArea ? (
-          <textarea {...props} id={inputId} onChange={this.handleChange} />
+          <textarea ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
         ) : (
-          <input {...props} id={inputId} onChange={this.handleChange} />
+          <input ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
         )}
         {!error && limit ? (
-          <div className="limit">{`${limit - props.value.length} / ${limit} characters`}</div>
+          <div className="limit">{`${limit - (props.value || '').length} / ${limit} characters`}</div>
         ) : null}
         {children}
         {error ? (

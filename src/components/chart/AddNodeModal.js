@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import { toggleNodeModal } from '../../store/actions/app';
+import { addNodeCustomFieldKey, setNodeCustomField } from '../../store/actions/graphs';
 import Select from '../form/Select';
 import Input from '../form/Input';
 import Button from '../form/Button';
@@ -12,22 +13,33 @@ import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
+import LocationInputs from './LocationInputs';
 
 class AddNodeModal extends Component {
   static propTypes = {
     toggleNodeModal: PropTypes.func.isRequired,
+    setNodeCustomField: PropTypes.func.isRequired,
     addNodeParams: PropTypes.object.isRequired,
   }
 
-  initNodeData = memoizeOne(() => {
+  initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
+    const {
+      fx, fy, name, icon, nodeType, type, keywords, location, index = null, customField,
+    } = addNodeParams;
     this.setState({
       nodeData: {
-        name: '',
-        icon: '',
-        nodeType: 'circle',
-        type: _.last(nodes)?.type || '',
+        fx,
+        fy,
+        name: name || '',
+        icon: icon || '',
+        nodeType: nodeType || 'circle',
+        type: type || _.last(nodes)?.type || '',
+        keywords: keywords || [],
+        location,
       },
+      customField,
+      index,
       errors: {},
     });
   }, _.isEqual)
@@ -45,8 +57,12 @@ class AddNodeModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodeData: {},
+      nodeData: {
+        keywords: [],
+      },
+      customField: null,
       errors: {},
+      index: null,
     };
   }
 
@@ -54,19 +70,35 @@ class AddNodeModal extends Component {
     this.props.toggleNodeModal();
   }
 
-  addNode = async (ev) => {
+  saveNode = async (ev) => {
     ev.preventDefault();
-    const { addNodeParams } = this.props;
-    const { nodeData } = this.state;
+    const { nodeData, index, customField } = this.state;
     const errors = {};
     const nodes = Chart.getNodes();
+    let links;
 
-    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name);
+    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, !_.isNull(index));
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
+    [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
 
     if (!Validate.hasError(errors)) {
-      nodes.push({ ...addNodeParams, ...nodeData });
-      Chart.render({ nodes });
+      if (_.isNull(index)) {
+        nodes.push(nodeData);
+      } else {
+        const { name: oldName } = nodes[index];
+        links = Chart.getLinks().map((d) => {
+          if (d.source === oldName) {
+            d.source = nodeData.name;
+          } else if (d.target === oldName) {
+            d.target = nodeData.name;
+          }
+          return d;
+        });
+
+        nodes[index] = nodeData;
+      }
+      Chart.render({ nodes, links });
+      this.props.setNodeCustomField(nodeData.type, nodeData.name, customField);
       this.props.toggleNodeModal();
     }
     this.setState({ errors, nodeData });
@@ -79,8 +111,12 @@ class AddNodeModal extends Component {
     this.setState({ nodeData, errors });
   }
 
+  handleCustomFieldsChange = (customField) => {
+    this.setState({ customField: { ...customField } });
+  }
+
   render() {
-    const { nodeData, errors } = this.state;
+    const { nodeData, errors, index } = this.state;
     const { addNodeParams } = this.props;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
@@ -92,11 +128,10 @@ class AddNodeModal extends Component {
         isOpen={!_.isEmpty(addNodeParams)}
         onRequestClose={this.closeModal}
       >
-        <form onSubmit={this.addNode}>
-          <h2>Add new node</h2>
+        <form onSubmit={this.saveNode}>
+          <h2>{_.isNull(index) ? 'Add new node' : 'Edit node'}</h2>
           <Select
-            isClearable
-            isSearchable
+            isCreatable
             label="Type"
             value={[
               groups.find((t) => t.value === nodeData.type) || {
@@ -131,12 +166,26 @@ class AddNodeModal extends Component {
             value={nodeData.icon}
             onChangeFile={(v) => this.handleChange('icon', v)}
           />
+          <Select
+            label="keywords"
+            isCreatable
+            isMulti
+            value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
+            menuIsOpen={false}
+            placeholder="Add..."
+            onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
+          />
+          <LocationInputs
+            error={errors.location}
+            value={nodeData.location}
+            onChange={(v) => this.handleChange('location', v)}
+          />
           <div className="buttons">
             <Button onClick={this.closeModal}>
               Cancel
             </Button>
             <Button type="submit">
-              Add
+              {_.isNull(index) ? 'Add' : 'Save'}
             </Button>
           </div>
         </form>
@@ -150,6 +199,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   toggleNodeModal,
+  setNodeCustomField,
 };
 
 const Container = connect(

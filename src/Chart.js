@@ -4,6 +4,7 @@ import EventEmitter from 'events';
 import { toast } from 'react-toastify';
 import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
+import Utils from './helpers/Utils';
 
 class Chart {
   static event = new EventEmitter();
@@ -12,8 +13,11 @@ class Chart {
     const dragstart = (d) => {
       this.event.emit('node.dragstart', d);
       if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
+      d.fixed = !!d.fx;
+      // d.fx = d.x;
+      // d.fy = d.y;
+      // d.x = d3.event.x;
+      // d.y = d3.event.y;
     };
 
     const dragged = (d) => {
@@ -24,6 +28,12 @@ class Chart {
     const dragend = (d) => {
       this.event.emit('node.dragend', d);
       if (!d3.event.active) simulation.alphaTarget(0);
+      if (!d.fixed) {
+        d.x = d.fx || d.x;
+        d.y = d.fy || d.y;
+        delete d.fx;
+        delete d.fy;
+      }
     };
 
     return d3.drag()
@@ -41,6 +51,9 @@ class Chart {
   }
 
   static normalizeData(data) {
+    data.nodes = data.nodes || Chart.getNodes();
+    data.links = data.links || _.cloneDeep(Chart.getLinks());
+
     const nodes = data.nodes.map((d) => Object.create(d));
 
     _.forEach(data.links, (link, linkIndex) => {
@@ -109,26 +122,17 @@ class Chart {
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('charge', d3.forceManyBody());
-      // .force('x', d3.forceX((d) => {
-      //   const length = ChartUtils.getthis.radiusList()[d.index];
-      //   if (length) {
-      //     return d.x * length;
-      //   }
-      //   return d.x + 4;
-      // }))
-      // .force('y', d3.forceY((d) => {
-      //   const length = ChartUtils.getthis.radiusList()[d.index];
-      //   if (length) {
-      //     return d.y * length;
-      //   }
-      //   return d.y + 4;
-      // }));
+        .force('charge', d3.forceManyBody().strength((d, i) => (i === 0 ? -2000 : -1000)).distanceMin(200).distanceMax(1000));
+      // .force('y', d3.forceY(0.01))
+      // .force('x', d3.forceX(0.01));
     }
     return null;
   }
 
   static handleZoom = () => {
+    if (this.activeButton === 'create-label') {
+      return;
+    }
     const { transform } = d3.event;
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
@@ -145,11 +149,7 @@ class Chart {
       }
       this._dataNodes = null;
       this._dataLinks = null;
-      data.nodes = data.nodes || Chart.getNodes();
-      data.links = data.links || _.cloneDeep(Chart.getLinks());
-
       data = this.normalizeData(data);
-      data = ChartUtils.filter(data, params.filters);
 
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         if (!_.isEmpty(data?.nodes) || !_.isEmpty(data?.links)) {
@@ -161,6 +161,7 @@ class Chart {
           }
         }
       }
+      data = ChartUtils.filter(data, params.filters, params.customFields);
       this.data = data;
 
       this.radiusList = ChartUtils.getRadiusList();
@@ -174,10 +175,10 @@ class Chart {
       this.autoPosition();
 
       this.svg = d3.select('#graph svg');
-
       this.zoom = d3.zoom().on('zoom', this.handleZoom);
       this.svg = this.svg
         .call(this.zoom)
+        .on('dblclick.zoom', null)
         .on('click', (d) => this.event.emit('click', d))
         .on('mousemove', (d) => this.event.emit('mousemove', d));
 
@@ -209,6 +210,7 @@ class Chart {
         .call(this.drag(this.simulation))
         .on('mouseenter', (d) => this.event.emit('node.mouseenter', d))
         .on('mouseleave', (d) => this.event.emit('node.mouseleave', d))
+        .on('dblclick', (d) => this.event.emit('node.dblclick', d))
         .on('click', (d) => this.event.emit('node.click', d));
 
       this.nodesWrapper.selectAll('.node > *').remove();
@@ -256,7 +258,6 @@ class Chart {
         this.link.attr('d', (d) => {
           let arc = 0;
           let arcDirection = 0;
-
           if (d.same) {
             const dr = ChartUtils.nodesDistance(d);
 
@@ -300,7 +301,12 @@ class Chart {
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
-      console.error(e);
+      console.error(e.message);
+      // if (e.message.startsWith('missing: ')) {
+      //   const name = e.message.replace('missing: ', '');
+      //   const links = this.getLinks().filter(d => d.source !== name && d.target !== name);
+      //   this.render({ links });
+      // }
       return this;
     }
   }
@@ -512,17 +518,36 @@ class Chart {
       .attr('x2', 0)
       .attr('y2', 0);
 
-    this.event.on('node.click', (d) => {
+    let cancel = false;
+    this.event.on('node.dblclick', () => {
+      cancel = true;
+      setTimeout(() => {
+        cancel = false;
+      }, 300);
+    });
+    this.event.on('node.click', async (d) => {
+      await Utils.sleep(10);
       if (this.activeButton !== 'create') {
         return;
       }
+      if (cancel) {
+        this.newLink.attr('data-source', '')
+          .attr('x1', 0)
+          .attr('y1', 0)
+          .attr('x2', 0)
+          .attr('y2', 0);
+        return;
+      }
       const source = this.newLink.attr('data-source');
+      if (d.fx === undefined || d.fy === undefined) {
+        return;
+      }
       if (!source) {
         this.newLink.attr('data-source', d.name)
-          .attr('x1', d.fx)
-          .attr('y1', d.fy)
-          .attr('x2', d.fx)
-          .attr('y2', d.fy);
+          .attr('x1', d.fx || d.x)
+          .attr('y1', d.fy || d.y)
+          .attr('x2', d.fx || d.x)
+          .attr('y2', d.fy || d.y);
       } else {
         const target = d.name;
         this.newLink.attr('data-source', '')
@@ -581,7 +606,7 @@ class Chart {
     return links;
   }
 
-  static getNodes() {
+  static getNodes(show = null) {
     if (_.isEmpty(this.data)) {
       return [];
     }
@@ -597,7 +622,17 @@ class Chart {
         icon: d.icon || '',
         link: d.link || '',
         hidden: d.hidden,
+        keywords: d.keywords || [],
+        location: d.location || undefined,
       }));
+    }
+    if (show) {
+      this._dataNodes = this._dataNodes.map((d, i) => {
+        show.forEach((s) => {
+          d[s] = this.data.nodes[i][s];
+        });
+        return d;
+      });
     }
 
     return this._dataNodes;
@@ -635,11 +670,12 @@ class Chart {
     this.data.nodes = [];
     this.data.links = [];
     this.event.removeAllListeners();
+    this.undoManager.reset();
     ChartUtils.resetColors();
     window.removeEventListener('resize', Chart.resizeSvg);
   }
 
-  static printMode(svgWidth, svgHeight) {
+  static printMode(svgWidth, svgHeight, crop = false) {
     const originalDimensions = {
       scale: this.wrapper.attr('data-scale') || 1,
       x: this.wrapper.attr('data-x') || 0,
@@ -656,8 +692,14 @@ class Chart {
 
     if (!document.querySelector('#graph svg')) {
       console.error('graph error');
-      return;
+      return '';
     }
+
+    if (crop) {
+      this.wrapper.selectAll('.unChecked')
+        .attr('style', 'display:none');
+    }
+
     const {
       left: svgLeft, top: svgTop,
     } = document.querySelector('#graph svg').getBoundingClientRect();
@@ -670,8 +712,8 @@ class Chart {
     const scaleH = svgHeight / height;
     const scale = Math.min(scaleW, scaleH);
 
-    const y = -1 * (top - svgTop) * scale + (svgHeight - height * scale);
-    const x = -1 * (left - svgLeft) * scale + (svgWidth - width * scale);
+    const x = -1 * (left - svgLeft) * scale + ((svgWidth - width * scale) / 2);
+    const y = -1 * (top - svgTop) * scale + ((svgHeight - height * scale) / 2);
 
     Chart.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`)
       .attr('data-scale', scale)
@@ -707,6 +749,9 @@ class Chart {
 
     this.linksWrapper.selectAll('path')
       .attr('fill', undefined);
+
+    this.wrapper.selectAll('.unChecked')
+      .attr('style', undefined);
 
     this.nodesWrapper.selectAll('.node text')
       .attr('font-family', undefined)

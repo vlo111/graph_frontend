@@ -119,7 +119,7 @@ class AddLinkModal extends Component {
             error={errors.type}
             onChange={(v) => this.handleChange('type', v?.value)}
             options={types}
-            isClearable
+            isCreatable
           />
 
           <Input

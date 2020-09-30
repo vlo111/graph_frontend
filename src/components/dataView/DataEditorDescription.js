@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import Button from '../form/Button';
 import Editor from '../form/Editor';
+import stripHtml from "string-strip-html";
 
 class DataEditorDescription extends Component {
   static propTypes = {
@@ -22,6 +23,7 @@ class DataEditorDescription extends Component {
 
   render() {
     const { onClose, onChangeText, ...props } = this.props;
+    const { result: description } = stripHtml(props.value || '');
     return (
       <>
         <Modal
@@ -34,7 +36,9 @@ class DataEditorDescription extends Component {
           <Editor {...props} onChange={onChangeText} />
           <Button onMouseDown={this.closeModal}>Save</Button>
         </Modal>
-        <span className="value-viewer" dangerouslySetInnerHTML={{ __html: props.value }} />
+        <span className="value-viewer">
+          {description}
+        </span>
       </>
     );
   }

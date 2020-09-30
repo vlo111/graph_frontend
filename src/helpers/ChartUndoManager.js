@@ -9,6 +9,11 @@ class ChartUndoManager {
     this.data = [];
   }
 
+  reset() {
+    this.pointer = 0;
+    this.data = [];
+  }
+
   async push(datum) {
     if (_.isEqual(_.last(this.data), datum)) {
       return;

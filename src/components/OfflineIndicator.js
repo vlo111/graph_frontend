@@ -18,7 +18,6 @@ class OfflineIndicator extends Component {
     window.removeEventListener('offline', this.updateOnlineStatus);
   }
 
-
   updateOnlineStatus = () => {
     const { onLine } = navigator;
     this.setState({ onLine });
