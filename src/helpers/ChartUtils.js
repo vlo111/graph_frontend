@@ -160,6 +160,15 @@ class ChartUtils {
   }
 
   static calcScaledPosition(x = 0, y = 0) {
+    if (Chart.wrapper.empty()) {
+      return {
+        x: 0,
+        y: 0,
+        moveX: 0,
+        moveY: 0,
+        scale: 1,
+      };
+    }
     const moveX = +Chart.wrapper?.attr('data-x') || 0;
     const moveY = +Chart.wrapper?.attr('data-y') || 0;
     const scale = +Chart.wrapper?.attr('data-scale') || 1;
