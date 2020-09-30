@@ -382,6 +382,7 @@ class ChartUtils {
 
       d.push([x, y]);
     }
+    console.log(`coordinatesCompass: ${data.length} -> ${d.length}`);
     return d;
   }
 }

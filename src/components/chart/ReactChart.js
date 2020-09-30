@@ -46,6 +46,7 @@ class ReactChartComp extends Component {
 
     ContextMenu.event.on('label.delete', this.handleLabelDelete);
     Chart.event.on('label.click', this.handleLabelClick);
+    Chart.event.on('label.create', this.handleLabelCrate);
 
     this.props.socket.on('graphUpdate', (data) => {
       this.props.updateSingleGraph(data);
@@ -66,6 +67,10 @@ class ReactChartComp extends Component {
     if (Chart.activeButton === 'delete') {
       this.handleLabelDelete(d);
     }
+  }
+
+  handleLabelCrate = (ev, d) => {
+    console.log(d);
   }
 
   handleLabelDelete = (ev, d) => {

@@ -695,6 +695,7 @@ p {
   &.create-label {
     .labels {
       pointer-events: all;
+      cursor: url("../images/pen.png") 0 50, auto;
 
       .labelsBoard {
         pointer-events: all;

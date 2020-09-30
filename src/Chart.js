@@ -189,16 +189,16 @@ class Chart {
 
       activeLine = labels.append('path')
         .datum({
+          name: ChartUtils.labelColors()(),
           color: ChartUtils.labelColors()(),
           d: [],
         })
         .attr('class', 'label')
-        .attr('data-name', (d) => d.color);
+        .attr('data-name', (d) => d.name);
     };
 
     const handleDrag = (ev) => {
       if (this.activeButton !== 'create-label') return;
-      // const [x, y] = d3.pointer(ev);
       const { x, y } = ev;
       const datum = activeLine.datum();
       datum.d.push([x, y]);
@@ -211,7 +211,7 @@ class Chart {
         .attr('stroke-width', 2);
     };
 
-    const handleDragEnd = () => {
+    const handleDragEnd = (ev) => {
       if (this.activeButton !== 'create-label') return;
       const datum = activeLine.datum();
 
@@ -229,6 +229,8 @@ class Chart {
 
       activeLine = null;
       this._dataNodes = null;
+
+      this.event.emit('label.create', ev, datum);
     };
 
     labels.call(d3.drag()
