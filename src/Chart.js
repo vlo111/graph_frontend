@@ -23,6 +23,11 @@ class Chart {
     const dragged = (ev, d) => {
       d.fx = ev.x;
       d.fy = ev.y;
+
+      d.x = ev.x;
+      d.y = ev.y;
+
+      this.graphMovement();
     };
 
     const dragend = (ev, d) => {
@@ -254,7 +259,8 @@ class Chart {
       const filteredNodes = this.data.nodes.filter((d) => !d.hidden);
 
       this.simulation = d3.forceSimulation(this.data.nodes)
-        .force('link', d3.forceLink(filteredLinks).id((d) => d.name));
+        .force('link', d3.forceLink(filteredLinks).id((d) => d.name))
+        .on('tick', this.graphMovement);
 
       this.autoPosition();
 
@@ -338,45 +344,6 @@ class Chart {
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : ChartUtils.nodeColor()(d)));
 
       this.renderLinkText();
-
-      this.simulation.on('tick', () => {
-        this.link.attr('d', (d) => {
-          let arc = 0;
-          let arcDirection = 0;
-          if (d.same) {
-            const dr = ChartUtils.nodesDistance(d);
-
-            arc = d.same.arc * dr;
-            arcDirection = d.same.arcDirection;
-          }
-
-          return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${arcDirection} ${d.target.x},${d.target.y}`;
-        });
-        this.node
-          .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
-          .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
-
-        this.linkText
-          .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + +d.value / 2 : (5 + +d.value / 2) * -1))
-          .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
-
-        this.directions
-          .attr('dx', (d) => {
-            let i = this.radiusList[d.target.index] - d.value;
-            if (d.target.nodeType === 'triangle') {
-              i += 5;
-            } else if (d.target.nodeType === 'hexagon') {
-              i += 5;
-            }
-            if (!d.target.icon) {
-              i += 4;
-            }
-            return i * -1;
-          });
-
-        this._dataNodes = null;
-        this._dataLinks = null;
-      });
       this.renderNodeText();
       this.renderNewLink();
       this.nodeFilter();
@@ -394,6 +361,48 @@ class Chart {
       // }
       return this;
     }
+  }
+
+  static graphMovement = () => {
+    if (!this.link || !this.link) {
+      return;
+    }
+    this.link.attr('d', (d) => {
+      let arc = 0;
+      let arcDirection = 0;
+      if (d.same) {
+        const dr = ChartUtils.nodesDistance(d);
+
+        arc = d.same.arc * dr;
+        arcDirection = d.same.arcDirection;
+      }
+
+      return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${arcDirection} ${d.target.x},${d.target.y}`;
+    });
+    this.node
+      .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
+      .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
+
+    this.linkText
+      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + +d.value / 2 : (5 + +d.value / 2) * -1))
+      .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
+
+    this.directions
+      .attr('dx', (d) => {
+        let i = this.radiusList[d.target.index] - d.value;
+        if (d.target.nodeType === 'triangle') {
+          i += 5;
+        } else if (d.target.nodeType === 'hexagon') {
+          i += 5;
+        }
+        if (!d.target.icon) {
+          i += 4;
+        }
+        return i * -1;
+      });
+
+    this._dataNodes = null;
+    this._dataLinks = null;
   }
 
   static renderDirections() {
