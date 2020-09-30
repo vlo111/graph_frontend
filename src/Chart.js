@@ -152,13 +152,17 @@ class Chart {
   static setLabelsBoardZoom(transform) {
     const scale = 1 / transform.k;
     const size = 100 * scale;
-    const x = transform.x * -1 * scale;
-    const y = transform.y * -1 * scale;
+    const x = transform.x * -1;
+    const y = transform.y * -1;
+
+    // this.wrapper.select('.labelsBoard')
+    //   .attr('transform', `scale(${scale}) translate(${x}, ${y})`)
+
     this.wrapper.select('.labelsBoard')
       .attr('width', `${size}%`)
       .attr('height', `${size}%`)
-      .attr('x', x)
-      .attr('y', y);
+      .attr('x', x * scale)
+      .attr('y', y * scale);
   }
 
   static renderLabels() {
@@ -196,12 +200,13 @@ class Chart {
 
     const handleDrag = (ev) => {
       if (this.activeButton !== 'create-label') return;
-      const [x, y] = d3.pointer(ev);
+      // const [x, y] = d3.pointer(ev);
+      const { x, y } = ev;
       const datum = activeLine.datum();
       datum.d.push([x, y]);
       activeLine.datum(datum);
       activeLine.attr('d', (d) => renderPath(d.d));
-    }
+    };
 
     const handleDragEnd = () => {
       if (this.activeButton !== 'create-label') return;
