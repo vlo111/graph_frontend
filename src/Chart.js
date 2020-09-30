@@ -193,9 +193,7 @@ class Chart {
           d: [],
         })
         .attr('class', 'label')
-        .attr('opacity', '0.4')
-        .attr('data-name', (d) => d.color)
-        .attr('fill', (d) => d.color);
+        .attr('data-name', (d) => d.color);
     };
 
     const handleDrag = (ev) => {
@@ -204,23 +202,28 @@ class Chart {
       const { x, y } = ev;
       const datum = activeLine.datum();
       datum.d.push([x, y]);
-      activeLine.datum(datum);
-      activeLine.attr('d', (d) => renderPath(d.d));
+      activeLine
+        .datum(datum)
+        .attr('d', (d) => renderPath(d.d))
+        .attr('opacity', 1)
+        .attr('fill', 'transparent')
+        .attr('stroke', '#0D0905')
+        .attr('stroke-width', 2);
     };
 
     const handleDragEnd = () => {
       if (this.activeButton !== 'create-label') return;
       const datum = activeLine.datum();
 
-      datum.d = datum.d.filter((d, i) => i % 2 === 0);
-      // datum.test = [d[0]];
-      // let x = d[0];
-      // let y = d[1];
-      //
-      // datum.d.forEach(() => {})
+      datum.d = ChartUtils.coordinatesCompass(datum.d, 3);
 
-      activeLine.datum(datum);
-      activeLine.attr('d', (d) => renderPath(d.d));
+      activeLine
+        .datum(datum)
+        .attr('d', (d) => renderPath(d.d))
+        .attr('opacity', 0.4)
+        .attr('fill', (d) => d.color)
+        .attr('stroke', undefined)
+        .attr('stroke-width', undefined);
 
       this.data.labels.push(datum);
 
@@ -680,7 +683,7 @@ class Chart {
       if (this.activeButton !== 'create' || !source) {
         return;
       }
-      const { x, y } = this.getScaledPosition(ev);
+      const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
       this.newLink.attr('x2', x).attr('y2', y);
     });
   }

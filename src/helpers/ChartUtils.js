@@ -363,6 +363,27 @@ class ChartUtils {
       .map((d) => d.getAttribute('data-name'));
     return labelsName;
   }
+
+  static coordinatesCompass(data, compressLevel) {
+    const d = [];
+    for (let i = 0; i < data.length; i += compressLevel) {
+      let x = 0;
+      let y = 0;
+      let level = 0;
+      _.range(i, i + compressLevel).forEach((j) => {
+        if (data[j]) {
+          x += data[j][0];
+          y += data[j][1];
+          level += 1;
+        }
+      });
+      x /= level;
+      y /= level;
+
+      d.push([x, y]);
+    }
+    return d;
+  }
 }
 
 export default ChartUtils;

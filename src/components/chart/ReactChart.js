@@ -11,6 +11,7 @@ import { updateSingleGraph } from '../../store/actions/graphs';
 import ContextMenu from '../ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
 import SocketContext from '../../context/Socket';
+import ChartUtils from "../../helpers/ChartUtils";
 
 class ReactChartComp extends Component {
   static propTypes = {
@@ -87,12 +88,12 @@ class ReactChartComp extends Component {
 
   addNewNode = (ev) => {
     const { target } = ev;
-    if (target.tagName !== 'svg'
+    if (!['svg', 'path'].includes(target.tagName)
       || Chart.activeButton !== 'create'
       || Chart.newLink.attr('data-source')) {
       return;
     }
-    const { x, y } = Chart.getScaledPosition(ev);
+    const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
 
     this.props.toggleNodeModal({
       fx: x,
