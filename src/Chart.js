@@ -31,6 +31,7 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
+      this.detectLabels(d);
       this.event.emit('node.dragend', ev, d);
       if (!ev.active) simulation.alphaTarget(0);
       if (!d.fixed) {
@@ -165,6 +166,47 @@ class Chart {
       .attr('y', y * scale);
   }
 
+  static detectLabels(d = null) {
+    const originalDimensions = {
+      scale: this.wrapper.attr('data-scale') || 1,
+      x: this.wrapper.attr('data-x') || 0,
+      y: this.wrapper.attr('data-y') || 0,
+    };
+    const {
+      left: svgLeft, top: svgTop,
+    } = document.querySelector('#graph svg').getBoundingClientRect();
+
+    const {
+      left, top, width, height,
+    } = document.querySelector('#graph .nodes').getBoundingClientRect();
+
+    const scale = 0.1;
+
+    const x = -1 * (left - svgLeft) * scale + ((window.innerWidth - width * scale) / 2);
+    const y = -1 * (top - svgTop) * scale + ((window.innerHeight - height * scale) / 2);
+
+    // Chart.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
+
+    this.data.nodes = this.data.nodes.map((l) => {
+      if (d) {
+        if (d.name === l.name) {
+          l.labels = ChartUtils.getLabelsByPosition(l);
+        }
+      } else {
+        l.labels = ChartUtils.getLabelsByPosition(l);
+      }
+      return l;
+    });
+
+
+    const { x: oX, y: oY, scale: oScale } = originalDimensions;
+    // this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`);
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
+
+    this._dataNodes = null;
+  }
+
   static renderLabels() {
     let activeLine;
 
@@ -226,10 +268,8 @@ class Chart {
         .attr('stroke-width', undefined);
 
       this.data.labels.push(datum);
-
+      this.detectLabels();
       activeLine = null;
-      this._dataNodes = null;
-
       this.event.emit('label.new', ev, datum);
     };
 
@@ -359,7 +399,10 @@ class Chart {
       this.nodeFilter();
       this.windowResize();
 
-      this.event.emit('render', this);
+      setTimeout(() => {
+        this.detectLabels();
+        this.event.emit('render', this);
+      }, 1000);
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
@@ -728,7 +771,7 @@ class Chart {
         hidden: d.hidden,
         keywords: d.keywords || [],
         location: d.location || undefined,
-        labels: ChartUtils.getLabelsByPosition(d),
+        labels: d.labels,
       }));
     }
     if (show) {

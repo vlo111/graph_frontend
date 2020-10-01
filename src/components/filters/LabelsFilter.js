@@ -38,7 +38,6 @@ class LabelsFilter extends Component {
     } else {
       filters.labels.push(value);
     }
-    console.log(filters.labels);
 
     this.props.setFilter('labels', filters.labels);
   }

@@ -159,7 +159,7 @@ class ChartUtils {
     return node.getBoundingClientRect();
   }
 
-  static calcScaledPosition(x = 0, y = 0) {
+  static calcScaledPosition(x = 0, y = 0, del = '/') {
     if (!Chart.wrapper || Chart.wrapper.empty()) {
       return {
         x: 0,
@@ -172,8 +172,12 @@ class ChartUtils {
     const moveX = +Chart.wrapper?.attr('data-x') || 0;
     const moveY = +Chart.wrapper?.attr('data-y') || 0;
     const scale = +Chart.wrapper?.attr('data-scale') || 1;
-    const _x = (x - moveX) / scale;
-    const _y = (y - moveY) / scale;
+    let _x = (x - moveX) / scale;
+    let _y = (y - moveY) / scale;
+    if (del === '*') {
+      _x = (x - moveX) * scale;
+      _y = (y - moveY) * scale;
+    }
     return {
       x: _x,
       y: _y,
@@ -332,14 +336,13 @@ class ChartUtils {
   }
 
   static getLabelsByPosition(node) {
-    const { x, y } = ChartUtils.calcScaledPosition(node.fx || node.x, node.fy || node.y);
+    const { x, y } = this.getNodeDocumentPosition(node.index);
     const elements = [];
     const labels = document.querySelectorAll('#graph .labels .label');
     document.body.style.pointerEvents = 'none';
     labels.forEach((label) => {
       label.style.pointerEvents = 'all';
     });
-
     while (true) {
       const el = document.elementFromPoint(x, y);
       if (!el || el.tagName.toLowerCase() === 'html') {
