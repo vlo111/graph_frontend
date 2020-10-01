@@ -83,13 +83,16 @@ class AddLinkModal extends Component {
 
   render() {
     const { linkData, errors, show } = this.state;
+    if (!show) {
+      return null;
+    }
     const links = Chart.getLinks();
     const types = this.getTypes(links);
     return (
       <Modal
         className="ghModal"
         overlayClassName="ghModalOverlay"
-        isOpen={show}
+        isOpen
         onRequestClose={this.closeModal}
       >
         <form onSubmit={this.addLink}>

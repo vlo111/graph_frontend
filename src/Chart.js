@@ -179,7 +179,7 @@ class Chart {
       .join('path')
       .attr('class', 'label')
       .attr('opacity', '0.4')
-      .attr('data-name', ChartUtils.labelColors())
+      .attr('data-name', (d) => d.name)
       .attr('fill', ChartUtils.labelColors())
       .attr('d', (d) => renderPath(d.d))
       .on('click', (...p) => this.event.emit('label.click', ...p));
@@ -189,7 +189,7 @@ class Chart {
 
       activeLine = labels.append('path')
         .datum({
-          name: ChartUtils.labelColors()(),
+          name: '',
           color: ChartUtils.labelColors()(),
           d: [],
         })
@@ -230,7 +230,7 @@ class Chart {
       activeLine = null;
       this._dataNodes = null;
 
-      this.event.emit('label.create', ev, datum);
+      this.event.emit('label.new', ev, datum);
     };
 
     labels.call(d3.drag()
