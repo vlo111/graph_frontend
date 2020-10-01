@@ -19,61 +19,61 @@ class ChartUtils {
     }
     data.links = data.links.map((d) => {
       if (!_.isEmpty(params.linkTypes) && !params.linkTypes.includes(d.type)) {
-        d.hidden = true;
+        d.hidden = 1;
         return d;
       }
       if (params.linkValue?.min > -1) {
         if (d.value < params.linkValue.min || d.value > params.linkValue.max) {
-          d.hidden = true;
+          d.hidden = 1;
           return d;
         }
       }
-      d.hidden = false;
+      d.hidden = 0;
       return d;
     });
     data.nodes = data.nodes.map((d) => {
       // if (data.links.some((l) => l.hidden && d.name === l.source)) {
-      //   d.hidden = true;
+      //   d.hidden = 1;
       //   return d;
       // }
       if (params.linkConnection?.min > -1) {
         const { length = 0 } = data.links.filter((l) => l.source === d.name || l.target === d.name) || {};
         if (length < params.linkConnection.min || length > params.linkConnection.max) {
-          d.hidden = true;
+          d.hidden = 1;
           return d;
         }
       }
       if (params.hideIsolated && !data.links.some((l) => d.name === l.source || d.name === l.target)) {
-        d.hidden = true;
+        d.hidden = 1;
         return d;
       }
       if (!_.isEmpty(params.nodeTypes) && !params.nodeTypes.includes(d.type)) {
-        d.hidden = true;
+        d.hidden = 1;
         return d;
       }
 
-      // if (!_.isEmpty(params.labels) && !d.labels.some((l) => params.labels.includes(l))) {
-      //   d.hidden = true;
-      //   return d;
-      // }
+      if (!_.isEmpty(params.labels) && !d.labels.some((l) => params.labels.includes(l))) {
+        d.hidden = -1;
+        return d;
+      }
 
       if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.name]))) {
-        d.hidden = true;
+        d.hidden = 1;
         return d;
       }
       if (!_.isEmpty(params.nodeKeywords) && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
-        d.hidden = true;
+        d.hidden = 1;
         if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keyword)) {
-          d.hidden = false;
+          d.hidden = 0;
         }
         return d;
       }
-      d.hidden = false;
+      d.hidden = 0;
       return d;
     });
 
     data.links = data.links.map((d) => {
-      d.hidden = d.hidden || data.nodes.some((n) => n.hidden && (d.target === n.name || d.source === n.name));
+      d.hidden = d.hidden || (data.nodes.some((n) => n.hidden !== 0 && (d.target === n.name || d.source === n.name)) ? 1 : 0);
       return d;
     });
 
@@ -335,7 +335,6 @@ class ChartUtils {
     const { x, y } = ChartUtils.calcScaledPosition(node.fx || node.x, node.fy || node.y);
     const elements = [];
     const labels = document.querySelectorAll('#graph .labels .label');
-
     document.body.style.pointerEvents = 'none';
     labels.forEach((label) => {
       label.style.pointerEvents = 'all';

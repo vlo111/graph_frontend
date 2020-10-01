@@ -179,7 +179,7 @@ class Chart {
       .join('path')
       .attr('class', 'label')
       .attr('opacity', '0.4')
-      .attr('data-name', (d) => d.name)
+      .attr('data-name', (d) => d.name || ChartUtils.labelColors()(d))
       .attr('fill', ChartUtils.labelColors())
       .attr('d', (d) => renderPath(d.d))
       .on('click', (...p) => this.event.emit('label.click', ...p));
@@ -265,8 +265,8 @@ class Chart {
       this.data = data;
       this.radiusList = ChartUtils.getRadiusList();
 
-      const filteredLinks = this.data.links.filter((d) => !d.hidden);
-      const filteredNodes = this.data.nodes.filter((d) => !d.hidden);
+      const filteredLinks = this.data.links.filter((d) => d.hidden !== 1);
+      const filteredNodes = this.data.nodes.filter((d) => d.hidden !== 1);
 
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(filteredLinks).id((d) => d.name))
@@ -306,7 +306,7 @@ class Chart {
       this.node = this.nodesWrapper.selectAll('.node')
         .data(filteredNodes)
         .join('g')
-        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''}`)
+        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.hidden === -1 ? 'disappear' : ''}`)
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
         .on('mouseenter', (...p) => this.event.emit('node.mouseenter', ...p))
@@ -421,7 +421,7 @@ class Chart {
     directions.selectAll('text textPath').remove();
 
     this.directions = directions.selectAll('text')
-      .data(this.data.links.filter((d) => d.direction && !d.hidden))
+      .data(this.data.links.filter((d) => d.direction && d.hidden !== 1))
       .join('text')
       .attr('dy', (d) => d.value * 1.8 + 1.55)
       .attr('dx', (d) => {
@@ -535,7 +535,7 @@ class Chart {
     wrapper.selectAll('text textPath').remove();
 
     this.linkText = wrapper.selectAll('text')
-      .data(linksData.filter((d) => !d.hidden))
+      .data(linksData.filter((d) => d.hidden !== 1))
       .join('text')
       .attr('text-anchor', 'middle')
       .attr('fill', ChartUtils.linkColor())

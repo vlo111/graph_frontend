@@ -64,7 +64,7 @@ class ReactChartComp extends Component {
 
   handleLabelClick = (ev, d) => {
     if (Chart.activeButton === 'delete') {
-      this.handleLabelDelete(d);
+      this.handleLabelDelete(ev, d);
     }
   }
 
@@ -73,7 +73,7 @@ class ReactChartComp extends Component {
   }
 
   handleLabelDelete = (ev, d) => {
-    const labels = Chart.getLabels().filter((l) => l.color !== d.color);
+    const labels = Chart.getLabels().filter((l) => l.name !== d.name);
     Chart.render({ labels });
   }
 

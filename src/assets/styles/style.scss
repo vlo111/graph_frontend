@@ -694,7 +694,6 @@ p {
 
   &.create-label {
     .labels {
-      pointer-events: all;
       cursor: url("../images/pen.png") 0 50, auto;
 
       .labelsBoard {
@@ -737,7 +736,10 @@ p {
 
       &.hidden {
         opacity: 0.2 !important;
-        pointer-events: none;
+      }
+
+      &.disappear {
+        opacity: 0 !important;
       }
 
       &.unChecked {
@@ -804,6 +806,10 @@ p {
       text {
         opacity: 0.4 !important;
       }
+    }
+
+    &.disappear {
+      opacity: 0 !important;
     }
 
     &.unChecked {
@@ -2358,6 +2364,7 @@ p {
         top: 4px;
         transform: translate(-50%);
         color: $color-white;
+        pointer-events: none;
       }
 
       input:not(:checked) ~ label {

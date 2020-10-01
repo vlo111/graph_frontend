@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import memoizeOne from 'memoize-one';
-import Select from '../form/Select';
 import Button from '../form/Button';
 import Chart from '../../Chart';
-import { DASH_TYPES } from '../../data/link';
 import Validate from '../../helpers/Validate';
-import SvgLine from '../SvgLine';
 import Input from '../form/Input';
 
 class AddLabelModal extends Component {
