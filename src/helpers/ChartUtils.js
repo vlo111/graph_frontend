@@ -51,7 +51,6 @@ class ChartUtils {
         d.hidden = 1;
         return d;
       }
-
       if (!_.isEmpty(params.labels) && !d.labels.some((l) => params.labels.includes(l))) {
         d.hidden = -1;
         return d;

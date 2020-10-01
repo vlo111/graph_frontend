@@ -13,11 +13,15 @@ class Filters extends Component {
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     filters: PropTypes.object.isRequired,
-    customFields: PropTypes.object.isRequired,
+    customFields: PropTypes.object,
+  }
+
+  static defaultProps = {
+    customFields: undefined,
   }
 
   renderChart = memoizeOne((filters, customFields) => {
-    if (!_.isEmpty(customFields)) {
+    if (customFields) {
       Chart.render(undefined, { filters, customFields });
     }
   })
@@ -27,6 +31,7 @@ class Filters extends Component {
       filters, customFields, match: { params: { graphId } }, location: { pathname },
     } = this.props;
     const show = pathname.startsWith('/graphs/filter/');
+    console.log(filters);
     this.renderChart(filters, customFields);
     if (!graphId || !show) {
       return null;
@@ -37,7 +42,7 @@ class Filters extends Component {
 
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
-  customFields: state.graphs.singleGraph.customFields || {},
+  customFields: state.graphs.singleGraph.customFields,
 });
 
 const mapDispatchToProps = {

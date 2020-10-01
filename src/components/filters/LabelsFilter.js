@@ -6,7 +6,6 @@ import _ from 'lodash';
 import Tooltip from 'rc-tooltip/es';
 import { setFilter } from '../../store/actions/app';
 import Checkbox from '../form/Checkbox';
-import Chart from "../../Chart";
 
 class LabelsFilter extends Component {
   static propTypes = {
@@ -38,7 +37,6 @@ class LabelsFilter extends Component {
     } else {
       filters.labels.push(value);
     }
-
     this.props.setFilter('labels', filters.labels);
   }
 

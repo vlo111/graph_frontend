@@ -172,6 +172,9 @@ class Chart {
       x: this.wrapper.attr('data-x') || 0,
       y: this.wrapper.attr('data-y') || 0,
     };
+    if (!document.querySelector('#graph svg')) {
+      return null;
+    }
     const {
       left: svgLeft, top: svgTop,
     } = document.querySelector('#graph svg').getBoundingClientRect();
@@ -180,7 +183,7 @@ class Chart {
       left, top, width, height,
     } = document.querySelector('#graph .nodes').getBoundingClientRect();
 
-    const scale = 0.1;
+    const scale = 0.1; // todo get right scale
 
     const x = -1 * (left - svgLeft) * scale + ((window.innerWidth - width * scale) / 2);
     const y = -1 * (top - svgTop) * scale + ((window.innerHeight - height * scale) / 2);
@@ -290,7 +293,6 @@ class Chart {
       this._dataNodes = null;
       this._dataLinks = null;
       data = this.normalizeData(data);
-
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         if (!_.isEmpty(data?.nodes) || !_.isEmpty(data?.links)) {
           this.undoManager.push(data);
