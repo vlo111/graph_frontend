@@ -41,7 +41,7 @@ class NodeFullInfo extends Component {
               <img
                 className="avatar circle"
                 src={singleGraph.user?.avatar}
-                alt={singleGraph.user?.firstName}
+                alt={singleGraph.user?.firstName || ''}
               />
               <span className="userName">{[singleGraph.user?.firstName, singleGraph.user?.lastName].join(' ')}</span>
             </div>

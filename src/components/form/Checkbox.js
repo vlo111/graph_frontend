@@ -7,7 +7,7 @@ class Checkbox extends Component {
     id: PropTypes.string,
     containerClassName: PropTypes.string,
     containerId: PropTypes.string,
-    label: PropTypes.string,
+    label: PropTypes.any,
     error: PropTypes.string,
     children: PropTypes.node,
     labelReverse: PropTypes.bool,

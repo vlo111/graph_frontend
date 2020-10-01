@@ -11,6 +11,7 @@ import Button from '../form/Button';
 class NodeTypesFilter extends Component {
   static propTypes = {
     filters: PropTypes.object.isRequired,
+    customFields: PropTypes.object.isRequired,
     setFilter: PropTypes.func.isRequired,
     nodes: PropTypes.array.isRequired,
   }

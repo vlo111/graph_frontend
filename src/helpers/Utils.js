@@ -3,7 +3,6 @@ import _ from 'lodash';
 import Bowser from 'bowser';
 import memoizeOne from 'memoize-one';
 import Api from '../Api';
-import Account from './Account';
 
 const browser = Bowser.getParser(window.navigator.userAgent);
 

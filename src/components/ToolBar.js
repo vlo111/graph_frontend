@@ -36,7 +36,6 @@ class ToolBar extends Component {
       this.props.getSingleGraphRequest(graphId);
     }
   }
-
   render() {
     const { activeButton, match: { params: { graphId } } } = this.props;
     return (
@@ -60,7 +59,7 @@ class ToolBar extends Component {
               icon={<TagSvg />}
               onClick={() => this.handleClick('create-label')}
             >
-              Add Label
+              Create Label
             </Button>
             <Button
               icon={<CloseSvg style={{ width: 10, margin: '0 2px' }} />}

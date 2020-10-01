@@ -4,6 +4,7 @@ export const DEFAULT_FILTERS = {
   linkTypes: [],
   nodeKeywords: [],
   nodeCustomFields: [],
+  labels: [],
   linkValue: {
     min: -1,
     max: -1,

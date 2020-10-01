@@ -8,13 +8,11 @@ import File from '../form/File';
 import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
-import Chart from '../../Chart';
 import ImportStep2 from './ImportStep2';
 
 class DataImportModal extends Component {
   static propTypes = {
     convertGraphRequest: PropTypes.func.isRequired,
-    importData: PropTypes.object.isRequired,
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -113,9 +111,8 @@ class DataImportModal extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  importData: state.graphs.importData,
-});
+const mapStateToProps = () => ({});
+
 const mapDispatchToProps = {
   convertGraphRequest,
 };

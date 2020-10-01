@@ -19,56 +19,60 @@ class ChartUtils {
     }
     data.links = data.links.map((d) => {
       if (!_.isEmpty(params.linkTypes) && !params.linkTypes.includes(d.type)) {
-        d.hidden = true;
+        d.hidden = 1;
         return d;
       }
       if (params.linkValue?.min > -1) {
         if (d.value < params.linkValue.min || d.value > params.linkValue.max) {
-          d.hidden = true;
+          d.hidden = 1;
           return d;
         }
       }
-      d.hidden = false;
+      d.hidden = 0;
       return d;
     });
     data.nodes = data.nodes.map((d) => {
       // if (data.links.some((l) => l.hidden && d.name === l.source)) {
-      //   d.hidden = true;
+      //   d.hidden = 1;
       //   return d;
       // }
       if (params.linkConnection?.min > -1) {
         const { length = 0 } = data.links.filter((l) => l.source === d.name || l.target === d.name) || {};
         if (length < params.linkConnection.min || length > params.linkConnection.max) {
-          d.hidden = true;
+          d.hidden = 1;
           return d;
         }
       }
       if (params.hideIsolated && !data.links.some((l) => d.name === l.source || d.name === l.target)) {
-        d.hidden = true;
+        d.hidden = 1;
         return d;
       }
       if (!_.isEmpty(params.nodeTypes) && !params.nodeTypes.includes(d.type)) {
-        d.hidden = true;
+        d.hidden = 1;
+        return d;
+      }
+      if (!_.isEmpty(params.labels) && !d.labels.some((l) => params.labels.includes(l))) {
+        d.hidden = -1;
         return d;
       }
 
       if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.name]))) {
-        d.hidden = true;
+        d.hidden = 1;
         return d;
       }
       if (!_.isEmpty(params.nodeKeywords) && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
-        d.hidden = true;
+        d.hidden = 1;
         if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keyword)) {
-          d.hidden = false;
+          d.hidden = 0;
         }
         return d;
       }
-      d.hidden = false;
+      d.hidden = 0;
       return d;
     });
 
     data.links = data.links.map((d) => {
-      d.hidden = d.hidden || data.nodes.some((n) => n.hidden && (d.target === n.name || d.source === n.name));
+      d.hidden = d.hidden || (data.nodes.some((n) => n.hidden !== 0 && (d.target === n.name || d.source === n.name)) ? 1 : 0);
       return d;
     });
 
@@ -154,12 +158,25 @@ class ChartUtils {
     return node.getBoundingClientRect();
   }
 
-  static calcScaledPosition(x = 0, y = 0) {
+  static calcScaledPosition(x = 0, y = 0, del = '/') {
+    if (!Chart.wrapper || Chart.wrapper.empty()) {
+      return {
+        x: 0,
+        y: 0,
+        moveX: 0,
+        moveY: 0,
+        scale: 1,
+      };
+    }
     const moveX = +Chart.wrapper?.attr('data-x') || 0;
     const moveY = +Chart.wrapper?.attr('data-y') || 0;
     const scale = +Chart.wrapper?.attr('data-scale') || 1;
-    const _x = (x - moveX) / scale;
-    const _y = (y - moveY) / scale;
+    let _x = (x - moveX) / scale;
+    let _y = (y - moveY) / scale;
+    if (del === '*') {
+      _x = (x - moveX) * scale;
+      _y = (y - moveY) * scale;
+    }
     return {
       x: _x,
       y: _y,
@@ -205,41 +222,52 @@ class ChartUtils {
 
   static linkColorObj = {};
 
-  static linkColorIndex = 0;
+  static linkColorArr = _.clone(LINK_COLORS);
 
   static linkColor = () => (d) => {
-    if (d.color) {
-      return d.color;
-    }
-    if (!(d.type in this.linkColorObj)) {
-      this.linkColorObj[d.type] = LINK_COLORS[this.linkColorIndex] || randomColor({
-        luminosity: 'light',
-      });
-      this.linkColorIndex += 1;
+    if (!this.linkColorObj[d.type]) {
+      if (d.color) {
+        this.linkColorArr = this.linkColorArr.filter((c) => d.color !== c);
+        this.linkColorArr[d.type] = d.color;
+        return d.color;
+      }
+      this.linkColorObj[d.type] = this.linkColorArr.shift() || randomColor({ luminosity: 'light' });
     }
     return this.linkColorObj[d.type];
   }
 
   static nodeColorObj = {};
 
-  static nodeColorIndex = 0;
+  static nodeColorsArr = _.clone(NODE_COLOR);
 
   static nodeColor = () => (d) => {
-    if (d.color) {
-      return d.color;
-    }
-    if (!(d.type in this.nodeColorObj)) {
-      this.nodeColorObj[d.type] = NODE_COLOR[this.nodeColorIndex] || randomColor();
-      this.nodeColorIndex += 1;
+    if (!this.nodeColorObj[d.type]) {
+      if (d.color) {
+        this.nodeColorsArr = this.nodeColorsArr.filter((c) => d.color !== c);
+        this.nodeColorObj[d.type] = d.color;
+        return d.color;
+      }
+      this.nodeColorObj[d.type] = this.nodeColorsArr.shift() || randomColor();
     }
     return this.nodeColorObj[d.type];
+  }
+
+  static labelColorsArr = _.clone(LINK_COLORS);
+
+  static labelColors = () => (d = {}) => {
+    if (d.color) {
+      this.labelColorsArr = this.labelColorsArr.filter((c) => d.color !== c);
+      return d.color;
+    }
+    return this.labelColorsArr.shift() || randomColor({ luminosity: 'light' });
   }
 
   static resetColors() {
     this.linkColorObj = {};
     this.nodeColorObj = {};
-    this.linkColorIndex = 0;
-    this.nodeColorIndex = 0;
+    this.linkColorArr = _.clone(LINK_COLORS);
+    this.nodeColorsArr = _.clone(NODE_COLOR);
+    this.labelColorsArr = _.clone(LINK_COLORS);
   }
 
   static setClass = (fn) => (d, index, g) => {
@@ -304,6 +332,59 @@ class ChartUtils {
     const top = (y * -1) + (window.innerHeight / 2) - nodeWidth;
     Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(2));
     // Chart.event.emit('node.mouseenter', node);
+  }
+
+  static getLabelsByPosition(node) {
+    const { x, y } = this.getNodeDocumentPosition(node.index);
+    const elements = [];
+    const labels = document.querySelectorAll('#graph .labels .label');
+    document.body.style.pointerEvents = 'none';
+    labels.forEach((label) => {
+      label.style.pointerEvents = 'all';
+    });
+    while (true) {
+      const el = document.elementFromPoint(x, y);
+      if (!el || el.tagName.toLowerCase() === 'html') {
+        break;
+      }
+      elements.push(el);
+      el.style.pointerEvents = 'none';
+    }
+
+    document.body.style.pointerEvents = null;
+    labels.forEach((label) => {
+      label.style.pointerEvents = null;
+    });
+    elements.forEach((el) => {
+      el.style.pointerEvents = null;
+    });
+
+    const labelsName = elements
+      .filter((el) => el.classList.contains('label'))
+      .map((d) => d.getAttribute('data-name'));
+    return labelsName;
+  }
+
+  static coordinatesCompass(data, compressLevel) {
+    const d = [];
+    for (let i = 0; i < data.length; i += compressLevel) {
+      let x = 0;
+      let y = 0;
+      let level = 0;
+      _.range(i, i + compressLevel).forEach((j) => {
+        if (data[j]) {
+          x += data[j][0];
+          y += data[j][1];
+          level += 1;
+        }
+      });
+      x /= level;
+      y /= level;
+
+      d.push([x, y]);
+    }
+    console.log(`coordinatesCompass: ${data.length} -> ${d.length}`);
+    return d;
   }
 }
 

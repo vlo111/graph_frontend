@@ -10,9 +10,9 @@ class Chart {
   static event = new EventEmitter();
 
   static drag(simulation) {
-    const dragstart = (d) => {
-      this.event.emit('node.dragstart', d);
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    const dragstart = (ev, d) => {
+      this.event.emit('node.dragstart', ev, d);
+      if (ev.active) simulation.alphaTarget(0.3).restart();
       d.fixed = !!d.fx;
       // d.fx = d.x;
       // d.fy = d.y;
@@ -20,14 +20,26 @@ class Chart {
       // d.y = d3.event.y;
     };
 
-    const dragged = (d) => {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
+    const dragged = (ev, d) => {
+      d.fx = ev.x;
+      d.fy = ev.y;
+
+      d.x = ev.x;
+      d.y = ev.y;
+
+      this.graphMovement();
     };
 
-    const dragend = (d) => {
-      this.event.emit('node.dragend', d);
-      if (!d3.event.active) simulation.alphaTarget(0);
+    const dragend = (ev, d) => {
+      this.detectLabels(d);
+      this.event.emit('node.dragend', ev, d);
+      if (!ev.active) simulation.alphaTarget(0);
+      if (!d.fixed) {
+        d.x = d.fx || d.x;
+        d.y = d.fy || d.y;
+        delete d.fx;
+        delete d.fy;
+      }
       if (!d.fixed) {
         d.x = d.fx || d.x;
         d.y = d.fy || d.y;
@@ -53,6 +65,7 @@ class Chart {
   static normalizeData(data) {
     data.nodes = data.nodes || Chart.getNodes();
     data.links = data.links || _.cloneDeep(Chart.getLinks());
+    data.labels = data.labels || Chart.getLabels();
 
     const nodes = data.nodes.map((d) => Object.create(d));
 
@@ -95,7 +108,7 @@ class Chart {
 
     const links = Object.values(data.links).map((d) => Object.create(d));
 
-    return { links, nodes };
+    return { links, nodes, labels: data.labels };
   }
 
   static resizeSvg = () => {
@@ -129,16 +142,152 @@ class Chart {
     return null;
   }
 
-  static handleZoom = () => {
+  static handleZoom = (ev) => {
     if (this.activeButton === 'create-label') {
       return;
     }
-    const { transform } = d3.event;
+    const { transform } = ev;
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
       .attr('data-y', transform.y);
+
+    this.setLabelsBoardZoom(transform);
     this.renderNodeText(transform.k);
+  }
+
+  static setLabelsBoardZoom(transform) {
+    const scale = 1 / transform.k;
+    const size = 100 * scale;
+    const x = transform.x * -1;
+    const y = transform.y * -1;
+
+    // this.wrapper.select('.labelsBoard')
+    //   .attr('transform', `scale(${scale}) translate(${x}, ${y})`)
+
+    this.wrapper.select('.labelsBoard')
+      .attr('width', `${size}%`)
+      .attr('height', `${size}%`)
+      .attr('x', x * scale)
+      .attr('y', y * scale);
+  }
+
+  static detectLabels(d = null) {
+    const originalDimensions = {
+      scale: this.wrapper.attr('data-scale') || 1,
+      x: this.wrapper.attr('data-x') || 0,
+      y: this.wrapper.attr('data-y') || 0,
+    };
+    if (!document.querySelector('#graph svg')) {
+      return null;
+    }
+    const {
+      left: svgLeft, top: svgTop,
+    } = document.querySelector('#graph svg').getBoundingClientRect();
+
+    const {
+      left, top, width, height,
+    } = document.querySelector('#graph .nodes').getBoundingClientRect();
+
+    const scale = 0.1; // todo get right scale
+
+    const x = -1 * (left - svgLeft) * scale + ((window.innerWidth - width * scale) / 2);
+    const y = -1 * (top - svgTop) * scale + ((window.innerHeight - height * scale) / 2);
+
+    // Chart.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
+
+    this.data.nodes = this.data.nodes.map((l) => {
+      if (d) {
+        if (d.name === l.name) {
+          l.labels = ChartUtils.getLabelsByPosition(l);
+        }
+      } else {
+        l.labels = ChartUtils.getLabelsByPosition(l);
+      }
+      return l;
+    });
+
+
+    const { x: oX, y: oY, scale: oScale } = originalDimensions;
+    // this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`);
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
+
+    this._dataNodes = null;
+  }
+
+  static renderLabels() {
+    let activeLine;
+
+    const renderPath = d3.line()
+      .x((d) => d[0])
+      .y((d) => d[1])
+      .curve(d3.curveBasis);
+    const labels = d3.select('#graph .labels');
+
+    labels.selectAll('path')
+      .data(this.data.labels)
+      .join('path')
+      .attr('class', 'label')
+      .attr('opacity', '0.4')
+      .attr('data-name', (d) => d.name || ChartUtils.labelColors()(d))
+      .attr('fill', ChartUtils.labelColors())
+      .attr('d', (d) => renderPath(d.d))
+      .on('click', (...p) => this.event.emit('label.click', ...p));
+
+    const handleDragStart = () => {
+      if (this.activeButton !== 'create-label') return;
+
+      activeLine = labels.append('path')
+        .datum({
+          name: '',
+          color: ChartUtils.labelColors()(),
+          d: [],
+        })
+        .attr('class', 'label')
+        .attr('data-name', (d) => d.name);
+    };
+
+    const handleDrag = (ev) => {
+      if (this.activeButton !== 'create-label') return;
+      const { x, y } = ev;
+      const datum = activeLine.datum();
+      datum.d.push([x, y]);
+      activeLine
+        .datum(datum)
+        .attr('d', (d) => renderPath(d.d))
+        .attr('opacity', 1)
+        .attr('fill', 'transparent')
+        .attr('stroke', '#0D0905')
+        .attr('stroke-width', 2);
+    };
+
+    const handleDragEnd = (ev) => {
+      if (this.activeButton !== 'create-label') return;
+      const datum = activeLine.datum();
+
+      datum.d = ChartUtils.coordinatesCompass(datum.d, 3);
+
+      activeLine
+        .datum(datum)
+        .attr('d', (d) => renderPath(d.d))
+        .attr('opacity', 0.4)
+        .attr('fill', (d) => d.color)
+        .attr('stroke', undefined)
+        .attr('stroke-width', undefined);
+
+      this.data.labels.push(datum);
+      this.detectLabels();
+      activeLine = null;
+      this.event.emit('label.new', ev, datum);
+    };
+
+    labels.call(d3.drag()
+      .on('start', handleDragStart)
+      .on('drag', handleDrag)
+      .on('end', handleDragEnd));
+
+    this._dataNodes = null;
   }
 
   static render(data = {}, params = {}) {
@@ -150,7 +299,6 @@ class Chart {
       this._dataNodes = null;
       this._dataLinks = null;
       data = this.normalizeData(data);
-
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         if (!_.isEmpty(data?.nodes) || !_.isEmpty(data?.links)) {
           this.undoManager.push(data);
@@ -163,14 +311,14 @@ class Chart {
       }
       data = ChartUtils.filter(data, params.filters, params.customFields);
       this.data = data;
-
       this.radiusList = ChartUtils.getRadiusList();
 
-      const filteredLinks = this.data.links.filter((d) => !d.hidden);
-      const filteredNodes = this.data.nodes.filter((d) => !d.hidden);
+      const filteredLinks = this.data.links.filter((d) => d.hidden !== 1);
+      const filteredNodes = this.data.nodes.filter((d) => d.hidden !== 1);
 
       this.simulation = d3.forceSimulation(this.data.nodes)
-        .force('link', d3.forceLink(filteredLinks).id((d) => d.name));
+        .force('link', d3.forceLink(filteredLinks).id((d) => d.name))
+        .on('tick', this.graphMovement);
 
       this.autoPosition();
 
@@ -179,8 +327,8 @@ class Chart {
       this.svg = this.svg
         .call(this.zoom)
         .on('dblclick.zoom', null)
-        .on('click', (d) => this.event.emit('click', d))
-        .on('mousemove', (d) => this.event.emit('mousemove', d));
+        .on('click', (...p) => this.event.emit('click', ...p))
+        .on('mousemove', (...p) => this.event.emit('mousemove', ...p));
 
       this.resizeSvg();
 
@@ -196,22 +344,23 @@ class Chart {
         .attr('stroke', ChartUtils.linkColor())
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
-        .on('click', (d) => this.event.emit('link.click', d));
+        .on('click', (...p) => this.event.emit('link.click', ...p));
 
       this.renderDirections();
+      this.renderLabels();
       this.icons = this.renderIcons();
 
       this.nodesWrapper = this.svg.select('.nodes');
       this.node = this.nodesWrapper.selectAll('.node')
         .data(filteredNodes)
         .join('g')
-        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''}`)
+        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.hidden === -1 ? 'disappear' : ''}`)
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
-        .on('mouseenter', (d) => this.event.emit('node.mouseenter', d))
-        .on('mouseleave', (d) => this.event.emit('node.mouseleave', d))
-        .on('dblclick', (d) => this.event.emit('node.dblclick', d))
-        .on('click', (d) => this.event.emit('node.click', d));
+        .on('mouseenter', (...p) => this.event.emit('node.mouseenter', ...p))
+        .on('mouseleave', (...p) => this.event.emit('node.mouseleave', ...p))
+        .on('dblclick', (...p) => this.event.emit('node.dblclick', ...p))
+        .on('click', (...p) => this.event.emit('node.click', ...p));
 
       this.nodesWrapper.selectAll('.node > *').remove();
 
@@ -253,51 +402,15 @@ class Chart {
         .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : ChartUtils.nodeColor()(d)));
 
       this.renderLinkText();
-
-      this.simulation.on('tick', () => {
-        this.link.attr('d', (d) => {
-          let arc = 0;
-          let arcDirection = 0;
-          if (d.same) {
-            const dr = ChartUtils.nodesDistance(d);
-
-            arc = d.same.arc * dr;
-            arcDirection = d.same.arcDirection;
-          }
-
-          return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${arcDirection} ${d.target.x},${d.target.y}`;
-        });
-        this.node
-          .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
-          .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
-
-        this.linkText
-          .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + +d.value / 2 : (5 + +d.value / 2) * -1))
-          .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
-
-        this.directions
-          .attr('dx', (d) => {
-            let i = this.radiusList[d.target.index] - d.value;
-            if (d.target.nodeType === 'triangle') {
-              i += 5;
-            } else if (d.target.nodeType === 'hexagon') {
-              i += 5;
-            }
-            if (!d.target.icon) {
-              i += 4;
-            }
-            return i * -1;
-          });
-
-        this._dataNodes = null;
-        this._dataLinks = null;
-      });
       this.renderNodeText();
       this.renderNewLink();
       this.nodeFilter();
       this.windowResize();
 
-      this.event.emit('render', this);
+      setTimeout(() => {
+        this.detectLabels();
+        this.event.emit('render', this);
+      }, 1000);
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
@@ -311,13 +424,55 @@ class Chart {
     }
   }
 
+  static graphMovement = () => {
+    if (!this.link || !this.link) {
+      return;
+    }
+    this.link.attr('d', (d) => {
+      let arc = 0;
+      let arcDirection = 0;
+      if (d.same) {
+        const dr = ChartUtils.nodesDistance(d);
+
+        arc = d.same.arc * dr;
+        arcDirection = d.same.arcDirection;
+      }
+
+      return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${arcDirection} ${d.target.x},${d.target.y}`;
+    });
+    this.node
+      .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
+      .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
+
+    this.linkText
+      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + +d.value / 2 : (5 + +d.value / 2) * -1))
+      .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
+
+    this.directions
+      .attr('dx', (d) => {
+        let i = this.radiusList[d.target.index] - d.value;
+        if (d.target.nodeType === 'triangle') {
+          i += 5;
+        } else if (d.target.nodeType === 'hexagon') {
+          i += 5;
+        }
+        if (!d.target.icon) {
+          i += 4;
+        }
+        return i * -1;
+      });
+
+    this._dataNodes = null;
+    this._dataLinks = null;
+  }
+
   static renderDirections() {
     const directions = this.wrapper.select('.directions');
 
     directions.selectAll('text textPath').remove();
 
     this.directions = directions.selectAll('text')
-      .data(this.data.links.filter((d) => d.direction && !d.hidden))
+      .data(this.data.links.filter((d) => d.direction && d.hidden !== 1))
       .join('text')
       .attr('dy', (d) => d.value * 1.8 + 1.55)
       .attr('dx', (d) => {
@@ -431,7 +586,7 @@ class Chart {
     wrapper.selectAll('text textPath').remove();
 
     this.linkText = wrapper.selectAll('text')
-      .data(linksData.filter((d) => !d.hidden))
+      .data(linksData.filter((d) => d.hidden !== 1))
       .join('text')
       .attr('text-anchor', 'middle')
       .attr('fill', ChartUtils.linkColor())
@@ -474,7 +629,7 @@ class Chart {
       dragActive = false;
     });
 
-    this.event.on('node.mouseenter', (d) => {
+    this.event.on('node.mouseenter', (ev, d) => {
       if (dragActive) return;
       const links = this.getNodeLinks(d.name, 'all');
       links.push({ source: d.name, target: d.name });
@@ -525,7 +680,7 @@ class Chart {
         cancel = false;
       }, 300);
     });
-    this.event.on('node.click', async (d) => {
+    this.event.on('node.click', async (ev, d) => {
       await Utils.sleep(10);
       if (this.activeButton !== 'create') {
         return;
@@ -556,7 +711,7 @@ class Chart {
           .attr('x2', 0)
           .attr('y2', 0);
         if (source !== target) {
-          this.event.emit('line.new', {
+          this.event.emit('line.new', ev, {
             source,
             target: d.name,
           });
@@ -564,8 +719,8 @@ class Chart {
       }
     });
 
-    this.event.on('click', () => {
-      if (d3.event.target.tagName !== 'svg') {
+    this.event.on('click', (ev) => {
+      if (ev.target.tagName !== 'svg') {
         return;
       }
       setTimeout(() => {
@@ -576,18 +731,18 @@ class Chart {
           .attr('y2', 0);
       }, 10);
     });
-    this.event.on('mousemove', () => {
+    this.event.on('mousemove', (ev) => {
       const source = this.newLink.attr('data-source');
       if (this.activeButton !== 'create' || !source) {
         return;
       }
-      const { x, y } = this.getScaledPosition();
+      const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
       this.newLink.attr('x2', x).attr('y2', y);
     });
   }
 
-  static getScaledPosition() {
-    const { x, y } = d3.event;
+  static getScaledPosition(ev) {
+    const { x, y } = ev;
     return ChartUtils.calcScaledPosition(x, y);
   }
 
@@ -624,6 +779,7 @@ class Chart {
         hidden: d.hidden,
         keywords: d.keywords || [],
         location: d.location || undefined,
+        labels: d.labels,
       }));
     }
     if (show) {
@@ -658,6 +814,13 @@ class Chart {
       });
     }
     return this._dataLinks;
+  }
+
+  static getLabels() {
+    if (_.isEmpty(this.data)) {
+      return [];
+    }
+    return this.data.labels || [];
   }
 
   static get activeButton() {
@@ -708,8 +871,8 @@ class Chart {
       left, top, width, height,
     } = document.querySelector('#graph .nodes').getBoundingClientRect();
 
-    const scaleW = svgWidth / width;
-    const scaleH = svgHeight / height;
+    const scaleW = svgWidth / (width + 20);
+    const scaleH = svgHeight / (height + 20);
     const scale = Math.min(scaleW, scaleH);
 
     const x = -1 * (left - svgLeft) * scale + ((svgWidth - width * scale) / 2);

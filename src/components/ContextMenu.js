@@ -35,6 +35,7 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
+    console.log(ev.target.classList.contains('label'))
     if (ev.target.parentNode.classList.contains('node')) {
       const index = +ev.target.parentNode.getAttribute('data-i');
       params = Chart.getNodes().find((d) => d.index === index);
@@ -52,6 +53,9 @@ class ContextMenu extends Component {
         element = 'nodeFullInfo';
         params = { fieldName };
       }
+    } else if (ev.target.classList.contains('label')) {
+      params = { color: ev.target.getAttribute('fill') };
+      element = 'label';
     }
     this.setState({
       x, y, show: element, params,
@@ -62,10 +66,10 @@ class ContextMenu extends Component {
     this.setState({ show: false });
   }
 
-  handleClick = (type, additionalParams) => {
+  handleClick = (ev, type, additionalParams) => {
     const { params } = this.state;
     params.contextMenu = true;
-    this.constructor.event.emit(type, { ...params, ...additionalParams });
+    this.constructor.event.emit(type, ev, { ...params, ...additionalParams });
   }
 
   nodeFullInfoContext = () => {
@@ -73,10 +77,10 @@ class ContextMenu extends Component {
     return (
       <div className="contextmenuOverlay contextmenuOverlayFullInfo" onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
-          <Button icon="fa-pencil-square-o" onClick={() => this.handleClick('node.fields-edit', params.name)}>
+          <Button icon="fa-pencil-square-o" onClick={(ev) => this.handleClick(ev, 'node.fields-edit', params.name)}>
             Edit
           </Button>
-          <Button icon="fa-trash" onClick={() => this.handleClick('node.fields-delete', params.name)}>
+          <Button icon="fa-trash" onClick={(ev) => this.handleClick(ev, 'node.fields-delete', params.name)}>
             Delete
           </Button>
         </div>
@@ -100,7 +104,7 @@ class ContextMenu extends Component {
       <div className="contextmenuOverlay" onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
           {show === 'node' ? (
-            <Button icon="fa-pencil-square-o" onClick={() => this.handleClick('node.edit')}>
+            <Button icon="fa-pencil-square-o" onClick={(ev) => this.handleClick(ev, 'node.edit')}>
               Edit
             </Button>
           ) : null}
@@ -112,24 +116,29 @@ class ContextMenu extends Component {
             </Button>
           ) : null}
           {show === 'node' ? (
-            <Button icon="fa-eraser" onClick={() => this.handleClick('node.delete')}>
+            <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, 'node.delete')}>
               Delete
             </Button>
           ) : null}
           {show === 'link' ? (
-            <Button icon="fa-eraser" onClick={() => this.handleClick('link.delete')}>
+            <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, 'link.delete')}>
+              Delete
+            </Button>
+          ) : null}
+          {show === 'label' ? (
+            <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, 'label.delete')}>
               Delete
             </Button>
           ) : null}
           {showInMap ? (
-            <Button icon="fa-globe" onClick={() => this.handleClick('active-button', { button: 'maps-view' })}>
+            <Button icon="fa-globe" onClick={(ev) => this.handleClick(ev, 'active-button', { button: 'maps-view' })}>
               Show in map
             </Button>
           ) : null}
-          <Button icon="fa-crop" onClick={() => this.handleClick('crop')}>
+          <Button icon="fa-crop" onClick={(ev) => this.handleClick(ev, 'crop')}>
             Crop
           </Button>
-          <Button disabled={!undoCount} icon="fa-undo" onClick={() => this.handleClick('undo')}>
+          <Button disabled={!undoCount} icon="fa-undo" onClick={(ev) => this.handleClick(ev, 'undo')}>
             {'Undo '}
             <sub>(Ctrl+Z)</sub>
           </Button>

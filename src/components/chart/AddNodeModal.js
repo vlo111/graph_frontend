@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import { toggleNodeModal } from '../../store/actions/app';
-import { addNodeCustomFieldKey, setNodeCustomField } from '../../store/actions/graphs';
+import { setNodeCustomField } from '../../store/actions/graphs';
 import Select from '../form/Select';
 import Input from '../form/Input';
 import Button from '../form/Button';

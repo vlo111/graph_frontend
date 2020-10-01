@@ -4,7 +4,13 @@ import Api from '../../Api';
 export const CONVERT_GRAPH = define('CONVERT_GRAPH');
 
 export function convertGraphRequest(type, requestData) {
-  return CONVERT_GRAPH.request(() => Api.convert(type, requestData));
+  return CONVERT_GRAPH.request(() => Api.convertToGraph(type, requestData));
+}
+
+export const CONVERT_NODE_GRAPH = define('CONVERT_NODE_GRAPH');
+
+export function convertNodeRequest(type, requestData) {
+  return CONVERT_NODE_GRAPH.request(() => Api.convertToNode(type, requestData));
 }
 
 export const CONVERT_NODE_GRAPH = define('CONVERT_NODE_GRAPH');

@@ -11,6 +11,7 @@ import Button from '../components/form/Button';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
+import { ReactComponent as ShareSvg } from '../assets/images/icons/share.svg';
 import Filters from '../components/filters/Filters';
 import NodeDescription from '../components/NodeDescription';
 import { deleteGraphRequest, getSingleGraphRequest } from '../store/actions/graphs';
@@ -31,6 +32,13 @@ class GraphView extends Component {
     location: PropTypes.object.isRequired,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      openShareModal: false,
+    };
+  }
+
   componentDidMount() {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('view');
@@ -46,6 +54,12 @@ class GraphView extends Component {
       await this.props.deleteGraphRequest(graphId);
       this.props.history.push('/');
       toast.info('Successfully deleted');
+    }
+  }
+
+  shareGraph = async () => {
+    if (window.confirm('Are you sure?')) {
+      this.setState({ openShareModal: true });
     }
   }
 

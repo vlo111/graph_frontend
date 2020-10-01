@@ -59,13 +59,8 @@ class SaveGraphModal extends Component {
     };
   }
 
-  saveGraph = async (status, forceCreate) => {
-    const { requestData } = this.state;
-    const { match: { params: { graphId } }, customFields } = this.props;
-
-    this.props.setLoading(true);
+  getNodesAndFiles = async () => {
     let nodes = Chart.getNodes();
-    const links = Chart.getLinks();
     const icons = await Promise.all(nodes.map((d) => {
       if (d.icon && d.icon.startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);
@@ -84,15 +79,26 @@ class SaveGraphModal extends Component {
       return d;
     });
     files = await Promise.allValues(files);
+    return { nodes, files };
+  }
 
-    let resGraphId;
+  saveGraph = async (status, forceCreate) => {
+    const { requestData } = this.state;
+    const { match: { params: { graphId } }, customFields } = this.props;
+
+    this.props.setLoading(true);
+    const links = Chart.getLinks();
+    const labels = Chart.getLabels();
+    const { nodes, files } = await this.getNodesAndFiles();
     const svg = Chart.printMode(400, 223);
 
+    let resGraphId;
     if (forceCreate || !graphId) {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
         nodes,
         links,
+        labels,
         files,
         svg,
         status,
@@ -104,6 +110,7 @@ class SaveGraphModal extends Component {
         ...requestData,
         nodes,
         links,
+        labels,
         files,
         svg,
         status,

@@ -80,8 +80,8 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  graphsList: state.graphs.graphsList,
-  graphsListInfo: state.graphs.graphsListInfo,
+  graphsList: state.graphs.graphsList || [],
+  graphsListInfo: state.graphs.graphsListInfo || {},
 });
 
 const mapDispatchToProps = {

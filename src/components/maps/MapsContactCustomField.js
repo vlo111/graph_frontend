@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class MapsContactCustomField extends Component {
   static propTypes = {
-    data: PropTypes.oneOfType(PropTypes.string).isRequired,
+    data: PropTypes.object.isRequired,
   }
 
   render() {

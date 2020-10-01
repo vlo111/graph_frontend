@@ -19,7 +19,8 @@ import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
 import MapsButton from '../components/maps/MapsButton';
 import MapsGraph from '../components/maps/MapsGraph';
-import NodeFullInfo from "../components/nodeInfo/NodeFullInfo";
+import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
+import AddLabelModal from '../components/chart/AddLabelModal';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -55,6 +56,7 @@ class GraphForm extends Component {
         {activeButton === 'search' && <SearchModal />}
         {activeButton === 'maps-view' && <MapsGraph />}
         <AddLinkModal />
+        <AddLabelModal />
         <ContextMenu />
         <DataImport />
         <NodeDescription />

@@ -128,6 +128,11 @@ class Validate {
     const value = (val || '').trim();
     return [null, value];
   }
+
+  static labelName(val) {
+    const value = (val || '').trim();
+    return [null, value];
+  }
 }
 
 export default Validate;

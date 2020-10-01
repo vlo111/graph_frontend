@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import { connect } from 'react-redux';
 import FiltersModal from './FiltersModal';
@@ -12,11 +13,17 @@ class Filters extends Component {
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     filters: PropTypes.object.isRequired,
-    customFields: PropTypes.object.isRequired,
+    customFields: PropTypes.object,
+  }
+
+  static defaultProps = {
+    customFields: undefined,
   }
 
   renderChart = memoizeOne((filters, customFields) => {
-    Chart.render(undefined, { filters, customFields });
+    if (customFields) {
+      Chart.render(undefined, { filters, customFields });
+    }
   })
 
   render() {
@@ -24,6 +31,7 @@ class Filters extends Component {
       filters, customFields, match: { params: { graphId } }, location: { pathname },
     } = this.props;
     const show = pathname.startsWith('/graphs/filter/');
+    console.log(filters);
     this.renderChart(filters, customFields);
     if (!graphId || !show) {
       return null;
@@ -34,7 +42,7 @@ class Filters extends Component {
 
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
-  customFields: state.graphs.singleGraph.customFields || {},
+  customFields: state.graphs.singleGraph.customFields,
 });
 
 const mapDispatchToProps = {
