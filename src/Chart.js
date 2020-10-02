@@ -193,8 +193,10 @@ class Chart {
     const scale = Math.min(scaleW, scaleH, 1);
 
     const nodes = this.getNodes();
-    const x = Math.min(...nodes.map((n) => n.fx - this.radiusList[d.index] - 2)) / -1;
-    const y = Math.min(...nodes.map((n) => n.fy - this.radiusList[d.index] - 2)) / -1;
+
+
+    const x = Math.min(...nodes.map((n) => n.fx - this.radiusList[n.index] - 2)) / -1;
+    const y = Math.min(...nodes.map((n) => n.fy - this.radiusList[n.index] - 2)) / -1;
     this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
     // this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
 
