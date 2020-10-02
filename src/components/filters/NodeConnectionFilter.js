@@ -33,8 +33,8 @@ class NodeConnectionFilter extends Component {
       }))
       .orderBy('count')
       .value();
-    const max = _.maxBy(connections, (v) => v.count)?.count || 1;
-    const maxLength = _.maxBy(connections, (v) => v.length)?.length || 1;
+    const max = _.maxBy(connections, (v) => v.count)?.count || 0;
+    const maxLength = _.maxBy(connections, (v) => v.length)?.length || 0;
 
     const hasNoConnected = nodes.some((n) => !links.some((l) => l.source === n.name || l.target === n.name));
     const min = hasNoConnected ? 0 : _.minBy(connections, (v) => v.count)?.count || 0;
