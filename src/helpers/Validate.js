@@ -131,7 +131,14 @@ class Validate {
 
   static labelName(val) {
     const value = (val || '').trim();
-    return [null, value];
+    let error = null;
+    const labels = Chart.getLabels();
+    if (!value) {
+      error = 'Name is required';
+    } else if (labels.some((d) => d.name === value)) {
+      error = 'Already exists';
+    }
+    return [error, value];
   }
 }
 

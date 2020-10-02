@@ -31,7 +31,9 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
-      this.detectLabels(d);
+      if (this.activeButton === 'view') {
+        this.detectLabels(d);
+      }
       this.event.emit('node.dragend', ev, d);
       if (!ev.active) simulation.alphaTarget(0);
       if (!d.fixed) {
@@ -167,29 +169,28 @@ class Chart {
   }
 
   static detectLabels(d = null) {
+    const nodesEl = document.querySelector('#graph .nodes');
+    if (!nodesEl) {
+      return null;
+    }
     const originalDimensions = {
       scale: this.wrapper.attr('data-scale') || 1,
       x: this.wrapper.attr('data-x') || 0,
       y: this.wrapper.attr('data-y') || 0,
     };
-    if (!document.querySelector('#graph svg')) {
-      return null;
-    }
-    const {
-      left: svgLeft, top: svgTop,
-    } = document.querySelector('#graph svg').getBoundingClientRect();
 
-    const {
-      left, top, width, height,
-    } = document.querySelector('#graph .nodes').getBoundingClientRect();
+    const { width, height } = nodesEl.getBoundingClientRect();
 
-    const scale = 0.1; // todo get right scale
+    // const scale = 0.1;
+    const scaleW = window.innerWidth / (width + 20);
+    const scaleH = window.innerHeight / (height + 20);
+    const scale = Math.min(scaleW, scaleH);
 
-    const x = -1 * (left - svgLeft) * scale + ((window.innerWidth - width * scale) / 2);
-    const y = -1 * (top - svgTop) * scale + ((window.innerHeight - height * scale) / 2);
-
-    // Chart.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
+    const nodes = this.getNodes();
+    const x = Math.min(...nodes.map((n) => n.fx)) / -2;
+    const y = Math.min(...nodes.map((n) => n.fy)) / -2;
+    Chart.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
+    // Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
 
     this.data.nodes = this.data.nodes.map((l) => {
       if (d) {
@@ -202,10 +203,10 @@ class Chart {
       return l;
     });
 
-
     const { x: oX, y: oY, scale: oScale } = originalDimensions;
-    // this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`);
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
+
+    this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`);
+    // Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
 
     this._dataNodes = null;
   }
@@ -227,7 +228,10 @@ class Chart {
       .attr('data-name', (d) => d.name || ChartUtils.labelColors()(d))
       .attr('fill', ChartUtils.labelColors())
       .attr('d', (d) => renderPath(d.d))
-      .on('click', (...p) => this.event.emit('label.click', ...p));
+      .on('click', (...p) => this.event.emit('label.click', ...p))
+      .on('mouseenter', (...p) => this.event.emit('label.mouseenter', ...p))
+      .on('mousemove', (...p) => this.event.emit('label.mousemove', ...p))
+      .on('mouseleave', (...p) => this.event.emit('label.mouseleave', ...p));
 
     const handleDragStart = () => {
       if (this.activeButton !== 'create-label') return;
@@ -261,6 +265,12 @@ class Chart {
       const datum = activeLine.datum();
 
       datum.d = ChartUtils.coordinatesCompass(datum.d, 3);
+
+      if (datum.d.length < 4) {
+        activeLine.remove();
+        activeLine = null;
+        return;
+      }
 
       activeLine
         .datum(datum)
@@ -401,10 +411,7 @@ class Chart {
       this.nodeFilter();
       this.windowResize();
 
-      setTimeout(() => {
-        this.detectLabels();
-        this.event.emit('render', this);
-      }, 1000);
+      this.event.emit('render', this);
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
@@ -786,6 +793,11 @@ class Chart {
     }
 
     return this._dataNodes;
+  }
+
+  static getNotesWithLabels() {
+    this.detectLabels();
+    return this.getNodes();
   }
 
   static getLinks() {

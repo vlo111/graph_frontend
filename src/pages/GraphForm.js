@@ -21,6 +21,7 @@ import MapsButton from '../components/maps/MapsButton';
 import MapsGraph from '../components/maps/MapsGraph';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import AddLabelModal from '../components/chart/AddLabelModal';
+import LabelTooltip from "../components/LabelTooltip";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -64,6 +65,7 @@ class GraphForm extends Component {
         <AutoPlay />
         <Zoom />
         <MapsButton />
+        <LabelTooltip />
       </Wrapper>
     );
   }
