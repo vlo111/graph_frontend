@@ -14,6 +14,7 @@ import FileInput from '../form/FileInput';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
+import Api from "../../Api";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -25,7 +26,7 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, type, keywords, location, index = null, customField,
+      fx, fy, name, icon, nodeType, type, keywords, location, index = null, customField = {},
     } = addNodeParams;
     this.setState({
       nodeData: {
@@ -74,58 +75,40 @@ class AddNodeModal extends Component {
     ev.preventDefault();
     const { nodeData, index, customField } = this.state;
 
-    let url = 'https://en.wikipedia.org/w/api.php';
+    const errors = {};
+    const nodes = Chart.getNodes();
+    let links;
 
-    const params = {
-      action: 'query',
-      list: 'search',
-      srsearch: nodeData.name,
-      format: 'json',
-    };
+    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, !_.isNull(index));
+    [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
+    [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
 
-    url += '?origin=*';
-    Object.keys(params).forEach((key) => { url += `&${key}=${params[key]}`; });
+    if (!Validate.hasError(errors)) {
+      const { data: wikiData } = await Api.getWikipediaInfo(nodeData.name).catch((e) => e);
+      if (wikiData?.result) {
+        customField.Wikipedia = `https://en.wikipedia.org/wiki/${nodeData.name}`;
+      }
 
-    fetch(url)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.query.search[0].title === nodeData.name) {
-          customField.Wikipedia = `<iframe src="">https://en.wikipedia.org/wiki/${nodeData.name}</iframe>`;
-        }
-
-        const errors = {};
-        const nodes = Chart.getNodes();
-        let links;
-
-        [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, !_.isNull(index));
-        [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
-        [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
-
-        if (!Validate.hasError(errors)) {
-          if (_.isNull(index)) {
-            nodes.push(nodeData);
-          } else {
-            const { name: oldName } = nodes[index];
-            links = Chart.getLinks().map((d) => {
-              if (d.source === oldName) {
-                d.source = nodeData.name;
-              } else if (d.target === oldName) {
-                d.target = nodeData.name;
-              }
-              return d;
-            });
-
-            nodes[index] = nodeData;
+      if (_.isNull(index)) {
+        nodes.push(nodeData);
+      } else {
+        const { name: oldName } = nodes[index];
+        links = Chart.getLinks().map((d) => {
+          if (d.source === oldName) {
+            d.source = nodeData.name;
+          } else if (d.target === oldName) {
+            d.target = nodeData.name;
           }
-          Chart.render({ nodes, links });
-          this.props.setNodeCustomField(nodeData.type, nodeData.name, customField);
-          this.props.toggleNodeModal();
-        }
-        this.setState({ errors, nodeData });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+          return d;
+        });
+
+        nodes[index] = nodeData;
+      }
+      Chart.render({ nodes, links });
+      this.props.setNodeCustomField(nodeData.type, nodeData.name, customField);
+      this.props.toggleNodeModal();
+    }
+    this.setState({ errors, nodeData });
   }
 
   handleChange = (path, value) => {

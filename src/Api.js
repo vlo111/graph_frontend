@@ -146,6 +146,12 @@ class Api {
   static notificationsUpdate() {
     return api.get('/notifications/update');
   }
+
+  static getWikipediaInfo(search) {
+    return api.get('/helpers/wikipedia', {
+      params: { search },
+    });
+  }
 }
 
 export default Api;

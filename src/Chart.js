@@ -826,7 +826,7 @@ class Chart {
           type: pd.type || d.type || '',
           direction: pd.direction || d.direction || '',
           hidden: pd.hidden || d.hidden,
-          color: d.color || ChartUtils.linkColor()(d),
+          color: pd.color || ChartUtils.linkColor()(d),
         };
       });
     }
