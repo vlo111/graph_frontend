@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import { connect } from 'react-redux';
 import FiltersModal from './FiltersModal';
@@ -31,7 +30,6 @@ class Filters extends Component {
       filters, customFields, match: { params: { graphId } }, location: { pathname },
     } = this.props;
     const show = pathname.startsWith('/graphs/filter/');
-    console.log(filters);
     this.renderChart(filters, customFields);
     if (!graphId || !show) {
       return null;

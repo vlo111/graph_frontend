@@ -35,7 +35,6 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
-    console.log(ev.target.classList.contains('label'))
     if (ev.target.parentNode.classList.contains('node')) {
       const index = +ev.target.parentNode.getAttribute('data-i');
       params = Chart.getNodes().find((d) => d.index === index);
@@ -54,7 +53,7 @@ class ContextMenu extends Component {
         params = { fieldName };
       }
     } else if (ev.target.classList.contains('label')) {
-      params = { color: ev.target.getAttribute('fill') };
+      params = { name: ev.target.getAttribute('data-name') };
       element = 'label';
     }
     this.setState({

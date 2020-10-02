@@ -38,7 +38,7 @@ class AddLabelModal extends Component {
     const { labelData } = this.state;
     let labels = Chart.getLabels();
     const errors = {};
-    [errors.type, labelData.name] = Validate.labelName(labelData.name);
+    [errors.name, labelData.name] = Validate.labelName(labelData.name);
 
     if (!Validate.hasError(errors)) {
       labels = labels.map((l) => {
@@ -48,8 +48,9 @@ class AddLabelModal extends Component {
         return l;
       });
       Chart.render({ labels });
+      this.setState({ show: false });
     }
-    this.setState({ errors, show: false });
+    this.setState({ errors });
   }
 
   handleChange = (path, value) => {
