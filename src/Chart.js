@@ -188,9 +188,11 @@ class Chart {
     const { width, height } = nodesEl.getBoundingClientRect();
 
     // const scale = 0.1;
-    const scaleW = window.innerWidth / (width + 20);
-    const scaleH = window.innerHeight / (height + 20);
+    const scaleW = window.innerWidth / (width / originalDimensions.scale + 20);
+    const scaleH = window.innerHeight / (height / originalDimensions.scale + 20);
     const scale = Math.min(scaleW, scaleH, 1);
+
+    console.log(scaleH)
 
     const nodes = this.getNodes();
 
