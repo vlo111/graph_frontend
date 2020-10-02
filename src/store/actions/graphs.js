@@ -13,12 +13,6 @@ export function convertNodeRequest(type, requestData) {
   return CONVERT_NODE_GRAPH.request(() => Api.convertToNode(type, requestData));
 }
 
-export const CONVERT_NODE_GRAPH = define('CONVERT_NODE_GRAPH');
-
-export function convertNodeRequest(type, requestData) {
-  return CONVERT_NODE_GRAPH.request(() => Api.convertNode(type, requestData));
-}
-
 export const CREATE_GRAPH = define('CREATE_GRAPH');
 
 export function createGraphRequest(requestData) {
