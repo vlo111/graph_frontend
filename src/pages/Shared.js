@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
-import Utils from '../helpers/Utils';
-import Header from '../components/Header';
+import Utils from '../helpers/Utils'; 
 import { userGraphs } from '../store/selectors/shareGraphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 
@@ -16,8 +15,7 @@ const Shared = React.memo(() => {
   }, [dispatch]);
 
   return (
-    <Wrapper className="homePage">
-      <Header />
+    <Wrapper className="homePage"> 
       <div className="graphsList">
         {userGraphsData && userGraphsData.map(({ graph, user }) => (
           <article key={graph.id} className="graphsItem">

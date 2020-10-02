@@ -14,6 +14,7 @@ import ForgotPassword from './pages/sign/ForgotPassword';
 import ResetPassword from './pages/sign/ResetPassword';
 import OAuth from './pages/sign/OAuth';
 import Shared from './pages/Shared';
+import Index from './pages/Index';
 
 class App extends Component {
   componentDidMount() {
@@ -44,7 +45,7 @@ class App extends Component {
             <Route path="/sign/reset-password" component={ResetPassword} />
             <Route path="/sign/oauth/:type" component={OAuth} />
 
-            <Route path="/" component={Home} />
+            <Route path="/" component={Index} />
           </Switch>
         </BrowserRouter>
         <ToastContainer hideProgressBar transition={ToastSlide} autoClose={3000} pauseOnFocusLoss={false} />
