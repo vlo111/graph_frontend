@@ -29,11 +29,7 @@ class Home extends Component {
     const { page = 1 } = queryString.parse(window.location.search);
     this.getGraphsList(page);
     return (
-      <Wrapper className="homePage">
-        <Header />
-        <Link to="/graphs/create" style={{ marginTop: 65 }}>
-          <Button icon="fa-pencil" className=" edit">New Graph</Button>
-        </Link>
+      <Wrapper className="homePage">         
         <div className="graphsList">
           {graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">

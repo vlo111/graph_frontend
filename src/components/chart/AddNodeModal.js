@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import { toggleNodeModal } from '../../store/actions/app';
-import { setNodeCustomField } from '../../store/actions/graphs';
+import { addNodeCustomFieldKey, setNodeCustomField } from '../../store/actions/graphs';
 import Select from '../form/Select';
 import Input from '../form/Input';
 import Button from '../form/Button';
@@ -73,35 +73,59 @@ class AddNodeModal extends Component {
   saveNode = async (ev) => {
     ev.preventDefault();
     const { nodeData, index, customField } = this.state;
-    const errors = {};
-    const nodes = Chart.getNodes();
-    let links;
 
-    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, !_.isNull(index));
-    [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
-    [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
+    let url = 'https://en.wikipedia.org/w/api.php';
 
-    if (!Validate.hasError(errors)) {
-      if (_.isNull(index)) {
-        nodes.push(nodeData);
-      } else {
-        const { name: oldName } = nodes[index];
-        links = Chart.getLinks().map((d) => {
-          if (d.source === oldName) {
-            d.source = nodeData.name;
-          } else if (d.target === oldName) {
-            d.target = nodeData.name;
+    const params = {
+      action: 'query',
+      list: 'search',
+      srsearch: nodeData.name,
+      format: 'json',
+    };
+
+    url += '?origin=*';
+    Object.keys(params).forEach((key) => { url += `&${key}=${params[key]}`; });
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.query.search[0].title === nodeData.name) {
+          customField.Wikipedia = `<iframe src="">https://en.wikipedia.org/wiki/${nodeData.name}</iframe>`;
+        }
+
+        const errors = {};
+        const nodes = Chart.getNodes();
+        let links;
+
+        [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, !_.isNull(index));
+        [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
+        [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
+
+        if (!Validate.hasError(errors)) {
+          if (_.isNull(index)) {
+            nodes.push(nodeData);
+          } else {
+            const { name: oldName } = nodes[index];
+            links = Chart.getLinks().map((d) => {
+              if (d.source === oldName) {
+                d.source = nodeData.name;
+              } else if (d.target === oldName) {
+                d.target = nodeData.name;
+              }
+              return d;
+            });
+
+            nodes[index] = nodeData;
           }
-          return d;
-        });
-
-        nodes[index] = nodeData;
-      }
-      Chart.render({ nodes, links });
-      this.props.setNodeCustomField(nodeData.type, nodeData.name, customField);
-      this.props.toggleNodeModal();
-    }
-    this.setState({ errors, nodeData });
+          Chart.render({ nodes, links });
+          this.props.setNodeCustomField(nodeData.type, nodeData.name, customField);
+          this.props.toggleNodeModal();
+        }
+        this.setState({ errors, nodeData });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   handleChange = (path, value) => {

@@ -13,6 +13,7 @@ import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as ShareSvg } from '../assets/images/icons/share.svg';
 import Filters from '../components/filters/Filters';
+import AccountDropDown from '../components/account/AccountDropDown';
 import NodeDescription from '../components/NodeDescription';
 import { deleteGraphRequest, getSingleGraphRequest } from '../store/actions/graphs';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
@@ -73,6 +74,7 @@ class GraphView extends Component {
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
+          <AccountDropDown />
           <ReactChart />
         </div>
         {preview ? (

@@ -78,3 +78,14 @@ export function resetFilter() {
 }
 
 export const TOGGLE_NODE_FULL_INFO = 'TOGGLE_NODE_FULL_INFO';
+
+export const SET_LEGEND_BUTTON = 'SET_LEGEND_BUTTON';
+
+export function setLegendButton(mode) {
+  return {
+    type: SET_LEGEND_BUTTON,
+    payload: {
+      mode,
+    },
+  };
+}
