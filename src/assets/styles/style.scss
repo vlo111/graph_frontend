@@ -3283,6 +3283,10 @@ body .gh__menu {
     min-width: max-content;
     border-radius: 24px 24px 0 0;
 
+    p {
+      margin-bottom: 0;
+    }
+
     &.active {
       color: $color-accent;
       position: relative;
@@ -3406,6 +3410,9 @@ body .gh__menu {
   padding: 0 10%;
 
   .row {
+    flex-direction: column;
+    margin-left: 0;
+    margin-right: 0;
     h3 {
       font-weight: 600;
       font-size: 16px;
@@ -3545,6 +3552,7 @@ body .gh__menu {
 
   &__search {
     width: 30%;
+
     &-user {
       margin-top: 32px;
     }
@@ -3570,6 +3578,7 @@ body .gh__menu {
   }
 
 }
+
 #search-user {
   border: 1px solid black !important;
   border-radius: 0 0 5px 5px;
