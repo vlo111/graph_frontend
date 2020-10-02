@@ -190,11 +190,11 @@ class Chart {
     // const scale = 0.1;
     const scaleW = window.innerWidth / (width + 20);
     const scaleH = window.innerHeight / (height + 20);
-    const scale = Math.min(scaleW, scaleH);
+    const scale = Math.min(scaleW, scaleH, 1);
 
     const nodes = this.getNodes();
-    const x = Math.min(...nodes.map((n) => n.fx)) / -2;
-    const y = Math.min(...nodes.map((n) => n.fy)) / -2;
+    const x = Math.min(...nodes.map((n) => n.fx - this.radiusList[d.index] - 2)) / -1;
+    const y = Math.min(...nodes.map((n) => n.fy - this.radiusList[d.index] - 2)) / -1;
     this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
     // this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
 
