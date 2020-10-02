@@ -133,6 +133,7 @@ class Validate {
     const value = (val || '').trim();
     let error = null;
     const labels = Chart.getLabels();
+    console.log(labels, labels.some((d) => d.name === value))
     if (!value) {
       error = 'Name is required';
     } else if (labels.some((d) => d.name === value)) {

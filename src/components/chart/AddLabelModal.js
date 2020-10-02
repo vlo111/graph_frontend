@@ -22,7 +22,7 @@ class AddLabelModal extends Component {
   }
 
   handleLabelCrate = (ev, d) => {
-    this.setState({ show: true, labelData: d });
+    this.setState({ show: true, labelData: { ...d } });
   }
 
   deleteLabel = () => {
