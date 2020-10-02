@@ -194,7 +194,6 @@ class Chart {
 
     const nodes = this.getNodes();
 
-
     const x = Math.min(...nodes.map((n) => n.fx - this.radiusList[n.index] - 2)) / -1;
     const y = Math.min(...nodes.map((n) => n.fy - this.radiusList[n.index] - 2)) / -1;
     this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
