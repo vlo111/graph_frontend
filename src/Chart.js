@@ -195,8 +195,8 @@ class Chart {
     const nodes = this.getNodes();
     const x = Math.min(...nodes.map((n) => n.fx)) / -2;
     const y = Math.min(...nodes.map((n) => n.fy)) / -2;
-    Chart.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
-    // Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
+    this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
+    // this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
 
     this.data.nodes = this.data.nodes.map((l) => {
       if (d) {
@@ -212,7 +212,7 @@ class Chart {
     const { x: oX, y: oY, scale: oScale } = originalDimensions;
 
     this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`);
-    // Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
+    // this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
 
     this._dataNodes = null;
   }
@@ -227,7 +227,7 @@ class Chart {
     const labels = d3.select('#graph .labels');
 
     labels.selectAll('path')
-      .data(this.data.labels)
+      .data(this.data.labels.filter((l) => l.hidden !== 1))
       .join('path')
       .attr('class', 'label')
       .attr('opacity', '0.4')

@@ -2393,7 +2393,7 @@ p {
       .badge {
         position: absolute;
         left: 50%;
-        top: 4px;
+        top: 7px;
         transform: translate(-50%);
         color: $color-white;
         pointer-events: none;
@@ -2604,7 +2604,7 @@ p {
 
   .dropdown {
     left: 25px;
-    top: 80px;
+    top: 0;
     width: calc(100% - 25px);
     padding: 0 25px 0 0;
 
@@ -3577,12 +3577,6 @@ body .gh__menu {
   padding: 5px 16px;
 }
 
-.ReactModal {
-  &__Overlay {
-    z-index: 9;
-  }
-}
-
 
 #labelTooltip {
   position: absolute;
@@ -3594,4 +3588,5 @@ body .gh__menu {
   border-radius: 5px;
   pointer-events: none;
   margin: 10px;
+  opacity: 0.8;
 }

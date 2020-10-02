@@ -31,6 +31,15 @@ class ChartUtils {
       d.hidden = 0;
       return d;
     });
+
+    data.labels = data.labels.map(d => {
+      if (!_.isEmpty(params.labels) && !params.labels.includes(d.name)) {
+        d.hidden = 1;
+        return d;
+      }
+      d.hidden = 0;
+      return d;
+    });
     data.nodes = data.nodes.map((d) => {
       // if (data.links.some((l) => l.hidden && d.name === l.source)) {
       //   d.hidden = 1;
