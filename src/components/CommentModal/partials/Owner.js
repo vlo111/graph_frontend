@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Owner = ({ user }) => (
+const Owner = ({ user, date }) => (
   <div className="comment-modal__owner">
     {user && (
       <>
@@ -10,7 +10,11 @@ const Owner = ({ user }) => (
           src={user && user.avatar}
           alt={`${user.firstName} ${user.lastName}`}
         />
-        <span>{`${user.firstName} ${user.lastName}`}</span>
+        <span>
+          {`${user.firstName} ${user.lastName}`}
+          <br/>
+          <span className="comment-modal__comment-date">{date}</span>
+        </span>
       </>
     )}
   </div>
@@ -18,6 +22,7 @@ const Owner = ({ user }) => (
 
 Owner.propTypes = {
   user: PropTypes.object.isRequired,
+  date: PropTypes.string.isRequired,
 };
 
 export default Owner;

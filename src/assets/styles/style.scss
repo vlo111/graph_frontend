@@ -3635,16 +3635,34 @@ body .gh__menu {
 }
 
 .comment-modal {
+  max-width: 900px;
+
   &__title {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
-  &__add-comment {
-    &-button {
+  &__comment-item {
+    margin-bottom: 15px;
+  }
 
-    }
+  &__owner {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__owner-logo {
+    margin-right: 10px;
+  }
+
+  &__comment-date {
+    font-size: 12px;
+  }
+
+  &__add-comment-section {
+    margin-top: 40px;
   }
 }
 

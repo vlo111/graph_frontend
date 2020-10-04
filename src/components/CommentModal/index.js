@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import { useSelector } from 'react-redux';
 
-import CommentItem from './partials/CommentItem';
+import CommentItems from './partials/CommentItems';
 import AddComment from './partials/AddComment';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
@@ -20,16 +20,17 @@ const CommentModal = React.memo(({ closeModal }) => {
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         contentLabel="Comment"
+        style={{ maxWidth: 900 }}
       >
         <div className="comment-modal__title">
-          <h3>Conservative Party</h3>
+          <h3>{singleGraph.title}</h3>
           <Button
             icon={<CloseSvg style={{ height: 30 }} />}
             onClick={() => closeModal()}
             className="transparent"
           />
         </div>
-        <CommentItem />
+        <CommentItems />
         <AddComment />
       </Modal>
     )
