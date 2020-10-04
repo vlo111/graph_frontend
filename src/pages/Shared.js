@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
-import Utils from '../helpers/Utils'; 
+import Utils from '../helpers/Utils';
 import { userGraphs } from '../store/selectors/shareGraphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 
@@ -15,19 +15,19 @@ const Shared = React.memo(() => {
   }, [dispatch]);
 
   return (
-    <Wrapper className="homePage"> 
+    <Wrapper className="homePage">
       <div className="graphsList">
-        {userGraphsData && userGraphsData.map(({ graph, user }) => (
+        {userGraphsData && userGraphsData.map(({ graph }) => (
           <article key={graph.id} className="graphsItem">
             <div className="top">
               <img
                 className="avatar"
-                src={user.avatar}
-                alt={user.name}
+                src={graph.user.avatar}
+                alt={graph.user.name}
               />
               <div className="infoWrapper">
                 <a href="/">
-                  <span className="author">{`${user.firstName} ${user.lastName}`}</span>
+                  <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
                 </a>
                 <div className="info">
                   <span>{moment(graph.updatedAt).calendar()}</span>
