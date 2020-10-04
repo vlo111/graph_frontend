@@ -11,7 +11,6 @@ import Button from '../components/form/Button';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
-import { ReactComponent as ShareSvg } from '../assets/images/icons/share.svg';
 import Filters from '../components/filters/Filters';
 import AccountDropDown from '../components/account/AccountDropDown';
 import NodeDescription from '../components/NodeDescription';

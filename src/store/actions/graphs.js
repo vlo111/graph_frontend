@@ -93,3 +93,9 @@ export function removeNodeCustomFieldKey(type, key) {
     payload: { type, key },
   };
 }
+
+export const ACTIONS_COUNT = define('ACTIONS_COUNT');
+
+export function getActionsCountRequest(id) {
+  return ACTIONS_COUNT.request(() => Api.getActionsCount(id));
+}

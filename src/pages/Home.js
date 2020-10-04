@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
@@ -11,6 +11,8 @@ import Button from '../components/form/Button';
 import Utils from '../helpers/Utils';
 import Pagination from '../components/Pagination';
 import Header from '../components/Header';
+const GraphListFooter = lazy(() => import('../components/GraphListFooter'));
+
 
 class Home extends Component {
   static propTypes = {
@@ -63,6 +65,9 @@ class Home extends Component {
                   {graph.description.length > 600 ? `${graph.description.substr(0, 600)}... ` : graph.description}
                 </p>
               </Link>
+              <Suspense fallback={<div>Loading...</div>}>
+                <GraphListFooter graphId={graph.id} />
+              </Suspense>
             </article>
           ))}
         </div>

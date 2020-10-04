@@ -3864,3 +3864,30 @@ body .gh__menu {
     }
   }
 }
+
+.graphListFooter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .footer-icon {
+    color: #9BA6B4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+
+    &:focus, :hover {
+      border: none;
+      outline: none;
+    }
+
+    path {
+      fill: #9BA6B4;
+    }
+  }
+
+  &__count {
+    margin-left: 4px;
+  }
+}
