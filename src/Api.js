@@ -135,6 +135,15 @@ class Api {
     return api.post('/share-graphs/list/', requestData);
   }
 
+  static createCommentGraph(requestData) {
+    return api.post('/comment-graphs/create', requestData);
+  }
+
+  static graphComments(requestData) {
+    console.log(requestData);
+    return api.get('/comment-graphs/comments', { params: requestData });
+  }
+
   static userGraph() {
     return api.get('/share-graphs/user-graphs');
   }

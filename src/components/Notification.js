@@ -28,8 +28,6 @@ const NotificationList = (props) => {
     });
   }, [dispatch]);
 
-  list.forEach((item) => { console.log(item, 'iteeeeem'); item.link = '/graphs/preview/'; });
-  console.log(list, 'datalist');
   return (
     <NotifyMe
       data={list}
@@ -47,14 +45,12 @@ const NotificationList = (props) => {
   );
 };
 
-const Notification = (props) => (
-  <SocketContext.Consumer>
-    {(socket) => <NotificationList {...props} socket={socket} />}
-  </SocketContext.Consumer>
-);
-
 NotificationList.propTypes = {
   socket: PropTypes.object.isRequired,
 };
 
-export default Notification;
+export default (props) => (
+  <SocketContext.Consumer>
+    {(socket) => <NotificationList {...props} socket={socket} />}
+  </SocketContext.Consumer>
+);

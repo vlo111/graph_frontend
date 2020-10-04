@@ -19,6 +19,8 @@ import { deleteGraphRequest, getSingleGraphRequest } from '../store/actions/grap
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import ShareGraph from '../components/ShareGraph';
+import CommentGraph from '../components/CommentGraph';
+import LabelTooltip from '../components/LabelTooltip';
 
 class GraphView extends Component {
   static propTypes = {
@@ -114,6 +116,7 @@ class GraphView extends Component {
             </>
             )}
             <ShareGraph graphId={+graphId} />
+            <CommentGraph graphId={+graphId} />
             <NodeDescription />
             <Link to="/">
               <Tooltip overlay="Back">
@@ -124,6 +127,7 @@ class GraphView extends Component {
         )}
         <Filters />
         <NodeFullInfo editable={false} />
+        <LabelTooltip />
       </Wrapper>
     );
   }
