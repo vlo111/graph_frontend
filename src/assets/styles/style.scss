@@ -3597,6 +3597,10 @@ body .gh__menu {
   &__collaborators {
     @include collaborators-list;
     justify-content: space-between;
+
+    &--status {
+      color: #ffcccb;
+    }
   }
 
   &__search {
@@ -3604,6 +3608,9 @@ body .gh__menu {
 
     &-user {
       margin-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     &--selected {

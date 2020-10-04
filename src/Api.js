@@ -135,6 +135,10 @@ class Api {
     return api.post('/share-graphs/list/', requestData);
   }
 
+  static updateShareGraphStatus(requestData) {
+    return api.post('/share-graphs/update-status/', requestData);
+  }
+
   static createCommentGraph(requestData) {
     return api.post('/comment-graphs/create', requestData);
   }

@@ -6,6 +6,7 @@ import NotifyMe from 'react-notification-timeline';
 import { listNotificationsRequest, NotificationsUpdateRequest, addNotification } from '../store/actions/notifications';
 import { notificationsList } from '../store/selectors/notifications';
 import SocketContext from '../context/Socket';
+import { getId } from '../store/selectors/account';
 
 const NotifyLink = ({ url, children }) => (url ? <Link to={url}>{children}</Link> : <>{children}</>);
 NotifyLink.defaultProps = {
@@ -17,13 +18,14 @@ NotifyLink.propTypes = {
 };
 
 const NotificationList = (props) => {
+  const userId = useSelector(getId);
   const dispatch = useDispatch();
   const list = useSelector(notificationsList);
 
   useEffect(() => {
     dispatch(listNotificationsRequest());
 
-    props.socket.on('notificationsListGraphShared', (data) => {
+    props.socket.on(`notificationsListGraphShared-${userId}`, (data) => {
       dispatch(addNotification(data));
     });
   }, [dispatch]);
