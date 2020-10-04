@@ -36,3 +36,9 @@ export const UPDATE_SHARE_GRAPH_STATUS = define('UPDATE_SHARE_GRAPH_STATUS');
 export function updateShareGraphStatusRequest(requestData) {
   return UPDATE_SHARE_GRAPH_STATUS.request(() => Api.updateShareGraphStatus(requestData));
 }
+
+export const GRAPH_SHARED_USERS = define('GRAPH_SHARED_USERS');
+
+export function graphUsersRequest(requestData) {
+  return GRAPH_SHARED_USERS.request(() => Api.graphUsers(requestData));
+}

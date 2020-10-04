@@ -127,6 +127,10 @@ class Api {
     return api.post('/share-graphs/create', requestData);
   }
 
+  static graphUsers(requestData) {
+    return api.post('/share-graphs/graph-users', requestData);
+  }
+
   static updateShareGraph(id, requestData) {
     return api.put(`/share-graphs/update/${id}`, requestData);
   }
