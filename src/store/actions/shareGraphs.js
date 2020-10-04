@@ -30,3 +30,9 @@ export const USER_SHARE_GRAPH = define('USER_SHARE_GRAPH');
 export function userGraphRequest(requestData) {
   return USER_SHARE_GRAPH.request(() => Api.userGraph(requestData));
 }
+
+export const UPDATE_SHARE_GRAPH_STATUS = define('UPDATE_SHARE_GRAPH_STATUS');
+
+export function updateShareGraphStatusRequest(requestData) {
+  return UPDATE_SHARE_GRAPH_STATUS.request(() => Api.updateShareGraphStatus(requestData));
+}
