@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import SearchInput from "./search/SearchInput";
-import AccountDropDown from "./account/AccountDropDown";
+import SearchInput from './search/SearchInput';
+import AccountDropDown from './account/AccountDropDown';
 
 class Header extends Component {
   render() {
@@ -12,13 +12,7 @@ class Header extends Component {
         <SearchInput />
         <ul className="links">
           <li>
-            <Link to="#">Info</Link>
-          </li>
-          <li>
             <Link to={`/graphs/filter/${graphId}`}>Filter</Link>
-          </li>
-          <li>
-            <Link to="/#">Analyze</Link>
           </li>
         </ul>
 
