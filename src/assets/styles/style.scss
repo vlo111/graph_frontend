@@ -519,6 +519,10 @@ p {
   font-size: 14px;
   margin: 5px 5px;
 
+  &:focus{
+    outline: none;
+  }
+
   &:hover {
     box-shadow: 0 2px 9px rgba(2, 47, 119, 0.1);
   }

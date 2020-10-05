@@ -237,7 +237,7 @@ class ChartUtils {
     if (!this.linkColorObj[d.type]) {
       if (d.color) {
         this.linkColorArr = this.linkColorArr.filter((c) => d.color !== c);
-        this.linkColorArr[d.type] = d.color;
+        this.linkColorObj[d.type] = d.color;
         return d.color;
       }
       this.linkColorObj[d.type] = this.linkColorArr.shift() || randomColor({ luminosity: 'light' });

@@ -174,11 +174,14 @@ class Chart {
       .attr('y', y * scale);
   }
 
+  static detectLabelsProcess = false;
+
   static detectLabels(d = null) {
     const nodesEl = document.querySelector('#graph .nodes');
-    if (!nodesEl) {
-      return null;
+    if (!nodesEl || this.detectLabelsProcess) {
+      return;
     }
+    this.detectLabelsProcess = true;
     const originalDimensions = {
       scale: this.wrapper.attr('data-scale') || 1,
       x: this.wrapper.attr('data-x') || 0,
@@ -218,6 +221,8 @@ class Chart {
     // this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
 
     this._dataNodes = null;
+
+    this.detectLabelsProcess = false;
   }
 
   static renderLabels() {
