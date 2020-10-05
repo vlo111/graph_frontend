@@ -10,6 +10,7 @@ import { setActiveButton } from '../store/actions/app';
 import Button from '../components/form/Button';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
+import { ReactComponent as ViewSvg } from '../assets/images/icons/view.svg';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import Filters from '../components/filters/Filters';
 import AccountDropDown from '../components/account/AccountDropDown';
@@ -92,6 +93,10 @@ class GraphView extends Component {
             <div>
               <strong>{'Links: '}</strong>
               {singleGraph.links?.length}
+            </div>
+            <div>
+              <strong>{'Views: '}</strong>
+              {singleGraph.views}
             </div>
             <Link className="ghButton view" to={`/graphs/view/${graphId}`} replace>
               View Graph

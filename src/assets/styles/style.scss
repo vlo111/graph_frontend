@@ -519,7 +519,7 @@ p {
   font-size: 14px;
   margin: 5px 5px;
 
-  &:focus{
+  &:focus {
     outline: none;
   }
 
@@ -1978,6 +1978,7 @@ p {
     border-radius: 24px;
     opacity: 1;
     margin-top: 15px;
+
     a {
       transition: all 300ms;
 
@@ -2128,7 +2129,7 @@ p {
   bottom: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 4;
   background-color: rgba(0, 0, 0, 0.5);
   color: $color-white;
   padding: 5%;
@@ -2158,6 +2159,10 @@ p {
     text-transform: uppercase;
     padding: 15px 35px;
     box-shadow: 0 0 5px #555555;
+  }
+
+  > div {
+    margin-bottom: 5px;
   }
 }
 
@@ -3725,6 +3730,7 @@ body .gh__menu {
   .nav-items {
     transform: matrix(0, -1, 1, 0, 0, 0);
   }
+
   .nav-pills .nav-link, .nav-pills .show > .nav-link {
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 5px 12px #0D090514;
@@ -3733,7 +3739,7 @@ body .gh__menu {
     opacity: 1;
   }
 
-   .nav-link {
+  .nav-link {
     display: block;
     background-color: inherit;
     color: black;

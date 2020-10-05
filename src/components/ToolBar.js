@@ -12,7 +12,7 @@ import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
-import { ReactComponent as ViewSvg } from '../assets/images/icons/viev_pass.svg';
+import { ReactComponent as ViewSvg } from '../assets/images/icons/view.svg';
 import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import ShareGraph from './ShareGraph';
