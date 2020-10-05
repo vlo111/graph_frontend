@@ -45,7 +45,7 @@ class NodeTabs extends Component {
     this.setState({ activeTab });
   }
 
-  openFormModal = (params) => {
+  openFormModal = (ev, params) => {
     this.setState({ formModalOpen: params?.fieldName || '' });
   }
 
@@ -53,7 +53,7 @@ class NodeTabs extends Component {
     this.setState({ formModalOpen: null });
   }
 
-  deleteCustomField = (params = {}) => {
+  deleteCustomField = (ev, params = {}) => {
     const { fieldName } = params;
     const { node } = this.props;
     if (fieldName && window.confirm('Are you sure?')) {

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   CLEAR_SINGLE_GRAPH,
   UPDATE_SINGLE_GRAPH,
@@ -71,8 +72,13 @@ export default function reducer(state = initialState, action) {
     }
     case SET_NODE_CUSTOM_FIELD: {
       const singleGraph = { ...state.singleGraph };
-      const { type, name, customField } = action.payload;
+      const {
+        type, name, customField, tabData,
+      } = action.payload;
       singleGraph.customFields = CustomFields.setValue(singleGraph.customFields, type, name, customField);
+      if (tabData) {
+        _.set(singleGraph.customFields, [type, tabData.name, 'subtitle'], tabData.subtitle);
+      }
       return {
         ...state,
         singleGraph,
@@ -107,9 +113,9 @@ export default function reducer(state = initialState, action) {
         ...state,
         actionsCount: {
           ...state.actionsCount,
-          ...action.payload.data.result
+          ...action.payload.data.result,
         },
-      }
+      };
     }
     default: {
       return state;

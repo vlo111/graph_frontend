@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import memoizeOne from 'memoize-one';
 import Input from '../form/Input';
 import Editor from '../form/Editor';
-import { connect } from "react-redux";
-import { addNodeCustomFieldKey, setNodeCustomField } from "../../store/actions/graphs";
-import Button from "../form/Button";
-import Validate from "../../helpers/Validate";
-import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
-import memoizeOne from "memoize-one";
+import { addNodeCustomFieldKey, setNodeCustomField } from '../../store/actions/graphs';
+import Button from '../form/Button';
+import Validate from '../../helpers/Validate';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -52,10 +52,11 @@ class NodeTabsFormModal extends Component {
   }
 
   save = async () => {
-    const { node, customField, customFields, fieldName } = this.props;
+    const {
+      node, customField, customFields, fieldName,
+    } = this.props;
     const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
-    const { name, subtitle, content } = tabData;
 
     if (!isUpdate) {
       [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node.type, customFields);
@@ -65,10 +66,10 @@ class NodeTabsFormModal extends Component {
 
     if (!Validate.hasError(errors)) {
       if (!isUpdate) {
-        await this.props.addNodeCustomFieldKey(node.type, name, subtitle);
+        await this.props.addNodeCustomFieldKey(node.type, tabData.name, tabData.subtitle);
       }
-      customField[name] = content;
-      this.props.setNodeCustomField(node.type, node.name, customField);
+      customField[tabData.name] = tabData.content;
+      this.props.setNodeCustomField(node.type, node.name, customField, tabData);
       this.props.onClose();
     }
     this.setState({ errors, tabData });
@@ -77,6 +78,7 @@ class NodeTabsFormModal extends Component {
   render() {
     const { tabData, errors } = this.state;
     const { node, customFields, fieldName } = this.props;
+    console.log(fieldName);
     this.initValues(customFields, node, fieldName);
     const isUpdate = !!fieldName;
     return (
@@ -120,7 +122,6 @@ class NodeTabsFormModal extends Component {
     );
   }
 }
-
 
 const mapStateToProps = (state) => ({
   customFields: state.graphs.singleGraph.customFields || {},

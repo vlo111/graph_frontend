@@ -3406,6 +3406,7 @@ body .gh__menu {
   .row {
     display: flex;
     width: 100%;
+    margin: 0;
 
     > * {
       margin-right: 5%;
@@ -3701,12 +3702,6 @@ body .gh__menu {
   pointer-events: none;
   margin: 10px;
   opacity: 0.8;
-}
-
-.ReactModal {
-  &__Overlay {
-    z-index: 9;
-  }
 }
 
 .indexTabs {
