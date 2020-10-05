@@ -1,4 +1,6 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, {
+  useEffect, Suspense, useState,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip/es';
@@ -10,6 +12,7 @@ import { getActionsCount } from '../store/selectors/graphs';
 import { getActionsCountRequest } from '../store/actions/graphs';
 import Button from './form/Button';
 import ShareTooltip from './ShareTooltip';
+import CommentModal from './CommentModal';
 
 const TootlipContent = ({ graphId }) => (
   <Suspense fallback={<div>Loading...</div>}>
@@ -20,23 +23,28 @@ TootlipContent.propTypes = {
   graphId: PropTypes.number.isRequired,
 };
 
-const GraphListFooter = ({ graphId }) => {
+const GraphListFooter = ({ graph }) => {
   const actionsCountAll = useSelector(getActionsCount);
-  const actionsCount = actionsCountAll[graphId];
+  const actionsCount = actionsCountAll[graph.id];
   const dispatch = useDispatch();
+  const [openCommentModal, setOpenCommentModal] = useState(false);
 
   useEffect(() => {
-    if (graphId) {
-      dispatch(getActionsCountRequest(graphId));
+    if (graph.id) {
+      dispatch(getActionsCountRequest(graph.id));
     }
-  }, [dispatch, graphId]);
+  }, [dispatch, graph.id]);
 
   return (
     <div className="graphListFooter">
       <Button icon={<HeartSvg style={{ height: 14 }} />} className="transparent footer-icon">
         <span className="graphListFooter__count">{actionsCount?.likes}</span>
       </Button>
-      <Button icon={<CommentSvg style={{ height: 14, color: 'red' }} />} className="transparent footer-icon">
+      <Button
+        icon={<CommentSvg style={{ height: 14, color: 'red' }} />}
+        className="transparent footer-icon"
+        onClick={() => setOpenCommentModal(true)}
+      >
         <span className="graphListFooter__count">{actionsCount?.comments}</span>
       </Button>
       <Button icon={<ViewPassSvg style={{ height: 14 }} />} className="transparent footer-icon">
@@ -44,7 +52,7 @@ const GraphListFooter = ({ graphId }) => {
       </Button>
       {actionsCount?.shares
         ? (
-          <Tooltip overlay={<TootlipContent graphId={graphId} />} trigger={['hover']}>
+          <Tooltip overlay={<TootlipContent graphId={graph.id} />} trigger={['hover']}>
             <Button icon={<ShareSvg style={{ height: 14 }} />} className="transparent footer-icon">
               <span className="graphListFooter__count">{actionsCount?.shares}</span>
             </Button>
@@ -54,13 +62,19 @@ const GraphListFooter = ({ graphId }) => {
           <Button icon={<ShareSvg style={{ height: 14 }} />} className="transparent footer-icon">
             <span className="graphListFooter__count">{actionsCount?.shares}</span>
           </Button>
-)}
+      )}
+      {openCommentModal && (
+        <CommentModal
+          closeModal={() => setOpenCommentModal(false)}
+          graph={graph}
+        />
+      )}
     </div>
   );
 };
 
 GraphListFooter.propTypes = {
-  graphId: PropTypes.number.isRequired,
+  graph: PropTypes.object.isRequired,
 };
 
 export default React.memo(GraphListFooter);

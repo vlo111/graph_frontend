@@ -12,7 +12,7 @@ const Owner = ({ user, date }) => (
         />
         <span>
           {`${user.firstName} ${user.lastName}`}
-          <br/>
+          <br />
           <span className="comment-modal__comment-date">{date}</span>
         </span>
       </>
@@ -22,7 +22,7 @@ const Owner = ({ user, date }) => (
 
 Owner.propTypes = {
   user: PropTypes.object.isRequired,
-  date: PropTypes.string.isRequired,
+  date: PropTypes.string,
 };
 
 export default Owner;
