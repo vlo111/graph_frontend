@@ -18,6 +18,7 @@ import LabelsFilter from './LabelsFilter';
 class FiltersModal extends Component {
   static propTypes = {
     resetFilter: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -40,6 +41,7 @@ class FiltersModal extends Component {
   componentWillUnmount() {
     Chart.event.removeListener('render', this.handleChartRender);
     Chart.event.on('node.dragend', this.handleChartRender);
+    this.props.resetFilter();
   }
 
   handleChartRender = () => {

@@ -132,7 +132,7 @@ class ChartUtils {
       filters = {};
     }
 
-    return { ...DEFAULT_FILTERS, ...filters };
+    return { ..._.cloneDeep(DEFAULT_FILTERS), ...filters };
   }
 
   static dashType(type, value) {

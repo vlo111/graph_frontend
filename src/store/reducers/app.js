@@ -86,6 +86,7 @@ export default function reducer(state = initialState, action) {
       const { key, value } = action.payload;
       const filters = { ...state.filters };
       _.set(filters, key, value);
+      // ChartUtils.setFilter(key, value);
       return {
         ...state,
         filters,
@@ -94,7 +95,7 @@ export default function reducer(state = initialState, action) {
     case RESET_FILTER: {
       return {
         ...state,
-        filters: { ...DEFAULT_FILTERS },
+        filters: _.cloneDeep(DEFAULT_FILTERS),
       };
     }
     case SET_LEGEND_BUTTON: {
