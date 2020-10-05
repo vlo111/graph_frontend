@@ -18,6 +18,7 @@ const CommentModal = React.memo(({ closeModal, graph }) => {
         onRequestClose={closeModal}
         contentLabel="Comment"
         style={{ maxWidth: 900 }}
+        id="comment-modal"
       >
         <div className="comment-modal__title">
           <h3>{graph.title}</h3>

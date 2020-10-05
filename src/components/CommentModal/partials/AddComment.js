@@ -5,17 +5,19 @@ import Owner from './Owner';
 import Button from '../../form/Button';
 import Input from '../../form/Input';
 import { getAccount } from '../../../store/selectors/account';
+import { getGraphCommentParent } from '../../../store/selectors/commentGraphs';
 import { createGraphCommentRequest } from '../../../store/actions/commentGraphs';
 
 const AddComment = ({ graph, closeModal }) => {
   const dispatch = useDispatch();
   const myAccount = useSelector(getAccount);
+  const parent = useSelector(getGraphCommentParent);
   const [text, setText] = useState('');
 
   return (
     <div className="comment-modal__add-comment-section">
       <Owner user={myAccount.myAccount} />
-      <Input textArea onChangeText={(value) => setText(value)} className="comment-modal__add-comment-input" />
+      <Input textArea onChangeText={(value) => setText(value)} className="comment-modal__add-comment-input" id="add-comment" />
       <div className="comment-modal__add-comment-buttons">
         <Button
           className="comment-modal__add-comment-cancel"
@@ -24,11 +26,16 @@ const AddComment = ({ graph, closeModal }) => {
           Cancel
         </Button>
         <Button
-          onClick={() => (
+          onClick={() => {
             dispatch(createGraphCommentRequest(
-              { graphId: graph.id, text },
-            ))
-          )}
+              {
+                graphId: graph.id,
+                text,
+                parentId: parent.id,
+              },
+            ));
+            setText('');
+          }}
           className="comment-modal__add-comment-button"
         >
           Comment

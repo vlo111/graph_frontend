@@ -6,6 +6,18 @@ import { getGraphComments } from '../../../store/selectors/commentGraphs';
 import { getGraphCommentsRequest } from '../../../store/actions/commentGraphs';
 import Owner from './Owner';
 
+const CommentItem = ({ comment, isReply }) => (
+  <div className={`comment-modal__comment-item${isReply ? '--reply' : ''}`} key={`comment-${comment.id}`}>
+    <Owner
+      user={comment.user}
+      date={moment.utc(comment.createdAt).format('DD.MM.YYYY')}
+      comment={comment}
+      edit={!isReply}
+    />
+    {comment.text}
+  </div>
+);
+
 const CommentItems = ({ graph }) => {
   const dispatch = useDispatch();
   const graphComments = useSelector(getGraphComments);
@@ -17,13 +29,12 @@ const CommentItems = ({ graph }) => {
   return (
     <div className="comment-modal__comments-wrapper">
       {graphComments.map((comment) => (
-        <div className="comment-modal__comment-item" key={`comment-${comment.id}`}>
-          <Owner
-            user={comment.user}
-            date={moment.utc(comment.createdAt).format('DD.MM.YYYY')}
-          />
-          {comment.text}
-        </div>
+        <>
+          <CommentItem comment={comment} />
+          {comment.children.map((reply) => (
+            <CommentItem comment={reply} isReply />
+          ))}
+        </>
       ))}
     </div>
   );
@@ -31,6 +42,15 @@ const CommentItems = ({ graph }) => {
 
 CommentItems.propTypes = {
   graph: PropTypes.object.isRequired,
+};
+
+CommentItem.propTypes = {
+  comment: PropTypes.object.isRequired,
+  isReply: PropTypes.bool,
+};
+
+CommentItem.defaultProps = {
+  isReply: false,
 };
 
 export default CommentItems;
