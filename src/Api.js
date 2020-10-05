@@ -82,6 +82,10 @@ class Api {
     return api.put(`/graphs/update/${id}`, requestData);
   }
 
+  static getActionsCount(id) {
+    return api.get(`/graphs/actions-count/${id}`);
+  }
+
   static deleteGraph(id) {
     return api.delete(`/graphs/delete/${id}`);
   }
@@ -123,6 +127,10 @@ class Api {
     return api.post('/share-graphs/create', requestData);
   }
 
+  static graphUsers(requestData) {
+    return api.post('/share-graphs/graph-users', requestData);
+  }
+
   static updateShareGraph(id, requestData) {
     return api.put(`/share-graphs/update/${id}`, requestData);
   }
@@ -133,6 +141,19 @@ class Api {
 
   static listShareGraph(requestData) {
     return api.post('/share-graphs/list/', requestData);
+  }
+
+  static updateShareGraphStatus(requestData) {
+    return api.post('/share-graphs/update-status/', requestData);
+  }
+
+  static createCommentGraph(requestData) {
+    return api.post('/comment-graphs/create', requestData);
+  }
+
+  static graphComments(requestData) {
+    console.log(requestData);
+    return api.get('/comment-graphs/comments', { params: requestData });
   }
 
   static userGraph() {

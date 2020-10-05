@@ -1978,7 +1978,6 @@ p {
     border-radius: 24px;
     opacity: 1;
     margin-top: 15px;
-
     a {
       transition: all 300ms;
 
@@ -2211,10 +2210,26 @@ p {
     }
   }
 
+  .comment {
+    position: absolute;
+    left: 15px;
+    top: 293px;
+    margin-right: 0;
+    padding-right: 0;
+
+    .icon {
+      margin: 0;
+
+      svg {
+        min-width: 30px;
+      }
+    }
+  }
+
   .back {
     position: absolute;
     left: 15px;
-    top: 290px;
+    top: 357px;
     margin-right: 0;
     padding-right: 0;
 
@@ -3598,6 +3613,10 @@ body .gh__menu {
   &__collaborators {
     @include collaborators-list;
     justify-content: space-between;
+
+    &--status {
+      color: #ffcccb;
+    }
   }
 
   &__search {
@@ -3605,6 +3624,9 @@ body .gh__menu {
 
     &-user {
       margin-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     &--selected {
@@ -3626,7 +3648,38 @@ body .gh__menu {
       padding: 8px 0;
     }
   }
+}
 
+.comment-modal {
+  max-width: 900px;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__comment-item {
+    margin-bottom: 15px;
+  }
+
+  &__owner {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__owner-logo {
+    margin-right: 10px;
+  }
+
+  &__comment-date {
+    font-size: 12px;
+  }
+
+  &__add-comment-section {
+    margin-top: 40px;
+  }
 }
 
 #search-user {
@@ -3650,11 +3703,11 @@ body .gh__menu {
   opacity: 0.8;
 }
 
-//  .ReactModal {
-//  &__Overlay {
-//    z-index: 9;
-//  }
-//}
+.ReactModal {
+  &__Overlay {
+    z-index: 9;
+  }
+}
 
 .indexTabs {
 
@@ -3677,18 +3730,15 @@ body .gh__menu {
   .nav-items {
     transform: matrix(0, -1, 1, 0, 0, 0);
   }
-
   .nav-pills .nav-link, .nav-pills .show > .nav-link {
-
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 5px 12px #0D090514;
     border: 1px solid #E2E7EB;
     border-radius: 24px 0px 0px 24px;
     opacity: 1;
-
   }
 
-  .nav-link {
+   .nav-link {
     display: block;
     background-color: inherit;
     color: black;
@@ -3848,5 +3898,32 @@ body .gh__menu {
         }
       }
     }
+  }
+}
+
+.graphListFooter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .footer-icon {
+    color: #9BA6B4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+
+    &:focus, :hover {
+      border: none;
+      outline: none;
+    }
+
+    path {
+      fill: #9BA6B4;
+    }
+  }
+
+  &__count {
+    margin-left: 4px;
   }
 }

@@ -13,6 +13,7 @@ import Button from '../form/Button';
 
 const ShareModal = React.memo(({ graph, closeModal }) => {
   const [select, setSelect] = useState([]);
+  const [sharedUsers, setShardUsers] = useState([]);
   const afterOpenModal = () => {};
   return (isEmpty(graph) ? null
     : (
@@ -32,7 +33,7 @@ const ShareModal = React.memo(({ graph, closeModal }) => {
         </div>
         <Owner user={graph.user} />
         {select && <Collaborators graph={graph} select={select} />}
-        <Search select={select} setSelect={setSelect} user={graph.user} />
+        <Search select={select} setSelect={setSelect} user={graph.user} closeModal={closeModal} />
       </Modal>
     )
   );

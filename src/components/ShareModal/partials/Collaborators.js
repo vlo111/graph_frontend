@@ -45,6 +45,9 @@ const Collaborators = ({ select, graph }) => {
           />
           <span>{item.user.email}</span>
         </div>
+        <div className='share-modal__collaborators--status'>
+          {item.status === 'new' && 'Not Saved'}
+        </div>
         <div className="share-modal__search--selected-action">
           <Select
             defaultValue={selectOptions.find((i) => i.value === item.role)}

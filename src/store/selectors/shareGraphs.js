@@ -11,3 +11,8 @@ export const userGraphs = createSelector(
   getShareGraph,
   (items) => items.userGraphs,
 );
+
+export const getGraphUsers = createSelector(
+  getShareGraph,
+  (items) => items.graphUsers,
+);

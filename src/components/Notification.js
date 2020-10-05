@@ -1,19 +1,31 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NotifyMe from 'react-notification-timeline';
 import { listNotificationsRequest, NotificationsUpdateRequest, addNotification } from '../store/actions/notifications';
 import { notificationsList } from '../store/selectors/notifications';
 import SocketContext from '../context/Socket';
+import { getId } from '../store/selectors/account';
+
+const NotifyLink = ({ url, children }) => (url ? <Link to={url}>{children}</Link> : <>{children}</>);
+NotifyLink.defaultProps = {
+  url: '',
+};
+NotifyLink.propTypes = {
+  url: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
 
 const NotificationList = (props) => {
+  const userId = useSelector(getId);
   const dispatch = useDispatch();
   const list = useSelector(notificationsList);
 
   useEffect(() => {
     dispatch(listNotificationsRequest());
 
-    props.socket.on('notificationsListGraphShared', (data) => {
+    props.socket.on(`notificationsListGraphShared-${userId}`, (data) => {
       dispatch(addNotification(data));
     });
   }, [dispatch]);
@@ -22,6 +34,8 @@ const NotificationList = (props) => {
     <NotifyMe
       data={list}
       notific_key="createdAt"
+      link="link"
+      notifyLink={NotifyLink}
       notific_value="text"
       heading="Notification Alerts"
       sortedByKey={false}
@@ -33,14 +47,12 @@ const NotificationList = (props) => {
   );
 };
 
-const Notification = (props) => (
+NotificationList.propTypes = {
+  socket: PropTypes.object.isRequired,
+};
+
+export default (props) => (
   <SocketContext.Consumer>
     {(socket) => <NotificationList {...props} socket={socket} />}
   </SocketContext.Consumer>
 );
-
-Notification.propTypes = {
-  socket: PropTypes.object.isRequired,
-};
-
-export default Notification;

@@ -7,6 +7,7 @@ import {
   SET_NODE_CUSTOM_FIELD,
   ADD_NODE_CUSTOM_FIELD_KEY,
   REMOVE_NODE_CUSTOM_FIELD_KEY,
+  ACTIONS_COUNT,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 
@@ -17,6 +18,7 @@ const initialState = {
   graphsListInfo: {
     totalPages: 0,
   },
+  actionsCount: {},
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -99,6 +101,15 @@ export default function reducer(state = initialState, action) {
         ...state,
         singleGraph: action.payload,
       };
+    }
+    case ACTIONS_COUNT.SUCCESS: {
+      return {
+        ...state,
+        actionsCount: {
+          ...state.actionsCount,
+          ...action.payload.data.result
+        },
+      }
     }
     default: {
       return state;

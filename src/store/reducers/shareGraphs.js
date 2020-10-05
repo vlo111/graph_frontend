@@ -3,6 +3,8 @@ import {
   DELETE_SHARE_GRAPH,
   LIST_SHARE_GRAPH,
   USER_SHARE_GRAPH,
+  UPDATE_SHARE_GRAPH_STATUS,
+  GRAPH_SHARED_USERS,
 } from '../actions/shareGraphs';
 
 const initialState = {
@@ -11,6 +13,7 @@ const initialState = {
   page: 0,
   total: 0,
   totalPages: 0,
+  graphUsers: {},
 };
 
 export default function reducer(state = initialState, action) {
@@ -25,6 +28,7 @@ export default function reducer(state = initialState, action) {
     case LIST_SHARE_GRAPH.SUCCESS:
     case CREATE_SHARE_GRAPH.SUCCESS:
     case DELETE_SHARE_GRAPH.SUCCESS:
+    case UPDATE_SHARE_GRAPH_STATUS.SUCCESS:  
     {
       const {
         shareGraphs: shareGraphsList, page, total, totalPages,
@@ -41,6 +45,16 @@ export default function reducer(state = initialState, action) {
       return {
         ...state, userGraphs,
       };
+    }
+    case GRAPH_SHARED_USERS.SUCCESS:
+    {
+      return {
+        ...state,
+        graphUsers: {
+          ...state.graphUsers,
+          ...action.payload.data.result,
+        }
+      }
     }
     default: {
       return state;
