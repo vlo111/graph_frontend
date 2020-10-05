@@ -1,15 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import Owner from './Owner';
 import Button from '../../form/Button';
 import Input from '../../form/Input';
-import { getSingleGraph } from '../../../store/selectors/graphs';
 import { getAccount } from '../../../store/selectors/account';
 import { createGraphCommentRequest } from '../../../store/actions/commentGraphs';
 
-export default () => {
+const AddComment = ({ graph, closeModal }) => {
   const dispatch = useDispatch();
-  const singleGraph = useSelector(getSingleGraph);
   const myAccount = useSelector(getAccount);
   const [text, setText] = useState('');
 
@@ -18,13 +17,16 @@ export default () => {
       <Owner user={myAccount.myAccount} />
       <Input textArea onChangeText={(value) => setText(value)} className="comment-modal__add-comment-input" />
       <div className="comment-modal__add-comment-buttons">
-        <Button className="comment-modal__add-comment-cancel">
+        <Button
+          className="comment-modal__add-comment-cancel"
+          onClick={() => closeModal()}
+        >
           Cancel
         </Button>
         <Button
           onClick={() => (
             dispatch(createGraphCommentRequest(
-              { graphId: singleGraph.id, text },
+              { graphId: graph.id, text },
             ))
           )}
           className="comment-modal__add-comment-button"
@@ -35,3 +37,10 @@ export default () => {
     </div>
   );
 };
+
+AddComment.propTypes = {
+  graph: PropTypes.object.isRequired,
+  closeModal: PropTypes.func.isRequired,
+};
+
+export default AddComment;

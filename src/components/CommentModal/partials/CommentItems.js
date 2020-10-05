@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import { getGraphComments } from '../../../store/selectors/commentGraphs';
 import { getGraphCommentsRequest } from '../../../store/actions/commentGraphs';
-import { getSingleGraph } from '../../../store/selectors/graphs';
 import Owner from './Owner';
 
-export default () => {
+const CommentItems = ({ graph }) => {
   const dispatch = useDispatch();
   const graphComments = useSelector(getGraphComments);
-  const singleGraph = useSelector(getSingleGraph);
 
   useEffect(() => {
-    dispatch(getGraphCommentsRequest({ graphId: singleGraph.id }));
+    dispatch(getGraphCommentsRequest({ graphId: graph.id }));
   }, []);
 
   return (
@@ -29,3 +28,9 @@ export default () => {
     </div>
   );
 };
+
+CommentItems.propTypes = {
+  graph: PropTypes.object.isRequired,
+};
+
+export default CommentItems;
