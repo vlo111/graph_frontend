@@ -133,7 +133,7 @@ class ReactChartComp extends Component {
     Chart.render({ nodes, links });
   }
 
-  setActiveButton = (params) => {
+  setActiveButton = (ev, params) => {
     this.props.setActiveButton(params.button);
   }
 
