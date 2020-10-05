@@ -24,11 +24,15 @@ const NotificationList = (props) => {
 
   useEffect(() => {
     dispatch(listNotificationsRequest());
+  }, [dispatch]);
 
+  useEffect(() => {
     props.socket.on(`notificationsListGraphShared-${userId}`, (data) => {
       dispatch(addNotification(data));
     });
-  }, [dispatch]);
+  }, [userId, dispatch, props.socket]);
+  
+  list.forEach(item => item.link = `/graphs/preview/${item.graphId}`)
 
   return (
     <NotifyMe
