@@ -21,7 +21,7 @@ class ChartUndoManager {
     if (this.data.length > MAX_COUNT - 1) {
       this.data.shift();
     }
-    this.data.push(datum);
+    this.data.push(_.cloneDeep(datum));
   }
 
   undoCount() {
