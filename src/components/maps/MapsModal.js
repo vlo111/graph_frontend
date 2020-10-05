@@ -14,6 +14,8 @@ import Loading from '../Loading';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import CustomFields from '../../helpers/CustomFields';
 import MapsContactCustomField from './MapsContactCustomField';
+import Api from "../../Api";
+import { setNodeCustomField } from "../../store/actions/graphs";
 
 class MapsModal extends Component {
   static propTypes = {
@@ -82,7 +84,7 @@ class MapsModal extends Component {
           international_phone_number: phone,
           types,
         } = place;
-        const photo = !_.isEqual(photos) ? photos[0].getUrl({ maxWidth: 250, maxHeight: 250 }) : null;
+        const photo = !_.isEqual(photos) ? photos[0].getUrl({ maxWidth: 1024, maxHeight: 1024 }) : null;
         const type = _.lowerCase(types[0] || '');
         const selected = {
           location, website, name, photo, address, type, phone,
@@ -110,6 +112,11 @@ class MapsModal extends Component {
     const contact = ReactDOMServer.renderToString(<MapsContactCustomField data={selected} />);
     if (contact) {
       customField.Contact = contact;
+    }
+
+    const { data: wikiData } = await Api.getWikipediaInfo(selected.name).catch((e) => e);
+    if (wikiData?.result) {
+      customField.Wikipedia = `https://en.wikipedia.org/wiki/${selected.name}`;
     }
 
     this.props.toggleNodeModal({

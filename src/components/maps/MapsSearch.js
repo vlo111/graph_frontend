@@ -42,7 +42,7 @@ class MapsSearch extends Component {
       return;
     }
     const location = { lat: geometry.location.lat(), lng: geometry.location.lng() };
-    const photo = !_.isEqual(photos) ? photos[0].getUrl({ maxWidth: 250, maxHeight: 250 }) : null;
+    const photo = !_.isEqual(photos) ? photos[0].getUrl({ maxWidth: 1024, maxHeight: 1024 }) : null;
     const type = _.lowerCase(types[0] || '');
     const params = {
       website, name, location, photo, address, type, phone, autoCenter: true,

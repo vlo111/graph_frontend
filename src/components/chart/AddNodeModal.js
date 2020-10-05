@@ -102,11 +102,6 @@ class AddNodeModal extends Component {
       Chart.render({ nodes, links });
       this.props.toggleNodeModal();
 
-      const { data: wikiData } = await Api.getWikipediaInfo(nodeData.name).catch((e) => e);
-      if (wikiData?.result) {
-        customField.Wikipedia = `https://en.wikipedia.org/wiki/${nodeData.name}`;
-      }
-      this.props.setNodeCustomField(nodeData.type, nodeData.name, customField);
     }
     this.setState({ errors, nodeData });
   }
