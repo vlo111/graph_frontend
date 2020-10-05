@@ -71,7 +71,7 @@ class LinkTypesFilter extends Component {
         <h4 className="title">Link Types</h4>
         <ul className="list">
           {types.map((item) => (
-            <li key={item.type} className="item" style={{ color: ChartUtils.linkColor()(item) }}>
+            <li key={item.type} className="item" style={{ color: ChartUtils.linkColor(item) }}>
               <Checkbox
                 label={item.type}
                 checked={_.isEmpty(filters.linkTypes) || filters.linkTypes.includes(item.type)}

@@ -233,7 +233,7 @@ class ChartUtils {
 
   static linkColorArr = _.clone(LINK_COLORS);
 
-  static linkColor = () => (d) => {
+  static linkColor = (d) => {
     if (!this.linkColorObj[d.type]) {
       if (d.color) {
         this.linkColorArr = this.linkColorArr.filter((c) => d.color !== c);
@@ -249,7 +249,7 @@ class ChartUtils {
 
   static nodeColorsArr = _.clone(NODE_COLOR);
 
-  static nodeColor = () => (d) => {
+  static nodeColor = (d) => {
     if (!this.nodeColorObj[d.type]) {
       if (d.color) {
         this.nodeColorsArr = this.nodeColorsArr.filter((c) => d.color !== c);
@@ -263,7 +263,7 @@ class ChartUtils {
 
   static labelColorsArr = _.clone(LINK_COLORS);
 
-  static labelColors = () => (d = {}) => {
+  static labelColors = (d = {}) => {
     if (d.color) {
       this.labelColorsArr = this.labelColorsArr.filter((c) => d.color !== c);
       return d.color;

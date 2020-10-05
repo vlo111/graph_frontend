@@ -78,7 +78,7 @@ class MapsGraph extends Component {
             <Polyline
               key={d.index}
               path={d.locations}
-              strokeColor={ChartUtils.linkColor()(d)}
+              strokeColor={ChartUtils.linkColor(d)}
               strokeWeight={d.value * 2 || 2}
             />
           ))}
@@ -90,7 +90,7 @@ class MapsGraph extends Component {
               title={d.name}
               onClick={(props, marker, ev) => this.handleMarkerClick(props, marker, ev, d)}
               icon={{
-                url: `${Api.url}/public/markers/${ChartUtils.nodeColor()(d).replace('#', '')}.svg`,
+                url: `${Api.url}/public/markers/${ChartUtils.nodeColor(d).replace('#', '')}.svg`,
                 anchor: new google.maps.Point(25, 35),
                 scaledSize: new google.maps.Size(50, 50),
               }}

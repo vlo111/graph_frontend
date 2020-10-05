@@ -105,7 +105,7 @@ class NodeTypesFilter extends Component {
         <h4 className="title">Node Types</h4>
         <ul className="list">
           {types.map((item) => (
-            <li key={item.type} className="item" style={{ color: ChartUtils.nodeColor()(item) }}>
+            <li key={item.type} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
               <Checkbox
                 label={item.type}
                 checked={_.isEmpty(filters.nodeTypes) || filters.nodeTypes.includes(item.type)}

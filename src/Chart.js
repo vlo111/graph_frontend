@@ -239,8 +239,8 @@ class Chart {
       .join('path')
       .attr('class', 'label')
       .attr('opacity', '0.4')
-      .attr('data-name', (d) => d.name || ChartUtils.labelColors()(d))
-      .attr('fill', ChartUtils.labelColors())
+      .attr('data-name', (d) => d.name || ChartUtils.labelColors(d))
+      .attr('fill', ChartUtils.labelColors)
       .attr('d', (d) => renderPath(d.d))
       .on('click', (...p) => this.event.emit('label.click', ...p))
       .on('mouseenter', (...p) => this.event.emit('label.mouseenter', ...p))
@@ -253,7 +253,7 @@ class Chart {
       activeLine = labels.append('path')
         .datum({
           name: '',
-          color: ChartUtils.labelColors()(),
+          color: ChartUtils.labelColors(),
           d: [],
         })
         .attr('class', 'label')
@@ -359,7 +359,7 @@ class Chart {
         .attr('id', (d) => `l${d.index}`)
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
-        .attr('stroke', ChartUtils.linkColor())
+        .attr('stroke', ChartUtils.linkColor)
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
         .on('click', (...p) => this.event.emit('link.click', ...p));
@@ -417,7 +417,7 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node :not(text)')
-        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : ChartUtils.nodeColor()(d)));
+        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : ChartUtils.nodeColor(d)));
 
       this.renderLinkText();
       this.renderNodeText();
@@ -504,7 +504,7 @@ class Chart {
       })
       .attr('text-anchor', 'end')
       .attr('font-size', (d) => 5 + (d.value * 5))
-      .attr('fill', ChartUtils.linkColor())
+      .attr('fill', ChartUtils.linkColor)
       .join('text');
 
     this.directions.append('textPath')
@@ -604,7 +604,7 @@ class Chart {
       .data(linksData.filter((d) => d.hidden !== 1))
       .join('text')
       .attr('text-anchor', 'middle')
-      .attr('fill', ChartUtils.linkColor())
+      .attr('fill', ChartUtils.linkColor)
       .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + d.value / 2 : (5 + d.value / 2) * -1))
       .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
@@ -618,7 +618,7 @@ class Chart {
 
     this.directions
       .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? 0.8 : undefined))
-      .attr('stroke', (d) => (linkIndexes.includes(d.index) ? ChartUtils.linkColor()(d) : undefined));
+      .attr('stroke', (d) => (linkIndexes.includes(d.index) ? ChartUtils.linkColor(d) : undefined));
   }
 
   static #calledFunctions = [];
@@ -795,7 +795,7 @@ class Chart {
         keywords: d.keywords || [],
         location: d.location || undefined,
         labels: d.labels,
-        color: d.color || ChartUtils.nodeColor()(d),
+        color: d.color || ChartUtils.nodeColor(d),
       }));
     }
     if (show) {
@@ -831,7 +831,7 @@ class Chart {
           type: pd.type || d.type || '',
           direction: pd.direction || d.direction || '',
           hidden: pd.hidden || d.hidden,
-          color: pd.color || ChartUtils.linkColor()(d),
+          color: pd.color || ChartUtils.linkColor(d),
         };
       });
     }

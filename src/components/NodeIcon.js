@@ -12,7 +12,7 @@ class NodeIcon extends Component {
     return (
       <span
         className={`nodeIcon ${node.nodeType} ${node.icon ? 'hasImage' : ''}`}
-        style={{ background: !node.icon ? ChartUtils.nodeColor()(node) : undefined }}
+        style={{ background: !node.icon ? ChartUtils.nodeColor(node) : undefined }}
       >
         {node.icon ? (
           <img src={node.icon} alt="icon" width={50} height={50} />
