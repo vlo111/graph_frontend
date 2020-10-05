@@ -7,10 +7,8 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
 import Wrapper from '../components/Wrapper';
-import Button from '../components/form/Button';
 import Utils from '../helpers/Utils';
 import Pagination from '../components/Pagination';
-import Header from '../components/Header';
 const GraphListFooter = lazy(() => import('../components/GraphListFooter'));
 
 

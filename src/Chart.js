@@ -67,7 +67,7 @@ class Chart {
   static normalizeData(data) {
     data.nodes = data.nodes || Chart.getNodes();
     data.links = data.links || _.cloneDeep(Chart.getLinks());
-    data.labels = data.labels || Chart.getLabels();
+    data.labels = data.labels?.filter((d) => d.name) || Chart.getLabels();
 
     const nodes = data.nodes.map((d) => Object.create(d));
 
@@ -195,7 +195,7 @@ class Chart {
     const scaleH = window.innerHeight / (height / originalDimensions.scale + 20);
     const scale = Math.min(scaleW, scaleH, 1);
 
-    console.log(scaleH)
+    console.log(scaleH);
 
     const nodes = this.getNodes();
 
