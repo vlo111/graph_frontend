@@ -64,7 +64,7 @@ class Home extends Component {
                 </p>
               </Link>
               <Suspense fallback={<div>Loading...</div>}>
-                <GraphListFooter graphId={graph.id} />
+                <GraphListFooter graph={graph} />
               </Suspense>
             </article>
           ))}

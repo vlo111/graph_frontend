@@ -10,7 +10,6 @@ import { setActiveButton } from '../store/actions/app';
 import Button from '../components/form/Button';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
-import { ReactComponent as ViewSvg } from '../assets/images/icons/view.svg';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import Filters from '../components/filters/Filters';
 import AccountDropDown from '../components/account/AccountDropDown';
@@ -19,9 +18,9 @@ import { deleteGraphRequest, getSingleGraphRequest } from '../store/actions/grap
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import ShareGraph from '../components/ShareGraph';
-import LabelTooltip from "../components/LabelTooltip";
+import LabelTooltip from '../components/LabelTooltip';
 import CommentGraph from '../components/CommentGraph';
-import Legend from "../components/Legend";
+import Legend from '../components/Legend';
 
 class GraphView extends Component {
   static propTypes = {

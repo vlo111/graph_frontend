@@ -6,7 +6,7 @@ import { ReactComponent as ShareSvg } from '../assets/images/icons/share.svg';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg';
 import { ReactComponent as ViewPassSvg } from '../assets/images/icons/view.svg';
 import { ReactComponent as HeartSvg } from '../assets/images/icons/heart.svg';
-import { getActionsCount } from '../store/selectors/graphs';
+import { getActionsCount, getGraphsList, getSingleGraph } from '../store/selectors/graphs';
 import { getActionsCountRequest } from '../store/actions/graphs';
 import Button from './form/Button';
 import ShareTooltip from './ShareTooltip';
@@ -17,20 +17,19 @@ const TootlipContent = ({ graphId }) => (
   </Suspense>
 );
 TootlipContent.propTypes = {
-  graphId: PropTypes.number.isRequired,
+  graphId: PropTypes.object.isRequired,
 };
 
-const GraphListFooter = ({ graphId }) => {
+const GraphListFooter = ({ graph }) => {
   const actionsCountAll = useSelector(getActionsCount);
-  const actionsCount = actionsCountAll[graphId];
+  const actionsCount = actionsCountAll[graph.id];
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (graphId) {
-      dispatch(getActionsCountRequest(graphId));
+    if (graph.id) {
+      dispatch(getActionsCountRequest(graph.id));
     }
-  }, [dispatch, graphId]);
-
+  }, [dispatch, graph.id]);
   return (
     <div className="graphListFooter">
       <Button icon={<HeartSvg style={{ height: 14 }} />} className="transparent footer-icon">
@@ -40,11 +39,11 @@ const GraphListFooter = ({ graphId }) => {
         <span className="graphListFooter__count">{actionsCount?.comments}</span>
       </Button>
       <Button icon={<ViewPassSvg style={{ height: 14 }} />} className="transparent footer-icon">
-        <span className="graphListFooter__count">{actionsCount?.views}</span>
+        <span className="graphListFooter__count">{graph?.views || 0}</span>
       </Button>
       {actionsCount?.shares
         ? (
-          <Tooltip overlay={<TootlipContent graphId={graphId} />} trigger={['hover']}>
+          <Tooltip overlay={<TootlipContent graphId={graph.id} />} trigger={['hover']}>
             <Button icon={<ShareSvg style={{ height: 14 }} />} className="transparent footer-icon">
               <span className="graphListFooter__count">{actionsCount?.shares}</span>
             </Button>
@@ -60,7 +59,7 @@ const GraphListFooter = ({ graphId }) => {
 };
 
 GraphListFooter.propTypes = {
-  graphId: PropTypes.number.isRequired,
+  graph: PropTypes.object.isRequired,
 };
 
 export default React.memo(GraphListFooter);
