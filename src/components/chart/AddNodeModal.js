@@ -84,11 +84,6 @@ class AddNodeModal extends Component {
     [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
 
     if (!Validate.hasError(errors)) {
-      const { data: wikiData } = await Api.getWikipediaInfo(nodeData.name).catch((e) => e);
-      if (wikiData?.result) {
-        customField.Wikipedia = `https://en.wikipedia.org/wiki/${nodeData.name}`;
-      }
-
       if (_.isNull(index)) {
         nodes.push(nodeData);
       } else {
@@ -105,8 +100,13 @@ class AddNodeModal extends Component {
         nodes[index] = nodeData;
       }
       Chart.render({ nodes, links });
-      this.props.setNodeCustomField(nodeData.type, nodeData.name, customField);
       this.props.toggleNodeModal();
+
+      const { data: wikiData } = await Api.getWikipediaInfo(nodeData.name).catch((e) => e);
+      if (wikiData?.result) {
+        customField.Wikipedia = `https://en.wikipedia.org/wiki/${nodeData.name}`;
+      }
+      this.props.setNodeCustomField(nodeData.type, nodeData.name, customField);
     }
     this.setState({ errors, nodeData });
   }

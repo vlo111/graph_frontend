@@ -30,7 +30,7 @@ class Home extends Component {
     const { page = 1 } = queryString.parse(window.location.search);
     this.getGraphsList(page);
     return (
-      <Wrapper className="homePage"> 
+      <Wrapper className="homePage">
         <div className="graphsList">
           {graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
