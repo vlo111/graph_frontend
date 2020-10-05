@@ -20,6 +20,7 @@ import { userGraphRequest } from '../store/actions/shareGraphs';
 import ShareGraph from '../components/ShareGraph';
 import LabelTooltip from "../components/LabelTooltip";
 import CommentGraph from '../components/CommentGraph';
+import Legend from "../components/Legend";
 
 class GraphView extends Component {
   static propTypes = {
@@ -124,6 +125,7 @@ class GraphView extends Component {
             </Link>
           </>
         )}
+        <Legend />
         <Filters />
         <NodeFullInfo editable={false} />
         <LabelTooltip />
