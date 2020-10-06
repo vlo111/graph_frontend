@@ -4046,3 +4046,18 @@ body .gh__menu {
     }
   }
 }
+
+.profileSettings {
+  .row{
+    margin: 0;
+  }
+  form {
+    display: flex;
+    .avatar{
+      width: 270px;
+      height: 270px;
+      border-radius: 50%;
+    }
+  }
+
+}

@@ -38,7 +38,7 @@ class App extends Component {
             <Route path="/graphs/update/:graphId" component={GraphForm} />
             <Route path="/graphs/author/:authorId" component={GraphForm} />
 
-            <Route path="/account" component={Account} />
+            {/*<Route path="/account" component={Account} />*/}
 
             <Route path="/sign/sign-in" component={SignIn} />
             <Route path="/sign/sign-up" component={SignUp} />

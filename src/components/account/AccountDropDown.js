@@ -48,7 +48,7 @@ class AccountDropDown extends Component {
             <div className="dropdown">
               <ul>
                 <li className="item">
-                  <Link to="/account">Account</Link>
+                  <Link to="#">Account</Link>
                 </li>
                 {!visible &&
                 <li className="item">
