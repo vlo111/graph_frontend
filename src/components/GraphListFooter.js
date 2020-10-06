@@ -36,32 +36,32 @@ const GraphListFooter = ({ graph }) => {
   }, [dispatch, graph.id]);
   return (
     <div className="graphListFooter">
-      <Button icon={<HeartSvg style={{ height: 14 }} />} className="transparent footer-icon">
+      <Button icon={<HeartSvg />} className="transparent footer-icon">
         <span className="graphListFooter__count">{actionsCount?.likes}</span>
       </Button>
       <Button
-        icon={<CommentSvg style={{ height: 14, color: 'red' }} />}
+        icon={<CommentSvg />}
         className="transparent footer-icon"
         onClick={() => setOpenCommentModal(true)}
       >
         <span className="graphListFooter__count">{actionsCount?.comments}</span>
       </Button>
-      <Button icon={<ViewPassSvg style={{ height: 14 }} />} className="transparent footer-icon">
+      <Button icon={<ViewPassSvg />} className="transparent footer-icon">
         <span className="graphListFooter__count">{graph?.views || 0}</span>
       </Button>
       {actionsCount?.shares
         ? (
           <Tooltip overlay={<TootlipContent graphId={graph.id} />} trigger={['hover']}>
-            <Button icon={<ShareSvg style={{ height: 14 }} />} className="transparent footer-icon">
+            <Button icon={<ShareSvg />} className="transparent footer-icon">
               <span className="graphListFooter__count">{actionsCount?.shares}</span>
             </Button>
           </Tooltip>
         )
         : (
-          <Button icon={<ShareSvg style={{ height: 14 }} />} className="transparent footer-icon">
+          <Button icon={<ShareSvg />} className="transparent footer-icon">
             <span className="graphListFooter__count">{actionsCount?.shares}</span>
           </Button>
-      )}
+        )}
       {openCommentModal && (
         <CommentModal
           closeModal={() => setOpenCommentModal(false)}

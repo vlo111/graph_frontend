@@ -1994,7 +1994,7 @@ p {
   margin: 0;
 
 
-  &.empty{
+  &.empty {
     min-height: 450px;
     background-color: $color-white;
     border-radius: 24px;
@@ -2013,21 +2013,27 @@ p {
       transition: all 300ms;
 
       &:hover {
-        color: $color-main;
+        text-decoration: none;
       }
     }
 
 
     .top {
       display: flex;
-      margin-top: 20px;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid $color-light-gray;
 
       .avatar {
         margin-right: 15px;
+        border-radius: 50%;
+        width: 52px;
+        height: 52px;
       }
 
       .author {
         font-size: 16px;
+        color: $color-dark;
       }
 
       .info {
@@ -2054,32 +2060,22 @@ p {
       }
     }
 
-    .description {
-      text-align: left;
-      font: normal normal normal 16px/22px Open Sans;
-      letter-spacing: 0px;
-      color: #0D0905;
-      opacity: 1;
+    .line {
+      border: 1px solid $color-light-gray;
     }
 
-    .line {
-      border: 1px solid #E2E7EB;
-      pacity: 1;
-    }
 
     .thumbnail {
-      border: 1px solid $color-gray;
       width: 100%;
       height: 325px;
       max-height: 34vw;
       min-height: 130px;
       object-fit: cover;
       object-position: top center;
-      margin-top: 10px;
 
-      background: #FFFFFF 0% 0% no-repeat padding-box;
-      box-shadow: 0px 5px 12px #E2E7EB29;
-      border: 1px solid #E2E7EB;
+      background-color: $color-white;
+      box-shadow: 0 5px 12px #E2E7EB29;
+      border: 1px solid $color-light-gray;
       border-radius: 24px;
       opacity: 1;
     }
@@ -2088,12 +2084,21 @@ p {
       font-size: 28px;
       margin-top: 20px;
       font-weight: 400;
+      text-decoration: none;
+      color: $color-dark;
+
+
     }
 
     .description {
       margin: 20px 0;
       font-size: 16px;
       font-weight: 400;
+      color: $color-dark;
+
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 }
@@ -2737,7 +2742,7 @@ p {
 
       ul {
         box-shadow: 0 5px 12px #E2E7EB29;
-        border: 1px solid #E2E7EB;
+        border: 1px solid $color-light-gray;
         text-align: right;
         padding: 5px 10px;
       }
@@ -3272,7 +3277,7 @@ body .gh__menu {
 
   .contentWrapper {
     box-shadow: 0 5px 12px #E2E7EB29;
-    border: 1px solid #E2E7EB;
+    border: 1px solid $color-light-gray;
     border-radius: 13px 24px 24px 24px;
     padding: 39px 4% 31px;
     max-height: 380px;
@@ -3505,7 +3510,7 @@ body .gh__menu {
       font-weight: 600;
       font-size: 16px;
       padding-bottom: 16px;
-      border-bottom: 1px solid #E2E7EB;
+      border-bottom: 1px solid $color-light-gray;
       margin: 20px 0;
     }
 
@@ -3735,7 +3740,7 @@ body .gh__menu {
 
   background: #FFFFFF 0% 0% no-repeat padding-box;
   box-shadow: 0px 5px 12px #E2E7EB29;
-  border: 1px solid #E2E7EB;
+  border: 1px solid $color-light-gray;
   border-radius: 24px;
   opacity: 1;
   padding-top: 60px;
@@ -3743,7 +3748,7 @@ body .gh__menu {
   .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     background: #FE794F 0% 0% no-repeat padding-box;
     box-shadow: 0px 5px 12px #0D090526;
-    border: 1px solid #E2E7EB;
+    border: 1px solid $color-light-gray;
     border-radius: 24px 0px 0px 24px;
     opacity: 1;
 
@@ -3756,7 +3761,7 @@ body .gh__menu {
   .nav-pills .nav-link, .nav-pills .show > .nav-link {
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 5px 12px #0D090514;
-    border: 1px solid #E2E7EB;
+    border: 1px solid $color-light-gray;
     border-radius: 24px 0px 0px 24px;
     opacity: 1;
   }
@@ -3946,9 +3951,17 @@ body .gh__menu {
     }
   }
 
-  &__count {
-    margin-left: 4px;
+  .ghButton {
+    padding: 20px 10px 0;
+
+    .icon {
+      svg {
+        height: 15px;
+        width: auto;
+      }
+    }
   }
+
 }
 
 

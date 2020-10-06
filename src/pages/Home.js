@@ -48,19 +48,19 @@ class Home extends Component {
                 </div>
               </div>
               <Link to={`/graphs/preview/${graph.id}`}>
-                <img
-                  className="thumbnail"
-                  src={graph.thumbnail || Utils.fileSrc(`/public/uploads/thumbnails/${graph.id}.png`)}
-                  alt={graph.title}
-                />
-              </Link>
-              <Link to={`/graphs/preview/${graph.id}`}>
                 <h3 className="title">{graph.title}</h3>
               </Link>
               <Link to={`/graphs/preview/${graph.id}`}>
                 <p className="description">
                   {graph.description.length > 600 ? `${graph.description.substr(0, 600)}... ` : graph.description}
                 </p>
+              </Link>
+              <Link to={`/graphs/preview/${graph.id}`}>
+                <img
+                  className="thumbnail"
+                  src={graph.thumbnail || Utils.fileSrc(`/public/uploads/thumbnails/${graph.id}.png`)}
+                  alt={graph.title}
+                />
               </Link>
               <GraphListFooter graph={graph} />
             </article>
