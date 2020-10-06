@@ -37,9 +37,9 @@ const GraphListFooter = ({ graph }) => {
   }, [dispatch, graph.id]);
   return (
     <div className="graphListFooter">
-      <Button icon={<HeartSvg />} className="transparent footer-icon">
-        <span className="graphListFooter__count">{actionsCount?.likes}</span>
-      </Button>
+      {/*<Button icon={<HeartSvg />} className="transparent footer-icon">*/}
+      {/*  <span className="graphListFooter__count">{actionsCount?.likes}</span>*/}
+      {/*</Button>*/}
       <Button
         icon={<CommentSvg />}
         className="transparent footer-icon"
