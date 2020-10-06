@@ -9,7 +9,7 @@ export const shareGraphs = createSelector(
 
 export const userGraphs = createSelector(
   getShareGraph,
-  (items) => items.userGraphs,
+  (items) => items.userGraphs || [],
 );
 
 export const getGraphUsers = createSelector(

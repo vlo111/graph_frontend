@@ -12,7 +12,7 @@ class Index extends Component {
     return (
       <Wrapper className="homePage">
         <Header />
-        <VerticalTabs tabs={['Home', 'Templates', 'Shared Graphs']}>
+        <VerticalTabs className="homePageTabs" tabs={['Home', 'Templates', 'Shared Graphs']}>
           <Home />
           <GraphTemplates />
           <Shared />

@@ -6,10 +6,9 @@ import memoizeOne from 'memoize-one';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
-import Wrapper from '../components/Wrapper';
 import Utils from '../helpers/Utils';
 import Pagination from '../components/Pagination';
-const GraphListFooter = lazy(() => import('../components/GraphListFooter'));
+import GraphListFooter from "../components/GraphListFooter";
 
 
 class Home extends Component {
@@ -29,7 +28,7 @@ class Home extends Component {
     this.getGraphsList(page);
     return (
       <>
-        <div className="graphsList">
+        <div className={`graphsList ${!graphsList.length ? 'empty' : ''}`}>
           {graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
               <div className="top">
@@ -63,9 +62,7 @@ class Home extends Component {
                   {graph.description.length > 600 ? `${graph.description.substr(0, 600)}... ` : graph.description}
                 </p>
               </Link>
-              <Suspense fallback={<div>Loading...</div>}>
-                <GraphListFooter graph={graph} />
-              </Suspense>
+              <GraphListFooter graph={graph} />
             </article>
           ))}
         </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Notification from './Notification';
 import AccountDropDown from './account/AccountDropDown';
-import SearchGraphs from './search/SearchGraphs';
+// import SearchGraphs from './search/SearchGraphs';
 
 class Header extends Component {
   render() {
@@ -13,7 +13,6 @@ class Header extends Component {
             <h3> graphs analysed </h3>
           </Link>
         </div>
-        <SearchGraphs />
         <div className="start-graphs">
           <Link to="/graphs/create" style={{ marginLeft: 65 }}>
             Start a Graphs

@@ -30,7 +30,7 @@ class Home extends Component {
     this.getGraphsList(page);
     return (
       <>
-        <div className="graphsList">
+        <div className={`graphsList ${!graphsList.length ? 'empty' : ''}`}>
           {graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
               <div className="top">

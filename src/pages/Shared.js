@@ -16,7 +16,7 @@ const Shared = React.memo(() => {
 
   return (
     <>
-      <div className="graphsList">
+      <div className={`graphsList ${!userGraphsData.length ? 'empty' : ''}`}>
         {userGraphsData && userGraphsData.map(({ graph }) => (
           <article key={graph.id} className="graphsItem">
             <div className="top">

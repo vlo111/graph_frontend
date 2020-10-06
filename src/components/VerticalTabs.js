@@ -22,9 +22,9 @@ class VerticalTabs extends Component {
 
   render() {
     const { index } = this.state;
-    const { children, tabs } = this.props;
+    const { children, tabs, ...props } = this.props;
     return (
-      <div id="verticalTabs">
+      <div id="verticalTabs" {...props}>
         <ul className="tabsList">
           {_.reverse([...tabs]).map((tab, i) => (
             <li key={tab} className={`item ${tabs.length - i - 1 === index ? 'active' : ''}`}>
