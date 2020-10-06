@@ -45,7 +45,6 @@ $font-family: 'Open Sans', sans-serif;
 body {
   font-family: $font-family;
   color: $color-dark;
-
 }
 
 .link,
@@ -105,7 +104,10 @@ main {
   &.homePage {
     //background-color: $color-white;
     padding-top: 80px;
-    background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
+    background-image: url("../images/concept.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: bottom left;
   }
 }
 
@@ -3675,12 +3677,14 @@ body .gh__menu {
     }
   }
 }
+
 .ghModalOverlay {
   .commentModal {
     width: 900px;
     max-width: 900px;
   }
 }
+
 .comment-modal {
   max-width: 900px;
 
