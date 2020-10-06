@@ -31,7 +31,7 @@ const CommentItems = ({ graph }) => {
       {graphComments.map((comment) => (
         <>
           <CommentItem comment={comment} />
-          {comment.children.map((reply) => (
+          {comment.children?.map((reply) => (
             <CommentItem comment={reply} isReply />
           ))}
         </>
