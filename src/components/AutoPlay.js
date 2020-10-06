@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ReactComponent as PlaySvg } from '../assets/images/icons/play.svg';
 import { ReactComponent as ControlSvg } from '../assets/images/icons/control.svg';
 import Chart from '../Chart';
+import { toast } from "react-toastify";
 
 class AutoPlay extends Component {
   constructor(props) {
@@ -28,6 +29,12 @@ class AutoPlay extends Component {
   }
 
   toggle = () => {
+    const labels = Chart.getLabels();
+    toast.dismiss(this.notification);
+    if (labels.length) {
+      this.notification = toast.info('You can not use this feature because you have a label(s)');
+      return;
+    }
     const { play: _play } = this.state;
     const play = !_play;
     const nodes = Chart.getNodes();

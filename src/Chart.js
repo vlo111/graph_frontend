@@ -232,78 +232,113 @@ class Chart {
       .x((d) => d[0])
       .y((d) => d[1])
       .curve(d3.curveBasis);
-    const labels = d3.select('#graph .labels');
+
+    const dragLabel = {};
+
+    const handleDragStart = (ev) => {
+      ChartUtils.keyEvent(ev.sourceEvent);
+      if (this.activeButton === 'create-label') {
+        activeLine = labels.append('path')
+          .datum({
+            name: '',
+            color: ChartUtils.labelColors(),
+            d: [],
+          })
+          .attr('class', 'label')
+          .attr('data-name', (d) => d.name);
+      } else if (ev.sourceEvent.ctrlPress && ev.sourceEvent.target.classList.contains('label')) {
+        const name = ev.sourceEvent.target.getAttribute('data-name');
+        this.detectLabels();
+        dragLabel.label = labels.select(`#lb_${name}`);
+        dragLabel.nodes = this.data.nodes.filter((d) => d.labels.includes(name));
+      }
+    };
+
+    const handleDrag = (ev) => {
+      if (this.activeButton === 'create-label') {
+        const { x, y } = ev;
+        const datum = activeLine.datum();
+        datum.d.push([x, y]);
+        activeLine
+          .datum(datum)
+          .attr('d', (d) => renderPath(d.d))
+          .attr('opacity', 1)
+          .attr('fill', 'transparent')
+          .attr('stroke', '#0D0905')
+          .attr('stroke-width', 2);
+      } else if (dragLabel.label) {
+        const datum = dragLabel.label.datum();
+        datum.d = datum.d.map((p) => {
+          p[0] += ev.dx;
+          p[1] += ev.dy;
+          return p;
+        });
+        this.node.each((d) => {
+          if (dragLabel.nodes.some((n) => n.index === d.index)) {
+            d.fx += ev.dx;
+            d.fy += ev.dy;
+
+            d.x += ev.dx;
+            d.y += ev.dy;
+          }
+        });
+        this.graphMovement();
+
+        dragLabel.label
+          .datum(datum)
+          .attr('d', (d) => renderPath(d.d));
+
+        this.event.emit('label.drag', ev, dragLabel.label);
+      }
+    };
+
+    const handleDragEnd = (ev) => {
+      dragLabel.label = null;
+      if (this.activeButton === 'create-label') {
+        const datum = activeLine.datum();
+
+        datum.d = ChartUtils.coordinatesCompass(datum.d, 3);
+
+        if (datum.d.length < 4) {
+          activeLine.remove();
+          activeLine = null;
+          return;
+        }
+
+        activeLine
+          .datum(datum)
+          .attr('d', (d) => renderPath(d.d))
+          .attr('opacity', 0.4)
+          .attr('fill', (d) => d.color)
+          .attr('stroke', undefined)
+          .attr('stroke-width', undefined);
+
+        this.data.labels.push(datum);
+        this.detectLabels();
+        activeLine = null;
+        this.event.emit('label.new', ev, datum);
+      }
+    };
+
+    const labels = d3.select('#graph .labels')
+      .call(d3.drag()
+        .on('start', handleDragStart)
+        .on('drag', handleDrag)
+        .on('end', handleDragEnd));
 
     labels.selectAll('path')
       .data(this.data.labels.filter((l) => l.hidden !== 1))
       .join('path')
       .attr('class', 'label')
       .attr('opacity', '0.4')
+      .attr('id', (d) => `lb_${d.name}`)
       .attr('data-name', (d) => d.name || ChartUtils.labelColors(d))
       .attr('fill', ChartUtils.labelColors)
       .attr('d', (d) => renderPath(d.d))
-      .on('click', (...p) => this.event.emit('label.click', ...p))
-      .on('mouseenter', (...p) => this.event.emit('label.mouseenter', ...p))
-      .on('mousemove', (...p) => this.event.emit('label.mousemove', ...p))
-      .on('mouseleave', (...p) => this.event.emit('label.mouseleave', ...p));
-
-    const handleDragStart = () => {
-      if (this.activeButton !== 'create-label') return;
-
-      activeLine = labels.append('path')
-        .datum({
-          name: '',
-          color: ChartUtils.labelColors(),
-          d: [],
-        })
-        .attr('class', 'label')
-        .attr('data-name', (d) => d.name);
-    };
-
-    const handleDrag = (ev) => {
-      if (this.activeButton !== 'create-label') return;
-      const { x, y } = ev;
-      const datum = activeLine.datum();
-      datum.d.push([x, y]);
-      activeLine
-        .datum(datum)
-        .attr('d', (d) => renderPath(d.d))
-        .attr('opacity', 1)
-        .attr('fill', 'transparent')
-        .attr('stroke', '#0D0905')
-        .attr('stroke-width', 2);
-    };
-
-    const handleDragEnd = (ev) => {
-      if (this.activeButton !== 'create-label') return;
-      const datum = activeLine.datum();
-
-      datum.d = ChartUtils.coordinatesCompass(datum.d, 3);
-
-      if (datum.d.length < 4) {
-        activeLine.remove();
-        activeLine = null;
-        return;
-      }
-
-      activeLine
-        .datum(datum)
-        .attr('d', (d) => renderPath(d.d))
-        .attr('opacity', 0.4)
-        .attr('fill', (d) => d.color)
-        .attr('stroke', undefined)
-        .attr('stroke-width', undefined);
-
-      this.data.labels.push(datum);
-      this.detectLabels();
-      activeLine = null;
-      this.event.emit('label.new', ev, datum);
-    };
-
-    labels.call(d3.drag()
-      .on('start', handleDragStart)
-      .on('drag', handleDrag)
-      .on('end', handleDragEnd));
+      .on('click', (ev, d) => this.event.emit('label.click', ev, d))
+      .on('mouseenter', (ev, d) => this.event.emit('label.mouseenter', ev, d))
+      .on('mousemove', (ev, d) => this.event.emit('label.mousemove', ev, d))
+      .on('mouseleave', (ev, d) => this.event.emit('label.mouseleave', ev, d));
 
     this._dataNodes = null;
   }

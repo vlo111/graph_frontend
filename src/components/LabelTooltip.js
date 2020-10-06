@@ -15,12 +15,14 @@ class LabelTooltip extends Component {
     Chart.event.on('label.mouseenter', this.handleMouseEnter);
     Chart.event.on('label.mousemove', this.handleMouseMove);
     Chart.event.on('label.mouseleave', this.handleMouseLeave);
+    Chart.event.on('label.drag', this.handleDrag);
   }
 
   componentWillUnmount() {
     Chart.event.removeListener('label.mouseenter', this.handleMouseEnter);
     Chart.event.removeListener('label.mousemove', this.handleMouseMove);
     Chart.event.removeListener('label.mouseleave', this.handleMouseLeave);
+    Chart.event.removeListener('label.drag', this.handleDrag);
   }
 
   handleMouseEnter = (ev, d) => {
@@ -34,6 +36,10 @@ class LabelTooltip extends Component {
   }
 
   handleMouseLeave = () => {
+    this.setState({ label: null });
+  }
+
+  handleDrag = () => {
     this.setState({ label: null });
   }
 
