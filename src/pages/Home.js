@@ -28,7 +28,7 @@ class Home extends Component {
     const { page = 1 } = queryString.parse(window.location.search);
     this.getGraphsList(page);
     return (
-      <Wrapper className="homePage">
+      <>
         <div className="graphsList">
           {graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
@@ -70,7 +70,7 @@ class Home extends Component {
           ))}
         </div>
         <Pagination totalPages={totalPages} />
-      </Wrapper>
+      </>
     );
   }
 }

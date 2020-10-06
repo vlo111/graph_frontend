@@ -15,7 +15,7 @@ const Shared = React.memo(() => {
   }, [dispatch]);
 
   return (
-    <Wrapper className="homePage">
+    <>
       <div className="graphsList">
         {userGraphsData && userGraphsData.map(({ graph }) => (
           <article key={graph.id} className="graphsItem">
@@ -53,7 +53,7 @@ const Shared = React.memo(() => {
           </article>
         ))}
       </div>
-    </Wrapper>
+    </>
   );
 });
 
