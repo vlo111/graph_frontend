@@ -132,7 +132,7 @@ class ReactChartComp extends Component {
 
     nodes = nodes.filter((n) => n.index !== d.index);
 
-    links = links.filter((l) => !(l.source === d.name || l.target === d.name));
+    links = links.filter((l) => !(Chart.getSource(l) === d.name || Chart.getTarget(l) === d.name));
 
     Chart.render({ nodes, links });
   }
