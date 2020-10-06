@@ -296,6 +296,7 @@ class ChartUtils {
 
   static keyEvent(ev) {
     ev.ctrlPress = Utils.getOS() === 'macos' ? ev.metaKey : ev.ctrlKey;
+    console.log(Utils.getOS(), ev);
     ev.chartEvent = !['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase());
   }
 

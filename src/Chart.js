@@ -237,6 +237,7 @@ class Chart {
 
     const handleDragStart = (ev) => {
       ChartUtils.keyEvent(ev.sourceEvent);
+      console.log(11, ev.sourceEvent,  ev.sourceEvent.target.classList.contains('label'));
       if (this.activeButton === 'create-label') {
         activeLine = labels.append('path')
           .datum({
