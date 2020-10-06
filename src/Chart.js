@@ -236,8 +236,6 @@ class Chart {
     const dragLabel = {};
 
     const handleDragStart = (ev) => {
-      ChartUtils.keyEvent(ev.sourceEvent);
-      console.log(11, ev.sourceEvent,  ev.sourceEvent.target.classList.contains('label'));
       if (this.activeButton === 'create-label') {
         activeLine = labels.append('path')
           .datum({
@@ -247,7 +245,7 @@ class Chart {
           })
           .attr('class', 'label')
           .attr('data-name', (d) => d.name);
-      } else if (ev.sourceEvent.ctrlPress && ev.sourceEvent.target.classList.contains('label')) {
+      } else if (ev.sourceEvent.target.classList.contains('label')) {
         const name = ev.sourceEvent.target.getAttribute('data-name');
         this.detectLabels();
         dragLabel.label = labels.select(`#lb_${name}`);
