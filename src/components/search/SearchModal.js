@@ -39,7 +39,7 @@ class SearchModal extends Component {
   }
 
   findNode = (node) => {
-    this.findNodeInDom(node);
+    ChartUtils.findNodeInDom(node);
     this.closeModal();
   }
 

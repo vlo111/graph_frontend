@@ -2823,12 +2823,14 @@ body .gh__menu {
 .ghModalSearch {
   .list {
     max-height: 100%;
+    width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
 
     .item {
       display: flex;
       padding: 10px;
+      width: 100%;
 
       .ghButton {
         width: 100%;
@@ -2849,6 +2851,7 @@ body .gh__menu {
 
           .row {
             display: flex;
+            margin: 0;
           }
 
           .name {
@@ -2876,6 +2879,7 @@ body .gh__menu {
         .type {
           max-width: calc(50% - 70px);
           color: $color-dark-blue;
+          white-space: nowrap;
         }
       }
     }
