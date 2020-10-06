@@ -32,7 +32,7 @@ class AccountDropDown extends Component {
     const { showDropDown } = this.state;
     const { mini, myAccount: { firstName, lastName, avatar }, match: { params: { graphId = '' } } } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
-    const visible = window.location.pathname === "/" ? true : false; 
+    const visible = window.location.pathname === "/" ? true : false;
     return (
       <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
@@ -48,9 +48,9 @@ class AccountDropDown extends Component {
             <div className="dropdown">
               <ul>
                 <li className="item">
-                  <Link to="/">Account</Link>
+                  <Link to="/account">Account</Link>
                 </li>
-                 {!visible && 
+                {!visible &&
                 <li className="item">
                   <Link to={`/graphs/filter/${graphId}`}>Filters</Link>
                 </li>

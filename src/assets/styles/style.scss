@@ -237,7 +237,7 @@ p {
       color: #9CA6C5;
       white-space: nowrap;
       top: -19px;
-      left: 0px;
+      left: 0;
     }
 
     .jodit-toolbar-button_bold:before {
@@ -606,7 +606,6 @@ p {
     background-color: transparent !important;
     box-shadow: none !important;
     color: $color-main;
-    box-shadow: none;
   }
 
   .icon {
@@ -2840,7 +2839,6 @@ body .gh__menu {
         align-items: center;
         background-color: transparent;
         text-align: left;
-        display: flex;
         flex-direction: row;
 
         .right {
