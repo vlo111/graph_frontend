@@ -877,7 +877,7 @@ class Chart {
     if (_.isEmpty(this.data)) {
       return [];
     }
-    return this.data.labels || [];
+    return _.uniqBy(this.data.labels || [], 'name');
   }
 
   static get activeButton() {
