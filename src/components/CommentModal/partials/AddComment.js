@@ -19,6 +19,7 @@ const AddComment = ({ graph, closeModal }) => {
       <Owner user={myAccount.myAccount} />
       <Input
         textArea
+        value={text}
         onChangeText={(value) => setText(value)}
         className="comment-modal__add-comment-input"
         id="add-comment"
@@ -28,7 +29,7 @@ const AddComment = ({ graph, closeModal }) => {
           className="comment-modal__add-comment-cancel"
           onClick={() => {
             if (parent.id) {
-              setGraphCommentParent({});
+              dispatch(setGraphCommentParent({}));
             } else {
               closeModal();
             }
@@ -46,7 +47,7 @@ const AddComment = ({ graph, closeModal }) => {
               },
             ));
             setText('');
-            setGraphCommentParent({});
+            dispatch(setGraphCommentParent({}));
           }}
           className="comment-modal__add-comment-button"
         >
