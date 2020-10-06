@@ -18,6 +18,9 @@ class VerticalTabs extends Component {
 
   setActiveTab = (index) => {
     this.setState({ index });
+    if (this.props.onChange) {
+      this.props.onChange(index);
+    }
   }
 
   render() {
