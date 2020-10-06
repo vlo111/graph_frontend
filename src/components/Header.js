@@ -1,27 +1,29 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Notification from './Notification';
-import Button from '../components/form/Button'; 
 import AccountDropDown from './account/AccountDropDown';
+import SearchGraphs from './search/SearchGraphs';
 
 class Header extends Component {
   render() {
     return (
       <header id="header">
         <div className="logo-graphs">
-         <h3>graphs analysed</h3> 
-          
+          <Link to="/">
+            <h3> graphs analysed </h3>
+          </Link>
         </div>
+        <SearchGraphs />
         <div className="start-graphs">
-        <Link to="/graphs/create" style={{ marginLeft: 65 }}>
-            <Button icon="fa-pencil" className=" edit">Start a Graphs</Button>
+          <Link to="/graphs/create" style={{ marginLeft: 65 }}>
+            Start a Graphs
           </Link>
         </div>
         <div className="right-elements">
           <Notification />
-          <div  className="signOut">
+          <div className="signOut">
             <AccountDropDown />
-  
+
           </div>
         </div>
       </header>

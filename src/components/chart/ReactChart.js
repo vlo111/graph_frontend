@@ -11,7 +11,7 @@ import { updateSingleGraph } from '../../store/actions/graphs';
 import ContextMenu from '../ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
 import SocketContext from '../../context/Socket';
-import ChartUtils from "../../helpers/ChartUtils";
+import ChartUtils from '../../helpers/ChartUtils';
 
 class ReactChartComp extends Component {
   static propTypes = {
@@ -26,7 +26,11 @@ class ReactChartComp extends Component {
   };
 
   renderChart = memoizeOne((nodes, links, labels) => {
-    Chart.render({ nodes, links, labels });
+    if (!nodes) {
+      return;
+    }
+    const ll = links.filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
+    Chart.render({ nodes, links: ll, labels });
   });
 
   componentDidMount() {

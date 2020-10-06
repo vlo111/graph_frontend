@@ -307,9 +307,9 @@ class ChartUtils {
     return degrees > 90 && degrees < 270;
   }
 
-  static nodeSearch(search, limit = 15) {
+  static nodeSearch(search, limit = 15, nodes = Chart.getNodes()) {
     const s = search.trim().toLowerCase();
-    const nodes = Chart.getNodes().map((d) => {
+    nodes = nodes.map((d) => {
       d.priority = undefined;
       if (d.name.toLowerCase() === s) {
         d.priority = 1;
@@ -331,6 +331,14 @@ class ChartUtils {
       return d;
     }).filter((d) => d.priority);
     return _.orderBy(nodes, 'priority').slice(0, limit);
+  }
+
+  static graphsSearch(graphsList, search, limit) {
+    const graphs = graphsList.map((graph) => {
+      return this.nodeSearch(search, limit, graph.nodes);
+    });
+    console.log(graphs)
+    return [];
   }
 
   static findNodeInDom(node) {

@@ -45,7 +45,6 @@ $font-family: 'Open Sans', sans-serif;
 body {
   font-family: $font-family;
   color: $color-dark;
-  background-image: url("../images/concept.jpg");
 
 }
 
@@ -937,6 +936,8 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  opacity: 1;
 
   .right-elements {
     display: flex;
@@ -949,7 +950,12 @@ p {
 
     .notification-container {
       margin-right: 360px;
+
+      .notification {
+        background: #FE794F !important;
+      }
     }
+
   }
 
   .logo-graphs {
@@ -959,14 +965,29 @@ p {
     letter-spacing: 0px;
     text-transform: capitalize;
     opacity: 1;
+
+    a {
+      color: #FE794F !important;
+      background-color: transparent;
+      text-decoration: none;
+    }
   }
 
   .start-graphs {
     text-align: left;
     font: normal normal normal 16px/22px Open Sans;
     letter-spacing: 0px;
-    color: #0D0905;
+    color: #0D0905 !important;
     opacity: 1;
+
+    a {
+      text-align: left;
+      font: normal normal normal 16px/22px Open Sans;
+      letter-spacing: 0px;
+      color: #0D0905 !important;
+      opacity: 1;
+    }
+
   }
 }
 
@@ -3919,5 +3940,56 @@ body .gh__menu {
 
   &__count {
     margin-left: 4px;
+  }
+}
+
+
+.account {
+  padding-top: 80px;
+  background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
+}
+
+#verticalTabs {
+  display: flex;
+  width: 64%;
+  margin: 0 auto;
+  align-items: flex-start;
+
+  .tabsList {
+    display: flex;
+    flex-direction: row;
+    transform: rotate(270deg) translate(0, -100%);
+    transform-origin: top right;
+    margin: 0;
+
+    .item {
+      margin-left: -10px;
+      .ghButton {
+        background-color: $color-white;
+        color: $color-gray;
+        border-radius: 24px 24px 0 0 ;
+        padding: 12px 30px 60px;
+        margin: 0 0 -50px 0;
+        box-shadow: 0px 5px 12px #0D090514;
+      }
+
+      &.active {
+        .ghButton {
+          background-color: $color-main2;
+          color: $color-white;
+        }
+      }
+
+    }
+  }
+
+  .content {
+    background-color: $color-white;
+    border: 1px solid $color-light-gray;
+    border-radius: 24px;
+    width: 100%;
+    padding: 2% 3.4%;
+    position: relative;
+    min-height: 400px;
   }
 }

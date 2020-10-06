@@ -15,6 +15,7 @@ import ResetPassword from './pages/sign/ResetPassword';
 import OAuth from './pages/sign/OAuth';
 import Shared from './pages/Shared';
 import Index from './pages/Index';
+import Account from "./pages/profile/Account";
 
 class App extends Component {
   componentDidMount() {
@@ -37,7 +38,7 @@ class App extends Component {
             <Route path="/graphs/update/:graphId" component={GraphForm} />
             <Route path="/graphs/author/:authorId" component={GraphForm} />
 
-            <Route path="/account" component={GraphForm} />
+            <Route path="/account" component={Account} />
 
             <Route path="/sign/sign-in" component={SignIn} />
             <Route path="/sign/sign-up" component={SignUp} />

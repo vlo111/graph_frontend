@@ -3,7 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 import SearchInput from './search/SearchInput';
 import AccountDropDown from './account/AccountDropDown';
 
-class Header extends Component {
+class HeaderMini extends Component {
   render() {
     const { match: { params: { graphId = '' } } } = this.props;
 
@@ -23,4 +23,4 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+export default withRouter(HeaderMini);
