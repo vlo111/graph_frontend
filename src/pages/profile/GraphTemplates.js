@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import queryString from 'query-string';
 import memoizeOne from 'memoize-one';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import Wrapper from '../../components/Wrapper';
 import Button from '../../components/form/Button';
@@ -81,4 +81,4 @@ const Container = connect(
   mapDispatchToProps,
 )(Home);
 
-export default Container;
+export default withRouter(Container);

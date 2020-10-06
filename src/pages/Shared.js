@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import Utils from '../helpers/Utils';
 import { userGraphs } from '../store/selectors/shareGraphs';
@@ -59,4 +59,4 @@ const Shared = React.memo(() => {
   );
 });
 
-export default Shared;
+export default withRouter(Shared);

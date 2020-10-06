@@ -1,15 +1,14 @@
-import React, { Component, lazy, Suspense } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import memoizeOne from 'memoize-one';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
 import Utils from '../helpers/Utils';
 import Pagination from '../components/Pagination';
-import GraphListFooter from "../components/GraphListFooter";
-
+import GraphListFooter from '../components/GraphListFooter';
 
 class Home extends Component {
   static propTypes = {
@@ -86,4 +85,4 @@ const Container = connect(
   mapDispatchToProps,
 )(Home);
 
-export default Container;
+export default withRouter(Container);
