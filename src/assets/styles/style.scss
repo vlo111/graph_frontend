@@ -2217,26 +2217,10 @@ p {
     }
   }
 
-  .comment {
-    position: absolute;
-    left: 15px;
-    top: 293px;
-    margin-right: 0;
-    padding-right: 0;
-
-    .icon {
-      margin: 0;
-
-      svg {
-        min-width: 30px;
-      }
-    }
-  }
-
   .back {
     position: absolute;
     left: 15px;
-    top: 357px;
+    top: 293px;
     margin-right: 0;
     padding-right: 0;
 
@@ -3669,6 +3653,11 @@ body .gh__menu {
 
   &__comment-item {
     margin-bottom: 15px;
+
+    &--reply {
+      margin-bottom: 15px;
+      margin-left: 61px;
+    }
   }
 
   &__owner {

@@ -1,32 +1,41 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import Owner from './Owner';
 import Button from '../../form/Button';
 import Input from '../../form/Input';
-import { getSingleGraph } from '../../../store/selectors/graphs';
 import { getAccount } from '../../../store/selectors/account';
+import { getGraphCommentParent } from '../../../store/selectors/commentGraphs';
 import { createGraphCommentRequest } from '../../../store/actions/commentGraphs';
 
-export default () => {
+const AddComment = ({ graph, closeModal }) => {
   const dispatch = useDispatch();
-  const singleGraph = useSelector(getSingleGraph);
   const myAccount = useSelector(getAccount);
+  const parent = useSelector(getGraphCommentParent);
   const [text, setText] = useState('');
 
   return (
     <div className="comment-modal__add-comment-section">
       <Owner user={myAccount.myAccount} />
-      <Input textArea onChangeText={(value) => setText(value)} className="comment-modal__add-comment-input" />
+      <Input textArea onChangeText={(value) => setText(value)} className="comment-modal__add-comment-input" id="add-comment" />
       <div className="comment-modal__add-comment-buttons">
-        <Button className="comment-modal__add-comment-cancel">
+        <Button
+          className="comment-modal__add-comment-cancel"
+          onClick={() => closeModal()}
+        >
           Cancel
         </Button>
         <Button
-          onClick={() => (
+          onClick={() => {
             dispatch(createGraphCommentRequest(
-              { graphId: singleGraph.id, text },
-            ))
-          )}
+              {
+                graphId: graph.id,
+                text,
+                parentId: parent.id,
+              },
+            ));
+            setText('');
+          }}
           className="comment-modal__add-comment-button"
         >
           Comment
@@ -35,3 +44,10 @@ export default () => {
     </div>
   );
 };
+
+AddComment.propTypes = {
+  graph: PropTypes.object.isRequired,
+  closeModal: PropTypes.func.isRequired,
+};
+
+export default AddComment;

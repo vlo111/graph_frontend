@@ -6,3 +6,8 @@ export const getGraphComments = createSelector(
   getCommentGraph,
   (items) => items.graphComments,
 );
+
+export const getGraphCommentParent = createSelector(
+  getCommentGraph,
+  (items) => items.graphCommentParent,
+);

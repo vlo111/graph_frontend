@@ -120,7 +120,6 @@ class GraphView extends Component {
             </>
             )}
             <ShareGraph graphId={+graphId} />
-            <CommentGraph graphId={+graphId} />
             <NodeDescription />
             <Link to="/">
               <Tooltip overlay="Back">

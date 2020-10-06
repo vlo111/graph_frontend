@@ -12,3 +12,12 @@ export const GET_GRAPH_COMMENTS = define('GET_GRAPH_COMMENTS');
 export function getGraphCommentsRequest(requestData) {
   return GET_GRAPH_COMMENTS.request(() => Api.graphComments(requestData));
 }
+
+export const SET_COMMENT_PARENT = define('SET_COMMENT_PARENT');
+
+export function setGraphCommentParent(parent) {
+  return {
+    type: SET_COMMENT_PARENT,
+    payload: parent,
+  };
+}
