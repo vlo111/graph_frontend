@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { getGraphsListRequest } from '../store/actions/graphs';
 import Wrapper from '../components/Wrapper';
 import Header from '../components/Header';
 
@@ -24,18 +22,4 @@ class Index extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  graphsList: state.graphs.graphsList,
-  graphsListInfo: state.graphs.graphsListInfo,
-});
-
-const mapDispatchToProps = {
-  getGraphsListRequest,
-};
-
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Index);
-
-export default Container;
+export default Index;
