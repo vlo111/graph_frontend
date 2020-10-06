@@ -3677,7 +3677,12 @@ body .gh__menu {
     }
   }
 }
-
+.ghModalOverlay {
+  .commentModal {
+    width: 900px;
+    max-width: 900px;
+  }
+}
 .comment-modal {
   max-width: 900px;
 

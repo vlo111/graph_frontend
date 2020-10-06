@@ -17,8 +17,9 @@ const CommentModal = React.memo(({ closeModal, graph }) => {
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         contentLabel="Comment"
-        style={{ maxWidth: 900 }}
         id="comment-modal"
+        className="ghModal commentModal"
+        overlayClassName="ghModalOverlay"
       >
         <div className="comment-modal__title">
           <h3>{graph.title}</h3>

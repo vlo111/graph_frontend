@@ -32,7 +32,7 @@ class ChartUtils {
       return d;
     });
 
-    data.labels = data.labels.map(d => {
+    data.labels = data.labels.map((d) => {
       if (!_.isEmpty(params.labels) && !params.labels.includes(d.name)) {
         d.hidden = 1;
         return d;
@@ -165,6 +165,15 @@ class ChartUtils {
       return {};
     }
     return node.getBoundingClientRect();
+  }
+
+  static normalizeId(str, prefix) {
+    let id = '';
+    if (prefix) {
+      id += `${prefix}_`;
+    }
+    id += _.snakeCase(str);
+    return id;
   }
 
   static calcScaledPosition(x = 0, y = 0, del = '/') {
@@ -334,10 +343,8 @@ class ChartUtils {
   }
 
   static graphsSearch(graphsList, search, limit) {
-    const graphs = graphsList.map((graph) => {
-      return this.nodeSearch(search, limit, graph.nodes);
-    });
-    console.log(graphs)
+    const graphs = graphsList.map((graph) => this.nodeSearch(search, limit, graph.nodes));
+    console.log(graphs);
     return [];
   }
 

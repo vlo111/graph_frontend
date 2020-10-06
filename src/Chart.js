@@ -248,7 +248,7 @@ class Chart {
       } else if (ev.sourceEvent.target.classList.contains('label')) {
         const name = ev.sourceEvent.target.getAttribute('data-name');
         this.detectLabels();
-        dragLabel.label = labels.select(`#lb_${name}`);
+        dragLabel.label = labels.select(`[data-name="${name}"]`);
         dragLabel.nodes = this.data.nodes.filter((d) => d.labels.includes(name));
       }
     };
@@ -330,7 +330,7 @@ class Chart {
       .join('path')
       .attr('class', 'label')
       .attr('opacity', '0.4')
-      .attr('id', (d) => `lb_${d.name}`)
+      // .attr('id', (d) => ChartUtils.normalizeId(d.name, 'lb'))
       .attr('data-name', (d) => d.name || ChartUtils.labelColors(d))
       .attr('fill', ChartUtils.labelColors)
       .attr('d', (d) => renderPath(d.d))
