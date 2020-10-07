@@ -8,14 +8,22 @@ import AddComment from './partials/AddComment';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
 
+import { getActionsCountRequest } from '../../store/actions/graphs';
+import { useDispatch } from 'react-redux';
+
 const CommentModal = React.memo(({ closeModal, graph }) => {
   const afterOpenModal = () => {};
+  const dispatch = useDispatch();
+  const onClose = () => {
+    closeModal();
+    dispatch(getActionsCountRequest(graph.id));
+  };
   return (isEmpty(graph) ? null
     : (
       <Modal
         isOpen
         onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
+        onRequestClose={onClose}
         contentLabel="Comment"
         id="comment-modal"
         className="ghModal commentModal"
@@ -25,7 +33,7 @@ const CommentModal = React.memo(({ closeModal, graph }) => {
           <h3>{graph.title}</h3>
           <Button
             icon={<CloseSvg style={{ height: 30 }} />}
-            onClick={() => closeModal()}
+            onClick={onClose}
             className="transparent"
           />
         </div>
