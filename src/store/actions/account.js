@@ -19,6 +19,12 @@ export function getMyAccountRequest() {
   return GET_MY_ACCOUNT.request(() => Api.getMyAccount());
 }
 
+export const UPDATE_MY_ACCOUNT = define('UPDATE_MY_ACCOUNT');
+
+export function updateMyAccountRequest(data) {
+  return UPDATE_MY_ACCOUNT.request(() => Api.updateMyAccount(data));
+}
+
 export const FORGOT_PASSWORD = define('FORGOT_PASSWORD');
 
 export function forgotPasswordRequest(email, callback) {

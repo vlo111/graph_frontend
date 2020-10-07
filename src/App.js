@@ -28,7 +28,8 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route path="/drifts" exact component={GraphDrafts} />
-            <Route path="/templates" exact component={GraphTemplates} />
+            <Route path="/templates" exact component={Index} />
+            <Route path="/shared" exact component={Index} />
 
             <Route path="/graphs/view/:graphId" component={GraphView} />
             <Route path="/graphs/preview/:graphId" component={GraphView} />
@@ -38,7 +39,7 @@ class App extends Component {
             <Route path="/graphs/update/:graphId" component={GraphForm} />
             <Route path="/graphs/author/:authorId" component={GraphForm} />
 
-            {/*<Route path="/account" component={Account} />*/}
+            <Route path="/account" component={Account} />
 
             <Route path="/sign/sign-in" component={SignIn} />
             <Route path="/sign/sign-up" component={SignUp} />

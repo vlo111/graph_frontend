@@ -9,26 +9,18 @@ import Home from './Home';
 import VerticalTabs from '../components/VerticalTabs';
 
 class Index extends Component {
-  handleChange = () => {
-    const queryObj = queryString.parse(window.location.search);
-    delete queryObj.page;
-    const query = queryString.stringify(queryObj);
-    this.props.history.replace(`?${query}`);
-  }
-
   render() {
     return (
       <Wrapper className="homePage">
         <Header />
         <VerticalTabs
           className="homePageTabs"
-          tabs={['Home', 'Templates', 'Shared Graphs']}
-          onChange={this.handleChange}
-        >
-          <Home />
-          <GraphTemplates />
-          <Shared />
-        </VerticalTabs>
+          tabs={[
+            { to: '/', name: 'Home', component: <Home /> },
+            { to: '/templates', name: 'Templates', component: <GraphTemplates /> },
+            { to: '/shared', name: 'Shared Graphs', component: <Shared /> },
+          ]}
+        />
       </Wrapper>
     );
   }

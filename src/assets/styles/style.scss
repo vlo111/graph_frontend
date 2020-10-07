@@ -3997,7 +3997,7 @@ body .gh__menu {
     transform-origin: top left;
     margin: 0;
     position: absolute;
-    top: 0;
+    top: 1px;
     left: 0;
 
     .item {
@@ -4049,15 +4049,85 @@ body .gh__menu {
 }
 
 .profileSettings {
-  .row{
+  padding: 20px 5%;
+
+  .row {
     margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
   }
+
   form {
     display: flex;
-    .avatar{
-      width: 270px;
-      height: 270px;
-      border-radius: 50%;
+
+    .left {
+      padding-right: 5%;
+
+      .avatar {
+        width: 14.1vw;
+        height: 14.1vw;
+        min-width: 200px;
+        min-height: 200px;
+        border-radius: 50%;
+      }
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+    }
+
+    .ghFormField {
+      width: 100%;
+
+    }
+
+    .firstName {
+      padding-right: 13px;
+    }
+
+    .newPassword {
+      padding-right: 13px;
+
+      .error {
+        white-space: nowrap;
+        position: absolute;
+        bottom: -21px;
+        left: -3px;
+      }
+    }
+
+    .bio {
+      width: 100%;
+
+      textarea {
+        height: 71px;
+        resize: none;
+      }
+    }
+
+
+    .changePassword {
+      margin: 20px 0 0 0;
+      background-color: transparent;
+      box-shadow: none;
+      color: $color-accent;
+      font-weight: 600;
+      font-size: 16px;
+      padding-left: 0;
+    }
+
+    .changePasswordWrapper {
+      width: 100%;
+    }
+
+    .save {
+      margin: 20px 0 0 auto;
     }
   }
 

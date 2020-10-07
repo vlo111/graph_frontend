@@ -58,6 +58,10 @@ class Api {
     return api.get('/users/me');
   }
 
+  static updateMyAccount(data) {
+    return api.post('/users/update', this.toFormData(data));
+  }
+
   static async download(type, requestData) {
     const { data, headers } = await api.post(`/convert/graph/to/${type}`, requestData, {
       responseType: 'arraybuffer',
