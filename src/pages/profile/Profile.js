@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import Button from '../../components/form/Button';
 import { updateMyAccountRequest } from '../../store/actions/account';
 import Input from '../../components/form/Input';
+import AvatarUploader from "../../components/AvatarUploader";
 
 class Profile extends Component {
   initValues = memoizeOne((requestData) => {
@@ -67,7 +68,7 @@ class Profile extends Component {
       <div className="profileSettings">
         <form onSubmit={this.saveAccount}>
           <div className="left">
-            <img src={myAccount.avatar} className="avatar" alt={myAccount.name} />
+            <AvatarUploader value={myAccount.avatar} onChange={(val) => this.handleChange(val, 'avatar')} />
           </div>
           <div className="right">
             <div className="row">

@@ -4065,13 +4065,6 @@ body .gh__menu {
     .left {
       padding-right: 5%;
 
-      .avatar {
-        width: 14.1vw;
-        height: 14.1vw;
-        min-width: 200px;
-        min-height: 200px;
-        border-radius: 50%;
-      }
     }
 
     .right {
@@ -4131,4 +4124,55 @@ body .gh__menu {
     }
   }
 
+}
+
+#avatarUploader {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+
+  input {
+    display: none;
+  }
+
+
+  .avatar {
+    width: 14.1vw;
+    height: 14.1vw;
+    min-width: 200px;
+    min-height: 200px;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    .selectImage {
+      opacity: 1;
+    }
+  }
+
+  .selectImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgba(#0D0905, .5);
+    color: $color-white;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 500ms;
+
+    svg {
+      width: 55px;
+      height: 55px;
+      fill: $color-white;
+      opacity: 0.54;
+    }
+  }
 }
