@@ -6,7 +6,8 @@ import { toast } from 'react-toastify';
 import Button from '../../components/form/Button';
 import { updateMyAccountRequest } from '../../store/actions/account';
 import Input from '../../components/form/Input';
-import AvatarUploader from "../../components/AvatarUploader";
+import AvatarUploader from '../../components/AvatarUploader';
+import UpdatePasswordModal from "../../components/account/UpdatePasswordModal";
 
 class Profile extends Component {
   initValues = memoizeOne((requestData) => {
@@ -38,10 +39,9 @@ class Profile extends Component {
   saveAccount = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
-
+    console.log(11111)
     const { payload: { data } } = await this.props.updateMyAccountRequest(requestData);
     if (data.status === 'ok') {
-      this.toggleChangePassword(false);
       toast.info('Successfully saved');
     } else if (data?.errors) {
       this.setState({ errors: data.errors });
@@ -51,13 +51,7 @@ class Profile extends Component {
   }
 
   toggleChangePassword = (changePassword) => {
-    const { requestData } = this.state;
-
-    requestData.oldPassword = '';
-    requestData.password = '';
-    requestData.repeatPassword = '';
-
-    this.setState({ requestData, changePassword });
+    this.setState({ changePassword });
   }
 
   render() {
@@ -112,42 +106,14 @@ class Profile extends Component {
             <Button className="changePassword" onClick={() => this.toggleChangePassword(!changePassword)}>
               Change Password
             </Button>
-            {changePassword ? (
-              <div className="changePasswordWrapper">
-                <Input
-                  name="oldPassword"
-                  label="Old Password"
-                  type="password"
-                  value={requestData.oldPassword}
-                  error={errors.oldPassword}
-                  onChangeText={this.handleChange}
-                />
-                <div className="row">
-                  <Input
-                    name="password"
-                    label="New Password"
-                    type="password"
-                    containerClassName="newPassword"
-                    value={requestData.password}
-                    error={errors.password}
-                    onChangeText={this.handleChange}
-                  />
-                  <Input
-                    name="repeatPassword"
-                    label="Repeat Password"
-                    type="password"
-                    value={requestData.repeatPassword}
-                    error={errors.repeatPassword}
-                    onChangeText={this.handleChange}
-                  />
-                </div>
-
-              </div>
-            ) : null}
-
             <Button className="save" color="accent" type="submit">Save Changes</Button>
           </div>
         </form>
+        {changePassword ? (
+          <UpdatePasswordModal
+            onClose={() => this.toggleChangePassword(false)}
+          />
+        ) : null}
       </div>
     );
   }

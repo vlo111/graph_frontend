@@ -262,6 +262,7 @@ p {
 
 .ghFormField {
   width: 320px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   margin: 5px 0;
@@ -1370,6 +1371,38 @@ p {
   .ghModalSave {
     overflow-x: hidden;
     overflow-y: auto;
+  }
+
+  &.changePasswordModalOverlay {
+    .ghModal {
+      top: 25%;
+      max-width: 339px;
+      padding: 0 35px 50px;
+
+      form {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+      }
+
+      h3 {
+        text-align: center;
+        width: 100%;
+        margin: 20px 0;
+      }
+
+      .buttonsWrapper {
+        display: flex;
+        margin-top: 20px;
+        justify-content: center;
+        width: 100%;
+
+        .cancel {
+          text-transform: none;
+          color: $color-main;
+        }
+      }
+    }
   }
 }
 
@@ -4115,9 +4148,6 @@ body .gh__menu {
       padding-left: 0;
     }
 
-    .changePasswordWrapper {
-      width: 100%;
-    }
 
     .save {
       margin: 20px 0 0 auto;
@@ -4176,3 +4206,5 @@ body .gh__menu {
     }
   }
 }
+
+

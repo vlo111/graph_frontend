@@ -62,6 +62,10 @@ class Api {
     return api.post('/users/update', this.toFormData(data));
   }
 
+  static updateMyAccountPassword(data) {
+    return api.post('/users/update-password', data);
+  }
+
   static async download(type, requestData) {
     const { data, headers } = await api.post(`/convert/graph/to/${type}`, requestData, {
       responseType: 'arraybuffer',
