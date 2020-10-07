@@ -39,7 +39,6 @@ class Profile extends Component {
   saveAccount = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
-    console.log(11111)
     const { payload: { data } } = await this.props.updateMyAccountRequest(requestData);
     if (data.status === 'ok') {
       toast.info('Successfully saved');

@@ -44,7 +44,6 @@ class UpdatePasswordModal extends Component {
     }
   }
 
-
   render() {
     const { requestData, errors } = this.state;
     return (

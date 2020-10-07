@@ -1,5 +1,5 @@
 import {
-  SIGN_IN, GET_MY_ACCOUNT, OAUTH, GET_USER_BY_TEXT
+  SIGN_IN, GET_MY_ACCOUNT, OAUTH, GET_USER_BY_TEXT, UPDATE_MY_ACCOUNT
 } from '../actions/account';
 import Account from '../../helpers/Account';
 
@@ -28,6 +28,8 @@ export default function reducer(state = initialState, action) {
         myAccount,
       };
     }
+
+    case UPDATE_MY_ACCOUNT.SUCCESS:
     case GET_MY_ACCOUNT.SUCCESS: {
       const { user: myAccount } = action.payload.data;
       Account.set(myAccount);
