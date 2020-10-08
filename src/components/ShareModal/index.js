@@ -22,6 +22,11 @@ const ShareModal = React.memo(({ graph, closeModal }) => {
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         contentLabel="Share"
+        style={{
+          overlay: {
+            zIndex: 10
+          },
+        }}
       >
         <div className='share-modal__title'>
           <h3>Collaborators</h3>
