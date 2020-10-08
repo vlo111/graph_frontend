@@ -833,7 +833,7 @@ class Chart {
         keywords: d.keywords || [],
         location: d.location || undefined,
         labels: d.labels,
-        color: d.color || ChartUtils.nodeColor(d),
+        color: ChartUtils.nodeColor(d),
       }));
     }
     if (show) {
@@ -869,7 +869,7 @@ class Chart {
           type: pd.type || d.type || '',
           direction: pd.direction || d.direction || '',
           hidden: pd.hidden || d.hidden,
-          color: pd.color || ChartUtils.linkColor(d),
+          color: ChartUtils.linkColor(d),
         };
       });
     }
