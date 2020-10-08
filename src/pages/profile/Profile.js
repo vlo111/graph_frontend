@@ -3,13 +3,19 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 import Button from '../../components/form/Button';
 import { updateMyAccountRequest } from '../../store/actions/account';
 import Input from '../../components/form/Input';
 import AvatarUploader from '../../components/AvatarUploader';
-import UpdatePasswordModal from "../../components/account/UpdatePasswordModal";
+import UpdatePasswordModal from '../../components/account/UpdatePasswordModal';
 
 class Profile extends Component {
+  static propTypes = {
+    updateMyAccountRequest: PropTypes.func.isRequired,
+    myAccount: PropTypes.object.isRequired,
+  }
+
   initValues = memoizeOne((requestData) => {
     this.setState({ requestData });
   })
@@ -61,7 +67,10 @@ class Profile extends Component {
       <div className="profileSettings">
         <form onSubmit={this.saveAccount}>
           <div className="left">
-            <AvatarUploader value={myAccount.avatar} onChange={(val) => this.handleChange(val, 'avatar')} />
+            <AvatarUploader
+              value={myAccount.avatar}
+              onChange={(val) => this.handleChange(val || '', 'avatar')}
+            />
           </div>
           <div className="right">
             <div className="row">

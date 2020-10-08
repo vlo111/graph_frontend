@@ -405,6 +405,34 @@ p {
   }
 }
 
+.ghFormFieldPassword {
+  .icon + input {
+    padding-right: 30px;
+    padding-left: 8px;
+  }
+
+  input[type="password"] {
+    letter-spacing: 2.5px;
+  }
+
+  .icon {
+    left: auto;
+    right: 3px;
+    bottom: 3px;
+    cursor: pointer;
+
+    svg {
+      width: 30px;
+      height: 30px;
+      padding: 7px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
+}
+
 .ghFile {
   display: flex;
   align-items: flex-start;
@@ -4173,12 +4201,30 @@ body .gh__menu {
     min-width: 200px;
     min-height: 200px;
     border-radius: 50%;
+    object-fit: cover;
   }
 
   &:hover {
     .selectImage {
       opacity: 1;
     }
+    .delete {
+      opacity: 1;
+    }
+  }
+
+
+  .delete {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    bottom: 10px;
+    left: calc(50% - 7.5px);
+    fill: $color-main2;
+    z-index: 2;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 500ms;
   }
 
   .selectImage {
@@ -4197,8 +4243,9 @@ body .gh__menu {
     cursor: pointer;
     opacity: 0;
     transition: all 500ms;
+    user-select: none;
 
-    svg {
+    .icon {
       width: 55px;
       height: 55px;
       fill: $color-white;

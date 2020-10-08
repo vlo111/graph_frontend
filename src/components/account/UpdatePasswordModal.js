@@ -2,14 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
+import { toast } from 'react-toastify';
+import _ from 'lodash';
 import Input from '../form/Input';
 import Button from '../form/Button';
-import { toast } from "react-toastify";
-import { updateMyAccountPasswordRequest } from "../../store/actions/account";
-import _ from "lodash";
+import { updateMyAccountPasswordRequest } from '../../store/actions/account';
+import PasswordInput from "../form/PasswordInput";
 
 class UpdatePasswordModal extends Component {
-  static propTypes = {}
+  static propTypes = {
+    onClose: PropTypes.func.isRequired,
+    updateMyAccountPasswordRequest: PropTypes.func.isRequired,
+  }
 
   constructor(props) {
     super(props);
@@ -55,7 +59,7 @@ class UpdatePasswordModal extends Component {
       >
         <form onSubmit={this.handlePasswordChange}>
           <h3>Change Password</h3>
-          <Input
+          <PasswordInput
             name="oldPassword"
             label="Old Password"
             type="password"
@@ -63,7 +67,7 @@ class UpdatePasswordModal extends Component {
             error={errors.oldPassword}
             onChangeText={this.handleChange}
           />
-          <Input
+          <PasswordInput
             name="password"
             label="New Password"
             type="password"
@@ -72,7 +76,7 @@ class UpdatePasswordModal extends Component {
             error={errors.password}
             onChangeText={this.handleChange}
           />
-          <Input
+          <PasswordInput
             name="confirmPassword"
             label="Confirm New Password"
             type="password"
@@ -96,10 +100,10 @@ class UpdatePasswordModal extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
-  updateMyAccountPasswordRequest
+  updateMyAccountPasswordRequest,
 };
 
 const Container = connect(

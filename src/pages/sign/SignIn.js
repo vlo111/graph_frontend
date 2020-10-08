@@ -13,6 +13,7 @@ import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
 import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
 import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
 import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
+import PasswordInput from "../../components/form/PasswordInput";
 
 class Login extends Component {
   static propTypes = {
@@ -81,9 +82,8 @@ class Login extends Component {
                 value={requestData.email}
                 onChangeText={this.handleTextChange}
               />
-              <Input
+              <PasswordInput
                 name="password"
-                type="password"
                 label="Password"
                 value={requestData.password}
                 onChangeText={this.handleTextChange}

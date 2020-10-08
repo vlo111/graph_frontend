@@ -9,6 +9,7 @@ import Button from '../../components/form/Button';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
 import { signUpRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
+import PasswordInput from "../../components/form/PasswordInput";
 
 class SignUp extends Component {
   static propTypes = {
@@ -89,17 +90,15 @@ class SignUp extends Component {
                 error={errors.email}
                 onChangeText={this.handleChange}
               />
-              <Input
+              <PasswordInput
                 name="password"
-                type="password"
                 label="Password"
                 value={requestData.password}
                 error={errors.password}
                 onChangeText={this.handleChange}
               />
-              <Input
+              <PasswordInput
                 name="passwordConfirm"
-                type="password"
                 label="Confirm Password"
                 value={requestData.passwordConfirm}
                 error={errors.passwordConfirm}

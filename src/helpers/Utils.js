@@ -99,6 +99,20 @@ class Utils {
     };
     return window.open(url, title, _.map(params, (v, k) => `${k}=${v}`).join(', '));
   }
+
+  static moveCursorToEnd(el) {
+    const pos = el.value.length;
+    if (el.setSelectionRange) {
+      el.focus();
+      el.setSelectionRange(pos, pos);
+    } else if (el.createTextRange) {
+      const range = el.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', pos);
+      range.moveStart('character', pos);
+      range.select();
+    }
+  }
 }
 
 export default Utils;

@@ -8,8 +8,8 @@ import queryString from 'query-string';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
 import { resetPasswordRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
-import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
+import PasswordInput from '../../components/form/PasswordInput';
 
 class ResetPassword extends Component {
   static propTypes = {
@@ -69,9 +69,8 @@ class ResetPassword extends Component {
             <form onSubmit={this.signIn} id="login" className="authForm">
               <h1>Reset Password</h1>
               <LogoSvg className="logo orange" />
-              <Input
+              <PasswordInput
                 name="password"
-                type="password"
                 label="New password"
                 value={requestData.password}
                 onChangeText={this.handleTextChange}
