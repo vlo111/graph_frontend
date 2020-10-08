@@ -76,10 +76,16 @@ class ContextMenu extends Component {
     return (
       <div className="contextmenuOverlay contextmenuOverlayFullInfo" onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
-          <Button icon="fa-pencil-square-o" onClick={(ev) => this.handleClick(ev, 'node.fields-edit', params.name)}>
+          <Button
+            icon="fa-pencil-square-o"
+            onClick={(ev) => this.handleClick(ev, params.fieldName === '_location' ? 'node.location-edit' : 'node.fields-edit')}
+          >
             Edit
           </Button>
-          <Button icon="fa-trash" onClick={(ev) => this.handleClick(ev, 'node.fields-delete', params.name)}>
+          <Button
+            icon="fa-trash"
+            onClick={(ev) => this.handleClick(ev, params.fieldName === '_location' ? 'node.location-delete' : 'node.fields-delete')}
+          >
             Delete
           </Button>
         </div>
