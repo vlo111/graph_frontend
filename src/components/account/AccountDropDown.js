@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import Outside from '../Outside';
-import Icon from "../form/Icon";
+import Icon from '../form/Icon';
 
 class AccountDropDown extends Component {
   static propTypes = {
@@ -13,14 +13,14 @@ class AccountDropDown extends Component {
   }
 
   static defaultProps = {
-    mini: false
+    mini: false,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       showDropDown: false,
-    }
+    };
   }
 
   toggleDropDown = () => {
@@ -32,7 +32,7 @@ class AccountDropDown extends Component {
     const { showDropDown } = this.state;
     const { mini, myAccount: { firstName, lastName, avatar }, match: { params: { graphId = '' } } } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
-    const visible = window.location.pathname === "/" ? true : false;
+    const visible = ['/', '/account'].includes(window.location.pathname);
     return (
       <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
@@ -50,11 +50,12 @@ class AccountDropDown extends Component {
                 <li className="item">
                   <Link to="/account">Account</Link>
                 </li>
-                {!visible &&
+                {!visible
+                && (
                 <li className="item">
                   <Link to={`/graphs/filter/${graphId}`}>Filters</Link>
                 </li>
-                }
+                )}
                 <li className="item">
                   <Link to="/sign/sign-out">Sign Out</Link>
                 </li>

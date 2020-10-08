@@ -130,6 +130,8 @@ class AddLinkModal extends Component {
             value={linkData.value}
             error={errors.value}
             type="number"
+            min="1"
+            max="15"
             onBlur={() => {
               if (linkData.value < 1) {
                 linkData.value = 1;

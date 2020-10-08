@@ -642,6 +642,7 @@ p {
 
   .icon {
     width: 14px;
+
     margin-right: 8px;
     vertical-align: middle;
     display: inline-flex;
@@ -2268,6 +2269,12 @@ p {
 }
 
 .graphView {
+  .ghButton {
+    .icon {
+      width: auto;
+    }
+  }
+
   .edit {
     position: absolute;
     left: 15px;
@@ -3200,6 +3207,7 @@ body .gh__menu {
   .button {
     filter: grayscale(90%);
     cursor: pointer;
+    height: 35px;
     width: 35px;
     margin-top: 10px;
 
