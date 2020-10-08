@@ -69,6 +69,7 @@ class Profile extends Component {
           <div className="left">
             <AvatarUploader
               value={myAccount.avatar}
+              email={myAccount.email}
               onChange={(val) => this.handleChange(val || '', 'avatar')}
             />
           </div>

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip';
 import { ReactComponent as RefreshSvg } from '../assets/images/icons/refresh.svg';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
+import Api from '../Api';
 
 class AvatarUploader extends Component {
   static propTypes = {
@@ -38,23 +39,23 @@ class AvatarUploader extends Component {
   }
 
   render() {
-    const { value } = this.props;
+    const { value, email } = this.props;
     const { image } = this.state;
     this.setImage(value);
     return (
       <div id="avatarUploader">
-        <Tooltip overlay="Delete Image" placement="top">
-          <CloseSvg className="delete" onClick={() => this.props.onChange('')} />
-        </Tooltip>
+        <img src={image || `${Api.url}/public/gravatar/${encodeURIComponent(email)}`} className="avatar" alt="avatar" />
+        {image && !image.includes('gravatar') ? (
+          <Tooltip overlay="Delete Image" placement="top">
+            <CloseSvg className="delete" onClick={() => this.props.onChange('')} />
+          </Tooltip>
+        ) : null}
         {value ? (
-          <>
-            <img src={image || 'https://www.gravatar.com/avatar/2?s=256&d=identicon'} className="avatar" alt="avatar" />
-            <label className="selectImage">
-              <RefreshSvg className="icon" />
-              <input type="file" accept="image/*" onChange={this.handleChange} />
-              <span>Replace Image</span>
-            </label>
-          </>
+          <label className="selectImage">
+            <RefreshSvg className="icon" />
+            <input type="file" accept="image/*" onChange={this.handleChange} />
+            <span>Replace Image</span>
+          </label>
         ) : (
           <label className="selectImage addImage">
             <RefreshSvg className="icon" />
