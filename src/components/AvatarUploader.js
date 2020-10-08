@@ -9,7 +9,12 @@ import Api from '../Api';
 class AvatarUploader extends Component {
   static propTypes = {
     value: PropTypes.any.isRequired,
+    email: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+  }
+  
+  static defaultProps = {
+    email: '',
   }
 
   setImage = memoizeOne((image) => {
@@ -44,7 +49,11 @@ class AvatarUploader extends Component {
     this.setImage(value);
     return (
       <div id="avatarUploader">
-        <img src={image || `${Api.url}/public/gravatar/${encodeURIComponent(email)}`} className="avatar" alt="avatar" />
+        <img
+          src={image || `${Api.url}/public/gravatar/${encodeURIComponent(email)}.png`}
+          className="avatar"
+          alt="avatar"
+        />
         {image && !image.includes('gravatar') ? (
           <Tooltip overlay="Delete Image" placement="top">
             <CloseSvg className="delete" onClick={() => this.props.onChange('')} />
