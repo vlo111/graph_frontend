@@ -449,7 +449,13 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node :not(text)')
-        .attr('fill', (d) => (d.icon ? `url(#i${d.index})` : ChartUtils.nodeColor(d)));
+        .attr('fill', (d) => {
+          const color = ChartUtils.nodeColor(d);
+          if (d.icon) {
+            return `url(#i${d.index})`;
+          }
+          return color;
+        });
 
       this.renderLinkText();
       this.renderNodeText();
