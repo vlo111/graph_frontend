@@ -14,7 +14,6 @@ import FileInput from '../form/FileInput';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
-import Api from "../../Api";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -26,7 +25,7 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, type, keywords, location, index = null, customField = {},
+      fx, fy, name, icon, nodeType, type, keywords, location, index = null, customField,
     } = addNodeParams;
     this.setState({
       nodeData: {

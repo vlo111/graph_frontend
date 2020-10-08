@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
+import { Map, Marker } from 'google-maps-react';
+import _ from 'lodash';
+import memoizeOne from 'memoize-one';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import withGoogleMap from '../../helpers/withGoogleMap';
-import { Map, Marker } from "google-maps-react";
-import markerImg from "../../assets/images/icons/marker.svg";
-import Button from "../form/Button";
-import ContextMenu from "../ContextMenu";
-import _ from "lodash";
-import memoizeOne from "memoize-one";
-import Chart from "../../Chart";
+import markerImg from '../../assets/images/icons/marker.svg';
+import Button from '../form/Button';
+import ContextMenu from '../ContextMenu';
+import Chart from '../../Chart';
 
 class MapsInfo extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      edit: false,
-      location: {}
-    }
+  static propTypes = {
+    google: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    node: PropTypes.object.isRequired,
   }
 
   initLocation = memoizeOne((location) => {
@@ -23,19 +22,27 @@ class MapsInfo extends Component {
     this.setState({ location: { lat, lng } });
   })
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      edit: false,
+      location: {},
+    };
+  }
+
   componentDidMount() {
     ContextMenu.event.on('node.location-edit', this.editLocation);
+    ContextMenu.event.on('node.location-delete', this.deleteLocation);
   }
 
   componentWillUnmount() {
     ContextMenu.event.removeListener('node.location-edit', this.editLocation);
+    ContextMenu.event.removeListener('node.location-delete', this.deleteLocation);
   }
 
-  handleClick = (props, map, ev) => {
+  handleLocationChange = (props, map, ev) => {
     const { edit } = this.state;
-    if (!edit) {
-      return;
-    }
+    if (!edit) return;
     const location = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
     this.setState({ location });
   }
@@ -45,19 +52,29 @@ class MapsInfo extends Component {
   }
 
   deleteLocation = () => {
-
+    const { node } = this.props;
+    const nodes = Chart.getNodes().map((d) => {
+      if (d.index === node.index) {
+        d.location = undefined;
+      }
+      return d;
+    });
+    Chart.render({ nodes });
+    this.setState({ edit: false, location: {} });
+    this.props.history.replace('#delete');
   }
 
   saveLocation = () => {
     const { location } = this.state;
     const { node } = this.props;
-    const nodes = Chart.getNodes().map(d => {
+    const nodes = Chart.getNodes().map((d) => {
       if (d.index === node.index) {
-        d.location = `${location.lat},${location.lng}`;
+        d.location = [location.lat, location.lng].join(',');
       }
       return d;
-    })
+    });
     Chart.render({ nodes });
+    this.setState({ edit: false });
   }
 
   render() {
@@ -75,7 +92,7 @@ class MapsInfo extends Component {
             zoom={9}
             streetViewControl={false}
             fullscreenControl={false}
-            onClick={this.handleClick}
+            onClick={this.handleLocationChange}
             initialCenter={location}
           >
             <Marker
@@ -83,6 +100,7 @@ class MapsInfo extends Component {
               name={node.name}
               position={location}
               draggable={edit}
+              onDragend={this.handleLocationChange}
               icon={{
                 url: markerImg,
                 anchor: new google.maps.Point(25, 35),
@@ -99,4 +117,4 @@ class MapsInfo extends Component {
   }
 }
 
-export default withGoogleMap(MapsInfo);
+export default withGoogleMap(withRouter(MapsInfo));

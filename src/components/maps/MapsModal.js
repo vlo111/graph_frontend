@@ -14,8 +14,6 @@ import Loading from '../Loading';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import CustomFields from '../../helpers/CustomFields';
 import MapsContactCustomField from './MapsContactCustomField';
-import Api from "../../Api";
-import { setNodeCustomField } from "../../store/actions/graphs";
 
 class MapsModal extends Component {
   static propTypes = {
@@ -84,7 +82,7 @@ class MapsModal extends Component {
           international_phone_number: phone,
           types,
         } = place;
-        const photo = !_.isEqual(photos) ? photos[0].getUrl({ maxWidth: 1024, maxHeight: 1024 }) : null;
+        const photo = !_.isEqual(photos) ? photos[0].getUrl({ maxWidth: 250, maxHeight: 250 }) : null;
         const type = _.lowerCase(types[0] || '');
         const selected = {
           location, website, name, photo, address, type, phone,
@@ -110,14 +108,46 @@ class MapsModal extends Component {
     }
     const customField = CustomFields.get(customFields, selected.type);
     const contact = ReactDOMServer.renderToString(<MapsContactCustomField data={selected} />);
-    if (contact) {
-      customField.Contact = contact;
-    }
 
-    const { data: wikiData } = await Api.getWikipediaInfo(selected.name).catch((e) => e);
-    if (wikiData?.result) {
-      customField.Wikipedia = `https://en.wikipedia.org/wiki/${selected.name}`;
-    }
+    let url = 'https://en.wikipedia.org/w/api.php';
+
+    const params = {
+      action: 'query',
+      prop: 'extracts',
+      titles: selected.name,
+      exintro: 0,
+      explaintext: 0,
+      redirects: 1,
+      format: 'json',
+    };
+
+    url += '?origin=*';
+
+    Object.keys(params).forEach((key) => {
+      url += `&${key}=${params[key]}`;
+    });
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((response) => {
+        if (Object.values(response.query.pages)[0].extract && customField) {
+          if (contact) {
+            customField.About = `<div>
+<strong class="tabHeader">Contact</strong><br>
+<br>${contact}<br>
+</div>`;
+          }
+          customField.About += `<div>
+<strong class="tabHeader">About</strong><br>
+<br>${Object.values(response.query.pages)[0].extract}<br>
+<a href="https://en.wikipedia.org/wiki/${selected.name}" target="_blank">
+https://en.wikipedia.org/wiki/${selected.name}
+</a></div>`;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     this.props.toggleNodeModal({
       fx: x,

@@ -8,7 +8,7 @@ import MapsSearch from './MapsSearch';
 import markerImg from '../../assets/images/icons/marker.svg';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import Button from '../form/Button';
-import Utils from "../../helpers/Utils";
+import Utils from '../../helpers/Utils';
 
 class MapsLocationPicker extends Component {
   static propTypes = {
@@ -44,8 +44,13 @@ class MapsLocationPicker extends Component {
     this.setCurrentLocation();
   }
 
-
   setCurrentLocation = async () => {
+    const { value } = this.props;
+    if (value) {
+      const [lat, lng] = value.split(',').map((v) => +v);
+      this.setState({ initialCenter: { lat, lng } });
+      return;
+    }
     try {
       const { coords } = await Utils.getCurrentPosition();
       const initialCenter = { lat: coords.latitude, lng: coords.longitude };
@@ -67,7 +72,7 @@ class MapsLocationPicker extends Component {
     this.props.onClose();
   }
 
-  handleClick = (props, map, ev) => {
+  handleLocationChange = (props, map, ev) => {
     const location = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
     this.setState({ selected: { location } });
   }
@@ -90,7 +95,7 @@ class MapsLocationPicker extends Component {
               zoom={17}
               streetViewControl={false}
               fullscreenControl={false}
-              onClick={this.handleClick}
+              onClick={this.handleLocationChange}
               center={selected.autoCenter ? selected.location : undefined}
               initialCenter={initialCenter}
             >
@@ -100,6 +105,7 @@ class MapsLocationPicker extends Component {
                   name={selected.name}
                   position={selected.location}
                   draggable
+                  onDragend={this.handleLocationChange}
                   icon={{
                     url: markerImg,
                     anchor: new google.maps.Point(25, 35),
