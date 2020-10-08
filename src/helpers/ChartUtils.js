@@ -261,9 +261,9 @@ class ChartUtils {
   static nodeColor = (d) => {
     if (!this.nodeColorObj[d.type]) {
       if (d.color) {
-        // this.nodeColorsArr = this.nodeColorsArr.filter((c) => d.color !== c);
-        // this.nodeColorObj[d.type] = d.color;
-        // return d.color;
+        this.nodeColorsArr = this.nodeColorsArr.filter((c) => d.color !== c);
+        this.nodeColorObj[d.type] = d.color;
+        return d.color;
       }
       this.nodeColorObj[d.type] = this.nodeColorsArr.shift() || randomColor();
     }
