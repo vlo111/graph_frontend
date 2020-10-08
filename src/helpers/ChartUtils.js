@@ -260,11 +260,11 @@ class ChartUtils {
 
   static nodeColor = (d) => {
     if (!this.nodeColorObj[d.type]) {
-      if (d.color) {
-        this.nodeColorsArr = this.nodeColorsArr.filter((c) => d.color !== c);
-        this.nodeColorObj[d.type] = d.color;
-        return d.color;
-      }
+      // if (d.color) {
+      //   this.nodeColorsArr = this.nodeColorsArr.filter((c) => d.color !== c);
+      //   this.nodeColorObj[d.type] = d.color;
+      //   return d.color;
+      // }
       this.nodeColorObj[d.type] = this.nodeColorsArr.shift() || randomColor();
     }
     return this.nodeColorObj[d.type];
@@ -366,9 +366,14 @@ class ChartUtils {
     labels.forEach((label) => {
       label.style.pointerEvents = 'all';
     });
+    let i = 0;
     while (true) {
       const el = document.elementFromPoint(x, y);
       if (!el || el.tagName.toLowerCase() === 'html') {
+        break;
+      }
+      if (i++ > 30) {
+        console.warn('getLabelsByPosition: ', el);
         break;
       }
       elements.push(el);

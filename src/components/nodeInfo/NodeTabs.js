@@ -11,6 +11,7 @@ import NodeTabsFormModal from './NodeTabsFormModal';
 import ContextMenu from '../ContextMenu';
 import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
 import FlexTabs from "../FlexTabs";
+import MapsInfo from "../maps/MapsInfo";
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -27,8 +28,8 @@ class NodeTabs extends Component {
     };
   }
 
-  setFirstTab = memoizeOne((customField) => {
-    this.setState({ activeTab: Object.keys(customField)[0] });
+  setFirstTab = memoizeOne((node, customField) => {
+    this.setState({ activeTab: node.location ? '_location' : Object.keys(customField)[0] });
   }, _.isEqual);
 
   componentDidMount() {
@@ -66,10 +67,18 @@ class NodeTabs extends Component {
     const { node, customFields, editable } = this.props;
     const customField = CustomFields.get(customFields, node.type, node.name);
     const content = customField[activeTab];
-    this.setFirstTab(customField);
+    this.setFirstTab(node, customField);
     return (
       <div className="nodeTabs">
         <FlexTabs>
+          {node.location ? (
+            <Button
+              className={activeTab === '_location' ? 'active activeNoShadow' : undefined}
+              onClick={() => this.setActiveTab('_location')}
+            >
+              <p>Location</p>
+            </Button>
+          ) : null}
           {_.map(customField, (val, key) => (
             <Button
               className={activeTab === key ? 'active' : undefined}
@@ -94,7 +103,11 @@ class NodeTabs extends Component {
             onClose={this.closeFormModal}
           />
         ) : null}
-        <NodeTabsContent name={activeTab} node={node} content={content} />
+        {activeTab === '_location' ? (
+          <MapsInfo node={node} />
+        ) : (
+          <NodeTabsContent name={activeTab} node={node} content={content} />
+        )}
       </div>
     );
   }

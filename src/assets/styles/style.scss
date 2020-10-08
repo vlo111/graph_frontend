@@ -3066,22 +3066,24 @@ body .gh__menu {
     }
   }
 
-  .selectLocation {
-    border-radius: 2px;
-    background-color: $color-white;
-    box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
-    z-index: 2;
-    position: absolute;
-    bottom: 25px;
-    left: 5px;
-    padding: 8px 22px;
-    font-size: 18px;
 
-    &:hover {
-      background-color: rgb(235, 235, 235);
-    }
+}
+
+
+.selectLocation {
+  border-radius: 2px;
+  background-color: $color-white;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
+  z-index: 2;
+  position: absolute;
+  bottom: 25px;
+  left: 5px;
+  padding: 8px 22px;
+  font-size: 18px;
+
+  &:hover {
+    background-color: rgb(235, 235, 235);
   }
-
 }
 
 #mapsGraph {
@@ -3315,6 +3317,16 @@ body .gh__menu {
   .previewWrapper {
     position: relative;
     overflow: hidden;
+    border: none;
+
+    &.mapWrapper {
+      height: 400px;
+      padding: 0;
+
+      .content {
+        padding: 0;
+      }
+    }
 
     iframe {
       width: 300%;
@@ -3448,6 +3460,15 @@ body .gh__menu {
       color: $color-accent;
       position: relative;
       z-index: 2;
+
+      &.activeNoShadow {
+        z-index: 1;
+
+        &:after,
+        &:before {
+          content: none;
+        }
+      }
 
       &:after {
         content: '';
@@ -4208,6 +4229,7 @@ body .gh__menu {
     .selectImage {
       opacity: 1;
     }
+
     .delete {
       opacity: 1;
     }

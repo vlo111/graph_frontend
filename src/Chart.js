@@ -195,15 +195,13 @@ class Chart {
     const scaleH = window.innerHeight / (height / originalDimensions.scale + 20);
     const scale = Math.min(scaleW, scaleH, 1);
 
-    console.log(scaleH);
 
     const nodes = this.getNodes();
 
     const x = Math.min(...nodes.map((n) => n.fx - this.radiusList[n.index] - 2)) * -1 * scale;
     const y = Math.min(...nodes.map((n) => n.fy - this.radiusList[n.index] - 2)) * -1 * scale;
-    this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
-    // this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
-
+    // this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
+    this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
     this.data.nodes = this.data.nodes.map((l) => {
       if (d) {
         if (d.name === l.name) {
@@ -217,8 +215,8 @@ class Chart {
 
     const { x: oX, y: oY, scale: oScale } = originalDimensions;
 
-    this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`);
-    // this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
+    // this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`);
+    this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
 
     this._dataNodes = null;
 

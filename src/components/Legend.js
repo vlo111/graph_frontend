@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { setLegendButton } from '../store/actions/app';
 import Chart from '../Chart';
 import { ReactComponent as Arrow } from '../assets/images/arrow.svg';
+import Utils from "../helpers/Utils";
+import ChartUtils from "../helpers/ChartUtils";
 
 class Legend extends Component {
     static propTypes = {
@@ -26,13 +28,13 @@ class Legend extends Component {
 
       let check = Chart.getNodes();
 
-     
+
 
       const links = [...new Map(Chart.getLinks().map((link) => [link.type, link])).values()];
-      
+
       const listNodeItems = nodes.map((node) => (
         <li className="node-item">
-          <span className="indicator" style={{ backgroundColor: node.color }} />
+          <span className="indicator" style={{ backgroundColor: ChartUtils.nodeColor(node) }} />
           <a title={node.type} href="#">{node.type}</a>
         </li>
       ));
