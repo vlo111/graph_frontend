@@ -10,6 +10,7 @@ import Wrapper from '../../components/Wrapper';
 import Button from '../../components/form/Button';
 import Pagination from '../../components/Pagination';
 import Header from '../../components/Header';
+import GraphListFooter from "../../components/GraphListFooter";
 
 class Home extends Component {
   static propTypes = {
@@ -50,14 +51,15 @@ class Home extends Component {
                 </div>
               </div>
               <Link to={`/graphs/preview/${graph.id}`}>
-                <img className="thumbnail" src={graph.thumbnail} alt={graph.title} />
-              </Link>
-              <Link to={`/graphs/preview/${graph.id}`}>
                 <h3 className="title">{graph.title}</h3>
               </Link>
               <Link to={`/graphs/preview/${graph.id}`}>
                 <p className="description">{graph.description}</p>
               </Link>
+              <Link to={`/graphs/preview/${graph.id}`}>
+                <img className="thumbnail" src={graph.thumbnail} alt={graph.title} />
+              </Link>
+              <GraphListFooter graph={graph} />
             </article>
           ))}
         </div>
