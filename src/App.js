@@ -28,6 +28,7 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route path="/drifts" exact component={GraphDrafts} />
+            <Route path="/search" component={Index} />
             <Route path="/templates" exact component={Index} />
             <Route path="/shared" exact component={Index} />
 

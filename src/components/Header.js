@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Notification from './Notification';
 import AccountDropDown from './account/AccountDropDown';
-// import SearchGraphs from './search/SearchGraphs';
+import SearchGraphs from './search/SearchGraphs';
 
 class Header extends Component {
   render() {
@@ -18,6 +18,7 @@ class Header extends Component {
             Start a Graphs
           </Link>
         </div>
+        <SearchGraphs />
         <div className="right-elements">
           <Notification />
           <div className="signOut">

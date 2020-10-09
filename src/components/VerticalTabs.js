@@ -33,7 +33,7 @@ class VerticalTabs extends Component {
     return (
       <div id="verticalTabs" {...props}>
         <ul className="tabsList">
-          {_.reverse([...tabs]).map((t) => (
+          {_.reverse([...tabs.filter((t) => !t.hidden)]).map((t) => (
             <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`}>
               <Button onClick={() => this.setActiveTab(t)}>
                 {t.name}

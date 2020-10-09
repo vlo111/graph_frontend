@@ -17,17 +17,20 @@ class Home extends Component {
     graphsListInfo: PropTypes.object.isRequired,
   }
 
-  getGraphsList = memoizeOne((page) => {
-    this.props.getGraphsListRequest(page);
+  getGraphsList = memoizeOne((page, s) => {
+    this.props.getGraphsListRequest(page, { s });
   })
 
   render() {
     const { graphsList, graphsListInfo: { totalPages } } = this.props;
-    const { page = 1 } = queryString.parse(window.location.search);
-    this.getGraphsList(page);
+    const { page = 1, s } = queryString.parse(window.location.search);
+    this.getGraphsList(page, s);
     return (
       <>
         <div className={`graphsList ${!graphsList.length ? 'empty' : ''}`}>
+          {s ? (
+            <h2 className="searchResult">{`Search Result for: ${s}`}</h2>
+          ) : null}
           {graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
               <div className="top">
@@ -47,7 +50,12 @@ class Home extends Component {
                 </div>
               </div>
               <Link to={`/graphs/preview/${graph.id}`}>
-                <h3 className="title">{graph.title}</h3>
+                <h3 className="title">
+                  {graph.title}
+                  {s && graph.status !== 'active' ? (
+                    <span>{` (${graph.status})`}</span>
+                  ) : null}
+                </h3>
               </Link>
               <Link to={`/graphs/preview/${graph.id}`}>
                 <p className="description">

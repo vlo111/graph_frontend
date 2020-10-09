@@ -4,7 +4,6 @@ import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Input from '../form/Input';
-import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
 import Utils from '../../helpers/Utils';
 
@@ -20,86 +19,29 @@ class SearchGraphs extends Component {
     };
   }
 
-  handleChange = (search = '') => {
-    const { graphsList } = this.props;
-    if (!search.trim().toLowerCase()) {
-      this.setState({ nodes: [], search });
-      return;
+  handleChange = (s = '') => {
+    if (!s) {
+      return this.props.history.replace('/');
     }
-    const nodes = ChartUtils.graphsSearch(graphsList, search, 7);
-    this.setState({ nodes, search });
-  }
-
-  formatHtml = (text) => {
-    const { search } = this.state;
-    return text.replace(new RegExp(Utils.escRegExp(search), 'ig'), '<b>$&</b>');
-  }
-
-  findNode = (node) => {
-    ChartUtils.findNodeInDom(node);
-    const queryObj = queryString.parse(window.location.search);
-    queryObj.info = node.name;
-    const query = queryString.stringify(queryObj);
-    this.props.history.replace(`?${query}`);
-    this.setState({ nodes: [] });
+    const query = queryString.stringify({ s });
+    this.props.history.replace(`/search?${query}`);
   }
 
   render() {
-    const { nodes, search } = this.state;
+    const queryObj = queryString.parse(window.location.search);
     return (
       <div className="searchInputWrapper">
         <Input
           placeholder="Search ..."
           autoComplete="off"
-          value={search}
+          value={queryObj.s}
           icon="fa-search"
           containerClassName="graphSearch"
-          onFocus={() => this.handleChange(search)}
           onChangeText={this.handleChange}
         />
-        <ul className="list">
-          {nodes.map((d) => (
-            <li className="item" key={d.index}>
-              <div tabIndex="0" role="button" className="ghButton" onClick={() => this.findNode(d)}>
-                <div className="left">
-                  <NodeIcon node={d} />
-                </div>
-                <div className="right">
-                  <span className="row">
-                    <span
-                      className="name"
-                      dangerouslySetInnerHTML={{ __html: this.formatHtml(d.name) }}
-                    />
-                    <span
-                      className="type"
-                      dangerouslySetInnerHTML={{ __html: this.formatHtml(d.type) }}
-                    />
-                  </span>
-                  {!d.name.toLowerCase().includes(search) && !d.type.toLowerCase().includes(search) ? (
-                    <span
-                      className="keywords"
-                      dangerouslySetInnerHTML={{ __html: d.keywords.map((k) => this.formatHtml(k)).join(', ') }}
-                    />
-                  ) : null}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  graphsList: state.graphs.graphsList,
-});
-
-const mapDispatchToProps = {};
-
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SearchGraphs);
-
-export default withRouter(Container);
+export default withRouter(SearchGraphs);
