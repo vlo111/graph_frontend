@@ -29,7 +29,7 @@ class Home extends Component {
       <>
         <div className={`graphsList ${!graphsList.length ? 'empty' : ''}`}>
           {s ? (
-            <h2 className="searchResult">{`Search Result for: ${s}`}</h2>
+            <h2 className="searchResult">{'Search Result for: '}<span>{s}</span></h2>
           ) : null}
           {graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
