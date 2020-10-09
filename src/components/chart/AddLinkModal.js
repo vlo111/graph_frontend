@@ -3,6 +3,8 @@ import Modal from 'react-modal';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 import Select from '../form/Select';
 import Input from '../form/Input';
 import Button from '../form/Button';
@@ -13,6 +15,10 @@ import Validate from '../../helpers/Validate';
 import SvgLine from '../SvgLine';
 
 class AddLinkModal extends Component {
+  static propTypes = {
+    currentUserId: PropTypes.number.isRequired,
+  }
+
   getTypes = memoizeOne((links) => {
     const types = links.filter((d) => d.type)
       .map((d) => ({
@@ -59,11 +65,17 @@ class AddLinkModal extends Component {
 
   addLink = async (ev) => {
     ev.preventDefault();
+    const { currentUserId } = this.props;
     const { linkData } = this.state;
     const links = Chart.getLinks();
     const errors = {};
     [errors.type, linkData.type] = Validate.linkType(linkData.type, linkData.source, linkData.target);
     [, linkData.value] = Validate.linkValue(linkData.value);
+
+    linkData.updatedAt = moment().unix();
+    linkData.createdAt = moment().unix();
+    linkData.createUser = currentUserId;
+    linkData.updateUser = currentUserId;
 
     if (!Validate.hasError(errors)) {
       links.push(linkData);
@@ -162,7 +174,9 @@ class AddLinkModal extends Component {
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  currentUserId: state.account.myAccount.id,
+});
 const mapDispatchToProps = {};
 
 const Container = connect(

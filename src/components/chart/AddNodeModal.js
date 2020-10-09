@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Modal from 'react-modal';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import { toggleNodeModal } from '../../store/actions/app';
-import { addNodeCustomFieldKey, setNodeCustomField } from '../../store/actions/graphs';
+import { setNodeCustomField } from '../../store/actions/graphs';
 import Select from '../form/Select';
 import Input from '../form/Input';
 import Button from '../form/Button';
@@ -19,6 +20,7 @@ class AddNodeModal extends Component {
   static propTypes = {
     toggleNodeModal: PropTypes.func.isRequired,
     setNodeCustomField: PropTypes.func.isRequired,
+    currentUserId: PropTypes.number.isRequired,
     addNodeParams: PropTypes.object.isRequired,
   }
 
@@ -72,6 +74,7 @@ class AddNodeModal extends Component {
 
   saveNode = async (ev) => {
     ev.preventDefault();
+    const { currentUserId } = this.props;
     const { nodeData, index, customField } = this.state;
 
     const errors = {};
@@ -82,8 +85,13 @@ class AddNodeModal extends Component {
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
     [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
 
+    nodeData.updatedAt = moment().unix();
+    nodeData.updateUser = currentUserId;
+
     if (!Validate.hasError(errors)) {
       if (_.isNull(index)) {
+        nodeData.createdAt = moment().unix();
+        nodeData.createUser = currentUserId;
         nodes.push(nodeData);
       } else {
         const { name: oldName } = nodes[index];
@@ -197,6 +205,7 @@ class AddNodeModal extends Component {
 
 const mapStateToProps = (state) => ({
   addNodeParams: state.app.addNodeParams,
+  currentUserId: state.account.myAccount.id,
 });
 const mapDispatchToProps = {
   toggleNodeModal,

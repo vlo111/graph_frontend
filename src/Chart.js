@@ -834,6 +834,8 @@ class Chart {
         location: d.location || undefined,
         labels: d.labels,
         color: ChartUtils.nodeColor(d),
+        createdAt: d.createdAt,
+        updatedAt: d.updatedAt,
       }));
     }
     if (show) {
@@ -870,6 +872,8 @@ class Chart {
           direction: pd.direction || d.direction || '',
           hidden: pd.hidden || d.hidden,
           color: ChartUtils.linkColor(d),
+          createdAt: pd.createdAt,
+          updatedAt: pd.updatedAt,
         };
       });
     }
