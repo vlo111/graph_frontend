@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Input from '../form/Input';
-import ChartUtils from '../../helpers/ChartUtils';
-import Utils from '../../helpers/Utils';
 
 class SearchGraphs extends Component {
   static propTypes = {
@@ -21,7 +18,8 @@ class SearchGraphs extends Component {
 
   handleChange = (s = '') => {
     if (!s) {
-      return this.props.history.replace('/');
+      this.props.history.replace('/');
+      return;
     }
     const query = queryString.stringify({ s });
     this.props.history.replace(`/search?${query}`);

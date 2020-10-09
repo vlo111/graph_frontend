@@ -104,7 +104,10 @@ class Api {
 
   static getGraphsList(page, requestData = {}) {
     const params = { page, ...requestData };
-    return api.get('/graphs', { params });
+    return api.get('/graphs', {
+      params,
+      cancelToken: this.#cancel('getGraphsList'),
+    });
   }
 
   static getSingleGraph(getSingleGraph) {
