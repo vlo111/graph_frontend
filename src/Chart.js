@@ -836,6 +836,8 @@ class Chart {
         color: ChartUtils.nodeColor(d),
         createdAt: d.createdAt,
         updatedAt: d.updatedAt,
+        createdUser: d.createdUser,
+        updatedUser: d.updatedUser,
       }));
     }
     if (show) {
@@ -874,6 +876,8 @@ class Chart {
           color: ChartUtils.linkColor(d),
           createdAt: pd.createdAt,
           updatedAt: pd.updatedAt,
+          createdUser: pd.createdUser,
+          updatedUser: pd.updatedUser,
         };
       });
     }

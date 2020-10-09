@@ -86,12 +86,12 @@ class AddNodeModal extends Component {
     [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
 
     nodeData.updatedAt = moment().unix();
-    nodeData.updateUser = currentUserId;
+    nodeData.updatedUser = currentUserId;
 
     if (!Validate.hasError(errors)) {
       if (_.isNull(index)) {
         nodeData.createdAt = moment().unix();
-        nodeData.createUser = currentUserId;
+        nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
       } else {
         const { name: oldName } = nodes[index];

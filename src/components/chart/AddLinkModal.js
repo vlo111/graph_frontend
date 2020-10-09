@@ -74,8 +74,8 @@ class AddLinkModal extends Component {
 
     linkData.updatedAt = moment().unix();
     linkData.createdAt = moment().unix();
-    linkData.createUser = currentUserId;
-    linkData.updateUser = currentUserId;
+    linkData.createdUser = currentUserId;
+    linkData.updatedUser = currentUserId;
 
     if (!Validate.hasError(errors)) {
       links.push(linkData);
