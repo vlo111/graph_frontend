@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NotifyMe from 'react-notification-timeline';
-import { listNotificationsRequest, NotificationsUpdateRequest, addNotification } from '../store/actions/notifications';
+import { listNotificationsRequest, NotificationsUpdateRequest } from '../store/actions/notifications';
 import { notificationsList } from '../store/selectors/notifications';
-import SocketContext from '../context/Socket';
-import { getId } from '../store/selectors/account';
 
 const NotifyLink = ({ url, children }) => (url ? <Link to={url}>{children}</Link> : <>{children}</>);
 NotifyLink.defaultProps = {
@@ -17,8 +15,7 @@ NotifyLink.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const NotificationList = (props) => {
-  const userId = useSelector(getId);
+export default () => {
   const dispatch = useDispatch();
   const list = useSelector(notificationsList);
 
@@ -26,13 +23,9 @@ const NotificationList = (props) => {
     dispatch(listNotificationsRequest());
   }, [dispatch]);
 
-  useEffect(() => {
-    props.socket.on(`notificationsListGraphShared-${userId}`, (data) => {
-      dispatch(addNotification(data));
-    });
-  }, [userId, dispatch, props.socket]);
-  
-  list.forEach(item => item.link = `/graphs/preview/${item.graphId}`)
+  list.forEach((item) => {
+    item.link = `/graphs/preview/${item.graphId}`;
+  });
 
   return (
     <NotifyMe
@@ -50,13 +43,3 @@ const NotificationList = (props) => {
     />
   );
 };
-
-NotificationList.propTypes = {
-  socket: PropTypes.object.isRequired,
-};
-
-export default (props) => (
-  <SocketContext.Consumer>
-    {(socket) => <NotificationList {...props} socket={socket} />}
-  </SocketContext.Consumer>
-);

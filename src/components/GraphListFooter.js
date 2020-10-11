@@ -13,7 +13,7 @@ import { getActionsCountRequest } from '../store/actions/graphs';
 import Button from './form/Button';
 import ShareTooltip from './ShareTooltip';
 import CommentModal from './CommentModal';
-import Shared from "../pages/Shared";
+import Shared from '../pages/Shared';
 
 const TootlipContent = ({ graphId }) => (
   <Suspense fallback={<div>Loading...</div>}>
@@ -37,9 +37,9 @@ const GraphListFooter = ({ graph }) => {
   }, [dispatch, graph.id]);
   return (
     <div className="graphListFooter">
-      {/*<Button icon={<HeartSvg />} className="transparent footer-icon">*/}
-      {/*  <span className="graphListFooter__count">{actionsCount?.likes}</span>*/}
-      {/*</Button>*/}
+      {/* <Button icon={<HeartSvg />} className="transparent footer-icon"> */}
+      {/*  <span className="graphListFooter__count">{actionsCount?.likes}</span> */}
+      {/* </Button> */}
       <Button
         icon={<CommentSvg />}
         className="transparent footer-icon"
