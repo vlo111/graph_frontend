@@ -8,21 +8,21 @@ import { getAccount } from '../../../store/selectors/account';
 import { getGraphCommentParent } from '../../../store/selectors/commentGraphs';
 import { createGraphCommentRequest, setGraphCommentParent } from '../../../store/actions/commentGraphs';
 
-const AddComment = ({ graph, closeModal }) => {
+const AddComment = ({ graph, closeModal, isReply }) => {
   const dispatch = useDispatch();
   const myAccount = useSelector(getAccount);
   const parent = useSelector(getGraphCommentParent);
   const [text, setText] = useState('');
 
   return (
-    <div className="comment-modal__add-comment-section">
+    <div className={`comment-modal__add-comment-section${isReply ? '--reply' : ''}`}>
       <Owner user={myAccount.myAccount} />
       <Input
         textArea
         value={text}
         onChangeText={(value) => setText(value)}
         className="comment-modal__add-comment-input"
-        id="add-comment"
+        id={isReply ? 'reply-comment' : 'add-comment'}
       />
       <div className="comment-modal__add-comment-buttons">
         <Button
@@ -61,6 +61,11 @@ const AddComment = ({ graph, closeModal }) => {
 AddComment.propTypes = {
   graph: PropTypes.object.isRequired,
   closeModal: PropTypes.func.isRequired,
+  isReply: PropTypes.bool,
+};
+
+AddComment.defaultProps = {
+  isReply: false,
 };
 
 export default AddComment;
