@@ -28,7 +28,7 @@ class GraphEmbed extends Component {
 
   render() {
     return (
-      <Wrapper className="graphView" showFooter={false}>
+      <Wrapper auth={false} className="graphView" showFooter={false}>
         <div className="graphWrapper">
           <ReactChart />
         </div>

@@ -15,9 +15,11 @@ class Wrapper extends Component {
     token: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     className: PropTypes.string,
+    auth: PropTypes.bool,
   }
 
   static defaultProps = {
+    auth: true,
     className: undefined,
   }
 
@@ -28,9 +30,9 @@ class Wrapper extends Component {
 
   render() {
     const {
-      className, children, token, isLoading,
+      className, children, token, isLoading, auth,
     } = this.props;
-    if (!token) {
+    if (!token && auth) {
       return (<Redirect to="/sign/sign-in" />);
     }
     return (
