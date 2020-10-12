@@ -7,22 +7,18 @@ import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import Chart from '../../Chart';
 import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
-import { updateSingleGraph } from '../../store/actions/graphs';
 import ContextMenu from '../ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
-import SocketContext from '../../context/Socket';
 import ChartUtils from '../../helpers/ChartUtils';
 
-class ReactChartComp extends Component {
+class ReactChart extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
-    updateSingleGraph: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
     customFields: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    socket: PropTypes.object.isRequired,
   };
 
   renderChart = memoizeOne((nodes, links, labels) => {
@@ -50,12 +46,6 @@ class ReactChartComp extends Component {
 
     ContextMenu.event.on('label.delete', this.handleLabelDelete);
     Chart.event.on('label.click', this.handleLabelClick);
-
-    this.props.socket.on('graphUpdate', (data) => {
-      data.id = +data.id;
-      return (data.id === this.props.singleGraph.id)
-        && this.props.updateSingleGraph(data);
-    });
   }
 
   componentWillUnmount() {
@@ -64,8 +54,6 @@ class ReactChartComp extends Component {
     ContextMenu.event.removeListener('node.delete', this.handleNodeClick);
     ContextMenu.event.removeListener('node.edit', this.editNode);
     ContextMenu.event.removeListener('label.delete', this.handleLabelDelete);
-
-    this.props.socket.disconnect();
   }
 
   handleLabelClick = (ev, d) => {
@@ -166,12 +154,6 @@ class ReactChartComp extends Component {
   }
 }
 
-const ReactChart = (props) => (
-  <SocketContext.Consumer>
-    {(socket) => <ReactChartComp {...props} socket={socket} />}
-  </SocketContext.Consumer>
-);
-
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
@@ -180,7 +162,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   toggleNodeModal,
   setActiveButton,
-  updateSingleGraph,
 };
 
 const Container = connect(

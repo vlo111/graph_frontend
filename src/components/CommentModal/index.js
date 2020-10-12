@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
+import { useDispatch } from 'react-redux';
 
 import CommentItems from './partials/CommentItems';
 import AddComment from './partials/AddComment';
@@ -9,7 +10,6 @@ import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg'
 import Button from '../form/Button';
 
 import { getActionsCountRequest } from '../../store/actions/graphs';
-import { useDispatch } from 'react-redux';
 
 const CommentModal = React.memo(({ closeModal, graph }) => {
   const afterOpenModal = () => {};
@@ -37,7 +37,7 @@ const CommentModal = React.memo(({ closeModal, graph }) => {
             className="transparent"
           />
         </div>
-        <CommentItems graph={graph} />
+        <CommentItems graph={graph} closeModal={closeModal} />
         <AddComment
           graph={graph}
           closeModal={closeModal}

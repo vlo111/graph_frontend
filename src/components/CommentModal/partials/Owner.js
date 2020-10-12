@@ -29,9 +29,11 @@ const Owner = ({
               icon={<EditSvg style={{ height: 17 }} />}
               onClick={() => {
                 dispatch(setGraphCommentParent(comment));
-                const commentModal = document.getElementById('comment-modal');
-                commentModal.scrollTop = commentModal.scrollHeight;
-                document.getElementById('add-comment').focus();
+                setTimeout(() => {
+                  const replyInput = document.getElementById('reply-comment');
+                  if (replyInput) replyInput.focus();
+                  else document.getElementById('add-comment').focus();
+                });
               }}
               className="transparent"
             >
