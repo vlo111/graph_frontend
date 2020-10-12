@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
 import Socket from './Socket';
 import GraphForm from './pages/GraphForm';
 import SignIn from './pages/sign/SignIn';
 import SignUp from './pages/sign/SignUp';
-import Home from './pages/Home';
 import GraphView from './pages/GraphView';
 import SignOut from './pages/sign/SignOut';
 import GraphDrafts from './pages/profile/GraphDrafts';
-import GraphTemplates from './pages/profile/GraphTemplates';
 import Utils from './helpers/Utils';
 import ForgotPassword from './pages/sign/ForgotPassword';
 import ResetPassword from './pages/sign/ResetPassword';
@@ -17,6 +15,10 @@ import OAuth from './pages/sign/OAuth';
 import Shared from './pages/Shared';
 import Index from './pages/Index';
 import Account from './pages/profile/Account';
+import Page404 from './pages/Page404';
+import suspense from './helpers/suspense';
+
+const GraphEmbed = React.lazy(() => import('./pages/GraphEmbed'));
 
 class App extends Component {
   componentDidMount() {
@@ -28,7 +30,7 @@ class App extends Component {
       <Socket>
         <BrowserRouter>
           <Switch>
-            <Route path="/drifts" exact component={GraphDrafts} />
+            <Route path="/drifts" exact component={GraphDrafts} />r
             <Route path="/search" component={Index} />
             <Route path="/templates" exact component={Index} />
             <Route path="/shared" exact component={Index} />
@@ -41,6 +43,8 @@ class App extends Component {
             <Route path="/graphs/update/:graphId" component={GraphForm} />
             <Route path="/graphs/author/:authorId" component={GraphForm} />
 
+            <Route path="/graphs/embed/:graphId/:token" component={suspense(GraphEmbed)} />
+
             <Route path="/account" component={Account} />
 
             <Route path="/sign/sign-in" component={SignIn} />
@@ -49,6 +53,8 @@ class App extends Component {
             <Route path="/sign/forgot-password" component={ForgotPassword} />
             <Route path="/sign/reset-password" component={ResetPassword} />
             <Route path="/sign/oauth/:type" component={OAuth} />
+
+            <Route path="/404" component={Page404} />
 
             <Route path="/" component={Index} />
           </Switch>

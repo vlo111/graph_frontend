@@ -110,8 +110,12 @@ class Api {
     });
   }
 
-  static getSingleGraph(getSingleGraph) {
-    return api.get(`/graphs/single/${getSingleGraph}`);
+  static getSingleGraph(graphId) {
+    return api.get(`/graphs/single/${graphId}`);
+  }
+
+  static getSingleEmbedGraph(graphId, token) {
+    return api.get(`/graphs/embed/${graphId}/${token}`);
   }
 
   static oAuth(type, params) {

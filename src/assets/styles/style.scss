@@ -2442,6 +2442,7 @@ p {
   animation: ghLoading 1s linear infinite;
   border-radius: 50%;
   pointer-events: none;
+  margin: auto;
   @keyframes ghLoading {
     0% {
       transform: rotate(0deg);
@@ -4066,6 +4067,8 @@ body .gh__menu {
     padding: 20px 10px 0;
 
     .icon {
+      font-size: 16px;
+
       svg {
         height: 15px;
         width: auto;
@@ -4306,5 +4309,24 @@ body .gh__menu {
 
   span {
     font-weight: 600;
+  }
+}
+
+.graphEmbed {
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+
+  input {
+    font-size: 13px;
+    width: 320px;
+    padding: 5px;
   }
 }

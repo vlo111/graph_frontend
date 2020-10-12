@@ -35,6 +35,7 @@ module.exports = {
     'radix': [0],
     'react/static-property-placement': [0],
     'react/jsx-props-no-spreading': [0],
+    'jsx-a11y/iframe-has-title': [0],
     'jsx-a11y/label-has-associated-control': [1, {
       'labelComponents': ['CustomLabel'],
       'labelAttributes': ['inputLabel'],

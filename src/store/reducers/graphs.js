@@ -8,7 +8,7 @@ import {
   SET_NODE_CUSTOM_FIELD,
   ADD_NODE_CUSTOM_FIELD_KEY,
   REMOVE_NODE_CUSTOM_FIELD_KEY,
-  ACTIONS_COUNT,
+  ACTIONS_COUNT, GET_SINGLE_EMBED_GRAPH,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 
@@ -56,6 +56,7 @@ export default function reducer(state = initialState, action) {
         singleGraph: {},
       };
     }
+    case GET_SINGLE_EMBED_GRAPH.SUCCESS:
     case GET_SINGLE_GRAPH.SUCCESS: {
       const { graph: singleGraph } = action.payload.data;
       singleGraph.customFields = { ...singleGraph.customFields };

@@ -49,6 +49,12 @@ export function getSingleGraphRequest(graphId) {
   return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId));
 }
 
+export const GET_SINGLE_EMBED_GRAPH = define('GET_SINGLE_EMBED_GRAPH');
+
+export function getSingleEmbedGraphRequest(graphId, token) {
+  return GET_SINGLE_EMBED_GRAPH.request(() => Api.getSingleEmbedGraph(graphId, token));
+}
+
 export const CLEAR_SINGLE_GRAPH = 'CLEAR_SINGLE_GRAPH';
 
 export const UPDATE_SINGLE_GRAPH = 'UPDATE_SINGLE_GRAPH';

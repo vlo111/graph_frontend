@@ -14,6 +14,7 @@ import Button from './form/Button';
 import ShareTooltip from './ShareTooltip';
 import CommentModal from './CommentModal';
 import Shared from '../pages/Shared';
+import EmbedButton from "./embed/EmbedButton";
 
 const TootlipContent = ({ graphId }) => (
   <Suspense fallback={<div>Loading...</div>}>
@@ -69,6 +70,7 @@ const GraphListFooter = ({ graph }) => {
           graph={graph}
         />
       )}
+      <EmbedButton graph={graph} />
     </div>
   );
 };
