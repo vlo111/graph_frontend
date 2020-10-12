@@ -16,7 +16,7 @@ class HeaderMini extends Component {
           </li>
         </ul>
 
-        <AccountDropDown mini />
+        {/*<AccountDropDown mini />*/}
 
       </header>
     );
