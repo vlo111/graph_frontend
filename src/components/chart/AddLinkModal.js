@@ -13,6 +13,7 @@ import Checkbox from '../form/Checkbox';
 import { DASH_TYPES } from '../../data/link';
 import Validate from '../../helpers/Validate';
 import SvgLine from '../SvgLine';
+import ContextMenu from '../ContextMenu';
 
 class AddLinkModal extends Component {
   static propTypes = {
@@ -39,7 +40,8 @@ class AddLinkModal extends Component {
   }
 
   componentDidMount() {
-    Chart.event.on('line.new', this.handleAddNewLine);
+    Chart.event.on('link.new', this.handleAddNewLine);
+    ContextMenu.event.on('link.edit', this.handleLineEdit);
   }
 
   handleAddNewLine = (ev, d) => {
@@ -56,7 +58,16 @@ class AddLinkModal extends Component {
       linkType: 'a',
       description: '',
     };
-    this.setState({ linkData, show: true, errors: {} });
+    this.setState({
+      linkData, show: true, errors: {},
+    });
+  }
+
+  handleLineEdit = (ev, d) => {
+    const linkData = Chart.getLinks().find((l) => l.index === d.index);
+    this.setState({
+      linkData, show: true, errors: {},
+    });
   }
 
   closeModal = () => {
@@ -67,18 +78,28 @@ class AddLinkModal extends Component {
     ev.preventDefault();
     const { currentUserId } = this.props;
     const { linkData } = this.state;
-    const links = Chart.getLinks();
+    const isUpdate = !_.isNull(linkData.index);
+    let links = Chart.getLinks();
     const errors = {};
-    [errors.type, linkData.type] = Validate.linkType(linkData.type, linkData.source, linkData.target);
+    [errors.type, linkData.type] = Validate.linkType(linkData.type, linkData);
     [, linkData.value] = Validate.linkValue(linkData.value);
 
-    linkData.updatedAt = moment().unix();
-    linkData.createdAt = moment().unix();
-    linkData.createdUser = currentUserId;
-    linkData.updatedUser = currentUserId;
-
     if (!Validate.hasError(errors)) {
-      links.push(linkData);
+      linkData.updatedAt = moment().unix();
+      linkData.updatedUser = currentUserId;
+
+      if (isUpdate) {
+        links = links.map((d) => {
+          if (d.index === linkData.index) {
+            d = linkData;
+          }
+          return d;
+        });
+      } else {
+        linkData.createdAt = moment().unix();
+        linkData.createdUser = currentUserId;
+        links.push(linkData);
+      }
 
       this.setState({ show: false });
       Chart.render({ links });
@@ -100,6 +121,8 @@ class AddLinkModal extends Component {
     }
     const links = Chart.getLinks();
     const types = this.getTypes(links);
+    const isUpdate = !_.isNull(linkData.index);
+    console.log(linkData.type);
     return (
       <Modal
         className="ghModal"
@@ -108,7 +131,9 @@ class AddLinkModal extends Component {
         onRequestClose={this.closeModal}
       >
         <form onSubmit={this.addLink}>
-          <h2>Add new Link</h2>
+          <h2>
+            {isUpdate ? 'Edit Link' : 'Add new Link'}
+          </h2>
           <Select
             label="Link Type"
             value={[linkData.linkType]}
@@ -165,7 +190,7 @@ class AddLinkModal extends Component {
               Cancel
             </Button>
             <Button type="submit">
-              Add
+              {isUpdate ? 'Save' : 'Add'}
             </Button>
           </div>
         </form>

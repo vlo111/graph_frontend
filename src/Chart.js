@@ -764,7 +764,7 @@ class Chart {
           .attr('x2', 0)
           .attr('y2', 0);
         if (source !== target) {
-          this.event.emit('line.new', ev, {
+          this.event.emit('link.new', ev, {
             source,
             target: d.name,
           });

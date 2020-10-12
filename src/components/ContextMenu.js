@@ -35,11 +35,12 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
-    if (ev.target.parentNode.classList.contains('node')) {
+
+    if (ev.target.closest('.nodes')) {
       const index = +ev.target.parentNode.getAttribute('data-i');
       params = Chart.getNodes().find((d) => d.index === index);
       element = 'node';
-    } else if (ev.target.tagName === 'line') {
+    } else if (ev.target.closest('.links')) {
       const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
@@ -52,7 +53,7 @@ class ContextMenu extends Component {
         element = 'nodeFullInfo';
         params = { fieldName };
       }
-    } else if (ev.target.classList.contains('label')) {
+    } else if (ev.target.closest('.labels')) {
       params = { name: ev.target.getAttribute('data-name') };
       element = 'label';
     }
@@ -110,6 +111,11 @@ class ContextMenu extends Component {
         <div className="contextmenu" style={{ left: x, top: y }}>
           {show === 'node' ? (
             <Button icon="fa-pencil-square-o" onClick={(ev) => this.handleClick(ev, 'node.edit')}>
+              Edit
+            </Button>
+          ) : null}
+          {show === 'link' ? (
+            <Button icon="fa-pencil-square-o" onClick={(ev) => this.handleClick(ev, 'link.edit')}>
               Edit
             </Button>
           ) : null}

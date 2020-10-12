@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stripHtml from 'string-strip-html';
+import { connect } from 'react-redux';
+import queryString from 'query-string';
+import { withRouter } from 'react-router-dom';
 import Chart from '../Chart';
 import Icon from './form/Icon';
 import Outside from './Outside';
 import ChartUtils from '../helpers/ChartUtils';
 import NodeIcon from './NodeIcon';
 import Button from './form/Button';
-import { connect } from "react-redux";
-import queryString from "query-string";
-import { withRouter } from "react-router-dom";
 
 const MODAL_WIDTH = 300;
 

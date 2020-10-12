@@ -42,16 +42,21 @@ class Validate {
     return [error, value.join(',')];
   }
 
-  static linkType(val, source, target) {
+  static linkType(val, linkData) {
     let value = (val || '').trim();
+    const { source, target, index } = linkData;
     const links = Chart.getLinks();
 
     let error = null;
+
+    const sameLink = links.find((d) => source === d.source && target === d.target && value === d.type);
     if (!value) {
       error = 'Type is required';
-    } else if (links.find((d) => source === d.source && target === d.target && value === d.type)) {
-      error = 'Already exists';
-      value = '';
+    } else if (sameLink) {
+      if (sameLink.index !== index) {
+        error = 'Already exists';
+        value = '';
+      }
     }
 
     return [error, value];
