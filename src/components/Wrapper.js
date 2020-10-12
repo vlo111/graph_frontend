@@ -24,7 +24,10 @@ class Wrapper extends Component {
   }
 
   componentDidMount() {
-    this.props.getMyAccountRequest();
+    const { auth } = this.props;
+    if (auth) {
+      this.props.getMyAccountRequest();
+    }
   }
 
 
