@@ -35,6 +35,7 @@ class AddLinkModal extends Component {
     this.state = {
       linkData: {},
       show: false,
+      index: null,
       errors: {},
     };
   }
@@ -59,14 +60,14 @@ class AddLinkModal extends Component {
       description: '',
     };
     this.setState({
-      linkData, show: true, errors: {},
+      linkData, show: true, index: null, errors: {},
     });
   }
 
   handleLineEdit = (ev, d) => {
     const linkData = Chart.getLinks().find((l) => l.index === d.index);
     this.setState({
-      linkData, show: true, errors: {},
+      linkData, show: true, index: linkData.index, errors: {},
     });
   }
 
@@ -77,8 +78,8 @@ class AddLinkModal extends Component {
   addLink = async (ev) => {
     ev.preventDefault();
     const { currentUserId } = this.props;
-    const { linkData } = this.state;
-    const isUpdate = !_.isNull(linkData.index);
+    const { linkData, index } = this.state;
+    const isUpdate = !_.isNull(index);
     let links = Chart.getLinks();
     const errors = {};
     [errors.type, linkData.type] = Validate.linkType(linkData.type, linkData);
@@ -87,7 +88,6 @@ class AddLinkModal extends Component {
     if (!Validate.hasError(errors)) {
       linkData.updatedAt = moment().unix();
       linkData.updatedUser = currentUserId;
-
       if (isUpdate) {
         links = links.map((d) => {
           if (d.index === linkData.index) {
@@ -115,14 +115,13 @@ class AddLinkModal extends Component {
   }
 
   render() {
-    const { linkData, errors, show } = this.state;
+    const { linkData, index, errors, show } = this.state;
     if (!show) {
       return null;
     }
     const links = Chart.getLinks();
     const types = this.getTypes(links);
-    const isUpdate = !_.isNull(linkData.index);
-    console.log(linkData.type);
+    const isUpdate = !_.isNull(index);
     return (
       <Modal
         className="ghModal"
