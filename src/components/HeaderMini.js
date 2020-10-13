@@ -17,7 +17,7 @@ class HeaderMini extends Component {
           </li>
         </ul>
 
-        {Utils.isInEmbed() ? (
+        {!Utils.isInEmbed() ? (
           <AccountDropDown mini />
         ) : null}
 

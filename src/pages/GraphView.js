@@ -20,6 +20,7 @@ import { userGraphRequest } from '../store/actions/shareGraphs';
 import ShareGraph from '../components/ShareGraph';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
+import Utils from "../helpers/Utils";
 
 class GraphView extends Component {
   static propTypes = {
@@ -73,7 +74,7 @@ class GraphView extends Component {
     const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId);
 
     return (
-      <Wrapper className="graphView" showFooter={false}>
+      <Wrapper auth={!Utils.isInEmbed()} className="graphView" showFooter={false}>
         <div className="graphWrapper">
           <AccountDropDown />
           <ReactChart />

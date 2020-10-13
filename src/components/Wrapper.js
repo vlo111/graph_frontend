@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import OfflineIndicator from './OfflineIndicator';
 import Loading from './Loading';
 import { getMyAccountRequest } from "../store/actions/account";
-import Utils from "../helpers/Utils";
 
 Modal.setAppElement(document.body);
 
@@ -36,7 +35,7 @@ class Wrapper extends Component {
     const {
       className, children, token, isLoading, auth,
     } = this.props;
-    if (!token && auth && !Utils.isInEmbed()) {
+    if (!token && auth) {
       return (<Redirect to="/sign/sign-in" />);
     }
     return (
