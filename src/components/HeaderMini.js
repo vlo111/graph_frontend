@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import SearchInput from './search/SearchInput';
 import AccountDropDown from './account/AccountDropDown';
+import Utils from "../helpers/Utils";
 
 class HeaderMini extends Component {
   render() {
@@ -16,7 +17,9 @@ class HeaderMini extends Component {
           </li>
         </ul>
 
-        {/*<AccountDropDown mini />*/}
+        {Utils.isInEmbed() ? (
+          <AccountDropDown mini />
+        ) : null}
 
       </header>
     );
