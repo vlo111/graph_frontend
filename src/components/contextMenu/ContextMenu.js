@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import EventEmitter from 'events';
-import Button from './form/Button';
-import Chart from '../Chart';
+import Button from '../form/Button';
+import Chart from '../../Chart';
 
 class ContextMenu extends Component {
   static event = new EventEmitter();
@@ -134,6 +134,11 @@ class ContextMenu extends Component {
           {show === 'link' ? (
             <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, 'link.delete')}>
               Delete
+            </Button>
+          ) : null}
+          {show === 'label' ? (
+            <Button icon="fa-clipboard" onClick={(ev) => this.handleClick(ev, 'label.copy')}>
+              Copy
             </Button>
           ) : null}
           {show === 'label' ? (

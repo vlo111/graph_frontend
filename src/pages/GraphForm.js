@@ -6,7 +6,7 @@ import ToolBar from '../components/ToolBar';
 import ReactChart from '../components/chart/ReactChart';
 import AddNodeModal from '../components/chart/AddNodeModal';
 import Crop from '../components/chart/Crop';
-import ContextMenu from '../components/ContextMenu';
+import ContextMenu from '../components/contextMenu/ContextMenu';
 import DataView from '../components/dataView/DataView';
 import DataImport from '../components/import/DataImportModal';
 import NodeDescription from '../components/NodeDescription';

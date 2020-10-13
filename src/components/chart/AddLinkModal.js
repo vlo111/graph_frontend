@@ -13,7 +13,7 @@ import Checkbox from '../form/Checkbox';
 import { DASH_TYPES } from '../../data/link';
 import Validate from '../../helpers/Validate';
 import SvgLine from '../SvgLine';
-import ContextMenu from '../ContextMenu';
+import ContextMenu from '../contextMenu/ContextMenu';
 
 class AddLinkModal extends Component {
   static propTypes = {

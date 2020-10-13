@@ -3,7 +3,7 @@ import Button from './form/Button';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as UndoBackSvg } from '../assets/images/icons/undo-back.svg';
 import Chart from '../Chart';
-import ContextMenu from './ContextMenu';
+import ContextMenu from './contextMenu/ContextMenu';
 import ChartUtils from '../helpers/ChartUtils';
 
 class Undo extends Component {

@@ -8,7 +8,7 @@ import Button from '../form/Button';
 import NodeTabsContent from './NodeTabsContent';
 import CustomFields from '../../helpers/CustomFields';
 import NodeTabsFormModal from './NodeTabsFormModal';
-import ContextMenu from '../ContextMenu';
+import ContextMenu from '../contextMenu/ContextMenu';
 import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
 import FlexTabs from "../FlexTabs";
 import MapsInfo from "../maps/MapsInfo";

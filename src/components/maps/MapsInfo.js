@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import markerImg from '../../assets/images/icons/marker.svg';
 import Button from '../form/Button';
-import ContextMenu from '../ContextMenu';
+import ContextMenu from '../contextMenu/ContextMenu';
 import Chart from '../../Chart';
 
 class MapsInfo extends Component {

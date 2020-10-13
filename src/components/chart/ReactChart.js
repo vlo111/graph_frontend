@@ -7,7 +7,7 @@ import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import Chart from '../../Chart';
 import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
-import ContextMenu from '../ContextMenu';
+import ContextMenu from '../contextMenu/ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
 import ChartUtils from '../../helpers/ChartUtils';
 

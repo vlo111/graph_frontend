@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactCrop from 'react-image-crop';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ContextMenu from '../ContextMenu';
+import ContextMenu from '../contextMenu/ContextMenu';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton, setGridIndexes } from '../../store/actions/app';
