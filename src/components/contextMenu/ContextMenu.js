@@ -4,9 +4,9 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodeContextMenu from './NodeContextMenu';
 import LinkContextMenu from './LinkContextMenu';
-import labelContextMenu from './LabelContextMenu';
 import NodeFullInfoContext from './NodeFullInfoContext';
 import LabelContextMenu from "./LabelContextMenu";
+import Icon from "../form/Icon";
 
 class ContextMenu extends Component {
   static event = new EventEmitter();
@@ -40,7 +40,6 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
-
     if (ev.target.closest('.nodes')) {
       const index = +ev.target.parentNode.getAttribute('data-i');
       params = Chart.getNodes().find((d) => d.index === index);
@@ -93,7 +92,19 @@ class ContextMenu extends Component {
           {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
-          {['node', 'link', 'label'].includes(show) ? (
+          <Button icon="fa-clipboard">
+            Past
+            <Icon className="arrow" value="fa-angle-right" />
+            <div className="contextmenu">
+              <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
+                Append
+              </Button>
+              <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
+                Past Embedded (//todo)
+              </Button>
+            </div>
+          </Button>
+          {['node', 'link', 'label', 'chart'].includes(show) ? (
             <>
               {showInMap ? (
                 <Button

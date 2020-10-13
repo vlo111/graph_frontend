@@ -1466,6 +1466,9 @@ p {
   display: flex;
   flex-direction: column;
 
+
+
+
   button {
     background-color: transparent;
     border-radius: 0;
@@ -1476,11 +1479,31 @@ p {
     position: relative;
     margin: 0;
     font-weight: 400;
+    display: flex;
+    align-items: center;
 
     a {
       color: $color-dark;
       text-decoration: none;
     }
+
+    .arrow {
+      margin-left: auto;
+    }
+
+    .contextmenu {
+      left: 100%;
+      top: 0;
+      position: absolute;
+      display: none;
+    }
+
+    &:hover {
+      > .contextmenu {
+        display: flex;
+      }
+    }
+
 
     &:after {
       content: '';
