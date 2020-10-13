@@ -13,9 +13,11 @@ import ChartUtils from '../../helpers/ChartUtils';
 import Api from '../../Api';
 import NodeIcon from '../NodeIcon';
 import withGoogleMap from '../../helpers/withGoogleMap';
+import queryString from 'query-string';
 
 class MapsGraph extends Component {
   static propTypes = {
+    history: PropTypes.object.isRequired,
     google: PropTypes.object.isRequired,
     previousActiveButton: PropTypes.func.isRequired,
   }
@@ -38,6 +40,11 @@ class MapsGraph extends Component {
     this.setState({
       activeNode: { marker, node },
     });
+
+    const queryObj = queryString.parse(window.location.search);
+    queryObj.info = node.name;
+    const query = queryString.stringify(queryObj);
+    this.props.History.replace(`?${query}`);
   }
 
   render() {

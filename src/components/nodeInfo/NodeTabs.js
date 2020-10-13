@@ -27,9 +27,10 @@ class NodeTabs extends Component {
     };
   }
 
-  setFirstTab = memoizeOne((customField) => {
+setFirstTab = memoizeOne((node, customField) => {
     this.setState({ activeTab: Object.keys(customField)[0] });
   }, _.isEqual);
+
 
   componentDidMount() {
     ContextMenu.event.on('node.fields-edit', this.openFormModal);
@@ -66,7 +67,7 @@ class NodeTabs extends Component {
     const { node, customFields, editable } = this.props;
     const customField = CustomFields.get(customFields, node.type, node.name);
     const content = customField[activeTab];
-    this.setFirstTab(customField);
+    this.setFirstTab(node, customField);
     return (
       <div className="nodeTabs">
         <FlexTabs>
@@ -79,6 +80,14 @@ class NodeTabs extends Component {
               <p>{key}</p>
             </Button>
           ))}
+          {node.location ? (
+              <Button
+                  className={activeTab === '_location' ? 'active activeNoShadow' : undefined}
+                  onClick={() => this.setActiveTab('_location')}
+              >
+                <p>Location</p>
+              </Button>
+          ) : null}
           {editable && Object.values(customField).length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
               <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
@@ -94,7 +103,11 @@ class NodeTabs extends Component {
             onClose={this.closeFormModal}
           />
         ) : null}
-        <NodeTabsContent name={activeTab} node={node} content={content} />
+        {activeTab === '_location' ? (
+          <MapsInfo node={node} />
+        ) : (
+          <NodeTabsContent name={activeTab} node={node} content={content} />
+        )}
       </div>
     );
   }
