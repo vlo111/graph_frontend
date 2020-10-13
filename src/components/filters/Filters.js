@@ -29,7 +29,7 @@ class Filters extends Component {
     const {
       filters, customFields, match: { params: { graphId } }, location: { pathname },
     } = this.props;
-    const show = pathname.startsWith('/graphs/filter/');
+    const show = pathname.startsWith('/graphs/filter/') || pathname.startsWith('/graphs/embed/filter/');
     this.renderChart(filters, customFields);
     if (!graphId || !show) {
       return null;

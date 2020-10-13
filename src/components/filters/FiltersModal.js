@@ -14,7 +14,7 @@ import NodeConnectionFilter from './NodeConnectionFilter';
 import { ReactComponent as CloseIcon } from '../../assets/images/icons/close.svg';
 import KeywordsFilter from './KeywordsFilter';
 import LabelsFilter from './LabelsFilter';
-import Utils from "../../helpers/Utils";
+import Utils from '../../helpers/Utils';
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -54,15 +54,17 @@ class FiltersModal extends Component {
 
   render() {
     const { nodes, links, labels } = this.state;
-    const { match: { params: { graphId = '' } }, singleGraph } = this.props;
+    const { match: { params: { graphId = '', token = '' } } } = this.props;
     return (
       <Modal
         className="ghModal ghModalFilters"
         overlayClassName="ghModalOverlay ghModalFiltersOverlay"
         isOpen
       >
-        <Link to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${singleGraph.token}` : `/graphs/update/${graphId}`}
-              replace>
+        <Link
+          to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/update/${graphId}`}
+          replace
+        >
           <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
         </Link>
         <div className="row resetAll">

@@ -6,18 +6,20 @@ import Utils from "../helpers/Utils";
 
 class HeaderMini extends Component {
   render() {
-    const { match: { params: { graphId = '' } } } = this.props;
-
+    const { match: { params: { graphId = '', token = '' } } } = this.props;
+    const isInEmbed = Utils.isInEmbed();
     return (
       <header id="headerMini">
         <SearchInput />
         <ul className="links">
           <li>
-            <Link to={`/graphs/filter/${graphId}`}>Filter</Link>
+            <Link to={isInEmbed ? `/graphs/embed/filter/${graphId}/${token}` : `/graphs/filter/${graphId}`}>
+              Filter
+            </Link>
           </li>
         </ul>
 
-        {!Utils.isInEmbed() ? (
+        {!isInEmbed ? (
           <AccountDropDown mini />
         ) : null}
 
