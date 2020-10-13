@@ -113,6 +113,14 @@ class Utils {
       range.select();
     }
   }
+
+  static isInEmbed() {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  }
 }
 
 export default Utils;

@@ -415,14 +415,6 @@ class ChartUtils {
     console.log(`coordinatesCompass: ${data.length} -> ${d.length}`);
     return d;
   }
-
-  static isInEmbed() {
-    try {
-      return window.self !== window.top;
-    } catch (e) {
-      return true;
-    }
-  }
 }
 
 export default ChartUtils;

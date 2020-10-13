@@ -178,7 +178,7 @@ class Chart {
 
   static detectLabels(d = null) {
     const nodesEl = document.querySelector('#graph .nodes');
-    if (!nodesEl || this.detectLabelsProcess) {
+    if (!nodesEl || this.detectLabelsProcess || _.isEmpty(this.data.labels)) {
       return;
     }
     this.detectLabelsProcess = true;
