@@ -74,7 +74,7 @@ class GraphView extends Component {
     const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId);
 
     return (
-      <Wrapper auth={!Utils.isInEmbed()} className="graphView" showFooter={false}>
+      <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
           <AccountDropDown />
           <ReactChart />
@@ -103,21 +103,21 @@ class GraphView extends Component {
           </div>
         ) : (
           <>
-            { (!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
-            <>
-              <Link to={`/graphs/update/${graphId}`}>
-                <Tooltip overlay="Update">
-                  <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
+            {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
+              <>
+                <Link to={`/graphs/update/${graphId}`}>
+                  <Tooltip overlay="Update">
+                    <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
+                  </Tooltip>
+                </Link>
+                <Tooltip overlay="Delete">
+                  <Button
+                    icon={<TrashSvg style={{ height: 30 }} />}
+                    onClick={this.deleteGraph}
+                    className="transparent delete"
+                  />
                 </Tooltip>
-              </Link>
-              <Tooltip overlay="Delete">
-                <Button
-                  icon={<TrashSvg style={{ height: 30 }} />}
-                  onClick={this.deleteGraph}
-                  className="transparent delete"
-                />
-              </Tooltip>
-            </>
+              </>
             )}
             <ShareGraph graphId={+graphId} />
             <NodeDescription />
