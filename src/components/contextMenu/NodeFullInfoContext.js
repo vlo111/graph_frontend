@@ -1,0 +1,26 @@
+import React, { Component } from 'react';
+import Button from '../form/Button';
+
+class NodeFullInfoContext extends Component {
+  render() {
+    const { params } = this.props;
+    return (
+      <>
+        <Button
+          icon="fa-pencil-square-o"
+          onClick={(ev) => this.props.onClick(ev, params.fieldName === '_location' ? 'node.location-edit' : 'node.fields-edit')}
+        >
+          Edit
+        </Button>
+        <Button
+          icon="fa-trash"
+          onClick={(ev) => this.props.onClick(ev, params.fieldName === '_location' ? 'node.location-delete' : 'node.fields-delete')}
+        >
+          Delete
+        </Button>
+      </>
+    );
+  }
+}
+
+export default NodeFullInfoContext;

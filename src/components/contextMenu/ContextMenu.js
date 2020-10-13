@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import EventEmitter from 'events';
 import Button from '../form/Button';
 import Chart from '../../Chart';
+import NodeContextMenu from './NodeContextMenu';
+import LinkContextMenu from './LinkContextMenu';
+import labelContextMenu from './LabelContextMenu';
+import NodeFullInfoContext from './NodeFullInfoContext';
+import LabelContextMenu from "./LabelContextMenu";
 
 class ContextMenu extends Component {
   static event = new EventEmitter();
@@ -72,28 +77,6 @@ class ContextMenu extends Component {
     this.constructor.event.emit(type, ev, { ...params, ...additionalParams });
   }
 
-  nodeFullInfoContext = () => {
-    const { x, y, params } = this.state;
-    return (
-      <div className="contextmenuOverlay contextmenuOverlayFullInfo" onClick={this.closeMenu}>
-        <div className="contextmenu" style={{ left: x, top: y }}>
-          <Button
-            icon="fa-pencil-square-o"
-            onClick={(ev) => this.handleClick(ev, params.fieldName === '_location' ? 'node.location-edit' : 'node.fields-edit')}
-          >
-            Edit
-          </Button>
-          <Button
-            icon="fa-trash"
-            onClick={(ev) => this.handleClick(ev, params.fieldName === '_location' ? 'node.location-delete' : 'node.fields-delete')}
-          >
-            Delete
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
   render() {
     const {
       x, y, show, params,
@@ -101,63 +84,34 @@ class ContextMenu extends Component {
     if (!show) {
       return null;
     }
-    if (show === 'nodeFullInfo') {
-      return this.nodeFullInfoContext();
-    }
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
     return (
       <div className="contextmenuOverlay" onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
-          {show === 'node' ? (
-            <Button icon="fa-pencil-square-o" onClick={(ev) => this.handleClick(ev, 'node.edit')}>
-              Edit
-            </Button>
+          {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
+          {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
+          {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
+          {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
+          {['node', 'link', 'label'].includes(show) ? (
+            <>
+              {showInMap ? (
+                <Button
+                  icon="fa-globe"
+                  onClick={(ev) => this.handleClick(ev, 'active-button', { button: 'maps-view' })}
+                >
+                  Show in map
+                </Button>
+              ) : null}
+              <Button icon="fa-crop" onClick={(ev) => this.handleClick(ev, 'crop')}>
+                Crop
+              </Button>
+              <Button disabled={!undoCount} icon="fa-undo" onClick={(ev) => this.handleClick(ev, 'undo')}>
+                {'Undo '}
+                <sub>(Ctrl+Z)</sub>
+              </Button>
+            </>
           ) : null}
-          {show === 'link' ? (
-            <Button icon="fa-pencil-square-o" onClick={(ev) => this.handleClick(ev, 'link.edit')}>
-              Edit
-            </Button>
-          ) : null}
-          {params.link ? (
-            <Button icon="fa-link" title={params.link}>
-              <a href={params.link} target="_blank" rel="noopener noreferrer">
-                Open Link
-              </a>
-            </Button>
-          ) : null}
-          {show === 'node' ? (
-            <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, 'node.delete')}>
-              Delete
-            </Button>
-          ) : null}
-          {show === 'link' ? (
-            <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, 'link.delete')}>
-              Delete
-            </Button>
-          ) : null}
-          {show === 'label' ? (
-            <Button icon="fa-clipboard" onClick={(ev) => this.handleClick(ev, 'label.copy')}>
-              Copy
-            </Button>
-          ) : null}
-          {show === 'label' ? (
-            <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, 'label.delete')}>
-              Delete
-            </Button>
-          ) : null}
-          {showInMap ? (
-            <Button icon="fa-globe" onClick={(ev) => this.handleClick(ev, 'active-button', { button: 'maps-view' })}>
-              Show in map
-            </Button>
-          ) : null}
-          <Button icon="fa-crop" onClick={(ev) => this.handleClick(ev, 'crop')}>
-            Crop
-          </Button>
-          <Button disabled={!undoCount} icon="fa-undo" onClick={(ev) => this.handleClick(ev, 'undo')}>
-            {'Undo '}
-            <sub>(Ctrl+Z)</sub>
-          </Button>
         </div>
       </div>
     );

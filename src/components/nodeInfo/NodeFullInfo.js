@@ -40,7 +40,7 @@ class NodeFullInfo extends Component {
       return null;
     }
     return (
-      <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlayFullInfo,.jodit">
+      <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
         <div id="nodeFullInfo">
           <HeaderMini />
           <div className="nodeFullContent">

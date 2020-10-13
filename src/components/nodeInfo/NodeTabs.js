@@ -71,14 +71,6 @@ class NodeTabs extends Component {
     return (
       <div className="nodeTabs">
         <FlexTabs>
-          {node.location ? (
-            <Button
-              className={activeTab === '_location' ? 'active activeNoShadow' : undefined}
-              onClick={() => this.setActiveTab('_location')}
-            >
-              <p>Location</p>
-            </Button>
-          ) : null}
           {_.map(customField, (val, key) => (
             <Button
               className={activeTab === key ? 'active' : undefined}
@@ -88,6 +80,14 @@ class NodeTabs extends Component {
               <p>{key}</p>
             </Button>
           ))}
+          {node.location ? (
+            <Button
+              className={activeTab === '_location' ? 'active activeNoShadow' : undefined}
+              onClick={() => this.setActiveTab('_location')}
+            >
+              <p>Location</p>
+            </Button>
+          ) : null}
           {editable && Object.values(customField).length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
               <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
