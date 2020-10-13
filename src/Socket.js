@@ -26,7 +26,7 @@ const Socket = ({ socket, children }) => {
       dispatch(addNotification(data));
     });
 
-    return socket.disconnect();
+    return () => socket.disconnect();
   }, []);
 
   return children;

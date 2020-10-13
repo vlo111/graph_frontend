@@ -1,6 +1,6 @@
 import {
   LIST_NOTIFICATIONS,
-  ADD_NOTIFICATIONS,
+  ADD_NOTIFICATIONS, NOTIFICATIONS_UPDATE,
 } from '../actions/notifications';
 
 const initialState = {
@@ -10,6 +10,7 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case LIST_NOTIFICATIONS.REQUEST:
+    case NOTIFICATIONS_UPDATE.REQUEST:
     {
       return {
         ...state,
