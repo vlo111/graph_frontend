@@ -86,7 +86,7 @@ class ReactChart extends Component {
 
   addNewNode = (ev) => {
     const { target } = ev;
-    if (!['svg', 'path'].includes(target.tagName)
+    if (!target.classList.contains('nodeCrate')
       || Chart.activeButton !== 'create'
       || Chart.newLink.attr('data-source')) {
       return;
@@ -137,7 +137,7 @@ class ReactChart extends Component {
         <div className="borderCircle">
           {_.range(0, 6).map((k) => <div key={k} />)}
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg">
+        <svg xmlns="http://www.w3.org/2000/svg" className="nodeCrate">
           <g className="wrapper" transform-origin="top left">
             <g className="labels">
               <rect className="labelsBoard" fill="transparent" width="100%" height="100%" />
