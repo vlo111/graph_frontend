@@ -2,13 +2,12 @@ import _ from 'lodash';
 import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
 import Utils from './Utils';
-import store from '../store'
-import CustomFields from "./CustomFields";
-import { setNodeCustomField } from "../store/actions/graphs";
+import store from '../store';
+import CustomFields from './CustomFields';
+import { setNodeCustomField } from '../store/actions/graphs';
 
 class LabelUtils {
   static copy(graphId, name, customFields) {
-
     const labels = Chart.getLabels();
     const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(name));
     const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
@@ -53,7 +52,7 @@ class LabelUtils {
           .filter((n) => new RegExp(`^${Utils.escRegExp(d.name)}(_\\d+|)$`).test(n.name))
           .map((n) => {
             const [, num] = n.name.match(/_(\d+)$/) || [0, 0];
-            return num;
+            return +num;
           })
           .max()
           .value() + 1;
@@ -84,7 +83,7 @@ class LabelUtils {
         .filter((n) => new RegExp(`^${Utils.escRegExp(data.label.name)}(_\\d+|)$`).test(n.name))
         .map((n) => {
           const [, num] = n.name.match(/_(\d+)$/) || [0, 0];
-          return num;
+          return +num;
         })
         .max()
         .value() + 1;

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 class CustomFields {
-  static LIMIT = 6;
+  static LIMIT = 10;
 
   static setValue(customFields = {}, type, name, values) {
     let i = 0;
