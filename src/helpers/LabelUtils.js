@@ -48,7 +48,7 @@ class LabelUtils {
     data.nodes.forEach((d) => {
       const originalName = d.name;
       if (nodes.some((n) => n.name === d.name)) {
-        const i = +_.chain(nodes)
+        const i = _.chain(nodes)
           .filter((n) => new RegExp(`^${Utils.escRegExp(d.name)}(_\\d+|)$`).test(n.name))
           .map((n) => {
             const [, num] = n.name.match(/_(\d+)$/) || [0, 0];
@@ -79,7 +79,7 @@ class LabelUtils {
     const labels = Chart.getLabels();
 
     if (labels.some((l) => l.name === data.label.name)) {
-      const i = +_.chain(labels)
+      const i = _.chain(labels)
         .filter((n) => new RegExp(`^${Utils.escRegExp(data.label.name)}(_\\d+|)$`).test(n.name))
         .map((n) => {
           const [, num] = n.name.match(/_(\d+)$/) || [0, 0];
