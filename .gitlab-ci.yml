@@ -20,7 +20,7 @@ staging_job:
 production_job:
     stage: deploy
     only: 
-      - master
+      - develop2
       
     before_script:
         # Generate SSH Key
@@ -34,4 +34,4 @@ production_job:
       
     environment:
       name: production
-      url: https://graphs.analysed.ai/
+      url: https://graphs2.analysed.ai/
