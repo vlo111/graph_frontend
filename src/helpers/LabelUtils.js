@@ -2,18 +2,24 @@ import _ from 'lodash';
 import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
 import Utils from './Utils';
+import store from '../store'
+import CustomFields from "./CustomFields";
+import { setNodeCustomField } from "../store/actions/graphs";
 
 class LabelUtils {
-  static copy(graphId, name) {
+  static copy(graphId, name, customFields) {
+
     const labels = Chart.getLabels();
     const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(name));
     const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
     const label = labels.find((l) => l.name === name);
+
     const data = {
       graphId,
       label,
       nodes,
       links,
+      customFields,
     };
     sessionStorage.setItem('label.copy', JSON.stringify(data));
 
@@ -41,8 +47,8 @@ class LabelUtils {
     });
 
     data.nodes.forEach((d) => {
+      const originalName = d.name;
       if (nodes.some((n) => n.name === d.name)) {
-        const originalName = d.name;
         const i = +_.chain(nodes)
           .filter((n) => new RegExp(`^${Utils.escRegExp(d.name)}(_\\d+|)$`).test(n.name))
           .map((n) => {
@@ -64,6 +70,9 @@ class LabelUtils {
       }
       d.fx = d.fx - minX + posX;
       d.fy = d.fy - minY + posY;
+      const customField = CustomFields.get(data.customFields, d.type, originalName);
+
+      store.dispatch(setNodeCustomField(d.type, d.name, customField));
       nodes.push(d);
     });
 

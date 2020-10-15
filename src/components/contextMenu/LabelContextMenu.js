@@ -3,17 +3,19 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '../form/Button';
 import LabelUtils from '../../helpers/LabelUtils';
+import { connect } from "react-redux";
 
 class labelContextMenu extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
+    customFields: PropTypes.object.isRequired,
   }
 
   handleCopyClick = (ev) => {
-    const { params, match: { params: { graphId = '' } } } = this.props;
-    const data = LabelUtils.copy(graphId, params.name);
+    const { params, customFields, match: { params: { graphId = '' } } } = this.props;
+    const data = LabelUtils.copy(graphId, params.name, customFields);
     this.props.onClick(ev, 'label.copy', { data, graphId });
   }
 
@@ -31,4 +33,15 @@ class labelContextMenu extends Component {
   }
 }
 
-export default withRouter(labelContextMenu);
+const mapStateToProps = (state) => ({
+  customFields: state.graphs.singleGraph.customFields || {},
+});
+
+const mapDispatchToProps = {};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(labelContextMenu);
+
+export default withRouter(Container);
