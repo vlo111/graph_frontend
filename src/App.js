@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
 import Socket from './Socket';
