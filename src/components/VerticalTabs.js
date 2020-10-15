@@ -1,4 +1,4 @@
-import React, { Component, Children } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { withRouter } from 'react-router-dom';

@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Button from '../form/Button';
 
 class NodeFullInfoContext extends Component {
+  static propTypes = {
+    params: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired,
+  }
+
   render() {
     const { params } = this.props;
     return (

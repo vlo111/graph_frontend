@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
 import Socket from './Socket';
@@ -42,7 +42,6 @@ class App extends Component {
             <Route path="/graphs/shared" component={Shared} />
             <Route path="/graphs/update/:graphId" component={GraphForm} />
             <Route path="/graphs/author/:authorId" component={GraphForm} />
-
 
             <Route path="/graphs/embed/filter/:graphId/:token" component={suspense(GraphEmbed)} />
             <Route path="/graphs/embed/:graphId/:token" component={suspense(GraphEmbed)} />

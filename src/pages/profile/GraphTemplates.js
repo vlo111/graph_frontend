@@ -6,11 +6,8 @@ import memoizeOne from 'memoize-one';
 import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../../store/actions/graphs';
-import Wrapper from '../../components/Wrapper';
-import Button from '../../components/form/Button';
 import Pagination from '../../components/Pagination';
-import Header from '../../components/Header';
-import GraphListFooter from "../../components/GraphListFooter";
+import GraphListFooter from '../../components/GraphListFooter';
 
 class Home extends Component {
   static propTypes = {

@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Button from '../form/Button';
-import Chart from '../../Chart';
+import LabelUtils from '../../helpers/LabelUtils';
 
 class labelContextMenu extends Component {
+  static propTypes = {
+    params: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
+  }
+
   handleCopyClick = (ev) => {
     const { params, match: { params: { graphId = '' } } } = this.props;
-    const labels = Chart.getLabels();
-    const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(params.name));
-    const label = labels.find((l) => l.name === params.name);
-    const data = {
-      label,
-      graphId,
-      nodes,
-    };
-    sessionStorage.setItem('label.copy', JSON.stringify(data));
-    this.props.onClick(ev, 'label.copy', { data });
+    const data = LabelUtils.copy(graphId, params.name);
+    this.props.onClick(ev, 'label.copy', { data, graphId });
   }
 
   render() {
