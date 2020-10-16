@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Button from '../form/Button';
 
 class LinkContextMenu extends Component {
+  static propTypes = {
+    onClick: PropTypes.func.isRequired,
+  }
+
   render() {
     return (
       <>

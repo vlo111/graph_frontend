@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
-import Input from '../form/Input';
 import Button from '../form/Button';
 import { updateMyAccountPasswordRequest } from '../../store/actions/account';
-import PasswordInput from "../form/PasswordInput";
+import PasswordInput from '../form/PasswordInput';
 
 class UpdatePasswordModal extends Component {
   static propTypes = {

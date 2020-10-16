@@ -7,14 +7,12 @@ import Tooltip from 'rc-tooltip/es';
 import { ReactComponent as ShareSvg } from '../assets/images/icons/share.svg';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg';
 import { ReactComponent as ViewPassSvg } from '../assets/images/icons/view.svg';
-import { ReactComponent as HeartSvg } from '../assets/images/icons/heart.svg';
 import { getActionsCount } from '../store/selectors/graphs';
 import { getActionsCountRequest } from '../store/actions/graphs';
 import Button from './form/Button';
 import ShareTooltip from './ShareTooltip';
 import CommentModal from './CommentModal';
-import Shared from '../pages/Shared';
-import EmbedButton from "./embed/EmbedButton";
+import EmbedButton from './embed/EmbedButton';
 
 const TootlipContent = ({ graphId }) => (
   <Suspense fallback={<div>Loading...</div>}>
