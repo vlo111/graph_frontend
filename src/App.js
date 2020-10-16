@@ -17,6 +17,9 @@ import Index from './pages/Index';
 import Account from './pages/profile/Account';
 import Page404 from './pages/Page404';
 import suspense from './helpers/suspense';
+import Search from './pages/search';
+import SearchPeople from './pages/search/people';
+import SearchGraphs from './pages/search/graphs';
 
 const GraphEmbed = React.lazy(() => import('./pages/GraphEmbed'));
 
@@ -31,7 +34,9 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route path="/drifts" exact component={GraphDrafts} />r
-            <Route path="/search" component={Index} />
+            <Route path="/search" component={Search} />
+            <Route path="/search-people" component={SearchPeople} />
+            <Route path="/search-graph" component={SearchGraphs} />
             <Route path="/templates" exact component={Index} />
             <Route path="/shared" exact component={Index} />
 
