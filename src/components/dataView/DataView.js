@@ -18,6 +18,7 @@ class DataView extends Component {
     setActiveButton: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
+    customFields: PropTypes.object.isRequired,
     selectedGrid: PropTypes.objectOf(PropTypes.array).isRequired,
   }
 
@@ -81,9 +82,10 @@ class DataView extends Component {
   }
 
   export = (type) => {
-    const { selectedGrid } = this.props;
+    const { selectedGrid, customFields } = this.props;
     const nodes = Chart.getNodes().filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
     const links = Chart.getLinks().filter((d) => ChartUtils.isCheckedLink(selectedGrid, d));
+    const labels = Chart.getLabels(); // todo filter empty labels
 
     if (type === 'csv') {
       Api.download('csv-nodes', { nodes });
@@ -92,7 +94,7 @@ class DataView extends Component {
       }
       return;
     }
-    Api.download(type, { nodes, links });
+    Api.download(type, { nodes, links, labels, customFields });
   }
 
   download = async (type) => {
@@ -166,6 +168,7 @@ class DataView extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   selectedGrid: state.app.selectedGrid,
+  customFields: state.graphs.singleGraph.customFields || {},
 });
 
 const mapDispatchToProps = {
