@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Button from '../form/Button';
-import Chart from '../../Chart';
 
 class NodeContextMenu extends Component {
+  static propTypes = {
+    params: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired,
+  }
+
   render() {
     const { params } = this.props;
     return (

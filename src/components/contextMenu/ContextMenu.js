@@ -5,8 +5,9 @@ import Chart from '../../Chart';
 import NodeContextMenu from './NodeContextMenu';
 import LinkContextMenu from './LinkContextMenu';
 import NodeFullInfoContext from './NodeFullInfoContext';
-import LabelContextMenu from "./LabelContextMenu";
-import Icon from "../form/Icon";
+import LabelContextMenu from './LabelContextMenu';
+import Icon from '../form/Icon';
+import LabelUtils from '../../helpers/LabelUtils';
 
 class ContextMenu extends Component {
   static event = new EventEmitter();
@@ -66,7 +67,10 @@ class ContextMenu extends Component {
     });
   }
 
-  closeMenu = () => {
+  closeMenu = (ev) => {
+    if (ev && ev.target.classList.contains('notClose')) {
+      return;
+    }
     this.setState({ show: false });
   }
 
@@ -86,24 +90,29 @@ class ContextMenu extends Component {
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
     return (
-      <div className="contextmenuOverlay" onClick={this.closeMenu}>
+      <div className={`contextmenuOverlay ${x + 360 > window.innerWidth ? 'toLeft' : ''}`} onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
           {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
-          <Button icon="fa-clipboard">
+          <div className="ghButton notClose">
+            <Icon value="fa-clipboard" />
             Past
             <Icon className="arrow" value="fa-angle-right" />
             <div className="contextmenu">
-              <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
+              <Button onClick={(ev) => {
+                LabelUtils.past(x, y);
+                this.handleClick(ev, 'label.append');
+              }}
+              >
                 Append
               </Button>
               <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
                 Past Embedded (//todo)
               </Button>
             </div>
-          </Button>
+          </div>
           {['node', 'link', 'label', 'chart'].includes(show) ? (
             <>
               {showInMap ? (

@@ -255,7 +255,7 @@ class Chart {
       if (this.activeButton === 'create-label') {
         const { x, y } = ev;
         const datum = activeLine.datum();
-        datum.d.push([x, y]);
+        datum.d.push([+x.toFixed(2), +y.toFixed(2)]);
         activeLine
           .datum(datum)
           .attr('d', (d) => renderPath(d.d))

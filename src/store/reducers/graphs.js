@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { toast } from 'react-toastify';
 import {
   CLEAR_SINGLE_GRAPH,
   UPDATE_SINGLE_GRAPH,
@@ -76,7 +77,11 @@ export default function reducer(state = initialState, action) {
       const {
         type, name, customField, tabData,
       } = action.payload;
-      singleGraph.customFields = CustomFields.setValue(singleGraph.customFields, type, name, customField);
+      const res = CustomFields.setValue(singleGraph.customFields, type, name, customField);
+      singleGraph.customFields = res.customFields;
+      if (!res.success) {
+        toast.warn('Some tabs are not imported');
+      }
       if (tabData) {
         _.set(singleGraph.customFields, [type, tabData.name, 'subtitle'], tabData.subtitle);
       }
