@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Button from "../form/Button";
-import EmbedModal from "./EmbedModal";
+import Button from '../form/Button';
+import EmbedModal from './EmbedModal';
 
 class EmbedButton extends Component {
-  static propTypes = {}
+  static propTypes = {
+    graph: PropTypes.object.isRequired,
+  }
 
   constructor(props) {
     super(props);
     this.state = {
       showModal: false,
-    }
+    };
   }
 
   toggleModal = (showModal) => {
@@ -36,7 +38,7 @@ class EmbedButton extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {};
 

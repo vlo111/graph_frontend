@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import queryString from 'query-string';
 import Wrapper from '../components/Wrapper';
 import Header from '../components/Header';
 

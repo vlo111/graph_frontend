@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Wrapper from '../../components/Wrapper';
 import Header from '../../components/Header';
 import VerticalTabs from '../../components/VerticalTabs';

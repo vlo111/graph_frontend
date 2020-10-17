@@ -20,7 +20,6 @@ import { userGraphRequest } from '../store/actions/shareGraphs';
 import ShareGraph from '../components/ShareGraph';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
-import Utils from "../helpers/Utils";
 
 class GraphView extends Component {
   static propTypes = {

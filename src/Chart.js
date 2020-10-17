@@ -241,7 +241,7 @@ class Chart {
             color: ChartUtils.labelColors(),
             d: [],
           })
-          .attr('class', 'label')
+          .attr('class', 'label nodeCrate')
           .attr('data-name', (d) => d.name);
       } else if (ev.sourceEvent.target.classList.contains('label')) {
         const name = ev.sourceEvent.target.getAttribute('data-name');
@@ -255,7 +255,7 @@ class Chart {
       if (this.activeButton === 'create-label') {
         const { x, y } = ev;
         const datum = activeLine.datum();
-        datum.d.push([x, y]);
+        datum.d.push([+x.toFixed(2), +y.toFixed(2)]);
         activeLine
           .datum(datum)
           .attr('d', (d) => renderPath(d.d))
@@ -326,7 +326,7 @@ class Chart {
     labels.selectAll('path')
       .data(this.data.labels.filter((l) => l.hidden !== 1))
       .join('path')
-      .attr('class', 'label')
+      .attr('class', 'label nodeCrate')
       .attr('opacity', '0.4')
       // .attr('id', (d) => ChartUtils.normalizeId(d.name, 'lb'))
       .attr('data-name', (d) => d.name || ChartUtils.labelColors(d))
@@ -747,7 +747,7 @@ class Chart {
         return;
       }
       const source = this.newLink.attr('data-source');
-      if (d.fx === undefined || d.fy === undefined) {
+      if ((d.fx || d.x) === undefined || (d.fy || d.y) === undefined) {
         return;
       }
       if (!source) {

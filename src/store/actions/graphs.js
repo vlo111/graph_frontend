@@ -78,7 +78,9 @@ export const SET_NODE_CUSTOM_FIELD = 'SET_NODE_CUSTOM_FIELD';
 export function setNodeCustomField(type, name, customField, tabData) {
   return {
     type: SET_NODE_CUSTOM_FIELD,
-    payload: { type, name, customField, tabData },
+    payload: {
+      type, name, customField, tabData,
+    },
   };
 }
 
