@@ -7,6 +7,7 @@ import Header from '../../components/Header';
 import { getUserSearch } from '../../store/selectors/account';
 import Button from '../../components/form/Button';
 import { getUsersByTextRequest } from '../../store/actions/account';
+import { AddFriendRequest } from '../../store/actions/userFriends';
 
 const Search = React.memo(() => {
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const Search = React.memo(() => {
                   </div>
                 </div>
                 <div>
-                  <Button>connect</Button>
+                  <Button onClick={()=>{dispatch(AddFriendRequest({receiverUserId: user.id}))}}>connect</Button>
                 </div>
               </article>
             ))}

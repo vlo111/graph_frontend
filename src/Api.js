@@ -188,6 +188,10 @@ class Api {
       params: { search },
     });
   }
+
+  static addFriend(requestData) {
+    return api.post('/user-friends/add', requestData);
+  }
 }
 
 export default Api;
