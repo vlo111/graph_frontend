@@ -192,6 +192,14 @@ class Api {
   static addFriend(requestData) {
     return api.post('/user-friends/add', requestData);
   }
+
+  static cancelFriend(requestData) {
+    return api.put('/user-friends/cancel', requestData);
+  }
+
+  static removeFriend(requestData) {
+    return api.put('/user-friends/remove', requestData);
+  }
 }
 
 export default Api;
