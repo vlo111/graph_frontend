@@ -52,5 +52,5 @@ production2_job:
       - bash .deploy-production2.sh
       
     environment:
-      name: production
+      name: production2
       url: https://graphs2.analysed.ai/
