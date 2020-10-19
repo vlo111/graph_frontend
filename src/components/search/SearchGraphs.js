@@ -10,9 +10,11 @@ class SearchGraphs extends Component {
   }
 
   constructor(props) {
+    const { s } = queryString.parse(window.location.search);
     super(props);
     this.state = {
       nodes: [],
+      text: s || '',
     };
   }
 
@@ -21,22 +23,30 @@ class SearchGraphs extends Component {
       this.props.history.replace('/');
       return;
     }
-    const query = queryString.stringify({ s });
-    this.props.history.replace(`/search?${query}`);
+    this.setState({ text: s });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (this.state.text) {
+      const query = queryString.stringify({ s: this.state.text });
+      this.props.history.replace(`/search?${query}`);
+    }
   }
 
   render() {
-    const queryObj = queryString.parse(window.location.search);
     return (
       <div className="searchInputWrapper">
-        <Input
-          placeholder="Search ..."
-          autoComplete="off"
-          value={queryObj.s}
-          icon="fa-search"
-          containerClassName="graphSearch"
-          onChangeText={this.handleChange}
-        />
+        <form onSubmit={this.handleSubmit}>
+          <Input
+            placeholder="Search ..."
+            autoComplete="off"
+            value={this.state.text}
+            icon="fa-search"
+            containerClassName="graphSearch"
+            onChangeText={this.handleChange}
+          />
+        </form>
       </div>
     );
   }

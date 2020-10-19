@@ -4162,6 +4162,14 @@ body .gh__menu {
     }
   }
 
+  .rightTabList {
+    .tabsList {
+      transform: rotate(90deg) translate(0, 0);
+      transform-origin: top right;
+      top: 200px;
+    }
+  }
+
   .content {
     width: 100%;
     margin-left: 50px;

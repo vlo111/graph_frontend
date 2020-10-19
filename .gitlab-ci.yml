@@ -1,22 +1,3 @@
-staging_job:
-    stage: deploy
-    only: 
-      - develop
-      
-    before_script:
-        # Generate SSH Key
-        - mkdir -p ~/.ssh
-        - echo "$STAGE_SSH_PRIVATE" | tr -d '\r' > ~/.ssh/id_rsa
-        - chmod 600 ~/.ssh/id_rsa
-        - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-        
-    script:
-      - bash .deploy-staging.sh
-      
-    environment:
-      name: staging
-      url: https://graphs-frontend.ghost-services.com/
-
 production_job:
     stage: deploy
     only: 
@@ -34,4 +15,4 @@ production_job:
       
     environment:
       name: production
-      url: https://graphs2.analysed.ai/
+      url: http://graphs2.analysed.ai/
