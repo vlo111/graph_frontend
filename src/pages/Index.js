@@ -6,6 +6,7 @@ import GraphTemplates from './profile/GraphTemplates';
 import Shared from './Shared';
 import Home from './Home';
 import VerticalTabs from '../components/VerticalTabs';
+import Friends from './friends';
 
 class Index extends Component {
   render() {
@@ -16,9 +17,12 @@ class Index extends Component {
           className="homePageTabs"
           tabs={[
             { to: '/', name: 'Home', component: <Home /> },
-            { to: '/search', name: 'Search', hidden: true, component: <Home /> },
+            {
+              to: '/search', name: 'Search', hidden: true, component: <Home />,
+            },
             { to: '/templates', name: 'Templates', component: <GraphTemplates /> },
             { to: '/shared', name: 'Shared Graphs', component: <Shared /> },
+            { to: '/friends', name: 'Friends', component: <Friends /> },
           ]}
         />
       </Wrapper>

@@ -167,7 +167,6 @@ class Api {
   }
 
   static graphComments(requestData) {
-    console.log(requestData);
     return api.get('/comment-graphs/comments', { params: requestData });
   }
 
@@ -189,12 +188,20 @@ class Api {
     });
   }
 
+  static getFriends() {
+    return api.get('/user-friends');
+  }
+
   static addFriend(requestData) {
     return api.post('/user-friends/add', requestData);
   }
 
   static cancelFriend(requestData) {
     return api.put('/user-friends/cancel', requestData);
+  }
+
+  static rejectFriend(requestData) {
+    return api.put('/user-friends/reject', requestData);
   }
 
   static removeFriend(requestData) {
