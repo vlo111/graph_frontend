@@ -12,6 +12,7 @@ import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
 import Api from '../../Api';
 import ChartUtils from '../../helpers/ChartUtils';
+import Utils from "../../helpers/Utils";
 
 class DataView extends Component {
   static propTypes = {
@@ -81,11 +82,36 @@ class DataView extends Component {
     });
   }
 
-  export = (type) => {
+  export = async (type) => {
     const { selectedGrid, customFields } = this.props;
-    const nodes = Chart.getNodes().filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
+    let nodes = _.clone(Chart.getNodes()).filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
     const links = Chart.getLinks().filter((d) => ChartUtils.isCheckedLink(selectedGrid, d));
     const labels = Chart.getLabels(); // todo filter empty labels
+
+    const icons = await Promise.all(nodes.map((d) => {
+      if (d.icon && d.icon.startsWith('blob:')) {
+        return Utils.blobToBase64(d.icon);
+      }
+      return d.icon;
+    }));
+
+    const files = [];
+    /* eslint-disable */
+    for (const d of nodes) {
+      const reg = /\shref="(blob:https?:\/\/[^"]+)"/g;
+      let m;
+      while (m = reg.exec(d.description)) {
+        const file = await Utils.blobToBase64(m[1]);
+        files.push(file);
+      }
+    }
+    /* eslint-enable */
+
+    nodes = nodes.map((d, i) => {
+      d.icon = icons[i];
+      d.description = d.description.replace(/\shref="(blob:https?:\/\/[^"]+)"/g, () => ` href="${files.shift()}"`);
+      return d;
+    });
 
     if (type === 'csv') {
       Api.download('csv-nodes', { nodes });
