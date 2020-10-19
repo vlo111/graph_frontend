@@ -8,9 +8,8 @@ import Header from '../../components/Header';
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import { getList, getListInfo } from '../../store/selectors/graphs';
 import { getUserSearch } from '../../store/selectors/account';
-import Button from '../../components/form/Button';
 import { getUsersByTextRequest } from '../../store/actions/account';
-import { AddFriendRequest } from '../../store/actions/userFriends';
+import { myFriendsRequest } from '../../store/actions/userFriends';
 import AddFriend from './addFriend';
 
 const Search = React.memo(() => {
@@ -27,6 +26,10 @@ const Search = React.memo(() => {
   useEffect(() => {
     dispatch(getUsersByTextRequest(searchParam));
   }, [dispatch, searchParam]);
+
+  useEffect(() => {
+    dispatch(myFriendsRequest());
+  }, [dispatch, myFriendsRequest]);
 
   return (
     <Wrapper>

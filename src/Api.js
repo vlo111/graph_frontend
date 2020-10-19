@@ -193,12 +193,20 @@ class Api {
     return api.post('/user-friends/add', requestData);
   }
 
-  static cancelFriend(requestData) {
-    return api.put('/user-friends/cancel', requestData);
+  static cancelFriend(requestData, id) {
+    return api.put(`/user-friends/cancel/${id}`, requestData);
   }
 
-  static removeFriend(requestData) {
-    return api.put('/user-friends/remove', requestData);
+  static acceptFriend(requestData, id) {
+    return api.put(`/user-friends/accept/${id}`, requestData);
+  }
+
+  static removeFriend(id) {
+    return api.put(`/user-friends/remove/${id}`);
+  }
+
+  static myFriends() {
+    return api.get('/user-friends/my-friends');
   }
 }
 
