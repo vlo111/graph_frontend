@@ -31,7 +31,7 @@ production_job:
         - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
         
     script:
-      - bash .deploy-production2.sh
+      - bash .deploy-production.sh
       
     environment:
       name: production
