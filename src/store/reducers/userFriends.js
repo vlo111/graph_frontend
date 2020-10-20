@@ -1,9 +1,10 @@
 import {
-  MY_FRIENDS, ADD_FRIEND, ACCEPT_FRIEND, REMOVE_FRIEND,
+  MY_FRIENDS, ADD_FRIEND, ACCEPT_FRIEND, REMOVE_FRIEND, GET_FRIENDS,
 } from '../actions/userFriends';
 
 const initialState = {
   myFriends: [],
+  friendsList: [],
 };
 
 export default function reducer(state = initialState, action) {
@@ -25,6 +26,16 @@ export default function reducer(state = initialState, action) {
     {
       return {
         ...state, myFriends: action.payload.data.data,
+      };
+    }
+    case GET_FRIENDS.SUCCESS:
+    {
+      const {
+        friendsList,
+      } = action.payload.data;
+      return {
+        ...state,
+        friendsList,
       };
     }
     default: {

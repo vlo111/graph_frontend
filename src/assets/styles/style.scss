@@ -4436,6 +4436,12 @@ body .gh__menu {
   .viewAll {
     margin-top: 16px;
   }
+}
 
-
+.friends-list {
+  min-height: 90vh;
+  padding: 2% 3.4%;
+  border: 1px solid $color-light-gray;
+  border-radius: 24px;
+  background-color: $color-white;
 }

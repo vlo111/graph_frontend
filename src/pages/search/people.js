@@ -5,9 +5,7 @@ import { Link } from 'react-router-dom';
 import Wrapper from '../../components/Wrapper';
 import Header from '../../components/Header';
 import { getUserSearch } from '../../store/selectors/account';
-import Button from '../../components/form/Button';
 import { getUsersByTextRequest } from '../../store/actions/account';
-import { AddFriendRequest } from '../../store/actions/userFriends';
 import AddFriend from './addFriend';
 
 const Search = React.memo(() => {

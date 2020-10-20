@@ -13,7 +13,7 @@ const Socket = ({ socket, children }) => {
   const singleGraph = useSelector(getSingleGraph);
 
   useEffect(() => {
-    socket.on('graphUpdate', (data) => {
+    socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
       data.id = +data.id;
 
       return (
