@@ -110,7 +110,7 @@ class ReactChart extends Component {
 
   handleNodeClick = (ev, d) => {
     if (Chart.activeButton === 'delete') {
-      this.deleteNode(d);
+      this.deleteNode(ev, d);
     }
   }
 
