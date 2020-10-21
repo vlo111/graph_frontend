@@ -28,7 +28,7 @@ export default function reducer(state = initialState, action) {
     case LIST_SHARE_GRAPH.SUCCESS:
     case CREATE_SHARE_GRAPH.SUCCESS:
     case DELETE_SHARE_GRAPH.SUCCESS:
-    case UPDATE_SHARE_GRAPH_STATUS.SUCCESS:  
+    case UPDATE_SHARE_GRAPH_STATUS.SUCCESS:
     {
       const {
         shareGraphs: shareGraphsList, page, total, totalPages,
@@ -53,8 +53,8 @@ export default function reducer(state = initialState, action) {
         graphUsers: {
           ...state.graphUsers,
           ...action.payload.data.result,
-        }
-      }
+        },
+      };
     }
     default: {
       return state;
