@@ -6,6 +6,7 @@ import { getSingleGraph } from './store/selectors/graphs';
 import { updateSingleGraph } from './store/actions/graphs';
 import { addNotification } from './store/actions/notifications';
 import { getId } from './store/selectors/account';
+import { addMyFriends } from './store/actions/userFriends';
 
 const Socket = ({ socket, children }) => {
   const dispatch = useDispatch();
@@ -24,6 +25,10 @@ const Socket = ({ socket, children }) => {
 
     socket.on(`notificationsListGraphShared-${userId}`, (data) => {
       dispatch(addNotification(data));
+    });
+
+    socket.on(`updateUserfriend-${userId}`, (data) => {
+      dispatch(addMyFriends(data));
     });
 
     return () => socket.disconnect();

@@ -42,3 +42,12 @@ export const MY_FRIENDS = define('MY_FRIENDS');
 export function myFriendsRequest() {
   return MY_FRIENDS.request(() => Api.myFriends());
 }
+
+export const ADD_MYFRIENDS = define('ADD_MYFRIENDS');
+
+export function addMyFriends(data) {
+  return {
+    type: ADD_MYFRIENDS,
+    payload: data,
+  };
+}

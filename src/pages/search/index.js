@@ -37,7 +37,9 @@ const Search = React.memo(() => {
       <div className="searchData">
         <div className="searchData__links">
           <div className="searchData__link"><Link to={`search-graph?s=${searchParam}`}>Graphs</Link></div>
-          <div className="searchData__link"><Link to={`search-people?s=${searchParam}`} style={{ marginRight: '32px' }}>People</Link></div>
+          <div className="searchData__link">
+            <Link to={`search-people?s=${searchParam}`} style={{ marginRight: '32px' }}>People</Link>
+          </div>
         </div>
         <Suspense fallback={<div>Loading graphs...</div>}>
           {graphsList && graphsList.length ? (
@@ -69,9 +71,6 @@ const Search = React.memo(() => {
                         <span>{`${graph.nodesCount} nodes`}</span>
                       </div>
                     </div>
-                  </div>
-                  <div>
-                    <AddFriend user={graph.user} />
                   </div>
                 </article>
               ))}
