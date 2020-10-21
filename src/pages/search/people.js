@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import Wrapper from '../../components/Wrapper';
 import Header from '../../components/Header';
 import { getUserSearch } from '../../store/selectors/account';
-import Button from '../../components/form/Button';
 import { getUsersByTextRequest } from '../../store/actions/account';
+import AddFriend from './addFriend';
 
 const Search = React.memo(() => {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const Search = React.memo(() => {
                   </div>
                 </div>
                 <div>
-                  <Button>connect</Button>
+                  <AddFriend user={user} />
                 </div>
               </article>
             ))}
