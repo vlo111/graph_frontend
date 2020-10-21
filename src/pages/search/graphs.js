@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
@@ -8,6 +8,8 @@ import Header from '../../components/Header';
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import { getList, getListInfo } from '../../store/selectors/graphs';
 import Button from '../../components/form/Button';
+import { AddFriendRequest } from '../../store/actions/userFriends';
+import AddFriend from './addFriend';
 
 const Graphs = React.memo(() => {
   const dispatch = useDispatch();
@@ -58,7 +60,7 @@ const Graphs = React.memo(() => {
                   </div>
                 </div>
                 <div>
-                  <Button>connect</Button>
+                  <AddFriend user={graph.user} />
                 </div>
               </article>
             ))}
