@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 
-class DataImportModal extends Component {
+class ImportLinkedinCustomField extends Component {
   static propTypes = {
     type: PropTypes.oneOf(['work']).isRequired,
     data: PropTypes.object.isRequired,
@@ -9,6 +10,9 @@ class DataImportModal extends Component {
 
   renderWork = () => {
     const { data } = this.props;
+    if (_.isEmpty(data.work)) {
+      return null;
+    }
     return (
       <>
         {data.work.map((row) => (
@@ -44,6 +48,9 @@ class DataImportModal extends Component {
 
   renderSkills = () => {
     const { data } = this.props;
+    if (_.isEmpty(data.skills)) {
+      return null;
+    }
     return (
       <>
         {data.skills.map((row, index) => (
@@ -62,6 +69,9 @@ class DataImportModal extends Component {
 
   renderEduction = () => {
     const { data } = this.props;
+    if (_.isEmpty(data.education)) {
+      return null;
+    }
     return (
       <>
         {data.education.map((row) => (
@@ -109,4 +119,4 @@ class DataImportModal extends Component {
   }
 }
 
-export default DataImportModal;
+export default ImportLinkedinCustomField;
