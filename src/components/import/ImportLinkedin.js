@@ -40,6 +40,7 @@ class DataImportModal extends Component {
       this.props.setActiveButton('create');
     } else {
       this.toast = toast.error(data?.message || 'something went wrong');
+      return;
     }
     const { node = {} } = data;
     const x = window.innerWidth / 2;
