@@ -167,7 +167,6 @@ class Api {
   }
 
   static graphComments(requestData) {
-    console.log(requestData);
     return api.get('/comment-graphs/comments', { params: requestData });
   }
 
@@ -187,6 +186,34 @@ class Api {
     return api.get('/helpers/wikipedia', {
       params: { search },
     });
+  }
+
+  static getFriends() {
+    return api.get('/user-friends');
+  }
+
+  static addFriend(requestData) {
+    return api.post('/user-friends/add', requestData);
+  }
+
+  static cancelFriend(requestData, id) {
+    return api.put(`/user-friends/cancel/${id}`, requestData);
+  }
+
+  static acceptFriend(requestData, id) {
+    return api.put(`/user-friends/accept/${id}`, requestData);
+  }
+
+  static rejectFriend(requestData) {
+    return api.put('/user-friends/reject', requestData);
+  }
+
+  static removeFriend(id) {
+    return api.put(`/user-friends/remove/${id}`);
+  }
+
+  static myFriends() {
+    return api.get('/user-friends/my-friends');
   }
 }
 
