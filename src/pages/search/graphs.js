@@ -7,9 +7,6 @@ import Wrapper from '../../components/Wrapper';
 import Header from '../../components/Header';
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import { getList, getListInfo } from '../../store/selectors/graphs';
-import Button from '../../components/form/Button';
-import { AddFriendRequest } from '../../store/actions/userFriends';
-import AddFriend from './addFriend';
 
 const Graphs = React.memo(() => {
   const dispatch = useDispatch();
@@ -58,9 +55,6 @@ const Graphs = React.memo(() => {
                       <span>{`${graph.nodesCount} nodes`}</span>
                     </div>
                   </div>
-                </div>
-                <div>
-                  <AddFriend user={graph.user} />
                 </div>
               </article>
             ))}
