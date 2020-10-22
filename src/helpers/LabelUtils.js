@@ -110,13 +110,13 @@ class LabelUtils {
           return +num;
         })
         .max()
-        .value() + 1;
+        .value() + 1;s
       data.label.name = `${data.label.name}_${i}`;
     }
-    // if (labels.some((l) => l.color === data.label.color)) {
-    //   delete data.label.color;
-    //   data.label.color = ChartUtils.labelColors(data.label);
-    // }
+    if (!isEmbed && labels.some((l) => l.color === data.label.color)) {
+      delete data.label.color;
+      data.label.color = ChartUtils.labelColors(data.label);
+    }
 
     labels.push(data.label);
 
