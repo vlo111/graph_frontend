@@ -830,8 +830,8 @@ class Chart {
   }
 
   static setNodeData(nodeName, node, forceRender = false) {
-    this.data.nodes = this.getNodes().map((d) => {
-      if (d.name === nodeName) {
+    this.data.nodes = this.data.nodes.map((d) => {
+      if (d.name === nodeName || +d.index === +nodeName) {
         d = { ...d, ...node };
       }
       return d;
