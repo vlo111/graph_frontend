@@ -110,7 +110,7 @@ class LabelUtils {
           return +num;
         })
         .max()
-        .value() + 1;s
+        .value() + 1;
       data.label.name = `${data.label.name}_${i}`;
     }
     if (!isEmbed && labels.some((l) => l.color === data.label.color)) {
