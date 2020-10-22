@@ -29,7 +29,7 @@ class NodeFullInfo extends Component {
   }
 
   render() {
-    const { editable } = this.props;
+    const { editable, customFields } = this.props;
     const queryObj = queryString.parse(window.location.search);
     const { info: infoNodeName, expand } = queryObj;
     if (!infoNodeName) {
@@ -42,7 +42,12 @@ class NodeFullInfo extends Component {
     return (
       <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
         <div id="nodeFullInfo">
-          <HeaderMini />
+          <HeaderMini
+            HeaderImg={node.icon ? node.icon : bgImage}
+            NodeName={node.name}
+            NodeType={node.type}
+            Tabs={customFields}
+          />
           <div className="nodeFullContent">
             <div className="headerBanner">
               <img
@@ -76,6 +81,7 @@ class NodeFullInfo extends Component {
 
 const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph, // rerender then data changed
+  customFields: state.graphs.singleGraph.customFields || {},
 });
 
 const mapDispatchToProps = {};
