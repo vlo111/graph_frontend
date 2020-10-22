@@ -80,6 +80,9 @@ class ReactChart extends Component {
   }
 
   editNode = (ev, d) => {
+    if (d.readOnly) {
+      return;
+    }
     const { customFields } = this.props;
     const customField = CustomFields.get(customFields, d.type, d.name);
     this.props.toggleNodeModal({ ...d, customField });
@@ -102,6 +105,9 @@ class ReactChart extends Component {
 
   deleteLink = (ev, d) => {
     if (Chart.activeButton !== 'delete' && !d.contextMenu) {
+      return;
+    }
+    if (d.readOnly) {
       return;
     }
     const links = Chart.getLinks();

@@ -110,8 +110,12 @@ class ContextMenu extends Component {
                 >
                   Append
                 </Button>
-                <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
-                  Past Embedded (//todo)
+                <Button onClick={(ev) => {
+                  LabelUtils.past(x, y, true);
+                  this.handleClick(ev, 'label.embed');
+                }}
+                >
+                  Past Embedded
                 </Button>
               </div>
             </div>

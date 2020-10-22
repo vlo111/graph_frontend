@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
 import Socket from './Socket';
@@ -33,7 +33,7 @@ class App extends Component {
       <Socket>
         <BrowserRouter>
           <Switch>
-            <Route path="/drifts" exact component={GraphDrafts} />r
+            <Route path="/drifts" exact component={GraphDrafts} />
             <Route path="/search" component={Search} />
             <Route path="/search-people" component={SearchPeople} />
             <Route path="/search-graph" component={SearchGraphs} />

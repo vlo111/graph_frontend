@@ -1040,6 +1040,20 @@ p {
 
       a {
         color: $color-dark;
+        font-size: 16px;
+      }
+
+      .ghButton {
+        color: $color-dark;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        font-size: 16px;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
@@ -1489,7 +1503,7 @@ p {
     display: flex;
     align-items: center;
 
-    &.div{
+    &.div {
       cursor: default;
     }
 
@@ -4421,6 +4435,7 @@ body .gh__menu {
 
   &__link {
     margin-right: 16px;
+
     a {
       color: $color-dark-blue;
       text-decoration: none;
@@ -4444,4 +4459,51 @@ body .gh__menu {
   border: 1px solid $color-light-gray;
   border-radius: 24px;
   background-color: $color-white;
+}
+
+.graphUsersInfoOverlay{
+  .graphUsersInfo {
+    padding: 30px 20px 20px;
+    .close {
+      position: absolute;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .info {
+      margin-top: 10px;
+
+      > div {
+        display: flex;
+      }
+
+      img {
+        margin-right: 10px;
+      }
+
+      .userName{
+        font-size: 16px;
+        margin-top: 6px;
+      }
+
+      .time{
+        font-size: 15px;
+        color: $color-dark-blue;
+      }
+
+      .right {
+        display: flex;
+        flex-direction: column;
+
+      }
+    }
+  }
 }
