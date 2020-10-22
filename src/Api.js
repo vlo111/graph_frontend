@@ -58,6 +58,10 @@ class Api {
     return api.get('/users/me');
   }
 
+  static getUser(userId) {
+    return api.get('/users/profile', { params: { userId } });
+  }
+
   static updateMyAccount(data) {
     return api.post('/users/update', this.toFormData(data));
   }
@@ -196,8 +200,8 @@ class Api {
     });
   }
 
-  static getFriends() {
-    return api.get('/user-friends');
+  static getFriends(userId) {
+    return api.get('/user-friends', { params: { userId } });
   }
 
   static addFriend(requestData) {
