@@ -42,3 +42,9 @@ export const GRAPH_SHARED_USERS = define('GRAPH_SHARED_USERS');
 export function graphUsersRequest(requestData) {
   return GRAPH_SHARED_USERS.request(() => Api.graphUsers(requestData));
 }
+
+export const SEARCH_GRAPH_LIST = define('SEARCH_GRAPH_LIST');
+
+export function searchGraphsListRequest(page = 1, requestData = {}) {
+  return SEARCH_GRAPH_LIST.request(() => Api.searchGraphsList(page, requestData)).takeLatest();
+}

@@ -20,6 +20,7 @@ import suspense from './helpers/suspense';
 import Search from './pages/search';
 import SearchPeople from './pages/search/people';
 import SearchGraphs from './pages/search/graphs';
+import ShareGraphs from './pages/search/ShareGraphs';
 
 const GraphEmbed = React.lazy(() => import('./pages/GraphEmbed'));
 
@@ -37,6 +38,7 @@ class App extends Component {
             <Route path="/search" component={Search} />
             <Route path="/search-people" component={SearchPeople} />
             <Route path="/search-graph" component={SearchGraphs} />
+            <Route path="/search-shared-graph" component={ShareGraphs} />
             <Route path="/templates" exact component={Index} />
             <Route path="/shared" exact component={Index} />
 

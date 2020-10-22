@@ -162,6 +162,14 @@ class Api {
     return api.post('/share-graphs/update-status/', requestData);
   }
 
+  static searchGraphsList(page, requestData = {}) {
+    const params = { page, ...requestData };
+    return api.get('/share-graphs/search', {
+      params,
+      cancelToken: this.#cancel('searchGraphsList'),
+    });
+  }
+
   static createCommentGraph(requestData) {
     return api.post('/comment-graphs/create', requestData);
   }
