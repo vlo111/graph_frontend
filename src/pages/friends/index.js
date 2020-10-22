@@ -8,7 +8,7 @@ import { getFriendsRequest, myFriendsRequest } from '../../store/actions/userFri
 import { getId } from '../../store/selectors/account';
 import AddButton from '../search/addFriend';
 
-const Search = React.memo(() => {
+const Friends = React.memo(() => {
   const dispatch = useDispatch();
   const friends = useSelector(getUserFriendsList);
   const userId = useSelector(getId);
@@ -59,4 +59,4 @@ const Search = React.memo(() => {
   );
 });
 
-export default Search;
+export default Friends;

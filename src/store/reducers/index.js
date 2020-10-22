@@ -6,6 +6,7 @@ import shareGraphs from './shareGraphs';
 import commentGraphs from './commentGraphs';
 import notifications from './notifications';
 import userFriends from './userFriends';
+import profile from './profile';
 
 export default combineReducers({
   app,
@@ -15,4 +16,5 @@ export default combineReducers({
   commentGraphs,
   notifications,
   userFriends,
+  profile,
 });

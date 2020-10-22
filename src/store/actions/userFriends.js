@@ -3,8 +3,8 @@ import Api from '../../Api';
 
 export const GET_FRIENDS = define('GET_FRIENDS');
 
-export function getFriendsRequest() {
-  return GET_FRIENDS.request(() => Api.getFriends()).takeLatest();
+export function getFriendsRequest(userId) {
+  return GET_FRIENDS.request(() => Api.getFriends(userId)).takeLatest();
 }
 
 export const ADD_FRIEND = define('ADD_FRIEND');
