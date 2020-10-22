@@ -75,7 +75,7 @@ class HeaderMini extends Component {
             </Link>
           </li>
           <li>
-            <Button onClick={() => this.toggleGraphUsersInfo(false)}>
+            <Button onClick={() => this.toggleGraphUsersInfo(true)}>
               Info
             </Button>
           </li>
