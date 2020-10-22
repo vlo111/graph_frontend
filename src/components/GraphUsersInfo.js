@@ -5,27 +5,24 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Chart from '../Chart';
-import { setActiveButton } from '../store/actions/app';
-import { getSingleGraphRequest } from '../store/actions/graphs';
 
 class GraphUsersInfo extends Component {
   static propTypes = {
-    singleGraphUsers: PropTypes.array.isRequired,
-    myAccount: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
   }
 
   render() {
-    const { singleGraphUsers, myAccount } = this.props;
-
+    const { singleGraph } = this.props;
     const { info: nodeName } = queryString.parse(window.location.search);
-    if (!nodeName) return null;
+
+    if (!nodeName || !singleGraph.users) return null;
 
     const node = Chart.getNodes().find((d) => d.name === nodeName);
     if (!node) return null;
 
-    const createdUser = singleGraphUsers.find((u) => u.id === (node.createdUser || myAccount.id)) || {};
-    const updatedUser = singleGraphUsers.find((u) => u.id === (node.updatedUser || myAccount.id)) || {};
+    const createdUser = singleGraph.users.find((u) => u.id === (node.createdUser || singleGraph.userId)) || {};
+    const updatedUser = singleGraph.users.find((u) => u.id === (node.updatedUser || singleGraph.userId)) || {};
     return (
       <Modal
         isOpen
@@ -40,7 +37,7 @@ class GraphUsersInfo extends Component {
             <img src={createdUser.avatar} className="avatar" alt="" />
             <div className="right">
               <span className="userName">
-                {`${updatedUser.firstName} ${updatedUser.lastName}`}
+                {`${createdUser.firstName} ${createdUser.lastName}`}
               </span>
               <span className="time">
                 {node.createdAt ? moment(node.createdAt * 1000).calendar() : ''}
@@ -71,13 +68,9 @@ class GraphUsersInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  singleGraphUsers: state.graphs.singleGraph.users || [],
-  myAccount: state.account.myAccount,
+  singleGraph: state.graphs.singleGraph,
 });
-const mapDispatchToProps = {
-  setActiveButton,
-  getSingleGraphRequest,
-};
+const mapDispatchToProps = {};
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,

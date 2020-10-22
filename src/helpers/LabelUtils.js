@@ -113,11 +113,10 @@ class LabelUtils {
         .value() + 1;
       data.label.name = `${data.label.name}_${i}`;
     }
-    if (labels.some((l) => l.color === data.label.color)) {
-      delete data.label.color;
-      data.label.color = ChartUtils.labelColors(data.label);
-    }
-
+    // if (labels.some((l) => l.color === data.label.color)) {
+    //   delete data.label.color;
+    //   data.label.color = ChartUtils.labelColors(data.label);
+    // }
 
     labels.push(data.label);
 

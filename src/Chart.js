@@ -345,6 +345,7 @@ class Chart {
       // .attr('id', (d) => ChartUtils.normalizeId(d.name, 'lb'))
       .attr('data-name', (d) => d.name || ChartUtils.labelColors(d))
       .attr('fill', ChartUtils.labelColors)
+      .attr('filter', (d) => d.sourceId ? 'url(#labelShadow)' : null)
       .attr('d', (d) => renderPath(d.d))
       .on('click', (ev, d) => this.event.emit('label.click', ev, d))
       .on('mouseenter', (ev, d) => this.event.emit('label.mouseenter', ev, d))
@@ -826,6 +827,19 @@ class Chart {
       });
     }
     return links;
+  }
+
+  static setNodeData(nodeName, node, forceRender = false) {
+    this.data.nodes = this.data.nodes.map((d) => {
+      if (d.name === nodeName || +d.index === +nodeName) {
+        d = { ...d, ...node };
+      }
+      return d;
+    });
+    this._dataNodes = null;
+    if (forceRender) {
+      this.render();
+    }
   }
 
   static getNodes(show = null) {

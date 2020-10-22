@@ -90,6 +90,9 @@ class ContextMenu extends Component {
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
     const showPast = !!sessionStorage.getItem('label.copy');
+    if (params.fieldName === '_location') {
+      return null;
+    }
     return (
       <div className={`contextmenuOverlay ${x + 360 > window.innerWidth ? 'toLeft' : ''}`} onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
