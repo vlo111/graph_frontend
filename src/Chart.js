@@ -829,6 +829,19 @@ class Chart {
     return links;
   }
 
+  static setNodeData(nodeName, node, forceRender = false) {
+    this.data.nodes = this.getNodes().map((d) => {
+      if (d.name === nodeName) {
+        d = { ...d, ...node };
+      }
+      return d;
+    });
+    this._dataNodes = null;
+    if (forceRender) {
+      this.render();
+    }
+  }
+
   static getNodes(show = null) {
     if (_.isEmpty(this.data)) {
       return [];

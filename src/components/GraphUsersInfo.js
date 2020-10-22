@@ -37,7 +37,7 @@ class GraphUsersInfo extends Component {
             <img src={createdUser.avatar} className="avatar" alt="" />
             <div className="right">
               <span className="userName">
-                {`${updatedUser.firstName} ${updatedUser.lastName}`}
+                {`${createdUser.firstName} ${createdUser.lastName}`}
               </span>
               <span className="time">
                 {node.createdAt ? moment(node.createdAt * 1000).calendar() : ''}
