@@ -68,7 +68,7 @@ class HeaderMini extends Component {
     return (
       <header id="headerMini">
         <SearchInput />
-        <ul className="links">
+        <ul className="navLinks">
           <li>
             <Link to={isInEmbed ? `/graphs/embed/filter/${graphId}/${token}` : `/graphs/filter/${graphId}`}>
               Filter

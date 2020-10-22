@@ -829,10 +829,10 @@ class Chart {
     return links;
   }
 
-  static setNodeData(nodeName, node, forceRender = false) {
-    this.data.nodes = this.data.nodes.map((d) => {
+  static setNodeData(nodeName, data, forceRender = false) {
+    this.data.nodes = this.getNodes().map((d) => {
       if (d.name === nodeName || +d.index === +nodeName) {
-        d = { ...d, ...node };
+        d = { ...d, ...data };
       }
       return d;
     });
