@@ -345,6 +345,7 @@ class Chart {
       // .attr('id', (d) => ChartUtils.normalizeId(d.name, 'lb'))
       .attr('data-name', (d) => d.name || ChartUtils.labelColors(d))
       .attr('fill', ChartUtils.labelColors)
+      .attr('filter', (d) => d.sourceId ? 'url(#labelShadow)' : null)
       .attr('d', (d) => renderPath(d.d))
       .on('click', (ev, d) => this.event.emit('label.click', ev, d))
       .on('mouseenter', (ev, d) => this.event.emit('label.mouseenter', ev, d))

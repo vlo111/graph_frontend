@@ -10,22 +10,22 @@ import { getSingleGraphRequest } from '../store/actions/graphs';
 
 class GraphUsersInfo extends Component {
   static propTypes = {
-    singleGraphUsers: PropTypes.array.isRequired,
+    singleGraph: PropTypes.object.isRequired,
     myAccount: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
   }
 
   render() {
-    const { singleGraphUsers, myAccount } = this.props;
+    const { singleGraph, myAccount } = this.props;
 
     const { info: nodeName } = queryString.parse(window.location.search);
-    if (!nodeName) return null;
+    if (!nodeName || !singleGraph.user) return null;
 
     const node = Chart.getNodes().find((d) => d.name === nodeName);
     if (!node) return null;
 
-    const createdUser = singleGraphUsers.find((u) => u.id === (node.createdUser || myAccount.id)) || {};
-    const updatedUser = singleGraphUsers.find((u) => u.id === (node.updatedUser || myAccount.id)) || {};
+    const createdUser = singleGraph.user.find((u) => u.id === (node.createdUser || singleGraph.userId)) || {};
+    const updatedUser = singleGraph.user.find((u) => u.id === (node.updatedUser || singleGraph.userId)) || {};
     return (
       <Modal
         isOpen
@@ -71,8 +71,7 @@ class GraphUsersInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  singleGraphUsers: state.graphs.singleGraph.users || [],
-  myAccount: state.account.myAccount,
+  singleGraphUsers: state.graphs.singleGraph,
 });
 const mapDispatchToProps = {
   setActiveButton,
