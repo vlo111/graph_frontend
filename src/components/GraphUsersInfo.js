@@ -5,18 +5,15 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Chart from '../Chart';
-import { setActiveButton } from '../store/actions/app';
-import { getSingleGraphRequest } from '../store/actions/graphs';
 
 class GraphUsersInfo extends Component {
   static propTypes = {
     singleGraph: PropTypes.object.isRequired,
-    myAccount: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
   }
 
   render() {
-    const { singleGraph, myAccount } = this.props;
+    const { singleGraph } = this.props;
 
     const { info: nodeName } = queryString.parse(window.location.search);
     if (!nodeName || !singleGraph.user) return null;
@@ -71,12 +68,9 @@ class GraphUsersInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  singleGraphUsers: state.graphs.singleGraph,
+  singleGraph: state.graphs.singleGraph,
 });
-const mapDispatchToProps = {
-  setActiveButton,
-  getSingleGraphRequest,
-};
+const mapDispatchToProps = {};
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
