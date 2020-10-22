@@ -1,4 +1,6 @@
-import React, { useMemo, useCallback } from 'react';
+import React, {
+  useMemo, useCallback, useContext, useEffect,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import find from 'lodash/find';
@@ -6,7 +8,7 @@ import { getId } from '../../store/selectors/account';
 import Button from '../../components/form/Button';
 import Select from '../../components/form/Select';
 import {
-  AddFriendRequest, cancelFriendRequest, removeFriendRequest, acceptFriendRequest,
+  AddFriendRequest, removeFriendRequest, acceptFriendRequest,
 } from '../../store/actions/userFriends';
 import { friendsList } from '../../store/selectors/userFriends';
 
