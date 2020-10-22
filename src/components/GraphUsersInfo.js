@@ -3,21 +3,29 @@ import Modal from 'react-modal';
 import queryString from 'query-string';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Chart from '../Chart';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 
 class GraphUsersInfo extends Component {
+  static propTypes = {
+    singleGraphUsers: PropTypes.array.isRequired,
+    myAccount: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired,
+  }
+
   render() {
     const { singleGraphUsers, myAccount } = this.props;
+
     const { info: nodeName } = queryString.parse(window.location.search);
-    if (!nodeName) {
-      return null;
-    }
+    if (!nodeName) return null;
+
     const node = Chart.getNodes().find((d) => d.name === nodeName);
+    if (!node) return null;
+
     const createdUser = singleGraphUsers.find((u) => u.id === (node.createdUser || myAccount.id)) || {};
-    const updatedUser = singleGraphUsers.find((u) => u.id === node.updatedUser) || {};
-    console.log(updatedUser);
+    const updatedUser = singleGraphUsers.find((u) => u.id === (node.updatedUser || myAccount.id)) || {};
     return (
       <Modal
         isOpen
@@ -31,26 +39,32 @@ class GraphUsersInfo extends Component {
           <div>
             <img src={createdUser.avatar} className="avatar" alt="" />
             <div className="right">
-              <span className="userName">{`${createdUser.firstName} ${createdUser.lastName}`}</span>
+              <span className="userName">
+                {`${updatedUser.firstName} ${updatedUser.lastName}`}
+              </span>
               <span className="time">
                 {node.createdAt ? moment(node.createdAt * 1000).calendar() : ''}
               </span>
             </div>
           </div>
         </div>
-        <div className="info updated">
-          <h3>Updated</h3>
-          <div>
-            <img src={updatedUser.avatar} className="avatar" alt="" />
-            <div className="right">
-              <span className="userName">{`${updatedUser.firstName} ${updatedUser.lastName}`}</span>
-              <span className="time">
-                {node.updatedAt ? moment(node.updatedAt * 1000).calendar() : ''}
-              </span>
-            </div>
+        {node.createdAt !== node.updatedAt ? (
+          <div className="info updated">
+            <h3>Updated</h3>
+            <div>
+              <img src={updatedUser.avatar} className="avatar" alt="" />
+              <div className="right">
+                <span className="userName">
+                  {`${updatedUser.firstName} ${updatedUser.lastName}`}
+                </span>
+                <span className="time">
+                  {node.updatedAt ? moment(node.updatedAt * 1000).calendar() : ''}
+                </span>
+              </div>
 
+            </div>
           </div>
-        </div>
+        ) : null}
       </Modal>
     );
   }
