@@ -9,7 +9,7 @@ import {
   SET_NODE_CUSTOM_FIELD,
   ADD_NODE_CUSTOM_FIELD_KEY,
   REMOVE_NODE_CUSTOM_FIELD_KEY,
-  ACTIONS_COUNT, GET_SINGLE_EMBED_GRAPH,
+  ACTIONS_COUNT, GET_SINGLE_EMBED_GRAPH, SET_GRAPH_CUSTOM_FIELDS,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 
@@ -70,6 +70,14 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         singleGraph: {},
+      };
+    }
+    case SET_GRAPH_CUSTOM_FIELDS: {
+      const { customFields } = action.payload;
+      const singleGraph = { ...state.singleGraph, customFields };
+      return {
+        ...state,
+        singleGraph,
       };
     }
     case SET_NODE_CUSTOM_FIELD: {

@@ -24,7 +24,11 @@ export default () => {
   }, [dispatch]);
 
   list.forEach((item) => {
-    item.link = `/graphs/preview/${item.graphId}`;
+    if (item.actionType === 'add-friend') {
+      item.link = '/friends';
+    } else {
+      item.link = `/graphs/preview/${item.graphId}`;
+    }
   });
 
   return (

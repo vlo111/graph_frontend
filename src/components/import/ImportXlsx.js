@@ -62,8 +62,6 @@ class DataImportModal extends Component {
     let convertType = 'xlsx';
     if (file.type === 'text/csv') {
       convertType = 'csv';
-    } else if (file.type === 'application/zip') {
-      convertType = 'csv-zip';
     }
     this.setState({ loading: true });
     const { payload: { data } } = await this.props.convertGraphRequest(convertType, requestData);
@@ -92,7 +90,7 @@ class DataImportModal extends Component {
           <>
             <File
               onChangeFile={(file) => this.handleChange('file', file)}
-              accept=".xlsx"
+              accept=".zip"
               label={file1Label}
             />
             {['nodes', 'links'].includes(fileType) ? (

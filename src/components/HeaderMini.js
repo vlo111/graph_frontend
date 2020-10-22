@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 import _ from 'lodash';
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 import SearchInput from './search/SearchInput';
-import AccountDropDown from './account/AccountDropDown'; 
+import AccountDropDown from './account/AccountDropDown';
 import Utils from '../helpers/Utils';
 import Chart from '../Chart';
 import { setLoading } from '../store/actions/app';
-import ExportNodeTabs from './ExportNode/ExportNodeTabs'; 
+import ExportNodeTabs from './ExportNode/ExportNodeTabs';
+import GraphUsersInfo from "./GraphUsersInfo";
+import Button from "./form/Button";
 
 class HeaderMini extends Component {
   async componentWillMount() {
@@ -55,7 +57,12 @@ class HeaderMini extends Component {
     this.setState({ image: HeaderImg });
   }
 
+  toggleGraphUsersInfo = (showGraphUsersInfo) => {
+    this.setState({ showGraphUsersInfo });
+  }
+
   render() {
+    const { showGraphUsersInfo } = this.state;
     const { match: { params: { graphId = '', token = '' } } } = this.props;
     const isInEmbed = Utils.isInEmbed();
     return (
@@ -66,7 +73,12 @@ class HeaderMini extends Component {
             <Link to={isInEmbed ? `/graphs/embed/filter/${graphId}/${token}` : `/graphs/filter/${graphId}`}>
               Filter
             </Link>
-                      </li>
+          </li>
+          <li>
+            <Button onClick={() => this.toggleGraphUsersInfo(false)}>
+              Info
+            </Button>
+          </li>
           <li>
             <ExportNodeTabs
               NodeName={this.props.NodeName}
@@ -82,6 +94,10 @@ class HeaderMini extends Component {
             <AccountDropDown mini />
           ) : null
         }
+
+        {showGraphUsersInfo ? (
+          <GraphUsersInfo onClose={() => this.toggleGraphUsersInfo(false)} />
+        ) : null}
       </header>
     );
   }

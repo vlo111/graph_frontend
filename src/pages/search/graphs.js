@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
@@ -7,7 +7,6 @@ import Wrapper from '../../components/Wrapper';
 import Header from '../../components/Header';
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import { getList, getListInfo } from '../../store/selectors/graphs';
-import Button from '../../components/form/Button';
 
 const Graphs = React.memo(() => {
   const dispatch = useDispatch();
@@ -56,9 +55,6 @@ const Graphs = React.memo(() => {
                       <span>{`${graph.nodesCount} nodes`}</span>
                     </div>
                   </div>
-                </div>
-                <div>
-                  <Button>connect</Button>
                 </div>
               </article>
             ))}

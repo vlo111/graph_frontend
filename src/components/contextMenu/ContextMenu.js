@@ -89,6 +89,7 @@ class ContextMenu extends Component {
     }
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
+    const showPast = !!sessionStorage.getItem('label.copy');
     return (
       <div className={`contextmenuOverlay ${x + 360 > window.innerWidth ? 'toLeft' : ''}`} onClick={this.closeMenu}>
         <div className="contextmenu" style={{ left: x, top: y }}>
@@ -96,23 +97,30 @@ class ContextMenu extends Component {
           {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
-          <div className="ghButton notClose">
-            <Icon value="fa-clipboard" />
-            Past
-            <Icon className="arrow" value="fa-angle-right" />
-            <div className="contextmenu">
-              <Button onClick={(ev) => {
-                LabelUtils.past(x, y);
-                this.handleClick(ev, 'label.append');
-              }}
-              >
-                Append
-              </Button>
-              <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
-                Past Embedded (//todo)
-              </Button>
+          {showPast ? (
+            <div className="ghButton notClose">
+              <Icon value="fa-clipboard" />
+              Past
+              <Icon className="arrow" value="fa-angle-right" />
+              <div className="contextmenu">
+                <Button onClick={(ev) => {
+                  LabelUtils.past(x, y);
+                  this.handleClick(ev, 'label.append');
+                }}
+                >
+                  Append
+                </Button>
+                <Button onClick={(ev) => {
+                  LabelUtils.past(x, y, true);
+                  this.handleClick(ev, 'label.embed');
+                }}
+                >
+                  Past Embedded
+                </Button>
+              </div>
             </div>
-          </div>
+          ) : null}
+
           {['node', 'link', 'label', 'chart'].includes(show) ? (
             <>
               {showInMap ? (

@@ -25,7 +25,11 @@ class LabelUtils {
     return data;
   }
 
-  static past(x, y) {
+  static pastEmbed(x, y) {
+
+  }
+
+  static past(x, y, isEmbed) {
     let data;
     try {
       data = JSON.parse(sessionStorage.getItem('label.copy'));
@@ -35,6 +39,7 @@ class LabelUtils {
     if (!data) {
       return;
     }
+
     const { x: posX, y: posY } = ChartUtils.calcScaledPosition(x, y);
     const nodes = Chart.getNodes();
     const minX = Math.min(...data.label.d.map((l) => l[0]));
@@ -69,15 +74,34 @@ class LabelUtils {
       }
       d.fx = d.fx - minX + posX;
       d.fy = d.fy - minY + posY;
+      if (isEmbed) {
+        d.readOnly = true;
+        d.sourceId = data.graphId;
+        d.originalName = originalName;
+      }
+
       const customField = CustomFields.get(data.customFields, d.type, originalName);
 
       store.dispatch(setNodeCustomField(d.type, d.name, customField));
       nodes.push(d);
     });
 
+    data.links = data.links.map((d) => {
+      if (isEmbed) {
+        d.readOnly = true;
+        d.sourceId = data.graphId;
+      }
+      return d;
+    });
+
     const links = [...Chart.getLinks(), ...data.links];
     const labels = Chart.getLabels();
 
+    if (isEmbed) {
+      data.label.readOnly = true;
+      data.label.sourceId = data.graphId;
+      data.label.originalName = data.label.name;
+    }
     if (labels.some((l) => l.name === data.label.name)) {
       const i = _.chain(labels)
         .filter((n) => new RegExp(`^${Utils.escRegExp(data.label.name)}(_\\d+|)$`).test(n.name))
@@ -93,6 +117,7 @@ class LabelUtils {
       delete data.label.color;
       data.label.color = ChartUtils.labelColors(data.label);
     }
+
 
     labels.push(data.label);
 

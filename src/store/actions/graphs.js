@@ -73,6 +73,17 @@ export function updateSingleGraph(graph) {
   };
 }
 
+export const SET_GRAPH_CUSTOM_FIELDS = 'SET_GRAPH_CUSTOM_FIELDS';
+
+export function setGraphCustomFields(customFields) {
+  return {
+    type: SET_GRAPH_CUSTOM_FIELDS,
+    payload: {
+      customFields,
+    },
+  };
+}
+
 export const SET_NODE_CUSTOM_FIELD = 'SET_NODE_CUSTOM_FIELD';
 
 export function setNodeCustomField(type, name, customField, tabData) {
