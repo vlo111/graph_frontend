@@ -341,7 +341,7 @@ class Chart {
       .data(this.data.labels.filter((l) => l.hidden !== 1))
       .join('path')
       .attr('class', 'label nodeCrate')
-      .attr('opacity', '0.4')
+      .attr('opacity', d => d.sourceId ? 0.6 : 0.4)
       // .attr('id', (d) => ChartUtils.normalizeId(d.name, 'lb'))
       .attr('data-name', (d) => d.name || ChartUtils.labelColors(d))
       .attr('fill', ChartUtils.labelColors)

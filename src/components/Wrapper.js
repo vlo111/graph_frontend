@@ -5,7 +5,8 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import OfflineIndicator from './OfflineIndicator';
 import Loading from './Loading';
-import { getMyAccountRequest } from "../store/actions/account";
+import { getMyAccountRequest } from '../store/actions/account';
+import { socketInit } from '../store/actions/socket';
 
 Modal.setAppElement(document.body);
 
@@ -14,6 +15,8 @@ class Wrapper extends Component {
     children: PropTypes.node.isRequired,
     token: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    socketInit: PropTypes.func.isRequired,
+    getMyAccountRequest: PropTypes.func.isRequired,
     className: PropTypes.string,
     auth: PropTypes.bool,
   }
@@ -28,8 +31,8 @@ class Wrapper extends Component {
     if (auth) {
       this.props.getMyAccountRequest();
     }
+    this.props.socketInit();
   }
-
 
   render() {
     const {
@@ -56,7 +59,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  getMyAccountRequest
+  getMyAccountRequest,
+  socketInit,
 };
 
 const Container = connect(

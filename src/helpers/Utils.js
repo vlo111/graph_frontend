@@ -121,6 +121,16 @@ class Utils {
       return true;
     }
   }
+
+  static hexToRgb(hex, opacity = 1) {
+    hex = hex.toUpperCase().replace('#', '');
+    const arrBuff = new ArrayBuffer(4);
+    const dv = new DataView(arrBuff);
+    dv.setUint32(0, parseInt(hex, 16), false);
+    const arrByte = [...new Uint8Array(arrBuff)];
+    arrByte.shift();
+    return opacity ? `rgba(${arrByte.join(',')}, ${opacity})` : `rgb(${arrByte.join(',')})`;
+  }
 }
 
 export default Utils;

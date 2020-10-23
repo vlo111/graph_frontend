@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
-import Socket from './Socket';
 import GraphForm from './pages/GraphForm';
 import SignIn from './pages/sign/SignIn';
 import SignUp from './pages/sign/SignUp';
@@ -30,7 +29,7 @@ class App extends Component {
 
   render() {
     return (
-      <Socket>
+      <>
         <BrowserRouter>
           <Switch>
             <Route path="/drifts" exact component={GraphDrafts} />
@@ -66,7 +65,7 @@ class App extends Component {
           </Switch>
         </BrowserRouter>
         <ToastContainer hideProgressBar transition={ToastSlide} autoClose={3000} pauseOnFocusLoss={false} />
-      </Socket>
+      </>
     );
   }
 }
