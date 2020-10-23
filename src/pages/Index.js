@@ -22,7 +22,7 @@ class Index extends Component {
             },
             { to: '/templates', name: 'Templates', component: <GraphTemplates /> },
             { to: '/shared', name: 'Shared Graphs', component: <Shared /> },
-            { to: '/friends', name: 'Friends', component: <Friends /> },
+           // { to: '/friends', name: 'Friends', component: <Friends /> },
           ]}
         />
       </Wrapper>
