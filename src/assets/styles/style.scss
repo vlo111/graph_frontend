@@ -4509,14 +4509,12 @@ body .gh__menu {
     }
   }
 }
-.mapTabButton {
-  bottom: 280px; 
+.mapTabButton { 
   background: transparent;
   border: none;
-  display: flex;
-  position: absolute;
+  display: flex; 
   left: 67px;
-
+  position: absolute;
   img {
     width: 40px;
     height: 40px;
