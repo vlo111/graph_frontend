@@ -4510,10 +4510,12 @@ body .gh__menu {
   }
 }
 .mapTabButton {
-  bottom: 250px; 
+  bottom: 280px; 
   background: transparent;
   border: none;
   display: flex;
+  position: absolute;
+  left: 67px;
 
   img {
     width: 40px;
