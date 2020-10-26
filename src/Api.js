@@ -182,6 +182,10 @@ class Api {
     return api.get('/comment-graphs/comments', { params: requestData });
   }
 
+  static deleteGraphComment(id) {
+    return api.delete(`comment-graphs/delete/${id}`);
+  }
+
   static userGraph() {
     return api.get('/share-graphs/user-graphs');
   }

@@ -3,21 +3,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { getGraphCommentParent, getGraphComments } from '../../../store/selectors/commentGraphs';
+import { getId } from '../../../store/selectors/account';
 import { getGraphCommentsRequest } from '../../../store/actions/commentGraphs';
 import Owner from './Owner';
 import AddComment from './AddComment';
 
-const CommentItem = ({ comment, isReply }) => (
-  <div className={`comment-modal__comment-item${isReply ? '--reply' : ''}`} key={`comment-${comment.id}`}>
-    <Owner
-      user={comment.user}
-      date={moment.utc(comment.createdAt).format('DD.MM.YYYY')}
-      comment={comment}
-      edit={!isReply}
-    />
-    {comment.text}
-  </div>
-);
+const CommentItem = ({ comment, isReply }) => {
+  const userId = useSelector(getId);
+
+  return (
+    <div className={`comment-modal__comment-item${isReply ? '--reply' : ''}`} key={`comment-${comment.id}`}>
+      <Owner
+        user={comment.user}
+        date={moment.utc(comment.createdAt).format('DD.MM.YYYY')}
+        comment={comment}
+        edit={!isReply}
+        remove={+userId === +comment.user.id}
+      />
+      {comment.text}
+    </div>
+  );
+};
 
 const CommentItems = ({ graph, closeModal }) => {
   const dispatch = useDispatch();

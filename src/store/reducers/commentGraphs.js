@@ -2,6 +2,7 @@ import {
   CREATE_COMMENT_GRAPH,
   GET_GRAPH_COMMENTS,
   SET_COMMENT_PARENT,
+  DELETE_GRAPH_COMMENT,
 } from '../actions/commentGraphs';
 
 const initialState = {
@@ -48,6 +49,19 @@ export default function reducer(state = initialState, action) {
 
       return {
         ...state, graphComments,
+      };
+    }
+    case DELETE_GRAPH_COMMENT.SUCCESS: {
+      const {
+        id,
+      } = action.payload.data;
+
+      return {
+        ...state,
+        graphComments: state.graphComments.filter(
+          (comment) => +comment.id !== +id,
+        ),
+        graphCommentParent: {},
       };
     }
     default: {
