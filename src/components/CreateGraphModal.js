@@ -62,13 +62,18 @@ class CreateGraphModal extends Component {
           textArea
           onChangeText={(v) => this.handleChange('description', v)}
         />
-        <Button
-          className="saveNode"
-          disabled={!graphData.title}
-          onClick={this.addGraph}
-        >
-          Create
-        </Button>
+        <div className="buttons">
+          <Button onClick={this.props.history.goBack}>
+            Cancel
+          </Button>
+          <Button
+            className="saveNode"
+            disabled={!graphData.title}
+            onClick={this.addGraph}
+          >
+            Create
+          </Button>
+        </div>
       </Modal>
     );
   }
