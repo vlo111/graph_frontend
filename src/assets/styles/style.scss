@@ -1031,7 +1031,7 @@ p {
   align-items: center;
   height: 94px;
 
-  .links {
+  .navLinks {
     display: flex;
     margin: 0 13px;
 
@@ -1040,6 +1040,20 @@ p {
 
       a {
         color: $color-dark;
+        font-size: 16px;
+      }
+
+      .ghButton {
+        color: $color-dark;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        font-size: 16px;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
@@ -1489,7 +1503,7 @@ p {
     display: flex;
     align-items: center;
 
-    &.div{
+    &.div {
       cursor: default;
     }
 
@@ -1602,7 +1616,7 @@ p {
   .contentWrapper {
     background-color: white;
     max-width: 100%;
-    height: calc(100% - 32px);
+    height: calc(100% - 34px);
     display: flex;
     flex-direction: column;
     font-size: 15px;
@@ -4421,6 +4435,7 @@ body .gh__menu {
 
   &__link {
     margin-right: 16px;
+
     a {
       color: $color-dark-blue;
       text-decoration: none;
@@ -4473,5 +4488,65 @@ body .gh__menu {
     margin-top: 20px;
     border-top: 1px solid $color-gray;
     padding-top: 20px;
+  }
+}
+
+.graphUsersInfoOverlay{
+  .graphUsersInfo {
+    padding: 30px 20px 20px;
+    width: 350px;
+    height: 350px;
+    .close {
+      position: absolute;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .info {
+      margin-top: 10px;
+
+      > div {
+        display: flex;
+      }
+
+      img {
+        margin-right: 10px;
+      }
+
+      .userName{
+        font-size: 16px;
+        margin-top: 6px;
+      }
+
+      .time{
+        font-size: 15px;
+        color: $color-dark-blue;
+      }
+
+      .right {
+        display: flex;
+        flex-direction: column;
+
+      }
+    }
+  }
+}
+.mapTabButton { 
+  background: transparent;
+  border: none;
+  display: flex; 
+  left: 67px;
+  position: absolute;
+  img {
+    width: 40px;
+    height: 40px;
   }
 }

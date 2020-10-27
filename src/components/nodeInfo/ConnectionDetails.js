@@ -28,9 +28,20 @@ class ConnectionDetails extends Component {
   })
 
   render() {
-    const { nodeName } = this.props;
+    const { nodeName, exportNode, ConnectionNodes } = this.props;
     const queryObj = queryString.parse(window.location.search);
     const connectedNodes = this.getGroupedConnections(nodeName);
+
+    if (exportNode) {
+      connectedNodes.map((nodeGroup) => {
+        nodeGroup.map((d) => {
+          if (d.connected.icon && d.connected.icon.startsWith('blob')) {
+            d.connected.icon = ConnectionNodes.find((node) => node.name === d.connected.name).icon;
+          }
+        });
+      });
+    }
+
     return (
       <div className="connectionDetails">
         {connectedNodes.map((nodeGroup) => (
@@ -39,15 +50,29 @@ class ConnectionDetails extends Component {
             <ul className="list">
               {nodeGroup.map((d) => (
                 <li className="item" key={d.connected.name}>
-                  <Link replace to={`?${queryString.stringify({ ...queryObj, info: d.connected.name })}`}>
-                    <div className="left">
-                      <NodeIcon node={d.connected} />
-                    </div>
-                    <div className="right">
-                      <span className="name">{d.connected.name}</span>
-                      <span className="type">{d.connected.type}</span>
-                    </div>
-                  </Link>
+                  {exportNode === false
+                    ? (
+                      <Link replace to={`?${queryString.stringify({ ...queryObj, info: d.connected.name })}`}>
+                        <div className="left">
+                          <NodeIcon node={d.connected} />
+                        </div>
+                        <div className="right">
+                          <span className="name">{d.connected.name}</span>
+                          <span className="type">{d.connected.type}</span>
+                        </div>
+                      </Link>
+                    )
+                    : (
+                      <a href="#">
+                        <div className="left">
+                          <NodeIcon node={d.connected} />
+                        </div>
+                        <div className="right">
+                          <span className="name">{d.connected.name}</span>
+                          <span className="type">{d.connected.type}</span>
+                        </div>
+                      </a>
+                    )}
                 </li>
               ))}
             </ul>

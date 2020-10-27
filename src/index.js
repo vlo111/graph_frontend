@@ -4,11 +4,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import './helpers/Promise.allValues';
-import socketIOClient from 'socket.io-client';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
-import SocketContext from './context/Socket';
 
 import 'rc-tooltip/assets/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,15 +16,11 @@ import 'react-image-crop/lib/ReactCrop.scss';
 import './assets/styles/font-awesome.css';
 import './assets/styles/style.scss';
 
-const socket = socketIOClient(process.env.REACT_APP_API_URL);
-
 ReactDOM.render((
   <Provider store={store}>
-    <SocketContext.Provider value={socket}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </SocketContext.Provider>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
   </Provider>
 ), document.getElementById('root'));
 

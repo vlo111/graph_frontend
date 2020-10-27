@@ -12,12 +12,14 @@ import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
 import Api from '../../Api';
 import ChartUtils from '../../helpers/ChartUtils';
+import Utils from "../../helpers/Utils";
 
 class DataView extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
+    customFields: PropTypes.object.isRequired,
     selectedGrid: PropTypes.objectOf(PropTypes.array).isRequired,
   }
 
@@ -80,10 +82,36 @@ class DataView extends Component {
     });
   }
 
-  export = (type) => {
-    const { selectedGrid } = this.props;
-    const nodes = Chart.getNodes().filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
+  export = async (type) => {
+    const { selectedGrid, customFields } = this.props;
+    let nodes = _.clone(Chart.getNodes()).filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
     const links = Chart.getLinks().filter((d) => ChartUtils.isCheckedLink(selectedGrid, d));
+    const labels = Chart.getLabels(); // todo filter empty labels
+
+    const icons = await Promise.all(nodes.map((d) => {
+      if (d.icon && d.icon.startsWith('blob:')) {
+        return Utils.blobToBase64(d.icon);
+      }
+      return d.icon;
+    }));
+
+    const files = [];
+    /* eslint-disable */
+    for (const d of nodes) {
+      const reg = /\shref="(blob:https?:\/\/[^"]+)"/g;
+      let m;
+      while (m = reg.exec(d.description)) {
+        const file = await Utils.blobToBase64(m[1]);
+        files.push(file);
+      }
+    }
+    /* eslint-enable */
+
+    nodes = nodes.map((d, i) => {
+      d.icon = icons[i];
+      d.description = d.description.replace(/\shref="(blob:https?:\/\/[^"]+)"/g, () => ` href="${files.shift()}"`);
+      return d;
+    });
 
     if (type === 'csv') {
       Api.download('csv-nodes', { nodes });
@@ -92,7 +120,7 @@ class DataView extends Component {
       }
       return;
     }
-    Api.download(type, { nodes, links });
+    Api.download(type, { nodes, links, labels, customFields });
   }
 
   download = async (type) => {
@@ -166,6 +194,7 @@ class DataView extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   selectedGrid: state.app.selectedGrid,
+  customFields: state.graphs.singleGraph.customFields || {},
 });
 
 const mapDispatchToProps = {

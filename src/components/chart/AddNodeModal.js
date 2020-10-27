@@ -104,7 +104,7 @@ class AddNodeModal extends Component {
           return d;
         });
 
-        nodes[index] = nodeData;
+        nodes[index] = { ...nodes[index], ...nodeData };
       }
       Chart.render({ nodes, links });
       this.props.setNodeCustomField(nodeData.type, nodeData.name, customField);
