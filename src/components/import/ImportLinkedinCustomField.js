@@ -39,6 +39,12 @@ class ImportLinkedinCustomField extends Component {
                 {`${row.startDate} - ${row.endDate}`}
               </p>
             ) : null}
+          {row.summary ? (
+              <p>
+                <strong>Summary: </strong>
+                {row.summary}
+              </p>
+            ) : null}
             <hr />
           </Fragment>
         ))}
