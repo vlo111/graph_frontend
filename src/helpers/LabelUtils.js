@@ -5,6 +5,8 @@ import Utils from './Utils';
 import store from '../store';
 import CustomFields from './CustomFields';
 import { setNodeCustomField } from '../store/actions/graphs';
+import Api from "../Api";
+import { toast } from "react-toastify";
 
 class LabelUtils {
   static copy(graphId, name, customFields) {
@@ -41,6 +43,40 @@ class LabelUtils {
     }
 
     const { x: posX, y: posY } = ChartUtils.calcScaledPosition(x, y);
+
+    // label past
+    const labels = Chart.getLabels();
+
+    if (isEmbed) {
+      if (labels.some((l) => l.originalName && l.originalName === data.label.name)) {
+        toast.info('Label already pasted');
+        return;
+      }
+      data.label.readOnly = true;
+      data.label.sourceId = data.graphId;
+      data.label.originalName = data.label.name;
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (labels.some((l) => l.color === data.label.color)) {
+        delete data.label.color;
+        data.label.color = ChartUtils.labelColors(data.label);
+      }
+    }
+    if (labels.some((l) => l.name === data.label.name)) {
+      const i = _.chain(labels)
+        .filter((n) => new RegExp(`^${Utils.escRegExp(data.label.name)}(_\\d+|)$`).test(n.name))
+        .map((n) => {
+          const [, num] = n.name.match(/_(\d+)$/) || [0, 0];
+          return +num;
+        })
+        .max()
+        .value() + 1;
+      data.label.name = `${data.label.name}_${i}`;
+    }
+
+    labels.push(data.label);
+
+    // nodes past
     const nodes = Chart.getNodes();
     const minX = Math.min(...data.label.d.map((l) => l[0]));
     const minY = Math.min(...data.label.d.map((l) => l[1]));
@@ -83,9 +119,12 @@ class LabelUtils {
       const customField = CustomFields.get(data.customFields, d.type, originalName);
 
       store.dispatch(setNodeCustomField(d.type, d.name, customField));
+
       nodes.push(d);
     });
 
+    // links past
+    const links = Chart.getLinks();
     data.links = data.links.map((d) => {
       if (isEmbed) {
         d.readOnly = true;
@@ -94,31 +133,11 @@ class LabelUtils {
       return d;
     });
 
-    const links = [...Chart.getLinks(), ...data.links];
-    const labels = Chart.getLabels();
+    links.push(...data.links);
 
     if (isEmbed) {
-      data.label.readOnly = true;
-      data.label.sourceId = data.graphId;
-      data.label.originalName = data.label.name;
+      Api.labelShare(data.graphId, data.label.originalName);
     }
-    if (labels.some((l) => l.name === data.label.name)) {
-      const i = _.chain(labels)
-        .filter((n) => new RegExp(`^${Utils.escRegExp(data.label.name)}(_\\d+|)$`).test(n.name))
-        .map((n) => {
-          const [, num] = n.name.match(/_(\d+)$/) || [0, 0];
-          return +num;
-        })
-        .max()
-        .value() + 1;
-      data.label.name = `${data.label.name}_${i}`;
-    }
-    if (!isEmbed && labels.some((l) => l.color === data.label.color)) {
-      delete data.label.color;
-      data.label.color = ChartUtils.labelColors(data.label);
-    }
-
-    labels.push(data.label);
 
     Chart.render({ links, nodes, labels });
   }

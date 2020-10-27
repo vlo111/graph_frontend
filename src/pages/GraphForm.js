@@ -23,6 +23,7 @@ import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
+import CreateGraphModal from "../components/CreateGraphModal";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -56,7 +57,7 @@ class GraphForm extends Component {
         <AddNodeModal />
         {activeButton === 'data' && <DataView />}
         {activeButton === 'search' && <SearchModal />}
-          {activeButton === 'maps-view' && <MapsGraph History={this.props.history} />}
+        {activeButton === 'maps-view' && <MapsGraph />}
         <AddLinkModal />
         <AddLabelModal />
         <ContextMenu />
@@ -68,6 +69,7 @@ class GraphForm extends Component {
         <MapsButton />
         <Legend />
         <LabelTooltip />
+        <CreateGraphModal />
       </Wrapper>
     );
   }

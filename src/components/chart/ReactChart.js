@@ -69,6 +69,12 @@ class ReactChart extends Component {
 
   handleLabelDelete = (ev, d) => {
     const labels = Chart.getLabels().filter((l) => l.name !== d.name);
+    if (d.sourceId) {
+      const nodes = Chart.getNodes().filter((n) => !n.sourceId || n.sourceId !== d.sourceId);
+      const links = Chart.getLinks().filter((l) => !l.sourceId || l.sourceId !== d.sourceId);
+      Chart.render({ labels, nodes, links });
+      return;
+    }
     Chart.render({ labels });
   }
 

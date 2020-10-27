@@ -119,7 +119,7 @@ export default function reducer(state = initialState, action) {
     case UPDATE_SINGLE_GRAPH: {
       return {
         ...state,
-        singleGraph: action.payload,
+        singleGraph: action.payload.graph,
       };
     }
     case ACTIONS_COUNT.SUCCESS: {

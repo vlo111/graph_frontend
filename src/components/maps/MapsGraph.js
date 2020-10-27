@@ -5,6 +5,8 @@ import {
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import queryString from 'query-string';
+import { withRouter } from 'react-router-dom';
 import Button from '../form/Button';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import { previousActiveButton } from '../../store/actions/app';
@@ -13,7 +15,6 @@ import ChartUtils from '../../helpers/ChartUtils';
 import Api from '../../Api';
 import NodeIcon from '../NodeIcon';
 import withGoogleMap from '../../helpers/withGoogleMap';
-import queryString from 'query-string';
 
 class MapsGraph extends Component {
   static propTypes = {
@@ -44,7 +45,7 @@ class MapsGraph extends Component {
     const queryObj = queryString.parse(window.location.search);
     queryObj.info = node.name;
     const query = queryString.stringify(queryObj);
-    this.props.History.replace(`?${query}`);
+    this.props.history.replace(`?${query}`);
   }
 
   render() {
@@ -134,4 +135,4 @@ const Container = connect(
   mapDispatchToProps,
 )(MapsGraph);
 
-export default withGoogleMap(Container);
+export default withRouter(withGoogleMap(Container));

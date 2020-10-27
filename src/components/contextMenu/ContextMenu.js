@@ -59,7 +59,9 @@ class ContextMenu extends Component {
         params = { fieldName };
       }
     } else if (ev.target.closest('.labels')) {
-      params = { name: ev.target.getAttribute('data-name') };
+      const name = ev.target.getAttribute('data-name');
+      const label = Chart.getLabels().find((l) => l.name === name);
+      params = { ...label };
       element = 'label';
     }
     this.setState({
