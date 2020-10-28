@@ -4509,3 +4509,52 @@ body .gh__menu {
     }
   }
 }
+.mapTabButton { 
+  background: transparent;
+  border: none;
+  display: flex; 
+  left: 67px;
+  position: absolute;
+  img {
+    width: 40px;
+    height: 40px;
+  }
+}
+.linkedin {
+  
+  .company {
+    color: #181818;
+    font-size: 15;
+    line-height: 1.5;
+  } 
+  .position {
+    color: #181818;
+    font-size: 14.5px;
+    line-height: 1.4;
+  }
+  .date {
+    color: rgba(0,0,0,.6);
+    font-size: 13.5px;
+  } 
+  .location {
+    color: rgba(0,0,0,.6);
+    font-size: 13.5px;
+  }
+  .summary {
+    color: #181818;
+    font-size: 13.5px;
+  }
+  .institution {
+    font-size: 14.5px;
+    line-height: 1.4;
+  }
+  .studyType {
+    font-size: 14.5px;
+    line-height: 1.4;
+  } 
+  .skills {
+    color: #181818;
+    font-size: 14.5px;
+    line-height: 1.4;
+  }
+}
