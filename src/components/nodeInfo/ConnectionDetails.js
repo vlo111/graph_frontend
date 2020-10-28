@@ -50,7 +50,7 @@ class ConnectionDetails extends Component {
             <ul className="list">
               {nodeGroup.map((d) => (
                 <li className="item" key={d.connected.name}>
-                  {exportNode === false
+                  {exportNode == undefined || exportNode === false
                     ? (
                       <Link replace to={`?${queryString.stringify({ ...queryObj, info: d.connected.name })}`}>
                         <div className="left">
