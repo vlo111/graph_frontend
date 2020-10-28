@@ -9,6 +9,7 @@ import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg
 import { ReactComponent as ViewPassSvg } from '../assets/images/icons/view.svg';
 import { getActionsCount } from '../store/selectors/graphs';
 import { getActionsCountRequest } from '../store/actions/graphs';
+import { getGraphCommentsCount } from '../store/selectors/commentGraphs';
 import Button from './form/Button';
 import ShareTooltip from './ShareTooltip';
 import CommentModal from './CommentModal';
@@ -25,6 +26,7 @@ TootlipContent.propTypes = {
 
 const GraphListFooter = ({ graph }) => {
   const actionsCountAll = useSelector(getActionsCount);
+  const commentsCount = useSelector(getGraphCommentsCount);
   const actionsCount = actionsCountAll[graph.id];
   const dispatch = useDispatch();
   const [openCommentModal, setOpenCommentModal] = useState(false);
@@ -44,7 +46,7 @@ const GraphListFooter = ({ graph }) => {
         className="transparent footer-icon"
         onClick={() => setOpenCommentModal(true)}
       >
-        <span className="graphListFooter__count">{actionsCount?.comments}</span>
+        <span className="graphListFooter__count">{commentsCount}</span>
       </Button>
       <Button icon={<ViewPassSvg />} className="transparent footer-icon">
         <span className="graphListFooter__count">{graph?.views || 0}</span>

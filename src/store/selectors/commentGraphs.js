@@ -11,3 +11,8 @@ export const getGraphCommentParent = createSelector(
   getCommentGraph,
   (items) => items.graphCommentParent,
 );
+
+export const getGraphCommentsCount = createSelector(
+  getCommentGraph,
+  (items) => items.graphComments.length,
+);
