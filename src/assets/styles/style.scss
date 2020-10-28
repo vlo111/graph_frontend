@@ -4521,41 +4521,24 @@ body .gh__menu {
   }
 }
 .linkedin {
-  
+ 
   .company {
     color: #181818;
     font-size: 15px;
-    font-weight: bold
+    font-weight: 600;
+    margin-bottom: 0rem !important;
   } 
-  .position {
+  .position, .institution, .studyType, .skills, .summary {
     color: #181818;
     font-size: 14.5px; 
+    margin-bottom: 0rem !important; 
   }
-  .date {
+  .date, .location  {
     color: rgba(0,0,0,.6);
     font-size: 13.5px;
-  } 
-  .location {
-    color: rgba(0,0,0,.6);
-    font-size: 13.5px;
-  }
-  .summary {
-    color: #181818;
-    font-size: 13.5px;
-  }
-  .institution {
-    color: #181818;
-    font-size: 14.5px; 
-  }
-  .studyType {
-    color: #181818;
-    font-size: 14.5px; 
-  } 
-  .skills {
-    color: #181818;
-    font-size: 14.5px; 
-  }
-  .displayNone {
-    display: none
+    margin-bottom: 0rem !important;
+  }   
+  .visually-hidden {
+    display: none;
   }
 }
