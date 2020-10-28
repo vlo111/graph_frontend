@@ -15,6 +15,7 @@ import FileInput from '../form/FileInput';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
+import Utils from '../../helpers/Utils';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -130,6 +131,9 @@ class AddNodeModal extends Component {
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
     const groups = this.getTypes(nodes);
+
+    Utils.orderGroup(groups, nodeData.type);
+
     return (
       <Modal
         className="ghModal"
