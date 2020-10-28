@@ -43,7 +43,7 @@ class ImportLinkedinCustomField extends Component {
                 </p>
               ) : null}
              {row.startDate ? (
-                <p className="displayNone"> 
+                <p className="visually-hidden"> 
                 <strong>startDate: </strong>
                   {row.startDate}
                   <strong>endDate: </strong>
@@ -51,13 +51,13 @@ class ImportLinkedinCustomField extends Component {
                 </p>
               ) : null} 
               {row.date ? (
-                <p className="displayNone"> 
+                <p className="visually-hidden"> 
                  <strong>date: </strong>
                   {row.date}
                 </p>
               ) : null}
              {row.duration ? (
-                <p className="displayNone"> 
+                <p className="visually-hidden"> 
                 <strong>duration: </strong>
                   {row.duration}
                 </p>
