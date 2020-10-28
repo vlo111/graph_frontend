@@ -18,33 +18,48 @@ class ImportLinkedinCustomField extends Component {
         {data.work.map((row) => (
           <Fragment key={row.startDate} >
             <div className='linkedin'>
-              <p className="company">
-                {/* <strong>Company: </strong> */}
+              <p className="company"> 
                 {row.company}
               </p>
               {row.position ? (
-                <p className="position">
-                  {/* <strong>Position: </strong> */}
+                <p className="position"> 
                   {row.position}
                 </p>
               ) : null} 
               {row.date ? (
-                <p className="date">
-                  {/* <strong>Date: </strong> */}
-                  {row.date} {`  ${row.duration} `}
+                <p className="date"> 
+                  {row.date} {`${row.duration}`}
                 </p>
               ) : null}
               {row.location ? (
-                <p className="location">
-                  {/* <strong>Location: </strong> */}
+                <p className="location"> 
                   {row.location}
                 </p>
               ) : null}
               <br />
               {row.summary ? (
-                <p className="summary">
-                  {/* <strong>Summary: </strong> */}
+                <p className="summary"> 
                   {row.summary}
+                </p>
+              ) : null}
+             {row.startDate ? (
+                <p className="displayNone"> 
+                <strong>startDate: </strong>
+                  {row.startDate}
+                  <strong>endDate: </strong>
+                  {row.endDate}
+                </p>
+              ) : null} 
+              {row.date ? (
+                <p className="displayNone"> 
+                 <strong>date: </strong>
+                  {row.date}
+                </p>
+              ) : null}
+             {row.duration ? (
+                <p className="displayNone"> 
+                <strong>duration: </strong>
+                  {row.duration}
                 </p>
               ) : null}
               <br />
