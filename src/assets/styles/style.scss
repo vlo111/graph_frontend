@@ -4525,12 +4525,11 @@ body .gh__menu {
   .company {
     color: #181818;
     font-size: 15;
-    line-height: 1.5;
+    font-weight: bold
   } 
   .position {
     color: #181818;
-    font-size: 14.5px;
-    line-height: 1.4;
+    font-size: 14.5px; 
   }
   .date {
     color: rgba(0,0,0,.6);
@@ -4545,17 +4544,16 @@ body .gh__menu {
     font-size: 13.5px;
   }
   .institution {
-    font-size: 14.5px;
-    line-height: 1.4;
+    color: #181818;
+    font-size: 14.5px; 
   }
   .studyType {
-    font-size: 14.5px;
-    line-height: 1.4;
+    color: #181818;
+    font-size: 14.5px; 
   } 
   .skills {
     color: #181818;
-    font-size: 14.5px;
-    line-height: 1.4;
+    font-size: 14.5px; 
   }
   .displayNone {
     display: none
