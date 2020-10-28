@@ -59,7 +59,10 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         graphComments: state.graphComments.filter(
-          (comment) => +comment.id !== +id,
+          (comment) => {
+            comment.children = comment.children?.filter((reply) => +reply.id !== +id);
+            return +comment.id !== +id;
+          },
         ),
         graphCommentParent: {},
       };

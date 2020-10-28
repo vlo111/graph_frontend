@@ -24,6 +24,6 @@ export function setGraphCommentParent(parent) {
 
 export const DELETE_GRAPH_COMMENT = define('DELETE_GRAPH_COMMENT');
 
-export function deleteGraphComment(id) {
-  return DELETE_GRAPH_COMMENT.request(() => Api.deleteGraphComment(id));
+export function deleteGraphComment(id, graphId) {
+  return DELETE_GRAPH_COMMENT.request(() => Api.deleteGraphComment(id, graphId));
 }

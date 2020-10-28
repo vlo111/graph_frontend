@@ -19,6 +19,7 @@ class Wrapper extends Component {
     getMyAccountRequest: PropTypes.func.isRequired,
     className: PropTypes.string,
     auth: PropTypes.bool,
+    singleGraph: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
@@ -32,6 +33,12 @@ class Wrapper extends Component {
       this.props.getMyAccountRequest();
     }
     this.props.socketInit();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.singleGraph.id !== this.props.singleGraph.id) {
+      this.props.socketInit();
+    }
   }
 
   render() {
@@ -56,6 +63,7 @@ class Wrapper extends Component {
 const mapStateToProps = (state) => ({
   token: state.account.token,
   isLoading: state.app.isLoading,
+  singleGraph: state.graphs.singleGraph,
 });
 
 const mapDispatchToProps = {

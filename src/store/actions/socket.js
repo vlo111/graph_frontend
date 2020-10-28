@@ -19,6 +19,7 @@ export function socketInit() {
       graphs: { singleGraph },
       account: { myAccount: { id: userId } },
     } = getState();
+
     socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
       data.id = +data.id;
 
