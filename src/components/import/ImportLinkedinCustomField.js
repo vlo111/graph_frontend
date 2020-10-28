@@ -16,36 +16,39 @@ class ImportLinkedinCustomField extends Component {
     return (
       <>
         {data.work.map((row) => (
-          <Fragment key={row.startDate}>
-            <p>
-              <strong>Company: </strong>
-              {row.company}
-            </p>
-            {row.location ? (
-              <p>
-                <strong>Location: </strong>
-                {row.location}
+          <Fragment key={row.startDate} >
+            <div className='linkedin'>
+              <p className="company">
+                {/* <strong>Company: </strong> */}
+                {row.company}
               </p>
-            ) : null}
-            {row.position ? (
-              <p>
-                <strong>Position: </strong>
-                {row.position}
-              </p>
-            ) : null}
-            {row.startDate ? (
-              <p>
-                <strong>Date: </strong>
-                {`${row.startDate} - ${row.endDate}`}
-              </p>
-            ) : null}
-          {row.summary ? (
-              <p>
-                <strong>Summary: </strong>
-                {row.summary}
-              </p>
-            ) : null}
-            <hr />
+              {row.position ? (
+                <p className="position">
+                  {/* <strong>Position: </strong> */}
+                  {row.position}
+                </p>
+              ) : null} 
+              {row.date ? (
+                <p className="date">
+                  {/* <strong>Date: </strong> */}
+                  {row.date} {`  ${row.duration} `}
+                </p>
+              ) : null}
+              {row.location ? (
+                <p className="location">
+                  {/* <strong>Location: </strong> */}
+                  {row.location}
+                </p>
+              ) : null}
+              <br />
+              {row.summary ? (
+                <p className="summary">
+                  {/* <strong>Summary: </strong> */}
+                  {row.summary}
+                </p>
+              ) : null}
+              <br />
+            </div>
           </Fragment>
         ))}
       </>
@@ -61,12 +64,14 @@ class ImportLinkedinCustomField extends Component {
       <>
         {data.skills.map((row, index) => (
           <Fragment key={row.name}>
-            <p>
-              <strong>
-                {`${index + 1}. `}
-              </strong>
-              {row.name}
-            </p>
+            <div className='linkedin'>
+              <p >
+                <strong className="skills">
+                  {`${index + 1}. `}
+                </strong>
+                {row.name}
+              </p>
+            </div>
           </Fragment>
         ))}
       </>
@@ -82,25 +87,27 @@ class ImportLinkedinCustomField extends Component {
       <>
         {data.education.map((row) => (
           <Fragment key={row.name}>
-            {row.institution ? (
-              <p>
-                <strong>Institution: </strong>
-                {row.institution}
-              </p>
-            ) : null}
-            {row.studyType ? (
-              <p>
-                <strong>Study Type: </strong>
-                {row.studyType}
-              </p>
-            ) : null}
-            {row.startDate ? (
-              <p>
-                <strong>Date: </strong>
-                {`${row.startDate} - ${row.endDate}`}
-              </p>
-            ) : null}
-            <hr />
+            <div className='linkedin'>
+              {row.institution ? (
+                <p className="institution">
+                  {/* <strong>Institution: </strong> */}
+                  {row.institution}
+                </p>
+              ) : null}
+              {row.studyType ? (
+                <p className="studyType">
+                  {/* <strong>Study Type: </strong> */}
+                  {row.studyType}
+                </p>
+              ) : null}
+              {row.date ? (
+                <p className="startDate">
+                  {/* <strong>Date: </strong> */}
+                  {`${row.startDate} - ${row.endDate}`}
+                </p>
+              ) : null}
+              <br />
+            </div>
           </Fragment>
         ))}
       </>
