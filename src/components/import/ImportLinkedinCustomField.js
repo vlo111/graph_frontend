@@ -17,7 +17,7 @@ class ImportLinkedinCustomField extends Component {
       <>
         {data.work.map((row) => (
           <Fragment key={row.startDate} >
-            <div className='linkedin'>
+            <section className='linkedin'>
               <p className="company"> 
                 {row.company}
               </p>
@@ -43,7 +43,7 @@ class ImportLinkedinCustomField extends Component {
                 </p>
               ) : null}
              {row.startDate ? (
-                <p className="displayNone"> 
+                <p className="visually-hidden"> 
                 <strong>startDate: </strong>
                   {row.startDate}
                   <strong>endDate: </strong>
@@ -51,19 +51,20 @@ class ImportLinkedinCustomField extends Component {
                 </p>
               ) : null} 
               {row.date ? (
-                <p className="displayNone"> 
+                <p className="visually-hidden"> 
                  <strong>date: </strong>
                   {row.date}
                 </p>
               ) : null}
              {row.duration ? (
-                <p className="displayNone"> 
+                <p className="visually-hidden"> 
                 <strong>duration: </strong>
                   {row.duration}
                 </p>
               ) : null}
-              <br />
-            </div>
+              
+            </section>
+             <hr/>
           </Fragment>
         ))}
       </>
@@ -104,20 +105,17 @@ class ImportLinkedinCustomField extends Component {
           <Fragment key={row.name}>
             <div className='linkedin'>
               {row.institution ? (
-                <p className="institution">
-                  {/* <strong>Institution: </strong> */}
+                <p className="institution"> 
                   {row.institution}
                 </p>
               ) : null}
               {row.studyType ? (
-                <p className="studyType">
-                  {/* <strong>Study Type: </strong> */}
+                <p className="studyType"> 
                   {row.studyType}
                 </p>
               ) : null}
-              {row.date ? (
-                <p className="startDate">
-                  {/* <strong>Date: </strong> */}
+              {row.startDate ? (
+                <p className="date"> 
                   {`${row.startDate} - ${row.endDate}`}
                 </p>
               ) : null}
