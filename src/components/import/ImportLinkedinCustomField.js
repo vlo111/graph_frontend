@@ -17,7 +17,7 @@ class ImportLinkedinCustomField extends Component {
       <>
         {data.work.map((row) => (
           <Fragment key={row.startDate} >
-            <div className='linkedin'>
+            <section className='linkedin'>
               <p className="company"> 
                 {row.company}
               </p>
@@ -62,8 +62,9 @@ class ImportLinkedinCustomField extends Component {
                   {row.duration}
                 </p>
               ) : null}
-              <br />
-            </div>
+              
+            </section>
+             <hr/>
           </Fragment>
         ))}
       </>
@@ -113,8 +114,8 @@ class ImportLinkedinCustomField extends Component {
                   {row.studyType}
                 </p>
               ) : null}
-              {row.date ? (
-                <p className="startDate"> 
+              {row.startDate ? (
+                <p className="date"> 
                   {`${row.startDate} - ${row.endDate}`}
                 </p>
               ) : null}
