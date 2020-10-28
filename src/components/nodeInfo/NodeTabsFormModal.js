@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import Input from '../form/Input';
@@ -10,6 +11,7 @@ import { addNodeCustomFieldKey, setNodeCustomField } from '../../store/actions/g
 import Button from '../form/Button';
 import Validate from '../../helpers/Validate';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Chart from "../../Chart";
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -53,7 +55,7 @@ class NodeTabsFormModal extends Component {
 
   save = async () => {
     const {
-      node, customField, customFields, fieldName,
+      node, customField, customFields, fieldName, currentUserId,
     } = this.props;
     const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
@@ -70,6 +72,10 @@ class NodeTabsFormModal extends Component {
       }
       customField[tabData.name] = tabData.content;
       this.props.setNodeCustomField(node.type, node.name, customField, tabData);
+      Chart.setNodeData(node.name, {
+        updatedAt: moment().unix(),
+        updatedUser: currentUserId,
+      });
       this.props.onClose();
     }
     this.setState({ errors, tabData });
@@ -125,6 +131,7 @@ class NodeTabsFormModal extends Component {
 
 const mapStateToProps = (state) => ({
   customFields: state.graphs.singleGraph.customFields || {},
+  currentUserId: state.account.myAccount.id,
 });
 
 const mapDispatchToProps = {

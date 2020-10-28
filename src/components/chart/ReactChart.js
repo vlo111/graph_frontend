@@ -80,6 +80,9 @@ class ReactChart extends Component {
   }
 
   editNode = (ev, d) => {
+    if (d.readOnly) {
+      return;
+    }
     const { customFields } = this.props;
     const customField = CustomFields.get(customFields, d.type, d.name);
     this.props.toggleNodeModal({ ...d, customField });
@@ -102,6 +105,9 @@ class ReactChart extends Component {
 
   deleteLink = (ev, d) => {
     if (Chart.activeButton !== 'delete' && !d.contextMenu) {
+      return;
+    }
+    if (d.readOnly) {
       return;
     }
     const links = Chart.getLinks();
@@ -145,6 +151,14 @@ class ReactChart extends Component {
           <g className="wrapper" transform-origin="top left">
             <g className="labels">
               <rect className="labelsBoard" fill="transparent" width="100%" height="100%" />
+              <defs>
+                <filter id="labelShadow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                  <feDropShadow dx="1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                  <feDropShadow dx="0" dy="-1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                  <feDropShadow dx="-1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                </filter>
+              </defs>
             </g>
             <g className="directions" />
             <g className="links" />

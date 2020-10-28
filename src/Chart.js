@@ -11,6 +11,9 @@ class Chart {
 
   static drag(simulation) {
     const dragstart = (ev, d) => {
+      if (d.readOnly) {
+        return;
+      }
       this.event.emit('node.dragstart', ev, d);
       if (ev.active) simulation.alphaTarget(0.3).restart();
       d.fixed = !!d.fx;
@@ -21,6 +24,9 @@ class Chart {
     };
 
     const dragged = (ev, d) => {
+      if (d.readOnly) {
+        return;
+      }
       d.fx = ev.x;
       d.fy = ev.y;
 
@@ -31,6 +37,9 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
+      if (d.readOnly) {
+        return;
+      }
       if (this.activeButton === 'view') {
         this.detectLabels(d);
       }
@@ -266,17 +275,22 @@ class Chart {
       } else if (dragLabel.label) {
         const datum = dragLabel.label.datum();
         datum.d = datum.d.map((p) => {
-          p[0] += ev.dx;
-          p[1] += ev.dy;
+          p[0] = +(p[0] + ev.dx).toFixed(2);
+          p[1] = +(p[1] + ev.dy).toFixed(2);
           return p;
         });
         this.node.each((d) => {
           if (dragLabel.nodes.some((n) => n.index === d.index)) {
-            d.fx += ev.dx;
-            d.fy += ev.dy;
+            if (
+              (!d.readOnly && !datum.readOnly)
+              || (d.readOnly && datum.readOnly && d.sourceId === datum.sourceId)
+            ) {
+              d.fx += ev.dx;
+              d.fy += ev.dy;
 
-            d.x += ev.dx;
-            d.y += ev.dy;
+              d.x += ev.dx;
+              d.y += ev.dy;
+            }
           }
         });
         this.graphMovement();
@@ -327,10 +341,11 @@ class Chart {
       .data(this.data.labels.filter((l) => l.hidden !== 1))
       .join('path')
       .attr('class', 'label nodeCrate')
-      .attr('opacity', '0.4')
+      .attr('opacity', d => d.sourceId ? 0.6 : 0.4)
       // .attr('id', (d) => ChartUtils.normalizeId(d.name, 'lb'))
       .attr('data-name', (d) => d.name || ChartUtils.labelColors(d))
       .attr('fill', ChartUtils.labelColors)
+      .attr('filter', (d) => d.sourceId ? 'url(#labelShadow)' : null)
       .attr('d', (d) => renderPath(d.d))
       .on('click', (ev, d) => this.event.emit('label.click', ev, d))
       .on('mouseenter', (ev, d) => this.event.emit('label.mouseenter', ev, d))
@@ -814,6 +829,19 @@ class Chart {
     return links;
   }
 
+  static setNodeData(nodeName, data, forceRender = false) {
+    this.data.nodes = this.getNodes().map((d) => {
+      if (d.name === nodeName || +d.index === +nodeName) {
+        d = { ...d, ...data };
+      }
+      return d;
+    });
+    this._dataNodes = null;
+    if (forceRender) {
+      this.render();
+    }
+  }
+
   static getNodes(show = null) {
     if (_.isEmpty(this.data)) {
       return [];
@@ -838,6 +866,8 @@ class Chart {
         updatedAt: d.updatedAt,
         createdUser: d.createdUser,
         updatedUser: d.updatedUser,
+        readOnly: !!d.readOnly || undefined,
+        sourceId: d.sourceId || undefined,
       }));
     }
     if (show) {
@@ -878,6 +908,8 @@ class Chart {
           updatedAt: pd.updatedAt,
           createdUser: pd.createdUser,
           updatedUser: pd.updatedUser,
+          readOnly: pd.readOnly,
+          sourceId: pd.sourceId,
         };
       });
     }

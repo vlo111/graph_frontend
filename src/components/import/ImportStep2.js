@@ -4,19 +4,25 @@ import PropTypes from 'prop-types';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton } from '../../store/actions/app';
-import { convertGraphRequest } from '../../store/actions/graphs';
+import { convertGraphRequest, setGraphCustomFields } from '../../store/actions/graphs';
 import ChartUtils from '../../helpers/ChartUtils';
 
 class ImportStep2 extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
+    setGraphCustomFields: PropTypes.func.isRequired,
     importData: PropTypes.object.isRequired,
   }
 
   import = () => {
-    const { importData: { nodes = [], links = [] } } = this.props;
+    const {
+      importData: {
+        nodes = [], links = [], labels = [], customFields = {},
+      },
+    } = this.props;
     ChartUtils.resetColors();
-    Chart.render({ nodes, links });
+    Chart.render({ nodes, links, labels });
+    this.props.setGraphCustomFields(customFields);
     this.props.setActiveButton('create');
   }
 
@@ -51,6 +57,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setActiveButton,
   convertGraphRequest,
+  setGraphCustomFields,
 };
 const Container = connect(
   mapStateToProps,
