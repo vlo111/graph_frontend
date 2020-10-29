@@ -4,6 +4,7 @@ import Account from '../../helpers/Account';
 import { updateSingleGraph } from './graphs';
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
+import Chart from "../../Chart";
 
 let socket;
 
@@ -35,5 +36,23 @@ export function socketInit() {
     socket.on(`updateUserfriend-${userId}`, (data) => {
       dispatch(addMyFriends(data));
     });
+
+    socket.on('socketLabelDataChange', (data) => {
+      const embedLabels = Chart.data.embedLabels;
+      console.log(data)
+      Chart.render({ embedLabels: [data] })
+    });
+  };
+}
+
+export const SOCKET_LABEL_DATA_CHANGE = 'SOCKET_LABEL_DATA_CHANGE';
+
+export function socketLabelDataChange(graph) {
+  socket.emit('socketLabelDataChange', graph);
+  return {
+    type: SOCKET_LABEL_DATA_CHANGE,
+    payload: {
+      graph,
+    },
   };
 }

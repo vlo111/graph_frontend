@@ -81,73 +81,73 @@ class Chart {
     data.labels = data.labels?.filter((d) => d.name) || Chart.getLabels();
     data.embedLabels = data.embedLabels || this.data?.embedLabels || [];
 
-    const labelsObj = {};
-    data.embedLabels.forEach((label) => {
-      const nodes = data.nodes.filter((n) => +label.graphId === +n.sourceId);
+    if (data.embedLabels.length) {
+      const labelsObj = {};
+      data.embedLabels.forEach((label) => {
+        const nodes = data.nodes.filter((n) => +label.graphId === +n.sourceId);
 
+        // find and push new nodes
+        label.nodes = label.nodes.map((d) => {
+          if (!nodes.some((n) => d.name === (n.originalName || n.name))) {
+            d.sourceId = label.graphId;
+            d.readOnly = true;
+            d.originalName = d.name;
 
-      // find and push new nodes
-      label.nodes = label.nodes.map((d) => {
-        if (!nodes.some((n) => d.name === (n.originalName || n.name))) {
-          d.sourceId = label.graphId;
-          d.readOnly = true;
-          d.originalName = d.name;
-
-          if (data.nodes.some((n) => n.name === d.name)) {
-            d.name = LabelUtils.getNewNodeName(data.nodes);
-            label.links = label.links.map((l) => {
-              if (l.source === d.originalName) {
-                l.source = d.name;
-              }
-              if (l.target === d.originalName) {
-                l.target = d.name;
-              }
-              return l;
-            });
+            if (data.nodes.some((n) => n.name === d.name)) {
+              d.name = LabelUtils.getNewNodeName(data.nodes);
+              label.links = label.links.map((l) => {
+                if (l.source === d.originalName) {
+                  l.source = d.name;
+                }
+                if (l.target === d.originalName) {
+                  l.target = d.name;
+                }
+                return l;
+              });
+            }
+            data.nodes.push(d);
           }
-          data.nodes.push(d);
+          return d;
+        });
+
+        // get position difference
+        const labelEmbed = data.labels.find((l) => l.originalName === label.label.name);
+        if (labelEmbed) {
+          label.cx = label.label.d[0][0] - labelEmbed.d[0][0];
+          label.cy = label.label.d[0][1] - labelEmbed.d[0][1];
+        }
+
+        labelsObj[label.graphId] = label;
+      });
+
+      let removedNodes = false;
+      data.nodes = data.nodes.map((d) => {
+        if (d.sourceId) {
+          const labelData = labelsObj[d.sourceId];
+          const labelNode = labelData.nodes.find((n) => n.name === (d.originalName || d.name));
+          // set node right position
+          if (labelNode) {
+            d.fx = labelNode.fx - labelData.cx;
+            d.fy = labelNode.fy - labelData.cy;
+          } else {
+            // remove deleted nodes
+            if (!data.links.some((l) => !l.sourceId && (l.target === d.name || l.source === d.name))) {
+              d.remove = true;
+              removedNodes = true;
+            }
+            d.deleted = true;
+          }
         }
         return d;
       });
 
-
-
-      // get position difference
-      const labelEmbed = data.labels.find((l) => l.originalName === label.labelName);
-      if (labelEmbed) {
-        label.cx = label.label.d[0][0] - labelEmbed.d[0][0];
-        label.cy = label.label.d[0][1] - labelEmbed.d[0][1];
+      // remove unused data
+      if (removedNodes) {
+        data.nodes = data.nodes.filter((d) => !d.remove);
+        data.links = data.links.filter((l) => data.links.some((n) => l.source === n.name) && data.links.some((n) => l.target === n.name));
       }
-
-      labelsObj[label.graphId] = label;
-    });
-
-    let removedNodes = false;
-    data.nodes = data.nodes.map((d) => {
-      if (d.sourceId) {
-        const labelData = labelsObj[d.sourceId];
-        const labelNode = labelData.nodes.find((n) => n.name === (d.originalName || d.name));
-        // set node right position
-        if (labelNode) {
-          d.fx = labelNode.fx - labelData.cx;
-          d.fy = labelNode.fy - labelData.cy;
-        } else {
-          // remove deleted nodes
-          if (!data.links.some((l) => !l.sourceId && (l.target === d.name || l.source === d.name))) {
-            d.remove = true;
-            removedNodes = true;
-          }
-          d.deleted = true;
-        }
-      }
-      return d;
-    });
-
-    // remove unused data
-    if (removedNodes) {
-      data.nodes = data.nodes.filter((d) => !d.remove);
-      data.links = data.links.filter((l) => data.links.some((n) => l.source === n.name) && data.links.some((n) => l.target === n.name));
     }
+
 
     const nodes = data.nodes.map((d) => Object.create(d));
 
@@ -446,10 +446,10 @@ class Chart {
       data = ChartUtils.filter(data, params.filters, params.customFields);
       this.data = data;
       this.radiusList = ChartUtils.getRadiusList();
-      console.log( this.data.nodes)
+      console.log(this.data.nodes)
       const filteredLinks = this.data.links.filter((d) => d.hidden !== 1);
       const filteredNodes = this.data.nodes.filter((d) => d.hidden !== 1);
-      console.log( this.data.nodes)
+      console.log(this.data.nodes)
 
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(filteredLinks).id((d) => d.name))

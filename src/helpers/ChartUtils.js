@@ -102,9 +102,23 @@ class ChartUtils {
     return selectedGrid.links.includes(d.index);
   }
 
-  static getNodeByName(name) {
-    const nodes = Chart.getNodes();
+  static getNodeByName(name, withLabels = false) {
+    const nodes = withLabels ? Chart.getNotesWithLabels() : Chart.getNodes();
     return nodes.find((d) => d.name === name);
+  }
+
+  static getLabelByName(name) {
+    const labels = Chart.getLabels();
+    return labels.find((d) => d.name === name);
+  }
+
+  static getFilteredGraphByLabel(labelName) {
+    const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(labelName));
+    const links = Chart.getLinks().filter((l) => nodes.some((n) => n.name === l.source) && nodes.some((n) => n.name === l.target));
+    return {
+      nodes,
+      links,
+    };
   }
 
   static normalizeIcon = (icon) => {

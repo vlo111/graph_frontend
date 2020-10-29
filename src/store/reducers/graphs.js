@@ -123,7 +123,7 @@ export default function reducer(state = initialState, action) {
       const singleGraph = marge ? { ...state.singleGraph, ...graph } : graph;
       return {
         ...state,
-        singleGraph,
+        singleGraph: _.cloneDeep(singleGraph),
       };
     }
     case ACTIONS_COUNT.SUCCESS: {
