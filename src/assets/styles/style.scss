@@ -857,6 +857,12 @@ p {
       opacity: 0 !important;
     }
 
+    &.deleted {
+      opacity: 0.5 !important;
+      filter: url(#grayscaleFilter);
+      pointer-events: none;
+    }
+
     &.unChecked {
       opacity: 0.1 !important;
       pointer-events: none;
