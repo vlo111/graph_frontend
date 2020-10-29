@@ -10,6 +10,7 @@ import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../contextMenu/ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
 import ChartUtils from '../../helpers/ChartUtils';
+import { socketLabelDataChange } from "../../store/actions/socket";
 
 class ReactChart extends Component {
   static propTypes = {
@@ -30,7 +31,7 @@ class ReactChart extends Component {
     Chart.render({
       nodes, links: ll, labels, embedLabels,
     });
-  });
+  }, _.isEqual);
 
   componentDidMount() {
     Chart.render({ nodes: [], links: [], labels: [] });
@@ -49,6 +50,8 @@ class ReactChart extends Component {
 
     ContextMenu.event.on('label.delete', this.handleLabelDelete);
     Chart.event.on('label.click', this.handleLabelClick);
+
+    Chart.event.on('node.dragend', this.handleNodeDragEnd);
   }
 
   componentWillUnmount() {
@@ -68,6 +71,21 @@ class ReactChart extends Component {
 
   handleLabelCrate = (ev, d) => {
     console.log(d);
+  }
+
+  handleNodeDragEnd = (ev, d) => {
+    const { match: { params: { graphId } } } = this.props;
+    const node = ChartUtils.getNodeByName(d.name, true);
+    node.labels.forEach((labelName) => {
+      const label = ChartUtils.getLabelByName(labelName, true);
+      if (label.hasInEmbed) {
+        const { nodes, links } = ChartUtils.getFilteredGraphByLabel(labelName);
+        const graph = {
+          nodes, links, graphId, label, customFields: {},
+        }
+        this.props.socketLabelDataChange(graph);
+      }
+    });
   }
 
   handleLabelDelete = (ev, d) => {
@@ -194,6 +212,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   toggleNodeModal,
   setActiveButton,
+  socketLabelDataChange,
 };
 
 const Container = connect(
