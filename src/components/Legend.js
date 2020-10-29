@@ -21,8 +21,8 @@ class Legend extends Component {
     }
 
     orderData = (data) => data.sort((a, b) => {
-      if (a.type < b.type) return -1;
-      if (a.type > b.type) return 1;
+      if (a.type.toUpperCase() < b.type.toUpperCase()) return -1;
+      if (a.type.toUpperCase() > b.type.toUpperCase()) return 1;
       return 0;
     })
 
