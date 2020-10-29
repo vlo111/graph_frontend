@@ -133,9 +133,9 @@ class Utils {
   }
   static orderGroup(groups, curentType) {
     if (groups.length > 1) {
-      groups = groups.sort((a, b) => {
-        if (a.value < b.value) return -1;
-        if (a.value > b.value) return 1;
+      groups = groups.sort((a, b) => { 
+        if (a.value.toUpperCase() < b.tyvaluepe.toUpperCase()) return -1;
+        if (a.value.toUpperCase() > b.value.toUpperCase()) return 1;
         return 0;
       });
 

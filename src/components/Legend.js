@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setLegendButton } from '../store/actions/app';
 import Chart from '../Chart';
-import { ReactComponent as Arrow } from '../assets/images/arrow.svg';
-import Utils from "../helpers/Utils";
-import ChartUtils from "../helpers/ChartUtils";
+import { ReactComponent as Arrow } from '../assets/images/arrow.svg'; 
+import ChartUtils from '../helpers/ChartUtils';
 
 class Legend extends Component {
     static propTypes = {
@@ -21,16 +20,18 @@ class Legend extends Component {
       } else this.props.setLegendButton('close');
     }
 
+    orderData = (data) => data.sort((a, b) => {
+      if (a.type.toUpperCase() < b.type.toUpperCase()) return -1;
+      if (a.type.toUpperCase() > b.type.toUpperCase()) return 1;
+      return 0;
+    })
+
     render() {
       const { showLegendButton } = this.props;
 
-      const nodes = [...new Map(Chart.getNodes().map((node) => [node.type, node])).values()];
+      const nodes = this.orderData([...new Map(Chart.getNodes().map((node) => [node.type, node])).values()]);
 
-      let check = Chart.getNodes();
-
-
-
-      const links = [...new Map(Chart.getLinks().map((link) => [link.type, link])).values()];
+      const links = this.orderData([...new Map(Chart.getLinks().map((link) => [link.type, link])).values()]);
 
       const listNodeItems = nodes.map((node) => (
         <li className="node-item">
@@ -40,10 +41,10 @@ class Legend extends Component {
       ));
 
       const listLinkItems = links.map((link) => (
-          <li className="connection-item">
-            <span className="indicator" style={{ backgroundColor: link.color }} />
-            <a title={link.type} href="#">{link.type}</a>
-          </li>
+        <li className="connection-item">
+          <span className="indicator" style={{ backgroundColor: link.color }} />
+          <a title={link.type} href="#">{link.type}</a>
+        </li>
       ));
 
       return (
@@ -56,13 +57,21 @@ class Legend extends Component {
           </button>
           <div className="dropdown">
             <div className="nodes">
-              <h4>Nodes ({nodes.length})</h4>
+              <h4>
+                Nodes (
+                {nodes.length}
+                )
+              </h4>
               <ul className="node-list">
                 {listNodeItems}
               </ul>
             </div>
             <div className="connections">
-              <h4>Connections ({links.length})</h4>
+              <h4>
+                Connections (
+                {links.length}
+                )
+              </h4>
               <ul className="connection-list">
                 {listLinkItems}
               </ul>

@@ -109,13 +109,20 @@ class ImportLinkedinCustomField extends Component {
                   {row.institution}
                 </p>
               ) : null}
+              {row.studyData ? (
+                <p className="studyData"> 
+                  {row.studyData}
+                </p>
+              ) : null}
               {row.studyType ? (
-                <p className="studyType"> 
+                <p className="visually-hidden"> 
+                <strong>studyType: </strong>
                   {row.studyType}
                 </p>
               ) : null}
               {row.startDate ? (
-                <p className="date"> 
+                <p className="visually-hidden"> 
+                <strong>date: </strong>
                   {`${row.startDate} - ${row.endDate}`}
                 </p>
               ) : null}
