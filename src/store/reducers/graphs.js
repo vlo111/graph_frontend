@@ -119,9 +119,11 @@ export default function reducer(state = initialState, action) {
       };
     }
     case UPDATE_SINGLE_GRAPH: {
+      const { marge, graph } = action.payload;
+      const singleGraph = marge ? { ...state.singleGraph, ...graph } : graph;
       return {
         ...state,
-        singleGraph: action.payload.graph,
+        singleGraph,
       };
     }
     case ACTIONS_COUNT.SUCCESS: {

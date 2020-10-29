@@ -4,13 +4,19 @@ import PropTypes from 'prop-types';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton } from '../../store/actions/app';
-import { clearSingleGraph, convertGraphRequest, setGraphCustomFields } from '../../store/actions/graphs';
+import {
+  clearSingleGraph,
+  convertGraphRequest,
+  setGraphCustomFields,
+  updateSingleGraph
+} from '../../store/actions/graphs';
 import ChartUtils from '../../helpers/ChartUtils';
 
 class ImportStep2 extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     setGraphCustomFields: PropTypes.func.isRequired,
+    updateSingleGraph: PropTypes.func.isRequired,
     importData: PropTypes.object.isRequired,
   }
 
@@ -20,11 +26,16 @@ class ImportStep2 extends Component {
         nodes = [], links = [], labels = [], customFields = {},
       },
     } = this.props;
-    await this.props.clearSingleGraph();
     ChartUtils.resetColors();
-    Chart.render({
-      nodes, links, labels, embedLabels: [],
+    this.props.updateSingleGraph({
+      nodes,
+      links,
+      labels,
+      embedLabels: [],
     });
+    // Chart.render({
+    //   nodes, links, labels, embedLabels: [],
+    // });
     this.props.setGraphCustomFields(customFields);
     this.props.setActiveButton('create');
   }
@@ -61,7 +72,7 @@ const mapDispatchToProps = {
   setActiveButton,
   convertGraphRequest,
   setGraphCustomFields,
-  clearSingleGraph,
+  updateSingleGraph
 };
 const Container = connect(
   mapStateToProps,

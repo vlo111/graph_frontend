@@ -66,11 +66,11 @@ export function clearSingleGraph() {
 
 export const UPDATE_SINGLE_GRAPH = 'UPDATE_SINGLE_GRAPH';
 
-export function updateSingleGraph(graph) {
+export function updateSingleGraph(graph, marge = false) {
   return {
     type: UPDATE_SINGLE_GRAPH,
     payload: {
-      graph,
+      graph, marge
     },
   };
 }
