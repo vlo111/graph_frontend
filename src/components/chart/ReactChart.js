@@ -11,6 +11,8 @@ import ContextMenu from '../contextMenu/ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
 import ChartUtils from '../../helpers/ChartUtils';
 import { socketLabelDataChange } from "../../store/actions/socket";
+import LabelUtils from "../../helpers/LabelUtils";
+import Utils from "../../helpers/Utils";
 
 class ReactChart extends Component {
   static propTypes = {
@@ -52,6 +54,7 @@ class ReactChart extends Component {
     Chart.event.on('label.click', this.handleLabelClick);
 
     Chart.event.on('node.dragend', this.handleNodeDragEnd);
+    Chart.event.on('render', this.handleRender);
   }
 
   componentWillUnmount() {
@@ -73,18 +76,19 @@ class ReactChart extends Component {
     console.log(d);
   }
 
+  handleRender = async () => {
+    await Utils.sleep(500);
+    const { match: { params: { graphId } } } = this.props;
+    Chart.getLabels().forEach((l) => {
+      LabelUtils.labelDataChange(graphId, l.name);
+    });
+  }
+
   handleNodeDragEnd = (ev, d) => {
     const { match: { params: { graphId } } } = this.props;
     const node = ChartUtils.getNodeByName(d.name, true);
     node.labels.forEach((labelName) => {
-      const label = ChartUtils.getLabelByName(labelName, true);
-      if (label.hasInEmbed) {
-        const { nodes, links } = ChartUtils.getFilteredGraphByLabel(labelName);
-        const graph = {
-          nodes, links, graphId, label, customFields: {},
-        }
-        this.props.socketLabelDataChange(graph);
-      }
+      LabelUtils.labelDataChange(graphId, labelName);
     });
   }
 

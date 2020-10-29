@@ -1,12 +1,13 @@
 import _ from 'lodash';
+import { toast } from 'react-toastify';
 import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
 import Utils from './Utils';
 import store from '../store';
 import CustomFields from './CustomFields';
 import { setNodeCustomField } from '../store/actions/graphs';
-import Api from "../Api";
-import { toast } from "react-toastify";
+import Api from '../Api';
+import { socketLabelDataChange } from '../store/actions/socket';
 
 class LabelUtils {
   static copy(graphId, name, customFields) {
@@ -147,6 +148,17 @@ class LabelUtils {
     }
 
     Chart.render({ links, nodes, labels });
+  }
+
+  static labelDataChange = (graphId, labelName) => {
+    const label = ChartUtils.getLabelByName(labelName, true);
+    if (label.hasInEmbed && !labelName.sourceId) {
+      const { nodes, links } = ChartUtils.getFilteredGraphByLabel(labelName);
+      const graph = {
+        nodes, links, graphId: +graphId, label, labelName: label.name, customFields: {},
+      };
+      store.dispatch(socketLabelDataChange(graph));
+    }
   }
 }
 

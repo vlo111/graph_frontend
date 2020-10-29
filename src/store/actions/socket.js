@@ -38,9 +38,21 @@ export function socketInit() {
     });
 
     socket.on('socketLabelDataChange', (data) => {
-      const embedLabels = Chart.data.embedLabels;
-      console.log(data)
-      Chart.render({ embedLabels: [data] })
+      const [, graphId] = window.location.pathname.match(/\/(\d+)$/); // todo write better solution
+      if (+data.graphId !== +graphId) {
+        let changed = false;
+        const embedLabels = Chart.data.embedLabels.map(l => {
+          console.log(l.graphId , data.graphId)
+          if (+l.graphId === +data.graphId) {
+            changed = true;
+            l = data;
+          }
+          return l;
+        });
+        if (changed) {
+          Chart.render({ embedLabels })
+        }
+      }
     });
   };
 }

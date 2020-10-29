@@ -122,7 +122,7 @@ class Chart {
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
-        if (d.sourceId) {
+        if (d.sourceId && labelsObj[d.sourceId]) {
           const labelData = labelsObj[d.sourceId];
           const labelNode = labelData.nodes.find((n) => n.name === (d.originalName || d.name));
           // set node right position
