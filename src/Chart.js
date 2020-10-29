@@ -128,7 +128,9 @@ class Chart {
           // set node right position
           if (labelNode) {
             d.fx = labelNode.fx - labelData.cx;
+            d.x = d.fx;
             d.fy = labelNode.fy - labelData.cy;
+            d.y = d.fy;
           } else {
             // remove deleted nodes
             if (!data.links.some((l) => !l.sourceId && (l.target === d.name || l.source === d.name))) {

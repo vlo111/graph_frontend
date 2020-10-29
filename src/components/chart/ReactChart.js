@@ -76,12 +76,14 @@ class ReactChart extends Component {
     console.log(d);
   }
 
-  handleRender = async () => {
-    await Utils.sleep(500);
-    const { match: { params: { graphId } } } = this.props;
-    Chart.getLabels().forEach((l) => {
-      LabelUtils.labelDataChange(graphId, l.name);
-    });
+  handleRender = () => {
+    clearTimeout(this.renderTimeout);
+    this.renderTimeout = setTimeout(() => {
+      const { match: { params: { graphId } } } = this.props;
+      Chart.getLabels().forEach((l) => {
+        LabelUtils.labelDataChange(graphId, l.name);
+      });
+    }, 500)
   }
 
   handleNodeDragEnd = (ev, d) => {
