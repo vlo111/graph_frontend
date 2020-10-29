@@ -15,6 +15,7 @@ import FileInput from '../form/FileInput';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
+import Utils from '../../helpers/Utils';
 
 class AddNodeModal extends Component {
   static propTypes = {

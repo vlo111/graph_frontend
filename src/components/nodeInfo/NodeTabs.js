@@ -12,6 +12,7 @@ import ContextMenu from '../contextMenu/ContextMenu';
 import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
 import FlexTabs from "../FlexTabs";
 import MapsInfo from "../maps/MapsInfo";
+import MapImg from '../../assets/images/icons/google-maps.svg';
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -25,11 +26,12 @@ class NodeTabs extends Component {
     this.state = {
       activeTab: '',
       formModalOpen: null,
+      showLocation: false,
     };
   }
 
-  setFirstTab = memoizeOne((node, customField) => {
-    this.setState({ activeTab: node.location ? '_location' : Object.keys(customField)[0] });
+  setFirstTab = memoizeOne((node, customField) => { 
+    this.setState({ activeTab: !_.isEmpty(customField) ? Object.keys(customField)[0] : node.location ? '_location' : 'About' }); 
   }, _.isEqual);
 
   componentDidMount() {
@@ -60,6 +62,10 @@ class NodeTabs extends Component {
     if (fieldName && window.confirm('Are you sure?')) {
       this.props.removeNodeCustomFieldKey(node.type, fieldName);
     }
+  }
+
+  showLocation() {
+    this.setState({ showLocation: true });
   }
 
   render() {
@@ -104,7 +110,15 @@ class NodeTabs extends Component {
           />
         ) : null}
         {activeTab === '_location' ? (
-          <MapsInfo node={node} />
+          [
+            (
+              this.state.showLocation
+                ? <MapsInfo node={node} />
+                : <button  className="mapTabButton" href="#" onClick={() => this.showLocation()}> 
+                <img src={MapImg} alt="show location" />
+                </button>
+            ),
+          ]
         ) : (
           <NodeTabsContent name={activeTab} node={node} content={content} />
         )}
