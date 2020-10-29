@@ -26,11 +26,12 @@ class ReactChart extends Component {
     if (!nodes) {
       return;
     }
+    console.log(111,122)
     const ll = links.filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
     Chart.render({
       nodes, links: ll, labels, embedLabels,
     });
-  });
+  }, _.isEqual);
 
   componentDidMount() {
     Chart.render({ nodes: [], links: [], labels: [] });
