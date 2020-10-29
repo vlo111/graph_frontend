@@ -23,7 +23,8 @@ import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
-import CreateGraphModal from "../components/CreateGraphModal";
+import CreateGraphModal from '../components/CreateGraphModal';
+import memoizeOne from "memoize-one";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -33,6 +34,12 @@ class GraphForm extends Component {
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
   }
+
+  getEmbedLabelsData = memoizeOne((labels) => {
+    // labels.forEach(l => {
+    //   this.props.a(1);
+    // })
+  })
 
   componentDidMount() {
     const { match: { params: { graphId } } } = this.props;
@@ -45,7 +52,8 @@ class GraphForm extends Component {
   }
 
   render() {
-    const { activeButton } = this.props;
+    const { activeButton, singleGraphLabels } = this.props;
+    this.getEmbedLabelsData(singleGraphLabels);
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
         <div className="graphWrapper">
@@ -77,6 +85,7 @@ class GraphForm extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
+  singleGraphLabels: state.graphs.singleGraph.labels || [],
 });
 const mapDispatchToProps = {
   setActiveButton,

@@ -17,6 +17,7 @@ const initialState = {
   importData: {},
   graphsList: [],
   singleGraph: {},
+  embedLabels: [],
   graphsListInfo: {
     totalPages: 0,
   },
@@ -59,17 +60,18 @@ export default function reducer(state = initialState, action) {
     }
     case GET_SINGLE_EMBED_GRAPH.SUCCESS:
     case GET_SINGLE_GRAPH.SUCCESS: {
-      const { graph: singleGraph } = action.payload.data;
-      singleGraph.customFields = { ...singleGraph.customFields };
+      const { graph: singleGraph, embedLabels } = action.payload.data;
       return {
         ...state,
         singleGraph,
+        embedLabels,
       };
     }
     case CLEAR_SINGLE_GRAPH: {
       return {
         ...state,
         singleGraph: {},
+        embedLabels: [],
       };
     }
     case SET_GRAPH_CUSTOM_FIELDS: {

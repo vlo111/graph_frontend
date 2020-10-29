@@ -31,6 +31,21 @@ class LabelUtils {
 
   }
 
+  static getNewNodeName(d, nodes) {
+    const i = _.chain(nodes)
+      .filter((n) => new RegExp(`^${Utils.escRegExp(d.name)}(_\\d+|)$`).test(n.name))
+      .map((n) => {
+        const [, num] = n.name.match(/_(\d+)$/) || [0, 0];
+        return +num;
+      })
+      .max()
+      .value() + 1;
+    if (i === 1) {
+      return d.name;
+    }
+    return `${d.name}_${i}`;
+  }
+
   static past(x, y, isEmbed) {
     let data;
     try {
@@ -89,15 +104,7 @@ class LabelUtils {
     data.nodes.forEach((d) => {
       const originalName = d.name;
       if (nodes.some((n) => n.name === d.name)) {
-        const i = _.chain(nodes)
-          .filter((n) => new RegExp(`^${Utils.escRegExp(d.name)}(_\\d+|)$`).test(n.name))
-          .map((n) => {
-            const [, num] = n.name.match(/_(\d+)$/) || [0, 0];
-            return +num;
-          })
-          .max()
-          .value() + 1;
-        d.name = `${d.name}_${i}`;
+        d.name = this.getNewNodeName(nodes);
         data.links = data.links.map((l) => {
           if (l.source === originalName) {
             l.source = d.name;
