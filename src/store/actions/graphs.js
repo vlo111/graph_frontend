@@ -57,8 +57,6 @@ export function getSingleEmbedGraphRequest(graphId, token) {
 
 export const CLEAR_SINGLE_GRAPH = 'CLEAR_SINGLE_GRAPH';
 
-export const UPDATE_SINGLE_GRAPH = 'UPDATE_SINGLE_GRAPH';
-
 export function clearSingleGraph() {
   return {
     type: CLEAR_SINGLE_GRAPH,
@@ -66,10 +64,14 @@ export function clearSingleGraph() {
   };
 }
 
-export function updateSingleGraph(graph) {
+export const UPDATE_SINGLE_GRAPH = 'UPDATE_SINGLE_GRAPH';
+
+export function updateSingleGraph(graph, marge = false) {
   return {
     type: UPDATE_SINGLE_GRAPH,
-    payload: graph,
+    payload: {
+      graph, marge
+    },
   };
 }
 

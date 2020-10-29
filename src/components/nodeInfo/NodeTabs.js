@@ -30,8 +30,8 @@ class NodeTabs extends Component {
     };
   }
 
-  setFirstTab = memoizeOne((node, customField) => {
-    this.setState({ activeTab: node.location ? Object.keys(customField)[0] : 'About' });
+  setFirstTab = memoizeOne((node, customField) => { 
+    this.setState({ activeTab: !_.isEmpty(customField) ? Object.keys(customField)[0] : node.location ? '_location' : 'About' }); 
   }, _.isEqual);
 
   componentDidMount() {
@@ -115,7 +115,7 @@ class NodeTabs extends Component {
               this.state.showLocation
                 ? <MapsInfo node={node} />
                 : <button  className="mapTabButton" href="#" onClick={() => this.showLocation()}> 
-                <img src={MapImg} alt="google map" />
+                <img src={MapImg} alt="show location" />
                 </button>
             ),
           ]

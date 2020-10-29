@@ -21,13 +21,17 @@ class ReactChart extends Component {
     history: PropTypes.object.isRequired,
   };
 
-  renderChart = memoizeOne((nodes, links, labels) => {
+  renderChart = memoizeOne((singleGraph, embedLabels) => {
+    const { nodes, links, labels } = singleGraph;
     if (!nodes) {
       return;
     }
+    console.log(111,122)
     const ll = links.filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
-    Chart.render({ nodes, links: ll, labels });
-  });
+    Chart.render({
+      nodes, links: ll, labels, embedLabels,
+    });
+  }, _.isEqual);
 
   componentDidMount() {
     Chart.render({ nodes: [], links: [], labels: [] });
@@ -69,6 +73,12 @@ class ReactChart extends Component {
 
   handleLabelDelete = (ev, d) => {
     const labels = Chart.getLabels().filter((l) => l.name !== d.name);
+    if (d.sourceId) {
+      const nodes = Chart.getNodes().filter((n) => !n.sourceId || n.sourceId !== d.sourceId);
+      const links = Chart.getLinks().filter((l) => !l.sourceId || l.sourceId !== d.sourceId);
+      Chart.render({ labels, nodes, links });
+      return;
+    }
     Chart.render({ labels });
   }
 
@@ -140,8 +150,8 @@ class ReactChart extends Component {
   }
 
   render() {
-    const { activeButton, singleGraph: { nodes, links, labels } } = this.props;
-    this.renderChart(nodes, links, labels);
+    const { activeButton, singleGraph, embedLabels } = this.props;
+    this.renderChart(singleGraph, embedLabels);
     return (
       <div id="graph" data-active={activeButton} className={activeButton}>
         <div className="borderCircle">
@@ -151,20 +161,24 @@ class ReactChart extends Component {
           <g className="wrapper" transform-origin="top left">
             <g className="labels">
               <rect className="labelsBoard" fill="transparent" width="100%" height="100%" />
-              <defs>
-                <filter id="labelShadow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
-                  <feDropShadow dx="1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
-                  <feDropShadow dx="0" dy="-1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
-                  <feDropShadow dx="-1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
-                </filter>
-              </defs>
             </g>
             <g className="directions" />
             <g className="links" />
             <g className="linkText" />
             <g className="nodes" />
             <g className="icons" />
+            <defs>
+              <filter id="labelShadowFilter" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                <feDropShadow dx="1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                <feDropShadow dx="0" dy="-1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                <feDropShadow dx="-1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+              </filter>
+              <filter id="grayscaleFilter">
+                <feColorMatrix type="saturate" values="0" />
+                <feColorMatrix type="luminanceToAlpha" result="A" />
+              </filter>
+            </defs>
           </g>
         </svg>
       </div>
@@ -175,6 +189,7 @@ class ReactChart extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
+  embedLabels: state.graphs.embedLabels,
   customFields: state.graphs.singleGraph.customFields || {},
 });
 const mapDispatchToProps = {
