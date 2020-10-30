@@ -10,9 +10,9 @@ import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../contextMenu/ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
 import ChartUtils from '../../helpers/ChartUtils';
-import { socketLabelDataChange } from "../../store/actions/socket";
-import LabelUtils from "../../helpers/LabelUtils";
-import Utils from "../../helpers/Utils";
+import { socketLabelDataChange } from '../../store/actions/socket';
+import LabelUtils from '../../helpers/LabelUtils';
+import Utils from '../../helpers/Utils';
 
 class ReactChart extends Component {
   static propTypes = {
@@ -29,9 +29,8 @@ class ReactChart extends Component {
     if (!nodes) {
       return;
     }
-    const ll = links.filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
     Chart.render({
-      nodes, links: ll, labels, embedLabels,
+      nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels,
     });
   }, _.isEqual);
 
@@ -83,7 +82,7 @@ class ReactChart extends Component {
       Chart.getLabels().forEach((l) => {
         LabelUtils.labelDataChange(graphId, l.name);
       });
-    }, 500)
+    }, 500);
   }
 
   handleNodeDragEnd = (ev, d) => {
@@ -97,9 +96,12 @@ class ReactChart extends Component {
   handleLabelDelete = (ev, d) => {
     const labels = Chart.getLabels().filter((l) => l.name !== d.name);
     if (d.sourceId) {
-      const nodes = Chart.getNodes().filter((n) => !n.sourceId || n.sourceId !== d.sourceId);
-      const links = Chart.getLinks().filter((l) => !l.sourceId || l.sourceId !== d.sourceId);
-      Chart.render({ labels, nodes, links });
+      const nodes = Chart.getNodes().filter((n) => !n.labels.includes(d.name));
+      const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
+      const embedLabels = Chart.data.embedLabels.filter((l) => l.labelName !== d.originalName);
+      Chart.render({
+        labels, nodes, links, embedLabels,
+      });
       return;
     }
     Chart.render({ labels });

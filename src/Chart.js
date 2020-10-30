@@ -448,10 +448,8 @@ class Chart {
       data = ChartUtils.filter(data, params.filters, params.customFields);
       this.data = data;
       this.radiusList = ChartUtils.getRadiusList();
-      console.log(this.data.nodes)
       const filteredLinks = this.data.links.filter((d) => d.hidden !== 1);
       const filteredNodes = this.data.nodes.filter((d) => d.hidden !== 1);
-      console.log(this.data.nodes)
 
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(filteredLinks).id((d) => d.name))

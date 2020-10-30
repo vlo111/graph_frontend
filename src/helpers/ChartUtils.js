@@ -121,6 +121,10 @@ class ChartUtils {
     };
   }
 
+  static cleanLinks(links, nodes) {
+    return links.filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
+  }
+
   static normalizeIcon = (icon) => {
     if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {
       return icon;

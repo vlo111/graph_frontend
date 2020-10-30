@@ -25,12 +25,14 @@ import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
 import CreateGraphModal from '../components/CreateGraphModal';
 import memoizeOne from "memoize-one";
+import { socketSetActiveGraph } from "../store/actions/socket";
 
 class GraphForm extends Component {
   static propTypes = {
     getSingleGraphRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     clearSingleGraph: PropTypes.func.isRequired,
+    socketSetActiveGraph: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
   }
@@ -49,6 +51,7 @@ class GraphForm extends Component {
     } else {
       this.props.clearSingleGraph();
     }
+    this.props.socketSetActiveGraph(+graphId || null);
   }
 
   render() {
@@ -90,6 +93,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
+  socketSetActiveGraph,
   clearSingleGraph,
 };
 const Container = connect(
