@@ -1,5 +1,4 @@
 import io from 'socket.io-client';
-import _ from 'lodash';
 import Chart from '../../Chart';
 import Api from '../../Api';
 import Account from '../../helpers/Account';
@@ -7,11 +6,10 @@ import { updateSingleGraph } from './graphs';
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
 
-let socket;
-
 export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
 
 export function socketEmit(...params) {
+  const socket = getSocket();
   const interval = setInterval(emit, 200);
   emit();
 
@@ -23,13 +21,20 @@ export function socketEmit(...params) {
   }
 }
 
-export function socketInit() {
-  if (!socket) {
+let s;
+
+export function getSocket() {
+  if (!s) {
     const token = Account.getToken();
-    socket = io.connect(Api.url, {
+    s = io.connect(Api.url, {
       query: `token=${token}`,
     });
   }
+  return s;
+}
+
+export function socketInit() {
+  const socket = getSocket();
   return (dispatch, getState) => {
     const {
       graphs: { singleGraph },
@@ -80,6 +85,9 @@ export function socketInit() {
         }
         return l;
       });
+      if (!changed) {
+        Chart.data.embedLabels.push(data);
+      }
       if (changed) {
         Chart.render({ embedLabels });
       }
