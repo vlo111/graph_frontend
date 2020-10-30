@@ -23,7 +23,7 @@ class LabelUtils {
       links,
       customFields,
     };
-    sessionStorage.setItem('label.copy', JSON.stringify(data));
+    localStorage.setItem('label.copy', JSON.stringify(data));
 
     return data;
   }
@@ -50,7 +50,7 @@ class LabelUtils {
   static past(x, y, isEmbed) {
     let data;
     try {
-      data = JSON.parse(sessionStorage.getItem('label.copy'));
+      data = JSON.parse(localStorage.getItem('label.copy'));
     } catch (e) {
       //
     }
@@ -146,7 +146,6 @@ class LabelUtils {
     if (isEmbed) {
       Api.labelShare(data.graphId, data.label.originalName);
     }
-
     Chart.render({ links, nodes, labels });
   }
 

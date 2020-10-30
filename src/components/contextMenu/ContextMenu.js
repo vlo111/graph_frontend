@@ -91,7 +91,7 @@ class ContextMenu extends Component {
     }
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
-    const showPast = !!sessionStorage.getItem('label.copy');
+    const showPast = !!localStorage.getItem('label.copy');
     if (params.fieldName === '_location') {
       return null;
     }

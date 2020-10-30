@@ -79,7 +79,7 @@ class Chart {
     data.nodes = data.nodes || Chart.getNodes();
     data.links = data.links || _.cloneDeep(Chart.getLinks());
     data.labels = data.labels?.filter((d) => d.name) || Chart.getLabels();
-    data.embedLabels = data.embedLabels || this.data?.embedLabels || [];
+    data.embedLabels = _.cloneDeep(data.embedLabels || this.data?.embedLabels || []);
 
     if (data.embedLabels.length) {
       const labelsObj = {};
