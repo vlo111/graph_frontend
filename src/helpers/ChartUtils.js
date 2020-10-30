@@ -114,7 +114,7 @@ class ChartUtils {
 
   static getFilteredGraphByLabel(labelName) {
     const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(labelName));
-    const links = Chart.getLinks().filter((l) => nodes.some((n) => n.name === l.source) && nodes.some((n) => n.name === l.target));
+    const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
     return {
       nodes,
       links,

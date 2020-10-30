@@ -29,6 +29,7 @@ class ReactChart extends Component {
     if (!nodes) {
       return;
     }
+    console.log(links, ChartUtils.cleanLinks(links, nodes))
     Chart.render({
       nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels,
     });

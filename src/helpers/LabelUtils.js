@@ -152,7 +152,7 @@ class LabelUtils {
 
   static labelDataChange = (graphId, labelName) => {
     const label = ChartUtils.getLabelByName(labelName, true);
-    if (!labelName.sourceId) {
+    if (label.hasInEmbed && !label.sourceId) {
       const { nodes, links } = ChartUtils.getFilteredGraphByLabel(labelName);
       const graph = {
         nodes, links, graphId: +graphId, label, labelName: label.name, customFields: {},

@@ -146,7 +146,7 @@ class Chart {
       // remove unused data
       if (removedNodes) {
         data.nodes = data.nodes.filter((d) => !d.remove);
-        data.links = data.links.filter((l) => data.links.some((n) => l.source === n.name) && data.links.some((n) => l.target === n.name));
+        data.links = ChartUtils.cleanLinks(data.links, data.nodes);
       }
     }
 
