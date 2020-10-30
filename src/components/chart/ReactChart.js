@@ -87,11 +87,7 @@ class ReactChart extends Component {
   }
 
   handleNodeDragEnd = (ev, d) => {
-    const { match: { params: { graphId } } } = this.props;
-    const node = ChartUtils.getNodeByName(d.name, true);
-    node.labels.forEach((labelName) => {
-      LabelUtils.labelDataChange(graphId, labelName);
-    });
+    this.handleRender();
   }
 
   handleLabelDelete = (ev, d) => {

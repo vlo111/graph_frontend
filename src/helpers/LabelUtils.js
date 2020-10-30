@@ -150,9 +150,9 @@ class LabelUtils {
     Chart.render({ links, nodes, labels });
   }
 
-  static labelDataChange = (graphId, labelName) => {
+  static labelDataChange = (graphId, labelName, force = false) => {
     const label = ChartUtils.getLabelByName(labelName, true);
-    if (label.hasInEmbed && !label.sourceId) {
+    if ((label.hasInEmbed && !label.sourceId) || force) {
       const { nodes, links } = ChartUtils.getFilteredGraphByLabel(labelName);
       const graph = {
         nodes, links, graphId: +graphId, label, labelName: label.name, customFields: {},
