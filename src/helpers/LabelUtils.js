@@ -57,7 +57,6 @@ class LabelUtils {
     if (!data) {
       return;
     }
-
     const { x: posX, y: posY } = ChartUtils.calcScaledPosition(x, y);
 
     // label past
@@ -147,6 +146,9 @@ class LabelUtils {
       Api.labelShare(data.graphId, data.label.originalName);
     }
     Chart.render({ links, nodes, labels });
+    setTimeout(() => {
+      Chart.render({ links, nodes, labels });
+    }, 500)
   }
 
   static labelDataChange = (graphId, labelName, force = false) => {
