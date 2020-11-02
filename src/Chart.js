@@ -87,8 +87,12 @@ class Chart {
         const nodes = data.nodes.filter((n) => +label.graphId === +n.sourceId);
 
         // find and push new nodes
-        console.log(data.links, label.links)
-        // data.links = data.links.filter((l) => +l.sourceId !== +label.graphId);
+        label.links = label.links.map((l) => {
+          l.sourceId = label.graphId;
+          l.readOnly = true;
+          return l;
+        });
+        data.links = data.links.filter((l) => +l.sourceId !== +label.graphId);
         label.nodes = label.nodes.map((d) => {
           if (!nodes.some((n) => d.name === (n.originalName || n.name))) {
             d.sourceId = label.graphId;
@@ -111,7 +115,7 @@ class Chart {
           }
           return d;
         });
-        // data.links.push(...label.links);
+        data.links.push(...label.links);
 
         // get position difference
         const labelEmbed = data.labels.find((l) => l.originalName === label.label.name);
