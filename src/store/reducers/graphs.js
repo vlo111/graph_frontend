@@ -12,6 +12,8 @@ import {
   ACTIONS_COUNT, GET_SINGLE_EMBED_GRAPH, SET_GRAPH_CUSTOM_FIELDS,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
+import Chart from "../../Chart";
+import ChartUtils from "../../helpers/ChartUtils";
 
 const initialState = {
   importData: {},
@@ -61,6 +63,10 @@ export default function reducer(state = initialState, action) {
     case GET_SINGLE_EMBED_GRAPH.SUCCESS:
     case GET_SINGLE_GRAPH.SUCCESS: {
       const { graph: singleGraph, embedLabels } = action.payload.data;
+      const { nodes, links, labels } = singleGraph;
+      Chart.render({
+        nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels,
+      });
       return {
         ...state,
         singleGraph,

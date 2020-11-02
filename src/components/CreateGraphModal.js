@@ -4,13 +4,15 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Input from './form/Input';
 import Button from './form/Button';
-import { updateSingleGraph } from '../store/actions/graphs';
+import { createGraphRequest } from '../store/actions/graphs';
 
 class CreateGraphModal extends Component {
   static propTypes = {
-    updateSingleGraph: PropTypes.func.isRequired,
+    createGraphRequest: PropTypes.func.isRequired,
+    history: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
   }
@@ -18,7 +20,7 @@ class CreateGraphModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      graphData: {
+      requestData: {
         title: '',
         description: '',
       },
@@ -26,19 +28,27 @@ class CreateGraphModal extends Component {
   }
 
   handleChange = (path, value) => {
-    const { graphData } = this.state;
-    _.set(graphData, path, value);
-    this.setState({ graphData });
+    const { requestData } = this.state;
+    _.set(requestData, path, value);
+    this.setState({ requestData });
   }
 
-  addGraph = () => {
-    const { graphData } = this.state;
-    this.props.updateSingleGraph(graphData);
+  addGraph = async () => {
+    const { requestData } = this.state;
+    const { payload: { data } } = await this.props.createGraphRequest({
+      ...requestData,
+      status: 'active',
+    });
+    if (data?.graphId) {
+      this.props.history.replace(`/graphs/update/${data.graphId}`);
+      return;
+    }
+    toast.error('Something went wrong');
   }
 
   render() {
     const { singleGraph, match: { params: { graphId = '' } } } = this.props;
-    const { graphData } = this.state;
+    const { requestData } = this.state;
     if (graphId || !_.isEmpty(singleGraph)) {
       return null;
     }
@@ -53,12 +63,12 @@ class CreateGraphModal extends Component {
         </h2>
         <Input
           label="Title"
-          value={graphData.title}
+          value={requestData.title}
           onChangeText={(v) => this.handleChange('title', v)}
         />
         <Input
           label="Description"
-          value={graphData.description}
+          value={requestData.description}
           textArea
           onChangeText={(v) => this.handleChange('description', v)}
         />
@@ -68,7 +78,7 @@ class CreateGraphModal extends Component {
           </Button>
           <Button
             className="saveNode"
-            disabled={!graphData.title}
+            disabled={!requestData.title}
             onClick={this.addGraph}
           >
             Create
@@ -84,7 +94,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  updateSingleGraph,
+  createGraphRequest,
 };
 
 const Container = connect(

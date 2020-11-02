@@ -131,11 +131,12 @@ class Utils {
     arrByte.shift();
     return opacity ? `rgba(${arrByte.join(',')}, ${opacity})` : `rgb(${arrByte.join(',')})`;
   }
+
   static orderGroup(groups, curentType) {
     if (groups.length > 1) {
-      groups = groups.sort((a, b) => { 
-        if (a.value.toUpperCase() < b.tyvaluepe.toUpperCase()) return -1;
-        if (a.value.toUpperCase() > b.value.toUpperCase()) return 1;
+      groups = groups.sort((a, b) => {
+        if (a.value?.toUpperCase() < b.value?.toUpperCase()) return -1;
+        if (a.value?.toUpperCase() > b.value?.toUpperCase()) return 1;
         return 0;
       });
 

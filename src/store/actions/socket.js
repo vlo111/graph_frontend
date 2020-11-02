@@ -81,16 +81,15 @@ export function socketInit() {
       const embedLabels = Chart.data.embedLabels.map((l) => {
         if (+l.graphId === +data.graphId) {
           changed = true;
+          data.sourceId = data.graphId;
           l = data;
         }
         return l;
       });
       if (!changed) {
-        Chart.data.embedLabels.push(data);
+        embedLabels.push(data);
       }
-      if (changed) {
-        Chart.render({ embedLabels });
-      }
+      Chart.render({ embedLabels });
     });
   };
 }

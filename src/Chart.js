@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
-import LabelUtils from "./helpers/LabelUtils";
+import LabelUtils from './helpers/LabelUtils';
 
 class Chart {
   static event = new EventEmitter();
@@ -87,6 +87,8 @@ class Chart {
         const nodes = data.nodes.filter((n) => +label.graphId === +n.sourceId);
 
         // find and push new nodes
+        console.log(data.links, label.links)
+        // data.links = data.links.filter((l) => +l.sourceId !== +label.graphId);
         label.nodes = label.nodes.map((d) => {
           if (!nodes.some((n) => d.name === (n.originalName || n.name))) {
             d.sourceId = label.graphId;
@@ -94,7 +96,7 @@ class Chart {
             d.originalName = d.name;
 
             if (data.nodes.some((n) => n.name === d.name)) {
-              d.name = LabelUtils.getNewNodeName(data.nodes);
+              d.name = LabelUtils.getNewNodeName(d, data.nodes);
               label.links = label.links.map((l) => {
                 if (l.source === d.originalName) {
                   l.source = d.name;
@@ -109,6 +111,7 @@ class Chart {
           }
           return d;
         });
+        // data.links.push(...label.links);
 
         // get position difference
         const labelEmbed = data.labels.find((l) => l.originalName === label.label.name);
@@ -149,7 +152,6 @@ class Chart {
         data.links = ChartUtils.cleanLinks(data.links, data.nodes);
       }
     }
-
 
     const nodes = data.nodes.map((d) => Object.create(d));
 
@@ -980,7 +982,7 @@ class Chart {
           createdUser: pd.createdUser,
           updatedUser: pd.updatedUser,
           readOnly: pd.readOnly,
-          sourceId: +pd.sourceId,
+          sourceId: +pd.sourceId || undefined,
         };
       });
     }

@@ -171,8 +171,8 @@ class ReactChart extends Component {
   }
 
   render() {
-    const { activeButton, singleGraph, embedLabels } = this.props;
-    this.renderChart(singleGraph, embedLabels);
+    const { activeButton } = this.props;
+    // this.renderChart(singleGraph, embedLabels);
     return (
       <div id="graph" data-active={activeButton} className={activeButton}>
         <div className="borderCircle">
@@ -209,7 +209,6 @@ class ReactChart extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
-  singleGraph: state.graphs.singleGraph,
   embedLabels: state.graphs.embedLabels,
   customFields: state.graphs.singleGraph.customFields || {},
 });

@@ -41,7 +41,7 @@ class LabelUtils {
       })
       .max()
       .value() + 1;
-    if (i === 1) {
+    if (!i || i <= 1) {
       return d.name;
     }
     return `${d.name}_${i}`;
@@ -104,7 +104,7 @@ class LabelUtils {
     data.nodes.forEach((d) => {
       const originalName = d.name;
       if (nodes.some((n) => n.name === d.name)) {
-        d.name = this.getNewNodeName(nodes);
+        d.name = this.getNewNodeName(d, nodes);
         data.links = data.links.map((l) => {
           if (l.source === originalName) {
             l.source = d.name;
@@ -144,11 +144,11 @@ class LabelUtils {
 
     if (isEmbed) {
       Api.labelShare(data.graphId, data.label.originalName);
-    }
-    Chart.render({ links, nodes, labels });
-    setTimeout(() => {
       Chart.render({ links, nodes, labels });
-    }, 500)
+      return;
+    }
+
+    Chart.render({ links, nodes, labels });
   }
 
   static labelDataChange = (graphId, labelName, force = false) => {
