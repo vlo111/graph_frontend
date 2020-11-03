@@ -79,9 +79,8 @@ export function socketInit() {
       }
       let changed = false;
       const embedLabels = Chart.data.embedLabels.map((l) => {
-        if (+l.graphId === +data.graphId) {
+        if (+l.graphId === +data.sourceId) {
           changed = true;
-          data.sourceId = data.graphId;
           l = data;
         }
         return l;

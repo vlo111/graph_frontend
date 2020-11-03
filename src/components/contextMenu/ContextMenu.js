@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import EventEmitter from 'events';
+import { withRouter } from 'react-router-dom';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodeContextMenu from './NodeContextMenu';
@@ -89,6 +90,7 @@ class ContextMenu extends Component {
     if (!show) {
       return null;
     }
+    const { match: { params: { graphId = '' } } } = this.props;
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
     const showPast = !!localStorage.getItem('label.copy');
@@ -116,7 +118,7 @@ class ContextMenu extends Component {
                   Append
                 </Button>
                 <Button onClick={(ev) => {
-                  LabelUtils.past(x, y, true);
+                  LabelUtils.past(x, y, true, graphId);
                   this.handleClick(ev, 'label.embed');
                 }}
                 >
@@ -151,4 +153,4 @@ class ContextMenu extends Component {
   }
 }
 
-export default ContextMenu;
+export default withRouter(ContextMenu);

@@ -47,7 +47,7 @@ class LabelUtils {
     return `${d.name}_${i}`;
   }
 
-  static past(x, y, isEmbed) {
+  static past(x, y, isEmbed, graphId) {
     let data;
     try {
       data = JSON.parse(localStorage.getItem('label.copy'));
@@ -143,7 +143,7 @@ class LabelUtils {
     links.push(...data.links);
 
     if (isEmbed) {
-      Api.labelShare(data.graphId, data.label.originalName);
+      Api.labelShare(data.graphId, data.label.originalName, graphId);
       Chart.render({ links, nodes, labels });
       return;
     }
@@ -156,7 +156,7 @@ class LabelUtils {
     if ((label.hasInEmbed && !label.sourceId) || force) {
       const { nodes, links } = ChartUtils.getFilteredGraphByLabel(labelName);
       const graph = {
-        nodes, links, graphId: +graphId, label, labelName: label.name, customFields: {},
+        nodes, links, sourceId: +graphId, label, labelName: label.name, customFields: {},
       };
       store.dispatch(socketLabelDataChange(graph));
     }

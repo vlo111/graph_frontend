@@ -84,14 +84,11 @@ class Chart {
     if (data.embedLabels.length) {
       const labelsObj = {};
       data.embedLabels.forEach((label) => {
-        const nodes = data.nodes.filter((n) => +label.graphId === +n.sourceId);
-
-
-
+        const nodes = data.nodes.filter((n) => +label.sourceId === +n.sourceId);
         // find and push new nodes
         label.nodes = label.nodes.map((d) => {
           if (!nodes.some((n) => d.name === (n.originalName || n.name))) {
-            d.sourceId = label.graphId;
+            d.sourceId = label.sourceId;
             d.readOnly = true;
             d.originalName = d.name;
 
@@ -114,11 +111,11 @@ class Chart {
 
         // synchronize links
         label.links = label.links.map((l) => {
-          l.sourceId = label.graphId;
+          l.sourceId = label.sourceId;
           l.readOnly = true;
           return l;
         });
-        data.links = data.links.filter((l) => +l.sourceId !== +label.graphId);
+        data.links = data.links.filter((l) => +l.sourceId !== +label.sourceId);
         data.links.push(...label.links);
 
         // get position difference
@@ -128,7 +125,7 @@ class Chart {
           label.cy = label.label.d[0][1] - labelEmbed.d[0][1];
         }
 
-        labelsObj[label.graphId] = label;
+        labelsObj[label.sourceId] = label;
       });
 
       let removedNodes = false;

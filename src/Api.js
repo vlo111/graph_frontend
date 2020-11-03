@@ -216,8 +216,8 @@ class Api {
     return api.get('/user-friends/my-friends');
   }
 
-  static labelShare(graphId, labelName) {
-    return api.post('/graph-labels-embed/create', { graphId, labelName });
+  static labelShare(sourceId, labelName, graphId) {
+    return api.post('/graph-labels-embed/create', { sourceId, labelName, graphId });
   }
 }
 
