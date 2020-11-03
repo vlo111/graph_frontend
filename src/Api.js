@@ -219,6 +219,14 @@ class Api {
   static labelShare(sourceId, labelName, graphId) {
     return api.post('/graph-labels-embed/create', { sourceId, labelName, graphId });
   }
+
+  static labelDelete(sourceId, labelName, graphId) {
+    return api.delete('/graph-labels-embed/delete', {
+      params: {
+        sourceId, labelName, graphId,
+      },
+    });
+  }
 }
 
 export default Api;

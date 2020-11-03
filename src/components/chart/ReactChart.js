@@ -13,6 +13,7 @@ import ChartUtils from '../../helpers/ChartUtils';
 import { socketLabelDataChange } from '../../store/actions/socket';
 import LabelUtils from '../../helpers/LabelUtils';
 import Utils from '../../helpers/Utils';
+import Api from "../../Api";
 
 class ReactChart extends Component {
   static propTypes = {
@@ -92,12 +93,14 @@ class ReactChart extends Component {
   handleLabelDelete = (ev, d) => {
     const labels = Chart.getLabels().filter((l) => l.name !== d.name);
     if (d.sourceId) {
-      const nodes = Chart.getNodes().filter((n) => !n.labels.includes(d.name));
+      const { match: { params: { graphId } } } = this.props;
+      const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.name));
       const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
       const embedLabels = Chart.data.embedLabels.filter((l) => l.labelName !== d.originalName);
       Chart.render({
         labels, nodes, links, embedLabels,
       });
+      Api.labelDelete(d.sourceId, d.originalName, graphId);
       return;
     }
     Chart.render({ labels });
