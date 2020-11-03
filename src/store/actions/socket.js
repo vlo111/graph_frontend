@@ -74,15 +74,15 @@ export function socketInit() {
 
     socket.on('embedLabelDataChange', (data) => {
       const [, graphId] = window.location.pathname.match(/\/(\d+)$/) || [0, 0]; // todo write better solution
-      if (+data.graphId === +graphId) {
+      if (+data.sourceId === +graphId) {
         return;
       }
-      if (!Chart.getLabels().some((l) => +l.sourceId === +data.graphId)) {
+      if (!Chart.getLabels().some((l) => +l.sourceId === +data.sourceId)) {
         return;
       }
       let changed = false;
       const embedLabels = Chart.data.embedLabels.map((l) => {
-        if (+l.graphId === +data.sourceId) {
+        if (+l.sourceId === +data.sourceId) {
           changed = true;
           l = data;
         }
