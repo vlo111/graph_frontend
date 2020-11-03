@@ -41,7 +41,7 @@ class LabelUtils {
       })
       .max()
       .value() + 1;
-    if (!i || i <= 1) {
+    if (!i) {
       return d.name;
     }
     return `${d.name}_${i}`;
