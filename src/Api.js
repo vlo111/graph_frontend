@@ -86,9 +86,14 @@ class Api {
     return api.post('/graphs/create', requestData);
   }
 
-  static updateGraph(id, requestData) {
+  static updateGraph(id, requestData) { 
     return api.put(`/graphs/update/${id}`, requestData);
   }
+
+  static updateGraphData(id, requestData) {
+  return api.put(`/graphs/update-data/${id}`, requestData);
+}
+
 
   static getActionsCount(id) {
     return api.get(`/graphs/actions-count/${id}`);

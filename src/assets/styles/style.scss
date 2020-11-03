@@ -4132,7 +4132,21 @@ body .gh__menu {
   }
 
 }
+.graphListHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  right: 0px;
 
+  #dropdown-graphListHeader {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+  }
+
+
+}
 
 .account {
   padding-top: 80px;
@@ -4534,7 +4548,7 @@ body .gh__menu {
     font-weight: 600;
     margin-bottom: 0rem !important;
   } 
-  .position, .institution, .studyType, .skills, .summary {
+  .position, .studyType, .skills, .summary, .studyData {
     color: #181818;
     font-size: 14.5px; 
     margin-bottom: 0rem !important; 
@@ -4546,5 +4560,25 @@ body .gh__menu {
   }   
   .visually-hidden {
     display: none;
+  }
+}
+.no-graphs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    .title {
+      font-size: 4rem;
+      font-weight: 300;
+      
+      + .text {
+          margin: 0 0 1rem;
+      }
+  }
+  
+  .no-graphs-img {
+      font-weight: 300;
+      text-align: center;
   }
 }

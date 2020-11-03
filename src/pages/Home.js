@@ -9,6 +9,8 @@ import { getGraphsListRequest } from '../store/actions/graphs';
 import Utils from '../helpers/Utils';
 import Pagination from '../components/Pagination';
 import GraphListFooter from '../components/GraphListFooter';
+import GraphListHeader from '../components/GraphListHeader';
+import NoGraph from "../components/NoGraph";
 
 class Home extends Component {
   static propTypes = {
@@ -31,8 +33,9 @@ class Home extends Component {
           {s ? (
             <h2 className="searchResult">{'Search Result for: '}<span>{s}</span></h2>
           ) : null}
-          {graphsList.map((graph) => (
+          {graphsList.length ? graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
+              <GraphListHeader graph={graph} />
               <div className="top">
                 <img
                   className="avatar"
@@ -71,7 +74,7 @@ class Home extends Component {
               </Link>
               <GraphListFooter graph={graph} />
             </article>
-          ))}
+          )) : <NoGraph />}
         </div>
         <Pagination totalPages={totalPages} />
       </>
