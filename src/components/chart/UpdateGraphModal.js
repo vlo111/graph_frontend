@@ -38,7 +38,7 @@ const UpdateGraphModal = ({ graph, closeModal }) => {
 
   function validateForm() { 
     return (
-      graphData.title.trim().length > 0 
+      graphData.title.trim().length === 0 
     );
   }
   const handleChange = (path, value) => {
