@@ -37,14 +37,7 @@ class GraphForm extends Component {
     match: PropTypes.object.isRequired,
   }
 
-  getEmbedLabelsData = memoizeOne((labels) => {
-    // labels.forEach(l => {
-    //   this.props.a(1);
-    // })
-  })
-
-  componentDidMount() {
-    const { match: { params: { graphId } } } = this.props;
+  getSingleGraph = memoizeOne((graphId) => {
     this.props.setActiveButton('create');
     if (+graphId) {
       this.props.getSingleGraphRequest(graphId);
@@ -52,11 +45,11 @@ class GraphForm extends Component {
       this.props.clearSingleGraph();
     }
     this.props.socketSetActiveGraph(+graphId || null);
-  }
+  })
 
   render() {
-    const { activeButton, singleGraphLabels } = this.props;
-    this.getEmbedLabelsData(singleGraphLabels);
+    const { activeButton, match: { params: { graphId } } } = this.props;
+    this.getSingleGraph(graphId);
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
         <div className="graphWrapper">
