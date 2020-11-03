@@ -36,6 +36,11 @@ const UpdateGraphModal = ({ graph, closeModal }) => {
     }
   }
 
+  function validateForm() { 
+    return (
+      graphData.title.trim().length > 0 
+    );
+  }
   const handleChange = (path, value) => {
     setGraphData({ ...graphData, [path]: value });
   }
@@ -70,7 +75,7 @@ const UpdateGraphModal = ({ graph, closeModal }) => {
       </Button>
         <Button
           className="saveNode"
-          disabled={!graphData.title}
+          disabled={validateForm()}
           onClick={updateGraph}
         >
           Update
