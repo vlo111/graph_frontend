@@ -6,40 +6,43 @@ import { updateSingleGraph } from './graphs';
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
 
-export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
+let socket;
+const notPushedEmits = [];
 
 export function socketEmit(...params) {
-  const socket = getSocket();
-  const interval = setInterval(emit, 200);
-  emit();
-
-  function emit() {
-    if (socket?.id) {
-      socket.emit(...params);
-      clearInterval(interval);
-    }
+  if (socket?.init) {
+    socket.emit(...params);
+  } else {
+    notPushedEmits.push(params);
   }
 }
 
-let s;
-
-export function getSocket() {
-  if (!s) {
-    const token = Account.getToken();
-    s = io.connect(Api.url, {
-      query: `token=${token}`,
-    });
-  }
-  return s;
-}
+export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
 
 export function socketInit() {
-  const socket = getSocket();
   return (dispatch, getState) => {
+    if (socket) {
+      return;
+    }
     const {
       graphs: { singleGraph },
       account: { myAccount: { id: userId } },
     } = getState();
+    const token = Account.getToken();
+
+    socket = io.connect(Api.url, {
+      query: `token=${token}`,
+    });
+
+    socket.on('connect', () => {
+      setTimeout(() => {
+        socket.init = true;
+        notPushedEmits.forEach((params) => {
+          socket.emit(...params);
+        });
+      }, 200);
+    });
+
     socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
       data.id = +data.id;
 
