@@ -47,7 +47,7 @@ class LabelUtils {
     return `${d.name}_${i}`;
   }
 
-  static past(x, y, isEmbed, graphId) {
+  static async past(x, y, isEmbed, graphId) {
     let data;
     try {
       data = JSON.parse(localStorage.getItem('label.copy'));
@@ -143,7 +143,11 @@ class LabelUtils {
     links.push(...data.links);
 
     if (isEmbed) {
-      Api.labelShare(data.graphId, data.label.originalName, graphId);
+      const { data: res } = await Api.labelShare(data.graphId, data.label.originalName, graphId).catch((e) => e.response);
+      if (res.status !== 'ok') {
+        toast.error(res.message);
+        return;
+      }
       Chart.render({ links, nodes, labels });
       return;
     }

@@ -328,7 +328,7 @@ class Chart {
             color: ChartUtils.labelColors(),
             d: [],
           })
-          .attr('class', 'label nodeCrate')
+          .attr('class', 'label nodeCreate')
           .attr('data-name', (d) => d.name);
       } else if (ev.sourceEvent.target.classList.contains('label')) {
         const name = ev.sourceEvent.target.getAttribute('data-name');
@@ -418,7 +418,7 @@ class Chart {
     labels.selectAll('path')
       .data(this.data.labels.filter((l) => l.hidden !== 1))
       .join('path')
-      .attr('class', 'label nodeCrate')
+      .attr('class', 'label nodeCreate')
       .attr('opacity', (d) => (d.sourceId ? 0.6 : 0.4))
       // .attr('id', (d) => ChartUtils.normalizeId(d.name, 'lb'))
       .attr('data-name', (d) => d.name || ChartUtils.labelColors(d))
