@@ -8,6 +8,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import Pagination from '../../components/Pagination';
 import GraphListFooter from '../../components/GraphListFooter';
+import GraphListHeader from '../../components/GraphListHeader';
+import NoGraph from "../../components/NoGraph";
 
 class Home extends Component {
   static propTypes = {
@@ -29,8 +31,9 @@ class Home extends Component {
     return (
       <>
         <div className={`graphsList ${!graphsList.length ? 'empty' : ''}`}>
-          {graphsList.map((graph) => (
+          {graphsList.length ? graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
+              <GraphListHeader graph={graph} />
               <div className="top">
                 <img
                   className="avatar"
@@ -58,7 +61,7 @@ class Home extends Component {
               </Link>
               <GraphListFooter graph={graph} />
             </article>
-          ))}
+          )) : <NoGraph />}
         </div>
         <Pagination totalPages={totalPages} />
       </>
