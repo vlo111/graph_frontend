@@ -90,9 +90,7 @@ class Chart {
           d.readOnly = true;
           d.originalName = d.name;
           if (!labelNodes.some((n) => d.name === (n.originalName || n.name))) {
-            if (data.nodes.some((n) => n.name === d.name)) {
-              d.name = LabelUtils.getNewNodeName(d, data.nodes);
-            }
+            d.name = LabelUtils.getNewNodeName(d, data.nodes);
             data.nodes.push(d);
           }
           return d;
