@@ -7,6 +7,7 @@ import Utils from '../helpers/Utils';
 import { userGraphs } from '../store/selectors/shareGraphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import GraphListFooter from "../components/GraphListFooter";
+import NoGraph from "../components/NoGraph";
 
 const Shared = React.memo(() => {
   const userGraphsData = useSelector(userGraphs);
@@ -18,7 +19,7 @@ const Shared = React.memo(() => {
   return (
     <>
       <div className={`graphsList ${!userGraphsData.length ? 'empty' : ''}`}>
-        {userGraphsData && userGraphsData.map(({ graph }) => (
+        {userGraphsData.length ? userGraphsData.map(({ graph }) => (
           <article key={graph.id} className="graphsItem">
             <div className="top">
               <img
@@ -53,7 +54,7 @@ const Shared = React.memo(() => {
             </Link>
             <GraphListFooter graph={graph} />
           </article>
-        ))}
+        )) : <NoGraph />}
       </div>
     </>
   );

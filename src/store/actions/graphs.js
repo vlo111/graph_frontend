@@ -25,6 +25,12 @@ export function updateGraphRequest(id, requestData) {
   return UPDATE_GRAPH.request(() => Api.updateGraph(id, requestData));
 }
 
+export const UPDATE_GRAPH_DATA = define('UPDATE_GRAPH_DATA');
+
+export function updateGraphDataRequest(id, requestData) {
+  return UPDATE_GRAPH_DATA.request(() => Api.updateGraphData(id, requestData));
+}
+
 export const DELETE_GRAPH = define('DELETE_GRAPH');
 
 export function deleteGraphRequest(id) {
