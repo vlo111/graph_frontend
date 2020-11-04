@@ -19,21 +19,19 @@ class ReactChart extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
-    singleGraph: PropTypes.object.isRequired,
     customFields: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
   };
 
-  renderChart = memoizeOne((singleGraph, embedLabels) => {
-    const { nodes, links, labels } = singleGraph;
-    if (!nodes) {
-      return;
+  constructor(props) {
+    super(props);
+    this.state = {
+      ctrlPress: undefined,
+      shiftKey: undefined,
     }
-    Chart.render({
-      nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels,
-    });
-  }, _.isEqual);
+  }
+
 
   componentDidMount() {
     Chart.render({ nodes: [], links: [], labels: [] });
@@ -55,6 +53,9 @@ class ReactChart extends Component {
 
     Chart.event.on('node.dragend', this.handleNodeDragEnd);
     Chart.event.on('render', this.handleRender);
+
+    window.addEventListener('keydown', this.handleKeyPress);
+    window.addEventListener('keyup', this.handleKeyUp);
   }
 
   componentWillUnmount() {
@@ -64,6 +65,21 @@ class ReactChart extends Component {
     ContextMenu.event.removeListener('active-button', this.setActiveButton);
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
     ContextMenu.event.removeListener('label.delete', this.handleLabelDelete);
+  }
+
+  handleKeyPress = (ev) => {
+    ChartUtils.keyEvent(ev);
+    const { ctrlPress, shiftKey } = this.state;
+    if (ctrlPress !== ev.ctrlPress || shiftKey !== ev.shiftKey) {
+      this.setState({
+        ctrlPress: ev.ctrlPress ? '' : undefined,
+        shiftKey: ev.shiftKey ? '' : undefined,
+      });
+    }
+  }
+
+  handleKeyUp = () => {
+    this.setState({ ctrlPress: undefined, shiftKey: undefined });
   }
 
   handleLabelClick = (ev, d) => {
@@ -174,26 +190,28 @@ class ReactChart extends Component {
   }
 
   render() {
+    const { ctrlPress, shiftKey } = this.state;
     const { activeButton } = this.props;
+
     // this.renderChart(singleGraph, embedLabels);
     return (
-      <div id="graph" data-active={activeButton} className={activeButton}>
+      <div id="graph" data-active={activeButton} data-shift={shiftKey} data-ctrl={ctrlPress} className={activeButton}>
         <div className="borderCircle">
           {_.range(0, 6).map((k) => <div key={k} />)}
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" className="nodeCreate">
           <g className="wrapper" transform-origin="top left">
             <g className="labels">
-              <rect className="labelsBoard" fill="transparent" width="100%" height="100%" />
+              <rect className="labelsBoard areaBoard" fill="transparent" width="100%" height="100%" />
             </g>
             <g className="directions" />
             <g className="links" />
             <g className="linkText" />
             <g className="nodes" />
             <g className="icons" />
-            <g className="labels">
-              <rect className="labelsBoard" fill="transparent" width="100%" height="100%" />
-            </g>
+
+            <rect className="selectBoard areaBoard" fill="transparent" width="0" height="0" />
+
             <defs>
               <filter id="labelShadowFilter" x="-50%" y="-50%" width="200%" height="200%">
                 <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />

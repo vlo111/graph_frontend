@@ -228,7 +228,7 @@ class Chart {
   }
 
   static handleZoom = (ev) => {
-    if (this.activeButton === 'create-label') {
+    if (this.activeButton === 'create-label' || ev.sourceEvent.shiftKey) {
       return;
     }
     const { transform } = ev;
@@ -237,11 +237,11 @@ class Chart {
       .attr('data-x', transform.x)
       .attr('data-y', transform.y);
 
-    this.setLabelsBoardZoom(transform);
+    this.setAreaBoardZoom(transform);
     this.renderNodeText(transform.k);
   }
 
-  static setLabelsBoardZoom(transform) {
+  static setAreaBoardZoom(transform) {
     const scale = 1 / transform.k;
     const size = 100 * scale;
     const x = transform.x * -1;
@@ -250,7 +250,7 @@ class Chart {
     // this.wrapper.select('.labelsBoard')
     //   .attr('transform', `scale(${scale}) translate(${x}, ${y})`)
 
-    this.wrapper.select('.labelsBoard')
+    this.wrapper.selectAll('.areaBoard')
       .attr('width', `${size}%`)
       .attr('height', `${size}%`)
       .attr('x', x * scale)
@@ -428,6 +428,15 @@ class Chart {
     this._dataNodes = null;
   }
 
+  static handleDrag() {
+    console.log(11)
+    const drag = () => {
+      console.log(2222)
+    }
+    return d3.drag()
+      .on('drag', drag)
+  }
+
   static render(data = {}, params = {}) {
     try {
       const firstCall = this.isCalled('render');
@@ -465,11 +474,12 @@ class Chart {
         .call(this.zoom)
         .on('dblclick.zoom', null)
         .on('click', (...p) => this.event.emit('click', ...p))
-        .on('mousemove', (...p) => this.event.emit('mousemove', ...p));
+        .on('mousemove', (...p) => this.event.emit('mousemove', ...p))
 
       this.resizeSvg();
 
-      this.wrapper = this.svg.select('.wrapper');
+      this.wrapper = this.svg.select('.wrapper')
+        .call(this.handleDrag);
 
       this.linksWrapper = this.svg.select('.links');
       this.link = this.linksWrapper.selectAll('path')
