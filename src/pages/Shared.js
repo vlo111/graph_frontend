@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
-import Wrapper from '../components/Wrapper';
+import _ from 'lodash';
 import Utils from '../helpers/Utils';
 import { userGraphs } from '../store/selectors/shareGraphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
@@ -19,7 +19,10 @@ const Shared = React.memo(() => {
   return (
     <>
       <div className={`graphsList ${!userGraphsData.length ? 'empty' : ''}`}>
-        {userGraphsData.length ? userGraphsData.map(({ graph }) => (
+      {_.isEmpty(userGraphsData) ? (
+            <NoGraph />
+          ) : null}
+        {userGraphsData.map(({ graph }) => (
           <article key={graph.id} className="graphsItem">
             <div className="top">
               <img
@@ -54,7 +57,7 @@ const Shared = React.memo(() => {
             </Link>
             <GraphListFooter graph={graph} />
           </article>
-        )) : <NoGraph />}
+        ))}
       </div>
     </>
   );
