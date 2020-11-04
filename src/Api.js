@@ -58,6 +58,10 @@ class Api {
     return api.get('/users/me');
   }
 
+  static getUser(userId) {
+    return api.get('/users/profile', { params: { userId } });
+  }
+
   static updateMyAccount(data) {
     return api.post('/users/update', this.toFormData(data));
   }
@@ -167,12 +171,24 @@ class Api {
     return api.post('/share-graphs/update-status/', requestData);
   }
 
+  static searchGraphsList(page, requestData = {}) {
+    const params = { page, ...requestData };
+    return api.get('/share-graphs/search', {
+      params,
+      cancelToken: this.#cancel('searchGraphsList'),
+    });
+  }
+
   static createCommentGraph(requestData) {
     return api.post('/comment-graphs/create', requestData);
   }
 
   static graphComments(requestData) {
     return api.get('/comment-graphs/comments', { params: requestData });
+  }
+
+  static deleteGraphComment(id) {
+    return api.delete(`comment-graphs/delete/${id}`);
   }
 
   static userGraph() {
@@ -193,8 +209,8 @@ class Api {
     });
   }
 
-  static getFriends() {
-    return api.get('/user-friends');
+  static getFriends(userId) {
+    return api.get('/user-friends', { params: { userId } });
   }
 
   static addFriend(requestData) {

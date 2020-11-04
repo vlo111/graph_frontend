@@ -5,6 +5,7 @@ import {
   USER_SHARE_GRAPH,
   UPDATE_SHARE_GRAPH_STATUS,
   GRAPH_SHARED_USERS,
+  SEARCH_GRAPH_LIST,
 } from '../actions/shareGraphs';
 
 const initialState = {
@@ -19,16 +20,21 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case LIST_SHARE_GRAPH.REQUEST:
+    case SEARCH_GRAPH_LIST.REQUEST:
     {
       return {
         ...state,
         shareGraphsList: [],
+        page: 0,
+        total: 0,
+        totalPages: 0,
       };
     }
     case LIST_SHARE_GRAPH.SUCCESS:
     case CREATE_SHARE_GRAPH.SUCCESS:
     case DELETE_SHARE_GRAPH.SUCCESS:
     case UPDATE_SHARE_GRAPH_STATUS.SUCCESS:
+    case SEARCH_GRAPH_LIST.SUCCESS:
     {
       const {
         shareGraphs: shareGraphsList, page, total, totalPages,

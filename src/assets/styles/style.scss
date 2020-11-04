@@ -4481,6 +4481,36 @@ body .gh__menu {
   background-color: $color-white;
 }
 
+.profile {
+  max-width: 960px;
+  width: 100%;
+  margin-top: 80px;
+  margin-left: auto;
+  margin-right: auto;
+
+  &__title {
+    margin-bottom: 12px;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  &__user-details {
+    display: flex;
+    flex-direction: column;
+    margin: 0 16px;
+  }
+
+  &__friends {
+    margin-top: 20px;
+    border-top: 1px solid $color-gray;
+    padding-top: 20px;
+  }
+}
+
 .graphUsersInfoOverlay{
   .graphUsersInfo {
     padding: 30px 20px 20px;

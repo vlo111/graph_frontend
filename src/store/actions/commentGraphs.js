@@ -21,3 +21,9 @@ export function setGraphCommentParent(parent) {
     payload: parent,
   };
 }
+
+export const DELETE_GRAPH_COMMENT = define('DELETE_GRAPH_COMMENT');
+
+export function deleteGraphComment(id, graphId) {
+  return DELETE_GRAPH_COMMENT.request(() => Api.deleteGraphComment(id, graphId));
+}
