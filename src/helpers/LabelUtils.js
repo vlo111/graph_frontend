@@ -10,14 +10,14 @@ import Api from '../Api';
 import { socketLabelDataChange } from '../store/actions/socket';
 
 class LabelUtils {
-  static copy(graphId, name, customFields) {
+  static copy(sourceId, name, customFields) {
     const labels = Chart.getLabels();
     const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(name));
     const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
     const label = labels.find((l) => l.name === name);
 
     const data = {
-      graphId,
+      sourceId: +sourceId,
       label,
       nodes,
       links,
@@ -68,7 +68,7 @@ class LabelUtils {
         return;
       }
       data.label.readOnly = true;
-      data.label.sourceId = data.graphId;
+      data.label.sourceId = data.sourceId;
       data.label.originalName = data.label.name;
     } else {
       // eslint-disable-next-line no-lonely-if
@@ -119,7 +119,7 @@ class LabelUtils {
       d.fy = d.fy - minY + posY;
       if (isEmbed) {
         d.readOnly = true;
-        d.sourceId = data.graphId;
+        d.sourceId = data.sourceId;
         d.originalName = originalName;
       }
 
@@ -135,7 +135,7 @@ class LabelUtils {
     data.links = data.links.map((d) => {
       if (isEmbed) {
         d.readOnly = true;
-        d.sourceId = data.graphId;
+        d.sourceId = data.sourceId;
       }
       return d;
     });
@@ -143,7 +143,7 @@ class LabelUtils {
     links.push(...data.links);
 
     if (isEmbed) {
-      const { data: res } = await Api.labelShare(data.graphId, data.label.originalName, graphId).catch((e) => e.response);
+      const { data: res } = await Api.labelShare(data.sourceId, data.label.originalName, graphId).catch((e) => e.response);
       if (res.status !== 'ok') {
         toast.error(res.message);
         return;

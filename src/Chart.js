@@ -84,25 +84,14 @@ class Chart {
     if (data.embedLabels.length) {
       const labelsObj = {};
       data.embedLabels.forEach((label) => {
-        const nodes = data.nodes.filter((n) => +label.sourceId === +n.sourceId);
-        // find and push new nodes
+        const labelNodes = data.nodes.filter((n) => +label.sourceId === +n.sourceId);
         label.nodes = label.nodes.map((d) => {
-          if (!nodes.some((n) => d.name === (n.originalName || n.name))) {
-            d.sourceId = label.sourceId;
-            d.readOnly = true;
-            d.originalName = d.name;
-
+          d.sourceId = label.sourceId;
+          d.readOnly = true;
+          d.originalName = d.name;
+          if (!labelNodes.some((n) => d.name === (n.originalName || n.name))) {
             if (data.nodes.some((n) => n.name === d.name)) {
               d.name = LabelUtils.getNewNodeName(d, data.nodes);
-              label.links = label.links.map((l) => {
-                if (l.source === d.originalName) {
-                  l.source = d.name;
-                }
-                if (l.target === d.originalName) {
-                  l.target = d.name;
-                }
-                return l;
-              });
             }
             data.nodes.push(d);
           }
@@ -113,6 +102,13 @@ class Chart {
         label.links = label.links.map((l) => {
           l.sourceId = label.sourceId;
           l.readOnly = true;
+
+          const source = data.nodes.find((n) => n.originalName === l.source)?.name;
+          l.source = source || l.source;
+
+          const target = data.nodes.find((n) => n.originalName === l.target)?.name;
+          l.target = target || l.target;
+
           return l;
         });
         data.links = data.links.filter((l) => +l.sourceId !== +label.sourceId);
@@ -143,6 +139,7 @@ class Chart {
             // remove deleted nodes
             if (!data.links.some((l) => !l.sourceId && (l.target === d.name || l.source === d.name))) {
               d.remove = true;
+              console.log('remove')
               removedNodes = true;
             }
             d.deleted = true;
