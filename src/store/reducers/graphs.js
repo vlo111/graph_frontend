@@ -16,6 +16,7 @@ import CustomFields from '../../helpers/CustomFields';
 const initialState = {
   importData: {},
   graphsList: [],
+  graphsListStatus: '',
   singleGraph: {},
   embedLabels: [],
   graphsListInfo: {
@@ -41,6 +42,7 @@ export default function reducer(state = initialState, action) {
     case GET_GRAPHS_LIST.REQUEST: {
       return {
         ...state,
+        graphsListStatus: 'request',
         graphsList: [],
       };
     }
@@ -48,8 +50,15 @@ export default function reducer(state = initialState, action) {
       const { graphs: graphsList, ...graphsListInfo } = action.payload.data;
       return {
         ...state,
+        graphsListStatus: 'success',
         graphsList,
         graphsListInfo,
+      };
+    }
+    case GET_GRAPHS_LIST.FAIL: {
+      return {
+        ...state,
+        graphsListStatus: 'fail',
       };
     }
     case GET_SINGLE_GRAPH.REQUEST: {

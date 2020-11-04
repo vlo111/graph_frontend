@@ -2114,7 +2114,7 @@ p {
 
 
   &.empty {
-    min-height: 450px;
+    min-height: 90vh;
     background-color: $color-white;
     border-radius: 24px;
     border: 1px solid $color-light-gray;
@@ -4542,7 +4542,7 @@ body .gh__menu {
 }
 .linkedin {
   padding: 3px 72px 1px 14px;
-  .company {
+  .company, .institution {
     color: #181818;
     font-size: 15px;
     font-weight: 600;
@@ -4567,11 +4567,13 @@ body .gh__menu {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: 100%; 
+    padding-top: 50px;
     .title {
       font-size: 4rem;
       font-weight: 300;
-      
+      font: normal normal 600 36px/49px Open Sans;
+
       + .text {
           margin: 0 0 1rem;
       }
