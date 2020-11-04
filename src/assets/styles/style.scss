@@ -4529,10 +4529,10 @@ body .gh__menu {
     }
   }
 }
-.mapTabButton { 
+.mapTabButton {
   background: transparent;
   border: none;
-  display: flex; 
+  display: flex;
   left: 67px;
   position: absolute;
   img {
@@ -4547,17 +4547,17 @@ body .gh__menu {
     font-size: 15px;
     font-weight: 600;
     margin-bottom: 0rem !important;
-  } 
+  }
   .position, .studyType, .skills, .summary, .studyData {
     color: #181818;
-    font-size: 14.5px; 
-    margin-bottom: 0rem !important; 
+    font-size: 14.5px;
+    margin-bottom: 0rem !important;
   }
   .date, .location  {
     color: rgba(0,0,0,.6);
     font-size: 13.5px;
     margin-bottom: 0rem !important;
-  }   
+  }
   .visually-hidden {
     display: none;
   }
@@ -4571,12 +4571,12 @@ body .gh__menu {
     .title {
       font-size: 4rem;
       font-weight: 300;
-      
+
       + .text {
           margin: 0 0 1rem;
       }
   }
-  
+
   .no-graphs-img {
       font-weight: 300;
       text-align: center;

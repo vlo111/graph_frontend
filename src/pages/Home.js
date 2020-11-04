@@ -38,10 +38,8 @@ class Home extends Component {
               <span>{s}</span>
             </h2>
           ) : null}
-          {graphsListStatus === 'request' && _.isEmpty(graphsListStatus) ? (
-            <article className="graphsItem">
-              <NoGraph />
-            </article>
+          {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
+            <NoGraph />
           ) : null}
           {graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
