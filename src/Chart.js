@@ -137,7 +137,7 @@ class Chart {
             // remove deleted nodes
             if (!data.links.some((l) => !l.sourceId && (l.target === d.name || l.source === d.name))) {
               d.remove = true;
-              console.log('remove')
+              console.log('remove');
               removedNodes = true;
             }
             d.deleted = true;
