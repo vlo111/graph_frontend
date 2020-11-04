@@ -16,6 +16,5 @@ export default combineReducers({
   commentGraphs,
   notifications,
   userFriends,
-  graphLabelsEmbed,
   profile,
 });
