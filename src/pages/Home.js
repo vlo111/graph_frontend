@@ -33,7 +33,7 @@ class Home extends Component {
           {s ? (
             <h2 className="searchResult">{'Search Result for: '}<span>{s}</span></h2>
           ) : null}
-          {graphsList.length ? graphsList.map((graph) => (
+          {graphsList &&  graphsList.length ? (graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
               <GraphListHeader graph={graph} />
               <div className="top">
@@ -74,7 +74,7 @@ class Home extends Component {
               </Link>
               <GraphListFooter graph={graph} />
             </article>
-          )) : <NoGraph />}
+          ))) : <NoGraph  />}
         </div>
         <Pagination totalPages={totalPages} />
       </>
