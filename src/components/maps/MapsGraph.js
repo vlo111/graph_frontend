@@ -40,11 +40,11 @@ class MapsGraph extends Component {
     this.setState({
       activeNode: { marker, node },
     });
-
+    
     const queryObj = queryString.parse(window.location.search);
     queryObj.info = node.name;
     const query = queryString.stringify(queryObj); 
-    this.props.History.replace(`?${query}`, {});
+    this.props.History.replace(`?${query}`);
   }
 
   render() {

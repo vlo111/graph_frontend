@@ -4500,8 +4500,15 @@ body .gh__menu {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    color : #808080;
+    margin-left:10%;
+    margin-top:70px;
   }
 
+  &__description {
+    margin-top: 25px;
+  }
+  
   &__user-details {
     display: flex;
     flex-direction: column;

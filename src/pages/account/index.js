@@ -9,14 +9,13 @@ import { getFriendsRequest } from '../../store/actions/userFriends';
 import { getProfile } from '../../store/selectors/profile';
 import { getUserFriendsList } from '../../store/selectors/userFriends';
 import AddButton from '../search/addFriend';
-import { friendType } from '../../data/friend';
+import { friendType } from '../../data/friend'; 
 
 const Profile = React.memo((props) => {
   const { userId } = props.match.params;
   const dispatch = useDispatch();
   const profile = useSelector(getProfile);
-  const friends = useSelector(getUserFriendsList);
-
+  const friends = useSelector(getUserFriendsList); 
   useEffect(() => {
     dispatch(getUserRequest(userId));
     dispatch(getFriendsRequest(userId));
@@ -37,16 +36,18 @@ const Profile = React.memo((props) => {
                   alt={profile.firstName}
                 />
                 <div className="profile__user-details">
-                  {`${profile.firstName} ${profile.lastName}`}
-                  <span className="description">
-                    {profile.email}
-                  </span>
-                  <span className="description">
-                  Short description/ bio : {profile.bio}
+                  <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
+                 
+                  <span className="email">
+                   <strong>Email : </strong> {profile.email} 
                   </span>
                   <span className="website">
-                    {profile.website}
+                  <strong>Website : </strong> {profile.website}
+                  </span> 
+                  <span className="profile__description">
+                   <span> <strong>Short description/ bio : </strong>   {profile.bio} </span>
                   </span>
+                
                 </div>
               </div>
               <AddButton user={profile} />
