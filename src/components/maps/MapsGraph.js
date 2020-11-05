@@ -43,7 +43,7 @@ class MapsGraph extends Component {
 
     const queryObj = queryString.parse(window.location.search);
     queryObj.info = node.name;
-    const query = queryString.stringify(queryObj);
+    const query = queryString.stringify(queryObj);console.log(query, 'query')
     this.props.History.replace(`?${query}`);
   }
 
