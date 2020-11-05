@@ -41,6 +41,12 @@ const Profile = React.memo((props) => {
                   <span className="description">
                     {profile.email}
                   </span>
+                  <span className="description">
+                  Short description/ bio : {profile.bio}
+                  </span>
+                  <span className="website">
+                    {profile.website}
+                  </span>
                 </div>
               </div>
               <AddButton user={profile} />

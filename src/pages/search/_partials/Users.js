@@ -35,7 +35,7 @@ const Users = React.memo(({ setLimit }) => {
                   alt={user.firstName}
                 />
                 <div className="searchData__graphInfo-details">
-                  <Link to={`/user/preview/${user.id}`}>
+                  <Link to={`/profile/${user.id}`}>
                     {`${user.firstName} ${user.lastName}`}
                   </Link>
                   <span className="description">
