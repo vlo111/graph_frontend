@@ -9,13 +9,13 @@ import { getFriendsRequest } from '../../store/actions/userFriends';
 import { getProfile } from '../../store/selectors/profile';
 import { getUserFriendsList } from '../../store/selectors/userFriends';
 import AddButton from '../search/addFriend';
-import { friendType } from '../../data/friend'; 
+import { friendType } from '../../data/friend';
 
 const Profile = React.memo((props) => {
   const { userId } = props.match.params;
   const dispatch = useDispatch();
   const profile = useSelector(getProfile);
-  const friends = useSelector(getUserFriendsList); 
+  const friends = useSelector(getUserFriendsList);
   useEffect(() => {
     dispatch(getUserRequest(userId));
     dispatch(getFriendsRequest(userId));
@@ -28,30 +28,33 @@ const Profile = React.memo((props) => {
         {profile.id && (
           <>
             <h3 className="profile__title">{`Welcome to ${profile.firstName} ${profile.lastName}'s profile page`}</h3>
-            <article key={profile.id}>
-              <div className="profile__user">
+            <div className="profile__my">
+              <article key={profile.id}>
                 <img
-                  className="avatar"
+                  className="profile__avatar"
                   src={profile.avatar}
                   alt={profile.firstName}
                 />
-                <div className="profile__user-details">
-                  <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
-                 
-                  <span className="email">
-                   <strong>Email : </strong> {profile.email} 
-                  </span>
-                  <span className="website">
-                  <strong>Website : </strong> {profile.website}
-                  </span> 
-                  <span className="profile__description">
-                   <span> <strong>Short description/ bio : </strong>   {profile.bio} </span>
-                  </span>
-                
+                <div className="profile__user">
+
+                  <div className="profile__user-details">
+                    <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
+
+                    <span className="email">
+                      <strong>Email : </strong> {profile.email}
+                    </span>
+                    <span className="website">
+                      <strong>Website : </strong> {profile.website}
+                    </span>
+                    <span className="profile__description">
+                      <span> <strong>Short description/ bio : </strong>   {profile.bio} </span>
+                    </span>
+
+                  </div>
                 </div>
-              </div>
-              <AddButton user={profile} />
-            </article>
+                <AddButton user={profile} />
+              </article>
+            </div>
           </>
         )}
         <div className="profile__friends">

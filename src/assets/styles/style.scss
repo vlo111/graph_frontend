@@ -4496,6 +4496,10 @@ body .gh__menu {
     margin-bottom: 12px;
   }
 
+  &___my {
+    min-height: 200px;
+  }
+
   &__user {
     display: flex;
     align-items: center;
@@ -4504,7 +4508,19 @@ body .gh__menu {
     margin-left:10%;
     margin-top:70px;
   }
-
+   
+  &__avatar {
+    width: 14.1vw;
+    height: 14.1vw;
+    min-width: 200px;
+    min-height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+    top: 126px;
+    left: 282px;
+  }
+  
   &__description {
     margin-top: 25px;
   }
