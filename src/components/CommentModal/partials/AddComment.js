@@ -16,6 +16,7 @@ const AddComment = ({ graph, closeModal, isReply }) => {
 
   return (
     <div className={`comment-modal__add-comment-section${isReply ? '--reply' : ''}`}>
+      <hr />
       <Owner user={myAccount.myAccount} />
       <Input
         textArea

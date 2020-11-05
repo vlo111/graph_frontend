@@ -17,6 +17,8 @@ $color-dark-blue: #717EA0;
 $color-green: #48897a;
 $color-white: #ffffff;
 
+$color-darkgreen : #d0e2bc;
+
 $font-family: 'Open Sans', sans-serif;
 
 
@@ -3852,10 +3854,12 @@ body .gh__menu {
 
   &__comment-item {
     margin-bottom: 15px;
+    background-color: $color-darkgreen;
 
     &--reply {
       margin-bottom: 15px;
-      margin-left: 61px;
+      margin-left: 61px; 
+      background-color: $color-darkgreen;
     }
   }
 
