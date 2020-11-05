@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import memoizeOne from 'memoize-one';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import Chart from '../../Chart';
@@ -12,8 +11,7 @@ import CustomFields from '../../helpers/CustomFields';
 import ChartUtils from '../../helpers/ChartUtils';
 import { socketLabelDataChange } from '../../store/actions/socket';
 import LabelUtils from '../../helpers/LabelUtils';
-import Utils from '../../helpers/Utils';
-import Api from "../../Api";
+import Api from '../../Api';
 
 class ReactChart extends Component {
   static propTypes = {
@@ -29,9 +27,8 @@ class ReactChart extends Component {
     this.state = {
       ctrlPress: undefined,
       shiftKey: undefined,
-    }
+    };
   }
-
 
   componentDidMount() {
     Chart.render({ nodes: [], links: [], labels: [] });
@@ -53,9 +50,6 @@ class ReactChart extends Component {
 
     Chart.event.on('node.dragend', this.handleNodeDragEnd);
     Chart.event.on('render', this.handleRender);
-
-    window.addEventListener('keydown', this.handleKeyPress);
-    window.addEventListener('keyup', this.handleKeyUp);
   }
 
   componentWillUnmount() {
@@ -65,21 +59,6 @@ class ReactChart extends Component {
     ContextMenu.event.removeListener('active-button', this.setActiveButton);
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
     ContextMenu.event.removeListener('label.delete', this.handleLabelDelete);
-  }
-
-  handleKeyPress = (ev) => {
-    ChartUtils.keyEvent(ev);
-    const { ctrlPress, shiftKey } = this.state;
-    if (ctrlPress !== ev.ctrlPress || shiftKey !== ev.shiftKey) {
-      this.setState({
-        ctrlPress: ev.ctrlPress ? '' : undefined,
-        shiftKey: ev.shiftKey ? '' : undefined,
-      });
-    }
-  }
-
-  handleKeyUp = () => {
-    this.setState({ ctrlPress: undefined, shiftKey: undefined });
   }
 
   handleLabelClick = (ev, d) => {
@@ -209,9 +188,6 @@ class ReactChart extends Component {
             <g className="linkText" />
             <g className="nodes" />
             <g className="icons" />
-
-            <rect className="selectBoard areaBoard" fill="transparent" width="0" height="0" />
-
             <defs>
               <filter id="labelShadowFilter" x="-50%" y="-50%" width="200%" height="200%">
                 <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />

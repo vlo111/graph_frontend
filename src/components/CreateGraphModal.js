@@ -12,7 +12,7 @@ import { createGraphRequest } from '../store/actions/graphs';
 class CreateGraphModal extends Component {
   static propTypes = {
     createGraphRequest: PropTypes.func.isRequired,
-    history: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
   }

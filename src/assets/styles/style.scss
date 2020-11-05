@@ -727,14 +727,18 @@ p {
   }
 
 
-  &[data-shift] {
-    .selectBoard {
-      display: block;
-    }
-  }
+  .selectSquare {
+    fill: rgba($color-accent, 0.05);
+    stroke: rgba($color-accent, 0.5);
+    stroke-width: 1;
+    stroke-dasharray: 4;
+    animation: selectSquareAnim 40s linear infinite;
 
-  .selectBoard {
-    display: none;
+    @keyframes selectSquareAnim {
+      to {
+        stroke-dashoffset: -400;
+      }
+    }
   }
 
 

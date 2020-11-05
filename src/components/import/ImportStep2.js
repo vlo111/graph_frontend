@@ -33,9 +33,9 @@ class ImportStep2 extends Component {
       labels,
       embedLabels: [],
     });
-    // Chart.render({
-    //   nodes, links, labels, embedLabels: [],
-    // });
+    Chart.render({
+      nodes, links, labels, embedLabels: [],
+    });
     this.props.setGraphCustomFields(customFields);
     this.props.setActiveButton('create');
   }
