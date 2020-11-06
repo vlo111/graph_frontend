@@ -21,12 +21,13 @@ class NodeIcon extends Component {
   render() {
     const { error } = this.state;
     const { node } = this.props;
+    const showIcon = node.icon && !error;
     return (
       <span
-        className={`nodeIcon ${node.nodeType} ${node.icon ? 'hasImage' : ''}`}
-        style={{ background: !node.icon ? ChartUtils.nodeColor(node) : undefined }}
+        className={`nodeIcon ${node.nodeType} ${showIcon ? 'hasImage' : ''}`}
+        style={{ background: !showIcon ? ChartUtils.nodeColor(node) : undefined }}
       >
-        {node.icon && !error ? (
+        {showIcon ? (
           <img src={node.icon} onError={this.handleError} alt="icon" width={50} height={50} />
         ) : (
           <span className="text">{node.type[0]}</span>
