@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import randomColor from 'randomcolor';
 import memoizeOne from 'memoize-one';
 import stripHtml from 'string-strip-html';
+import path from 'path';
 import Chart from '../Chart';
 import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
@@ -432,6 +433,42 @@ class ChartUtils {
     }
     console.log(`coordinatesCompass: ${data.length} -> ${d.length}`);
     return d;
+  }
+
+  static async getNodesWithFiles(customFields = {}) {
+    let nodes = Chart.getNotesWithLabels();
+    const icons = await Promise.all(nodes.map((d) => {
+      if (d.icon && d.icon.startsWith('blob:')) {
+        return Utils.blobToBase64(d.icon);
+      }
+      return d.icon;
+    }));
+    let files = {};
+    let fIndex = new Date().getTime();
+    nodes = nodes.map((d, i) => {
+      d.icon = icons[i];
+      d.description = d.description.replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
+        fIndex += 1;
+        files[fIndex] = Utils.blobToBase64(url);
+        return ` href="<%= file_${fIndex} %>"`;
+      });
+      return d;
+    });
+
+    for (const nodeType in customFields) {
+      for (const tab in customFields[nodeType]) {
+        for (const node in customFields[nodeType][tab].values) {
+          customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
+            .replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
+              fIndex += 1;
+              files[fIndex] = Utils.blobToBase64(url);
+              return ` href="<%= file_${fIndex} %>"`;
+            });
+        }
+      }
+    }
+    files = await Promise.allValues(files);
+    return { nodes, files, customFields };
   }
 }
 

@@ -39,6 +39,7 @@ class Utils {
       const base64 = Buffer.from(data, 'binary').toString('base64');
       return `data:${type};base64,${base64}`;
     } catch (e) {
+      console.warn(e);
       return null;
     }
   }

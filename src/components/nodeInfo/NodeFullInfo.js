@@ -39,6 +39,7 @@ class NodeFullInfo extends Component {
     if (!node) {
       return null;
     }
+
     return (
       <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
         <div id="nodeFullInfo">
