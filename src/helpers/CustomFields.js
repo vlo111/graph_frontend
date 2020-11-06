@@ -31,12 +31,15 @@ class CustomFields {
       console.warn('CustomFields limit');
       return customFields;
     }
-    if (!_.get(customFields, [type, key])) {
-      _.set(customFields, [type, key], {
+    if (!customFields[type]) {
+      customFields[type] = {};
+    }
+    if (!customFields[type]) {
+      customFields[type][key] = {
         order: Object.values(customFields[type] || {}).length,
-        values: {},
         subtitle,
-      });
+        values: {},
+      };
     }
     return { ...customFields };
   }

@@ -457,13 +457,17 @@ class ChartUtils {
 
     for (const nodeType in customFields) {
       for (const tab in customFields[nodeType]) {
-        for (const node in customFields[nodeType][tab].values) {
-          customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
-            .replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
-              fIndex += 1;
-              files[fIndex] = Utils.blobToBase64(url);
-              return ` href="<%= file_${fIndex} %>"`;
-            });
+        if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
+          for (const node in customFields[nodeType][tab].values) {
+            customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
+              .replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
+                fIndex += 1;
+                files[fIndex] = Utils.blobToBase64(url);
+                return ` href="<%= file_${fIndex} %>"`;
+              });
+          }
+        } else {
+          delete customFields[nodeType][tab];
         }
       }
     }

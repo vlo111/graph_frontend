@@ -99,7 +99,6 @@ class NodeTypesFilter extends Component {
     if (typesFull.length < 2) {
       return null;
     }
-    console.log(filters.nodeCustomFields);
     return (
       <div className="nodesTypesFilter graphFilter">
         <h4 className="title">Node Types</h4>
