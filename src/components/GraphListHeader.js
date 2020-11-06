@@ -17,7 +17,7 @@ import { getGraphsListRequest } from '../store/actions/graphs';
 
 const GraphListHeader = ({ graph }) => {
   const dispatch = useDispatch();
-  const [openCommentModal, setOpenCommentModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const history = useHistory()
   const { page = 1, s: searchParam } = queryString.parse(window.location.search);
 
@@ -67,15 +67,15 @@ const GraphListHeader = ({ graph }) => {
         <Button
           icon={<EditSvg style={{ height: 30 }} />}
           className="transparent edit"
-          onClick={() => setOpenCommentModal(true)} />
+          onClick={() => setOpenEditModal(true)} />
         <Button
           icon={<TrashSvg style={{ height: 30 }} />}
           onClick={deleteGraph}
           className="transparent delete" />
       </DropdownButton>
-      {openCommentModal && (
+      {openEditModal && (
         <UpdateGraphModal
-          closeModal={() => setOpenCommentModal(false)}
+          closeModal={() => setOpenEditModal(false)}
           graph={graph}
         />
       )}
