@@ -31,9 +31,9 @@ const Shared = React.memo(() => {
                 alt={graph.user.name}
               />
               <div className="infoWrapper">
-                <a href="/">
+                <Link to={`/profile/${graph.user.id}`}>
                   <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
-                </a>
+                </Link>
                 <div className="info">
                   <span>{moment(graph.updatedAt).calendar()}</span>
                   <span>{`${graph.nodes.length} nodes`}</span>
