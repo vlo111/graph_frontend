@@ -34,7 +34,7 @@ class CustomFields {
     if (!customFields[type]) {
       customFields[type] = {};
     }
-    if (!customFields[type]) {
+    if (!customFields[type][key]) {
       customFields[type][key] = {
         order: Object.values(customFields[type] || {}).length,
         subtitle,
@@ -63,7 +63,7 @@ class CustomFields {
     const customFieldType = _.get(customFields, type, {});
     _.forEach(customFieldType, (d, key) => {
       if (_.get(customFields, [type, key, oldName])) {
-        _.set(customFields, [type, key, name], d);
+        customFields[type][key][name] = d;
         _.remove(customFields, [type, key, oldName]);
       }
     });
