@@ -84,7 +84,6 @@ class NodeTabsFormModal extends Component {
   render() {
     const { tabData, errors } = this.state;
     const { node, customFields, fieldName } = this.props;
-    console.log(fieldName);
     this.initValues(customFields, node, fieldName);
     const isUpdate = !!fieldName;
     return (
