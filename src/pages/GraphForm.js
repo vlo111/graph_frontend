@@ -21,6 +21,7 @@ import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
+import CreateGraphModal from '../components/CreateGraphModal';
 
 class GraphForm extends Component {
   static propTypes = {
