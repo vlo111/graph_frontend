@@ -24,7 +24,7 @@ class FlexTabs extends Component {
   reduceMargin = () => {
     const { marginLeft } = this.state;
 
-    if (this.hasScroll() && marginLeft > -80) {
+    if (this.hasScroll() && marginLeft > -120) {
       this.setState({ marginLeft: marginLeft - 2 });
     }
   }
@@ -36,9 +36,14 @@ class FlexTabs extends Component {
     return (
       <div className="tabs" ref={(ref) => this.ref = ref}>
         {Children.map(this.props.children, (child) => (
-          <span key={child?.key} style={{ marginLeft: child?.props.className !== 'empty' ? marginLeft : undefined }}>
-            {child}
-          </span>
+          child ? (
+            <span
+              key={child?.key}
+              style={{ marginLeft: child?.props.className !== 'empty' ? marginLeft : undefined }}
+            >
+              {child}
+            </span>
+          ) : null
         ))}
       </div>
     );
