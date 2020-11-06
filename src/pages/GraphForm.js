@@ -14,17 +14,13 @@ import { setActiveButton } from '../store/actions/app';
 import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
-import AccountDropDown from '../components/account/AccountDropDown';
 import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
-import MapsButton from '../components/maps/MapsButton';
 import MapsGraph from '../components/maps/MapsGraph';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
-import Legend from '../components/Legend';
-import CreateGraphModal from '../components/CreateGraphModal';
-import memoizeOne from "memoize-one";
+import ToolBarHeader from '../components/ToolBarHeader';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -59,8 +55,8 @@ class GraphForm extends Component {
         <div className="graphWrapper">
           <ReactChart />
         </div>
-        <ToolBar />
-        <AccountDropDown />
+        <ToolBarHeader />
+        <ToolBar />        
         <Crop />
         <AddNodeModal />
         {activeButton === 'data' && <DataView />}
@@ -74,8 +70,6 @@ class GraphForm extends Component {
         <NodeFullInfo />
         <AutoPlay />
         <Zoom />
-        <MapsButton />
-        <Legend />
         <LabelTooltip />
         <CreateGraphModal />
       </Wrapper>

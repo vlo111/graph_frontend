@@ -1031,6 +1031,17 @@ p {
     }
 
   }
+
+   .graphs {
+    position: absolute;
+    left: 750px;
+
+    button {
+      background-color: $color-white;
+      border: 0px; 
+      padding: 4px 20px 1px;
+    } 
+   }
 }
 
 #headerMini {
@@ -1101,7 +1112,7 @@ p {
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
-  padding-top: 12px;
+  padding-top: 53px;
   position: fixed;
   z-index: 1;
 
@@ -3072,8 +3083,8 @@ body .gh__menu {
   border: none;
   display: flex;
   z-index: 2;
-  left: 210px;
-  top: 5px;
+  left: 435px;
+  top: 8px;
 
   img {
     width: 40px;
@@ -3969,8 +3980,8 @@ body .gh__menu {
   border: none;
   display: flex;
   z-index: 2;
-  left: 210px;
-  top: 50px;
+  left: 214px;
+  top: 4px;
   color: #0D0905;
   max-width: 200px;
   min-width: 200px;
