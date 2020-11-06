@@ -94,6 +94,11 @@ class Api {
     return api.put(`/graphs/update/${id}`, requestData);
   }
 
+  static updateGraphData(id, requestData) {
+  return api.put(`/graphs/update-data/${id}`, requestData);
+}
+
+
   static getActionsCount(id) {
     return api.get(`/graphs/actions-count/${id}`);
   }
@@ -230,6 +235,18 @@ class Api {
 
   static myFriends() {
     return api.get('/user-friends/my-friends');
+  }
+
+  static labelShare(sourceId, labelName, graphId) {
+    return api.post('/graph-labels-embed/create', { sourceId, labelName, graphId });
+  }
+
+  static labelDelete(sourceId, labelName, graphId) {
+    return api.delete('/graph-labels-embed/delete', {
+      params: {
+        sourceId, labelName, graphId,
+      },
+    });
   }
 }
 

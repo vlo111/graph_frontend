@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import memoizeOne from 'memoize-one';
 import Wrapper from '../components/Wrapper';
 import ToolBar from '../components/ToolBar';
 import ReactChart from '../components/chart/ReactChart';
@@ -14,53 +15,46 @@ import { setActiveButton } from '../store/actions/app';
 import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
-import AccountDropDown from '../components/account/AccountDropDown';
 import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
-import MapsButton from '../components/maps/MapsButton';
 import MapsGraph from '../components/maps/MapsGraph';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
-import Legend from '../components/Legend';
 import CreateGraphModal from '../components/CreateGraphModal';
-import memoizeOne from "memoize-one";
+import ToolBarHeader from '../components/ToolBarHeader';
+import { socketSetActiveGraph } from '../store/actions/socket';
 
 class GraphForm extends Component {
   static propTypes = {
     getSingleGraphRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     clearSingleGraph: PropTypes.func.isRequired,
+    socketSetActiveGraph: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
   }
 
-  getEmbedLabelsData = memoizeOne((labels) => {
-    // labels.forEach(l => {
-    //   this.props.a(1);
-    // })
-  })
-
-  componentDidMount() {
-    const { match: { params: { graphId } } } = this.props;
+  getSingleGraph = memoizeOne((graphId) => {
     this.props.setActiveButton('create');
     if (+graphId) {
       this.props.getSingleGraphRequest(graphId);
     } else {
       this.props.clearSingleGraph();
     }
-  }
+    this.props.socketSetActiveGraph(+graphId || null);
+  })
 
   render() {
-    const { activeButton, singleGraphLabels } = this.props;
-    this.getEmbedLabelsData(singleGraphLabels);
+    const { activeButton, match: { params: { graphId } } } = this.props;
+    this.getSingleGraph(graphId);
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
         <div className="graphWrapper">
           <ReactChart />
         </div>
+        <ToolBarHeader />
         <ToolBar />
-        <AccountDropDown />
         <Crop />
         <AddNodeModal />
         {activeButton === 'data' && <DataView />}
@@ -74,8 +68,6 @@ class GraphForm extends Component {
         <NodeFullInfo />
         <AutoPlay />
         <Zoom />
-        <MapsButton />
-        <Legend />
         <LabelTooltip />
         <CreateGraphModal />
       </Wrapper>
@@ -90,6 +82,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
+  socketSetActiveGraph,
   clearSingleGraph,
 };
 const Container = connect(

@@ -17,6 +17,8 @@ $color-dark-blue: #717EA0;
 $color-green: #48897a;
 $color-white: #ffffff;
 
+$color-darkgreen : #f2f3f5;
+
 $font-family: 'Open Sans', sans-serif;
 
 
@@ -726,6 +728,22 @@ p {
     display: none !important;
   }
 
+
+  .selectSquare {
+    fill: rgba($color-accent, 0.05);
+    stroke: rgba($color-accent, 0.5);
+    stroke-width: 1;
+    stroke-dasharray: 4;
+    animation: selectSquareAnim 40s linear infinite;
+
+    @keyframes selectSquareAnim {
+      to {
+        stroke-dashoffset: -400;
+      }
+    }
+  }
+
+
   .labels {
     .labelsBoard {
       pointer-events: none;
@@ -1029,6 +1047,17 @@ p {
     }
 
   }
+
+   .graphs {
+    position: absolute;
+    left: 750px;
+
+    button {
+      background-color: $color-white;
+      border: 0px;
+      padding: 4px 20px 1px;
+    }
+   }
 }
 
 #headerMini {
@@ -1099,7 +1128,7 @@ p {
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
-  padding-top: 12px;
+  padding-top: 53px;
   position: fixed;
   z-index: 1;
 
@@ -2114,7 +2143,7 @@ p {
 
 
   &.empty {
-    min-height: 450px;
+    min-height: 90vh;
     background-color: $color-white;
     border-radius: 24px;
     border: 1px solid $color-light-gray;
@@ -3070,8 +3099,8 @@ body .gh__menu {
   border: none;
   display: flex;
   z-index: 2;
-  left: 210px;
-  top: 5px;
+  left: 435px;
+  top: 8px;
 
   img {
     width: 40px;
@@ -3852,10 +3881,12 @@ body .gh__menu {
 
   &__comment-item {
     margin-bottom: 15px;
+    background-color: $color-darkgreen;
 
     &--reply {
       margin-bottom: 15px;
       margin-left: 61px;
+      background-color: $color-darkgreen;
     }
   }
 
@@ -3965,8 +3996,8 @@ body .gh__menu {
   border: none;
   display: flex;
   z-index: 2;
-  left: 210px;
-  top: 50px;
+  left: 214px;
+  top: 4px;
   color: #0D0905;
   max-width: 200px;
   min-width: 200px;
@@ -4132,7 +4163,21 @@ body .gh__menu {
   }
 
 }
+.graphListHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  right: 0px;
 
+  #dropdown-graphListHeader {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+  }
+
+
+}
 
 .account {
   padding-top: 80px;
@@ -4478,10 +4523,33 @@ body .gh__menu {
     margin-bottom: 12px;
   }
 
+  &__my {
+    min-height: 200px;
+  }
+
   &__user {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    color : #808080;
+    margin-left:10%;
+    margin-top:70px;
+  }
+
+  &__avatar {
+    width: 14.1vw;
+    height: 14.1vw;
+    min-width: 200px;
+    min-height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+    top: 126px;
+    left: 282px;
+  }
+
+  &__description {
+    margin-top: 25px;
   }
 
   &__user-details {
@@ -4545,10 +4613,10 @@ body .gh__menu {
     }
   }
 }
-.mapTabButton { 
+.mapTabButton {
   background: transparent;
   border: none;
-  display: flex; 
+  display: flex;
   left: 67px;
   position: absolute;
   img {
@@ -4558,23 +4626,47 @@ body .gh__menu {
 }
 .linkedin {
   padding: 3px 72px 1px 14px;
-  .company {
+
+  .company, .institution {
     color: #181818;
     font-size: 15px;
     font-weight: 600;
     margin-bottom: 0rem !important;
-  } 
-  .position, .institution, .studyType, .skills, .summary {
+  }
+
+  .position, .studyType, .skills, .summary, .studyData {
     color: #181818;
-    font-size: 14.5px; 
-    margin-bottom: 0rem !important; 
+    font-size: 14.5px;
+    margin-bottom: 0rem !important;
   }
   .date, .location  {
     color: rgba(0,0,0,.6);
     font-size: 13.5px;
     margin-bottom: 0rem !important;
-  }   
+  }
   .visually-hidden {
     display: none;
+  }
+}
+.no-graphs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-top: 50px;
+    .title {
+      font-size: 4rem;
+      font-weight: 300;
+      font: normal normal 600 36px/49px Open Sans;
+
+      + .text {
+          margin: 0 0 1rem;
+      }
+  }
+
+  .no-graphs-img {
+      font-weight: 300;
+      text-align: center;
   }
 }

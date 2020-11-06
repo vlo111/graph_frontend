@@ -12,10 +12,13 @@ import {
   ACTIONS_COUNT, GET_SINGLE_EMBED_GRAPH, SET_GRAPH_CUSTOM_FIELDS,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
+import Chart from "../../Chart";
+import ChartUtils from "../../helpers/ChartUtils";
 
 const initialState = {
   importData: {},
   graphsList: [],
+  graphsListStatus: '',
   singleGraph: {},
   embedLabels: [],
   graphsListInfo: {
@@ -41,6 +44,7 @@ export default function reducer(state = initialState, action) {
     case GET_GRAPHS_LIST.REQUEST: {
       return {
         ...state,
+        graphsListStatus: 'request',
         graphsList: [],
       };
     }
@@ -48,8 +52,15 @@ export default function reducer(state = initialState, action) {
       const { graphs: graphsList, ...graphsListInfo } = action.payload.data;
       return {
         ...state,
+        graphsListStatus: 'success',
         graphsList,
         graphsListInfo,
+      };
+    }
+    case GET_GRAPHS_LIST.FAIL: {
+      return {
+        ...state,
+        graphsListStatus: 'fail',
       };
     }
     case GET_SINGLE_GRAPH.REQUEST: {
@@ -61,6 +72,10 @@ export default function reducer(state = initialState, action) {
     case GET_SINGLE_EMBED_GRAPH.SUCCESS:
     case GET_SINGLE_GRAPH.SUCCESS: {
       const { graph: singleGraph, embedLabels } = action.payload.data;
+      const { nodes, links, labels } = singleGraph;
+      Chart.render({
+        nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels,
+      });
       return {
         ...state,
         singleGraph,
@@ -123,7 +138,7 @@ export default function reducer(state = initialState, action) {
       const singleGraph = marge ? { ...state.singleGraph, ...graph } : graph;
       return {
         ...state,
-        singleGraph,
+        singleGraph: _.cloneDeep(singleGraph),
       };
     }
     case ACTIONS_COUNT.SUCCESS: {

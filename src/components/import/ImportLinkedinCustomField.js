@@ -18,51 +18,51 @@ class ImportLinkedinCustomField extends Component {
         {data.work.map((row) => (
           <Fragment key={row.startDate} >
             <section className='linkedin'>
-              <p className="company"> 
+              <p className="company">
                 {row.company}
               </p>
               {row.position ? (
-                <p className="position"> 
+                <p className="position">
                   {row.position}
                 </p>
-              ) : null} 
+              ) : null}
               {row.date ? (
-                <p className="date"> 
+                <p className="date">
                   {row.date} {`${row.duration}`}
                 </p>
               ) : null}
               {row.location ? (
-                <p className="location"> 
+                <p className="location">
                   {row.location}
                 </p>
               ) : null}
               <br />
               {row.summary ? (
-                <p className="summary"> 
+                <p className="summary">
                   {row.summary}
                 </p>
               ) : null}
              {row.startDate ? (
-                <p className="visually-hidden"> 
+                <p className="visually-hidden">
                 <strong>startDate: </strong>
                   {row.startDate}
                   <strong>endDate: </strong>
                   {row.endDate}
                 </p>
-              ) : null} 
+              ) : null}
               {row.date ? (
-                <p className="visually-hidden"> 
+                <p className="visually-hidden">
                  <strong>date: </strong>
                   {row.date}
                 </p>
               ) : null}
              {row.duration ? (
-                <p className="visually-hidden"> 
+                <p className="visually-hidden">
                 <strong>duration: </strong>
                   {row.duration}
                 </p>
               ) : null}
-              
+
             </section>
              <hr/>
           </Fragment>
@@ -105,17 +105,25 @@ class ImportLinkedinCustomField extends Component {
           <Fragment key={row.name}>
             <div className='linkedin'>
               {row.institution ? (
-                <p className="institution"> 
+                <p className="institution">
                   {row.institution}
                 </p>
               ) : null}
+              {row.studyData ? (
+                <p className="studyData">
+                  {row.studyData}
+                </p>
+              ) : null}
               {row.studyType ? (
-                <p className="studyType"> 
+                <p className="visually-hidden">
+                <strong>studyType: </strong>
                   {row.studyType}
                 </p>
               ) : null}
               {row.startDate ? (
-                <p className="date"> 
+
+                <p className="visually-hidden">
+                <strong>date: </strong>
                   {`${row.startDate} - ${row.endDate}`}
                 </p>
               ) : null}

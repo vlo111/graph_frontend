@@ -16,10 +16,12 @@ const AddComment = ({ graph, closeModal, isReply }) => {
 
   return (
     <div className={`comment-modal__add-comment-section${isReply ? '--reply' : ''}`}>
+      <hr />
       <Owner user={myAccount.myAccount} />
       <Input
         textArea
         value={text}
+        limit={250}
         onChangeText={(value) => setText(value)}
         className="comment-modal__add-comment-input"
         id={isReply ? 'reply-comment' : 'add-comment'}

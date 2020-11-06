@@ -39,6 +39,7 @@ class Utils {
       const base64 = Buffer.from(data, 'binary').toString('base64');
       return `data:${type};base64,${base64}`;
     } catch (e) {
+      console.warn(e);
       return null;
     }
   }
@@ -131,11 +132,12 @@ class Utils {
     arrByte.shift();
     return opacity ? `rgba(${arrByte.join(',')}, ${opacity})` : `rgb(${arrByte.join(',')})`;
   }
+
   static orderGroup(groups, curentType) {
     if (groups.length > 1) {
       groups = groups.sort((a, b) => {
-        if (a.value < b.value) return -1;
-        if (a.value > b.value) return 1;
+        if (a.value?.toUpperCase() < b.value?.toUpperCase()) return -1;
+        if (a.value?.toUpperCase() > b.value?.toUpperCase()) return 1;
         return 0;
       });
 

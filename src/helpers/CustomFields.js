@@ -31,12 +31,15 @@ class CustomFields {
       console.warn('CustomFields limit');
       return customFields;
     }
-    if (!_.get(customFields, [type, key])) {
-      _.set(customFields, [type, key], {
+    if (!customFields[type]) {
+      customFields[type] = {};
+    }
+    if (!customFields[type][key]) {
+      customFields[type][key] = {
         order: Object.values(customFields[type] || {}).length,
-        values: {},
         subtitle,
-      });
+        values: {},
+      };
     }
     return { ...customFields };
   }
@@ -60,7 +63,7 @@ class CustomFields {
     const customFieldType = _.get(customFields, type, {});
     _.forEach(customFieldType, (d, key) => {
       if (_.get(customFields, [type, key, oldName])) {
-        _.set(customFields, [type, key, name], d);
+        customFields[type][key][name] = d;
         _.remove(customFields, [type, key, oldName]);
       }
     });

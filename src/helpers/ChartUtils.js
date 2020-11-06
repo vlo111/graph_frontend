@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import randomColor from 'randomcolor';
 import memoizeOne from 'memoize-one';
 import stripHtml from 'string-strip-html';
+import path from 'path';
 import Chart from '../Chart';
 import history from './history';
 import { DASH_TYPES, LINK_COLORS } from '../data/link';
@@ -102,9 +103,27 @@ class ChartUtils {
     return selectedGrid.links.includes(d.index);
   }
 
-  static getNodeByName(name) {
-    const nodes = Chart.getNodes();
+  static getNodeByName(name, withLabels = false) {
+    const nodes = withLabels ? Chart.getNotesWithLabels() : Chart.getNodes();
     return nodes.find((d) => d.name === name);
+  }
+
+  static getLabelByName(name) {
+    const labels = Chart.getLabels();
+    return labels.find((d) => d.name === name);
+  }
+
+  static getFilteredGraphByLabel(labelName) {
+    const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(labelName));
+    const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
+    return {
+      nodes,
+      links,
+    };
+  }
+
+  static cleanLinks(links, nodes) {
+    return links.filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
   }
 
   static normalizeIcon = (icon) => {
@@ -414,6 +433,46 @@ class ChartUtils {
     }
     console.log(`coordinatesCompass: ${data.length} -> ${d.length}`);
     return d;
+  }
+
+  static async getNodesWithFiles(customFields = {}) {
+    let nodes = Chart.getNotesWithLabels();
+    const icons = await Promise.all(nodes.map((d) => {
+      if (d.icon && d.icon.startsWith('blob:')) {
+        return Utils.blobToBase64(d.icon);
+      }
+      return d.icon;
+    }));
+    let files = {};
+    let fIndex = new Date().getTime();
+    nodes = nodes.map((d, i) => {
+      d.icon = icons[i];
+      d.description = d.description.replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
+        fIndex += 1;
+        files[fIndex] = Utils.blobToBase64(url);
+        return ` href="<%= file_${fIndex} %>"`;
+      });
+      return d;
+    });
+
+    for (const nodeType in customFields) {
+      for (const tab in customFields[nodeType]) {
+        if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
+          for (const node in customFields[nodeType][tab].values) {
+            customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
+              .replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
+                fIndex += 1;
+                files[fIndex] = Utils.blobToBase64(url);
+                return ` href="<%= file_${fIndex} %>"`;
+              });
+          }
+        } else {
+          delete customFields[nodeType][tab];
+        }
+      }
+    }
+    files = await Promise.allValues(files);
+    return { nodes, files, customFields };
   }
 }
 

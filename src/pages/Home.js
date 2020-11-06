@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
+import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import moment from 'moment';
 import { withRouter, Link } from 'react-router-dom';
@@ -9,12 +10,15 @@ import { getGraphsListRequest } from '../store/actions/graphs';
 import Utils from '../helpers/Utils';
 import Pagination from '../components/Pagination';
 import GraphListFooter from '../components/GraphListFooter';
+import GraphListHeader from '../components/GraphListHeader';
+import NoGraph from '../components/NoGraph';
 
 class Home extends Component {
   static propTypes = {
     getGraphsListRequest: PropTypes.func.isRequired,
     graphsList: PropTypes.array.isRequired,
     graphsListInfo: PropTypes.object.isRequired,
+    graphsListStatus: PropTypes.string.isRequired,
   }
 
   getGraphsList = memoizeOne((page, s) => {
@@ -22,17 +26,24 @@ class Home extends Component {
   })
 
   render() {
-    const { graphsList, graphsListInfo: { totalPages } } = this.props;
+    const { graphsList, graphsListStatus, graphsListInfo: { totalPages } } = this.props;
     const { page = 1, s } = queryString.parse(window.location.search);
     this.getGraphsList(page, s);
     return (
       <>
         <div className={`graphsList ${!graphsList.length ? 'empty' : ''}`}>
           {s ? (
-            <h2 className="searchResult">{'Search Result for: '}<span>{s}</span></h2>
+            <h2 className="searchResult">
+              {'Search Result for: '}
+              <span>{s}</span>
+            </h2>
+          ) : null}
+          {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
+            <NoGraph />
           ) : null}
           {graphsList.map((graph) => (
             <article key={graph.id} className="graphsItem">
+              <GraphListHeader graph={graph} />
               <div className="top">
                 <img
                   className="avatar"
@@ -80,6 +91,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  graphsListStatus: state.graphs.graphsListStatus,
   graphsList: state.graphs.graphsList || [],
   graphsListInfo: state.graphs.graphsListInfo || {},
 });

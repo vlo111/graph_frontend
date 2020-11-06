@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import memoizeOne from 'memoize-one';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import Chart from '../../Chart';
@@ -10,28 +9,26 @@ import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../contextMenu/ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
 import ChartUtils from '../../helpers/ChartUtils';
+import { socketLabelDataChange } from '../../store/actions/socket';
+import LabelUtils from '../../helpers/LabelUtils';
+import Api from '../../Api';
 
 class ReactChart extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
-    singleGraph: PropTypes.object.isRequired,
     customFields: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
   };
 
-  renderChart = memoizeOne((singleGraph, embedLabels) => {
-    const { nodes, links, labels } = singleGraph;
-    if (!nodes) {
-      return;
-    }
-    console.log(111,122)
-    const ll = links.filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
-    Chart.render({
-      nodes, links: ll, labels, embedLabels,
-    });
-  }, _.isEqual);
+  constructor(props) {
+    super(props);
+    this.state = {
+      ctrlPress: undefined,
+      shiftKey: undefined,
+    };
+  }
 
   componentDidMount() {
     Chart.render({ nodes: [], links: [], labels: [] });
@@ -50,6 +47,9 @@ class ReactChart extends Component {
 
     ContextMenu.event.on('label.delete', this.handleLabelDelete);
     Chart.event.on('label.click', this.handleLabelClick);
+
+    Chart.event.on('node.dragend', this.handleNodeDragEnd);
+    Chart.event.on('render', this.handleRender);
   }
 
   componentWillUnmount() {
@@ -71,12 +71,31 @@ class ReactChart extends Component {
     console.log(d);
   }
 
+  handleRender = () => {
+    clearTimeout(this.renderTimeout);
+    this.renderTimeout = setTimeout(() => {
+      const { match: { params: { graphId } } } = this.props;
+      Chart.getLabels().forEach((l) => {
+        LabelUtils.labelDataChange(graphId, l.name);
+      });
+    }, 500);
+  }
+
+  handleNodeDragEnd = (ev, d) => {
+    this.handleRender();
+  }
+
   handleLabelDelete = (ev, d) => {
     const labels = Chart.getLabels().filter((l) => l.name !== d.name);
     if (d.sourceId) {
-      const nodes = Chart.getNodes().filter((n) => !n.sourceId || n.sourceId !== d.sourceId);
-      const links = Chart.getLinks().filter((l) => !l.sourceId || l.sourceId !== d.sourceId);
-      Chart.render({ labels, nodes, links });
+      const { match: { params: { graphId } } } = this.props;
+      const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.name));
+      const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
+      const embedLabels = Chart.data.embedLabels.filter((l) => l.labelName !== d.originalName);
+      Chart.render({
+        labels, nodes, links, embedLabels,
+      });
+      Api.labelDelete(d.sourceId, d.originalName, graphId);
       return;
     }
     Chart.render({ labels });
@@ -100,7 +119,7 @@ class ReactChart extends Component {
 
   addNewNode = (ev) => {
     const { target } = ev;
-    if (!target.classList.contains('nodeCrate')
+    if (!target.classList.contains('nodeCreate')
       || Chart.activeButton !== 'create'
       || Chart.newLink.attr('data-source')) {
       return;
@@ -150,17 +169,19 @@ class ReactChart extends Component {
   }
 
   render() {
-    const { activeButton, singleGraph, embedLabels } = this.props;
-    this.renderChart(singleGraph, embedLabels);
+    const { ctrlPress, shiftKey } = this.state;
+    const { activeButton } = this.props;
+
+    // this.renderChart(singleGraph, embedLabels);
     return (
-      <div id="graph" data-active={activeButton} className={activeButton}>
+      <div id="graph" data-active={activeButton} data-shift={shiftKey} data-ctrl={ctrlPress} className={activeButton}>
         <div className="borderCircle">
           {_.range(0, 6).map((k) => <div key={k} />)}
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" className="nodeCrate">
+        <svg xmlns="http://www.w3.org/2000/svg" className="nodeCreate">
           <g className="wrapper" transform-origin="top left">
             <g className="labels">
-              <rect className="labelsBoard" fill="transparent" width="100%" height="100%" />
+              <rect className="labelsBoard areaBoard" fill="transparent" width="100%" height="100%" />
             </g>
             <g className="directions" />
             <g className="links" />
@@ -188,13 +209,13 @@ class ReactChart extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
-  singleGraph: state.graphs.singleGraph,
   embedLabels: state.graphs.embedLabels,
   customFields: state.graphs.singleGraph.customFields || {},
 });
 const mapDispatchToProps = {
   toggleNodeModal,
   setActiveButton,
+  socketLabelDataChange,
 };
 
 const Container = connect(

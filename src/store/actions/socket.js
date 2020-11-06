@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import Chart from '../../Chart';
 import Api from '../../Api';
 import Account from '../../helpers/Account';
 import { updateSingleGraph } from './graphs';
@@ -6,19 +7,41 @@ import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
 
 let socket;
+const notPushedEmits = [];
+
+export function socketEmit(...params) {
+  if (socket?.init) {
+    socket.emit(...params);
+  } else {
+    notPushedEmits.push(params);
+  }
+}
+
+export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
 
 export function socketInit() {
-  if (!socket) {
-    const token = Account.getToken();
-    socket = io.connect(Api.url, {
-      query: `token=${token}`,
-    });
-  }
   return (dispatch, getState) => {
+    if (socket) {
+      return;
+    }
     const {
       graphs: { singleGraph },
       account: { myAccount: { id: userId } },
     } = getState();
+    const token = Account.getToken();
+
+    socket = io.connect(Api.url, {
+      query: `token=${token}`,
+    });
+
+    socket.on('connect', () => {
+      setTimeout(() => {
+        socket.init = true;
+        notPushedEmits.forEach((params) => {
+          socket.emit(...params);
+        });
+      }, 200);
+    });
 
     socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
       data.id = +data.id;
@@ -36,5 +59,66 @@ export function socketInit() {
     socket.on(`updateUserfriend-${userId}`, (data) => {
       dispatch(addMyFriends(data));
     });
+
+    socket.on('labelEmbedCopy', (labelEmbed) => {
+      Chart.data.labels = Chart.data.labels.map((l) => {
+        if (l.name === labelEmbed.name) {
+          l.hasInEmbed = true;
+        }
+        return l;
+      });
+      dispatch({
+        type: SOCKET_LABEL_EMBED_COPY,
+        payload: {
+          labelEmbed,
+        },
+      });
+    });
+
+    socket.on('embedLabelDataChange', (data) => {
+      const [, graphId] = window.location.pathname.match(/\/(\d+)$/) || [0, 0]; // todo write better solution
+      if (+data.sourceId === +graphId) {
+        return;
+      }
+      if (!Chart.getLabels().some((l) => +l.sourceId === +data.sourceId)) {
+        return;
+      }
+      let changed = false;
+      const embedLabels = Chart.data.embedLabels.map((l) => {
+        if (+l.sourceId === +data.sourceId) {
+          changed = true;
+          l = data;
+        }
+        return l;
+      });
+      if (!changed) {
+        embedLabels.push(data);
+      }
+      Chart.render({ embedLabels });
+    });
+  };
+}
+
+export const SOCKET_LABEL_DATA_CHANGE = 'SOCKET_LABEL_DATA_CHANGE';
+
+export function socketLabelDataChange(graph) {
+  socketEmit('labelDataChange', graph);
+  return {
+    type: SOCKET_LABEL_DATA_CHANGE,
+    payload: {
+      graph,
+    },
+  };
+}
+
+export const SOCKET_SET_ACTIVE_GRAPH = 'SOCKET_SET_ACTIVE_GRAPH';
+
+export function socketSetActiveGraph(graphId) {
+  socketEmit('setActiveGraph', { graphId });
+  return {
+    type: SOCKET_SET_ACTIVE_GRAPH,
+    payload: {
+      graphId,
+    },
   };
 }

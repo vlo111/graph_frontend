@@ -560,15 +560,15 @@ class Chart {
   }
 
   static renderSelectSquare() {
-    if (this.isCalled('renderSelectselectBoard')) {
+    if (this.isCalled('renderSelectSquare')) {
       return;
     }
 
     this.event.on('window.keydown', (ev) => {
       if (ev.shiftKey) {
-        const scale = 1 / (+Chart.wrapper?.attr('data-scale') || 1);
-        const x = -1 * (+Chart.wrapper?.attr('data-x') || 0);
-        const y = -1 * (+Chart.wrapper?.attr('data-y') || 0);
+        const x = +Chart.wrapper?.attr('data-x') || 0;
+        const y = +Chart.wrapper?.attr('data-y') || 0;
+        const scale = +Chart.wrapper?.attr('data-scale') || 1;
         const size = scale * 100;
 
         this.wrapper.append('rect')
@@ -581,6 +581,7 @@ class Chart {
           .call(d3.drag()
             .on('start', handleDragStart)
             .on('drag', handleDrag));
+
       }
     });
 
@@ -593,11 +594,12 @@ class Chart {
     let selectSquare;
 
     const handleSquareDragStart = () => {
-      const datum = selectSquare.datum();
-      const { scale, x, y } = ChartUtils.calcScaledPosition(datum.x, datum.y);
+      const dx = +selectSquare.attr('x');
+      const dy = +selectSquare.attr('y');
+      const { scale, x, y } = ChartUtils.calcScaledPosition(dx, dy);
 
-      const width = datum.width * scale;
-      const height = datum.height * scale;
+      const width = +selectSquare.attr('width') * scale;
+      const height = +selectSquare.attr('height') * scale;
 
       nodes = this.getNodes().filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
     };
@@ -606,13 +608,9 @@ class Chart {
       if (!ev.sourceEvent.shiftKey) {
         return;
       }
-
-      const datum = selectSquare.datum();
-      datum.x += ev.dx;
-      datum.y += ev.dy;
       selectSquare
-        .datum(datum)
-        .attr('transform', (d) => `translate(${d.x} ${d.y})`);
+        .attr('x', () => +selectSquare.attr('x') + ev.dx)
+        .attr('y', () => +selectSquare.attr('y') + ev.dy);
 
       this.node.each((d) => {
         if (nodes.some((n) => n.name === d.name)) {
@@ -634,17 +632,13 @@ class Chart {
 
     const handleDragStart = (ev) => {
       this.wrapper.select('.selectSquare').remove();
-      selectSquare = this.wrapper.append('path')
-        .datum({
-          width: 0,
-          height: 0,
-          x: ev.x,
-          y: ev.y,
-        })
+      selectSquare = this.wrapper.append('rect')
         .attr('class', 'selectSquare')
         .attr('fill', 'transparent')
-        .attr('d', (d) => `M 0 0 H ${d.width} V ${d.height} H 0 L 0 0`)
-        .attr('transform', (d) => `translate(${d.x} ${d.y})`)
+        .attr('x', ev.x)
+        .attr('y', ev.y)
+        .attr('width', 0)
+        .attr('height', 0)
         .call(d3.drag()
           .on('start', handleSquareDragStart)
           .on('drag', handleSquareDrag)
@@ -652,12 +646,19 @@ class Chart {
     };
 
     const handleDrag = (ev) => {
-      const datum = selectSquare.datum();
-      datum.width += ev.dx;
-      datum.height += ev.dy;
+      const x = +selectSquare.attr('x');
+      const y = +selectSquare.attr('y');
+      let width = +selectSquare.attr('width') + ev.dx;
+      if (width < 0) {
+        width *= -1;
+      }
+      let height = +selectSquare.attr('height') + ev.dy;
+      if (height < 0) {
+        height *= -1;
+      }
       selectSquare
-        .datum(datum)
-        .attr('d', (d) => `M 0 0 H ${d.width} V ${d.height} H 0 L 0 0`);
+        .attr('width', width)
+        .attr('height', height);
     };
   }
 
