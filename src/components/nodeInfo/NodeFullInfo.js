@@ -56,6 +56,8 @@ class NodeFullInfo extends Component {
                 onError={(ev) => {
                   if (ev.target.src !== node.icon) {
                     ev.target.src = node.icon;
+                  } else if (ev.target.src !== bgImage) {
+                    ev.target.src = bgImage;
                   }
                 }}
                 alt="background"
