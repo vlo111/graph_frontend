@@ -131,6 +131,9 @@ class AddNodeModal extends Component {
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
     const groups = this.getTypes(nodes);
+
+    Utils.orderGroup(groups, nodeData.type);
+
     return (
       <Modal
         className="ghModal"

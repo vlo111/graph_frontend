@@ -139,7 +139,7 @@ class DataView extends Component {
     return (
       <div id="dataTable" className={fullWidth ? 'fullWidth' : undefined}>
         <div className="exportButtons">
-          <Button onClick={() => this.export('xlsx')}>Export xlsx</Button>
+          <Button onClick={() => this.export('xlsx')}>Export Graph</Button>
           <Button onClick={() => this.download('pdf')}>Export pdf</Button>
           <Button onClick={() => this.download('png')}>Export png</Button>
         </div>

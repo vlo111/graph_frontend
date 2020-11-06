@@ -17,6 +17,8 @@ $color-dark-blue: #717EA0;
 $color-green: #48897a;
 $color-white: #ffffff;
 
+$color-darkgreen : #f2f3f5;
+
 $font-family: 'Open Sans', sans-serif;
 
 
@@ -1045,6 +1047,17 @@ p {
     }
 
   }
+
+   .graphs {
+    position: absolute;
+    left: 750px;
+
+    button {
+      background-color: $color-white;
+      border: 0px; 
+      padding: 4px 20px 1px;
+    } 
+   }
 }
 
 #headerMini {
@@ -1115,7 +1128,7 @@ p {
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
-  padding-top: 12px;
+  padding-top: 53px;
   position: fixed;
   z-index: 1;
 
@@ -3086,8 +3099,8 @@ body .gh__menu {
   border: none;
   display: flex;
   z-index: 2;
-  left: 210px;
-  top: 5px;
+  left: 435px;
+  top: 8px;
 
   img {
     width: 40px;
@@ -3868,10 +3881,12 @@ body .gh__menu {
 
   &__comment-item {
     margin-bottom: 15px;
+    background-color: $color-darkgreen;
 
     &--reply {
       margin-bottom: 15px;
-      margin-left: 61px;
+      margin-left: 61px; 
+      background-color: $color-darkgreen;
     }
   }
 
@@ -3981,8 +3996,8 @@ body .gh__menu {
   border: none;
   display: flex;
   z-index: 2;
-  left: 210px;
-  top: 50px;
+  left: 214px;
+  top: 4px;
   color: #0D0905;
   max-width: 200px;
   min-width: 200px;
@@ -4148,7 +4163,6 @@ body .gh__menu {
   }
 
 }
-
 .graphListHeader {
   display: flex;
   justify-content: flex-start;
@@ -4498,12 +4512,64 @@ body .gh__menu {
   background-color: $color-white;
 }
 
-.graphUsersInfoOverlay {
+.profile {
+  max-width: 960px;
+  width: 100%;
+  margin-top: 80px;
+  margin-left: auto;
+  margin-right: auto;
+
+  &__title {
+    margin-bottom: 12px;
+  }
+
+  &__my {
+    min-height: 200px;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    color : #808080;
+    margin-left:10%;
+    margin-top:70px;
+  }
+   
+  &__avatar {
+    width: 14.1vw;
+    height: 14.1vw;
+    min-width: 200px;
+    min-height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+    top: 126px;
+    left: 282px;
+  }
+  
+  &__description {
+    margin-top: 25px;
+  }
+  
+  &__user-details {
+    display: flex;
+    flex-direction: column;
+    margin: 0 16px;
+  }
+
+  &__friends {
+    margin-top: 20px;
+    border-top: 1px solid $color-gray;
+    padding-top: 20px;
+  }
+}
+
+.graphUsersInfoOverlay{
   .graphUsersInfo {
     padding: 30px 20px 20px;
     width: 350px;
     height: 350px;
-
     .close {
       position: absolute;
     }
@@ -4529,12 +4595,12 @@ body .gh__menu {
         margin-right: 10px;
       }
 
-      .userName {
+      .userName{
         font-size: 16px;
         margin-top: 6px;
       }
 
-      .time {
+      .time{
         font-size: 15px;
         color: $color-dark-blue;
       }
@@ -4547,67 +4613,58 @@ body .gh__menu {
     }
   }
 }
-
-.mapTabButton {
+.mapTabButton { 
   background: transparent;
   border: none;
-  display: flex;
+  display: flex; 
   left: 67px;
   position: absolute;
-
   img {
     width: 40px;
     height: 40px;
   }
 }
-
 .linkedin {
   padding: 3px 72px 1px 14px;
-
   .company, .institution {
     color: #181818;
     font-size: 15px;
     font-weight: 600;
     margin-bottom: 0rem !important;
-  }
-
+  } 
   .position, .studyType, .skills, .summary, .studyData {
     color: #181818;
-    font-size: 14.5px;
-    margin-bottom: 0rem !important;
+    font-size: 14.5px; 
+    margin-bottom: 0rem !important; 
   }
-
-  .date, .location {
-    color: rgba(0, 0, 0, .6);
+  .date, .location  {
+    color: rgba(0,0,0,.6);
     font-size: 13.5px;
     margin-bottom: 0rem !important;
-  }
-
+  }   
   .visually-hidden {
     display: none;
   }
 }
-
 .no-graphs {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+    padding-top: 50px;
+    .title {
+      font-size: 4rem;
+      font-weight: 300;
+      font: normal normal 600 36px/49px Open Sans;
 
-  .title {
-    font-size: 4rem;
-    font-weight: 300;
-    font: normal normal 600 36px/49px Open Sans;
-
-    + .text {
-      margin: 0 0 1rem;
-    }
+      + .text {
+          margin: 0 0 1rem;
+      }
   }
-
+  
   .no-graphs-img {
-    font-weight: 300;
-    text-align: center;
+      font-weight: 300;
+      text-align: center;
   }
 }
