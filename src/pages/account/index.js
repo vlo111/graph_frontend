@@ -39,6 +39,9 @@ const Profile = React.memo((props) => {
 
                   <div className="profile__user-details">
                     <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
+                    <div style={{ position: 'absolute', right: '500px' }}>
+                      <AddButton user={profile} />
+                    </div>
 
                     <span className="email">
                       <strong>Email : </strong> {profile.email}
@@ -52,7 +55,7 @@ const Profile = React.memo((props) => {
 
                   </div>
                 </div>
-                <AddButton user={profile} />
+
               </article>
             </div>
           </>
