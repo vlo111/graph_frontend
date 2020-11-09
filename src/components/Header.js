@@ -22,7 +22,7 @@ class Header extends Component {
         <div className="right-elements">
           <Notification />
           <div className="signOut">
-            <AccountDropDown />
+           // <AccountDropDown />
 
           </div>
         </div>
