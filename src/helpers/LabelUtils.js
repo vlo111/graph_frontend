@@ -1,28 +1,29 @@
 import _ from 'lodash';
+import { toast } from 'react-toastify';
 import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
 import Utils from './Utils';
 import store from '../store';
 import CustomFields from './CustomFields';
 import { setNodeCustomField } from '../store/actions/graphs';
-import Api from "../Api";
-import { toast } from "react-toastify";
+import Api from '../Api';
+import { socketLabelDataChange } from '../store/actions/socket';
 
 class LabelUtils {
-  static copy(graphId, name, customFields) {
+  static copy(sourceId, name, customFields) {
     const labels = Chart.getLabels();
     const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(name));
     const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
     const label = labels.find((l) => l.name === name);
 
     const data = {
-      graphId,
+      sourceId: +sourceId,
       label,
       nodes,
       links,
       customFields,
     };
-    sessionStorage.setItem('label.copy', JSON.stringify(data));
+    localStorage.setItem('label.copy', JSON.stringify(data));
 
     return data;
   }
@@ -40,23 +41,22 @@ class LabelUtils {
       })
       .max()
       .value() + 1;
-    if (i === 1) {
+    if (!i) {
       return d.name;
     }
     return `${d.name}_${i}`;
   }
 
-  static past(x, y, isEmbed) {
+  static async past(x, y, isEmbed, graphId) {
     let data;
     try {
-      data = JSON.parse(sessionStorage.getItem('label.copy'));
+      data = JSON.parse(localStorage.getItem('label.copy'));
     } catch (e) {
       //
     }
     if (!data) {
       return;
     }
-
     const { x: posX, y: posY } = ChartUtils.calcScaledPosition(x, y);
 
     // label past
@@ -68,7 +68,7 @@ class LabelUtils {
         return;
       }
       data.label.readOnly = true;
-      data.label.sourceId = data.graphId;
+      data.label.sourceId = data.sourceId;
       data.label.originalName = data.label.name;
     } else {
       // eslint-disable-next-line no-lonely-if
@@ -104,7 +104,7 @@ class LabelUtils {
     data.nodes.forEach((d) => {
       const originalName = d.name;
       if (nodes.some((n) => n.name === d.name)) {
-        d.name = this.getNewNodeName(nodes);
+        d.name = this.getNewNodeName(d, nodes);
         data.links = data.links.map((l) => {
           if (l.source === originalName) {
             l.source = d.name;
@@ -119,7 +119,7 @@ class LabelUtils {
       d.fy = d.fy - minY + posY;
       if (isEmbed) {
         d.readOnly = true;
-        d.sourceId = data.graphId;
+        d.sourceId = data.sourceId;
         d.originalName = originalName;
       }
 
@@ -135,7 +135,7 @@ class LabelUtils {
     data.links = data.links.map((d) => {
       if (isEmbed) {
         d.readOnly = true;
-        d.sourceId = data.graphId;
+        d.sourceId = data.sourceId;
       }
       return d;
     });
@@ -143,10 +143,27 @@ class LabelUtils {
     links.push(...data.links);
 
     if (isEmbed) {
-      Api.labelShare(data.graphId, data.label.originalName);
+      const { data: res } = await Api.labelShare(data.sourceId, data.label.originalName, graphId).catch((e) => e.response);
+      if (res.status !== 'ok') {
+        toast.error(res.message);
+        return;
+      }
+      Chart.render({ links, nodes, labels });
+      return;
     }
 
     Chart.render({ links, nodes, labels });
+  }
+
+  static labelDataChange = (graphId, labelName, force = false) => {
+    const label = ChartUtils.getLabelByName(labelName, true);
+    if ((label.hasInEmbed && !label.sourceId) || force) {
+      const { nodes, links } = ChartUtils.getFilteredGraphByLabel(labelName);
+      const graph = {
+        nodes, links, sourceId: +graphId, label, labelName: label.name, customFields: {},
+      };
+      store.dispatch(socketLabelDataChange(graph));
+    }
   }
 }
 

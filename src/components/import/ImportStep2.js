@@ -5,7 +5,6 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton } from '../../store/actions/app';
 import {
-  clearSingleGraph,
   convertGraphRequest,
   setGraphCustomFields,
   updateSingleGraph
@@ -33,9 +32,10 @@ class ImportStep2 extends Component {
       labels,
       embedLabels: [],
     });
-    // Chart.render({
-    //   nodes, links, labels, embedLabels: [],
-    // });
+
+    Chart.render({
+      nodes, links, labels, embedLabels: [],
+    });
     this.props.setGraphCustomFields(customFields);
     this.props.setActiveButton('create');
   }

@@ -39,6 +39,7 @@ class NodeFullInfo extends Component {
     if (!node) {
       return null;
     }
+
     return (
       <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
         <div id="nodeFullInfo">
@@ -55,6 +56,8 @@ class NodeFullInfo extends Component {
                 onError={(ev) => {
                   if (ev.target.src !== node.icon) {
                     ev.target.src = node.icon;
+                  } else if (ev.target.src !== bgImage) {
+                    ev.target.src = bgImage;
                   }
                 }}
                 alt="background"

@@ -23,42 +23,38 @@ import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
 import CreateGraphModal from '../components/CreateGraphModal';
 import memoizeOne from "memoize-one";
+import { socketSetActiveGraph } from "../store/actions/socket";
 
 class GraphForm extends Component {
   static propTypes = {
     getSingleGraphRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     clearSingleGraph: PropTypes.func.isRequired,
+    socketSetActiveGraph: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
   }
 
-  getEmbedLabelsData = memoizeOne((labels) => {
-    // labels.forEach(l => {
-    //   this.props.a(1);
-    // })
-  })
-
-  componentDidMount() {
-    const { match: { params: { graphId } } } = this.props;
+  getSingleGraph = memoizeOne((graphId) => {
     this.props.setActiveButton('create');
     if (+graphId) {
       this.props.getSingleGraphRequest(graphId);
     } else {
       this.props.clearSingleGraph();
     }
-  }
+    this.props.socketSetActiveGraph(+graphId || null);
+  })
 
   render() {
-    const { activeButton, singleGraphLabels } = this.props;
-    this.getEmbedLabelsData(singleGraphLabels);
+    const { activeButton, match: { params: { graphId } } } = this.props;
+    this.getSingleGraph(graphId);
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
         <div className="graphWrapper">
           <ReactChart />
         </div>
         <ToolBarHeader />
-        <ToolBar />        
+        <ToolBar />
         <Crop />
         <AddNodeModal />
         {activeButton === 'data' && <DataView />}
@@ -86,6 +82,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
+  socketSetActiveGraph,
   clearSingleGraph,
 };
 const Container = connect(

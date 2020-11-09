@@ -21,6 +21,7 @@ const AddComment = ({ graph, closeModal, isReply }) => {
       <Input
         textArea
         value={text}
+        limit={250}
         onChangeText={(value) => setText(value)}
         className="comment-modal__add-comment-input"
         id={isReply ? 'reply-comment' : 'add-comment'}

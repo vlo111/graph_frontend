@@ -7,6 +7,7 @@ import commentGraphs from './commentGraphs';
 import notifications from './notifications';
 import userFriends from './userFriends';
 import profile from './profile';
+import graphLabelsEmbed from './graphLabelsEmbed';
 
 export default combineReducers({
   app,
@@ -17,4 +18,5 @@ export default combineReducers({
   notifications,
   userFriends,
   profile,
+  graphLabelsEmbed,
 });

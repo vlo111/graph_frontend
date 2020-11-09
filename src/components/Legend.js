@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { setLegendButton } from '../store/actions/app';
 import Chart from '../Chart';
 import { ReactComponent as Arrow } from '../assets/images/arrow.svg';
-import Utils from '../helpers/Utils';
 import ChartUtils from '../helpers/ChartUtils';
 
 class Legend extends Component {
