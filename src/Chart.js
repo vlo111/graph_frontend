@@ -115,7 +115,7 @@ class Chart {
         data.links.push(...label.links);
 
         // get position difference
-        const labelEmbed = data.labels.find((l) => l.originalName === label.label.name);
+        const labelEmbed = data.labels.find((l) => l.originalName === label.label?.name);
         if (labelEmbed) {
           label.cx = label.label.d[0][0] - labelEmbed.d[0][0];
           label.cy = label.label.d[0][1] - labelEmbed.d[0][1];
