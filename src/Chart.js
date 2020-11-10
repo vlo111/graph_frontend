@@ -286,15 +286,16 @@ class Chart {
     const y = Math.min(...nodes.map((n) => n.fy - this.radiusList[n.index] - 2)) * -1 * scale;
     // this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
     this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
-    this.data.nodes = this.data.nodes.map((l) => {
+
+    this.data.nodes = this.data.nodes.map((n) => {
       if (d) {
-        if (d.name === l.name) {
-          l.labels = ChartUtils.getLabelsByPosition(l);
+        if (d.name === n.name) {
+          n.labels = ChartUtils.getNodeLabels(n);
         }
       } else {
-        l.labels = ChartUtils.getLabelsByPosition(l);
+        n.labels = ChartUtils.getNodeLabels(n);
       }
-      return l;
+      return n;
     });
 
     const { x: oX, y: oY, scale: oScale } = originalDimensions;

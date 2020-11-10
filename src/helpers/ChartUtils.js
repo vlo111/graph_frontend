@@ -377,6 +377,28 @@ class ChartUtils {
     // Chart.event.emit('node.mouseenter', node);
   }
 
+  static isNodeInLabel(node, label) {
+    const x = node.fx || node.x;
+    const y = node.fy || node.y;
+    const { d } = label;
+    let inside = false;
+    for (let i = 0, j = d.length - 1; i < d.length; j = i++) {
+      const xi = d[i][0];
+      const yi = d[i][1];
+      const xj = d[j][0];
+      const yj = d[j][1];
+      if ((yi > y ^ yj > y) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+        inside = !inside;
+      }
+    }
+    return inside;
+  }
+
+  static getNodeLabels(node) {
+    return Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.name);
+  }
+
+  // deprecated use getNodeLabels
   static getLabelsByPosition(node) {
     const { x, y } = this.getNodeDocumentPosition(node.index);
     const elements = [];
