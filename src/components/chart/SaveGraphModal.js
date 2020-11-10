@@ -61,7 +61,7 @@ class SaveGraphModal extends Component {
   }
 
   getNodesAndFiles = async () => {
-    let nodes = Chart.getNotesWithLabels();
+    let nodes = Chart.getNodes();
     const icons = await Promise.all(nodes.map((d) => {
       if (d.icon && d.icon.startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);

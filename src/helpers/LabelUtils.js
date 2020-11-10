@@ -12,7 +12,7 @@ import { socketLabelDataChange } from '../store/actions/socket';
 class LabelUtils {
   static copy(sourceId, name, customFields) {
     const labels = Chart.getLabels();
-    const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(name));
+    const nodes = Chart.getNodes().filter((n) => n.labels.includes(name));
     const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
     const label = labels.find((l) => l.name === name);
 

@@ -104,7 +104,7 @@ class ChartUtils {
   }
 
   static getNodeByName(name, withLabels = false) {
-    const nodes = withLabels ? Chart.getNotesWithLabels() : Chart.getNodes();
+    const nodes = Chart.getNodes();
     return nodes.find((d) => d.name === name);
   }
 
@@ -114,7 +114,7 @@ class ChartUtils {
   }
 
   static getFilteredGraphByLabel(labelName) {
-    const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(labelName));
+    const nodes = Chart.getNodes().filter((n) => n.labels.includes(labelName));
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
     return {
       nodes,
@@ -387,6 +387,7 @@ class ChartUtils {
       const yi = d[i][1];
       const xj = d[j][0];
       const yj = d[j][1];
+      // eslint-disable-next-line no-mixed-operators,no-bitwise
       if ((yi > y ^ yj > y) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
         inside = !inside;
       }
@@ -458,7 +459,7 @@ class ChartUtils {
   }
 
   static async getNodesWithFiles(customFields = {}) {
-    let nodes = Chart.getNotesWithLabels();
+    let nodes = Chart.getNodes();
     const icons = await Promise.all(nodes.map((d) => {
       if (d.icon && d.icon.startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);

@@ -262,31 +262,6 @@ class Chart {
   static detectLabelsProcess = false;
 
   static detectLabels(d = null) {
-    const nodesEl = document.querySelector('#graph .nodes');
-    if (!nodesEl || this.detectLabelsProcess || _.isEmpty(this.data.labels)) {
-      return;
-    }
-    this.detectLabelsProcess = true;
-    const originalDimensions = {
-      scale: this.wrapper.attr('data-scale') || 1,
-      x: this.wrapper.attr('data-x') || 0,
-      y: this.wrapper.attr('data-y') || 0,
-    };
-
-    const { width, height } = nodesEl.getBoundingClientRect();
-
-    // const scale = 0.1;
-    const scaleW = window.innerWidth / (width / originalDimensions.scale + 20);
-    const scaleH = window.innerHeight / (height / originalDimensions.scale + 20);
-    const scale = Math.min(scaleW, scaleH, 1);
-
-    const nodes = this.getNodes();
-
-    const x = Math.min(...nodes.map((n) => n.fx - this.radiusList[n.index] - 2)) * -1 * scale;
-    const y = Math.min(...nodes.map((n) => n.fy - this.radiusList[n.index] - 2)) * -1 * scale;
-    // this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
-    this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
-
     this.data.nodes = this.data.nodes.map((n) => {
       if (d) {
         if (d.name === n.name) {
@@ -297,15 +272,7 @@ class Chart {
       }
       return n;
     });
-
-    const { x: oX, y: oY, scale: oScale } = originalDimensions;
-
-    // this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`);
-    this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
-
-    this._dataNodes = null;
-
-    this.detectLabelsProcess = false;
+    this._dataNodes = this.data.nodes;
   }
 
   static renderLabels() {
@@ -1072,6 +1039,7 @@ class Chart {
         updatedUser: d.updatedUser,
         readOnly: !!d.readOnly || undefined,
         sourceId: +d.sourceId || undefined,
+        label: ChartUtils.getNodeLabels(d),
         originalName: d.originalName,
       }));
     }
@@ -1087,6 +1055,7 @@ class Chart {
     return this._dataNodes;
   }
 
+  // deprecated
   static getNotesWithLabels() {
     this.detectLabels();
     return this.getNodes();
