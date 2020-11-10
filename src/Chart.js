@@ -12,10 +12,10 @@ class Chart {
 
   static drag(simulation) {
     const dragstart = (ev, d) => {
+      this.event.emit('node.dragstart', ev, d);
       if (d.readOnly) {
         return;
       }
-      this.event.emit('node.dragstart', ev, d);
       if (ev.active) simulation.alphaTarget(0.3).restart();
       d.fixed = !!d.fx;
       // d.fx = d.x;
@@ -25,7 +25,8 @@ class Chart {
     };
 
     const dragged = (ev, d) => {
-      if (d.readOnly) {
+      this.event.emit('node.drag', ev, d);
+      if (d.readOnly || ev.sourceEvent.shiftKey) {
         return;
       }
       d.fx = ev.x;
@@ -38,13 +39,14 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
+      this.event.emit('node.dragend', ev, d);
+
       if (d.readOnly) {
         return;
       }
       if (this.activeButton === 'view') {
         this.detectLabels(d);
       }
-      this.event.emit('node.dragend', ev, d);
 
       if (!ev.active) simulation.alphaTarget(0);
       if (!d.fixed) {
@@ -560,62 +562,81 @@ class Chart {
   }
 
   static renderSelectSquare() {
-    if (this.isCalled('renderSelectselectBoard')) {
+    if (this.isCalled('renderSelectSquare')) {
       return;
     }
 
-    this.event.on('window.keydown', (ev) => {
-      if (ev.shiftKey) {
-        const scale = 1 / (+Chart.wrapper?.attr('data-scale') || 1);
-        const x = -1 * (+Chart.wrapper?.attr('data-x') || 0);
-        const y = -1 * (+Chart.wrapper?.attr('data-y') || 0);
-        const size = scale * 100;
+    let selectedNodes = [];
+    let nodes = [];
+    let selectSquare;
 
-        this.wrapper.append('rect')
-          .attr('class', 'selectBoard areaBoard')
-          .attr('fill', 'transparent')
-          .attr('width', `${size}%`)
-          .attr('height', `${size}%`)
-          .attr('x', x * scale)
-          .attr('y', y * scale)
-          .call(d3.drag()
-            .on('start', handleDragStart)
-            .on('drag', handleDrag));
+    const showSelectedNodes = () => {
+      this.nodesWrapper.selectAll('.node :not(text)')
+        .attr('filter', (n) => (selectedNodes.includes(n.name) ? 'url(#selectedNodeFilter)' : null));
+    };
+
+    this.event.on('node.click', (ev, d) => {
+      if (!ev.shiftKey) {
+        return;
       }
+      selectedNodes.push(d.name);
+      showSelectedNodes();
+    });
+
+    this.event.on('window.keydown', (ev) => {
+      if (!ev.shiftKey) {
+        return;
+      }
+      const scale = 1 / (+Chart.wrapper?.attr('data-scale') || 1);
+      const x = -1 * (+Chart.wrapper?.attr('data-x') || 0);
+      const y = -1 * (+Chart.wrapper?.attr('data-y') || 0);
+      const size = scale * 100;
+
+      this.wrapper
+        .insert('rect', '.nodes')
+        .attr('class', 'selectBoard areaBoard')
+        .attr('fill', 'transparent')
+        .attr('width', `${size}%`)
+        .attr('height', `${size}%`)
+        .attr('x', x * scale)
+        .attr('y', y * scale)
+        .call(d3.drag()
+          .on('start', handleDragStart)
+          .on('drag', handleDrag));
     });
 
     this.event.on('window.keyup', () => {
       this.wrapper.selectAll('.selectBoard').remove();
       this.wrapper.selectAll('.selectSquare').remove();
+      selectedNodes = [];
+      nodes = [];
+      showSelectedNodes();
     });
 
-    let nodes = [];
-    let selectSquare;
-
     const handleSquareDragStart = () => {
-      const datum = selectSquare.datum();
-      const { scale, x, y } = ChartUtils.calcScaledPosition(datum.x, datum.y);
-
-      const width = datum.width * scale;
-      const height = datum.height * scale;
-
-      nodes = this.getNodes().filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
+      if (selectSquare) {
+        const { width, height, x, y } = selectSquare.datum();
+        nodes = this.getNodes()
+          .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height)
+          .map((d) => d.name);
+      }
     };
 
     const handleSquareDrag = (ev) => {
       if (!ev.sourceEvent.shiftKey) {
         return;
       }
-
-      const datum = selectSquare.datum();
-      datum.x += ev.dx;
-      datum.y += ev.dy;
-      selectSquare
-        .datum(datum)
-        .attr('transform', (d) => `translate(${d.x} ${d.y})`);
+      if (selectSquare) {
+        const datum = selectSquare.datum();
+        datum.x += ev.dx;
+        datum.y += ev.dy;
+        selectSquare
+          .datum(datum)
+          .attr('transform', (d) => `translate(${d.x} ${d.y})`);
+      }
 
       this.node.each((d) => {
-        if (nodes.some((n) => n.name === d.name)) {
+        if (nodes.includes(d.name) || selectedNodes.includes(d.name)) {
           if (!d.readOnly) {
             d.fx += ev.dx;
             d.x += ev.dx;
@@ -629,7 +650,7 @@ class Chart {
     };
 
     const handleSquareDragEnd = () => {
-      selectSquare.remove();
+      // selectSquare.remove();
     };
 
     const handleDragStart = (ev) => {
@@ -650,6 +671,8 @@ class Chart {
           .on('drag', handleSquareDrag)
           .on('end', handleSquareDragEnd));
     };
+    this.event.on('node.dragstart', handleSquareDragStart);
+    this.event.on('node.drag', handleSquareDrag);
 
     const handleDrag = (ev) => {
       const datum = selectSquare.datum();
@@ -867,7 +890,7 @@ class Chart {
     });
 
     this.event.on('node.mouseenter', (ev, d) => {
-      if (dragActive) return;
+      if (dragActive || ev.shiftKey) return;
       const links = this.getNodeLinks(d.name, 'all');
       links.push({ source: d.name, target: d.name });
       const nodeNames = new Set();
@@ -918,6 +941,9 @@ class Chart {
       }, 300);
     });
     this.event.on('node.click', async (ev, d) => {
+      if (ev.shiftKey) {
+        return;
+      }
       await Utils.sleep(10);
       if (this.activeButton !== 'create') {
         return;

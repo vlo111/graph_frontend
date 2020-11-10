@@ -104,7 +104,7 @@ class ContextMenu extends Component {
           {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
-          {showPast && false ? (
+          {showPast ? (
             <div className="ghButton notClose">
               <Icon value="fa-clipboard" />
               Past
