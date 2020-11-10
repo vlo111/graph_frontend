@@ -579,7 +579,13 @@ class Chart {
       if (!ev.shiftKey) {
         return;
       }
-      selectedNodes.push(d.name);
+      const i = selectedNodes.indexOf(d.name);
+      if (i > -1) {
+        selectedNodes.splice(i, 1);
+      } else {
+        selectedNodes.push(d.name);
+      }
+
       showSelectedNodes();
     });
 
