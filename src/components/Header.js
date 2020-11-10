@@ -13,7 +13,6 @@ class Header extends Component {
             <h3> graphs analysed </h3>
           </Link>
         </div>
-        <SearchGraphs />
         <div className="start-graphs">
           <Link to="/graphs/create" style={{ marginLeft: 65 }}>
             Start a Graphs
