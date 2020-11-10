@@ -524,7 +524,7 @@ class Chart {
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
-      console.error(e.message);
+      console.error(e);
       return this;
     }
   }
