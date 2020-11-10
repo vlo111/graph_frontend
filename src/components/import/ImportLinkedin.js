@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import ReactDOMServer from 'react-dom/server';
 import File from '../form/File';
 import Button from '../form/Button';
 import { convertNodeRequest } from '../../store/actions/graphs';
 import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
-import ChartUtils from "../../helpers/ChartUtils";
-import ReactDOMServer from "react-dom/server";
-import ImportLinkedinCustomField from "./ImportLinkedinCustomField";
+import ChartUtils from '../../helpers/ChartUtils';
+import ImportLinkedinCustomField from './ImportLinkedinCustomField';
+import Utils from '../../helpers/Utils';
 
 class DataImportModal extends Component {
   static propTypes = {
@@ -47,6 +48,17 @@ class DataImportModal extends Component {
     const y = window.innerHeight / 2;
     const { x: fx, y: fy } = ChartUtils.calcScaledPosition(x, y);
     const customField = {};
+
+    await Promise.all(node.education.map(async (p) => {
+      const url = Utils.wikiUrlByName(p.institution);
+
+      const wikiData = await Utils.getWikiContent(url);
+
+      if (wikiData) {
+        p.wikipedia = true;
+      } else p.wikipedia = false;
+      return p;
+    }));
 
     const work = ReactDOMServer.renderToString(<ImportLinkedinCustomField type="work" data={node} />);
     if (work) {

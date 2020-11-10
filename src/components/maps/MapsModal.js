@@ -109,45 +109,24 @@ class MapsModal extends Component {
     const customField = CustomFields.get(customFields, selected.type);
     const contact = ReactDOMServer.renderToString(<MapsContactCustomField data={selected} />);
 
-    let url = 'https://en.wikipedia.org/w/api.php';
+    const url = Utils.wikiUrlByName(selected.name);
 
-    const params = {
-      action: 'query',
-      prop: 'extracts',
-      titles: selected.name,
-      exintro: 0,
-      explaintext: 0,
-      redirects: 1,
-      format: 'json',
-    };
+    const wikiData = await Utils.getWikiContent(url);
 
-    url += '?origin=*';
-
-    Object.keys(params).forEach((key) => {
-      url += `&${key}=${params[key]}`;
-    });
-
-    fetch(url)
-      .then((response) => response.json())
-      .then((response) => {
-        if (Object.values(response.query.pages)[0].extract && customField) {
-          if (contact) {
-            customField.About = `<div>
+    if (wikiData && customField) {
+      if (contact) {
+        customField.About = `<div>
 <strong class="tabHeader">Contact</strong><br>
 <br>${contact}<br>
 </div>`;
-          }
-          customField.About += `<div>
+      }
+      customField.About += `<div>
 <strong class="tabHeader">About</strong><br>
-<br>${Object.values(response.query.pages)[0].extract}<br>
+<br>${wikiData}<br>
 <a href="https://en.wikipedia.org/wiki/${selected.name}" target="_blank">
 https://en.wikipedia.org/wiki/${selected.name}
 </a></div>`;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
 
     this.props.toggleNodeModal({
       fx: x,

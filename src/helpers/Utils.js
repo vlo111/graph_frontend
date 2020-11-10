@@ -151,6 +151,37 @@ class Utils {
       }
     }
   }
+
+  static wikiUrlByName(name) {
+    let url = 'https://en.wikipedia.org/w/api.php';
+
+    const params = {
+      action: 'query',
+      prop: 'extracts',
+      titles: name,
+      exintro: 0,
+      explaintext: 0,
+      redirects: 1,
+      format: 'json',
+    };
+
+    url += '?origin=*';
+
+    Object.keys(params).forEach((key) => {
+      url += `&${key}=${params[key]}`;
+    });
+
+    return url;
+  }
+
+  static async getWikiContent(url) {
+    return fetch(url)
+      .then((response) => response.json())
+      .then((response) => Object.values(response.query.pages)[0].extract)
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 }
 
 export default Utils;

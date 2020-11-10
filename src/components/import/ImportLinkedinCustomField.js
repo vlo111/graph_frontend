@@ -105,9 +105,15 @@ class ImportLinkedinCustomField extends Component {
           <Fragment key={row.name}>
             <div className='linkedin'>
               {row.institution ? (
-                <p className="institution"> 
-                  {row.institution}
-                </p>
+                  row.wikipedia ? (
+                      <a href={`https://en.wikipedia.org/wiki/${row.institution}`} target="_blank">
+                        {row.institution}
+                      </a>
+                  ) : (
+                      <p className="institution">
+                        {row.institution}
+                      </p>
+                  )
               ) : null}
               {row.studyData ? (
                 <p className="studyData"> 
