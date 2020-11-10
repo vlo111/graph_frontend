@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import memoizeOne from 'memoize-one';
 import Wrapper from '../components/Wrapper';
 import ToolBar from '../components/ToolBar';
 import ReactChart from '../components/chart/ReactChart';
@@ -22,8 +23,7 @@ import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
 import CreateGraphModal from '../components/CreateGraphModal';
-import memoizeOne from "memoize-one";
-import { socketSetActiveGraph } from "../store/actions/socket";
+import { socketSetActiveGraph } from '../store/actions/socket';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -59,7 +59,7 @@ class GraphForm extends Component {
         <AddNodeModal />
         {activeButton === 'data' && <DataView />}
         {activeButton === 'search' && <SearchModal />}
-          {activeButton === 'maps-view' && <MapsGraph History={this.props.history} />}
+        {activeButton === 'maps-view' && <MapsGraph History={this.props.history} />}
         <AddLinkModal />
         <AddLabelModal />
         <ContextMenu />
