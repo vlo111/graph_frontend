@@ -40,7 +40,7 @@ export function socketInit() {
         notPushedEmits.forEach((params) => {
           socket.emit(...params);
         });
-      }, 200);
+      }, 500);
     });
 
     socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
