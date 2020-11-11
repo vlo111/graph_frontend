@@ -597,8 +597,8 @@ class Chart {
         nodes = allNodes
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height)
           .map((d) => d.name);
-        labels = this.getLabels().filter((l) => nodes.filter((n) => n.labels.includes(l.name)) === allNodes.filter((n) => n.labels.includes(l.name)));
-        console.log(labels)
+        // labels = this.getLabels().filter((l) => nodes.filter((n) => n.labels.includes(l.name)) === allNodes.filter((n) => n.labels.includes(l.name)));
+        // console.log(labels)
       }
     };
 
