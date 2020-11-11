@@ -536,6 +536,7 @@ class Chart {
 
     let selectedNodes = [];
     let nodes = [];
+    let labels = [];
     let selectSquare;
 
     const showSelectedNodes = () => {
@@ -592,9 +593,12 @@ class Chart {
         const {
           width, height, x, y,
         } = selectSquare.datum();
-        nodes = this.getNodes()
+        const allNodes = this.getNodes();
+        nodes = allNodes
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height)
           .map((d) => d.name);
+        labels = this.getLabels().filter((l) => nodes.filter((n) => n.labels.includes(l.name)) === allNodes.filter((n) => n.labels.includes(l.name)));
+        console.log(labels)
       }
     };
 
@@ -1013,11 +1017,11 @@ class Chart {
     }
   }
 
-  static getNodes(show = null) {
+  static getNodes(force = false) {
     if (_.isEmpty(this.data)) {
       return [];
     }
-    if (!this._dataNodes) {
+    if (!this._dataNodes || force) {
       this._dataNodes = this.data.nodes.map((d) => ({
         index: d.index,
         fx: d.fx || d.x || 0,
@@ -1031,7 +1035,6 @@ class Chart {
         hidden: d.hidden,
         keywords: d.keywords || [],
         location: d.location || undefined,
-        labels: d.labels,
         color: ChartUtils.nodeColor(d),
         createdAt: d.createdAt,
         updatedAt: d.updatedAt,
@@ -1039,17 +1042,9 @@ class Chart {
         updatedUser: d.updatedUser,
         readOnly: !!d.readOnly || undefined,
         sourceId: +d.sourceId || undefined,
-        label: ChartUtils.getNodeLabels(d),
+        labels: ChartUtils.getNodeLabels(d),
         originalName: d.originalName,
       }));
-    }
-    if (show) {
-      this._dataNodes = this._dataNodes.map((d, i) => {
-        show.forEach((s) => {
-          d[s] = this.data.nodes[i][s];
-        });
-        return d;
-      });
     }
 
     return this._dataNodes;

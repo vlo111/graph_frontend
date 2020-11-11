@@ -49,7 +49,7 @@ class FiltersModal extends Component {
   handleChartRender = () => {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      const nodes = Chart.getNodes();
+      const nodes = Chart.getNodes(true);
       const links = Chart.getLinks();
       const labels = Chart.getLabels();
       this.setState({ nodes, links, labels });
