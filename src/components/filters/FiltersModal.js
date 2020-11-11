@@ -37,7 +37,7 @@ class FiltersModal extends Component {
 
   componentDidMount() {
     Chart.event.on('render', this.handleChartRender);
-    // Chart.event.on('node.dragend', this.handleChartRender);
+    Chart.event.on('node.dragend', this.handleChartRender);
   }
 
   componentWillUnmount() {
