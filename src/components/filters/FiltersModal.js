@@ -15,6 +15,7 @@ import { ReactComponent as CloseIcon } from '../../assets/images/icons/close.svg
 import KeywordsFilter from './KeywordsFilter';
 import LabelsFilter from './LabelsFilter';
 import Utils from '../../helpers/Utils';
+import _ from 'lodash';
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -36,20 +37,23 @@ class FiltersModal extends Component {
 
   componentDidMount() {
     Chart.event.on('render', this.handleChartRender);
-    Chart.event.on('node.dragend', this.handleChartRender);
+    // Chart.event.on('node.dragend', this.handleChartRender);
   }
 
   componentWillUnmount() {
     Chart.event.removeListener('render', this.handleChartRender);
-    Chart.event.on('node.dragend', this.handleChartRender);
+    Chart.event.removeListener('node.dragend', this.handleChartRender);
     this.props.resetFilter();
   }
 
   handleChartRender = () => {
-    const nodes = Chart.getNodes();
-    const links = Chart.getLinks();
-    const labels = Chart.getLabels();
-    this.setState({ nodes, links, labels });
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      const nodes = Chart.getNodes();
+      const links = Chart.getLinks();
+      const labels = Chart.getLabels();
+      this.setState({ nodes, links, labels });
+    }, 500);
   }
 
   render() {
@@ -90,9 +94,7 @@ class FiltersModal extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  singleGraph: state.graphs.singleGraph,
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {
   resetFilter,
