@@ -396,7 +396,7 @@ class ChartUtils {
   }
 
   static getNodeLabels(node) {
-    return Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.name) || [];
+    return Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.name);
   }
 
   // deprecated use getNodeLabels
@@ -459,7 +459,7 @@ class ChartUtils {
   }
 
   static async getNodesWithFiles(customFields = {}) {
-    let nodes = Chart.getNodes();
+    let nodes = Chart.getNodes(true);
     const icons = await Promise.all(nodes.map((d) => {
       if (d.icon && d.icon.startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);
