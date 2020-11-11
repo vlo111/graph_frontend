@@ -21,7 +21,7 @@ class LabelsFilter extends Component {
       .map((l) => ({
         color: l.color,
         name: l.name || l.color,
-        length: nodes.filter((d) => d.labels.includes(l.name || l.color)).length,
+        length: nodes.filter((d) => (d.labels || []).includes(l.name || l.color)).length,
       }))
       .orderBy('length', 'desc')
       .value();
