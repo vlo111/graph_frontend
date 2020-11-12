@@ -6,6 +6,7 @@ import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
 import LabelUtils from './helpers/LabelUtils';
+// import { v4 as uuidv4 } from 'uuid';
 
 class Chart {
   static event = new EventEmitter();
@@ -287,7 +288,7 @@ class Chart {
 
     const handleDragStart = (ev) => {
       if (this.activeButton === 'create-label') {
-        activeLine = labels.append('path')
+        activeLine = labelsWrapper.append('path')
           .datum({
             name: '',
             color: ChartUtils.labelColors(),
@@ -298,7 +299,7 @@ class Chart {
       } else if (ev.sourceEvent.target.classList.contains('label')) {
         const name = ev.sourceEvent.target.getAttribute('data-name');
         this.detectLabels();
-        dragLabel.label = labels.select(`[data-name="${name}"]`);
+        dragLabel.label = labelsWrapper.select(`[data-name="${name}"]`);
         dragLabel.nodes = this.data.nodes.filter((d) => d.labels.includes(name));
       }
     };
@@ -374,13 +375,13 @@ class Chart {
       }
     };
 
-    const labels = d3.select('#graph .labels')
+    const labelsWrapper = d3.select('#graph .labels')
       .call(d3.drag()
         .on('start', handleDragStart)
         .on('drag', handleDrag)
         .on('end', handleDragEnd));
 
-    labels.selectAll('path')
+    this.labels = labelsWrapper.selectAll('path')
       .data(this.data.labels.filter((l) => l.hidden !== 1))
       .join('path')
       .attr('class', 'label nodeCreate')
@@ -389,11 +390,12 @@ class Chart {
       .attr('data-name', (d) => d.name || ChartUtils.labelColors(d))
       .attr('fill', ChartUtils.labelColors)
       .attr('filter', (d) => (d.sourceId ? 'url(#labelShadowFilter)' : null))
-      .attr('d', (d) => renderPath(d.d))
       .on('click', (ev, d) => this.event.emit('label.click', ev, d))
       .on('mouseenter', (ev, d) => this.event.emit('label.mouseenter', ev, d))
       .on('mousemove', (ev, d) => this.event.emit('label.mousemove', ev, d))
       .on('mouseleave', (ev, d) => this.event.emit('label.mouseleave', ev, d));
+
+    this.labelMovement();
 
     this._dataNodes = null;
   }
@@ -595,10 +597,11 @@ class Chart {
         } = selectSquare.datum();
         const allNodes = this.getNodes();
         nodes = allNodes
-          .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height)
-          .map((d) => d.name);
-        // labels = this.getLabels().filter((l) => nodes.filter((n) => n.labels.includes(l.name)) === allNodes.filter((n) => n.labels.includes(l.name)));
-        // console.log(labels)
+          .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
+        labels = this.getLabels()
+          .filter((l) => nodes.filter((n) => n.labels.includes(l.name)).length === allNodes.filter((n) => n.labels.includes(l.name)).length)
+          .map((l) => l.name);
+        nodes = nodes.map((d) => d.name);
       }
     };
 
@@ -627,6 +630,17 @@ class Chart {
         }
       });
       this.graphMovement();
+      this.labels.each((l) => {
+        if (labels.includes(l.name) && !l.readOnly) {
+          l.d = l.d.map((p) => {
+            p[0] = +(p[0] + ev.dx).toFixed(2);
+            p[1] = +(p[1] + ev.dy).toFixed(2);
+            return p;
+          });
+        }
+        return l;
+      });
+      this.labelMovement();
     };
 
     const handleSquareDragEnd = () => {
@@ -662,6 +676,14 @@ class Chart {
         .datum(datum)
         .attr('d', (d) => `M 0 0 H ${d.width} V ${d.height} H 0 L 0 0`);
     };
+  }
+
+  static labelMovement = () => {
+    const renderPath = d3.line()
+      .x((d) => d[0])
+      .y((d) => d[1])
+      .curve(d3.curveBasis);
+    this.labels.attr('d', (d) => renderPath(d.d));
   }
 
   static graphMovement = () => {
@@ -1023,6 +1045,7 @@ class Chart {
     }
     if (!this._dataNodes || force) {
       this._dataNodes = this.data.nodes.map((d) => ({
+        // id: d.id || uuidv4(),
         index: d.index,
         fx: d.fx || d.x || 0,
         fy: d.fy || d.y || 0,
@@ -1046,7 +1069,6 @@ class Chart {
         originalName: d.originalName,
       }));
     }
-
     return this._dataNodes;
   }
 

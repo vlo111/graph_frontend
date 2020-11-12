@@ -182,6 +182,11 @@ class Utils {
         console.log(error);
       });
   }
+
+  static getGraphIdFormUrl() {
+    const [, graphId] = window.location.pathname.match(/\/(\d+)$/) || [];
+    return +graphId || '';
+  }
 }
 
 export default Utils;

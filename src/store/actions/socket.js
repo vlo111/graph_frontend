@@ -5,6 +5,7 @@ import Account from '../../helpers/Account';
 import { updateSingleGraph } from './graphs';
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
+import Utils from "../../helpers/Utils";
 
 let socket;
 const notPushedEmits = [];
@@ -35,6 +36,10 @@ export function socketInit() {
     });
 
     socket.on('connect', () => {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId) {
+        dispatch(socketSetActiveGraph(graphId));
+      }
       setTimeout(() => {
         socket.init = true;
         notPushedEmits.forEach((params) => {
@@ -76,8 +81,8 @@ export function socketInit() {
     });
 
     socket.on('embedLabelDataChange', (data) => {
-      const [, graphId] = window.location.pathname.match(/\/(\d+)$/) || [0, 0]; // todo write better solution
-      if (+data.sourceId === +graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (+data.sourceId === graphId) {
         return;
       }
       if (!Chart.getLabels().some((l) => +l.sourceId === +data.sourceId)) {
