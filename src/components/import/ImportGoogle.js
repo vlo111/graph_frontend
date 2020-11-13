@@ -54,7 +54,8 @@ class DataImportModal extends Component {
 
   convert = async () => {
     const { requestData } = this.state;
-
+    const { match: { params: { graphId = '' } } } = this.props;
+    requestData.graphId = graphId;
     this.setState({ loading: true });
     const { payload: { data } } = await this.props.convertGraphRequest('google-sheets', requestData);
     if (data.nodes?.length) {

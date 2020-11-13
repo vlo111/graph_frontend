@@ -1,16 +1,13 @@
 import _ from 'lodash';
 import Chart from '../Chart';
-import CustomFields from "./CustomFields";
+import CustomFields from './CustomFields';
 
 class Validate {
-  static nodeName(val, edit) {
+  static nodeName(val) {
     const value = (val || '').trim();
     let error = null;
-    const nodes = Chart.getNodes();
     if (!value) {
       error = 'Name is required';
-    } else if (!edit && nodes.some((d) => d.name === value)) {
-      error = 'Already exists';
     }
     return [error, value];
   }
@@ -137,11 +134,8 @@ class Validate {
   static labelName(val) {
     const value = (val || '').trim().replace(/"/g, "'");
     let error = null;
-    const labels = Chart.getLabels();
     if (!value) {
       error = 'Name is required';
-    } else if (labels.some((d) => d.name === value)) {
-      error = 'Already exists';
     }
     return [error, value];
   }

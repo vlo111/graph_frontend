@@ -64,13 +64,12 @@ class Crop extends Component {
     nodes = nodes.filter((d) => d.fx >= x1 && d.fx < x2 && d.fy >= y1 && d.fy < y2);
     this.props.setGridIndexes('nodes', nodes.map((d) => d.index));
 
-
-    const nodeName = nodes.map((d) => d.name);
+    const nodeIds = nodes.map((d) => d.id);
     links = links.map((d, i) => {
       d.index = i;
       return d;
     });
-    links = links.filter((d) => nodeName.includes(d.target) && nodeName.includes(d.source));
+    links = links.filter((d) => nodeIds.includes(d.target) && nodeIds.includes(d.source));
     this.props.setGridIndexes('links', links.map((d) => d.index));
 
     this.props.setActiveButton('data');

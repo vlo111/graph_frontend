@@ -36,11 +36,11 @@ class NodeDescription extends Component {
     clearTimeout(this.showInfoTimout);
   }
 
-  getNode = (name) => {
-    const nodes = Chart.getNodes();
-    const node = nodes.find((n) => n.name === name);
+  getNode = (id) => {
+    const node = ChartUtils.getNodeById(id);
     if (node) {
-      node.index = nodes.findIndex((n) => n.name === name);
+      const nodes = Chart.getNodes();
+      node.index = nodes.findIndex((n) => n.id === id);
     }
     return node;
   }
@@ -53,7 +53,7 @@ class NodeDescription extends Component {
     clearTimeout(this.showInfoTimout);
     this.showInfoTimout = setTimeout(() => {
       this.setState({
-        node: this.getNode(d.name),
+        node: this.getNode(d.id),
       });
     }, 900);
   }
@@ -67,7 +67,7 @@ class NodeDescription extends Component {
     const { node } = this.state;
     this.hideInfo();
     const queryObj = queryString.parse(window.location.search);
-    queryObj.info = node.name;
+    queryObj.info = node.id;
     const query = queryString.stringify(queryObj);
     this.props.history.replace(`?${query}`);
   }
@@ -90,7 +90,7 @@ class NodeDescription extends Component {
     let { result: description } = stripHtml(node.description);
     description = description.length > 130 ? `${description.substr(0, 120)}... ` : description;
 
-    const nodeLinks = Chart.getNodeLinks(node.name, 'all');
+    const nodeLinks = Chart.getNodeLinks(node.id, 'all');
     return (
       <Outside onClick={this.hideInfo}>
         <div onMouseLeave={this.hideInfo} data-node-info={node.index} id="nodeDescription" style={{ top, left }}>

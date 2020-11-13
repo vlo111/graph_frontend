@@ -67,7 +67,7 @@ export function socketInit() {
 
     socket.on('labelEmbedCopy', (labelEmbed) => {
       Chart.data.labels = Chart.data.labels.map((l) => {
-        if (l.name === labelEmbed.name) {
+        if (l.id === labelEmbed.id) {
           l.hasInEmbed = true;
         }
         return l;

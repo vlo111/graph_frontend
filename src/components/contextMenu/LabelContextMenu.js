@@ -15,7 +15,7 @@ class labelContextMenu extends Component {
 
   handleCopyClick = (ev) => {
     const { params, customFields, match: { params: { graphId = '' } } } = this.props;
-    const data = LabelUtils.copy(graphId, params.name, customFields);
+    const data = LabelUtils.copy(graphId, params.id, customFields);
     this.props.onClick(ev, 'label.copy', { data, graphId });
   }
 
