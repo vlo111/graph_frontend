@@ -943,7 +943,7 @@ class Chart {
       }, 300);
     });
     this.event.on('node.click', async (ev, d) => {
-      if (ev.shiftKey) {
+      if (ev.shiftKey || d.readOnly) {
         return;
       }
       await Utils.sleep(10);
