@@ -6,6 +6,7 @@ import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
 import LabelUtils from './helpers/LabelUtils';
+
 // import { v4 as uuidv4 } from 'uuid';
 
 class Chart {
@@ -943,7 +944,7 @@ class Chart {
       }, 300);
     });
     this.event.on('node.click', async (ev, d) => {
-      if (ev.shiftKey || d.readOnly) {
+      if (ev.shiftKey) {
         return;
       }
       await Utils.sleep(10);
@@ -958,28 +959,32 @@ class Chart {
           .attr('y2', 0);
         return;
       }
-      const source = this.newLink.attr('data-source');
+      const sourceName = this.newLink.attr('data-source');
       if ((d.fx || d.x) === undefined || (d.fy || d.y) === undefined) {
         return;
       }
-      if (!source) {
+      if (!sourceName) {
         this.newLink.attr('data-source', d.name)
           .attr('x1', d.fx || d.x)
           .attr('y1', d.fy || d.y)
           .attr('x2', d.fx || d.x)
           .attr('y2', d.fy || d.y);
       } else {
-        const target = d.name;
+        const targetName = d.name;
+        const target = d;
+        const source = this.data.nodes.find((n) => n.name === sourceName);
         this.newLink.attr('data-source', '')
           .attr('x1', 0)
           .attr('y1', 0)
           .attr('x2', 0)
           .attr('y2', 0);
-        if (source !== target) {
-          this.event.emit('link.new', ev, {
-            source,
-            target: d.name,
-          });
+        if (sourceName !== targetName) {
+          if (!source.readOnly || !target.readOnly) {
+            this.event.emit('link.new', ev, {
+              source: sourceName,
+              target: targetName,
+            });
+          }
         }
       }
     });
