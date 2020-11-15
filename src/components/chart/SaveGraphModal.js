@@ -19,7 +19,7 @@ import {
 import { setActiveButton, setLoading } from '../../store/actions/app';
 import Select from '../form/Select';
 import { GRAPH_STATUS } from '../../data/graph';
-import ChartUtils from "../../helpers/ChartUtils";
+import ChartUtils from '../../helpers/ChartUtils';
 
 class SaveGraphModal extends Component {
   static propTypes = {
