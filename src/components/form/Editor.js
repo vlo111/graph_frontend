@@ -161,7 +161,7 @@ class Editor extends Component {
                   <div className="jodit-tabs__wrapper">
                     <div className="jodit-tab jodit-tab_active">
                       <form onSubmit={this.insertFile} className="jodit-form-2">
-                        {!(popUpData.file || '').startsWith('blob:http') ? (
+                        {!(popUpData.file || '').startsWith('blob:') ? (
                           <div className="jodit-form__group">
                             <input
                               className="jodit-input"

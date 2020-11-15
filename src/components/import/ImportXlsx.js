@@ -9,6 +9,7 @@ import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportStep2 from './ImportStep2';
+import { withRouter } from "react-router-dom";
 
 class DataImportModal extends Component {
   static propTypes = {
@@ -53,6 +54,7 @@ class DataImportModal extends Component {
 
   convert = async () => {
     const { requestData } = this.state;
+    const { match: { params: { graphId = '' } } } = this.props;
     const { file } = requestData;
     toast.dismiss(this.toast);
     if (!file) {
@@ -63,6 +65,7 @@ class DataImportModal extends Component {
     if (file.type === 'text/csv') {
       convertType = 'csv';
     }
+    requestData.graphId = graphId;
     this.setState({ loading: true });
     const { payload: { data } } = await this.props.convertGraphRequest(convertType, requestData);
     if (data.nodes?.length) {
@@ -119,4 +122,4 @@ const Container = connect(
   mapDispatchToProps,
 )(DataImportModal);
 
-export default Container;
+export default withRouter(Container);

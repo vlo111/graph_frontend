@@ -72,7 +72,7 @@ class SaveGraphModal extends Component {
     let fIndex = new Date().getTime();
     nodes = nodes.map((d, i) => {
       d.icon = icons[i];
-      d.description = d.description.replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
+      d.description = d.description.replace(/\shref="(blob:\/\/[^"]+)"/g, (m, url) => {
         fIndex += 1;
         files[fIndex] = Utils.blobToBase64(url);
         return ` href="<%= file_${fIndex} %>"`;

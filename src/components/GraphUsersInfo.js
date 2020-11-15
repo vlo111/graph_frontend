@@ -14,11 +14,11 @@ class GraphUsersInfo extends Component {
 
   render() {
     const { singleGraph } = this.props;
-    const { info: nodeName } = queryString.parse(window.location.search);
+    const { info: nodeId } = queryString.parse(window.location.search);
 
-    if (!nodeName || !singleGraph.users) return null;
+    if (!nodeId || !singleGraph.users) return null;
 
-    const node = Chart.getNodes().find((d) => d.name === nodeName);
+    const node = Chart.getNodes().find((d) => d.id === nodeId);
     if (!node) return null;
 
     const createdUser = singleGraph.users.find((u) => u.id === (node.createdUser || singleGraph.userId)) || {};

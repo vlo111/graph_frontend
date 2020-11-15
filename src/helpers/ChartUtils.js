@@ -34,7 +34,7 @@ class ChartUtils {
     });
 
     data.labels = data.labels.map((d) => {
-      if (!_.isEmpty(params.labels) && !params.labels.includes(d.name)) {
+      if (!_.isEmpty(params.labels) && !params.labels.includes(d.id)) {
         d.hidden = 1;
         return d;
       }
@@ -47,13 +47,13 @@ class ChartUtils {
       //   return d;
       // }
       if (params.linkConnection?.min > -1) {
-        const { length = 0 } = data.links.filter((l) => l.source === d.name || l.target === d.name) || {};
+        const { length = 0 } = data.links.filter((l) => l.source === d.id || l.target === d.id) || {};
         if (length < params.linkConnection.min || length > params.linkConnection.max) {
           d.hidden = 1;
           return d;
         }
       }
-      if (params.hideIsolated && !data.links.some((l) => d.name === l.source || d.name === l.target)) {
+      if (params.hideIsolated && !data.links.some((l) => d.id === l.source || d.id === l.target)) {
         d.hidden = 1;
         return d;
       }
@@ -66,7 +66,7 @@ class ChartUtils {
         return d;
       }
 
-      if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.name]))) {
+      if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.id]))) {
         d.hidden = 1;
         return d;
       }
@@ -82,7 +82,7 @@ class ChartUtils {
     });
 
     data.links = data.links.map((d) => {
-      d.hidden = d.hidden || (data.nodes.some((n) => n.hidden !== 0 && (d.target === n.name || d.source === n.name)) ? 1 : 0);
+      d.hidden = d.hidden || (data.nodes.some((n) => n.hidden !== 0 && (d.target === n.id || d.source === n.id)) ? 1 : 0);
       return d;
     });
 
@@ -95,26 +95,26 @@ class ChartUtils {
     if (_.isEmpty(selectedGrid.nodes)) {
       return true;
     }
-    const { index: sourceIndex } = this.getNodeByName(d.source.name || d.source);
-    const { index: targetIndex } = this.getNodeByName(d.target.name || d.target);
+    const { index: sourceIndex } = this.getNodeById(d.source.id || d.source);
+    const { index: targetIndex } = this.getNodeById(d.target.id || d.target);
     if (!selectedGrid.nodes.includes(sourceIndex) || !selectedGrid.nodes.includes(targetIndex)) {
       return false;
     }
     return selectedGrid.links.includes(d.index);
   }
 
-  static getNodeByName(name, withLabels = false) {
+  static getNodeById(id) {
     const nodes = Chart.getNodes();
-    return nodes.find((d) => d.name === name);
+    return nodes.find((d) => d.id === id);
   }
 
-  static getLabelByName(name) {
+  static getLabelById(id) {
     const labels = Chart.getLabels();
-    return labels.find((d) => d.name === name);
+    return labels.find((d) => d.id === id);
   }
 
-  static getFilteredGraphByLabel(labelName) {
-    const nodes = Chart.getNodes().filter((n) => n.labels?.includes(labelName));
+  static getFilteredGraphByLabel(labelId) {
+    const nodes = Chart.getNodes().filter((n) => n.labels?.includes(labelId));
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
     return {
       nodes,
@@ -123,7 +123,7 @@ class ChartUtils {
   }
 
   static cleanLinks(links, nodes) {
-    return links.filter((l) => nodes.some((n) => l.source === n.name) && nodes.some((n) => l.target === n.name));
+    return links.filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
   }
 
   static normalizeIcon = (icon) => {
@@ -241,7 +241,7 @@ class ChartUtils {
   static nodesDistance = (d) => this.distance([d.target.x, d.target.y], [d.source.x, d.source.y])
 
   static getRadiusList() {
-    let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.name).length * 2 + (d.icon ? 6.5 : 2));
+    let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.id).length * 2 + (d.icon ? 6.5 : 2));
     let max = Math.max(...radiusList);
     if (max > 40) {
       radiusList = radiusList.map((d) => {
@@ -396,7 +396,7 @@ class ChartUtils {
   }
 
   static getNodeLabels(node) {
-    return Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.name);
+    return Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
   }
 
   // deprecated use getNodeLabels
@@ -432,7 +432,7 @@ class ChartUtils {
 
     const labelsName = elements
       .filter((el) => el.classList.contains('label'))
-      .map((d) => d.getAttribute('data-name'));
+      .map((d) => d.getAttribute('data-id'));
     return labelsName;
   }
 
@@ -470,7 +470,7 @@ class ChartUtils {
     let fIndex = new Date().getTime();
     nodes = nodes.map((d, i) => {
       d.icon = icons[i];
-      d.description = d.description.replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
+      d.description = d.description.replace(/\shref="(blob:\/\/[^"]+)"/g, (m, url) => {
         fIndex += 1;
         files[fIndex] = Utils.blobToBase64(url);
         return ` href="<%= file_${fIndex} %>"`;
@@ -482,9 +482,9 @@ class ChartUtils {
       for (const tab in customFields[nodeType]) {
         if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
           for (const node in customFields[nodeType][tab].values) {
-            if(customFields[nodeType][tab].values[node]){
+            if (customFields[nodeType][tab].values[node]) {
               customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
-                .replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
+                .replace(/\shref="(blob:\/\/[^"]+)"/g, (m, url) => {
                   fIndex += 1;
                   files[fIndex] = Utils.blobToBase64(url);
                   return ` href="<%= file_${fIndex} %>"`;
@@ -498,6 +498,16 @@ class ChartUtils {
     }
     files = await Promise.allValues(files);
     return { nodes, files, customFields };
+  }
+
+  static uniqueId(data) {
+    const graphId = Utils.getGraphIdFormUrl();
+    let max = Math.max(...data.map((d) => +String(d.id || 0).split('.')[0] || 0));
+    if (!max || !_.isFinite(max)) {
+      max = 0;
+    }
+    max += 1;
+    return `${max}.${graphId}`;
   }
 }
 

@@ -60,8 +60,8 @@ class ContextMenu extends Component {
         params = { fieldName };
       }
     } else if (ev.target.closest('.labels')) {
-      const name = ev.target.getAttribute('data-name');
-      const label = Chart.getLabels().find((l) => l.name === name);
+      const id = ev.target.getAttribute('data-id');
+      const label = Chart.getLabels().find((l) => l.id === id);
       params = { ...label };
       element = 'label';
     }

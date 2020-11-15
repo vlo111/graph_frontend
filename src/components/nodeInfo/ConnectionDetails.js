@@ -7,15 +7,15 @@ import Chart from '../../Chart';
 import NodeIcon from '../NodeIcon';
 
 class ConnectionDetails extends Component {
-  getGroupedConnections = memoizeOne((nodeName) => {
-    const nodeLinks = Chart.getNodeLinks(nodeName, 'all');
+  getGroupedConnections = memoizeOne((nodeId) => {
+    const nodeLinks = Chart.getNodeLinks(nodeId, 'all');
     const nodes = Chart.getNodes();
     const connectedNodes = nodeLinks.map((l) => {
       let connected;
-      if (l.source === nodeName) {
-        connected = nodes.find((d) => d.name === l.target);
+      if (l.source === nodeId) {
+        connected = nodes.find((d) => d.id === l.target);
       } else {
-        connected = nodes.find((d) => d.name === l.source);
+        connected = nodes.find((d) => d.id === l.source);
       }
       return {
         linkType: l.type,
@@ -28,15 +28,15 @@ class ConnectionDetails extends Component {
   })
 
   render() {
-    const { nodeName, exportNode, ConnectionNodes } = this.props;
+    const { nodeId, exportNode, nodeData } = this.props;
     const queryObj = queryString.parse(window.location.search);
-    const connectedNodes = this.getGroupedConnections(nodeName);
+    const connectedNodes = this.getGroupedConnections(nodeId);
 
     if (exportNode) {
       connectedNodes.map((nodeGroup) => {
         nodeGroup.map((d) => {
           if (d.connected.icon && d.connected.icon.startsWith('blob')) {
-            d.connected.icon = ConnectionNodes.find((node) => node.name === d.connected.name).icon;
+            d.connected.icon = nodeData.find((node) => node.id === d.connected.id).icon;
           }
         });
       });
@@ -49,10 +49,10 @@ class ConnectionDetails extends Component {
             <h3>{`${nodeGroup[0].linkType} (${nodeGroup.length})`}</h3>
             <ul className="list">
               {nodeGroup.map((d) => (
-                <li className="item" key={d.connected.name}>
+                <li className="item" key={d.connected.id}>
                   {exportNode == undefined || exportNode === false
                     ? (
-                      <Link replace to={`?${queryString.stringify({ ...queryObj, info: d.connected.name })}`}>
+                      <Link replace to={`?${queryString.stringify({ ...queryObj, info: d.connected.id })}`}>
                         <div className="left">
                           <NodeIcon node={d.connected} />
                         </div>

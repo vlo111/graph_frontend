@@ -82,7 +82,9 @@ class AddNodeModal extends Component {
     const nodes = Chart.getNodes();
     let links;
 
-    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, !_.isNull(index));
+    const update = !_.isNull(index);
+
+    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name);
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
     [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
 
@@ -90,25 +92,16 @@ class AddNodeModal extends Component {
     nodeData.updatedUser = currentUserId;
 
     if (!Validate.hasError(errors)) {
-      if (_.isNull(index)) {
+      if (update) {
+        nodes[index] = { ...nodes[index], ...nodeData };
+      } else {
         nodeData.createdAt = moment().unix();
         nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
-      } else {
-        const { name: oldName } = nodes[index];
-        links = Chart.getLinks().map((d) => {
-          if (d.source === oldName) {
-            d.source = nodeData.name;
-          } else if (d.target === oldName) {
-            d.target = nodeData.name;
-          }
-          return d;
-        });
-
-        nodes[index] = { ...nodes[index], ...nodeData };
       }
+
       Chart.render({ nodes, links });
-      this.props.setNodeCustomField(nodeData.type, nodeData.name, customField);
+      this.props.setNodeCustomField(nodeData.type, nodeData.id, customField);
       this.props.toggleNodeModal();
     }
     this.setState({ errors, nodeData });
