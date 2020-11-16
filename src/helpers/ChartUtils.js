@@ -500,14 +500,21 @@ class ChartUtils {
     return { nodes, files, customFields };
   }
 
-  static uniqueId(data) {
+  static uniqueId(data = []) {
     const graphId = Utils.getGraphIdFormUrl();
-    let max = Math.max(...data.map((d) => +String(d.id || 0).split('.')[0] || 0));
-    if (!max || !_.isFinite(max)) {
-      max = 0;
+    const ids = [0];
+    data.forEach((d) => {
+      const id = +String(d.id || 0).split('.')[0];
+      if (id && !d.sourceId) {
+        ids.push(id);
+      }
+    });
+    const max = _.max(ids);
+    if (Chart.data.lastUid < max) {
+      Chart.data.lastUid = max;
     }
-    max += 1;
-    return `${max}.${graphId}`;
+    Chart.data.lastUid += 1;
+    return `${Chart.data.lastUid}.${graphId}`;
   }
 }
 

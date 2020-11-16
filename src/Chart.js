@@ -191,8 +191,10 @@ class Chart {
 
     const links = Object.values(data.links).map((d) => Object.create(d));
 
+    const lastUid = data.lastUid || this.data?.lastUid || 0;
+
     return {
-      links, nodes, labels: data.labels, embedLabels: data.embedLabels,
+      links, nodes, labels: data.labels, embedLabels: data.embedLabels, lastUid,
     };
   }
 

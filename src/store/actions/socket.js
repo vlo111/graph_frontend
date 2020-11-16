@@ -5,7 +5,7 @@ import Account from '../../helpers/Account';
 import { updateSingleGraph } from './graphs';
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
-import Utils from "../../helpers/Utils";
+import Utils from '../../helpers/Utils';
 
 let socket;
 const notPushedEmits = [];
@@ -45,7 +45,7 @@ export function socketInit() {
         notPushedEmits.forEach((params) => {
           socket.emit(...params);
         });
-      }, 200);
+      }, 500);
     });
 
     socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
