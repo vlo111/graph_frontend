@@ -591,9 +591,17 @@ class Chart {
 
     const handleSquareDragStart = () => {
       if (selectSquare) {
-        const {
+        let {
           width, height, x, y,
         } = selectSquare.datum();
+        if (width < 0) {
+          width *= -1;
+          x -= width;
+        }
+        if (height < 0) {
+          height *= -1;
+          y -= height;
+        }
         const allNodes = this.getNodes();
         nodes = allNodes
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
