@@ -90,7 +90,7 @@ class Api {
     return api.post('/graphs/create', requestData);
   }
 
-  static updateGraph(id, requestData) {
+  static updateGraph(id, requestData) { 
     return api.put(`/graphs/update/${id}`, requestData);
   }
 

@@ -21,8 +21,8 @@ import MapsGraph from '../components/maps/MapsGraph';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
-import CreateGraphModal from '../components/CreateGraphModal';
 import ToolBarHeader from '../components/ToolBarHeader';
+import CreateGraphModal from '../components/CreateGraphModal';
 import { socketSetActiveGraph } from '../store/actions/socket';
 
 class GraphForm extends Component {
@@ -59,7 +59,7 @@ class GraphForm extends Component {
         <AddNodeModal />
         {activeButton === 'data' && <DataView />}
         {activeButton === 'search' && <SearchModal />}
-        {activeButton === 'maps-view' && <MapsGraph />}
+        {activeButton === 'maps-view' && <MapsGraph History={this.props.history} />}
         <AddLinkModal />
         <AddLabelModal />
         <ContextMenu />

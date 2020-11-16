@@ -199,6 +199,16 @@ class ReactChart extends Component {
                 <feColorMatrix type="saturate" values="0" />
                 <feColorMatrix type="luminanceToAlpha" result="A" />
               </filter>
+              <filter id="selectedNodeFilter" x="-50%" y="-50%" width="300%" height="300%">
+                <feDropShadow dx="0" dy="0" stdDeviation="1" floodColor="#7166F8" floodOpacity="1">
+                  <animate
+                    attributeName="stdDeviation"
+                    values="1;4;1"
+                    dur="1s"
+                    repeatCount="indefinite"
+                  />
+                </feDropShadow>
+              </filter>
             </defs>
           </g>
         </svg>

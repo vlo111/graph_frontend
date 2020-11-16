@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setLegendButton } from '../store/actions/app';
 import Chart from '../Chart';
-import { ReactComponent as Arrow } from '../assets/images/arrow.svg'; 
+import { ReactComponent as Arrow } from '../assets/images/arrow.svg';
 import ChartUtils from '../helpers/ChartUtils';
 
 class Legend extends Component {

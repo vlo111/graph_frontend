@@ -4177,6 +4177,12 @@ body .gh__menu {
   }
 
 
+  #dropdown-graphListHeader {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+  }
+
 }
 
 .account {
@@ -4626,14 +4632,12 @@ body .gh__menu {
 }
 .linkedin {
   padding: 3px 72px 1px 14px;
-
   .company, .institution {
     color: #181818;
     font-size: 15px;
     font-weight: 600;
     margin-bottom: 0rem !important;
   }
-
   .position, .studyType, .skills, .summary, .studyData {
     color: #181818;
     font-size: 14.5px;
@@ -4669,4 +4673,5 @@ body .gh__menu {
       font-weight: 300;
       text-align: center;
   }
+
 }

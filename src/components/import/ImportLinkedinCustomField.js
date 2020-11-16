@@ -16,7 +16,7 @@ class ImportLinkedinCustomField extends Component {
     return (
       <>
         {data.work.map((row) => (
-          <Fragment key={row.startDate} >
+          <Fragment key={row.startDate}>
             <section className='linkedin'>
               <p className="company">
                 {row.company}
@@ -42,9 +42,9 @@ class ImportLinkedinCustomField extends Component {
                   {row.summary}
                 </p>
               ) : null}
-             {row.startDate ? (
+              {row.startDate ? (
                 <p className="visually-hidden">
-                <strong>startDate: </strong>
+                  <strong>startDate: </strong>
                   {row.startDate}
                   <strong>endDate: </strong>
                   {row.endDate}
@@ -52,19 +52,19 @@ class ImportLinkedinCustomField extends Component {
               ) : null}
               {row.date ? (
                 <p className="visually-hidden">
-                 <strong>date: </strong>
+                  <strong>date: </strong>
                   {row.date}
                 </p>
               ) : null}
-             {row.duration ? (
+              {row.duration ? (
                 <p className="visually-hidden">
-                <strong>duration: </strong>
+                  <strong>duration: </strong>
                   {row.duration}
                 </p>
               ) : null}
 
             </section>
-             <hr/>
+            <hr />
           </Fragment>
         ))}
       </>
@@ -81,7 +81,7 @@ class ImportLinkedinCustomField extends Component {
         {data.skills.map((row, index) => (
           <Fragment key={row.name}>
             <div className='linkedin'>
-              <p >
+              <p>
                 <strong className="skills">
                   {`${index + 1}. `}
                 </strong>
@@ -105,9 +105,15 @@ class ImportLinkedinCustomField extends Component {
           <Fragment key={row.name}>
             <div className='linkedin'>
               {row.institution ? (
-                <p className="institution">
-                  {row.institution}
-                </p>
+                row.wikipedia ? (
+                  <a href={`https://en.wikipedia.org/wiki/${row.institution}`} target="_blank">
+                    {row.institution}
+                  </a>
+                ) : (
+                  <p className="institution">
+                    {row.institution}
+                  </p>
+                )
               ) : null}
               {row.studyData ? (
                 <p className="studyData">
@@ -116,14 +122,13 @@ class ImportLinkedinCustomField extends Component {
               ) : null}
               {row.studyType ? (
                 <p className="visually-hidden">
-                <strong>studyType: </strong>
+                  <strong>studyType: </strong>
                   {row.studyType}
                 </p>
               ) : null}
               {row.startDate ? (
-
                 <p className="visually-hidden">
-                <strong>date: </strong>
+                  <strong>date: </strong>
                   {`${row.startDate} - ${row.endDate}`}
                 </p>
               ) : null}

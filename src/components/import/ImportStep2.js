@@ -5,7 +5,6 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton } from '../../store/actions/app';
 import {
-  clearSingleGraph,
   convertGraphRequest,
   setGraphCustomFields,
   updateSingleGraph

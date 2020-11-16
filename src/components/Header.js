@@ -18,11 +18,11 @@ class Header extends Component {
             Start a Graphs
           </Link>
         </div>
-        <SearchGraphs />
+       
         <div className="right-elements">
           <Notification />
           <div className="signOut">
-            <AccountDropDown />
+           <AccountDropDown /> 
 
           </div>
         </div>

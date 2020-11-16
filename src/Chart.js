@@ -12,10 +12,10 @@ class Chart {
 
   static drag(simulation) {
     const dragstart = (ev, d) => {
+      this.event.emit('node.dragstart', ev, d);
       if (d.readOnly) {
         return;
       }
-      this.event.emit('node.dragstart', ev, d);
       if (ev.active) simulation.alphaTarget(0.3).restart();
       d.fixed = !!d.fx;
       // d.fx = d.x;
@@ -25,7 +25,8 @@ class Chart {
     };
 
     const dragged = (ev, d) => {
-      if (d.readOnly) {
+      this.event.emit('node.drag', ev, d);
+      if (d.readOnly || ev.sourceEvent.shiftKey) {
         return;
       }
       d.fx = ev.x;
@@ -38,13 +39,14 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
+      this.event.emit('node.dragend', ev, d);
+
       if (d.readOnly) {
         return;
       }
       if (this.activeButton === 'view') {
         this.detectLabels(d);
       }
-      this.event.emit('node.dragend', ev, d);
 
       if (!ev.active) simulation.alphaTarget(0);
       if (!d.fixed) {
@@ -113,7 +115,7 @@ class Chart {
         data.links.push(...label.links);
 
         // get position difference
-        const labelEmbed = data.labels.find((l) => l.originalName === label.label.name);
+        const labelEmbed = data.labels.find((l) => l.originalName === label.label?.name);
         if (labelEmbed) {
           label.cx = label.label.d[0][0] - labelEmbed.d[0][0];
           label.cy = label.label.d[0][1] - labelEmbed.d[0][1];
@@ -260,49 +262,17 @@ class Chart {
   static detectLabelsProcess = false;
 
   static detectLabels(d = null) {
-    const nodesEl = document.querySelector('#graph .nodes');
-    if (!nodesEl || this.detectLabelsProcess || _.isEmpty(this.data.labels)) {
-      return;
-    }
-    this.detectLabelsProcess = true;
-    const originalDimensions = {
-      scale: this.wrapper.attr('data-scale') || 1,
-      x: this.wrapper.attr('data-x') || 0,
-      y: this.wrapper.attr('data-y') || 0,
-    };
-
-    const { width, height } = nodesEl.getBoundingClientRect();
-
-    // const scale = 0.1;
-    const scaleW = window.innerWidth / (width / originalDimensions.scale + 20);
-    const scaleH = window.innerHeight / (height / originalDimensions.scale + 20);
-    const scale = Math.min(scaleW, scaleH, 1);
-
-    const nodes = this.getNodes();
-
-    const x = Math.min(...nodes.map((n) => n.fx - this.radiusList[n.index] - 2)) * -1 * scale;
-    const y = Math.min(...nodes.map((n) => n.fy - this.radiusList[n.index] - 2)) * -1 * scale;
-    // this.wrapper.attr('transform', `translate(${x}, ${y}), scale(${scale})`);
-    this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
-    this.data.nodes = this.data.nodes.map((l) => {
+    this.data.nodes = this.data.nodes.map((n) => {
       if (d) {
-        if (d.name === l.name) {
-          l.labels = ChartUtils.getLabelsByPosition(l);
+        if (d.name === n.name) {
+          n.labels = ChartUtils.getNodeLabels(n);
         }
       } else {
-        l.labels = ChartUtils.getLabelsByPosition(l);
+        n.labels = ChartUtils.getNodeLabels(n);
       }
-      return l;
+      return n;
     });
-
-    const { x: oX, y: oY, scale: oScale } = originalDimensions;
-
-    // this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`);
-    this.svg.call(this.zoom.transform, d3.zoomIdentity.translate(oX, oY).scale(oScale));
-
-    this._dataNodes = null;
-
-    this.detectLabelsProcess = false;
+    this._dataNodes = this.data.nodes;
   }
 
   static renderLabels() {
@@ -500,7 +470,7 @@ class Chart {
 
       this.nodesWrapper.selectAll('.node > *').remove();
 
-      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
+      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle):not(.image)')
         .append('circle')
         .attr('r', (d) => this.radiusList[d.index]);
 
@@ -534,6 +504,17 @@ class Chart {
           return `translate(${r}, ${r})`;
         });
 
+      this.nodesWrapper.selectAll('.image')
+        .append('svg:image')
+        .attr('x', (d) => this.radiusList[d.index] * -1)
+        .attr('y', (d) => this.radiusList[d.index] * -1)
+        .attr('xlink:href', (d) => {
+          if (d.icon && d.nodeType === 'image') {
+            return d.icon;
+          }
+          return '';
+        });
+
       this.nodesWrapper.selectAll('.node :not(text)')
         .attr('fill', (d) => {
           const color = ChartUtils.nodeColor(d);
@@ -554,68 +535,99 @@ class Chart {
       return this;
     } catch (e) {
       toast.error(`Chart Error :: ${e.message}`);
-      console.error(e.message);
+      console.error(e);
       return this;
     }
   }
 
   static renderSelectSquare() {
-    if (this.isCalled('renderSelectselectBoard')) {
+    if (this.isCalled('renderSelectSquare')) {
       return;
     }
 
-    this.event.on('window.keydown', (ev) => {
-      if (ev.shiftKey) {
-        const scale = 1 / (+Chart.wrapper?.attr('data-scale') || 1);
-        const x = -1 * (+Chart.wrapper?.attr('data-x') || 0);
-        const y = -1 * (+Chart.wrapper?.attr('data-y') || 0);
-        const size = scale * 100;
+    let selectedNodes = [];
+    let nodes = [];
+    let labels = [];
+    let selectSquare;
 
-        this.wrapper.append('rect')
-          .attr('class', 'selectBoard areaBoard')
-          .attr('fill', 'transparent')
-          .attr('width', `${size}%`)
-          .attr('height', `${size}%`)
-          .attr('x', x * scale)
-          .attr('y', y * scale)
-          .call(d3.drag()
-            .on('start', handleDragStart)
-            .on('drag', handleDrag));
+    const showSelectedNodes = () => {
+      this.nodesWrapper.selectAll('.node :not(text)')
+        .attr('filter', (n) => (selectedNodes.includes(n.name) ? 'url(#selectedNodeFilter)' : null));
+    };
+
+    this.event.on('node.click', (ev, d) => {
+      if (!ev.shiftKey) {
+        return;
       }
+      const i = selectedNodes.indexOf(d.name);
+      if (i > -1) {
+        selectedNodes.splice(i, 1);
+      } else {
+        selectedNodes.push(d.name);
+      }
+
+      showSelectedNodes();
+    });
+
+    this.event.on('window.keydown', (ev) => {
+      if (!ev.shiftKey) {
+        return;
+      }
+      const scale = 1 / (+Chart.wrapper?.attr('data-scale') || 1);
+      const x = -1 * (+Chart.wrapper?.attr('data-x') || 0);
+      const y = -1 * (+Chart.wrapper?.attr('data-y') || 0);
+      const size = scale * 100;
+
+      this.wrapper
+        .insert('rect', '.nodes')
+        .attr('class', 'selectBoard areaBoard')
+        .attr('fill', 'transparent')
+        .attr('width', `${size}%`)
+        .attr('height', `${size}%`)
+        .attr('x', x * scale)
+        .attr('y', y * scale)
+        .call(d3.drag()
+          .on('start', handleDragStart)
+          .on('drag', handleDrag));
     });
 
     this.event.on('window.keyup', () => {
       this.wrapper.selectAll('.selectBoard').remove();
       this.wrapper.selectAll('.selectSquare').remove();
+      selectedNodes = [];
+      nodes = [];
+      showSelectedNodes();
     });
 
-    let nodes = [];
-    let selectSquare;
-
     const handleSquareDragStart = () => {
-      const datum = selectSquare.datum();
-      const { scale, x, y } = ChartUtils.calcScaledPosition(datum.x, datum.y);
-
-      const width = datum.width * scale;
-      const height = datum.height * scale;
-
-      nodes = this.getNodes().filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
+      if (selectSquare) {
+        const {
+          width, height, x, y,
+        } = selectSquare.datum();
+        const allNodes = this.getNodes();
+        nodes = allNodes
+          .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height)
+          .map((d) => d.name);
+        // labels = this.getLabels().filter((l) => nodes.filter((n) => n.labels.includes(l.name)) === allNodes.filter((n) => n.labels.includes(l.name)));
+        // console.log(labels)
+      }
     };
 
     const handleSquareDrag = (ev) => {
       if (!ev.sourceEvent.shiftKey) {
         return;
       }
-
-      const datum = selectSquare.datum();
-      datum.x += ev.dx;
-      datum.y += ev.dy;
-      selectSquare
-        .datum(datum)
-        .attr('transform', (d) => `translate(${d.x} ${d.y})`);
+      if (selectSquare) {
+        const datum = selectSquare.datum();
+        datum.x += ev.dx;
+        datum.y += ev.dy;
+        selectSquare
+          .datum(datum)
+          .attr('transform', (d) => `translate(${d.x} ${d.y})`);
+      }
 
       this.node.each((d) => {
-        if (nodes.some((n) => n.name === d.name)) {
+        if (nodes.includes(d.name) || selectedNodes.includes(d.name)) {
           if (!d.readOnly) {
             d.fx += ev.dx;
             d.x += ev.dx;
@@ -629,7 +641,7 @@ class Chart {
     };
 
     const handleSquareDragEnd = () => {
-      selectSquare.remove();
+      // selectSquare.remove();
     };
 
     const handleDragStart = (ev) => {
@@ -650,6 +662,8 @@ class Chart {
           .on('drag', handleSquareDrag)
           .on('end', handleSquareDragEnd));
     };
+    this.event.on('node.dragstart', handleSquareDragStart);
+    this.event.on('node.drag', handleSquareDrag);
 
     const handleDrag = (ev) => {
       const datum = selectSquare.datum();
@@ -867,7 +881,7 @@ class Chart {
     });
 
     this.event.on('node.mouseenter', (ev, d) => {
-      if (dragActive) return;
+      if (dragActive || ev.shiftKey) return;
       const links = this.getNodeLinks(d.name, 'all');
       links.push({ source: d.name, target: d.name });
       const nodeNames = new Set();
@@ -918,6 +932,9 @@ class Chart {
       }, 300);
     });
     this.event.on('node.click', async (ev, d) => {
+      if (ev.shiftKey) {
+        return;
+      }
       await Utils.sleep(10);
       if (this.activeButton !== 'create') {
         return;
@@ -1011,11 +1028,11 @@ class Chart {
     }
   }
 
-  static getNodes(show = null) {
+  static getNodes(force = false) {
     if (_.isEmpty(this.data)) {
       return [];
     }
-    if (!this._dataNodes) {
+    if (!this._dataNodes || force) {
       this._dataNodes = this.data.nodes.map((d) => ({
         index: d.index,
         fx: d.fx || d.x || 0,
@@ -1029,7 +1046,6 @@ class Chart {
         hidden: d.hidden,
         keywords: d.keywords || [],
         location: d.location || undefined,
-        labels: d.labels,
         color: ChartUtils.nodeColor(d),
         createdAt: d.createdAt,
         updatedAt: d.updatedAt,
@@ -1037,21 +1053,15 @@ class Chart {
         updatedUser: d.updatedUser,
         readOnly: !!d.readOnly || undefined,
         sourceId: +d.sourceId || undefined,
+        labels: ChartUtils.getNodeLabels(d),
         originalName: d.originalName,
       }));
-    }
-    if (show) {
-      this._dataNodes = this._dataNodes.map((d, i) => {
-        show.forEach((s) => {
-          d[s] = this.data.nodes[i][s];
-        });
-        return d;
-      });
     }
 
     return this._dataNodes;
   }
 
+  // deprecated
   static getNotesWithLabels() {
     this.detectLabels();
     return this.getNodes();

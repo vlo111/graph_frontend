@@ -19,7 +19,7 @@ import {
 import { setActiveButton, setLoading } from '../../store/actions/app';
 import Select from '../form/Select';
 import { GRAPH_STATUS } from '../../data/graph';
-import ChartUtils from "../../helpers/ChartUtils";
+import ChartUtils from '../../helpers/ChartUtils';
 
 class SaveGraphModal extends Component {
   static propTypes = {
@@ -61,7 +61,7 @@ class SaveGraphModal extends Component {
   }
 
   getNodesAndFiles = async () => {
-    let nodes = Chart.getNotesWithLabels();
+    let nodes = Chart.getNodes();
     const icons = await Promise.all(nodes.map((d) => {
       if (d.icon && d.icon.startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);

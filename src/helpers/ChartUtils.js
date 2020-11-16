@@ -104,7 +104,7 @@ class ChartUtils {
   }
 
   static getNodeByName(name, withLabels = false) {
-    const nodes = withLabels ? Chart.getNotesWithLabels() : Chart.getNodes();
+    const nodes = Chart.getNodes();
     return nodes.find((d) => d.name === name);
   }
 
@@ -114,7 +114,7 @@ class ChartUtils {
   }
 
   static getFilteredGraphByLabel(labelName) {
-    const nodes = Chart.getNotesWithLabels().filter((n) => n.labels.includes(labelName));
+    const nodes = Chart.getNodes().filter((n) => n.labels?.includes(labelName));
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
     return {
       nodes,
@@ -377,6 +377,29 @@ class ChartUtils {
     // Chart.event.emit('node.mouseenter', node);
   }
 
+  static isNodeInLabel(node, label) {
+    const x = node.fx || node.x;
+    const y = node.fy || node.y;
+    const { d } = label;
+    let inside = false;
+    for (let i = 0, j = d.length - 1; i < d.length; j = i++) {
+      const xi = d[i][0];
+      const yi = d[i][1];
+      const xj = d[j][0];
+      const yj = d[j][1];
+      // eslint-disable-next-line no-mixed-operators,no-bitwise
+      if ((yi > y ^ yj > y) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+        inside = !inside;
+      }
+    }
+    return inside;
+  }
+
+  static getNodeLabels(node) {
+    return Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.name);
+  }
+
+  // deprecated use getNodeLabels
   static getLabelsByPosition(node) {
     const { x, y } = this.getNodeDocumentPosition(node.index);
     const elements = [];
@@ -436,7 +459,7 @@ class ChartUtils {
   }
 
   static async getNodesWithFiles(customFields = {}) {
-    let nodes = Chart.getNotesWithLabels();
+    let nodes = Chart.getNodes(true);
     const icons = await Promise.all(nodes.map((d) => {
       if (d.icon && d.icon.startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);
@@ -459,12 +482,14 @@ class ChartUtils {
       for (const tab in customFields[nodeType]) {
         if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
           for (const node in customFields[nodeType][tab].values) {
-            customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
-              .replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
-                fIndex += 1;
-                files[fIndex] = Utils.blobToBase64(url);
-                return ` href="<%= file_${fIndex} %>"`;
-              });
+            if(customFields[nodeType][tab].values[node]){
+              customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
+                .replace(/\shref="(blob:https?:\/\/[^"]+)"/g, (m, url) => {
+                  fIndex += 1;
+                  files[fIndex] = Utils.blobToBase64(url);
+                  return ` href="<%= file_${fIndex} %>"`;
+                });
+            }
           }
         } else {
           delete customFields[nodeType][tab];
