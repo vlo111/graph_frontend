@@ -50,7 +50,7 @@ class LabelTooltip extends Component {
     }
     return (
       <div id="labelTooltip" style={{ backgroundColor: label.color, left: x, top: y }}>
-        {label.name}
+        {label.sourceId ? `Embed: ${label.name}` : label.name}
       </div>
     );
   }
