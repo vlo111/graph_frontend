@@ -371,7 +371,9 @@ class Chart {
         this.detectLabels();
         activeLine = null;
         this.event.emit('label.new', ev, datum);
+        return;
       }
+      this.event.emit('label.dragend', ev);
     };
 
     const labelsWrapper = d3.select('#graph .labels')

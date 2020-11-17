@@ -24,6 +24,7 @@ import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
 import CreateGraphModal from '../components/CreateGraphModal';
 import { socketSetActiveGraph } from '../store/actions/socket';
+import AutoSave from "../components/AutoSave";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -59,7 +60,7 @@ class GraphForm extends Component {
         <AddNodeModal />
         {activeButton === 'data' && <DataView />}
         {activeButton === 'search' && <SearchModal />}
-        {activeButton === 'maps-view' && <MapsGraph History={this.props.history} />}
+        {activeButton === 'maps-view' && <MapsGraph />}
         <AddLinkModal />
         <AddLabelModal />
         <ContextMenu />
@@ -70,6 +71,7 @@ class GraphForm extends Component {
         <Zoom />
         <LabelTooltip />
         <CreateGraphModal />
+        <AutoSave />
       </Wrapper>
     );
   }

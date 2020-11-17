@@ -167,9 +167,20 @@ p {
     }
   }
 }
-
-.autoSave{
-  .logo{
+.logoWrapper{
+  position: relative;
+  .autoSaveText {
+    font-size: 12px;
+    color: $color-main2;
+    font-weight: 600;
+    position: absolute;
+    top: 32px;
+    left: 146px;
+    display: none;
+  }
+}
+.autoSave {
+  .logo {
     circle {
       animation-name: logoLoading;
       animation-duration: 1s;
@@ -186,6 +197,9 @@ p {
         }
       }
     }
+  }
+  .autoSaveText{
+    display: block;
   }
 }
 
@@ -4708,3 +4722,6 @@ body .gh__menu {
   }
 
 }
+
+
+
