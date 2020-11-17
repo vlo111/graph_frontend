@@ -1046,6 +1046,7 @@ class Chart {
     if (forceRender) {
       this.render();
     }
+    this.event.emit('setNodeData', nodeId, data);
   }
 
   static getNodes(force = false) {
