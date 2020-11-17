@@ -1297,6 +1297,7 @@ p {
     flex-direction: column;
     overflow: scroll;
     .authForm {
+      margin: 30px 70px 30px;
       .submit {
         align-self: center ;
       }
@@ -1323,6 +1324,9 @@ p {
     overflow: scroll;   
     .authForm {
       margin: 30px 70px;
+      .ghFormField {
+        width: 91%;
+      }
       .submit {
         align-self: center ;
       }
