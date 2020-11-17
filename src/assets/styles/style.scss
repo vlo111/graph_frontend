@@ -886,7 +886,7 @@ p {
 
     &.hidden {
       opacity: 0.2 !important;
-      pointer-events: none;
+      //pointer-events: none;
 
       text {
         opacity: 0.4 !important;

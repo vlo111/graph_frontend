@@ -91,7 +91,9 @@ class SaveGraphModal extends Component {
     const links = Chart.getLinks();
     const labels = Chart.getLabels();
     const { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
-    const svg = Chart.printMode(400, 223);
+    const svg = document.querySelector('#graph svg').outerHTML;
+
+    // const svg = Chart.printMode(400, 223);
 
     let resGraphId;
     if (forceCreate || !graphId) {
@@ -121,9 +123,9 @@ class SaveGraphModal extends Component {
     }
     if (resGraphId) {
       toast.info('Successfully saved');
-      const svgBig = Chart.printMode(800, 446);
-      this.props.updateGraphThumbnailRequest(resGraphId, svgBig);
-      this.props.onSave(resGraphId);
+      // const svgBig = Chart.printMode(800, 446);
+      this.props.updateGraphThumbnailRequest(resGraphId, svg);
+      // this.props.onSave(resGraphId);
     } else {
       toast.error('Something went wrong. Please try again');
     }

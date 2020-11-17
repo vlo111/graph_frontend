@@ -1,0 +1,84 @@
+svg {
+  user-select: none;
+  left: 0;
+  top: 0; }
+  svg .selectSquare {
+    fill: rgba(0, 98, 255, 0.05);
+    stroke: rgba(0, 98, 255, 0.5);
+    stroke-width: 1;
+    stroke-dasharray: 4;
+    animation: selectSquareAnim 40s linear infinite; }
+
+@keyframes selectSquareAnim {
+  to {
+    stroke-dashoffset: -400; } }
+  svg .labels .labelsBoard {
+    pointer-events: none; }
+  svg .links path {
+    fill: transparent;
+    cursor: pointer; }
+    svg .links path.hidden {
+      opacity: 0.2 !important; }
+    svg .links path.disappear {
+      opacity: 0 !important; }
+    svg .links path.unChecked {
+      opacity: 0.1 !important;
+      pointer-events: none; }
+    svg .links path.unChecked {
+      opacity: 0.1 !important;
+      pointer-events: none; }
+  svg .directions .hidden {
+    opacity: 0 !important;
+    pointer-events: none; }
+  svg .linkText text {
+    display: flex;
+    height: 40px;
+    line-height: 999;
+    transform-box: fill-box;
+    transform-origin: center;
+    font-size: 14px; }
+  svg .node {
+    cursor: pointer; }
+    svg .node :not(text) {
+      stroke: #ffffff;
+      stroke-width: 10; }
+    svg .node.withIcon :not(text) {
+      stroke-width: 1; }
+    svg .node text {
+      font-family: "Open Sans", sans-serif;
+      dominant-baseline: central;
+      fill: #0D0905;
+      stroke: #fafbfc;
+      stroke-width: 0.3;
+      text-anchor: middle; }
+    svg .node.hidden {
+      opacity: 0.2 !important; }
+      svg .node.hidden text {
+        opacity: 0.4 !important; }
+    svg .node.disappear {
+      opacity: 0 !important; }
+    svg .node.deleted {
+      opacity: 0.5 !important;
+      filter: url(#grayscaleFilter);
+      pointer-events: none; }
+    svg .node.unChecked {
+      opacity: 0.1 !important;
+      pointer-events: none; }
+    svg .node.auto rect,
+    svg .node.auto path,
+    svg .node.auto image,
+    svg .node.auto circle {
+      stroke-width: 2;
+      stroke: white;
+      stroke-dasharray: 2;
+      animation: dashAutoAnim 80s linear;
+      animation-iteration-count: infinite; }
+
+@keyframes dashAutoAnim {
+  to {
+    stroke-dashoffset: 1000; } }
+  svg #addNewLink {
+    pointer-events: none;
+    stroke-width: 2;
+    stroke-dasharray: 4;
+    stroke: #7166F8; }

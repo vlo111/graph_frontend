@@ -1172,20 +1172,20 @@ class Chart {
     this.linksWrapper.selectAll('path')
       .attr('fill', 'transparent');
 
-    this.nodesWrapper.selectAll('.node text')
-      .attr('font-family', 'Open Sans')
-      .attr('dominant-baseline', 'middle')
-      .attr('stroke', 'white')
-      .attr('fill', '#0D0905')
-      .attr('text-anchor', 'middle')
-      .attr('stroke-width', 0);
-
-    this.nodesWrapper.selectAll('.node :not(text)')
-      .attr('stroke', 'white')
-      .attr('stroke-width', 10);
-
-    this.nodesWrapper.selectAll('.node.withIcon :not(text)')
-      .attr('stroke-width', 1.5);
+    // this.nodesWrapper.selectAll('.node text')
+    //   .attr('font-family', 'Open Sans')
+    //   .attr('dominant-baseline', 'middle')
+    //   .attr('stroke', 'white')
+    //   .attr('fill', '#0D0905')
+    //   .attr('text-anchor', 'middle')
+    //   .attr('stroke-width', 0);
+    //
+    // this.nodesWrapper.selectAll('.node :not(text)')
+    //   .attr('stroke', 'white')
+    //   .attr('stroke-width', 10);
+    //
+    // this.nodesWrapper.selectAll('.node.withIcon :not(text)')
+    //   .attr('stroke-width', 1.5);
 
     const html = document.querySelector('#graph svg').outerHTML;
 
@@ -1199,20 +1199,20 @@ class Chart {
     this.linksWrapper.selectAll('path')
       .attr('fill', undefined);
 
-    this.wrapper.selectAll('.unChecked')
-      .attr('style', undefined);
-
-    this.nodesWrapper.selectAll('.node text')
-      .attr('font-family', undefined)
-      .attr('dominant-baseline', undefined)
-      .attr('stroke', undefined)
-      .attr('stroke-width', undefined)
-      .attr('fill', undefined)
-      .attr('text-anchor', undefined);
-
-    this.nodesWrapper.selectAll('.node :not(text)')
-      .attr('stroke', undefined)
-      .attr('stroke-width', undefined);
+    // this.wrapper.selectAll('.unChecked')
+    //   .attr('style', undefined);
+    //
+    // this.nodesWrapper.selectAll('.node text')
+    //   .attr('font-family', undefined)
+    //   .attr('dominant-baseline', undefined)
+    //   .attr('stroke', undefined)
+    //   .attr('stroke-width', undefined)
+    //   .attr('fill', undefined)
+    //   .attr('text-anchor', undefined);
+    //
+    // this.nodesWrapper.selectAll('.node :not(text)')
+    //   .attr('stroke', undefined)
+    //   .attr('stroke-width', undefined);
 
     this.resizeSvg();
 
