@@ -44,6 +44,9 @@ class LabelUtils {
     // label past
     const labels = Chart.getLabels();
 
+    const labelOriginalId = data.label.id;
+    const labelId = ChartUtils.uniqueId(labels);
+
     if (isEmbed) {
       if (labels.some((l) => l.id === data.label.id)) {
         toast.info('Label already pasted');
@@ -57,7 +60,7 @@ class LabelUtils {
         delete data.label.color;
         data.label.color = ChartUtils.labelColors(data.label);
       }
-      data.label.id = ChartUtils.uniqueId(labels);
+      data.label.id = labelId;
     }
     labels.push(data.label);
 
@@ -74,11 +77,18 @@ class LabelUtils {
     data.nodes.forEach((d) => {
       d.fx = d.fx - minX + posX;
       d.fy = d.fy - minY + posY;
+
       if (isEmbed) {
         d.readOnly = true;
         d.sourceId = data.sourceId;
       } else {
         const id = ChartUtils.uniqueId(nodes);
+        d.labels = d.labels.map((l) => {
+          if (l === labelOriginalId) {
+            return labelId;
+          }
+          return l;
+        });
         data.links = data.links.map((l) => {
           if (l.source === d.id) {
             l.source = id;
@@ -115,10 +125,7 @@ class LabelUtils {
         toast.error(res.message);
         return;
       }
-      Chart.render({ links, nodes, labels });
-      return;
     }
-
     Chart.render({ links, nodes, labels });
   }
 

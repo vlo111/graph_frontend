@@ -1119,7 +1119,7 @@ class Chart {
     if (_.isEmpty(this.data)) {
       return [];
     }
-    return _.uniqBy(this.data.labels || [], 'name');
+    return _.uniqBy(this.data.labels || [], 'id');
   }
 
   static get activeButton() {
