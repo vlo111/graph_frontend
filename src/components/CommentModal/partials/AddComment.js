@@ -15,9 +15,8 @@ const AddComment = ({ graph, closeModal, isReply }) => {
   const [text, setText] = useState('');
 
   return (
-    <div className={`comment-modal__add-comment-section${isReply ? '--reply' : ''}`}>
+    <div className={isReply ? 'comment-modal__add-comment-section--reply' : ''}>
       <hr />
-      <Owner user={myAccount.myAccount} />
       <Input
         textArea
         value={text}
