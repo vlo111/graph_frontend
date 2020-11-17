@@ -1297,7 +1297,6 @@ p {
     flex-direction: column;
     overflow: scroll;
     .authForm {
-      margin-top: 80%;
       .submit {
         align-self: center ;
       }
@@ -1321,10 +1320,9 @@ p {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    overflow: scroll;
-    margin: 30px 70px;
+    overflow: scroll;   
     .authForm {
-      margin-top: 80%;
+      margin: 30px 70px;
       .submit {
         align-self: center ;
       }
