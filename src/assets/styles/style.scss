@@ -1279,7 +1279,7 @@ p {
   background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
 
 @media screen and (max-width: 468px) {
-
+  overflow: scroll;
   .left {
     width:0%; 
 
@@ -1295,12 +1295,11 @@ p {
     z-index: 1;
     top: 0;
     left: 0;
-  
+    overflow: scroll;
     .authForm {
       margin-top: 80%;
       .submit {
-        align-self: center !important;
-        background-color: $color-dark !important;
+        align-self: center ;
       }
     }
   } 
