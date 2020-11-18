@@ -91,6 +91,7 @@ class Chart {
       const labelsObj = {};
       data.embedLabels.forEach((label) => {
         const labelNodes = data.nodes.filter((n) => +label.sourceId === +n.sourceId);
+        console.log(label.nodes, 4444)
         label.nodes = label.nodes.map((d) => {
           d.sourceId = label.sourceId;
           d.readOnly = true;
@@ -121,15 +122,25 @@ class Chart {
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
+        if(d.sourceId === 117){
+          console.log(labelsObj[d.sourceId], d)
+        }
         if (d.sourceId && labelsObj[d.sourceId]) {
           const labelData = labelsObj[d.sourceId];
           const labelNode = labelData.nodes.find((n) => n.id === d.id);
           // set node right position
           if (labelNode) {
-            d.fx = labelNode.fx - labelData.cx;
-            d.x = d.fx;
-            d.fy = labelNode.fy - labelData.cy;
-            d.y = d.fy;
+            const fx = labelNode.fx - labelData.cx;
+            const fy = labelNode.fy - labelData.cy;
+            d = {
+              ...labelNode,
+              sourceId: d.sourceId,
+              readOnly: true,
+              fx,
+              fy,
+              x: fx,
+              y: fy,
+            };
           } else {
             // remove deleted nodes
             if (!data.links.some((l) => !l.sourceId && (l.target === d.id || l.source === d.id))) {
