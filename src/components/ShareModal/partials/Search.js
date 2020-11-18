@@ -31,7 +31,7 @@ const Search = ({ select, setSelect, user, closeModal }) => {
         id="search-user"
         className="ghInput share-modal__search"
         isLoading={isLoading}
-        labelKey="email"
+        labelKey={option => `${option.firstName} ${option.lastName} ${option.email}`}
         minLength={3}
         onSearch={handleSearch}
         options={options}
