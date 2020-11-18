@@ -33,7 +33,9 @@ class OAuthButtonGoogle extends Component {
         }
         this.props.oAuthRequest('google', { accessToken });
       }, (error) => {
-        toast.error(`Something went wrong: ${error.error}`);
+        if (error.error !== 'popup_closed_by_user') {
+          toast.error(`Something went wrong: ${error.error}`);
+        }
         console.warn(error);
       });
     });
