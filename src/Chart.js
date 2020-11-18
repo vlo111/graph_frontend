@@ -994,7 +994,7 @@ class Chart {
     });
 
     this.event.on('click', (ev) => {
-      if (ev.target.tagName !== 'svg') {
+      if (ev.target.parentNode.classList.contains('node')) {
         return;
       }
       setTimeout(() => {

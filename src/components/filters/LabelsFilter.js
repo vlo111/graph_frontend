@@ -16,12 +16,13 @@ class LabelsFilter extends Component {
   }
 
 
-  formatLabels = memoizeOne((labels, nodes, d) => {
+  formatLabels = memoizeOne((labels, nodes) => {
     const labelsFormatted = _.chain(labels)
       .map((l) => ({
+        id: l.id,
         color: l.color,
         name: l.name || l.color,
-        length: nodes.filter((d) => (d.labels || []).includes(l.name || l.color)).length,
+        length: nodes.filter((d) => (d.labels || []).includes(l.id)).length,
       }))
       .orderBy('length', 'desc')
       .value();
@@ -51,7 +52,7 @@ class LabelsFilter extends Component {
         <h4 className="title">Labels</h4>
         <ul className="list">
           {labelsFormatted.map((item) => (
-            <Tooltip key={item.color} overlay={item.name}>
+            <Tooltip key={item.id} overlay={item.name}>
               <li className="item">
                 <Checkbox
                   label={(
@@ -59,8 +60,8 @@ class LabelsFilter extends Component {
                       <div style={{ backgroundColor: item.color }} />
                     </div>
                   )}
-                  checked={filters.labels.includes(item.name)}
-                  onChange={() => this.handleChange(item.name)}
+                  checked={filters.labels.includes(item.id)}
+                  onChange={() => this.handleChange(item.id)}
                 >
                   <span className="badge">
                     {item.length}
