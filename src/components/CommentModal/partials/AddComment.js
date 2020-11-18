@@ -15,9 +15,8 @@ const AddComment = ({ graph, closeModal, isReply }) => {
   const [text, setText] = useState('');
 
   return (
-    <div className={`comment-modal__add-comment-section${isReply ? '--reply' : ''}`}>
+    <div className={isReply ? 'comment-modal__add-comment-section--reply' : ''}>
       <hr />
-      <Owner user={myAccount.myAccount} />
       <Input
         textArea
         value={text}
@@ -41,13 +40,16 @@ const AddComment = ({ graph, closeModal, isReply }) => {
         </Button>
         <Button
           onClick={() => {
-            dispatch(createGraphCommentRequest(
-              {
-                graphId: graph.id,
-                text,
-                parentId: parent.id,
-              },
-            ));
+            text.trim() === '' ?
+              alert('Text cannot be blank.')
+              :
+              dispatch(createGraphCommentRequest(
+                {
+                  graphId: graph.id,
+                  text,
+                  parentId: parent.id,
+                },
+              ));
             setText('');
             dispatch(setGraphCommentParent({}));
           }}
