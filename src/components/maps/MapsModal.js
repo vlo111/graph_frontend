@@ -139,8 +139,8 @@ https://en.wikipedia.org/wiki/${selected.name}
     });
   }
 
-  handleMarkerMouseDown = (props, marker, ev) => {
-    const { clientX, clientY } = ev.ub;
+  handleMarkerMouseDown = async(ev) => {
+    const { clientX, clientY } = ev;
     this.setState({ markerDrag: true, virtualMarkerPos: [clientX, clientY] });
   }
 
