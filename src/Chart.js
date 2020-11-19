@@ -91,7 +91,6 @@ class Chart {
       const labelsObj = {};
       data.embedLabels.forEach((label) => {
         const labelNodes = data.nodes.filter((n) => +label.sourceId === +n.sourceId);
-        console.log(label.nodes, 4444)
         label.nodes = label.nodes.map((d) => {
           d.sourceId = label.sourceId;
           d.readOnly = true;
@@ -122,9 +121,6 @@ class Chart {
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
-        if(d.sourceId === 117){
-          console.log(labelsObj[d.sourceId], d)
-        }
         if (d.sourceId && labelsObj[d.sourceId]) {
           const labelData = labelsObj[d.sourceId];
           const labelNode = labelData.nodes.find((n) => n.id === d.id);
@@ -1005,7 +1001,7 @@ class Chart {
     });
 
     this.event.on('click', (ev) => {
-      if (ev.target.parentNode.classList.contains('node')) {
+      if (!ev.target.parentNode || ev.target.parentNode.classList.contains('node')) {
         return;
       }
       setTimeout(() => {
