@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './form/Button';
-import { setActiveButton } from '../store/actions/app'; 
+import { setActiveButton } from '../store/actions/app';
 import SaveGraph from './chart/SaveGraph';
 import Undo from './Undo';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
 import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
-import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg'; 
+import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 
@@ -32,12 +32,13 @@ class ToolBar extends Component {
       this.props.getSingleGraphRequest(graphId);
     }
   }
+
   render() {
     const { activeButton, match: { params: { graphId } } } = this.props;
     return (
       <div id="toolBar">
         <div className="top">
-          
+
           <SaveGraph />
           <Undo />
           <div className="actionButtons">
@@ -62,13 +63,13 @@ class ToolBar extends Component {
             >
               Remove
             </Button>
-            <Button
+            {false ? <Button
               icon={<LoopSvg />}
               className={activeButton === 'reset' ? 'active' : undefined}
               onClick={this.resetGraph}
             >
               Reset project
-            </Button>
+            </Button> : null}
             <Button
               className={activeButton === 'data' ? 'active' : undefined}
               icon={<LoopSvg />}
@@ -82,8 +83,8 @@ class ToolBar extends Component {
               onClick={() => this.handleClick('import')}
             >
               Import data
-            </Button>            
-           
+            </Button>
+
           </div>
         </div>
         <div className="bottom helpWrapper">

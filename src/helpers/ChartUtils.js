@@ -34,7 +34,6 @@ class ChartUtils {
     });
 
     data.labels = data.labels.map((d) => {
-      console.log(params.labels)
       if (!_.isEmpty(params.labels) && !params.labels.includes(d.id)) {
         d.hidden = 1;
         return d;

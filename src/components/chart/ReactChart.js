@@ -99,6 +99,7 @@ class ReactChart extends Component {
       return;
     }
     Chart.render({ labels });
+    Chart.event.emit('label.mouseleave', ev, d);
   }
 
   handleDbNodeClick = (ev, d) => {
