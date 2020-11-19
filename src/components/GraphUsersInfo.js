@@ -21,8 +21,8 @@ class GraphUsersInfo extends Component {
     const node = Chart.getNodes().find((d) => d.id === nodeId);
     if (!node) return null;
 
-    const createdUser = singleGraph.users.find((u) => u.id === (node.createdUser || singleGraph.userId)) || {};
-    const updatedUser = singleGraph.users.find((u) => u.id === (node.updatedUser || singleGraph.userId)) || {};
+    const createdUser = singleGraph.users.find((u) => +u.id === +(node.createdUser || singleGraph.userId)) || {};
+    const updatedUser = singleGraph.users.find((u) => +u.id === +(node.updatedUser || singleGraph.userId)) || {};
     return (
       <Modal
         isOpen
