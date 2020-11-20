@@ -57,6 +57,17 @@ class NodeFullInfoContext extends Component {
     }
   }
 
+  deleteGraph = () => {
+    const { params: { squareDara } } = this.props;
+    let nodes = Chart.getNodes();
+    let links = Chart.getLinks();
+    nodes = nodes.filter((d) => d.sourceId || !squareDara.nodes.includes(d.id));
+
+    links = links.filter((d) => !squareDara.nodes.includes(d.target) && !squareDara.nodes.includes(d.source));
+
+    Chart.render({ links, nodes });
+  }
+
   render() {
     const { params } = this.props;
     return (
@@ -72,6 +83,12 @@ class NodeFullInfoContext extends Component {
           onClick={this.crop}
         >
           Crop
+        </Button>
+        <Button
+          icon="fa-eraser"
+          onClick={this.deleteGraph}
+        >
+          Delete
         </Button>
       </>
     );
