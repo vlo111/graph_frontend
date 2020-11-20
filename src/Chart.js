@@ -543,25 +543,28 @@ class Chart {
       return;
     }
 
-    let selectedNodes = [];
-    let nodes = [];
-    let labels = [];
+    this.squareDara = {
+      selectedNodes: [],
+      nodes: [],
+      labels: [],
+    };
+
     let selectSquare;
 
     const showSelectedNodes = () => {
       this.nodesWrapper.selectAll('.node :not(text)')
-        .attr('filter', (n) => (selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
+        .attr('filter', (n) => (this.squareDara.selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
     };
 
     this.event.on('node.click', (ev, d) => {
       if (!ev.shiftKey) {
         return;
       }
-      const i = selectedNodes.indexOf(d.id);
+      const i = this.squareDara.selectedNodes.indexOf(d.id);
       if (i > -1) {
-        selectedNodes.splice(i, 1);
+        this.squareDara.selectedNodes.splice(i, 1);
       } else {
-        selectedNodes.push(d.id);
+        this.squareDara.selectedNodes.push(d.id);
       }
 
       showSelectedNodes();
@@ -586,15 +589,22 @@ class Chart {
         .attr('y', y * scale)
         .call(d3.drag()
           .on('start', handleDragStart)
-          .on('drag', handleDrag));
+          .on('drag', handleDrag)
+          .on('end', handleDragEnd));
     });
 
-    this.event.on('window.keyup', () => {
+    this.event.on('window.mousedown', (ev) => {
+      if (ev.shiftKey || ev.which === 3) {
+        return;
+      }
       this.wrapper.selectAll('.selectBoard').remove();
       this.wrapper.selectAll('.selectSquare').remove();
       selectSquare = null;
-      selectedNodes = [];
-      nodes = [];
+      this.squareDara = {
+        selectedNodes: [],
+        nodes: [],
+        labels: [],
+      };
       showSelectedNodes();
     });
 
@@ -612,12 +622,12 @@ class Chart {
           y -= height;
         }
         const allNodes = this.getNodes();
-        nodes = allNodes
+        this.squareDara.nodes = allNodes
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
-        labels = this.getLabels()
-          .filter((l) => nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
+        this.squareDara.labels = this.getLabels()
+          .filter((l) => this.squareDara.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
           .map((l) => l.id);
-        nodes = nodes.map((d) => d.id);
+        this.squareDara.nodes = this.squareDara.nodes.map((d) => d.id);
       }
     };
 
@@ -635,7 +645,7 @@ class Chart {
       }
 
       this.node.each((d) => {
-        if (nodes.includes(d.id) || selectedNodes.includes(d.id)) {
+        if (this.squareDara.nodes.includes(d.id) || this.squareDara.selectedNodes.includes(d.id)) {
           if (!d.readOnly) {
             d.fx += ev.dx;
             d.x += ev.dx;
@@ -647,7 +657,7 @@ class Chart {
       });
       this.graphMovement();
       this.labels.each((l) => {
-        if (labels.includes(l.id) && !l.readOnly) {
+        if (this.squareDara.labels.includes(l.id) && !l.readOnly) {
           l.d = l.d.map((p) => {
             p[0] = +(p[0] + ev.dx).toFixed(2);
             p[1] = +(p[1] + ev.dy).toFixed(2);
@@ -659,8 +669,12 @@ class Chart {
       this.labelMovement();
     };
 
+    const handleDragEnd = () => {
+      handleSquareDragStart();
+    };
+
     const handleSquareDragEnd = () => {
-      // selectSquare.remove();
+      handleSquareDragStart();
     };
 
     const handleDragStart = (ev) => {
@@ -683,6 +697,7 @@ class Chart {
     };
     this.event.on('node.dragstart', handleSquareDragStart);
     this.event.on('node.drag', handleSquareDrag);
+    this.event.on('node.dragend', handleSquareDragEnd);
 
     const handleDrag = (ev) => {
       const datum = selectSquare.datum();
@@ -1236,6 +1251,7 @@ class Chart {
     window.addEventListener('resize', this.resizeSvg);
     window.addEventListener('keydown', this.handleWindowKeyDown);
     window.addEventListener('keyup', this.handleWindowKeyUp);
+    window.addEventListener('mousedown', this.handleWindowMouseDown, { capture: true });
   }
 
   static handleWindowKeyDown = (ev) => {
@@ -1246,6 +1262,11 @@ class Chart {
   static handleWindowKeyUp = (ev) => {
     ChartUtils.keyEvent(ev);
     this.event.emit('window.keyup', ev);
+  }
+
+  static handleWindowMouseDown = (ev) => {
+    ChartUtils.keyEvent(ev);
+    this.event.emit('window.mousedown', ev);
   }
 
   static unmount() {
@@ -1263,6 +1284,7 @@ class Chart {
     window.removeEventListener('resize', this.resizeSvg);
     window.removeEventListener('keydown', this.handleWindowKeyDown);
     window.removeEventListener('keyup', this.handleWindowKeyUp);
+    window.removeEventListener('mousedown', this.handleWindowMouseDown);
   }
 }
 

@@ -9,6 +9,7 @@ import NodeFullInfoContext from './NodeFullInfoContext';
 import LabelContextMenu from './LabelContextMenu';
 import Icon from '../form/Icon';
 import LabelUtils from '../../helpers/LabelUtils';
+import SelectSquare from "./SelectSquare";
 
 class ContextMenu extends Component {
   static event = new EventEmitter();
@@ -42,6 +43,7 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
+    console.log(ev.target)
     if (ev.target.closest('.nodes')) {
       const index = +ev.target.parentNode.getAttribute('data-i');
       params = Chart.getNodes().find((d) => d.index === index);
@@ -64,6 +66,11 @@ class ContextMenu extends Component {
       const label = Chart.getLabels().find((l) => l.id === id);
       params = { ...label };
       element = 'label';
+    } else if (ev.target.classList.contains('selectSquare')) {
+      params = {
+        squareDara: Chart.squareDara || {},
+      };
+      element = 'selectSquare';
     }
     this.setState({
       x, y, show: element, params,
@@ -93,7 +100,7 @@ class ContextMenu extends Component {
     const { match: { params: { graphId = '' } } } = this.props;
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
-    const showPast = !!localStorage.getItem('label.copy');
+    const showPast = !!localStorage.getItem('label.copy') && (show === 'node' || show === 'link' || show === 'label');
     if (params.fieldName === '_location') {
       return null;
     }
@@ -104,6 +111,7 @@ class ContextMenu extends Component {
           {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
           {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
+          {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
           {showPast ? (
             <div className="ghButton notClose">
               <Icon value="fa-clipboard" />
