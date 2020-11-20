@@ -100,7 +100,7 @@ class ContextMenu extends Component {
     const { match: { params: { graphId = '' } } } = this.props;
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
-    const showPast = !!localStorage.getItem('label.copy') && (show === 'node' || show === 'link' || show === 'label');
+    const showPast = !!localStorage.getItem('label.copy') && (show === 'chart' || show === 'node' || show === 'link' || show === 'label');
     if (params.fieldName === '_location') {
       return null;
     }
