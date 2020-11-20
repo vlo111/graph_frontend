@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton, setGridIndexes } from '../../store/actions/app';
-import ChartUtils from "../../helpers/ChartUtils";
-import { createGraphRequest } from "../../store/actions/graphs";
-import { withRouter } from "react-router-dom";
-import { toast } from "react-toastify";
+import ChartUtils from '../../helpers/ChartUtils';
+import { createGraphRequest } from '../../store/actions/graphs';
 
 class NodeFullInfoContext extends Component {
   static propTypes = {
@@ -16,6 +16,8 @@ class NodeFullInfoContext extends Component {
     setActiveButton: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
     createGraphRequest: PropTypes.func.isRequired,
+    singleGraph: PropTypes.object.isRequired,
+    customFields: PropTypes.object.isRequired,
   }
 
   crop = () => {
@@ -49,7 +51,7 @@ class NodeFullInfoContext extends Component {
       customFields,
     });
     if (data.graphId) {
-      window.location.href = `/graphs/view/${data.graphId}`;
+      window.location.href = `/graphs/update/${data.graphId}`;
     } else {
       toast.error('Something went wrong');
     }
