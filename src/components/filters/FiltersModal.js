@@ -21,6 +21,7 @@ class FiltersModal extends Component {
   static propTypes = {
     resetFilter: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
+    userGraphs: PropTypes.array.isRequired,
   }
 
   constructor(props) {
@@ -58,19 +59,25 @@ class FiltersModal extends Component {
 
   render() {
     const { nodes, links, labels } = this.state;
-    const { match: { params: { graphId = '', token = '' } } } = this.props;
+    const { userGraphs, match: { params: { graphId = '', token = '' } } } = this.props;
+    const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId);
+
     return (
       <Modal
         className="ghModal ghModalFilters"
         overlayClassName="ghModalOverlay ghModalFiltersOverlay"
         isOpen
       >
-        <Link
-          to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/update/${graphId}`}
-          replace
-        >
-          <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
-        </Link>
+        {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
+          <>
+            <Link
+              to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/update/${graphId}`}
+              replace
+            >
+              <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
+            </Link>
+          </>
+        )}
         <div className="row resetAll">
           <Button onClick={this.props.resetFilter}>RESET ALL</Button>
           {`Showing ${nodes.filter((d) => !d.hidden).length} nodes out of ${nodes.length}`}
@@ -94,7 +101,10 @@ class FiltersModal extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  userGraphs: state.shareGraphs.userGraphs,
+
+});
 
 const mapDispatchToProps = {
   resetFilter,
