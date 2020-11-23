@@ -105,9 +105,7 @@ class Chart {
           l.readOnly = true;
           return l;
         });
-        data.links = data.links.filter((l) => +l.sourceId !== +label.sourceId);
         data.links.push(...label.links);
-
         // get position difference
         const labelEmbed = labels.find((l) => l.id === label.label?.id);
         if (labelEmbed) {
@@ -116,6 +114,7 @@ class Chart {
         }
         return label;
       });
+      data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.source}//${d.type}`);
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
@@ -132,7 +131,7 @@ class Chart {
           // remove deleted nodes
           if (!data.links.some((l) => !l.sourceId && (l.target === d.id || l.source === d.id))) {
             d.remove = true;
-            console.log('remove');
+            console.log('remove', d);
             removedNodes = true;
           }
           d.deleted = true;
