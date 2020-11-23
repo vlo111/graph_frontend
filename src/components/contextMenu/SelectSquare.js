@@ -63,7 +63,7 @@ class NodeFullInfoContext extends Component {
     let links = Chart.getLinks();
     nodes = nodes.filter((d) => d.sourceId || !squareDara.nodes.includes(d.id));
 
-    links = links.filter((d) => !squareDara.nodes.includes(d.target) && !squareDara.nodes.includes(d.source));
+    links = links.filter((d) => !squareDara.nodes.includes(d.target) && !squareDara.selectedNodes.includes(d.source));
 
     Chart.render({ links, nodes });
   }
