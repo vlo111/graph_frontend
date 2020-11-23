@@ -82,6 +82,7 @@ export function socketInit() {
 
     socket.on('embedLabelDataChange', (data) => {
       const graphId = Utils.getGraphIdFormUrl();
+      const { app: { filters } } = getState();
       if (+data.sourceId === graphId) {
         return;
       }
@@ -92,14 +93,14 @@ export function socketInit() {
       const embedLabels = Chart.data.embedLabels.map((l) => {
         if (+l.sourceId === +data.sourceId) {
           changed = true;
-          l = data;
+          return data;
         }
         return l;
       });
       if (!changed) {
         embedLabels.push(data);
       }
-      Chart.render({ embedLabels });
+      Chart.render({ embedLabels }, { filters });
     });
   };
 }

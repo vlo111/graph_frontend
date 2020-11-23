@@ -21,7 +21,9 @@ class Filters extends Component {
 
   renderChart = memoizeOne((filters, customFields) => {
     if (customFields) {
-      Chart.render(undefined, { filters, customFields });
+      setTimeout(() => {
+        Chart.render(undefined, { filters, customFields });
+      }, 500)
     }
   })
 
