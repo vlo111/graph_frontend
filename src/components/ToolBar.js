@@ -65,6 +65,7 @@ class ToolBar extends Component {
     return (
       <div id="toolBar">
         <div className="top">
+
           <SaveGraph />
           <Undo />
           <div className="actionButtons">
@@ -89,13 +90,13 @@ class ToolBar extends Component {
             >
               Remove
             </Button>
-            <Button
+            {false ? <Button
               icon={<LoopSvg />}
               className={activeButton === 'reset' ? 'active' : undefined}
               onClick={this.resetGraph}
             >
               Reset project
-            </Button>
+            </Button> : null}
             <Button
               className={activeButton === 'data' ? 'active' : undefined}
               icon={<LoopSvg />}

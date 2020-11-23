@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
+import stripHtml from 'string-strip-html';
 import { setActiveButton, setGridIndexes, toggleGrid } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Input from '../form/Input';
@@ -15,8 +16,7 @@ import Select from '../form/Select';
 import { NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
-import MapsLocationPicker from "../maps/MapsLocationPicker";
-import stripHtml from "string-strip-html";
+import MapsLocationPicker from '../maps/MapsLocationPicker';
 
 class DataTableNodes extends Component {
   static propTypes = {
@@ -51,28 +51,19 @@ class DataTableNodes extends Component {
       grid[d.row][d.col] = { ...grid[d.row][d.col], value };
     });
     const nodesChanged = Convert.gridDataToNode(grid);
-    let links = Chart.getLinks();
+    const links = Chart.getLinks();
     const nodes = Chart.getNodes().map((d) => {
       const changed = nodesChanged.find((c) => c.index === d.index);
       if (changed) {
-        links = links.map((l) => {
-          if (l.source === d.name) {
-            l.source = changed.name;
-          } else if (l.target === d.name) {
-            l.target = changed.name;
-          }
-          return l;
-        });
-        // eslint-disable-next-line no-param-reassign
-        d = changed;
+        return changed;
       }
       return d;
     });
     Chart.render({ nodes, links });
   }
 
-  toggleGrid = async (index) => {
-    await this.props.toggleGrid('nodes', index);
+  toggleGrid = (index) => {
+    this.props.toggleGrid('nodes', index);
   }
 
   renderSheet = (props) =>
@@ -82,29 +73,29 @@ class DataTableNodes extends Component {
     (
       <table className={props.className}>
         <thead>
-        <tr>
-          <th className="cell index" width="60">
-            <label>
-              {/* <input */}
-              {/*  type="checkbox" */}
-              {/*  checked={allChecked} */}
-              {/*  onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))} */}
-              {/* /> */}
-              {/* All */}
-            </label>
-          </th>
-          <th className="cell name" width="180"><span>Name</span></th>
-          <th className="cell type" width="150"><span>Type</span></th>
-          <th className="cell description" width="272"><span>Description</span></th>
-          <th className="cell nodeType" width="130"><span>Node Type</span></th>
-          <th className="cell icon" width="272"><span>Icon</span></th>
-          <th className="cell link" width="272"><span>Link</span></th>
-          <th className="cell keywords" width="272"><span>Keywords</span></th>
-          <th className="cell location" width="272"><span>Location</span></th>
-        </tr>
+          <tr>
+            <th className="cell index" width="60">
+              <label>
+                {/* <input */}
+                {/*  type="checkbox" */}
+                {/*  checked={allChecked} */}
+                {/*  onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))} */}
+                {/* /> */}
+                {/* All */}
+              </label>
+            </th>
+            <th className="cell name" width="180"><span>Name</span></th>
+            <th className="cell type" width="150"><span>Type</span></th>
+            <th className="cell description" width="272"><span>Description</span></th>
+            <th className="cell nodeType" width="130"><span>Node Type</span></th>
+            <th className="cell icon" width="272"><span>Icon</span></th>
+            <th className="cell link" width="272"><span>Link</span></th>
+            <th className="cell keywords" width="272"><span>Keywords</span></th>
+            <th className="cell location" width="272"><span>Location</span></th>
+          </tr>
         </thead>
         <tbody>
-        {props.children}
+          {props.children}
         </tbody>
       </table>
     )

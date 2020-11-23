@@ -41,7 +41,7 @@ const Friends = React.memo(() => {
                     alt={friend.firstName}
                   />
                   <div className="searchData__graphInfo-details">
-                    <Link to={`/user/preview/${friend.id}`}>
+                    <Link to={`/profile/${friend.id}`}>
                       {`${friend.firstName} ${friend.lastName}`}
                     </Link>
                     <span className="description">

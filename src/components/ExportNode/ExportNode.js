@@ -7,14 +7,14 @@ import Chart from '../../Chart';
 class ExportNode extends Component {
   render() {
     const {
-      Tabs, NodeName, NodeType, ConnectionNodes
+      tabs, node, nodeData
     } = this.props;
 
-    const customField = CustomFields.get(Tabs, NodeType, NodeName);
+    const customField = CustomFields.get(tabs, node.type, node.id);
 
     let links = Chart.getLinks();
 
-    links = links.find((n) => n.source === NodeName || n.target === NodeName);
+    links = links.find((n) => n.source === node.id || n.target === node.id);
 
     return (
       <div id="nodeFullInfo">
@@ -25,11 +25,11 @@ class ExportNode extends Component {
               alt=""
             />
             <div className="textWrapper">
-              <h2 className="name">{NodeName}</h2>
-              <h3 className="type">{NodeType}</h3>
+              <h2 className="name">{node.name}</h2>
+              <h3 className="type">{node.type}</h3>
             </div>
           </div>
-          {!_.isEmpty(Tabs) ? (
+          {!_.isEmpty(tabs) ? (
             <div className="nodeTabs">
               <div className="contentWrapper">
                 <div className="content">
@@ -49,7 +49,7 @@ class ExportNode extends Component {
           <div className="connectionDetailsGeneral">
             <div className="contentWrapper">
               <h2 className="connectionDetails">Connections</h2>
-              <ConnectionDetails nodeName={NodeName} exportNode ConnectionNodes={ConnectionNodes} />
+              <ConnectionDetails nodeId={node.id} exportNode nodeData={nodeData} />
             </div>
           </div>
         ) : null}

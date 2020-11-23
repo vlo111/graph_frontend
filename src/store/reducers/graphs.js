@@ -72,9 +72,9 @@ export default function reducer(state = initialState, action) {
     case GET_SINGLE_EMBED_GRAPH.SUCCESS:
     case GET_SINGLE_GRAPH.SUCCESS: {
       const { graph: singleGraph, embedLabels } = action.payload.data;
-      const { nodes, links, labels } = singleGraph;
+      const { nodes, links, labels, lastUid } = singleGraph;
       Chart.render({
-        nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels,
+        nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels, lastUid,
       });
       return {
         ...state,

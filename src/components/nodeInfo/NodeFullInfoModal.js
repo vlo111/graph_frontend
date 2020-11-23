@@ -66,7 +66,7 @@ class NodeFullInfo extends Component {
             </div>
           </div>
           <div className="right">
-            <ConnectionDetails nodeName={node.name} />
+            <ConnectionDetails nodeId={node.id} />
           </div>
         </div>
       </Modal>

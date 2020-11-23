@@ -4,9 +4,9 @@ import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
-import { ReactComponent as Logo } from '../assets/images/logo.svg'; 
+import { ReactComponent as Logo } from '../assets/images/logo.svg';
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
-import { ReactComponent as ViewSvg } from '../assets/images/icons/view.svg'; 
+import { ReactComponent as ViewSvg } from '../assets/images/icons/view.svg';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import ShareGraph from './ShareGraph';
 import AccountDropDown from '../components/account/AccountDropDown';
@@ -32,12 +32,14 @@ class ToolBarHeader extends Component {
       this.props.getSingleGraphRequest(graphId);
     }
   }
+
   render() {
     const { activeButton, match: { params: { graphId } } } = this.props;
     return (
       <header id="header">
-        <Link to="/">
+        <Link to="/" className="logoWrapper">
           <Logo className="logo" />
+          <span className="autoSaveText">Saving...</span>
         </Link>
         <AccountDropDown />
         <MapsButton />
@@ -49,14 +51,14 @@ class ToolBarHeader extends Component {
             onClick={() => this.handleClick('search')}
           >
             Search
-            </Button>
+          </Button>
           <ShareGraph graphId={+graphId} setButton />
           <Button
             icon={<ViewSvg />}
             onClick={() => this.props.history.replace(`/graphs/view/${graphId}`)}
           >
             View mode
-            </Button>
+          </Button>
 
         </div>
 

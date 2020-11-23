@@ -15,24 +15,20 @@ import Button from "./form/Button";
 class HeaderMini extends Component {
   async componentWillMount() {
     let {
-      HeaderImg, NodeName,
+      headerImg, node,
     } = this.props;
 
-    const node = Chart.getNodes().find((n) => n.name === NodeName);
-    if (!node) {
-      return null;
-    }
 
     const nodeData = [];
 
-    const nodeLinks = Chart.getNodeLinks(node.name, 'all');
+    const nodeLinks = Chart.getNodeLinks(node.id, 'all');
     const nodes = Chart.getNodes();
     const connectedNodes = nodeLinks.map(async (l) => {
       let connected;
-      if (l.source === node.name) {
-        connected = nodes.find((d) => d.name === l.target);
+      if (l.id === node.id) {
+        connected = nodes.find((d) => d.id === l.target);
       } else {
-        connected = nodes.find((d) => d.name === l.source);
+        connected = nodes.find((d) => d.id === l.source);
       }
       connected.icon = await Utils.blobToBase64(connected.icon);
 
@@ -51,10 +47,10 @@ class HeaderMini extends Component {
 
     this.setState({ nodeData: obj });
 
-    if (HeaderImg && !HeaderImg.startsWith('https://maps.googleapis.com')) {
-      HeaderImg = await Utils.blobToBase64(HeaderImg);
+    if (headerImg && !headerImg.startsWith('https://maps.googleapis.com')) {
+      headerImg = await Utils.blobToBase64(headerImg);
     }
-    this.setState({ image: HeaderImg });
+    this.setState({ image: headerImg });
   }
 
   toggleGraphUsersInfo = (showGraphUsersInfo) => {
@@ -63,7 +59,7 @@ class HeaderMini extends Component {
 
   render() {
     const { showGraphUsersInfo } = this.state;
-    const { match: { params: { graphId = '', token = '' } } } = this.props;
+    const { tabs, node, match: { params: { graphId = '', token = '' } } } = this.props;
     const isInEmbed = Utils.isInEmbed();
     return (
       <header id="headerMini">
@@ -81,11 +77,10 @@ class HeaderMini extends Component {
           </li>
           <li>
             <ExportNodeTabs
-              NodeName={this.props.NodeName}
-              NodeType={this.props.NodeType}
-              Tabs={this.props.Tabs}
-              NodeData={this.state.nodeData}
-              Image={this.state.image}
+              node={node}
+              tabs={tabs}
+              nodeData={this.state.nodeData}
+              image={this.state.image}
             />
           </li>
         </ul>

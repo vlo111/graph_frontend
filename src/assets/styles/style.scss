@@ -17,7 +17,7 @@ $color-dark-blue: #717EA0;
 $color-green: #48897a;
 $color-white: #ffffff;
 
-$color-darkgreen : #f2f3f5;
+$color-darkgreen: #f2f3f5;
 
 $font-family: 'Open Sans', sans-serif;
 
@@ -145,6 +145,7 @@ p {
 
 .logo {
   max-width: 100%;
+  overflow: visible;
 
   &.orange {
     text {
@@ -164,6 +165,41 @@ p {
     circle {
       fill: $color-white;
     }
+  }
+}
+.logoWrapper{
+  position: relative;
+  .autoSaveText {
+    font-size: 12px;
+    color: $color-main2;
+    font-weight: 600;
+    position: absolute;
+    top: 32px;
+    left: 146px;
+    display: none;
+  }
+}
+.autoSave {
+  .logo {
+    circle {
+      animation-name: logoLoading;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      stroke: $color-main2;
+      stroke-opacity: 0.5;
+      @keyframes logoLoading {
+        from {
+          stroke-width: 0;
+        }
+        to {
+          stroke-width: 8;
+        }
+      }
+    }
+  }
+  .autoSaveText{
+    display: block;
   }
 }
 
@@ -864,7 +900,7 @@ p {
 
     &.hidden {
       opacity: 0.2 !important;
-      pointer-events: none;
+      //pointer-events: none;
 
       text {
         opacity: 0.4 !important;
@@ -1048,7 +1084,7 @@ p {
 
   }
 
-   .graphs {
+  .graphs {
     position: absolute;
     left: 750px;
 
@@ -1057,7 +1093,7 @@ p {
       border: 0px;
       padding: 4px 20px 1px;
     }
-   }
+  }
 }
 
 #headerMini {
@@ -1281,16 +1317,16 @@ p {
 @media screen and (max-width: 468px) {
   overflow: scroll;
   .left {
-    width:0%; 
+    width:0%;
 
     &.forgotPassword,
     &.signIn {
-      background-image:none; 
- 
-    } 
+      background-image:none;
+
+    }
   }
   .right {
-    width: 100%;   
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1302,26 +1338,27 @@ p {
         align-self: center ;
       }
     }
-  } 
+  }
 }
 @media screen and (max-width: 368px) {
   overflow: scroll;
   .left {
-    width:0%; 
+    width:0%;
 
     &.forgotPassword,
     &.signIn {
-      background-image:none; 
- 
-    } 
+      background-image:none;
+
+    }
   }
+
   .right {
-    width: 100%;   
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    overflow: scroll;   
+    overflow: scroll;
     .authForm {
       margin: 30px 70px;
       .ghFormField {
@@ -1331,22 +1368,27 @@ p {
         align-self: center ;
       }
     }
-  } 
+  }
+  .switchSignMode {
+    font-size: 20px;
+    margin-top: 80px;
+    margin: 30px 70px;
+  }
 }
 
-  @media screen and (min-width: 768px){ 
+  @media screen and (min-width: 768px){
     .left {
       width: 56.54%;
       height: 100vh;
       max-width: 1081px;
-  
+
       &.forgotPassword,
       &.signIn {
         background-image: url("../images/sign.png");
         background-size: cover;
         position: relative;
         z-index: 1;
-  
+
         &:before {
           content: '';
           position: absolute;
@@ -1358,16 +1400,16 @@ p {
           opacity: 0.5;
           z-index: -1;
         }
-  
+
         .logo {
           margin: 30px 70px;
         }
       }
-  
+
       &.forgotPassword {
         background-image: url("../images/forgot-password.png");
       }
-  
+
       img {
         width: 100%;
         height: 100%;
@@ -1380,11 +1422,15 @@ p {
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      
+
       .submit {
         align-self: flex-end;
         margin-top: 32px;
       }
+    }
+    .switchSignMode {
+      font-size: 20px;
+      margin-top: 100px;
     }
   }
 
@@ -4219,6 +4265,7 @@ body .gh__menu {
   }
 
 }
+
 .graphListHeader {
   display: flex;
   justify-content: flex-start;
@@ -4593,9 +4640,9 @@ body .gh__menu {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-    color : #808080;
-    margin-left:10%;
-    margin-top:70px;
+    color: #808080;
+    margin-left: 10%;
+    margin-top: 70px;
   }
 
   &__avatar {
@@ -4627,11 +4674,12 @@ body .gh__menu {
   }
 }
 
-.graphUsersInfoOverlay{
+.graphUsersInfoOverlay {
   .graphUsersInfo {
     padding: 30px 20px 20px;
     width: 350px;
     height: 350px;
+
     .close {
       position: absolute;
     }
@@ -4657,12 +4705,12 @@ body .gh__menu {
         margin-right: 10px;
       }
 
-      .userName{
+      .userName {
         font-size: 16px;
         margin-top: 6px;
       }
 
-      .time{
+      .time {
         font-size: 15px;
         color: $color-dark-blue;
       }
@@ -4675,59 +4723,71 @@ body .gh__menu {
     }
   }
 }
+
 .mapTabButton {
   background: transparent;
   border: none;
   display: flex;
   left: 67px;
   position: absolute;
+
   img {
     width: 40px;
     height: 40px;
   }
 }
+
 .linkedin {
   padding: 3px 72px 1px 14px;
+
   .company, .institution {
     color: #181818;
     font-size: 15px;
     font-weight: 600;
     margin-bottom: 0rem !important;
   }
+
   .position, .studyType, .skills, .summary, .studyData {
     color: #181818;
     font-size: 14.5px;
     margin-bottom: 0rem !important;
   }
-  .date, .location  {
-    color: rgba(0,0,0,.6);
+
+  .date, .location {
+    color: rgba(0, 0, 0, .6);
     font-size: 13.5px;
     margin-bottom: 0rem !important;
   }
+
   .visually-hidden {
     display: none;
   }
 }
-.no-graphs {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding-top: 50px;
-    .title {
-      font-size: 4rem;
-      font-weight: 300;
-      font: normal normal 600 36px/49px Open Sans;
 
-      + .text {
-          margin: 0 0 1rem;
-      }
+.no-graphs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-top: 50px;
+
+  .title {
+    font-size: 4rem;
+    font-weight: 300;
+    font: normal normal 600 36px/49px Open Sans;
+
+    + .text {
+      margin: 0 0 1rem;
+    }
   }
 
   .no-graphs-img {
-      font-weight: 300;
-      text-align: center;
+    font-weight: 300;
+    text-align: center;
   }
 
 }
+
+
+

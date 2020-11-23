@@ -15,16 +15,16 @@ class labelContextMenu extends Component {
 
   handleCopyClick = (ev) => {
     const { params, customFields, match: { params: { graphId = '' } } } = this.props;
-    const data = LabelUtils.copy(graphId, params.name, customFields);
+    const data = LabelUtils.copy(graphId, params.id, customFields);
     this.props.onClick(ev, 'label.copy', { data, graphId });
   }
 
   render() {
     return (
       <>
-        {/* <Button icon="fa-copy" onClick={this.handleCopyClick}> */}
-        {/* Copy */}
-        {/* </Button> */}
+        <Button icon="fa-copy" onClick={this.handleCopyClick}>
+          Copy
+        </Button>
         <Button icon="fa-eraser" onClick={(ev) => this.props.onClick(ev, 'label.delete')}>
           Delete
         </Button>

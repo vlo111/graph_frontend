@@ -79,10 +79,10 @@ class SaveGraph extends Component {
         <Button className="saveGraph" onClick={() => this.toggleModal(true)}>
           Save Graph
         </Button>
-        <Prompt
-          when={preventReload}
-          message={this.handleRouteChange}
-        />
+        {/* <Prompt */}
+        {/*  when={preventReload} */}
+        {/*  message={this.handleRouteChange} */}
+        {/* /> */}
         {showModal ? (
           <SaveGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
         ) : null}

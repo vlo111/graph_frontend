@@ -39,9 +39,9 @@ const Profile = React.memo((props) => {
 
                   <div className="profile__user-details">
                     <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
-                    {/* <div style={{ position: 'absolute', right: '500px' }}>
+                    <div style={{ position: 'absolute', right: '500px' }}>
                       <AddButton user={profile} />
-                    </div> */}
+                    </div>
 
                     <span className="email">
                       <strong>Email : </strong> {profile.email}
@@ -60,7 +60,7 @@ const Profile = React.memo((props) => {
             </div>
           </>
         )}
-        {/* <div className="profile__friends">
+        <div className="profile__friends">
           <h4>Friend requests</h4>
           {friends && friends.length ? (
             friends.map((friendship) => {
@@ -78,7 +78,7 @@ const Profile = React.memo((props) => {
                         alt={friend.firstName}
                       />
                       <div className="searchData__graphInfo-details">
-                        <Link to={`/user/preview/${friend.id}`}>
+                        <Link to={`/profile/${friend.id}`}>
                           {`${friend.firstName} ${friend.lastName}`}
                         </Link>
                         <span className="description">
@@ -92,7 +92,7 @@ const Profile = React.memo((props) => {
               );
             })
           ) : null}
-        </div> */}
+        </div>
       </div>
     </Wrapper>
   );

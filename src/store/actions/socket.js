@@ -5,6 +5,7 @@ import Account from '../../helpers/Account';
 import { updateSingleGraph } from './graphs';
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
+import Utils from '../../helpers/Utils';
 
 let socket;
 const notPushedEmits = [];
@@ -35,6 +36,10 @@ export function socketInit() {
     });
 
     socket.on('connect', () => {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId) {
+        dispatch(socketSetActiveGraph(graphId));
+      }
       setTimeout(() => {
         socket.init = true;
         notPushedEmits.forEach((params) => {
@@ -62,7 +67,7 @@ export function socketInit() {
 
     socket.on('labelEmbedCopy', (labelEmbed) => {
       Chart.data.labels = Chart.data.labels.map((l) => {
-        if (l.name === labelEmbed.name) {
+        if (l.id === labelEmbed.id) {
           l.hasInEmbed = true;
         }
         return l;
@@ -76,25 +81,26 @@ export function socketInit() {
     });
 
     socket.on('embedLabelDataChange', (data) => {
-      const [, graphId] = window.location.pathname.match(/\/(\d+)$/) || [0, 0]; // todo write better solution
-      if (+data.sourceId === +graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      const { app: { filters } } = getState();
+      if (+data.sourceId === graphId) {
         return;
       }
-      if (!Chart.getLabels().some((l) => +l.sourceId === +data.sourceId)) {
+      if (!Chart.getLabels().some((l) => l.id === data.label.id)) {
         return;
       }
       let changed = false;
       const embedLabels = Chart.data.embedLabels.map((l) => {
         if (+l.sourceId === +data.sourceId) {
           changed = true;
-          l = data;
+          return data;
         }
         return l;
       });
       if (!changed) {
         embedLabels.push(data);
       }
-      Chart.render({ embedLabels });
+      Chart.render({ embedLabels }, { filters });
     });
   };
 }

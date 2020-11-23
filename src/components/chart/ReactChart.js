@@ -72,13 +72,13 @@ class ReactChart extends Component {
   }
 
   handleRender = () => {
-    clearTimeout(this.renderTimeout);
-    this.renderTimeout = setTimeout(() => {
-      const { match: { params: { graphId } } } = this.props;
-      Chart.getLabels().forEach((l) => {
-        LabelUtils.labelDataChange(graphId, l.name);
-      });
-    }, 500);
+    // clearTimeout(this.renderTimeout);
+    // this.renderTimeout = setTimeout(() => {
+    //   const { match: { params: { graphId } } } = this.props;
+    //   Chart.getLabels().forEach((l) => {
+    //     LabelUtils.labelDataChange(graphId, l.id);
+    //   });
+    // }, 500);
   }
 
   handleNodeDragEnd = (ev, d) => {
@@ -86,24 +86,25 @@ class ReactChart extends Component {
   }
 
   handleLabelDelete = (ev, d) => {
-    const labels = Chart.getLabels().filter((l) => l.name !== d.name);
+    const labels = Chart.getLabels().filter((l) => l.id !== d.id);
     if (d.sourceId) {
       const { match: { params: { graphId } } } = this.props;
-      const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.name));
+      const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.id));
       const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
-      const embedLabels = Chart.data.embedLabels.filter((l) => l.labelName !== d.originalName);
+      const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
       Chart.render({
         labels, nodes, links, embedLabels,
       });
-      Api.labelDelete(d.sourceId, d.originalName, graphId);
+      Api.labelDelete(d.sourceId, d.id, graphId);
       return;
     }
     Chart.render({ labels });
+    Chart.event.emit('label.mouseleave', ev, d);
   }
 
   handleDbNodeClick = (ev, d) => {
     const queryObj = queryString.parse(window.location.search);
-    queryObj.info = d.name;
+    queryObj.info = d.id;
     const query = queryString.stringify(queryObj);
     this.props.history.replace(`?${query}`);
   }
@@ -113,7 +114,7 @@ class ReactChart extends Component {
       return;
     }
     const { customFields } = this.props;
-    const customField = CustomFields.get(customFields, d.type, d.name);
+    const customField = CustomFields.get(customFields, d.type, d.id);
     this.props.toggleNodeModal({ ...d, customField });
   }
 
@@ -159,7 +160,7 @@ class ReactChart extends Component {
 
     nodes = nodes.filter((n) => n.index !== d.index);
 
-    links = links.filter((l) => !(l.source === d.name || l.target === d.name));
+    links = links.filter((l) => !(l.source === d.id || l.target === d.id));
 
     Chart.render({ nodes, links });
   }
@@ -178,7 +179,7 @@ class ReactChart extends Component {
         <div className="borderCircle">
           {_.range(0, 6).map((k) => <div key={k} />)}
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" className="nodeCreate">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" className="nodeCreate">
           <g className="wrapper" transform-origin="top left">
             <g className="labels">
               <rect className="labelsBoard areaBoard" fill="transparent" width="100%" height="100%" />
@@ -194,6 +195,7 @@ class ReactChart extends Component {
                 <feDropShadow dx="1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
                 <feDropShadow dx="0" dy="-1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
                 <feDropShadow dx="-1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                <feDropShadow dx="0" dy="0" stdDeviation="10" floodColor="#0d090554" floodOpacity="1" />
               </filter>
               <filter id="grayscaleFilter">
                 <feColorMatrix type="saturate" values="0" />

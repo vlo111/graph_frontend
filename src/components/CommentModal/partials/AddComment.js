@@ -40,13 +40,16 @@ const AddComment = ({ graph, closeModal, isReply }) => {
         </Button>
         <Button
           onClick={() => {
-            dispatch(createGraphCommentRequest(
-              {
-                graphId: graph.id,
-                text,
-                parentId: parent.id,
-              },
-            ));
+            text.trim() === '' ?
+              alert('Text cannot be blank.')
+              :
+              dispatch(createGraphCommentRequest(
+                {
+                  graphId: graph.id,
+                  text,
+                  parentId: parent.id,
+                },
+              ));
             setText('');
             dispatch(setGraphCommentParent({}));
           }}
