@@ -31,11 +31,11 @@ class NodeFullInfo extends Component {
   render() {
     const { editable, customFields } = this.props;
     const queryObj = queryString.parse(window.location.search);
-    const { info: infoNodeName, expand } = queryObj;
-    if (!infoNodeName) {
+    const { info: nodeId, expand } = queryObj;
+    if (!nodeId) {
       return null;
     }
-    const node = Chart.getNodes().find((n) => n.name === infoNodeName);
+    const node = Chart.getNodes().find((n) => n.id === nodeId);
     if (!node) {
       return null;
     }
@@ -44,10 +44,9 @@ class NodeFullInfo extends Component {
       <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
         <div id="nodeFullInfo">
           <HeaderMini
-            HeaderImg={node.icon ? node.icon : bgImage}
-            NodeName={node.name}
-            NodeType={node.type}
-            Tabs={customFields}
+            headerImg={node.icon ? node.icon : bgImage}
+            node={node}
+            tabs={customFields}
           />
           <div className="nodeFullContent">
             <div className="headerBanner">
@@ -72,7 +71,7 @@ class NodeFullInfo extends Component {
             </div>
             <NodeTabs node={node} editable={editable} />
           </div>
-          <ConnectionDetails nodeName={node.name} />
+          <ConnectionDetails nodeId={node.id} />
         </div>
         {expand === '1' ? (
           <NodeFullInfoModal node={node} />

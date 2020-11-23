@@ -98,7 +98,7 @@ class DataView extends Component {
     const files = [];
     /* eslint-disable */
     for (const d of nodes) {
-      const reg = /\shref="(blob:https?:\/\/[^"]+)"/g;
+      const reg = /\shref="(blob:\/\/[^"]+)"/g;
       let m;
       while (m = reg.exec(d.description)) {
         const file = await Utils.blobToBase64(m[1]);
@@ -109,7 +109,7 @@ class DataView extends Component {
 
     nodes = nodes.map((d, i) => {
       d.icon = icons[i];
-      d.description = d.description.replace(/\shref="(blob:https?:\/\/[^"]+)"/g, () => ` href="${files.shift()}"`);
+      d.description = d.description.replace(/\shref="(blob:\/\/[^"]+)"/g, () => ` href="${files.shift()}"`);
       return d;
     });
 

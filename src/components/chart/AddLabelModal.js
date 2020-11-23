@@ -6,6 +6,7 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import Validate from '../../helpers/Validate';
 import Input from '../form/Input';
+import ChartUtils from "../../helpers/ChartUtils";
 
 class AddLabelModal extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class AddLabelModal extends Component {
     let labels = Chart.getLabels();
     const errors = {};
     [errors.name, labelData.name] = Validate.labelName(labelData.name);
-
+    labelData.id = ChartUtils.uniqueId(labels);
     if (!Validate.hasError(errors)) {
       labels = labels.map((l) => {
         if (l.color === labelData.color) {

@@ -21,17 +21,16 @@ class ExportNodeTabs extends Component {
     this.props.setLoading(true);
 
     const {
-      NodeName, NodeType, Tabs, Image,
+      node, tabs, image, nodeData
     } = this.props;
 
     const html = this.decode(renderToString(<ExportNode
-      NodeName={NodeName}
-      NodeType={NodeType}
-      Tabs={Tabs}
-      ConnectionNodes={this.props.NodeData}
+      node={node}
+      tabs={tabs}
+      nodeData={nodeData}
     />));
 
-    await Api.download('node-info-pdf', { html, image: Image });
+    await Api.download('node-info-pdf', { html, image });
 
     this.props.setLoading(false);
   }

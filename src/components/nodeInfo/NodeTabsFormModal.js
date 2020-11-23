@@ -27,7 +27,7 @@ class NodeTabsFormModal extends Component {
     if (customField) {
       const tabData = {
         name: fieldName,
-        content: customField.values[node.name],
+        content: customField.values[node.id],
         subtitle: customField.subtitle,
       };
       this.setState({ tabData });
@@ -71,8 +71,8 @@ class NodeTabsFormModal extends Component {
         await this.props.addNodeCustomFieldKey(node.type, tabData.name, tabData.subtitle);
       }
       customField[tabData.name] = tabData.content;
-      this.props.setNodeCustomField(node.type, node.name, customField, tabData);
-      Chart.setNodeData(node.name, {
+      this.props.setNodeCustomField(node.type, node.id, customField, tabData);
+      Chart.setNodeData(node.id, {
         updatedAt: moment().unix(),
         updatedUser: currentUserId,
       });

@@ -17,17 +17,7 @@ export default function reducer(state = initialState, action) {
         graphComments,
       } = action.payload.data;
       const comments = [...state.graphComments];
-
-      if (graphComments.parentId) {
-        const parent = comments.findIndex((comment) => comment.id === graphComments.parentId);
-
-        const { children } = comments[parent];
-        if (children) {
-          children.push(graphComments);
-        } else {
-          comments[parent].children = [graphComments];
-        }
-      } else {
+      if (!graphComments.parentId) {
         comments.push(graphComments);
       }
 

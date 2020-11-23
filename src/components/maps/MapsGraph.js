@@ -57,8 +57,8 @@ class MapsGraph extends Component {
       return d;
     });
     const links = Chart.getLinks().map((d) => {
-      const source = ChartUtils.getNodeByName(d.source);
-      const target = ChartUtils.getNodeByName(d.target);
+      const source = ChartUtils.getNodeById(d.source);
+      const target = ChartUtils.getNodeById(d.target);
       if (source.location && target.location) {
         const l1 = source.location.split(',');
         const l2 = target.location.split(',');

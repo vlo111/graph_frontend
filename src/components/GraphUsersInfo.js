@@ -14,15 +14,18 @@ class GraphUsersInfo extends Component {
 
   render() {
     const { singleGraph } = this.props;
-    const { info: nodeName } = queryString.parse(window.location.search);
+    const { info: nodeId } = queryString.parse(window.location.search);
 
-    if (!nodeName || !singleGraph.users) return null;
+    if (!nodeId || !singleGraph.users) return null;
 
-    const node = Chart.getNodes().find((d) => d.name === nodeName);
+    const node = Chart.getNodes().find((d) => d.id === nodeId);
     if (!node) return null;
 
-    const createdUser = singleGraph.users.find((u) => u.id === (node.createdUser || singleGraph.userId)) || {};
-    const updatedUser = singleGraph.users.find((u) => u.id === (node.updatedUser || singleGraph.userId)) || {};
+    const createdUser = singleGraph.users.find((u) => +u.id === +(node.createdUser || singleGraph.userId)) || {
+      firstName: '',
+      lastName: '',
+    };
+    const updatedUser = singleGraph.users.find((u) => +u.id === +(node.updatedUser || singleGraph.userId));
     return (
       <Modal
         isOpen
@@ -45,7 +48,7 @@ class GraphUsersInfo extends Component {
             </div>
           </div>
         </div>
-        {node.createdAt !== node.updatedAt ? (
+        {node.createdAt !== node.updatedAt && updatedUser? (
           <div className="info updated">
             <h3>Updated</h3>
             <div>
