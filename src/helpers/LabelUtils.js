@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { toast } from 'react-toastify';
+import { uniqueId } from 'react-bootstrap-typeahead/lib/utils';
 import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
 import Utils from './Utils';
@@ -8,7 +9,6 @@ import CustomFields from './CustomFields';
 import { setNodeCustomField } from '../store/actions/graphs';
 import Api from '../Api';
 import { socketLabelDataChange } from '../store/actions/socket';
-import { uniqueId } from "react-bootstrap-typeahead/lib/utils";
 
 class LabelUtils {
   static copy(sourceId, id, customFields) {
@@ -118,13 +118,18 @@ class LabelUtils {
     });
 
     links.push(...data.links);
-
     if (isEmbed) {
       const { data: res } = await Api.labelShare(data.sourceId, data.label.id, graphId).catch((e) => e.response);
       if (res.status !== 'ok') {
         toast.error(res.message);
         return;
       }
+      const { labelEmbed } = res;
+      const embedLabels = _.uniqBy([...Chart.data.embedLabels, labelEmbed], 'id');
+      Chart.render({
+        links, nodes, labels, embedLabels,
+      });
+      return;
     }
     Chart.render({ links, nodes, labels });
   }
