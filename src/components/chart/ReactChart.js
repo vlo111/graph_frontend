@@ -72,13 +72,13 @@ class ReactChart extends Component {
   }
 
   handleRender = () => {
-    clearTimeout(this.renderTimeout);
-    this.renderTimeout = setTimeout(() => {
-      const { match: { params: { graphId } } } = this.props;
-      Chart.getLabels().forEach((l) => {
-        LabelUtils.labelDataChange(graphId, l.id);
-      });
-    }, 500);
+    // clearTimeout(this.renderTimeout);
+    // this.renderTimeout = setTimeout(() => {
+    //   const { match: { params: { graphId } } } = this.props;
+    //   Chart.getLabels().forEach((l) => {
+    //     LabelUtils.labelDataChange(graphId, l.id);
+    //   });
+    // }, 500);
   }
 
   handleNodeDragEnd = (ev, d) => {
