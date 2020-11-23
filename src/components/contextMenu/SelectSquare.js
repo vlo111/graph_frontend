@@ -12,7 +12,6 @@ import { createGraphRequest } from '../../store/actions/graphs';
 class NodeFullInfoContext extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
-    onClick: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
     createGraphRequest: PropTypes.func.isRequired,
@@ -36,6 +35,7 @@ class NodeFullInfoContext extends Component {
     const { singleGraph, params: { squareDara } } = this.props;
     let links = Chart.getLinks();
     let labels = Chart.getLabels();
+    // eslint-disable-next-line prefer-const
     let { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
 
     nodes = nodes.filter((d) => squareDara.nodes.includes(d.id));
@@ -69,25 +69,15 @@ class NodeFullInfoContext extends Component {
   }
 
   render() {
-    const { params } = this.props;
     return (
       <>
-        <Button
-          icon="fa-plus-circle"
-          onClick={this.createNewGraph}
-        >
+        <Button icon="fa-plus-circle" onClick={this.createNewGraph}>
           New Graph
         </Button>
-        <Button
-          icon="fa-crop"
-          onClick={this.crop}
-        >
+        <Button icon="fa-crop" onClick={this.crop}>
           Crop
         </Button>
-        <Button
-          icon="fa-eraser"
-          onClick={this.deleteGraph}
-        >
+        <Button icon="fa-eraser" onClick={this.deleteGraph}>
           Delete
         </Button>
       </>

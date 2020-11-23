@@ -331,11 +331,17 @@ class Chart {
           p[1] = +(p[1] + ev.dy).toFixed(2);
           return p;
         });
+
+        let readOnlyLabel;
+        if (datum.readOnly) {
+          readOnlyLabel = this.data.embedLabels.find((l) => l.label.id === datum.id);
+        }
+
         this.node.each((d) => {
           if (dragLabel.nodes.some((n) => n.id === d.id)) {
             if (
               (!d.readOnly && !datum.readOnly)
-              || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
+              || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
             ) {
               d.fx += ev.dx;
               d.fy += ev.dy;
