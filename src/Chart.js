@@ -88,8 +88,7 @@ class Chart {
     });
 
     if (data.embedLabels.length) {
-      const labelsObj = {};
-      data.embedLabels.forEach((label) => {
+      data.embedLabels = data.embedLabels.map((label) => {
         const labelNodes = data.nodes.filter((n) => +label.sourceId === +n.sourceId);
         label.nodes = label.nodes.map((d) => {
           d.sourceId = label.sourceId;
@@ -115,39 +114,43 @@ class Chart {
           label.cx = label.label.d[0][0] - labelEmbed.d[0][0];
           label.cy = label.label.d[0][1] - labelEmbed.d[0][1];
         }
-
-        labelsObj[label.sourceId] = label;
+        return label;
       });
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
-        if (d.sourceId && labelsObj[d.sourceId]) {
-          const labelData = labelsObj[d.sourceId];
-          const labelNode = labelData.nodes.find((n) => n.id === d.id);
-          // set node right position
-          if (labelNode) {
-            const fx = labelNode.fx - labelData.cx;
-            const fy = labelNode.fy - labelData.cy;
-            d = {
-              ...labelNode,
-              sourceId: d.sourceId,
-              readOnly: true,
-              fx,
-              fy,
-              x: fx,
-              y: fy,
-            };
-          } else {
-            // remove deleted nodes
-            if (!data.links.some((l) => !l.sourceId && (l.target === d.id || l.source === d.id))) {
-              d.remove = true;
-              console.log('remove');
-              removedNodes = true;
-            }
-            d.deleted = true;
-          }
+        if (!d.sourceId) {
+          return d;
         }
-        return d;
+        const labelData = data.embedLabels.find((l) => d.labels?.includes(l.labelId));
+        if (!labelData) {
+          console.error('can\'t find label', d);
+          return d;
+        }
+        const labelNode = labelData.nodes.find((n) => n.id === d.id);
+        if (!labelNode) {
+          // remove deleted nodes
+          if (!data.links.some((l) => !l.sourceId && (l.target === d.id || l.source === d.id))) {
+            d.remove = true;
+            console.log('remove');
+            removedNodes = true;
+          }
+          d.deleted = true;
+          return d;
+        }
+
+        // set node right position
+        const fx = labelNode.fx - labelData.cx;
+        const fy = labelNode.fy - labelData.cy;
+        return {
+          ...labelNode,
+          sourceId: d.sourceId,
+          readOnly: true,
+          fx,
+          fy,
+          x: fx,
+          y: fy,
+        };
       });
 
       // remove unused data
