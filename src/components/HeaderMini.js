@@ -80,11 +80,6 @@ class HeaderMini extends Component {
             </Button>
           </li>
           <li>
-            <Button onClick={() => this.toggleGraphUsersInfo(true)}>
-              Info
-            </Button>
-          </li>
-          <li>
             <ExportNodeTabs
               node={node}
               tabs={tabs}
