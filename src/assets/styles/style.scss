@@ -4017,6 +4017,17 @@ body .gh__menu {
 .comment-modal {
   max-width: 900px;
 
+  &__add-comment-input {
+    font-size: 0.9rem ;
+    margin-bottom: 0 ;
+    resize: vertical ;
+    height: 90px !important;
+    margin-bottom: 10px ;;
+    -webkit-border-radius: 3px ;
+    -moz-border-radius: 3px ;
+    -ms-border-radius: 3px ;
+    border-radius: 3px ;
+  }
   &__title {
     display: flex;
     align-items: center;
@@ -4049,6 +4060,8 @@ body .gh__menu {
   }
 
   &__add-comment-section {
+    margin-top: 40px;
+
     &--reply {
       margin-left: 61px;
     }

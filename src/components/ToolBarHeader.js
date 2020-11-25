@@ -7,11 +7,13 @@ import { setActiveButton } from '../store/actions/app';
 import { ReactComponent as Logo } from '../assets/images/logo.svg';
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
 import { ReactComponent as ViewSvg } from '../assets/images/icons/view.svg';
+import { ReactComponent as FilterSvg } from '../assets/images/icons/filter.svg';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import ShareGraph from './ShareGraph';
 import AccountDropDown from '../components/account/AccountDropDown';
 import Legend from '../components/Legend';
 import MapsButton from '../components/maps/MapsButton';
+import Utils from '../helpers/Utils';
 
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -34,7 +36,8 @@ class ToolBarHeader extends Component {
   }
 
   render() {
-    const { activeButton, match: { params: { graphId } } } = this.props;
+    const { activeButton, match: { params: { graphId, token = '' } } } = this.props;
+    const isInEmbed = Utils.isInEmbed();
     return (
       <header id="header">
         <Link to="/" className="logoWrapper">
@@ -59,7 +62,13 @@ class ToolBarHeader extends Component {
           >
             View mode
           </Button>
-
+          <Button
+            icon={<FilterSvg />}
+            onClick={() => {isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
+             : this.props.history.replace(`/graphs/filter/${graphId}`)}}
+          >
+           Filter
+          </Button>
         </div>
 
       </header>
