@@ -1021,7 +1021,7 @@ class Chart {
         }
         const sourceNode = ChartUtils.getNodeById(source);
         const targetNode = ChartUtils.getNodeById(target);
-        if (sourceNode.sourceId === targetNode.sourceId && sourceNode.labels.some((l) => targetNode.labels.includes(l))) {
+        if (sourceNode.sourceId && targetNode.sourceId && sourceNode.labels.some((l) => targetNode.labels.includes(l))) {
           return;
         }
         this.event.emit('link.new', ev, {
