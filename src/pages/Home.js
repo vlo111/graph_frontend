@@ -7,7 +7,6 @@ import memoizeOne from 'memoize-one';
 import moment from 'moment';
 import { withRouter, Link } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
-import Utils from '../helpers/Utils';
 import Pagination from '../components/Pagination';
 import GraphListFooter from '../components/GraphListFooter';
 import GraphListHeader from '../components/GraphListHeader';
