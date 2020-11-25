@@ -11,6 +11,11 @@ import {
   AddFriendRequest, removeFriendRequest, acceptFriendRequest,
 } from '../../store/actions/userFriends';
 import { friendsList } from '../../store/selectors/userFriends';
+import { ReactComponent as MinusFriendsSvg } from '../../assets/images/icons/friend-minus.svg';
+import { ReactComponent as PlusFriendsSvg } from '../../assets/images/icons/friend-plus.svg';
+import { ReactComponent as SolidFriendsSvg } from '../../assets/images/icons/user-solid.svg';
+
+
 
 const selectOptions = [
   { value: 'accept', label: 'Accept' },
@@ -40,7 +45,7 @@ const AddFriend = React.memo(({ user }) => {
       switch (matchUser.status) {
         case 'pending':
           if (matchUser.isSender) {
-            return <Button onClick={() => dispatch(removeFriendRequest(matchUser.id))}>Cancel</Button>;
+            return <Button className="ghButton2" icon={<SolidFriendsSvg />} onClick={() => dispatch(removeFriendRequest(matchUser.id))}> Cancel Request</Button>;
           }
           return (
             <Select
@@ -49,14 +54,14 @@ const AddFriend = React.memo(({ user }) => {
             />
           );
         case 'accepted':
-          return <Button onClick={() => dispatch(removeFriendRequest(matchUser.id))}>Remove</Button>;
+          return <Button className="ghButton2"  icon={<MinusFriendsSvg />} onClick={() => dispatch(removeFriendRequest(matchUser.id))}> <span>Unfriend </span></Button>;
         case 'rejected':
-          return <Button onClick={() => dispatch(AddFriendRequest({ receiverUserId: id }))}>Connect</Button>;
+          return <Button className="ghButton2" icon={<PlusFriendsSvg />} onClick={() => dispatch(AddFriendRequest({ receiverUserId: id }))}> Add Friend </Button>;
         default:
-          return <Button onClick={() => dispatch(AddFriendRequest({ receiverUserId: id }))}>Connect</Button>;
+          return <Button className="ghButton2" icon={<PlusFriendsSvg />} onClick={() => dispatch(AddFriendRequest({ receiverUserId: id }))}> Add Friend </Button>;
       }
     }
-    return <Button onClick={() => dispatch(AddFriendRequest({ receiverUserId: id }))}>Connect</Button>;
+    return <Button className="ghButton2" icon={<PlusFriendsSvg />} onClick={() => dispatch(AddFriendRequest({ receiverUserId: id }))}> Add Friend </Button>;
   }, [dispatch, selectAction, myFriends]);
 
   return loggedInUserId !== id ? getButtonClick : null;

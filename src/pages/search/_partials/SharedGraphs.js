@@ -47,7 +47,7 @@ const SharedGraphs = React.memo(({ setLimit }) => {
                   <span className="author">{`${shGraph.graph.user.firstName} ${shGraph.graph.user.lastName}`}</span>
                   <div className="info">
                     <span>{moment(shGraph.graph.updatedAt).calendar()}</span>
-                    <span>{`${shGraph.graph.nodesCount} nodes`}</span>
+                    <span>{`  (${shGraph.graph.nodesCount} nodes) `}</span>
                   </div>
                 </div>
               </div>
