@@ -76,7 +76,7 @@ class Home extends Component {
               <Link to={`/graphs/preview/${graph.id}`}>
                 <img
                   className="thumbnail"
-                  src={graph.thumbnail || Utils.fileSrc(`/public/uploads/thumbnails/${graph.id}.png`)}
+                  src={`${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
                   alt={graph.title}
                 />
               </Link>

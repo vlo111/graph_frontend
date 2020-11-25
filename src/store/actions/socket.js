@@ -19,6 +19,7 @@ export function socketEmit(...params) {
 }
 
 export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
+export const GENERATE_THUMBNAIL_WORKER = 'GENERATE_THUMBNAIL_WORKER';
 
 export function socketInit() {
   return (dispatch, getState) => {
@@ -63,6 +64,13 @@ export function socketInit() {
 
     socket.on(`updateUserfriend-${userId}`, (data) => {
       dispatch(addMyFriends(data));
+    });
+
+    socket.on('generateThumbnailWorker', (data) => {
+      dispatch({
+        type: GENERATE_THUMBNAIL_WORKER,
+        payload: { data }
+      })
     });
 
     socket.on('labelEmbedCopy', (labelEmbed) => {
