@@ -15,7 +15,7 @@ export function getNodeCommentsRequest(requestData) {
 
 export const SET_COMMENT_PARENT = define('SET_COMMENT_PARENT');
 
-export function setNodeCommentParent(parent) { console.log(parent, 'parent');
+export function setNodeCommentParent(parent) { 
   return {
     type: SET_COMMENT_PARENT,
     payload: parent,

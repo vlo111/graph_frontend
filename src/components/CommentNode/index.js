@@ -22,7 +22,6 @@ const CommentModal = React.memo(({ closeModal, graph}) => {
     if (!node) {
       return null;
     }
-    console.log(graph, 'graph')
   const afterOpenModal = () => {};
   const dispatch = useDispatch();
   
