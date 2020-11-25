@@ -114,7 +114,7 @@ class Chart {
         }
         return label;
       });
-      data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.source}//${d.type}`);
+      data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.target}//${d.type}`);
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
@@ -308,7 +308,7 @@ class Chart {
         const id = ev.sourceEvent.target.getAttribute('data-id');
         this.detectLabels();
         dragLabel.label = labelsWrapper.select(`[data-id="${id}"]`);
-        dragLabel.nodes = this.data.nodes.filter((d) => d.labels.includes(id));
+        dragLabel.nodes = this.getNodes().filter((d) => d.labels.includes(id));
       }
     };
 
@@ -342,6 +342,7 @@ class Chart {
             if (
               (!d.readOnly && !datum.readOnly)
               || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
+              || d.deleted
             ) {
               d.fx += ev.dx;
               d.fy += ev.dy;
@@ -981,6 +982,7 @@ class Chart {
         cancel = false;
       }, 300);
     });
+
     this.event.on('node.click', async (ev, d) => {
       if (ev.shiftKey) {
         return;
@@ -1014,12 +1016,18 @@ class Chart {
           .attr('y1', 0)
           .attr('x2', 0)
           .attr('y2', 0);
-        if (source !== target) {
-          this.event.emit('link.new', ev, {
-            source,
-            target: d.id,
-          });
+        if (source === target) {
+          return;
         }
+        const sourceNode = ChartUtils.getNodeById(source);
+        const targetNode = ChartUtils.getNodeById(target);
+        if (sourceNode.sourceId === targetNode.sourceId && sourceNode.labels.some((l) => targetNode.labels.includes(l))) {
+          return;
+        }
+        this.event.emit('link.new', ev, {
+          source,
+          target: d.id,
+        });
       }
     });
 
