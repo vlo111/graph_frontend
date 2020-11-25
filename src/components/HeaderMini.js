@@ -62,8 +62,8 @@ class HeaderMini extends Component {
   }
 
   render() {
-    const { showGraphUsersInfo } = this.state;
-    const { tabs, node, match: { params: { graphId = '', token = '' } } } = this.props;
+    const { showGraphUsersInfo, showNodeComment } = this.state;
+    const {singleGraph, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props;
     const isInEmbed = Utils.isInEmbed();
     return (
       <header id="headerMini">
