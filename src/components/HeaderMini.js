@@ -70,9 +70,9 @@ class HeaderMini extends Component {
         <SearchInput />
         <ul className="navLinks">
           <li>
-            <Link to={isInEmbed ? `/graphs/embed/filter/${graphId}/${token}` : `/graphs/filter/${graphId}`}>
-              Filter
-            </Link>
+            <Button onClick={() => this.toggleGraphUsersInfo(true)}>
+              Info
+            </Button>
           </li>
 	  <li>
             <Button onClick={() => this.toggleNodeComment(true)}>
