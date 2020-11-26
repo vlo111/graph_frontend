@@ -70,7 +70,7 @@ class ChartUtils {
         d.hidden = 1;
         return d;
       }
-      if (!_.isEmpty(params.nodeKeywords) && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
+      if (!params.nodeKeywords.some((t) => d.keywords.includes(t))) {
         d.hidden = 1;
         if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keyword)) {
           d.hidden = 0;
