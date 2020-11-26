@@ -12,7 +12,7 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
-import { NODE_TYPES } from '../../data/node';
+import { NODE_TYPES, NODE_STATUS } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
 import Utils from '../../helpers/Utils';
@@ -28,7 +28,7 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, type, keywords, location, index = null, customField,
+      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField,
     } = addNodeParams;
     this.setState({
       nodeData: {
@@ -36,6 +36,7 @@ class AddNodeModal extends Component {
         fy,
         name: name || '',
         icon: icon || '',
+        status: status || 'approved',
         nodeType: nodeType || 'circle',
         type: type || _.last(nodes)?.type || '',
         keywords: keywords || [],
@@ -157,6 +158,14 @@ class AddNodeModal extends Component {
             limit={250}
             autoFocus
             onChangeText={(v) => this.handleChange('name', v)}
+          />
+          <Select
+            label="Status"
+            portal
+            options={NODE_STATUS}
+            value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
+            error={errors.status}
+            onChange={(v) => this.handleChange('status', v?.value || '')}
           />
           <Select
             label="Node Type"
