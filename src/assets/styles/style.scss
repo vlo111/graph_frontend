@@ -4039,14 +4039,12 @@ body .gh__menu {
 
   &__add-comment-input {
     font-size: 0.9rem;
-    margin-bottom: 0;
     resize: vertical;
     height: 90px !important;
-    margin-bottom: 10px;;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
     border-radius: 3px;
+    margin-bottom: 10px ;
+    border-radius: 3px ;
+    font-family: chaparral-pro, serif;
   }
 
   &__title {
@@ -4058,11 +4056,17 @@ body .gh__menu {
   &__comment-item {
     margin-bottom: 15px;
     background-color: $color-darkgreen;
+    margin: 28px 13px 9px 16px;
+    border-radius: 14px ;
+    font-family: chaparral-pro, serif;
 
     &--reply {
       margin-bottom: 15px;
       margin-left: 61px;
       background-color: $color-darkgreen;
+      margin: 15px 13px 9px 61px;
+      border-radius: 14px ;
+      font-family: chaparral-pro, serif;
     }
   }
 
