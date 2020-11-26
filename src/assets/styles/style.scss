@@ -4027,6 +4027,7 @@ body .gh__menu {
     -moz-border-radius: 3px ;
     -ms-border-radius: 3px ;
     border-radius: 3px ;
+    font-family: chaparral-pro, serif;
   }
   &__title {
     display: flex;
@@ -4037,7 +4038,9 @@ body .gh__menu {
   &__comment-item {
     margin-bottom: 15px;
     background-color: $color-darkgreen;
-
+    margin: 28px 13px 9px 16px;
+    border-radius: 14px ;
+    
     &--reply {
       margin-bottom: 15px;
       margin-left: 61px;
