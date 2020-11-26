@@ -25,16 +25,9 @@ class NodesStatusFilter extends Component {
       }))
       .orderBy('length', 'desc')
       .value();
+    this.props.setFilter('nodeStatus', status.map((d) => d.status));
     return status;
-  }, _.isEqual);
-
-  getCustomFields = memoizeOne((customFields) => {
-    const keys = [];
-    _.forEach(customFields, (d) => {
-      keys.push(...Object.keys(d));
-    });
-    return _.uniq(keys);
-  }, _.isEqual);
+  }, (a, b) => _.isEqual(a[0].map((d) => d.status), b[0].map((d) => d.status)));
 
   constructor(props) {
     super(props);
@@ -45,54 +38,48 @@ class NodesStatusFilter extends Component {
   }
 
   handleChange = (value) => {
-    const { nodes, filters } = this.props;
-    console.log(filters.nodeStatus, 'filters');
-    if (!filters.nodeStatus.length) {
-      
-      filters.nodeStatus = this.getNodeStatus(nodes).map((d) => d.status);
-      console.log(filters.nodeStatus, 'filters.nodeStatus');
-    }
-    const i = filters.nodeStatus.indexOf(value);
-    console.log(i, 'iiiiii', filters.nodeStatus.splice(i, 1));
-    /*if (i > -1) {
-      filters.nodeStatus.splice(i, 1); //console.log(filters.nodeStatus.length, 'filters.nodeStatus.length');
-      if (!filters.nodeStatus.length) {
-        filters.nodeStatus = this.getNodeStatus(nodes).map((d) => d.status).filter((d) => d !== value);
-      }
-    } else {
-      filters.nodeStatus.push(value);
-    }
-    
-    this.props.setFilter('status', filters.nodeStatus);*/
-  }
-
-  handleFilterChange = (value) => {
     const { filters } = this.props;
-    const i = filters.nodeCustomFields.indexOf(value);
-   
+    const i = filters.nodeStatus.indexOf(value); 
     if (i > -1) {
-      filters.nodeCustomFields.splice(i, 1);
+      filters.nodeStatus.splice(i, 1);
     } else {
-      filters.nodeCustomFields.push(value);
+      filters.nodeStatus.push(value); 
     }
+    this.props.setFilter('nodeStatus', filters.nodeStatus);
+  } 
 
-    this.props.setFilter('nodeCustomFields', filters.nodeCustomFields);
+  toggleAll = (fullData, allChecked) => {
+    if (allChecked) {
+      this.props.setFilter('nodeStatus', []);
+    } else {
+      this.props.setFilter('nodeStatus', fullData.map((d) => d.status));
+    }
   }
 
   render() {
-    const { showMore } = this.state;
     const { nodes, filters } = this.props;
     const statusFull = this.getNodeStatus(nodes);
-    console.log(filters.nodeStatus, 'statusFull') 
+    const allChecked = statusFull.length === filters.nodeStatus.length;
     return (
       <div className="nodesStatusFilter graphFilter">
         <h4 className="title">Status</h4>
         <ul className="list">
+        <li className="item">
+            <Checkbox
+              label={allChecked ? 'Uncheck All' : 'Check All'}
+              checked={allChecked}
+              onChange={() => this.toggleAll(statusFull, allChecked)}
+            >
+              <span className="badge">
+                {_.sumBy(statusFull, 'length')}
+              </span>
+            </Checkbox>
+          </li>
           {statusFull.map((item) => (
             <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
              <Checkbox
                 label={item.status}
-                checked={_.isEmpty(filters.nodeStatus) || filters.nodeStatus.includes(item.status)}
+                checked={filters.nodeStatus.includes(item.status)}
                 onChange={() => this.handleChange(item.status)}
               >
                 <span className="badge">

@@ -77,6 +77,10 @@ class ChartUtils {
         }
         return d;
       }
+      if (!params.nodeStatus.includes(d.status)) {
+        d.hidden = 1;
+        return d;
+      }
       d.hidden = 0;
       return d;
     });
