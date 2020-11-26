@@ -59,9 +59,9 @@ class LabelsFilter extends Component {
   render() {
     const { labels, nodes, filters } = this.props;
     const labelsFormatted = this.formatLabels(labels, nodes);
-    // if (labelsFormatted.length < 2) {
-    //   return null;
-    // }
+    if (labelsFormatted.length < 1) {
+      return null;
+    }
     const allChecked = labelsFormatted.length === filters.labels.length;
 
     return (
