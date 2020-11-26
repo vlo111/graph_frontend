@@ -31,7 +31,7 @@ class NodeTabs extends Component {
   }
 
   setFirstTab = memoizeOne((node, customField) => {
-    this.setState({ activeTab: !_.isEmpty(customField) ? Object.keys(customField)[0] : node.location ? '_location' : 'About' });
+    this.setState({ activeTab: !_.isEmpty(customField) ? Object.keys(customField)[0] : node.location ? '_location' : '' });
   }, _.isEqual);
 
   componentDidMount() {

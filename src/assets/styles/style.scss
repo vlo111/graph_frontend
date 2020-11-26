@@ -167,8 +167,10 @@ p {
     }
   }
 }
-.logoWrapper{
+
+.logoWrapper {
   position: relative;
+
   .autoSaveText {
     font-size: 12px;
     color: $color-main2;
@@ -179,6 +181,7 @@ p {
     display: none;
   }
 }
+
 .autoSave {
   .logo {
     circle {
@@ -198,7 +201,8 @@ p {
       }
     }
   }
-  .autoSaveText{
+
+  .autoSaveText {
     display: block;
   }
 }
@@ -708,6 +712,7 @@ p {
     }
   }
 }
+
 .ghButton2 {
   display: inline-block;
   padding: 0.46em 1.6em;
@@ -716,14 +721,15 @@ p {
   border-radius: 0.38em;
   box-sizing: border-box;
   text-decoration: none;
-  font-family: 'Roboto',sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 300;
   color: #000000;
-  text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
   background-color: #FFFFFF;
   text-align: center;
-  transition: all 0.15s; 
+  transition: all 0.15s;
 }
+
 .ghButton2:after {
   content: '\00bb';
   position: absolute;
@@ -733,7 +739,7 @@ p {
   transition: 0.5s;
 }
 
-.ghButton2:hover  {
+.ghButton2:hover {
   padding-right: 25px;
   background-color: #C6E6FF;
 }
@@ -742,7 +748,6 @@ p {
   opacity: 1;
   right: 0;
 }
-
 
 
 .ghCheckbox {
@@ -1350,86 +1355,91 @@ p {
   flex-direction: row;
   background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
 
-@media screen and (max-width: 468px) {
-  overflow: scroll;
-  .left {
-    width:0%; 
-
-    &.forgotPassword,
-    &.signIn {
-      background-image:none; 
- 
-    } 
-  }
-  .right {
-    width: 100%;   
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  @media screen and (max-width: 468px) {
     overflow: scroll;
-    .authForm {
-      margin: 30px 70px 30px;
-      .submit {
-        align-self: center ;
+    .left {
+      width: 0%;
+
+      &.forgotPassword,
+      &.signIn {
+        background-image: none;
+
       }
     }
-  } 
-  
-  .switchSignMode {
-    font-size: 20px;
-    margin-top: 80px;
-    margin: 30px 70px;
-  }
-}
-@media screen and (max-width: 368px) {
-  overflow: scroll;
-  .left {
-    width:0%; 
+    .right {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow: scroll;
 
-    &.forgotPassword,
-    &.signIn {
-      background-image:none; 
- 
-    } 
-  }
-  .right {
-    width: 100%;   
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    overflow: scroll;   
-    .authForm {
+      .authForm {
+        margin: 30px 70px 30px;
+
+        .submit {
+          align-self: center;
+        }
+      }
+    }
+
+    .switchSignMode {
+      font-size: 20px;
+      margin-top: 80px;
       margin: 30px 70px;
-      .ghFormField {
-        width: 91%;
-      }
-      .submit {
-        align-self: center ;
+    }
+  }
+  @media screen and (max-width: 368px) {
+    overflow: scroll;
+    .left {
+      width: 0%;
+
+      &.forgotPassword,
+      &.signIn {
+        background-image: none;
+
       }
     }
-  } 
-  .switchSignMode {
-    font-size: 20px;
-    margin-top: 80px;
-    margin: 30px 70px;
-  }
-}
+    .right {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow: scroll;
 
-  @media screen and (min-width: 768px){ 
+      .authForm {
+        margin: 30px 70px;
+
+        .ghFormField {
+          width: 91%;
+        }
+
+        .submit {
+          align-self: center;
+        }
+      }
+    }
+    .switchSignMode {
+      font-size: 20px;
+      margin-top: 80px;
+      margin: 30px 70px;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
     .left {
       width: 56.54%;
       height: 100vh;
       max-width: 1081px;
-  
+
       &.forgotPassword,
       &.signIn {
         background-image: url("../images/sign.png");
         background-size: cover;
         position: relative;
         z-index: 1;
-  
+
         &:before {
           content: '';
           position: absolute;
@@ -1441,16 +1451,16 @@ p {
           opacity: 0.5;
           z-index: -1;
         }
-  
+
         .logo {
           margin: 30px 70px;
         }
       }
-  
+
       &.forgotPassword {
         background-image: url("../images/forgot-password.png");
       }
-  
+
       img {
         width: 100%;
         height: 100%;
@@ -1463,7 +1473,7 @@ p {
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      
+
       .submit {
         align-self: flex-end;
         margin-top: 32px;
@@ -2772,52 +2782,62 @@ p {
       .item {
         margin-right: 10px;
       }
-    }
 
-    .ghCheckbox {
-      cursor: pointer;
+      .ghCheckbox {
+        cursor: pointer;
 
-      input {
-        display: none;
-      }
-
-      .badge {
-        position: absolute;
-        left: 50%;
-        top: 7px;
-        transform: translate(-50%);
-        color: $color-white;
-        pointer-events: none;
-      }
-
-      input:not(:checked) ~ label {
-        .colorBox {
-          border-color: transparent !important;
-          filter: brightness(0.9);
+        input {
+          display: none;
         }
-      }
 
-      label {
-        padding-left: 0;
-
-        .colorBox {
-          height: 30px;
-          width: 75px;
-          background-color: #f4f4ff;
-          border-radius: 7px;
-          overflow: hidden;
-          border: 3px solid;
+        .badge {
+          position: absolute;
+          left: 50%;
+          top: 7px;
+          transform: translate(-50%);
+          color: $color-white;
           pointer-events: none;
+        }
 
-          div {
-            width: 100%;
-            height: 100%;
-            opacity: 0.7;
+        input:not(:checked) ~ label {
+          .colorBox {
+            border-color: transparent !important;
+            filter: brightness(0.9);
           }
         }
 
-      }
+        label {
+          padding-left: 0;
 
+          .colorBox {
+            height: 30px;
+            width: 75px;
+            background-color: #f4f4ff;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 3px solid;
+            pointer-events: none;
+
+            div {
+              width: 100%;
+              height: 100%;
+              opacity: 0.7;
+            }
+          }
+
+        }
+
+      }
+    }
+
+    .checkAll {
+      width: 100%;
+      .ghCheckbox{
+        width: 100%;
+        .badge{
+          margin-left: auto;
+        }
+      }
     }
 
   }
@@ -4018,16 +4038,17 @@ body .gh__menu {
   max-width: 900px;
 
   &__add-comment-input {
-    font-size: 0.9rem ;
-    margin-bottom: 0 ;
-    resize: vertical ;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    resize: vertical;
     height: 90px !important;
-    margin-bottom: 10px ;;
-    -webkit-border-radius: 3px ;
-    -moz-border-radius: 3px ;
-    -ms-border-radius: 3px ;
-    border-radius: 3px ;
+    margin-bottom: 10px;;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
   }
+
   &__title {
     display: flex;
     align-items: center;
