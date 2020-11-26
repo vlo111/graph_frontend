@@ -18,8 +18,9 @@ class ChartUtils {
     if (_.isEmpty(params) || !window.location.pathname.startsWith('/graphs/filter/')) {
       return data;
     }
+    console.log(params)
     data.links = data.links.map((d) => {
-      if (!params.linkTypes.includes(d.type)) {
+      if (params.linkTypes[0] !== '__ALL__' && !params.linkTypes.includes(d.type)) {
         d.hidden = 1;
         return d;
       }
@@ -57,30 +58,29 @@ class ChartUtils {
         d.hidden = 1;
         return d;
       }
-      if (!params.nodeTypes.includes(d.type)) {
+      if (params.nodeTypes[0] !== '__ALL__' && !params.nodeTypes.includes(d.type)) {
         d.hidden = 1;
         return d;
       }
-      if (!_.isEmpty(d.labels) && !d.labels.some((l) => params.labels.includes(l))) {
+      if (params.labels[0] !== '__ALL__' && !d.labels.some((l) => params.labels.includes(l))) {
         d.hidden = -1;
         return d;
       }
-
-      if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.id]))) {
+      if (params.nodeCustomFields[0] !== '__ALL__' && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.id]))) {
         d.hidden = 1;
         return d;
       }
-      if (!params.nodeKeywords.some((t) => d.keywords.includes(t))) {
+      if (params.nodeKeywords[0] !== '__ALL__' && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
         d.hidden = 1;
         if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keyword)) {
           d.hidden = 0;
         }
         return d;
       }
-      if (!params.nodeStatus.includes(d.status)) {
-        d.hidden = 1;
-        return d;
-      }
+      // if (params.nodeStatus[0] !== '__ALL__' && !params.nodeStatus.includes(d.status)) {
+      //   d.hidden = 1;
+      //   return d;
+      // }
       d.hidden = 0;
       return d;
     });

@@ -25,7 +25,9 @@ class NodesStatusFilter extends Component {
       }))
       .orderBy('length', 'desc')
       .value();
-    this.props.setFilter('nodeStatus', status.map((d) => d.status));
+    if (status.length) {
+      this.props.setFilter('nodeStatus', status.map((d) => d.status));
+    }
     return status;
   }, (a, b) => _.isEqual(a[0].map((d) => d.status), b[0].map((d) => d.status)));
 
@@ -39,14 +41,14 @@ class NodesStatusFilter extends Component {
 
   handleChange = (value) => {
     const { filters } = this.props;
-    const i = filters.nodeStatus.indexOf(value); 
+    const i = filters.nodeStatus.indexOf(value);
     if (i > -1) {
       filters.nodeStatus.splice(i, 1);
     } else {
-      filters.nodeStatus.push(value); 
+      filters.nodeStatus.push(value);
     }
     this.props.setFilter('nodeStatus', filters.nodeStatus);
-  } 
+  }
 
   toggleAll = (fullData, allChecked) => {
     if (allChecked) {
@@ -64,7 +66,7 @@ class NodesStatusFilter extends Component {
       <div className="nodesStatusFilter graphFilter">
         <h4 className="title">Status</h4>
         <ul className="list">
-        <li className="item">
+          <li className="item">
             <Checkbox
               label={allChecked ? 'Uncheck All' : 'Check All'}
               checked={allChecked}
@@ -77,7 +79,7 @@ class NodesStatusFilter extends Component {
           </li>
           {statusFull.map((item) => (
             <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
-             <Checkbox
+              <Checkbox
                 label={item.status}
                 checked={filters.nodeStatus.includes(item.status)}
                 onChange={() => this.handleChange(item.status)}

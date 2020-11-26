@@ -31,8 +31,9 @@ class LabelsFilter extends Component {
     //   name: 'No Label',
     //   length: 'No Label',
     // });
-    this.props.setFilter('labels', labelsFormatted.map((d) => d.id));
-
+    if (labelsFormatted.length) {
+      this.props.setFilter('labels', labelsFormatted.map((d) => d.id));
+    }
     return labelsFormatted;
   }, (a, b) => _.isEqual(a[0].map((d) => d.id), b[0].map((d) => d.id)));
 
@@ -73,7 +74,7 @@ class LabelsFilter extends Component {
             onChange={() => this.toggleAll(labelsFormatted, allChecked)}
           >
             <span className="badge">
-              {_.sumBy(labelsFormatted, (d) => +d.length || 0 )}
+              {_.sumBy(labelsFormatted, (d) => +d.length || 0)}
             </span>
           </Checkbox>
         </div>

@@ -32,7 +32,9 @@ class KeywordsFilter extends Component {
         keyword: '[ No Keyword ]',
       });
     }
-    this.props.setFilter('nodeKeywords', keywords.map((d) => d.keyword));
+    if (keywords.length) {
+      this.props.setFilter('nodeKeywords', keywords.map((d) => d.keyword));
+    }
 
     return _.orderBy(keywords, 'length', 'desc');
   }, (a, b) => _.isEqual(a[0].map((d) => d.keyword), b[0].map((d) => d.keyword)));
@@ -45,7 +47,7 @@ class KeywordsFilter extends Component {
   }
 
   handleChange = (value) => {
-    const {  filters } = this.props;
+    const { filters } = this.props;
     const i = filters.nodeKeywords.indexOf(value);
     if (i > -1) {
       filters.nodeKeywords.splice(i, 1);
