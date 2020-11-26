@@ -15,7 +15,6 @@ class LabelsFilter extends Component {
     nodes: PropTypes.array.isRequired,
   }
 
-
   formatLabels = memoizeOne((labels, nodes) => {
     const labelsFormatted = _.chain(labels)
       .map((l) => ({
@@ -26,9 +25,16 @@ class LabelsFilter extends Component {
       }))
       .orderBy('length', 'desc')
       .value();
-    return labelsFormatted;
-  }, _.isEqual);
+    // labelsFormatted.push({
+    //   id: -1,
+    //   color: '#8dc5f0',
+    //   name: 'No Label',
+    //   length: 'No Label',
+    // });
+    this.props.setFilter('labels', labelsFormatted.map((d) => d.id));
 
+    return labelsFormatted;
+  }, (a, b) => _.isEqual(a[0].map((d) => d.id), b[0].map((d) => d.id)));
 
   handleChange = (value) => {
     const { filters } = this.props;
@@ -41,15 +47,36 @@ class LabelsFilter extends Component {
     this.props.setFilter('labels', filters.labels);
   }
 
+  toggleAll = (fullData, allChecked) => {
+    if (allChecked) {
+      this.props.setFilter('labels', []);
+    } else {
+      this.props.setFilter('labels', fullData.map((d) => d.id));
+    }
+  }
+
   render() {
     const { labels, nodes, filters } = this.props;
     const labelsFormatted = this.formatLabels(labels, nodes);
     // if (labelsFormatted.length < 2) {
     //   return null;
     // }
+    const allChecked = labelsFormatted.length === filters.labels.length;
+
     return (
       <div className="labelsFilter graphFilter">
         <h4 className="title">Labels</h4>
+        <div className="checkAll">
+          <Checkbox
+            label={allChecked ? 'Uncheck All' : 'Check All'}
+            checked={allChecked}
+            onChange={() => this.toggleAll(labelsFormatted, allChecked)}
+          >
+            <span className="badge">
+              {_.sumBy(labelsFormatted, (d) => +d.length || 0 )}
+            </span>
+          </Checkbox>
+        </div>
         <ul className="list">
           {labelsFormatted.map((item) => (
             <Tooltip key={item.id} overlay={item.name}>

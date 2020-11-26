@@ -19,7 +19,7 @@ class ChartUtils {
       return data;
     }
     data.links = data.links.map((d) => {
-      if (!_.isEmpty(params.linkTypes) && !params.linkTypes.includes(d.type)) {
+      if (!params.linkTypes.includes(d.type)) {
         d.hidden = 1;
         return d;
       }
@@ -34,7 +34,7 @@ class ChartUtils {
     });
 
     data.labels = data.labels.map((d) => {
-      if (!_.isEmpty(params.labels) && !params.labels.includes(d.id)) {
+      if (!params.labels.includes(d.id)) {
         d.hidden = 1;
         return d;
       }
@@ -57,11 +57,11 @@ class ChartUtils {
         d.hidden = 1;
         return d;
       }
-      if (!_.isEmpty(params.nodeTypes) && !params.nodeTypes.includes(d.type)) {
+      if (!params.nodeTypes.includes(d.type)) {
         d.hidden = 1;
         return d;
       }
-      if (!_.isEmpty(params.labels) && !d.labels.some((l) => params.labels.includes(l))) {
+      if (!_.isEmpty(d.labels) && !d.labels.some((l) => params.labels.includes(l))) {
         d.hidden = -1;
         return d;
       }
