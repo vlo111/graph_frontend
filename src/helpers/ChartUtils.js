@@ -15,7 +15,7 @@ import Utils from './Utils';
 
 class ChartUtils {
   static filter = memoizeOne((data, params = {}, customFields = {}) => {
-    if (_.isEmpty(params)) {
+    if (_.isEmpty(params) || !window.location.pathname.startsWith('/graphs/filter/')) {
       return data;
     }
     data.links = data.links.map((d) => {

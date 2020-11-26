@@ -251,7 +251,7 @@ class Chart {
     this.setAreaBoardZoom(transform);
     this.renderNodeText(transform.k);
     this.renderNodeStatusText(transform.k);
-    
+
   }
 
   static setAreaBoardZoom(transform) {
@@ -902,11 +902,11 @@ class Chart {
       })
       .append('text')
       .attr('y', (d) => {
-        let i = 3;       
+        let i = 3;
         return  i;
       })
       .attr('x', (d) => {
-        let i = 3;       
+        let i = 3;
         return  i;
       })
       .attr("class", "draft")
