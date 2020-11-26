@@ -1,6 +1,7 @@
 export const DEFAULT_FILTERS = {
   hideIsolated: '',
   nodeTypes: [],
+  nodeStatus: [],
   linkTypes: [],
   nodeKeywords: [],
   nodeCustomFields: [],

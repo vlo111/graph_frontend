@@ -938,7 +938,18 @@ p {
       stroke-width: 0.3;
       text-anchor: middle;
     }
-
+    .draft {
+      font-family: $font-family;
+      dominant-baseline: central;
+      fill: red ;
+      stroke: red ;
+      stroke-width: 0.3;
+      text-anchor: middle; 
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transform: rotate(-15deg); 
+    }
     &.hidden {
       opacity: 0.2 !important;
       //pointer-events: none;

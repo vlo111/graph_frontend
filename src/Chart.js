@@ -250,6 +250,8 @@ class Chart {
 
     this.setAreaBoardZoom(transform);
     this.renderNodeText(transform.k);
+    this.renderNodeStatusText(transform.k);
+    
   }
 
   static setAreaBoardZoom(transform) {
@@ -533,6 +535,7 @@ class Chart {
 
       this.renderLinkText();
       this.renderNodeText();
+      this.renderNodeStatusText()
       this.renderNewLink();
       this.renderSelectSquare();
       this.nodeFilter();
@@ -879,7 +882,37 @@ class Chart {
       .attr('font-size', (d) => 13.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
   }
+  static renderNodeStatusText(scale) {
+    if (!scale && !this.wrapper.empty()) {
+      // eslint-disable-next-line no-param-reassign
+      scale = +this.wrapper.attr('data-scale') || 1;
+    }
 
+    //this.nodesWrapper.selectAll('.node text').remove();
+
+    this.nodesWrapper.selectAll('.node')
+      .filter((d) => {
+        if (scale >= 0.8) {
+          return true;
+        }
+        if (this.radiusList[d.index] < 11) {
+          return false;
+        }
+        return true;
+      })
+      .append('text')
+      .attr('y', (d) => {
+        let i = 3;       
+        return  i;
+      })
+      .attr('x', (d) => {
+        let i = 3;       
+        return  i;
+      })
+      .attr("class", "draft")
+      .attr('font-size', (d) => 20.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
+      .text((d) =>(d.status === 'draft' ? 'draft' : ''));
+  }
   static renderLinkText(links = []) {
     const wrapper = this.svg.select('.linkText');
     const linkIndexes = links.map((d) => d.index);
@@ -1099,6 +1132,7 @@ class Chart {
         fy: d.fy || d.y || 0,
         name: d.name || '',
         type: d.type || '',
+        status: d.status || 'approved',
         nodeType: d.nodeType || 'circle',
         description: d.description || '',
         icon: d.icon || '',

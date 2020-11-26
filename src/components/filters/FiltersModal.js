@@ -6,6 +6,7 @@ import { withRouter, Link } from 'react-router-dom';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodesFilter from './NodeTypesFilter';
+import NodesStatusFilter from './NodesStatusFilter';
 import IsolatedFilter from './IsolatedFilter';
 import { resetFilter } from '../../store/actions/app';
 import LinkTypesFilter from './LinkTypesFilter';
@@ -86,6 +87,8 @@ class FiltersModal extends Component {
         <IsolatedFilter />
 
         <NodesFilter nodes={nodes} />
+
+        <NodesStatusFilter nodes={nodes} />
 
         <LinkTypesFilter links={links} />
 
