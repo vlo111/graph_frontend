@@ -19,6 +19,7 @@ export function socketEmit(...params) {
 }
 
 export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
+export const GENERATE_THUMBNAIL_WORKER = 'GENERATE_THUMBNAIL_WORKER';
 
 export function socketInit() {
   return (dispatch, getState) => {
@@ -65,6 +66,13 @@ export function socketInit() {
       dispatch(addMyFriends(data));
     });
 
+    socket.on('generateThumbnailWorker', (data) => {
+      dispatch({
+        type: GENERATE_THUMBNAIL_WORKER,
+        payload: { data }
+      })
+    });
+
     socket.on('labelEmbedCopy', (labelEmbed) => {
       Chart.data.labels = Chart.data.labels.map((l) => {
         if (l.id === labelEmbed.id) {
@@ -91,7 +99,7 @@ export function socketInit() {
       }
       let changed = false;
       const embedLabels = Chart.data.embedLabels.map((l) => {
-        if (+l.sourceId === +data.sourceId) {
+        if (+l.labelId === +data.labelId) {
           changed = true;
           return data;
         }

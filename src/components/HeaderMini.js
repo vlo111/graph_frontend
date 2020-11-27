@@ -11,6 +11,7 @@ import { setLoading } from '../store/actions/app';
 import ExportNodeTabs from './ExportNode/ExportNodeTabs';
 import GraphUsersInfo from "./GraphUsersInfo";
 import Button from "./form/Button";
+import CommentModal from './CommentNode';
 
 class HeaderMini extends Component {
   async componentWillMount() {
@@ -56,23 +57,26 @@ class HeaderMini extends Component {
   toggleGraphUsersInfo = (showGraphUsersInfo) => {
     this.setState({ showGraphUsersInfo });
   }
+  toggleNodeComment = (showNodeComment) => {
+    this.setState({ showNodeComment });
+  }
 
   render() {
-    const { showGraphUsersInfo } = this.state;
-    const { tabs, node, match: { params: { graphId = '', token = '' } } } = this.props;
+    const { showGraphUsersInfo, showNodeComment } = this.state;
+    const {singleGraph, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props;
     const isInEmbed = Utils.isInEmbed();
     return (
       <header id="headerMini">
         <SearchInput />
         <ul className="navLinks">
           <li>
-            <Link to={isInEmbed ? `/graphs/embed/filter/${graphId}/${token}` : `/graphs/filter/${graphId}`}>
-              Filter
-            </Link>
-          </li>
-          <li>
             <Button onClick={() => this.toggleGraphUsersInfo(true)}>
               Info
+            </Button>
+          </li>
+	  <li>
+            <Button onClick={() => this.toggleNodeComment(true)}>
+              Comment
             </Button>
           </li>
           <li>
@@ -93,12 +97,22 @@ class HeaderMini extends Component {
         {showGraphUsersInfo ? (
           <GraphUsersInfo onClose={() => this.toggleGraphUsersInfo(false)} />
         ) : null}
+        {showNodeComment ? (
+          <CommentModal
+            closeModal={() => this.toggleNodeComment(false)}
+            graph={singleGraph}
+
+          />
+        ) : null}
+
       </header>
     );
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  singleGraph: state.graphs.singleGraph,
+});
 
 const mapDispatchToProps = {
   setLoading,

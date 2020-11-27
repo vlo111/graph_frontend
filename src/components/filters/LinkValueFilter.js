@@ -39,7 +39,7 @@ class LinkValueFilter extends Component {
       minLength,
       maxLength,
     };
-  }, _.isEqual);
+  }, (a, b) => _.isEqual(a[0].map((d) => d.value), b[0].map((d) => d.value)));
 
   setPadding = memoizeOne((item) => {
     if (item) {

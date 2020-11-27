@@ -5,13 +5,13 @@ import Owner from './Owner';
 import Button from '../../form/Button';
 import Input from '../../form/Input';
 import { getAccount } from '../../../store/selectors/account';
-import { getGraphCommentParent } from '../../../store/selectors/commentGraphs';
-import { createGraphCommentRequest, setGraphCommentParent } from '../../../store/actions/commentGraphs';
+import { getNodeCommentParent } from '../../../store/selectors/commentNodes';
+import { createNodeCommentRequest, setNodeCommentParent } from '../../../store/actions/commentNodes';
 
-const AddComment = ({ graph, closeModal, isReply }) => {
+const AddComment = ({ graph, node, closeModal, isReply }) => {
   const dispatch = useDispatch();
   const myAccount = useSelector(getAccount);
-  const parent = useSelector(getGraphCommentParent);
+  const parent = useSelector(getNodeCommentParent);
   const [text, setText] = useState('');
 
   return (
@@ -24,13 +24,14 @@ const AddComment = ({ graph, closeModal, isReply }) => {
         onChangeText={(value) => setText(value)}
         className="comment-modal__add-comment-input"
         id={isReply ? 'reply-comment' : 'add-comment'}
+        placeholder="Make a comment"
       />
       <div className="comment-modal__add-comment-buttons">
         <Button
           className=" ghButton2 comment-modal__add-comment-cancel"
           onClick={() => {
             if (parent.id) {
-              dispatch(setGraphCommentParent({}));
+              dispatch(setNodeCommentParent({}));
             } else {
               closeModal();
             }
@@ -43,17 +44,19 @@ const AddComment = ({ graph, closeModal, isReply }) => {
             text.trim() === '' ?
               alert('Text cannot be blank.')
               :
-              dispatch(createGraphCommentRequest(
+              dispatch(createNodeCommentRequest(
                 {
                   graphId: graph.id,
+                  nodeId: node.id,
                   text,
                   parentId: parent.id,
                 },
               ));
             setText('');
-            dispatch(setGraphCommentParent({}));
+            dispatch(setNodeCommentParent({}));
+
           }}
-          className="ghButton2 comment-modal__add-comment-button"
+          className=" ghButton2 comment-modal__add-comment-button"
         >
           Comment
         </Button>
