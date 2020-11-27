@@ -114,7 +114,7 @@ class Chart {
         }
         return label;
       });
-      data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.source}//${d.type}`);
+      data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.target}//${d.type}`);
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
