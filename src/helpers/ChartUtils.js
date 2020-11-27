@@ -62,7 +62,7 @@ class ChartUtils {
         d.hidden = 1;
         return d;
       }
-      if (params.labels[0] !== '__ALL__' && !d.labels.some((l) => params.labels.includes(l))) {
+      if (params.labels[0] !== '__ALL__' && d.labels.length && !d.labels.some((l) => params.labels.includes(l))) {
         d.hidden = -1;
         return d;
       }
