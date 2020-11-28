@@ -17,6 +17,8 @@ $color-dark-blue: #717EA0;
 $color-green: #48897a;
 $color-white: #ffffff;
 
+$color-button: #0062FF;
+
 $color-darkgreen: #f2f3f5;
 
 $font-family: 'Open Sans', sans-serif;
@@ -588,8 +590,8 @@ p {
 .ghButton {
 
   border: none;
-  color: $color-dark;
-  background-color: $color-light-blue;
+  color: $color-white;
+  background-color: $color-button;
   padding: 7px 14px 6px;
   border-radius: 4px;
   font-size: 14px;
@@ -1387,9 +1389,21 @@ p {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    overflow: scroll;
+    .authForm {
+      margin: 30px 70px 30px;
+      .submit {
+        align-self: center ;
+      }
+    }
+  } 
+  
+  .switchSignMode {
+    font-size: 20px;
+    margin-top: 80px;
+    margin: 30px 70px;
   }
 }
-
 @media screen and (max-width: 368px) {
   overflow: scroll;
   .left {
@@ -2631,6 +2645,7 @@ p {
     background-color: transparent;
     box-shadow: none;
     margin-top: 0;
+    padding-left: 322px;
   }
 
   .ghModalFilters {
@@ -2731,6 +2746,7 @@ p {
 .graphFilter {
   width: 100%;
   margin-bottom: 15px;
+  padding-left: 14px;
 
   .list {
     .item {
