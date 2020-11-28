@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { getNodeCommentParent, getNodeComments } from '../../../store/selectors/commentNodes';
 import { getId } from '../../../store/selectors/account';
 import { getNodeCommentsRequest } from '../../../store/actions/commentNodes';
-import { getActionsCountRequest } from '../../../store/actions/graphs';
+import { getActionsCountRequest } from '../../../store/actions/commentNodes';
 import Owner from './Owner';
 import AddComment from './AddComment';
 
@@ -35,9 +35,9 @@ const CommentItems = ({ graph, node, closeModal }) => {
     dispatch(getNodeCommentsRequest({ graphId: graph.id, nodeId: node.id }));
   }, []);
 
-  useEffect(() => {
-    dispatch(getActionsCountRequest(graph.id));
-  }, graphComments);
+  useEffect(() => { 
+    dispatch(getActionsCountRequest( { graphId: graph.id, nodeId: node.id }));
+  }, []);
 
   return (
     <div className="comment-modal__comments-wrapper">

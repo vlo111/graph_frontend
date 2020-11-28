@@ -3,11 +3,13 @@ import {
   GET_NODE_COMMENTS,
   SET_COMMENT_PARENT,
   DELETE_NODE_COMMENT,
+  COMMENT_COUNT,
 } from '../actions/commentNodes';
 
 const initialState = {
   nodeComments: [],
   nodeCommentParent: {},
+  commentCount: 0
 };
 
 export default function reducer(state = initialState, action) {
@@ -65,6 +67,15 @@ export default function reducer(state = initialState, action) {
           },
         ),
         nodeCommentParent: {},
+      };
+    }
+    case COMMENT_COUNT.SUCCESS: {
+      return {
+        ...state,
+        commentCount: {
+          ...state.commentCount,
+          ...action.payload.data.result,
+        },
       };
     }
     default: {

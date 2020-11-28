@@ -38,7 +38,7 @@ class OAuthButtonTwitter extends Component {
 
   render() {
     return (
-      <button type="button" className="button" onClick={this.handleClick}>
+      <button type="button" className="button twitter" onClick={this.handleClick}>
         <img src={twitterImg} alt="twitter" />
         <span>Twitter</span>
       </button>

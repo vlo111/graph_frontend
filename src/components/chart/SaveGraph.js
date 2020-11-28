@@ -5,6 +5,7 @@ import Button from '../form/Button';
 import SaveGraphModal from './SaveGraphModal';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
+import { connect } from 'react-redux';
 
 class SaveGraph extends Component {
   static propTypes = {
@@ -74,21 +75,38 @@ class SaveGraph extends Component {
 
   render() {
     const { showModal, preventReload } = this.state;
+    const { singleGraph, match: { params: { graphId } } } = this.props;
+
     return (
-      <div className="saveGraphWrapper">
-        <Button className="saveGraph" onClick={() => this.toggleModal(true)}>
-          Save Graph
+      <div>
+        <div className="saveGraphWrapper">
+          <Button className="saveGraph" onClick={() => this.toggleModal(true)}>
+            Save Graph
         </Button>
-        {/* <Prompt */}
-        {/*  when={preventReload} */}
-        {/*  message={this.handleRouteChange} */}
-        {/* /> */}
-        {showModal ? (
-          <SaveGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
-        ) : null}
+
+          <Prompt
+            when={preventReload}
+            message={this.handleRouteChange}
+          />
+
+          {showModal ? (
+            <SaveGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
+          ) : null}
+        </div>
+        <spa className="graphsName"> Name : {singleGraph.title}</spa>
       </div>
+
     );
   }
 }
+const mapStateToProps = (state) => ({
+  singleGraph: state.graphs.singleGraph,
 
-export default withRouter(SaveGraph);
+});
+const mapDispatchToProps = {};
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SaveGraph);
+
+export default withRouter(Container); 
