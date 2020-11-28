@@ -590,7 +590,7 @@ p {
 .ghButton {
 
   border: none;
-  color: $color-white;
+  color: $color-dark;
   background-color: $color-button;
   padding: 7px 14px 6px;
   border-radius: 4px;
@@ -743,7 +743,7 @@ p {
 
 .ghButton2:hover {
   padding-right: 25px;
-  background-color: #C6E6FF;
+  background-color: $color-button;
 }
 
 .ghButton2:hover button:after {
