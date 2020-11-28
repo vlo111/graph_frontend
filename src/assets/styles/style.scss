@@ -3452,7 +3452,7 @@ body .gh__menu {
 
 
 .socialButtons {
-  display: flex;
+  //display: flex;
   flex-wrap: wrap;
   justify-content: center;
 
@@ -3467,7 +3467,7 @@ body .gh__menu {
     outline: none;
     border: none;
     font-size: 14px;
-
+    width: 120px;
     &:hover {
       text-decoration: underline;
     }
