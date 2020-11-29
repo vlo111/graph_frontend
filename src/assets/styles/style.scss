@@ -750,6 +750,43 @@ p {
 }
 
 
+.ghButton2 {
+  display: inline-block;
+  padding: 0.46em 1.6em;
+  border: 0.1em solid #000000;
+  margin: 0.8em 0.4em 0.2em 3px;
+  border-radius: 0.38em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  color: #000000;
+  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
+  background-color: #FFFFFF;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.ghButton2:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.ghButton2:hover {
+  padding-right: 25px;
+  background-color: #C6E6FF;
+}
+
+.ghButton2:hover button:after {
+  opacity: 1;
+  right: 0;
+}
+
+
 .ghCheckbox {
   display: flex;
   flex-direction: row;
