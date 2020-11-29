@@ -81,7 +81,7 @@ class FiltersModal extends Component {
         )}
         <div className="row resetAll">
           <Button onClick={this.props.resetFilter}>RESET ALL</Button>
-          {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${nodes.length}`}
+          <span className="nodeCount">{`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${nodes.length}`}</span>
         </div>
 
         <IsolatedFilter />

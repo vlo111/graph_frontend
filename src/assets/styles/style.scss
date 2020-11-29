@@ -2659,8 +2659,11 @@ p {
     overflow-y: auto;
   }
 
-  .resetAll {
-    display: flex;
+    .resetAll {
+      display: flex;
+      .nodeCount {
+        font-size: 14px;
+      }
   }
 }
 
