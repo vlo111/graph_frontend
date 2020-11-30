@@ -71,7 +71,7 @@ class GraphView extends Component {
     } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
     const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId);
-
+    console.log(singleGraph.currentUserRole)
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
@@ -102,7 +102,7 @@ class GraphView extends Component {
           </div>
         ) : (
           <>
-            {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
+            {['admin', 'edit'].includes(singleGraph.currentUserRole) && (
               <>
                 <Link to={`/graphs/update/${graphId}`}>
                   <Tooltip overlay="Update">

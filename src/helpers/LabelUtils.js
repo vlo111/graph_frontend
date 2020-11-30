@@ -36,14 +36,13 @@ class LabelUtils {
     } catch (e) {
       //
     }
-    if (!data) {
+    if (!data || !data.label) {
       return;
     }
     const { x: posX, y: posY } = ChartUtils.calcScaledPosition(x, y);
 
     // label past
     const labels = Chart.getLabels();
-
     const labelOriginalId = data.label.id;
     const labelId = ChartUtils.uniqueId(labels);
 
