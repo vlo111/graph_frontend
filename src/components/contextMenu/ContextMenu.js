@@ -43,7 +43,6 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
-    console.log(ev.target)
     if (ev.target.closest('.nodes')) {
       const index = +ev.target.parentNode.getAttribute('data-i');
       params = Chart.getNodes().find((d) => d.index === index);

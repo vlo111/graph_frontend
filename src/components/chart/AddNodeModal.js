@@ -23,20 +23,23 @@ class AddNodeModal extends Component {
     setNodeCustomField: PropTypes.func.isRequired,
     currentUserId: PropTypes.number.isRequired,
     addNodeParams: PropTypes.object.isRequired,
+    currentUserRole: PropTypes.string.isRequired,
   }
 
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
+    const { currentUserRole } = this.props;
     const {
       fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField,
     } = addNodeParams;
+    const allowStatus = currentUserRole === 'admin' ? 'approved' : 'draft';
     this.setState({
       nodeData: {
         fx,
         fy,
         name: name || '',
         icon: icon || '',
-        status: status || 'approved',
+        status: status || allowStatus,
         nodeType: nodeType || 'circle',
         type: type || _.last(nodes)?.type || '',
         keywords: keywords || [],
@@ -121,7 +124,7 @@ class AddNodeModal extends Component {
 
   render() {
     const { nodeData, errors, index } = this.state;
-    const { addNodeParams } = this.props;
+    const { addNodeParams, currentUserRole } = this.props;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
     const groups = this.getTypes(nodes);
@@ -163,6 +166,7 @@ class AddNodeModal extends Component {
             label="Status"
             portal
             options={NODE_STATUS}
+            isDisabled={currentUserRole === 'edit'}
             value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
             error={errors.status}
             onChange={(v) => this.handleChange('status', v?.value || '')}
@@ -212,6 +216,7 @@ class AddNodeModal extends Component {
 const mapStateToProps = (state) => ({
   addNodeParams: state.app.addNodeParams,
   currentUserId: state.account.myAccount.id,
+  currentUserRole: state.graphs.singleGraph.currentUserRole,
 });
 const mapDispatchToProps = {
   toggleNodeModal,

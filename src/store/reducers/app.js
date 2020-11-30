@@ -85,18 +85,18 @@ export default function reducer(state = initialState, action) {
     }
     case SET_FILTER: {
       const { key, value, setInitialFilter } = action.payload;
-      const { initialFilters } = state;
+      const initialFilters = { ...state.initialFilters };
       const filters = { ...state.filters };
 
       _.set(filters, key, value);
       if (setInitialFilter) {
-        _.set(initialFilters, key, value);
+        _.set(initialFilters, key, [...value]);
       }
       // ChartUtils.setFilter(key, value);
       return {
         ...state,
         filters,
-        setInitialFilter,
+        initialFilters,
       };
     }
     case RESET_FILTER: {
