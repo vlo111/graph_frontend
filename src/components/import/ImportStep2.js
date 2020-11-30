@@ -17,6 +17,7 @@ class ImportStep2 extends Component {
     setGraphCustomFields: PropTypes.func.isRequired,
     updateSingleGraph: PropTypes.func.isRequired,
     importData: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
   }
 
   import = async () => {
@@ -24,12 +25,15 @@ class ImportStep2 extends Component {
       importData: {
         nodes = [], links = [], labels = [], customFields = {},
       },
+      singleGraph: { title, description },
     } = this.props;
     ChartUtils.resetColors();
     this.props.updateSingleGraph({
       nodes,
       links,
       labels,
+      title,
+      description,
       embedLabels: [],
     });
 
@@ -66,6 +70,7 @@ class ImportStep2 extends Component {
 
 const mapStateToProps = (state) => ({
   importData: state.graphs.importData,
+  singleGraph: state.graphs.singleGraph,
 });
 
 const mapDispatchToProps = {
