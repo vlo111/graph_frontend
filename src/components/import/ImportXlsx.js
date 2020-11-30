@@ -93,7 +93,7 @@ class DataImportModal extends Component {
           <>
             <File
               onChangeFile={(file) => this.handleChange('file', file)}
-              accept=".zip"
+              accept=".xlsx,.xls"
               label={file1Label}
             />
             {['nodes', 'links'].includes(fileType) ? (
@@ -103,7 +103,7 @@ class DataImportModal extends Component {
                 label={file2Label}
               />
             ) : null}
-            <Button onClick={this.convert} loading={loading}>Next</Button>
+            <Button  className="ghButton2" onClick={this.convert} loading={loading}>Next</Button>
           </>
         ) : null}
         {step === 2 ? <ImportStep2 /> : null}
