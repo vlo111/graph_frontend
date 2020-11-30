@@ -5,9 +5,9 @@ export const NODE_TYPES = [
   { value: 'hexagon', label: 'Hexagon' },
 ];
 
-export const NODE_STATUS = [  
+export const NODE_STATUS = [
   { value: 'approved', label: 'Approved' },
-  { value: 'draft', label: 'Draft' }, 
+  { value: 'draft', label: 'Draft' },
 ];
 
 export const NODE_COLOR = [

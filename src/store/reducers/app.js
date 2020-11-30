@@ -96,7 +96,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         filters,
-        setInitialFilter,
+        initialFilters,
       };
     }
     case RESET_FILTER: {
