@@ -88,7 +88,7 @@ class AddNodeModal extends Component {
 
     const update = !_.isNull(index);
 
-    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name);
+    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update);
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
     [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
 
