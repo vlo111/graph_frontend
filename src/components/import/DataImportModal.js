@@ -8,6 +8,7 @@ import ImportXlsx from './ImportXlsx';
 import Button from '../form/Button';
 import ImportGoogle from './ImportGoogle';
 import ImportLinkedin from "./ImportLinkedin";
+import ImportZip from './ImportZip';
 
 class DataImportModal extends Component {
   static propTypes = {
@@ -18,7 +19,7 @@ class DataImportModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: 'xlsx',
+      activeTab: 'zip',
     };
   }
 
@@ -41,6 +42,9 @@ class DataImportModal extends Component {
         onRequestClose={this.closeModal}
       >
         <div className="ghTabs">
+          <Button className={activeTab === 'zip' ? 'active' : undefined} onClick={() => this.setActiveTab('zip')}>
+            Zip
+          </Button>
           <Button className={activeTab === 'xlsx' ? 'active' : undefined} onClick={() => this.setActiveTab('xlsx')}>
             EXCEL XLSX
           </Button>
@@ -51,6 +55,7 @@ class DataImportModal extends Component {
             LINKEDIN
           </Button>
         </div>
+        {activeTab === 'zip' ? <ImportZip /> : null}
         {activeTab === 'xlsx' ? <ImportXlsx /> : null}
         {activeTab === 'google' ? <ImportGoogle /> : null}
         {activeTab === 'linkedin' ? <ImportLinkedin /> : null}

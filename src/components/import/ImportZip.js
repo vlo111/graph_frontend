@@ -4,16 +4,16 @@ import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import File from '../form/File';
 import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
-import Input from '../form/Input';
 import ImportStep2 from './ImportStep2';
+import { withRouter } from "react-router-dom";
 
 class DataImportModal extends Component {
   static propTypes = {
     convertGraphRequest: PropTypes.func.isRequired,
-    importData: PropTypes.object.isRequired,
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -55,39 +55,54 @@ class DataImportModal extends Component {
   convert = async () => {
     const { requestData } = this.state;
     const { match: { params: { graphId = '' } } } = this.props;
+    const { file } = requestData;
+    toast.dismiss(this.toast);
+    if (!file) {
+      this.toast = toast.warn('Please Select File');
+      return;
+    }
+    let convertType = 'zip';
+    if (file.type === 'text/csv') {
+      convertType = 'csv';
+    }
     requestData.graphId = graphId;
     this.setState({ loading: true });
-    const { payload: { data } } = await this.props.convertGraphRequest('google-sheets', requestData);
+    const { payload: { data } } = await this.props.convertGraphRequest(convertType, requestData);
     if (data.nodes?.length) {
       this.setState({ loading: false, step: 2 });
     } else {
-      this.toast = toast.error(data.errors?.url || 'something went wrong');
+      this.toast = toast.error('Invalid File');
       this.setState({ loading: false });
     }
   }
 
-  handleChange = async (path, value) => {
-    const { requestData } = this.state;
-    _.set(requestData, path, value);
-    this.setState({ requestData });
-  }
-
   render() {
-    const { importData } = this.props;
-    const { step, loading } = this.state;
-
+    const { fileType, step, loading } = this.state;
+    let file1Label = 'Select File';
+    let file2Label = 'Select File';
+    if (fileType === 'nodes') {
+      file1Label = 'Select File (nodes)';
+      file2Label = 'Select File (links)';
+    } else if (fileType === 'links') {
+      file1Label = 'Select File (links)';
+      file2Label = 'Select File (nodes)';
+    }
     return (
       <>
         {step === 1 ? (
           <>
-            <Input
-              value={importData.url}
-              onChangeText={(value) => this.handleChange('url', value)}
-              type="url"
-              name="google_sheets_url"
-              label="Google Sheets URL"
-              placeholder="Paste URL from your Google Sheets"
+            <File
+              onChangeFile={(file) => this.handleChange('file', file)}
+              accept=".zip"
+              label={file1Label}
             />
+            {['nodes', 'links'].includes(fileType) ? (
+              <File
+                onChangeFile={(file) => this.handleChange('file_2', file)}
+                accept=".csv"
+                label={file2Label}
+              />
+            ) : null}
             <Button  className="ghButton2" onClick={this.convert} loading={loading}>Next</Button>
           </>
         ) : null}
@@ -97,10 +112,8 @@ class DataImportModal extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  activeButton: state.app.activeButton,
-  importData: state.graphs.importData,
-});
+const mapStateToProps = () => ({});
+
 const mapDispatchToProps = {
   convertGraphRequest,
 };
@@ -109,4 +122,4 @@ const Container = connect(
   mapDispatchToProps,
 )(DataImportModal);
 
-export default Container;
+export default withRouter(Container);

@@ -95,7 +95,7 @@ class DataImportModal extends Component {
           accept=".pdf"
           label="Select PDF File"
         />
-        <Button onClick={this.convert} loading={loading}>Import</Button>
+        <Button  className="ghButton2" onClick={this.convert} loading={loading}>Import</Button>
       </>
     );
   }
