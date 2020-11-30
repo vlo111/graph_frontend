@@ -22,3 +22,7 @@ export const getNodeCommentsCount = createSelector(
     return length;
   },
 );
+export const getCommentCount = createSelector(
+  getCommentNode,
+  (items) => items.commentsCount,
+);

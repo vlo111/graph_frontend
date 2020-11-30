@@ -11,7 +11,7 @@ import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg'
 import Button from '../form/Button';
 import Chart from '../../Chart';
 
-import { getActionsCountRequest } from '../../store/actions/graphs';
+import { getActionsCountRequest } from '../../store/actions/commentNodes';
 
 const CommentModal = React.memo(({ closeModal, graph}) => {
   const { info: nodeId } = queryString.parse(window.location.search);
@@ -27,7 +27,7 @@ const CommentModal = React.memo(({ closeModal, graph}) => {
   
   const onClose = () => {
     closeModal();
-    dispatch(getActionsCountRequest(graph.id));
+    dispatch(getActionsCountRequest(graph.id, node.id));
   };
   return (isEmpty(graph) ? null
     : (
