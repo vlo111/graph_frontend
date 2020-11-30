@@ -714,6 +714,25 @@ p {
     }
   }
 }
+.ghButton:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.ghButton:hover  {
+  padding-right: 25px;
+  background-color: $color-white;
+  color: #0062FF;
+}
+
+.ghButton:hover button:after {
+  opacity: 1;
+  right: 0;
+}
 
 .ghButton2 {
   display: inline-block;
@@ -1250,6 +1269,10 @@ p {
     padding-top: 9px;
     margin-top: 5px;
     border-top: 1px solid $color-light-gray;
+
+    .saveGraph {      
+     background-color: $color-light-blue;
+    }
   }
 
   .helpWrapper,
