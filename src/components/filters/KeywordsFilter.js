@@ -33,7 +33,7 @@ class KeywordsFilter extends Component {
       });
     }
     if (keywords.length) {
-      this.props.setFilter('nodeKeywords', keywords.map((d) => d.keyword));
+      this.props.setFilter('nodeKeywords', keywords.map((d) => d.keyword), true);
     }
 
     return _.orderBy(keywords, 'length', 'desc');

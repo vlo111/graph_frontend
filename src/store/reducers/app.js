@@ -16,6 +16,7 @@ const initialState = {
   addNodeParams: {},
   isLoading: false,
   filters: ChartUtils.getFilters(),
+  initialFilters: ChartUtils.getFilters(),
   selectedGrid: {
     nodes: [],
     links: [],
@@ -83,19 +84,26 @@ export default function reducer(state = initialState, action) {
       };
     }
     case SET_FILTER: {
-      const { key, value } = action.payload;
+      const { key, value, setInitialFilter } = action.payload;
+      const { initialFilters } = state;
       const filters = { ...state.filters };
+
       _.set(filters, key, value);
+      if (setInitialFilter) {
+        _.set(initialFilters, key, value);
+      }
       // ChartUtils.setFilter(key, value);
       return {
         ...state,
         filters,
+        setInitialFilter,
       };
     }
     case RESET_FILTER: {
+      const { initialFilters } = state;
       return {
         ...state,
-        filters: _.cloneDeep(DEFAULT_FILTERS),
+        filters: _.cloneDeep(initialFilters),
       };
     }
     case SET_LEGEND_BUTTON: {

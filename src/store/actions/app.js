@@ -61,10 +61,10 @@ export function setLoading(isLoading = true) {
 
 export const SET_FILTER = 'SET_FILTER';
 
-export function setFilter(key, value) {
+export function setFilter(key, value, setInitialFilter = false) {
   return {
     type: SET_FILTER,
-    payload: { key, value },
+    payload: { key, value, setInitialFilter },
   };
 }
 

@@ -26,7 +26,7 @@ class NodesStatusFilter extends Component {
       .orderBy('length', 'desc')
       .value();
     if (status.length) {
-      this.props.setFilter('nodeStatus', status.map((d) => d.status));
+      this.props.setFilter('nodeStatus', status.map((d) => d.status), true);
     }
     return status;
   }, (a, b) => _.isEqual(a[0].map((d) => d.status), b[0].map((d) => d.status)));
