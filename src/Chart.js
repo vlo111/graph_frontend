@@ -133,16 +133,19 @@ class Chart {
             d.remove = true;
             console.log('remove', d);
             removedNodes = true;
+          } else {
+            d.deleted = true;
+            return d;
           }
-          d.deleted = true;
-          return d;
         }
 
+     const name = ChartUtils.nodeUniqueName(d.name);
         // set node right position
         const fx = labelNode.fx - labelData.cx;
         const fy = labelNode.fy - labelData.cy;
         return {
           ...labelNode,
+          name,
           sourceId: d.sourceId,
           readOnly: true,
           fx,

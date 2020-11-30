@@ -18,7 +18,7 @@ class ChartUtils {
     if (_.isEmpty(params) || !window.location.pathname.startsWith('/graphs/filter/')) {
       return data;
     }
-    console.log(params)
+    console.log(params);
     data.links = data.links.map((d) => {
       if (params.linkTypes[0] !== '__ALL__' && !params.linkTypes.includes(d.type)) {
         d.hidden = 1;
@@ -519,6 +519,15 @@ class ChartUtils {
     }
     Chart.data.lastUid += 1;
     return `${Chart.data.lastUid}.${graphId}`;
+  }
+
+  static nodeUniqueName(name) {
+    const nodes = Chart.getNodes().filter((n) => name === n.name || new RegExp(`^${Utils.escRegExp(name)}_\\d+$`).test(n.name));
+    if (!nodes.length) {
+      return name;
+    }
+    const max = _.max(nodes.map((n) => +(n.name.match(/_(\d+)$/) || [0, 0])[1])) || 0;
+    return `${name}_${max + 1}`;
   }
 }
 
