@@ -49,7 +49,7 @@ class OAuthButtonLinkedin extends Component {
 
   render() {
     return (
-      <button type="button" onClick={this.handleClick} className="button">
+      <button type="button" onClick={this.handleClick} className="button  linkedin">
         <img src={linkedinImg} alt="Linkedin" />
         <span>Linkedin</span>
       </button>

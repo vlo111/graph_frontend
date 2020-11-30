@@ -260,6 +260,11 @@ class Api {
   static deleteNodeComment(id) {
     return api.delete(`comment-nodes/delete/${id}`);
   }
+
+  static getActionsNodeCount(id, nodeId) {
+    return api.get(`/comment-nodes/actions-count/${id}/${nodeId}`);
+  }
+
 }
 
 export default Api;

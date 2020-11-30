@@ -32,7 +32,7 @@ class LabelsFilter extends Component {
     //   length: 'No Label',
     // });
     if (labelsFormatted.length) {
-      this.props.setFilter('labels', labelsFormatted.map((d) => d.id));
+      this.props.setFilter('labels', labelsFormatted.map((d) => d.id), true);
     }
     return labelsFormatted;
   }, (a, b) => _.isEqual(a[0].map((d) => d.id), b[0].map((d) => d.id)));

@@ -26,7 +26,7 @@ class NodeTypesFilter extends Component {
       .orderBy('length', 'desc')
       .value();
     if (types.length) {
-      this.props.setFilter('nodeTypes', types.map((d) => d.type));
+      this.props.setFilter('nodeTypes', types.map((d) => d.type), true);
     }
     return types;
   }, (a, b) => _.isEqual(a[0].map((d) => d.type), b[0].map((d) => d.type)));

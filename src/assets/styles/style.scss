@@ -714,6 +714,7 @@ p {
     }
   }
 }
+
 .ghButton:after {
   content: '\00bb';
   position: absolute;
@@ -723,7 +724,7 @@ p {
   transition: 0.5s;
 }
 
-.ghButton:hover  {
+.ghButton:hover {
   padding-right: 25px;
   background-color: $color-white;
   color: #0062FF;
@@ -760,16 +761,16 @@ p {
   transition: 0.5s;
 }
 
-.ghButton2:hover  {
+.ghButton2:hover {
   padding-right: 25px;
   background-color: $color-button;
+  color: $color-white;
 }
 
 .ghButton2:hover button:after {
   opacity: 1;
   right: 0;
 }
-
 
 
 .ghCheckbox {
@@ -960,18 +961,20 @@ p {
       stroke-width: 0.3;
       text-anchor: middle;
     }
+
     .draft {
       font-family: $font-family;
       dominant-baseline: central;
-      fill: red ;
-      stroke: red ;
+      fill: red;
+      stroke: red;
       stroke-width: 0.3;
-      text-anchor: middle; 
+      text-anchor: middle;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 2px;
-      transform: rotate(-15deg); 
+      transform: rotate(-15deg);
     }
+
     &.hidden {
       opacity: 0.2 !important;
       //pointer-events: none;
@@ -1197,6 +1200,7 @@ p {
         box-shadow: none;
         font-size: 16px;
         font-family: chaparral-pro, serif;
+
         &:hover {
           text-decoration: underline;
         }
@@ -1268,8 +1272,8 @@ p {
     margin-top: 5px;
     border-top: 1px solid $color-light-gray;
 
-    .saveGraph {      
-     background-color: $color-light-blue;
+    .saveGraph {
+      background-color: $color-light-blue;
     }
   }
 
@@ -1438,6 +1442,7 @@ p {
 
       }
     }
+
     .right {
       width: 100%;
       display: flex;
@@ -2536,7 +2541,7 @@ p {
     font-size: 16px;
     text-transform: uppercase;
     padding: 15px 35px;
-    box-shadow: 0 0 5px #555555; 
+    box-shadow: 0 0 5px #555555;
     background: #FE794F 0% 0% no-repeat padding-box;
     border-radius: 12px;
     opacity: 1;
@@ -2683,9 +2688,10 @@ p {
 
   .resetAll {
     display: flex;
-     .nodeCount {
-        font-size: 14px;
-      }
+
+    .nodeCount {
+      font-size: 14px;
+    }
   }
 }
 
@@ -2878,9 +2884,11 @@ p {
 
     .checkAll {
       width: 100%;
-      .ghCheckbox{
+
+      .ghCheckbox {
         width: 100%;
-        .badge{
+
+        .badge {
           margin-left: auto;
         }
       }
@@ -3463,7 +3471,7 @@ body .gh__menu {
   flex-wrap: wrap;
   justify-content: center;
 
-  .button { 
+  .button {
     color: $color-white;
     display: flex;
     border-radius: 8px;
@@ -3473,7 +3481,8 @@ body .gh__menu {
     outline: none;
     border: none;
     font-size: 14px;
-    width: 120px; 
+    width: 120px;
+
     &:hover {
       text-decoration: underline;
     }
@@ -3493,15 +3502,19 @@ body .gh__menu {
       }
     }
   }
-  .facebook {      
+
+  .facebook {
     background-color: #3B579D;
   }
+
   .twitter {
     background-color: #1DA1F2;
   }
+
   .google {
     background-color: #4285F4;
   }
+
   .linkedin {
     background-color: #007BB6;
   }
@@ -4093,20 +4106,22 @@ body .gh__menu {
 
 .comment-modal {
   max-width: 900px;
+
   .ghButton {
     position: absolute;
     right: 25px !important;
   }
+
   &__add-comment-input {
-    font-size: 0.9rem ;
-    margin-bottom: 0 ;
-    resize: vertical ;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    resize: vertical;
     height: 90px !important;
-    margin-bottom: 10px ;;
-    -webkit-border-radius: 3px ;
-    -moz-border-radius: 3px ;
-    -ms-border-radius: 3px ;
-    border-radius: 3px ;
+    margin-bottom: 10px;;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
     font-family: chaparral-pro, serif;
   }
 
@@ -4120,7 +4135,7 @@ body .gh__menu {
     margin-bottom: 15px;
     background-color: $color-darkgreen;
     margin: 28px 13px 9px 16px;
-    border-radius: 14px ;
+    border-radius: 14px;
     font-family: chaparral-pro, serif;
 
     &--reply {
@@ -4128,7 +4143,7 @@ body .gh__menu {
       margin-left: 61px;
       background-color: $color-darkgreen;
       margin: 15px 13px 9px 61px;
-      border-radius: 14px ;
+      border-radius: 14px;
       font-family: chaparral-pro, serif;
     }
   }
@@ -4933,6 +4948,7 @@ body .gh__menu {
   }
 
 }
+
 .graphsName {
   font-size: 15px;
   color: #FE794F;

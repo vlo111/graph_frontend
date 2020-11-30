@@ -27,3 +27,9 @@ export const DELETE_NODE_COMMENT = define('DELETE_NODE_COMMENT');
 export function deleteNodeComment(id, graphId) {
   return DELETE_NODE_COMMENT.request(() => Api.deleteNodeComment(id, graphId));
 }
+
+export const COMMENT_COUNT = define('COMMENT_COUNT');
+
+export function getActionsCountRequest(id, nodeId) {
+  return COMMENT_COUNT.request(() => Api.getActionsNodeCount(id, nodeId));
+}
