@@ -346,7 +346,7 @@ class Chart {
             if (
               (!d.readOnly && !datum.readOnly)
               || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
-              || (d.deleted &&  d.sourceId === datum.sourceId)
+              || (d.deleted && d.sourceId === datum.sourceId)
             ) {
               d.fx += ev.dx;
               d.fy += ev.dy;
@@ -492,7 +492,7 @@ class Chart {
 
       this.nodesWrapper.selectAll('.node > *').remove();
 
-      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
+      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle):not(.image)')
         .append('circle')
         .attr('r', (d) => this.radiusList[d.index]);
 
@@ -524,6 +524,17 @@ class Chart {
         .attr('transform', (d) => {
           const r = this.radiusList[d.index] * -1.13;
           return `translate(${r}, ${r})`;
+        });
+
+      this.nodesWrapper.selectAll('.image')
+        .append('svg:image')
+        .attr('x', (d) => this.radiusList[d.index] * -1)
+        .attr('y', (d) => this.radiusList[d.index] * -1)
+        .attr('xlink:href', (d) => {
+          if (d.icon && d.nodeType === 'image') {
+            return d.icon;
+          }
+          return '';
         });
 
       this.nodesWrapper.selectAll('.node :not(text)')

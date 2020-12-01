@@ -28,18 +28,16 @@ class AddNodeModal extends Component {
 
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
-    const { currentUserRole } = this.props;
     const {
       fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField,
     } = addNodeParams;
-    const allowStatus = currentUserRole === 'admin' ? 'approved' : 'draft';
     this.setState({
       nodeData: {
         fx,
         fy,
         name: name || '',
         icon: icon || '',
-        status: status || allowStatus,
+        status: status || 'approved',
         nodeType: nodeType || 'circle',
         type: type || _.last(nodes)?.type || '',
         keywords: keywords || [],
@@ -124,13 +122,12 @@ class AddNodeModal extends Component {
 
   render() {
     const { nodeData, errors, index } = this.state;
-    const { addNodeParams, currentUserRole } = this.props;
+    const { addNodeParams, currentUserRole, currentUserId } = this.props;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
     const groups = this.getTypes(nodes);
 
     Utils.orderGroup(groups, nodeData.type);
-
     return (
       <Modal
         className="ghModal"
@@ -166,7 +163,7 @@ class AddNodeModal extends Component {
             label="Status"
             portal
             options={NODE_STATUS}
-            isDisabled={currentUserRole === 'edit'}
+            isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
             value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
             error={errors.status}
             onChange={(v) => this.handleChange('status', v?.value || '')}
