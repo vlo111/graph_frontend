@@ -6,13 +6,17 @@ import { setActiveButton, setGridIndexes, setLoading } from '../../store/actions
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
 import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
+import { ReactComponent as ExportSvg } from '../../assets/images/icons/export.svg';
 import Chart from '../../Chart';
 import Button from '../form/Button';
 import DataTableNodes from './DataTableNodes';
 import DataTableLinks from './DataTableLinks';
 import Api from '../../Api';
 import ChartUtils from '../../helpers/ChartUtils';
-import Utils from "../../helpers/Utils";
+import Utils from '../../helpers/Utils';
+import Select from '../form/Select';
+import Outside from '../Outside';
+import { EXPORT_TYPES } from '../../data/export';
 
 class DataView extends Component {
   static propTypes = {
@@ -33,6 +37,8 @@ class DataView extends Component {
         group: 'nodes',
         type: nodes[0]?.type || '',
       },
+      exportType: 'png',
+      showExport: false,
     };
   }
 
@@ -130,19 +136,70 @@ class DataView extends Component {
     this.props.setLoading(false);
   }
 
+  closeExport = (ev) => {
+    const isSelectType = typeof (ev.target.className) === 'string'
+      ? !!ev.target.className?.includes('gh__option')
+      : false;
+
+    if (!isSelectType) {
+      const { showExport } = this.state;
+      this.setState({ showExport: !showExport });
+    }
+  }
+
+  handleExport = () => {
+    const { exportType } = this.state;
+
+    switch (exportType) {
+      case 'png': {
+        this.download('png');
+        break;
+      }
+      case 'pdf': {
+        this.download('pdf');
+        break;
+      }
+      case 'excel': {
+        this.export('xlsx');
+        break;
+      }
+      default:
+        this.download('png');
+    }
+  }
+
   render() {
-    const { fullWidth, activeTab } = this.state;
+    const {
+      fullWidth, activeTab, exportType, showExport,
+    } = this.state;
+
     const links = Chart.getLinks();
     const nodes = Chart.getNodes();
     const linksGrouped = _.groupBy(links, 'type');
     const nodesGrouped = _.groupBy(nodes, 'type');
     return (
       <div id="dataTable" className={fullWidth ? 'fullWidth' : undefined}>
-        <div className="exportButtons">
-          <Button onClick={() => this.export('zip')}>Export Graph Zip</Button>
-          <Button onClick={() => this.export('xlsx')}>Export Graph Xlsx</Button>
-          <Button onClick={() => this.download('pdf')}>Export pdf</Button>
-          <Button onClick={() => this.download('png')}>Export png</Button>
+
+        <div className="exportData">
+          <div className="exportContent">
+            <Button onClick={this.closeExport} className="showExportButton" icon={<ExportSvg />} />
+            {showExport ? (
+              <Outside onClick={(ev) => this.closeExport(ev)} exclude=".exportData">
+                <div className="exportDropDown">
+                  <Select
+                    label="Type File"
+                    portal
+                    options={EXPORT_TYPES}
+                    value={EXPORT_TYPES.filter((t) => t.value === exportType)}
+                    onChange={(v) => this.setState({ exportType: v.value })}
+                  />
+                  <Button onClick={this.handleExport} className="exportButton ghButton accent alt" type="submit">
+                    Export
+                  </Button>
+                </div>
+              </Outside>
+            ) : null}
+          </div>
         </div>
         <div className="contentWrapper">
           <div className="header">

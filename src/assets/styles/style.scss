@@ -727,6 +727,7 @@ p {
 }
 
 .ghButton:hover {
+  padding-right: 25px;
   background-color: $color-white;
   color: #0062FF;
 }
@@ -1621,10 +1622,11 @@ p {
   .ghModal {
     outline: none;
     position: relative;
+    top: 16%;
     max-width: 460px;
     background-color: white;
     box-shadow: 0px 6px 20px #0D090526;
-    padding: 40px 20px;
+    padding: 15px;
     max-height: 80%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -5004,5 +5006,71 @@ body .gh__menu {
   .clear {
     margin-left: 185px;
     top: 6px;
+  }
+}
+
+.exportDropDown .ghFormField {
+  position: relative !important;
+  background: #C6E6FF 0% 0% no-repeat padding-box !important;
+}
+
+.exportData {
+  border: none;
+  display: flex;
+  z-index: 2;
+  left: 214px;
+  top: 4px;
+  max-width: 52px;
+
+  .showExportButton {
+    position: relative;
+    z-index: 9;
+    padding: 10px;
+    border-radius: 9px;
+    margin-bottom: -15px;
+    background: #C6E6FF 0% 0% no-repeat padding-box;
+  }
+  .exportDropDown {
+    /*visibility: hidden; */
+    z-index: 4;
+    position: absolute;
+    margin-left: 5px;
+    width: 50%;
+    padding: 50px 40px 21px;
+    border-radius: 12px;
+    background: #C6E6FF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 6px 20px #0D090529;
+    border: 1px solid #ABD6F780;
+    opacity: 1;
+    border-top-left-radius: 0px 0px;
+  }
+  .exportButton {
+    float: right;
+    margin: 30px 0 10px;
+  }
+  .icon {
+    width: 25px;
+    height: 30px;
+
+    svg {
+      height: 22px;
+    }
+  }
+  .gh__control {
+    border-radius: 10px !important;
+    height: 45px !important;
+    font: normal normal normal 18px/19px Open Sans !important;
+  }
+  label {
+    font: normal normal 600 15px/17px Open Sans;
+    padding-bottom: 15px;
+  }
+  .gh__indicator svg {
+    background: #F2F5F7 0% 0% no-repeat padding-box !important;
+  }
+  .gh__single-value {
+    color: #9BA6B4;
+    font: normal normal normal 15px/19px Open Sans;
+    letter-spacing: 0px;
   }
 }
