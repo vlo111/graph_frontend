@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import Input from './Input';
+import Icon from './Icon';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class File extends Component {
   static propTypes = {
@@ -29,10 +31,18 @@ class File extends Component {
     this.constructor.id += 1;
     this.id = this.constructor.id;
     this.state = {
-      fileName: '',
-    }
+      file: {},
+      focused: false,
+    };
   }
 
+  handleInputFocus = () => {
+    this.setState({ focused: true });
+  }
+
+  handleInputBlur = () => {
+    this.setState({ focused: false });
+  }
 
   handleChange = (ev) => {
     const { files } = ev.target;
@@ -43,26 +53,46 @@ class File extends Component {
     if (this.props.onChange) {
       this.props.onChange(ev);
     }
-    this.setState({ fileName: files[0]?.name || '' })
+    this.setState({ file: files[0] || '' });
   }
 
+  clearFile = () => {
+    this.setState({ file: {} });
+    this.props.onChangeFile('', {
+      name: '',
+    });
+  }
 
   render() {
     const {
-      id, containerId, label, containerClassName, onChangeFile, ...props
+      id, containerId, containerClassName, onChangeFile, ...props
     } = this.props;
-    const { fileName } = this.state;
+
+    const { file, focused } = this.state;
     const inputId = id || `file_${this.id}`;
+
+    const fileName = props.value || file.name || '';
+    const localFile = !!fileName;
+
     return (
-      <div
-        id={containerId}
-        className={classNames(containerClassName, 'ghFormField', 'ghFile')}
-      >
-        {label ? (
-          <span className="label">{label}</span>
+      <div className={`ghFileInput ${focused ? 'focused' : ''}`}>
+        <Input
+          onFocus={this.handleInputFocus}
+          onBlur={this.handleInputBlur}
+          value={fileName}
+          title={fileName}
+          disabled={localFile}
+          onChangeText={this.handleTextChange}
+        />
+        {localFile ? (
+            <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
         ) : null}
-        <label htmlFor={inputId}>{fileName || 'Select...'}</label>
-        <input {...props} id={inputId} type="file" onChange={this.handleChange} />
+        <div className="buttons">
+          <label className="fileLabel">
+            select file
+            <input {...props} id={inputId} type="file" onChange={this.handleChange} />
+          </label>
+        </div>
       </div>
     );
   }
