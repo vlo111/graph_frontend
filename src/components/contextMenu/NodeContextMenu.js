@@ -10,11 +10,14 @@ class NodeContextMenu extends Component {
 
   render() {
     const { params } = this.props;
+
     return (
       <>
-        <Button icon="fa-pencil-square-o" onClick={(ev) => this.props.onClick(ev, 'node.edit')}>
-          Edit
-        </Button>
+        {!params.readOnly ? (
+          <Button icon="fa-pencil-square-o" onClick={(ev) => this.props.onClick(ev, 'node.edit')}>
+            Edit
+          </Button>
+        ) : null}
         {params.link ? (
           <Button icon="fa-link" title={params.link}>
             <a href={params.link} target="_blank" rel="noopener noreferrer">
@@ -22,9 +25,12 @@ class NodeContextMenu extends Component {
             </a>
           </Button>
         ) : null}
-        <Button icon="fa-eraser" onClick={(ev) => this.props.onClick(ev, 'node.delete')}>
-          Delete
-        </Button>
+        {!params.readOnly ? (
+          <Button icon="fa-eraser" onClick={(ev) => this.props.onClick(ev, 'node.delete')}>
+            Delete
+          </Button>
+        ) : null}
+
       </>
     );
   }
