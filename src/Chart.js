@@ -135,11 +135,11 @@ class Chart {
             removedNodes = true;
           } else {
             d.deleted = true;
-            return d;
           }
+          return d;
         }
 
-     const name = ChartUtils.nodeUniqueName(d);
+        const name = ChartUtils.nodeUniqueName(d);
         // set node right position
         const fx = labelNode.fx - labelData.cx;
         const fy = labelNode.fy - labelData.cy;
