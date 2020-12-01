@@ -92,7 +92,7 @@ class AddLinkModal extends Component {
       if (isUpdate) {
         links = links.map((d) => {
           if (d.index === linkData.index) {
-            d = linkData;
+            return linkData;
           }
           return d;
         });

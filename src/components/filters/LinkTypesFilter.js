@@ -24,9 +24,11 @@ class LinkTypesFilter extends Component {
       }))
       .orderBy('length', 'desc')
       .value();
-
+    if (types.length) {
+      this.props.setFilter('linkTypes', types.map((d) => d.type), true);
+    }
     return types;
-  }, _.isEqual);
+  }, (a, b) => _.isEqual(a[0].map((d) => d.type), b[0].map((d) => d.type)));
 
   constructor(props) {
     super(props);
@@ -36,26 +38,27 @@ class LinkTypesFilter extends Component {
   }
 
   handleChange = (value) => {
-    const { links, filters } = this.props;
-    if (!filters.linkTypes.length) {
-      filters.linkTypes = this.getLinkTypes(links).map((d) => d.type);
-    }
+    const { filters } = this.props;
     const i = filters.linkTypes.indexOf(value);
     if (i > -1) {
       filters.linkTypes.splice(i, 1);
-      if (!filters.linkTypes.length) {
-        filters.linkTypes = this.getLinkTypes(links).map((d) => d.type).filter((d) => d !== value);
-      }
     } else {
       filters.linkTypes.push(value);
     }
-
     this.props.setFilter('linkTypes', filters.linkTypes);
   }
 
   toggleMore = () => {
     const { showMore } = this.state;
     this.setState({ showMore: !showMore });
+  }
+
+  toggleAll = (fullData, allChecked) => {
+    if (allChecked) {
+      this.props.setFilter('linkTypes', []);
+    } else {
+      this.props.setFilter('linkTypes', fullData.map((d) => d.type));
+    }
   }
 
   render() {
@@ -66,15 +69,27 @@ class LinkTypesFilter extends Component {
     if (typesFull.length < 2) {
       return null;
     }
+    const allChecked = typesFull.length === filters.linkTypes.length;
     return (
       <div className="linkTypesFilter graphFilter">
         <h4 className="title">Link Types</h4>
         <ul className="list">
+          <li className="item">
+            <Checkbox
+              label={allChecked ? 'Uncheck All' : 'Check All'}
+              checked={allChecked}
+              onChange={() => this.toggleAll(typesFull, allChecked)}
+            >
+              <span className="badge">
+                {_.sumBy(typesFull, 'length')}
+              </span>
+            </Checkbox>
+          </li>
           {types.map((item) => (
             <li key={item.type} className="item" style={{ color: ChartUtils.linkColor(item) }}>
               <Checkbox
                 label={item.type}
-                checked={_.isEmpty(filters.linkTypes) || filters.linkTypes.includes(item.type)}
+                checked={filters.linkTypes.includes(item.type)}
                 onChange={() => this.handleChange(item.type)}
               >
                 <span className="badge">

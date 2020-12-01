@@ -17,6 +17,8 @@ $color-dark-blue: #717EA0;
 $color-green: #48897a;
 $color-white: #ffffff;
 
+$color-button: #0062FF;
+
 $color-darkgreen: #f2f3f5;
 
 $font-family: 'Open Sans', sans-serif;
@@ -167,8 +169,10 @@ p {
     }
   }
 }
-.logoWrapper{
+
+.logoWrapper {
   position: relative;
+
   .autoSaveText {
     font-size: 12px;
     color: $color-main2;
@@ -179,6 +183,7 @@ p {
     display: none;
   }
 }
+
 .autoSave {
   .logo {
     circle {
@@ -198,7 +203,8 @@ p {
       }
     }
   }
-  .autoSaveText{
+
+  .autoSaveText {
     display: block;
   }
 }
@@ -432,6 +438,7 @@ p {
   .limit {
     font-size: 14px;
     padding: 0 8px;
+    margin-bottom: -8px;
     text-align: right;
     color: $color-gray;
   }
@@ -488,7 +495,7 @@ p {
     }
   }
 
-  input {
+  input[type="file"] {
     display: none;
   }
 }
@@ -528,7 +535,8 @@ p {
   }
 
   .ghInput input {
-    padding-right: 100px;
+    padding-right: 144px;
+    text-overflow: ellipsis;
   }
 
   .clear {
@@ -585,7 +593,7 @@ p {
 
   border: none;
   color: $color-dark;
-  background-color: $color-light-blue;
+  background-color: $color-button;
   padding: 7px 14px 6px;
   border-radius: 4px;
   font-size: 14px;
@@ -708,6 +716,27 @@ p {
     }
   }
 }
+
+.ghButton:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.ghButton:hover {
+  padding-right: 25px;
+  background-color: $color-white;
+  color: #0062FF;
+}
+
+.ghButton:hover button:after {
+  opacity: 1;
+  right: 0;
+}
+
 .ghButton2 {
   display: inline-block;
   padding: 0.46em 1.6em;
@@ -716,14 +745,15 @@ p {
   border-radius: 0.38em;
   box-sizing: border-box;
   text-decoration: none;
-  font-family: 'Roboto',sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 300;
   color: #000000;
-  text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
   background-color: #FFFFFF;
   text-align: center;
-  transition: all 0.15s; 
+  transition: all 0.15s;
 }
+
 .ghButton2:after {
   content: '\00bb';
   position: absolute;
@@ -733,16 +763,16 @@ p {
   transition: 0.5s;
 }
 
-.ghButton2:hover  {
+.ghButton2:hover {
   padding-right: 25px;
-  background-color: #C6E6FF;
+  background-color: $color-button;
+  color: $color-white;
 }
 
 .ghButton2:hover button:after {
   opacity: 1;
   right: 0;
 }
-
 
 
 .ghCheckbox {
@@ -934,6 +964,19 @@ p {
       text-anchor: middle;
     }
 
+    .draft {
+      font-family: $font-family;
+      dominant-baseline: central;
+      fill: red;
+      stroke: red;
+      stroke-width: 0.3;
+      text-anchor: middle;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transform: rotate(-15deg);
+    }
+
     &.hidden {
       opacity: 0.2 !important;
       //pointer-events: none;
@@ -1122,7 +1165,7 @@ p {
 
   .graphs {
     position: absolute;
-    left: 550px;
+    left: 477px;
 
     button {
       background-color: $color-white;
@@ -1148,6 +1191,7 @@ p {
       a {
         color: $color-dark;
         font-size: 16px;
+        font-family: chaparral-pro, serif;
       }
 
       .ghButton {
@@ -1157,6 +1201,7 @@ p {
         margin: 0;
         box-shadow: none;
         font-size: 16px;
+        font-family: chaparral-pro, serif;
 
         &:hover {
           text-decoration: underline;
@@ -1228,6 +1273,10 @@ p {
     padding-top: 9px;
     margin-top: 5px;
     border-top: 1px solid $color-light-gray;
+
+    .saveGraph {
+      background-color: $color-light-blue;
+    }
   }
 
   .helpWrapper,
@@ -1350,69 +1399,80 @@ p {
   flex-direction: row;
   background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
 
-@media screen and (max-width: 468px) {
-  overflow: scroll;
-  .left {
-    width:0%;
-
-    &.forgotPassword,
-    &.signIn {
-      background-image:none;
-
-    }
-  }
-  .right {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  @media screen and (max-width: 468px) {
     overflow: scroll;
-    .authForm {
-      margin: 30px 70px 30px;
-      .submit {
-        align-self: center ;
+    .left {
+      width: 0%;
+
+      &.forgotPassword,
+      &.signIn {
+        background-image: none;
+
       }
     }
-  }
-}
-@media screen and (max-width: 368px) {
-  overflow: scroll;
-  .left {
-    width:0%;
+    .right {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow: scroll;
 
-    &.forgotPassword,
-    &.signIn {
-      background-image:none;
+      .authForm {
+        margin: 30px 70px 30px;
 
+        .submit {
+          align-self: center;
+        }
+      }
     }
-  }
 
-  .right {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    overflow: scroll;
-    .authForm {
+    .switchSignMode {
+      font-size: 20px;
+      margin-top: 80px;
       margin: 30px 70px;
-      .ghFormField {
-        width: 91%;
-      }
-      .submit {
-        align-self: center ;
-      }
     }
   }
-  .switchSignMode {
-    font-size: 20px;
-    margin-top: 80px;
-    margin: 30px 70px;
-  }
-}
+  @media screen and (max-width: 368px) {
+    overflow: scroll;
+    .left {
+      width: 0%;
 
-  @media screen and (min-width: 768px){
+      &.forgotPassword,
+      &.signIn {
+        background-image: none;
+
+      }
+    }
+
+    .right {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow: scroll;
+
+      .authForm {
+        margin: 30px 70px;
+
+        .ghFormField {
+          width: 91%;
+        }
+
+        .submit {
+          align-self: center;
+        }
+      }
+    }
+    .switchSignMode {
+      font-size: 20px;
+      margin-top: 80px;
+      margin: 30px 70px;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
     .left {
       width: 56.54%;
       height: 100vh;
@@ -1469,7 +1529,6 @@ p {
       margin-top: 100px;
     }
   }
-
 }
 
 .authForm {
@@ -1575,6 +1634,10 @@ p {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
 
     .ghModalContent {
       height: 100%;
@@ -1583,6 +1646,14 @@ p {
       overflow-x: hidden;
       margin-right: -15px;
       padding-right: 15px;
+    }
+
+    h2 {
+      text-align: center;
+      font: normal normal bold 26px/36px Open Sans;
+    }
+    label {
+      font: normal normal 600 16px/22px Open Sans;
     }
   }
 
@@ -1804,7 +1875,7 @@ p {
 
   .header {
     display: flex;
-    padding: 0 5px;
+    padding: 25px 5px 0;
 
     .buttons {
       margin-left: auto;
@@ -2485,6 +2556,9 @@ p {
     text-transform: uppercase;
     padding: 15px 35px;
     box-shadow: 0 0 5px #555555;
+    background: #FE794F 0% 0% no-repeat padding-box;
+    border-radius: 12px;
+    opacity: 1;
   }
 
   > div {
@@ -2612,6 +2686,7 @@ p {
     background-color: transparent;
     box-shadow: none;
     margin-top: 0;
+    padding-left: 322px;
   }
 
   .ghModalFilters {
@@ -2627,6 +2702,10 @@ p {
 
   .resetAll {
     display: flex;
+
+    .nodeCount {
+      font-size: 14px;
+    }
   }
 }
 
@@ -2712,6 +2791,7 @@ p {
 .graphFilter {
   width: 100%;
   margin-bottom: 15px;
+  padding-left: 14px;
 
   .list {
     .item {
@@ -2768,52 +2848,64 @@ p {
       .item {
         margin-right: 10px;
       }
-    }
 
-    .ghCheckbox {
-      cursor: pointer;
+      .ghCheckbox {
+        cursor: pointer;
 
-      input {
-        display: none;
-      }
-
-      .badge {
-        position: absolute;
-        left: 50%;
-        top: 7px;
-        transform: translate(-50%);
-        color: $color-white;
-        pointer-events: none;
-      }
-
-      input:not(:checked) ~ label {
-        .colorBox {
-          border-color: transparent !important;
-          filter: brightness(0.9);
+        input {
+          display: none;
         }
-      }
 
-      label {
-        padding-left: 0;
-
-        .colorBox {
-          height: 30px;
-          width: 75px;
-          background-color: #f4f4ff;
-          border-radius: 7px;
-          overflow: hidden;
-          border: 3px solid;
+        .badge {
+          position: absolute;
+          left: 50%;
+          top: 7px;
+          transform: translate(-50%);
+          color: $color-white;
           pointer-events: none;
+        }
 
-          div {
-            width: 100%;
-            height: 100%;
-            opacity: 0.7;
+        input:not(:checked) ~ label {
+          .colorBox {
+            border-color: transparent !important;
+            filter: brightness(0.9);
           }
         }
 
-      }
+        label {
+          padding-left: 0;
 
+          .colorBox {
+            height: 30px;
+            width: 75px;
+            background-color: #f4f4ff;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 3px solid;
+            pointer-events: none;
+
+            div {
+              width: 100%;
+              height: 100%;
+              opacity: 0.7;
+            }
+          }
+
+        }
+
+      }
+    }
+
+    .checkAll {
+      width: 100%;
+
+      .ghCheckbox {
+        width: 100%;
+
+        .badge {
+          margin-left: auto;
+        }
+      }
     }
 
   }
@@ -3389,12 +3481,11 @@ body .gh__menu {
 
 
 .socialButtons {
-  display: flex;
+  //display: flex;
   flex-wrap: wrap;
   justify-content: center;
 
   .button {
-    background-color: #4285F4;
     color: $color-white;
     display: flex;
     border-radius: 8px;
@@ -3404,6 +3495,7 @@ body .gh__menu {
     outline: none;
     border: none;
     font-size: 14px;
+    width: 120px;
 
     &:hover {
       text-decoration: underline;
@@ -3423,6 +3515,22 @@ body .gh__menu {
         border-radius: 4px;
       }
     }
+  }
+
+  .facebook {
+    background-color: #3B579D;
+  }
+
+  .twitter {
+    background-color: #1DA1F2;
+  }
+
+  .google {
+    background-color: #4285F4;
+  }
+
+  .linkedin {
+    background-color: #007BB6;
   }
 }
 
@@ -3446,7 +3554,7 @@ body .gh__menu {
 #nodeFullInfo {
   position: fixed;
   background: $color-white;
-  width: 40%;
+  width: 45%;
   height: 100vh;
   z-index: 22;
   box-shadow: 0px 6px 20px #0D090526;
@@ -3805,22 +3913,6 @@ body .gh__menu {
       font-weight: 600;
     }
   }
-
-  .close {
-    padding: 0;
-    position: absolute;
-    top: 15px;
-    right: 16px;
-
-    svg {
-      width: 11px;
-      height: 10px;
-
-      path {
-        fill: $color-gray;
-      }
-    }
-  }
 }
 
 .connectionDetails {
@@ -3874,7 +3966,7 @@ body .gh__menu {
 
 .ghModalNodeFullInfoOverlay {
   .ghModal {
-    top: 5%;
+    top: 50%;
     width: 77%;
     height: 90%;
     max-height: 90%;
@@ -3935,8 +4027,18 @@ body .gh__menu {
 }
 
 .ghImportModal {
+  display: block !important;
   .ghTabs {
     margin-bottom: 20px;
+  }
+
+  .ghButton {
+    margin: 20px 10px 0px;
+    float: right;
+  }
+
+  h2 {
+    margin-bottom: 40px;
   }
 }
 
@@ -4013,6 +4115,24 @@ body .gh__menu {
 .comment-modal {
   max-width: 900px;
 
+  .ghButton {
+    position: absolute;
+    right: 25px !important;
+  }
+
+  &__add-comment-input {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    resize: vertical;
+    height: 90px !important;
+    margin-bottom: 10px;;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    font-family: chaparral-pro, serif;
+  }
+
   &__title {
     display: flex;
     align-items: center;
@@ -4022,11 +4142,17 @@ body .gh__menu {
   &__comment-item {
     margin-bottom: 15px;
     background-color: $color-darkgreen;
+    margin: 28px 13px 9px 16px;
+    border-radius: 14px;
+    font-family: chaparral-pro, serif;
 
     &--reply {
       margin-bottom: 15px;
       margin-left: 61px;
       background-color: $color-darkgreen;
+      margin: 15px 13px 9px 61px;
+      border-radius: 14px;
+      font-family: chaparral-pro, serif;
     }
   }
 
@@ -4045,6 +4171,8 @@ body .gh__menu {
   }
 
   &__add-comment-section {
+    margin-top: 40px;
+
     &--reply {
       margin-left: 61px;
     }
@@ -4174,6 +4302,7 @@ body .gh__menu {
     outline: 0;
     border-radius: 12px;
     width: 100%;
+    font-family: chaparral-pro, serif;
 
     &:focus, &:active {
       box-shadow: 0px 0px 0px 1px #ABD6F780;
@@ -4203,6 +4332,7 @@ body .gh__menu {
     h4 {
       font-weight: bold;
       margin-bottom: 10px;
+      font-family: chaparral-pro, serif;
     }
 
     .indicator {
@@ -4225,6 +4355,7 @@ body .gh__menu {
         display: flex;
         align-items: center;
         margin-bottom: 16px;
+        font-family: chaparral-pro, serif;
 
         .indicator {
           height: 10px;
@@ -4246,6 +4377,7 @@ body .gh__menu {
         display: flex;
         align-items: center;
         margin-bottom: 16px;
+        font-family: chaparral-pro, serif;
 
         .indicator {
           height: 2px;
@@ -4825,5 +4957,120 @@ body .gh__menu {
 
 }
 
+.graphsName {
+  font-size: 15px;
+  color: #FE794F;
+  font-family: chaparral-pro, serif;
+}
 
+.ghModalOverlay .ghModal, .nodeTabsFormModal {
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
 
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
+}
+
+.importST2Node {
+  text-align: center;
+}
+
+.importST2Link {
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 30px;
+}
+
+.importSelectLbl label {
+  padding: 0 0 10px;
+}
+
+.importSelectFileLbl, importSelectFileLbl label{
+  padding: 20px 0px 5px;
+}
+
+.importFile {
+  .fileLabel{
+    margin-bottom: 5px;
+  }
+  .clear {
+    margin-left: 185px;
+    top: 6px;
+  }
+}
+
+.exportDropDown .ghFormField {
+  position: relative !important;
+  background: #C6E6FF 0% 0% no-repeat padding-box !important;
+}
+
+.exportData {
+  border: none;
+  display: flex;
+  z-index: 2;
+  left: 214px;
+  top: 4px;
+  max-width: 52px;
+
+  .showExportButton {
+    position: relative;
+    z-index: 9;
+    padding: 10px;
+    border-radius: 9px;
+    margin-bottom: -15px;
+    background: #C6E6FF 0% 0% no-repeat padding-box;
+  }
+  .exportDropDown {
+    /*visibility: hidden; */
+    z-index: 4;
+    position: absolute;
+    margin-left: 5px;
+    width: 50%;
+    padding: 50px 40px 21px;
+    border-radius: 12px;
+    background: #C6E6FF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 6px 20px #0D090529;
+    border: 1px solid #ABD6F780;
+    opacity: 1;
+    border-top-left-radius: 0px 0px;
+  }
+  .exportButton {
+    float: right;
+    margin: 30px 0 10px;
+  }
+  .icon {
+    width: 25px;
+    height: 30px;
+
+    svg {
+      height: 22px;
+    }
+  }
+  .gh__control {
+    border-radius: 10px !important;
+    height: 45px !important;
+    font: normal normal normal 18px/19px Open Sans !important;
+  }
+  label {
+    font: normal normal 600 15px/17px Open Sans;
+    padding-bottom: 15px;
+  }
+  .gh__indicator svg {
+    background: #F2F5F7 0% 0% no-repeat padding-box !important;
+  }
+  .gh__single-value {
+    color: #9BA6B4;
+    font: normal normal normal 15px/19px Open Sans;
+    letter-spacing: 0px;
+  }
+}

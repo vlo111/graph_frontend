@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import Button from '../../form/Button';
 import { setGraphCommentParent, deleteGraphComment } from '../../../store/actions/commentGraphs';
-import { ReactComponent as EditSvg } from '../../../assets/images/icons/edit.svg';
+import { ReactComponent as ReplySvg } from '../../../assets/images/icons/reply.svg';
 import { ReactComponent as RemoveSvg } from '../../../assets/images/icons/trash.svg';
 
 const Owner = ({
@@ -27,7 +27,7 @@ const Owner = ({
           </span>
           {edit && (
             <Button
-              icon={<EditSvg style={{ height: 17 }} />}
+              icon={<ReplySvg style={{ height: 17 }} />}
               onClick={() => {
                 dispatch(setGraphCommentParent(comment));
                 setTimeout(() => {
@@ -37,8 +37,8 @@ const Owner = ({
                 });
               }}
               className="transparent"
+              title="reply"
             >
-              <spa>reply</spa>
             </Button>
           )}
           {remove && (
@@ -48,8 +48,8 @@ const Owner = ({
                 dispatch(deleteGraphComment(comment.id));
               }}
               className="transparent"
-            >
-              <spa>remove</spa>
+              title="Remove"
+            > 
             </Button>
           )}
         </>

@@ -37,7 +37,6 @@ class NodeTabsContent extends Component {
     const html = String(content?.content || content || '');
     this.getContentType(html);
     const { result: text } = stripHtml(html);
-
     if (['text/html', 'application/pdf'].includes(contentType)) {
       const query = queryString.stringify({
         url: text,

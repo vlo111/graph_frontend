@@ -36,6 +36,7 @@ class Convert {
       { value: d.name, key: 'name' },
       { value: d.type, key: 'type' },
       { value: d.description, key: 'description' },
+      { value: d.status, key: 'status' },
       { value: d.nodeType, key: 'nodeType' },
       { value: d.icon, key: 'icon' },
       { value: d.link, key: 'link' },

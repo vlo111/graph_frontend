@@ -25,9 +25,11 @@ class NodeTypesFilter extends Component {
       }))
       .orderBy('length', 'desc')
       .value();
-
+    if (types.length) {
+      this.props.setFilter('nodeTypes', types.map((d) => d.type), true);
+    }
     return types;
-  }, _.isEqual);
+  }, (a, b) => _.isEqual(a[0].map((d) => d.type), b[0].map((d) => d.type)));
 
   getCustomFields = memoizeOne((customFields) => {
     const keys = [];
@@ -46,16 +48,11 @@ class NodeTypesFilter extends Component {
   }
 
   handleChange = (value) => {
-    const { nodes, filters } = this.props;
-    if (!filters.nodeTypes.length) {
-      filters.nodeTypes = this.getNodeTypes(nodes).map((d) => d.type);
-    }
+    const { filters } = this.props;
+
     const i = filters.nodeTypes.indexOf(value);
     if (i > -1) {
       filters.nodeTypes.splice(i, 1);
-      if (!filters.nodeTypes.length) {
-        filters.nodeTypes = this.getNodeTypes(nodes).map((d) => d.type).filter((d) => d !== value);
-      }
     } else {
       filters.nodeTypes.push(value);
     }
@@ -91,6 +88,14 @@ class NodeTypesFilter extends Component {
     this.setState({ openList });
   }
 
+  toggleAll = (fullData, allChecked) => {
+    if (allChecked) {
+      this.props.setFilter('nodeTypes', []);
+    } else {
+      this.props.setFilter('nodeTypes', fullData.map((d) => d.type));
+    }
+  }
+
   render() {
     const { showMore, openList } = this.state;
     const { nodes, filters, customFields } = this.props;
@@ -99,15 +104,28 @@ class NodeTypesFilter extends Component {
     if (typesFull.length < 2) {
       return null;
     }
+    const allChecked = typesFull.length === filters.nodeTypes.length;
+
     return (
       <div className="nodesTypesFilter graphFilter">
         <h4 className="title">Node Types</h4>
         <ul className="list">
+          <li className="item">
+            <Checkbox
+              label={allChecked ? 'Uncheck All' : 'Check All'}
+              checked={allChecked}
+              onChange={() => this.toggleAll(typesFull, allChecked)}
+            >
+              <span className="badge">
+                {_.sumBy(typesFull, 'length')}
+              </span>
+            </Checkbox>
+          </li>
           {types.map((item) => (
             <li key={item.type} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
               <Checkbox
                 label={item.type}
-                checked={_.isEmpty(filters.nodeTypes) || filters.nodeTypes.includes(item.type)}
+                checked={filters.nodeTypes.includes(item.type)}
                 onChange={() => this.handleChange(item.type)}
               >
                 {!_.isEmpty(customFields[item.type]) ? (

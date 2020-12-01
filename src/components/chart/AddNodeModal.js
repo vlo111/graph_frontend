@@ -12,7 +12,7 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
-import { NODE_TYPES } from '../../data/node';
+import { NODE_TYPES, NODE_STATUS } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
 import Utils from '../../helpers/Utils';
@@ -23,12 +23,13 @@ class AddNodeModal extends Component {
     setNodeCustomField: PropTypes.func.isRequired,
     currentUserId: PropTypes.number.isRequired,
     addNodeParams: PropTypes.object.isRequired,
+    currentUserRole: PropTypes.string.isRequired,
   }
 
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, type, keywords, location, index = null, customField,
+      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField,
     } = addNodeParams;
     this.setState({
       nodeData: {
@@ -36,6 +37,7 @@ class AddNodeModal extends Component {
         fy,
         name: name || '',
         icon: icon || '',
+        status: status || 'approved',
         nodeType: nodeType || 'circle',
         type: type || _.last(nodes)?.type || '',
         keywords: keywords || [],
@@ -84,7 +86,7 @@ class AddNodeModal extends Component {
 
     const update = !_.isNull(index);
 
-    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name);
+    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update);
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
     [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
 
@@ -120,13 +122,12 @@ class AddNodeModal extends Component {
 
   render() {
     const { nodeData, errors, index } = this.state;
-    const { addNodeParams } = this.props;
+    const { addNodeParams, currentUserRole, currentUserId } = this.props;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
     const groups = this.getTypes(nodes);
 
     Utils.orderGroup(groups, nodeData.type);
-
     return (
       <Modal
         className="ghModal"
@@ -157,6 +158,15 @@ class AddNodeModal extends Component {
             limit={250}
             autoFocus
             onChangeText={(v) => this.handleChange('name', v)}
+          />
+          <Select
+            label="Status"
+            portal
+            options={NODE_STATUS}
+            isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
+            value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
+            error={errors.status}
+            onChange={(v) => this.handleChange('status', v?.value || '')}
           />
           <Select
             label="Node Type"
@@ -203,6 +213,7 @@ class AddNodeModal extends Component {
 const mapStateToProps = (state) => ({
   addNodeParams: state.app.addNodeParams,
   currentUserId: state.account.myAccount.id,
+  currentUserRole: state.graphs.singleGraph.currentUserRole,
 });
 const mapDispatchToProps = {
   toggleNodeModal,

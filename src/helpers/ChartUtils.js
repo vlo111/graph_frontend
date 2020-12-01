@@ -15,11 +15,12 @@ import Utils from './Utils';
 
 class ChartUtils {
   static filter = memoizeOne((data, params = {}, customFields = {}) => {
-    if (_.isEmpty(params)) {
+    if (_.isEmpty(params) || !window.location.pathname.startsWith('/graphs/filter/')) {
       return data;
     }
+    console.log(params);
     data.links = data.links.map((d) => {
-      if (!_.isEmpty(params.linkTypes) && !params.linkTypes.includes(d.type)) {
+      if (params.linkTypes[0] !== '__ALL__' && !params.linkTypes.includes(d.type)) {
         d.hidden = 1;
         return d;
       }
@@ -34,7 +35,7 @@ class ChartUtils {
     });
 
     data.labels = data.labels.map((d) => {
-      if (!_.isEmpty(params.labels) && !params.labels.includes(d.id)) {
+      if (!params.labels.includes(d.id)) {
         d.hidden = 1;
         return d;
       }
@@ -57,26 +58,29 @@ class ChartUtils {
         d.hidden = 1;
         return d;
       }
-      if (!_.isEmpty(params.nodeTypes) && !params.nodeTypes.includes(d.type)) {
+      if (params.nodeTypes[0] !== '__ALL__' && !params.nodeTypes.includes(d.type)) {
         d.hidden = 1;
         return d;
       }
-      if (!_.isEmpty(params.labels) && !d.labels.some((l) => params.labels.includes(l))) {
+      if (params.labels[0] !== '__ALL__' && d.labels.length && !d.labels.some((l) => params.labels.includes(l))) {
         d.hidden = -1;
         return d;
       }
-
-      if (!_.isEmpty(params.nodeCustomFields) && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.id]))) {
+      if (params.nodeCustomFields[0] !== '__ALL__' && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.id]))) {
         d.hidden = 1;
         return d;
       }
-      if (!_.isEmpty(params.nodeKeywords) && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
+      if (params.nodeKeywords[0] !== '__ALL__' && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
         d.hidden = 1;
         if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keyword)) {
           d.hidden = 0;
         }
         return d;
       }
+      // if (params.nodeStatus[0] !== '__ALL__' && !params.nodeStatus.includes(d.status)) {
+      //   d.hidden = 1;
+      //   return d;
+      // }
       d.hidden = 0;
       return d;
     });
@@ -515,6 +519,17 @@ class ChartUtils {
     }
     Chart.data.lastUid += 1;
     return `${Chart.data.lastUid}.${graphId}`;
+  }
+
+  static nodeUniqueName(node) {
+    const nodes = Chart.getNodes()
+      .filter((n) => n.id !== node.id
+        && (node.name === n.name || new RegExp(`^${Utils.escRegExp(node.name)}_\\d+$`).test(n.name)));
+    if (!nodes.length) {
+      return node.name;
+    }
+    const max = _.max(nodes.map((n) => +(n.name.match(/_(\d+)$/) || [0, 0])[1])) || 0;
+    return `${node.name}_${max + 1}`;
   }
 }
 

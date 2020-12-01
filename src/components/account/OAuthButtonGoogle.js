@@ -47,7 +47,7 @@ class OAuthButtonGoogle extends Component {
         <Helmet>
           <script async defer src="https://apis.google.com/js/api:client.js?onload=handleGoogleInit" />
         </Helmet>
-        <button type="button" className="button" ref={(ref) => this.button = ref}>
+        <button type="button" className="button google" ref={(ref) => this.button = ref}>
           <img src={googleImg} alt="Google" className="whiteBg" />
           <span>Google</span>
         </button>

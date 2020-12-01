@@ -43,7 +43,7 @@ class MapsGraph extends Component {
     });
 
     const queryObj = queryString.parse(window.location.search);
-    queryObj.info = node.name;
+    queryObj.info = node.id;
     const query = queryString.stringify(queryObj);
     this.props.history.replace(`?${query}`);
   }

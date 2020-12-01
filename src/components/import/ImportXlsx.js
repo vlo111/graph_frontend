@@ -4,12 +4,12 @@ import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import { withRouter } from 'react-router-dom';
 import File from '../form/File';
 import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportStep2 from './ImportStep2';
-import { withRouter } from "react-router-dom";
 
 class DataImportModal extends Component {
   static propTypes = {
@@ -70,43 +70,45 @@ class DataImportModal extends Component {
     const { payload: { data } } = await this.props.convertGraphRequest(convertType, requestData);
     if (data.nodes?.length) {
       this.setState({ loading: false, step: 2 });
+      this.props.showSelectHandler(false);
     } else {
       this.toast = toast.error('Invalid File');
       this.setState({ loading: false });
     }
   }
 
+  updateShowSelect = (param) => {
+    if (param) this.setState({ step: 1 });
+    else this.setState({ step: 2 });
+
+    this.props.showSelectHandler(param);
+  }
+
   render() {
     const { fileType, step, loading } = this.state;
-    let file1Label = 'Select File';
-    let file2Label = 'Select File';
-    if (fileType === 'nodes') {
-      file1Label = 'Select File (nodes)';
-      file2Label = 'Select File (links)';
-    } else if (fileType === 'links') {
-      file1Label = 'Select File (links)';
-      file2Label = 'Select File (nodes)';
-    }
+
     return (
       <>
         {step === 1 ? (
           <>
-            <File
-              onChangeFile={(file) => this.handleChange('file', file)}
-              accept=".zip"
-              label={file1Label}
-            />
-            {['nodes', 'links'].includes(fileType) ? (
+            <div className="ghFormField importFile">
+              <label className="importSelectFileLbl">Select file</label>
               <File
-                onChangeFile={(file) => this.handleChange('file_2', file)}
-                accept=".csv"
-                label={file2Label}
+                onChangeFile={(file) => this.handleChange('file', file)}
+                accept=".xlsx,.xls"
               />
-            ) : null}
-            <Button onClick={this.convert} loading={loading}>Next</Button>
+              {['nodes', 'links'].includes(fileType) ? (
+                <File
+                  onChangeFile={(file) => this.handleChange('file_2', file)}
+                  accept=".csv"
+                />
+              ) : null}
+            </div>
+
+            <Button className="ghButton accent alt main" onClick={this.convert} loading={loading}>Next</Button>
           </>
         ) : null}
-        {step === 2 ? <ImportStep2 /> : null}
+        {step === 2 ? <ImportStep2 updateShowSelect={this.updateShowSelect} /> : null}
       </>
     );
   }

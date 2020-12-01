@@ -3,11 +3,14 @@ import Chart from '../Chart';
 import CustomFields from './CustomFields';
 
 class Validate {
-  static nodeName(val) {
+  static nodeName(val, update) {
     const value = (val || '').trim();
     let error = null;
+    const nodes = Chart.getNodes();
     if (!value) {
       error = 'Name is required';
+    } else if (!update && nodes.some((d) => d.name === value)) {
+      error = 'Already exists';
     }
     return [error, value];
   }

@@ -247,6 +247,24 @@ class Api {
       },
     });
   }
+
+  
+  static createCommentNode(requestData) {
+    return api.post('/comment-nodes/create', requestData);
+  }
+
+  static nodeComments(requestData) {
+    return api.get('/comment-nodes/comments', { params: requestData });
+  }
+
+  static deleteNodeComment(id) {
+    return api.delete(`comment-nodes/delete/${id}`);
+  }
+
+  static getActionsNodeCount(id, nodeId) {
+    return api.get(`/comment-nodes/actions-count/${id}/${nodeId}`);
+  }
+
 }
 
 export default Api;

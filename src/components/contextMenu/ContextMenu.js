@@ -43,7 +43,6 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
-    console.log(ev.target)
     if (ev.target.closest('.nodes')) {
       const index = +ev.target.parentNode.getAttribute('data-i');
       params = Chart.getNodes().find((d) => d.index === index);
@@ -143,7 +142,7 @@ class ContextMenu extends Component {
                   icon="fa-globe"
                   onClick={(ev) => this.handleClick(ev, 'active-button', { button: 'maps-view' })}
                 >
-                  Show in map
+                  Show on map
                 </Button>
               ) : null}
               <Button icon="fa-crop" onClick={(ev) => this.handleClick(ev, 'crop')}>

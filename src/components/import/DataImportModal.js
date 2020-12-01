@@ -7,7 +7,11 @@ import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportXlsx from './ImportXlsx';
 import Button from '../form/Button';
 import ImportGoogle from './ImportGoogle';
-import ImportLinkedin from "./ImportLinkedin";
+import ImportLinkedin from './ImportLinkedin';
+import ImportZip from './ImportZip';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Select from '../form/Select';
+import { IMPORT_TYPES } from '../../data/import';
 
 class DataImportModal extends Component {
   static propTypes = {
@@ -19,20 +23,39 @@ class DataImportModal extends Component {
     super(props);
     this.state = {
       activeTab: 'xlsx',
+      nextStep: true,
+      initCurrentStep: true,
     };
   }
 
   closeModal = () => {
     this.props.setActiveButton('create');
+    this.setState({
+      initCurrentStep: true,
+    });
   }
 
   setActiveTab = (activeTab) => {
     this.setState({ activeTab });
   }
 
+  showSelectHandler = (param) => {
+    this.setState({
+      nextStep: param,
+      initCurrentStep: param,
+    });
+  }
+
   render() {
-    const { activeTab } = this.state;
+    const { activeTab, nextStep, initCurrentStep } = this.state;
     const { activeButton } = this.props;
+
+    if (!nextStep && initCurrentStep) {
+      this.setState({
+        nextStep: true,
+      });
+    }
+
     return (
       <Modal
         isOpen={activeButton === 'import'}
@@ -40,18 +63,23 @@ class DataImportModal extends Component {
         overlayClassName="ghModalOverlay"
         onRequestClose={this.closeModal}
       >
-        <div className="ghTabs">
-          <Button className={activeTab === 'xlsx' ? 'active' : undefined} onClick={() => this.setActiveTab('xlsx')}>
-            EXCEL XLSX
-          </Button>
-          <Button className={activeTab === 'google' ? 'active' : undefined} onClick={() => this.setActiveTab('google')}>
-            GOOGLE SHEETS
-          </Button>
-          <Button className={activeTab === 'linkedin' ? 'active' : undefined} onClick={() => this.setActiveTab('linkedin')}>
-            LINKEDIN
-          </Button>
-        </div>
-        {activeTab === 'xlsx' ? <ImportXlsx /> : null}
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
+
+        <h2>Import Data</h2>
+
+        {nextStep
+        && (
+        <Select
+          containerClassName="importSelectLbl"
+          label="Choose import data"
+          portal
+          options={IMPORT_TYPES}
+          value={IMPORT_TYPES.filter((t) => t.value === activeTab)}
+          onChange={(v) => this.setActiveTab(v.value)}
+        />
+        )}
+        {activeTab === 'zip' ? <ImportZip showSelectHandler={this.showSelectHandler} /> : null}
+        {activeTab === 'xlsx' ? <ImportXlsx showSelectHandler={this.showSelectHandler} /> : null}
         {activeTab === 'google' ? <ImportGoogle /> : null}
         {activeTab === 'linkedin' ? <ImportLinkedin /> : null}
       </Modal>

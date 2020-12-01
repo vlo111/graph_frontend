@@ -8,6 +8,8 @@ import notifications from './notifications';
 import userFriends from './userFriends';
 import graphLabelsEmbed from './graphLabelsEmbed';
 import profile from './profile';
+import commentNodes from './commentNodes';
+
 
 export default combineReducers({
   app,
@@ -19,4 +21,5 @@ export default combineReducers({
   userFriends,
   profile,
   graphLabelsEmbed,
+  commentNodes,
 });

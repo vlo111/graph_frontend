@@ -114,7 +114,7 @@ class Chart {
         }
         return label;
       });
-      data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.source}//${d.type}`);
+      data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.target}//${d.type}`);
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
@@ -133,16 +133,19 @@ class Chart {
             d.remove = true;
             console.log('remove', d);
             removedNodes = true;
+          } else {
+            d.deleted = true;
           }
-          d.deleted = true;
           return d;
         }
 
+        const name = ChartUtils.nodeUniqueName(d);
         // set node right position
         const fx = labelNode.fx - labelData.cx;
         const fy = labelNode.fy - labelData.cy;
         return {
           ...labelNode,
+          name,
           sourceId: d.sourceId,
           readOnly: true,
           fx,
@@ -250,6 +253,7 @@ class Chart {
 
     this.setAreaBoardZoom(transform);
     this.renderNodeText(transform.k);
+    this.renderNodeStatusText(transform.k);
   }
 
   static setAreaBoardZoom(transform) {
@@ -308,7 +312,7 @@ class Chart {
         const id = ev.sourceEvent.target.getAttribute('data-id');
         this.detectLabels();
         dragLabel.label = labelsWrapper.select(`[data-id="${id}"]`);
-        dragLabel.nodes = this.data.nodes.filter((d) => d.labels.includes(id));
+        dragLabel.nodes = this.getNodes().filter((d) => d.labels.includes(id));
       }
     };
 
@@ -342,6 +346,7 @@ class Chart {
             if (
               (!d.readOnly && !datum.readOnly)
               || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
+              || (d.deleted && d.sourceId === datum.sourceId)
             ) {
               d.fx += ev.dx;
               d.fy += ev.dy;
@@ -543,6 +548,7 @@ class Chart {
 
       this.renderLinkText();
       this.renderNodeText();
+      this.renderNodeStatusText();
       this.renderNewLink();
       this.renderSelectSquare();
       this.nodeFilter();
@@ -890,6 +896,35 @@ class Chart {
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
   }
 
+  static renderNodeStatusText(scale) {
+    if (!scale && !this.wrapper.empty()) {
+      // eslint-disable-next-line no-param-reassign
+      scale = +this.wrapper.attr('data-scale') || 1;
+    }
+
+    // this.nodesWrapper.selectAll('.node text').remove();
+
+    this.nodesWrapper.selectAll('.node')
+      .filter((d) => {
+        if (d.status !== 'draft') {
+          return false;
+        }
+        if (scale >= 0.8) {
+          return true;
+        }
+        if (this.radiusList[d.index] < 11) {
+          return false;
+        }
+        return true;
+      })
+      .append('text')
+      .attr('y', 3)
+      .attr('x', 3)
+      .attr('class', 'draft')
+      .attr('font-size', (d) => 20.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
+      .text('draft');
+  }
+
   static renderLinkText(links = []) {
     const wrapper = this.svg.select('.linkText');
     const linkIndexes = links.map((d) => d.index);
@@ -992,6 +1027,7 @@ class Chart {
         cancel = false;
       }, 300);
     });
+
     this.event.on('node.click', async (ev, d) => {
       if (ev.shiftKey) {
         return;
@@ -1025,12 +1061,18 @@ class Chart {
           .attr('y1', 0)
           .attr('x2', 0)
           .attr('y2', 0);
-        if (source !== target) {
-          this.event.emit('link.new', ev, {
-            source,
-            target: d.id,
-          });
+        if (source === target) {
+          return;
         }
+        const sourceNode = ChartUtils.getNodeById(source);
+        const targetNode = ChartUtils.getNodeById(target);
+        if (sourceNode.sourceId && targetNode.sourceId && sourceNode.labels.some((l) => targetNode.labels.includes(l))) {
+          return;
+        }
+        this.event.emit('link.new', ev, {
+          source,
+          target: d.id,
+        });
       }
     });
 
@@ -1102,6 +1144,7 @@ class Chart {
         fy: d.fy || d.y || 0,
         name: d.name || '',
         type: d.type || '',
+        status: d.status || 'approved',
         nodeType: d.nodeType || 'circle',
         description: d.description || '',
         icon: d.icon || '',

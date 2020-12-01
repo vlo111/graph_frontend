@@ -32,8 +32,12 @@ class KeywordsFilter extends Component {
         keyword: '[ No Keyword ]',
       });
     }
+    if (keywords.length) {
+      this.props.setFilter('nodeKeywords', keywords.map((d) => d.keyword), true);
+    }
+
     return _.orderBy(keywords, 'length', 'desc');
-  }, _.isEqual);
+  }, (a, b) => _.isEqual(a[0].map((d) => d.keyword), b[0].map((d) => d.keyword)));
 
   constructor(props) {
     super(props);
@@ -43,16 +47,10 @@ class KeywordsFilter extends Component {
   }
 
   handleChange = (value) => {
-    const { nodes, filters } = this.props;
-    if (!filters.nodeKeywords.length) {
-      filters.nodeKeywords = this.getKeywords(nodes).map((d) => d.keyword);
-    }
+    const { filters } = this.props;
     const i = filters.nodeKeywords.indexOf(value);
     if (i > -1) {
       filters.nodeKeywords.splice(i, 1);
-      if (!filters.nodeKeywords.length) {
-        filters.nodeKeywords = this.getKeywords(nodes).map((d) => d.keyword).filter((d) => d !== value);
-      }
     } else {
       filters.nodeKeywords.push(value);
     }
@@ -65,6 +63,14 @@ class KeywordsFilter extends Component {
     this.setState({ showMore: !showMore });
   }
 
+  toggleAll = (fullData, allChecked) => {
+    if (allChecked) {
+      this.props.setFilter('nodeKeywords', []);
+    } else {
+      this.props.setFilter('nodeKeywords', fullData.map((d) => d.keyword));
+    }
+  }
+
   render() {
     const { showMore } = this.state;
     const { nodes, filters } = this.props;
@@ -73,15 +79,27 @@ class KeywordsFilter extends Component {
     if (typesFull.length < 2) {
       return null;
     }
+    const allChecked = typesFull.length === filters.nodeKeywords.length;
     return (
       <div className="tagsFilter graphFilter">
         <h4 className="title">Node Keywords</h4>
         <ul className="list">
+          <li className="item">
+            <Checkbox
+              label={allChecked ? 'Uncheck All' : 'Check All'}
+              checked={allChecked}
+              onChange={() => this.toggleAll(typesFull, allChecked)}
+            >
+              <span className="badge">
+                {_.sumBy(typesFull, 'length')}
+              </span>
+            </Checkbox>
+          </li>
           {types.map((item) => (
             <li key={item.keyword} className="item">
               <Checkbox
                 label={item.keyword}
-                checked={_.isEmpty(filters.nodeKeywords) || filters.nodeKeywords.includes(item.keyword)}
+                checked={filters.nodeKeywords.includes(item.keyword)}
                 onChange={() => this.handleChange(item.keyword)}
               >
                 <span className="badge">

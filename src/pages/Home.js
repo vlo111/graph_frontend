@@ -7,7 +7,6 @@ import memoizeOne from 'memoize-one';
 import moment from 'moment';
 import { withRouter, Link } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
-import Utils from '../helpers/Utils';
 import Pagination from '../components/Pagination';
 import GraphListFooter from '../components/GraphListFooter';
 import GraphListHeader from '../components/GraphListHeader';
@@ -76,7 +75,7 @@ class Home extends Component {
               <Link to={`/graphs/preview/${graph.id}`}>
                 <img
                   className="thumbnail"
-                  src={graph.thumbnail || Utils.fileSrc(`/public/uploads/thumbnails/${graph.id}.png`)}
+                  src={`${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
                   alt={graph.title}
                 />
               </Link>
