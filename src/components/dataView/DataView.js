@@ -155,6 +155,10 @@ class DataView extends Component {
         this.download('png');
         break;
       }
+      case 'zip': {
+        this.download('zip');
+        break;
+      }
       case 'pdf': {
         this.download('pdf');
         break;
