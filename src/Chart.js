@@ -133,16 +133,19 @@ class Chart {
             d.remove = true;
             console.log('remove', d);
             removedNodes = true;
+          } else {
+            d.deleted = true;
+            return d;
           }
-          d.deleted = true;
-          return d;
         }
 
+     const name = ChartUtils.nodeUniqueName(d.name);
         // set node right position
         const fx = labelNode.fx - labelData.cx;
         const fy = labelNode.fy - labelData.cy;
         return {
           ...labelNode,
+          name,
           sourceId: d.sourceId,
           readOnly: true,
           fx,
@@ -251,7 +254,6 @@ class Chart {
     this.setAreaBoardZoom(transform);
     this.renderNodeText(transform.k);
     this.renderNodeStatusText(transform.k);
-
   }
 
   static setAreaBoardZoom(transform) {
@@ -535,7 +537,7 @@ class Chart {
 
       this.renderLinkText();
       this.renderNodeText();
-      this.renderNodeStatusText()
+      this.renderNodeStatusText();
       this.renderNewLink();
       this.renderSelectSquare();
       this.nodeFilter();
@@ -882,16 +884,20 @@ class Chart {
       .attr('font-size', (d) => 13.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
   }
+
   static renderNodeStatusText(scale) {
     if (!scale && !this.wrapper.empty()) {
       // eslint-disable-next-line no-param-reassign
       scale = +this.wrapper.attr('data-scale') || 1;
     }
 
-    //this.nodesWrapper.selectAll('.node text').remove();
+    // this.nodesWrapper.selectAll('.node text').remove();
 
     this.nodesWrapper.selectAll('.node')
       .filter((d) => {
+        if (d.status !== 'draft') {
+          return false;
+        }
         if (scale >= 0.8) {
           return true;
         }
@@ -901,18 +907,13 @@ class Chart {
         return true;
       })
       .append('text')
-      .attr('y', (d) => {
-        let i = 3;
-        return  i;
-      })
-      .attr('x', (d) => {
-        let i = 3;
-        return  i;
-      })
-      .attr("class", "draft")
+      .attr('y', 3)
+      .attr('x', 3)
+      .attr('class', 'draft')
       .attr('font-size', (d) => 20.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
-      .text((d) =>(d.status === 'draft' ? 'draft' : ''));
+      .text('draft');
   }
+
   static renderLinkText(links = []) {
     const wrapper = this.svg.select('.linkText');
     const linkIndexes = links.map((d) => d.index);
