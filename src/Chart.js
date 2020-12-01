@@ -135,11 +135,11 @@ class Chart {
             removedNodes = true;
           } else {
             d.deleted = true;
-            return d;
           }
+          return d;
         }
 
-     const name = ChartUtils.nodeUniqueName(d.name);
+        const name = ChartUtils.nodeUniqueName(d);
         // set node right position
         const fx = labelNode.fx - labelData.cx;
         const fy = labelNode.fy - labelData.cy;
@@ -346,7 +346,7 @@ class Chart {
             if (
               (!d.readOnly && !datum.readOnly)
               || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
-              || d.deleted
+              || (d.deleted &&  d.sourceId === datum.sourceId)
             ) {
               d.fx += ev.dx;
               d.fy += ev.dy;
