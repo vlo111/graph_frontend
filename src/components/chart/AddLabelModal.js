@@ -7,6 +7,7 @@ import Chart from '../../Chart';
 import Validate from '../../helpers/Validate';
 import Input from '../form/Input';
 import ChartUtils from "../../helpers/ChartUtils";
+import {ReactComponent as CloseSvg} from "../../assets/images/icons/close.svg";
 
 class AddLabelModal extends Component {
   constructor(props) {
@@ -73,6 +74,7 @@ class AddLabelModal extends Component {
         isOpen
         onRequestClose={this.deleteLabel}
       >
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.deleteLabel} />
         <form onSubmit={this.addLabel}>
           <h2>Add new label</h2>
           <Input
@@ -82,10 +84,10 @@ class AddLabelModal extends Component {
             onChangeText={(v) => this.handleChange('name', v)}
           />
           <div className="buttons">
-            <Button onClick={this.deleteLabel}>
+            <Button class="ghButton cancel transparent alt" onClick={this.deleteLabel}>
               Cancel
             </Button>
-            <Button type="submit">
+            <Button className="ghButton accent alt" type="submit">
               Add
             </Button>
           </div>

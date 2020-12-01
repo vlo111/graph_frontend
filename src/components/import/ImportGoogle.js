@@ -80,15 +80,18 @@ class DataImportModal extends Component {
       <>
         {step === 1 ? (
           <>
-            <Input
-              value={importData.url}
-              onChangeText={(value) => this.handleChange('url', value)}
-              type="url"
-              name="google_sheets_url"
-              label="Google Sheets URL"
-              placeholder="Paste URL from your Google Sheets"
-            />
-            <Button  className="ghButton2" onClick={this.convert} loading={loading}>Next</Button>
+            <div className="ghFormField importFile">
+              <Input
+                containerClassName="importSelectFileLbl"
+                value={importData.url}
+                onChangeText={(value) => this.handleChange('url', value)}
+                type="url"
+                name="google_sheets_url"
+                label="Google Sheets URL"
+                placeholder="Paste URL from your Google Sheets"
+              />
+            </div>
+            <Button className="ghButton accent alt main" onClick={this.convert} loading={loading}>Next</Button>
           </>
         ) : null}
         {step === 2 ? <ImportStep2 /> : null}

@@ -42,17 +42,22 @@ class ImportStep2 extends Component {
     });
     this.props.setGraphCustomFields(customFields);
     this.props.setActiveButton('create');
+    this.props.updateShowSelect(true);
+  }
+
+  back = () => {
+    this.props.updateShowSelect(true);
   }
 
   render() {
     const { importData } = this.props;
     return (
       <>
-        <div>
+        <div className="importST2Node">
           <strong>Nodes: </strong>
           {importData.nodes?.length || 0}
         </div>
-        <div>
+        <div className="importST2Link">
           <strong>Links: </strong>
           {importData.links?.length || 0}
         </div>
@@ -62,7 +67,12 @@ class ImportStep2 extends Component {
             {importData.warnings?.length}
           </div>
         ) : null}
-        <Button onClick={this.import}>Import</Button>
+        <div className="buttons">
+          <Button class="ghButton cancel transparent alt" onClick={this.back}>
+            Prev
+          </Button>
+          <Button className="ghButton accent alt main" onClick={this.import}>Import</Button>
+        </div>
       </>
     );
   }

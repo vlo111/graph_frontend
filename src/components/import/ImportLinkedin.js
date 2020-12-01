@@ -90,12 +90,14 @@ class DataImportModal extends Component {
 
     return (
       <>
-        <File
-          onChangeFile={(file) => this.handleChange('file', file)}
-          accept=".pdf"
-          label="Select PDF File"
-        />
-        <Button  className="ghButton2" onClick={this.convert} loading={loading}>Import</Button>
+        <div className="ghFormField importFile">
+          <label className="importSelectFileLbl">Select file</label>
+          <File
+            onChangeFile={(file) => this.handleChange('file', file)}
+            accept=".pdf"
+          />
+        </div>
+        <Button className="ghButton accent alt main" onClick={this.convert} loading={loading}>Import</Button>
       </>
     );
   }
