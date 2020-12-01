@@ -76,7 +76,7 @@ class LabelUtils {
     data.nodes.forEach((d) => {
       d.fx = d.fx - minX + posX;
       d.fy = d.fy - minY + posY;
-      d.name = ChartUtils.nodeUniqueName(d.name);
+      d.name = ChartUtils.nodeUniqueName(d);
 
       if (isEmbed) {
         d.readOnly = true;
