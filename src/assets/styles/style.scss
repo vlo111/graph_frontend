@@ -309,13 +309,14 @@ p {
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 5px 0;
+  margin: 20px 10px;
   position: relative;
 
   label,
   .label {
     font-size: 16px;
     margin-bottom: 1px;
+    font: normal normal 600 16px/22px Open Sans;
   }
 
 
@@ -495,7 +496,7 @@ p {
     }
   }
 
-  input {
+  input[type="file"] {
     display: none;
   }
 }
@@ -535,7 +536,8 @@ p {
   }
 
   .ghInput input {
-    padding-right: 100px;
+    padding-right: 144px;
+    text-overflow: ellipsis;
   }
 
   .clear {
@@ -571,7 +573,7 @@ p {
     align-items: center;
     justify-content: center;
     padding: 8px 18px;
-    margin: 0;
+    margin: 0px 10px 0px;
     cursor: pointer;
     height: 33px;
     border-radius: 8px;
@@ -1621,11 +1623,10 @@ p {
   .ghModal {
     outline: none;
     position: relative;
-    top: 16%;
     max-width: 460px;
     background-color: white;
     box-shadow: 0px 6px 20px #0D090526;
-    padding: 15px;
+    padding: 40px 20px;
     max-height: 80%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -1633,6 +1634,10 @@ p {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
     .ghModalContent {
       height: 100%;
@@ -1641,6 +1646,14 @@ p {
       overflow-x: hidden;
       margin-right: -15px;
       padding-right: 15px;
+    }
+
+    h2 {
+      text-align: center;
+      font: normal normal bold 26px/36px Open Sans;
+    }
+    label {
+      font: normal normal 600 16px/17px Open Sans
     }
   }
 
@@ -4030,8 +4043,18 @@ body .gh__menu {
 }
 
 .ghImportModal {
+  display: block !important;
   .ghTabs {
     margin-bottom: 20px;
+  }
+
+  .ghButton {
+    margin: 10px 10px 0px;
+    float: right;
+  }
+
+  h2 {
+    margin-bottom: 50px;
   }
 }
 
@@ -4956,5 +4979,32 @@ body .gh__menu {
   font-family: chaparral-pro, serif;
 }
 
+.ghModalOverlay .ghModal, .nodeTabsFormModal {
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
+}
+
+.importST2Node {
+  text-align: center;
+}
+
+.importST2Link {
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 30px;
+}
 
 
