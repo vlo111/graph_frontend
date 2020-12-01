@@ -521,13 +521,15 @@ class ChartUtils {
     return `${Chart.data.lastUid}.${graphId}`;
   }
 
-  static nodeUniqueName(name) {
-    const nodes = Chart.getNodes().filter((n) => name === n.name || new RegExp(`^${Utils.escRegExp(name)}_\\d+$`).test(n.name));
+  static nodeUniqueName(node) {
+    const nodes = Chart.getNodes()
+      .filter((n) => n.id !== node.id
+        && (node.name === n.name || new RegExp(`^${Utils.escRegExp(node.name)}_\\d+$`).test(n.name)));
     if (!nodes.length) {
-      return name;
+      return node.name;
     }
     const max = _.max(nodes.map((n) => +(n.name.match(/_(\d+)$/) || [0, 0])[1])) || 0;
-    return `${name}_${max + 1}`;
+    return `${node.name}_${max + 1}`;
   }
 }
 

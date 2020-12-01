@@ -139,7 +139,7 @@ class Chart {
           }
         }
 
-     const name = ChartUtils.nodeUniqueName(d.name);
+     const name = ChartUtils.nodeUniqueName(d);
         // set node right position
         const fx = labelNode.fx - labelData.cx;
         const fy = labelNode.fy - labelData.cy;
