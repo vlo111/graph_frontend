@@ -156,7 +156,7 @@ class DataView extends Component {
         break;
       }
       case 'zip': {
-        this.download('zip');
+        this.export('zip');
         break;
       }
       case 'pdf': {
