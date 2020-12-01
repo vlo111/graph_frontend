@@ -20,7 +20,6 @@ export default function reducer(state = initialState, action) {
       if (!graphComments.parentId) {
         comments.push(graphComments);
       }
-
       return {
         ...state,
         graphComments: comments,
