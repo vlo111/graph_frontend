@@ -346,7 +346,7 @@ class Chart {
             if (
               (!d.readOnly && !datum.readOnly)
               || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
-              || d.deleted
+              || (d.deleted &&  d.sourceId === datum.sourceId)
             ) {
               d.fx += ev.dx;
               d.fy += ev.dy;
