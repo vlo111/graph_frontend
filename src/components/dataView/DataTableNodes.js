@@ -44,7 +44,7 @@ class DataTableNodes extends Component {
   handleDataChange = (changes) => {
     const { grid } = this.state;
     changes.forEach((d) => {
-      const [error, value] = Validate.link(d.cell.key, d.value);
+      const [error, value] = Validate.node(d.cell.key, d.value);
       if (error) {
         toast.error(error);
       }
