@@ -1,4 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 143 51" width="143" height="55">
-    <text font-size="37" font-family="'Open Sans', sans-serif" font-weight="bold" x="0" y="42">Graphs</text>
-    <circle r="3" fill="#FE794F" cx="138" cy="39" />
+<svg width="143" height="51" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="602" width="802" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text style="cursor: move;" id="svg_1" y="42" x="0" font-weight="bold" font-family="'Open Sans', sans-serif" font-size="37">ARAKS</text>
+  <circle id="svg_2" cy="39" cx="138" fill="#FE794F" r="3"/>
+ </g>
 </svg>
