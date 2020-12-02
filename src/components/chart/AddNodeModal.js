@@ -213,7 +213,7 @@ class AddNodeModal extends Component {
 const mapStateToProps = (state) => ({
   addNodeParams: state.app.addNodeParams,
   currentUserId: state.account.myAccount.id,
-  currentUserRole: state.graphs.singleGraph.currentUserRole,
+  currentUserRole: state.graphs.singleGraph.currentUserRole || '',
 });
 const mapDispatchToProps = {
   toggleNodeModal,

@@ -406,6 +406,7 @@ class Chart {
       .data(this.data.labels.filter((l) => l.hidden !== 1))
       .join('path')
       .attr('class', 'label nodeCreate')
+      .attr('marker-end', (d) => d.status === 'lock' ? 'url(#label-lock)' : null)
       .attr('opacity', (d) => (d.sourceId ? 0.6 : 0.4))
       .attr('data-id', (d) => d.id)
       .attr('fill', ChartUtils.labelColors)

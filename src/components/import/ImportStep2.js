@@ -36,7 +36,6 @@ class ImportStep2 extends Component {
       description,
       embedLabels: [],
     });
-
     Chart.render({
       nodes, links, labels, embedLabels: [],
     });
@@ -68,7 +67,7 @@ class ImportStep2 extends Component {
           </div>
         ) : null}
         <div className="buttons">
-          <Button class="ghButton cancel transparent alt" onClick={this.back}>
+          <Button className="ghButton cancel transparent alt" onClick={this.back}>
             Prev
           </Button>
           <Button className="ghButton accent alt main" onClick={this.import}>Import</Button>

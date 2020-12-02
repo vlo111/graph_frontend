@@ -4,13 +4,13 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
+import lockSvg from '../../assets/images/icons/lock.svg';
 import Chart from '../../Chart';
 import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../contextMenu/ContextMenu';
 import CustomFields from '../../helpers/CustomFields';
 import ChartUtils from '../../helpers/ChartUtils';
 import { socketLabelDataChange } from '../../store/actions/socket';
-import LabelUtils from '../../helpers/LabelUtils';
 import Api from '../../Api';
 
 class ReactChart extends Component {
@@ -211,6 +211,10 @@ class ReactChart extends Component {
                   />
                 </feDropShadow>
               </filter>
+              <marker id="label-lock" refX="-100" refY="50" viewBox="0 0 512 512" markerWidth="40" markerHeight="40">
+                <use width="512" height="512" href={`${lockSvg}#label-lock`} />
+              </marker>
+
             </defs>
           </g>
         </svg>
