@@ -1133,11 +1133,15 @@ p {
 
   .logo-graphs {
     color: #FE794F;
-    text-align: left;
     font: normal normal bold 37px/51px Open Sans;
     letter-spacing: 0px;
     text-transform: capitalize;
     opacity: 1;
+
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin: 17px 40px;
 
     a {
       color: #FE794F !important;
