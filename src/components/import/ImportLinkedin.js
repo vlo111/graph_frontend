@@ -50,7 +50,7 @@ class DataImportModal extends Component {
     const customField = {};
 
     await Promise.all(node.education.map(async (p) => {
-      const url = Utils.wikiUrlByName(p.institution);
+      const url = Utils.wikiContentUrlByName(p.institution);
 
       const wikiData = await Utils.getWikiContent(url);
 

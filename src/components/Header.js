@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Notification from './Notification';
 import AccountDropDown from './account/AccountDropDown';
 import SearchGraphs from './search/SearchGraphs';
+import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 
 class Header extends Component {
   render() {
@@ -10,7 +11,7 @@ class Header extends Component {
       <header id="header">
         <div className="logo-graphs">
           <Link to="/">
-            <h3> graphs analysed </h3>
+          <LogoSvg className="logo orange" />
           </Link>
         </div>
         <SearchGraphs />
