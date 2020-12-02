@@ -172,7 +172,10 @@ p {
 
 .logoWrapper {
   position: relative;
-
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin: 17px 40px;
   .autoSaveText {
     font-size: 12px;
     color: $color-main2;
@@ -495,7 +498,7 @@ p {
     }
   }
 
-  input[type="file"] {
+  input {
     display: none;
   }
 }
@@ -535,7 +538,7 @@ p {
   }
 
   .ghInput input {
-    padding-right: 144px;
+    padding-right: 100px;
     text-overflow: ellipsis;
   }
 
@@ -1169,7 +1172,7 @@ p {
 
   .graphs {
     position: absolute;
-    left: 477px;
+    left: 550px;
 
     button {
       background-color: $color-white;
@@ -1626,7 +1629,7 @@ p {
   .ghModal {
     outline: none;
     position: relative;
-    top: 3%;
+    top: 16%;
     max-width: 460px;
     background-color: white;
     box-shadow: 0px 6px 20px #0D090526;
@@ -1638,10 +1641,6 @@ p {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 
     .ghModalContent {
       height: 100%;
@@ -1879,7 +1878,7 @@ p {
 
   .header {
     display: flex;
-    padding: 25px 5px 0;
+    padding: 0 5px;
 
     .buttons {
       margin-left: auto;
@@ -3239,7 +3238,6 @@ body .gh__menu {
 }
 
 .ghModalSearch {
-  top: 25% !important;
   width: 460px;
   max-width: 90%;
   display: flex;
@@ -3926,6 +3924,22 @@ body .gh__menu {
       font-weight: 600;
     }
   }
+
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
 }
 
 .connectionDetails {
@@ -3979,7 +3993,7 @@ body .gh__menu {
 
 .ghModalNodeFullInfoOverlay {
   .ghModal {
-    //top: 50%;
+    top: 5%;
     width: 77%;
     height: 90%;
     max-height: 90%;
@@ -4053,8 +4067,13 @@ body .gh__menu {
   h2 {
     margin-bottom: 40px;
   }
+   .close {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    cursor: pointer;
+  }
 }
-
 .share-modal {
   @mixin collaborators-list {
     display: flex;
@@ -4976,24 +4995,93 @@ body .gh__menu {
   font-family: chaparral-pro, serif;
 }
 
-.ghModalOverlay .ghModal, .nodeTabsFormModal {
-  .close {
-    padding: 0;
+
+
+#dataTable {
+  flex: 1;
+  width: 40%;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: white;
+  max-height: 100vh;
+  height: 100vh;
+  position: absolute;
+  z-index: 3;
+  left: 202px;
+  border-left: 1px solid $color-light-gray;
+  padding-left: 4px;
+
+
+  &.fullWidth {
     position: absolute;
-    top: 15px;
-    right: 16px;
+    width: calc(100% - 202px);
+    height: 100%;
+    z-index: 10;
+    overflow: hidden;
+  }
 
-    svg {
-      width: 11px;
-      height: 10px;
 
-      path {
-        fill: $color-gray;
+  h4 {
+    font-weight: normal;
+
+    .circle {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background-color: red;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .line {
+      display: inline-block;
+      width: 15px;
+      height: 3px;
+      background-color: red;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+  }
+
+  .contentWrapper {
+    background-color: white;
+    max-width: 100%;
+    height: calc(100% - 34px);
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    position: relative;
+
+    p {
+      font-size: 15px;
+    }
+  }
+
+  .header {
+    display: flex;
+    padding: 25px 5px 0;
+
+    .buttons {
+      margin-left: auto;
+      margin-top: 0;
+
+      .ghButton {
+        background-color: transparent;
+        color: $color-dark;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        border: 2px solid $color-dark;
+
+        .icon {
+          margin: 0;
+          display: flex;
+          margin: auto;
+        }
       }
     }
   }
 }
-
 .importST2Node {
   text-align: center;
 }
@@ -5048,7 +5136,7 @@ body .gh__menu {
     z-index: 4;
     position: absolute;
     margin-left: 5px;
-    width: 50%;
+    width: 70%;
     padding: 50px 40px 21px;
     border-radius: 12px;
     background: #C6E6FF 0% 0% no-repeat padding-box;
@@ -5086,4 +5174,189 @@ body .gh__menu {
     font: normal normal normal 15px/19px Open Sans;
     letter-spacing: 0px;
   }
+}
+
+.wikiSearch {
+  width: 800px;
+  margin: 0 auto;
+  text-align: left;
+  margin-bottom: 48px !important;
+  margin-left: 50px;
+}
+.wikiSearch h3 {
+  color: #1a0dab;
+}
+.wikiSearch h3 a {
+  color: #1a0dab;
+  display: inline-block;
+  line-height: 16px;
+  text-decoration: none;
+}
+.wikiSearch h3 a:hover {
+  border-bottom: 3px solid;
+}
+.wikiSearch a:visited {
+  color: #1a0dab;
+}
+.wikiSearch .link a {
+  text-decoration: none;
+  color: #287e44;
+}
+.wikiSearch .link a:hover {
+  text-decoration: none;
+}
+.wikiSearch .searchmatch {
+  font-weight: bold;
+}
+.wikiSearch .description {
+  color: #414141;
+  position: absolute;
+  margin-right: 15%;
+}
+
+.Wiki {
+  margin: 0 auto;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 50px;
+}
+
+.wikiButton {
+  position: fixed;
+  background: transparent;
+  border: none;
+  display: flex;
+  z-index: 2;
+  left: 500px;
+  top: 8px;
+
+  img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.Wiki form {
+  border-radius: 20px;
+  box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
+  margin-bottom: 30px;
+}
+.Wiki input {
+  line-height: 40px;
+  border-radius: 20px 0 0 20px;
+  border: none;
+  width: 400px;
+  padding: 0 20px;
+}
+.Wiki input:focus {
+  outline: none;
+}
+.Wiki button {
+  line-height: 40px;
+  border: none;
+  background-color: #f6f6f6;
+  padding: 0 20px;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  margin-left: 50px !important;
+}
+
+.Wiki button:focus {
+  outline: none;
+}
+.wikiModal {
+  img {
+    margin: 0 auto;
+    width: 80px;
+  }
+
+  h2 {
+    top: 15%;
+    left: 42%;
+    font-family: times !important;
+    font-size: 40px !important;
+    position: absolute;
+  }
+}
+
+.wikiCheckbox {
+  position: absolute;
+  display: none; }
+
+.wikiCheckbox[disabled] {
+  cursor: not-allowed; }
+
+.wikiCheckbox + label {
+  margin-left: -35px;
+  margin-top: 5px;
+  position: relative;
+  display: block;
+  padding-left: 30px;
+  cursor: pointer;
+  vertical-align: middle; 
+}
+.wikiCheckbox + label:hover:before {
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+  animation-name: hover-color; }
+.wikiCheckbox + label:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  content: '';
+  border: 1px solid #c0c0c0; }
+.wikiCheckbox + label:after {
+  position: absolute;
+  display: none;
+  content: ''; }
+
+.wikiCheckbox[disabled] + label {
+  cursor: not-allowed;
+  color: #e4e4e4; }
+.wikiCheckbox[disabled] + label:hover,
+.wikiCheckbox[disabled] + label:before,
+.wikiCheckbox[disabled] + label:after {
+  cursor: not-allowed; }
+.wikiCheckbox[disabled] + label:hover:before {
+  border: 1px solid #e4e4e4;
+  animation-name: none; }
+.wikiCheckbox[disabled] + label:before {
+  border-color: #e4e4e4; }
+.wikiCheckbox:checked + label:before {
+  animation-name: none; }
+.wikiCheckbox:checked + label:after {
+  display: block; }
+.wikiCheckbox + label:before {
+  border-radius: 3px; }
+.wikiCheckbox + label:after {
+  top: 2px;
+  left: 7px;
+  box-sizing: border-box;
+  width: 6px;
+  height: 12px;
+  transform: rotate(45deg);
+  border-width: 2px;
+  border-style: solid;
+  border-color: #fff;
+  border-top: 0;
+  border-left: 0; }
+.wikiCheckbox:checked + label:before {
+  border: #3e97eb;
+  background: #3e97eb; }
+.wikiCheckbox:checked[disabled] + label:before {
+  border: #c9e2f9;
+  background: #c9e2f9; }
+
+.wikiModal {
+  width: 100%;
+}
+
+.WikiCreateNode {
+  position: absolute !important;
+  right: 40px;
+  font-size: 13px !important;
+  width: 10%;
 }
