@@ -11,8 +11,7 @@ import NodeTabsFormModal from './NodeTabsFormModal';
 import ContextMenu from '../contextMenu/ContextMenu';
 import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
 import FlexTabs from "../FlexTabs";
-import MapsInfo from "../maps/MapsInfo";
-import MapImg from '../../assets/images/icons/google-maps.svg';
+import MapsInfo from "../maps/MapsInfo"; 
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -114,9 +113,9 @@ class NodeTabs extends Component {
             (
               this.state.showLocation
                 ? <MapsInfo node={node} />
-                : <button  className="mapTabButton" href="#" onClick={() => this.showLocation()}>
-                <img src={MapImg} alt="show location" />
-                </button>
+                : <Button  className="mapTabButton" href="#" onClick={() => this.showLocation()}>
+                Show on Map
+                </Button>
             ),
           ]
         ) : (

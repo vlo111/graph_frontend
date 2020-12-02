@@ -114,7 +114,7 @@ class ContextMenu extends Component {
           {showPast ? (
             <div className="ghButton notClose">
               <Icon value="fa-clipboard" />
-              Past
+              Paste
               <Icon className="arrow" value="fa-angle-right" />
               <div className="contextmenu">
                 <Button onClick={(ev) => {
@@ -129,7 +129,7 @@ class ContextMenu extends Component {
                   this.handleClick(ev, 'label.embed');
                 }}
                 >
-                  Past Embedded
+                  Paste Embedded
                 </Button>
               </div>
             </div>
