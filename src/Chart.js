@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
+import lockSvg from './assets/images/icons/lock.svg';
 import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
@@ -340,7 +341,6 @@ class Chart {
         if (datum.readOnly) {
           readOnlyLabel = this.data.embedLabels.find((l) => l.label.id === datum.id);
         }
-        console.log(this.data.embedLabels)
         this.node.each((d) => {
           if (dragLabel.nodes.some((n) => n.id === d.id)) {
             if (
@@ -406,7 +406,7 @@ class Chart {
       .data(this.data.labels.filter((l) => l.hidden !== 1))
       .join('path')
       .attr('class', 'label nodeCreate')
-      .attr('marker-end', (d) => d.status === 'lock' ? 'url(#label-lock)' : null)
+      .attr('marker-end', (d) => (d.status === 'lock' ? 'url(#label-lock)' : null))
       .attr('opacity', (d) => (d.sourceId ? 0.6 : 0.4))
       .attr('data-id', (d) => d.id)
       .attr('fill', ChartUtils.labelColors)
@@ -415,6 +415,20 @@ class Chart {
       .on('mouseenter', (ev, d) => this.event.emit('label.mouseenter', ev, d))
       .on('mousemove', (ev, d) => this.event.emit('label.mousemove', ev, d))
       .on('mouseleave', (ev, d) => this.event.emit('label.mouseleave', ev, d));
+
+
+    setTimeout(() => {
+      // labelsWrapper.selectAll('use')
+      //   .data(this.data.labels.filter((l) => l.hidden !== 1))
+      //   .join('use')
+      //   .attr('href', `${lockSvg}#label-lock`)
+      //   .attr('height', '40')
+      //   .attr('width', '40')
+      //   .attr('transform', (d, index, g) => {
+      //     const { width, height, left, top } = document.querySelector(`[data-id="${d.id}"]`).getBoundingClientRect();
+      //     return `translate(${top}, ${left})`
+      //   })
+    }, 200)
 
     this.labelMovement();
 
