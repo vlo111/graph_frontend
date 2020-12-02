@@ -1621,8 +1621,6 @@ p {
 
   .ghModal {
     outline: none;
-    position: relative;
-    top: 3%;
     max-width: 460px;
     background-color: white;
     box-shadow: 0px 6px 20px #0D090526;
@@ -1634,10 +1632,10 @@ p {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    // position: absolute;
-    // top: 50%;
-    // left: 50%;
-    // transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
     .ghModalContent {
       height: 100%;
