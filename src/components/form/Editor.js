@@ -126,9 +126,11 @@ class Editor extends Component {
     let top;
     let left;
     if (showPopUp) {
+      let modalPos = document.querySelector('.nodeTabsFormModal').getBoundingClientRect()
       const pos = document.querySelector(`.jodit-toolbar-button_${showPopUp}`).getBoundingClientRect();
-      top = pos.top + 35;
-      left = pos.left;
+
+      top = (pos.top + 35) - modalPos.top;
+      left = pos.left - modalPos.left - 50;
     }
 
     return (
