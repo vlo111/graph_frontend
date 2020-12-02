@@ -142,7 +142,7 @@ class ContextMenu extends Component {
                   icon="fa-globe"
                   onClick={(ev) => this.handleClick(ev, 'active-button', { button: 'maps-view' })}
                 >
-                  Show in map
+                  Show on map
                 </Button>
               ) : null}
               <Button icon="fa-crop" onClick={(ev) => this.handleClick(ev, 'crop')}>

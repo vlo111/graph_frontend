@@ -1622,7 +1622,7 @@ p {
   .ghModal {
     outline: none;
     position: relative;
-    top: 16%;
+    top: 3%;
     max-width: 460px;
     background-color: white;
     box-shadow: 0px 6px 20px #0D090526;
@@ -1634,10 +1634,10 @@ p {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
 
     .ghModalContent {
       height: 100%;
@@ -3966,7 +3966,7 @@ body .gh__menu {
 
 .ghModalNodeFullInfoOverlay {
   .ghModal {
-    top: 50%;
+    //top: 50%;
     width: 77%;
     height: 90%;
     max-height: 90%;
