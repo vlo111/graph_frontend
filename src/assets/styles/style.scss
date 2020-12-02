@@ -853,6 +853,9 @@ p {
     .labelsBoard {
       pointer-events: none;
     }
+    .labelLock{
+      pointer-events: none;
+    }
   }
 
   &.create-label {

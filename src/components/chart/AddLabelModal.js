@@ -84,7 +84,7 @@ class AddLabelModal extends Component {
             onChangeText={(v) => this.handleChange('name', v)}
           />
           <div className="buttons">
-            <Button class="ghButton cancel transparent alt" onClick={this.deleteLabel}>
+            <Button className="ghButton cancel transparent alt" onClick={this.deleteLabel}>
               Cancel
             </Button>
             <Button className="ghButton accent alt" type="submit">
