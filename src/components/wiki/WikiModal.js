@@ -132,31 +132,25 @@ https://en.wikipedia.org/wiki/${name}
     }
 
     checkedWiki = (param) => {
-      const { getChecked } = this.state;
 
-      if (!getChecked) {
-        this.setState({
-          getChecked: param,
-        });
-      } else {
-        this.setState({
-          getChecked: false,
-        });
-      }
+      this.setState({
+        getChecked: param,
+      });
     }
 
     render() {
       const { getChecked } = this.state;
       const wikiSearchResults = [];
-      // console.log(this.state.wikiSearchReturnValues);
 
       for (const key3 in this.state.wikiSearchReturnValues) {
         wikiSearchResults.push(
           <div className="wikiSearch" key={key3}>
+            {key3 === getChecked
+            && <button onClick={(ev) => this.openAddNewNode(ev)} className="ghButton accent alt WikiCreateNode">Create Node</button>}
             <div>
               <input
                 onChange={() => this.checkedWiki(key3)}
-                disabled={!getChecked ? getChecked : (key3 !== getChecked)}
+                checked={!getChecked ? getChecked : (key3 === getChecked)}
                 className="wikiCheckbox"
                 type="checkbox"
                 name="layout"
@@ -183,8 +177,6 @@ https://en.wikipedia.org/wiki/${name}
         );
       }
 
-      console.log(wikiSearchResults);
-
       return (
         <>
           <Modal
@@ -202,10 +194,7 @@ https://en.wikipedia.org/wiki/${name}
             </div>
             <div className="Wiki">
               {wikiSearchResults}
-              {!_.isEmpty(wikiSearchResults)
-              && <button onClick={(ev) => this.openAddNewNode(ev)} className="ghButton accent alt">Create Node</button>}
             </div>
-
           </Modal>
 
         </>
