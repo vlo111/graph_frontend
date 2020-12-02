@@ -185,7 +185,7 @@ https://en.wikipedia.org/wiki/${name}
             overlayClassName="ghModalOverlay ghMapsModalOverlay"
             onRequestClose={this.props.onClose}
           >
-            <img src={WikiImg} alt="wikipedia" />
+            <img src={WikiImg} alt="wikipedia" className="wikipediaLogo" />
             <div className="Wiki">
               <form action="">
                 <input type="text" value={this.state.WikiSearchTerms || ''} onChange={this.changeWikiSearchTerms} placeholder="Search Wikipedia Articles" />

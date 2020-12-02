@@ -172,7 +172,10 @@ p {
 
 .logoWrapper {
   position: relative;
-
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin: 17px 40px;
   .autoSaveText {
     font-size: 12px;
     color: $color-main2;
@@ -495,7 +498,7 @@ p {
     }
   }
 
-  input[type="file"] {
+  input {
     display: none;
   }
 }
@@ -535,7 +538,7 @@ p {
   }
 
   .ghInput input {
-    padding-right: 144px;
+    padding-right: 100px;
     text-overflow: ellipsis;
   }
 
@@ -1626,7 +1629,7 @@ p {
   .ghModal {
     outline: none;
     position: relative;
-    top: 3%;
+    top: 16%;
     max-width: 460px;
     background-color: white;
     box-shadow: 0px 6px 20px #0D090526;
@@ -1638,10 +1641,6 @@ p {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 
     .ghModalContent {
       height: 100%;
@@ -1879,7 +1878,7 @@ p {
 
   .header {
     display: flex;
-    padding: 25px 5px 0;
+    padding: 0 5px;
 
     .buttons {
       margin-left: auto;
@@ -3239,7 +3238,6 @@ body .gh__menu {
 }
 
 .ghModalSearch {
-  top: 25% !important;
   width: 460px;
   max-width: 90%;
   display: flex;
@@ -3926,6 +3924,22 @@ body .gh__menu {
       font-weight: 600;
     }
   }
+
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
 }
 
 .connectionDetails {
@@ -3979,7 +3993,7 @@ body .gh__menu {
 
 .ghModalNodeFullInfoOverlay {
   .ghModal {
-    //top: 50%;
+    top: 5%;
     width: 77%;
     height: 90%;
     max-height: 90%;
@@ -4053,8 +4067,13 @@ body .gh__menu {
   h2 {
     margin-bottom: 40px;
   }
+   .close {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    cursor: pointer;
+  }
 }
-
 .share-modal {
   @mixin collaborators-list {
     display: flex;
@@ -4969,31 +4988,99 @@ body .gh__menu {
   }
 
 }
-
 .graphsName {
   font-size: 15px;
   color: #FE794F;
   font-family: chaparral-pro, serif;
 }
 
-.ghModalOverlay .ghModal, .nodeTabsFormModal {
-  .close {
-    padding: 0;
+
+
+#dataTable {
+  flex: 1;
+  width: 40%;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: white;
+  max-height: 100vh;
+  height: 100vh;
+  position: absolute;
+  z-index: 3;
+  left: 202px;
+  border-left: 1px solid $color-light-gray;
+  padding-left: 4px;
+
+
+  &.fullWidth {
     position: absolute;
-    top: 15px;
-    right: 16px;
+    width: calc(100% - 202px);
+    height: 100%;
+    z-index: 10;
+    overflow: hidden;
+  }
 
-    svg {
-      width: 11px;
-      height: 10px;
 
-      path {
-        fill: $color-gray;
+  h4 {
+    font-weight: normal;
+
+    .circle {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background-color: red;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .line {
+      display: inline-block;
+      width: 15px;
+      height: 3px;
+      background-color: red;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+  }
+
+  .contentWrapper {
+    background-color: white;
+    max-width: 100%;
+    height: calc(100% - 34px);
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    position: relative;
+
+    p {
+      font-size: 15px;
+    }
+  }
+
+  .header {
+    display: flex;
+    padding: 25px 5px 0;
+
+    .buttons {
+      margin-left: auto;
+      margin-top: 0;
+
+      .ghButton {
+        background-color: transparent;
+        color: $color-dark;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        border: 2px solid $color-dark;
+
+        .icon {
+          margin: 0;
+          display: flex;
+          margin: auto;
+        }
       }
     }
   }
 }
-
 .importST2Node {
   text-align: center;
 }
@@ -5048,7 +5135,7 @@ body .gh__menu {
     z-index: 4;
     position: absolute;
     margin-left: 5px;
-    width: 50%;
+    width: 70%;
     padding: 50px 40px 21px;
     border-radius: 12px;
     background: #C6E6FF 0% 0% no-repeat padding-box;
@@ -5179,7 +5266,7 @@ body .gh__menu {
 .wikiModal {
   img {
     margin: 0 auto;
-    width: 200px;
+    width: 118px;
   }
 
   h2 {
@@ -5205,7 +5292,8 @@ body .gh__menu {
   display: block;
   padding-left: 30px;
   cursor: pointer;
-  vertical-align: middle; }
+  vertical-align: middle; 
+}
 .wikiCheckbox + label:hover:before {
   animation-duration: 0.4s;
   animation-fill-mode: both;
