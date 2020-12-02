@@ -5087,3 +5087,180 @@ body .gh__menu {
     letter-spacing: 0px;
   }
 }
+
+.wikiSearch {
+  width: 800px;
+  margin: 0 auto;
+  text-align: left;
+  margin-bottom: 48px !important;
+  margin-left: 50px;
+}
+.wikiSearch h3 {
+  color: #1a0dab;
+}
+.wikiSearch h3 a {
+  color: #1a0dab;
+  display: inline-block;
+  line-height: 16px;
+  text-decoration: none;
+}
+.wikiSearch h3 a:hover {
+  border-bottom: 3px solid;
+}
+.wikiSearch a:visited {
+  color: #1a0dab;
+}
+.wikiSearch .link a {
+  text-decoration: none;
+  color: #287e44;
+}
+.wikiSearch .link a:hover {
+  text-decoration: none;
+}
+.wikiSearch .searchmatch {
+  font-weight: bold;
+}
+.wikiSearch .description {
+  color: #414141;
+  position: absolute;
+  margin-right: 15%;
+}
+
+.Wiki {
+  margin: 0 auto;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 50px;
+}
+
+.wikiButton {
+  position: fixed;
+  background: transparent;
+  border: none;
+  display: flex;
+  z-index: 2;
+  left: 500px;
+  top: 8px;
+
+  img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.Wiki form {
+  border-radius: 20px;
+  box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
+  margin-bottom: 30px;
+}
+.Wiki input {
+  line-height: 40px;
+  border-radius: 20px 0 0 20px;
+  border: none;
+  width: 400px;
+  padding: 0 20px;
+}
+.Wiki input:focus {
+  outline: none;
+}
+.Wiki button {
+  line-height: 40px;
+  border: none;
+  background-color: #f6f6f6;
+  padding: 0 20px;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  margin-left: 50px !important;
+}
+
+.Wiki button:focus {
+  outline: none;
+}
+.wikiModal {
+  img {
+    margin: 0 auto;
+    width: 200px;
+  }
+
+  h2 {
+    top: 15%;
+    left: 42%;
+    font-family: times !important;
+    font-size: 40px !important;
+    position: absolute;
+  }
+}
+
+.wikiCheckbox {
+  position: absolute;
+  display: none; }
+
+.wikiCheckbox[disabled] {
+  cursor: not-allowed; }
+
+.wikiCheckbox + label {
+  margin-left: -35px;
+  margin-top: 5px;
+  position: relative;
+  display: block;
+  padding-left: 30px;
+  cursor: pointer;
+  vertical-align: middle; }
+.wikiCheckbox + label:hover:before {
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+  animation-name: hover-color; }
+.wikiCheckbox + label:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  content: '';
+  border: 1px solid #c0c0c0; }
+.wikiCheckbox + label:after {
+  position: absolute;
+  display: none;
+  content: ''; }
+
+.wikiCheckbox[disabled] + label {
+  cursor: not-allowed;
+  color: #e4e4e4; }
+.wikiCheckbox[disabled] + label:hover,
+.wikiCheckbox[disabled] + label:before,
+.wikiCheckbox[disabled] + label:after {
+  cursor: not-allowed; }
+.wikiCheckbox[disabled] + label:hover:before {
+  border: 1px solid #e4e4e4;
+  animation-name: none; }
+.wikiCheckbox[disabled] + label:before {
+  border-color: #e4e4e4; }
+.wikiCheckbox:checked + label:before {
+  animation-name: none; }
+.wikiCheckbox:checked + label:after {
+  display: block; }
+.wikiCheckbox + label:before {
+  border-radius: 3px; }
+.wikiCheckbox + label:after {
+  top: 2px;
+  left: 7px;
+  box-sizing: border-box;
+  width: 6px;
+  height: 12px;
+  transform: rotate(45deg);
+  border-width: 2px;
+  border-style: solid;
+  border-color: #fff;
+  border-top: 0;
+  border-left: 0; }
+.wikiCheckbox:checked + label:before {
+  border: #3e97eb;
+  background: #3e97eb; }
+.wikiCheckbox:checked[disabled] + label:before {
+  border: #c9e2f9;
+  background: #c9e2f9; }
+
+.wikiModal {
+  width: 100%;
+}
