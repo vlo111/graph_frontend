@@ -139,7 +139,7 @@ class AddNodeModal extends Component {
           <h2>{_.isNull(index) ? 'Add new node' : 'Edit node'}</h2>
           <Select
             isCreatable
-            label="Type"
+            label="Node type"
             value={[
               groups.find((t) => t.value === nodeData.type) || {
                 value: nodeData.type,
@@ -152,7 +152,7 @@ class AddNodeModal extends Component {
             onChange={(v) => this.handleChange('type', v?.value || '')}
           />
           <Input
-            label="Name"
+            label="Node name"
             value={nodeData.name}
             error={errors.name}
             limit={250}
@@ -169,7 +169,7 @@ class AddNodeModal extends Component {
             onChange={(v) => this.handleChange('status', v?.value || '')}
           />
           <Select
-            label="Node Type"
+            label="Icon shape"
             portal
             options={NODE_TYPES}
             value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
