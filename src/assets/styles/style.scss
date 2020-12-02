@@ -3139,7 +3139,15 @@ p {
     }
   }
 }
+.logoInfoText {
+  h4 {
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    margin: 10px 0;
 
+  }
+}
 .socialLogin {
   display: flex;
   flex-direction: column;

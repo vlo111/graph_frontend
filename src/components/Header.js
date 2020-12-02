@@ -10,7 +10,7 @@ class Header extends Component {
       <header id="header">
         <div className="logo-graphs">
           <Link to="/">
-            <h3> graphs analysed </h3>
+            <h3> Araks analysed </h3>
           </Link>
         </div>
         <SearchGraphs />
