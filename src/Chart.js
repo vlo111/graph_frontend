@@ -313,6 +313,7 @@ class Chart {
         const id = ev.sourceEvent.target.getAttribute('data-id');
         this.detectLabels();
         dragLabel.label = labelsWrapper.select(`[data-id="${id}"]`);
+        dragLabel.labelLock = labelsWrapper.select(`use[data-label-id="${id}"]`);
         dragLabel.nodes = this.getNodes().filter((d) => d.labels.includes(id));
       }
     };
@@ -336,6 +337,16 @@ class Chart {
           p[1] = +(p[1] + ev.dy).toFixed(2);
           return p;
         });
+        dragLabel.label
+          .datum(datum)
+          .attr('d', (d) => renderPath(d.d));
+
+        if (!dragLabel.labelLock.empty()) {
+          let [, x, y] = dragLabel.labelLock.attr('transform').match(/(-?[\d.]+),\s*(-?[\d.]+)/) || [0, 0, 0];
+          x = +x + ev.dx;
+          y = +y + ev.dy;
+          dragLabel.labelLock.attr('transform', `translate(${x}, ${y})`);
+        }
 
         let readOnlyLabel;
         if (datum.readOnly) {
@@ -358,9 +369,6 @@ class Chart {
         });
         this.graphMovement();
 
-        dragLabel.label
-          .datum(datum)
-          .attr('d', (d) => renderPath(d.d));
 
         this.event.emit('label.drag', ev, dragLabel.label);
       }
@@ -416,19 +424,22 @@ class Chart {
       .on('mousemove', (ev, d) => this.event.emit('label.mousemove', ev, d))
       .on('mouseleave', (ev, d) => this.event.emit('label.mouseleave', ev, d));
 
-
+    this.labelsLock = [];
     setTimeout(() => {
-      // labelsWrapper.selectAll('use')
-      //   .data(this.data.labels.filter((l) => l.hidden !== 1))
-      //   .join('use')
-      //   .attr('href', `${lockSvg}#label-lock`)
-      //   .attr('height', '40')
-      //   .attr('width', '40')
-      //   .attr('transform', (d, index, g) => {
-      //     const { width, height, left, top } = document.querySelector(`[data-id="${d.id}"]`).getBoundingClientRect();
-      //     return `translate(${top}, ${left})`
-      //   })
-    }, 200)
+      this.labelsLock = labelsWrapper.selectAll('use')
+        .data(this.data.labels.filter((l) => l.hidden !== 1 && l.status === 'lock'))
+        .join('use')
+        .attr('data-label-id', (d) => d.id)
+        .attr('class', 'labelLock')
+        .attr('href', '#labelLock')
+        .attr('transform', (d) => {
+          const {
+            width, height, left, top,
+          } = document.querySelector(`[data-id="${d.id}"]`).getBoundingClientRect();
+          const { x, y } = ChartUtils.calcScaledPosition(left + (width / 2) - 20, top + (height / 2) - 20);
+          return `translate(${x}, ${y})`;
+        });
+    }, 200);
 
     this.labelMovement();
 
