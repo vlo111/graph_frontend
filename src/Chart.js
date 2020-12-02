@@ -340,7 +340,7 @@ class Chart {
         if (datum.readOnly) {
           readOnlyLabel = this.data.embedLabels.find((l) => l.label.id === datum.id);
         }
-
+        console.log(this.data.embedLabels)
         this.node.each((d) => {
           if (dragLabel.nodes.some((n) => n.id === d.id)) {
             if (
