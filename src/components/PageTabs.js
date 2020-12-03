@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
 import Button from './form/Button';
 
-class VerticalTabs extends Component {
+class PageTabs extends Component {
   static propTypes = {
     children: PropTypes.any.isRequired,
     tabs: PropTypes.array.isRequired,
@@ -12,10 +12,12 @@ class VerticalTabs extends Component {
     history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     onChange: PropTypes.func,
+    direction: PropTypes.oneOf(['vertical', 'horizontal']),
   }
 
   static defaultProps = {
     onChange: undefined,
+    direction: 'vertical',
   }
 
   setActiveTab = (tab) => {
@@ -27,13 +29,14 @@ class VerticalTabs extends Component {
 
   render() {
     const {
-      children, tabs, location, history, match, ...props
+      children, tabs, location, history, match, className, direction, ...props
     } = this.props;
     const tab = tabs.find((t) => t.to === location.pathname);
+    const list = direction === 'vertical' ? _.reverse([...tabs]) : tabs;
     return (
-      <div id="verticalTabs" {...props}>
+      <div id="verticalTabs" className={`${direction} ${className}`} {...props}>
         <ul className="tabsList">
-          {_.reverse([...tabs.filter((t) => !t.hidden)]).map((t) => (
+          {list.filter((t) => !t.hidden).map((t) => (
             <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`}>
               <Button onClick={() => this.setActiveTab(t)}>
                 {t.name}
@@ -49,4 +52,4 @@ class VerticalTabs extends Component {
   }
 }
 
-export default withRouter(VerticalTabs);
+export default withRouter(PageTabs);

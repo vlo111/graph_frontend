@@ -850,7 +850,8 @@ p {
     .labelsBoard {
       pointer-events: none;
     }
-    .labelLock{
+
+    .labelLock {
       pointer-events: none;
     }
   }
@@ -1659,6 +1660,7 @@ p {
       text-align: center;
       font: normal normal bold 26px/36px Open Sans;
     }
+
     label {
       font: normal normal 600 16px/22px Open Sans;
     }
@@ -3146,6 +3148,7 @@ p {
     }
   }
 }
+
 .logoInfoText {
   h4 {
     font-size: 14px;
@@ -3155,6 +3158,7 @@ p {
 
   }
 }
+
 .socialLogin {
   display: flex;
   flex-direction: column;
@@ -4044,6 +4048,7 @@ body .gh__menu {
 
 .ghImportModal {
   display: block !important;
+
   .ghTabs {
     margin-bottom: 20px;
   }
@@ -4485,6 +4490,7 @@ body .gh__menu {
   position: relative;
   min-width: 900px;
 
+
   .tabsList {
     display: flex;
     flex-direction: row;
@@ -4546,10 +4552,32 @@ body .gh__menu {
       background-color: transparent;
       padding: 0;
       border: none;
+    }
+  }
 
+  &.horizontal {
+    min-width: auto;
+    flex-direction: column;
+
+    .tabsList {
+      transform: none;
+      position: static;
+      margin-left: 10px;
+      margin-bottom: -55px;
+      .item {
+        margin-left: -10px;
+
+        .ghButton {
+          font-weight: normal;
+        }
+      }
+    }
+    .content{
+      margin-left: 0;
     }
   }
 }
+
 
 .profileSettings {
   padding: 20px 5%;
@@ -5011,14 +5039,15 @@ body .gh__menu {
   padding: 0 0 10px;
 }
 
-.importSelectFileLbl, importSelectFileLbl label{
+.importSelectFileLbl, importSelectFileLbl label {
   padding: 20px 0px 5px;
 }
 
 .importFile {
-  .fileLabel{
+  .fileLabel {
     margin-bottom: 5px;
   }
+
   .clear {
     margin-left: 185px;
     top: 6px;
@@ -5046,6 +5075,7 @@ body .gh__menu {
     margin-bottom: -15px;
     background: #C6E6FF 0% 0% no-repeat padding-box;
   }
+
   .exportDropDown {
     /*visibility: hidden; */
     z-index: 4;
@@ -5060,10 +5090,12 @@ body .gh__menu {
     opacity: 1;
     border-top-left-radius: 0px 0px;
   }
+
   .exportButton {
     float: right;
     margin: 30px 0 10px;
   }
+
   .icon {
     width: 25px;
     height: 30px;
@@ -5072,18 +5104,22 @@ body .gh__menu {
       height: 22px;
     }
   }
+
   .gh__control {
     border-radius: 10px !important;
     height: 45px !important;
     font: normal normal normal 18px/19px Open Sans !important;
   }
+
   label {
     font: normal normal 600 15px/17px Open Sans;
     padding-bottom: 15px;
   }
+
   .gh__indicator svg {
     background: #F2F5F7 0% 0% no-repeat padding-box !important;
   }
+
   .gh__single-value {
     color: #9BA6B4;
     font: normal normal normal 15px/19px Open Sans;
@@ -5098,31 +5134,39 @@ body .gh__menu {
   margin-bottom: 48px !important;
   margin-left: 50px;
 }
+
 .wikiSearch h3 {
   color: #1a0dab;
 }
+
 .wikiSearch h3 a {
   color: #1a0dab;
   display: inline-block;
   line-height: 16px;
   text-decoration: none;
 }
+
 .wikiSearch h3 a:hover {
   border-bottom: 3px solid;
 }
+
 .wikiSearch a:visited {
   color: #1a0dab;
 }
+
 .wikiSearch .link a {
   text-decoration: none;
   color: #287e44;
 }
+
 .wikiSearch .link a:hover {
   text-decoration: none;
 }
+
 .wikiSearch .searchmatch {
   font-weight: bold;
 }
+
 .wikiSearch .description {
   color: #414141;
   position: absolute;
@@ -5156,6 +5200,7 @@ body .gh__menu {
   box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
   margin-bottom: 30px;
 }
+
 .Wiki input {
   line-height: 40px;
   border-radius: 20px 0 0 20px;
@@ -5163,9 +5208,11 @@ body .gh__menu {
   width: 400px;
   padding: 0 20px;
 }
+
 .Wiki input:focus {
   outline: none;
 }
+
 .Wiki button {
   line-height: 40px;
   border: none;
@@ -5179,6 +5226,7 @@ body .gh__menu {
 .Wiki button:focus {
   outline: none;
 }
+
 .wikiModal {
   img {
     margin: 0 auto;
@@ -5196,10 +5244,12 @@ body .gh__menu {
 
 .wikiCheckbox {
   position: absolute;
-  display: none; }
+  display: none;
+}
 
 .wikiCheckbox[disabled] {
-  cursor: not-allowed; }
+  cursor: not-allowed;
+}
 
 .wikiCheckbox + label {
   margin-left: -35px;
@@ -5208,11 +5258,15 @@ body .gh__menu {
   display: block;
   padding-left: 30px;
   cursor: pointer;
-  vertical-align: middle; }
+  vertical-align: middle;
+}
+
 .wikiCheckbox + label:hover:before {
   animation-duration: 0.4s;
   animation-fill-mode: both;
-  animation-name: hover-color; }
+  animation-name: hover-color;
+}
+
 .wikiCheckbox + label:before {
   position: absolute;
   top: 0;
@@ -5221,30 +5275,47 @@ body .gh__menu {
   width: 20px;
   height: 20px;
   content: '';
-  border: 1px solid #c0c0c0; }
+  border: 1px solid #c0c0c0;
+}
+
 .wikiCheckbox + label:after {
   position: absolute;
   display: none;
-  content: ''; }
+  content: '';
+}
 
 .wikiCheckbox[disabled] + label {
   cursor: not-allowed;
-  color: #e4e4e4; }
+  color: #e4e4e4;
+}
+
 .wikiCheckbox[disabled] + label:hover,
 .wikiCheckbox[disabled] + label:before,
 .wikiCheckbox[disabled] + label:after {
-  cursor: not-allowed; }
+  cursor: not-allowed;
+}
+
 .wikiCheckbox[disabled] + label:hover:before {
   border: 1px solid #e4e4e4;
-  animation-name: none; }
+  animation-name: none;
+}
+
 .wikiCheckbox[disabled] + label:before {
-  border-color: #e4e4e4; }
+  border-color: #e4e4e4;
+}
+
 .wikiCheckbox:checked + label:before {
-  animation-name: none; }
+  animation-name: none;
+}
+
 .wikiCheckbox:checked + label:after {
-  display: block; }
+  display: block;
+}
+
 .wikiCheckbox + label:before {
-  border-radius: 3px; }
+  border-radius: 3px;
+}
+
 .wikiCheckbox + label:after {
   top: 2px;
   left: 7px;
@@ -5256,13 +5327,18 @@ body .gh__menu {
   border-style: solid;
   border-color: #fff;
   border-top: 0;
-  border-left: 0; }
+  border-left: 0;
+}
+
 .wikiCheckbox:checked + label:before {
   border: #3e97eb;
-  background: #3e97eb; }
+  background: #3e97eb;
+}
+
 .wikiCheckbox:checked[disabled] + label:before {
   border: #c9e2f9;
-  background: #c9e2f9; }
+  background: #c9e2f9;
+}
 
 .wikiModal {
   width: 100%;
