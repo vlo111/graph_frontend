@@ -25,7 +25,7 @@ class PageTabs extends Component {
     if (this.props.onChange) {
       this.props.onChange(tab);
     }
-  }styles/style.scss
+  }
 
   render() {
     const {
