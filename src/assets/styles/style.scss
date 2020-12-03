@@ -309,11 +309,11 @@ p {
 }
 
 .ghFormField {
-  width: 320px;
+  width: 250px;
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 5px 0;
+  margin: 10px 0;
   position: relative;
 
   label,
@@ -533,6 +533,7 @@ p {
 
 .ghFileInput {
   position: relative;
+  width: 250px;
 
   [type="file"] {
     display: none;
@@ -721,6 +722,24 @@ p {
   }
 }
 
+.ghButton:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.ghButton:hover {
+  background-color: $color-white;
+  color: #0062FF;
+}
+
+.ghButton:hover button:after {
+  opacity: 1;
+  right: 0;
+}
 
 .ghButton2 {
   display: inline-block;
@@ -1644,10 +1663,12 @@ p {
     h2 {
       text-align: center;
       font: normal normal bold 26px/36px Open Sans;
+      width: 250px;
+      margin-bottom: 20px;
     }
 
     label {
-      font: normal normal 600 16px/22px Open Sans;
+      font: normal normal 600 14px/17px Open Sans;
     }
   }
 
@@ -3860,7 +3881,23 @@ body .gh__menu {
     }
   }
 }
+.ghModalOverlay .nodeTabsFormModal, .ghModalOverlay .AddNewNode {
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
 
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
+}
 .ghModalOverlay .nodeTabsFormModal {
   width: 31%;
   max-width: unset !important;
@@ -4053,24 +4090,26 @@ body .gh__menu {
     margin-bottom: 20px;
   }
 
+  .ghButton {
+    margin: 20px 10px 0px;
+    float: right;
+  }
 
   h2 {
     margin-bottom: 40px;
   }
-
   .close {
+    padding: 0;
     position: absolute;
-    right: 5px;
-    top: 5px;
-    cursor: pointer;
-    padding: 5px 10px;
+    top: 15px;
+    right: 16px;
 
-    &:hover,
-    &:active {
-      background-color: transparent !important;
+    svg {
+      width: 11px;
+      height: 10px;
 
-      &:after {
-        content: none;
+      path {
+        fill: $color-gray;
       }
     }
   }
@@ -5444,4 +5483,15 @@ body .gh__menu {
   right: 40px;
   font-size: 13px !important;
   width: 10%;
+}
+.AddNewNode {
+  width: 340px;
+
+  form {
+    margin: 20px 40px;
+  }
+
+  .buttons {
+    width: 250px;
+  }
 }
