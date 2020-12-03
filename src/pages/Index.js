@@ -24,7 +24,7 @@ class Index extends Component {
             { to: '/', name: 'Home', component: <Home /> },
             { to: '/search', name: 'Search', hidden: true, component: <Home /> },
             { to: '/templates', name: 'Templates', component: <GraphTemplates /> },
-            { to: '/shared', name: 'Shared Graphs', component: <Shared /> },
+            { to: '/shared', name: 'Shared SearchGraphs', component: <Shared /> },
             { to: '/friends', name: 'Friends', component: <Friends /> },
           ]}
         />

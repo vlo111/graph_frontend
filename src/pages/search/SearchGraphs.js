@@ -5,10 +5,10 @@ import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
-import { getGraphsListRequest } from '../../../store/actions/graphs';
-import { getList, getListInfo } from '../../../store/selectors/graphs';
+import { getGraphsListRequest } from '../../store/actions/graphs';
+import { getList, getListInfo } from '../../store/selectors/graphs';
 
-const Graphs = React.memo(({ setLimit }) => {
+const SearchGraphs = React.memo(({ setLimit }) => {
   const dispatch = useDispatch();
   const graphsList = useSelector(getList);
   const { totalPages } = useSelector(getListInfo);
@@ -18,10 +18,10 @@ const Graphs = React.memo(({ setLimit }) => {
   }, [dispatch, page, searchParam]);
 
   return (
-    <Suspense fallback={<div>Loading graphs...</div>}>
+    <div className="searchData">
       {graphsList && !isEmpty(graphsList) && graphsList.length ? (
         <div className="searchData__wrapper">
-          <h3>{ `Graph${graphsList.length > 1 ? 's' : ''}`}</h3>
+          <h3>{`Graph${graphsList.length > 1 ? 's' : ''}`}</h3>
           {graphsList.slice(0, 5).map((graph) => (
             <article key={graph.id} className="searchData__graph">
               <div className="searchData__graphInfo">
@@ -45,8 +45,8 @@ const Graphs = React.memo(({ setLimit }) => {
                 <div>
                   <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
                   <div className="info">
-                    <span>{moment(graph.updatedAt).calendar() }</span>
-                    <span>{ ` (${graph.nodesCount} nodes )` }</span>
+                    <span>{moment(graph.updatedAt).calendar()}</span>
+                    <span>{` (${graph.nodesCount} nodes )`}</span>
                   </div>
                 </div>
               </div>
@@ -58,16 +58,16 @@ const Graphs = React.memo(({ setLimit }) => {
           }
         </div>
       ) : ((!setLimit && <h3>No Graph Found</h3>) || null)}
-    </Suspense>
+    </div>
   );
 });
 
-Graphs.propTypes = {
+SearchGraphs.propTypes = {
   setLimit: PropTypes.bool.isRequired,
 };
 
-Graphs.defaultProp = {
+SearchGraphs.defaultProp = {
   setLimit: false,
 };
 
-export default Graphs;
+export default SearchGraphs;

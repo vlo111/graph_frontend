@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
-import AddFriend from '../addFriend';
-import { getUserSearch } from '../../../store/selectors/account';
-import { getUsersByTextRequest } from '../../../store/actions/account';
-import { myFriendsRequest } from '../../../store/actions/userFriends';
+import AddFriend from './addFriend';
+import { getUserSearch } from '../../store/selectors/account';
+import { getUsersByTextRequest } from '../../store/actions/account';
+import { myFriendsRequest } from '../../store/actions/userFriends';
 
-const Users = React.memo(({ setLimit }) => {
+const SearchUsers = React.memo(({ setLimit }) => {
   const dispatch = useDispatch();
   const useSearch = useSelector(getUserSearch);
   const { page = 1, s: searchParam } = queryString.parse(window.location.search);
@@ -22,10 +22,10 @@ const Users = React.memo(({ setLimit }) => {
   }, [dispatch, myFriendsRequest]);
 
   return (
-    <Suspense fallback={<div>Loading users...</div>}>
+    <div className="searchData">
       {useSearch && useSearch.length ? (
         <div className="searchData__wrapper">
-          <h3>{ `${useSearch.length > 1 ? 'People' : 'Person'}`}</h3>
+          <h3>{`${useSearch.length > 1 ? 'People' : 'Person'}`}</h3>
           {useSearch.slice(0, 5).map((user) => (
             <article key={user.id} className="searchData__graph">
               <div className="searchData__graphInfo">
@@ -54,16 +54,16 @@ const Users = React.memo(({ setLimit }) => {
           }
         </div>
       ) : ((!setLimit && <h3>No User Found</h3>) || null)}
-    </Suspense>
+    </div>
   );
 });
 
-Users.propTypes = {
+SearchUsers.propTypes = {
   setLimit: PropTypes.bool.isRequired,
 };
 
-Users.defaultProp = {
+SearchUsers.defaultProp = {
   setLimit: false,
 };
 
-export default Users;
+export default SearchUsers;

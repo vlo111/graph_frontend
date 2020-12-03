@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { shareGraphs } from '../../../store/selectors/shareGraphs';
-import { searchGraphsListRequest } from '../../../store/actions/shareGraphs';
+import { shareGraphs } from '../../store/selectors/shareGraphs';
+import { searchGraphsListRequest } from '../../store/actions/shareGraphs';
 
-const SharedGraphs = React.memo(({ setLimit }) => {
+const SearchSharedGraphs = React.memo(({ setLimit }) => {
   const dispatch = useDispatch();
   const shZGraphsList = useSelector(shareGraphs);
   const { page = 1, s: searchParam } = queryString.parse(window.location.search);
@@ -17,10 +17,10 @@ const SharedGraphs = React.memo(({ setLimit }) => {
   }, [dispatch, page, searchParam]);
 
   return (
-    <Suspense fallback={<div>Loading shared graphs...</div>}>
+    <div className="searchData">
       {shZGraphsList && shZGraphsList.length ? (
         <div className="searchData__wrapper">
-          <h3>{ `Graph${shZGraphsList.length > 1 ? 's' : ''} shared with you`}</h3>
+          <h3>{`Graph${shZGraphsList.length > 1 ? 's' : ''} shared with you`}</h3>
           {shZGraphsList.slice(0, 5).map((shGraph) => (
             <article key={shGraph.graph.id} className="searchData__graph">
               <div className="searchData__graphInfo">
@@ -59,16 +59,16 @@ const SharedGraphs = React.memo(({ setLimit }) => {
           }
         </div>
       ) : ((!setLimit && <h3>No Shared Graphs Found</h3>) || null)}
-    </Suspense>
+    </div>
   );
 });
 
-SharedGraphs.propTypes = {
+SearchSharedGraphs.propTypes = {
   setLimit: PropTypes.bool.isRequired,
 };
 
-SharedGraphs.defaultProp = {
+SearchSharedGraphs.defaultProp = {
   setLimit: false,
 };
 
-export default SharedGraphs;
+export default SearchSharedGraphs;
