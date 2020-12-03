@@ -308,11 +308,11 @@ p {
 }
 
 .ghFormField {
-  width: 320px;
+  width: 250px;
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 5px 0;
+  margin: 10px 0;
   position: relative;
 
   label,
@@ -532,6 +532,7 @@ p {
 
 .ghFileInput {
   position: relative;
+  width: 250px;
 
   [type="file"] {
     display: none;
@@ -730,7 +731,6 @@ p {
 }
 
 .ghButton:hover {
-  padding-right: 25px;
   background-color: $color-white;
   color: #0062FF;
 }
@@ -1658,10 +1658,12 @@ p {
     h2 {
       text-align: center;
       font: normal normal bold 26px/36px Open Sans;
+      width: 250px;
+      margin-bottom: 20px;
     }
 
     label {
-      font: normal normal 600 16px/22px Open Sans;
+      font: normal normal 600 14px/17px Open Sans;
     }
   }
 
@@ -3874,7 +3876,23 @@ body .gh__menu {
     }
   }
 }
+.ghModalOverlay .nodeTabsFormModal, .ghModalOverlay .AddNewNode {
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
 
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
+}
 .ghModalOverlay .nodeTabsFormModal {
   width: 31%;
   max-width: unset !important;
@@ -4075,11 +4093,20 @@ body .gh__menu {
   h2 {
     margin-bottom: 40px;
   }
-   .close {
+  .close {
+    padding: 0;
     position: absolute;
-    right: 10px;
-    top: 5px;
-    cursor: pointer;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
   }
 }
 .share-modal {
@@ -5445,4 +5472,15 @@ body .gh__menu {
   right: 40px;
   font-size: 13px !important;
   width: 10%;
+}
+.AddNewNode {
+  width: 340px;
+
+  form {
+    margin: 20px 40px;
+  }
+
+  .buttons {
+    width: 250px;
+  }
 }
