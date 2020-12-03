@@ -23,7 +23,7 @@ class Search extends Component {
           tabs={[
             { to: '/search', name: 'Search', component: <SearchResult /> },
             { to: '/search-graph', name: 'Graphs', component: <SearchGraphs /> },
-            { to: '/search-shared-graph', name: 'Shared SearchGraphs', component: <SearchSharedGraphs /> },
+            { to: '/search-shared-graph', name: 'Shared Graphs', component: <SearchSharedGraphs /> },
             { to: '/search-people', name: 'People', component: <SearchPeople /> },
           ]}
         />
