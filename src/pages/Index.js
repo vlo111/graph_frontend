@@ -19,7 +19,7 @@ class Index extends Component {
         <Header />
         <VerticalTabs
           className="homePageTabs"
-          direction="horizontal"
+          //direction="horizontal"
           tabs={[
             { to: '/', name: 'Home', component: <Home /> },
             { to: '/search', name: 'Search', hidden: true, component: <Home /> },
