@@ -4626,40 +4626,6 @@ body .gh__menu {
     border: 1px solid $color-light-gray;
     margin-bottom: 10px;
   }
-
-  &.homePageTabs {
-    .content {
-      min-height: 450px;
-      background-color: transparent;
-      padding: 0;
-      border: none;
-    }
-  }
-
-  &.horizontal {
-    min-width: auto;
-    flex-direction: column;
-
-    .tabsList {
-      transform: none;
-      position: static;
-      margin-left: 10px;
-      margin-bottom: -20px;
-
-      .item {
-        margin-left: -10px;
-
-        .ghButton {
-          font-weight: normal;
-          padding-bottom: 25px;
-        }
-      }
-    }
-
-    .content {
-      margin-left: 0;
-    }
-  }
 }
 
 
