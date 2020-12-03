@@ -15,6 +15,7 @@ import Legend from '../components/Legend';
 import MapsButton from '../components/maps/MapsButton';
 import Utils from '../helpers/Utils';
 import WikiButton from "./wiki/WikiButton";
+import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -42,7 +43,7 @@ class ToolBarHeader extends Component {
     return (
       <header id="header">
         <Link to="/" className="logoWrapper">
-          <Logo className="logo" />
+        <LogoSvg className="logo orange" />
           <span className="autoSaveText">Saving...</span>
         </Link>
         <AccountDropDown />

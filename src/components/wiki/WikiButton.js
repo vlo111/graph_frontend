@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import WikiImg from '../../assets/images/wikipedia.png';
+import WikipediaSvg from '../../assets/images/wikipedia.svg';
 import { setActiveButton } from '../../store/actions/app';
 import WikiModal from "./WikiModal";
 
@@ -16,19 +16,20 @@ class WikiButton extends Component {
       this.props.setActiveButton(activeButton === 'wiki' ? 'create' : 'wiki');
     }
 
-    render() {
-      const { activeButton } = this.props;
-      return (
-        <>
-          <button className="wikiButton" onClick={this.toggleModal}>
-            <img src={WikiImg} alt="wikipedia" />
-          </button>
-          {activeButton === 'wiki' ? (
-              <WikiModal onClose={this.toggleModal} />
-          ) : null}
-        </>
-      );
-    }
+  render() {
+    const { activeButton } = this.props;
+    return (
+      <>
+        <button className="wikiButton" onClick={this.toggleModal}>
+          <img src={WikipediaSvg} alt="wikipedia" />
+        </button>
+
+        {activeButton === 'wiki' ? (
+          <WikiModal onClose={this.toggleModal} />
+        ) : null}
+      </>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({

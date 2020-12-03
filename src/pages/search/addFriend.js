@@ -54,7 +54,7 @@ const AddFriend = React.memo(({ user }) => {
             />
           );
         case 'accepted':
-          return <Button className="ghButton2"  icon={<MinusFriendsSvg />} onClick={() => dispatch(removeFriendRequest(matchUser.id))}> <span>Unfriend </span></Button>;
+          return <Button className="ghButton2"  icon={<SolidFriendsSvg />} onClick={() => dispatch(removeFriendRequest(matchUser.id))}> <span>Unfriend </span></Button>;
         case 'rejected':
           return <Button className="ghButton2" icon={<PlusFriendsSvg />} onClick={() => dispatch(AddFriendRequest({ receiverUserId: id }))}> Add Friend </Button>;
         default:
