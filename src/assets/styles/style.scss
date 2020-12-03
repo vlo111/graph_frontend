@@ -8,6 +8,8 @@ $color-accent: #0062FF;
 $color-error: #FE5C4F;
 $color-warning: #FED300;
 
+$color-background: #F4F5FF;
+
 $color-light-blue: #C6E6FF;
 $color-gray: #9BA6B4;
 $color-light-gray: #E2E7EB;
@@ -22,7 +24,7 @@ $color-button: #0062FF;
 $color-darkgreen: #f2f3f5;
 
 $font-family: 'Open Sans', sans-serif;
-
+$font-user-panel: normal normal normal 15px/21px Segoe UI;
 
 * {
   margin: 0;
@@ -106,9 +108,9 @@ main {
   }
 
   &.homePage {
-    //background-color: $color-white;
+    background-color: $color-background;
     padding-top: 80px;
-    background-image: url("../images/concept.jpg");
+    //background-image: url("../images/concept.jpg");
     background-attachment: fixed;
     background-size: cover;
     background-position: top left;
@@ -4513,14 +4515,13 @@ body .gh__menu {
   background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
 }
 
-#verticalTabs {
+.verticalTabs {
   display: flex;
   width: 64%;
   margin: 0 auto 50px;
   align-items: flex-start;
   position: relative;
   min-width: 900px;
-
 
   .tabsList {
     display: flex;
@@ -4531,6 +4532,37 @@ body .gh__menu {
     position: absolute;
     top: 1px;
     left: 0;
+  }
+
+  .content {
+    margin-left: 50px;
+  }
+}
+
+.homePageTabs {
+  display: flex;
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 350px 50px auto 100px;
+  grid-template-rows: auto 220px auto;
+
+  .tabsList {
+    display: flex;
+    flex-direction: row;
+    transform: rotate(270deg) translate(-100%, 0);
+    transform-origin: top left;
+    margin: 0;
+    left: 0;
+    width: 510px;
+  }
+
+  .content {
+    margin-left: 0;
+  }
+}
+
+.verticalTabs, .homePageTabs{
+  .tabsList {
 
     .item {
       margin-left: -10px;
@@ -4567,45 +4599,10 @@ body .gh__menu {
 
   .content {
     width: 100%;
-    margin-left: 50px;
     position: relative;
-    min-height: 400px;
-    background-color: $color-white;
-    padding: 2% 3.4%;
+    //background-color: $color-white;
     border-radius: 24px;
-    border: 1px solid $color-light-gray;
     margin-bottom: 10px;
-  }
-
-  &.homePageTabs {
-    .content {
-      min-height: 450px;
-      background-color: transparent;
-      padding: 0;
-      border: none;
-    }
-  }
-
-  &.horizontal {
-    min-width: auto;
-    flex-direction: column;
-
-    .tabsList {
-      transform: none;
-      position: static;
-      margin-left: 10px;
-      margin-bottom: -55px;
-      .item {
-        margin-left: -10px;
-
-        .ghButton {
-          font-weight: normal;
-        }
-      }
-    }
-    .content{
-      margin-left: 0;
-    }
   }
 }
 
@@ -5341,12 +5338,10 @@ body .gh__menu {
 
 .wikiCheckbox {
   position: absolute;
-  display: none;
-}
+  display: none; }
 
 .wikiCheckbox[disabled] {
-  cursor: not-allowed;
-}
+  cursor: not-allowed; }
 
 .wikiCheckbox + label {
   margin-left: -35px;
@@ -5355,15 +5350,12 @@ body .gh__menu {
   display: block;
   padding-left: 30px;
   cursor: pointer;
-  vertical-align: middle;
+  vertical-align: middle; 
 }
-
 .wikiCheckbox + label:hover:before {
   animation-duration: 0.4s;
   animation-fill-mode: both;
-  animation-name: hover-color;
-}
-
+  animation-name: hover-color; }
 .wikiCheckbox + label:before {
   position: absolute;
   top: 0;
@@ -5372,35 +5364,25 @@ body .gh__menu {
   width: 20px;
   height: 20px;
   content: '';
-  border: 1px solid #c0c0c0;
-}
-
+  border: 1px solid #c0c0c0; }
 .wikiCheckbox + label:after {
   position: absolute;
   display: none;
-  content: '';
-}
+  content: ''; 
+  }
 
 .wikiCheckbox[disabled] + label {
   cursor: not-allowed;
-  color: #e4e4e4;
-}
-
+  color: #e4e4e4; }
 .wikiCheckbox[disabled] + label:hover,
 .wikiCheckbox[disabled] + label:before,
 .wikiCheckbox[disabled] + label:after {
-  cursor: not-allowed;
-}
-
+  cursor: not-allowed; }
 .wikiCheckbox[disabled] + label:hover:before {
   border: 1px solid #e4e4e4;
-  animation-name: none;
-}
-
+  animation-name: none; }
 .wikiCheckbox[disabled] + label:before {
-  border-color: #e4e4e4;
-}
-
+  border-color: #e4e4e4; }
 .wikiCheckbox:checked + label:before {
   animation-name: none;
 }
@@ -5446,4 +5428,26 @@ body .gh__menu {
   right: 40px;
   font-size: 13px !important;
   width: 10%;
+}
+
+.userPanel {
+  text-align: center;
+  padding: 0 30px 0 80px;
+
+  img {
+    width: 140px;
+    border-radius: 100px;
+  }
+
+  p, a {
+    margin-top: 15px;
+    font: $font-user-panel;
+    color: $color-dark;
+  }
+
+  h4 {
+    font-family: $font-family;
+    font-size: 24px;
+  }
+
 }
