@@ -71,29 +71,6 @@ class ImportLinkedinCustomField extends Component {
     );
   }
 
-  renderSkills = () => {
-    const { data } = this.props;
-    if (_.isEmpty(data.skills)) {
-      return null;
-    }
-    return (
-      <>
-        {data.skills.map((row, index) => (
-          <Fragment key={row.name}>
-            <div className='linkedin'>
-              <p>
-                <strong className="skills">
-                  {`${index + 1}. `}
-                </strong>
-                {row.name}
-              </p>
-            </div>
-          </Fragment>
-        ))}
-      </>
-    );
-  }
-
   renderEduction = () => {
     const { data } = this.props;
     if (_.isEmpty(data.education)) {
@@ -139,19 +116,43 @@ class ImportLinkedinCustomField extends Component {
       </>
     );
   }
+  renderSkills = () => {
+    const { data } = this.props;
+    if (_.isEmpty(data.skills)) {
+      return null;
+    }
+    return (
+      <>
+        {data.skills.map((row, index) => (
+          <Fragment key={row.name}>
+            <div className='linkedin'>
+              <p>
+                <strong className="skills">
+                  {`${index + 1}. `}
+                </strong>
+                {row.name}
+              </p>
+            </div>
+          </Fragment>
+        ))}
+      </>
+    );
+  }
+
 
   render() {
     const { type } = this.props;
 
-    if (type === 'work') {
+    if (type === 'experience') {
       return this.renderWork();
     }
 
-    if (type === 'skills') {
-      return this.renderSkills();
-    }
     if (type === 'education') {
       return this.renderEduction();
+    }
+    
+    if (type === 'skills') {
+      return this.renderSkills();
     }
 
     return null;

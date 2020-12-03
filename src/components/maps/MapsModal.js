@@ -109,7 +109,7 @@ class MapsModal extends Component {
     const customField = CustomFields.get(customFields, selected.type);
     const contact = ReactDOMServer.renderToString(<MapsContactCustomField data={selected} />);
 
-    const url = Utils.wikiUrlByName(selected.name);
+    const url = Utils.wikiContentUrlByName(selected.name);
 
     const wikiData = await Utils.getWikiContent(url);
 

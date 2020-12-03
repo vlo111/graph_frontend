@@ -65,18 +65,18 @@ class DataImportModal extends Component {
       >
         <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
 
-        <h2>Import Data</h2>
+        <h2>Import Data </h2>
 
         {nextStep
         && (
-        <Select
-          containerClassName="importSelectLbl"
-          label="Choose import data"
-          portal
-          options={IMPORT_TYPES}
-          value={IMPORT_TYPES.filter((t) => t.value === activeTab)}
-          onChange={(v) => this.setActiveTab(v.value)}
-        />
+          <Select
+            containerClassName="importSelectLbl"
+            label="Choose import data"
+            portal
+            options={IMPORT_TYPES}
+            value={IMPORT_TYPES.filter((t) => t.value === activeTab)}
+            onChange={(v) => this.setActiveTab(v.value)}
+          />
         )}
         {activeTab === 'zip' ? <ImportZip showSelectHandler={this.showSelectHandler} /> : null}
         {activeTab === 'xlsx' ? <ImportXlsx showSelectHandler={this.showSelectHandler} /> : null}

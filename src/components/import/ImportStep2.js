@@ -36,7 +36,6 @@ class ImportStep2 extends Component {
       description,
       embedLabels: [],
     });
-
     Chart.render({
       nodes, links, labels, embedLabels: [],
     });

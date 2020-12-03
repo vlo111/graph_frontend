@@ -176,6 +176,7 @@ p {
   font-weight: bold;
   text-align: center;
   margin: 17px 40px;
+
   .autoSaveText {
     font-size: 12px;
     color: $color-main2;
@@ -308,11 +309,11 @@ p {
 }
 
 .ghFormField {
-  width: 320px;
+  width: 250px;
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 5px 0;
+  margin: 10px 0;
   position: relative;
 
   label,
@@ -532,6 +533,7 @@ p {
 
 .ghFileInput {
   position: relative;
+  width: 250px;
 
   [type="file"] {
     display: none;
@@ -730,7 +732,6 @@ p {
 }
 
 .ghButton:hover {
-  padding-right: 25px;
   background-color: $color-white;
   color: #0062FF;
 }
@@ -853,6 +854,10 @@ p {
     .labelsBoard {
       pointer-events: none;
     }
+
+    .labelLock {
+      pointer-events: none;
+    }
   }
 
   &.create-label {
@@ -962,8 +967,6 @@ p {
       font-family: $font-family;
       dominant-baseline: central;
       fill: $color-dark;
-      stroke: #fafbfc;
-      stroke-width: 0.3;
       text-anchor: middle;
     }
 
@@ -1642,6 +1645,10 @@ p {
     flex-direction: column;
     align-items: flex-start;
 
+    .importButton {
+      margin-left: auto;
+    }
+
     .ghModalContent {
       height: 100%;
       width: calc(100% + 10px);
@@ -1654,9 +1661,12 @@ p {
     h2 {
       text-align: center;
       font: normal normal bold 26px/36px Open Sans;
+      width: 250px;
+      margin-bottom: 20px;
     }
+
     label {
-      font: normal normal 600 16px/22px Open Sans;
+      font: normal normal 600 14px/17px Open Sans;
     }
   }
 
@@ -3142,6 +3152,7 @@ p {
     }
   }
 }
+
 .logoInfoText {
   h4 {
     font-size: 14px;
@@ -3151,6 +3162,17 @@ p {
 
   }
 }
+
+.logoInfoText {
+  h4 {
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    margin: 10px 0;
+
+  }
+}
+
 .socialLogin {
   display: flex;
   flex-direction: column;
@@ -3868,6 +3890,24 @@ body .gh__menu {
   }
 }
 
+.ghModalOverlay .nodeTabsFormModal, .ghModalOverlay .AddNewNode {
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
+}
+
 .ghModalOverlay .nodeTabsFormModal {
   width: 31%;
   max-width: unset !important;
@@ -4055,6 +4095,7 @@ body .gh__menu {
 
 .ghImportModal {
   display: block !important;
+
   .ghTabs {
     margin-bottom: 20px;
   }
@@ -4067,13 +4108,24 @@ body .gh__menu {
   h2 {
     margin-bottom: 40px;
   }
-   .close {
+
+  .close {
+    padding: 0;
     position: absolute;
-    right: 10px;
-    top: 5px;
-    cursor: pointer;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
   }
 }
+
 .share-modal {
   @mixin collaborators-list {
     display: flex;
@@ -4139,10 +4191,27 @@ body .gh__menu {
 
 .ghModalOverlay {
   .commentModal {
-    width:600px;
+    width: 600px;
     max-width: 900px;
+
     .ghFormField {
       width: 410px;
+    }
+
+    .close {
+      padding: 0;
+      position: absolute;
+      top: 15px;
+      right: 16px;
+
+      svg {
+        width: 11px;
+        height: 10px;
+
+        path {
+          fill: $color-gray;
+        }
+      }
     }
   }
 }
@@ -4172,11 +4241,12 @@ body .gh__menu {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
+
     .close {
       margin-top: 0;
       padding-left: 480px;
     }
+
     .closeNode {
       margin-top: -22px;
       padding-left: 423px;
@@ -4513,6 +4583,7 @@ body .gh__menu {
   position: relative;
   min-width: 900px;
 
+
   .tabsList {
     display: flex;
     flex-direction: row;
@@ -4574,10 +4645,35 @@ body .gh__menu {
       background-color: transparent;
       padding: 0;
       border: none;
+    }
+  }
 
+  &.horizontal {
+    min-width: auto;
+    flex-direction: column;
+
+    .tabsList {
+      transform: none;
+      position: static;
+      margin-left: 10px;
+      margin-bottom: -20px;
+
+      .item {
+        margin-left: -10px;
+
+        .ghButton {
+          font-weight: normal;
+          padding-bottom: 25px;
+        }
+      }
+    }
+
+    .content {
+      margin-left: 0;
     }
   }
 }
+
 
 .profileSettings {
   padding: 20px 5%;
@@ -4761,17 +4857,15 @@ body .gh__menu {
 }
 
 .searchData {
-  margin-top: 60px;
   margin-right: auto;
   margin-left: auto;
   max-width: 960px;
   width: 100%;
-  padding-right: 16px;
-  padding-left: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+
 
   &__wrapper {
     width: 100%;
@@ -4936,15 +5030,15 @@ body .gh__menu {
   }
 }
 
-.mapTabButton { 
+.mapTabButton {
   border: none;
   display: flex;
   left: 67px;
   margin: 20px 23px;
   display: inline-block;
   padding: .46em 1.6em;
-  border: .1em solid #f8f9fa; 
-  text-shadow: 0 0.04em 0.04em rgba(0,0,0,.35);
+  border: .1em solid #f8f9fa;
+  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, .35);
 }
 
 .linkedin {
@@ -5004,8 +5098,6 @@ body .gh__menu {
   color: #FE794F;
   font-family: chaparral-pro, serif;
 }
-
-
 
 #dataTable {
   flex: 1;
@@ -5092,6 +5184,7 @@ body .gh__menu {
     }
   }
 }
+
 .importST2Node {
   text-align: center;
 }
@@ -5106,14 +5199,15 @@ body .gh__menu {
   padding: 0 0 10px;
 }
 
-.importSelectFileLbl, importSelectFileLbl label{
+.importSelectFileLbl, importSelectFileLbl label {
   padding: 20px 0px 5px;
 }
 
 .importFile {
-  .fileLabel{
+  .fileLabel {
     margin-bottom: 5px;
   }
+
   .clear {
     margin-left: 185px;
     top: 6px;
@@ -5141,6 +5235,7 @@ body .gh__menu {
     margin-bottom: -15px;
     background: #C6E6FF 0% 0% no-repeat padding-box;
   }
+
   .exportDropDown {
     /*visibility: hidden; */
     z-index: 4;
@@ -5155,10 +5250,12 @@ body .gh__menu {
     opacity: 1;
     border-top-left-radius: 0px 0px;
   }
+
   .exportButton {
     float: right;
     margin: 30px 0 10px;
   }
+
   .icon {
     width: 25px;
     height: 30px;
@@ -5167,18 +5264,22 @@ body .gh__menu {
       height: 22px;
     }
   }
+
   .gh__control {
     border-radius: 10px !important;
     height: 45px !important;
     font: normal normal normal 18px/19px Open Sans !important;
   }
+
   label {
     font: normal normal 600 15px/17px Open Sans;
     padding-bottom: 15px;
   }
+
   .gh__indicator svg {
     background: #F2F5F7 0% 0% no-repeat padding-box !important;
   }
+
   .gh__single-value {
     color: #9BA6B4;
     font: normal normal normal 15px/19px Open Sans;
@@ -5193,31 +5294,55 @@ body .gh__menu {
   margin-bottom: 48px !important;
   margin-left: 50px;
 }
+
 .wikiSearch h3 {
   color: #1a0dab;
 }
+
 .wikiSearch h3 a {
   color: #1a0dab;
   display: inline-block;
   line-height: 16px;
   text-decoration: none;
 }
+
 .wikiSearch h3 a:hover {
   border-bottom: 3px solid;
 }
+
 .wikiSearch a:visited {
   color: #1a0dab;
 }
+
+.wikiSearch h3 a:hover {
+  border-bottom: 3px solid;
+}
+
+.wikiSearch a:visited {
+  color: #1a0dab;
+}
+
 .wikiSearch .link a {
   text-decoration: none;
   color: #287e44;
 }
+
 .wikiSearch .link a:hover {
   text-decoration: none;
 }
+
 .wikiSearch .searchmatch {
   font-weight: bold;
 }
+
+.wikiSearch .link a:hover {
+  text-decoration: none;
+}
+
+.wikiSearch .searchmatch {
+  font-weight: bold;
+}
+
 .wikiSearch .description {
   color: #414141;
   position: absolute;
@@ -5251,6 +5376,7 @@ body .gh__menu {
   box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
   margin-bottom: 30px;
 }
+
 .Wiki input {
   line-height: 40px;
   border-radius: 20px 0 0 20px;
@@ -5258,9 +5384,15 @@ body .gh__menu {
   width: 400px;
   padding: 0 20px;
 }
+
 .Wiki input:focus {
   outline: none;
 }
+
+.Wiki input:focus {
+  outline: none;
+}
+
 .Wiki button {
   line-height: 40px;
   border: none;
@@ -5274,6 +5406,7 @@ body .gh__menu {
 .Wiki button:focus {
   outline: none;
 }
+
 .wikiModal {
   img {
     margin: 0 auto;
@@ -5291,10 +5424,16 @@ body .gh__menu {
 
 .wikiCheckbox {
   position: absolute;
-  display: none; }
+  display: none;
+}
 
 .wikiCheckbox[disabled] {
-  cursor: not-allowed; }
+  cursor: not-allowed;
+}
+
+.wikiCheckbox[disabled] {
+  cursor: not-allowed;
+}
 
 .wikiCheckbox + label {
   margin-left: -35px;
@@ -5303,12 +5442,22 @@ body .gh__menu {
   display: block;
   padding-left: 30px;
   cursor: pointer;
-  vertical-align: middle; 
+  vertical-align: middle;
 }
+
 .wikiCheckbox + label:hover:before {
   animation-duration: 0.4s;
   animation-fill-mode: both;
-  animation-name: hover-color; }
+  animation-name: hover-color;
+}
+
+
+.wikiCheckbox + label:hover:before {
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+  animation-name: hover-color;
+}
+
 .wikiCheckbox + label:before {
   position: absolute;
   top: 0;
@@ -5317,30 +5466,85 @@ body .gh__menu {
   width: 20px;
   height: 20px;
   content: '';
-  border: 1px solid #c0c0c0; }
+  border: 1px solid #c0c0c0;
+}
+
 .wikiCheckbox + label:after {
   position: absolute;
   display: none;
-  content: ''; }
+  content: '';
+}
 
 .wikiCheckbox[disabled] + label {
   cursor: not-allowed;
-  color: #e4e4e4; }
+  color: #e4e4e4;
+}
+
 .wikiCheckbox[disabled] + label:hover,
 .wikiCheckbox[disabled] + label:before,
 .wikiCheckbox[disabled] + label:after {
-  cursor: not-allowed; }
+  cursor: not-allowed;
+}
+
 .wikiCheckbox[disabled] + label:hover:before {
   border: 1px solid #e4e4e4;
-  animation-name: none; }
+  animation-name: none;
+}
+
 .wikiCheckbox[disabled] + label:before {
-  border-color: #e4e4e4; }
+  border-color: #e4e4e4;
+}
+
 .wikiCheckbox:checked + label:before {
-  animation-name: none; }
+  animation-name: none;
+}
+
 .wikiCheckbox:checked + label:after {
-  display: block; }
+  display: block;
+}
+
 .wikiCheckbox + label:before {
-  border-radius: 3px; }
+  border-radius: 3px;
+}
+
+.wikiCheckbox + label:after {
+  position: absolute;
+  display: none;
+  content: '';
+}
+
+.wikiCheckbox[disabled] + label {
+  cursor: not-allowed;
+  color: #e4e4e4;
+}
+
+.wikiCheckbox[disabled] + label:hover,
+.wikiCheckbox[disabled] + label:before,
+.wikiCheckbox[disabled] + label:after {
+  cursor: not-allowed;
+}
+
+.wikiCheckbox[disabled] + label:hover:before {
+  border: 1px solid #e4e4e4;
+  animation-name: none;
+}
+
+.wikiCheckbox[disabled] + label:before {
+  border-color: #e4e4e4;
+}
+
+.wikiCheckbox:checked + label:before {
+  animation-name: none;
+}
+
+.wikiCheckbox:checked + label:after {
+  display: block;
+}
+
+.wikiCheckbox + label:before {
+  border-radius: 3px;
+}
+
 .wikiCheckbox + label:after {
   top: 2px;
   left: 7px;
@@ -5352,13 +5556,29 @@ body .gh__menu {
   border-style: solid;
   border-color: #fff;
   border-top: 0;
-  border-left: 0; }
+  border-left: 0;
+}
+
 .wikiCheckbox:checked + label:before {
   border: #3e97eb;
-  background: #3e97eb; }
+  background: #3e97eb;
+}
+
 .wikiCheckbox:checked[disabled] + label:before {
   border: #c9e2f9;
-  background: #c9e2f9; }
+  background: #c9e2f9;
+}
+
+
+.wikiCheckbox:checked + label:before {
+  border: #3e97eb;
+  background: #3e97eb;
+}
+
+.wikiCheckbox:checked[disabled] + label:before {
+  border: #c9e2f9;
+  background: #c9e2f9;
+}
 
 .wikiModal {
   width: 100%;
@@ -5369,4 +5589,16 @@ body .gh__menu {
   right: 40px;
   font-size: 13px !important;
   width: 10%;
+}
+
+.AddNewNode {
+  width: 340px;
+
+  form {
+    margin: 20px 40px;
+  }
+
+  .buttons {
+    width: 250px;
+  }
 }

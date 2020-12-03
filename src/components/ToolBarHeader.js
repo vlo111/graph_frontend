@@ -14,6 +14,7 @@ import AccountDropDown from '../components/account/AccountDropDown';
 import Legend from '../components/Legend';
 import MapsButton from '../components/maps/MapsButton';
 import Utils from '../helpers/Utils';
+import WikiButton from "./wiki/WikiButton";
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 
 class ToolBarHeader extends Component {
@@ -47,6 +48,7 @@ class ToolBarHeader extends Component {
         </Link>
         <AccountDropDown />
         <MapsButton />
+        <WikiButton />
         <Legend />
         <div className="graphs">
           <Button

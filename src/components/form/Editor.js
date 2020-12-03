@@ -132,7 +132,6 @@ class Editor extends Component {
       top = (pos.top + 35) - modalPos.top;
       left = pos.left - modalPos.left - 50;
     }
-
     return (
       <div className={`contentEditor ${className} ${error ? 'hasError' : ''}`}>
         {label ? <span className="label">{label}</span> : null}

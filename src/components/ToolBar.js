@@ -35,6 +35,7 @@ class ToolBar extends Component {
 
   render() {
     const { activeButton, match: { params: { graphId } } } = this.props;
+
     return (
       <div id="toolBar">
         <div className="top">

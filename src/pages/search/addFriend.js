@@ -11,7 +11,6 @@ import {
   AddFriendRequest, removeFriendRequest, acceptFriendRequest,
 } from '../../store/actions/userFriends';
 import { friendsList } from '../../store/selectors/userFriends';
-import { ReactComponent as MinusFriendsSvg } from '../../assets/images/icons/friend-minus.svg';
 import { ReactComponent as PlusFriendsSvg } from '../../assets/images/icons/friend-plus.svg';
 import { ReactComponent as SolidFriendsSvg } from '../../assets/images/icons/user-solid.svg';
 
