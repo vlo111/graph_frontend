@@ -4184,6 +4184,21 @@ body .gh__menu {
     .ghFormField {
       width: 410px;
     }
+    .close {
+      padding: 0;
+      position: absolute;
+      top: 15px;
+      right: 16px;
+  
+      svg {
+        width: 11px;
+        height: 10px;
+  
+        path {
+          fill: $color-gray;
+        }
+      }
+    }
   }
 }
 

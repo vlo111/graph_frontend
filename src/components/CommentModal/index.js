@@ -31,10 +31,9 @@ const CommentModal = React.memo(({ closeModal, graph }) => {
       >
         <div className="comment-modal__title">
           <h3>{graph.title}</h3>
-          <Button
-            icon={<CloseSvg style={{ height: 30 }} />}
+          <Button color="transparent" className="close" icon={<CloseSvg />}
             onClick={onClose}
-            className="transparent close "
+            
           />
         </div>
         <CommentItems graph={graph} closeModal={closeModal} />
