@@ -3915,7 +3915,8 @@ body .gh__menu {
   }
 }
 
-.ghModalOverlay .nodeTabsFormModal, .ghModalOverlay .AddNewNode {
+.ghModalOverlay .ghModal
+{
   .close {
     padding: 0;
     position: absolute;
@@ -4221,22 +4222,6 @@ body .gh__menu {
 
     .ghFormField {
       width: 410px;
-    }
-
-    .close {
-      padding: 0;
-      position: absolute;
-      top: 15px;
-      right: 16px;
-
-      svg {
-        width: 11px;
-        height: 10px;
-
-        path {
-          fill: $color-gray;
-        }
-      }
     }
   }
 }
@@ -5234,7 +5219,7 @@ body .gh__menu {
 
 .importFile {
   .fileLabel {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 
   .clear {
@@ -5620,7 +5605,7 @@ body .gh__menu {
   width: 10%;
 }
 
-.AddNewNode {
+.containerModal {
   width: 340px;
 
   .form {
