@@ -176,6 +176,7 @@ p {
   font-weight: bold;
   text-align: center;
   margin: 17px 40px;
+
   .autoSaveText {
     font-size: 12px;
     color: $color-main2;
@@ -1645,6 +1646,10 @@ p {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    .importButton {
+      margin-left: auto;
+    }
 
     .ghModalContent {
       height: 100%;
@@ -4109,6 +4114,7 @@ body .gh__menu {
     }
   }
 }
+
 .share-modal {
   @mixin collaborators-list {
     display: flex;
@@ -4174,8 +4180,9 @@ body .gh__menu {
 
 .ghModalOverlay {
   .commentModal {
-    width:600px;
+    width: 600px;
     max-width: 900px;
+
     .ghFormField {
       width: 410px;
     }
@@ -4212,6 +4219,7 @@ body .gh__menu {
       margin-top: 0;
       padding-left: 480px;
     }
+
     .closeNode {
       margin-top: -22px;
       padding-left: 423px;
@@ -4622,6 +4630,7 @@ body .gh__menu {
       position: static;
       margin-left: 10px;
       margin-bottom: -20px;
+
       .item {
         margin-left: -10px;
 
@@ -4631,7 +4640,8 @@ body .gh__menu {
         }
       }
     }
-    .content{
+
+    .content {
       margin-left: 0;
     }
   }
@@ -5001,7 +5011,7 @@ body .gh__menu {
   display: inline-block;
   padding: .46em 1.6em;
   border: .1em solid #f8f9fa;
-  text-shadow: 0 0.04em 0.04em rgba(0,0,0,.35);
+  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, .35);
 }
 
 .linkedin {
@@ -5055,12 +5065,12 @@ body .gh__menu {
   }
 
 }
+
 .graphsName {
   font-size: 15px;
   color: #FE794F;
   font-family: chaparral-pro, serif;
 }
-
 
 
 #dataTable {
@@ -5148,6 +5158,7 @@ body .gh__menu {
     }
   }
 }
+
 .importST2Node {
   text-align: center;
 }

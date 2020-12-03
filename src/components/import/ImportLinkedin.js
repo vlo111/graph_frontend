@@ -97,7 +97,7 @@ class DataImportModal extends Component {
             accept=".pdf"
           />
         </div>
-        <Button className="ghButton accent alt main" onClick={this.convert} loading={loading}>Import</Button>
+        <Button className="importButton" color="accent" onClick={this.convert} loading={loading}>Import</Button>
       </>
     );
   }

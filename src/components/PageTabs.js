@@ -21,9 +21,10 @@ class PageTabs extends Component {
   }
 
   setActiveTab = (tab) => {
-    this.props.history.push(tab.to);
     if (this.props.onChange) {
       this.props.onChange(tab);
+    } else {
+      this.props.history.push(tab.to);
     }
   }
 
