@@ -3091,6 +3091,7 @@ p {
       letter-spacing: 0;
       font-size: 20px;
       font-weight: 600;
+
     }
   }
 
@@ -3149,6 +3150,30 @@ p {
         text-align: right;
         padding: 5px 10px;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #accountDropDown {
+    .accountInfo {
+      padding: 0;
+
+      .name {
+        display: none;
+      }
+
+    }
+
+    .dropdown {
+      position: absolute;
+      right: 15px;
+      top: 59px;
+      width: 200px;
+      left: auto;
+      padding: 0;
+      border: 1px solid #E2E7EB;
+      border-radius: 15px;
     }
   }
 }
@@ -4645,6 +4670,10 @@ body .gh__menu {
       background-color: transparent;
       padding: 0;
       border: none;
+
+      .graphsItem {
+        min-height: 519px;
+      }
     }
   }
 
