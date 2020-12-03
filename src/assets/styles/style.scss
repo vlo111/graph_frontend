@@ -148,6 +148,7 @@ p {
 .logo {
   max-width: 100%;
   overflow: visible;
+  min-width: 143px;
 
   &.orange {
     text {
@@ -1158,17 +1159,16 @@ p {
 
   .start-graphs {
     text-align: left;
-    font: normal normal normal 16px/22px Open Sans;
-    letter-spacing: 0px;
-    color: #0D0905 !important;
+    font-size: 16px;
     opacity: 1;
+    padding: 0 10px;
 
     a {
       text-align: left;
-      font: normal normal normal 16px/22px Open Sans;
-      letter-spacing: 0px;
+      font-size: 16px;
       color: #0D0905 !important;
       opacity: 1;
+      white-space: nowrap;
     }
 
   }
