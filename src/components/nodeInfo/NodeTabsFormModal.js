@@ -64,7 +64,7 @@ class NodeTabsFormModal extends Component {
       [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node.type, customFields);
     }
     [errors.content, tabData.content] = Validate.customFieldContent(tabData.content);
-    [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
+    //[errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
 
     if (!Validate.hasError(errors)) {
       if (!isUpdate) {
@@ -103,12 +103,12 @@ class NodeTabsFormModal extends Component {
             disabled={!!fieldName}
             onChangeText={(v) => this.handleChange('name', v)}
           />
-          <Input
+          {/* <Input
             value={tabData.subtitle}
             error={errors.subtitle}
             label="Subtitle"
             onChangeText={(v) => this.handleChange('subtitle', v)}
-          />
+          /> */}
         </div>
 
         <Editor
