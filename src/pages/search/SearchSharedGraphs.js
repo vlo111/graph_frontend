@@ -26,6 +26,7 @@ class SearchSharedGraphs extends Component {
     const { setLimit, shareGraphsList } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
     this.getGraphs(page, searchParam);
+    console.log(shareGraphsList)
     return (
       <div className="searchData">
         {shareGraphsList && shareGraphsList.length ? (
@@ -75,7 +76,7 @@ class SearchSharedGraphs extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  shareGraphsList: state.graphs.shareGraphsList,
+  shareGraphsList: state.shareGraphs.shareGraphsList,
 });
 const mapDispatchToProps = {
   searchGraphsListRequest,
