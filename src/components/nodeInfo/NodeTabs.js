@@ -113,9 +113,13 @@ class NodeTabs extends Component {
             (
               this.state.showLocation
                 ? <MapsInfo node={node} />
-                : <Button  className="mapTabButton" href="#" onClick={() => this.showLocation()}>
-                Show on Map
-                </Button>
+                : (
+                  <div className="contentWrapper">
+                    <Button icon="fa-globe" className=" ghButton2  mapTabButton" href="#" onClick={() => this.showLocation()}>
+                      Show on Map
+                    </Button>
+                  </div>
+                )
             ),
           ]
         ) : (

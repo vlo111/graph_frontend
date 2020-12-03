@@ -743,16 +743,16 @@ p {
 .ghButton2 {
   display: inline-block;
   padding: 0.46em 1.6em;
-  border: 0.1em solid #000000;
+  border: none;
+  color: $color-white;
+  background-color: $color-button;
   margin: 0.8em 0.4em 0.2em 3px;
   border-radius: 0.38em;
   box-sizing: border-box;
   text-decoration: none;
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
-  color: #000000;
   text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
-  background-color: #FFFFFF;
   text-align: center;
   transition: all 0.15s;
 }
@@ -768,8 +768,8 @@ p {
 
 .ghButton2:hover {
   padding-right: 25px;
-  background-color: $color-button;
-  color: $color-white;
+  background-color: $color-white;
+  color: #0062FF;
 }
 
 .ghButton2:hover button:after {
@@ -4142,8 +4142,11 @@ body .gh__menu {
 
 .ghModalOverlay {
   .commentModal {
-    width: 900px;
+    width:600px;
     max-width: 900px;
+    .ghFormField {
+      width: 410px;
+    }
   }
 }
 
@@ -4172,6 +4175,15 @@ body .gh__menu {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
+    .close {
+      margin-top: 0;
+      padding-left: 480px;
+    }
+    .closeNode {
+      margin-top: -22px;
+      padding-left: 423px;
+    }
   }
 
   &__comment-item {
@@ -4927,13 +4939,10 @@ body .gh__menu {
   }
 }
 
-.mapTabButton {
-  background: transparent;
+.mapTabButton { 
   border: none;
   display: flex;
   left: 67px;
-  position: absolute;
-  background-color: #C6E6FF; 
   margin: 20px 23px;
   display: inline-block;
   padding: .46em 1.6em;
@@ -5270,7 +5279,7 @@ body .gh__menu {
 .wikiModal {
   img {
     margin: 0 auto;
-    width: 80px;
+    width: 100px;
   }
 
   h2 {
