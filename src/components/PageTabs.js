@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
 import Button from './form/Button';
-import UserData from '../pages/profile/UserData';
+import UserData from "../pages/profile/UserData";
 
 class PageTabs extends Component {
   static propTypes = {
@@ -22,9 +22,10 @@ class PageTabs extends Component {
   }
 
   setActiveTab = (tab) => {
-    this.props.history.push(tab.to);
     if (this.props.onChange) {
       this.props.onChange(tab);
+    } else {
+      this.props.history.push(tab.to);
     }
   }
 
@@ -34,22 +35,23 @@ class PageTabs extends Component {
     } = this.props;
     const tab = tabs.find((t) => t.to === location.pathname);
     const list = direction === 'vertical' ? _.reverse([...tabs]) : tabs;
+    const isHome = direction === 'vertical' && className === 'homePageTabs';
     return (
-      <div id="verticalTabs" className={` ${direction} ${className}`} {...props}>
-        <UserData tabs={tabs} />
-        <ul className="tabsList">
-          {list.filter((t) => !t.hidden).map((t) => (
-            <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`}>
-              <Button onClick={() => this.setActiveTab(t)}>
-                {t.name}
-              </Button>
-            </li>
-          ))}
-        </ul>
-        <div className="content">
-          {tab?.component}
+        <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser'}`} {...props}>
+          { isHome && <UserData />}
+          <ul className="tabsList">
+            {list.filter((t) => !t.hidden).map((t) => (
+                <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`}>
+                  <Button onClick={() => this.setActiveTab(t)}>
+                    {t.name}
+                  </Button>
+                </li>
+            ))}
+          </ul>
+          <div className="content">
+            {tab?.component}
+          </div>
         </div>
-      </div>
     );
   }
 }

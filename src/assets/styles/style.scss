@@ -8,7 +8,6 @@ $color-accent: #0062FF;
 $color-error: #FE5C4F;
 $color-warning: #FED300;
 
-$color-background: #F4F5FF;
 $color-light-blue: #C6E6FF;
 $color-gray: #9BA6B4;
 $color-light-gray: #E2E7EB;
@@ -107,9 +106,9 @@ main {
   }
 
   &.homePage {
-    background-color: $color-background;
+    //background-color: $color-white;
     padding-top: 80px;
-    //background-image: url("../images/concept.jpg");
+    background-image: url("../images/concept.jpg");
     background-attachment: fixed;
     background-size: cover;
     background-position: top left;
@@ -3916,7 +3915,8 @@ body .gh__menu {
   }
 }
 
-.ghModalOverlay .nodeTabsFormModal, .ghModalOverlay .AddNewNode {
+.ghModalOverlay .ghModal
+{
   .close {
     padding: 0;
     position: absolute;
@@ -4222,22 +4222,6 @@ body .gh__menu {
 
     .ghFormField {
       width: 410px;
-    }
-
-    .close {
-      padding: 0;
-      position: absolute;
-      top: 15px;
-      right: 16px;
-
-      svg {
-        width: 11px;
-        height: 10px;
-
-        path {
-          fill: $color-gray;
-        }
-      }
     }
   }
 }
@@ -4601,7 +4585,7 @@ body .gh__menu {
   background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
 }
 
-.verticalTabs {
+#verticalTabs {
   display: flex;
   width: 64%;
   margin: 0 auto 50px;
@@ -4619,37 +4603,6 @@ body .gh__menu {
     position: absolute;
     top: 1px;
     left: 0;
-  }
-
-  .content {
-    margin-left: 50px;
-  }
-}
-
-.homePageTabs {
-  display: flex;
-  align-items: flex-start;
-  display: grid;
-  grid-template-columns: 350px 50px auto 100px;
-  grid-template-rows: auto 220px auto;
-
-  .tabsList {
-    display: flex;
-    flex-direction: row;
-    transform: rotate(270deg) translate(-100%, 0);
-    transform-origin: top left;
-    margin: 0;
-    left: 0;
-    width: 510px;
-  }
-
-  .content {
-    margin-left: 0;
-  }
-}
-
-.verticalTabs, .homePageTabs{
-  .tabsList {
 
     .item {
       margin-left: -10px;
@@ -4684,22 +4637,28 @@ body .gh__menu {
     }
   }
 
-  .content {
+  > .content {
     width: 100%;
+    margin-left: 50px;
     position: relative;
     min-height: 400px;
     background-color: $color-white;
+    padding: 2% 3.4%;
     border-radius: 24px;
     border: 1px solid $color-light-gray;
     margin-bottom: 10px;
   }
 
   &.homePageTabs {
-    .content {
+    > .content {
       min-height: 450px;
       background-color: transparent;
       padding: 0;
       border: none;
+
+      .graphsItem {
+        min-height: 519px;
+      }
     }
   }
 
@@ -4728,7 +4687,51 @@ body .gh__menu {
     }
   }
 }
+.homeWithUser {
+  width: 100% !important;
+  position: relative !important;
+  align-items: flex-start !important;
+  display: grid !important;
+  grid-template-columns: 350px 50px auto 100px;
+  grid-template-rows: auto 220px auto;
 
+  .tabsList {
+    display: flex;
+    flex-direction: row;
+    transform: rotate(270deg) translate(-99.3%, 0) !important;
+    transform-origin: top left;
+    margin: 0;
+    left: 0;
+    width: 510px;
+    position: relative !important;
+  }
+
+  .content {
+    margin-left: 0 !important;
+    padding: 2% 3.4%;
+  }
+}
+
+.userPanel {
+  text-align: center;
+  padding: 0 30px 0 80px;
+
+  img {
+    width: 140px;
+    border-radius: 100px;
+  }
+
+  p, a {
+    margin-top: 15px;
+    font: $font-user-panel;
+    color: $color-dark;
+  }
+
+  h4 {
+    font-family: $font-family;
+    font-size: 24px;
+  }
+}
 
 .profileSettings {
   padding: 20px 5%;
@@ -5260,7 +5263,7 @@ body .gh__menu {
 
 .importFile {
   .fileLabel {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 
   .clear {
@@ -5646,7 +5649,7 @@ body .gh__menu {
   width: 10%;
 }
 
-.AddNewNode {
+.containerModal {
   width: 340px;
 
   .form {
@@ -5656,27 +5659,4 @@ body .gh__menu {
   .buttons {
     width: 250px;
   }
-}
-
-
-.userPanel {
-  text-align: center;
-  padding: 0 30px 0 80px;
-
-  img {
-    width: 140px;
-    border-radius: 100px;
-  }
-
-  p, a {
-    margin-top: 15px;
-    font: $font-user-panel;
-    color: $color-dark;
-  }
-
-  h4 {
-    font-family: $font-family;
-    font-size: 24px;
-  }
-
 }
