@@ -9,7 +9,7 @@ import {
   SET_NODE_CUSTOM_FIELD,
   ADD_NODE_CUSTOM_FIELD_KEY,
   REMOVE_NODE_CUSTOM_FIELD_KEY,
-  ACTIONS_COUNT, GET_SINGLE_EMBED_GRAPH, SET_GRAPH_CUSTOM_FIELDS,
+  ACTIONS_COUNT, GET_SINGLE_EMBED_GRAPH, SET_GRAPH_CUSTOM_FIELDS, GET_SINGLE_GRAPH_PREVIEW,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -98,6 +98,18 @@ export default function reducer(state = initialState, action) {
         ...state,
         singleGraph,
         embedLabels,
+      };
+    }
+    case GET_SINGLE_GRAPH_PREVIEW.SUCCESS: {
+      const { graph: singleGraph } = action.payload.data;
+      const { nodes, links, labels } = singleGraph;
+      Chart.render({
+        nodes, links: ChartUtils.cleanLinks(links, nodes), labels,
+      });
+
+      return {
+        ...state,
+        singleGraph,
       };
     }
     case CLEAR_SINGLE_GRAPH: {

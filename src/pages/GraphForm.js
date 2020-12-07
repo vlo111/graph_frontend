@@ -25,6 +25,7 @@ import ToolBarHeader from '../components/ToolBarHeader';
 import CreateGraphModal from '../components/CreateGraphModal';
 import { socketSetActiveGraph } from '../store/actions/socket';
 import AutoSave from "../components/AutoSave";
+import LabelShare from "../components/labelShare/LabelShare";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -72,6 +73,7 @@ class GraphForm extends Component {
         <LabelTooltip />
         <CreateGraphModal />
         <AutoSave />
+        <LabelShare />
       </Wrapper>
     );
   }

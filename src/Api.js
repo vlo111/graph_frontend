@@ -118,8 +118,19 @@ class Api {
     });
   }
 
-  static getSingleGraph(graphId) {
-    return api.get(`/graphs/single/${graphId}`);
+  static getSingleGraph(graphId, params = {}) {
+    return api.get(`/graphs/single/${graphId}`, {
+      params,
+    });
+  }
+
+  static getSingleGraphWithAccessToken(graphId, userId, token) {
+    return api.get(`/graphs/single/token/${graphId}`, {
+      params: {
+        userId,
+        token,
+      },
+    });
   }
 
   static getSingleEmbedGraph(graphId, token) {
@@ -248,7 +259,7 @@ class Api {
     });
   }
 
-  
+
   static createCommentNode(requestData) {
     return api.post('/comment-nodes/create', requestData);
   }

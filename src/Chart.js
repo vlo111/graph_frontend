@@ -425,7 +425,6 @@ class Chart {
 
     this.labelsLock = [];
     setTimeout(() => {
-      return
       this.labelsLock = labelsWrapper.selectAll('use')
         .data(this.data.labels.filter((l) => l.hidden !== 1 && l.status === 'lock'))
         .join('use')
@@ -439,7 +438,7 @@ class Chart {
           const { x, y } = ChartUtils.calcScaledPosition(left + (width / 2) - 20, top + (height / 2) - 20);
           return `translate(${x}, ${y})`;
         });
-    }, 200);
+    }, 10);
 
     this.labelMovement();
 
@@ -1226,7 +1225,7 @@ class Chart {
     return d3.select('#graph').attr('data-active');
   }
 
-  static printMode(svgWidth, svgHeight, crop = false) {
+  static printMode(svgWidth, svgHeight, crop = false, preventInitial = false) {
     const originalDimensions = {
       scale: this.wrapper.attr('data-scale') || 1,
       x: this.wrapper.attr('data-x') || 0,
@@ -1291,12 +1290,15 @@ class Chart {
 
     const html = document.querySelector('#graph svg').outerHTML;
 
-    // reset original styles
-    const { x: oX, y: oY, scale: oScale } = originalDimensions;
-    this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`)
-      .attr('data-scale', oScale)
-      .attr('data-x', oX)
-      .attr('data-y', oY);
+    if(!preventInitial){
+      // reset original styles
+      const { x: oX, y: oY, scale: oScale } = originalDimensions;
+      this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`)
+        .attr('data-scale', oScale)
+        .attr('data-x', oX)
+        .attr('data-y', oY);
+    }
+
 
     this.linksWrapper.selectAll('path')
       .attr('fill', undefined);
