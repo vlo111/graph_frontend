@@ -9,7 +9,6 @@ $color-error: #FE5C4F;
 $color-warning: #FED300;
 
 $color-background: #F4F5FF;
-
 $color-light-blue: #C6E6FF;
 $color-gray: #9BA6B4;
 $color-light-gray: #E2E7EB;
@@ -150,6 +149,7 @@ p {
 .logo {
   max-width: 100%;
   overflow: visible;
+  min-width: 143px;
 
   &.orange {
     text {
@@ -1130,7 +1130,7 @@ p {
     }
 
     .notification-container {
-      margin-right: 360px;
+      margin-right: 390px;
 
       .notification {
         background: #FE794F !important;
@@ -1160,17 +1160,16 @@ p {
 
   .start-graphs {
     text-align: left;
-    font: normal normal normal 16px/22px Open Sans;
-    letter-spacing: 0px;
-    color: #0D0905 !important;
+    font-size: 16px;
     opacity: 1;
+    padding: 0 10px;
 
     a {
       text-align: left;
-      font: normal normal normal 16px/22px Open Sans;
-      letter-spacing: 0px;
+      font-size: 16px;
       color: #0D0905 !important;
       opacity: 1;
+      white-space: nowrap;
     }
 
   }
@@ -3156,6 +3155,40 @@ p {
   }
 }
 
+@media screen and (max-width: 900px) {
+  #accountDropDown {
+    .accountInfo {
+      padding: 0;
+
+      .name {
+        display: none;
+      }
+
+    }
+
+    .dropdown {
+      position: absolute;
+      right: 15px;
+      top: 59px;
+      width: 200px;
+      left: auto;
+      padding: 0;
+      border: 1px solid #E2E7EB;
+      border-radius: 15px;
+    }
+  }
+}
+
+.logoInfoText {
+  h4 {
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    margin: 10px 0;
+
+  }
+}
+
 .logoInfoText {
   h4 {
     font-size: 14px;
@@ -3883,8 +3916,7 @@ body .gh__menu {
   }
 }
 
-.ghModalOverlay .ghModal
-{
+.ghModalOverlay .nodeTabsFormModal, .ghModalOverlay .AddNewNode {
   .close {
     padding: 0;
     position: absolute;
@@ -3956,6 +3988,22 @@ body .gh__menu {
     label {
       font-size: 12px;
       font-weight: 600;
+    }
+  }
+
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
     }
   }
 }
@@ -4174,6 +4222,22 @@ body .gh__menu {
 
     .ghFormField {
       width: 410px;
+    }
+
+    .close {
+      padding: 0;
+      position: absolute;
+      top: 15px;
+      right: 16px;
+
+      svg {
+        width: 11px;
+        height: 10px;
+
+        path {
+          fill: $color-gray;
+        }
+      }
     }
   }
 }
@@ -5196,7 +5260,7 @@ body .gh__menu {
 
 .importFile {
   .fileLabel {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 
   .clear {
@@ -5305,9 +5369,25 @@ body .gh__menu {
   color: #1a0dab;
 }
 
+.wikiSearch h3 a:hover {
+  border-bottom: 3px solid;
+}
+
+.wikiSearch a:visited {
+  color: #1a0dab;
+}
+
 .wikiSearch .link a {
   text-decoration: none;
   color: #287e44;
+}
+
+.wikiSearch .link a:hover {
+  text-decoration: none;
+}
+
+.wikiSearch .searchmatch {
+  font-weight: bold;
 }
 
 .wikiSearch .link a:hover {
@@ -5364,6 +5444,10 @@ body .gh__menu {
   outline: none;
 }
 
+.Wiki input:focus {
+  outline: none;
+}
+
 .Wiki button {
   line-height: 40px;
   border: none;
@@ -5402,6 +5486,10 @@ body .gh__menu {
   cursor: not-allowed;
 }
 
+.wikiCheckbox[disabled] {
+  cursor: not-allowed;
+}
+
 .wikiCheckbox + label {
   margin-left: -35px;
   margin-top: 5px;
@@ -5418,6 +5506,13 @@ body .gh__menu {
   animation-name: hover-color;
 }
 
+
+.wikiCheckbox + label:hover:before {
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+  animation-name: hover-color;
+}
+
 .wikiCheckbox + label:before {
   position: absolute;
   top: 0;
@@ -5427,6 +5522,44 @@ body .gh__menu {
   height: 20px;
   content: '';
   border: 1px solid #c0c0c0;
+}
+
+.wikiCheckbox + label:after {
+  position: absolute;
+  display: none;
+  content: '';
+}
+
+.wikiCheckbox[disabled] + label {
+  cursor: not-allowed;
+  color: #e4e4e4;
+}
+
+.wikiCheckbox[disabled] + label:hover,
+.wikiCheckbox[disabled] + label:before,
+.wikiCheckbox[disabled] + label:after {
+  cursor: not-allowed;
+}
+
+.wikiCheckbox[disabled] + label:hover:before {
+  border: 1px solid #e4e4e4;
+  animation-name: none;
+}
+
+.wikiCheckbox[disabled] + label:before {
+  border-color: #e4e4e4;
+}
+
+.wikiCheckbox:checked + label:before {
+  animation-name: none;
+}
+
+.wikiCheckbox:checked + label:after {
+  display: block;
+}
+
+.wikiCheckbox + label:before {
+  border-radius: 3px;
 }
 
 .wikiCheckbox + label:after {
@@ -5491,6 +5624,17 @@ body .gh__menu {
   background: #c9e2f9;
 }
 
+
+.wikiCheckbox:checked + label:before {
+  border: #3e97eb;
+  background: #3e97eb;
+}
+
+.wikiCheckbox:checked[disabled] + label:before {
+  border: #c9e2f9;
+  background: #c9e2f9;
+}
+
 .wikiModal {
   width: 100%;
 }
@@ -5501,6 +5645,19 @@ body .gh__menu {
   font-size: 13px !important;
   width: 10%;
 }
+
+.AddNewNode {
+  width: 340px;
+
+  .form {
+    margin: 20px 40px;
+  }
+
+  .buttons {
+    width: 250px;
+  }
+}
+
 
 .userPanel {
   text-align: center;
@@ -5522,16 +5679,4 @@ body .gh__menu {
     font-size: 24px;
   }
 
-}
-
-.containerModal {
-  width: 340px;
-
-  .form {
-    margin: 20px 40px;
-  }
-
-  .buttons {
-    width: 250px;
-  }
 }
