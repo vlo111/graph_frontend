@@ -22,7 +22,7 @@ $color-button: #0062FF;
 $color-darkgreen: #f2f3f5;
 
 $font-family: 'Open Sans', sans-serif;
-
+$font-user-panel: normal normal normal 15px/21px Segoe UI;
 
 * {
   margin: 0;
@@ -4687,7 +4687,51 @@ body .gh__menu {
     }
   }
 }
+.homeWithUser {
+  width: 100% !important;
+  position: relative !important;
+  align-items: flex-start !important;
+  display: grid !important;
+  grid-template-columns: 350px 50px auto 100px;
+  grid-template-rows: auto 220px auto;
 
+  .tabsList {
+    display: flex;
+    flex-direction: row;
+    transform: rotate(270deg) translate(-99.3%, 0) !important;
+    transform-origin: top left;
+    margin: 0;
+    left: 0;
+    width: 510px;
+    position: relative !important;
+  }
+
+  .content {
+    margin-left: 0 !important;
+    padding: 2% 3.4%;
+  }
+}
+
+.userPanel {
+  text-align: center;
+  padding: 0 30px 0 80px;
+
+  img {
+    width: 140px;
+    border-radius: 100px;
+  }
+
+  p, a {
+    margin-top: 15px;
+    font: $font-user-panel;
+    color: $color-dark;
+  }
+
+  h4 {
+    font-family: $font-family;
+    font-size: 24px;
+  }
+}
 
 .profileSettings {
   padding: 20px 5%;
