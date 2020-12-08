@@ -57,13 +57,6 @@ class ToolBar extends Component {
             >
               Create Label
             </Button>
-            <Button
-              icon={<CloseSvg style={{ width: 10, margin: '0 2px' }} />}
-              className={activeButton === 'delete' ? 'active' : undefined}
-              onClick={() => this.handleClick('delete')}
-            >
-              Remove
-            </Button>
             {false ? <Button
               icon={<LoopSvg />}
               className={activeButton === 'reset' ? 'active' : undefined}

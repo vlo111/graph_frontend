@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import EventEmitter from 'events';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodeContextMenu from './NodeContextMenu';
@@ -9,9 +11,15 @@ import NodeFullInfoContext from './NodeFullInfoContext';
 import LabelContextMenu from './LabelContextMenu';
 import Icon from '../form/Icon';
 import LabelUtils from '../../helpers/LabelUtils';
-import SelectSquare from "./SelectSquare";
+import SelectSquare from './SelectSquare';
+import DeleteModalContext from './DeleteModalContext';
+import { setActiveButton } from '../../store/actions/app';
 
 class ContextMenu extends Component {
+  static propTypes = {
+    setActiveButton: PropTypes.func.isRequired,
+  }
+
   static event = new EventEmitter();
 
   constructor(props) {
@@ -21,6 +29,7 @@ class ContextMenu extends Component {
       x: 0,
       y: 0,
       params: {},
+      deleteDataModal: {},
     };
   }
 
@@ -84,80 +93,123 @@ class ContextMenu extends Component {
   }
 
   handleClick = (ev, type, additionalParams) => {
-    const { params } = this.state;
-    params.contextMenu = true;
-    this.constructor.event.emit(type, ev, { ...params, ...additionalParams });
+    if (type.includes('.delete')) {
+      this.setState({
+        deleteDataModal: {ev, type},
+      });
+      this.props.setActiveButton('deleteModal');
+    }
+    else {
+      const { params } = this.state;
+      params.contextMenu = true;
+      this.constructor.event.emit(type, ev, { ...params, ...additionalParams });
+    }
   }
 
   render() {
     const {
-      x, y, show, params,
+      x, y, show, params, deleteDataModal,
     } = this.state;
-    if (!show) {
-      return null;
+    const { activeButton } = this.props;
+
+    if (activeButton !== 'deleteModal') {
+      if (!show) {
+        return null;
+      }
     }
     const { match: { params: { graphId = '' } } } = this.props;
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
-    const showPast = !!localStorage.getItem('label.copy') && (show === 'chart' || show === 'node' || show === 'link' || show === 'label');
+    const showPast = !!localStorage.getItem('label.copy')
+        && (show === 'chart' || show === 'node' || show === 'link' || show === 'label');
     if (params.fieldName === '_location') {
       return null;
     }
     return (
-      <div className={`contextmenuOverlay ${x + 360 > window.innerWidth ? 'toLeft' : ''}`} onClick={this.closeMenu}>
-        <div className="contextmenu" style={{ left: x, top: y }}>
-          {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
-          {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
-          {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
-          {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
-          {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
-          {showPast ? (
-            <div className="ghButton notClose">
-              <Icon value="fa-clipboard" />
-              Paste
-              <Icon className="arrow" value="fa-angle-right" />
-              <div className="contextmenu">
-                <Button onClick={(ev) => {
-                  LabelUtils.past(x, y);
-                  this.handleClick(ev, 'label.append');
-                }}
-                >
-                  Append
-                </Button>
-                <Button onClick={(ev) => {
-                  LabelUtils.past(x, y, true, graphId);
-                  this.handleClick(ev, 'label.embed');
-                }}
-                >
-                  Paste Embedded
-                </Button>
-              </div>
-            </div>
-          ) : null}
+      activeButton === 'deleteModal' ? <DeleteModalContext data={deleteDataModal} params={params} />
+        : (
+          <div className={`contextmenuOverlay ${x + 360 > window.innerWidth ? 'toLeft' : ''}`} onClick={this.closeMenu}>
+            <div className="contextmenu" style={{ left: x, top: y }}>
+              {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
+              {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
+              {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
+              {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
+              {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
-          {['node', 'link', 'label', 'chart'].includes(show) ? (
-            <>
-              {showInMap ? (
-                <Button
-                  icon="fa-globe"
-                  onClick={(ev) => this.handleClick(ev, 'active-button', { button: 'maps-view' })}
-                >
-                  Show on map
-                </Button>
+              {showPast ? (
+                <div className="ghButton notClose">
+                  <Icon value="fa-clipboard" />
+                  Paste
+                  <Icon className="arrow" value="fa-angle-right" />
+                  <div className="contextmenu">
+                    <Button onClick={(ev) => {
+                      LabelUtils.past(x, y);
+                      this.handleClick(ev, 'label.append');
+                    }}
+                    >
+                      Append
+                    </Button>
+                    <Button onClick={(ev) => {
+                      LabelUtils.past(x, y, true, graphId);
+                      this.handleClick(ev, 'label.embed');
+                    }}
+                    >
+                      Paste Embedded
+                    </Button>
+                  </div>
+                </div>
               ) : null}
-              <Button icon="fa-crop" onClick={(ev) => this.handleClick(ev, 'crop')}>
-                Crop
-              </Button>
-              <Button disabled={!undoCount} icon="fa-undo" onClick={(ev) => this.handleClick(ev, 'undo')}>
-                {'Undo '}
-                <sub>(Ctrl+Z)</sub>
-              </Button>
-            </>
-          ) : null}
-        </div>
-      </div>
+              {['node', 'link', 'label', 'selectSquare'].includes(show) ? (
+                <>
+                  {show === 'node' ? (!params.readOnly ? (
+                    <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
+                      Delete
+                    </Button>
+                  ) : null)
+                    : (
+                      <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
+                        Delete
+                      </Button>
+                    )}
+                </>
+              ) : null}
+
+              {['node', 'link', 'label', 'chart'].includes(show) ? (
+                <>
+                  {showInMap ? (
+                    <Button
+                      icon="fa-globe"
+                      onClick={(ev) => this.handleClick(ev, 'active-button', { button: 'maps-view' })}
+                    >
+                      Show on map
+                    </Button>
+                  ) : null}
+                  <Button icon="fa-crop" onClick={(ev) => this.handleClick(ev, 'crop')}>
+                    Crop
+                  </Button>
+                  <Button disabled={!undoCount} icon="fa-undo" onClick={(ev) => this.handleClick(ev, 'undo')}>
+                    {'Undo '}
+                    <sub>(Ctrl+Z)</sub>
+                  </Button>
+                </>
+              ) : null}
+            </div>
+          </div>
+        )
     );
   }
 }
 
-export default withRouter(ContextMenu);
+const mapStateToProps = (state) => ({
+  activeButton: state.app.activeButton,
+});
+const mapDispatchToProps = {
+  setActiveButton,
+};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ContextMenu);
+
+export default withRouter(Container);

@@ -63,7 +63,9 @@ class Login extends Component {
           <div>
             <form onSubmit={this.signIn} id="login" className="authForm">
               <h1>Sign in to</h1>
-              <LogoSvg className="logo orange" />
+              <div className="logo">
+                <LogoSvg className="logo orange" />
+              </div>
               <div className="logoInfoText">
                 <h4>Your ultimate graphing tool</h4>
               </div>
