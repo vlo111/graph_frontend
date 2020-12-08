@@ -18,3 +18,7 @@ export const UPDATE_SHARE_GRAPH_WITH_USERS = define('UPDATE_SHARE_GRAPH_WITH_USE
 export function updateShareGraphWithUsersRequest(shareId, params) {
   return UPDATE_SHARE_GRAPH_WITH_USERS.request(() => Api.updateShareGraphWithUsers(shareId, params));
 }
+
+export function deleteShareGraphWithUsersRequest(shareId) {
+  return UPDATE_SHARE_GRAPH_WITH_USERS.request(() => Api.deleteShareGraphWithUsers(shareId));
+}

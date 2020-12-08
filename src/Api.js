@@ -296,6 +296,10 @@ class Api {
   static updateShareGraphWithUsers(shareId, params) {
     return api.put(`/share/update/${shareId}`, params);
   }
+
+  static deleteShareGraphWithUsers(shareId) {
+    return api.delete(`/share/delete/${shareId}`);
+  }
 }
 
 export default Api;
