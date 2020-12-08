@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Select from "../form/Select";
 import { LABEL_SHARE_TYPES } from "../../data/graph";
-import { getSharedWithUsersRequest, updateShareGraphWithUsersRequest } from "../../store/actions/share";
+import {
+  deleteShareGraphWithUsersRequest,
+  getSharedWithUsersRequest,
+  updateShareGraphWithUsersRequest
+} from "../../store/actions/share";
 
 class ShareUserItem extends Component {
   static propTypes = {
@@ -14,7 +18,11 @@ class ShareUserItem extends Component {
 
   handleUserRoleChange = async (value) => {
     const { user } = this.props;
-    await this.props.updateShareGraphWithUsersRequest(user.share.id, { role: value.value });
+    if (value.value === 'none') {
+      await this.props.deleteShareGraphWithUsersRequest(user.share.id);
+    } else {
+      await this.props.updateShareGraphWithUsersRequest(user.share.id, { role: value.value });
+    }
     this.props.onChange(user, value.value);
   }
 
@@ -43,6 +51,7 @@ const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {
   updateShareGraphWithUsersRequest,
+  deleteShareGraphWithUsersRequest,
   getSharedWithUsersRequest,
 };
 

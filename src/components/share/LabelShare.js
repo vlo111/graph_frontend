@@ -48,15 +48,16 @@ class LabelShare extends Component {
     return data.users || [];
   }
 
-  addUser = (value) => {
+  addUser = async (value) => {
     const { match: { params: { graphId = '' } } } = this.props;
     const labelId = '1.555';
-    this.props.shareGraphWithUsersRequest({
+    await this.props.shareGraphWithUsersRequest({
       graphId,
       userId: value.id,
       type: 'label',
       objectId: labelId,
     });
+    this.handleUserRoleChange();
   }
 
   handleUserRoleChange = () => {
