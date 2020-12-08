@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TwitterPicker } from 'react-color';
+import { SketchPicker  } from 'react-color';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
@@ -51,7 +51,7 @@ class ColorPicker extends Component {
       ReactDOM.createPortal((
         <Outside exclude=".ghColorPicker" onClick={this.closePicker}>
           <div className="ghColorPickerPopUp" onClick={this.handleColorClick} style={{ left: x, top: y + height + 5 }}>
-            <TwitterPicker color={value} onChange={(v) => onChangeText(v.hex)} />
+            <SketchPicker  color={value} onChange={(v) => onChangeText(v.hex)} />
           </div>
         </Outside>
       ), document.body)
