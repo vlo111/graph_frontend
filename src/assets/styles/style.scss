@@ -5678,3 +5678,36 @@ body .gh__menu {
     width: 250px;
   }
 }
+
+
+.ghModalLabelShareOverlay {
+  .ghModalLabelShare {
+    width: 60%;
+
+    .ghFormField {
+      width: 100%;
+
+    }
+
+    .shareUserItem {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+      padding: 0 1px;
+
+      .userName {
+        white-space: nowrap;
+        padding-right: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+      }
+
+      .shareType {
+        width: 115px;
+        min-width: 115px;
+      }
+    }
+  }
+}

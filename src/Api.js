@@ -259,7 +259,6 @@ class Api {
     });
   }
 
-
   static createCommentNode(requestData) {
     return api.post('/comment-nodes/create', requestData);
   }
@@ -276,6 +275,27 @@ class Api {
     return api.get(`/comment-nodes/actions-count/${id}/${nodeId}`);
   }
 
+  static searchUsers(s, page) {
+    return api.get('/users/search', {
+      params: { s, page },
+    });
+  }
+
+  static getSharedWithUsers(graphId, type, objectId) {
+    return api.get('/share/users', {
+      params: {
+        graphId, type, objectId,
+      },
+    });
+  }
+
+  static shareGraphWithUsers(params) {
+    return api.post('/share/create', params);
+  }
+
+  static updateShareGraphWithUsers(shareId, params) {
+    return api.put(`/share/update/${shareId}`, params);
+  }
 }
 
 export default Api;
