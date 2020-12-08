@@ -106,7 +106,7 @@ main {
   }
 
   &.homePage {
-    background-color: $color-white;
+    background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
     padding-top: 80px;
     //background-image: url("../images/concept.jpg");
     background-attachment: fixed;
