@@ -41,9 +41,6 @@ class labelContextMenu extends Component {
         <Button icon="fa-copy" onClick={this.handleCopyClick}>
           Copy
         </Button>
-        <Button icon="fa-eraser" onClick={(ev) => this.props.onClick(ev, 'label.delete')}>
-          Delete
-        </Button>
       </>
     );
   }

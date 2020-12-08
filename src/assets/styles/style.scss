@@ -106,7 +106,7 @@ main {
   }
 
   &.homePage {
-    background-color: $color-white;
+    background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
     padding-top: 80px;
     //background-image: url("../images/concept.jpg");
     background-attachment: fixed;
@@ -1131,9 +1131,98 @@ p {
     .notification-container {
       margin-right: 390px;
 
-      .notification {
-        background: #FE794F !important;
+
+    .notification {
+      display: inline-block;
+      position: relative;
+      padding: 6px;
+      background: #7166F8 0% 0% no-repeat padding-box;
+      border-radius: 45px;
+      font-size: 1.3em;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+
+    .notification::before,
+    .notification::after {
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .notification::before {
+      display: block;
+      font-family: "FontAwesome";
+      transform-origin: top center;
+    }
+
+    .notification::after {
+      font-family: Arial;
+      font-size: 12px;
+      font-weight: 700;
+      position: absolute;
+      top: -9px;
+      right: -15px;
+      padding: 5px 8px;
+      line-height: 100%;
+      border: 2px #fff solid;
+      border-radius: 60px;
+      background: #db3434;
+      opacity: 0;
+      content: attr(data-count);
+      opacity: 0;
+      transform: scale(0.5);
+      transition: transform, opacity;
+      transition-duration: 0.3s;
+      transition-timing-function: ease-out;
+    }
+
+      .notification.notify::before {
+        animation: ring 1.5s ease;
       }
+
+      .notification.show-count::after {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      .notification-info-panel {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 0;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 0px 6px 20px #00000029;
+        border: 1px solid #E2E7EB;
+        border-radius: 15px;
+        opacity: 1
+      }
+
+      .notification-info-panel .notification-message {
+        list-style: none;
+        padding: 4px;
+        background-color: #ebebeb;
+        margin-bottom: 3px;
+        border: 1px solid #ececec;
+        border-radius: 8px;
+      }
+
+      .notification-info-panel .notification-message .timestamp {
+        margin-bottom: 2px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .notification-info-panel .notification-message .content {
+        font-size: 17px;
+      }
+
+      .notification-info-panel .notification-message.unread {
+        background-color: #FFFFFF 0% 0% no-repeat padding-box7A2B8;
+        color: #00000029;
+
+
+      }
+
+
     }
 
   }
@@ -1434,6 +1523,15 @@ p {
         .submit {
           align-self: center;
         }
+        .logo svg {
+
+          height: 74px;
+
+        }
+        .logo {
+          height: 120px;
+          width: 226px;
+        }
       }
     }
 
@@ -1473,6 +1571,10 @@ p {
         .submit {
           align-self: center;
         }
+        .logo {
+          height: 120px;
+          width: 226px;
+        }
       }
     }
     .switchSignMode {
@@ -1508,7 +1610,11 @@ p {
         }
 
         .logo {
-          margin: 30px 70px;
+          margin: 0px 23px;
+          height: 116px;
+          width: 223px;
+          position: absolute;
+          left: 0px;
         }
       }
 
@@ -1532,6 +1638,10 @@ p {
       .submit {
         align-self: flex-end;
         margin-top: 32px;
+      }
+      .logo {
+        height: 120px;
+        width: 226px;
       }
     }
     .switchSignMode {
@@ -4579,7 +4689,8 @@ body .gh__menu {
   justify-content: flex-start;
   align-items: center;
   position: absolute;
-  right: 0px;
+  right: 70px;
+  top: 38px;
 
   #dropdown-graphListHeader {
     background-color: #ffffff;
@@ -5674,5 +5785,43 @@ body .gh__menu {
 
   .buttons {
     width: 250px;
+  }
+}
+
+.ghModalLabelShareOverlay {
+  .ghModalLabelShare {
+    width: 60%;
+
+    .ghFormField {
+      width: 100%;
+
+    }
+
+    .shareUserItem {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+      padding: 0 1px;
+
+      .userName {
+        white-space: nowrap;
+        padding-right: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+      }
+
+      .shareType {
+        width: 115px;
+        min-width: 115px;
+      }
+    }
+  }
+}
+.deleteModal {
+  p {
+    font: normal normal 600 16px/22px Open Sans;
+    letter-spacing: 0px;
   }
 }
