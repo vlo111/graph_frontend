@@ -134,9 +134,9 @@ class AddLinkModal extends Component {
         isOpen
         onRequestClose={this.closeModal}
       >
-        <div className="AddnewLink">
+        <div className="containerModal">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
-          <form onSubmit={this.addLink}>
+          <form className="form" onSubmit={this.addLink}>
             <h2>
               {isUpdate ? 'Edit Link' : 'Add new Link'}
             </h2>

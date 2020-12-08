@@ -136,9 +136,9 @@ class AddNodeModal extends Component {
         isOpen={!_.isEmpty(addNodeParams)}
         onRequestClose={this.closeModal}
       >
-        <div className="AddNewNode">
+        <div className="containerModal">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
-          <form onSubmit={this.saveNode}>
+          <form className="form" onSubmit={this.saveNode}>
             <h2>{_.isNull(index) ? 'Add new node' : 'Edit node'}</h2>
             <Select
                 isCreatable

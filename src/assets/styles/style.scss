@@ -106,9 +106,9 @@ main {
   }
 
   &.homePage {
-    //background-color: $color-white;
+    background-color: $color-white;
     padding-top: 80px;
-    background-image: url("../images/concept.jpg");
+    //background-image: url("../images/concept.jpg");
     background-attachment: fixed;
     background-size: cover;
     background-position: top left;
@@ -3915,8 +3915,8 @@ body .gh__menu {
   }
 }
 
-.ghModalOverlay .ghModal
-{
+
+.ghModalOverlay .ghModal {
   .close {
     padding: 0;
     position: absolute;
@@ -4222,6 +4222,22 @@ body .gh__menu {
 
     .ghFormField {
       width: 410px;
+    }
+
+    .close {
+      padding: 0;
+      position: absolute;
+      top: 15px;
+      right: 16px;
+
+      svg {
+        width: 11px;
+        height: 10px;
+
+        path {
+          fill: $color-gray;
+        }
+      }
     }
   }
 }
