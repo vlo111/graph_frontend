@@ -2,7 +2,7 @@
 
 
 $color-main: #7166F8;
-$color-main2: #FE794F;
+$color-main2:  #7166F8 ; 
 $color-accent: #0062FF;
 
 $color-error: #FE5C4F;
@@ -1132,7 +1132,7 @@ p {
       margin-right: 390px;
 
       .notification {
-        background: #FE794F !important;
+        background: #7166F8 0% 0% no-repeat padding-box;
       }
     }
 
@@ -4579,7 +4579,8 @@ body .gh__menu {
   justify-content: flex-start;
   align-items: center;
   position: absolute;
-  right: 0px;
+  right: 70px;
+  top: 38px;
 
   #dropdown-graphListHeader {
     background-color: #ffffff;
