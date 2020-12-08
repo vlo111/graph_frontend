@@ -125,12 +125,11 @@ class Editor extends Component {
     const { className, error, label } = this.props;
     let top;
     let left;
-    if (showPopUp) {
-      let modalPos = document.querySelector('.nodeTabsFormModal').getBoundingClientRect()
-      const pos = document.querySelector(`.jodit-toolbar-button_${showPopUp}`).getBoundingClientRect();
+    if (showPopUp) { 
+      const pos = document.querySelector(`.jodit-toolbar-button_${showPopUp}`).getBoundingClientRect(); 
+	  top = pos.top + 35;
+      left = pos.left;
 
-      top = (pos.top + 35) - modalPos.top;
-      left = pos.left - modalPos.left - 50;
     }
     return (
       <div className={`contentEditor ${className} ${error ? 'hasError' : ''}`}>
