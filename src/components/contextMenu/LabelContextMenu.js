@@ -47,9 +47,6 @@ class labelContextMenu extends Component {
         <Button icon="fa-share-alt" onClick={(ev) => this.props.onClick(ev, 'label.share')}>
           Share
         </Button>
-        <Button icon="fa-eraser" onClick={(ev) => this.props.onClick(ev, 'label.delete')}>
-          Delete
-        </Button>
       </>
     );
   }

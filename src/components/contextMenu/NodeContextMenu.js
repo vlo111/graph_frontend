@@ -25,12 +25,6 @@ class NodeContextMenu extends Component {
             </a>
           </Button>
         ) : null}
-        {!params.readOnly ? (
-          <Button icon="fa-eraser" onClick={(ev) => this.props.onClick(ev, 'node.delete')}>
-            Delete
-          </Button>
-        ) : null}
-
       </>
     );
   }
