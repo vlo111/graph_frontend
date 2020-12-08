@@ -8,6 +8,7 @@ import memoizeOne from 'memoize-one';
 import { toggleNodeModal } from '../../store/actions/app';
 import { setNodeCustomField } from '../../store/actions/graphs';
 import Select from '../form/Select';
+import ColorPicker from '../form/ColorPicker';
 import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
@@ -16,7 +17,7 @@ import { NODE_TYPES, NODE_STATUS } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
 import Utils from '../../helpers/Utils';
-import {ReactComponent as CloseSvg} from "../../assets/images/icons/close.svg";
+import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -178,6 +179,14 @@ class AddNodeModal extends Component {
                 value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
                 error={errors.nodeType}
                 onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+            />
+            <ColorPicker
+              label="Color"
+              value={nodeData.color}
+              readOnly 
+              style={{ color: nodeData.color }}
+              onChangeText={(v) => this.handleChange('color', v)}
+              autocomplete="off" 
             />
             <FileInput
                 label="Icon"
