@@ -295,7 +295,9 @@ class ChartUtils {
 
   static setNodeTypeColor = (type, color) => {
     Chart.data.nodes = Chart.data.nodes.map((n) => {
-      n.color = color;
+      if(n.type === type){
+        n.color = color;
+      }
       return n;
     });
     this.nodeColorObj[type] = color;

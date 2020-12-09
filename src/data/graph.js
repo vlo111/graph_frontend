@@ -7,4 +7,6 @@ export const LABEL_SHARE_TYPES = [
   { value: 'none', label: 'None' },
   { value: 'view', label: 'View' },
   { value: 'edit', label: 'Edit' },
+  { value: 'edit_inside', label: 'Edit Inside', disabled: true },
+  { value: 'admin', label: 'Audit', disabled: true },
 ];
