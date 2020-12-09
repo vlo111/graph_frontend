@@ -293,6 +293,14 @@ class ChartUtils {
     return this.nodeColorObj[d.type];
   }
 
+  static setNodeTypeColor = (type, color) => {
+    Chart.data.nodes = Chart.data.nodes.map((n) => {
+      n.color = color;
+      return n;
+    });
+    this.nodeColorObj[type] = color;
+  }
+
   static labelColorsArr = _.clone(LINK_COLORS);
 
   static labelColors = (d = {}) => {
