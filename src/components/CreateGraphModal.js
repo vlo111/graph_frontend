@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import Input from './form/Input';
 import Button from './form/Button';
 import { createGraphRequest } from '../store/actions/graphs';
+import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 
 class CreateGraphModal extends Component {
   static propTypes = {
@@ -58,6 +59,7 @@ class CreateGraphModal extends Component {
         overlayClassName="ghModalOverlay"
         isOpen
       >
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.props.history.goBack} />
         <h2>
           Create Graph
         </h2>
@@ -73,11 +75,11 @@ class CreateGraphModal extends Component {
           onChangeText={(v) => this.handleChange('description', v)}
         />
         <div className="buttons">
-          <Button onClick={this.props.history.goBack}>
+          <Button className="cancel transparent alt" onClick={this.props.history.goBack}>
             Cancel
           </Button>
           <Button
-            className="saveNode"
+            className="accent alt saveNode"
             disabled={!requestData.title}
             onClick={this.addGraph}
           >
