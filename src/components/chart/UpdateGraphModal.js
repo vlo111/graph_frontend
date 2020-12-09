@@ -1,8 +1,7 @@
 import React, {
   useState
 } from 'react';
-import { useSelector, useDispatch } from 'react-redux'; 
-
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
@@ -10,8 +9,9 @@ import Button from '../form/Button';
 import queryString from 'query-string';
 import Modal from 'react-modal';
 import Input from '../form/Input';
-import { updateGraphDataRequest,  getGraphsListRequest }
-  from '../../store/actions/graphs'; 
+import { updateGraphDataRequest, getGraphsListRequest }
+  from '../../store/actions/graphs';
+  import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 const UpdateGraphModal = ({ graph, closeModal }) => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const UpdateGraphModal = ({ graph, closeModal }) => {
   const [graphData, setGraphData] = useState(graph);
   const { page = 1, s: searchParam } = queryString.parse(window.location.search);
 
-  const updateGraph = async (event) => { 
+  const updateGraph = async (event) => {
     event.preventDefault();
     try {
       const { payload: { data } } = await dispatch(updateGraphDataRequest(graphData.id,
@@ -36,27 +36,22 @@ const UpdateGraphModal = ({ graph, closeModal }) => {
     }
   }
 
-  function validateForm() { 
+  function validateForm() {
     return (
-      graphData.title.trim().length === 0 
+      graphData.title.trim().length === 0
     );
   }
   const handleChange = (path, value) => {
     setGraphData({ ...graphData, [path]: value });
   }
-
-  // useEffect(() => { 
-  //     console.log('sss'); 
-  //    dispatch(getGraphsListRequest(page, { s: searchParam }));
-
-  // }, [dispatch, updateGraphDataRequest]);
-
   return (
     <Modal
-      className="ghModal ghModalSave"
+      className="ghModal"
       overlayClassName="ghModalOverlay"
       isOpen
     >
+      <Button color="transparent" className="close" icon={<CloseSvg />}  onClick={() => closeModal()} />
+
       <h2> Update Graph </h2>
       <Input
         label="Title"
@@ -70,11 +65,11 @@ const UpdateGraphModal = ({ graph, closeModal }) => {
         onChangeText={(v) => handleChange('description', v)}
       />
       <div className="buttons">
-        <Button onClick={() => closeModal()}>
+        <Button className="cancel transparent alt" onClick={() => closeModal()}>
           Cancel
       </Button>
         <Button
-          className="saveNode"
+          className="accent alt"
           disabled={validateForm()}
           onClick={updateGraph}
         >
