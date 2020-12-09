@@ -126,6 +126,7 @@ class SaveGraphModal extends Component {
       // const svgBig = Chart.printMode(800, 446);
       this.props.updateGraphThumbnailRequest(resGraphId, svg);
       this.props.onSave(resGraphId);
+      this.props.history.push("/");
     } else {
       toast.error('Something went wrong. Please try again');
     }
@@ -180,7 +181,7 @@ class SaveGraphModal extends Component {
         <div className="buttons">
           {isTemplate ? (
             <>
-              <Button onClick={() => this.saveGraph('active', true)} disabled={!canSave}>
+              <Button className="accent alt" onClick={() => this.saveGraph('active', true)} disabled={!canSave}>
                 Save as Graph
               </Button>
               <Button onClick={() => this.saveGraph('template', false)} disabled={!canSave}>
@@ -188,19 +189,19 @@ class SaveGraphModal extends Component {
               </Button>
             </>
           ) : (
-            <>
-              <Button onClick={() => this.saveGraph('template', true)}>
-                Save as Template
+              <>
+                <Button className="accent alt" onClick={() => this.saveGraph('template', true)}>
+                  Save as Template
               </Button>
-              <Button
-                className="saveNode"
-                onClick={() => this.saveGraph(requestData.status, false)}
-                disabled={!canSave}
-              >
-                {isUpdate ? 'Save' : 'Create'}
-              </Button>
-            </>
-          )}
+                <Button
+                  className="accent alt saveNode"
+                  onClick={() => this.saveGraph(requestData.status, false)}
+                  disabled={!canSave}
+                >
+                  {isUpdate ? 'Save' : 'Create'}
+                </Button>
+              </>
+            )}
         </div>
 
       </Modal>
