@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SketchPicker, TwitterPicker } from 'react-color';
+import { SketchPicker } from 'react-color';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
