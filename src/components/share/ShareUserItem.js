@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Select from "../form/Select";
-import { LABEL_SHARE_TYPES } from "../../data/graph";
+import Select from '../form/Select';
+import { LABEL_SHARE_TYPES } from '../../data/graph';
 import {
   deleteShareGraphWithUsersRequest,
   getSharedWithUsersRequest,
-  updateShareGraphWithUsersRequest
-} from "../../store/actions/share";
+  updateShareGraphWithUsersRequest,
+} from '../../store/actions/share';
 
 class ShareUserItem extends Component {
   static propTypes = {
@@ -28,7 +28,6 @@ class ShareUserItem extends Component {
 
   render() {
     const { user } = this.props;
-    console.log(user.share.role);
     return (
       <div className="shareUserItem">
         <span className="userName">
