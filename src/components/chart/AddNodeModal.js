@@ -100,10 +100,10 @@ class AddNodeModal extends Component {
     nodeData.updatedUser = currentUserId;
 
     if (!Validate.hasError(errors)) {
+      if (nodeData.color) {
+        ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
+      }
       if (update) {
-        if (nodeData.color) {
-          ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
-        }
         nodes[index] = { ...nodes[index], ...nodeData };
       } else {
         nodeData.createdAt = moment().unix();
