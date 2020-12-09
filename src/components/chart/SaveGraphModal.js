@@ -91,7 +91,7 @@ class SaveGraphModal extends Component {
     const links = Chart.getLinks();
     const labels = Chart.getLabels();
     const { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
-    const svg = document.querySelector('#graph svg').outerHTML;
+    // const svg = document.querySelector('#graph svg').outerHTML;
 
     // const svg = Chart.printMode(400, 223);
 
@@ -103,7 +103,6 @@ class SaveGraphModal extends Component {
         links,
         labels,
         files,
-        svg,
         status,
         customFields,
       });
@@ -115,16 +114,16 @@ class SaveGraphModal extends Component {
         links,
         labels,
         files,
-        svg,
         status,
         customFields,
       });
       resGraphId = data.graphId;
     }
+
     if (resGraphId) {
       toast.info('Successfully saved');
       // const svgBig = Chart.printMode(800, 446);
-      this.props.updateGraphThumbnailRequest(resGraphId, svg);
+      // this.props.updateGraphThumbnailRequest(resGraphId, svg);
       this.props.onSave(resGraphId);
       this.props.history.push("/");
     } else {
