@@ -93,6 +93,7 @@ class AddNodeModal extends Component {
     [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update);
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
     [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
+    [errors.color, nodeData.color] = Validate.nodeColor(nodeData.color, nodeData.type);
 
     nodeData.updatedAt = moment().unix();
     nodeData.updatedUser = currentUserId;
@@ -188,6 +189,7 @@ class AddNodeModal extends Component {
             <ColorPicker
               label="Color"
               value={nodeData.color}
+              error={errors.color}
               readOnly
               style={{ color: nodeData.color }}
               onChangeText={(v) => this.handleChange('color', v)}
