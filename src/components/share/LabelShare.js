@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -21,7 +22,7 @@ class LabelShare extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      labelId: null,
     };
   }
 
@@ -33,14 +34,15 @@ class LabelShare extends Component {
     ContextMenu.event.removeListener('label.share', this.openShareModal);
   }
 
-  openShareModal = (params) => {
+  openShareModal = (ev, params) => {
     const { match: { params: { graphId = '' } } } = this.props;
-    this.props.getSharedWithUsersRequest(graphId, 'label', '1.555');
-    this.setState({ open: true });
+    const { id: labelId } = params;
+    this.props.getSharedWithUsersRequest(graphId, 'label', labelId);
+    this.setState({ labelId });
   }
 
   closeModal = () => {
-    this.setState({ open: false });
+    this.setState({ labelId: null });
   }
 
   searchUser = async (value) => {
@@ -49,8 +51,8 @@ class LabelShare extends Component {
   }
 
   addUser = async (value) => {
+    const { labelId } = this.state;
     const { match: { params: { graphId = '' } } } = this.props;
-    const labelId = '1.555';
     await this.props.shareGraphWithUsersRequest({
       graphId,
       userId: value.id,
@@ -61,18 +63,19 @@ class LabelShare extends Component {
   }
 
   handleUserRoleChange = () => {
+    const { labelId } = this.state;
     const { match: { params: { graphId = '' } } } = this.props;
-    this.props.getSharedWithUsersRequest(graphId, 'label', '1.555');
+    this.props.getSharedWithUsersRequest(graphId, 'label', labelId);
   }
 
   render() {
     const { shareWithUsers } = this.props;
-    const { open } = this.state;
+    const { labelId } = this.state;
     return (
       <Modal
         className="ghModal ghModalLabelShare"
         overlayClassName="ghModalOverlay ghModalLabelShareOverlay"
-        isOpen={open}
+        isOpen={!_.isNull(labelId)}
         onRequestClose={this.closeModal}
       >
         <Select
