@@ -32,8 +32,9 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, color,
+      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField,
     } = addNodeParams;
+    const _type = type || _.last(nodes)?.type || '';
     this.setState({
       nodeData: {
         fx,
@@ -42,10 +43,10 @@ class AddNodeModal extends Component {
         icon: icon || '',
         status: status || 'approved',
         nodeType: nodeType || 'circle',
-        type: type || _.last(nodes)?.type || '',
+        type: _type,
         keywords: keywords || [],
         location,
-        color,
+        color: ChartUtils.nodeColorObj[_type] || '',
       },
       customField,
       index,
@@ -121,6 +122,10 @@ class AddNodeModal extends Component {
     const { nodeData, errors } = this.state;
     _.set(nodeData, path, value);
     _.remove(errors, path);
+    if (path === 'type') {
+      _.set(nodeData, 'color', ChartUtils.nodeColorObj[value] || '');
+      _.remove(errors, 'color');
+    }
     this.setState({ nodeData, errors });
   }
 
