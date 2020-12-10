@@ -72,6 +72,7 @@ class InsertMediaTabsModal extends Component {
       const { popUpData } = this.state;
       _.set(popUpData, 'tags', [...this.state.tags, val]);
       this.setState({ popUpData });
+      e.target.value = '';
     } else if (e.key === 'Backspace' && !val) {
       this.removeTag(this.state.tags.length - 1);
     }
