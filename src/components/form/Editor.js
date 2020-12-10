@@ -102,7 +102,8 @@ class Editor extends Component {
 
   insertFile = (popUpData, tags) => {
     if (popUpData.file) {
-      const anchor = popUpData.fileName.includes('png', 'jpg', 'jpeg')
+      const desc = popUpData.desc ? `description={${popUpData.desc}}` : '';
+      const anchor = popUpData.fileName.toLowerCase().includes('png', 'jpg', 'jpeg')
         ? `
 <table style="width: 200px;"><tbody>
 <tr>
@@ -115,13 +116,13 @@ class Editor extends Component {
      </td>
 </tr>
 <tr>
-<td>${popUpData.desc}</td>
+<td>${desc}</td>
 </tr>
 </tbody>
 </table>`
         : `<a 
 href="${popUpData.file}"
-tags="url={${popUpData.file}}, tager={${tags}}, description={${popUpData.desc}" 
+tags="url={${popUpData.file}}, tager={${tags}}, ${desc}" 
 download="${popUpData.fileName}">
 ${popUpData.text || popUpData.fileName}
 </a>`;
