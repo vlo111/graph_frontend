@@ -300,6 +300,10 @@ class Api {
   static deleteShareGraphWithUsers(shareId) {
     return api.delete(`/share/delete/${shareId}`);
   }
+
+  static getShareGraphsList() {
+    return api.get('/share');
+  }
 }
 
 export default Api;
