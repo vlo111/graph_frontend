@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Jodit } from 'jodit';
 import 'jodit/build/jodit.min.css';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import InsertMediaTabsModal from '../nodeInfo/InsertMediaTabsModal';
 
 class Editor extends Component {
@@ -102,9 +103,17 @@ class Editor extends Component {
 
   insertFile = (popUpData, tags) => {
     if (popUpData.file) {
-      const desc = popUpData.desc ? `description={${popUpData.desc}}` : '';
-      const anchor = popUpData.fileName.toLowerCase().includes('png', 'jpg', 'jpeg')
-        ? `
+
+      const desc = popUpData.desc ? `${popUpData.desc}` : '';
+
+      const linkFileName = `<a 
+href="${popUpData.file}"
+tags="url={${popUpData.file}}, tager={${tags}}, ${desc}" 
+download="${popUpData.fileName}">
+${popUpData.text || popUpData.fileName}
+</a>`;
+
+      const tableImgWithDesc = `
 <table style="width: 200px;"><tbody>
 <tr>
 <td>
@@ -113,19 +122,23 @@ class Editor extends Component {
  src=${popUpData.file} 
  tags="url={${popUpData.file}}, tager={${tags}}" 
  download="${popUpData.fileName}" />
+ ${desc}
      </td>
 </tr>
-<tr>
-<td>${desc}</td>
-</tr>
 </tbody>
-</table>`
-        : `<a 
-href="${popUpData.file}"
-tags="url={${popUpData.file}}, tager={${tags}}, ${desc}" 
-download="${popUpData.fileName}">
-${popUpData.text || popUpData.fileName}
-</a>`;
+</table>`;
+
+      const img = `<img
+          className=scaled
+          src=${popUpData.file}
+          tags="url={${popUpData.file}}, tager={${tags}}"
+          download="${popUpData.fileName}"/>`;
+
+      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg'].filter((p) => 'png'.includes(p)));
+
+      const anchor = isImg
+        ? (desc ? tableImgWithDesc : img)
+        : linkFileName;
 
       let html;
       if (popUpData.update) {
