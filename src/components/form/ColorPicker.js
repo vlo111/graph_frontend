@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { SketchPicker  } from 'react-color';
+import { SketchPicker } from 'react-color';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import Outside from '../Outside';
 import Input from './Input';
+import { NODE_COLOR } from '../../data/node';
 
 class ColorPicker extends Component {
   static propTypes = {
@@ -24,7 +25,6 @@ class ColorPicker extends Component {
       target: null,
     };
   }
-
 
   handleColorClick = (ev) => {
     const title = ev.target.getAttribute('title');
@@ -50,8 +50,14 @@ class ColorPicker extends Component {
     return (
       ReactDOM.createPortal((
         <Outside exclude=".ghColorPicker" onClick={this.closePicker}>
-          <div className="ghColorPickerPopUp" onClick={this.handleColorClick} style={{ left: x, top: y + height + 5 }}>
-            <SketchPicker  color={value} onChange={(v) => onChangeText(v.hex)} />
+          <div className="ghColorPickerPopUp" onClick={this.handleColorClick} style={{ left: x, top: y + height - 35 }}>
+            <SketchPicker
+              width={230}
+              color={value}
+              disableAlpha
+              onChange={(v) => onChangeText(v.hex)}
+              presetColors={[...NODE_COLOR].splice(0, 18)}
+            />
           </div>
         </Outside>
       ), document.body)

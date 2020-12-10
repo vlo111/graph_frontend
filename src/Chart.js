@@ -558,7 +558,7 @@ class Chart {
           if (d.icon) {
             return `url(#i${d.index})`;
           }
-          return d.color ? d.color : color;
+          return color;
         });
 
       this.renderLinkText();
