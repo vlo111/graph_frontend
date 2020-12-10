@@ -541,7 +541,7 @@ p {
   }
 
   .ghInput input {
-    padding-right: 100px;
+    padding-right: 120px;
     text-overflow: ellipsis;
   }
 
@@ -553,9 +553,11 @@ p {
     align-items: center;
     display: flex;
     justify-content: center;
-    background: $color-light-gray;
     border-radius: 3px;
-    margin-right: 8px;
+    right: 0;
+    margin-right: 105px;
+    position: absolute;
+    z-index: 1;
 
     svg {
       width: 6.8px;
@@ -568,6 +570,7 @@ p {
   }
 
   .buttons {
+    width: 105px !important;
     position: absolute;
     bottom: 1px;
     right: 1px;
@@ -5392,8 +5395,8 @@ body .gh__menu {
   }
 
   .clear {
-    margin-left: 185px;
-    top: 6px;
+    margin-left: 130px;
+    top: 10px;
   }
 }
 
