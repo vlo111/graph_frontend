@@ -8,12 +8,14 @@ import PropTypes from 'prop-types';
 import NoGraph from '../components/NoGraph';
 import GraphListItem from '../components/GraphListItem';
 import { getShareGraphListRequest } from '../store/actions/share';
+import Pagination from "../components/Pagination";
 
 class Shared extends Component {
   static propTypes = {
     shareGraphsList: PropTypes.array.isRequired,
     shareGraphsListStatus: PropTypes.string.isRequired,
     getShareGraphListRequest: PropTypes.func.isRequired,
+    shareGraphsListInfo: PropTypes.object.isRequired,
   }
 
   getShareGraphsList = memoizeOne((page) => {
@@ -21,7 +23,7 @@ class Shared extends Component {
   })
 
   render() {
-    const { shareGraphsListStatus, shareGraphsList } = this.props;
+    const { shareGraphsListStatus, shareGraphsList, shareGraphsListInfo: { totalPages } } = this.props;
     const { page = 1 } = queryString.parse(window.location.search);
     this.getShareGraphsList(page);
     return (
@@ -34,6 +36,7 @@ class Shared extends Component {
             <GraphListItem key={graph.id} graph={graph} />
           ))}
         </div>
+        <Pagination totalPages={totalPages} />
       </>
     );
   }
@@ -42,6 +45,7 @@ class Shared extends Component {
 const mapStateToProps = (state) => ({
   shareGraphsList: state.share.shareGraphsList,
   shareGraphsListStatus: state.share.shareGraphsListStatus,
+  shareGraphsListInfo: state.share.shareGraphsListInfo,
 });
 
 const mapDispatchToProps = {

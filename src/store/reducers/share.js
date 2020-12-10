@@ -4,6 +4,7 @@ const initialState = {
   shareWithUsers: [],
   shareGraphsListStatus: '',
   shareGraphsList: [],
+  shareGraphsListInfo: {},
 };
 
 export default function reducer(state = initialState, action) {
@@ -27,21 +28,22 @@ export default function reducer(state = initialState, action) {
         ...state,
         shareGraphsListStatus: 'request',
         shareGraphsList: [],
+        shareGraphsListInfo: {},
       };
     }
     case GET_SHARE_GRAPH_LIST.SUCCESS: {
-      const { shareGraphs: shareGraphsList } = action.payload.data;
+      const { shareGraphs: shareGraphsList, ...shareGraphsListInfo } = action.payload.data;
       return {
         ...state,
         shareGraphsListStatus: 'success',
         shareGraphsList,
+        shareGraphsListInfo,
       };
     }
     case GET_SHARE_GRAPH_LIST.FAIL: {
       return {
         ...state,
         shareGraphsListStatus: 'fail',
-        shareGraphsList: [],
       };
     }
     default: {
