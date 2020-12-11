@@ -9,7 +9,11 @@ import {
   SET_NODE_CUSTOM_FIELD,
   ADD_NODE_CUSTOM_FIELD_KEY,
   REMOVE_NODE_CUSTOM_FIELD_KEY,
-  ACTIONS_COUNT, GET_SINGLE_EMBED_GRAPH, SET_GRAPH_CUSTOM_FIELDS, GET_SINGLE_GRAPH_PREVIEW,
+  ACTIONS_COUNT,
+  GET_SINGLE_EMBED_GRAPH,
+  SET_GRAPH_CUSTOM_FIELDS,
+  GET_SINGLE_GRAPH_PREVIEW,
+  REMOVE_NODE_FROM_CUSTOM_FIELD,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -158,6 +162,15 @@ export default function reducer(state = initialState, action) {
       const singleGraph = { ...state.singleGraph };
       const { type, key } = action.payload;
       singleGraph.customFields = CustomFields.removeKey(singleGraph.customFields, type, key);
+      return {
+        ...state,
+        singleGraph,
+      };
+    }
+    case REMOVE_NODE_FROM_CUSTOM_FIELD: {
+      const singleGraph = { ...state.singleGraph };
+      const { nodeId } = action.payload;
+      singleGraph.customFields = CustomFields.removeNode(singleGraph.customFields, nodeId);
       return {
         ...state,
         singleGraph,

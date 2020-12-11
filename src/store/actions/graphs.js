@@ -128,6 +128,15 @@ export function removeNodeCustomFieldKey(type, key) {
   };
 }
 
+export const REMOVE_NODE_FROM_CUSTOM_FIELD = 'REMOVE_NODE_FROM_CUSTOM_FIELD';
+
+export function removeNodeFromCustom(nodeId) {
+  return {
+    type: REMOVE_NODE_FROM_CUSTOM_FIELD,
+    payload: { nodeId },
+  };
+}
+
 export const ACTIONS_COUNT = define('ACTIONS_COUNT');
 
 export function getActionsCountRequest(id) {
