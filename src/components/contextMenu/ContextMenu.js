@@ -125,6 +125,10 @@ class ContextMenu extends Component {
     if (params.fieldName === '_location') {
       return null;
     }
+
+    // remove curve points
+    Chart.wrapper.selectAll('#fcurve, #lcurve').remove();
+
     return (
       activeButton === 'deleteModal' ? <DeleteModalContext data={deleteDataModal} params={params} />
         : (

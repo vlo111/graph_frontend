@@ -2847,7 +2847,7 @@ p {
 
     &--is-selected {
       svg {
-        line {
+        line, path {
           stroke: $color-dark;
         }
       }
@@ -5914,4 +5914,22 @@ body .gh__menu {
 
 img.scaled {
   width: 100%;
+}
+
+.curvedLine {
+  stroke-width: 1;
+  stroke: #999;
+  stroke-linecap: round;
+  stroke-dasharray: 5, 3;
+}
+
+.curvedCircle {
+  stroke-width: 2;
+  stroke: #EF2D56;
+  fill: #fff;
+}
+
+.curvedCircle:hover {
+  fill: #EF2D56;
+  cursor: move;
 }
