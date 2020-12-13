@@ -853,12 +853,14 @@ class Chart {
           SvgService.updateImageTranslateCoordinates(size.x, size.y);
           Chart.tPos = SvgService.getImageUpdatedTranslateCoordinates();
           const imageNewCoords = SvgService.getImageUpdatedCoordinates();
-          //console.log({ x: zie, width: imageNewCoords.width, height: imageNewCoords.height }, size);
           const controlsGroup = Chart.imageManipulation(imageNewCoords, this);
           const elemCenter = Chart.getElementCenter();
           if (SvgService.image.rotate.angle) {
+            const transformAttr = SvgService.getTransform();
+            const translateInd = transformAttr.indexOf('translate');
+            const translate = transformAttr.substring(translateInd, transformAttr.length);
             controlsGroup.attr(
-              'transform', SvgService.getTransform(),
+              'transform', `rotate(${SvgService.image.rotate.angle}, ${elemCenter.x}, ${elemCenter.y}) ${translate}`,
             );
           }
           SvgService.updateImageRotateCoordinates(SvgService.image.rotate.angle || null, elemCenter.x, elemCenter.y);
