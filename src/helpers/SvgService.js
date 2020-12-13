@@ -3,7 +3,7 @@ export default {
     width: 0,
     url: 'http://i.imgur.com/hSqdOZI.jpg',
     height: 0,
-    x: 50,
+    x: 0,
     y: 50,
     rotate: {
       angle: 0, cx: 0, cy: 0,

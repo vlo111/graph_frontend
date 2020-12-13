@@ -84,7 +84,6 @@ class Chart {
       // updates the image object model with the new coordinates values
       SvgService.updateImageCoordinates(width, height, x, y);
       const myImage = d3.select(image);
-      console.log(width, height, myImage?.style('width').slice(0, -2))
       x && myImage.attr('x', x);
       y && myImage.attr('y', y);
       width && myImage.attr('width', width);
@@ -95,7 +94,7 @@ class Chart {
         height,
         x: updatedCoordinates.x,
         y: updatedCoordinates.y,
-      }, myImage);
+      }, image);
     }
   }
 
@@ -140,9 +139,9 @@ class Chart {
 
     d3.select('.controls-group').attr('transform', SvgService.getTransform());
     d3.select(image).attr('transform', SvgService.getTransform());
-    const myImage = d3.select(image);
+    // const myImage = d3.select(image);
     Chart.imageManipulation({
-    }, myImage);
+    }, image);
   }
 
   static getHandleRotatePosition(handleStartPos) {
@@ -672,11 +671,13 @@ class Chart {
     this._dataNodes = null;
   }
 
-  static imageManipulation(size) {
+  static imageManipulation(size, image) {
     d3.select('.controls-group').remove();
+    const imageTransform = d3.select(image).attr('transform');
     const controlsGroup = d3.select('.nodes')
       .append('g')
-      .attr('class', 'controls-group');
+      .attr('class', 'controls-group')
+      .attr('transform', imageTransform);
     controlsGroup.append('rect')
       .attr('class', 'move-rect')
       .attr('fill-opacity', '0')
@@ -853,11 +854,11 @@ class Chart {
           Chart.tPos = SvgService.getImageUpdatedTranslateCoordinates();
           const imageNewCoords = SvgService.getImageUpdatedCoordinates();
           //console.log({ x: zie, width: imageNewCoords.width, height: imageNewCoords.height }, size);
-          const controlsGroup = Chart.imageManipulation(imageNewCoords);
+          const controlsGroup = Chart.imageManipulation(imageNewCoords, this);
           const elemCenter = Chart.getElementCenter();
           if (SvgService.image.rotate.angle) {
             controlsGroup.attr(
-              'transform', `rotate(${SvgService.image.rotate.angle}, ${elemCenter.x}, ${elemCenter.y})`
+              'transform', SvgService.getTransform(),
             );
           }
           SvgService.updateImageRotateCoordinates(SvgService.image.rotate.angle || null, elemCenter.x, elemCenter.y);
