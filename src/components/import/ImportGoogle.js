@@ -91,7 +91,7 @@ class DataImportModal extends Component {
                 placeholder="Paste URL from your Google Sheets"
               />
             </div>
-            <Button className="ghButton accent alt main" onClick={this.convert} loading={loading}>Next</Button>
+            <Button className="importButton" color="accent" onClick={this.convert} loading={loading}>Next</Button>
           </>
         ) : null}
         {step === 2 ? <ImportStep2 /> : null}

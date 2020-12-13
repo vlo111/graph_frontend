@@ -15,6 +15,7 @@ import Validate from '../../helpers/Validate';
 import SvgLine from '../SvgLine';
 import ContextMenu from '../contextMenu/ContextMenu';
 import Utils from '../../helpers/Utils';
+import {ReactComponent as CloseSvg} from "../../assets/images/icons/close.svg";
 
 class AddLinkModal extends Component {
   static propTypes = {
@@ -133,70 +134,73 @@ class AddLinkModal extends Component {
         isOpen
         onRequestClose={this.closeModal}
       >
-        <form onSubmit={this.addLink}>
-          <h2>
-            {isUpdate ? 'Edit Link' : 'Add new Link'}
-          </h2>
-          <Select
-            label="Link Type"
-            value={[linkData.linkType]}
-            error={errors.linkType}
-            onChange={(v) => this.handleChange('linkType', v)}
-            options={Object.keys(DASH_TYPES)}
-            containerClassName="lineTypeSelect"
-            getOptionValue={(v) => v}
-            getOptionLabel={(v) => <SvgLine type={v} />}
-          />
+        <div className="containerModal">
+          <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
+          <form className="form" onSubmit={this.addLink}>
+            <h2>
+              {isUpdate ? 'Edit Link' : 'Add new Link'}
+            </h2>
+            <Select
+                label="Link Type"
+                value={[linkData.linkType]}
+                error={errors.linkType}
+                onChange={(v) => this.handleChange('linkType', v)}
+                options={Object.keys(DASH_TYPES)}
+                containerClassName="lineTypeSelect"
+                getOptionValue={(v) => v}
+                getOptionLabel={(v) => <SvgLine type={v} />}
+            />
 
-          <Select
-            label="Relation Type"
-            isSearchable
-            portal
-            placeholder=""
-            value={[
-              types.find((t) => t.value === linkData.type) || {
-                value: linkData.type,
-                label: linkData.type,
-              },
-            ]}
-            error={errors.type}
-            onChange={(v) => this.handleChange('type', v?.value)}
-            options={types}
-            isCreatable
-          />
+            <Select
+                label="Relation Type"
+                isSearchable
+                portal
+                placeholder=""
+                value={[
+                  types.find((t) => t.value === linkData.type) || {
+                    value: linkData.type,
+                    label: linkData.type,
+                  },
+                ]}
+                error={errors.type}
+                onChange={(v) => this.handleChange('type', v?.value)}
+                options={types}
+                isCreatable
+            />
 
-          <Input
-            label="Value"
-            value={linkData.value}
-            error={errors.value}
-            type="number"
-            min="1"
-            max="15"
-            onBlur={() => {
-              if (linkData.value < 1) {
-                linkData.value = 1;
-              } else if (linkData.value > 15) {
-                linkData.value = 15;
-              }
-              this.handleChange('value', linkData.value);
-            }}
-            onChangeText={(v) => this.handleChange('value', v)}
-          />
+            <Input
+                label="Value"
+                value={linkData.value}
+                error={errors.value}
+                type="number"
+                min="1"
+                max="15"
+                onBlur={() => {
+                  if (linkData.value < 1) {
+                    linkData.value = 1;
+                  } else if (linkData.value > 15) {
+                    linkData.value = 15;
+                  }
+                  this.handleChange('value', linkData.value);
+                }}
+                onChangeText={(v) => this.handleChange('value', v)}
+            />
 
-          <Checkbox
-            label="Show Direction"
-            checked={linkData.direction}
-            onChange={() => this.handleChange('direction', !linkData.direction)}
-          />
-          <div className="buttons">
-            <Button onClick={this.closeModal}>
-              Cancel
-            </Button>
-            <Button type="submit">
-              {isUpdate ? 'Save' : 'Add'}
-            </Button>
-          </div>
-        </form>
+            <Checkbox
+                label="Show Direction"
+                checked={linkData.direction}
+                onChange={() => this.handleChange('direction', !linkData.direction)}
+            />
+            <div className="buttons">
+              <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
+                Cancel
+              </Button>
+              <Button className="ghButton accent alt main main" type="submit">
+                {isUpdate ? 'Save' : 'Add'}
+              </Button>
+            </div>
+          </form>
+        </div>
       </Modal>
     );
   }

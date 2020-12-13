@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import Chart from '../Chart';
 import CustomFields from './CustomFields';
+import ChartUtils from "./ChartUtils";
 
 class Validate {
   static nodeName(val, update) {
@@ -40,6 +41,16 @@ class Validate {
       error = 'Invalid location';
     }
     return [error, value.join(',')];
+  }
+
+
+  static nodeColor(val, type) {
+    const value = (val || '').trim();
+    let error = null;
+    if (ChartUtils.nodeColorObj[type] !== val && Object.entries(ChartUtils.nodeColorObj).find(([t, c]) => value === c)) {
+      error = 'Already exists';
+    }
+    return [error, value];
   }
 
   static linkType(val, linkData) {

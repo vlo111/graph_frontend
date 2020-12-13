@@ -74,24 +74,26 @@ class AddLabelModal extends Component {
         isOpen
         onRequestClose={this.deleteLabel}
       >
-        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.deleteLabel} />
-        <form onSubmit={this.addLabel}>
-          <h2>Add new label</h2>
-          <Input
-            value={labelData.name}
-            error={errors.name}
-            label="Name"
-            onChangeText={(v) => this.handleChange('name', v)}
-          />
-          <div className="buttons">
-            <Button class="ghButton cancel transparent alt" onClick={this.deleteLabel}>
-              Cancel
-            </Button>
-            <Button className="ghButton accent alt" type="submit">
-              Add
-            </Button>
-          </div>
-        </form>
+        <div className="containerModal">
+          <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.deleteLabel} />
+          <form className="form" onSubmit={this.addLabel}>
+            <h2>Add new label</h2>
+            <Input
+                value={labelData.name}
+                error={errors.name}
+                label="Name"
+                onChangeText={(v) => this.handleChange('name', v)}
+            />
+            <div className="buttons">
+              <Button className="ghButton cancel transparent alt" onClick={this.deleteLabel}>
+                Cancel
+              </Button>
+              <Button className="ghButton accent alt" type="submit">
+                Add
+              </Button>
+            </div>
+          </form>
+        </div>
       </Modal>
     );
   }

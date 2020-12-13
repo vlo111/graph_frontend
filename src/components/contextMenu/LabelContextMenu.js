@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '../form/Button';
 import LabelUtils from '../../helpers/LabelUtils';
+import Chart from '../../Chart';
 
 class labelContextMenu extends Component {
   static propTypes = {
@@ -19,14 +20,26 @@ class labelContextMenu extends Component {
     this.props.onClick(ev, 'label.copy', { data, graphId });
   }
 
+  handleLockClick = (ev) => {
+    const { params: { id } } = this.props;
+    const labels = Chart.getLabels().map((l) => {
+      if (l.id === id) {
+        l.status = l.status === 'lock' ? undefined : 'lock';
+      }
+      return l;
+    });
+    Chart.render({ labels });
+  }
+
   render() {
+    const { params: { status, sourceId } } = this.props;
+    if (sourceId) {
+      return null;
+    }
     return (
       <>
         <Button icon="fa-copy" onClick={this.handleCopyClick}>
           Copy
-        </Button>
-        <Button icon="fa-eraser" onClick={(ev) => this.props.onClick(ev, 'label.delete')}>
-          Delete
         </Button>
       </>
     );

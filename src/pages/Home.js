@@ -11,6 +11,7 @@ import Pagination from '../components/Pagination';
 import GraphListFooter from '../components/GraphListFooter';
 import GraphListHeader from '../components/GraphListHeader';
 import NoGraph from '../components/NoGraph';
+import GraphListItem from "../components/GraphListItem";
 
 class Home extends Component {
   static propTypes = {
@@ -41,46 +42,7 @@ class Home extends Component {
             <NoGraph />
           ) : null}
           {graphsList.map((graph) => (
-            <article key={graph.id} className="graphsItem">
-              <GraphListHeader graph={graph} />
-              <div className="top">
-                <img
-                  className="avatar"
-                  src={graph.user.avatar}
-                  alt={graph.user.name}
-                />
-                <div className="infoWrapper">
-                  <Link to={`/profile/${graph.user.id}`}>
-                    <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
-                  </Link>
-                  <div className="info">
-                    <span>{moment(graph.updatedAt).calendar()}</span>
-                    <span>{`${graph.nodesCount} nodes`}</span>
-                  </div>
-                </div>
-              </div>
-              <Link to={`/graphs/preview/${graph.id}`}>
-                <h3 className="title">
-                  {graph.title}
-                  {s && graph.status !== 'active' ? (
-                    <span>{` (${graph.status})`}</span>
-                  ) : null}
-                </h3>
-              </Link>
-              <Link to={`/graphs/preview/${graph.id}`}>
-                <p className="description">
-                  {graph.description.length > 600 ? `${graph.description.substr(0, 600)}... ` : graph.description}
-                </p>
-              </Link>
-              <Link to={`/graphs/preview/${graph.id}`}>
-                <img
-                  className="thumbnail"
-                  src={`${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
-                  alt={graph.title}
-                />
-              </Link>
-              <GraphListFooter graph={graph} />
-            </article>
+            <GraphListItem key={graph.id} graph={graph} />
           ))}
         </div>
         <Pagination totalPages={totalPages} />

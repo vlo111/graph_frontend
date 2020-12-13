@@ -50,7 +50,7 @@ class DataImportModal extends Component {
     const customField = {};
 
     await Promise.all(node.education.map(async (p) => {
-      const url = Utils.wikiUrlByName(p.institution);
+      const url = Utils.wikiContentUrlByName(p.institution);
 
       const wikiData = await Utils.getWikiContent(url);
 
@@ -60,19 +60,19 @@ class DataImportModal extends Component {
       return p;
     }));
 
-    const work = ReactDOMServer.renderToString(<ImportLinkedinCustomField type="work" data={node} />);
-    if (work) {
-      customField.Work = work;
-    }
-
-    const skills = ReactDOMServer.renderToString(<ImportLinkedinCustomField type="skills" data={node} />);
-    if (skills) {
-      customField.Skills = skills;
+    const experience = ReactDOMServer.renderToString(<ImportLinkedinCustomField type="experience" data={node} />);
+    if (experience) {
+      customField.Experience = experience;
     }
 
     const education = ReactDOMServer.renderToString(<ImportLinkedinCustomField type="education" data={node} />);
     if (education) {
       customField.Education = education;
+    }
+
+    const skills = ReactDOMServer.renderToString(<ImportLinkedinCustomField type="skills" data={node} />);
+    if (skills) {
+      customField.Skills = skills;
     }
     this.props.toggleNodeModal({
       fx,
@@ -97,7 +97,7 @@ class DataImportModal extends Component {
             accept=".pdf"
           />
         </div>
-        <Button className="ghButton accent alt main" onClick={this.convert} loading={loading}>Import</Button>
+        <Button className="importButton" color="accent" onClick={this.convert} loading={loading}>Import</Button>
       </>
     );
   }

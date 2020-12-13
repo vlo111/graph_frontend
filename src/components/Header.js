@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Notification from './Notification';
 import AccountDropDown from './account/AccountDropDown';
 import SearchGraphs from './search/SearchGraphs';
+import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 
 class Header extends Component {
   render() {
@@ -10,20 +11,20 @@ class Header extends Component {
       <header id="header">
         <div className="logo-graphs">
           <Link to="/">
-            <h3> graphs analysed </h3>
+          <LogoSvg className="logo orange" />
           </Link>
         </div>
         <SearchGraphs />
         <div className="start-graphs">
-          <Link to="/graphs/create" style={{ marginLeft: 65 }}>
+          <Link to="/graphs/create">
             Start a graph
           </Link>
         </div>
-       
+
         <div className="right-elements">
           <Notification />
           <div className="signOut">
-           <AccountDropDown /> 
+           <AccountDropDown />
 
           </div>
         </div>

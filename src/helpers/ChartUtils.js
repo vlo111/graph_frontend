@@ -77,10 +77,10 @@ class ChartUtils {
         }
         return d;
       }
-      // if (params.nodeStatus[0] !== '__ALL__' && !params.nodeStatus.includes(d.status)) {
-      //   d.hidden = 1;
-      //   return d;
-      // }
+      if (params.nodeStatus[0] !== '__ALL__' && !params.nodeStatus.includes(d.status)) {
+        d.hidden = 1;
+        return d;
+      }
       d.hidden = 0;
       return d;
     });
@@ -291,6 +291,16 @@ class ChartUtils {
       this.nodeColorObj[d.type] = this.nodeColorsArr.shift() || randomColor();
     }
     return this.nodeColorObj[d.type];
+  }
+
+  static setNodeTypeColor = (type, color) => {
+    Chart.data.nodes = Chart.data.nodes.map((n) => {
+      if (n.type === type) {
+        n.color = color;
+      }
+      return n;
+    });
+    this.nodeColorObj[type] = color;
   }
 
   static labelColorsArr = _.clone(LINK_COLORS);

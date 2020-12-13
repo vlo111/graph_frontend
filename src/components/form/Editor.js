@@ -125,12 +125,12 @@ class Editor extends Component {
     const { className, error, label } = this.props;
     let top;
     let left;
-    if (showPopUp) {
-      const pos = document.querySelector(`.jodit-toolbar-button_${showPopUp}`).getBoundingClientRect();
-      top = pos.top + 35;
+    if (showPopUp) { 
+      const pos = document.querySelector(`.jodit-toolbar-button_${showPopUp}`).getBoundingClientRect(); 
+	  top = pos.top + 35;
       left = pos.left;
-    }
 
+    }
     return (
       <div className={`contentEditor ${className} ${error ? 'hasError' : ''}`}>
         {label ? <span className="label">{label}</span> : null}

@@ -8,6 +8,7 @@ import memoizeOne from 'memoize-one';
 import { toggleNodeModal } from '../../store/actions/app';
 import { setNodeCustomField } from '../../store/actions/graphs';
 import Select from '../form/Select';
+import ColorPicker from '../form/ColorPicker';
 import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
@@ -16,6 +17,8 @@ import { NODE_TYPES, NODE_STATUS } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
 import Utils from '../../helpers/Utils';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import ChartUtils from "../../helpers/ChartUtils";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -31,6 +34,7 @@ class AddNodeModal extends Component {
     const {
       fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField,
     } = addNodeParams;
+    const _type = type || _.last(nodes)?.type || '';
     this.setState({
       nodeData: {
         fx,
@@ -39,9 +43,10 @@ class AddNodeModal extends Component {
         icon: icon || '',
         status: status || 'approved',
         nodeType: nodeType || 'circle',
-        type: type || _.last(nodes)?.type || '',
+        type: _type,
         keywords: keywords || [],
         location,
+        color: ChartUtils.nodeColorObj[_type] || '',
       },
       customField,
       index,
@@ -89,11 +94,15 @@ class AddNodeModal extends Component {
     [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update);
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
     [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
+    [errors.color, nodeData.color] = Validate.nodeColor(nodeData.color, nodeData.type);
 
     nodeData.updatedAt = moment().unix();
     nodeData.updatedUser = currentUserId;
 
     if (!Validate.hasError(errors)) {
+      if (nodeData.color) {
+        ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
+      }
       if (update) {
         nodes[index] = { ...nodes[index], ...nodeData };
       } else {
@@ -113,6 +122,10 @@ class AddNodeModal extends Component {
     const { nodeData, errors } = this.state;
     _.set(nodeData, path, value);
     _.remove(errors, path);
+    if (path === 'type') {
+      _.set(nodeData, 'color', ChartUtils.nodeColorObj[value] || '');
+      _.remove(errors, 'color');
+    }
     this.setState({ nodeData, errors });
   }
 
@@ -135,76 +148,88 @@ class AddNodeModal extends Component {
         isOpen={!_.isEmpty(addNodeParams)}
         onRequestClose={this.closeModal}
       >
-        <form onSubmit={this.saveNode}>
-          <h2>{_.isNull(index) ? 'Add new node' : 'Edit node'}</h2>
-          <Select
-            isCreatable
-            label="Type"
-            value={[
-              groups.find((t) => t.value === nodeData.type) || {
-                value: nodeData.type,
-                label: nodeData.type,
-              },
-            ]}
-            limit={250}
-            options={groups}
-            error={errors.type}
-            onChange={(v) => this.handleChange('type', v?.value || '')}
-          />
-          <Input
-            label="Name"
-            value={nodeData.name}
-            error={errors.name}
-            limit={250}
-            autoFocus
-            onChangeText={(v) => this.handleChange('name', v)}
-          />
-          <Select
-            label="Status"
-            portal
-            options={NODE_STATUS}
-            isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
-            value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
-            error={errors.status}
-            onChange={(v) => this.handleChange('status', v?.value || '')}
-          />
-          <Select
-            label="Node Type"
-            portal
-            options={NODE_TYPES}
-            value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
-            error={errors.nodeType}
-            onChange={(v) => this.handleChange('nodeType', v?.value || '')}
-          />
-          <FileInput
-            label="Icon"
-            accept=".png,.jpg,.gif"
-            value={nodeData.icon}
-            onChangeFile={(v) => this.handleChange('icon', v)}
-          />
-          <Select
-            label="keywords"
-            isCreatable
-            isMulti
-            value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
-            menuIsOpen={false}
-            placeholder="Add..."
-            onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
-          />
-          <LocationInputs
-            error={errors.location}
-            value={nodeData.location}
-            onChange={(v) => this.handleChange('location', v)}
-          />
-          <div className="buttons">
-            <Button onClick={this.closeModal}>
-              Cancel
-            </Button>
-            <Button type="submit">
-              {_.isNull(index) ? 'Add' : 'Save'}
-            </Button>
-          </div>
-        </form>
+        <div className="containerModal">
+          <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
+          <form className="form" onSubmit={this.saveNode}>
+            <h2>{_.isNull(index) ? 'Add new node' : 'Edit node'}</h2>
+            <Select
+              isCreatable
+              label="Node type"
+              value={[
+                groups.find((t) => t.value === nodeData.type) || {
+                  value: nodeData.type,
+                  label: nodeData.type,
+                },
+              ]}
+              limit={250}
+              options={groups}
+              error={errors.type}
+              onChange={(v) => this.handleChange('type', v?.value || '')}
+            />
+            <Input
+              label="Node name"
+              value={nodeData.name}
+              error={errors.name}
+              limit={250}
+              autoFocus
+              onChangeText={(v) => this.handleChange('name', v)}
+            />
+            <Select
+              label="Status"
+              portal
+              options={NODE_STATUS}
+              isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
+              value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
+              error={errors.status}
+              onChange={(v) => this.handleChange('status', v?.value || '')}
+            />
+            <Select
+              label="Icon shape"
+              portal
+              options={NODE_TYPES}
+              value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
+              error={errors.nodeType}
+              onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+            />
+            <ColorPicker
+              label="Color"
+              value={nodeData.color}
+              error={errors.color}
+              readOnly
+              style={{ color: nodeData.color }}
+              onChangeText={(v) => this.handleChange('color', v)}
+              autocomplete="off"
+            />
+            <FileInput
+              label="Icon"
+              accept=".png,.jpg,.gif"
+              value={nodeData.icon}
+              onChangeFile={(v) => this.handleChange('icon', v)}
+            />
+            <Select
+              label="keywords"
+              isCreatable
+              isMulti
+              value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
+              menuIsOpen={false}
+              placeholder="Add..."
+              onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
+            />
+            <LocationInputs
+              error={errors.location}
+              value={nodeData.location}
+              onChange={(v) => this.handleChange('location', v)}
+            />
+            <div className="buttons">
+              <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
+                Cancel
+              </Button>
+              <Button className="ghButton accent alt main main" type="submit">
+                {_.isNull(index) ? 'Add' : 'Save'}
+              </Button>
+            </div>
+          </form>
+        </div>
       </Modal>
     );
   }
@@ -213,7 +238,7 @@ class AddNodeModal extends Component {
 const mapStateToProps = (state) => ({
   addNodeParams: state.app.addNodeParams,
   currentUserId: state.account.myAccount.id,
-  currentUserRole: state.graphs.singleGraph.currentUserRole,
+  currentUserRole: state.graphs.singleGraph.currentUserRole || '',
 });
 const mapDispatchToProps = {
   toggleNodeModal,
