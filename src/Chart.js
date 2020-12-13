@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
+import lockSvg from './assets/images/icons/lock.svg';
 import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
@@ -563,6 +564,7 @@ class Chart {
         const id = ev.sourceEvent.target.getAttribute('data-id');
         this.detectLabels();
         dragLabel.label = labelsWrapper.select(`[data-id="${id}"]`);
+        dragLabel.labelLock = labelsWrapper.select(`use[data-label-id="${id}"]`);
         dragLabel.nodes = this.getNodes().filter((d) => d.labels.includes(id));
       }
     };
@@ -586,12 +588,21 @@ class Chart {
           p[1] = +(p[1] + ev.dy).toFixed(2);
           return p;
         });
+        dragLabel.label
+          .datum(datum)
+          .attr('d', (d) => renderPath(d.d));
+
+        if (!dragLabel.labelLock.empty()) {
+          let [, x, y] = dragLabel.labelLock.attr('transform').match(/(-?[\d.]+),\s*(-?[\d.]+)/) || [0, 0, 0];
+          x = +x + ev.dx;
+          y = +y + ev.dy;
+          dragLabel.labelLock.attr('transform', `translate(${x}, ${y})`);
+        }
 
         let readOnlyLabel;
         if (datum.readOnly) {
           readOnlyLabel = this.data.embedLabels.find((l) => l.label.id === datum.id);
         }
-
         this.node.each((d) => {
           if (dragLabel.nodes.some((n) => n.id === d.id)) {
             if (
@@ -609,9 +620,6 @@ class Chart {
         });
         this.graphMovement();
 
-        dragLabel.label
-          .datum(datum)
-          .attr('d', (d) => renderPath(d.d));
 
         this.event.emit('label.drag', ev, dragLabel.label);
       }
@@ -665,6 +673,24 @@ class Chart {
       .on('mouseenter', (ev, d) => this.event.emit('label.mouseenter', ev, d))
       .on('mousemove', (ev, d) => this.event.emit('label.mousemove', ev, d))
       .on('mouseleave', (ev, d) => this.event.emit('label.mouseleave', ev, d));
+
+    this.labelsLock = [];
+    setTimeout(() => {
+      return
+      this.labelsLock = labelsWrapper.selectAll('use')
+        .data(this.data.labels.filter((l) => l.hidden !== 1 && l.status === 'lock'))
+        .join('use')
+        .attr('data-label-id', (d) => d.id)
+        .attr('class', 'labelLock')
+        .attr('href', '#labelLock')
+        .attr('transform', (d) => {
+          const {
+            width, height, left, top,
+          } = document.querySelector(`[data-id="${d.id}"]`).getBoundingClientRect();
+          const { x, y } = ChartUtils.calcScaledPosition(left + (width / 2) - 20, top + (height / 2) - 20);
+          return `translate(${x}, ${y})`;
+        });
+    }, 200);
 
     this.labelMovement();
 
@@ -796,7 +822,7 @@ class Chart {
 
       this.nodesWrapper.selectAll('.node > *').remove();
 
-      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle):not(.image)')
+      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
         .append('circle')
         .attr('r', (d) => this.radiusList[d.index]);
 

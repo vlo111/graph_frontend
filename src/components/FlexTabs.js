@@ -25,7 +25,7 @@ class FlexTabs extends Component {
     const { marginLeft } = this.state;
 
     if (this.hasScroll() && marginLeft > -120) {
-      this.setState({ marginLeft: marginLeft - 2 });
+      this.setState({ marginLeft: marginLeft - 5 });
     }
   }
 

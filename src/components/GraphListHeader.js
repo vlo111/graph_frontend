@@ -56,10 +56,10 @@ const GraphListHeader = ({ graph }) => {
 
       <DropdownButton
         iconClass="fa list-ul"
-        //alignRight 
-        drop={"left"}
+        alignRight 
+       // drop={"left"}
         title={
-          <span><i className="fa fa-bars fa-fw "></i> </span> // fa-ellipsis-v
+          <span><i className="fa fa-bars fa-ellipsis-v "></i> </span> // fa-fw 
           
         }
         id="dropdown-graphListHeader"

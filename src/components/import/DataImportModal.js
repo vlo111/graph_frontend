@@ -63,25 +63,29 @@ class DataImportModal extends Component {
         overlayClassName="ghModalOverlay"
         onRequestClose={this.closeModal}
       >
-        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
+        <div className="containerModal">
+          <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
+          <div className="form">
 
-        <h2>Import Data</h2>
+            <h2>Import Data</h2>
 
-        {nextStep
-        && (
-        <Select
-          containerClassName="importSelectLbl"
-          label="Choose import data"
-          portal
-          options={IMPORT_TYPES}
-          value={IMPORT_TYPES.filter((t) => t.value === activeTab)}
-          onChange={(v) => this.setActiveTab(v.value)}
-        />
-        )}
-        {activeTab === 'zip' ? <ImportZip showSelectHandler={this.showSelectHandler} /> : null}
-        {activeTab === 'xlsx' ? <ImportXlsx showSelectHandler={this.showSelectHandler} /> : null}
-        {activeTab === 'google' ? <ImportGoogle /> : null}
-        {activeTab === 'linkedin' ? <ImportLinkedin /> : null}
+            {nextStep
+            && (
+            <Select
+              containerClassName="importSelectLbl"
+              label="Choose import data"
+              portal
+              options={IMPORT_TYPES}
+              value={IMPORT_TYPES.filter((t) => t.value === activeTab)}
+              onChange={(v) => this.setActiveTab(v.value)}
+            />
+            )}
+            {activeTab === 'zip' ? <ImportZip showSelectHandler={this.showSelectHandler} /> : null}
+            {activeTab === 'xlsx' ? <ImportXlsx showSelectHandler={this.showSelectHandler} /> : null}
+            {activeTab === 'google' ? <ImportGoogle /> : null}
+            {activeTab === 'linkedin' ? <ImportLinkedin /> : null}
+          </div>
+        </div>
       </Modal>
     );
   }

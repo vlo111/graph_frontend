@@ -24,7 +24,7 @@ const CommentModal = React.memo(({ closeModal, graph}) => {
     }
   const afterOpenModal = () => {};
   const dispatch = useDispatch();
-  
+
   const onClose = () => {
     closeModal();
     dispatch(getActionsCountRequest(graph.id, node.id));
@@ -42,10 +42,8 @@ const CommentModal = React.memo(({ closeModal, graph}) => {
       >
         <div className="comment-modal__title">
           <h3>{node.name}</h3>
-          <Button
-            icon={<CloseSvg style={{ height: 30 }} />}
+          <Button color="transparent" className="close" icon={<CloseSvg />}
             onClick={onClose}
-            className="transparent"
           />
         </div>
         <CommentItems graph={graph} node={node} closeModal={closeModal}  />

@@ -6,16 +6,12 @@ import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
 import SaveGraph from './chart/SaveGraph';
 import Undo from './Undo';
-import Chart from '../Chart';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
 import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg';
-import { ReactComponent as UploadSvg } from '../assets/images/icons/upload.svg';
 import { getSingleGraphRequest } from '../store/actions/graphs';
-import FileInput from './form/FileInput';
-import moment from "moment";
 
 class ToolBar extends Component {
   static propTypes = {
@@ -24,28 +20,6 @@ class ToolBar extends Component {
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      nodeData: {
-        fx: 0,
-        fy: 234,
-        name: '',
-        type: 'image',
-        nodeType: 'image',
-        description: '',
-        icon: '',
-        link: '',
-        keywords: [],
-        color: '#1f77b4',
-        createdUser: 33,
-        updatedUser: 33,
-        labels: [],
-      },
-      icon: null,
-    };
   }
 
   handleClick = (button) => {
@@ -83,13 +57,6 @@ class ToolBar extends Component {
             >
               Create Label
             </Button>
-            <Button
-              icon={<CloseSvg style={{ width: 10, margin: '0 2px' }} />}
-              className={activeButton === 'delete' ? 'active' : undefined}
-              onClick={() => this.handleClick('delete')}
-            >
-              Remove
-            </Button>
             {false ? <Button
               icon={<LoopSvg />}
               className={activeButton === 'reset' ? 'active' : undefined}
@@ -111,26 +78,7 @@ class ToolBar extends Component {
             >
               Import data
             </Button>
-            <FileInput
-              label="Icon"
-              accept=".png,.jpg,.gif"
-              value={this.state.icon}
-              onChangeFile={(icon) => {
-                this.setState((state) => ({
-                  nodeData: {
-                    ...state.nodeData,
-                    icon,
-                    index: Chart.getNodes().length,
-                    createdAt: moment().unix(),
-                    updatedAt: moment().unix(),
-                  },
-                }), () => {
-                  const nodes = Chart.getNodes();
-                  nodes.push(this.state.nodeData);
-                  Chart.render({ nodes });
-                });
-              }}
-            />
+
           </div>
         </div>
         <div className="bottom helpWrapper">

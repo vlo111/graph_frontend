@@ -152,7 +152,7 @@ class Utils {
     }
   }
 
-  static wikiUrlByName(name) {
+  static wikiContentUrlByName(name) {
     let url = 'https://en.wikipedia.org/w/api.php';
 
     const params = {
@@ -174,10 +174,68 @@ class Utils {
     return url;
   }
 
+  static wikifirstImageUrlByName(name) {
+    let url = 'https://en.wikipedia.org/w/api.php';
+
+    const params = {
+      action: 'query',
+      prop: 'pageimages',
+      piprop: 'original',
+      titles: name,
+      format: 'json',
+    };
+
+    url += '?origin=*';
+
+    Object.keys(params).forEach((key) => {
+      url += `&${key}=${params[key]}`;
+    });
+
+    return url;
+  }
+
+  static wikiUrlByImage(name) {
+    let url = 'https://en.wikipedia.org/w/api.php';
+
+    const params = {
+      action: 'query',
+      prop: 'imageinfo|categories',
+      generator: 'search',
+      gsrsearch: 'roses',
+      gsrnamespace: '6',
+      format: 'json',
+    };
+
+    url += '?origin=*';
+
+    Object.keys(params).forEach((key) => {
+      url += `&${key}=${params[key]}`;
+    });
+
+    return url;
+  }
+
   static async getWikiContent(url) {
     return fetch(url)
       .then((response) => response.json())
       .then((response) => Object.values(response.query.pages)[0].extract)
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  static async getWikiImage(url) {
+    return fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        const result = data.query.pages;
+        const id = Object.keys(result)[0];
+        if (result[id].original) {
+          const imgURL = result[id].original.source;
+          console.log(imgURL);
+          return imgURL;
+        }
+      })
       .catch((error) => {
         console.log(error);
       });
