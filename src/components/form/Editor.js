@@ -104,7 +104,7 @@ class Editor extends Component {
 
   insertFile = async (popUpData, tags) => {
     if (popUpData.file) {
-      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg'].filter((p) => popUpData.fileName.includes(p)));
+      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg'].filter((p) => popUpData.fileName.includes(p)));
 
       const desc = popUpData.desc ? `${popUpData.desc}` : '';
 
