@@ -51,8 +51,15 @@ export function getGraphsListRequest(page = 1, requestData = {}) {
 
 export const GET_SINGLE_GRAPH = define('GET_SINGLE_GRAPH');
 
-export function getSingleGraphRequest(graphId) {
-  return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId));
+export function getSingleGraphRequest(graphId, params) {
+  return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId, params));
+}
+
+
+export const GET_SINGLE_GRAPH_PREVIEW = define('GET_SINGLE_GRAPH_PREVIEW');
+
+export function getSingleGraphPreviewRequest(graphId, userId, token) {
+  return GET_SINGLE_GRAPH_PREVIEW.request(() => Api.getSingleGraphWithAccessToken(graphId, userId, token));
 }
 
 export const GET_SINGLE_EMBED_GRAPH = define('GET_SINGLE_EMBED_GRAPH');
@@ -118,6 +125,15 @@ export function removeNodeCustomFieldKey(type, key) {
   return {
     type: REMOVE_NODE_CUSTOM_FIELD_KEY,
     payload: { type, key },
+  };
+}
+
+export const REMOVE_NODE_FROM_CUSTOM_FIELD = 'REMOVE_NODE_FROM_CUSTOM_FIELD';
+
+export function removeNodeFromCustom(nodeId) {
+  return {
+    type: REMOVE_NODE_FROM_CUSTOM_FIELD,
+    payload: { nodeId },
   };
 }
 

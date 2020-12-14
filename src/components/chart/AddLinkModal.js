@@ -93,6 +93,7 @@ class AddLinkModal extends Component {
       if (isUpdate) {
         links = links.map((d) => {
           if (d.index === linkData.index) {
+            d.sx = undefined;
             return linkData;
           }
           return d;
@@ -104,7 +105,16 @@ class AddLinkModal extends Component {
       }
 
       this.setState({ show: false });
-      Chart.render({ links });
+
+      let checkLinkCurve;
+
+      if (isUpdate) {
+        checkLinkCurve = 'updateCurve';
+      } else if (linkData.linkType === 'a1') {
+        checkLinkCurve = 'createCurve';
+      } else checkLinkCurve = '';
+
+      Chart.render({ links }, checkLinkCurve);
     }
     this.setState({ errors });
   }
@@ -127,6 +137,20 @@ class AddLinkModal extends Component {
 
     Utils.orderGroup(types, linkData.type);
 
+    let dashTypes;
+
+    const res = links.filter((p) => {
+      if (((p.source === linkData.source || p.source === linkData.target)
+          && (p.target === linkData.source || p.target === linkData.target)) && p.sx) {
+        return p;
+      }
+    });
+
+    if (res.length > 0) {
+      dashTypes = Object.keys(DASH_TYPES);
+      dashTypes.splice(1, 1);
+    } else dashTypes = Object.keys(DASH_TYPES);
+
     return (
       <Modal
         className="ghModal"
@@ -145,7 +169,7 @@ class AddLinkModal extends Component {
                 value={[linkData.linkType]}
                 error={errors.linkType}
                 onChange={(v) => this.handleChange('linkType', v)}
-                options={Object.keys(DASH_TYPES)}
+                options={dashTypes}
                 containerClassName="lineTypeSelect"
                 getOptionValue={(v) => v}
                 getOptionLabel={(v) => <SvgLine type={v} />}

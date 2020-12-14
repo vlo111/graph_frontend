@@ -124,13 +124,11 @@ class Utils {
   }
 
   static hexToRgb(hex, opacity = 1) {
-    hex = hex.toUpperCase().replace('#', '');
-    const arrBuff = new ArrayBuffer(4);
-    const dv = new DataView(arrBuff);
-    dv.setUint32(0, parseInt(hex, 16), false);
-    const arrByte = [...new Uint8Array(arrBuff)];
-    arrByte.shift();
-    return opacity ? `rgba(${arrByte.join(',')}, ${opacity})` : `rgb(${arrByte.join(',')})`;
+    const h = hex.replace('#', '');
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return opacity ? `rgba(${r}, ${g}, ${b}, ${opacity})` : `rgb(${r}, ${g}, ${b})`;
   }
 
   static orderGroup(groups, curentType) {

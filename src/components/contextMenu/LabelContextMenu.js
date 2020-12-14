@@ -41,6 +41,12 @@ class labelContextMenu extends Component {
         <Button icon="fa-copy" onClick={this.handleCopyClick}>
           Copy
         </Button>
+        <Button icon={status === 'lock' ? 'fa-unlock-alt' : 'fa-lock'} onClick={this.handleLockClick}>
+          {status === 'lock' ? 'Unlock' : 'Lock'}
+        </Button>
+        <Button icon="fa-share-alt" onClick={(ev) => this.props.onClick(ev, 'label.share')}>
+          Share
+        </Button>
       </>
     );
   }

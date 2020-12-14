@@ -18,6 +18,7 @@ import Page404 from './pages/Page404';
 import suspense from './helpers/suspense';
 import Search from './pages/search/Search';
 import Profile from './pages/account';
+import GraphThumbnail from './pages/GraphThumbnail';
 
 const GraphEmbed = React.lazy(() => import('./pages/GraphEmbed'));
 
@@ -41,6 +42,7 @@ class App extends Component {
             <Route path="/templates" exact component={Index} />
             <Route path="/shared" exact component={Index} />
 
+            <Route path="/graphs/thumbnail/:graphId/:userId" component={GraphThumbnail} />
             <Route path="/graphs/view/:graphId" component={GraphView} />
             <Route path="/graphs/preview/:graphId" component={GraphView} />
             <Route path="/graphs/filter/:graphId" component={GraphView} />

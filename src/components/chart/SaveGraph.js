@@ -93,7 +93,7 @@ class SaveGraph extends Component {
             <SaveGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
           ) : null}
         </div>
-        <spa className="graphsName"> Name : {singleGraph.title}</spa>
+        <span className="graphsName"> Name : {singleGraph.title}</span>
       </div>
 
     );
@@ -109,4 +109,4 @@ const Container = connect(
   mapDispatchToProps,
 )(SaveGraph);
 
-export default withRouter(Container); 
+export default withRouter(Container);

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import path from "path";
 
 class CustomFields {
   static LIMIT = 10;
@@ -56,6 +57,21 @@ class CustomFields {
     if (customFields[type]) {
       delete customFields[type][key];
     }
+    return { ...customFields };
+  }
+
+  static removeNode(customFields = {}, nodeId) {
+    /* eslint-disable */
+    for (const nodeType in customFields) {
+      for (const tab in customFields[nodeType]) {
+        for (const node in customFields[nodeType][tab].values) {
+          if (node === nodeId) {
+            delete customFields[nodeType][tab].values[node];
+          }
+        }
+      }
+    }
+    /* eslint-enable */
     return { ...customFields };
   }
 
