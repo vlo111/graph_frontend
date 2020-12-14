@@ -4,6 +4,7 @@ import 'jodit/build/jodit.min.css';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import InsertMediaTabsModal from '../nodeInfo/InsertMediaTabsModal';
+import Utils from '../../helpers/Utils';
 
 class Editor extends Component {
   static propTypes = {
@@ -63,11 +64,11 @@ class Editor extends Component {
         if (anchor && anchor.getAttribute) {
           popUpData.file = anchor.getAttribute('href');
           popUpData.fileName = anchor.getAttribute('download');
-          popUpData.text = anchor.innerText;
+          popUpData.alt = anchor.innerText;
           popUpData.update = anchor.outerHTML;
         } else if (selected) {
           popUpData.update = selected;
-          popUpData.text = selected;
+          popUpData.alt = selected;
         }
 
         this.setState({ showPopUp: 'file' });
@@ -101,25 +102,23 @@ class Editor extends Component {
     this.setState({ showPopUp: null });
   }
 
-  insertFile = (popUpData, tags) => {
+  insertFile = async (popUpData, tags) => {
     if (popUpData.file) {
+      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg'].filter((p) => popUpData.fileName.includes(p)));
 
       const desc = popUpData.desc ? `${popUpData.desc}` : '';
 
-      const linkFileName = `<a 
-href="${popUpData.file}"
-tags="url={${popUpData.file}}, tager={${tags}}, ${desc}" 
-download="${popUpData.fileName}">
-${popUpData.text || popUpData.fileName}
-</a>`;
+      let anchor = '';
 
-      const tableImgWithDesc = `
+      if (isImg && !popUpData.alt) {
+        if (desc) {
+          anchor = `
 <table style="width: 200px;"><tbody>
 <tr>
 <td>
     <img
  class=scaled
- src=${popUpData.file} 
+ src=${await Utils.blobToBase64(popUpData.file)} 
  tags="url={${popUpData.file}}, tager={${tags}}" 
  download="${popUpData.fileName}" />
  ${desc}
@@ -127,18 +126,21 @@ ${popUpData.text || popUpData.fileName}
 </tr>
 </tbody>
 </table>`;
-
-      const img = `<img
+        } else {
+          anchor = `<img
           className=scaled
-          src=${popUpData.file}
+          src=${await Utils.blobToBase64(popUpData.file)}
           tags="url={${popUpData.file}}, tager={${tags}}"
           download="${popUpData.fileName}"/>`;
-
-      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg'].filter((p) => 'png'.includes(p)));
-
-      const anchor = isImg
-        ? (desc ? tableImgWithDesc : img)
-        : linkFileName;
+        }
+      } else {
+        anchor = `<a 
+href="${popUpData.file}"
+tags="url={${popUpData.file}}, tager={${tags}}, ${desc}" 
+download="${popUpData.fileName}">
+${popUpData.alt || popUpData.fileName}
+</a>`;
+      }
 
       let html;
       if (popUpData.update) {

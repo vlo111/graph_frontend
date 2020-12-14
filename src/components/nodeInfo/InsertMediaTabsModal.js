@@ -37,10 +37,9 @@ class InsertMediaTabsModal extends Component {
     this.props.close();
   }
 
-  handleFileChange = async (path, value) => {
+  handleFileChange = (path, value) => {
     const file = value?.name;
-    let url = file ? Utils.fileToBlob(value) : '';
-    url = await Utils.blobToBase64(url);
+    const url = file ? Utils.fileToBlob(value) : '';
     const { popUpData } = this.state;
 
     _.set(popUpData, path, url);

@@ -7,7 +7,7 @@ import Chart from '../../Chart';
 class ExportNode extends Component {
   render() {
     const {
-      tabs, node, nodeData
+      tabs, node, nodeData, image
     } = this.props;
 
     const customField = CustomFields.get(tabs, node.type, node.id);
@@ -21,7 +21,7 @@ class ExportNode extends Component {
         <div className="nodeFullContent">
           <div className="headerBanner">
             <img
-              src="HeaderImagePlace"
+              src={image}
               alt=""
             />
             <div className="textWrapper">
@@ -34,7 +34,7 @@ class ExportNode extends Component {
               <div className="contentWrapper">
                 <div className="content">
                   {Object.keys(customField).map((item) => (
-                    <div>
+                    <div className="content-parts">
                       <h2>{item}</h2>
                       {customField[item]}
                     </div>
