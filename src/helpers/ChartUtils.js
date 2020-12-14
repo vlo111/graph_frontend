@@ -484,7 +484,7 @@ class ChartUtils {
     let fIndex = new Date().getTime();
     nodes = nodes.map((d, i) => {
       d.icon = icons[i];
-      d.description = d.description.replace(/\shref="(blob:\/\/[^"]+)"/g, (m, url) => {
+      d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
         fIndex += 1;
         files[fIndex] = Utils.blobToBase64(url);
         return ` href="<%= file_${fIndex} %>"`;
@@ -498,7 +498,7 @@ class ChartUtils {
           for (const node in customFields[nodeType][tab].values) {
             if (customFields[nodeType][tab].values[node]) {
               customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
-                .replace(/\shref="(blob:\/\/[^"]+)"/g, (m, url) => {
+                .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
                   fIndex += 1;
                   files[fIndex] = Utils.blobToBase64(url);
                   return ` href="<%= file_${fIndex} %>"`;
