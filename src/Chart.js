@@ -11,6 +11,8 @@ class Chart {
   static event = new EventEmitter();
 
   static drag(simulation) {
+    let startX;
+    let startY;
     const dragstart = (ev, d) => {
       this.event.emit('node.dragstart', ev, d);
 
@@ -20,10 +22,9 @@ class Chart {
         }
         if (ev.active) simulation.alphaTarget(0.3).restart();
         d.fixed = !!d.fx;
-        // d.fx = d.x;
-        // d.fy = d.y;
-        // d.x = d3.event.x;
-        // d.y = d3.event.y;
+
+        startX = ev.x;
+        startY = ev.y;
       }
     };
 
@@ -64,13 +65,16 @@ class Chart {
         if (this.activeButton === 'view') {
           this.detectLabels(d);
         }
-
-        if (!d.fixed) {
-          d.x = d.fx || d.x;
-          d.y = d.fy || d.y;
-          delete d.fx;
-          delete d.fy;
+        if (this.getCurrentUserRole() === 'edit_inside') {
+          const node = ChartUtils.getNodeById(d.id);
+          if (!node.labels.length) {
+            d.x = startX;
+            d.y = startY;
+            this.graphMovement();
+            return;
+          }
         }
+
         if (!d.fixed) {
           d.x = d.fx || d.x;
           d.y = d.fy || d.y;
@@ -208,7 +212,7 @@ class Chart {
 
       const sameLinks = data.links.filter((l) => (
         ((this.getSource(l) === this.getSource(link) && this.getTarget(l) === this.getTarget(link))
-              || (this.getSource(l) === this.getTarget(link) && this.getTarget(l) === this.getSource(link))) && !l.curve
+          || (this.getSource(l) === this.getTarget(link) && this.getTarget(l) === this.getSource(link))) && !l.curve
       ));
       if (sameLinks.length) {
         _.forEach(sameLinks, (l, i) => {
@@ -221,16 +225,16 @@ class Chart {
             const middleLink = !even && Math.ceil(totalHalf) === index;
             const indexCorrected = index <= totalHalf ? index : index - Math.ceil(totalHalf);
 
-          let arcDirection = index <= totalHalf ? 0 : 1;
-          if (reverse) {
-            arcDirection = arcDirection === 1 ? 0 : 1;
-          }
+            let arcDirection = index <= totalHalf ? 0 : 1;
+            if (reverse) {
+              arcDirection = arcDirection === 1 ? 0 : 1;
+            }
 
-          let arc = half / (indexCorrected - (even ? 0.5 : 0));
+            let arc = half / (indexCorrected - (even ? 0.5 : 0));
 
-          if (middleLink) {
-            arc = 0;
-          }
+            if (middleLink) {
+              arc = 0;
+            }
 
             l.same = {
               arcDirection,
@@ -341,6 +345,9 @@ class Chart {
     const dragLabel = {};
 
     const handleDragStart = (ev) => {
+      if (this.getCurrentUserRole() === 'edit_inside') {
+        return;
+      }
       if (this.activeButton === 'create-label') {
         activeLine = labelsWrapper.append('path')
           .datum({
@@ -411,7 +418,7 @@ class Chart {
         this.link.data().map((d) => {
           if (
             (!d.readOnly && !datum.readOnly)
-              || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
+            || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
           ) {
             if (dragLabel.nodes.some((n) => n.index === d.source.index || n.index === d.target.index)) {
               if (this.point) {
@@ -1529,7 +1536,7 @@ class Chart {
 
     const html = document.querySelector('#graph svg').outerHTML;
 
-    if(!preventInitial){
+    if (!preventInitial) {
       // reset original styles
       const { x: oX, y: oY, scale: oScale } = originalDimensions;
       this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`)
@@ -1603,6 +1610,11 @@ class Chart {
     window.removeEventListener('keydown', this.handleWindowKeyDown);
     window.removeEventListener('keyup', this.handleWindowKeyUp);
     window.removeEventListener('mousedown', this.handleWindowMouseDown);
+  }
+
+  static getCurrentUserRole() {
+    const graph = document.querySelector('#graph');
+    return graph.getAttribute('data-role');
   }
 }
 

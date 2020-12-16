@@ -243,6 +243,7 @@ class Utils {
     const [, graphId] = window.location.pathname.match(/\/(\d+)$/) || [];
     return +graphId || '';
   }
+
 }
 
 export default Utils;

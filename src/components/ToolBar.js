@@ -34,8 +34,7 @@ class ToolBar extends Component {
   }
 
   render() {
-    const { activeButton, match: { params: { graphId } } } = this.props;
-
+    const { activeButton, match: { params: { graphId } }, currentUserRole } = this.props;
     return (
       <div id="toolBar">
         <div className="top">
@@ -50,13 +49,16 @@ class ToolBar extends Component {
             >
               Add Node
             </Button>
-            <Button
-              className={activeButton === 'create-label' ? 'active' : undefined}
-              icon={<TagSvg />}
-              onClick={() => this.handleClick('create-label')}
-            >
-              Create Label
-            </Button>
+            {currentUserRole !== 'edit_inside' ? (
+              <Button
+                className={activeButton === 'create-label' ? 'active' : undefined}
+                icon={<TagSvg />}
+                onClick={() => this.handleClick('create-label')}
+              >
+                Create Label
+              </Button>
+            ) : null}
+
             {false ? <Button
               icon={<LoopSvg />}
               className={activeButton === 'reset' ? 'active' : undefined}
@@ -93,6 +95,7 @@ class ToolBar extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
+  currentUserRole: state.graphs.singleGraph.currentUserRole || '',
 });
 const mapDispatchToProps = {
   setActiveButton,
