@@ -42,7 +42,8 @@ class ReactChart extends Component {
     ContextMenu.event.on('node.edit', this.editNode);
 
     ContextMenu.event.on('active-button', this.setActiveButton);
-    Chart.event.on('click', this.addNewNode);
+    Chart.event.on('click', this.handleChartClick);
+    ContextMenu.event.on('node.create', this.addNewNode);
 
     Chart.event.on('link.click', this.deleteLink);
     ContextMenu.event.on('link.delete', this.deleteLink);
@@ -61,6 +62,7 @@ class ReactChart extends Component {
     ContextMenu.event.removeListener('active-button', this.setActiveButton);
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
     ContextMenu.event.removeListener('label.delete', this.handleLabelDelete);
+    ContextMenu.event.removeListener('node.create', this.addNewNode);
   }
 
   handleLabelClick = (ev, d) => {
@@ -120,7 +122,7 @@ class ReactChart extends Component {
     this.props.toggleNodeModal({ ...d, customField });
   }
 
-  addNewNode = (ev) => {
+  handleChartClick = (ev) => {
     const { target } = ev;
     if (!target.classList.contains('nodeCreate')
       || Chart.activeButton !== 'create'
@@ -131,6 +133,10 @@ class ReactChart extends Component {
     if (singleGraph.currentUserRole === 'edit_inside' && singleGraph.share.objectId !== target.getAttribute('data-id')) {
       return;
     }
+    this.addNewNode(ev);
+  }
+
+  addNewNode = (ev) => {
     const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
 
     this.props.toggleNodeModal({

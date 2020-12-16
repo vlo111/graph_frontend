@@ -2,7 +2,6 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
-import lockSvg from './assets/images/icons/lock.svg';
 import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
@@ -351,6 +350,7 @@ class Chart {
       if (this.activeButton === 'create-label') {
         activeLine = labelsWrapper.append('path')
           .datum({
+            id: ChartUtils.uniqueId(this.data.labels),
             name: '',
             color: ChartUtils.labelColors(),
             d: [],
