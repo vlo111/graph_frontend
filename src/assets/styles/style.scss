@@ -5933,3 +5933,28 @@ img.scaled {
   fill: #EF2D56;
   cursor: move;
 }
+.dropzone div {
+  width: 155px !important;
+  height: 155px!important;
+  border-radius: 10px !important;
+  object-fit: cover;
+  object-position: center;
+  border: 2px dashed #1C8ADB !important;
+  cursor: pointer;
+}
+.dropzone p {
+  margin-top: 45px;
+  text-align: center;
+  color: #95A1A9;
+  font-size: 16px;
+}
+
+.dropzonse:hover {
+  cursor: pointer;
+  background-color: #9ecbec !important;
+  opacity: 0.8;
+}
+
+.fileText {
+  margin-top: 65px !important;
+}

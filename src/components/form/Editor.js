@@ -102,9 +102,11 @@ class Editor extends Component {
     this.setState({ showPopUp: null });
   }
 
-  insertFile = async (popUpData, tags) => {
-    if (popUpData.file) {
-      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg'].filter((p) => popUpData.fileName.includes(p)));
+  insertFile = (popUpData, tags) => {
+    const file = popUpData.file[0];
+    debugger;
+    if (file) {
+      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg'].filter((p) => file.name.includes(p)));
 
       const desc = popUpData.desc ? `${popUpData.desc}` : '';
 
@@ -118,9 +120,9 @@ class Editor extends Component {
 <td>
     <img
  class=scaled
- src=${await Utils.blobToBase64(popUpData.file)} 
- tags="url={${popUpData.file}}, tager={${tags}}" 
- download="${popUpData.fileName}" />
+ src=${file.preview} 
+ tags="url={${file.preview}}, tager={${tags}}" 
+ download="${file.name}" />
  ${desc}
      </td>
 </tr>
@@ -129,16 +131,16 @@ class Editor extends Component {
         } else {
           anchor = `<img
           className=scaled
-          src=${await Utils.blobToBase64(popUpData.file)}
-          tags="url={${popUpData.file}}, tager={${tags}}"
-          download="${popUpData.fileName}"/>`;
+          src=${file.preview}
+          tags="url={${file.name}}, tager={${tags}}"
+          download="${file.name}"/>`;
         }
       } else {
         anchor = `<a 
-href="${popUpData.file}"
-tags="url={${popUpData.file}}, tager={${tags}}, ${desc}" 
-download="${popUpData.fileName}">
-${popUpData.alt || popUpData.fileName}
+href="${file.preview}"
+tags="url={${file.name}}, tager={${tags}}, ${desc}" 
+download="${file.name}">
+${popUpData.alt || file.name}
 </a>`;
       }
 

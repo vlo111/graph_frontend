@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Button from '../form/Button';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import File from '../form/File';
+import FileUpload from '../form/FileUpload';
 import Utils from '../../helpers/Utils';
 import Input from '../form/Input';
 
@@ -22,7 +23,9 @@ class InsertMediaTabsModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      popUpData: {},
+      popUpData: {
+        file: [],
+      },
       tags: [],
     };
   }
@@ -35,16 +38,6 @@ class InsertMediaTabsModal extends Component {
     const { popUpData, tags } = this.state;
     this.props.insertFile(popUpData, tags);
     this.props.close();
-  }
-
-  handleFileChange = (path, value) => {
-    const file = value?.name;
-    const url = file ? Utils.fileToBlob(value) : '';
-    const { popUpData } = this.state;
-
-    _.set(popUpData, path, url);
-    _.set(popUpData, 'fileName', value?.name);
-    this.setState({ popUpData });
   }
 
   handleTextChange = (path, value) => {
@@ -78,6 +71,19 @@ class InsertMediaTabsModal extends Component {
     }
   }
 
+  componentWillUnmount() {
+    // Make sure to revoke the data uris to avoid memory leaks
+    this.state.popUpData.file.forEach((file) => URL.revokeObjectURL(file.preview));
+  }
+
+  addFile = (file) => {
+    this.setState({
+      popUpData: {
+        file,
+      },
+    });
+  };
+
   render() {
     const { popUpData, tags } = this.state;
 
@@ -92,10 +98,7 @@ class InsertMediaTabsModal extends Component {
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeInsertMedia} />
           <div className="form">
             <h2>Select media</h2>
-            <File
-              onChangeFile={(file) => this.handleFileChange('file', file)}
-            />
-            <img src={popUpData?.file} alt="" />
+            <FileUpload addFile={this.addFile} file={popUpData.file} />
             <Input
               type="text"
               value={popUpData.desc || ''}
