@@ -159,7 +159,6 @@ ${popUpData.alt || file.name}
   render() {
     const { showPopUp } = this.state;
     const { className, error, label } = this.props;
-
     return (
       <div className={`contentEditor ${className} ${error ? 'hasError' : ''}`}>
         {label ? <span className="label">{label}</span> : null}

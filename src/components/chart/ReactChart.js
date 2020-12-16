@@ -12,7 +12,7 @@ import CustomFields from '../../helpers/CustomFields';
 import ChartUtils from '../../helpers/ChartUtils';
 import { socketLabelDataChange } from '../../store/actions/socket';
 import Api from '../../Api';
-import { removeNodeFromCustom } from "../../store/actions/graphs";
+import { removeNodeFromCustom } from '../../store/actions/graphs';
 
 class ReactChart extends Component {
   static propTypes = {
@@ -21,6 +21,7 @@ class ReactChart extends Component {
     customFields: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -126,6 +127,10 @@ class ReactChart extends Component {
       || Chart.newLink.attr('data-source')) {
       return;
     }
+    const { singleGraph } = this.props;
+    if (singleGraph.currentUserRole === 'edit_inside' && singleGraph.share.objectId !== target.getAttribute('data-id')) {
+      return;
+    }
     const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
 
     this.props.toggleNodeModal({
@@ -174,11 +179,18 @@ class ReactChart extends Component {
 
   render() {
     const { ctrlPress, shiftKey } = this.state;
-    const { activeButton } = this.props;
+    const { activeButton, singleGraph: { currentUserRole } } = this.props;
 
     // this.renderChart(singleGraph, embedLabels);
     return (
-      <div id="graph" data-active={activeButton} data-shift={shiftKey} data-ctrl={ctrlPress} className={activeButton}>
+      <div
+        id="graph"
+        data-role={currentUserRole}
+        data-active={activeButton}
+        data-shift={shiftKey}
+        data-ctrl={ctrlPress}
+        className={activeButton}
+      >
         <div className="borderCircle">
           {_.range(0, 6).map((k) => <div key={k} />)}
         </div>
@@ -218,7 +230,8 @@ class ReactChart extends Component {
               <symbol id="labelLock" viewBox="0 0 512 512" width="40" height="40">
                 <path
                   opacity="0.6"
-                  d="M437.333 192h-32v-42.667C405.333 66.99 338.344 0 256 0S106.667 66.99 106.667 149.333V192h-32A10.66 10.66 0 0064 202.667v266.667C64 492.865 83.135 512 106.667 512h298.667C428.865 512 448 492.865 448 469.333V202.667A10.66 10.66 0 00437.333 192zM287.938 414.823a10.67 10.67 0 01-10.604 11.844h-42.667a10.67 10.67 0 01-10.604-11.844l6.729-60.51c-10.927-7.948-17.458-20.521-17.458-34.313 0-23.531 19.135-42.667 42.667-42.667s42.667 19.135 42.667 42.667c0 13.792-6.531 26.365-17.458 34.313l6.728 60.51zM341.333 192H170.667v-42.667C170.667 102.281 208.948 64 256 64s85.333 38.281 85.333 85.333V192z" />
+                  d="M437.333 192h-32v-42.667C405.333 66.99 338.344 0 256 0S106.667 66.99 106.667 149.333V192h-32A10.66 10.66 0 0064 202.667v266.667C64 492.865 83.135 512 106.667 512h298.667C428.865 512 448 492.865 448 469.333V202.667A10.66 10.66 0 00437.333 192zM287.938 414.823a10.67 10.67 0 01-10.604 11.844h-42.667a10.67 10.67 0 01-10.604-11.844l6.729-60.51c-10.927-7.948-17.458-20.521-17.458-34.313 0-23.531 19.135-42.667 42.667-42.667s42.667 19.135 42.667 42.667c0 13.792-6.531 26.365-17.458 34.313l6.728 60.51zM341.333 192H170.667v-42.667C170.667 102.281 208.948 64 256 64s85.333 38.281 85.333 85.333V192z"
+                />
               </symbol>
             </defs>
           </g>
@@ -232,6 +245,7 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   embedLabels: state.graphs.embedLabels,
   customFields: state.graphs.singleGraph.customFields || {},
+  singleGraph: state.graphs.singleGraph,
 });
 const mapDispatchToProps = {
   toggleNodeModal,

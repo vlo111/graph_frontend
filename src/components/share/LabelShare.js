@@ -37,6 +37,7 @@ class LabelShare extends Component {
   openShareModal = (ev, params) => {
     const { match: { params: { graphId = '' } } } = this.props;
     const { id: labelId } = params;
+    console.log(params)
     this.props.getSharedWithUsersRequest(graphId, 'label', labelId);
     this.setState({ labelId });
   }
