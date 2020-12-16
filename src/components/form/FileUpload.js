@@ -2,13 +2,20 @@ import React from 'react';
 import Dropzone from 'react-dropzone';
 import _ from 'lodash';
 
+const MAX_SIZE = 3145728;
+
 class FileUpload extends React.Component {
     state = { warningMsg: '' };
 
     onDrop = (accepted, rejected) => {
       if (Object.keys(rejected).length !== 0) {
-        const message = 'Please submit valid file type';
+        let message = '';
+        if (rejected[0].size > MAX_SIZE) {
+          message = 'Failed to upload a file. The file maximum size is 3MB.';
+        } else message = 'Please submit valid file type';
         this.setState({ warningMsg: message });
+      } else if (accepted[0].type.includes('gif')) {
+        this.setState({ warningMsg: 'Please submit valid file type' });
       } else {
         this.setState({ warningMsg: '' });
         const blobPromise = new Promise((resolve, reject) => {
@@ -73,10 +80,11 @@ class FileUpload extends React.Component {
 
       return (
         <div>
-          {this.state.warningMsg && <p>{this.state.warningMsg}</p>}
+          {this.state.warningMsg && <p className="validateTabFile">{this.state.warningMsg}</p>}
           <div className="dropzone">
             <Dropzone
               multiple={false}
+              maxSize={MAX_SIZE}
                         // accept="image/*"
               onDrop={(accepted, rejected) => this.onDrop(accepted, rejected)}
             >
