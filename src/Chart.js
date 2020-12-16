@@ -333,6 +333,27 @@ class Chart {
     this._dataNodes = this.data.nodes;
   }
 
+
+  static renderFolders() {
+    const folderWrapper = d3.select('#graph .folders');
+
+    folderWrapper.selectAll('.folder > *').remove();
+
+    this.folders = folderWrapper.selectAll('.folder')
+      .data(this.data.labels.filter((l) => l.type === 'folder'))
+      .join('g')
+      .attr('data-id', (d) => d.id)
+      .attr('transform', (d) => `translate(${d.d[0][0] + 75}, ${d.d[0][1] + 75})`);
+
+    this.folders.append('use')
+      .attr('href', '#folderIcon');
+
+    this.folders.append('text')
+      .text((d) => d.name)
+      .attr('y', 75);
+
+  }
+
   static renderLabels() {
     let activeLine;
 
@@ -486,8 +507,8 @@ class Chart {
         .on('drag', handleDrag)
         .on('end', handleDragEnd));
 
-    this.labels = labelsWrapper.selectAll('path')
-      .data(this.data.labels.filter((l) => l.hidden !== 1))
+    this.labels = labelsWrapper.selectAll('.label')
+      .data(this.data.labels.filter((l) => l.hidden !== 1 && l.type !== 'folder'))
       .join('path')
       .attr('class', 'label nodeCreate')
       .attr('opacity', (d) => (d.sourceId ? 0.6 : 0.4))
@@ -501,7 +522,7 @@ class Chart {
 
     this.labelsLock = [];
     setTimeout(() => {
-      this.labelsLock = labelsWrapper.selectAll('use')
+      this.labelsLock = labelsWrapper.selectAll('.labelLock')
         .data(this.data.labels.filter((l) => l.hidden !== 1 && l.status === 'lock'))
         .join('use')
         .attr('data-label-id', (d) => d.id)
@@ -580,6 +601,7 @@ class Chart {
 
       this.renderDirections();
       this.renderLabels();
+      this.renderFolders();
       this.icons = this.renderIcons();
 
       this.nodesWrapper = this.svg.select('.nodes');
