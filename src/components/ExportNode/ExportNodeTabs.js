@@ -4,8 +4,10 @@ import { renderToString } from 'react-dom/server';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ExportNode from './ExportNode';
+import Button from '../form/Button';
 import { setLoading } from '../../store/actions/app';
 import Api from '../../Api';
+import { ReactComponent as ExportSvg } from '../../assets/images/icons/exportPdf.svg';
 
 class ExportNodeTabs extends Component {
   static propTypes = {
@@ -38,7 +40,11 @@ class ExportNodeTabs extends Component {
 
   render() {
     return (
-      <a onClick={this.export} to="/#">Export</a>
+      <Button onClick={this.export}
+       to="/#"
+       icon={<ExportSvg style={{ height: 40 }} />}>
+         Export
+       </Button>
     );
   }
 }

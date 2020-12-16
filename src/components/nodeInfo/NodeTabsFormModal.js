@@ -100,7 +100,7 @@ class NodeTabsFormModal extends Component {
             value={tabData.name}
             error={errors.name}
             label="Name"
-            disabled={!!fieldName}
+            //disabled={!!fieldName}
             onChangeText={(v) => this.handleChange('name', v)}
           />
           {/* <Input

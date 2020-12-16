@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import queryString from 'query-string';
-import SearchInput from './search/SearchInput';
-import AccountDropDown from './account/AccountDropDown';
-import Utils from '../helpers/Utils';
-import PropTypes from 'prop-types';
+import queryString from 'query-string'; 
 
+import Utils from '../helpers/Utils';
 import Chart from '../Chart';
 import { setLoading } from '../store/actions/app';
 import ExportNodeTabs from './ExportNode/ExportNodeTabs';
@@ -16,6 +14,9 @@ import GraphUsersInfo from "./GraphUsersInfo";
 import Button from "./form/Button";
 import CommentModal from './CommentNode';
 import { getActionsCountRequest } from '../store/actions/commentNodes';
+import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
+import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
+import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg';
 
 class HeaderMini extends Component {
   static propTypes = {
@@ -91,20 +92,21 @@ class HeaderMini extends Component {
 
   render() {
     const { showGraphUsersInfo, showNodeComment } = this.state;
-    const { singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props;
-    const isInEmbed = Utils.isInEmbed(); 
+    const { singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props; 
     return (
-      <header id="headerMini">
-        <SearchInput />
+      <header id="headerMini"> 
+       <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() =>  this.props.history.replace(`/graphs/update/${graphId}`)} />
         <ul className="navLinks">
           <li>
-            <Button onClick={() => this.toggleGraphUsersInfo(true)}>
+            <Button
+            icon={<InfoSvg style={{ height: 30 }}/>}
+            onClick={() => this.toggleGraphUsersInfo(true)}>
               Info
             </Button>
           </li>
           <li>
             <Button className="commentsInfo"
-             // icon={<CommentsSvg style={{ height: 40 }} />}
+             icon={<CommentSvg style={{ height: 40 }} />}
               title="Comment"
               onClick={() => this.toggleNodeComment(true)}>
                 Comment
@@ -119,13 +121,9 @@ class HeaderMini extends Component {
               image={this.state.image}
             />
           </li>
-        </ul>
-        {
-          !isInEmbed ? (
-            <AccountDropDown mini />
-          ) : null
-        }
-
+          
+        </ul> 
+       
         {showGraphUsersInfo ? (
           <GraphUsersInfo onClose={() => this.toggleGraphUsersInfo(false)} />
         ) : null}

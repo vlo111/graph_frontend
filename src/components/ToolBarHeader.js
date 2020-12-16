@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './form/Button';
+import SearchInput from './search/SearchInput';
 import { setActiveButton } from '../store/actions/app';
 import { ReactComponent as Logo } from '../assets/images/logo.svg';
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
@@ -43,7 +44,7 @@ class ToolBarHeader extends Component {
     return (
       <header id="header">
         <Link to="/" className="logoWrapper">
-        <LogoSvg className="logo orange" />
+          <LogoSvg className="logo orange" />
           <span className="autoSaveText">Saving...</span>
         </Link>
         <AccountDropDown />
@@ -58,6 +59,8 @@ class ToolBarHeader extends Component {
           >
             Search
           </Button>
+
+          {/* <SearchInput /> */}
           <ShareGraph graphId={+graphId} setButton />
           <Button
             icon={<ViewSvg />}
@@ -67,8 +70,10 @@ class ToolBarHeader extends Component {
           </Button>
           <Button
             icon={<FilterSvg />}
-            onClick={() => {isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
-             : this.props.history.replace(`/graphs/filter/${graphId}`)}}
+            onClick={() => {
+              isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
+                : this.props.history.replace(`/graphs/filter/${graphId}`)
+            }}
           >
            Filter
           </Button>

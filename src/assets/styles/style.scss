@@ -178,7 +178,6 @@ p {
   text-align: center;
   margin: 17px 40px;
   width: 118px;
-
   .autoSaveText {
     font-size: 12px;
     color: $color-main2;
@@ -255,8 +254,8 @@ p {
       }
 
       .jodit-toolbar-button__button {
-        border-radius: 11px;
-        min-height: 100%;
+        border-radius: 18px;
+        min-height: 26px;
         border: 1px solid #C2C9DE;
 
         &:hover {
@@ -305,6 +304,10 @@ p {
     .jodit-toolbar-button_link:before {
       content: 'Insert link';
       left: -5px;
+    } 
+
+    .jodit-workplace {
+      min-height: 184px !important;
     }
   }
 
@@ -839,9 +842,6 @@ p {
     display: none !important;
   }
 
-  &[data-role="edit_inside"] {
-
-  }
 
   .selectSquare {
     fill: rgba($color-accent, 0.05);
@@ -1134,64 +1134,57 @@ p {
     .signOut {
       margin-left: 10px;
     }
-
-    .notification-container {
+        .notification-container {
       margin-right: 390px;
 
 
-      .notification {
-        display: inline-block;
-        position: relative;
-        padding: 6px;
-        background: #7166F8 0% 0% no-repeat padding-box;
-        border-radius: 45px;
-        font-size: 1.3em;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-      }
+    .notification {
+      display: inline-block;
+      position: relative;
+      padding: 6px;
+      background: #7166F8 0% 0% no-repeat padding-box;
+      border-radius: 45px;
+      font-size: 1.3em;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
 
-      .notification::before,
-      .notification::after {
-        color: #fff;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-      }
+    .notification::before,
+    .notification::after {
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
 
-      .notification::before {
-        display: block;
-        font-family: "FontAwesome";
-        transform-origin: top center;
-      }
+    .notification::before {
+      display: block;
+      font-family: "FontAwesome";
+      transform-origin: top center;
+    }
 
-      .notification::after {
-        font-family: Arial;
-        font-size: 12px;
-        font-weight: 700;
-        position: absolute;
-        top: -9px;
-        right: -15px;
-        padding: 5px 8px;
-        line-height: 100%;
-        border: 2px #fff solid;
-        border-radius: 60px;
-        background: #db3434;
-        opacity: 0;
-        content: attr(data-count);
-        opacity: 0;
-        transform: scale(0.5);
-        transition: transform, opacity;
-        transition-duration: 0.3s;
-        transition-timing-function: ease-out;
-      }
+    .notification::after {
+      font-family: Arial;
+      font-size: 12px;
+      font-weight: 700;
+      position: absolute;
+      top: -9px;
+      right: -15px;
+      padding: 5px 8px;
+      line-height: 100%;
+      border: 2px #fff solid;
+      border-radius: 60px;
+      background: #db3434;
+      opacity: 0;
+      content: attr(data-count);
+      opacity: 0;
+      transform: scale(0.5);
+      transition: transform, opacity;
+      transition-duration: 0.3s;
+      transition-timing-function: ease-out;
+    }
 
       .notification.notify::before {
         animation: ring 1.5s ease;
       }
-
-      .notification.show-count::after {
-        transform: scale(1);
-        opacity: 1;
-      }
-
 
       .notification.show-count::after {
         transform: scale(1);
@@ -1287,14 +1280,14 @@ p {
 }
 
 #headerMini {
-  display: flex;
+  //display: flex;
   padding: 4% 3%;
   align-items: center;
   height: 94px;
 
   .navLinks {
     display: flex;
-    margin: 0 13px;
+    margin: 0 113px;
 
     li {
       margin: 0 10%;
@@ -1324,6 +1317,18 @@ p {
   .searchInputWrapper {
     max-width: 33%;
 
+  }
+  .close {
+    background-color: $color-white;
+    padding: 0;
+    position: absolute;
+    left: 15px;
+    z-index: 2;
+    top: 4px;
+
+    .icon {
+      color: $color-error;
+    }
   }
 }
 
@@ -1535,13 +1540,11 @@ p {
         .submit {
           align-self: center;
         }
-
         .logo svg {
 
           height: 74px;
 
         }
-
         .logo {
           height: 120px;
           width: 226px;
@@ -1585,7 +1588,6 @@ p {
         .submit {
           align-self: center;
         }
-
         .logo {
           height: 120px;
           width: 226px;
@@ -1654,7 +1656,6 @@ p {
         align-self: flex-end;
         margin-top: 32px;
       }
-
       .logo {
         height: 120px;
         width: 226px;
@@ -2789,6 +2790,7 @@ p {
 
 .jodit {
   .jodit-wysiwyg {
+     height: 125px;
     a {
       color: $color-main;
       text-decoration: underline;
@@ -3743,7 +3745,7 @@ body .gh__menu {
   z-index: 22;
   box-shadow: 0px 6px 20px #0D090526;
   right: 0;
-  top: 0;
+  top: 60px;
   overflow-x: hidden;
   overflow-y: auto;
 
@@ -4061,10 +4063,10 @@ body .gh__menu {
 }
 
 .ghModalOverlay .nodeTabsFormModal {
-  width: 31%;
+  width: 65%;
   max-width: unset !important;
   padding: 1.6% 2.1%;
-  min-width: 598px;
+  min-width: 920px;
 
   .row {
     display: flex;
@@ -4827,31 +4829,6 @@ body .gh__menu {
     .content {
       margin-left: 0;
     }
-  }
-}
-
-.homeWithUser {
-  width: 100% !important;
-  position: relative !important;
-  align-items: flex-start !important;
-  display: grid !important;
-  grid-template-columns: 350px 50px auto 100px;
-  grid-template-rows: auto 220px auto;
-
-  .tabsList {
-    display: flex;
-    flex-direction: row;
-    transform: rotate(270deg) translate(-99.3%, 0) !important;
-    transform-origin: top left;
-    margin: 0;
-    left: 0;
-    width: 510px;
-    position: relative !important;
-  }
-
-  .content {
-    margin-left: 0 !important;
-    padding: 2% 3.4%;
   }
 }
 
@@ -5817,6 +5794,7 @@ body .gh__menu {
   width: 10%;
 }
 
+
 .containerModal {
   width: 340px;
 
@@ -5859,7 +5837,6 @@ body .gh__menu {
     }
   }
 }
-
 .deleteModal {
   p {
     font: normal normal 600 16px/22px Open Sans;
@@ -5929,16 +5906,16 @@ body .gh__menu {
 }
 
 .jodit-popup__content {
-  max-width: 350px;
+  max-width: 3500px;
 }
 
 .insertMediaModal {
-  img {
+  img  {
     width: 340px;
   }
 
   .buttons, h2, .containerModal, .ghFileInput, .ghFormField {
-    width: auto !important;
+      width: auto !important;
   }
 }
 

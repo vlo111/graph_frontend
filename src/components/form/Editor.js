@@ -25,11 +25,19 @@ class Editor extends Component {
     placeholder: '',
     error: '',
     buttons: [
-      'bold', 'italic', 'underline', '|', 'file', '|', 'link', '|',
-      'left',
-      'center',
-      'right',
-      'justify',
+      'bold', 'italic', 'underline', 'fontsize', 'font', '|', 'file',  'link', '|',
+     
+      'ul', 'ol', '|',
+      'outdent', 'indent',  '|', 
+      'brush',
+      'paragraph', 'table',  '|',
+      'align', 'undo', 'redo', '|',
+      'hr',
+      'eraser',
+      'copyformat', '|',
+      'symbol',
+      'fullsize', 
+      
     ],
   }
 
