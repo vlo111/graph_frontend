@@ -336,6 +336,10 @@ class Chart {
 
   static renderFolders() {
     const folderWrapper = d3.select('#graph .folders');
+    const renderPath = d3.line()
+      .x((d) => d[0])
+      .y((d) => d[1])
+      .curve(d3.curveBasis);
 
     folderWrapper.selectAll('.folder > *').remove();
 
@@ -343,10 +347,32 @@ class Chart {
       .data(this.data.labels.filter((l) => l.type === 'folder'))
       .join('g')
       .attr('data-id', (d) => d.id)
-      .attr('transform', (d) => `translate(${d.d[0][0] + 75}, ${d.d[0][1] + 75})`);
+      .attr('transform', (d) => `translate(${d.d[0][0] + 75}, ${d.d[0][1] + 75})`)
+      .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
+      .on('click', (ev, d) => {
+        const x = d.d[0][0];
+        const y = d.d[0][1];
+        d.open = !d.open;
+        folderWrapper.select(`[data-id="${d.id}"]`).attr('class', `folder ${d.open ? 'folderOpen' : 'folderClose'}`);
+        if (d.open) {
+          folderWrapper.selectAll(`[data-id="${d.id}"]`)
+            .append('rect')
+            .attr('width', 500)
+            .attr('height', 500)
+            .attr('transform', 'translate(-250, -250)')
+        } else {
+          folderWrapper.selectAll(`[data-id="${d.id}"]`).remove();
+        }
 
-    this.folders.append('use')
+      });
+
+    folderWrapper.selectAll('.folderClose')
+      .append('use')
       .attr('href', '#folderIcon');
+
+    folderWrapper.selectAll('.folderOpen')
+      .append('path')
+      .attr('d', (d) => renderPath(d.d))
 
     this.folders.append('text')
       .text((d) => d.name)

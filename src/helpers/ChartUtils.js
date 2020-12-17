@@ -541,6 +541,22 @@ class ChartUtils {
     const max = _.max(nodes.map((n) => +(n.name.match(/_(\d+)$/) || [0, 0])[1])) || 0;
     return `${node.name}_${max + 1}`;
   }
+
+  static getPointPosition(pos1, pos2) {
+    const posZero = [0, 0];
+    const pos = [pos1[0] - pos2[0], pos1[1] - pos2[1]];
+
+    if (pos[0] > 0 && pos[1] > 0) {
+
+    } else if (pos[0] > 0 && pos[1] < 0) {
+
+    } else if (pos[0] < 0 && pos[1] < 0) {
+
+    } else if (pos[0] < 0 && pos[1] > 0) {
+
+    }
+
+  }
 }
 
 export default ChartUtils;
