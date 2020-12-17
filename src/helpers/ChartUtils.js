@@ -543,19 +543,28 @@ class ChartUtils {
   }
 
   static getPointPosition(pos1, pos2) {
-    const posZero = [0, 0];
     const pos = [pos1[0] - pos2[0], pos1[1] - pos2[1]];
-
-    if (pos[0] > 0 && pos[1] > 0) {
-
-    } else if (pos[0] > 0 && pos[1] < 0) {
-
-    } else if (pos[0] < 0 && pos[1] < 0) {
-
-    } else if (pos[0] < 0 && pos[1] > 0) {
-
+    const x = pos[0];
+    const y = pos[1];
+    const absX = Math.abs(x);
+    const absY = Math.abs(y);
+    let position = '';
+    if (x === 0 && y === 0) {
+      position = 'center';
+    } else if (x > 0 && y > 0) {
+      position = absX > absY ? 'left' : 'top';
+    } else if (x > 0 && y < 0) {
+      position = absX >= absY ? 'left' : 'bottom';
+    } else if (x < 0 && y < 0) {
+      position = absX >= absY ? 'right' : 'bottom';
+    } else if (x < 0 && y > 0) {
+      position = absX >= absY ? 'right' : 'top';
     }
+    return position;
+  }
 
+  static isInSquare(areaPos, size, pos) {
+    return pos[0] >= areaPos[0] && pos[0] <= areaPos[0] + size && pos[1] >= areaPos[1] && pos[1] <= areaPos[1] + size;
   }
 }
 

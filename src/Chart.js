@@ -336,6 +336,7 @@ class Chart {
 
   static renderFolders() {
     const folderWrapper = d3.select('#graph .folders');
+    const squareSize = 500;
     const renderPath = d3.line()
       .x((d) => d[0])
       .y((d) => d[1])
@@ -355,13 +356,40 @@ class Chart {
         d.open = !d.open;
         folderWrapper.select(`[data-id="${d.id}"]`).attr('class', `folder ${d.open ? 'folderOpen' : 'folderClose'}`);
         if (d.open) {
+          const squareX = x - (squareSize / 2);
+          const squareY = y - (squareSize / 2);
+          this.node.each((n) => {
+            const inSquare = ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
+            if (inSquare) {
+              const position = ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
+              console.log(n, position);
+              const move = (squareSize / 2) + 50;
+              if (position === 'right') {
+                n.fx += move;
+              }
+              if (position === 'left') {
+                n.fx -= move;
+              }
+              if (position === 'top') {
+                n.fy -= move;
+              }
+              if (position === 'bottom') {
+                n.fy += move;
+              }
+              n.x = n.fx
+              n.y = n.fy
+            }
+          });
+          this.graphMovement();
+
           folderWrapper.selectAll(`[data-id="${d.id}"]`)
             .append('rect')
-            .attr('width', 500)
-            .attr('height', 500)
-            .attr('transform', 'translate(-250, -250)')
+            .attr('width', squareSize)
+            .attr('height', squareSize)
+            .attr('x', squareSize / -2)
+            .attr('y', squareSize / -2);
         } else {
-          folderWrapper.selectAll(`[data-id="${d.id}"]`).remove();
+          folderWrapper.selectAll(`[data-id="${d.id}"] rect`).remove();
         }
 
       });
@@ -370,9 +398,9 @@ class Chart {
       .append('use')
       .attr('href', '#folderIcon');
 
-    folderWrapper.selectAll('.folderOpen')
-      .append('path')
-      .attr('d', (d) => renderPath(d.d))
+    folderWrapper.selectAll('.folderClose')
+      .append('use')
+      .attr('href', '#folderIcon');
 
     this.folders.append('text')
       .text((d) => d.name)
