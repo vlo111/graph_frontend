@@ -119,6 +119,15 @@ export function addNodeCustomFieldKey(type, key, subtitle) {
   };
 }
 
+export const RENAME_NODE_CUSTOM_FIELD_KEY = 'RENAME_NODE_CUSTOM_FIELD_KEY';
+
+export function renameNodeCustomFieldKey(type, oldName, name) {
+  return {
+    type: RENAME_NODE_CUSTOM_FIELD_KEY,
+    payload: { type, oldName, name },
+  };
+}
+
 export const REMOVE_NODE_CUSTOM_FIELD_KEY = 'REMOVE_NODE_CUSTOM_FIELD_KEY';
 
 export function removeNodeCustomFieldKey(type, key) {
