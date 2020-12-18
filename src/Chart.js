@@ -349,6 +349,7 @@ class Chart {
       .data(this.data.labels.filter((l) => l.type === 'folder'))
       .join('g')
       .attr('data-id', (d) => d.id)
+      .attr('fill', (d) => d.color)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
       .on('dblclick', (ev, d) => {
@@ -364,43 +365,45 @@ class Chart {
         folderWrapper.select(`[data-id="${d.id}"]`).attr('class', `folder ${d.open ? 'folderOpen' : 'folderClose'}`);
         const squareX = x - (squareSize / 2);
         const squareY = y - (squareSize / 2);
-        if (d.open) {
+        this.detectLabels();
 
-          this.detectLabels();
+        if (d.open) {
           this.node.each((n) => {
             const inSquare = ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
-            console.log(ChartUtils.getNodeById(n.id).labels, d.id);
             if (inSquare) {
-
-            }
-            delete n.lx;
-            delete n.ly;
-            this.data.nodes = this.data.nodes.map((node) => {
-              if (node.id === n.id) {
-                delete node.lx;
-                delete node.ly;
+              if (n.labels.includes(d.id)) {
+                delete n.lx;
+                delete n.ly;
+                this.data.nodes = this.data.nodes.map((node) => {
+                  if (node.id === n.id) {
+                    delete node.lx;
+                    delete node.ly;
+                  }
+                  return node;
+                });
+              } else {
+                const position = ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
+                const move = (squareSize / 2) + 50;
+                if (position === 'right') {
+                  n.fx += move;
+                }
+                if (position === 'left') {
+                  n.fx -= move;
+                }
+                if (position === 'top') {
+                  n.fy -= move;
+                }
+                if (position === 'bottom') {
+                  n.fy += move;
+                }
+                n.x = n.fx;
+                n.y = n.fy;
               }
-              return node;
-            });
-            if (inSquare && !n.labels.includes(d.id)) {
-              // const position = ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
-              // const move = (squareSize / 2) + 50;
-              // if (position === 'right') {
-              //   n.fx += move;
-              // }
-              // if (position === 'left') {
-              //   n.fx -= move;
-              // }
-              // if (position === 'top') {
-              //   n.fy -= move;
-              // }
-              // if (position === 'bottom') {
-              //   n.fy += move;
-              // }
-              // n.x = n.fx;
-              // n.y = n.fy;
             }
           });
+
+          this.node
+            .attr('class', ChartUtils.setClass(() => ({ disappear: false })));
 
           folderWrapper.selectAll(`[data-id="${d.id}"]`)
             .append('rect')
@@ -410,9 +413,9 @@ class Chart {
             .attr('y', squareSize / -2);
         } else {
           folderWrapper.selectAll(`[data-id="${d.id}"] rect`).remove();
-          this.node.each((n) => {
-            const inSquare = ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
-            if (inSquare) {
+          this.node
+            .filter((n) => ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]))
+            .each((n) => {
               n.lx = x + 30;
               n.ly = y + 30;
               this.data.nodes = this.data.nodes.map((node) => {
@@ -422,9 +425,8 @@ class Chart {
                 }
                 return node;
               });
-            }
-
-          });
+            })
+            .attr('class', ChartUtils.setClass(() => ({ disappear: true })));
         }
         this._dataNodes = undefined;
         this.graphMovement();
@@ -435,7 +437,7 @@ class Chart {
       .append('use')
       .attr('href', '#folderIcon');
 
-    folderWrapper.selectAll('.folderClose')
+    folderWrapper.selectAll('.folderOpen')
       .append('use')
       .attr('href', '#folderIcon');
 
@@ -699,7 +701,7 @@ class Chart {
       this.node = this.nodesWrapper.selectAll('.node')
         .data(filteredNodes)
         .join('g')
-        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.hidden === -1 ? 'disappear' : ''} ${d.deleted ? 'deleted' : ''}`)
+        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.hidden === -1 || d.lx ? 'disappear' : ''} ${d.deleted ? 'deleted' : ''}`)
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
         .on('mouseenter', (...p) => this.event.emit('node.mouseenter', ...p))
@@ -1516,6 +1518,8 @@ class Chart {
         index: d.index,
         fx: d.fx || d.x || 0,
         fy: d.fy || d.y || 0,
+        lx: d.lx,
+        ly: d.ly,
         name: d.name || '',
         type: d.type || '',
         status: d.status || 'approved',
