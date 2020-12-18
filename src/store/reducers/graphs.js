@@ -13,7 +13,7 @@ import {
   GET_SINGLE_EMBED_GRAPH,
   SET_GRAPH_CUSTOM_FIELDS,
   GET_SINGLE_GRAPH_PREVIEW,
-  REMOVE_NODE_FROM_CUSTOM_FIELD,
+  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -107,6 +107,15 @@ export default function reducer(state = initialState, action) {
     case GET_SINGLE_GRAPH_PREVIEW.SUCCESS: {
       const { graph: singleGraph } = action.payload.data;
       const { nodes, links, labels } = singleGraph;
+      if (_.isEmpty(nodes)) {
+        nodes.push({
+          id: '0',
+          name: '',
+          fx: 0,
+          fy: 0,
+          hidden: -1,
+        })
+      }
       Chart.render({
         nodes, links: ChartUtils.cleanLinks(links, nodes), labels,
       });
@@ -115,6 +124,18 @@ export default function reducer(state = initialState, action) {
         ...state,
         singleGraph,
       };
+    }
+    case GET_SINGLE_GRAPH_PREVIEW.FAIL: {
+      const nodes = [{
+        id: '0',
+        name: '',
+        fx: 0,
+        fy: 0,
+        hidden: -1,
+      }]
+      Chart.render({
+        nodes,
+      });
     }
     case CLEAR_SINGLE_GRAPH: {
       return {
@@ -156,6 +177,15 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         singleGraph,
+      };
+    }
+    case RENAME_NODE_CUSTOM_FIELD_KEY: {
+      const singleGraph = { ...state.singleGraph };
+      const { type, name, oldName } = action.payload;
+      singleGraph.customFields = CustomFields.customFieldRename(singleGraph.customFields, type, oldName, name);
+      return {
+        ...state,
+        singleGraph: _.cloneDeep(singleGraph),
       };
     }
     case REMOVE_NODE_CUSTOM_FIELD_KEY: {

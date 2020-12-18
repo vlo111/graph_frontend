@@ -1014,6 +1014,7 @@ p {
 
     &.disappear {
       opacity: 0 !important;
+      display: none;
     }
 
     &.deleted {
@@ -2187,7 +2188,7 @@ p {
     }
 
     .checked {
-      background-color: #fafafa !important;      
+      background-color: #fafafa !important;
     }
 
     &.ghGridTableLinks {

@@ -38,8 +38,8 @@ class AddLabelModal extends Component {
     const size = 150;
     const labels = Chart.getLabels();
     const labelData = {
-      id: ChartUtils.uniqueId(labels),
-      color: 'red',
+      id: `f_${ChartUtils.uniqueId(labels)}`,
+      color: ChartUtils.labelColors(),
       d: [[x, y], [x + size, y], [x + size, y], [x + size, y], [x + size, y + size], [x + size, y + size], [x + size, y + size], [x, y + size]],
       name: '',
       type: 'folder',
@@ -58,10 +58,9 @@ class AddLabelModal extends Component {
   addLabel = async (ev) => {
     ev.preventDefault();
     const { labelData } = this.state;
-    let labels = Chart.getLabels();
+    const labels = Chart.getLabels();
     const errors = {};
     [errors.name, labelData.name] = Validate.labelName(labelData.name);
-    labelData.id = ChartUtils.uniqueId(labels);
     if (!Validate.hasError(errors)) {
       const i = labels.findIndex((l) => l.id === labelData.id);
       if (i > -1) {

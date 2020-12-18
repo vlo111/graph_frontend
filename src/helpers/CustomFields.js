@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import path from "path";
 
 class CustomFields {
   static LIMIT = 10;
@@ -81,6 +80,18 @@ class CustomFields {
       if (_.get(customFields, [type, key, oldName])) {
         customFields[type][key][name] = d;
         _.remove(customFields, [type, key, oldName]);
+      }
+    });
+    return customFields;
+  }
+
+  static customFieldRename(customFields = {}, type, oldName, name) {
+    const customFieldType = _.get(customFields, type, {});
+    _.forEach(customFieldType, (d, key) => {
+      if (key === oldName) {
+        customFields[type][name] = { ...d };
+        customFields[type][key] = undefined
+        delete customFields[type][key];
       }
     });
     return customFields;
