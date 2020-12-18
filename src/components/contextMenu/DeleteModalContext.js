@@ -34,12 +34,10 @@ class AddLabelModal extends Component {
 
   render() {
     const { activeButton, data } = this.props;
-    console.log('zazaaaaaaaa');
     console.log(data.type);
     if (activeButton !== 'deleteModal') {
       return null;
-    }
-    console.log(data);
+    } 
     return (
       <Modal
         className="ghModal deleteModal"

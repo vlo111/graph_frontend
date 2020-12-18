@@ -2,6 +2,7 @@ export const DEFAULT_FILTERS = {
   hideIsolated: '',
   nodeTypes: ['__ALL__'],
   nodeStatus: ['__ALL__'],
+  labelStatus: ['__ALL__'],
   linkTypes: ['__ALL__'],
   nodeKeywords: ['__ALL__'],
   nodeCustomFields: ['__ALL__'],

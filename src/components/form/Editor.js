@@ -24,6 +24,8 @@ class Editor extends Component {
     label: '',
     placeholder: '',
     error: '',
+    height: 400,
+    toolbarButtonSize: "middle",
     buttons: [
       'bold', 'italic', 'underline', 'fontsize', 'font', '|', 'file',  'link', '|',
      
@@ -55,6 +57,8 @@ class Editor extends Component {
     if (this.editor) {
       this.editor.destruct();
     }
+    options.iframe = true;
+
     options.buttons = buttons;
 
     options.buttonsMD = options.buttonsMD || buttons;
@@ -112,7 +116,7 @@ class Editor extends Component {
 
   insertFile = (popUpData, tags) => {
     const file = popUpData.file[0];
-    debugger;
+
     if (file) {
       const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg'].filter((p) => file.name.includes(p)));
 
