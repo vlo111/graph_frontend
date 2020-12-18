@@ -107,6 +107,15 @@ export default function reducer(state = initialState, action) {
     case GET_SINGLE_GRAPH_PREVIEW.SUCCESS: {
       const { graph: singleGraph } = action.payload.data;
       const { nodes, links, labels } = singleGraph;
+      if (_.isEmpty(nodes)) {
+        nodes.push({
+          id: '0',
+          name: '',
+          fx: 0,
+          fy: 0,
+          hidden: -1,
+        })
+      }
       Chart.render({
         nodes, links: ChartUtils.cleanLinks(links, nodes), labels,
       });
@@ -115,6 +124,18 @@ export default function reducer(state = initialState, action) {
         ...state,
         singleGraph,
       };
+    }
+    case GET_SINGLE_GRAPH_PREVIEW.FAIL: {
+      const nodes = [{
+        id: '0',
+        name: '',
+        fx: 0,
+        fy: 0,
+        hidden: -1,
+      }]
+      Chart.render({
+        nodes,
+      });
     }
     case CLEAR_SINGLE_GRAPH: {
       return {

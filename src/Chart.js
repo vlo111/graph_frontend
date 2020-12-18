@@ -333,7 +333,6 @@ class Chart {
     this._dataNodes = this.data.nodes;
   }
 
-
   static renderFolders() {
     const folderWrapper = d3.select('#graph .folders');
     const squareSize = 500;
@@ -409,6 +408,7 @@ class Chart {
             .append('rect')
             .attr('width', squareSize)
             .attr('height', squareSize)
+            .attr('rx', 15)
             .attr('x', squareSize / -2)
             .attr('y', squareSize / -2);
         } else {
