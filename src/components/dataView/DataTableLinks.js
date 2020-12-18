@@ -14,6 +14,7 @@ import { DASH_TYPES } from '../../data/link';
 import SvgLine from '../SvgLine';
 import Validate from '../../helpers/Validate';
 
+let CHECKED = false;
 class DataTableLinks extends Component {
   static propTypes = {
     children: PropTypes.any.isRequired,
@@ -61,30 +62,54 @@ class DataTableLinks extends Component {
     Chart.render({ links });
   }
 
-  sheetRenderer = (props) => {
-    // const { grid } = this.state;
-    // const { selectedLinks } = this.props;
-    // const allChecked = grid.length === selectedLinks.length;
+  getValues = (arr) => {
+    const values = [];
+    arr.forEach((grid) => {
+      values.push(grid[0].value);
+    });
+
+    return values;
+  }
+
+  sheetRenderer = (props, className) => {
+    const { grid } = this.state;
+    const { selectedLinks } = this.props;
+    const position = className || '';
+    const gridValues = this.getValues(grid);
+    let isAllChecked = true;
+    if (grid.length) {
+      gridValues.forEach((l) => {
+        if (!Number.isFinite(selectedLinks.find((p) => p === l))) {
+          isAllChecked = false;
+        }
+      });
+    }
+
     return (
       <table className={props.className}>
         <thead>
           <tr>
-            <th className="cell index" width="60">
-              <label>
-                {/*<input*/}
-                {/*  type="checkbox"*/}
-                {/*  checked={grid.length === selectedLinks.length}*/}
-                {/*  onChange={() => this.props.setGridIndexes('links', allChecked ? [] : grid.map((g) => g[0].value))}*/}
-                {/*/>*/}
-                {/*All*/}
-              </label>
+            <th className={`${position} cell index`} width="60">
+
+              <div className="allTableCellChekked">
+                <input
+                  onChange={() => this.props.setGridIndexes('links', isAllChecked ? [] : grid.map((g) => g[0].value))}
+                  checked={isAllChecked}
+                  className="graphsCheckbox"
+                  type="checkbox"
+                  name="layout"
+                  id="all"
+                  value="All"
+                />
+                <label className="pull-left" htmlFor="all" />
+              </div>
             </th>
-            <th className="cell type" width="150"><span>Type</span></th>
-            <th className="cell source" width="150"><span>Source</span></th>
-            <th className="cell target" width="150"><span>Target</span></th>
-            <th className="cell value" width="50"><span>Value</span></th>
-            <th className="cell linkType" width="100"><span>Link Type</span></th>
-            <th className="cell direction" width="90"><span>Direction</span></th>
+            <th className={`${position} cell type`} width="150"><span>Type</span></th>
+            <th className={`${position} cell source`} width="150"><span>Source</span></th>
+            <th className={`${position} cell target`} width="150"><span>Target</span></th>
+            <th className={`${position} cell value`} width="80"><span>Value</span></th>
+            <th className={`${position} cell linkType`} width="100"><span>Link Type</span></th>
+            <th className={`${position} cell direction`} width="90"><span>Direction</span></th>
           </tr>
         </thead>
         <tbody>
@@ -94,33 +119,42 @@ class DataTableLinks extends Component {
     );
   }
 
-  cellRenderer = (props) => {
+  cellRenderer = (props, className) => {
     const { selectedLinks } = this.props;
+    
+    const position = className || '';
     const {
       cell, children, ...p
     } = props;
     if (cell.key === 'index') {
+      if (selectedLinks.includes(cell.value)) {
+        CHECKED = true;
+      } else CHECKED = false;
+     
       return (
-        <td className="cell index">
+        <td className={`${position} cell index ${CHECKED && 'checked'}`}>
           <label>
             <input
-              type="checkbox"
-              checked={selectedLinks.includes(cell.value)}
               onChange={() => this.props.toggleGrid('links', cell.value)}
+              checked={selectedLinks.includes(cell.value)}
+              className="graphsCheckbox"
+              type="checkbox"
+              name="layout"
+              id={cell.value}
             />
-            {props.row + 1}
+            <label className="pull-left" htmlFor={cell.value} />
           </label>
         </td>
       );
-    }
-    return (
-      <td {...p} className={`cell ${cell.key || ''}`}>
+    } 
+    return ( 
+      <td {...p} className={`${position} cell ${cell.key || ''} ${CHECKED && 'checked'}`}>
         {children}
       </td>
     );
   }
 
-  renderDataEditor = (props) => {
+  renderDataEditor = (props) => { 
     const defaultProps = {
       autoFocus: true,
       value: props.value,
@@ -134,10 +168,10 @@ class DataTableLinks extends Component {
           {...defaultProps}
           options={nodes}
           menuIsOpen
-          value={nodes.find((d) => d.name === props.value)}
+          value={nodes.find((d) => d.id === props.value)}
           getOptionLabel={(d) => d.name}
           getOptionValue={(d) => d.name}
-          onChange={(v) => v && props.onChange(v.name)}
+          onChange={(v) => v && props.onChange(v.id)}
         />
       );
     }
@@ -203,16 +237,16 @@ class DataTableLinks extends Component {
 
   render() {
     const { grid } = this.state;
-    const { links } = this.props;
+    const { links, classNamePos } = this.props;
     this.initGridValues(links);
     return (
       <ReactDataSheet
         className="ghGridTable ghGridTableLinks"
         data={grid}
         valueRenderer={(cell) => cell.value}
-        cellRenderer={this.cellRenderer}
+        cellRenderer={(props) => this.cellRenderer(props, classNamePos)}
         onCellsChanged={this.handleDataChange}
-        sheetRenderer={this.sheetRenderer}
+        sheetRenderer={(props) => this.sheetRenderer(props, classNamePos)}
         dataEditor={this.renderDataEditor}
         valueViewer={this.renderValueViewer}
       />

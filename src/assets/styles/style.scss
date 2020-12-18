@@ -21,6 +21,8 @@ $color-button: #0062FF;
 
 $color-darkgreen: #f2f3f5;
 
+$color-hover-sheet: #e6e5f1;
+
 $font-family: 'Open Sans', sans-serif;
 $font-user-panel: normal normal normal 15px/21px Segoe UI;
 
@@ -1985,15 +1987,14 @@ p {
     overflow: hidden;
   }
 
-
   h4 {
+    margin-top: 5px;
     font-weight: normal;
 
     .circle {
       display: inline-block;
       width: 12px;
       height: 12px;
-      background-color: red;
       border-radius: 50%;
       margin-right: 5px;
     }
@@ -2002,16 +2003,16 @@ p {
       display: inline-block;
       width: 15px;
       height: 3px;
-      background-color: red;
       margin-right: 5px;
       margin-bottom: 5px;
     }
   }
 
   .contentWrapper {
+    margin-left: 30px;
     background-color: white;
     max-width: 100%;
-    height: calc(100% - 41px);
+    height: calc(100% - 34px);
     display: flex;
     flex-direction: column;
     font-size: 15px;
@@ -2024,20 +2025,17 @@ p {
 
   .header {
     display: flex;
-    padding: 0 5px;
+    padding: 25px 5px 30px;
 
     .buttons {
       margin-left: auto;
       margin-top: 0;
 
       .ghButton {
-        background-color: transparent;
-        color: $color-dark;
-        border-radius: 50%;
+        background: #F2F5F7 0% 0% no-repeat padding-box;
         width: 30px;
         height: 30px;
         padding: 0;
-        border: 2px solid $color-dark;
 
         .icon {
           margin: 0;
@@ -2051,10 +2049,12 @@ p {
   .ghFileInput {
     height: 32px;
 
+
     .ghInput {
       margin: 0;
 
       input {
+        height: 32px;
         position: static;
       }
     }
@@ -2085,7 +2085,7 @@ p {
 
     > textarea,
     > input {
-      height: 32px;
+      height: 59px;
       text-align: left;
       font-size: 15px;
       padding: 5px;
@@ -2128,34 +2128,49 @@ p {
   }
 
   .ghGridTableWrapper {
+    .tablePosition {
+      position: inherit !important;
+    }
     overflow-x: auto;
     height: calc(100% - 87px);
     border-bottom: 1px solid $color-gray;
   }
 
   .ghGridTable {
-    //width: 100%;
     width: calc(100% - 2px);
     min-width: 640px;
 
     thead {
+      .allTableCellChekked {
+        margin-left: 15px;
+      }
+      th {
+        height: 60px;
+        span, label {
+          padding-left: 25px !important;
+        }
+      }
       .cell {
+        border: 1px solid #DDD;
+        border-top-style: hidden;
+        background: white;
         text-align: left !important;
         font-weight: normal;
         color: $color-dark-blue;
-        position: sticky !important;
+        position: sticky;
         top: 0;
-        border: none;
-        z-index: 2;
         overflow: hidden;
+        z-index: 2;
 
         &.index,
         &.name {
           z-index: 3;
-
           > * {
             height: 32px !important;
           }
+        }
+        span {
+          font: normal normal 600 14px/19px Open Sans;
         }
 
         > * {
@@ -2163,11 +2178,16 @@ p {
           width: 100%;
           display: block;
           height: 32px;
-          border: 1px solid #dddddd;
-          border-bottom: 1px solid #dddddd !important;
           background-color: $color-white;
         }
+        &.location {
+          border-right-style: hidden;
+        }
       }
+    }
+
+    .checked {
+      background-color: #fafafa !important;      
     }
 
     &.ghGridTableLinks {
@@ -2181,18 +2201,29 @@ p {
       tr {
         background-color: white;
 
-        &:last-child {
-          border-bottom: 1px solid #dddddd;
-        }
-
         &:hover {
           td {
-            background-color: #fafafa !important;
+            background-color: $color-hover-sheet !important;
+          }
+        }
+        .location {
+            border-right-style: hidden;
+        }
+      }
+      .cell {
+        &.index,
+        &.name {
+          z-index: 2;
+        }
+        &.name {
+          span {
+            padding: 20px 20px 0 25px;
+            font-family: 'Open Sans';
+            font-weight: 600;
           }
         }
       }
     }
-
 
     .cell {
       position: relative;
@@ -2203,10 +2234,11 @@ p {
       .value-viewer {
         height: 32px;
         white-space: nowrap;
-        padding: 5px 5px;
+        padding: 5px 25px;
         overflow: hidden;
         text-overflow: ellipsis;
         vertical-align: middle;
+        font-weight: 600;
         //margin-top: -1px;
 
         a {
@@ -2219,12 +2251,13 @@ p {
       }
 
       &.index {
+        border-left-style: hidden;
         label {
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: flex-start;
-          padding: 0 5px;
+          padding: 10px 20px;
           margin: 0;
 
           input {
@@ -2237,24 +2270,15 @@ p {
       &.index {
         position: sticky;
         left: 0;
-        z-index: 2;
-        border: none;
         padding: 0;
         background-color: white;
+        z-index: 1;
 
         > * {
+          z-index: 0;
           width: 100%;
           display: block;
-          border: 1px solid #dddddd;
-          border-bottom: none;
-          height: 33px;
-        }
-      }
-
-
-      &.index {
-        > * {
-          border-right: none;
+          height: 60px;
         }
       }
 
@@ -2304,12 +2328,23 @@ p {
 
 
   .tabs {
-    min-height: 46px;
-    display: flex;
+    height: 140px;
+    display: block;
     align-items: center;
-    overflow-x: auto;
     scroll-snap-type: x mandatory;
     user-select: none;
+
+    .nodesMode span, .linksMode  span{
+        font: normal normal 600 15px/19px Open Sans;
+        color: #717EA0;
+    }
+    .linksMode {
+      margin-top: 20px;
+    }
+
+    .nodesMode {
+      margin-top: 5px;
+    }
 
     .empty {
       min-width: 1px;
@@ -2322,12 +2357,13 @@ p {
       border: 0;
       background-color: transparent;
       padding: 5px 5px 1px;
-      color: $color-dark;
+      color: #da9393;
       border-bottom: 1px solid transparent;
       border-radius: 0;
       scroll-snap-align: start;
       white-space: nowrap;
       box-shadow: none;
+      font-size: 13px;
 
       &:before,
       &:after {
@@ -5337,92 +5373,6 @@ body .gh__menu {
   font-family: chaparral-pro, serif;
 }
 
-#dataTable {
-  flex: 1;
-  width: 40%;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: white;
-  max-height: 100vh;
-  height: 100vh;
-  position: absolute;
-  z-index: 3;
-  left: 202px;
-  border-left: 1px solid $color-light-gray;
-  padding-left: 4px;
-
-
-  &.fullWidth {
-    position: absolute;
-    width: calc(100% - 202px);
-    height: 100%;
-    z-index: 10;
-    overflow: hidden;
-  }
-
-
-  h4 {
-    font-weight: normal;
-
-    .circle {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      background-color: red;
-      border-radius: 50%;
-      margin-right: 5px;
-    }
-
-    .line {
-      display: inline-block;
-      width: 15px;
-      height: 3px;
-      background-color: red;
-      margin-right: 5px;
-      margin-bottom: 5px;
-    }
-  }
-
-  .contentWrapper {
-    background-color: white;
-    max-width: 100%;
-    height: calc(100% - 41px);
-    display: flex;
-    flex-direction: column;
-    font-size: 15px;
-    position: relative;
-
-    p {
-      font-size: 15px;
-    }
-  }
-
-  .header {
-    display: flex;
-    padding: 25px 5px 0;
-
-    .buttons {
-      margin-left: auto;
-      margin-top: 0;
-
-      .ghButton {
-        background-color: transparent;
-        color: $color-dark;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        padding: 0;
-        border: 2px solid $color-dark;
-
-        .icon {
-          margin: 0;
-          display: flex;
-          margin: auto;
-        }
-      }
-    }
-  }
-}
-
 .importST2Node {
   text-align: center;
 }
@@ -5458,6 +5408,8 @@ body .gh__menu {
 }
 
 .exportData {
+  margin-right: 30px;
+  margin-top: -10px;
   border: none;
   display: flex;
   z-index: 2;
@@ -5468,8 +5420,8 @@ body .gh__menu {
   .showExportButton {
     position: relative;
     z-index: 9;
-    padding: 10px;
-    border-radius: 9px;
+    padding: 7px 10px 7px 10px;
+    border-radius: 15px;
     margin-bottom: -15px;
     background: #C6E6FF 0% 0% no-repeat padding-box;
   }
@@ -5479,7 +5431,7 @@ body .gh__menu {
     z-index: 4;
     position: absolute;
     margin-left: 5px;
-    width: 70%;
+    width: 50%;
     padding: 50px 40px 21px;
     border-radius: 12px;
     background: #C6E6FF 0% 0% no-repeat padding-box;
@@ -5660,20 +5612,20 @@ body .gh__menu {
   }
 }
 
-.wikiCheckbox {
+.graphsCheckbox {
   position: absolute;
   display: none;
 }
 
-.wikiCheckbox[disabled] {
+.graphsCheckbox[disabled] {
   cursor: not-allowed;
 }
 
-.wikiCheckbox[disabled] {
+.graphsCheckbox[disabled] {
   cursor: not-allowed;
 }
 
-.wikiCheckbox + label {
+.graphsCheckbox + label {
   margin-left: -35px;
   margin-top: 5px;
   position: relative;
@@ -5683,20 +5635,20 @@ body .gh__menu {
   vertical-align: middle;
 }
 
-.wikiCheckbox + label:hover:before {
+.graphsCheckbox + label:hover:before {
   animation-duration: 0.4s;
   animation-fill-mode: both;
   animation-name: hover-color;
 }
 
 
-.wikiCheckbox + label:hover:before {
+.graphsCheckbox + label:hover:before {
   animation-duration: 0.4s;
   animation-fill-mode: both;
   animation-name: hover-color;
 }
 
-.wikiCheckbox + label:before {
+.graphsCheckbox + label:before {
   position: absolute;
   top: 0;
   left: 0;
@@ -5707,83 +5659,83 @@ body .gh__menu {
   border: 1px solid #c0c0c0;
 }
 
-.wikiCheckbox + label:after {
+.graphsCheckbox + label:after {
   position: absolute;
   display: none;
   content: '';
 }
 
-.wikiCheckbox[disabled] + label {
+.graphsCheckbox[disabled] + label {
   cursor: not-allowed;
   color: #e4e4e4;
 }
 
-.wikiCheckbox[disabled] + label:hover,
-.wikiCheckbox[disabled] + label:before,
-.wikiCheckbox[disabled] + label:after {
+.graphsCheckbox[disabled] + label:hover,
+.graphsCheckbox[disabled] + label:before,
+.graphsCheckbox[disabled] + label:after {
   cursor: not-allowed;
 }
 
-.wikiCheckbox[disabled] + label:hover:before {
+.graphsCheckbox[disabled] + label:hover:before {
   border: 1px solid #e4e4e4;
   animation-name: none;
 }
 
-.wikiCheckbox[disabled] + label:before {
+.graphsCheckbox[disabled] + label:before {
   border-color: #e4e4e4;
 }
 
-.wikiCheckbox:checked + label:before {
+.graphsCheckbox:checked + label:before {
   animation-name: none;
 }
 
-.wikiCheckbox:checked + label:after {
+.graphsCheckbox:checked + label:after {
   display: block;
 }
 
-.wikiCheckbox + label:before {
+.graphsCheckbox + label:before {
   border-radius: 3px;
 }
 
-.wikiCheckbox + label:after {
+.graphsCheckbox + label:after {
   position: absolute;
   display: none;
   content: '';
 }
 
-.wikiCheckbox[disabled] + label {
+.graphsCheckbox[disabled] + label {
   cursor: not-allowed;
   color: #e4e4e4;
 }
 
-.wikiCheckbox[disabled] + label:hover,
-.wikiCheckbox[disabled] + label:before,
-.wikiCheckbox[disabled] + label:after {
+.graphsCheckbox[disabled] + label:hover,
+.graphsCheckbox[disabled] + label:before,
+.graphsCheckbox[disabled] + label:after {
   cursor: not-allowed;
 }
 
-.wikiCheckbox[disabled] + label:hover:before {
+.graphsCheckbox[disabled] + label:hover:before {
   border: 1px solid #e4e4e4;
   animation-name: none;
 }
 
-.wikiCheckbox[disabled] + label:before {
+.graphsCheckbox[disabled] + label:before {
   border-color: #e4e4e4;
 }
 
-.wikiCheckbox:checked + label:before {
+.graphsCheckbox:checked + label:before {
   animation-name: none;
 }
 
-.wikiCheckbox:checked + label:after {
+.graphsCheckbox:checked + label:after {
   display: block;
 }
 
-.wikiCheckbox + label:before {
+.graphsCheckbox + label:before {
   border-radius: 3px;
 }
 
-.wikiCheckbox + label:after {
+.graphsCheckbox + label:after {
   top: 2px;
   left: 7px;
   box-sizing: border-box;
@@ -5797,23 +5749,23 @@ body .gh__menu {
   border-left: 0;
 }
 
-.wikiCheckbox:checked + label:before {
+.graphsCheckbox:checked + label:before {
   border: #3e97eb;
   background: #3e97eb;
 }
 
-.wikiCheckbox:checked[disabled] + label:before {
+.graphsCheckbox:checked[disabled] + label:before {
   border: #c9e2f9;
   background: #c9e2f9;
 }
 
 
-.wikiCheckbox:checked + label:before {
+.graphsCheckbox:checked + label:before {
   border: #3e97eb;
   background: #3e97eb;
 }
 
-.wikiCheckbox:checked[disabled] + label:before {
+.graphsCheckbox:checked[disabled] + label:before {
   border: #c9e2f9;
   background: #c9e2f9;
 }
@@ -5872,7 +5824,6 @@ body .gh__menu {
     }
   }
 }
-
 .deleteModal {
   p {
     font: normal normal 600 16px/22px Open Sans;
@@ -5946,12 +5897,12 @@ body .gh__menu {
 }
 
 .insertMediaModal {
-  img {
+  img  {
     width: 340px;
   }
 
   .buttons, h2, .containerModal, .ghFileInput, .ghFormField {
-    width: auto !important;
+      width: auto !important;
   }
 }
 

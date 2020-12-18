@@ -13,11 +13,12 @@ import FileInput from '../form/FileInput';
 import DataEditorDescription from './DataEditorDescription';
 import Convert from '../../helpers/Convert';
 import Select from '../form/Select';
-import { NODE_TYPES } from '../../data/node';
+import { NODE_STATUS, NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 
+let CHECKED = false;
 class DataTableNodes extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -66,42 +67,69 @@ class DataTableNodes extends Component {
     this.props.toggleGrid('nodes', index);
   }
 
-  renderSheet = (props) =>
-    // const { selectedNodes } = this.props;
-    // const { grid } = this.state;
-    // const allChecked = grid.length === selectedNodes.length;
-    (
+  getValues = (arr) => {
+    const values = [];
+    arr.forEach((grid) => {
+      values.push(grid[0].value);
+    });
+
+    return values;
+  }
+
+  renderSheet = (props, className) => {
+    const { selectedNodes } = this.props;
+    const { grid } = this.state;
+    const allChecked = grid.length === selectedNodes.length;
+    const position = className || '';
+    const gridValues = this.getValues(grid);
+    let isAllChecked = true;
+    if (grid.length) {
+      gridValues.forEach((l) => {
+        if (!Number.isFinite(selectedNodes.find((p) => p === l))) {
+          isAllChecked = false;
+        }
+      });
+    }
+
+    return (
       <table className={props.className}>
         <thead>
           <tr>
-            <th className="cell index" width="60">
-              <label>
-                {/* <input */}
-                {/*  type="checkbox" */}
-                {/*  checked={allChecked} */}
-                {/*  onChange={() => this.props.setGridIndexes('nodes', allChecked ? [] : grid.map((g) => g[0].value))} */}
-                {/* /> */}
-                {/* All */}
-              </label>
+            <th className={`${position} cell index`} width="60">
+              <div className="allTableCellChekked">
+                <input
+                  onChange={() => this.props.setGridIndexes('nodes', isAllChecked ? [] : grid.map((g) => g[0].value))}
+                  checked={isAllChecked}
+                  className="graphsCheckbox"
+                  type="checkbox"
+                  name="layout"
+                  id="all"
+                  value="All"
+                />
+                <label className="pull-left" htmlFor="all" />
+              </div>
             </th>
-            <th className="cell name" width="180"><span>Node name</span></th>
-            <th className="cell type" width="150"><span>Node type</span></th>
-            <th className="cell description" width="272"><span>Description</span></th>
-            <th className="cell nodeType" width="130"><span>Icon shape</span></th>
-            <th className="cell icon" width="272"><span>Icon</span></th>
-            <th className="cell link" width="272"><span>Link</span></th>
-            <th className="cell keywords" width="272"><span>Keywords</span></th>
-            <th className="cell location" width="272"><span>Location</span></th>
+            <th className={`${position} cell name`} width="180"><span>Node name</span></th>
+            <th className={`${position} cell type`} width="150"><span>Node type</span></th>
+            <th className={`${position} cell description`} width="272"><span>Description</span></th>
+            <th className={`${position} cell status`} width="272"><span>Status</span></th>
+            <th className={`${position} cell nodeType`} width="130"><span>Icon shape</span></th>
+            <th className={`${position} cell icon`} width="272"><span>Icon</span></th>
+            <th className={`${position} cell link`} width="272"><span>Link</span></th>
+            <th className={`${position} cell keywords`} width="272"><span>Keywords</span></th>
+            <th className={`${position} cell location`} width="272"><span>Location</span></th>
           </tr>
         </thead>
         <tbody>
           {props.children}
         </tbody>
       </table>
-    )
+    );
+  }
 
-  renderCell = (props) => {
+  renderCell = (props, className) => {
     const { selectedNodes } = this.props;
+    const position = className || '';
     const {
       cell, children,
       onContextMenu, onDoubleClick, onKeyUp, onMouseOver,
@@ -111,16 +139,26 @@ class DataTableNodes extends Component {
       this.onMouseDown = onMouseDown;
       onMouseDown = undefined;
     }
+
     if (cell.key === 'index') {
+      if (selectedNodes.includes(cell.value)) {
+        CHECKED = true;
+      } else CHECKED = false;
       return (
-        <td className="cell index">
+        <td className={`${position} cell index ${CHECKED && 'checked'}`}>
           <label>
-            <input
-              type="checkbox"
-              checked={selectedNodes.includes(cell.value)}
-              onChange={() => this.toggleGrid(cell.value)}
-            />
-            {props.row + 1}
+            <div>
+              <input
+                onChange={() => this.toggleGrid(cell.value)}
+                checked={selectedNodes.includes(cell.value)}
+                className="graphsCheckbox"
+                type="checkbox"
+                name="layout"
+                id={cell.value}
+              />
+              <label className="pull-left" htmlFor={cell.value} />
+            </div>
+            {/* {props.row + 1} */}
           </label>
         </td>
       );
@@ -132,7 +170,7 @@ class DataTableNodes extends Component {
         onKeyUp={onKeyUp}
         onMouseDown={onMouseDown}
         onMouseOver={onMouseOver}
-        className={`cell ${cell.key || ''}`}
+        className={`${position} cell ${cell.key || ''} ${CHECKED && 'checked'}`}
       >
         {children}
       </td>
@@ -192,6 +230,16 @@ class DataTableNodes extends Component {
     if (props.cell.key === 'description') {
       return (
         <DataEditorDescription {...defaultProps} onClose={this.onMouseDown} />
+      );
+    }
+    if (props.cell.key === 'status') {
+      return (
+        <Select
+          menuIsOpen
+          options={NODE_STATUS}
+          value={NODE_STATUS.filter((t) => t.value === props.value)}
+          onChange={(v) => props.onChange(v?.value || '')}
+        />
       );
     }
     if (props.cell.key === 'location') {
@@ -256,7 +304,7 @@ class DataTableNodes extends Component {
 
   render() {
     const { grid } = this.state;
-    const { nodes } = this.props;
+    const { nodes, classNamePos } = this.props;
     this.initGridValues(nodes);
     return (
       <ReactDataSheet
@@ -264,9 +312,9 @@ class DataTableNodes extends Component {
         data={grid || []}
         valueRenderer={(cell) => String(cell.value || '')}
         valueViewer={this.renderView}
-        cellRenderer={this.renderCell}
+        cellRenderer={(props) => this.renderCell(props, classNamePos)}
         onCellsChanged={this.handleDataChange}
-        sheetRenderer={this.renderSheet}
+        sheetRenderer={(props) => this.renderSheet(props, classNamePos)}
         dataEditor={this.renderDataEditor}
       />
     );
