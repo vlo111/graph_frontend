@@ -15,6 +15,8 @@ import NodeConnectionFilter from './NodeConnectionFilter';
 import { ReactComponent as CloseIcon } from '../../assets/images/icons/close.svg';
 import KeywordsFilter from './KeywordsFilter';
 import LabelsFilter from './LabelsFilter';
+import LabelStatusFilter from './LabelStatusFilter';
+
 import Utils from '../../helpers/Utils';
 import _ from 'lodash';
 
@@ -93,6 +95,8 @@ class FiltersModal extends Component {
         <LinkTypesFilter links={links} />
 
         <LabelsFilter labels={labels} nodes={nodes} />
+
+        <LabelStatusFilter labels={labels} nodes={nodes} />
 
         <LinkValueFilter links={links} />
 

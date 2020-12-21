@@ -20,11 +20,11 @@ class labelContextMenu extends Component {
     this.props.onClick(ev, 'label.copy', { data, graphId });
   }
 
-  handleLockClick = () => {
+  handleLockClick = (ev) => {
     const { params: { id } } = this.props;
     const labels = Chart.getLabels().map((l) => {
       if (l.id === id) {
-        l.status = l.status === 'lock' ? undefined : 'lock';
+        l.status = l.status === 'lock' ? 'unlock' : 'lock';
       }
       return l;
     });

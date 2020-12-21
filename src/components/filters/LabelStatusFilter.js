@@ -1,0 +1,109 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import memoizeOne from 'memoize-one';
+import _ from 'lodash';
+import ChartUtils from '../../helpers/ChartUtils';
+import { setFilter } from '../../store/actions/app';
+import Checkbox from '../form/Checkbox';
+
+class LabelStatusFilter extends Component {
+  static propTypes = {
+    filters: PropTypes.object.isRequired,
+    setFilter: PropTypes.func.isRequired,
+    labels: PropTypes.array.isRequired,
+    nodes: PropTypes.array.isRequired,
+  }
+
+
+  formatLabels = memoizeOne((labels) => {
+    
+    const labelsFormatted = _.chain(labels)
+      .groupBy('status')
+      .map((d, key) => ({
+        length: d.length,
+        status: key 
+      }))
+      .orderBy('length', 'desc')
+      .value();             
+    if (labelsFormatted.length) {
+      this.props.setFilter('labelStatus', labelsFormatted.map((d) => d.status), true);
+    } 
+    return labelsFormatted;
+  }, (a, b) => _.isEqual(a[0].map((d) => d.status), b[0].map((d) => d.status))); 
+
+  handleChange = (value) => {
+    const { filters } = this.props;
+    const i = filters.labelStatus.indexOf(value);
+   
+    if (i > -1) {
+      filters.labelStatus.splice(i, 1);
+    } else {
+      filters.labelStatus.push(value);
+    }  
+    this.props.setFilter('labelStatus', filters.labelStatus);
+  }
+
+  toggleAll = (fullData, allChecked) => { 
+    
+    if (allChecked) {
+      this.props.setFilter('labelStatus', []); 
+    } else {
+      this.props.setFilter('labelStatus', fullData.map((d) => d.status)); 
+    } 
+    
+  }
+
+  render() {
+    const { labels, filters } = this.props;
+    const labelStatusFull = this.formatLabels(labels); 
+    const allChecked = labelStatusFull.length === filters.labelStatus.length;
+    
+    return (
+      <div className="nodesStatusFilter graphFilter">
+        <h4 className="title">Label status</h4>
+        <ul className="list">
+          <li className="item">
+            <Checkbox
+              label={allChecked ? 'Uncheck All' : 'Check All'}
+              checked={allChecked}
+              onChange={() => this.toggleAll(labelStatusFull, allChecked)}
+            >
+              <span className="badge">
+                {_.sumBy(labelStatusFull, 'length')}
+              </span>
+            </Checkbox>
+          </li>
+          {labelStatusFull.map((item) => (  
+            <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
+              <Checkbox
+                label={item.status}
+                checked={filters.labelStatus.includes(item.status)}
+                onChange={() => this.handleChange(item.status)}
+              >
+                <span className="badge">
+                  {item.length}
+                </span>
+              </Checkbox>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  filters: state.app.filters,
+});
+
+const mapDispatchToProps = {
+  setFilter,
+};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LabelStatusFilter);
+
+export default Container;
