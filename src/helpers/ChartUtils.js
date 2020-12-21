@@ -398,14 +398,14 @@ class ChartUtils {
     let inside = false;
 
     if (label.type === 'folder') {
-      if (node.lx || node.cx && (node.lx === label.d[0][0] + 30 && node.ly === label.d[0][1] + 30)) {
+      if ((node.lx || node.ly) && (node.lx === label.d[0][0] + 30 && node.ly === label.d[0][1] + 30)) {
         return true;
       }
-      if (d.open) {
+      if (label.open) {
         const squareSize = 500;
-        const squareX = label.d[0][0] - (squareSize / 2);
-        const squareY = label.d[0][1] - (squareSize / 2);
-        return this.isInSquare([squareX, squareY], squareSize * 2, [x, y]);
+        const squareX = d[0][0] - (squareSize / 2);
+        const squareY = d[0][1] - (squareSize / 2);
+        return this.isInSquare([squareX, squareY], squareSize, [node.lx || x, node.ly || y]);
       }
     }
     for (let i = 0, j = d.length - 1; i < d.length; j = i++) {
