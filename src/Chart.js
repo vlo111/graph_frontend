@@ -410,6 +410,8 @@ class Chart {
       .on('dblclick', (ev, d) => {
         const x = d.d[0][0];
         const y = d.d[0][1];
+        this.detectLabels()
+
         d.open = !d.open;
         this.data.labels = this.data.labels.map((l) => {
           if (l.id === d.id) {
@@ -426,19 +428,12 @@ class Chart {
           this.node.each((n) => {
             const inFolder = n.labels.includes(d.id);
             if (inFolder) {
-              d.lx = undefined;
-              d.ly = undefined;
-              this.data.nodes = this.data.nodes.map((node) => {
-                if (node.id === n.id) {
-                  node.lx = undefined;
-                  node.ly = undefined;
-                }
-                return node;
-              });
+              n.lx = undefined;
+              n.ly = undefined;
             }
             const inSquare = ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
             if (inSquare && !inFolder) {
-              const labelPosition = n.labels.find(l => moveLabels[l]);
+              const labelPosition = n.labels.find((l) => moveLabels[l]);
               const position = labelPosition || ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
               if (!labelPosition) {
                 n.labels.forEach((l) => {
@@ -462,10 +457,22 @@ class Chart {
               n.x = n.fx;
               n.y = n.fy;
             }
+            this.data.nodes = this.data.nodes.map((node) => {
+              if (node.id === n.id) {
+                node.lx = n.lx;
+                node.ly = n.ly;
+
+                node.x = n.x;
+                node.y = n.y;
+
+                node.fx = n.fx;
+                node.fx = n.fy;
+              }
+              return node;
+            });
           });
 
-          this.node
-            .attr('class', ChartUtils.setClass(() => ({ disappear: false })));
+          this.node.attr('class', ChartUtils.setClass(() => ({ disappear: false })));
 
           const renderPath = d3.line()
             .x((d) => d[0])
@@ -491,12 +498,13 @@ class Chart {
               return p;
             });
             label.datum(datum).attr('d', (ld) => renderPath(ld.d));
-          })
+          });
 
           folderWrapper.select(`[data-id="${d.id}"]`)
             .append('rect')
             .attr('width', squareSize)
             .attr('height', squareSize)
+            .attr('opacity', 0.6)
             .attr('rx', 15)
             .attr('x', squareSize / -2)
             .attr('y', squareSize / -2);
@@ -529,6 +537,7 @@ class Chart {
       .append('rect')
       .attr('width', squareSize)
       .attr('height', squareSize)
+      .attr('opacity', 0.6)
       .attr('rx', 15)
       .attr('x', squareSize / -2)
       .attr('y', squareSize / -2);

@@ -966,6 +966,12 @@ p {
       fill: #0D0905;
       //text-anchor: middle;
     }
+    .folderOpen{
+      text,
+      use{
+        display: none;
+      }
+    }
   }
 
   .node {
