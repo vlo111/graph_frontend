@@ -103,10 +103,7 @@ class Chart {
     data.labels = data.labels?.filter((d) => d.id) || Chart.getLabels();
     data.embedLabels = _.cloneDeep(data.embedLabels || this.data?.embedLabels || []);
 
-    const labels = data.labels.map((l) => {
-      l.id = l.id || ChartUtils.uniqueId(data.labels);
-      return l;
-    });
+    const labels = Object.values(data.labels).map((d) => Object.create(d));
 
     if (data.embedLabels.length) {
       data.embedLabels = data.embedLabels.map((label) => {
@@ -251,7 +248,7 @@ class Chart {
     const lastUid = data.lastUid || this.data?.lastUid || 0;
 
     return {
-      links, nodes, labels: data.labels, embedLabels: data.embedLabels, lastUid,
+      links, nodes, labels, embedLabels: data.embedLabels, lastUid,
     };
   }
 
@@ -373,11 +370,13 @@ class Chart {
           ) {
             d.fx += ev.dx;
             d.fy += ev.dy;
-            d.x += ev.dx;
-            d.y += ev.dy;
+
+            d.x = d.fx;
+            d.y = d.fy;
+
             if (datum.open) {
-              d.lx = undefined;
-              d.ly = undefined;
+              d.lx = null;
+              d.ly = null;
             } else {
               d.lx += ev.dx;
               d.ly += ev.dy;
@@ -410,15 +409,8 @@ class Chart {
       .on('dblclick', (ev, d) => {
         const x = d.d[0][0];
         const y = d.d[0][1];
-        this.detectLabels()
-
         d.open = !d.open;
-        this.data.labels = this.data.labels.map((l) => {
-          if (l.id === d.id) {
-            l.open = d.open;
-          }
-          return l;
-        });
+
         folderWrapper.select(`[data-id="${d.id}"]`).attr('class', `folder ${d.open ? 'folderOpen' : 'folderClose'}`);
         const squareX = x - (squareSize / 2);
         const squareY = y - (squareSize / 2);
@@ -428,8 +420,8 @@ class Chart {
           this.node.each((n) => {
             const inFolder = n.labels.includes(d.id);
             if (inFolder) {
-              n.lx = undefined;
-              n.ly = undefined;
+              n.lx = null;
+              n.ly = null;
             }
             const inSquare = ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
             if (inSquare && !inFolder) {
@@ -457,19 +449,6 @@ class Chart {
               n.x = n.fx;
               n.y = n.fy;
             }
-            this.data.nodes = this.data.nodes.map((node) => {
-              if (node.id === n.id) {
-                node.lx = n.lx;
-                node.ly = n.ly;
-
-                node.x = n.x;
-                node.y = n.y;
-
-                node.fx = n.fx;
-                node.fx = n.fy;
-              }
-              return node;
-            });
           });
 
           this.node.attr('class', ChartUtils.setClass(() => ({ disappear: false })));
@@ -515,13 +494,6 @@ class Chart {
             .each((n) => {
               n.lx = x + 30;
               n.ly = y + 30;
-              this.data.nodes = this.data.nodes.map((node) => {
-                if (node.id === n.id) {
-                  node.lx = x + 30;
-                  node.ly = y + 30;
-                }
-                return node;
-              });
             })
             .attr('class', ChartUtils.setClass(() => ({ disappear: true })));
         }
@@ -1685,7 +1657,7 @@ class Chart {
     if (_.isEmpty(this.data)) {
       return [];
     }
-    return _.uniqBy(this.data.labels || [], 'id');
+    return this.data.labels;
   }
 
   static get activeButton() {

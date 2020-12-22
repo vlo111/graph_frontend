@@ -401,6 +401,9 @@ class ChartUtils {
       if ((node.lx || node.ly) && (node.lx === label.d[0][0] + 30 && node.ly === label.d[0][1] + 30)) {
         return true;
       }
+      if (!label.open && node.labels.includes(label.id)) {
+        return true;
+      }
       if (label.open) {
         const squareSize = 500;
         const squareX = d[0][0] - (squareSize / 2);
