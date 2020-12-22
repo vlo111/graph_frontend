@@ -6,6 +6,7 @@ import { updateSingleGraph } from './graphs';
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
 import Utils from '../../helpers/Utils';
+import ChartUtils from '../../helpers/ChartUtils';
 
 let socket;
 const notPushedEmits = [];
@@ -89,6 +90,34 @@ export function socketInit() {
     });
 
     socket.on('embedLabelDataChange', (data) => {
+      const { labels } = Chart;
+
+      let embededLabel = labels.data().filter((p) => p.readOnly && p.id === data.label.id);
+
+      if (embededLabel.length) {
+        embededLabel = embededLabel[0].id;
+        const curentEmbed = labels._groups[0].filter((p) => p.__data__.id === embededLabel)[0];
+
+        const { x: lx, y: ly } = curentEmbed.getBoundingClientRect();
+
+        const { x: posX, y: posY } = ChartUtils.calcScaledPosition(lx, ly);
+
+        const minX = Math.min(...data.label.d.map((l) => l[0]));
+        const minY = Math.min(...data.label.d.map((l) => l[1]));
+
+        data.links.map((l) => {
+          if (l.sx && l.linkType === 'a1') {
+            l.sx = l.sx - minX + posX;
+            l.sy = l.sy - minY + posY;
+            l.tx = l.tx - minX + posX;
+            l.ty = l.ty - minY + posY;
+          }
+          else {
+            l.sx = undefined;
+          }
+        });
+      }
+
       const graphId = Utils.getGraphIdFormUrl();
       const { app: { filters } } = getState();
       if (+data.sourceId === graphId) {
@@ -108,7 +137,7 @@ export function socketInit() {
       if (!changed) {
         embedLabels.push(data);
       }
-      Chart.render({ embedLabels }, { filters });
+      Chart.render({ embedLabels }, { filters, embeded: true });
     });
   };
 }

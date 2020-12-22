@@ -264,53 +264,70 @@ class Chart {
   static drag(simulation) {
     const dragstart = (ev, d) => {
       this.event.emit('node.dragstart', ev, d);
-      if (d.readOnly) {
-        return;
+
+      if (d && !(this.curentTarget && (this.curentTarget.id === 'tc' || this.curentTarget.id === 'sc'))) {
+        if (d.readOnly) {
+          return;
+        }
+        if (ev.active) simulation.alphaTarget(0.3).restart();
+        d.fixed = !!d.fx;
+        // d.fx = d.x;
+        // d.fy = d.y;
+        // d.x = d3.event.x;
+        // d.y = d3.event.y;
       }
-      if (ev.active) simulation.alphaTarget(0.3).restart();
-      d.fixed = !!d.fx;
-      // d.fx = d.x;
-      // d.fy = d.y;
-      // d.x = d3.event.x;
-      // d.y = d3.event.y;
     };
 
     const dragged = (ev, d) => {
       this.event.emit('node.drag', ev, d);
-      if (d.readOnly || ev.sourceEvent.shiftKey) {
-        return;
-      }
-      d.fx = ev.x;
-      d.fy = ev.y;
+      if (this.curentTarget && (this.curentTarget.id === 'tc' || this.curentTarget.id === 'sc')) {
+        // drag curve
+        const { id } = this.curentTarget;
 
-      d.x = ev.x;
-      d.y = ev.y;
+        if (this.point[id]) {
+          this.point[id].x = ev.x;
+          this.point[id].y = ev.y;
+
+          this.curentTarget.setAttributeNS(null, 'cx', ev.x);
+          this.curentTarget.setAttributeNS(null, 'cy', ev.y);
+        }
+      } else if (d) {
+        if (d.readOnly || ev.sourceEvent.shiftKey) {
+          return;
+        }
+        d.fx = ev.x;
+        d.fy = ev.y;
+
+        d.x = ev.x;
+        d.y = ev.y;
+      }
 
       this.graphMovement();
     };
 
     const dragend = (ev, d) => {
       this.event.emit('node.dragend', ev, d);
-
-      if (d.readOnly) {
-        return;
-      }
-      if (this.activeButton === 'view') {
-        this.detectLabels(d);
-      }
-
       if (!ev.active) simulation.alphaTarget(0);
-      if (!d.fixed) {
-        d.x = d.fx || d.x;
-        d.y = d.fy || d.y;
-        delete d.fx;
-        delete d.fy;
-      }
-      if (!d.fixed) {
-        d.x = d.fx || d.x;
-        d.y = d.fy || d.y;
-        delete d.fx;
-        delete d.fy;
+      if (d !== undefined) {
+        if (d.readOnly) {
+          return;
+        }
+        if (this.activeButton === 'view') {
+          this.detectLabels(d);
+        }
+
+        if (!d.fixed) {
+          d.x = d.fx || d.x;
+          d.y = d.fy || d.y;
+          delete d.fx;
+          delete d.fy;
+        }
+        if (!d.fixed) {
+          d.x = d.fx || d.x;
+          d.y = d.fy || d.y;
+          delete d.fx;
+          delete d.fy;
+        }
       }
     };
 
@@ -328,7 +345,7 @@ class Chart {
     return l.target?.id || l.target || NaN;
   }
 
-  static normalizeData(data) {
+  static normalizeData(data, param) {
     data.nodes = data.nodes || Chart.getNodes();
     data.links = data.links || _.cloneDeep(Chart.getLinks());
     data.labels = data.labels?.filter((d) => d.id) || Chart.getLabels();
@@ -419,20 +436,41 @@ class Chart {
       return Object.create(d);
     });
 
+    let embedLinks = [];
+
+    if (data.embedLabels.length) {
+      embedLinks = [].concat.apply(...data.embedLabels.map((e) => e.links));
+    }
+    // data.embedLabels.map((e) => e.links)[0];
+
     _.forEach(data.links, (link) => {
+      if (param.embeded) {
+        _.forEach(embedLinks, (embedLink) => {
+          if (link.source === embedLink.source && link.target === embedLink.target) {
+            if (embedLink.sx && embedLink.linkType === 'a1') {
+              link.sx = embedLink.sx;
+              link.sy = embedLink.sy;
+              link.tx = embedLink.tx;
+              link.ty = embedLink.ty;
+            }
+          }
+        });
+      }
+
       const sameLinks = data.links.filter((l) => (
-        (this.getSource(l) === this.getSource(link) && this.getTarget(l) === this.getTarget(link))
-        || (this.getSource(l) === this.getTarget(link) && this.getTarget(l) === this.getSource(link))
+        ((this.getSource(l) === this.getSource(link) && this.getTarget(l) === this.getTarget(link))
+              || (this.getSource(l) === this.getTarget(link) && this.getTarget(l) === this.getSource(link))) && !l.curve
       ));
-      if (sameLinks.length > 1) {
+      if (sameLinks.length) {
         _.forEach(sameLinks, (l, i) => {
-          const reverse = this.getSource(l) === this.getTarget(link);
-          const totalHalf = sameLinks.length / 2;
-          const index = i + 1;
-          const even = sameLinks.length % 2 === 0;
-          const half = Math.floor(sameLinks.length / 2);
-          const middleLink = !even && Math.ceil(totalHalf) === index;
-          const indexCorrected = index <= totalHalf ? index : index - Math.ceil(totalHalf);
+          if (l.linkType !== 'a1') {
+            const reverse = this.getSource(l) === this.getTarget(link);
+            const totalHalf = sameLinks.length / 2;
+            const index = i + 1;
+            const even = sameLinks.length % 2 === 0;
+            const half = Math.floor(sameLinks.length / 2);
+            const middleLink = !even && Math.ceil(totalHalf) === index;
+            const indexCorrected = index <= totalHalf ? index : index - Math.ceil(totalHalf);
 
           let arcDirection = index <= totalHalf ? 0 : 1;
           if (reverse) {
@@ -445,10 +483,13 @@ class Chart {
             arc = 0;
           }
 
-          l.same = {
-            arcDirection,
-            arc,
-          };
+            l.same = {
+              arcDirection,
+              arc,
+            };
+          } else {
+            l.curve = true;
+          }
         });
       }
     });
@@ -618,6 +659,34 @@ class Chart {
             }
           }
         });
+        this.link.data().map((d) => {
+          if (
+            (!d.readOnly && !datum.readOnly)
+              || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
+          ) {
+            if (dragLabel.nodes.some((n) => n.index === d.source.index || n.index === d.target.index)) {
+              if (this.point) {
+                if (d.sx === this.point.sc.x) {
+                  this.point.sc.x += ev.dx;
+                  this.point.sc.y += ev.dy;
+                  this.point.tc.x += ev.dx;
+                  this.point.tc.y += ev.dy;
+
+                  this.wrapper.select('#fcurve').selectAll('circle').attr('cx', this.point.sc.x);
+                  this.wrapper.select('#fcurve').selectAll('circle').attr('cy', this.point.sc.y);
+                  this.wrapper.select('#lcurve').selectAll('circle').attr('cx', this.point.tc.x);
+                  this.wrapper.select('#lcurve').selectAll('circle').attr('cy', this.point.tc.y);
+                }
+              }
+
+              d.sx += ev.dx;
+              d.sy += ev.dy;
+
+              d.tx += ev.dx;
+              d.ty += ev.dy;
+            }
+          }
+        });
         this.graphMovement();
 
 
@@ -676,7 +745,6 @@ class Chart {
 
     this.labelsLock = [];
     setTimeout(() => {
-      return
       this.labelsLock = labelsWrapper.selectAll('use')
         .data(this.data.labels.filter((l) => l.hidden !== 1 && l.status === 'lock'))
         .join('use')
@@ -690,7 +758,7 @@ class Chart {
           const { x, y } = ChartUtils.calcScaledPosition(left + (width / 2) - 20, top + (height / 2) - 20);
           return `translate(${x}, ${y})`;
         });
-    }, 200);
+    }, 10);
 
     this.labelMovement();
 
@@ -757,7 +825,7 @@ class Chart {
       }
       this._dataNodes = null;
       this._dataLinks = null;
-      data = this.normalizeData(data);
+      data = this.normalizeData(data, params);
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         if (!_.isEmpty(data?.nodes) || !_.isEmpty(data?.links)) {
           this.undoManager.push(data);
@@ -793,8 +861,11 @@ class Chart {
       this.wrapper = this.svg.select('.wrapper');
 
       this.linksWrapper = this.svg.select('.links');
+
+      const listLink = filteredLinks.sort((x, y) => ((x.curve === y.curve) ? 0 : x.curve ? 1 : -1));
+
       this.link = this.linksWrapper.selectAll('path')
-        .data(filteredLinks)
+        .data(listLink)
         .join('path')
         .attr('id', (d) => `l${d.index}`)
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
@@ -902,6 +973,15 @@ class Chart {
           return color;
         });
 
+      if (!_.isEmpty(filteredLinks)) {
+        const currentLink = filteredLinks[filteredLinks.length - 1];
+
+        if (params === 'createCurve' || (params === 'updateCurve' && currentLink.sx === undefined)) {
+          this.curved = true;
+          this.renderCurve(currentLink, params);
+        }
+      }
+
       this.renderLinkText();
       this.renderNodeText();
       this.renderNodeStatusText();
@@ -916,6 +996,93 @@ class Chart {
       toast.error(`Chart Error :: ${e.message}`);
       console.error(e);
       return this;
+    }
+  }
+
+  static renderCurve(link, curveMode) {
+    if (link.linkType !== 'a1') {
+      return;
+    }
+    this.curentLinkIndex = link.index;
+
+    const source = this.data.nodes.filter((d) => d.hidden !== 1).find((p) => p.index === link.source.index);
+    const target = this.data.nodes.filter((d) => d.hidden !== 1).find((p) => p.index === link.target.index);
+
+    let scy;
+    let tcy;
+    let scx;
+    let tcx;
+
+    if (curveMode === 'createCurve' || curveMode === 'updateCurve') {
+      scy = source.y - 100;
+      tcy = target.y - 100;
+      scx = source.x;
+      tcx = target.x;
+    } else {
+      scy = link.sy;
+      tcy = link.ty;
+      scx = link.sx;
+      tcx = link.tx;
+    }
+
+    this.nodesWrapper
+      .append('g')
+      .call(this.drag(this.simulation))
+      .attr('id', () => 'fcurve')
+      .append('circle')
+      .attr('class', 'curvedCircle')
+      .attr('id', 'sc')
+      .attr('r', 9)
+      .attr('cx', scx)
+      .attr('cy', scy);
+
+    this.nodesWrapper.select('#fcurve')
+      .append('line')
+      .attr('class', 'curvedLine')
+      .attr('id', 'curveLink1')
+      .attr('x1', scx)
+      .attr('y1', scy)
+      .attr('x2', source.x)
+      .attr('y2', source.y);
+
+    this.nodesWrapper
+      .append('g')
+      .call(this.drag(this.simulation))
+      .attr('id', 'lcurve')
+      .append('circle')
+      .attr('class', 'curvedCircle')
+      .attr('id', 'tc')
+      .attr('r', 9)
+      .attr('cx', tcx)
+      .attr('cy', tcy);
+
+    this.nodesWrapper.select('#lcurve')
+      .append('line')
+      .attr('id', 'curveLink2')
+      .attr('class', 'curvedLine')
+      .attr('x1', tcx)
+      .attr('y1', tcy)
+      .attr('x2', target.x)
+      .attr('y2', target.y);
+
+    // Initial curve line
+    this.line = {};
+    this.line.l1 = Chart.svg.select('#curveLink1');
+    this.line.l2 = Chart.svg.select('#curveLink2');
+
+    this.point = {};
+
+    if (link.sx && link.sy && link.tx && link.ty) {
+      this.point.sc = { x: link.sx, y: link.sy };
+      this.point.tc = { x: link.tx, y: link.ty };
+    } else {
+      this.point.sc = { x: scx, y: scy };
+      this.point.tc = { x: tcx, y: tcy };
+      // Initial curve data
+      link.sx = this.point.sc.x;
+      link.sy = this.point.sc.y;
+      link.tx = this.point.tc.x;
+      link.ty = this.point.tc.y;
     }
   }
 
@@ -1102,9 +1269,41 @@ class Chart {
     if (!this.link || !this.link) {
       return;
     }
+
+    const link = this.link.data().find((p) => p.index === this.curentLinkIndex);
+
+    if (this.line !== undefined && link !== undefined && link.linkType === 'a1') {
+      if (this.point && this.activeButton !== 'view') {
+        link.sx = this.point.sc.x;
+        link.sy = this.point.sc.y;
+        link.tx = this.point.tc.x;
+        link.ty = this.point.tc.y;
+      }
+
+      const { source } = link;
+      const { target } = link;
+
+      // control curve line 1
+      this.line.l1.attr('x1', source.x);
+      this.line.l1.attr('y1', source.y);
+      this.line.l1.attr('x2', link.sx);
+      this.line.l1.attr('y2', link.sy);
+
+      // control curve line 2
+      this.line.l2.attr('x1', target.x);
+      this.line.l2.attr('y1', target.y);
+      this.line.l2.attr('x2', link.tx);
+      this.line.l2.attr('y2', link.ty);
+    }
+
     this.link.attr('d', (d) => {
       let arc = 0;
       let arcDirection = 0;
+
+      if (d.curve) {
+        return `M${d.source.x},${d.source.y} C${d.sx},${d.sy} ${`${d.tx},${d.ty} `}${d.target.x},${d.target.y}`;
+      }
+
       if (d.same) {
         const dr = ChartUtils.nodesDistance(d);
 
@@ -1361,6 +1560,28 @@ class Chart {
       this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
       this.renderLinkText();
     });
+    this.event.on('link.click', (event, ...params) => {
+      const currentLink = params[0];
+
+      const isEmbed = currentLink.source.readOnly && currentLink.target.readOnly;
+
+      if (isEmbed) {
+        return;
+      }
+
+      if (currentLink.linkType !== 'a1' || this.activeButton === 'view') {
+        return;
+      }
+
+      if (this.wrapper.select('#fcurve').node()) {
+        this.wrapper.selectAll('#fcurve, #lcurve').remove();
+        return;
+      }
+
+      this.curved = false;
+
+      this.renderCurve(currentLink);
+    });
   }
 
   static renderNewLink() {
@@ -1438,6 +1659,14 @@ class Chart {
         return;
       }
       //d3.select('.controls-group').remove();
+      if (this.wrapper.select('#fcurve').node() && this.curved) {
+        setTimeout(() => {
+          this.wrapper.selectAll('#fcurve, #lcurve').remove();
+        }, 10);
+      } else this.curved = !this.curved;
+      if (ev.target.tagName !== 'svg') {
+        return;
+      }
       setTimeout(() => {
         this.newLink.attr('data-source', '')
           .attr('x1', 0)
@@ -1447,6 +1676,11 @@ class Chart {
       }, 10);
     });
     this.event.on('mousemove', (ev) => {
+      this.curentTarget = ev.target;
+
+      if (ev.x < 250 || ev.y < 70) {
+        this.wrapper.selectAll('#fcurve, #lcurve').remove();
+      }
       const source = this.newLink.attr('data-source');
       if (this.activeButton !== 'create' || !source) {
         return;
@@ -1538,6 +1772,10 @@ class Chart {
         const pd = Object.getPrototypeOf(d);
         return {
           index: d.index,
+          sx: d.sx,
+          sy: d.sy,
+          tx: d.tx,
+          ty: d.ty,
           source: Chart.getSource(pd) || Chart.getSource(d) || '',
           target: Chart.getTarget(pd) || Chart.getTarget(d) || '',
           value: +pd.value || +d.value || 1,
@@ -1569,7 +1807,7 @@ class Chart {
     return d3.select('#graph').attr('data-active');
   }
 
-  static printMode(svgWidth, svgHeight, crop = false) {
+  static printMode(svgWidth, svgHeight, crop = false, preventInitial = false) {
     const originalDimensions = {
       scale: this.wrapper.attr('data-scale') || 1,
       x: this.wrapper.attr('data-x') || 0,
@@ -1634,12 +1872,15 @@ class Chart {
 
     const html = document.querySelector('#graph svg').outerHTML;
 
-    // reset original styles
-    const { x: oX, y: oY, scale: oScale } = originalDimensions;
-    this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`)
-      .attr('data-scale', oScale)
-      .attr('data-x', oX)
-      .attr('data-y', oY);
+    if(!preventInitial){
+      // reset original styles
+      const { x: oX, y: oY, scale: oScale } = originalDimensions;
+      this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`)
+        .attr('data-scale', oScale)
+        .attr('data-x', oX)
+        .attr('data-y', oY);
+    }
+
 
     this.linksWrapper.selectAll('path')
       .attr('fill', undefined);

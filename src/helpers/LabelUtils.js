@@ -81,6 +81,16 @@ class LabelUtils {
       if (isEmbed) {
         d.readOnly = true;
         d.sourceId = data.sourceId;
+        data.links = data.links.map((l) => {
+          if (l.source === d.id) {
+            l.sx = l.sx - minX + posX;
+            l.sy = l.sy - minY + posY;
+          } else if (l.target === d.id) {
+            l.tx = l.tx - minX + posX;
+            l.ty = l.ty - minY + posY;
+          }
+          return l;
+        });
       } else {
         const id = ChartUtils.uniqueId(nodes);
         d.labels = d.labels.map((l) => {
@@ -92,8 +102,12 @@ class LabelUtils {
         data.links = data.links.map((l) => {
           if (l.source === d.id) {
             l.source = id;
+            l.sx = l.sx - minX + posX;
+            l.sy = l.sy - minY + posY;
           } else if (l.target === d.id) {
             l.target = id;
+            l.tx = l.tx - minX + posX;
+            l.ty = l.ty - minY + posY;
           }
           return l;
         });
@@ -128,10 +142,10 @@ class LabelUtils {
       const embedLabels = _.uniqBy([...Chart.data.embedLabels, labelEmbed], 'id');
       Chart.render({
         links, nodes, labels, embedLabels,
-      });
+      }, 'past');
       return;
     }
-    Chart.render({ links, nodes, labels });
+    Chart.render({ links, nodes, labels }, 'past');
   }
 
   static labelDataChange = (graphId, labelId, force = false) => {

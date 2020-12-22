@@ -9,6 +9,7 @@ import userFriends from './userFriends';
 import graphLabelsEmbed from './graphLabelsEmbed';
 import profile from './profile';
 import commentNodes from './commentNodes';
+import share from './share';
 
 
 export default combineReducers({
@@ -22,4 +23,5 @@ export default combineReducers({
   profile,
   graphLabelsEmbed,
   commentNodes,
+  share,
 });

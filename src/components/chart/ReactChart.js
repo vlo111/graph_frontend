@@ -12,6 +12,7 @@ import CustomFields from '../../helpers/CustomFields';
 import ChartUtils from '../../helpers/ChartUtils';
 import { socketLabelDataChange } from '../../store/actions/socket';
 import Api from '../../Api';
+import { removeNodeFromCustom } from "../../store/actions/graphs";
 
 class ReactChart extends Component {
   static propTypes = {
@@ -162,6 +163,8 @@ class ReactChart extends Component {
 
     links = links.filter((l) => !(l.source === d.id || l.target === d.id));
 
+    this.props.removeNodeFromCustom(d.id);
+
     Chart.render({ nodes, links });
   }
 
@@ -234,6 +237,7 @@ const mapDispatchToProps = {
   toggleNodeModal,
   setActiveButton,
   socketLabelDataChange,
+  removeNodeFromCustom,
 };
 
 const Container = connect(

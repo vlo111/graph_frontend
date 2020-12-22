@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import ReactSelect from 'react-select';
 import _ from 'lodash';
 import ReactSelectCreatable from 'react-select/creatable';
+import ReactSelectAsync from 'react-select/async';
 import Icon from './Icon';
 import Outside from '../Outside';
 
@@ -110,7 +111,7 @@ class Select extends Component {
     const { inputValue } = this.state;
     const {
       id, label, containerClassName, containerId, children,
-      error, icon, portal, limit, ...props
+      error, icon, portal, limit, isCreatable, isAsync, ...props
     } = this.props;
     const inputId = id || `select_${this.id}`;
     const params = {};
@@ -131,12 +132,32 @@ class Select extends Component {
           <label htmlFor={inputId}>{label}</label>
         ) : null}
         <Icon value={icon} />
-        {props.isCreatable ? (
+        {!isAsync && !isCreatable ? (
+          <ReactSelect
+            {...props}
+            {...params}
+            id={inputId}
+            classNamePrefix="gh"
+            className={classNames('ghSelectContent', props.className)}
+          />
+        ) : null}
+        {isAsync ? (
+          <ReactSelectAsync
+            {...props}
+            {...params}
+            id={inputId}
+            isSearchable
+            classNamePrefix="gh"
+            className={classNames('ghSelectContent', props.className)}
+          />
+        ) : null}
+        {isCreatable ? (
           <Outside onMouseDown={this.handleInputBlur}>
             <ReactSelectCreatable
               {...props}
               {...params}
               isSearchable
+              isCreatable
               id={inputId}
               classNamePrefix="gh"
               inputValue={inputValue}
@@ -146,15 +167,7 @@ class Select extends Component {
               className={classNames('ghSelectContent', props.className)}
             />
           </Outside>
-        ) : (
-          <ReactSelect
-            {...props}
-            {...params}
-            id={inputId}
-            classNamePrefix="gh"
-            className={classNames('ghSelectContent', props.className)}
-          />
-        )}
+        ) : null}
         {!error && limit ? (
           <div className="limit">{`${limit - this.getValue().length} / ${limit} characters`}</div>
         ) : null}

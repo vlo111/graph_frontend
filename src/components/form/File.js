@@ -63,6 +63,10 @@ class File extends Component {
     });
   }
 
+  handleTextChange = (name) => {
+    this.setState({ file: { name } });
+  }
+
   render() {
     const {
       id, containerId, containerClassName, onChangeFile, ...props
@@ -72,10 +76,13 @@ class File extends Component {
     const inputId = id || `file_${this.id}`;
 
     const fileName = props.value || file.name || '';
-    const localFile = !!fileName;
+    const localFile = file.type && !!fileName;
 
     return (
       <div className={`ghFileInput ${focused ? 'focused' : ''}`}>
+        {localFile ? (
+          <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
+        ) : null}
         <Input
           onFocus={this.handleInputFocus}
           onBlur={this.handleInputBlur}
@@ -84,13 +91,10 @@ class File extends Component {
           disabled={localFile}
           onChangeText={this.handleTextChange}
         />
-        {localFile ? (
-            <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
-        ) : null}
         <div className="buttons">
           <label className="fileLabel">
             select file
-            <input {...props} id={inputId} type="file" onChange={this.handleChange} />
+            <input {...props} id={inputId} type="file" onChange={(ev) => this.handleChange(ev)} />
           </label>
         </div>
       </div>

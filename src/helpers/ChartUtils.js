@@ -245,7 +245,7 @@ class ChartUtils {
   static nodesDistance = (d) => this.distance([d.target.x, d.target.y], [d.source.x, d.source.y])
 
   static getRadiusList() {
-    let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.id).length * 2 + (d.icon ? 6.5 : 2));
+    let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.id, 'all').length * 2 + (d.icon ? 6.5 : 2));
     let max = Math.max(...radiusList);
     if (max > 40) {
       radiusList = radiusList.map((d) => {
@@ -484,7 +484,7 @@ class ChartUtils {
     let fIndex = new Date().getTime();
     nodes = nodes.map((d, i) => {
       d.icon = icons[i];
-      d.description = d.description.replace(/\shref="(blob:\/\/[^"]+)"/g, (m, url) => {
+      d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
         fIndex += 1;
         files[fIndex] = Utils.blobToBase64(url);
         return ` href="<%= file_${fIndex} %>"`;
@@ -498,7 +498,7 @@ class ChartUtils {
           for (const node in customFields[nodeType][tab].values) {
             if (customFields[nodeType][tab].values[node]) {
               customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
-                .replace(/\shref="(blob:\/\/[^"]+)"/g, (m, url) => {
+                .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
                   fIndex += 1;
                   files[fIndex] = Utils.blobToBase64(url);
                   return ` href="<%= file_${fIndex} %>"`;

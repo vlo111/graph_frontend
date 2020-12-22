@@ -27,6 +27,7 @@ class ExportNodeTabs extends Component {
     const html = this.decode(renderToString(<ExportNode
       node={node}
       tabs={tabs}
+      image={image}
       nodeData={nodeData}
     />));
 
