@@ -344,7 +344,7 @@ class Chart {
       }
     };
     const handleDrag = (ev) => {
-      if (!dragFolder.folder) {
+      if (!dragFolder.folder || dragFolder.folder.empty()) {
         return;
       }
       const datum = dragFolder.folder.datum();
@@ -444,13 +444,13 @@ class Chart {
                 n.fx += labelMove || move;
               }
               if (position === 'left') {
-                n.fx -=labelMove ||  move;
+                n.fx -= labelMove || move;
               }
               if (position === 'top') {
-                n.fy -=labelMove ||  move;
+                n.fy -= labelMove || move;
               }
               if (position === 'bottom') {
-                n.fy +=labelMove ||  move;
+                n.fy += labelMove || move;
               }
               n.x = n.fx;
               n.y = n.fy;
@@ -494,7 +494,13 @@ class Chart {
         } else {
           folderWrapper.selectAll(`[data-id="${d.id}"] rect`).remove();
           this.node
-            .filter((n) => ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]))
+            .filter((n) => {
+              const nodeOldFolder = n.labels?.find((l) => l.startsWith('f_'));
+              if (nodeOldFolder && nodeOldFolder !== d.id) {
+                return false;
+              }
+              return ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
+            })
             .each((n) => {
               n.lx = x + 30;
               n.ly = y + 30;

@@ -52,6 +52,7 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
+    console.log(ev.target)
     if (ev.target.closest('.nodes')) {
       const index = +ev.target.parentNode.getAttribute('data-i');
       params = Chart.getNodes().find((d) => d.index === index);
@@ -71,6 +72,11 @@ class ContextMenu extends Component {
       }
     } else if (ev.target.closest('.labels')) {
       const id = ev.target.getAttribute('data-id');
+      const label = Chart.getLabels().find((l) => l.id === id);
+      params = { ...label };
+      element = 'label';
+    } else if (ev.target.parentNode.closest('.folder')) {
+      const id = ev.target.parentNode.getAttribute('data-id');
       const label = Chart.getLabels().find((l) => l.id === id);
       params = { ...label };
       element = 'label';

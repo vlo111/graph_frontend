@@ -398,6 +398,10 @@ class ChartUtils {
     let inside = false;
 
     if (label.type === 'folder') {
+      const nodeOldFolder = node.labels?.find((l) => l.startsWith('f_'));
+      if (nodeOldFolder && nodeOldFolder !== label.id) {
+        return false;
+      }
       if ((node.lx || node.ly) && (node.lx === label.d[0][0] + 30 && node.ly === label.d[0][1] + 30)) {
         return true;
       }
