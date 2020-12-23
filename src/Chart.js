@@ -403,7 +403,7 @@ class Chart {
       .data(this.data.labels.filter((l) => l.type === 'folder'))
       .join('g')
       .attr('data-id', (d) => d.id)
-      .attr('fill', (d) => d.color)
+      .attr('fill', ChartUtils.labelColors)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
       .on('dblclick', (ev, d) => {
@@ -416,7 +416,7 @@ class Chart {
         const squareY = y - (squareSize / 2);
         if (d.open) {
           const moveLabels = {};
-          const move = (squareSize / 2) + 50;
+          let move = (squareSize / 2) + 50;
           this.node.each((n, i, nodesArr) => {
             const inFolder = n.labels.includes(d.id);
             if (inFolder) {
@@ -428,24 +428,29 @@ class Chart {
             if (inSquare && !inFolder) {
               const labelPosition = n.labels.find((l) => moveLabels[l]);
               const position = labelPosition || ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
+              let labelMove;
               if (!labelPosition) {
                 n.labels.forEach((l) => {
                   if (!l.startsWith('f_')) {
-                    moveLabels[l] = position;
+                    labelMove = this.wrapper.select(`[data-id="${l}"]`).node().getBoundingClientRect().width || move;
+                    moveLabels[l] = {
+                      labelMove,
+                      position,
+                    };
                   }
                 });
               }
               if (position === 'right') {
-                n.fx += move;
+                n.fx += labelMove || move;
               }
               if (position === 'left') {
-                n.fx -= move;
+                n.fx -=labelMove ||  move;
               }
               if (position === 'top') {
-                n.fy -= move;
+                n.fy -=labelMove ||  move;
               }
               if (position === 'bottom') {
-                n.fy += move;
+                n.fy +=labelMove ||  move;
               }
               n.x = n.fx;
               n.y = n.fy;
@@ -457,21 +462,21 @@ class Chart {
             .y((d) => d[1])
             .curve(d3.curveBasis);
 
-          _.forEach(moveLabels, (position, l) => {
+          _.forEach(moveLabels, ({ position, labelMove }, l) => {
             const label = this.wrapper.select(`[data-id="${l}"]`);
             const datum = label.datum();
             datum.d = datum.d.map((p) => {
               if (position === 'right') {
-                p[0] = +(p[0] + move).toFixed(2);
+                p[0] = +(p[0] + labelMove).toFixed(2);
               }
               if (position === 'left') {
-                p[0] = +(p[0] - move).toFixed(2);
+                p[0] = +(p[0] - labelMove).toFixed(2);
               }
               if (position === 'top') {
-                p[1] = +(p[1] + move).toFixed(2);
+                p[1] = +(p[1] + labelMove).toFixed(2);
               }
               if (position === 'bottom') {
-                p[1] = +(p[1] - move).toFixed(2);
+                p[1] = +(p[1] - labelMove).toFixed(2);
               }
               return p;
             });
@@ -1656,11 +1661,11 @@ class Chart {
     if (_.isEmpty(this.data)) {
       return [];
     }
-    return this.data.labels.map(d => ({
+    return this.data.labels.map((d) => ({
       id: d.id,
       name: d.name,
       open: d.open,
-      color: d.color,
+      color: ChartUtils.labelColors(d),
       d: d.d,
       type: d.type,
     }));
