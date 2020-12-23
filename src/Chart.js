@@ -422,6 +422,7 @@ class Chart {
             if (inFolder) {
               n.lx = null;
               n.ly = null;
+              nodesArr[i].classList.remove('disappear');
             }
             const inSquare = ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
             if (inSquare && !inFolder) {
@@ -450,8 +451,6 @@ class Chart {
               n.y = n.fy;
             }
           });
-
-          this.node.attr('class', ChartUtils.setClass(() => ({ disappear: false })));
 
           const renderPath = d3.line()
             .x((d) => d[0])
