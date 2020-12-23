@@ -42,7 +42,7 @@ export default () => {
       sortedByKey={false}
       showDate
       size={30}
-      color="white"
+      color="#7166F8"
       onMarkAsRead={() => { dispatch(NotificationsUpdateRequest()); }}
     />
   );
