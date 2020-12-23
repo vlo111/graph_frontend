@@ -95,7 +95,7 @@ class AddLabelModal extends Component {
         <div className="containerModal">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.deleteLabel} />
           <form className="form" onSubmit={this.addLabel}>
-            <h2>Add new label</h2>
+            <h2>{labelData.type === 'folder' ? 'Add new Folder' : 'Add new label'}</h2>
             <Input
               value={labelData.name}
               error={errors.name}

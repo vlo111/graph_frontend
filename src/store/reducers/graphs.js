@@ -106,7 +106,7 @@ export default function reducer(state = initialState, action) {
     }
     case GET_SINGLE_GRAPH_PREVIEW.SUCCESS: {
       const { graph: singleGraph } = action.payload.data;
-      const { nodes, links, labels } = singleGraph;
+      let { nodes, links, labels } = singleGraph;
       if (_.isEmpty(nodes)) {
         nodes.push({
           id: '0',
@@ -114,12 +114,21 @@ export default function reducer(state = initialState, action) {
           fx: 0,
           fy: 0,
           hidden: -1,
-        })
+        });
       }
+      // nodes = nodes.map((d) => {
+      //   delete d.lx;
+      //   delete d.ly;
+      //   return d;
+      // });
+      links = ChartUtils.cleanLinks(links, nodes);
+      // labels = labels.map((d) => {
+      //   delete d.open;
+      //   return d;
+      // });
       Chart.render({
-        nodes, links: ChartUtils.cleanLinks(links, nodes), labels,
+        nodes, links, labels,
       });
-
       return {
         ...state,
         singleGraph,
