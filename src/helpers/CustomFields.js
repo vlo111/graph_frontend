@@ -90,7 +90,6 @@ class CustomFields {
     _.forEach(customFieldType, (d, key) => {
       if (key === oldName) {
         customFields[type][name] = { ...d };
-        customFields[type][key] = undefined
         delete customFields[type][key];
       }
     });

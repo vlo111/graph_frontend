@@ -417,7 +417,7 @@ class Chart {
         if (d.open) {
           const moveLabels = {};
           const move = (squareSize / 2) + 50;
-          this.node.each((n) => {
+          this.node.each((n, i, nodesArr) => {
             const inFolder = n.labels.includes(d.id);
             if (inFolder) {
               n.lx = null;
@@ -1657,7 +1657,14 @@ class Chart {
     if (_.isEmpty(this.data)) {
       return [];
     }
-    return this.data.labels;
+    return this.data.labels.map(d => ({
+      id: d.id,
+      name: d.name,
+      open: d.open,
+      color: d.color,
+      d: d.d,
+      type: d.type,
+    }));
   }
 
   static get activeButton() {

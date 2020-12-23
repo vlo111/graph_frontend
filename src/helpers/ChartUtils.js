@@ -401,7 +401,7 @@ class ChartUtils {
       if ((node.lx || node.ly) && (node.lx === label.d[0][0] + 30 && node.ly === label.d[0][1] + 30)) {
         return true;
       }
-      if (!label.open && node.labels.includes(label.id)) {
+      if (!label.open && node.labels?.includes(label.id)) {
         return true;
       }
       if (label.open) {
@@ -533,7 +533,8 @@ class ChartUtils {
     const graphId = Utils.getGraphIdFormUrl();
     const ids = [0];
     data.forEach((d) => {
-      const id = +String(d.id || 0).split('.')[0];
+      const [_id = 0] = /[\d.]+/.exec(d.id) || [];
+      const id = +String(_id).split('.')[0];
       if (id && !d.sourceId) {
         ids.push(id);
       }

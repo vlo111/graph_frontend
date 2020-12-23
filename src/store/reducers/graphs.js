@@ -185,7 +185,7 @@ export default function reducer(state = initialState, action) {
       singleGraph.customFields = CustomFields.customFieldRename(singleGraph.customFields, type, oldName, name);
       return {
         ...state,
-        singleGraph: _.cloneDeep(singleGraph),
+        singleGraph: { ...singleGraph },
       };
     }
     case REMOVE_NODE_CUSTOM_FIELD_KEY: {

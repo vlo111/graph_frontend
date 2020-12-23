@@ -73,7 +73,8 @@ class NodeTabsFormModal extends Component {
       }
       customField[tabData.name] = tabData.content;
       if (tabData.originalName !== tabData.name) {
-        await this.props.renameNodeCustomFieldKey(node.type, tabData.originalName, tabData.name)
+        delete customField[tabData.originalName];
+        await this.props.renameNodeCustomFieldKey(node.type, tabData.originalName, tabData.name);
       }
       this.props.setNodeCustomField(node.type, node.id, customField, tabData);
       Chart.setNodeData(node.id, {

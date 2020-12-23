@@ -11,7 +11,7 @@ import NodeTabsFormModal from './NodeTabsFormModal';
 import ContextMenu from '../contextMenu/ContextMenu';
 import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
 import FlexTabs from "../FlexTabs";
-import MapsInfo from "../maps/MapsInfo"; 
+import MapsInfo from "../maps/MapsInfo";
 
 class NodeTabs extends Component {
   static propTypes = {
