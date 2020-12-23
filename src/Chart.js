@@ -473,10 +473,10 @@ class Chart {
                 p[0] = +(p[0] - labelMove).toFixed(2);
               }
               if (position === 'top') {
-                p[1] = +(p[1] + labelMove).toFixed(2);
+                p[1] = +(p[1] - labelMove).toFixed(2);
               }
               if (position === 'bottom') {
-                p[1] = +(p[1] - labelMove).toFixed(2);
+                p[1] = +(p[1] + labelMove).toFixed(2);
               }
               return p;
             });
