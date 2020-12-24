@@ -8,6 +8,8 @@ import { getGraphCommentsRequest } from '../../../store/actions/commentGraphs';
 import { getActionsCountRequest } from '../../../store/actions/graphs';
 import Owner from './Owner';
 import AddComment from './AddComment';
+import stripHtml from 'string-strip-html';
+import queryString from 'query-string';
 
 const CommentItem = ({ comment, isReply }) => {
   const userId = useSelector(getId);
@@ -21,7 +23,7 @@ const CommentItem = ({ comment, isReply }) => {
         edit={!isReply}
         remove={+userId === +comment.user.id}
       />
-      {comment.text}
+     <div dangerouslySetInnerHTML={{__html: comment.text}}></div>
     </div>
   );
 };
