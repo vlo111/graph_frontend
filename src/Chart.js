@@ -800,7 +800,7 @@ class Chart {
       this.node = this.nodesWrapper.selectAll('.node')
         .data(filteredNodes)
         .join('g')
-        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.hidden === -1 || d.lx ? 'inFolder' : ''} ${d.deleted ? 'deleted' : ''}`)
+        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.hidden === -1 || d.lx ? 'hideInFolder' : ''} ${d.deleted ? 'deleted' : ''}`)
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
         .on('mouseenter', (...p) => this.event.emit('node.mouseenter', ...p))
@@ -1385,25 +1385,25 @@ class Chart {
 
     this.linkText.append('textPath')
       .attr('startOffset', '50%')
-       .attr('href', (d) => `#l${d.index}`) 
-      .text((d) =>  (d.status === 'draft' ? `  DRAFT ( ${d.type} ) ` : ` ${d.type} `)) 
-      ; 
+       .attr('href', (d) => `#l${d.index}`)
+      .text((d) =>  (d.status === 'draft' ? `  DRAFT ( ${d.type} ) ` : ` ${d.type} `))
+      ;
 
     this.link
       .attr('stroke-width', (d) => ( linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
-     
+
     this.directions
       .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? 0.8 : undefined))
       .attr('stroke', (d) => (linkIndexes.includes(d.index) ? ChartUtils.linkColor(d) : undefined));
   }
 
-  
+
   static renderLinkStatusText() {
 
-    const links = this.getLinks().filter( d =>  d.status === 'draft') || [];   
+    const links = this.getLinks().filter( d =>  d.status === 'draft') || [];
     const wrapper = this.svg.select('.linkText');
     const linkIndexes = links.map((d) => d.index);
-    const linksData = this.data.links.filter((d) => linkIndexes.includes(d.index)); 
+    const linksData = this.data.links.filter((d) => linkIndexes.includes(d.index));
 
     this.linkText = wrapper.selectAll('text')
       .data(linksData.filter((d) => d.hidden !== 1))
@@ -1416,10 +1416,10 @@ class Chart {
     this.linkText.append('textPath')
       .attr('startOffset', '50%')
        .attr('href', (d) => `#l${d.index}`)
-       .style("text-anchor","end") 
-      .text((d) => d.status === 'draft' ? `DRAFT` :  ` ${d.type} `) 
-      .attr('font-size', (d) => 20.5) ;  
-     
+       .style("text-anchor","end")
+      .text((d) => d.status === 'draft' ? `DRAFT` :  ` ${d.type} `)
+      .attr('font-size', (d) => 20.5) ;
+
 
 
   }
@@ -1474,7 +1474,7 @@ class Chart {
       this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
       this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
       this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
-      this.renderLinkText();      
+      this.renderLinkText();
       this.renderLinkStatusText();
     });
     this.event.on('link.click', (event, ...params) => {
