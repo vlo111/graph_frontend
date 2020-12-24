@@ -275,6 +275,9 @@ class ChartUtils {
   static linkDraftColor = _.clone(LINK_DRAFT_COLORS);
 
   static linkColor = (d) => {
+    if( d.status === 'draft') {
+      return ChartUtils.linkDraftColor
+    } 
     if (!this.linkColorObj[d.type]) {
       if (d.color) {
         this.linkColorArr = this.linkColorArr.filter((c) => d.color !== c);
