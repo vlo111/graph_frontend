@@ -307,7 +307,7 @@ p {
     .jodit-toolbar-button_link:before {
       content: 'Insert link';
       left: -5px;
-    }  
+    }
   }
 
 }
@@ -1015,6 +1015,11 @@ p {
     }
 
     &.disappear {
+      opacity: 0 !important;
+      display: none;
+    }
+
+    &.hideInFolder {
       opacity: 0 !important;
       display: none;
     }
@@ -2785,7 +2790,7 @@ p {
   }
 }
 
-.graphView { 
+.graphView {
 
   .edit {
     position: absolute;
@@ -5178,7 +5183,7 @@ body .gh__menu {
   &__graph {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; 
+    align-items: flex-start;
 
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 6px 12px #0000000D;
@@ -5235,9 +5240,9 @@ body .gh__menu {
   border: 1px solid $color-light-gray;
   border-radius: 24px;
   background-color: $color-white;
-  
+
   h3 {
-    text-align: center; 
+    text-align: center;
     font: normal normal 600 36px/49px Open Sans;
   }
 }

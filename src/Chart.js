@@ -338,9 +338,7 @@ class Chart {
       if (element) {
         const id = element.getAttribute('data-id');
         dragFolder.folder = folderWrapper.select(`[data-id="${id}"]`);
-        dragFolder.nodes = this.getNotesWithLabels().filter((d) => {
-          return d.labels.includes(id)
-        });
+        dragFolder.nodes = this.getNotesWithLabels().filter((d) => d.labels.includes(id));
       }
     };
     const handleDrag = (ev) => {
@@ -416,13 +414,13 @@ class Chart {
         const squareY = y - (squareSize / 2);
         if (d.open) {
           const moveLabels = {};
-          let move = (squareSize / 2) + 50;
+          const move = (squareSize / 2) + 50;
           this.node.each((n, i, nodesArr) => {
             const inFolder = n.labels.includes(d.id);
             if (inFolder) {
               n.lx = null;
               n.ly = null;
-              nodesArr[i].classList.remove('disappear');
+              nodesArr[i].classList.remove('hideInFolder');
             }
             const inSquare = ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
             if (inSquare && !inFolder) {
@@ -436,6 +434,12 @@ class Chart {
                     moveLabels[l] = {
                       labelMove,
                       position,
+                    };
+                  } else {
+                    moveLabels[l] = {
+                      labelMove: move,
+                      position,
+                      type: 'folder',
                     };
                   }
                 });
@@ -462,7 +466,8 @@ class Chart {
             .y((d) => d[1])
             .curve(d3.curveBasis);
 
-          _.forEach(moveLabels, ({ position, labelMove }, l) => {
+          _.forEach(moveLabels, (data, l) => {
+            const { position, labelMove, type } = data;
             const label = this.wrapper.select(`[data-id="${l}"]`);
             const datum = label.datum();
             datum.d = datum.d.map((p) => {
@@ -480,7 +485,20 @@ class Chart {
               }
               return p;
             });
-            label.datum(datum).attr('d', (ld) => renderPath(ld.d));
+
+            if (type === 'folder') {
+              label.datum(datum)
+                .attr('transform', (ld) => `translate(${ld.d[0][0]}, ${ld.d[0][1]})`);
+              this.node.each((n) => {
+                if (n.labels.includes(l) && (n.ly || n.lx)) {
+                  n.lx = datum.d[0][0] + 30;
+                  n.ly = datum.d[0][1] + 30;
+                }
+                return n;
+              });
+            } else {
+              label.datum(datum).attr('d', (ld) => renderPath(ld.d));
+            }
           });
 
           folderWrapper.select(`[data-id="${d.id}"]`)
@@ -505,7 +523,7 @@ class Chart {
               n.lx = x + 30;
               n.ly = y + 30;
             })
-            .attr('class', ChartUtils.setClass(() => ({ disappear: true })));
+            .attr('class', ChartUtils.setClass(() => ({ hideInFolder: true })));
         }
         this._dataNodes = undefined;
         this.graphMovement();
@@ -782,7 +800,7 @@ class Chart {
       this.node = this.nodesWrapper.selectAll('.node')
         .data(filteredNodes)
         .join('g')
-        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.hidden === -1 || d.lx ? 'disappear' : ''} ${d.deleted ? 'deleted' : ''}`)
+        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.hidden === -1 || d.lx ? 'inFolder' : ''} ${d.deleted ? 'deleted' : ''}`)
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
         .on('mouseenter', (...p) => this.event.emit('node.mouseenter', ...p))
