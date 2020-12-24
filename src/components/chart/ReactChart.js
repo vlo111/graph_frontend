@@ -211,6 +211,7 @@ class ReactChart extends Component {
             <g className="linkText" />
             <g className="nodes" />
             <g className="icons" />
+            <g className="folderIcons" />
             <defs>
               <filter id="labelShadowFilter" x="-50%" y="-50%" width="200%" height="200%">
                 <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
