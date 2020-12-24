@@ -16,7 +16,9 @@ export const LINK_COLORS = [
   '#a2f990', '#85ef7a', '#94fcf3', '#fcc4f9', '#94a1fc', '#a87de0', '#e7acf9', '#ef9ec2', '#fcbad3', '#e7ffad',
   '#94f7f0', '#e5f291', '#a2d2f2', '#daa4f9', '#ef8fb7', '#aefcef', '#f99fde', '#ea696b', '#f9a4b0', '#c1c8ff',
 ];
-
+export const LINK_DRAFT_COLORS = [
+  '#de1d26', 
+];
 export const DASH_TYPES = {
   a: null,
   a1: null,
@@ -25,3 +27,9 @@ export const DASH_TYPES = {
   d: [6, 6],
   e: [5, 2.5, 1.2, 1.2, 1.2, 2.5],
 };
+
+// STATUS
+export const TYPE_STATUS = [
+  { value: 'approved', label: 'Approved' },
+  { value: 'draft', label: 'Draft' },
+];

@@ -58,7 +58,9 @@ class LabelStatusFilter extends Component {
     const { labels, filters } = this.props;
     const labelStatusFull = this.formatLabels(labels); 
     const allChecked = labelStatusFull.length === filters.labelStatus.length;
-    
+    if (labelStatusFull.length < 1) {
+      return null;
+    }
     return (
       <div className="nodesStatusFilter graphFilter">
         <h4 className="title">Label status</h4>

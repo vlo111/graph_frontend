@@ -7,7 +7,7 @@ import stripHtml from 'string-strip-html';
 import path from 'path';
 import Chart from '../Chart';
 import history from './history';
-import { DASH_TYPES, LINK_COLORS } from '../data/link';
+import { DASH_TYPES, LINK_COLORS, LINK_DRAFT_COLORS} from '../data/link';
 import { NODE_COLOR } from '../data/node';
 import { DEFAULT_FILTERS } from '../data/filter';
 import Api from '../Api';
@@ -32,10 +32,13 @@ class ChartUtils {
       }
       d.hidden = 0;
       return d;
-    });
-
+    }); 
     data.labels = data.labels.map((d) => {
       if (!params.labels.includes(d.id)) {
+        d.hidden = 1;
+        return d;
+      } 
+      if (!params.labelStatus.includes(d.status)) {
         d.hidden = 1;
         return d;
       }
@@ -79,6 +82,11 @@ class ChartUtils {
       }
       if (params.nodeStatus[0] !== '__ALL__' && !params.nodeStatus.includes(d.status)) {
         d.hidden = 1;
+        return d;
+      }
+      
+      if (params.labelStatus[0] !== '__ALL__' && !d.labels.some((l) => params.labelStatus.includes(l))) {
+        d.hidden = -1;
         return d;
       }
       d.hidden = 0;
@@ -264,6 +272,7 @@ class ChartUtils {
   static linkColorObj = {};
 
   static linkColorArr = _.clone(LINK_COLORS);
+  static linkDraftColor = _.clone(LINK_DRAFT_COLORS);
 
   static linkColor = (d) => {
     if (!this.linkColorObj[d.type]) {

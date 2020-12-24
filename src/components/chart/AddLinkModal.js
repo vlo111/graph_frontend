@@ -10,7 +10,7 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import Checkbox from '../form/Checkbox';
-import { DASH_TYPES } from '../../data/link';
+import { DASH_TYPES, TYPE_STATUS } from '../../data/link';
 import Validate from '../../helpers/Validate';
 import SvgLine from '../SvgLine';
 import ContextMenu from '../contextMenu/ContextMenu';
@@ -60,6 +60,7 @@ class AddLinkModal extends Component {
       type: types[0]?.value || null,
       linkType: 'a',
       description: '',
+      status: 'approved',
     };
     this.setState({
       linkData, show: true, index: null, errors: {},
@@ -164,6 +165,14 @@ class AddLinkModal extends Component {
             <h2>
               {isUpdate ? 'Edit Link' : 'Add new Link'}
             </h2>
+            <Select
+              label="Status"
+              portal
+              options={TYPE_STATUS} 
+              value={TYPE_STATUS.filter((t) => t.value === linkData.status)}
+              error={errors.status}
+              onChange={(v) => this.handleChange('status', v?.value || '')} 
+            />
             <Select
                 label="Link Type"
                 value={[linkData.linkType]}

@@ -89,13 +89,18 @@ class HeaderMini extends Component {
     this.commentCountData();  
     this.setState({ showNodeComment });
   }
-
+  closeNodeInfoModal = () => {
+    const queryObj = queryString.parse(window.location.search);
+    delete queryObj.info;
+    const query = queryString.stringify(queryObj);
+    this.props.history.replace(`?${query}`);
+  }
   render() {
     const { showGraphUsersInfo, showNodeComment } = this.state;
     const { singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props; 
     return (
       <header id="headerMini"> 
-       <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() =>  this.props.history.replace(`/graphs/update/${graphId}`)} />
+       <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() =>  this.closeNodeInfoModal()} />
         <ul className="navLinks">
           <li>
             <Button

@@ -1370,6 +1370,33 @@ class Chart {
     this.link
       .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
 
+  
+  static renderLinkStatusText() {
+
+    const links = this.getLinks().filter( d =>  d.status === 'draft') || [];   
+    const wrapper = this.svg.select('.linkText');
+    const linkIndexes = links.map((d) => d.index);
+    const linksData = this.data.links.filter((d) => linkIndexes.includes(d.index)); 
+
+    this.linkText = wrapper.selectAll('text')
+      .data(linksData.filter((d) => d.hidden !== 1))
+      .join('text')
+      .attr('text-anchor', 'middle')
+      .attr('fill', ChartUtils.linkDraftColor)
+      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + d.value / 2 : (5 + d.value / 2) * -1))
+      .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
+
+    this.linkText.append('textPath')
+      .attr('startOffset', '50%')
+       .attr('href', (d) => `#l${d.index}`)
+       .style("text-anchor","end") 
+      .text((d) =>d.status === 'draft' ? `Draft` :  ` ${d.type} `) 
+      .attr('font-size', (d) => 20.5)
+      ; 
+
+    this.link
+      .attr('stroke-width', (d) => (d.status === 'draft' ? d.value + 4 : (linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1)));
+     
     this.directions
       .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? 0.8 : undefined))
       .attr('stroke', (d) => (linkIndexes.includes(d.index) ? ChartUtils.linkColor(d) : undefined));
@@ -1657,6 +1684,7 @@ class Chart {
           updatedUser: pd.updatedUser,
           readOnly: pd.readOnly,
           sourceId: +pd.sourceId || undefined,
+          status: d.status || 'approved',
         };
       });
     }

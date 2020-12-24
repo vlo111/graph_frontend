@@ -1195,7 +1195,7 @@ p {
         height: 45px;
       }
       .unread {
-        background-color: #ff8c2a54 !important;
+        background-color: $color-darkgreen !important;
         color: $color-dark;
       }
       .notification-message {
@@ -5188,9 +5188,9 @@ body .gh__menu {
     padding: 1.6em 1.6em;
     margin: 0.46em 0.2em 0.4em 1.1em;
 
-    &:not(:last-child) {
-      border-bottom: 1px solid $color-main;
-    }
+    // &:not(:last-child) {
+    //   border-bottom: 1px solid $color-main;
+    // }
   }
 
   &__graphInfo {
