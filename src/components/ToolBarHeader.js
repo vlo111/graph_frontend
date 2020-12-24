@@ -70,10 +70,8 @@ class ToolBarHeader extends Component {
           </Button>
           <Button
             icon={<FilterSvg />}
-            onClick={() => {
-              isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
-                : this.props.history.replace(`/graphs/filter/${graphId}`)
-            }}
+            onClick={() => {isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
+             : this.props.history.replace(`/graphs/filter/${graphId}`)}}
           >
            Filter
           </Button>

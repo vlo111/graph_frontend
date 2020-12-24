@@ -40,6 +40,8 @@ class FlexTabs extends Component {
             <span
               key={child?.key}
               style={{ marginLeft: child?.props.className !== 'empty' ? marginLeft : undefined }}
+              title={child?.key}
+             
             >
               {child}
             </span>
