@@ -845,6 +845,7 @@ class Chart {
       }
 
       this.renderLinkText();
+      this.renderLinkStatusText();
       this.renderNodeText();
       this.renderNodeStatusText();
       this.renderNewLink();
@@ -1204,6 +1205,8 @@ class Chart {
 
     this._dataNodes = null;
     this._dataLinks = null;
+    this._dataLabel = null;
+
   }
 
   static renderDirections() {
@@ -1364,11 +1367,17 @@ class Chart {
 
     this.linkText.append('textPath')
       .attr('startOffset', '50%')
-      .attr('href', (d) => `#l${d.index}`)
-      .text((d) => ` ${d.type} `);
+       .attr('href', (d) => `#l${d.index}`) 
+      .text((d) =>  ` ${d.type} `) 
+      ; 
 
     this.link
-      .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
+      .attr('stroke-width', (d) => ( linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
+     
+    this.directions
+      .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? 0.8 : undefined))
+      .attr('stroke', (d) => (linkIndexes.includes(d.index) ? ChartUtils.linkColor(d) : undefined));
+  }
 
   
   static renderLinkStatusText() {
@@ -1452,7 +1461,8 @@ class Chart {
       this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
       this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
       this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
-      this.renderLinkText();
+      this.renderLinkText();      
+      this.renderLinkStatusText();
     });
     this.event.on('link.click', (event, ...params) => {
       const currentLink = params[0];
