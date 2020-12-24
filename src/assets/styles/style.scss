@@ -4102,7 +4102,7 @@ body .gh__menu {
     &.addTab {
       background-color: $color-accent;
       position: relative;
-      //z-index: 3;
+      z-index: 3;
       //padding: 12px 25px;
 
       .icon {

@@ -1368,7 +1368,7 @@ class Chart {
     this.linkText.append('textPath')
       .attr('startOffset', '50%')
        .attr('href', (d) => `#l${d.index}`) 
-      .text((d) =>  ` ${d.type} `) 
+      .text((d) =>  (d.status === 'draft' ? `  DRAFT ( ${d.type} ) ` : ` ${d.type} `)) 
       ; 
 
     this.link
@@ -1399,16 +1399,11 @@ class Chart {
       .attr('startOffset', '50%')
        .attr('href', (d) => `#l${d.index}`)
        .style("text-anchor","end") 
-      .text((d) =>d.status === 'draft' ? `Draft` :  ` ${d.type} `) 
-      .attr('font-size', (d) => 20.5)
-      ; 
-
-    this.link
-      .attr('stroke-width', (d) => (d.status === 'draft' ? d.value + 4 : (linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1)));
+      .text((d) => d.status === 'draft' ? `DRAFT` :  ` ${d.type} `) 
+      .attr('font-size', (d) => 20.5) ;  
      
-    this.directions
-      .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? 0.8 : undefined))
-      .attr('stroke', (d) => (linkIndexes.includes(d.index) ? ChartUtils.linkColor(d) : undefined));
+
+
   }
 
   static #calledFunctions = [];
