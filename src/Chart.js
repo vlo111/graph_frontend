@@ -400,6 +400,7 @@ class Chart {
     this.folders = folderWrapper.selectAll('.folder')
       .data(this.data.labels.filter((l) => l.type === 'folder'))
       .join('g')
+      .attr('id', (d) => d.id)
       .attr('data-id', (d) => d.id)
       .attr('fill', ChartUtils.labelColors)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
@@ -412,6 +413,7 @@ class Chart {
         folderWrapper.select(`[data-id="${d.id}"]`).attr('class', `folder ${d.open ? 'folderOpen' : 'folderClose'}`);
         const squareX = x - (squareSize / 2);
         const squareY = y - (squareSize / 2);
+        this.wrapper.select(`[href="#${d.id}"]`).attr('class', d.open ? 'hide' : 'show');
         if (d.open) {
           const moveLabels = {};
           const move = (squareSize / 2) + 50;
@@ -528,6 +530,14 @@ class Chart {
         this._dataNodes = undefined;
         this.graphMovement();
       });
+
+
+    const folderIconsWrapper = d3.select('#graph .folderIcons');
+    folderIconsWrapper.selectAll('.folderIcons use')
+      .data(this.data.labels.filter((l) => l.type === 'folder'))
+      .join('use')
+      .attr('class', (d) => d.open ? 'hide' : 'show')
+      .attr('href', (d) => `#${d.id}`);
 
     folderWrapper.selectAll('.folder')
       .append('use')
@@ -1385,12 +1395,12 @@ class Chart {
 
     this.linkText.append('textPath')
       .attr('startOffset', '50%')
-       .attr('href', (d) => `#l${d.index}`)
-      .text((d) =>  (d.status === 'draft' ? `  DRAFT ( ${d.type} ) ` : ` ${d.type} `))
-      ;
+      .attr('href', (d) => `#l${d.index}`)
+      .text((d) => (d.status === 'draft' ? `  DRAFT ( ${d.type} ) ` : ` ${d.type} `))
+    ;
 
     this.link
-      .attr('stroke-width', (d) => ( linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
+      .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
 
     this.directions
       .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? 0.8 : undefined))
@@ -1400,7 +1410,7 @@ class Chart {
 
   static renderLinkStatusText() {
 
-    const links = this.getLinks().filter( d =>  d.status === 'draft') || [];
+    const links = this.getLinks().filter(d => d.status === 'draft') || [];
     const wrapper = this.svg.select('.linkText');
     const linkIndexes = links.map((d) => d.index);
     const linksData = this.data.links.filter((d) => linkIndexes.includes(d.index));
@@ -1415,11 +1425,10 @@ class Chart {
 
     this.linkText.append('textPath')
       .attr('startOffset', '50%')
-       .attr('href', (d) => `#l${d.index}`)
-       .style("text-anchor","end")
-      .text((d) => d.status === 'draft' ? `DRAFT` :  ` ${d.type} `)
-      .attr('font-size', (d) => 20.5) ;
-
+      .attr('href', (d) => `#l${d.index}`)
+      .style("text-anchor", "end")
+      .text((d) => d.status === 'draft' ? `DRAFT` : ` ${d.type} `)
+      .attr('font-size', (d) => 20.5);
 
 
   }

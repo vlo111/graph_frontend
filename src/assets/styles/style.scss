@@ -904,6 +904,16 @@ p {
     top: 0;
   }
 
+  .folderIcons {
+    pointer-events: none;
+    use{
+      pointer-events: none;
+    }
+    .hide {
+      display: none;
+    }
+  }
+
   .links {
     path {
       fill: transparent;
@@ -962,9 +972,10 @@ p {
       fill: #0D0905;
       //text-anchor: middle;
     }
-    .folderOpen{
+
+    .folderOpen {
       text,
-      use{
+      use {
         display: none;
       }
     }
@@ -1160,6 +1171,7 @@ p {
       min-width: 340px;
       border-radius: 20px !important;
     }
+
     .popover-header {
       background: #F2F4F5 0% 0% no-repeat padding-box;
       min-height: 50px;
@@ -1174,12 +1186,15 @@ p {
     .popover-body {
       display: table;
       padding: 0 30px 0 20px !important;
+
       div:first-child {
         display: table-footer-group;
         text-align: center;
+
         svg {
           display: none;
         }
+
         button {
           font: normal normal 600 16px/22px Open Sans;
           color: #0062FF;
@@ -1188,21 +1203,26 @@ p {
         }
       }
     }
+
     .arrow:before, .arrow:after {
       right: -120px;
     }
-    .notification-info-panel{
+
+    .notification-info-panel {
       text-align: center;
+
       svg {
         fill: #E2E7EB;
         stroke: white;
         width: 45px;
         height: 45px;
       }
+
       .unread {
         background-color: $color-darkgreen !important;
         color: $color-dark;
       }
+
       .notification-message {
         margin-bottom: 15px;
         font: normal normal normal 14px/25px Open Sans;
@@ -1212,6 +1232,7 @@ p {
         border: none;
         border-radius: 8px !important;
       }
+
       .notification-message:after {
         content: "______________";
         width: 153px;
@@ -1370,6 +1391,7 @@ p {
     max-width: 33%;
 
   }
+
   .close {
     background-color: $color-white;
     padding: 0;
@@ -2170,6 +2192,7 @@ p {
     .tablePosition {
       position: inherit !important;
     }
+
     overflow-x: auto;
     height: calc(100% - 87px);
     border-bottom: 1px solid $color-gray;
@@ -2183,12 +2206,15 @@ p {
       .allTableCellChekked {
         margin-left: 15px;
       }
+
       th {
         height: 60px;
+
         span, label {
           padding-left: 25px !important;
         }
       }
+
       .cell {
         border: 1px solid #DDD;
         border-top-style: hidden;
@@ -2204,10 +2230,12 @@ p {
         &.index,
         &.name {
           z-index: 3;
+
           > * {
             height: 32px !important;
           }
         }
+
         span {
           font: normal normal 600 14px/19px Open Sans;
         }
@@ -2219,6 +2247,7 @@ p {
           height: 32px;
           background-color: $color-white;
         }
+
         &.location {
           border-right-style: hidden;
         }
@@ -2245,15 +2274,18 @@ p {
             background-color: $color-hover-sheet !important;
           }
         }
+
         .location {
-            border-right-style: hidden;
+          border-right-style: hidden;
         }
       }
+
       .cell {
         &.index,
         &.name {
           z-index: 2;
         }
+
         &.name {
           span {
             padding: 20px 20px 0 25px;
@@ -2291,6 +2323,7 @@ p {
 
       &.index {
         border-left-style: hidden;
+
         label {
           cursor: pointer;
           display: flex;
@@ -2373,10 +2406,11 @@ p {
     scroll-snap-type: x mandatory;
     user-select: none;
 
-    .nodesMode span, .linksMode  span{
-        font: normal normal 600 15px/19px Open Sans;
-        color: #717EA0;
+    .nodesMode span, .linksMode span {
+      font: normal normal 600 15px/19px Open Sans;
+      color: #717EA0;
     }
+
     .linksMode {
       margin-top: 20px;
     }
@@ -2869,7 +2903,8 @@ p {
 
 .jodit {
   .jodit-wysiwyg {
-     height: 125px;
+    height: 125px;
+
     a {
       color: $color-main;
       text-decoration: underline;
@@ -4935,8 +4970,8 @@ body .gh__menu {
     padding: 2% 3.4%;
   }
 }
->>>>>>> Stashed changes
 
+> > > > > > > Stashed changes
 .homeWithUser {
   width: 100% !important;
   position: relative !important;
@@ -5870,6 +5905,7 @@ body .gh__menu {
     }
   }
 }
+
 .deleteModal {
   p {
     font: normal normal 600 16px/22px Open Sans;
@@ -5943,12 +5979,12 @@ body .gh__menu {
 }
 
 .insertMediaModal {
-  img  {
+  img {
     width: 340px;
   }
 
   .buttons, h2, .containerModal, .ghFileInput, .ghFormField {
-      width: auto !important;
+    width: auto !important;
   }
 }
 
@@ -5983,15 +6019,17 @@ img.scaled {
   fill: #EF2D56;
   cursor: move;
 }
+
 .dropzone div {
   width: 155px !important;
-  height: 155px!important;
+  height: 155px !important;
   border-radius: 10px !important;
   object-fit: cover;
   object-position: center;
   border: 2px dashed #1C8ADB !important;
   cursor: pointer;
 }
+
 .dropzone p {
   margin-top: 45px;
   text-align: center;
