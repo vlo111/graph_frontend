@@ -9,6 +9,7 @@
     "d3": "^6.2.0",
     "google-maps-react": "^2.0.6",
     "jodit": "^3.4.29",
+	"jodit-react": "^1.0.68",
     "js-file-download": "^0.4.12",
     "lodash": "^4.17.20",
     "memoize-one": "^5.1.1",
