@@ -1201,11 +1201,11 @@ class Chart {
         arc = d.same.arc * dr;
         arcDirection = d.same.arcDirection;
       }
-      const targetX = d.target.lx || d.target.x;
-      const targetY = d.target.ly || d.target.y;
+      const targetX = d.target.lx || d.target.x || d.target.fx || 0;
+      const targetY = d.target.ly || d.target.y || d.target.fy || 0;
 
-      const sourceX = d.source.lx || d.source.x;
-      const sourceY = d.source.ly || d.source.y;
+      const sourceX = d.source.lx || d.source.x || d.source.fx || 0;
+      const sourceY = d.source.ly || d.source.y || d.source.fy || 0;
 
       return `M${sourceX},${sourceY}A${arc},${arc} 0 0,${arcDirection} ${targetX},${targetY}`;
     });
