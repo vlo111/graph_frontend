@@ -32,12 +32,12 @@ class ChartUtils {
       }
       d.hidden = 0;
       return d;
-    }); 
+    });
     data.labels = data.labels.map((d) => {
       if (!params.labels.includes(d.id)) {
         d.hidden = 1;
         return d;
-      } 
+      }
       if (!params.labelStatus.includes(d.status)) {
         d.hidden = 1;
         return d;
@@ -75,7 +75,8 @@ class ChartUtils {
       }
       if (params.nodeKeywords[0] !== '__ALL__' && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
         d.hidden = 1;
-        if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keyword)) {
+        console.log(d.keywords, params.nodeKeywords)
+        if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keywords)) {
           d.hidden = 0;
         }
         return d;
@@ -84,7 +85,7 @@ class ChartUtils {
         d.hidden = 1;
         return d;
       }
-      
+
       if (params.labelStatus[0] !== '__ALL__' && !d.labels.some((l) => params.labelStatus.includes(l))) {
         d.hidden = -1;
         return d;
@@ -277,7 +278,7 @@ class ChartUtils {
   static linkColor = (d) => {
     if( d.status === 'draft') {
       return ChartUtils.linkDraftColor
-    } 
+    }
     if (!this.linkColorObj[d.type]) {
       if (d.color) {
         this.linkColorArr = this.linkColorArr.filter((c) => d.color !== c);
