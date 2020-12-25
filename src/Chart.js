@@ -1190,9 +1190,14 @@ class Chart {
     this.link.attr('d', (d) => {
       let arc = 0;
       let arcDirection = 0;
+      const targetX = d.target.lx || d.target.x || d.target.fx || 0;
+      const targetY = d.target.ly || d.target.y || d.target.fy || 0;
+
+      const sourceX = d.source.lx || d.source.x || d.source.fx || 0;
+      const sourceY = d.source.ly || d.source.y || d.source.fy || 0;
 
       if (d.curve) {
-        return `M${d.source.x},${d.source.y} C${d.sx},${d.sy} ${`${d.tx},${d.ty} `}${d.target.x},${d.target.y}`;
+        return `M${sourceX},${sourceY} C${d.sx || 0},${d.sy || 0} ${`${d.tx || 0},${d.ty || 0} `}${targetX},${targetY}`;
       }
 
       if (d.same) {
@@ -1201,11 +1206,7 @@ class Chart {
         arc = d.same.arc * dr;
         arcDirection = d.same.arcDirection;
       }
-      const targetX = d.target.lx || d.target.x || d.target.fx || 0;
-      const targetY = d.target.ly || d.target.y || d.target.fy || 0;
 
-      const sourceX = d.source.lx || d.source.x || d.source.fx || 0;
-      const sourceY = d.source.ly || d.source.y || d.source.fy || 0;
 
       return `M${sourceX},${sourceY}A${arc},${arc} 0 0,${arcDirection} ${targetX},${targetY}`;
     });
