@@ -906,9 +906,11 @@ p {
 
   .folderIcons {
     pointer-events: none;
-    use{
+
+    use {
       pointer-events: none;
     }
+
     .hide {
       display: none;
     }
@@ -973,9 +975,13 @@ p {
       //text-anchor: middle;
     }
 
+    .closeIcon {
+      cursor: pointer;
+    }
+
     .folderOpen {
       text,
-      use {
+      .folderIconUse {
         display: none;
       }
     }

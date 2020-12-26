@@ -75,7 +75,6 @@ class ChartUtils {
       }
       if (params.nodeKeywords[0] !== '__ALL__' && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
         d.hidden = 1;
-        console.log(d.keywords, params.nodeKeywords)
         if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keywords)) {
           d.hidden = 0;
         }
