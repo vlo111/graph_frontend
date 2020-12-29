@@ -6,8 +6,9 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import Validate from '../../helpers/Validate';
 import Input from '../form/Input';
-import ChartUtils from "../../helpers/ChartUtils";
-import {ReactComponent as CloseSvg} from "../../assets/images/icons/close.svg";
+import ChartUtils from '../../helpers/ChartUtils';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import ContextMenu from '../contextMenu/ContextMenu';
 
 class AddLabelModal extends Component {
   constructor(props) {
@@ -21,16 +22,35 @@ class AddLabelModal extends Component {
 
   componentDidMount() {
     Chart.event.on('label.new', this.handleLabelCrate);
+    ContextMenu.event.on('folder.new', this.handleFolderCrate);
+  }
+
+  componentWillUnmount() {
+    ContextMenu.event.removeListener('folder.new', this.handleFolderCrate);
   }
 
   handleLabelCrate = (ev, d) => {
     this.setState({ show: true, labelData: { ...d } });
   }
 
+  handleFolderCrate = (ev, d) => {
+    const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
+    const size = 150;
+    const labels = Chart.getLabels();
+    const labelData = {
+      id: ChartUtils.uniqueId(labels),
+      color: 'red',
+      d: [[x, y], [x + size, y], [x + size, y], [x + size, y], [x + size, y + size], [x + size, y + size], [x + size, y + size], [x, y + size]],
+      name: '',
+      type: 'folder',
+    };
+    this.setState({ show: true, labelData });
+  }
+
   deleteLabel = () => {
     const { labelData } = this.state;
     let labels = Chart.getLabels();
-    labels = labels.filter((l) => l.color !== labelData.color);
+    labels = labels.filter((l) => l.id !== labelData.id);
     Chart.render({ labels });
     this.setState({ show: false });
   }
@@ -43,13 +63,13 @@ class AddLabelModal extends Component {
     [errors.name, labelData.name] = Validate.labelName(labelData.name);
     labelData.id = ChartUtils.uniqueId(labels);
     if (!Validate.hasError(errors)) {
-      labels = labels.map((l) => {
-        if (l.id === labelData.id) {
-          return labelData;
-        }
-        return l;
-      });
-      Chart.render({ labels });
+      const i = labels.findIndex((l) => l.id === labelData.id);
+      if (i > -1) {
+        labels[i] = labelData;
+      } else {
+        labels.push(labelData);
+      }
+     Chart.render({ labels });
       this.setState({ show: false });
     }
     this.setState({ errors });
@@ -79,10 +99,10 @@ class AddLabelModal extends Component {
           <form className="form" onSubmit={this.addLabel}>
             <h2>Add new label</h2>
             <Input
-                value={labelData.name}
-                error={errors.name}
-                label="Name"
-                onChangeText={(v) => this.handleChange('name', v)}
+              value={labelData.name}
+              error={errors.name}
+              label="Name"
+              onChangeText={(v) => this.handleChange('name', v)}
             />
             <div className="buttons">
               <Button className="ghButton cancel transparent alt" onClick={this.deleteLabel}>
