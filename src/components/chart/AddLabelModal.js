@@ -44,7 +44,7 @@ class AddLabelModal extends Component {
     labelData.id = ChartUtils.uniqueId(labels);
     if (!Validate.hasError(errors)) {
       labels = labels.map((l) => {
-        if (l.color === labelData.color) {
+        if (l.id === labelData.id) {
           return labelData;
         }
         return l;
