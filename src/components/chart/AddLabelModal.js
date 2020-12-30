@@ -61,7 +61,6 @@ class AddLabelModal extends Component {
     let labels = Chart.getLabels();
     const errors = {};
     [errors.name, labelData.name] = Validate.labelName(labelData.name);
-    labelData.id = ChartUtils.uniqueId(labels);
     if (!Validate.hasError(errors)) {
       const i = labels.findIndex((l) => l.id === labelData.id);
       if (i > -1) {

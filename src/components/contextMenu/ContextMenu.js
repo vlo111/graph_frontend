@@ -178,7 +178,7 @@ class ContextMenu extends Component {
                 </>
               ) : null}
 
-              {['node', 'link', 'label', 'chart'].includes(show) ? (
+              {['node', 'link', 'label', 'chart'].includes(show) && false ? (
                 <>
                   <div className="ghButton notClose">
                     <Icon value="fa-plus-square" />
