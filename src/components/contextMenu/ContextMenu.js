@@ -49,10 +49,10 @@ class ContextMenu extends Component {
       this.setState({ show: false });
       return;
     }
+    console.log(ev.target)
     const { x, y } = ev;
     let element;
     let params = {};
-    console.log(ev.target)
     if (ev.target.closest('.nodes')) {
       const index = +ev.target.parentNode.getAttribute('data-i');
       params = Chart.getNodes().find((d) => d.index === index);
@@ -61,7 +61,7 @@ class ContextMenu extends Component {
       const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
-    } else if (ev.target.tagName === 'svg') {
+    } else if (ev.target.tagName === 'svg' || ev.target.classList.contains('labelsBoard')) {
       element = 'chart';
     } else if (ev.target.closest('.contentWrapper')) {
       const el = ev.target.closest('.contentWrapper');
@@ -70,7 +70,7 @@ class ContextMenu extends Component {
         element = 'nodeFullInfo';
         params = { fieldName };
       }
-    } else if (ev.target.closest('.labels')) {
+    } else if (ev.target.classList.contains('label')) {
       const id = ev.target.getAttribute('data-id');
       const label = Chart.getLabels().find((l) => l.id === id);
       params = { ...label };
@@ -131,7 +131,7 @@ class ContextMenu extends Component {
     if (params.fieldName === '_location') {
       return null;
     }
-
+    console.log(show)
     // remove curve points
     Chart.wrapper.selectAll('#fcurve, #lcurve').remove();
 
@@ -184,7 +184,7 @@ class ContextMenu extends Component {
                 </>
               ) : null}
 
-              {['node', 'link', 'label', 'chart'].includes(show) ? (
+              {['link', 'label', 'chart'].includes(show) ? (
                 <>
                   <div className="ghButton notClose">
                     <Icon value="fa-plus-square" />
