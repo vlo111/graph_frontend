@@ -15,48 +15,50 @@ class LabelStatusFilter extends Component {
     nodes: PropTypes.array.isRequired,
   }
 
-
   formatLabels = memoizeOne((labels) => {
-    
     const labelsFormatted = _.chain(labels)
+      .map((l) => {
+        l.status = l.status || 'unlock';
+        return l;
+      })
       .groupBy('status')
       .map((d, key) => ({
         length: d.length,
-        status: key 
+        status: key,
       }))
       .orderBy('length', 'desc')
-      .value();             
+      .value();
     if (labelsFormatted.length) {
       this.props.setFilter('labelStatus', labelsFormatted.map((d) => d.status), true);
-    } 
+    }
     return labelsFormatted;
-  }, (a, b) => _.isEqual(a[0].map((d) => d.status), b[0].map((d) => d.status))); 
+  }, (a, b) => _.isEqual(a[0].map((d) => d.status || 'unlock'), b[0].map((d) => d.status || 'unlock')));
 
   handleChange = (value) => {
     const { filters } = this.props;
     const i = filters.labelStatus.indexOf(value);
-   
+
     if (i > -1) {
       filters.labelStatus.splice(i, 1);
     } else {
       filters.labelStatus.push(value);
-    }  
+    }
     this.props.setFilter('labelStatus', filters.labelStatus);
   }
 
-  toggleAll = (fullData, allChecked) => { 
-    
+  toggleAll = (fullData, allChecked) => {
+
     if (allChecked) {
-      this.props.setFilter('labelStatus', []); 
+      this.props.setFilter('labelStatus', []);
     } else {
-      this.props.setFilter('labelStatus', fullData.map((d) => d.status)); 
-    } 
-    
+      this.props.setFilter('labelStatus', fullData.map((d) => d.status));
+    }
+
   }
 
   render() {
     const { labels, filters } = this.props;
-    const labelStatusFull = this.formatLabels(labels); 
+    const labelStatusFull = this.formatLabels(labels);
     const allChecked = labelStatusFull.length === filters.labelStatus.length;
     if (labelStatusFull.length < 1) {
       return null;
@@ -76,8 +78,8 @@ class LabelStatusFilter extends Component {
               </span>
             </Checkbox>
           </li>
-          {labelStatusFull.map((item) => (  
-            <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
+          {labelStatusFull.map((item) => (
+            <li key={item.status} className="item" >
               <Checkbox
                 label={item.status}
                 checked={filters.labelStatus.includes(item.status)}
