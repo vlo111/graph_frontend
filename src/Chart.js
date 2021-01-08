@@ -103,8 +103,6 @@ class Chart {
     data.labels = data.labels?.filter((d) => d.id) || Chart.getLabels();
     data.embedLabels = _.cloneDeep(data.embedLabels || this.data?.embedLabels || []);
 
-    const labels = Object.values(data.labels).map((d) => Object.create(d));
-
     if (data.embedLabels.length) {
       data.embedLabels = data.embedLabels.map((label) => {
         const labelNodes = data.nodes.filter((n) => +label.sourceId === +n.sourceId);
@@ -124,12 +122,16 @@ class Chart {
           return l;
         });
         data.links.push(...label.links);
-        // get position difference
-        const labelEmbed = labels.find((l) => l.id === label.label?.id);
-        if (labelEmbed) {
-          label.lx = label.label.d[0][0] - labelEmbed.d[0][0];
-          label.ly = label.label.d[0][1] - labelEmbed.d[0][1];
-        }
+
+        data.labels = data.labels.map((l) => {
+          if (l.id === label.label?.id) {
+            l.readOnly = true;
+            label.lx = label.label.d[0][0] - l.d[0][0];
+            label.ly = label.label.d[0][1] - l.d[0][1];
+          }
+          return l;
+        });
+
         return label;
       });
       data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.target}//${d.type}`);
@@ -246,6 +248,9 @@ class Chart {
     const links = Object.values(data.links).map((d) => Object.create(d));
 
     const lastUid = data.lastUid || this.data?.lastUid || 0;
+
+
+    const labels = Object.values(data.labels).map((d) => Object.create(d));
 
     return {
       links, nodes, labels, embedLabels: data.embedLabels, lastUid,
@@ -658,6 +663,7 @@ class Chart {
         }
         this.node.each((d) => {
           if (dragLabel.nodes.some((n) => n.id === d.id)) {
+            console.log(d.labels, datum.id)
             if (
               (!d.readOnly && !datum.readOnly)
               || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
@@ -1760,6 +1766,8 @@ class Chart {
       d: d.d,
       type: d.type,
       status: d.status,
+      sourceId: d.sourceId,
+      readOnly: d.readOnly,
     }));
   }
 

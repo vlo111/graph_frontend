@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
-import ChartUtils from '../../helpers/ChartUtils';
 import { setFilter } from '../../store/actions/app';
 import Checkbox from '../form/Checkbox';
 
@@ -79,7 +78,7 @@ class LabelStatusFilter extends Component {
             </Checkbox>
           </li>
           {labelStatusFull.map((item) => (
-            <li key={item.status} className="item" >
+            <li key={item.status} className="item">
               <Checkbox
                 label={item.status}
                 checked={filters.labelStatus.includes(item.status)}
