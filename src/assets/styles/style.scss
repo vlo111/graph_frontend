@@ -1913,13 +1913,7 @@ p {
 
 
     &:after {
-      content: '';
-      position: absolute;
-      left: 5px;
-      bottom: 0;
-      width: calc(100% - 10px);
-      height: 1px;
-      background-color: #f2f2f2;
+      content: none;
     }
 
     &:last-child:after {
@@ -1998,7 +1992,7 @@ p {
   .contentWrapper {
     background-color: white;
     max-width: 100%;
-    height: calc(100% - 34px);
+    height: calc(100% - 41px);
     display: flex;
     flex-direction: column;
     font-size: 15px;
@@ -5369,7 +5363,7 @@ body .gh__menu {
   .contentWrapper {
     background-color: white;
     max-width: 100%;
-    height: calc(100% - 34px);
+    height: calc(100% - 41px);
     display: flex;
     flex-direction: column;
     font-size: 15px;

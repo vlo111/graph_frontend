@@ -2,7 +2,6 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
-import lockSvg from './assets/images/icons/lock.svg';
 import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
@@ -459,7 +458,7 @@ class Chart {
 
       const sameLinks = data.links.filter((l) => (
         ((this.getSource(l) === this.getSource(link) && this.getTarget(l) === this.getTarget(link))
-              || (this.getSource(l) === this.getTarget(link) && this.getTarget(l) === this.getSource(link))) && !l.curve
+          || (this.getSource(l) === this.getTarget(link) && this.getTarget(l) === this.getSource(link))) && !l.curve
       ));
       if (sameLinks.length) {
         _.forEach(sameLinks, (l, i) => {
@@ -472,16 +471,16 @@ class Chart {
             const middleLink = !even && Math.ceil(totalHalf) === index;
             const indexCorrected = index <= totalHalf ? index : index - Math.ceil(totalHalf);
 
-          let arcDirection = index <= totalHalf ? 0 : 1;
-          if (reverse) {
-            arcDirection = arcDirection === 1 ? 0 : 1;
-          }
+            let arcDirection = index <= totalHalf ? 0 : 1;
+            if (reverse) {
+              arcDirection = arcDirection === 1 ? 0 : 1;
+            }
 
-          let arc = half / (indexCorrected - (even ? 0.5 : 0));
+            let arc = half / (indexCorrected - (even ? 0.5 : 0));
 
-          if (middleLink) {
-            arc = 0;
-          }
+            if (middleLink) {
+              arc = 0;
+            }
 
             l.same = {
               arcDirection,
@@ -595,6 +594,7 @@ class Chart {
       if (this.activeButton === 'create-label') {
         activeLine = labelsWrapper.append('path')
           .datum({
+            id: ChartUtils.uniqueId(this.data.labels),
             name: '',
             color: ChartUtils.labelColors(),
             d: [],
@@ -662,7 +662,7 @@ class Chart {
         this.link.data().map((d) => {
           if (
             (!d.readOnly && !datum.readOnly)
-              || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
+            || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
           ) {
             if (dragLabel.nodes.some((n) => n.index === d.source.index || n.index === d.target.index)) {
               if (this.point) {
@@ -1872,7 +1872,7 @@ class Chart {
 
     const html = document.querySelector('#graph svg').outerHTML;
 
-    if(!preventInitial){
+    if (!preventInitial) {
       // reset original styles
       const { x: oX, y: oY, scale: oScale } = originalDimensions;
       this.wrapper.attr('transform', `translate(${oX}, ${oY}), scale(${oScale})`)
