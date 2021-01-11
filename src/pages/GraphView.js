@@ -70,10 +70,10 @@ class GraphView extends Component {
       singleGraph, userGraphs, location: { pathname }, match: { params: { graphId = '' } },
     } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
-    const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId); 
+    const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId);
     return (
       <Wrapper className="graphView" showFooter={false}>
-        <div className="graphWrapper">        
+        <div className="graphWrapper">
           <ReactChart />
         </div>
         {preview ? (
@@ -101,20 +101,20 @@ class GraphView extends Component {
         ) : (
           <>
             {['admin', 'edit'].includes(singleGraph.currentUserRole) && (
-              <>
-                <Link to={`/graphs/update/${graphId}`}>
-                  <Tooltip overlay="Update">
-                    <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
-                  </Tooltip>
-                </Link>
-                <Tooltip overlay="Delete">
-                  <Button
-                    icon={<TrashSvg style={{ height: 30 }} />}
-                    onClick={this.deleteGraph}
-                    className="transparent delete"
-                  />
+              <Tooltip overlay="Delete">
+                <Button
+                  icon={<TrashSvg style={{ height: 30 }} />}
+                  onClick={this.deleteGraph}
+                  className="transparent delete"
+                />
+              </Tooltip>
+            )}
+            {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
+              <Link to={`/graphs/update/${graphId}`}>
+                <Tooltip overlay="Update">
+                  <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
                 </Tooltip>
-              </>
+              </Link>
             )}
             <ShareGraph graphId={+graphId} />
             <NodeDescription />

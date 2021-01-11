@@ -105,16 +105,16 @@ export function socketInit() {
         const minX = Math.min(...data.label.d.map((l) => l[0]));
         const minY = Math.min(...data.label.d.map((l) => l[1]));
 
-        data.links.map((l) => {
+        data.links = data.links.map((l) => {
           if (l.sx && l.linkType === 'a1') {
             l.sx = l.sx - minX + posX;
             l.sy = l.sy - minY + posY;
             l.tx = l.tx - minX + posX;
             l.ty = l.ty - minY + posY;
-          }
-          else {
+          } else {
             l.sx = undefined;
           }
+          return l;
         });
       }
 

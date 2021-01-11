@@ -55,7 +55,6 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
-      this.event.emit('node.dragend', ev, d);
       if (!ev.active) simulation.alphaTarget(0);
       if (d !== undefined) {
         if (d.readOnly) {
@@ -81,6 +80,7 @@ class Chart {
           delete d.fy;
         }
       }
+      this.event.emit('node.dragend', ev, d);
     };
 
     return d3.drag()
@@ -663,7 +663,6 @@ class Chart {
         }
         this.node.each((d) => {
           if (dragLabel.nodes.some((n) => n.id === d.id)) {
-            console.log(d.labels, datum.id)
             if (
               (!d.readOnly && !datum.readOnly)
               || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))

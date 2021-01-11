@@ -7,6 +7,7 @@ import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg'
 import { setActiveButton } from '../../store/actions/app';
 import ContextMenu from './ContextMenu';
 import Chart from '../../Chart';
+import ChartUtils from "../../helpers/ChartUtils";
 
 class AddLabelModal extends Component {
   closeDelete = () => {
@@ -20,9 +21,7 @@ class AddLabelModal extends Component {
       let nodes = Chart.getNodes();
       let links = Chart.getLinks();
       nodes = nodes.filter((d) => d.sourceId || !squareDara.nodes.includes(d.id));
-
-      links = links.filter((d) => !squareDara.nodes.includes(d.target) && !squareDara.selectedNodes.includes(d.source));
-
+      links = ChartUtils.cleanLinks(links, nodes);
       Chart.render({ links, nodes });
     } else {
       params.contextMenu = true;
@@ -37,7 +36,7 @@ class AddLabelModal extends Component {
     console.log(data.type);
     if (activeButton !== 'deleteModal') {
       return null;
-    } 
+    }
     return (
       <Modal
         className="ghModal deleteModal"

@@ -45,11 +45,14 @@ class ContextMenu extends Component {
   onHandleContextMenu = async (ev) => {
     ev.preventDefault();
     const { show } = this.state;
+    const { currentUserRole } = this.props;
     if (show) {
       this.setState({ show: false });
       return;
     }
-    console.log(ev.target)
+    if (currentUserRole === 'edit_inside') {
+      return;
+    }
     const { x, y } = ev;
     let element;
     let params = {};
@@ -131,7 +134,7 @@ class ContextMenu extends Component {
     if (params.fieldName === '_location') {
       return null;
     }
-    console.log(show)
+    console.log(show);
     // remove curve points
     Chart.wrapper.selectAll('#fcurve, #lcurve').remove();
 
@@ -228,6 +231,7 @@ class ContextMenu extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
+  currentUserRole: state.graphs.singleGraph.currentUserRole || '',
 });
 const mapDispatchToProps = {
   setActiveButton,
