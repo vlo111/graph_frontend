@@ -444,7 +444,12 @@ class ChartUtils {
   }
 
   static getNodeLabels(node) {
-    return Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
+    const firstFolder = node.labels?.find((l) => l.startsWith('f_'));
+    const labels = Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
+    if (labels.includes(firstFolder)) {
+      return [firstFolder];
+    }
+    return labels;
   }
 
   // deprecated use getNodeLabels
