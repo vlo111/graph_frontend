@@ -603,7 +603,7 @@ class ChartUtils {
   }
 
   static getChartSvg() {
-    return document.querySelector('#graph svg').outerHTML;
+    return document.querySelector('#graph svg')?.outerHTML || '';
   }
 }
 
