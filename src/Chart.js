@@ -402,6 +402,13 @@ class Chart {
 
     folderWrapper.selectAll('.folder > *').remove();
 
+
+    //
+    // const openFolder = d.labels.some((l) => {
+    //   const label = ChartUtils.getLabelById(l);
+    //   return label.type === 'folder' && label.open;
+    // })
+
     const aaaa = (ev, d) => {
       d.open = false;
       const x = d.d[0][0];
@@ -432,7 +439,7 @@ class Chart {
     };
 
     this.folders = folderWrapper.selectAll('.folder')
-      .data(this.data.labels.filter((l) => l.type === 'folder'))
+      .data(this.data.labels.filter((l) => l.type === 'folder' && l.hidden !== 1))
       .join('g')
       .attr('id', (d) => d.id)
       .attr('data-id', (d) => d.id)
@@ -826,7 +833,6 @@ class Chart {
       this.linksWrapper = this.svg.select('.links');
 
       const listLink = filteredLinks.sort((x, y) => ((x.curve === y.curve) ? 0 : x.curve ? 1 : -1));
-
       this.link = this.linksWrapper.selectAll('path')
         .data(listLink)
         .join('path')

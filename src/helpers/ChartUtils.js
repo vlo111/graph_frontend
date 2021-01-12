@@ -69,7 +69,7 @@ class ChartUtils {
         return d;
       }
       if (params.labels[0] !== '__ALL__' && d.labels.length && !d.labels.some((l) => params.labels.includes(l))) {
-        d.hidden = -1;
+        d.hidden = 1;
         return d;
       }
       if (params.nodeCustomFields[0] !== '__ALL__' && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.id]))) {
