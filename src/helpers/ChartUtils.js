@@ -601,6 +601,10 @@ class ChartUtils {
   static isInSquare(areaPos, size, pos) {
     return pos[0] >= areaPos[0] && pos[0] <= areaPos[0] + size && pos[1] >= areaPos[1] && pos[1] <= areaPos[1] + size;
   }
+
+  static getChartSvg() {
+    return document.querySelector('#graph svg').outerHTML;
+  }
 }
 
 export default ChartUtils;

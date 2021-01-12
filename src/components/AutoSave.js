@@ -40,6 +40,7 @@ class AutoSave extends Component {
     const links = Chart.getLinks();
     const labels = Chart.getLabels();
     const { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
+    const svg = ChartUtils.getChartSvg();
     await this.props.updateGraphRequest(graphId, {
       ...singleGraph,
       nodes,
@@ -48,6 +49,7 @@ class AutoSave extends Component {
       files,
       customFields,
       autoSave: true,
+      svg,
     });
     document.body.classList.remove('autoSave');
   }

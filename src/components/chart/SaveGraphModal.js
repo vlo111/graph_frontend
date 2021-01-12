@@ -91,8 +91,7 @@ class SaveGraphModal extends Component {
     const links = Chart.getLinks();
     const labels = Chart.getLabels();
     const { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
-    // const svg = document.querySelector('#graph svg').outerHTML;
-
+    const svg = ChartUtils.getChartSvg();
     // const svg = Chart.printMode(400, 223);
 
     let resGraphId;
@@ -105,6 +104,7 @@ class SaveGraphModal extends Component {
         files,
         status,
         customFields,
+        svg,
       });
       resGraphId = data.graphId;
     } else {
@@ -116,6 +116,7 @@ class SaveGraphModal extends Component {
         files,
         status,
         customFields,
+        svg,
       });
       resGraphId = data.graphId;
     }
