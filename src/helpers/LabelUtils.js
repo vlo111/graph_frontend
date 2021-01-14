@@ -29,17 +29,34 @@ class LabelUtils {
     return data;
   }
 
-  static async past(x, y, isEmbed, graphId) {
+
+  static getData() {
     let data;
     try {
       data = JSON.parse(localStorage.getItem('label.copy'));
     } catch (e) {
       //
     }
+    return data || {};
+  }
+
+  static compare() {
+    const data = this.getData();
+    if (!data.label) {
+      return {};
+    }
+    const nodes = Chart.getNodes();
+    const duplicatedNodes = _.intersectionBy(nodes, data.nodes, 'name');
+    return {
+      duplicatedNodes,
+    };
+  }
+
+  static async past(data, position, isEmbed, graphId) {
     if (!data || !data.label) {
       return;
     }
-    const { x: posX, y: posY } = ChartUtils.calcScaledPosition(x, y);
+    const { x: posX, y: posY } = ChartUtils.calcScaledPosition(position[0], position[1]);
 
     // label past
     const labels = Chart.getLabels();
@@ -72,11 +89,11 @@ class LabelUtils {
     });
 
     // nodes past
-    const nodes = Chart.getNodes();
+    let nodes = Chart.getNodes();
     data.nodes.forEach((d) => {
       d.fx = d.fx - minX + posX;
       d.fy = d.fy - minY + posY;
-      d.name = ChartUtils.nodeUniqueName(d);
+      d.name = d.replace ? d.name : ChartUtils.nodeUniqueName(d);
 
       if (isEmbed) {
         d.readOnly = true;
@@ -92,7 +109,7 @@ class LabelUtils {
           return l;
         });
       } else {
-        const id = ChartUtils.uniqueId(nodes);
+        const id = d.replace ? d.id : ChartUtils.uniqueId(nodes);
         d.labels = d.labels.map((l) => {
           if (l === labelOriginalId) {
             return labelId;
@@ -118,7 +135,16 @@ class LabelUtils {
 
       store.dispatch(setNodeCustomField(d.type, d.id, customField));
 
-      nodes.push(d);
+      if (d.replace) {
+        nodes = nodes.map((n) => {
+          if (n.id === d.id) {
+            return d;
+          }
+          return n;
+        });
+      } else {
+        nodes.push(d);
+      }
     });
 
     // links past

@@ -109,8 +109,10 @@ class ContextMenu extends Component {
       });
       this.props.setActiveButton('deleteModal');
     } else {
-      const { params } = this.state;
+      const { params, x, y } = this.state;
       params.contextMenu = true;
+      params.x = x;
+      params.y = y;
       this.constructor.event.emit(type, params.originalEvent, { ...params, ...additionalParams });
     }
   }
@@ -155,15 +157,13 @@ class ContextMenu extends Component {
                   Paste
                   <Icon className="arrow" value="fa-angle-right" />
                   <div className="contextmenu">
-                    <Button onClick={(ev) => {
-                      LabelUtils.past(x, y);
-                      this.handleClick(ev, 'label.append');
-                    }}
+                    <Button onClick={(ev) => this.handleClick(ev, 'label.append')}
                     >
                       Append
                     </Button>
                     <Button onClick={(ev) => {
-                      LabelUtils.past(x, y, true, graphId);
+                      const data = LabelUtils.getData();
+                      LabelUtils.past(data, [x, y], true, graphId);
                       this.handleClick(ev, 'label.embed');
                     }}
                     >
