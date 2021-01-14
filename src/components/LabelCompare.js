@@ -13,12 +13,13 @@ class LabelCompare extends Component {
   }
 
   render() {
-    const { duplicatedNodes } = this.props;
+    const { duplicatedNodes, onRequestClose } = this.props;
     return (
       <Modal
         isOpen
         className="ghModal graphCompare"
         overlayClassName="ghModalOverlay graphCompareOverlay"
+        onRequestClose={onRequestClose}
       >
 
       </Modal>

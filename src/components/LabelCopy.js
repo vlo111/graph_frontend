@@ -5,7 +5,7 @@ import ContextMenu from './contextMenu/ContextMenu';
 import LabelUtils from '../helpers/LabelUtils';
 import Button from './form/Button';
 import Chart from '../Chart';
-import LabelCompare from "./LabelCompare";
+import LabelCompare from './LabelCompare';
 
 class LabelCopy extends Component {
   constructor(props) {
@@ -39,11 +39,14 @@ class LabelCopy extends Component {
     const { duplicatedNodes } = LabelUtils.compare();
     const position = [x, y];
     const data = LabelUtils.getData();
+    console.log(data);
     if (_.isEmpty(duplicatedNodes)) {
       LabelUtils.past(data, position);
       return;
     }
-    this.setState({ duplicatedNodes, nodesLength: data.nodes.length, position, showQuestionModal: true });
+    this.setState({
+      duplicatedNodes, nodesLength: data.nodes.length, position, showQuestionModal: true,
+    });
   }
 
   skipDuplications = () => {
@@ -55,7 +58,9 @@ class LabelCopy extends Component {
   }
 
   closeModal = () => {
-    this.setState({ duplicatedNodes: [], nodesLength: 0, position: [], showQuestionModal: false });
+    this.setState({
+      duplicatedNodes: [], nodesLength: 0, position: [], showQuestionModal: false,
+    });
   }
 
   replaceDuplications = () => {
@@ -89,7 +94,9 @@ class LabelCopy extends Component {
   }
 
   render() {
-    const { duplicatedNodes, nodesLength, showQuestionModal, showCompareModal } = this.state;
+    const {
+      duplicatedNodes, nodesLength, showQuestionModal, showCompareModal,
+    } = this.state;
     if (!showQuestionModal && !showCompareModal) {
       return null;
     }
@@ -99,6 +106,7 @@ class LabelCopy extends Component {
           isOpen={showQuestionModal}
           className="ghModal graphCopy"
           overlayClassName="ghModalOverlay graphCopyOverlay"
+          onRequestClose={this.closeModal}
         >
           <h4 className="subtitle">
             {`Moving ${nodesLength} nodes from ${'AAA'} to ${'BBB'}.`}
@@ -107,8 +115,8 @@ class LabelCopy extends Component {
             {`The destinations has ${duplicatedNodes.length} nodes with the same type and name`}
           </h2>
           <div className="buttonsWrapper">
-            <Button onClick={this.compareNodes} className="actionButton" icon="fa-code-fork">
-              Compare nodes
+            <Button onClick={() => this.toggleCompareNodes(true)} className="actionButton" icon="fa-code-fork">
+              Compare nodes (in progress)
             </Button>
             <Button onClick={this.replaceDuplications} className="actionButton" icon="fa-retweet">
               Replace the nodes in the destination
@@ -121,7 +129,7 @@ class LabelCopy extends Component {
             </Button>
           </div>
         </Modal>
-        {showCompareModal ? <LabelCompare duplicatedNodes={duplicatedNodes} /> : null}
+        {showCompareModal ? <LabelCompare duplicatedNodes={duplicatedNodes} onRequestClose={() => this.toggleCompareNodes(false)} /> : null}
       </>
     );
   }

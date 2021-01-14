@@ -1733,6 +1733,7 @@ class Chart {
       this._dataLinks = this.data.links.map((d) => {
         const pd = Object.getPrototypeOf(d);
         return {
+          id: d.id || ChartUtils.uniqueId(this.data.links), // todo
           index: d.index,
           sx: d.sx,
           sy: d.sy,
