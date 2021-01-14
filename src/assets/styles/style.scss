@@ -6056,3 +6056,29 @@ img.scaled {
 .validateTabFile {
   color: $color-error;
 }
+
+.graphCompareOverlay {
+  .graphCompare {
+    max-width: 500px;
+    width: 50%;
+
+    .subtitle {
+      width: 100%;
+      text-align: center;
+    }
+
+    .title {
+      width: 100%;
+      text-align: center;
+    }
+
+    .buttonsWrapper {
+      padding: 0 10%;
+      .actionButton{
+        background-color: transparent;
+        width: 100%;
+        text-align: left;
+      }
+    }
+  }
+}
