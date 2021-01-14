@@ -1414,10 +1414,10 @@ p {
 
 .searchInputWrapper {
   width: 249px;
-  position:absolute;
-  left: 250px;   
+  position: absolute;
+  left: 250px;
   padding: 0px 22px 0px 4px;
-  
+
   .graphSearch {
     width: 100%;
   }
@@ -4979,7 +4979,7 @@ body .gh__menu {
     padding: 2% 3.4%;
   }
 }
- 
+
 .homeWithUser {
   width: 100% !important;
   position: relative !important;
@@ -6059,8 +6059,8 @@ img.scaled {
   color: $color-error;
 }
 
-.graphCompareOverlay {
-  .graphCompare {
+.graphCopyOverlay {
+  .graphCopy {
     max-width: 500px;
     width: 50%;
 
@@ -6076,10 +6076,18 @@ img.scaled {
 
     .buttonsWrapper {
       padding: 0 10%;
-      .actionButton{
+
+      .actionButton {
         background-color: transparent;
         width: 100%;
         text-align: left;
+
+        > .icon {
+          margin-right: 20px;
+          .fa::before {
+            font-size: 28px;
+          }
+        }
       }
     }
   }

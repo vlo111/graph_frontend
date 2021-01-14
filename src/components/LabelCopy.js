@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Modal from 'react-modal';
-import Tooltip from 'rc-tooltip';
 import ContextMenu from './contextMenu/ContextMenu';
 import LabelUtils from '../helpers/LabelUtils';
 import Button from './form/Button';
-import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import Chart from '../Chart';
+import LabelCompare from "./LabelCompare";
 
 class LabelCopy extends Component {
   constructor(props) {
     super(props);
     this.state = {
       duplicatedNodes: [],
+      position: [],
       nodesLength: 0,
+      showQuestionModal: false,
+      showCompareModal: false,
     };
   }
 
@@ -41,7 +43,7 @@ class LabelCopy extends Component {
       LabelUtils.past(data, position);
       return;
     }
-    this.setState({ duplicatedNodes, nodesLength: data.nodes.length, position });
+    this.setState({ duplicatedNodes, nodesLength: data.nodes.length, position, showQuestionModal: true });
   }
 
   skipDuplications = () => {
@@ -53,7 +55,7 @@ class LabelCopy extends Component {
   }
 
   closeModal = () => {
-    this.setState({ duplicatedNodes: [], nodesLength: 0, position: [] });
+    this.setState({ duplicatedNodes: [], nodesLength: 0, position: [], showQuestionModal: false });
   }
 
   replaceDuplications = () => {
@@ -82,39 +84,45 @@ class LabelCopy extends Component {
     this.closeModal();
   }
 
+  toggleCompareNodes = (showCompareModal) => {
+    this.setState({ showCompareModal });
+  }
+
   render() {
-    const { duplicatedNodes, nodesLength } = this.state;
-    if (_.isEmpty(duplicatedNodes)) {
+    const { duplicatedNodes, nodesLength, showQuestionModal, showCompareModal } = this.state;
+    if (!showQuestionModal && !showCompareModal) {
       return null;
     }
     return (
-      <Modal
-        isOpen
-        className="ghModal graphCompare"
-        overlayClassName="ghModalOverlay graphCompareOverlay"
-      >
-        <h4 className="subtitle">
-          {`Moving ${nodesLength} nodes from ${'AAA'} to ${'BBB'}.`}
-        </h4>
-        <h2 className="title">
-          {`The destinations has ${duplicatedNodes.length} nodes with the same type and name`}
-        </h2>
-        <div className="buttonsWrapper">
-          <Button className="actionButton" icon={<EditSvg style={{ height: 30 }} />}>
-            Compare nodes
-          </Button>
-          <Button onClick={this.replaceDuplications} className="actionButton" icon={<EditSvg style={{ height: 30 }} />}>
-            Replace the nodes in the destination
-          </Button>
-          <Button onClick={this.skipDuplications} className="actionButton" icon={<EditSvg style={{ height: 30 }} />}>
-            Skip these nodes
-          </Button>
-          <Button onClick={this.fixDuplications} className="actionButton" icon={<EditSvg style={{ height: 30 }} />}>
-            ???
-          </Button>
-        </div>
-
-      </Modal>
+      <>
+        <Modal
+          isOpen={showQuestionModal}
+          className="ghModal graphCopy"
+          overlayClassName="ghModalOverlay graphCopyOverlay"
+        >
+          <h4 className="subtitle">
+            {`Moving ${nodesLength} nodes from ${'AAA'} to ${'BBB'}.`}
+          </h4>
+          <h2 className="title">
+            {`The destinations has ${duplicatedNodes.length} nodes with the same type and name`}
+          </h2>
+          <div className="buttonsWrapper">
+            <Button onClick={this.compareNodes} className="actionButton" icon="fa-code-fork">
+              Compare nodes
+            </Button>
+            <Button onClick={this.replaceDuplications} className="actionButton" icon="fa-retweet">
+              Replace the nodes in the destination
+            </Button>
+            <Button onClick={this.skipDuplications} className="actionButton" icon="fa-compress">
+              Skip these nodes
+            </Button>
+            <Button onClick={this.fixDuplications} className="actionButton" icon="fa-clone">
+              ???
+            </Button>
+          </div>
+        </Modal>
+        {showCompareModal ? <LabelCompare duplicatedNodes={duplicatedNodes} /> : null}
+      </>
     );
   }
 }
