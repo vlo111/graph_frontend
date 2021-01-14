@@ -20,6 +20,7 @@ import { userGraphRequest } from '../store/actions/shareGraphs';
 import ShareGraph from '../components/ShareGraph';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
+import ToolBarHeader from '../components/ToolBarHeader';
 
 class GraphView extends Component {
   static propTypes = {
@@ -100,23 +101,14 @@ class GraphView extends Component {
           </div>
         ) : (
           <>
-            {['admin', 'edit'].includes(singleGraph.currentUserRole) && (
-              <Tooltip overlay="Delete">
-                <Button
-                  icon={<TrashSvg style={{ height: 30 }} />}
-                  onClick={this.deleteGraph}
-                  className="transparent delete"
-                />
-              </Tooltip>
-            )}
+           
             {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
               <Link to={`/graphs/update/${graphId}`}>
                 <Tooltip overlay="Update">
                   <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
                 </Tooltip>
               </Link>
-            )}
-            <ShareGraph graphId={+graphId} />
+            )} 
             <NodeDescription />
             <Link to="/">
               <Tooltip overlay="Back">
@@ -125,8 +117,7 @@ class GraphView extends Component {
             </Link>
           </>
         )}
-        <Legend />
-        <Filters />
+        <ToolBarHeader />  
         <NodeFullInfo editable={false} />
         <LabelTooltip />
       </Wrapper>

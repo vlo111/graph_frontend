@@ -25,6 +25,8 @@ class ToolBarHeader extends Component {
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+
   }
 
   handleClick = (button) => {
@@ -39,8 +41,9 @@ class ToolBarHeader extends Component {
   }
 
   render() {
-    const { activeButton, match: { params: { graphId, token = '' } } } = this.props;
+    const { activeButton, location: { pathname }, match: { params: { graphId, token = '' } } } = this.props;
     const isInEmbed = Utils.isInEmbed();
+    const updateLocation = pathname.startsWith('/graphs/update/');
     return (
       <header id="header">
         <Link to="/" className="logoWrapper">
@@ -48,30 +51,40 @@ class ToolBarHeader extends Component {
           <span className="autoSaveText">Saving...</span>
         </Link>
         <AccountDropDown />
-        <MapsButton />
-        <WikiButton />
+        {updateLocation ? (
+          <MapsButton />
+        ) : null}
+        {updateLocation ? (
+          <WikiButton />
+        ) : null}
         <Legend />
         <div className="graphs">
-          <Button
-            icon={<SearchSvg />}
-            className={activeButton === 'search' ? 'active' : undefined}
-            onClick={() => this.handleClick('search')}
-          >
-            Search
-          </Button>
-
-          {/* <SearchInput /> */}
+          {updateLocation ? (
+            <Button
+              icon={<SearchSvg />}
+              className={activeButton === 'search' ? 'active' : undefined}
+              onClick={() => this.handleClick('search')}
+            >
+              Search
+            </Button>
+          ) : (
+              <SearchInput />
+            )}
           <ShareGraph graphId={+graphId} setButton />
-          <Button
-            icon={<ViewSvg />}
-            onClick={() => this.props.history.replace(`/graphs/view/${graphId}`)}
-          >
-            View mode
-          </Button>
+          {updateLocation ? (
+            <Button
+              icon={<ViewSvg />}
+              onClick={() => this.props.history.replace(`/graphs/view/${graphId}`)}
+            >
+              View mode
+            </Button>
+          ) : null}
           <Button
             icon={<FilterSvg />}
-            onClick={() => {isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
-             : this.props.history.replace(`/graphs/filter/${graphId}`)}}
+            onClick={() => {
+              isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
+                : this.props.history.replace(`/graphs/filter/${graphId}`)
+            }}
           >
            Filter
           </Button>
