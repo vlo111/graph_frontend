@@ -2838,7 +2838,7 @@ p {
   .edit {
     position: absolute;
     left: 15px;
-    top: 75px;
+    top: 145px;
     margin-right: 0;
     padding-right: 0;
 
@@ -2886,7 +2886,7 @@ p {
   .back {
     position: absolute;
     left: 15px;
-    top: 293px;
+    top: 222px;
     margin-right: 0;
     padding-right: 0;
 
@@ -3555,7 +3555,7 @@ body .gh__menu {
 .searchInputWrapper,
 .ghModalSearch {
   .list {
-    max-height: 100%;
+    max-height: 500%;
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
