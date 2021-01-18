@@ -76,7 +76,7 @@ class GraphForm extends Component {
         <CreateGraphModal />
         <AutoSave />
         <LabelShare />
-        <LabelCopy />
+        {/*<LabelCopy />*/}
       </Wrapper>
     );
   }
