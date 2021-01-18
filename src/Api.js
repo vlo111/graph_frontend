@@ -157,6 +157,18 @@ class Api {
     return api.get('/users/get-by-text', { params: { text } });
   }
 
+  static getPicturesByTag(tag) {
+    return api.get('/document/get-pictures-by-tag', { params: { tag } });
+  }
+
+  static getDocumentsByTag(tag) {
+    return api.get('/document/get-documents-by-tag', { params: { tag } });
+  }
+
+  static getDocuments(graphId) {
+    return api.get('/document/get-documents', { params: { graphId } });
+  }
+
   static createShareGraph(requestData) {
     return api.post('/share-graphs/create', requestData);
   }

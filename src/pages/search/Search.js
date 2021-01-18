@@ -6,6 +6,8 @@ import Wrapper from '../../components/Wrapper';
 import Header from '../../components/Header';
 import SearchResult from './SearchResult';
 import SearchSharedGraphs from './SearchSharedGraphs';
+import SearchPictures from './SearchPictures';
+import SearchDocuments from './SearchDocuments';
 
 class Search extends Component {
   handleRouteChange = (tab) => {
@@ -25,6 +27,8 @@ class Search extends Component {
             { to: '/search-graph', name: 'Graphs', component: <SearchGraphs /> },
             { to: '/search-shared-graph', name: 'Shared Graphs', component: <SearchSharedGraphs /> },
             { to: '/search-people', name: 'People', component: <SearchPeople /> },
+            { to: '/search-pictures', name: 'Pictures', component: <SearchPictures /> },
+            { to: '/search-documents', name: 'Documents', component: <SearchDocuments /> },
           ]}
         />
       </Wrapper>

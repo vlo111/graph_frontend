@@ -130,10 +130,10 @@ export function renameNodeCustomFieldKey(type, oldName, name) {
 
 export const REMOVE_NODE_CUSTOM_FIELD_KEY = 'REMOVE_NODE_CUSTOM_FIELD_KEY';
 
-export function removeNodeCustomFieldKey(type, key) {
+export function removeNodeCustomFieldKey(type, key, nodeId) {
   return {
     type: REMOVE_NODE_CUSTOM_FIELD_KEY,
-    payload: { type, key },
+    payload: { type, key, nodeId },
   };
 }
 
