@@ -127,7 +127,7 @@ class LabelCopy extends Component {
               Skip these nodes
             </Button>
             <Button onClick={this.fixDuplications} className="actionButton" icon="fa-clone">
-              ???
+              Keep both
             </Button>
           </div>
         </Modal>
