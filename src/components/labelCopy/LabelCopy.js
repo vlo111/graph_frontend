@@ -6,6 +6,9 @@ import LabelUtils from '../../helpers/LabelUtils';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import LabelCompare from './LabelCompare';
+import { connect } from "react-redux";
+import CustomFields from "../../helpers/CustomFields";
+import { removeNodeCustomFieldKey } from "../../store/actions/graphs";
 
 class LabelCopy extends Component {
   constructor(props) {
@@ -63,6 +66,7 @@ class LabelCopy extends Component {
   }
 
   replaceDuplications = () => {
+    const { customFields } = this.props;
     const { position } = this.state;
     const data = LabelUtils.getData();
     const nodes = Chart.getNodes();
@@ -72,6 +76,10 @@ class LabelCopy extends Component {
         const originalId = n.id;
         n.id = duplicate.id;
         n.replace = true;
+        const customField = CustomFields.get(customFields, duplicate.type, duplicate.id);
+        _.forEach(customField, (v, name) => {
+          this.props.removeNodeCustomFieldKey(duplicate.type, name, duplicate.id);
+        });
         data.links = data.links.map((l) => {
           if (l.source === originalId) {
             l.source = n.id;
@@ -149,4 +157,15 @@ class LabelCopy extends Component {
 
 }
 
-export default LabelCopy;
+const mapStateToProps = (state) => ({
+  customFields: state.graphs.singleGraph.customFields || {},
+});
+const mapDispatchToProps = {
+  removeNodeCustomFieldKey
+};
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LabelCopy);
+
+export default Container;

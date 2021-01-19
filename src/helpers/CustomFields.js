@@ -26,6 +26,10 @@ class CustomFields {
     };
   }
 
+  static uniqueName(customFields, type, name) {
+    console.log(Object.keys(customFields[type]), 333)
+  }
+
   static setKey(customFields = {}, type, key, subtitle = '') {
     if (Object.keys(customFields[type] || {}).length >= this.LIMIT) {
       console.warn('CustomFields limit');
