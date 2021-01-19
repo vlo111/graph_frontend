@@ -24,19 +24,25 @@ const ShareTooltip = React.memo(({ graphId, graphOwner }) => {
 
     useEffect(() => {
         dispatch(graphUsersRequest({ graphId }));
-    }, [dispatch, graphId]); 
+    }, [dispatch, graphId]);
     if (graphOwner === undefined) {
         return false;
-    } 
+    }
+
+    const count = graphUsers && Object.keys(graphUsers) && Object.keys(graphUsers).length;
+
     return (
 
         <div className="contributors-container">
             <hr />
-            <p className="h4 mb-3 title b"> Contributors </p>
-           
+            <p className="h4 mb-3 title b"> Contributors:
+            {count ? (
+                    <span className="counter">  { count}  </span>
+                ) : null}
+            </p>
             <ul className="list-style-none d-flex flex-wrap mb-n2">
                 <Link to={`/profile/${graphOwner.id}`} target="_blank">
-                    <li className="mb-2 mr-2"> 
+                    <li className="mb-2 mr-2">
                         <Tooltip overlay={<TootlipContent user={graphOwner} role='Owner' />} trigger={['hover']}>
                             <img className="avatar-user d-block" src={graphOwner.avatar} alt="" />
                         </Tooltip>
