@@ -22,11 +22,35 @@ class LabelCompareItem extends Component {
     return (
       <>
         <input type="checkbox" checked={checked} onChange={this.handleChange} />
-        <NodeIcon node={node} />
-        <span className="type">{node.type}</span>
-        <span className="createdAt">{moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}</span>
-        <div>
+        <div className="row">
+          <NodeIcon node={node} />
+          <div className="description">
+            <span className="type">{node.type}</span>
+            <span className="createdAt">{moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}</span>
+          </div>
+        </div>
+        <div className="tabs">
           {_.map(customField, (val, key) => {
+            if (!val) {
+              return null;
+            }
+            const { result: text } = stripHtml(val || '');
+            return (
+              <Tooltip key={key} overlay={text} placement="top">
+                <span>{key}</span>
+              </Tooltip>
+            );
+          })} {_.map(customField, (val, key) => {
+            if (!val) {
+              return null;
+            }
+            const { result: text } = stripHtml(val || '');
+            return (
+              <Tooltip key={key} overlay={text} placement="top">
+                <span>{key}</span>
+              </Tooltip>
+            );
+          })} {_.map(customField, (val, key) => {
             if (!val) {
               return null;
             }

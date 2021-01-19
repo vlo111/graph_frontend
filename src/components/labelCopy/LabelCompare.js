@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import LabelUtils from '../../helpers/LabelUtils';
 import LabelCompareItem from './LabelCompareItem';
-import Button from "../form/Button";
-import Chart from "../../Chart";
-import ChartUtils from "../../helpers/ChartUtils";
+import Button from '../form/Button';
+import Chart from '../../Chart';
+import ChartUtils from '../../helpers/ChartUtils';
+import CustomFields from '../../helpers/CustomFields';
+import { removeNodeCustomFieldKey, renameNodeCustomFieldKey } from '../../store/actions/graphs';
 
 class LabelCompare extends Component {
   constructor(props) {
@@ -16,7 +18,6 @@ class LabelCompare extends Component {
       duplicates: [],
     };
   }
-
 
   handleChange = (checked, d, type) => {
     const checkedItems = this.state[type];
@@ -58,7 +59,7 @@ class LabelCompare extends Component {
   }
 
   handleSubmit = () => {
-    const { compare: { duplicatedNodes, sourceNodes }, position } = this.props;
+    const { compare: { duplicatedNodes, sourceNodes }, position, customFields } = this.props;
     const { sources, duplicates } = this.state;
     const data = LabelUtils.getData();
     let links = Chart.getLinks();
@@ -69,6 +70,14 @@ class LabelCompare extends Component {
         const originalId = n.id;
         n.id = merge.id;
         n.merge = true;
+        const customFieldDuplicate = Object.keys(CustomFields.get(data.customFields, n.type, n.id));
+        const customField = Object.keys(CustomFields.get(customFields, merge.type, merge.id));
+        CustomFields.uniqueName(customFields, merge.type, 'a');
+        customField.forEach((name) => {
+          if (customFieldDuplicate.includes(name)) {
+            this.props.renameNodeCustomFieldKey(merge.type, name, `${name}_1`);
+          }
+        });
         data.links = data.links.map((l) => {
           if (l.source === originalId) {
             l.source = n.id;
@@ -79,7 +88,16 @@ class LabelCompare extends Component {
           return l;
         });
       } else {
-        nodes = nodes.filter((d) => n.name !== d.name);
+        nodes = nodes.filter((d) => {
+          if (n.name === d.name) {
+            const customField = Object.keys(CustomFields.get(customFields, d.type, d.id));
+            customField.forEach((name) => {
+              this.props.removeNodeCustomFieldKey(d.type, name, d.id);
+            });
+            return false;
+          }
+          return true;
+        });
       }
 
       return n;
@@ -171,7 +189,10 @@ const mapStateToProps = (state) => ({
   customFields: state.graphs.singleGraph.customFields || {},
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  removeNodeCustomFieldKey,
+  renameNodeCustomFieldKey,
+};
 
 const Container = connect(
   mapStateToProps,

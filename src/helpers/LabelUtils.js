@@ -140,6 +140,8 @@ class LabelUtils {
         d.id = id;
       }
 
+
+
       const customField = CustomFields.get(data.customFields, d.type, d.id);
 
       store.dispatch(setNodeCustomField(d.type, d.id, customField));
