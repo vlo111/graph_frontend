@@ -24,16 +24,15 @@ const ShareTooltip = React.memo(({ graphId, graphOwner }) => {
 
     useEffect(() => {
         dispatch(graphUsersRequest({ graphId }));
-    }, [dispatch, graphId]);
-    console.log(graphOwner, 'graphOwnergraphOwnergraphOwnergraphOwner');
+    }, [dispatch, graphId]); 
     if (graphOwner === undefined) {
         return false;
-    }
+    } 
     return (
 
         <div className="contributors-container">
             <hr />
-            <h4 className="h4 mb-3 title"> Contributors user lits </h4>
+            <p className="h4 mb-3 title b"> Contributors </p>
            
             <ul className="list-style-none d-flex flex-wrap mb-n2">
                 <Link to={`/profile/${graphOwner.id}`} target="_blank">

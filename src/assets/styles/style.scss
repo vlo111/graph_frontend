@@ -6240,6 +6240,7 @@ img.scaled {
   .contributors-container {
   padding-top   : 24px;
   padding-bottom: 24px;
+  padding-left  : 24px;
 
   .avatar-user {
     border-radius: 50% !important;
@@ -6278,6 +6279,10 @@ img.scaled {
 
   .d-flex {
     display: flex !important;
+  }
+
+  .b {
+    font-weight: bold;
   }
 
   .list-style-none {
