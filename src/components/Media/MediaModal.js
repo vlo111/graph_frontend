@@ -34,6 +34,10 @@ class MediaModal extends Component {
       this.searchDocuments(graphIdParam);
 
       if (documentSearch && documentSearch.length) {
+      console.log('---------------')
+      console.log(documentSearch)
+      console.log('---------------')
+
         documentSearch.sort((a, b) => a.nodeType.localeCompare(b.nodeType));
         documentSearch.map((p) => {
           if (p.graphs?.nodes && p.graphs?.nodes.length) {

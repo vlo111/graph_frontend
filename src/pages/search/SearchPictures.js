@@ -36,6 +36,9 @@ class SearchPictures extends Component {
     this.searchPictures(searchParam);
     let users = {};
     if (pictureSearch.length) {
+      console.log('-------------------------------------')
+      console.log(pictureSearch)
+      console.log('-------------------------------------')
       pictureSearch.sort((a, b) => a.nodeType.localeCompare(b.nodeType));
 
       const groupByUserId = (array, key) => array.reduce((result, obj) => {

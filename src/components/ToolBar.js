@@ -12,6 +12,7 @@ import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg';
 import { getSingleGraphRequest } from '../store/actions/graphs';
+import ShareTooltip from './ShareTooltip/ShareTooltip';
 
 class ToolBar extends Component {
   static propTypes = {
@@ -20,6 +21,8 @@ class ToolBar extends Component {
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    singleGraphUser: PropTypes.object.isRequired,
+
   }
 
   handleClick = (button) => {
@@ -34,7 +37,8 @@ class ToolBar extends Component {
   }
 
   render() {
-    const { activeButton, match: { params: { graphId } }, currentUserRole } = this.props;
+    const { activeButton, match: { params: { graphId } }, currentUserRole, singleGraphUser } = this.props;
+    
     return (
       <div id="toolBar">
         <div className="top">
@@ -83,6 +87,10 @@ class ToolBar extends Component {
 
           </div>
         </div>
+
+        <div className="bottom ">
+        <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} />
+        </div>
         <div className="bottom helpWrapper">
           <Button icon={<InfoSvg />}>
             Help
@@ -96,6 +104,8 @@ class ToolBar extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   currentUserRole: state.graphs.singleGraph.currentUserRole || '',
+  singleGraphUser: state.graphs.singleGraph.user,
+
 });
 const mapDispatchToProps = {
   setActiveButton,
