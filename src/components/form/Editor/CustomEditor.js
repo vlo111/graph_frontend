@@ -5,8 +5,8 @@ import 'jodit/build/jodit.min.css';
 import PropTypes from 'prop-types';
 import Utils from '../../../helpers/Utils';
 import Outside from '../../Outside';
-import Picker from 'emoji-picker-react'; 
-import { MentionsInput, Mention } from 'react-mentions'
+// import Picker from 'emoji-picker-react'; 
+// import { MentionsInput, Mention } from 'react-mentions'
 
 class CustomEditor extends Component {
   static propTypes = {
