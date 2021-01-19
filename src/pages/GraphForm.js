@@ -27,6 +27,7 @@ import { socketSetActiveGraph } from '../store/actions/socket';
 import AutoSave from '../components/AutoSave';
 import LabelShare from '../components/share/LabelShare';
 import MediaModal from "../components/Media/MediaModal";
+import LabelCopy from "../components/labelCopy/LabelCopy";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -76,7 +77,7 @@ class GraphForm extends Component {
         <CreateGraphModal />
         <AutoSave />
         <LabelShare />
-        {/*<LabelCopy />*/}
+        <LabelCopy />
       </Wrapper>
     );
   }

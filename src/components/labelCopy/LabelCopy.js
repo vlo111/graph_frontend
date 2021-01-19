@@ -94,7 +94,7 @@ class LabelCopy extends Component {
 
   render() {
     const {
-      compare, nodesLength, showQuestionModal, showCompareModal,
+      compare, nodesLength, showQuestionModal, showCompareModal, position,
     } = this.state;
     if (!showQuestionModal && !showCompareModal) {
       return null;
@@ -135,6 +135,7 @@ class LabelCopy extends Component {
           <LabelCompare
             nodes={Chart.getNodes()}
             compare={compare}
+            position={position}
             onRequestClose={() => this.toggleCompareNodes(false)}
             closeAll={() => {
               this.toggleCompareNodes(false);

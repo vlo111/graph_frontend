@@ -37,7 +37,7 @@ class LabelCompare extends Component {
     } = this.props;
     let { sources } = this.state;
     if (sourceNodes.length !== sources.length) {
-      sources = sourceNodes;
+      sources = _.cloneDeep(sourceNodes);
     } else {
       sources = [];
     }
@@ -50,7 +50,7 @@ class LabelCompare extends Component {
     } = this.props;
     let { duplicates } = this.state;
     if (duplicatedNodes.length !== duplicates.length) {
-      duplicates = duplicatedNodes;
+      duplicates = _.cloneDeep(duplicatedNodes);
     } else {
       duplicates = [];
     }
@@ -58,7 +58,7 @@ class LabelCompare extends Component {
   }
 
   handleSubmit = () => {
-    const { compare: { duplicatedNodes, sourceNodes } } = this.props;
+    const { compare: { duplicatedNodes, sourceNodes }, position } = this.props;
     const { sources, duplicates } = this.state;
     const data = LabelUtils.getData();
     let links = Chart.getLinks();
@@ -86,7 +86,7 @@ class LabelCompare extends Component {
     });
     links = ChartUtils.cleanLinks(links, nodes);
     Chart.render({ nodes, links });
-    LabelUtils.past(data, [0, 0]);
+    LabelUtils.past(data, position);
     this.props.closeAll();
   }
 
