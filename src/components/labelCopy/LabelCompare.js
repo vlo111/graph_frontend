@@ -59,52 +59,10 @@ class LabelCompare extends Component {
   }
 
   handleSubmit = () => {
-    const { compare: { duplicatedNodes, sourceNodes }, position, customFields } = this.props;
+    const { position, customFields } = this.props;
     const { sources, duplicates } = this.state;
     const data = LabelUtils.getData();
-    let links = Chart.getLinks();
-    let nodes = Chart.getNodes();
-    data.nodes = duplicates.map((n) => {
-      const merge = sources.find((d) => n.name === d.name);
-      if (merge) {
-        const originalId = n.id;
-        n.id = merge.id;
-        n.merge = true;
-        const customFieldDuplicate = Object.keys(CustomFields.get(data.customFields, n.type, n.id));
-        const customField = Object.keys(CustomFields.get(customFields, merge.type, merge.id));
-        CustomFields.uniqueName(customFields, merge.type, 'a');
-        customField.forEach((name) => {
-          if (customFieldDuplicate.includes(name)) {
-            this.props.renameNodeCustomFieldKey(merge.type, name, `${name}_1`);
-          }
-        });
-        data.links = data.links.map((l) => {
-          if (l.source === originalId) {
-            l.source = n.id;
-          }
-          if (l.target === originalId) {
-            l.target = n.id;
-          }
-          return l;
-        });
-      } else {
-        nodes = nodes.filter((d) => {
-          if (n.name === d.name) {
-            const customField = Object.keys(CustomFields.get(customFields, d.type, d.id));
-            customField.forEach((name) => {
-              this.props.removeNodeCustomFieldKey(d.type, name, d.id);
-            });
-            return false;
-          }
-          return true;
-        });
-      }
-
-      return n;
-    });
-    links = ChartUtils.cleanLinks(links, nodes);
-    Chart.render({ nodes, links });
-    LabelUtils.past(data, position);
+    LabelUtils.pastAndMerge(data, position, sources, duplicates, customFields);
     this.props.closeAll();
   }
 

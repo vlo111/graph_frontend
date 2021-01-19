@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import Chart from "../Chart";
+import Utils from "./Utils";
 
 class CustomFields {
   static LIMIT = 10;
@@ -27,7 +29,13 @@ class CustomFields {
   }
 
   static uniqueName(customFields, type, name) {
-    console.log(Object.keys(customFields[type]), 333)
+    const names = Object.keys(customFields[type])
+      .filter((n) => (n === name || new RegExp(`^${Utils.escRegExp(name)}_\\d+$`).test(n)));
+    if (!names.length) {
+      return names;
+    }
+    const max = _.max(names.map((n) => +(n.match(/_(\d+)$/) || [0, 0])[1])) || 0;
+    return `${name}_${max + 1}`;
   }
 
   static setKey(customFields = {}, type, key, subtitle = '') {

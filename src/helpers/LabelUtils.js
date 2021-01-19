@@ -6,7 +6,7 @@ import ChartUtils from './ChartUtils';
 import Utils from './Utils';
 import store from '../store';
 import CustomFields from './CustomFields';
-import { setNodeCustomField } from '../store/actions/graphs';
+import { removeNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } from '../store/actions/graphs';
 import Api from '../Api';
 import { socketLabelDataChange } from '../store/actions/socket';
 
@@ -52,6 +52,58 @@ class LabelUtils {
       duplicatedNodes,
       sourceNodes,
     };
+  }
+
+  static pastAndMerge(data, position, sources, duplicates, customFields) {
+    let links = Chart.getLinks();
+    let nodes = Chart.getNodes();
+    data.nodes = data.nodes.map((n) => {
+      const selected = duplicates.find((d) => d.id === n.id);
+      const merge = sources.find((d) => n.name === d.name);
+      console.log(selected, merge, 1);
+      if (merge && selected) {
+        const originalId = n.id;
+        n.id = merge.id;
+        n.merge = true;
+        const customFieldDuplicate = Object.keys(CustomFields.get(data.customFields, n.type, n.id));
+        const customField = Object.keys(CustomFields.get(customFields, merge.type, merge.id));
+        customField.forEach((name) => {
+          if (customFieldDuplicate.includes(name)) {
+            store.dispatch(renameNodeCustomFieldKey(merge.type, name, CustomFields.uniqueName(customFields, merge.type, name)));
+          }
+        });
+        data.links = data.links.map((l) => {
+          if (l.source === originalId) {
+            l.source = n.id;
+          }
+          if (l.target === originalId) {
+            l.target = n.id;
+          }
+          return l;
+        });
+      } else if (!merge && selected) {
+        nodes = nodes.filter((d) => {
+          if (n.name === d.name) {
+            const customField = Object.keys(CustomFields.get(customFields, d.type, d.id));
+            customField.forEach((name) => {
+              store.dispatch(removeNodeCustomFieldKey(d.type, name, d.id));
+            });
+            return false;
+          }
+          return true;
+        });
+        links = ChartUtils.cleanLinks(links, nodes);
+      } else {
+        return undefined;
+      }
+
+      return n;
+    });
+    data.nodes = _.compact(data.nodes);
+    data.links = ChartUtils.cleanLinks(data.links, data.nodes);
+    links = ChartUtils.cleanLinks(links, nodes);
+    Chart.render({ nodes, links });
+    return LabelUtils.past(data, position);
   }
 
   static async past(data, position, isEmbed, graphId) {

@@ -31,30 +31,10 @@ class LabelCompareItem extends Component {
         </div>
         <div className="tabs">
           {_.map(customField, (val, key) => {
-            if (!val) {
-              return null;
-            }
             const { result: text } = stripHtml(val || '');
-            return (
-              <Tooltip key={key} overlay={text} placement="top">
-                <span>{key}</span>
-              </Tooltip>
-            );
-          })} {_.map(customField, (val, key) => {
-            if (!val) {
-              return null;
+            if (!text) {
+              return <span key={key}>{key}</span>
             }
-            const { result: text } = stripHtml(val || '');
-            return (
-              <Tooltip key={key} overlay={text} placement="top">
-                <span>{key}</span>
-              </Tooltip>
-            );
-          })} {_.map(customField, (val, key) => {
-            if (!val) {
-              return null;
-            }
-            const { result: text } = stripHtml(val || '');
             return (
               <Tooltip key={key} overlay={text} placement="top">
                 <span>{key}</span>

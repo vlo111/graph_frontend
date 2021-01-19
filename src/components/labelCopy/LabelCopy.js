@@ -100,6 +100,14 @@ class LabelCopy extends Component {
     this.setState({ showCompareModal });
   }
 
+  merge = () => {
+    const { customFields } = this.props;
+    const { position } = this.state;
+    const data = LabelUtils.getData();
+    LabelUtils.pastAndMerge(data, position, [], data.nodes, customFields);
+    this.closeModal();
+  }
+
   render() {
     const {
       compare, data, showQuestionModal, showCompareModal, position
@@ -128,7 +136,7 @@ class LabelCopy extends Component {
             <Button onClick={() => this.toggleCompareNodes(true)} className="actionButton" icon="fa-balance-scale">
               Compare nodes (in progress)
             </Button>
-            <Button onClick={() => this.toggleCompareNodes(true)} className="actionButton" icon="fa-code-fork">
+            <Button onClick={this.merge} className="actionButton" icon="fa-code-fork">
               Merge nodes
             </Button>
             <Button onClick={this.replaceDuplications} className="actionButton" icon="fa-retweet">
