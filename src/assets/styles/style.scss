@@ -3511,7 +3511,7 @@ body .gh__menu {
   justify-content: center;
   line-height: 0;
   border-radius: 50%;
-  padding-bottom: 3px;
+  padding-bottom: 5px;
   box-shadow: 0 0 0 0.5px $color-light-gray;
 
   &.hasImage {
@@ -4023,8 +4023,9 @@ body .gh__menu {
       overflow-x: hidden;
       overflow-y: auto;
       max-height: 100%;
-      padding: 0 10px;
-      width: 100%;
+      padding   : 0 10px;
+      width     : 100%;
+      min-height: 367px;
 
       &::-webkit-scrollbar {
         width: 4px;
@@ -6144,13 +6145,14 @@ img.scaled {
   }
 
   .nodeTabs {
-    padding: 15px 0 0 0;
+    padding: 15px 0 30px 0;
     width: 230px;;
   }
 
   .tabDoc {
     p {
       margin-top: 10px;
+      cursor: pointer;
     }
   }
   .searchDocumentContent {
@@ -6158,17 +6160,53 @@ img.scaled {
     grid-template-columns: auto auto auto;
     padding: 10px;
   }
-  .nodeName {
-    color: #25A2EB;
-    cursor: pointer;
-  }
-  .nodeType {
+
+  .createdBy {
     font-style: italic;
+  }
+
+  .createdBy {
+    a {
+      font-style: normal;
+    }
+  }
+
+  .line {
+    border: none;
+    width: 100%;
+    margin: auto;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    height: 8px;
+    background: linear-gradient(135deg, #ffffff 25%, transparent 25%) -20px 0, linear-gradient(225deg, #ffffff 25%, transparent 25%) -20px 0, linear-gradient(315deg, #ffffff 25%, transparent 25%), linear-gradient(45deg, #ffffff 25%, transparent 25%);
+    background-size: 10px 28px;
+    background-color: #7166f8;
+    opacity: 0.7;
+  }
+
+  .nodeLink {
+    display: flex;
+    color: #0d0905;
+    text-decoration: none;
+    margin-bottom: 10px;
+
+    .right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .left {
+      margin-right: 20px;
+    }
   }
 
   img {
     max-width: 100%;
     height: auto;
+  }
+
+  .searchData__graphInfo-details {
+    margin-left: auto;
   }
 }
 

@@ -22,6 +22,7 @@ class NodeIcon extends Component {
     const { error } = this.state;
     const { node } = this.props;
     const showIcon = node.icon && !error;
+
     return (
       <span
         className={`nodeIcon ${node.nodeType} ${showIcon ? 'hasImage' : ''}`}
@@ -30,7 +31,7 @@ class NodeIcon extends Component {
         {showIcon ? (
           <img src={node.icon} onError={this.handleError} alt="icon" width={50} height={50} />
         ) : (
-          <span className="text">{node.type ? node.type[0] : ''}</span>
+          <span className="text">{node.type[0]}</span>
         )}
       </span>
     );
