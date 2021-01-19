@@ -29,7 +29,6 @@ class LabelUtils {
     return data;
   }
 
-
   static getData() {
     let data;
     try {
@@ -47,8 +46,10 @@ class LabelUtils {
     }
     const nodes = Chart.getNodes();
     const duplicatedNodes = _.intersectionBy(nodes, data.nodes, 'name');
+    const sourceNodes = _.intersectionBy(data.nodes, nodes, 'name');
     return {
       duplicatedNodes,
+      sourceNodes,
     };
   }
 
@@ -93,7 +94,16 @@ class LabelUtils {
     data.nodes.forEach((d) => {
       d.fx = d.fx - minX + posX;
       d.fy = d.fy - minY + posY;
-      d.name = d.replace ? d.name : ChartUtils.nodeUniqueName(d);
+      d.name = (d.replace || d.merge) ? d.name : ChartUtils.nodeUniqueName(d);
+
+      let id;
+      if (d.replace) {
+        id = d.id;
+      } else if (d.merge) {
+        id = nodes.find((n) => n.name === d.name).id;
+      } else {
+        id = ChartUtils.uniqueId(nodes);
+      }
 
       if (isEmbed) {
         d.readOnly = true;
@@ -109,7 +119,6 @@ class LabelUtils {
           return l;
         });
       } else {
-        const id = d.replace ? d.id : ChartUtils.uniqueId(nodes);
         d.labels = d.labels.map((l) => {
           if (l === labelOriginalId) {
             return labelId;
@@ -142,13 +151,20 @@ class LabelUtils {
           }
           return n;
         });
+      } else if (d.merge) {
+        nodes = nodes.map((n) => {
+          if (n.id === d.id) {
+            return { ...n, ...d };
+          }
+          return n;
+        });
       } else {
         nodes.push(d);
       }
     });
 
     // links past
-    const links = Chart.getLinks();
+    let links = Chart.getLinks();
     data.links = data.links.map((d) => {
       if (isEmbed) {
         d.readOnly = true;
@@ -171,6 +187,9 @@ class LabelUtils {
       }, 'past');
       return;
     }
+
+    links = ChartUtils.cleanLinks(links, nodes);
+
     Chart.render({ links, nodes, labels }, 'past');
   }
 

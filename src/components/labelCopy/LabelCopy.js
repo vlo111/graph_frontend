@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Modal from 'react-modal';
-import ContextMenu from './contextMenu/ContextMenu';
-import LabelUtils from '../helpers/LabelUtils';
-import Button from './form/Button';
-import Chart from '../Chart';
+import ContextMenu from '../contextMenu/ContextMenu';
+import LabelUtils from '../../helpers/LabelUtils';
+import Button from '../form/Button';
+import Chart from '../../Chart';
 import LabelCompare from './LabelCompare';
 
 class LabelCopy extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      duplicatedNodes: [],
+      compare: {},
       position: [],
       nodesLength: 0,
       showQuestionModal: false,
@@ -36,21 +36,20 @@ class LabelCopy extends Component {
 
   handleLabelAppend = (ev, params) => {
     const { x, y } = params;
-    const { duplicatedNodes } = LabelUtils.compare();
+    const compare = LabelUtils.compare();
     const position = [x, y];
     const data = LabelUtils.getData();
-    console.log(data);
-    if (_.isEmpty(duplicatedNodes)) {
+    if (_.isEmpty(compare.duplicatedNodes)) {
       LabelUtils.past(data, position);
       return;
     }
     this.setState({
-      duplicatedNodes, nodesLength: data.nodes.length, position, showQuestionModal: true,
+      compare, nodesLength: data.nodes.length, position, showQuestionModal: true,
     });
   }
 
   skipDuplications = () => {
-    const { duplicatedNodes, position } = this.state;
+    const { compare: { duplicatedNodes }, position } = this.state;
     const data = LabelUtils.getData();
     data.nodes = data.nodes.filter((n) => !duplicatedNodes.some((d) => n.id === d.id));
     LabelUtils.past(data, position);
@@ -59,7 +58,7 @@ class LabelCopy extends Component {
 
   closeModal = () => {
     this.setState({
-      duplicatedNodes: [], nodesLength: 0, position: [], showQuestionModal: false,
+      compare: {}, nodesLength: 0, position: [], showQuestionModal: false,
     });
   }
 
@@ -95,7 +94,7 @@ class LabelCopy extends Component {
 
   render() {
     const {
-      duplicatedNodes, nodesLength, showQuestionModal, showCompareModal,
+      compare, nodesLength, showQuestionModal, showCompareModal,
     } = this.state;
     if (!showQuestionModal && !showCompareModal) {
       return null;
@@ -112,11 +111,14 @@ class LabelCopy extends Component {
             {`Moving ${nodesLength} nodes from ${'AAA'} to ${'BBB'}.`}
           </h4>
           <h2 className="title">
-            {`The destinations has ${duplicatedNodes.length} nodes with the same type and name`}
+            {`The destinations has ${compare.duplicatedNodes?.length || 0} nodes with the same type and name`}
           </h2>
           <div className="buttonsWrapper">
-            <Button onClick={() => this.toggleCompareNodes(true)} className="actionButton" icon="fa-code-fork">
+            <Button onClick={() => this.toggleCompareNodes(true)} className="actionButton" icon="fa-balance-scale">
               Compare nodes (in progress)
+            </Button>
+            <Button onClick={() => this.toggleCompareNodes(true)} className="actionButton" icon="fa-code-fork">
+              Merge nodes
             </Button>
             <Button onClick={this.replaceDuplications} className="actionButton" icon="fa-retweet">
               Replace the nodes in the destination
@@ -129,10 +131,21 @@ class LabelCopy extends Component {
             </Button>
           </div>
         </Modal>
-        {showCompareModal ? <LabelCompare duplicatedNodes={duplicatedNodes} onRequestClose={() => this.toggleCompareNodes(false)} /> : null}
+        {showCompareModal ?
+          <LabelCompare
+            nodes={Chart.getNodes()}
+            compare={compare}
+            onRequestClose={() => this.toggleCompareNodes(false)}
+            closeAll={() => {
+              this.toggleCompareNodes(false);
+              this.closeModal();
+            }}
+          />
+          : null}
       </>
     );
   }
+
 }
 
 export default LabelCopy;

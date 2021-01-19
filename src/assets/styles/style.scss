@@ -3511,7 +3511,7 @@ body .gh__menu {
   justify-content: center;
   line-height: 0;
   border-radius: 50%;
-  padding-bottom: 5px;
+  padding-bottom: 3px;
   box-shadow: 0 0 0 0.5px $color-light-gray;
 
   &.hasImage {
@@ -6084,8 +6084,52 @@ img.scaled {
 
         > .icon {
           margin-right: 20px;
+
           .fa::before {
             font-size: 28px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.graphCompareOverlay {
+  .graphCompare {
+    max-width: 510px;
+    width: 50%;
+
+    .title {
+      width: 100%;
+      font-size: 20px;
+      text-align: left;
+    }
+
+    .subtitle {
+      width: 100%;
+      font-weight: normal;
+      font-size: 16px;
+    }
+
+    .compareList {
+      width: 100%;
+
+      .item {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid $color-accent;
+        padding: 15px 0;
+
+        .top {
+          display: flex;
+          justify-content: center;
+        }
+
+        .bottom {
+          display: flex;
+
+          .node {
+            width: 50%;
           }
         }
       }

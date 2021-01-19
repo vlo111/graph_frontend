@@ -96,11 +96,11 @@ class CustomFields {
     return customFields;
   }
 
-  static get(customFields, type, name) {
+  static get(customFields, type, id) {
     const customFieldType = _.get(customFields, type, {});
     const data = {};
     _.forEach(customFieldType, (d, key) => {
-      data[key] = _.get(d, ['values', name], undefined);
+      data[key] = _.get(d, ['values', id], undefined);
     });
 
     return data;

@@ -30,7 +30,7 @@ class NodeIcon extends Component {
         {showIcon ? (
           <img src={node.icon} onError={this.handleError} alt="icon" width={50} height={50} />
         ) : (
-          <span className="text">{node.type[0]}</span>
+          <span className="text">{node.type ? node.type[0] : ''}</span>
         )}
       </span>
     );

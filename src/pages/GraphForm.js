@@ -24,9 +24,9 @@ import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
 import CreateGraphModal from '../components/CreateGraphModal';
 import { socketSetActiveGraph } from '../store/actions/socket';
-import AutoSave from "../components/AutoSave";
-import LabelShare from "../components/share/LabelShare";
-import LabelCopy from "../components/LabelCopy";
+import AutoSave from '../components/AutoSave';
+import LabelShare from '../components/share/LabelShare';
+import LabelCopy from '../components/labelCopy/LabelCopy';
 
 class GraphForm extends Component {
   static propTypes = {
