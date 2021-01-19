@@ -6,10 +6,12 @@ import memoizeOne from 'memoize-one';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import _ from 'lodash';
 import { setActiveButton } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
 import { getDocumentsRequest } from '../../store/actions/document';
+import NodeIcon from '../NodeIcon';
 
 class MediaModal extends Component {
     static propTypes = {
@@ -33,6 +35,11 @@ class MediaModal extends Component {
 
       if (documentSearch && documentSearch.length) {
         documentSearch.sort((a, b) => a.nodeType.localeCompare(b.nodeType));
+        documentSearch.map((p) => {
+          if (p.graphs?.nodes && p.graphs?.nodes.length) {
+            p.node = p.graphs.nodes.filter((n) => n.id === p.nodeId)[0];
+          }
+        });
       }
 
       return (
@@ -61,13 +68,19 @@ class MediaModal extends Component {
                                 ? { gridColumnEnd: 2 } : {}}
                               className="nodeTabs tabDoc"
                             >
-                              <p
-                                className="nodeName"
+                              <a
+                                className="nodeLink"
+                                href={`/graphs/update/${document.graphId}?info=${document.nodeId}`}
                               >
-                                {document.nodeName}
-                              </p>
+                                <div className="left">
+                                  <NodeIcon node={document.node} />
+                                </div>
+                                <div className="right">
+                                  <span className="name">{document.node.name}</span>
+                                  <span className="type">{document.node.type}</span>
+                                </div>
+                              </a>
 
-                              <p className="nodeType">{document.nodeType}</p>
                               <p>{moment(document.updatedAt).calendar()}</p>
                               {
                                   document.altText ? (
