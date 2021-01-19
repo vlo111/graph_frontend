@@ -19,7 +19,7 @@ const AddComment = ({ graph, node, closeModal, isReply }) => {
     setText(value);
   }
   return (
-    <div className={isReply ? 'comment-modal__add-comment-section--reply' : ''}>
+    <div className={isReply ? 'comment-modal__add-comment-section--reply comment--reply' : 'comment'}>
       <hr />
       <Editor
         id={isReply ? 'reply-comment' : 'add-comment'}

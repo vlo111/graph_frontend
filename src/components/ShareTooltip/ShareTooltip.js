@@ -35,8 +35,11 @@ const ShareTooltip = React.memo(({ graphId, graphOwner }) => {
 
         <div className="contributors-container">
             <hr />
-            <p className="h4 mb-3 title b"> Owner</p>
-
+            <p className="h4 mb-3 title"> Contributors:
+            {count ? (
+                    <span className="counter"> { count + 1}  </span>
+                ) : null}
+            </p>
             <ul className="list-style-none d-flex flex-wrap mb-n2">
                 <Link to={`/profile/${graphOwner.id}`} target="_blank">
                     <li className="mb-2 mr-2">
@@ -46,15 +49,6 @@ const ShareTooltip = React.memo(({ graphId, graphOwner }) => {
 
                     </li>
                 </Link>
-            </ul>
-            <hr />
-            <p className="h4 mb-3 title b"> Contributors:
-            {count ? (
-                    <span className="counter">  { count}  </span>
-                ) : null}
-            </p>
-            <ul className="list-style-none d-flex flex-wrap mb-n2">
-
                 {
                     graphUsers && graphUsers.map(item =>
                         <Link to={`/profile/${item.user?.id}`} target="_blank">

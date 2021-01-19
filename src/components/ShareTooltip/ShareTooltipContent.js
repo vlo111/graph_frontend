@@ -4,23 +4,18 @@ const ShareTooltipContent = React.memo(({ user, role }) => {
     return (
         <div className="contributors-container">
             <article key={user.id} className="tooltiptext">
-                <div class="hovercard">
-                    <div class="cover-image">
-                        <div class="avatar">
-                            <img
-                                className="avatar"
-                                src={user.avatar}
-                                alt={user.firstName}
-                            />
-                        </div>
-                        <div className="info">
-                            <div class="username">{`${user.firstName} ${user.lastName}`}</div>
-                            <div class="role">Role  -  {role}</div>
-                            <div class="email">{user.email}</div>
-                        </div>
-                    </div>
 
+                <img
+                    className="avatar"
+                    src={user.avatar}
+                    alt={user.firstName}
+                />
+                <div className="info">
+                    <div class="username">{`${user.firstName} ${user.lastName}`}</div>
+                    <div class="role">Role  -  {role}</div>
+                    <div class="email">{user.email}</div>
                 </div>
+
             </article>
 
         </div>
