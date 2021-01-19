@@ -27,7 +27,7 @@ class Editor extends Component {
     height: 400,
     toolbarButtonSize: 'middle',
     buttons: [
-      'bold', 'italic', 'underline', 'fontsize', 'font', '|', 'file', 'link', '|',
+      'bold', 'italic', 'underline', 'fontsize', 'font', '|', 'file', 'video', '|',
 
       'ul', 'ol', '|',
       'outdent', 'indent', '|',

@@ -2040,13 +2040,13 @@ p {
   width: 40%;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   background-color: white;
-  max-height: 100vh;
-  height: 100vh;
-  position: absolute;
-  z-index: 3;
-  left: 202px;
-  border-left: 1px solid $color-light-gray;
-  padding-left: 4px;
+  max-height      : 100vh;
+  height          : 100vh;
+  position        : absolute;
+  z-index         : 4;
+  left            : 202px;
+  border-left     : 1px solid $color-light-gray;
+  padding-left    : 4px;
 
 
   &.fullWidth {
