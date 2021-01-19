@@ -36,6 +36,8 @@ class App extends Component {
 
             <Route path="/search" component={Search} />
             <Route path="/search-people" component={Search} />
+            <Route path="/search-pictures" component={Search} />
+            <Route path="/search-documents" component={Search} />
             <Route path="/search-graph" component={Search} />
             <Route path="/search-shared-graph" component={Search} />
 

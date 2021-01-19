@@ -6136,3 +6136,66 @@ img.scaled {
     }
   }
 }
+.searchMediaContent {
+  .searchData__graph {
+    display: inline-block;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .nodeTabs {
+    padding: 15px 0 0 0;
+    width: 230px;;
+  }
+
+  .tabDoc {
+    p {
+      margin-top: 10px;
+    }
+  }
+  .searchDocumentContent {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+  }
+  .nodeName {
+    color: #25A2EB;
+    cursor: pointer;
+  }
+  .nodeType {
+    font-style: italic;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+  .ghModalMedia {
+    width: 65%;
+    max-width: unset !important;
+    padding: 1.6% 2.1% !important;
+    min-width: 920px;
+
+    .cancel {
+      font-size: 20px;
+      font-weight: 600;
+      color: #0062FF;
+      margin-right: 5px;
+      text-transform: none;
+    }
+
+    .buttonsWrapper {
+      margin-left: auto;
+    }
+
+    .searchData {
+      max-width: none;
+    }
+
+    .mediaNotFound {
+      margin-left: 40%;
+      color: #a6a6a6;
+    }
+  }

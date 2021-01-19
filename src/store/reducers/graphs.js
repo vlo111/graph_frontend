@@ -172,6 +172,11 @@ export default function reducer(state = initialState, action) {
         toast.warn('Some tabs are not imported');
       }
       if (tabData) {
+        if (tabData.documents?.length) {
+          singleGraph.file = null;
+          singleGraph.files = tabData.documents;
+          singleGraph.currentTabName = tabData.name;
+        }
         _.set(singleGraph.customFields, [type, tabData.name, 'subtitle'], tabData.subtitle);
       }
       return {
@@ -199,7 +204,25 @@ export default function reducer(state = initialState, action) {
     }
     case REMOVE_NODE_CUSTOM_FIELD_KEY: {
       const singleGraph = { ...state.singleGraph };
-      const { type, key } = action.payload;
+      const { type, key, nodeId } = action.payload;
+      singleGraph.currentTabName = key;
+
+      if (!singleGraph.dismissFiles) {
+        let deleteTabDocument = [];
+
+        deleteTabDocument.push({
+          tabName: key,
+          nodeId,
+          nodeType: type,
+        });
+        singleGraph.dismissFiles = deleteTabDocument;
+      } else if (!singleGraph.dismissFiles.some(e => e.tabName === key && e.nodeId === nodeId)) {
+        singleGraph.dismissFiles.push({
+          tabName: key,
+          nodeId,
+          nodeType: type,
+        });
+      }
       singleGraph.customFields = CustomFields.removeKey(singleGraph.customFields, type, key);
       return {
         ...state,

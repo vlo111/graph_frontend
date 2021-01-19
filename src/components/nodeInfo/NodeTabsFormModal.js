@@ -11,7 +11,7 @@ import { addNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } f
 import Button from '../form/Button';
 import Validate from '../../helpers/Validate';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import Chart from "../../Chart";
+import Chart from '../../Chart';
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -43,6 +43,7 @@ class NodeTabsFormModal extends Component {
         name: '',
         content: '',
         subtitle: '',
+        documents: [],
       },
     };
   }
@@ -52,6 +53,20 @@ class NodeTabsFormModal extends Component {
     _.set(tabData, path, value);
     _.remove(errors, path);
     this.setState({ tabData, errors });
+  }
+
+  media = (data) => {
+    const { tabData } = this.state;
+    data.nodeId = this.props.node.id;
+    data.nodeType = this.props.node.type;
+    data.file = {
+      data: data.file[0].preview,
+      type: data.file[0].type,
+      name: !data.file[0].type.includes('image') ? data.file[0].name : '',
+    };
+
+    _.set(tabData, 'documents', tabData.documents ? [...tabData.documents, data] : [data]);
+    this.setState({ tabData });
   }
 
   save = async () => {
@@ -117,6 +132,7 @@ class NodeTabsFormModal extends Component {
 
         <Editor
           value={tabData.content}
+          media={this.media}
           error={errors.content}
           label="ContentTabs"
           onChange={(v) => this.handleChange('content', v)}

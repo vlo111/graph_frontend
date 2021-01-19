@@ -26,7 +26,7 @@ import CreateGraphModal from '../components/CreateGraphModal';
 import { socketSetActiveGraph } from '../store/actions/socket';
 import AutoSave from '../components/AutoSave';
 import LabelShare from '../components/share/LabelShare';
-import LabelCopy from '../components/labelCopy/LabelCopy';
+import MediaModal from "../components/Media/MediaModal";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -62,6 +62,7 @@ class GraphForm extends Component {
         <AddNodeModal />
         {activeButton === 'data' && <DataView />}
         {activeButton === 'search' && <SearchModal />}
+        {activeButton === 'media' && <MediaModal />}
         {activeButton === 'maps-view' && <MapsGraph />}
         <AddLinkModal />
         <AddLabelModal />
@@ -75,7 +76,7 @@ class GraphForm extends Component {
         <CreateGraphModal />
         <AutoSave />
         <LabelShare />
-        <LabelCopy />
+        {/*<LabelCopy />*/}
       </Wrapper>
     );
   }

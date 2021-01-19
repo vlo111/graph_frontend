@@ -25,21 +25,21 @@ class Editor extends Component {
     placeholder: '',
     error: '',
     height: 400,
-    toolbarButtonSize: "middle",
+    toolbarButtonSize: 'middle',
     buttons: [
-      'bold', 'italic', 'underline', 'fontsize', 'font', '|', 'file',  'link', '|',
-     
+      'bold', 'italic', 'underline', 'fontsize', 'font', '|', 'file', 'link', '|',
+
       'ul', 'ol', '|',
-      'outdent', 'indent',  '|', 
+      'outdent', 'indent', '|',
       'brush',
-      'paragraph', 'table',  '|',
+      'paragraph', 'table', '|',
       'align', 'undo', 'redo', '|',
       'hr',
       'eraser',
       'copyformat', '|',
       'symbol',
-      'fullsize', 
-      
+      'fullsize',
+
     ],
   }
 
@@ -114,8 +114,12 @@ class Editor extends Component {
     this.setState({ showPopUp: null });
   }
 
-  insertFile = (popUpData, tags) => {
+  insertFile = (popUpData) => {
     const file = popUpData.file[0];
+
+    this.props.media(popUpData);
+
+    const { tags } = popUpData;
 
     if (file) {
       const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg'].filter((p) => file.name.includes(p)));
@@ -133,7 +137,6 @@ class Editor extends Component {
     <img
  class=scaled
  src=${file.preview} 
- tags="url={${file.preview}}, tager={${tags}}" 
  download="${file.name}" />
  ${desc}
      </td>
@@ -144,13 +147,11 @@ class Editor extends Component {
           anchor = `<img
           className=scaled
           src=${file.preview}
-          tags="url={${file.name}}, tager={${tags}}"
           download="${file.name}"/>`;
         }
       } else {
         anchor = `<a 
 href="${file.preview}"
-tags="url={${file.name}}, tager={${tags}}, ${desc}" 
 download="${file.name}">
 ${popUpData.alt || file.name}
 </a>`;

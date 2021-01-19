@@ -59,7 +59,7 @@ class NodeTabs extends Component {
     const { fieldName } = params;
     const { node } = this.props;
     if (fieldName && window.confirm('Are you sure?')) {
-      this.props.removeNodeCustomFieldKey(node.type, fieldName);
+      this.props.removeNodeCustomFieldKey(node.type, fieldName, node.id);
     }
   }
 

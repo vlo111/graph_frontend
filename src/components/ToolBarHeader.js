@@ -17,6 +17,7 @@ import MapsButton from '../components/maps/MapsButton';
 import Utils from '../helpers/Utils';
 import WikiButton from "./wiki/WikiButton";
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
+import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -86,7 +87,14 @@ class ToolBarHeader extends Component {
                 : this.props.history.replace(`/graphs/filter/${graphId}`)
             }}
           >
-           Filter
+            Filter
+          </Button>
+          <Button
+            icon={<MediaSvg />}
+            className={activeButton === 'media' ? 'active' : undefined}
+            onClick={() => this.handleClick('media')}
+          >
+            Media gallery
           </Button>
         </div>
 
