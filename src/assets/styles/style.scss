@@ -6384,5 +6384,20 @@ img.scaled {
       position: absolute;
       padding-left: 60px;
     }
-  }
+  } 
+
+  .counter {
+    display         : inline-block;
+    min-width       : 20px;
+    padding         : 0 9px;
+    font-size       : 12px;
+    font-weight     : 500;
+    line-height     : 18px;
+    color           : $color-white;
+    text-align      : center;
+    background-color: #7166f8;
+    border          : 1px solid transparent;
+    border-radius   : 2em;
+  } 
+ 
 }
