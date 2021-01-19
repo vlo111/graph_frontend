@@ -25,7 +25,7 @@ class Editor extends Component {
     placeholder: '',
     error: '',
     buttons: [
-      'bold', 'italic', 'underline', '|', 'file', '|', 'link', '|',
+      'bold', 'italic', 'underline', '|', 'file', '|', 'video', '|',
       'left',
       'center',
       'right',
