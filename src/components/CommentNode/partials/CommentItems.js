@@ -21,7 +21,7 @@ const CommentItem = ({ comment, isReply }) => {
         edit={!isReply}
         remove={+userId === +comment.user.id}
       />
-      {comment.text}
+    <div dangerouslySetInnerHTML={{__html: comment.text}}></div>
     </div>
   );
 };
