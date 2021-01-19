@@ -110,7 +110,7 @@ class LabelCompare extends Component {
 
   render() {
     const {
-      compare: { duplicatedNodes, sourceNodes }, onRequestClose, customFields,
+      compare: { duplicatedNodes, sourceNodes }, onRequestClose, customFields, singleGraph,
     } = this.props;
     const { sources, duplicates } = this.state;
     const data = LabelUtils.getData();
@@ -137,7 +137,7 @@ class LabelCompare extends Component {
                   onClick={() => this.toggleAllSource()}
                 />
                 {'Nodes from '}
-                <span>A</span>
+                <span>{singleGraph.title}</span>
               </div>
               <div className="node node_right">
                 <input
@@ -146,7 +146,7 @@ class LabelCompare extends Component {
                   onClick={() => this.toggleAllDuplicate()}
                 />
                 {'Nodes already in from '}
-                <span>B</span>
+                <span>{data.title}</span>
               </div>
             </div>
           </li>
@@ -186,6 +186,7 @@ class LabelCompare extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  singleGraph: state.graphs.singleGraph,
   customFields: state.graphs.singleGraph.customFields || {},
 });
 

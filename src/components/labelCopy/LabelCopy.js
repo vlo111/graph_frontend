@@ -16,7 +16,7 @@ class LabelCopy extends Component {
     this.state = {
       compare: {},
       position: [],
-      nodesLength: 0,
+      data: {},
       showQuestionModal: false,
       showCompareModal: false,
     };
@@ -47,7 +47,7 @@ class LabelCopy extends Component {
       return;
     }
     this.setState({
-      compare, nodesLength: data.nodes.length, position, showQuestionModal: true,
+      compare, data, position, showQuestionModal: true,
     });
   }
 
@@ -61,7 +61,7 @@ class LabelCopy extends Component {
 
   closeModal = () => {
     this.setState({
-      compare: {}, nodesLength: 0, position: [], showQuestionModal: false,
+      compare: {}, data: {}, position: [], showQuestionModal: false,
     });
   }
 
@@ -102,8 +102,11 @@ class LabelCopy extends Component {
 
   render() {
     const {
-      compare, nodesLength, showQuestionModal, showCompareModal, position,
+      compare, data, showQuestionModal, showCompareModal, position
     } = this.state;
+    const {
+      singleGraph
+    } = this.props;
     if (!showQuestionModal && !showCompareModal) {
       return null;
     }
@@ -116,7 +119,7 @@ class LabelCopy extends Component {
           onRequestClose={this.closeModal}
         >
           <h4 className="subtitle">
-            {`Moving ${nodesLength} nodes from ${'AAA'} to ${'BBB'}.`}
+            {`Moving ${data.nodes.length} nodes from ${singleGraph.title} to ${data.title}.`}
           </h4>
           <h2 className="title">
             {`The destinations has ${compare.duplicatedNodes?.length || 0} nodes with the same type and name`}
@@ -158,6 +161,7 @@ class LabelCopy extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  singleGraph: state.graphs.singleGraph,
   customFields: state.graphs.singleGraph.customFields || {},
 });
 const mapDispatchToProps = {

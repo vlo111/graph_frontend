@@ -11,7 +11,7 @@ import Api from '../Api';
 import { socketLabelDataChange } from '../store/actions/socket';
 
 class LabelUtils {
-  static copy(sourceId, id, customFields) {
+  static copy(sourceId, id, customFields, singleGraph) {
     const labels = Chart.getLabels();
     const nodes = Chart.getNodes().filter((n) => n.labels.includes(id));
     const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
@@ -23,6 +23,7 @@ class LabelUtils {
       nodes,
       links,
       customFields,
+      title: singleGraph.title,
     };
     localStorage.setItem('label.copy', JSON.stringify(data));
 
@@ -139,7 +140,6 @@ class LabelUtils {
         });
         d.id = id;
       }
-
 
 
       const customField = CustomFields.get(data.customFields, d.type, d.id);
