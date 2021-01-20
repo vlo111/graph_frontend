@@ -125,7 +125,7 @@ class SaveGraphModal extends Component {
       // const svgBig = Chart.printMode(800, 446);
       // this.props.updateGraphThumbnailRequest(resGraphId, svg);
       this.props.onSave(resGraphId);
-      this.props.history.push("/");
+      this.props.history.push('/');
     } else {
       toast.error('Something went wrong. Please try again');
     }
@@ -155,43 +155,44 @@ class SaveGraphModal extends Component {
         isOpen
         onRequestClose={() => this.props.toggleModal(false)}
       >
-        <h2>
-          {isTemplate ? 'Save this template' : 'Save this graph'}
-        </h2>
-        <Input
-          label="Title"
-          value={requestData.title}
-          onChangeText={(v) => this.handleChange('title', v)}
-        />
-        <Input
-          label="Description"
-          value={requestData.description}
-          textArea
-          onChangeText={(v) => this.handleChange('description', v)}
-        />
-        {false ? (
-          <Select
-            label="Status"
-            value={GRAPH_STATUS.find((o) => o.value === requestData.status)}
-            options={GRAPH_STATUS}
-            onChange={(v) => this.handleChange('status', v?.value || 'active')}
+        <div className="form">
+          <h2>
+            {isTemplate ? 'Save this template' : 'Save this graph'}
+          </h2>
+          <Input
+            label="Title"
+            value={requestData.title}
+            onChangeText={(v) => this.handleChange('title', v)}
           />
-        ) : null}
-        <div className="buttons">
-          {isTemplate ? (
-            <>
-              <Button className="accent alt" onClick={() => this.saveGraph('active', true)} disabled={!canSave}>
-                Save as Graph
-              </Button>
-              <Button onClick={() => this.saveGraph('template', false)} disabled={!canSave}>
-                Save
-              </Button>
-            </>
-          ) : (
+          <Input
+            label="Description"
+            value={requestData.description}
+            textArea
+            onChangeText={(v) => this.handleChange('description', v)}
+          />
+          {false ? (
+            <Select
+              label="Status"
+              value={GRAPH_STATUS.find((o) => o.value === requestData.status)}
+              options={GRAPH_STATUS}
+              onChange={(v) => this.handleChange('status', v?.value || 'active')}
+            />
+          ) : null}
+          <div className="buttons">
+            {isTemplate ? (
+              <>
+                <Button className="accent alt" onClick={() => this.saveGraph('active', true)} disabled={!canSave}>
+                  Save as Graph
+                </Button>
+                <Button onClick={() => this.saveGraph('template', false)} disabled={!canSave}>
+                  Save
+                </Button>
+              </>
+            ) : (
               <>
                 <Button className="accent alt" onClick={() => this.saveGraph('template', true)}>
                   Save as Template
-              </Button>
+                </Button>
                 <Button
                   className="accent alt saveNode"
                   onClick={() => this.saveGraph(requestData.status, false)}
@@ -201,8 +202,8 @@ class SaveGraphModal extends Component {
                 </Button>
               </>
             )}
+          </div>
         </div>
-
       </Modal>
     );
   }

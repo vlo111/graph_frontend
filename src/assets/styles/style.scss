@@ -1189,7 +1189,7 @@ p {
 }
 
 #header {
-  grid-template-columns: auto auto auto auto 20%;
+  grid-template-columns: 349px auto auto auto 20%;
 
   .right-elements {
     position: fixed;
@@ -1430,8 +1430,7 @@ p {
 
 .searchInputWrapper {
   width: 90%;
-  padding: 0px 22px 0px 4px;
-  justify-self: right;
+  justify-self: left;
 
   .graphSearch {
     width: 100%;
