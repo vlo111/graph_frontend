@@ -89,7 +89,7 @@ class ToolBar extends Component {
         </div>
 
         <div className="bottom ">
-        <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} />
+        <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>
         </div>
         <div className="bottom helpWrapper">
           <Button icon={<InfoSvg />}>

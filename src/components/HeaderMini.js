@@ -104,14 +104,14 @@ class HeaderMini extends Component {
         <ul className="navLinks">
           <li>
             <Button
-            icon={<InfoSvg style={{ height: 30 }}/>}
+            icon= "fa-info-circle"
             onClick={() => this.toggleGraphUsersInfo(true)}>
               Info
             </Button>
           </li>
           <li>
             <Button className="commentsInfo"
-             icon={<CommentSvg style={{ height: 40 }} />}
+             icon="fa-comments"
               title="Comment"
               onClick={() => this.toggleNodeComment(true)}>
                 Comment

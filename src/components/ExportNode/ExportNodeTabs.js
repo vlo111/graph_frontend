@@ -42,7 +42,7 @@ class ExportNodeTabs extends Component {
     return (
       <Button onClick={this.export}
        to="/#"
-       icon={<ExportSvg style={{ height: 40 }} />}>
+       icon="fa-download">
          Export
        </Button>
     );
