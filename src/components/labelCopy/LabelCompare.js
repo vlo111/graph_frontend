@@ -55,7 +55,6 @@ class LabelCompare extends Component {
     } else {
       duplicates = [];
     }
-    console.log(duplicatedNodes)
     this.setState({ duplicates });
   }
 
@@ -73,6 +72,7 @@ class LabelCompare extends Component {
     } = this.props;
     const { sources, duplicates } = this.state;
     const data = LabelUtils.getData();
+    console.log(duplicatedNodes, 3434434534534)
     return (
       <Modal
         isOpen
@@ -92,20 +92,20 @@ class LabelCompare extends Component {
               <div className="node node_left">
                 <input
                   type="checkbox"
-                  checked={sources.length === sourceNodes.length}
-                  onClick={() => this.toggleAllSource()}
+                  checked={duplicates.length === duplicatedNodes.length}
+                  onClick={() => this.toggleAllDuplicate()}
                 />
                 {'Nodes from '}
-                <span>{singleGraph.title}</span>
+                <span>{data.title}</span>
               </div>
               <div className="node node_right">
                 <input
                   type="checkbox"
-                  checked={duplicates.length === duplicatedNodes.length}
-                  onClick={() => this.toggleAllDuplicate()}
+                  checked={sources.length === sourceNodes.length}
+                  onClick={() => this.toggleAllSource()}
                 />
                 {'Nodes already in '}
-                <span>{data.title}</span>
+                <span>{singleGraph.title}</span>
               </div>
             </div>
           </li>
@@ -119,18 +119,19 @@ class LabelCompare extends Component {
                 <div className="bottom">
                   <div className="node node_left">
                     <LabelCompareItem
-                      node={nodeSource}
-                      customFields={customFields}
-                      checked={sources.some((d) => d.id === nodeSource.id)}
-                      onChange={(checked) => this.handleChange(checked, nodeSource, 'sources')}
+                      node={nodeDuplicate}
+                      customFields={data.customFields}
+                      d='left'
+                      checked={duplicates.some((d) => d.id === nodeDuplicate.id)}
+                      onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplicates')}
                     />
                   </div>
                   <div className="node node_right">
                     <LabelCompareItem
-                      node={nodeDuplicate}
-                      customFields={data.customFields}
-                      checked={duplicates.some((d) => d.id === nodeDuplicate.id)}
-                      onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplicates')}
+                      node={nodeSource}
+                      customFields={customFields}
+                      checked={sources.some((d) => d.id === nodeSource.id)}
+                      onChange={(checked) => this.handleChange(checked, nodeSource, 'sources')}
                     />
                   </div>
                 </div>

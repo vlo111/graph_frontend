@@ -46,8 +46,8 @@ class LabelUtils {
       return {};
     }
     const nodes = Chart.getNodes();
-    const duplicatedNodes = _.intersectionBy(nodes, data.nodes, 'name');
-    const sourceNodes = _.intersectionBy(data.nodes, nodes, 'name');
+    const sourceNodes = _.intersectionBy(nodes, data.nodes, 'name');
+    const duplicatedNodes = _.intersectionBy(data.nodes, nodes, 'name');
     return {
       duplicatedNodes,
       sourceNodes,
@@ -58,20 +58,24 @@ class LabelUtils {
     let links = Chart.getLinks();
     let nodes = Chart.getNodes();
     data.nodes = data.nodes.map((n) => {
-      const selected = duplicates.find((d) => d.id === n.id);
-      const merge = sources.find((d) => n.name === d.name);
-      console.log(selected, merge, 1);
+      const selected = duplicates.find((d) => d.name === n.name);
+      const merge = sources.find((d) => d.name === n.name);
+      console.log(merge, selected)
       if (merge && selected) {
         const originalId = n.id;
+        n.originalId = originalId;
         n.id = merge.id;
         n.merge = true;
-        const customFieldDuplicate = Object.keys(CustomFields.get(data.customFields, n.type, n.id));
-        const customField = Object.keys(CustomFields.get(customFields, merge.type, merge.id));
-        customField.forEach((name) => {
-          if (customFieldDuplicate.includes(name)) {
+        const customFieldDuplicate = CustomFields.get(data.customFields, n.type, n.id);
+        const customField = CustomFields.get(customFields, merge.type, merge.id);
+        _.forEach(customFieldDuplicate, (k, name) => {
+          if (Object.keys(customField).includes(name)) {
             store.dispatch(renameNodeCustomFieldKey(merge.type, name, CustomFields.uniqueName(customFields, merge.type, name)));
+          } else {
+            // todo
           }
         });
+
         data.links = data.links.map((l) => {
           if (l.source === originalId) {
             l.source = n.id;
@@ -93,6 +97,8 @@ class LabelUtils {
           return true;
         });
         links = ChartUtils.cleanLinks(links, nodes);
+      } else if (merge && !selected) {
+
       } else {
         return undefined;
       }
@@ -193,9 +199,9 @@ class LabelUtils {
         d.id = id;
       }
 
-
       const customField = CustomFields.get(data.customFields, d.type, d.id);
-
+      console.log(d.type, data.customFields)
+      const customField2 = CustomFields.get(data.customFields, d.type, d.originalId);
       store.dispatch(setNodeCustomField(d.type, d.id, customField));
 
       if (d.replace) {

@@ -33,7 +33,7 @@ class LabelCompareItem extends Component {
           {_.map(customField, (val, key) => {
             const { result: text } = stripHtml(val || '');
             if (!text) {
-              return <span key={key}>{key}</span>
+              return <span key={key}>{key}</span>;
             }
             return (
               <Tooltip key={key} overlay={text} placement="top">
