@@ -4606,6 +4606,11 @@ body .gh__menu {
       margin-left: 61px;
     }
   }
+
+  &__add-comment-section--reply {
+    width  : 88%;
+    padding: 10px 10px 10px 10px;
+  }
 }
 
 #search-user {
@@ -6314,7 +6319,10 @@ img.scaled {
   padding-bottom: 24px;
   padding-left  : 24px;
   color: #717EA0;
-
+  flex-direction: column;
+  /* transform: translateY(6%); */
+  padding-bottom: 1px;
+  display: inline-block; 
 
   .avatar-user {
     border-radius: 50% !important;
@@ -6413,7 +6421,7 @@ img.scaled {
     display: flex;
     flex-direction: row;  
     width : 100%; 
-    padding: 25px 15px 0px 15px;
+    padding: 25px 15px 17px 15px;
 
       img {
         margin-right:10px;
