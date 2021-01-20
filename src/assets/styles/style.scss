@@ -178,7 +178,7 @@ p {
   font-size: 32px;
   font-weight: bold;
   text-align: center;
-  margin: 17px 40px;
+  margin: 7px 40px;
   width: 118px;
 
   .autoSaveText {
@@ -1147,7 +1147,8 @@ p {
   }
 }
 
-#header {
+.headerPanel {
+  display: grid;
   position: fixed;
   z-index: 4;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -1156,21 +1157,44 @@ p {
   left: 0;
   right: 0;
   width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: space-between;
+  height: 70px;
   align-items: center;
   background: #FFFFFF 0% 0% no-repeat padding-box;
   opacity: 1;
 
-  .right-elements {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .signOut {
+    right: 20px;
+    position: fixed;
+    top: 6px;
+  }
+}
 
-    .signOut {
-      margin-left: 10px;
+#header-on-view-graph {
+  grid-template-columns: 20% auto auto auto 25%;
+
+}
+
+#header-on-graph {
+  grid-template-columns: 21% auto auto 5% 5% 25%;
+
+}
+
+#header-on-graph, #header-on-view-graph {
+  .graphs {
+    button {
+      background-color: $color-white;
+      border: 0px;
     }
+  }
+}
+
+#header {
+  grid-template-columns: auto auto auto auto 20%;
+
+  .right-elements {
+    position: fixed;
+    right: 5%;
+    top: 12px;
 
     #popover-contained {
       inset: 30px auto auto -120px !important;
@@ -1313,6 +1337,7 @@ p {
   }
 
   .logo-graphs {
+    margin-left: 10%;
     font: normal normal bold 37px/51px Open Sans;
     letter-spacing: 0px;
     text-transform: capitalize;
@@ -1321,7 +1346,6 @@ p {
     font-size: 32px;
     font-weight: bold;
     text-align: center;
-    margin: 17px 40px;
 
     a {
       color: #FE794F !important;
@@ -1334,27 +1358,19 @@ p {
     text-align: left;
     font-size: 16px;
     opacity: 1;
-    padding: 0 10px;
 
-    a {
-      text-align: left;
-      font-size: 16px;
-      color: #0D0905 !important;
-      opacity: 1;
-      white-space: nowrap;
+    button {
+      background-color: #ffffff;
+      color: #0062FF;
+    }
+    button:hover {
+      box-shadow: 0 1px 6px rgba(0, 98, 255, 0.4);
     }
 
   }
 
-  .graphs {
-    position: absolute;
-    left: 550px;
-
-    button {
-      background-color: $color-white;
-      border: 0px;
-      padding: 4px 20px 1px;
-    }
+  .signOut {
+    right: 6%;
   }
 }
 
@@ -1413,13 +1429,16 @@ p {
 }
 
 .searchInputWrapper {
-  width: 249px;
-  position: absolute;
-  left: 250px;
+  width: 90%;
   padding: 0px 22px 0px 4px;
+  justify-self: right;
 
   .graphSearch {
     width: 100%;
+
+    input {
+      height: 40px;
+    }
   }
 
 
@@ -1430,10 +1449,6 @@ p {
     box-shadow: 0px 6px 20px #0D090526;
     border-radius: 5px;
   }
-}
-
-.signOut {
-  margin-left: auto;
 }
 
 #toolBar {
@@ -1887,6 +1902,24 @@ p {
   .ghModalSave {
     overflow-x: hidden;
     overflow-y: auto;
+
+    .form {
+      margin: 20px 40px;
+    }
+
+    h2 {
+      width: auto;
+    }
+
+    label {
+      padding: 0 0 10px;
+    }
+    .ghFormField {
+      width: auto;
+    }
+    .buttons {
+      margin-top: 40px;
+    }
   }
 
   &.changePasswordModalOverlay {
@@ -1927,8 +1960,8 @@ p {
   justify-content: flex-end;
   margin-top: 15px;
 
-  .ghButton {
-    margin-left: 10px;
+  .ghButton:nth-last-child(1) {
+    margin-left: 20px;
   }
 }
 
@@ -3310,15 +3343,11 @@ p {
 
 
 #accountDropDown {
-  position: fixed;
   background-color: $color-white;
   top: 0;
   right: 0;
   border-radius: 0 0 0 35px;
-  display: flex;
-  justify-content: center;
   flex-direction: column;
-  padding: 0px 35px;
   z-index: 9;
 
   .accountInfo {
@@ -3348,7 +3377,6 @@ p {
 
   .dropdown {
     left: 25px;
-    top: 10px;
     padding: 0 25px 0 0;
 
     ul {
@@ -3556,7 +3584,7 @@ body .gh__menu {
 .ghModalSearch {
   .list {
     max-height: 500%;
-    width: 100%;
+    width: 20%;
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -3635,13 +3663,12 @@ body .gh__menu {
 }
 
 .mapButton {
-  position: fixed;
+  margin-bottom: 10px;
   background: transparent;
   border: none;
-  display: flex;
   z-index: 2;
-  left: 435px;
-  top: 8px;
+  position: absolute;
+  right: 27%;
 
   img {
     width: 40px;
@@ -4696,8 +4723,8 @@ body .gh__menu {
   border: none;
   display: flex;
   z-index: 2;
-  left: 233px;
-  top: 4px;
+  left: 11%;
+  top: 10px;
   color: #0D0905;
   max-width: 200px;
   min-width: 200px;
@@ -4731,12 +4758,11 @@ body .gh__menu {
     z-index: 101;
     border: none;
     background-color: #FFFFFF;
-    font-size: 18px;
+    font-size: 14px;
     padding: 12px;
     outline: 0;
     border-radius: 12px;
     width: 100%;
-    font-family: chaparral-pro, serif;
 
     &:focus, &:active {
       box-shadow: 0px 0px 0px 1px #ABD6F780;
@@ -4764,9 +4790,8 @@ body .gh__menu {
     border-radius: 12px;
 
     h4 {
-      font-weight: bold;
       margin-bottom: 10px;
-      font-family: chaparral-pro, serif;
+      font-size: 15px;
     }
 
     .indicator {
@@ -4789,7 +4814,6 @@ body .gh__menu {
         display: flex;
         align-items: center;
         margin-bottom: 16px;
-        font-family: chaparral-pro, serif;
 
         .indicator {
           height: 10px;
@@ -4811,7 +4835,6 @@ body .gh__menu {
         display: flex;
         align-items: center;
         margin-bottom: 16px;
-        font-family: chaparral-pro, serif;
 
         .indicator {
           height: 2px;
@@ -5679,13 +5702,12 @@ body .gh__menu {
 }
 
 .wikiButton {
-  position: fixed;
   background: transparent;
   border: none;
-  display: flex;
   z-index: 2;
-  left: 500px;
-  top: 8px;
+  margin-bottom: 6px;
+  position: absolute;
+  right: 23%;
 
   img {
     width: 40px;
@@ -6414,6 +6436,12 @@ img.preview-scaled {
     margin-right: 8px;
   }
 
+  .onwer-star {
+    color   : yellow;
+    position: relative; 
+    bottom: 28px;
+    left: 8px;
+  }
 }
 
 

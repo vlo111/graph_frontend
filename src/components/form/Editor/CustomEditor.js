@@ -116,7 +116,7 @@ class CustomEditor extends Component {
     const { tags } = popUpData;
 
     if (file) {
-      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg']
+      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg', 'jfif']
         .filter((p) => file.name.toLocaleLowerCase().includes(p)));
 
       const desc = popUpData.desc ? `${popUpData.desc}` : '';

@@ -47,10 +47,10 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
                     <Link to={`/profile/${graphOwner.id}`} target="_blank">
                         <li className="mb-2 mr-2">
                             <Tooltip overlay={<TootlipContent user={graphOwner} role='Owner' />} trigger={['hover']} >
-                                 
+                                <div>
                                     <img className="avatar-user d-block" src={graphOwner.avatar} alt="" />
-                                    {/* <img icon="fa-star" className=" edit" /> */}
-                                
+                                    <span class="fa fa-star onwer-star"></span> 
+                                </div>
                             </Tooltip>
 
                         </li>
