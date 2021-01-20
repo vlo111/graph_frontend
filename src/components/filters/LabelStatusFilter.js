@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
+import ChartUtils from '../../helpers/ChartUtils';
 import { setFilter } from '../../store/actions/app';
 import Checkbox from '../form/Checkbox';
 
@@ -14,16 +15,14 @@ class LabelStatusFilter extends Component {
     nodes: PropTypes.array.isRequired,
   }
 
+
   formatLabels = memoizeOne((labels) => {
+
     const labelsFormatted = _.chain(labels)
-      .map((l) => {
-        l.status = l.status || 'unlock';
-        return l;
-      })
       .groupBy('status')
       .map((d, key) => ({
         length: d.length,
-        status: key,
+        status: key
       }))
       .orderBy('length', 'desc')
       .value();
@@ -31,7 +30,7 @@ class LabelStatusFilter extends Component {
       this.props.setFilter('labelStatus', labelsFormatted.map((d) => d.status), true);
     }
     return labelsFormatted;
-  }, (a, b) => _.isEqual(a[0].map((d) => d.status || 'unlock'), b[0].map((d) => d.status || 'unlock')));
+  }, (a, b) => _.isEqual(a[0].map((d) => d.status), b[0].map((d) => d.status)));
 
   handleChange = (value) => {
     const { filters } = this.props;
@@ -54,7 +53,18 @@ class LabelStatusFilter extends Component {
     }
 
   }
+  statusName = (label) => {
+   
+    switch (label) {
+      case 'lock':
+        return 'Locked labels'
+      case 'unlock':
+        return 'Open labels';
 
+      default:
+        return null;
+    }
+  }
   render() {
     const { labels, filters } = this.props;
     const labelStatusFull = this.formatLabels(labels);
@@ -78,9 +88,9 @@ class LabelStatusFilter extends Component {
             </Checkbox>
           </li>
           {labelStatusFull.map((item) => (
-            <li key={item.status} className="item">
+            <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
               <Checkbox
-                label={item.status}
+                label={this.statusName(item.status)}
                 checked={filters.labelStatus.includes(item.status)}
                 onChange={() => this.handleChange(item.status)}
               >

@@ -6,6 +6,7 @@ import { getGraphUsers } from '../../store/selectors/shareGraphs';
 import { graphUsersRequest } from '../../store/actions/shareGraphs';
 import Tooltip from 'rc-tooltip/es';
 import ShareTooltipContent from './ShareTooltipContent';
+import { ReactComponent as ShareSvg } from '../../assets/images/icons/share.svg';
 
 
 const TootlipContent = ({ user, role, isOwner }) => (
@@ -34,10 +35,10 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
 
     return (
 
-        <div className="contributors-container"> 
-            <p className="h4 mb-3 title"> Contributors:
-            {count ? (
-                    <span className="counter"> { count + countOwner } </span>
+        <div className="contributors-container">
+            <p className="h4 mb-3 title"> {isOwner ? `Contributors:` : `Shared with : `}
+                {count ? (
+                    <span className="counter"> { count + countOwner} </span>
                 ) : null}
             </p>
             <ul className="list-style-none d-flex flex-wrap mb-n2">
@@ -46,7 +47,10 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
                     <Link to={`/profile/${graphOwner.id}`} target="_blank">
                         <li className="mb-2 mr-2">
                             <Tooltip overlay={<TootlipContent user={graphOwner} role='Owner' />} trigger={['hover']} >
-                                <img className="avatar-user d-block" src={graphOwner.avatar} alt="" />
+                                 
+                                    <img className="avatar-user d-block" src={graphOwner.avatar} alt="" />
+                                    {/* <img icon="fa-star" className=" edit" /> */}
+                                
                             </Tooltip>
 
                         </li>

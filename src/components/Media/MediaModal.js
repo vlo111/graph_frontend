@@ -116,9 +116,9 @@ class MediaModal extends Component {
                   </div>
                 </div>
               )
-              : <h3 className="mediaNotFound">No Media Gallery Found</h3>}
+              : <h3 className="mediaNotFound">No media gallery found</h3>}
             <div className="buttonsWrapper">
-              <Button color="transparent" className="cancel" onClick={this.closeModal}>back</Button>
+              <Button color="transparent" className="cancel" onClick={this.closeModal}>Close</Button>
             </div>
           </Modal>
         </div>

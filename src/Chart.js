@@ -559,7 +559,7 @@ class Chart {
           .append('use')
           .attr('href', '#folderCloseIcon')
           .attr('class', 'closeIcon')
-          .attr('fill', '#f44336')
+          .attr('fill', '#58595b')
           .attr('x', 210)
           .attr('y', -240)
           .on('click', aaaa);
@@ -592,7 +592,7 @@ class Chart {
       .append('use')
       .attr('href', '#folderCloseIcon')
       .attr('class', 'closeIcon')
-      .attr('fill', '#f44336')
+      .attr('fill', '#58595b')
       .attr('x', 210)
       .attr('y', -240)
       .on('click', aaaa);

@@ -6053,6 +6053,10 @@ img.scaled {
   width: 100%;
 }
 
+img.preview-scaled { 
+  max-width: 600px;
+}
+
 .curvedLine {
   stroke-width: 1;
   stroke: #999;

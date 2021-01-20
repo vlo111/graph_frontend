@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import Button from '../../form/Button';
+import Button from '../Button';
 import { ReactComponent as CloseSvg } from '../../../assets/images/icons/close.svg';
-import FileUpload from '../../form/FileUpload';
-import Input from '../../form/Input';
+import FileUpload from '../FileUpload';
+import Input from '../Input';
 
 class MediaModal extends Component {
   static propTypes = {
@@ -22,7 +22,8 @@ class MediaModal extends Component {
     super(props);
     this.state = {
       popUpData: {
-        file: [], 
+        file: [],
+        tags: [],
       },
     };
   }
@@ -74,7 +75,8 @@ class MediaModal extends Component {
   addFile = (file) => {
     this.setState({
       popUpData: {
-        file, 
+        file,
+        tags: [],
       },
     });
   };
