@@ -36,7 +36,7 @@ const Owner = ({
                   // else document.getElementById('add-comment').focus();
                 });
               }}
-              className="transparent"
+              className="transparent reply"
               title="reply"
             >
             </Button>
@@ -47,7 +47,7 @@ const Owner = ({
               onClick={() => {
                 dispatch(deleteGraphComment(comment.id));
               }}
-              className="transparent"
+              className="transparent remove"
               title="Remove"
             > 
             </Button>
