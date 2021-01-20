@@ -33,10 +33,7 @@ class MediaModal extends Component {
       const graphIdParam = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
       this.searchDocuments(graphIdParam);
 
-      if (documentSearch && documentSearch.length) {
-      console.log('---------------')
-      console.log(documentSearch)
-      console.log('---------------')
+      if (documentSearch && documentSearch.length) { 
 
         documentSearch.sort((a, b) => a.nodeType.localeCompare(b.nodeType));
         documentSearch.map((p) => {

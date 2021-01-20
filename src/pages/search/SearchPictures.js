@@ -88,7 +88,7 @@ class SearchPictures extends Component {
                             </div>
                             <div className="searchData__graphInfo-details">
                               <p className="createdBy">
-                                <span>create by </span>
+                                <span>created by </span>
                                 <Link to={`/profile/${users[item].user.id}`}>
                                   {`${users[item].user.firstName} ${users[item].user.lastName}`}
                                 </Link>

@@ -91,8 +91,8 @@ class SearchDocuments extends Component {
                                   <h3>{users[item][graph][0].graphName}</h3>
                                 </div>
                                 <div className="searchData__graphInfo-details">
-                                  <p className="createdBy">
-                                    <span>create by </span>
+                                  <p className="createBy">
+                                    <span>created by </span>
                                     <Link to={`/profile/${users[item].user.id}`}>
                                       {`${users[item].user.firstName} ${users[item].user.lastName}`}
                                     </Link>

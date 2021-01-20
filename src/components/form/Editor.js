@@ -122,7 +122,8 @@ class Editor extends Component {
     const { tags } = popUpData;
 
     if (file) {
-      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg'].filter((p) => file.name.includes(p)));
+      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg']
+        .filter((p) => file.name.toLocaleLowerCase().includes(p)));
 
       const desc = popUpData.desc ? `${popUpData.desc}` : '';
 
