@@ -36,7 +36,7 @@ class NodeFullInfoContext extends Component {
     let links = Chart.getLinks();
     let labels = Chart.getLabels();
     // eslint-disable-next-line prefer-const
-    let { nodes } = Chart.getNodes(true);
+    let nodes = Chart.getNodes(true);
     const { customFields } = this.props;
 
     nodes = nodes.filter((d) => squareDara.nodes.includes(d.id));

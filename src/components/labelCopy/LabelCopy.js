@@ -136,7 +136,7 @@ class LabelCopy extends Component {
           </h2>
           <div className="buttonsWrapper">
             <Button onClick={() => this.toggleCompareNodes(true)} className="actionButton" icon="fa-balance-scale">
-              Compare nodes (in progress)
+              Compare nodes
             </Button>
             <Button onClick={this.merge} className="actionButton" icon="fa-code-fork">
               Merge nodes
