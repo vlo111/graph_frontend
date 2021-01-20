@@ -54,7 +54,8 @@ class LabelCopy extends Component {
   skipDuplications = () => {
     const { compare: { duplicatedNodes }, position } = this.state;
     const data = LabelUtils.getData();
-    data.nodes = data.nodes.filter((n) => !duplicatedNodes.some((d) => n.id === d.id));
+    console.log(duplicatedNodes)
+    data.nodes = data.nodes.filter((n) => !duplicatedNodes.some((d) => n.name === d.name));
     LabelUtils.past(data, position);
     this.closeModal();
   }

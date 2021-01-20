@@ -55,6 +55,7 @@ class LabelCompare extends Component {
     } else {
       duplicates = [];
     }
+    console.log(duplicatedNodes)
     this.setState({ duplicates });
   }
 
@@ -103,7 +104,7 @@ class LabelCompare extends Component {
                   checked={duplicates.length === duplicatedNodes.length}
                   onClick={() => this.toggleAllDuplicate()}
                 />
-                {'Nodes already in from '}
+                {'Nodes already in '}
                 <span>{data.title}</span>
               </div>
             </div>
@@ -128,7 +129,7 @@ class LabelCompare extends Component {
                     <LabelCompareItem
                       node={nodeDuplicate}
                       customFields={data.customFields}
-                      checked={duplicates.some((d) => d.id === nodeSource.id)}
+                      checked={duplicates.some((d) => d.id === nodeDuplicate.id)}
                       onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplicates')}
                     />
                   </div>
