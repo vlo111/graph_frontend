@@ -4,33 +4,38 @@ import Notification from './Notification';
 import AccountDropDown from './account/AccountDropDown';
 import SearchGraphs from './search/SearchGraphs';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
+import Button from './form/Button';
 
 class Header extends Component {
-  render() {
-    return (
-      <header id="header">
-        <div className="logo-graphs">
-          <Link to="/">
-          <LogoSvg className="logo orange" />
-          </Link>
-        </div>
-        <SearchGraphs />
-        <div className="start-graphs">
-          <Link to="/graphs/create">
-            Start a graph
-          </Link>
-        </div>
+    startGraph = () => {
+      window.location.href = '/graphs/create';
+    }
 
-        <div className="right-elements">
-          <Notification />
-          <div className="signOut">
-           <AccountDropDown />
-
+    render() {
+      return (
+        <header className="headerPanel" id="header">
+          <div className="logo-graphs">
+            <Link to="/">
+              <LogoSvg className="logo orange" />
+            </Link>
           </div>
-        </div>
-      </header>
-    );
-  }
+          <SearchGraphs />
+          <div className="start-graphs">
+            <div className="buttonsWrapper">
+              <Button color="accent" onClick={this.startGraph}>
+                Start a graph
+              </Button>
+            </div>
+          </div>
+          <div className="right-elements">
+            <Notification />
+          </div>
+          <div className="signOut">
+            <AccountDropDown />
+          </div>
+        </header>
+      );
+    }
 }
 
 export default Header;

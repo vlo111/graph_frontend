@@ -60,31 +60,33 @@ class CreateGraphModal extends Component {
         isOpen
       >
         <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.props.history.goBack} />
-        <h2>
-          Create Graph
-        </h2>
-        <Input
-          label="Title"
-          value={requestData.title}
-          onChangeText={(v) => this.handleChange('title', v)}
-        />
-        <Input
-          label="Description"
-          value={requestData.description}
-          textArea
-          onChangeText={(v) => this.handleChange('description', v)}
-        />
-        <div className="buttons">
-          <Button className="cancel transparent alt" onClick={this.props.history.goBack}>
-            Cancel
-          </Button>
-          <Button
-            className="accent alt saveNode"
-            disabled={!requestData.title}
-            onClick={this.addGraph}
-          >
-            Create
-          </Button>
+        <div className="form">
+          <h2>
+            Create Graph
+          </h2>
+          <Input
+            label="Title"
+            value={requestData.title}
+            onChangeText={(v) => this.handleChange('title', v)}
+          />
+          <Input
+            label="Description"
+            value={requestData.description}
+            textArea
+            onChangeText={(v) => this.handleChange('description', v)}
+          />
+          <div className="buttons">
+            <Button className="cancel transparent alt" onClick={this.props.history.goBack}>
+              Cancel
+            </Button>
+            <Button
+              className="accent alt saveNode"
+              disabled={!requestData.title}
+              onClick={this.addGraph}
+            >
+              Create
+            </Button>
+          </div>
         </div>
       </Modal>
     );
