@@ -3889,13 +3889,13 @@ body .gh__menu {
 #nodeFullInfo {
   position: fixed;
   background: $color-white;
-  width: 45%;
-  height: 100vh;
-  z-index: 22;
+  width     : 45%;
+  height    : 94vh;
+  z-index   : 22;
   box-shadow: 0px 6px 20px #0D090526;
-  right: 0;
-  top: 60px;
-  overflow-x: hidden;
+  right     : 0;
+  top       : 60px;
+  overflow-x: auto;
   overflow-y: auto;
 
 
