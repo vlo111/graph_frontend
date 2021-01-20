@@ -9,6 +9,7 @@ import LabelCompare from './LabelCompare';
 import { connect } from "react-redux";
 import CustomFields from "../../helpers/CustomFields";
 import { removeNodeCustomFieldKey } from "../../store/actions/graphs";
+import ChartUtils from "../../helpers/ChartUtils";
 
 class LabelCopy extends Component {
   constructor(props) {
@@ -54,8 +55,8 @@ class LabelCopy extends Component {
   skipDuplications = () => {
     const { compare: { duplicatedNodes }, position } = this.state;
     const data = LabelUtils.getData();
-    console.log(duplicatedNodes)
     data.nodes = data.nodes.filter((n) => !duplicatedNodes.some((d) => n.name === d.name));
+    data.links = ChartUtils.cleanLinks(data.links, data.nodes);
     LabelUtils.past(data, position);
     this.closeModal();
   }
