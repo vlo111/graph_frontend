@@ -72,7 +72,7 @@ class LabelCompare extends Component {
     } = this.props;
     const { sources, duplicates } = this.state;
     const data = LabelUtils.getData();
-    console.log(duplicatedNodes, 3434434534534)
+    console.log(duplicatedNodes, duplicates, 3434434534534)
     return (
       <Modal
         isOpen

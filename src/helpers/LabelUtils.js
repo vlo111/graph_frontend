@@ -60,7 +60,6 @@ class LabelUtils {
     data.nodes = data.nodes.map((n) => {
       const selected = duplicates.find((d) => d.name === n.name);
       const merge = sources.find((d) => d.name === n.name);
-      console.log(merge, selected)
       if (merge && selected) {
         const originalId = n.id;
         n.originalId = originalId;
@@ -109,6 +108,7 @@ class LabelUtils {
     data.links = ChartUtils.cleanLinks(data.links, data.nodes);
     links = ChartUtils.cleanLinks(links, nodes);
     Chart.render({ nodes, links });
+    console.log(data.nodes, ' data.nodes')
     return LabelUtils.past(data, position);
   }
 
@@ -196,12 +196,12 @@ class LabelUtils {
           }
           return l;
         });
+        d.originalId = d.id;
         d.id = id;
       }
 
-      const customField = CustomFields.get(data.customFields, d.type, d.id);
-      console.log(d.type, data.customFields)
-      const customField2 = CustomFields.get(data.customFields, d.type, d.originalId);
+      const customField = CustomFields.get(data.customFields, d.type, d.originalId || d.id);
+      console.log(customField, d)
       store.dispatch(setNodeCustomField(d.type, d.id, customField));
 
       if (d.replace) {
