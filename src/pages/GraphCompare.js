@@ -127,10 +127,10 @@ class GraphCompare extends Component {
                   <Select
                     label="Graph 1"
                     isAsync
-                    value={[{
+                    value={singleGraph.id ? [{
                       value: singleGraph.id,
                       label: `${singleGraph.title} (${singleGraph.nodes?.length})`,
-                    }]}
+                    }] : undefined}
                     onChange={(val) => this.handleGraphSelect(val, 1)}
                     cacheOptions
                     loadOptions={this.loadGraphs}
@@ -140,10 +140,10 @@ class GraphCompare extends Component {
                   <Select
                     label="Graph 2"
                     isAsync
-                    value={[{
+                    value={singleGraph2.id ? [{
                       value: singleGraph2.id,
                       label: `${singleGraph2.title} (${singleGraph2.nodes?.length})`,
-                    }]}
+                    }] : undefined}
                     onChange={(val) => this.handleGraphSelect(val, 2)}
                     cacheOptions
                     loadOptions={this.loadGraphs}

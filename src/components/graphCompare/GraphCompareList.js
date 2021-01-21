@@ -21,14 +21,15 @@ class GraphCompareList extends Component {
   render() {
     const { show } = this.state;
     const { singleGraph1, singleGraph2, dropdown, title } = this.props;
-    if (_.isEmpty(singleGraph1) || _.isEmpty(singleGraph2)) {
+    if (_.isEmpty(singleGraph1?.nodes) && _.isEmpty(singleGraph2?.nodes)) {
       return null;
     }
     return (
       <div className="compareList">
         <div className="title">
           {title}
-          {dropdown ? (<Icon onClick={this.toggleDropdown} value={show ? 'fa-chevron-up' : 'fa-chevron-down'} />) : null}
+          {dropdown ? (
+            <Icon onClick={this.toggleDropdown} value={show ? 'fa-chevron-up' : 'fa-chevron-down'} />) : null}
         </div>
         {show ? (
           <>
