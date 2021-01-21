@@ -9,6 +9,7 @@ import CustomFields from './CustomFields';
 import { removeNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } from '../store/actions/graphs';
 import Api from '../Api';
 import { socketLabelDataChange } from '../store/actions/socket';
+import { LABEL_STATUS } from '../data/node';
 
 class LabelUtils {
   static copy(sourceId, id, customFields, singleGraph) {
@@ -262,6 +263,16 @@ class LabelUtils {
       };
       store.dispatch(socketLabelDataChange(graph));
     }
+  }
+  /**
+   * Return label status name for label status
+   * @param {*} status 
+   */
+  static lableStatusNane = (status = null) => {
+
+    const labelStatus = LABEL_STATUS.filter((c) => c.value === status);
+    return labelStatus.length ? labelStatus[0].label : null;
+
   }
 }
 

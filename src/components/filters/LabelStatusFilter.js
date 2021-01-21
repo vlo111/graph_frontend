@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import ChartUtils from '../../helpers/ChartUtils';
+import LabelUtils from '../../helpers/LabelUtils';
 import { setFilter } from '../../store/actions/app';
 import Checkbox from '../form/Checkbox';
 
@@ -54,16 +55,7 @@ class LabelStatusFilter extends Component {
 
   }
   statusName = (label) => {
-   
-    switch (label) {
-      case 'lock':
-        return 'Locked labels'
-      case 'unlock':
-        return 'Open labels';
-
-      default:
-        return null;
-    }
+    return LabelUtils.lableStatusNane(label);
   }
   render() {
     const { labels, filters } = this.props;
@@ -72,6 +64,7 @@ class LabelStatusFilter extends Component {
     if (labelStatusFull.length < 1) {
       return null;
     }
+
     return (
       <div className="nodesStatusFilter graphFilter">
         <h4 className="title">Label status</h4>
