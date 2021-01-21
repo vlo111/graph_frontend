@@ -1427,13 +1427,15 @@ p {
       color: $color-error;
     }
   }
-  .navbar{
+
+  .navbar {
     grid-template-columns: 21% 21% 21% 21% 0%;
-    display              : grid;
+    display: grid;
   }
+
   button {
     background-color: $color-white;
-    color           : $color-dark;
+    color: $color-dark;
   }
 }
 
@@ -6195,16 +6197,22 @@ img.preview-scaled {
 
 .compareList {
   width: 100%;
-margin-bottom: 20px;
+  margin-bottom: 20px;
+
+  .lazyload-wrapper:last-child {
+    .item {
+      border-bottom: none;
+    }
+  }
+
   .item {
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid $color-accent;
     padding: 15px 0 0;
     overflow: hidden;
-    &:last-child{
-      border-bottom: none;
-    }
+
+
 
     .row {
       margin: 0;
@@ -6501,9 +6509,10 @@ margin-bottom: 20px;
   .title {
     font-size: 23px;
     background-color: $color-light-gray;
-    padding: 5px  15px;
+    padding: 5px 15px;
     display: flex;
-    .icon{
+
+    .icon {
       margin-left: auto;
       cursor: pointer;
     }
