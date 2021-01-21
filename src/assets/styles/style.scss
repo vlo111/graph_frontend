@@ -1427,6 +1427,14 @@ p {
       color: $color-error;
     }
   }
+  .navbar{
+    grid-template-columns: 21% 21% 21% 21% 0%;
+    display              : grid;
+  }
+  button {
+    background-color: $color-white;
+    color           : $color-dark;
+  }
 }
 
 .searchInputWrapper {
@@ -6447,9 +6455,9 @@ margin-bottom: 20px;
   .onwer-star {
     color: yellow;
     position: relative;
-    bottom: 23px;
-    left: 17px;
+    left: 29px;
     font-size: 11px;
+    top: 21px;
   }
 }
 

@@ -7,7 +7,7 @@ import ExportNode from './ExportNode';
 import Button from '../form/Button';
 import { setLoading } from '../../store/actions/app';
 import Api from '../../Api';
-import { ReactComponent as ExportSvg } from '../../assets/images/icons/exportPdf.svg';
+import { ReactComponent as ExportSvg } from '../../assets/images/icons/export.svg';
 
 class ExportNodeTabs extends Component {
   static propTypes = {
@@ -42,7 +42,8 @@ class ExportNodeTabs extends Component {
     return (
       <Button onClick={this.export}
        to="/#"
-       icon="fa-download">
+       icon={<ExportSvg />}
+       >
          Export
        </Button>
     );

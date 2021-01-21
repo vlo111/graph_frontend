@@ -1771,7 +1771,7 @@ class Chart {
       color: ChartUtils.labelColors(d),
       d: d.d,
       type: d.type,
-      status: d.status,
+      status: d.status || 'unlock',
       sourceId: d.sourceId,
       readOnly: d.readOnly,
     }));

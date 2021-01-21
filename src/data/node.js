@@ -11,8 +11,8 @@ export const NODE_STATUS = [
 ];
 
 export const LABEL_STATUS = [
-  { value: 'lock', label: 'Lock' },
-  { value: 'unlock', label: 'Unlock' },
+  { value: 'lock', label: 'Locked labels' },
+  { value: 'unlock', label: 'Open labels' },
 ];
 
 

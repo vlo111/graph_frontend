@@ -21,7 +21,7 @@ class GraphCompareList extends Component {
   render() {
     const { show } = this.state;
     const { singleGraph1, singleGraph2, dropdown, title } = this.props;
-    if (_.isEmpty(singleGraph1) && _.isEmpty(singleGraph2)) {
+    if (_.isEmpty(singleGraph1) || _.isEmpty(singleGraph2)) {
       return null;
     }
     return (
