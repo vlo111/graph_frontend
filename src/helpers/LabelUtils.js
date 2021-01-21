@@ -270,8 +270,8 @@ class LabelUtils {
    */
   static lableStatusNane = (status = null) => {
 
-    const labelStatus = LABEL_STATUS.filter((c) => c.value === status);
-    return labelStatus.length ? labelStatus[0].label : null;
+    const labelStatus = LABEL_STATUS.filter((c) => c.value === status); console.log(labelStatus, 'labelStatuslabelStatuslabelStatuslabelStatuslabelStatus');
+    return labelStatus.length  ? labelStatus[0].label : null;
 
   }
 }
