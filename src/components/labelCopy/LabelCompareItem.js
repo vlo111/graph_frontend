@@ -19,6 +19,7 @@ class LabelCompareItem extends Component {
   render() {
     const { node, customFields, containerClassName, checked } = this.props;
     const customField = CustomFields.get(customFields, node.type, node.id);
+    console.log(node)
     return (
       <>
         <input type="checkbox" checked={checked} onChange={this.handleChange} />
@@ -26,7 +27,9 @@ class LabelCompareItem extends Component {
           <NodeIcon node={node} />
           <div className="description">
             <span className="type">{node.type}</span>
-            <span className="createdAt">{moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}</span>
+            {node.createdAt ? (
+              <span className="createdAt">{moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}</span>
+            ) : null}
           </div>
         </div>
         <div className="tabs">

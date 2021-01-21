@@ -1,0 +1,204 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import Tooltip from 'rc-tooltip';
+import { toast } from 'react-toastify';
+import Modal from 'react-modal';
+import memoizeOne from 'memoize-one';
+import Wrapper from '../components/Wrapper';
+import ReactChart from '../components/chart/ReactChart';
+import { setActiveButton } from '../store/actions/app';
+import Button from '../components/form/Button';
+import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
+import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
+import Filters from '../components/filters/Filters';
+import NodeDescription from '../components/NodeDescription';
+import { deleteGraphRequest, getSingleGraphRequest } from '../store/actions/graphs';
+import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
+import { userGraphRequest } from '../store/actions/shareGraphs';
+import LabelTooltip from '../components/LabelTooltip';
+import ToolBarHeader from '../components/ToolBarHeader';
+import Chart from '../Chart';
+import Api from '../Api';
+import LabelCompareItem from '../components/labelCopy/LabelCompareItem';
+import Header from '../components/Header';
+import Input from '../components/form/Input';
+import Select from '../components/form/Select';
+import GraphCompareList from '../components/graphCompare/GraphCompareList';
+
+class GraphCompare extends Component {
+  static propTypes = {
+    setActiveButton: PropTypes.func.isRequired,
+    deleteGraphRequest: PropTypes.func.isRequired,
+    getSingleGraphRequest: PropTypes.func.isRequired,
+    userGraphRequest: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
+    userGraphs: PropTypes.array.isRequired,
+    location: PropTypes.object.isRequired,
+  }
+
+  getGraph1Request = memoizeOne((graphId) => {
+    if (+graphId) {
+      this.props.getSingleGraphRequest(graphId);
+    }
+  })
+
+  getGraph2Request = memoizeOne(async (graph2Id) => {
+    if (+graph2Id) {
+      const { data = {} } = await Api.getSingleGraph(graph2Id).catch((e) => e);
+      this.setState({ singleGraph2: data.graph || {} });
+    }
+  })
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      singleGraph2: {},
+    };
+  }
+
+  async componentDidMount() {
+    const { match: { params: { graphId, graph2Id } } } = this.props;
+    this.props.setActiveButton('view');
+  }
+
+  deleteGraph = async () => {
+    const { match: { params: { graphId = '' } } } = this.props;
+    if (window.confirm('Are you sure?')) {
+      await this.props.deleteGraphRequest(graphId);
+      this.props.history.push('/');
+      toast.info('Successfully deleted');
+    }
+  }
+
+  shareGraph = async () => {
+    if (window.confirm('Are you sure?')) {
+      this.setState({ openShareModal: true });
+    }
+  }
+
+  loadGraphs = async (s) => {
+    const { data } = await Api.getGraphsList(1, {
+      s,
+      onlyTitle: 1,
+    });
+    const graphs = data.graphs.map((g) => ({
+      value: g.id,
+      label: `${g.title} (${g.nodesCount})`,
+    }));
+    return graphs;
+  }
+
+  handleGraphSelect = (val, graph) => {
+    const {
+      match: { params: { graphId, graph2Id } },
+    } = this.props;
+    const { value = 0 } = val;
+    console.log(graph);
+    if (graph === 1) {
+      this.props.history.replace(`/graphs/compare/${value}/${+graph2Id || 0}`);
+    } else {
+      this.props.history.replace(`/graphs/compare/${+graphId || 0}/${value}`);
+    }
+  }
+
+  render() {
+    const {
+      match: { params: { graphId, graph2Id } }, singleGraph,
+    } = this.props;
+    const { singleGraph2 } = this.state;
+    this.getGraph1Request(graphId);
+    this.getGraph2Request(graph2Id);
+    const graph1Nodes = _.differenceBy(singleGraph.nodes, singleGraph2.nodes, 'name');
+    const graph2Nodes = _.differenceBy(singleGraph2.nodes, singleGraph.nodes, 'name');
+
+    const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
+    return (
+      <Wrapper className="graphCompare" showFooter={false}>
+        <Header />
+        <div className="compareListWrapper">
+          <ul className="compareList">
+            <li className="item itemSearch">
+              <div className="bottom">
+                <div className="node node_left">
+                  <Select
+                    label="Graph 1"
+                    isAsync
+                    value={[{
+                      value: singleGraph.id,
+                      label: `${singleGraph.title} (${singleGraph.nodes?.length})`,
+                    }]}
+                    onChange={(val) => this.handleGraphSelect(val, 1)}
+                    cacheOptions
+                    loadOptions={this.loadGraphs}
+                  />
+                </div>
+                <div className="node node_right">
+                  <Select
+                    label="Graph 2"
+                    isAsync
+                    value={[{
+                      value: singleGraph2.id,
+                      label: `${singleGraph2.title} (${singleGraph2.nodes?.length})`,
+                    }]}
+                    onChange={(val) => this.handleGraphSelect(val, 2)}
+                    cacheOptions
+                    loadOptions={this.loadGraphs}
+                  />
+                </div>
+              </div>
+
+            </li>
+          </ul>
+          <GraphCompareList
+            title="Similar Nodes"
+            singleGraph1={{ ...singleGraph, nodes: graph1CompareNodes }}
+            singleGraph2={singleGraph2}
+          />
+          <GraphCompareList
+            title={(
+              <span>
+                {'Nodes in '}
+                <strong>{singleGraph.title}</strong>
+              </span>
+            )}
+            dropdown
+            singleGraph1={{ ...singleGraph, nodes: graph1Nodes }}
+          />
+          <GraphCompareList
+            title={(
+              <span>
+                {'Nodes in '}
+                <strong>{singleGraph2.title}</strong>
+              </span>
+            )}
+            dropdown
+            singleGraph2={{ ...singleGraph2, nodes: graph2Nodes }}
+          />
+        </div>
+
+      </Wrapper>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  activeButton: state.app.activeButton,
+  singleGraph: state.graphs.singleGraph,
+  userGraphs: state.shareGraphs.userGraphs,
+});
+const mapDispatchToProps = {
+  setActiveButton,
+  getSingleGraphRequest,
+  deleteGraphRequest,
+  userGraphRequest,
+};
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(GraphCompare);
+
+export default Container;

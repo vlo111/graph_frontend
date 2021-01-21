@@ -19,6 +19,7 @@ import suspense from './helpers/suspense';
 import Search from './pages/search/Search';
 import Profile from './pages/account';
 import GraphThumbnail from './pages/GraphThumbnail';
+import GraphCompare from "./pages/GraphCompare";
 
 const GraphEmbed = React.lazy(() => import('./pages/GraphEmbed'));
 
@@ -52,6 +53,10 @@ class App extends Component {
             <Route path="/graphs/shared" component={Shared} />
             <Route path="/graphs/update/:graphId" component={GraphForm} />
             <Route path="/graphs/author/:authorId" component={GraphForm} />
+
+            <Route path="/graphs/compare/:graphId/:graph2Id" component={GraphCompare} />
+            <Route path="/graphs/compare/:graphId" component={GraphCompare} />
+            <Route path="/graphs/compare" component={GraphCompare} />
 
             <Route path="/graphs/embed/filter/:graphId/:token" component={suspense(GraphEmbed)} />
             <Route path="/graphs/embed/:graphId/:token" component={suspense(GraphEmbed)} />

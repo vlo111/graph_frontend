@@ -129,7 +129,7 @@ class LabelCopy extends Component {
           onRequestClose={this.closeModal}
         >
           <h4 className="subtitle">
-            {`Moving ${data.nodes.length} nodes from ${singleGraph.title} to ${data.title}.`}
+            {`Moving ${data.nodes.length} nodes from ${data.title} to ${singleGraph.title}.`}
           </h4>
           <h2 className="title">
             {`The destinations has ${compare.duplicatedNodes?.length || 0} nodes with the same type and name`}
