@@ -16,6 +16,11 @@ class CreateGraphModal extends Component {
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
+    data: PropTypes.object,
+  }
+
+  static defaultProps = {
+    data: {},
   }
 
   constructor(props) {
@@ -24,6 +29,7 @@ class CreateGraphModal extends Component {
       requestData: {
         title: '',
         description: '',
+        ...props.data,
       },
     };
   }
@@ -48,10 +54,12 @@ class CreateGraphModal extends Component {
   }
 
   render() {
-    const { singleGraph, match: { params: { graphId = '' } } } = this.props;
+    const { singleGraph, match: { params: { graphId = '' } }, show } = this.props;
     const { requestData } = this.state;
     if (graphId || !_.isEmpty(singleGraph)) {
-      return null;
+      if (!show) {
+        return null;
+      }
     }
     return (
       <Modal

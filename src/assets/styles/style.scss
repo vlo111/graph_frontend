@@ -6505,6 +6505,9 @@ img.preview-scaled {
     overflow: visible;
     border-bottom: none;
   }
+  .item{
+    padding: 15px 15px;
+  }
 
   .title {
     font-size: 23px;
@@ -6517,4 +6520,13 @@ img.preview-scaled {
       cursor: pointer;
     }
   }
+}
+
+.compareAndCreateNewGraph{
+  position: fixed;
+  z-index: 4;
+  right: 15px;
+  bottom: 15px;
+  color: white;
+  font-size: 16px;
 }

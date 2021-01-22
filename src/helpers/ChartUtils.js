@@ -553,8 +553,8 @@ class ChartUtils {
     return { nodes, files, customFields };
   }
 
-  static uniqueId(data = []) {
-    const graphId = Utils.getGraphIdFormUrl();
+  static uniqueId(data = [], id) {
+    const graphId = id || Utils.getGraphIdFormUrl();
     const ids = [0];
     data.forEach((d) => {
       const [_id = 0] = /[\d.]+/.exec(d.id) || [];
@@ -609,6 +609,16 @@ class ChartUtils {
 
   static getChartSvg() {
     return document.querySelector('#graph svg')?.outerHTML || '';
+  }
+
+  static merge(d1, d2) {
+    const data = { ...d1, ...d2 };
+    for (const i in data) {
+      if (!data[i]) {
+        data[i] = d1[i];
+      }
+    }
+    return data;
   }
 }
 

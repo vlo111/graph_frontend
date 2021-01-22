@@ -26,6 +26,8 @@ import Header from '../components/Header';
 import Input from '../components/form/Input';
 import Select from '../components/form/Select';
 import GraphCompareList from '../components/graphCompare/GraphCompareList';
+import ChartUtils from '../helpers/ChartUtils';
+import CreateGraphModal from "../components/CreateGraphModal";
 
 class GraphCompare extends Component {
   static propTypes = {
@@ -57,6 +59,8 @@ class GraphCompare extends Component {
     super(props);
     this.state = {
       singleGraph2: {},
+      selectedNodes1: [],
+      selectedNodes2: [],
     };
   }
 
@@ -97,7 +101,6 @@ class GraphCompare extends Component {
       match: { params: { graphId, graph2Id } },
     } = this.props;
     const { value = 0 } = val;
-    console.log(graph);
     if (graph === 1) {
       this.props.history.replace(`/graphs/compare/${value}/${+graph2Id || 0}`);
     } else {
@@ -105,17 +108,67 @@ class GraphCompare extends Component {
     }
   }
 
+  handleChange = (d, checked, pos) => {
+    const key = pos === 1 ? 'selectedNodes1' : 'selectedNodes2';
+    const data = this.state[key];
+    const i = data.findIndex((n) => n.id === d.id);
+    if (checked) {
+      if (i === -1) {
+        data.push(d);
+      }
+    } else if (i > -1) {
+      data.splice(i, 1);
+    }
+    this.setState({ [key]: data });
+  }
+
+  createGraph = () => {
+    const { singleGraph } = this.props;
+    const { singleGraph2 } = this.state;
+    const { selectedNodes1, selectedNodes2 } = this.state;
+
+    let labels = new Set();
+    const nodes = selectedNodes1.map((node1) => {
+      const node2 = selectedNodes2.find((n) => n.name === node1.name);
+      if (node2) {
+        node1 = ChartUtils.merge(node2, node1);
+      }
+
+      singleGraph.labels.filter((l) => node1.labels?.includes(l.id)).forEach(labels.add, labels);
+      return node1;
+    });
+
+    selectedNodes2.forEach((node2) => {
+      const node1 = selectedNodes1.find((n) => n.name === node2.name);
+      if (!node1) {
+        singleGraph.labels.filter((l) => node2.labels?.includes(l.id)).forEach(labels.add, labels);
+        nodes.push(node2);
+      }
+    });
+
+    labels = [...labels];
+
+    const links = ChartUtils.cleanLinks([...singleGraph.links, ...singleGraph2.links], nodes);
+
+    this.setState({
+      createGraphData: { labels, nodes, links }
+    });
+  }
+
   render() {
     const {
       match: { params: { graphId, graph2Id } }, singleGraph,
     } = this.props;
-    const { singleGraph2 } = this.state;
+    const { singleGraph2, selectedNodes1, selectedNodes2, createGraphData } = this.state;
     this.getGraph1Request(graphId);
     this.getGraph2Request(graph2Id);
     const graph1Nodes = _.differenceBy(singleGraph.nodes, singleGraph2.nodes, 'name');
     const graph2Nodes = _.differenceBy(singleGraph2.nodes, singleGraph.nodes, 'name');
 
     const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
+
+    const selected = [...selectedNodes1, ...selectedNodes2];
+    console.log(createGraphData, 3333)
     return (
       <Wrapper className="graphCompare" showFooter={false}>
         <Header />
@@ -157,6 +210,8 @@ class GraphCompare extends Component {
             title="Similar Nodes"
             singleGraph1={{ ...singleGraph, nodes: graph1CompareNodes }}
             singleGraph2={singleGraph2}
+            onChange={this.handleChange}
+            selected={selected}
           />
           <GraphCompareList
             title={(
@@ -167,6 +222,8 @@ class GraphCompare extends Component {
             )}
             dropdown
             singleGraph1={{ ...singleGraph, nodes: graph1Nodes }}
+            onChange={this.handleChange}
+            selected={selected}
           />
           <GraphCompareList
             title={(
@@ -177,9 +234,18 @@ class GraphCompare extends Component {
             )}
             dropdown
             singleGraph2={{ ...singleGraph2, nodes: graph2Nodes }}
+            onChange={this.handleChange}
+            selected={selected}
           />
         </div>
 
+        <Button onClick={this.createGraph} className="compareAndCreateNewGraph" color="main" icon="fa-plus">
+          Create New Graph
+        </Button>
+
+        {!_.isEmpty(createGraphData) ? (
+          <CreateGraphModal show data={createGraphData} />
+        ) : null}
       </Wrapper>
     );
   }
