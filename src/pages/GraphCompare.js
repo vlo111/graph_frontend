@@ -134,14 +134,14 @@ class GraphCompare extends Component {
         node1 = ChartUtils.merge(node2, node1);
       }
 
-      singleGraph.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
+      // singleGraph.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
       return node1;
     });
 
     selectedNodes2.forEach((node2) => {
       const node1 = selectedNodes1.find((n) => n.name === node2.name);
       if (!node1) {
-        singleGraph.labels.filter((l) => node2.labels?.includes(l.id)).forEach(labels.add, labels);
+        // singleGraph.labels.filter((l) => node2.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
         nodes.push(node2);
       }
     });
