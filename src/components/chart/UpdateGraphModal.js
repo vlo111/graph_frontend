@@ -29,7 +29,7 @@ const UpdateGraphModal = ({ graph, closeModal }) => {
       await dispatch(getGraphsListRequest(page, { s: searchParam }));
       closeModal()
       history.push('/');
-      toast.info('Successfully saved');
+      toast.success('Successfully saved');
 
     } catch (e) {
       console.log(e)

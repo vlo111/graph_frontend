@@ -5,9 +5,7 @@ import { Link } from 'react-router-dom';
 import { getGraphUsers } from '../../store/selectors/shareGraphs';
 import { graphUsersRequest } from '../../store/actions/shareGraphs';
 import Tooltip from 'rc-tooltip/es';
-import ShareTooltipContent from './ShareTooltipContent';
-import { ReactComponent as ShareSvg } from '../../assets/images/icons/share.svg';
-
+import ShareTooltipContent from './ShareTooltipContent'; 
 
 const TootlipContent = ({ user, role, isOwner }) => (
     <Suspense fallback={<div>Loading...</div>}>

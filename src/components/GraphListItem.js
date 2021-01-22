@@ -12,12 +12,12 @@ class GraphListItem extends Component {
   }
 
   render() {
-    const { graph } = this.props;
+    const { graph, headerTools } = this.props;
     const { s } = queryString.parse(window.location.search);
 
     return (
       <article className="graphsItem">
-        <GraphListHeader graph={graph} />
+        <GraphListHeader graph={graph} headerTools={headerTools} />
         <div className="top">
           <img
             className="avatar"
@@ -28,7 +28,7 @@ class GraphListItem extends Component {
             <Link to={`/profile/${graph.user.id}`}>
               <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
             </Link>
-            <div className="info">
+            <div className="info"> 
               <span>{moment(graph.updatedAt).calendar()}</span>
               <span>{`${graph.nodesCount} nodes`}</span>
             </div>

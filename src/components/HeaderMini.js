@@ -102,14 +102,17 @@ class HeaderMini extends Component {
       <header id="headerMini">
         <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() => this.closeNodeInfoModal()} />
         <div className="navbar">
-        <Button
+          <Button
             icon={<InfoSvg />}
+            title="Info"
+            className="b-navbar"
             onClick={() => this.toggleGraphUsersInfo(true)}>
             Info
             </Button>
           <Button className="commentsInfo"
             icon={<CommentSvg />}
             title="Comment"
+            className="b-navbar"
             onClick={() => this.toggleNodeComment(true)}>
             Comment
               {<span>({commentsCount?.commentsCount})</span>}

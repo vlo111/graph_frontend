@@ -8,6 +8,7 @@ import SearchResult from './SearchResult';
 import SearchSharedGraphs from './SearchSharedGraphs';
 import SearchPictures from './SearchPictures';
 import SearchDocuments from './SearchDocuments';
+import { ReactComponent as ScrollUpSvg } from '../../assets/images/icons/scroll-up.svg';
 
 class Search extends Component {
   handleRouteChange = (tab) => {
@@ -16,6 +17,7 @@ class Search extends Component {
 
   render() {
     return (
+      <>
       <Wrapper className="homePage">
         <Header />
         <VerticalTabs
@@ -32,6 +34,15 @@ class Search extends Component {
           ]}
         />
       </Wrapper>
+      <BackToTop
+        //showOnScrollUp
+        showAt={100}
+        speed={1500}
+        easing="easeInOutQuint"
+      >
+        <span><ScrollUpSvg className="icon" style={{ height: 40 }} /></span>
+      </BackToTop>
+      </>
     );
   }
 }

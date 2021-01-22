@@ -312,6 +312,10 @@ p {
 
 }
 
+.jodit_fullsize-box_true {
+  z-index: 102 !important;
+}
+
 .ghFormField {
   width: 250px;
   max-width: 100%;
@@ -1433,13 +1437,18 @@ p {
   }
 
   .navbar {
-    grid-template-columns: 21% 21% 21% 21% 0%;
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 100%; 
   }
-
   button {
     background-color: $color-white;
-    color: $color-dark;
+    color           : $color-dark; 
+  }
+  .b-navbar { 
+    margin: -9px 26px;
   }
 }
 
@@ -1867,11 +1876,11 @@ p {
   right: 0;
   bottom: 0;
   background-color: rgba($color-dark, 0.1);
-  z-index: 99;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-
+  z-index         : 99;
+  display         : flex;
+  justify-content : center;
+  align-items     : flex-start;
+   z-index: 102;
   .ghModal {
     outline: none;
     position: relative;
@@ -4352,6 +4361,7 @@ body .gh__menu {
 }
 
 .ghModalNodeFullInfoOverlay {
+  z-index: 101 !important;
   .ghModal {
     top: 5%;
     width: 77%;
@@ -6068,6 +6078,7 @@ body .gh__menu {
 }
 
 .insertMediaModal {
+  z-index: 101 !important;
   img {
     width: 340px;
   }
