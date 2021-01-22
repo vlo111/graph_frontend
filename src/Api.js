@@ -111,7 +111,7 @@ class Api {
   }
 
   static getGraphsList(page, requestData = {}) {
-    const params = { page, ...requestData, s: 'a' };
+    const params = { page, ...requestData };
     return api.get('/graphs', {
       params,
       cancelToken: this.#cancel('getGraphsList'),
