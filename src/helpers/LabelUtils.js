@@ -215,7 +215,7 @@ class LabelUtils {
       } else if (d.merge) {
         nodes = nodes.map((n) => {
           if (n.id === d.id) {
-            return { ...n, ...d };
+            return ChartUtils.merge(n, d);
           }
           return n;
         });
@@ -266,12 +266,12 @@ class LabelUtils {
   }
   /**
    * Return label status name for label status
-   * @param {*} status 
+   * @param {*} status
    */
   static lableStatusNane = (status = null) => {
 
-    const labelStatus = LABEL_STATUS.filter((c) => c.value === status); 
-    return labelStatus.length  ? labelStatus[0].label : null;
+    const labelStatus = LABEL_STATUS.filter((c) => c.value === status);
+    return labelStatus.length ? labelStatus[0].label : null;
 
   }
 }
