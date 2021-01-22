@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BackToTop from "react-back-to-top-button";
 import VerticalTabs from '../../components/PageTabs';
 import SearchPeople from './SearchUsers';
 import SearchGraphs from './SearchGraphs';
