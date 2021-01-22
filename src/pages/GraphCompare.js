@@ -91,7 +91,7 @@ class GraphCompare extends Component {
       onlyTitle: 1,
     });
     const graphs = data.graphs
-      .filter(g => g.id !== graphId && g.id !== graph2Id)
+      .filter(g => +g.id !== +graphId && +g.id !== +raph2Id)
       .map((g) => ({
         value: g.id,
         label: `${g.title} (${g.nodesCount})`,
