@@ -85,14 +85,17 @@ class GraphCompare extends Component {
   }
 
   loadGraphs = async (s) => {
+    const { match: { params: { graphId, graph2Id } } } = this.props;
     const { data } = await Api.getGraphsList(1, {
       s,
       onlyTitle: 1,
     });
-    const graphs = data.graphs.map((g) => ({
-      value: g.id,
-      label: `${g.title} (${g.nodesCount})`,
-    }));
+    const graphs = data.graphs
+      .filter(g => g.id !== graphId && g.id !== graph2Id)
+      .map((g) => ({
+        value: g.id,
+        label: `${g.title} (${g.nodesCount})`,
+      }));
     return graphs;
   }
 
