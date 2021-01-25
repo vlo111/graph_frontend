@@ -2,28 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
-import Modal from 'react-modal';
 import memoizeOne from 'memoize-one';
 import Wrapper from '../components/Wrapper';
-import ReactChart from '../components/chart/ReactChart';
 import { setActiveButton } from '../store/actions/app';
 import Button from '../components/form/Button';
-import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
-import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
-import Filters from '../components/filters/Filters';
-import NodeDescription from '../components/NodeDescription';
 import { deleteGraphRequest, getSingleGraphRequest } from '../store/actions/graphs';
-import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import { userGraphRequest } from '../store/actions/shareGraphs';
-import LabelTooltip from '../components/LabelTooltip';
-import ToolBarHeader from '../components/ToolBarHeader';
-import Chart from '../Chart';
 import Api from '../Api';
-import LabelCompareItem from '../components/labelCopy/LabelCompareItem';
 import Header from '../components/Header';
-import Input from '../components/form/Input';
 import Select from '../components/form/Select';
 import GraphCompareList from '../components/graphCompare/GraphCompareList';
 import ChartUtils from '../helpers/ChartUtils';
@@ -42,16 +29,17 @@ class GraphCompare extends Component {
     location: PropTypes.object.isRequired,
   }
 
-  getGraph1Request = memoizeOne((graphId) => {
+  getGraph1Request = memoizeOne(async (graphId) => {
     if (+graphId) {
-      this.props.getSingleGraphRequest(graphId);
+      const { payload: { data = {} } } = await this.props.getSingleGraphRequest(graphId);
+      this.setState({ selectedNodes1: _.cloneDeep(data.graph?.nodes || []) });
     }
   })
 
   getGraph2Request = memoizeOne(async (graph2Id) => {
     if (+graph2Id) {
       const { data = {} } = await Api.getSingleGraph(graph2Id).catch((e) => e);
-      this.setState({ singleGraph2: data.graph || {} });
+      this.setState({ singleGraph2: data.graph || {}, selectedNodes2: _.cloneDeep(data.graph?.nodes || []) });
     }
   })
 
@@ -147,14 +135,14 @@ class GraphCompare extends Component {
         });
       }
 
-      // singleGraph.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
+      singleGraph.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
       return node1;
     });
 
     selectedNodes2.forEach((node2) => {
       const node1 = selectedNodes1.find((n) => n.name === node2.name);
       if (!node1) {
-        // singleGraph.labels.filter((l) => node2.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
+        singleGraph.labels.filter((l) => node2.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
         nodes.push(node2);
       }
     });
@@ -220,7 +208,7 @@ class GraphCompare extends Component {
             </li>
           </ul>
           <GraphCompareList
-            title="Similar Nodes"
+            title={`Similar Nodes (${graph1CompareNodes.length}) `}
             singleGraph1={{ ...singleGraph, nodes: graph1CompareNodes }}
             singleGraph2={singleGraph2}
             onChange={this.handleChange}
@@ -231,6 +219,7 @@ class GraphCompare extends Component {
               <span>
                 {'Nodes in '}
                 <strong>{singleGraph.title}</strong>
+                {` (${graph1Nodes.length})`}
               </span>
             )}
             dropdown
@@ -243,6 +232,7 @@ class GraphCompare extends Component {
               <span>
                 {'Nodes in '}
                 <strong>{singleGraph2.title}</strong>
+                {` (${graph2Nodes.length})`}
               </span>
             )}
             dropdown

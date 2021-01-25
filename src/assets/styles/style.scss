@@ -6545,10 +6545,14 @@ img.preview-scaled {
     background-color: $color-light-gray;
     padding: 5px 15px;
     display: flex;
+    align-items: center;
 
     .icon {
       margin-left: auto;
       cursor: pointer;
+    }
+    [type="checkbox"]{
+      margin-left: 10px;
     }
   }
 }
