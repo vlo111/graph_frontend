@@ -169,7 +169,6 @@ class GraphCompare extends Component {
     const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
 
     const selected = [...selectedNodes1, ...selectedNodes2];
-    console.log(createGraphData, 3333);
     return (
       <Wrapper className="graphCompare" showFooter={false}>
         <Header />

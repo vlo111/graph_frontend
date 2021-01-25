@@ -6546,6 +6546,16 @@ img.preview-scaled {
     padding: 15px 15px;
   }
 
+  .ghSelect {
+    .gh__indicators {
+      display: none;
+
+    }
+    .gh__menu-notice--no-options {
+      display: none;
+    }
+  }
+
   .title {
     font-size: 23px;
     background-color: $color-light-gray;
