@@ -76,6 +76,12 @@ class NodeTabsFormModal extends Component {
     const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
 
+    tabData.documents = tabData.documents.sort((x, y) => {
+      const first = x.file.type.includes('image');
+      const second = y.file.type.includes('image');
+      return (first === second) ? 0 : first ? -1 : 1;
+    });
+
     if (!isUpdate || (tabData.originalName !== tabData.name)) {
       [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node.type, customFields);
     }

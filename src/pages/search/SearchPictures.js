@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getPicturesByTagRequest } from '../../store/actions/document';
 import NodeIcon from '../../components/NodeIcon';
+import ChartUtils from '../../helpers/ChartUtils';
+import Loading from '../../components/Loading';
 
 class SearchPictures extends Component {
   static propTypes = {
@@ -16,6 +18,11 @@ class SearchPictures extends Component {
     currentUserId: PropTypes.number.isRequired,
   };
 
+  constructor() {
+    super();
+    this.state = { loading: true };
+  }
+
   static defaultProps = {
     setLimit: false,
   }
@@ -24,21 +31,29 @@ class SearchPictures extends Component {
     this.props.getPicturesByTagRequest(searchParam);
   })
 
-  goToNodeTab = (graphId, nodeId, userId) => {
+  goToNodeTab = (graphId, node, userId) => {
     const { currentUserId } = this.props;
     const mode = currentUserId === userId ? 'update' : 'view';
-    this.props.history.replace(`/graphs/${mode}/${graphId}?info=${nodeId}`);
+    this.props.history.replace(`/graphs/${mode}/${graphId}?info=${node.id}`);
+    ChartUtils.findNodeInDom(node);
+  }
+
+  componentDidMount() {
+    if (this.state.loading) {
+      const { pictureSearch } = this.props;
+      if (pictureSearch && pictureSearch.length) {
+        this.setState({ loading: false });
+      }
+    }
   }
 
   render() {
     const { setLimit, pictureSearch } = this.props;
+    const { loading } = this.state;
     const { s: searchParam } = queryString.parse(window.location.search);
     this.searchPictures(searchParam);
     let users = {};
     if (pictureSearch.length) {
-      console.log('-------------------------------------')
-      console.log(pictureSearch)
-      console.log('-------------------------------------')
       pictureSearch.sort((a, b) => a.nodeType.localeCompare(b.nodeType));
 
       const groupByUserId = (array, key) => array.reduce((result, obj) => {
@@ -109,7 +124,7 @@ class SearchPictures extends Component {
                                     className="nodeLink"
                                     onClick={() => this.goToNodeTab(
                                       document.graphId,
-                                      document.nodeId,
+                                      document.node,
                                       users[item].user.id,
                                     )}
                                   >
@@ -122,20 +137,28 @@ class SearchPictures extends Component {
                                     </div>
                                   </p>
                                   {document.altText
-                                    ? <a download={document.altText} href={document.data}>{document.altText}</a>
+                                    ? <a target="_blank" href={document.data}>{document.altText}</a>
                                     : (
-                                      <table>
+                                      <table className="mediaTable">
                                         <tbody>
                                           <tr>
                                             <td>
-                                              <a href={document.data} download="graph_tab_img">
-                                                <img
-                                                  src={document.data}
-                                                  width="300px"
-                                                  download="graphTabImage"
-                                                />
-                                              </a>
-                                              {document.description}
+                                              <div className="mediaTumbnail">
+                                                <div className="container">
+                                                  <a target="_blank" href={document.data}>
+                                                    <img
+                                                      target="_blank"
+                                                      src={document.data}
+                                                      width="300px"
+                                                    />
+                                                  </a>
+                                                </div>
+                                                <p title={document.description}>
+                                                  { document.description && document.description.length > 59
+                                                    ? `${document.description.substr(0, 59)}... `
+                                                    : document.description}
+                                                </p>
+                                              </div>
                                             </td>
                                           </tr>
                                         </tbody>
@@ -152,11 +175,13 @@ class SearchPictures extends Component {
               </div>
             ))}
             {
-                  setLimit && document.length > 5
-                  && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link></div>
-                }
+              setLimit && document.length > 5
+              && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link></div>
+            }
           </div>
-        ) : ((!setLimit && <h3>No Pictures Found</h3>) || null)}
+        ) : ((!setLimit && (!loading
+          ? <Loading />
+          : <h3 className="mediaNotFound">No Pictures Found</h3>)) || null)}
       </div>
     );
   }

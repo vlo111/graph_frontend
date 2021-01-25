@@ -36,8 +36,7 @@ class NodeFullInfoContext extends Component {
     let links = Chart.getLinks();
     let labels = Chart.getLabels();
     // eslint-disable-next-line prefer-const
-    let nodes = Chart.getNodes(true);
-    const { customFields } = this.props;
+    let { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
 
     nodes = nodes.filter((d) => squareDara.nodes.includes(d.id));
     labels = labels.filter((l) => squareDara.labels.includes(l.id));
@@ -48,6 +47,7 @@ class NodeFullInfoContext extends Component {
       nodes,
       links,
       labels,
+      files,
       customFields,
     });
     if (data.graphId) {

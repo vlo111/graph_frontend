@@ -9,6 +9,8 @@ import Select from '../form/Select';
 import { searchUsers } from '../../store/actions/profile';
 import { getSharedWithUsersRequest, shareGraphWithUsersRequest } from '../../store/actions/share';
 import ShareUserItem from './ShareUserItem';
+import {ReactComponent as CloseSvg} from "../../assets/images/icons/close.svg";
+import Button from "../form/Button";
 
 class LabelShare extends Component {
   static propTypes = {
@@ -79,6 +81,7 @@ class LabelShare extends Component {
         isOpen={!_.isNull(labelId)}
         onRequestClose={this.closeModal}
       >
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
         <Select
           label="Add User"
           portal

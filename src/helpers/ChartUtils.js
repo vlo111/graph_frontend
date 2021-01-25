@@ -397,13 +397,17 @@ class ChartUtils {
   }
 
   static findNodeInDom(node) {
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(0, 0).scale(2));
-    const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
-    const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
-    const left = (x * -1) + (window.innerWidth / 2) - nodeWidth;
-    const top = (y * -1) + (window.innerHeight / 2) - nodeWidth;
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(2));
-    // Chart.event.emit('node.mouseenter', node);
+    try {
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(0, 0).scale(2));
+      const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
+      const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
+      const left = (x * -1) + (window.innerWidth / 2) - nodeWidth;
+      const top = (y * -1) + (window.innerHeight / 2) - nodeWidth;
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(2));
+      // Chart.event.emit('node.mouseenter', node);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   static isNodeInLabel(node, label) {
@@ -511,46 +515,64 @@ class ChartUtils {
     return d;
   }
 
-  static async getNodesWithFiles(customFields = {}) {
+  static async getNodesWithFiles(customFields = {}, documents = []) {
     let nodes = Chart.getNodes(true);
-    const icons = await Promise.all(nodes.map((d) => {
-      if (d.icon && d.icon.startsWith('blob:')) {
-        return Utils.blobToBase64(d.icon);
-      }
-      return d.icon;
-    }));
-    let files = {};
     let fIndex = new Date().getTime();
-    nodes = nodes.map((d, i) => {
-      d.icon = icons[i];
-      d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
-        fIndex += 1;
-        files[fIndex] = Utils.blobToBase64(url);
-        return ` href="<%= file_${fIndex} %>"`;
-      });
-      return d;
-    });
+    let docIndex = fIndex;
+    let files = {};
 
-    for (const nodeType in customFields) {
-      for (const tab in customFields[nodeType]) {
-        if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
-          for (const node in customFields[nodeType][tab].values) {
-            if (customFields[nodeType][tab].values[node]) {
-              customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
-                .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
-                  fIndex += 1;
-                  files[fIndex] = Utils.blobToBase64(url);
-                  return ` href="<%= file_${fIndex} %>"`;
-                });
+    if (documents) {
+      const icons = await Promise.all(nodes.map((d) => {
+        if (d.icon && d.icon.startsWith('blob:')) {
+          return Utils.blobToBase64(d.icon);
+        }
+        return d.icon;
+      }));
+
+      nodes = nodes.map((d, i) => {
+        d.icon = icons[i];
+        d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
+          fIndex += 1;
+          files[fIndex] = Utils.blobToBase64(url);
+          return ` href="<%= file_${fIndex} %>"`;
+        });
+        return d;
+      });
+
+      _.forEach(documents, (doc) => {
+        docIndex++;
+        doc.index = docIndex;
+      });
+
+      for (const nodeType in customFields) {
+        for (const tab in customFields[nodeType]) {
+          if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
+            for (const node in customFields[nodeType][tab].values) {
+              if (customFields[nodeType][tab].values[node]) {
+                customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
+                  .replace(/\ssrc="(blob:[^"]+)"/g, (m, url) => {
+                    fIndex += 1;
+                    files[fIndex] = Utils.blobToBase64(url);
+                    return ` src="<%= file_${fIndex} %>"`;
+                  })
+                  .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
+                    fIndex += 1;
+                    files[fIndex] = Utils.blobToBase64(url);
+                    return ` href ="<%= file_${fIndex} %>"`;
+                  });
+              }
             }
+          } else {
+            delete customFields[nodeType][tab];
           }
-        } else {
-          delete customFields[nodeType][tab];
         }
       }
+      files = await Promise.allValues(files);
     }
-    files = await Promise.allValues(files);
-    return { nodes, files, customFields };
+
+    return {
+      nodes, files, customFields, documents,
+    };
   }
 
   static uniqueId(data = [], id) {
