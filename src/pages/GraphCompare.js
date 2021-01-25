@@ -27,7 +27,7 @@ import Input from '../components/form/Input';
 import Select from '../components/form/Select';
 import GraphCompareList from '../components/graphCompare/GraphCompareList';
 import ChartUtils from '../helpers/ChartUtils';
-import CreateGraphModal from "../components/CreateGraphModal";
+import CreateGraphModal from '../components/CreateGraphModal';
 
 class GraphCompare extends Component {
   static propTypes = {
@@ -91,7 +91,7 @@ class GraphCompare extends Component {
       onlyTitle: 1,
     });
     const graphs = data.graphs
-      .filter(g => +g.id !== +graphId && +g.id !== +graph2Id)
+      .filter((g) => +g.id !== +graphId && +g.id !== +graph2Id)
       .map((g) => ({
         value: g.id,
         label: `${g.title} (${g.nodesCount})`,
@@ -130,11 +130,21 @@ class GraphCompare extends Component {
     const { singleGraph2 } = this.state;
     const { selectedNodes1, selectedNodes2 } = this.state;
 
+    let links = [...singleGraph.links, ...singleGraph2.links];
     let labels = new Set();
     const nodes = selectedNodes1.map((node1) => {
       const node2 = selectedNodes2.find((n) => n.name === node1.name);
       if (node2) {
         node1 = ChartUtils.merge(node2, node1);
+        links = links.map((l) => {
+          if (l.source === node2.id) {
+            l.source = node1.id;
+          }
+          if (l.target === node2.id) {
+            l.target = node1.id;
+          }
+          return l;
+        });
       }
 
       // singleGraph.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
@@ -151,10 +161,8 @@ class GraphCompare extends Component {
 
     labels = [...labels];
 
-    const links = ChartUtils.cleanLinks([...singleGraph.links, ...singleGraph2.links], nodes);
-
     this.setState({
-      createGraphData: { labels, nodes, links }
+      createGraphData: { labels, nodes, links },
     });
   }
 
@@ -162,7 +170,9 @@ class GraphCompare extends Component {
     const {
       match: { params: { graphId, graph2Id } }, singleGraph,
     } = this.props;
-    const { singleGraph2, selectedNodes1, selectedNodes2, createGraphData } = this.state;
+    const {
+      singleGraph2, selectedNodes1, selectedNodes2, createGraphData,
+    } = this.state;
     this.getGraph1Request(graphId);
     this.getGraph2Request(graph2Id);
     const graph1Nodes = _.differenceBy(singleGraph.nodes, singleGraph2.nodes, 'name');
@@ -171,7 +181,7 @@ class GraphCompare extends Component {
     const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
 
     const selected = [...selectedNodes1, ...selectedNodes2];
-    console.log(createGraphData, 3333)
+    console.log(createGraphData, 3333);
     return (
       <Wrapper className="graphCompare" showFooter={false}>
         <Header />
