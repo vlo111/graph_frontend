@@ -118,7 +118,7 @@ class GraphCompare extends Component {
     const { singleGraph2 } = this.state;
     const { selectedNodes1, selectedNodes2 } = this.state;
 
-    let links = [...singleGraph.links, ...singleGraph2.links];
+    let links = [...singleGraph.links || [], ...singleGraph2.links || []];
     let labels = new Set();
     const nodes = selectedNodes1.map((node1) => {
       const node2 = selectedNodes2.find((n) => n.name === node1.name);
@@ -135,14 +135,14 @@ class GraphCompare extends Component {
         });
       }
 
-      singleGraph.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
+      // singleGraph.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
       return node1;
     });
 
     selectedNodes2.forEach((node2) => {
       const node1 = selectedNodes1.find((n) => n.name === node2.name);
       if (!node1) {
-        singleGraph.labels.filter((l) => node2.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
+        // singleGraph.labels.filter((l) => node2.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
         nodes.push(node2);
       }
     });

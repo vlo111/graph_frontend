@@ -202,7 +202,6 @@ class LabelUtils {
       }
 
       const customField = CustomFields.get(data.customFields, d.type, d.originalId || d.id);
-      console.log(customField, d)
       store.dispatch(setNodeCustomField(d.type, d.id, customField));
 
       if (d.replace) {
@@ -250,6 +249,9 @@ class LabelUtils {
     }
 
     links = ChartUtils.cleanLinks(links, nodes);
+    links = _.uniqBy(links, (l) => JSON.stringify({
+      name: l.name, type: l.type, source: l.source, target: l.target,
+    }));
 
     Chart.render({ links, nodes, labels }, 'past');
   }

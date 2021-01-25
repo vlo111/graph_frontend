@@ -60,9 +60,41 @@ class LabelCompare extends Component {
 
   handleSubmit = () => {
     const { position, customFields } = this.props;
-    const { sources, duplicates } = this.state;
+    const { sources } = this.state;
+    let { duplicates } = this.state;
     const data = LabelUtils.getData();
-    LabelUtils.pastAndMerge(data, position, sources, duplicates, customFields);
+    let nodes = Chart.getNodes();
+
+    let links = Chart.getLinks();
+    console.log(sources);
+    nodes = nodes.map((n) => {
+      if (!sources.some((s) => s.id === n.id)) {
+        console.log(1);
+        return undefined;
+      }
+      const i = duplicates.findIndex((d) => d && d.name === n.name);
+      if (i > -1) {
+        data.nodes = data.nodes.filter((d) => {
+          if (d.name === n.name) {
+            d.merge = true;
+          }
+          return d;
+        });
+      } else {
+        data.nodes = data.nodes.filter((d) => d.name !== n.name);
+      }
+      return n;
+    });
+
+    nodes = _.compact(nodes);
+    duplicates = _.compact(duplicates);
+
+
+
+    links = ChartUtils.cleanLinks(links, nodes);
+
+    Chart.render({ nodes, links });
+    LabelUtils.past(data, position);
     this.props.closeAll();
   }
 
@@ -72,7 +104,7 @@ class LabelCompare extends Component {
     } = this.props;
     const { sources, duplicates } = this.state;
     const data = LabelUtils.getData();
-    console.log(duplicatedNodes, duplicates, 3434434534534)
+    console.log(sources, duplicates, 3434434534534);
     return (
       <Modal
         isOpen
@@ -121,7 +153,6 @@ class LabelCompare extends Component {
                     <LabelCompareItem
                       node={nodeDuplicate}
                       customFields={data.customFields}
-                      d='left'
                       checked={duplicates.some((d) => d.id === nodeDuplicate.id)}
                       onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplicates')}
                     />

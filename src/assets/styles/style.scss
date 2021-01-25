@@ -6548,9 +6548,14 @@ img.preview-scaled {
 
   .ghSelect {
     .gh__indicators {
-      display: none;
+      .gh__dropdown-indicator {
+        svg{
+          opacity: 0;
 
+        }
+      }
     }
+
     .gh__menu-notice--no-options {
       display: none;
     }
