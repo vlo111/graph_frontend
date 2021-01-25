@@ -1441,13 +1441,13 @@ p {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    flex: 1 0 100%; 
+    flex: 1 0 100%;
   }
   button {
     background-color: $color-white;
-    color           : $color-dark; 
+    color           : $color-dark;
   }
-  .b-navbar { 
+  .b-navbar {
     margin: -9px 26px;
   }
 }
@@ -6592,7 +6592,11 @@ img.preview-scaled {
         max-height: 100%;
         transform: translate(-50%, -50%);
       }
-    }
+    } 
 	}
 	}
   }
+=======
+  }
+}
+>>>>>>> 601039770dd5c351f6137df264a473ac85349530
