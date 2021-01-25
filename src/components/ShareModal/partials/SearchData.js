@@ -18,7 +18,7 @@ const SearchData = ({
   return (
     <div className="share-modal__search-data" onClick={() => optionSelected(option)}>
       <img
-        alt={option.email}
+        alt={`${option.firstName} ${option.lastName}`}
         src={option.avatar}
         style={{
           height: '24px',
@@ -26,8 +26,8 @@ const SearchData = ({
           width: '24px',
           borderRadius: '50%',
         }}
-      />
-      <span>{option.email}</span>
+      /> 
+      <span> {`${option.firstName} ${option.lastName}`}</span>
     </div>
   );
 };

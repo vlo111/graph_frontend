@@ -74,6 +74,9 @@ class Profile extends Component {
             />
           </div>
           <div className="right">
+          <div className="row"> 
+           <strong className="email">Email : </strong> {requestData.email}
+            </div>
             <div className="row">
               <Input
                 name="firstName"
