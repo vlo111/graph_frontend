@@ -46,10 +46,11 @@ const Profile = React.memo((props) => {
                     <div style={{ position: 'absolute', right: '500px' }}>
                       <AddButton user={profile} />
                     </div>
-
-                    <span className="email">
-                      <strong>Email : </strong> {profile.email}
-                    </span>
+                    {currentUserId == userId && (
+                      <span className="email">
+                        <strong>Email : </strong> {profile.email}
+                      </span>
+                    )}
                     <span className="website">
                       <strong>Website : </strong> {profile.website}
                     </span>
@@ -85,10 +86,7 @@ const Profile = React.memo((props) => {
                         <div className="searchData__graphInfo-details">
                           <Link to={`/profile/${friend.id}`}>
                             {`${friend.firstName} ${friend.lastName}`}
-                          </Link>
-                          <span className="description">
-                            {friend.email}
-                          </span>
+                          </Link>                          
                         </div>
                       </div>
                       <AddButton user={friend} />

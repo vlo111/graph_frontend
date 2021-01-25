@@ -41,9 +41,9 @@ const Collaborators = ({ select, graph }) => {
           <img
             className="avatar circle share-modal__owner-logo"
             src={item.user.avatar}
-            alt={item.user.email}
+            alt={`${item.user.firstName} ${item.user.lastName}`}
           />
-          <span>{item.user.email}</span>
+          <span>{`${item.user.firstName} ${item.user.lastName}`}</span> 
         </div>
         <div className='share-modal__collaborators--status'>
           {item.status === 'new' && 'Not Saved'}

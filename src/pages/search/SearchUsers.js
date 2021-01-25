@@ -49,10 +49,7 @@ class SearchUsers extends Component {
                   <div className="searchData__graphInfo-details">
                     <Link to={`/profile/${user.id}`}>
                       {`${user.firstName} ${user.lastName}`}
-                    </Link>
-                    <span className="description">
-                      {user.email}
-                    </span>
+                    </Link> 
                   </div>
                 </div>
                 <div>
