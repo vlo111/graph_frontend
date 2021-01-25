@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getDocumentsByTagRequest } from '../../store/actions/document';
 import NodeIcon from '../../components/NodeIcon';
+import Loading from '../../components/Loading';
+import ChartUtils from '../../helpers/ChartUtils';
 
 class SearchDocuments extends Component {
     static propTypes = {
@@ -16,6 +18,11 @@ class SearchDocuments extends Component {
       currentUserId: PropTypes.number.isRequired,
     };
 
+    constructor() {
+      super();
+      this.state = { loading: true };
+    }
+
     static defaultProps = {
       setLimit: false,
     }
@@ -24,14 +31,25 @@ class SearchDocuments extends Component {
       this.props.getDocumentsByTagRequest(searchParam);
     })
 
-    goToNodeTab = (graphId, nodeId, userId) => {
+    goToNodeTab = (graphId, node, userId) => {
       const { currentUserId } = this.props;
       const mode = currentUserId === userId ? 'update' : 'view';
-      this.props.history.replace(`/graphs/${mode}/${graphId}?info=${nodeId}`);
+      this.props.history.replace(`/graphs/${mode}/${graphId}?info=${node.id}`);
+      ChartUtils.findNodeInDom(node);
+    }
+
+    componentDidMount() {
+      if (this.state.loading) {
+        const { documentSearch } = this.props;
+        if (documentSearch && documentSearch.length) {
+          this.setState({ loading: false });
+        }
+      }
     }
 
     render() {
       const { setLimit, documentSearch } = this.props;
+      const { loading } = this.state;
       const { s: searchParam } = queryString.parse(window.location.search);
       this.searchDocuments(searchParam);
       let users = {};
@@ -43,19 +61,12 @@ class SearchDocuments extends Component {
 
           if (obj.user && !result[obj[key]].user) {
             result[obj[key]].user = obj.user;
-            obj.user = null;
-          }
-
-          if (!obj.graphs) {
-            return result;
           }
 
           obj.graphName = obj.graphs.title;
           obj.graphCreated = obj.graphs.createdAt;
 
           obj.node = obj.graphs.nodes.filter((p) => p.id === obj.nodeId)[0];
-
-          obj.graphs = null;
 
           return result;
         }, {});
@@ -91,7 +102,7 @@ class SearchDocuments extends Component {
                                   <h3>{users[item][graph][0].graphName}</h3>
                                 </div>
                                 <div className="searchData__graphInfo-details">
-                                  <p className="createBy">
+                                  <p className="createdBy">
                                     <span>created by </span>
                                     <Link to={`/profile/${users[item].user.id}`}>
                                       {`${users[item].user.firstName} ${users[item].user.lastName}`}
@@ -113,7 +124,7 @@ class SearchDocuments extends Component {
                                       className="nodeLink"
                                       onClick={() => this.goToNodeTab(
                                         document.graphId,
-                                        document.nodeId,
+                                        document.node,
                                         users[item].user.id,
                                       )}
                                     >
@@ -147,7 +158,9 @@ class SearchDocuments extends Component {
                   && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link></div>
               }
             </div>
-          ) : ((!setLimit && <h3>No Documents Found</h3>) || null)}
+          ) : ((!setLimit && (!loading
+            ? <Loading />
+            : <h3 className="mediaNotFound">No Documents Found</h3>)) || null)}
         </div>
       );
     }

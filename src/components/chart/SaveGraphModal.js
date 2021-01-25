@@ -91,8 +91,7 @@ class SaveGraphModal extends Component {
     this.props.setLoading(true);
     const links = Chart.getLinks();
     const labels = Chart.getLabels();
-    const nodes = Chart.getNodes(true);
-    const { customFields } = this.props.customFields;
+    const { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
     const svg = ChartUtils.getChartSvg();
     // const svg = Chart.printMode(400, 223);
 
@@ -104,6 +103,7 @@ class SaveGraphModal extends Component {
         links,
         labels,
         status,
+        files,
         customFields,
         svg,
       });

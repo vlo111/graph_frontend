@@ -3,21 +3,25 @@ import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
-import queryString from 'query-string';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
-import _ from 'lodash';
+import { Link } from 'react-router-dom';
 import { setActiveButton } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
 import { getDocumentsRequest } from '../../store/actions/document';
 import NodeIcon from '../NodeIcon';
+import Loading from '../Loading';
 
 class MediaModal extends Component {
     static propTypes = {
       setActiveButton: PropTypes.func.isRequired,
       getDocumentsRequest: PropTypes.func.isRequired,
       documentSearch: PropTypes.object.isRequired,
+    }
+
+    constructor() {
+      super();
+      this.state = { loading: true };
     }
 
     closeModal = () => {
@@ -28,13 +32,24 @@ class MediaModal extends Component {
       this.props.getDocumentsRequest(searchParam);
     })
 
+    componentDidMount() {
+      if (this.state.loading) {
+        const { documentSearch } = this.props;
+        if (documentSearch && documentSearch.length) {
+          this.setState({ loading: false });
+        }
+      }
+    }
+
     render() {
       const { documentSearch } = this.props;
+      const { loading } = this.state;
       const graphIdParam = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
       this.searchDocuments(graphIdParam);
-
-      if (documentSearch && documentSearch.length) { 
-
+      if (documentSearch && documentSearch.length) {
+        if (loading) {
+          this.setState({ loading: false });
+        }
         documentSearch.sort((a, b) => a.nodeType.localeCompare(b.nodeType));
         documentSearch.map((p) => {
           if (p.graphs?.nodes && p.graphs?.nodes.length) {
@@ -52,7 +67,7 @@ class MediaModal extends Component {
             onRequestClose={this.closeModal}
           >
             <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
-            <div>
+            <div className="mediaHeader">
               <h1>Media gallery</h1>
             </div>
             {documentSearch && documentSearch.length
@@ -61,7 +76,7 @@ class MediaModal extends Component {
                   <div className="searchData__wrapper">
                     <div className="searchMediaContent">
                       <article className="searchData__graph">
-                        <div className="searchDocumentContent">
+                        <div className="searchDocumentContent mediaGallery">
                           {documentSearch.map((document, index, array) => (
                             document.id && (
                             <div
@@ -83,24 +98,37 @@ class MediaModal extends Component {
                               </a>
 
                               <p>{moment(document.updatedAt).calendar()}</p>
+                              <p className="createdBy">
+                                <span>uploaded by </span>
+                                <Link to={`/profile/${document.user.id}`}>
+                                  {`${document.user.firstName} ${document.user.lastName}`}
+                                </Link>
+                              </p>
                               {
                                   document.altText ? (
-                                    <a download={document.altText} href={document.data}>
+                                    <a target="_blank" href={document.data}>
                                       {document.altText}
                                     </a>
                                   ) : (
-                                    <table>
+                                    <table className="mediaTable">
                                       <tbody>
                                         <tr>
                                           <td>
-                                            <a href={document.data} download="graph_tab_img">
-                                              <img
-                                                src={document.data}
-                                                width="300px"
-                                                download="graphTabImage"
-                                              />
-                                            </a>
-                                            {document.description}
+                                            <div className="mediaTumbnail">
+                                              <div className="container">
+                                                <a target="_blank" href={document.data}>
+                                                  <img
+                                                    src={document.data}
+                                                    width="300px"
+                                                  />
+                                                </a>
+                                              </div>
+                                              <p title={document.description}>
+                                                { document.description && document.description.length > 59
+                                                  ? `${document.description.substr(0, 59)}... `
+                                                  : document.description}
+                                              </p>
+                                            </div>
                                           </td>
                                         </tr>
                                       </tbody>
@@ -116,13 +144,14 @@ class MediaModal extends Component {
                   </div>
                 </div>
               )
-              : <h3 className="mediaNotFound">No media gallery found</h3>}
+              : (!loading
+                ? <Loading />
+                : <h3 className="mediaNotFound">No Media Gallery Found</h3>)}
             <div className="buttonsWrapper">
-              <Button color="transparent" className="cancel" onClick={this.closeModal}>Close</Button>
+              <Button color="transparent" className="cancel" onClick={this.closeModal}>cancel</Button>
             </div>
           </Modal>
         </div>
-
       );
     }
 }

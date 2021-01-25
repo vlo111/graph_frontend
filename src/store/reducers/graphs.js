@@ -13,6 +13,7 @@ import {
   GET_SINGLE_EMBED_GRAPH,
   SET_GRAPH_CUSTOM_FIELDS,
   GET_SINGLE_GRAPH_PREVIEW,
+  UPDATE_GRAPH,
   REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
@@ -33,6 +34,21 @@ const initialState = {
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case UPDATE_GRAPH.REQUEST:
+    case UPDATE_GRAPH.FAIL: {
+      return {
+        ...state,
+        customFields: [],
+      };
+    }
+    case UPDATE_GRAPH.SUCCESS: {
+      const { customFields } = action.payload.data;
+      state.singleGraph.customFields = customFields;
+      return {
+        ...state,
+        customFields,
+      };
+    }
     case CONVERT_GRAPH.REQUEST: {
       return {
         ...state,
@@ -174,7 +190,7 @@ export default function reducer(state = initialState, action) {
       if (tabData) {
         if (tabData.documents?.length) {
           singleGraph.file = null;
-          singleGraph.files = tabData.documents;
+          singleGraph.documents = tabData.documents;
           singleGraph.currentTabName = tabData.name;
         }
         _.set(singleGraph.customFields, [type, tabData.name, 'subtitle'], tabData.subtitle);

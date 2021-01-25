@@ -18,19 +18,19 @@ class FileUpload extends React.Component {
         this.setState({ warningMsg: 'Please submit valid file type' });
       } else {
         this.setState({ warningMsg: '' });
-        const blobPromise = new Promise((resolve, reject) => {
-          const reader = new window.FileReader();
-          reader.readAsDataURL(accepted[0]);
-          reader.onloadend = () => {
-            const base64data = reader.result;
-            resolve(base64data);
-          };
-        });
-        blobPromise.then((value) => {
-          accepted[0].preview = value;
-
-          this.props.addFile(accepted);
-        });
+        // const blobPromise = new Promise((resolve, reject) => {
+        //   const reader = new window.FileReader();
+        //   reader.readAsDataURL(accepted[0]);
+        //   reader.onloadend = () => {
+        //     const base64data = reader.result;
+        //     resolve(base64data);
+        //   };
+        // });
+        // blobPromise.then((value) => {
+        //   accepted[0].preview = value;
+        //
+        // });
+        this.props.addFile(accepted);
       }
     };
 
