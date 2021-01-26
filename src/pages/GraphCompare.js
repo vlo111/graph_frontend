@@ -7,7 +7,7 @@ import memoizeOne from 'memoize-one';
 import Wrapper from '../components/Wrapper';
 import { setActiveButton } from '../store/actions/app';
 import Button from '../components/form/Button';
-import { deleteGraphRequest, getSingleGraphRequest } from '../store/actions/graphs';
+import { clearSingleGraph, deleteGraphRequest, getSingleGraphRequest } from '../store/actions/graphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import Api from '../Api';
 import Header from '../components/Header';
@@ -55,6 +55,7 @@ class GraphCompare extends Component {
   async componentDidMount() {
     const { match: { params: { graphId, graph2Id } } } = this.props;
     this.props.setActiveButton('view');
+    this.props.clearSingleGraph();
   }
 
   deleteGraph = async () => {
@@ -180,12 +181,11 @@ class GraphCompare extends Component {
                   <Select
                     label="Graph 1"
                     isAsync
-                    value={singleGraph.id ? [{
+                    value={graphId && singleGraph.id ? [{
                       value: singleGraph.id,
                       label: `${singleGraph.title} (${singleGraph.nodes?.length})`,
                     }] : undefined}
                     onChange={(val) => this.handleGraphSelect(val, 1)}
-                    cacheOptions
                     loadOptions={this.loadGraphs}
                   />
                 </div>
@@ -193,12 +193,11 @@ class GraphCompare extends Component {
                   <Select
                     label="Graph 2"
                     isAsync
-                    value={singleGraph2.id ? [{
+                    value={graph2Id && singleGraph2.id ? [{
                       value: singleGraph2.id,
                       label: `${singleGraph2.title} (${singleGraph2.nodes?.length})`,
                     }] : undefined}
                     onChange={(val) => this.handleGraphSelect(val, 2)}
-                    cacheOptions
                     loadOptions={this.loadGraphs}
                   />
                 </div>
@@ -263,6 +262,7 @@ const mapDispatchToProps = {
   getSingleGraphRequest,
   deleteGraphRequest,
   userGraphRequest,
+  clearSingleGraph,
 };
 const Container = connect(
   mapStateToProps,
