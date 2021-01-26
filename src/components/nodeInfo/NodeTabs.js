@@ -82,7 +82,7 @@ class NodeTabs extends Component {
               key={key}
               onClick={() => this.setActiveTab(key)}
             >
-              <p>{key}</p>
+              <p>{key.length > 15 ? `${key.substr(0, 13)}..` : key}</p>
             </Button>
           ))}
           {node.location ? (
