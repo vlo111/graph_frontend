@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
 import Wrapper from '../components/Wrapper';
 import { setActiveButton } from '../store/actions/app';
 import Button from '../components/form/Button';
-import { clearSingleGraph, deleteGraphRequest, getSingleGraphRequest } from '../store/actions/graphs';
+import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import Api from '../Api';
 import Header from '../components/Header';
@@ -19,14 +18,10 @@ import CreateGraphModal from '../components/CreateGraphModal';
 class GraphCompare extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
-    deleteGraphRequest: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
-    userGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
-    userGraphs: PropTypes.array.isRequired,
-    location: PropTypes.object.isRequired,
   }
 
   getGraph1Request = memoizeOne(async (graphId) => {
@@ -56,21 +51,6 @@ class GraphCompare extends Component {
     const { match: { params: { graphId, graph2Id } } } = this.props;
     this.props.setActiveButton('view');
     this.props.clearSingleGraph();
-  }
-
-  deleteGraph = async () => {
-    const { match: { params: { graphId = '' } } } = this.props;
-    if (window.confirm('Are you sure?')) {
-      await this.props.deleteGraphRequest(graphId);
-      this.props.history.push('/');
-      toast.info('Successfully deleted');
-    }
-  }
-
-  shareGraph = async () => {
-    if (window.confirm('Are you sure?')) {
-      this.setState({ openShareModal: true });
-    }
   }
 
   loadGraphs = async (s) => {
@@ -154,8 +134,48 @@ class GraphCompare extends Component {
       name: l.name, type: l.type, source: l.source, target: l.target,
     }));
 
+    const { customFields } = singleGraph;
+
+    const customFieldsMerged = {};
+
+    for (const type in customFields) {
+      const customField = customFields[type];
+      for (const tab in customField) {
+        const { values } = customFields[type][tab];
+        for (const nodeName in values) {
+          const node1 = selectedNodes1.find((n) => n.name === nodeName);
+          const node2 = selectedNodes2.find((n) => n.name === nodeName);
+          const value1 = values[nodeName];
+          const value2 = node2 ? _.get(singleGraph2.customFields, [type, tab, 'values', nodeName]) : undefined;
+          if (node1 && !node2) {
+            if (value1) {
+              _.set(customFieldsMerged, [type, tab, 'values', nodeName], value1);
+            }
+          } else if (!node1 && node2) {
+            if (value2) {
+              _.set(customFieldsMerged, [type, tab, 'values', nodeName], value2);
+            }
+          } else if (node1 && node2) {
+            let value = '';
+            if (value1 && value2 && value1 !== value2) {
+              value = `${value1}\n<hr />\n${value2}`;
+            } else if (value1) {
+              value = value1;
+            } else if (value2) {
+              value = value2;
+            }
+            if (value) {
+              _.set(customFieldsMerged, [type, tab, 'values', nodeName], value);
+            }
+          }
+        }
+      }
+    }
+
+    console.log(customFieldsMerged);
+    return;
     this.setState({
-      createGraphData: { labels, nodes, links },
+      createGraphData: { labels, nodes, links, customFields: customFieldsMerged },
     });
   }
 
@@ -264,7 +284,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
-  deleteGraphRequest,
   userGraphRequest,
   clearSingleGraph,
 };

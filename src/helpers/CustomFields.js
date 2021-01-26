@@ -13,8 +13,10 @@ class CustomFields {
       }
       if (customFields[type] && customFields[type][key]) {
         const v = customFields[type][key].values[name];
-        if (append && v !== value) {
-          customFields[type][key].values[name] = `${v}\n<hr />\n${value}`;
+        if (append && v && v !== value) {
+          if (value) {
+            customFields[type][key].values[name] = `${v}\n<hr />\n${value}`;
+          }
         } else {
           customFields[type][key].values[name] = value;
         }

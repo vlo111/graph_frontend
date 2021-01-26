@@ -66,10 +66,8 @@ class LabelCompare extends Component {
     let nodes = Chart.getNodes();
 
     let links = Chart.getLinks();
-    console.log(sources);
     nodes = nodes.map((n) => {
       if (!sources.some((s) => s.id === n.id)) {
-        console.log(1);
         return undefined;
       }
       const i = duplicates.findIndex((d) => d && d.name === n.name);
@@ -88,8 +86,6 @@ class LabelCompare extends Component {
 
     nodes = _.compact(nodes);
     duplicates = _.compact(duplicates);
-
-
 
     links = ChartUtils.cleanLinks(links, nodes);
 
