@@ -58,8 +58,7 @@ class FiltersModal extends Component {
       const labels = Chart.getLabels();
       this.setState({ nodes, links, labels });
     }, 500);
-  }
-
+  } 
   render() {
     const { nodes, links, labels } = this.state;
     const { userGraphs, match: { params: { graphId = '', token = '' } } } = this.props;
@@ -74,7 +73,7 @@ class FiltersModal extends Component {
         {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
           <>
             <Link
-              to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/update/${graphId}`}
+              to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/view/${graphId}`}
               replace
             >
               <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
