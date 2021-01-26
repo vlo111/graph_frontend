@@ -4,7 +4,7 @@ import Utils from './Utils';
 class CustomFields {
   static LIMIT = 10;
 
-  static setValue(customFields = {}, type, name, values) {
+  static setValue(customFields = {}, type, name, values, append = false) {
     let i = 0;
     let success = true;
     _.forEach(values, (value, key) => {
@@ -12,7 +12,12 @@ class CustomFields {
         customFields = this.setKey(customFields, type, key, '');
       }
       if (customFields[type] && customFields[type][key]) {
-        customFields[type][key].values[name] = value;
+        const v = customFields[type][key].values[name];
+        if (append && v !== value) {
+          customFields[type][key].values[name] = `${v}\n<hr />\n${value}`;
+        } else {
+          customFields[type][key].values[name] = value;
+        }
         if (customFields[type][key].order === undefined) {
           customFields[type][key].order = i;
         }
