@@ -5,7 +5,7 @@ import Utils from "./Utils";
 class CustomFields {
   static LIMIT = 10;
 
-  static setValue(customFields = {}, type, name, values) {
+  static setValue(customFields = {}, type, name, values, append = false) {
     let i = 0;
     let success = true;
     _.forEach(values, (value, key) => {
