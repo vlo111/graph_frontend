@@ -4,10 +4,12 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import Modal from 'react-modal';
+import Button from '../form/Button';
 import { withRouter } from 'react-router-dom';
 import NodeTabs from './NodeTabs';
 import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
 import ConnectionDetails from './ConnectionDetails';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -36,6 +38,7 @@ class NodeFullInfo extends Component {
         onRequestClose={this.closeNodeInfoModal}
       >
         <div className="ghModalContent">
+          <Button className="close" color="transparent" icon={<CloseSvg />}  onClick={this.closeNodeInfoModal} />
           <div className="left">
             <div className="graphUser">
               <img

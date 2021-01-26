@@ -1947,8 +1947,7 @@ p {
 
     h2 {
       text-align: center;
-      font: normal normal bold 26px/36px Open Sans;
-      width: 250px;
+      font: normal normal bold 26px/36px Open Sans; 
       margin-bottom: 20px;
     }
 
@@ -3019,6 +3018,10 @@ p {
   z-index: 99 !important;
 }
 
+.jodit-modal {
+
+  z-index: 103 !important;
+}
 .exportButtons {
   display: flex;
 
