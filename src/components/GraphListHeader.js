@@ -20,18 +20,25 @@ const GraphListHeader = ({ graph, headerTools }) => {
   const dispatch = useDispatch();
   const [openEditModal, setOpenEditModal] = useState(false);
   const history = useHistory()
-  const { page = 1, s: searchParam } = queryString.parse(window.location.search);
+  const { page = 1, s: searchParam } = queryString.parse(window.location.search); 
 
-  const deleteGraph = useCallback((graphId) => {
-    if (window.confirm('Are you sure?')) {
-      // delete 
-      dispatch(deleteGraphRequest(graph.id));
-      //use selector
-      dispatch(getGraphsListRequest(page, { s: searchParam }));
-      history.push("/");
-      toast.info('Successfully deleted');
+  async function deleteGraph(event) {
+    event.preventDefault();
+    try {
+
+      if (window.confirm('Are you sure?')) {
+        await dispatch(deleteGraphRequest(graph.id));
+        // use selector
+        await dispatch(getGraphsListRequest(page, { s: searchParam }));
+
+        history.push("/");
+        toast.info('Successfully deleted');
+      }
+    } catch (e) {
+
+
     }
-  }, [dispatch]);
+  }
 
   const handledeleteShareGraph = useCallback((shareGraphId) => {
 
@@ -66,7 +73,7 @@ const GraphListHeader = ({ graph, headerTools }) => {
               onClick={() => setOpenEditModal(true)} />
             <Button
               icon={<TrashSvg style={{ height: 30 }} />}
-              onClick={() => deleteGraph(graph.id)}
+              onClick={deleteGraph}
               className="transparent delete" />
           </DropdownButton>
         )}
