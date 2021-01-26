@@ -13,7 +13,7 @@ class CustomFields {
       }
       if (customFields[type] && customFields[type][key]) {
         const v = customFields[type][key].values[name];
-        if (append && v !== value) {odeInfo/NodeTabsFormModal.js
+        if (append && v !== value) {
           customFields[type][key].values[name] = `${v}\n<hr />\n${value}`;
         } else {
           customFields[type][key].values[name] = value;
