@@ -114,13 +114,15 @@ class LabelCopy extends Component {
     const { position } = this.state;
     const data = LabelUtils.getData();
     let nodes = Chart.getNodes();
-
     let links = Chart.getLinks();
     nodes = nodes.map((n) => {
-      if (!sources.some((s) => s.id === n.id)) {
-        return undefined;
-      }
       const i = duplicates.findIndex((d) => d && d.name === n.name);
+      if (!sources.some((s) => s.id === n.id)) {
+        if (i !== -1) {
+          return undefined;
+        }
+        return n;
+      }
       if (i > -1) {
         data.nodes = data.nodes.filter((d) => {
           if (d.name === n.name) {
