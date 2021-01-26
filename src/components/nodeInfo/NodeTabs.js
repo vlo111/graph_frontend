@@ -70,7 +70,6 @@ class NodeTabs extends Component {
   render() {
     const { activeTab, formModalOpen } = this.state;
     const { node, customFields, editable } = this.props;
-    console.log( this.state, 'customFieldscustomFieldscustomFieldscustomFields');
     const customField = CustomFields.get(customFields, node.type, node.id);
     const content = customField[activeTab];
     this.setFirstTab(node, customField);
@@ -87,7 +86,7 @@ class NodeTabs extends Component {
               key={key}
               onClick={() => this.setActiveTab(key)}
             >
-              <p>{key}</p>
+              <p>{key.length > 15 ? `${key.substr(0, 13)}..` : key}</p>
             </Button>
           ))}
           {node.location ? (
