@@ -110,6 +110,42 @@ class LabelCopy extends Component {
     this.closeModal();
   }
 
+  compareAndMarge = (sources, duplicates) => {
+    const { position } = this.state;
+    const data = LabelUtils.getData();
+    let nodes = Chart.getNodes();
+
+    let links = Chart.getLinks();
+    nodes = nodes.map((n) => {
+      if (!sources.some((s) => s.id === n.id)) {
+        return undefined;
+      }
+      const i = duplicates.findIndex((d) => d && d.name === n.name);
+      if (i > -1) {
+        data.nodes = data.nodes.filter((d) => {
+          if (d.name === n.name) {
+            d.merge = true;
+          }
+          return d;
+        });
+      } else {
+        data.nodes = data.nodes.filter((d) => d.name !== n.name);
+      }
+      return n;
+    });
+
+    nodes = _.compact(nodes);
+    duplicates = _.compact(duplicates);
+
+    links = ChartUtils.cleanLinks(links, nodes);
+
+    Chart.render({ nodes, links });
+    LabelUtils.past(data, position);
+    this.setState({
+      compare: {}, data: {}, position: [], showQuestionModal: false, showCompareModal: false,
+    });
+  }
+
   render() {
     const {
       compare, data, showQuestionModal, showCompareModal, position
@@ -158,10 +194,7 @@ class LabelCopy extends Component {
             compare={compare}
             position={position}
             onRequestClose={() => this.toggleCompareNodes(false)}
-            closeAll={() => {
-              this.toggleCompareNodes(false);
-              this.closeModal();
-            }}
+            onSubmit={this.compareAndMarge}
           />
           : null}
       </>
