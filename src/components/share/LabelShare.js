@@ -73,6 +73,7 @@ class LabelShare extends Component {
 
   save = () => {
     toast.info('Successfully confirmed');
+    this.closeModal();
   }
 
   render() {

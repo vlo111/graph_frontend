@@ -1393,6 +1393,10 @@ p {
 
     .buttonsWrapper {
       display: flex;
+
+      .startGrapnButton {
+        margin-right: 1%;
+      }
     }
 
     button {
