@@ -202,7 +202,7 @@ class LabelUtils {
       d.name = (d.replace || d.merge) ? d.name : ChartUtils.nodeUniqueName(d);
 
       const customField = CustomFields.get(data.customFields, d.type, d.originalId || d.id);
-      store.dispatch(setNodeCustomField(d.type, d.id, customField));
+      store.dispatch(setNodeCustomField(d.type, d.id, customField, undefined, d.merge));
 
       if (d.replace) {
         nodes = nodes.map((n) => {
