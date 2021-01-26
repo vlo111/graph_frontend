@@ -179,6 +179,14 @@ class GraphCompare extends Component {
     });
   }
 
+  renderSelectOption = (props) => {
+    const { innerProps, children, getStyles, cx, ...params } = props;
+    console.log(params)
+    return (
+      <div {...innerProps} className={cx(getStyles('option', params))}>{children}</div>
+    );
+  }
+
   render() {
     const {
       match: { params: { graphId, graph2Id } }, singleGraph,
@@ -239,10 +247,10 @@ class GraphCompare extends Component {
           <GraphCompareList
             title={(
               <span>
-                {'Nodes in '}
+  {'Nodes in '}
                 <strong>{singleGraph.title}</strong>
                 {` (${graph1Nodes.length})`}
-              </span>
+  </span>
             )}
             dropdown
             singleGraph1={{ ...singleGraph, nodes: graph1Nodes }}
@@ -252,10 +260,10 @@ class GraphCompare extends Component {
           <GraphCompareList
             title={(
               <span>
-                {'Nodes in '}
+  {'Nodes in '}
                 <strong>{singleGraph2.title}</strong>
                 {` (${graph2Nodes.length})`}
-              </span>
+  </span>
             )}
             dropdown
             singleGraph2={{ ...singleGraph2, nodes: graph2Nodes }}

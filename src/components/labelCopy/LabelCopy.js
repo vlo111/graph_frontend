@@ -177,7 +177,7 @@ class LabelCopy extends Component {
               Compare nodes
             </Button>
             <Button
-              onClick={() => this.compareAndMarge(compare.duplicatedNodes, compare.duplicatedNodes)}
+              onClick={() => this.compareAndMarge(compare.sourceNodes, compare.duplicatedNodes)}
               className="actionButton"
               icon="fa-code-fork"
             >
