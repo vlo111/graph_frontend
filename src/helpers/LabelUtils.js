@@ -214,7 +214,17 @@ class LabelUtils {
       } else if (d.merge) {
         nodes = nodes.map((n) => {
           if (n.id === d.id) {
-            return ChartUtils.merge(n, d);
+            n = ChartUtils.merge(n, d);
+            n.id = d.id;
+            data.links = data.links.map((l) => {
+              if (l.source === d.originalId) {
+                l.source = d.id;
+              }
+              if (l.target === d.originalId) {
+                l.target = d.id;
+              }
+              return d;
+            });
           }
           return n;
         });
