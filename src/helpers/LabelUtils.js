@@ -215,15 +215,14 @@ class LabelUtils {
         nodes = nodes.map((n) => {
           if (n.id === d.id) {
             n = ChartUtils.merge(n, d);
-            n.id = d.id;
             data.links = data.links.map((l) => {
               if (l.source === d.originalId) {
-                l.source = d.id;
+                l.source = n.id;
               }
               if (l.target === d.originalId) {
-                l.target = d.id;
+                l.target = n.id;
               }
-              return d;
+              return l;
             });
           }
           return n;
