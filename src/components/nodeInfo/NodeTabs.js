@@ -11,7 +11,7 @@ import NodeTabsFormModal from './NodeTabsFormModal';
 import ContextMenu from '../contextMenu/ContextMenu';
 import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
 import FlexTabs from "../FlexTabs";
-import MapsInfo from "../maps/MapsInfo";
+import MapsInfo from "../maps/MapsInfo"; 
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -70,11 +70,16 @@ class NodeTabs extends Component {
   render() {
     const { activeTab, formModalOpen } = this.state;
     const { node, customFields, editable } = this.props;
+    console.log( this.state, 'customFieldscustomFieldscustomFieldscustomFields');
     const customField = CustomFields.get(customFields, node.type, node.id);
     const content = customField[activeTab];
     this.setFirstTab(node, customField);
+ 
     return (
-      <div className="nodeTabs">
+      <div className="nodeTabs"> 
+
+
+
         <FlexTabs>
           {_.map(customField, (val, key) => (
             <Button
