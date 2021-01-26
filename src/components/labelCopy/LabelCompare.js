@@ -61,7 +61,7 @@ class LabelCompare extends Component {
   handleSubmit = () => {
     const { sources } = this.state;
     let { duplicates } = this.state;
-    this.props.compareAndMarge(sources, duplicates);
+    this.props.onSubmit(sources, duplicates);
   }
 
   render() {

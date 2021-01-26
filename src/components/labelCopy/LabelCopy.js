@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Modal from 'react-modal';
+import { connect } from 'react-redux';
 import ContextMenu from '../contextMenu/ContextMenu';
 import LabelUtils from '../../helpers/LabelUtils';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import LabelCompare from './LabelCompare';
-import { connect } from "react-redux";
-import CustomFields from "../../helpers/CustomFields";
-import { removeNodeCustomFieldKey } from "../../store/actions/graphs";
-import ChartUtils from "../../helpers/ChartUtils";
+import CustomFields from '../../helpers/CustomFields';
+import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
+import ChartUtils from '../../helpers/ChartUtils';
 
 class LabelCopy extends Component {
   constructor(props) {
@@ -148,10 +148,10 @@ class LabelCopy extends Component {
 
   render() {
     const {
-      compare, data, showQuestionModal, showCompareModal, position
+      compare, data, showQuestionModal, showCompareModal, position,
     } = this.state;
     const {
-      singleGraph
+      singleGraph,
     } = this.props;
     if (!showQuestionModal && !showCompareModal) {
       return null;
@@ -174,7 +174,11 @@ class LabelCopy extends Component {
             <Button onClick={() => this.toggleCompareNodes(true)} className="actionButton" icon="fa-balance-scale">
               Compare nodes
             </Button>
-            <Button onClick={this.merge} className="actionButton" icon="fa-code-fork">
+            <Button
+              onClick={() => this.compareAndMarge(compare.duplicatedNodes, compare.duplicatedNodes)}
+              className="actionButton"
+              icon="fa-code-fork"
+            >
               Merge nodes
             </Button>
             <Button onClick={this.replaceDuplications} className="actionButton" icon="fa-retweet">
@@ -188,19 +192,20 @@ class LabelCopy extends Component {
             </Button>
           </div>
         </Modal>
-        {showCompareModal ?
-          <LabelCompare
-            nodes={Chart.getNodes()}
-            compare={compare}
-            position={position}
-            onRequestClose={() => this.toggleCompareNodes(false)}
-            onSubmit={this.compareAndMarge}
-          />
+        {showCompareModal
+          ? (
+            <LabelCompare
+              nodes={Chart.getNodes()}
+              compare={compare}
+              position={position}
+              onRequestClose={() => this.toggleCompareNodes(false)}
+              onSubmit={this.compareAndMarge}
+            />
+          )
           : null}
       </>
     );
   }
-
 }
 
 const mapStateToProps = (state) => ({
@@ -208,7 +213,7 @@ const mapStateToProps = (state) => ({
   customFields: state.graphs.singleGraph.customFields || {},
 });
 const mapDispatchToProps = {
-  removeNodeCustomFieldKey
+  removeNodeCustomFieldKey,
 };
 const Container = connect(
   mapStateToProps,
