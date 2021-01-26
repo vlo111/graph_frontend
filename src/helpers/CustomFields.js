@@ -1,11 +1,10 @@
 import _ from 'lodash';
-import Chart from "../Chart";
-import Utils from "./Utils";
+import Utils from './Utils';
 
 class CustomFields {
   static LIMIT = 10;
 
-  static setValue(customFields = {}, type, name, values, append = false) {
+  static setValue(customFields = {}, type, name, values) {
     let i = 0;
     let success = true;
     _.forEach(values, (value, key) => {

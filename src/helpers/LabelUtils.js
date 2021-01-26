@@ -154,8 +154,6 @@ class LabelUtils {
     data.nodes.forEach((d) => {
       d.fx = d.fx - minX + posX;
       d.fy = d.fy - minY + posY;
-      d.name = (d.replace || d.merge) ? d.name : ChartUtils.nodeUniqueName(d);
-
       let id;
       if (d.replace) {
         id = d.id;
@@ -200,6 +198,8 @@ class LabelUtils {
         d.originalId = d.id;
         d.id = id;
       }
+
+      d.name = (d.replace || d.merge) ? d.name : ChartUtils.nodeUniqueName(d);
 
       const customField = CustomFields.get(data.customFields, d.type, d.originalId || d.id);
       store.dispatch(setNodeCustomField(d.type, d.id, customField));
