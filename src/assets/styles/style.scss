@@ -6011,10 +6011,33 @@ body .gh__menu {
 
 .ghModalLabelShareOverlay {
   .ghModalLabelShare {
-    width: 65%;
+    width: 30%;
+    max-width: 50%;
+    padding: 2%;
 
     .ghFormField {
       width: 100%;
+    }
+
+    .addUserField {
+      margin: 5% 0%;
+
+      label {
+        font-size: 30px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .gh__control {
+        margin-left: auto;
+      }
+    }
+
+    .userFildSize {
+      .gh__control {
+        width: 63%;
+        margin-left: auto;
+      }
     }
 
     .shareUserItem {
@@ -6024,7 +6047,21 @@ body .gh__menu {
       justify-content: space-between;
       padding: 0 1px;
 
+      .separator {
+        border-right: 1px solid #c3c6cc;
+        right: 15%;
+        position: absolute;
+        height: 4%;
+      }
+
+      .icon {
+        width: 20px;
+      }
+
       .userName {
+        margin-right: auto;
+        margin-left: 4%;
+        font-weight: bold;
         white-space: nowrap;
         padding-right: 10px;
         overflow: hidden;
@@ -6034,8 +6071,26 @@ body .gh__menu {
 
       .shareType {
         width: 125px;
-        min-width: 125px;
+        min-width: 50%;
       }
+    }
+
+    .shareContent {
+      width: 100%;
+      margin-top: 3%;
+    }
+
+    .saveShareGraph {
+      margin-top: 10%;
+      margin-left: auto;
+    }
+
+    .shareContent:before {
+      content: '';
+      border-bottom: 1px solid #E2E7EB;
+      width: auto;
+      display: block;
+      margin-bottom: 5%;
     }
   }
 }
