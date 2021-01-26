@@ -150,6 +150,10 @@ class GraphCompare extends Component {
 
     labels = [...labels];
 
+    links = _.uniqBy(links, (l) => JSON.stringify({
+      name: l.name, type: l.type, source: l.source, target: l.target,
+    }));
+
     this.setState({
       createGraphData: { labels, nodes, links },
     });
