@@ -244,6 +244,14 @@ class Utils {
     return +graphId || '';
   }
 
+  static mergeDeep(a, b) {
+    return _.mergeWith({}, a, b, (objValue, srcValue) => {
+      if (_.isArray(srcValue)) {
+        return srcValue;
+      }
+      return undefined;
+    });
+  }
 }
 
 export default Utils;

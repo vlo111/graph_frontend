@@ -14,6 +14,7 @@ import Select from '../components/form/Select';
 import GraphCompareList from '../components/graphCompare/GraphCompareList';
 import ChartUtils from '../helpers/ChartUtils';
 import CreateGraphModal from '../components/CreateGraphModal';
+import Utils from "../helpers/Utils";
 
 class GraphCompare extends Component {
   static propTypes = {
@@ -144,10 +145,13 @@ class GraphCompare extends Component {
 
     const customFieldsMerged = {};
 
-    for (const type in customFields) {
-      const customField = customFields[type];
+
+    const customFieldsFull = Utils.mergeDeep(singleGraph2.customFields, customFields);
+
+    for (const type in customFieldsFull) {
+      const customField = customFieldsFull[type];
       for (const tab in customField) {
-        const { values } = customFields[type][tab];
+        const { values } = customFieldsFull[type][tab];
         for (const nodeName in values) {
           const mainNode = nodes.find((n) => n.name === nodeName);
           if (mainNode) {
@@ -156,18 +160,21 @@ class GraphCompare extends Component {
 
             const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : undefined;
             const value2 = node2 ? _.get(singleGraph2.customFields, [node2.type, tab, 'values', node2.id]) : undefined;
-
+            console.log(value2, node2?.type, tab, node2?.id, singleGraph2.customFields, 444);
             if (value1 && !value2) {
               _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1);
             } else if (!value1 && value2) {
               _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
-            } else if (value1 && value2) {
+            } else if (value1 && value2 && value1 !== value2) {
               _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`);
             }
           }
         }
       }
     }
+
+    console.log(customFieldsMerged);
+    return;
     this.setState({
       createGraphData: {
         labels, nodes, links, customFields: customFieldsMerged,
