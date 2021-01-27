@@ -116,6 +116,8 @@ class GraphCompare extends Component {
         });
       }
 
+      delete node1.color;
+
       // singleGraph.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
       return node1;
     });
@@ -124,6 +126,9 @@ class GraphCompare extends Component {
       const node1 = selectedNodes1.find((n) => n.name === node2.name);
       if (!node1) {
         // singleGraph.labels.filter((l) => node2.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
+
+        delete node2.color;
+
         nodes.push(node2);
       }
     });
@@ -132,7 +137,10 @@ class GraphCompare extends Component {
 
     links = _.uniqBy(links, (l) => JSON.stringify({
       name: l.name, type: l.type, source: l.source, target: l.target,
-    }));
+    })).map((l) => {
+      delete l.color;
+      return l;
+    });
 
     const { customFields } = singleGraph;
 
