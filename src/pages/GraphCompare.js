@@ -147,9 +147,6 @@ class GraphCompare extends Component {
 
 
     const customFieldsFull = Utils.mergeDeep(singleGraph2.customFields, customFields);
-    console.log({
-      a : singleGraph2.customFields, b: customFields,customFieldsFull
-    })
     for (const type in customFieldsFull) {
       const customField = customFieldsFull[type];
       for (const tab in customField) {
@@ -159,12 +156,6 @@ class GraphCompare extends Component {
           if (mainNode) {
             const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
             const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
-            console.log({
-              customFields,
-              b: singleGraph2.customFields,
-              node1,
-              node2,
-            });
             const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : undefined;
             const value2 = node2 ? _.get(singleGraph2.customFields, [node2.type, tab, 'values', node2.id]) : undefined;
             if (value1 && !value2) {
@@ -178,15 +169,11 @@ class GraphCompare extends Component {
                 _.set(customFieldsMerged, [mainNode.type, tab, 'valuecs', mainNode.id], value2);
               }
             }
-          }else {
-            console.log('no name')
           }
         }
       }
     }
 
-    console.log(customFieldsMerged);
-    return;
     this.setState({
       createGraphData: {
         labels, nodes, links, customFields: customFieldsMerged,
