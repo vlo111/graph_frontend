@@ -172,8 +172,6 @@ class GraphCompare extends Component {
       }
     }
 
-    console.log(customFieldsMerged);
-    return;
     this.setState({
       createGraphData: {
         labels, nodes, links, customFields: customFieldsMerged,
