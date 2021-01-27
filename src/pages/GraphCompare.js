@@ -154,11 +154,11 @@ class GraphCompare extends Component {
       const customField = customFieldsFull[type];
       for (const tab in customField) {
         const { values } = customFieldsFull[type][tab];
-        for (const nodeName in values) {
-          const mainNode = nodes.find((n) => n.name === nodeName);
+        for (const nodeId in values) {
+          const mainNode = nodes.find((n) => n.id === nodeId);
           if (mainNode) {
-            const node1 = selectedNodes1.find((n) => n.name === nodeName);
-            const node2 = selectedNodes2.find((n) => n.name === nodeName);
+            const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
+            const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
             console.log({
               customFields,
               b: singleGraph2.customFields,
