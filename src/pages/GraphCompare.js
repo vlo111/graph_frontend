@@ -157,7 +157,12 @@ class GraphCompare extends Component {
           if (mainNode) {
             const node1 = selectedNodes1.find((n) => n.name === nodeName);
             const node2 = selectedNodes2.find((n) => n.name === nodeName);
-
+            console.log({
+              customFields,
+              b: singleGraph2.customFields,
+              node,
+              node1,
+            });
             const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : undefined;
             const value2 = node2 ? _.get(singleGraph2.customFields, [node2.type, tab, 'values', node2.id]) : undefined;
             if (value1 && !value2) {
@@ -176,6 +181,8 @@ class GraphCompare extends Component {
       }
     }
 
+    console.log(customFieldsMerged);
+    return;
     this.setState({
       createGraphData: {
         labels, nodes, links, customFields: customFieldsMerged,
