@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
+import _ from 'lodash';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodesFilter from './NodeTypesFilter';
@@ -18,7 +19,6 @@ import LabelsFilter from './LabelsFilter';
 import LabelStatusFilter from './LabelStatusFilter';
 
 import Utils from '../../helpers/Utils';
-import _ from 'lodash';
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -59,15 +59,15 @@ class FiltersModal extends Component {
       this.setState({ nodes, links, labels });
     }, 500);
   }
-  closeFilter = () => {
-    const { resetFilter, match: { params: { graphId = '', token = '' } } } = this.props;
-    resetFilter();
+
+  closeFilter = async () => {
+    const { match: { params: { graphId = '', token = '' } } } = this.props;
+    await this.props.resetFilter();
     setTimeout(() => {
       Utils.isInEmbed()
         ? this.props.history.replace(`/graphs/view/${graphId}/${token}`)
         : this.props.history.replace(`/graphs/view/${graphId}`);
     }, 200);
-
   }
 
   render() {
@@ -89,7 +89,8 @@ class FiltersModal extends Component {
         )}
         <div className="row resetAll">
           <Button className="ghButton2" onClick={this.props.resetFilter}>RESET ALL</Button>
-          <span className="nodeCount">{`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${nodes.length}`}</span>
+          <span
+            className="nodeCount">{`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${nodes.length}`}</span>
         </div>
 
         <IsolatedFilter />
