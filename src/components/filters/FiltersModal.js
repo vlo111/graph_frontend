@@ -83,8 +83,12 @@ class FiltersModal extends Component {
       >
         {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
           <>
-            <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
-
+            <Link
+              to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/view/${graphId}`}
+              replace
+            >
+              <Button className="close" icon={<CloseIcon />} onClick={this.props.resetFilter} />
+            </Link>
           </>
         )}
         <div className="row resetAll">
