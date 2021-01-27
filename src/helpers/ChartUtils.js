@@ -275,11 +275,12 @@ class ChartUtils {
   static linkColorObj = {};
 
   static linkColorArr = _.clone(LINK_COLORS);
+
   static linkDraftColor = _.clone(LINK_DRAFT_COLORS);
 
   static linkColor = (d) => {
     if (d.status === 'draft') {
-      return ChartUtils.linkDraftColor
+      return ChartUtils.linkDraftColor;
     }
     if (!this.linkColorObj[d.type]) {
       if (d.color) {
@@ -641,6 +642,19 @@ class ChartUtils {
       }
     }
     return data;
+  }
+
+  static uniqueLinks(links) {
+    return _.uniqBy(links, (l) => {
+      if (l.direction) {
+        return JSON.stringify({
+          1: l.name, 2: l.type, 3: l.source, 4: l.target,
+        });
+      }
+      return JSON.stringify({
+        1: l.name, 2: l.type, 3: _.order([l.source, l.target]),
+      });
+    });
   }
 }
 

@@ -245,10 +245,6 @@ class Chart {
       }
     });
 
-
-    data.links = _.uniqBy(data.links, (l) => JSON.stringify({
-      name: l.name, type: l.type, source: l.source, target: l.target,
-    }))
     const links = Object.values(data.links).map((d) => Object.create(d));
 
     const lastUid = data.lastUid || this.data?.lastUid || 0;

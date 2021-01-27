@@ -135,9 +135,7 @@ class GraphCompare extends Component {
 
     labels = [...labels];
 
-    links = _.uniqBy(links, (l) => JSON.stringify({
-      name: l.name, type: l.type, source: l.source, target: l.target,
-    })).map((l) => {
+    links = ChartUtils.uniqueLinks(links).map((l) => {
       delete l.color;
       return l;
     });

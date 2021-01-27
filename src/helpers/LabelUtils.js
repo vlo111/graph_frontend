@@ -258,9 +258,7 @@ class LabelUtils {
     }
 
     links = ChartUtils.cleanLinks(links, nodes);
-    links = _.uniqBy(links, (l) => JSON.stringify({
-      name: l.name, type: l.type, source: l.source, target: l.target,
-    }));
+    links = ChartUtils.uniqueLinks(links);
 
     Chart.render({ links, nodes, labels }, 'past');
   }
