@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import path from "path";
+import Chart from "../Chart";
+import Utils from "./Utils";
 
 class CustomFields {
   static LIMIT = 10;
