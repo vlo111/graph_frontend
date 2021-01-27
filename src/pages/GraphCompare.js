@@ -160,7 +160,6 @@ class GraphCompare extends Component {
 
             const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : undefined;
             const value2 = node2 ? _.get(singleGraph2.customFields, [node2.type, tab, 'values', node2.id]) : undefined;
-            console.log(value2, node2?.type, tab, node2?.id, singleGraph2.customFields, 444);
             if (value1 && !value2) {
               _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1);
             } else if (!value1 && value2) {
