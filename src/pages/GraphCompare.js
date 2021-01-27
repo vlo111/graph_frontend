@@ -143,20 +143,25 @@ class GraphCompare extends Component {
       for (const tab in customField) {
         const { values } = customFields[type][tab];
         for (const nodeName in values) {
-          const value1 = values[nodeName];
-          const node2 = selectedNodes2.find((n) => n.name === nodeName);
-          const value2 = node2 ? _.get(singleGraph2.customFields, [node2.type, tab, 'values', node2.name]) : undefined;
-          if (value1 && !value2) {
-            _.set(customFieldsMerged, [type, tab, 'values', nodeName], value1);
-          } else if (!value1 && value2) {
-            _.set(customFieldsMerged, [type, tab, 'values', nodeName], value2);
-          } else if (value1 && value2) {
-            _.set(customFieldsMerged, [type, tab, 'values', nodeName], `${value1}\n<hr />\n${value2}`);
+          const mainNode = nodes.find((n) => n.name === nodeName);
+          if (mainNode) {
+            const node1 = selectedNodes1.find((n) => n.name === nodeName);
+            const node2 = selectedNodes2.find((n) => n.name === nodeName);
+
+            const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : undefined;
+            const value2 = node2 ? _.get(singleGraph2.customFields, [node2.type, tab, 'values', node2.id]) : undefined;
+
+            if (value1 && !value2) {
+              _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1);
+            } else if (!value1 && value2) {
+              _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
+            } else if (value1 && value2) {
+              _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`);
+            }
           }
         }
       }
     }
-
     this.setState({
       createGraphData: {
         labels, nodes, links, customFields: customFieldsMerged,
@@ -165,8 +170,9 @@ class GraphCompare extends Component {
   }
 
   renderSelectOption = (props) => {
-    const { innerProps, children, getStyles, cx, ...params } = props;
-    console.log(params)
+    const {
+      innerProps, children, getStyles, cx, ...params
+    } = props;
     return (
       <div {...innerProps} className={cx(getStyles('option', params))}>{children}</div>
     );
@@ -232,10 +238,10 @@ class GraphCompare extends Component {
           <GraphCompareList
             title={(
               <span>
-  {'Nodes in '}
+                {'Nodes in '}
                 <strong>{singleGraph.title}</strong>
                 {` (${graph1Nodes.length})`}
-  </span>
+              </span>
             )}
             dropdown
             singleGraph1={{ ...singleGraph, nodes: graph1Nodes }}
@@ -245,10 +251,10 @@ class GraphCompare extends Component {
           <GraphCompareList
             title={(
               <span>
-  {'Nodes in '}
+                {'Nodes in '}
                 <strong>{singleGraph2.title}</strong>
                 {` (${graph2Nodes.length})`}
-  </span>
+              </span>
             )}
             dropdown
             singleGraph2={{ ...singleGraph2, nodes: graph2Nodes }}
