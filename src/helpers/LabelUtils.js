@@ -214,7 +214,7 @@ class LabelUtils {
       } else if (d.merge) {
         nodes = nodes.map((n) => {
           if (n.id === d.id) {
-            n = ChartUtils.merge(n, d);
+            n = ChartUtils.merge(d, n);
             data.links = data.links.map((l) => {
               if (l.source === d.originalId) {
                 l.source = n.id;

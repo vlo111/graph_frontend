@@ -143,30 +143,15 @@ class GraphCompare extends Component {
       for (const tab in customField) {
         const { values } = customFields[type][tab];
         for (const nodeName in values) {
-          const node1 = selectedNodes1.find((n) => n.name === nodeName);
-          const node2 = selectedNodes2.find((n) => n.name === nodeName);
           const value1 = values[nodeName];
-          const value2 = node2 ? _.get(singleGraph2.customFields, [type, tab, 'values', nodeName]) : undefined;
-          if (node1 && !node2) {
-            if (value1) {
-              _.set(customFieldsMerged, [type, tab, 'values', nodeName], value1);
-            }
-          } else if (!node1 && node2) {
-            if (value2) {
-              _.set(customFieldsMerged, [type, tab, 'values', nodeName], value2);
-            }
-          } else if (node1 && node2) {
-            let value = '';
-            if (value1 && value2 && value1 !== value2) {
-              value = `${value1}\n<hr />\n${value2}`;
-            } else if (value1) {
-              value = value1;
-            } else if (value2) {
-              value = value2;
-            }
-            if (value) {
-              _.set(customFieldsMerged, [type, tab, 'values', nodeName], value);
-            }
+          const node2 = selectedNodes2.find((n) => n.name === nodeName);
+          const value2 = node2 ? _.get(singleGraph2.customFields, [node2.type, tab, 'values', node2.name]) : undefined;
+          if (value1 && !value2) {
+            _.set(customFieldsMerged, [type, tab, 'values', nodeName], value1);
+          } else if (!value1 && value2) {
+            _.set(customFieldsMerged, [type, tab, 'values', nodeName], value2);
+          } else if (value1 && value2) {
+            _.set(customFieldsMerged, [type, tab, 'values', nodeName], `${value1}\n<hr />\n${value2}`);
           }
         }
       }
