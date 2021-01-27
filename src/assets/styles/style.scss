@@ -5957,15 +5957,28 @@ img.scaled {
   cursor: move;
 }
 .container-tabs{
+  @media only screen and (max-width: 1200px) {
   .grid-wrapper {
-    // display: flex;
-    // flex-wrap: wrap;
-    // justify-content: center;
+    grid-template-columns: repeat( auto-fit, minmax(140px, 1fr) );
+    display: grid;
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .grid-wrapper {
+    grid-template-columns: repeat( auto-fit, minmax(110px, 1fr) );
+    display: grid;
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 1700px) {
+  .grid-wrapper { 
     grid-template-columns: 20% 20% 20% 20% 20%;
     display: grid;
     width: 100%;
   }
-  
+}
+
   .grid-wrapper .grid-item {
    
     width: 20%;
