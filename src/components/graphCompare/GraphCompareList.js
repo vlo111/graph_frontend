@@ -65,7 +65,7 @@ class GraphCompareList extends Component {
             {singleGraph1?.nodes?.map((node) => {
               const node2 = singleGraph2?.nodes?.find((n) => n.name === node.name);
               return (
-                <LazyLoad height={150} unmountIfInvisible>
+                <LazyLoad height={150} unmountIfInvisible offset={500}>
                   <div className="item">
                     <div className="top">
                       <span className="name">{node.name}</span>
@@ -95,7 +95,7 @@ class GraphCompareList extends Component {
               );
             })}
             {!singleGraph1 ? singleGraph2?.nodes?.map((node2) => (
-              <LazyLoad height={158} unmountIfInvisible>
+              <LazyLoad height={158} unmountIfInvisible offset={500}>
                 <div className="item">
                   <div className="top">
                     <span className="name">{node2.name}</span>
