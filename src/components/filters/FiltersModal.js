@@ -59,16 +59,7 @@ class FiltersModal extends Component {
       this.setState({ nodes, links, labels });
     }, 500);
   }
-  closeFilter = () => {
-    const { resetFilter, match: { params: { graphId = '', token = '' } } } = this.props;
-    resetFilter();
-    setTimeout(() => {
-      Utils.isInEmbed()
-        ? this.props.history.replace(`/graphs/view/${graphId}/${token}`)
-        : this.props.history.replace(`/graphs/view/${graphId}`);
-    }, 200);
-
-  }
+  
 
   render() {
     const { nodes, links, labels } = this.state;
@@ -83,8 +74,12 @@ class FiltersModal extends Component {
       >
         {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
           <>
-            <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
-
+            <Link
+              to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/view/${graphId}`}
+              replace
+            >
+              <Button className="close" icon={<CloseIcon />} onClick={this.props.resetFilter} />
+            </Link>
           </>
         )}
         <div className="row resetAll">
