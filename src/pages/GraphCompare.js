@@ -161,7 +161,7 @@ class GraphCompare extends Component {
               customFields,
               b: singleGraph2.customFields,
               node1,
-              node1,
+              node2,
             });
             const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : undefined;
             const value2 = node2 ? _.get(singleGraph2.customFields, [node2.type, tab, 'values', node2.id]) : undefined;
