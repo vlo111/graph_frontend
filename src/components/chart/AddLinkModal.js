@@ -15,7 +15,7 @@ import Validate from '../../helpers/Validate';
 import SvgLine from '../SvgLine';
 import ContextMenu from '../contextMenu/ContextMenu';
 import Utils from '../../helpers/Utils';
-import {ReactComponent as CloseSvg} from "../../assets/images/icons/close.svg";
+import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
 
 class AddLinkModal extends Component {
   static propTypes = {
@@ -142,7 +142,7 @@ class AddLinkModal extends Component {
 
     const res = links.filter((p) => {
       if (((p.source === linkData.source || p.source === linkData.target)
-          && (p.target === linkData.source || p.target === linkData.target)) && p.sx) {
+        && (p.target === linkData.source || p.target === linkData.target)) && p.sx) {
         return p;
       }
     });
@@ -168,61 +168,61 @@ class AddLinkModal extends Component {
             <Select
               label="Status"
               portal
-              options={TYPE_STATUS} 
+              options={TYPE_STATUS}
               value={TYPE_STATUS.filter((t) => t.value === linkData.status)}
               error={errors.status}
-              onChange={(v) => this.handleChange('status', v?.value || '')} 
+              onChange={(v) => this.handleChange('status', v?.value || '')}
             />
             <Select
-                label="Link Type"
-                value={[linkData.linkType]}
-                error={errors.linkType}
-                onChange={(v) => this.handleChange('linkType', v)}
-                options={dashTypes}
-                containerClassName="lineTypeSelect"
-                getOptionValue={(v) => v}
-                getOptionLabel={(v) => <SvgLine type={v} />}
+              label="Link Type"
+              value={[linkData.linkType]}
+              error={errors.linkType}
+              onChange={(v) => this.handleChange('linkType', v)}
+              options={dashTypes}
+              containerClassName="lineTypeSelect"
+              getOptionValue={(v) => v}
+              getOptionLabel={(v) => <SvgLine type={v} />}
             />
 
             <Select
-                label="Relation Type"
-                isSearchable
-                portal
-                placeholder=""
-                value={[
-                  types.find((t) => t.value === linkData.type) || {
-                    value: linkData.type,
-                    label: linkData.type,
-                  },
-                ]}
-                error={errors.type}
-                onChange={(v) => this.handleChange('type', v?.value)}
-                options={types}
-                isCreatable
+              label="Relation Type"
+              isSearchable
+              portal
+              placeholder=""
+              value={[
+                types.find((t) => t.value === linkData.type) || {
+                  value: linkData.type,
+                  label: linkData.type,
+                },
+              ]}
+              error={errors.type}
+              onChange={(v) => this.handleChange('type', v?.value)}
+              options={types}
+              isCreatable
             />
 
             <Input
-                label="Value"
-                value={linkData.value}
-                error={errors.value}
-                type="number"
-                min="1"
-                max="15"
-                onBlur={() => {
-                  if (linkData.value < 1) {
-                    linkData.value = 1;
-                  } else if (linkData.value > 15) {
-                    linkData.value = 15;
-                  }
-                  this.handleChange('value', linkData.value);
-                }}
-                onChangeText={(v) => this.handleChange('value', v)}
+              label="Value"
+              value={linkData.value}
+              error={errors.value}
+              type="number"
+              min="1"
+              max="15"
+              onBlur={() => {
+                if (linkData.value < 1) {
+                  linkData.value = 1;
+                } else if (linkData.value > 15) {
+                  linkData.value = 15;
+                }
+                this.handleChange('value', linkData.value);
+              }}
+              onChangeText={(v) => this.handleChange('value', v)}
             />
 
             <Checkbox
-                label="Show Direction"
-                checked={linkData.direction}
-                onChange={() => this.handleChange('direction', !linkData.direction)}
+              label="Show Direction"
+              checked={linkData.direction}
+              onChange={() => this.handleChange('direction', !linkData.direction)}
             />
             <div className="buttons">
               <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
