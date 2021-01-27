@@ -3818,11 +3818,15 @@ body .gh__menu {
   width: calc(100% - 202px);
   height: 100%;
 
-  .gmnoprint {
-    top: 60px !important;
+  .gmnoprint { 
     .gm-style-mtc:first-child {
-      margin-left: 60px;
+      margin-left: 60px !important;
+      top: 60px !important;
     }
+    .gm-style-mtc:nth-child(2) {
+      top: 60px !important;
+    } 
+     
   }
 
   .closeMap {
