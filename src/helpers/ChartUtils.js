@@ -652,7 +652,7 @@ class ChartUtils {
         });
       }
       return JSON.stringify({
-        1: l.name, 2: l.type, 3: _.order([l.source, l.target]),
+        1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
       });
     });
   }
