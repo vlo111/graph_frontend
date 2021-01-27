@@ -5,9 +5,260 @@ import { toast } from 'react-toastify';
 import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
+import SvgService from './helpers/SvgService';
 
 class Chart {
   static event = new EventEmitter();
+
+  /* @todo transform i mej avelacnem rotate u translate move y image i arandznacnem */
+  static minWidth;
+
+  static minHeight;
+
+  static tPos;
+
+  // gets the passed d3 element center coordinates
+  static getElementCenter() {
+    const uCords = SvgService.getImageUpdatedCoordinates();
+    return {
+      x: uCords.x + uCords.width / 2,
+      y: uCords.y + uCords.height / 2,
+    };
+  }
+
+  /**
+   * Function to move the object around
+   * */
+  static moveObject(ev, image) {
+    // increments the x/y values with the dx/dy values from the d3.event object
+    this.tPos.x += ev.dx;
+    this.tPos.y += ev.dy;
+    // updates the translate transform values to move the object to the new point
+    SvgService.updateImageTransform(
+      'translate',
+      `translate(${[this.tPos.x, this.tPos.y]})`,
+    );
+    // updates the translate coordinates in the model for further use
+    SvgService.updateImageTranslateCoordinates(this.tPos.x, this.tPos.y);
+    d3.select('.controls-group').attr('transform', SvgService.getTransform());
+    d3.select(image).attr('transform', SvgService.getTransform());
+  }
+
+  /**
+   * Function to resize the object based in the passed direction
+   * */
+  static resizeObject(direction, ev, size, image) {
+    // gets the original image coordinates from the service model
+    const updatedCoordinates = SvgService.getImageUpdatedCoordinates();
+    // auxiliar variables
+    let x; let y; let width; let height;
+    // do the resize math based in the direction that the resize started
+    switch (direction) {
+      // top left
+      case 'resize-tl':
+        width = updatedCoordinates.width - ev.dx;
+        height = updatedCoordinates.height - ev.dy;
+        x = updatedCoordinates.x + (updatedCoordinates.width - width);
+        y = updatedCoordinates.y + (updatedCoordinates.height - height);
+        break;
+      // top right
+      case 'resize-tr':
+        width = updatedCoordinates.width + ev.dx;
+        height = updatedCoordinates.height - ev.dy;
+        y = updatedCoordinates.y + (updatedCoordinates.height - height);
+        break;
+      // bottom left
+      case 'resize-bl':
+        width = updatedCoordinates.width - ev.dx;
+        height = updatedCoordinates.height + ev.dy;
+        x = updatedCoordinates.x + (updatedCoordinates.width - width);
+        break;
+      // bottom right
+      default: // 'resize-br'
+        width = updatedCoordinates.width + ev.dx;
+        height = updatedCoordinates.height + ev.dy;
+        break;
+    }
+
+    if (width > this.minWidth && height > this.minHeight) {
+      // updates the image object model with the new coordinates values
+      SvgService.updateImageCoordinates(width, height, x, y);
+      const myImage = d3.select(image);
+      x && myImage.attr('x', x);
+      y && myImage.attr('y', y);
+      width && myImage.attr('width', width);
+      height && myImage.attr('height', height);
+
+      Chart.imageManipulation({
+        width,
+        height,
+        x: updatedCoordinates.x,
+        y: updatedCoordinates.y,
+      }, image);
+    }
+  }
+
+  /**
+   * Function to rotate the object based in the initial rotation values
+   * present in the rotateHandleStartPos object
+   * */
+  static rotateObject(rotateHandleStartPos, ev, image) {
+    // gets the current udapted rotate coordinates
+    const updatedRotateCoordinates = SvgService.getImageUpdatedRotateCoordinates();
+
+    // increments the mouse event starting point with the mouse movement event
+    rotateHandleStartPos.x += ev.dx;
+    rotateHandleStartPos.y += ev.dy;
+
+    // calculates the difference between the current mouse position and the center line
+    const angleFinal = Chart.calcAngleDeg(
+      updatedRotateCoordinates,
+      rotateHandleStartPos,
+    );
+
+    // gets the difference of the angles to get to the final angle
+    let angle = rotateHandleStartPos.angle + angleFinal - rotateHandleStartPos.iniAngle;
+
+    // converts the values to stay inside the 360 positive
+    angle %= 360;
+    if (angle < 0) {
+      angle += 360;
+    }
+
+    // creates the new rotate position array
+    const rotatePos = [
+      angle,
+      updatedRotateCoordinates.cx,
+      updatedRotateCoordinates.cy,
+    ];
+
+    // updates the transform rotate string value and the rotate info in the service model
+    SvgService.updateImageTransform('rotate', `rotate(${rotatePos})`);
+    // and updates the current angle with the new one
+    SvgService.updateImageRotateCoordinates(angle);
+
+    d3.select('.controls-group').attr('transform', SvgService.getTransform());
+    d3.select(image).attr('transform', SvgService.getTransform());
+    // const myImage = d3.select(image);
+    Chart.imageManipulation({
+    }, image);
+  }
+
+  static getHandleRotatePosition(handleStartPos) {
+    // its possible to use "cx/cy" for properties
+    const originalX = handleStartPos.x ? handleStartPos.x : handleStartPos.cx;
+    const originalY = handleStartPos.y ? handleStartPos.y : handleStartPos.cy;
+
+    // gets the updated element center, without rotatio
+    const center = this.getElementCenter();
+    // calculates the rotated handle position considering the current center as
+    // pivot for rotation
+    const dx = originalX - center.x;
+    const dy = originalY - center.y;
+    const theta = (handleStartPos.angle * Math.PI) / 180;
+
+    return {
+      x: dx * Math.cos(theta) - dy * Math.sin(theta) + center.x,
+      y: dx * Math.sin(theta) + dy * Math.cos(theta) + center.y,
+    };
+  }
+
+  // gets the angle in degrees between two points
+  static calcAngleDeg(p1, p2) {
+    const p1x = p1.x ? p1.x : p1.cx;
+    const p1y = p1.y ? p1.y : p1.cy;
+    return (Math.atan2(p2.y - p1y, p2.x - p1x) * 180) / Math.PI;
+  }
+
+  static bindControlsDragAndDrop(size, image) {
+    // auxiliar variables
+    let target; let targetClass; let rotateHandleStartPos;
+
+    // binding the behavior callback functions
+    const dragData = d3.drag()
+      .on('start', dragStart)
+      .on('drag', dragMove)
+      .on('end', dragEnd);
+
+    /**
+     * For the drag action starts
+     * */
+    function dragStart(ev) {
+      // gets the current target element where the drag event started
+      target = d3.select(ev.sourceEvent.target);
+      // and saves the target element class in a aux variable
+      targetClass = target.attr('class');
+
+      // when the user is rotating the element, stores the initial angle
+      // information to be used in the rotate function
+      if (targetClass.indexOf('rotate') > -1) {
+        // gets the updated rotate coordinates
+        const updatedRotateCoordinates = SvgService.getImageUpdatedRotateCoordinates();
+
+        // updates the rotate handle start posistion object with
+        // basic information from the model and the handles
+        rotateHandleStartPos = {
+          angle: updatedRotateCoordinates.angle, // the current angle
+          x: parseFloat(target.attr('cx')), // the current cx value of the target handle
+          y: parseFloat(target.attr('cy')), // the current cy value of the target handle
+        };
+
+        // calc the rotated top & left corner
+        if (rotateHandleStartPos.angle > 0) {
+          const correctsRotateHandleStartPos = Chart.getHandleRotatePosition(
+            rotateHandleStartPos,
+          );
+          rotateHandleStartPos.x = correctsRotateHandleStartPos.x;
+          rotateHandleStartPos.y = correctsRotateHandleStartPos.y;
+        }
+
+        // adds the initial angle in degrees
+        rotateHandleStartPos.iniAngle = Chart.calcAngleDeg(
+          updatedRotateCoordinates,
+          rotateHandleStartPos,
+        );
+      }
+    }
+
+    /**
+     * For while the drag is happening
+     * */
+    function dragMove(ev) {
+      // checks the target class to choose the right function
+      // to be executed while dragging
+      // #1 - If the user is moving the element around
+      if (targetClass.indexOf('move') > -1) {
+        Chart.moveObject(ev, image);
+      } else if (targetClass.indexOf('resize') > -1) {
+        // #2 - If the user is resizing the element
+        Chart.resizeObject(targetClass, ev, size, image);
+      } else if (targetClass.indexOf('rotate') > -1) {
+        // #3 - If the user is rotating the element
+        Chart.rotateObject(rotateHandleStartPos, ev, image);
+      }
+      // apply the scope changes for any function that might
+      // have been called, to keep things updated in the service model
+    }
+
+    /**
+     * For when the drag stops (the user release the element)
+     * */
+    function dragEnd() {
+      // check if the user was resizing
+      d3.select('.controls-group').remove();
+      if (targetClass.indexOf('resize') > -1) {
+        // updates the center of rotation after resizing the element
+        const elemCenter = Chart.getElementCenter();
+        SvgService.updateImageRotateCoordinates(
+          null,
+          elemCenter.x,
+          elemCenter.y,
+        );
+      }
+    }
+
+    return dragData;
+  }
 
   static drag(simulation) {
     const dragstart = (ev, d) => {
@@ -514,6 +765,59 @@ class Chart {
     this._dataNodes = null;
   }
 
+  static imageManipulation(size, image) {
+    d3.select('.controls-group').remove();
+    const imageTransform = d3.select(image).attr('transform');
+    const controlsGroup = d3.select('.nodes')
+      .append('g')
+      .attr('class', 'controls-group')
+      .attr('transform', imageTransform);
+    controlsGroup.append('rect')
+      .attr('class', 'move-rect')
+      .attr('fill-opacity', '0')
+      .attr('stroke', '#ffffff')
+      .attr('stroke-width', '2')
+      .attr('width', size.width)
+      .attr('height', size.height)
+      .attr('x', size.x)
+      .attr('y', size.y);
+
+    const addResizeOption = (classAttr, fillAttr, xAttr, yAttr) => {
+      controlsGroup.append('rect')
+        .attr('class', classAttr)
+        .attr('fill-opacity', '0')
+        .attr('stroke', '#ffffff')
+        .attr('stroke-width', '2')
+        .attr('fill', fillAttr)
+        .attr('width', 20)
+        .attr('height', 20)
+        .attr('x', xAttr)
+        .attr('y', yAttr);
+    };
+
+    const addRotateOption = (classAttr, fillAttr, xAttr, yAttr) => {
+      controlsGroup.append('circle')
+        .attr('class', classAttr)
+        .attr('stroke', '#6f2409')
+        .attr('stroke-width', '2')
+        .attr('fill', fillAttr)
+        .attr('r', 12)
+        .attr('cx', xAttr)
+        .attr('cy', yAttr);
+    };
+    addResizeOption('resize-tl', 'white', size.x - 10, size.y - 10);
+    addResizeOption('resize-tr', 'red', size.x + size.width - 10, size.y - 10);
+    addResizeOption('resize-bl', 'blue', size.x - 10, size.y + size.height - 10);
+    addResizeOption('resize-br', 'yellow', size.x + size.width - 10, size.y + size.height - 10);
+
+    addRotateOption('rotate-tl', 'white', size.x - 20, size.y - 20);
+    addRotateOption('rotate-tr', 'red', size.x + size.width + 20, size.y - 20);
+    addRotateOption('rotate-bl', 'blue', size.x - 20, size.height + size.y + 20);
+    addRotateOption('rotate-br', 'yellow', size.x + size.width + 20, size.height + size.y + 20);
+
+    return controlsGroup;
+  }
+
   static render(data = {}, params = {}) {
     try {
       if (!this.isCalled('render')) {
@@ -621,6 +925,43 @@ class Chart {
         .attr('transform', (d) => {
           const r = this.radiusList[d.index] * -1.13;
           return `translate(${r}, ${r})`;
+        });
+
+      this.nodesWrapper.selectAll('.image')
+        .append('svg:image')
+        .attr('preserveAspectRatio', 'none')
+        .attr('x', (d) => d.x)
+        .attr('y', (d) => d.y)
+        .attr('xlink:href', (d) => {
+          if (d.icon && d.nodeType === 'image') {
+            return d.icon;
+          }
+          return '';
+        })
+        .on('click', function () {
+          const size = this.getBoundingClientRect();
+          const imageCoords = SvgService.getImageUpdatedCoordinates();
+          if (!imageCoords.width || !imageCoords.height) {
+            SvgService.updateImageCoordinates(size.width, size.height, size.x, size.y);
+          }
+          SvgService.updateImageTranslateCoordinates(size.x, size.y);
+          Chart.minWidth = 0.1 * size.width;
+          Chart.minHeight = 0.1 * size.height;
+          SvgService.updateImageTranslateCoordinates(size.x, size.y);
+          Chart.tPos = SvgService.getImageUpdatedTranslateCoordinates();
+          const imageNewCoords = SvgService.getImageUpdatedCoordinates();
+          const controlsGroup = Chart.imageManipulation(imageNewCoords, this);
+          const elemCenter = Chart.getElementCenter();
+          if (SvgService.image.rotate.angle) {
+            const transformAttr = SvgService.getTransform();
+            const translateInd = transformAttr.indexOf('translate');
+            const translate = transformAttr.substring(translateInd, transformAttr.length);
+            controlsGroup.attr(
+              'transform', `rotate(${SvgService.image.rotate.angle}, ${elemCenter.x}, ${elemCenter.y}) ${translate}`,
+            );
+          }
+          SvgService.updateImageRotateCoordinates(SvgService.image.rotate.angle || null, elemCenter.x, elemCenter.y);
+          controlsGroup.call(Chart.bindControlsDragAndDrop(size, this));
         });
 
       this.nodesWrapper.selectAll('.node :not(text)')
@@ -973,7 +1314,7 @@ class Chart {
       return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${arcDirection} ${d.target.x},${d.target.y}`;
     });
     this.node
-      .attr('transform', (d) => `translate(${d.x || 0}, ${d.y || 0})`)
+      .attr('transform', (d) => d.nodeType !== 'image' ? `translate(${d.x || 0}, ${d.y || 0})` : '')
       .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
     this.linkText
@@ -1265,9 +1606,10 @@ class Chart {
     });
 
     this.event.on('node.click', async (ev, d) => {
-      if (ev.shiftKey) {
+      if (ev.shiftKey || d.nodeType === 'image') {
         return;
       }
+      //d3.select('.controls-group').remove();
       await Utils.sleep(10);
       if (this.activeButton !== 'create') {
         return;
@@ -1316,6 +1658,7 @@ class Chart {
       if (!ev.target.parentNode || ev.target.parentNode.classList.contains('node')) {
         return;
       }
+      //d3.select('.controls-group').remove();
       if (this.wrapper.select('#fcurve').node() && this.curved) {
         setTimeout(() => {
           this.wrapper.selectAll('#fcurve, #lcurve').remove();
