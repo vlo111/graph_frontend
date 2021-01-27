@@ -54,6 +54,7 @@ class Convert {
       { value: d.value, key: 'value' },
       { value: d.linkType, key: 'linkType' },
       { value: d.direction, key: 'direction' },
+      { value: d.status, key: 'status' },
     ]));
   }
 

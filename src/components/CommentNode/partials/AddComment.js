@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Owner from './Owner';
 import Button from '../../form/Button';
 import Input from '../../form/Input';
+import Editor from '../../form/Editor/CustomEditor';
+
 import { getAccount } from '../../../store/selectors/account';
 import { getNodeCommentParent } from '../../../store/selectors/commentNodes';
 import { createNodeCommentRequest, setNodeCommentParent } from '../../../store/actions/commentNodes';
@@ -13,18 +15,19 @@ const AddComment = ({ graph, node, closeModal, isReply }) => {
   const myAccount = useSelector(getAccount);
   const parent = useSelector(getNodeCommentParent);
   const [text, setText] = useState('');
-
+  const handleChange = (path, value) => {
+    setText(value);
+  }
   return (
-    <div className={isReply ? 'comment-modal__add-comment-section--reply' : ''}>
+    <div className={isReply ? 'comment-modal__add-comment-section--reply comment--reply' : 'comment'}>
       <hr />
-      <Input
-        textArea
-        value={text}
-        limit={250}
-        onChangeText={(value) => setText(value)}
-        className="comment-modal__add-comment-input"
+      <Editor
         id={isReply ? 'reply-comment' : 'add-comment'}
-        placeholder="Make a comment"
+        class='comment-modal__add-comment-input'
+        //error={errors.content}
+        limit={250}
+        value={text}
+        onChange={(v) => handleChange('text', v)}
       />
       <div className="comment-modal__add-comment-buttons">
         <Button

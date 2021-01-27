@@ -10,7 +10,7 @@ import graphLabelsEmbed from './graphLabelsEmbed';
 import profile from './profile';
 import commentNodes from './commentNodes';
 import share from './share';
-
+import document from './document';
 
 export default combineReducers({
   app,
@@ -24,4 +24,5 @@ export default combineReducers({
   graphLabelsEmbed,
   commentNodes,
   share,
+  document,
 });

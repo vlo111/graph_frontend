@@ -10,6 +10,12 @@ export const NODE_STATUS = [
   { value: 'draft', label: 'Draft' },
 ];
 
+export const LABEL_STATUS = [
+  { value: 'lock', label: 'Locked labels' },
+  { value: 'unlock', label: 'Open labels' },
+];
+
+
 export const NODE_COLOR = [
   '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
   '#9467bd', '#8c564b', '#e377c2', '#7f7f7f',

@@ -10,6 +10,8 @@ import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
 import HeaderMini from '../HeaderMini';
 import ConnectionDetails from './ConnectionDetails';
 import NodeFullInfoModal from './NodeFullInfoModal';
+import ChartUtils from '../../helpers/ChartUtils';
+
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -36,6 +38,10 @@ class NodeFullInfo extends Component {
       return null;
     }
     const node = Chart.getNodes().find((n) => n.id === nodeId);
+    
+    if (node) {
+      ChartUtils.findNodeInDom(node);
+    }
     if (!node) {
       return null;
     }

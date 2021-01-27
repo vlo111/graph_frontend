@@ -42,18 +42,18 @@ class NodeTabsContent extends Component {
         url: text,
       });
       return (
-        <div data-field-name={name} className="contentWrapper previewWrapper">
-          <div className="content">
-            <img src={Utils.fileSrc(`/helpers/content-thumbnail?${query}`)} alt="thumbnail" />
-            <a href={text} target="_blank" rel="noopener noreferrer">{text}</a>
+          <div data-field-name={name} className="contentWrapper previewWrapper">
+            <div className="content">
+              <img src={Utils.fileSrc(`/helpers/content-thumbnail?${query}`)} alt="thumbnail" />
+              <a href={text} target="_blank" rel="noopener noreferrer">{text}</a>
+            </div>
           </div>
-        </div>
       );
     }
     return (
-      <div data-field-name={name} className="contentWrapper">
-        <div className="content" dangerouslySetInnerHTML={{ __html: html || 'no content' }} />
-      </div>
+        <div data-field-name={name} className="contentWrapper">
+          <div className="content" dangerouslySetInnerHTML={{ __html: html || 'no content' }} />
+        </div>
     );
   }
 }

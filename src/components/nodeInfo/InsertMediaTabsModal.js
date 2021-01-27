@@ -4,8 +4,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Button from '../form/Button';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import File from '../form/File';
-import Utils from '../../helpers/Utils';
+import FileUpload from '../form/FileUpload';
 import Input from '../form/Input';
 
 class InsertMediaTabsModal extends Component {
@@ -22,8 +21,10 @@ class InsertMediaTabsModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      popUpData: {},
-      tags: [],
+      popUpData: {
+        file: [],
+        tags: [],
+      },
     };
   }
 
@@ -32,19 +33,9 @@ class InsertMediaTabsModal extends Component {
   }
 
   insertData = () => {
-    const { popUpData, tags } = this.state;
-    this.props.insertFile(popUpData, tags);
-    this.props.close();
-  }
-
-  handleFileChange = (path, value) => {
-    const file = value?.name;
-    const url = file ? Utils.fileToBlob(value) : '';
     const { popUpData } = this.state;
-
-    _.set(popUpData, path, url);
-    _.set(popUpData, 'fileName', value?.name);
-    this.setState({ popUpData });
+    this.props.insertFile(popUpData);
+    this.props.close();
   }
 
   handleTextChange = (path, value) => {
@@ -54,32 +45,44 @@ class InsertMediaTabsModal extends Component {
   }
 
   removeTag = (i) => {
-    const newTags = [...this.state.tags];
+    const { popUpData } = this.state;
+
+    const newTags = [...popUpData.tags];
     newTags.splice(i, 1);
-    this.setState({ tags: newTags });
+
+    _.set(popUpData, 'tags', newTags);
+    this.setState({ popUpData });
   }
 
   inputTagKeyDown = (e) => {
     const val = e.target.value;
+    const { popUpData } = this.state;
 
     if (e.key === 'Enter' && val) {
-      if (this.state.tags.find((tag) => tag.toLowerCase() === val.toLowerCase())) {
+      if (popUpData.tags.find((tag) => tag.toLowerCase() === val.toLowerCase())) {
         return;
       }
-      this.setState({ tags: [...this.state.tags, val] });
+      _.set(popUpData, 'tags', [...popUpData.tags, val]);
       this.tagInput.value = null;
 
-      const { popUpData } = this.state;
-      _.set(popUpData, 'tags', [...this.state.tags, val]);
-      this.setState({ popUpData });
       e.target.value = '';
+      this.setState({ popUpData });
     } else if (e.key === 'Backspace' && !val) {
-      this.removeTag(this.state.tags.length - 1);
+      this.removeTag(popUpData.tags.length - 1);
     }
   }
 
+  addFile = (file) => {
+    this.setState({
+      popUpData: {
+        file,
+        tags: [],
+      },
+    });
+  };
+
   render() {
-    const { popUpData, tags } = this.state;
+    const { popUpData } = this.state;
 
     return (
       <Modal
@@ -92,10 +95,7 @@ class InsertMediaTabsModal extends Component {
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeInsertMedia} />
           <div className="form">
             <h2>Select media</h2>
-            <File
-              onChangeFile={(file) => this.handleFileChange('file', file)}
-            />
-            <img src={popUpData?.file} alt="" />
+            <FileUpload addFile={this.addFile} file={popUpData.file} />
             <Input
               type="text"
               value={popUpData.desc || ''}
@@ -110,7 +110,7 @@ class InsertMediaTabsModal extends Component {
             />
             <div className="input-tag">
               <ul className="input-tag__tags">
-                { tags.map((tag, i) => (
+                { popUpData.tags.map((tag, i) => (
                   <li key={tag}>
                     {tag}
                     <button type="button" onClick={() => { this.removeTag(i); }}>+</button>

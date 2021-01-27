@@ -11,7 +11,7 @@ import { addNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } f
 import Button from '../form/Button';
 import Validate from '../../helpers/Validate';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import Chart from "../../Chart";
+import Chart from '../../Chart';
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -43,6 +43,7 @@ class NodeTabsFormModal extends Component {
         name: '',
         content: '',
         subtitle: '',
+        documents: [],
       },
     };
   }
@@ -54,6 +55,20 @@ class NodeTabsFormModal extends Component {
     this.setState({ tabData, errors });
   }
 
+  media = (data) => {
+    const { tabData } = this.state;
+    data.nodeId = this.props.node.id;
+    data.nodeType = this.props.node.type;
+    data.file = {
+      data: data.file[0].preview,
+      type: data.file[0].type,
+      name: !data.file[0].type.includes('image') ? data.file[0].name : '',
+    };
+
+    _.set(tabData, 'documents', tabData.documents ? [...tabData.documents, data] : [data]);
+    this.setState({ tabData });
+  }
+
   save = async () => {
     const {
       node, customField, customFields, fieldName, currentUserId,
@@ -61,7 +76,13 @@ class NodeTabsFormModal extends Component {
     const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
 
-    
+
+    tabData.documents = tabData.documents?.sort((x, y) => {
+      const first = x.file.type.includes('image');
+      const second = y.file.type.includes('image');
+      return (first === second) ? 0 : first ? -1 : 1;
+    });
+
     if (!isUpdate || (tabData.originalName !== tabData.name)) {
       [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node.type, customFields);
     }
@@ -118,6 +139,7 @@ class NodeTabsFormModal extends Component {
 
         <Editor
           value={tabData.content}
+          media={this.media}
           error={errors.content}
           label="ContentTabs"
           onChange={(v) => this.handleChange('content', v)}

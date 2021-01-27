@@ -9,6 +9,9 @@ import Select from '../form/Select';
 import { searchUsers } from '../../store/actions/profile';
 import { getSharedWithUsersRequest, shareGraphWithUsersRequest } from '../../store/actions/share';
 import ShareUserItem from './ShareUserItem';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Button from '../form/Button';
+import { toast } from 'react-toastify';
 
 class LabelShare extends Component {
   static propTypes = {
@@ -68,6 +71,11 @@ class LabelShare extends Component {
     this.props.getSharedWithUsersRequest(graphId, 'label', labelId);
   }
 
+  save = () => {
+    toast.info('Successfully confirmed');
+    this.closeModal();
+  }
+
   render() {
     const { shareWithUsers } = this.props;
     const { labelId } = this.state;
@@ -78,9 +86,11 @@ class LabelShare extends Component {
         isOpen={!_.isNull(labelId)}
         onRequestClose={this.closeModal}
       >
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
         <Select
-          label="Add User"
+          label="Collaborators"
           portal
+          containerClassName={`addUserField ${shareWithUsers.length && ' userFildSize'} `}
           placeholder="Search..."
           isAsync
           cacheOptions
@@ -99,6 +109,9 @@ class LabelShare extends Component {
         {shareWithUsers.map((user) => (
           <ShareUserItem id={user.id} user={user} onChange={this.handleUserRoleChange} />
         ))}
+        {shareWithUsers.length > 0 && (
+        <Button className="saveShareGraph" color="accent" onClick={this.save}> Save </Button>
+        )}
       </Modal>
     );
   }

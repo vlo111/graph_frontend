@@ -20,6 +20,7 @@ import { userGraphRequest } from '../store/actions/shareGraphs';
 import ShareGraph from '../components/ShareGraph';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
+import ToolBarHeader from '../components/ToolBarHeader';
 
 class GraphView extends Component {
   static propTypes = {
@@ -70,12 +71,9 @@ class GraphView extends Component {
       singleGraph, userGraphs, location: { pathname }, match: { params: { graphId = '' } },
     } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
-    const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId);
-    console.log(singleGraph.currentUserRole)
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
-          <AccountDropDown />
           <ReactChart />
         </div>
         {preview ? (
@@ -101,36 +99,27 @@ class GraphView extends Component {
             </Link>
           </div>
         ) : (
-          <>
-            {['admin', 'edit'].includes(singleGraph.currentUserRole) && (
-              <>
+            <>
+
+              {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
                 <Link to={`/graphs/update/${graphId}`}>
                   <Tooltip overlay="Update">
                     <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
                   </Tooltip>
                 </Link>
-                <Tooltip overlay="Delete">
-                  <Button
-                    icon={<TrashSvg style={{ height: 30 }} />}
-                    onClick={this.deleteGraph}
-                    className="transparent delete"
-                  />
+              )}
+              <NodeDescription />
+              <Link to="/">
+                <Tooltip overlay="Back">
+                  <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
                 </Tooltip>
-              </>
-            )}
-            <ShareGraph graphId={+graphId} />
-            <NodeDescription />
-            <Link to="/">
-              <Tooltip overlay="Back">
-                <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
-              </Tooltip>
-            </Link>
-          </>
-        )}
-        <Legend />
-        <Filters />
+              </Link>
+            </>
+          )}
+        <ToolBarHeader />
         <NodeFullInfo editable={false} />
         <LabelTooltip />
+        <Filters />
       </Wrapper>
     );
   }

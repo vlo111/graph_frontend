@@ -261,6 +261,8 @@ class Chart {
   }
 
   static drag(simulation) {
+    let startX;
+    let startY;
     const dragstart = (ev, d) => {
       this.event.emit('node.dragstart', ev, d);
 
@@ -270,10 +272,9 @@ class Chart {
         }
         if (ev.active) simulation.alphaTarget(0.3).restart();
         d.fixed = !!d.fx;
-        // d.fx = d.x;
-        // d.fy = d.y;
-        // d.x = d3.event.x;
-        // d.y = d3.event.y;
+
+        startX = ev.x;
+        startY = ev.y;
       }
     };
 
@@ -305,7 +306,6 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
-      this.event.emit('node.dragend', ev, d);
       if (!ev.active) simulation.alphaTarget(0);
       if (d !== undefined) {
         if (d.readOnly) {
@@ -314,6 +314,15 @@ class Chart {
         if (this.activeButton === 'view') {
           this.detectLabels(d);
         }
+        if (this.getCurrentUserRole() === 'edit_inside') {
+          const node = ChartUtils.getNodeById(d.id);
+          if (!node.labels.length) {
+            d.x = startX;
+            d.y = startY;
+            this.graphMovement();
+            return;
+          }
+        }
 
         if (!d.fixed) {
           d.x = d.fx || d.x;
@@ -321,13 +330,8 @@ class Chart {
           delete d.fx;
           delete d.fy;
         }
-        if (!d.fixed) {
-          d.x = d.fx || d.x;
-          d.y = d.fy || d.y;
-          delete d.fx;
-          delete d.fy;
-        }
       }
+      this.event.emit('node.dragend', ev, d);
     };
 
     return d3.drag()
@@ -350,11 +354,6 @@ class Chart {
     data.labels = data.labels?.filter((d) => d.id) || Chart.getLabels();
     data.embedLabels = _.cloneDeep(data.embedLabels || this.data?.embedLabels || []);
 
-    const labels = data.labels.map((l) => {
-      l.id = l.id || ChartUtils.uniqueId(data.labels);
-      return l;
-    });
-
     if (data.embedLabels.length) {
       data.embedLabels = data.embedLabels.map((label) => {
         const labelNodes = data.nodes.filter((n) => +label.sourceId === +n.sourceId);
@@ -374,12 +373,16 @@ class Chart {
           return l;
         });
         data.links.push(...label.links);
-        // get position difference
-        const labelEmbed = labels.find((l) => l.id === label.label?.id);
-        if (labelEmbed) {
-          label.cx = label.label.d[0][0] - labelEmbed.d[0][0];
-          label.cy = label.label.d[0][1] - labelEmbed.d[0][1];
-        }
+
+        data.labels = data.labels.map((l) => {
+          if (l.id === label.label?.id) {
+            l.readOnly = true;
+            label.lx = label.label.d[0][0] - l.d[0][0];
+            label.ly = label.label.d[0][1] - l.d[0][1];
+          }
+          return l;
+        });
+
         return label;
       });
       data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.target}//${d.type}`);
@@ -409,8 +412,8 @@ class Chart {
 
         const name = ChartUtils.nodeUniqueName(d);
         // set node right position
-        const fx = labelNode.fx - labelData.cx;
-        const fy = labelNode.fy - labelData.cy;
+        const fx = labelNode.fx - labelData.lx;
+        const fy = labelNode.fy - labelData.ly;
         return {
           ...labelNode,
           name,
@@ -497,8 +500,11 @@ class Chart {
 
     const lastUid = data.lastUid || this.data?.lastUid || 0;
 
+
+    const labels = Object.values(data.labels).map((d) => Object.create(d));
+
     return {
-      links, nodes, labels: data.labels, embedLabels: data.embedLabels, lastUid,
+      links, nodes, labels, embedLabels: data.embedLabels, lastUid,
     };
   }
 
@@ -577,7 +583,273 @@ class Chart {
       }
       return n;
     });
-    this._dataNodes = this.data.nodes;
+    this._dataNodes = null;
+  }
+
+  static renderFolders() {
+    const dragFolder = {};
+    const handleDragStart = (ev) => {
+      const { target } = ev.sourceEvent;
+      const element = target.closest('.folder');
+      if (element) {
+        const id = element.getAttribute('data-id');
+        dragFolder.folder = folderWrapper.select(`[data-id="${id}"]`);
+        dragFolder.nodes = this.getNotesWithLabels().filter((d) => d.labels.includes(id));
+      }
+    };
+    const handleDrag = (ev) => {
+      if (!dragFolder.folder || dragFolder.folder.empty()) {
+        return;
+      }
+      const datum = dragFolder.folder.datum();
+      datum.d = datum.d.map((p) => {
+        p[0] = +(p[0] + ev.dx).toFixed(2);
+        p[1] = +(p[1] + ev.dy).toFixed(2);
+        return p;
+      });
+      dragFolder.folder
+        .datum(datum)
+        .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`);
+
+      let readOnlyLabel;
+      if (datum.readOnly) {
+        readOnlyLabel = this.data.embedLabels.find((l) => l.label.id === datum.id);
+      }
+      this.node.each((d) => {
+        if (dragFolder.nodes.some((n) => n.id === d.id)) {
+          if (
+            (!d.readOnly && !datum.readOnly)
+            || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
+            || (d.deleted && d.sourceId === datum.sourceId)
+          ) {
+            d.fx += ev.dx;
+            d.fy += ev.dy;
+
+            d.x = d.fx;
+            d.y = d.fy;
+
+            if (datum.open) {
+              d.lx = null;
+              d.ly = null;
+            } else {
+              d.lx += ev.dx;
+              d.ly += ev.dy;
+            }
+          }
+        }
+      });
+      this._dataNodes = undefined;
+      this.graphMovement();
+    };
+    const handleDragEnd = (ev) => {
+      dragFolder.folder = null;
+    };
+    const folderWrapper = d3.select('#graph .folders')
+      .call(d3.drag()
+        .on('start', handleDragStart)
+        .on('drag', handleDrag)
+        .on('end', handleDragEnd));
+    const squareSize = 500;
+
+    folderWrapper.selectAll('.folder > *').remove();
+
+
+    //
+    // const openFolder = d.labels.some((l) => {
+    //   const label = ChartUtils.getLabelById(l);
+    //   return label.type === 'folder' && label.open;
+    // })
+
+    const aaaa = (ev, d) => {
+      d.open = false;
+      const x = d.d[0][0];
+      const y = d.d[0][1];
+      const squareX = x - (squareSize / 2);
+      const squareY = y - (squareSize / 2);
+      folderWrapper.selectAll(`[data-id="${d.id}"] rect`).remove();
+      folderWrapper.selectAll(`[data-id="${d.id}"] .closeIcon`).remove();
+      this.wrapper.select(`[href="#${d.id}"]`).attr('class', 'show');
+      folderWrapper.select(`[data-id="${d.id}"]`).attr('class', 'folder folderClose');
+
+      this.node
+        .filter((n) => {
+          const nodeOldFolder = n.labels?.find((l) => l.startsWith('f_'));
+          if (nodeOldFolder && nodeOldFolder !== d.id) {
+            return false;
+          }
+          return ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
+        })
+        .each((n) => {
+          n.lx = x + 30;
+          n.ly = y + 30;
+        })
+        .attr('class', ChartUtils.setClass(() => ({ hideInFolder: true })));
+
+      this._dataNodes = undefined;
+      this.graphMovement();
+    };
+
+    this.folders = folderWrapper.selectAll('.folder')
+      .data(this.data.labels.filter((l) => l.type === 'folder' && l.hidden !== 1))
+      .join('g')
+      .attr('id', (d) => d.id)
+      .attr('data-id', (d) => d.id)
+      .attr('fill', ChartUtils.labelColors)
+      .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
+      .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
+      .on('dblclick', (ev, d) => {
+        if (d.open) {
+          return;
+        }
+        const x = d.d[0][0];
+        const y = d.d[0][1];
+        d.open = true;
+
+        folderWrapper.select(`[data-id="${d.id}"]`).attr('class', 'folder folderOpen');
+        const squareX = x - (squareSize / 2);
+        const squareY = y - (squareSize / 2);
+        this.wrapper.select(`[href="#${d.id}"]`).attr('class', 'hide');
+        const moveLabels = {};
+        const move = (squareSize / 2) + 50;
+        this.node.each((n, i, nodesArr) => {
+          const inFolder = n.labels.includes(d.id);
+          if (inFolder) {
+            n.lx = null;
+            n.ly = null;
+            nodesArr[i].classList.remove('hideInFolder');
+          }
+          const inSquare = ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
+          if (inSquare && !inFolder) {
+            const labelPosition = n.labels.find((l) => moveLabels[l]);
+            const position = labelPosition || ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
+            let labelMove;
+            if (!labelPosition) {
+              n.labels.forEach((l) => {
+                if (!l.startsWith('f_')) {
+                  labelMove = this.wrapper.select(`[data-id="${l}"]`).node().getBoundingClientRect().width || move;
+                  moveLabels[l] = {
+                    labelMove,
+                    position,
+                  };
+                } else {
+                  moveLabels[l] = {
+                    labelMove: move,
+                    position,
+                    type: 'folder',
+                  };
+                }
+              });
+            }
+            if (position === 'right') {
+              n.fx += labelMove || move;
+            }
+            if (position === 'left') {
+              n.fx -= labelMove || move;
+            }
+            if (position === 'top') {
+              n.fy -= labelMove || move;
+            }
+            if (position === 'bottom') {
+              n.fy += labelMove || move;
+            }
+            n.x = n.fx;
+            n.y = n.fy;
+          }
+        });
+
+        const renderPath = d3.line()
+          .x((d) => d[0])
+          .y((d) => d[1])
+          .curve(d3.curveBasis);
+
+        _.forEach(moveLabels, (data, l) => {
+          const { position, labelMove, type } = data;
+          const label = this.wrapper.select(`[data-id="${l}"]`);
+          const datum = label.datum();
+          datum.d = datum.d.map((p) => {
+            if (position === 'right') {
+              p[0] = +(p[0] + labelMove).toFixed(2);
+            }
+            if (position === 'left') {
+              p[0] = +(p[0] - labelMove).toFixed(2);
+            }
+            if (position === 'top') {
+              p[1] = +(p[1] - labelMove).toFixed(2);
+            }
+            if (position === 'bottom') {
+              p[1] = +(p[1] + labelMove).toFixed(2);
+            }
+            return p;
+          });
+
+          if (type === 'folder') {
+            label.datum(datum)
+              .attr('transform', (ld) => `translate(${ld.d[0][0]}, ${ld.d[0][1]})`);
+            this.node.each((n) => {
+              if (n.labels.includes(l) && (n.ly || n.lx)) {
+                n.lx = datum.d[0][0] + 30;
+                n.ly = datum.d[0][1] + 30;
+              }
+              return n;
+            });
+          } else {
+            label.datum(datum).attr('d', (ld) => renderPath(ld.d));
+          }
+        });
+
+        folderWrapper.select(`[data-id="${d.id}"]`)
+          .append('rect')
+          .attr('width', squareSize)
+          .attr('height', squareSize)
+          .attr('class', 'nodeCreate')
+          .attr('opacity', 0.6)
+          .attr('rx', 15)
+          .attr('x', squareSize / -2)
+          .attr('y', squareSize / -2);
+        folderWrapper.select(`[data-id="${d.id}"]`)
+          .append('use')
+          .attr('href', '#folderCloseIcon')
+          .attr('class', 'closeIcon')
+          .attr('fill', '#58595b')
+          .attr('x', 210)
+          .attr('y', -240)
+          .on('click', aaaa);
+        this._dataNodes = undefined;
+        this.graphMovement();
+      });
+
+    const folderIconsWrapper = d3.select('#graph .folderIcons');
+    folderIconsWrapper.selectAll('.folderIcons use')
+      .data(this.data.labels.filter((l) => l.type === 'folder'))
+      .join('use')
+      .attr('class', (d) => (d.open ? 'hide' : 'show'))
+      .attr('href', (d) => `#${d.id}`);
+
+    folderWrapper.selectAll('.folder')
+      .append('use')
+      .attr('href', '#folderIcon')
+      .attr('class', 'folderIconUse');
+
+    folderWrapper.selectAll('.folderOpen')
+      .append('rect')
+      .attr('class', 'nodeCreate')
+      .attr('width', squareSize)
+      .attr('height', squareSize)
+      .attr('opacity', 0.6)
+      .attr('rx', 15)
+      .attr('x', squareSize / -2)
+      .attr('y', squareSize / -2);
+    folderWrapper.selectAll('.folderOpen')
+      .append('use')
+      .attr('href', '#folderCloseIcon')
+      .attr('class', 'closeIcon')
+      .attr('fill', '#58595b')
+      .attr('x', 210)
+      .attr('y', -240)
+      .on('click', aaaa);
+    this.folders.append('text')
+      .text((d) => d.name)
+      .attr('y', 75);
   }
 
   static renderLabels() {
@@ -591,6 +863,9 @@ class Chart {
     const dragLabel = {};
 
     const handleDragStart = (ev) => {
+      if (this.getCurrentUserRole() === 'edit_inside') {
+        return;
+      }
       if (this.activeButton === 'create-label') {
         activeLine = labelsWrapper.append('path')
           .datum({
@@ -689,7 +964,6 @@ class Chart {
         });
         this.graphMovement();
 
-
         this.event.emit('label.drag', ev, dragLabel.label);
       }
     };
@@ -730,8 +1004,8 @@ class Chart {
         .on('drag', handleDrag)
         .on('end', handleDragEnd));
 
-    this.labels = labelsWrapper.selectAll('path')
-      .data(this.data.labels.filter((l) => l.hidden !== 1))
+    this.labels = labelsWrapper.selectAll('.label')
+      .data(this.data.labels.filter((l) => l.hidden !== 1 && l.type !== 'folder'))
       .join('path')
       .attr('class', 'label nodeCreate')
       .attr('opacity', (d) => (d.sourceId ? 0.6 : 0.4))
@@ -745,7 +1019,7 @@ class Chart {
 
     this.labelsLock = [];
     setTimeout(() => {
-      this.labelsLock = labelsWrapper.selectAll('use')
+      this.labelsLock = labelsWrapper.selectAll('.labelLock')
         .data(this.data.labels.filter((l) => l.hidden !== 1 && l.status === 'lock'))
         .join('use')
         .attr('data-label-id', (d) => d.id)
@@ -863,7 +1137,6 @@ class Chart {
       this.linksWrapper = this.svg.select('.links');
 
       const listLink = filteredLinks.sort((x, y) => ((x.curve === y.curve) ? 0 : x.curve ? 1 : -1));
-
       this.link = this.linksWrapper.selectAll('path')
         .data(listLink)
         .join('path')
@@ -877,13 +1150,14 @@ class Chart {
 
       this.renderDirections();
       this.renderLabels();
+      this.renderFolders();
       this.icons = this.renderIcons();
 
       this.nodesWrapper = this.svg.select('.nodes');
       this.node = this.nodesWrapper.selectAll('.node')
         .data(filteredNodes)
         .join('g')
-        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.hidden === -1 ? 'disappear' : ''} ${d.deleted ? 'deleted' : ''}`)
+        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.lx || d.ly ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`)
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
         .on('mouseenter', (...p) => this.event.emit('node.mouseenter', ...p))
@@ -983,6 +1257,7 @@ class Chart {
       }
 
       this.renderLinkText();
+      this.renderLinkStatusText();
       this.renderNodeText();
       this.renderNodeStatusText();
       this.renderNewLink();
@@ -1299,9 +1574,14 @@ class Chart {
     this.link.attr('d', (d) => {
       let arc = 0;
       let arcDirection = 0;
+      const targetX = d.target.lx || d.target.x || d.target.fx || 0;
+      const targetY = d.target.ly || d.target.y || d.target.fy || 0;
+
+      const sourceX = d.source.lx || d.source.x || d.source.fx || 0;
+      const sourceY = d.source.ly || d.source.y || d.source.fy || 0;
 
       if (d.curve) {
-        return `M${d.source.x},${d.source.y} C${d.sx},${d.sy} ${`${d.tx},${d.ty} `}${d.target.x},${d.target.y}`;
+        return `M${sourceX},${sourceY} C${d.sx || 0},${d.sy || 0} ${`${d.tx || 0},${d.ty || 0} `}${targetX},${targetY}`;
       }
 
       if (d.same) {
@@ -1311,10 +1591,10 @@ class Chart {
         arcDirection = d.same.arcDirection;
       }
 
-      return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${arcDirection} ${d.target.x},${d.target.y}`;
+      return `M${sourceX},${sourceY}A${arc},${arc} 0 0,${arcDirection} ${targetX},${targetY}`;
     });
     this.node
-      .attr('transform', (d) => d.nodeType !== 'image' ? `translate(${d.x || 0}, ${d.y || 0})` : '')
+      .attr('transform', (d) => `translate(${d.lx || d.x || 0}, ${d.ly || d.y || 0})`)
       .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
     this.linkText
@@ -1337,6 +1617,7 @@ class Chart {
 
     this._dataNodes = null;
     this._dataLinks = null;
+    this._dataLabel = null;
   }
 
   static renderDirections() {
@@ -1498,14 +1779,35 @@ class Chart {
     this.linkText.append('textPath')
       .attr('startOffset', '50%')
       .attr('href', (d) => `#l${d.index}`)
-      .text((d) => ` ${d.type} `);
-
+      .text((d) => (d.status === 'draft' ? `  DRAFT ( ${d.type} ) ` : ` ${d.type} `));
     this.link
       .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
 
     this.directions
       .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? 0.8 : undefined))
       .attr('stroke', (d) => (linkIndexes.includes(d.index) ? ChartUtils.linkColor(d) : undefined));
+  }
+
+  static renderLinkStatusText() {
+    const links = this.getLinks().filter((d) => d.status === 'draft') || [];
+    const wrapper = this.svg.select('.linkText');
+    const linkIndexes = links.map((d) => d.index);
+    const linksData = this.data.links.filter((d) => linkIndexes.includes(d.index));
+
+    this.linkText = wrapper.selectAll('text')
+      .data(linksData.filter((d) => d.hidden !== 1))
+      .join('text')
+      .attr('text-anchor', 'middle')
+      .attr('fill', ChartUtils.linkDraftColor)
+      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + d.value / 2 : (5 + d.value / 2) * -1))
+      .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
+
+    this.linkText.append('textPath')
+      .attr('startOffset', '50%')
+      .attr('href', (d) => `#l${d.index}`)
+      .style('text-anchor', 'end')
+      .text((d) => (d.status === 'draft' ? 'DRAFT' : ` ${d.type} `))
+      .attr('font-size', (d) => 20.5);
   }
 
   static #calledFunctions = [];
@@ -1559,6 +1861,7 @@ class Chart {
       this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
       this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
       this.renderLinkText();
+      this.renderLinkStatusText();
     });
     this.event.on('link.click', (event, ...params) => {
       const currentLink = params[0];
@@ -1734,6 +2037,8 @@ class Chart {
         index: d.index,
         fx: d.fx || d.x || 0,
         fy: d.fy || d.y || 0,
+        lx: d.lx,
+        ly: d.ly,
         name: d.name || '',
         type: d.type || '',
         status: d.status || 'approved',
@@ -1771,6 +2076,7 @@ class Chart {
       this._dataLinks = this.data.links.map((d) => {
         const pd = Object.getPrototypeOf(d);
         return {
+          id: d.id || ChartUtils.uniqueId(this.data.links), // todo
           index: d.index,
           sx: d.sx,
           sy: d.sy,
@@ -1790,6 +2096,7 @@ class Chart {
           updatedUser: pd.updatedUser,
           readOnly: pd.readOnly,
           sourceId: +pd.sourceId || undefined,
+          status: d.status || 'approved',
         };
       });
     }
@@ -1800,7 +2107,17 @@ class Chart {
     if (_.isEmpty(this.data)) {
       return [];
     }
-    return _.uniqBy(this.data.labels || [], 'id');
+    return this.data.labels.map((d) => ({
+      id: d.id,
+      name: d.name,
+      open: d.open,
+      color: ChartUtils.labelColors(d),
+      d: d.d,
+      type: d.type,
+      status: d.status || 'unlock',
+      sourceId: d.sourceId,
+      readOnly: d.readOnly,
+    }));
   }
 
   static get activeButton() {
@@ -1881,7 +2198,6 @@ class Chart {
         .attr('data-y', oY);
     }
 
-
     this.linksWrapper.selectAll('path')
       .attr('fill', undefined);
 
@@ -1946,6 +2262,11 @@ class Chart {
     window.removeEventListener('keydown', this.handleWindowKeyDown);
     window.removeEventListener('keyup', this.handleWindowKeyUp);
     window.removeEventListener('mousedown', this.handleWindowMouseDown);
+  }
+
+  static getCurrentUserRole() {
+    const graph = document.querySelector('#graph');
+    return graph.getAttribute('data-role');
   }
 }
 

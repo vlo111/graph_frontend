@@ -126,7 +126,9 @@ class DataView extends Component {
       }
       return;
     }
-    Api.download(type, { nodes, links, labels, customFields });
+    Api.download(type, {
+      nodes, links, labels, customFields,
+    });
   }
 
   download = async (type) => {
@@ -181,34 +183,42 @@ class DataView extends Component {
     const nodes = Chart.getNodes();
     const linksGrouped = _.groupBy(links, 'type');
     const nodesGrouped = _.groupBy(nodes, 'type');
+    let color = '';
+
+    if (links.length) {
+      if (activeTab.group === 'links') {
+        color = links.find((p) => p.type === activeTab.type).color;
+      } else if (activeTab.group === 'nodes') {
+        color = nodes.find((p) => p.type === activeTab.type).color;
+      } else color = '';
+    } 
     return (
       <div id="dataTable" className={fullWidth ? 'fullWidth' : undefined}>
-
-        <div className="exportData">
-          <div className="exportContent">
-            <Button onClick={this.closeExport} className="showExportButton" icon={<ExportSvg />} />
-            {showExport ? (
-              <Outside onClick={(ev) => this.closeExport(ev)} exclude=".exportData">
-                <div className="exportDropDown">
-                  <Select
-                    label="Type File"
-                    portal
-                    options={EXPORT_TYPES}
-                    value={EXPORT_TYPES.filter((t) => t.value === exportType)}
-                    onChange={(v) => this.setState({ exportType: v.value })}
-                  />
-                  <Button onClick={this.handleExport} className="exportButton ghButton accent alt" type="submit">
-                    Export
-                  </Button>
-                </div>
-              </Outside>
-            ) : null}
-          </div>
-        </div>
         <div className="contentWrapper">
           <div className="header">
+            <div className="exportData">
+              <div className="exportContent">
+                <Button onClick={this.closeExport} className="showExportButton" icon={<ExportSvg />} />
+                {showExport ? (
+                  <Outside onClick={(ev) => this.closeExport(ev)} exclude=".exportData">
+                    <div className="exportDropDown">
+                      <Select
+                        label="Type File"
+                        portal
+                        options={EXPORT_TYPES}
+                        value={EXPORT_TYPES.filter((t) => t.value === exportType)}
+                        onChange={(v) => this.setState({ exportType: v.value })}
+                      />
+                      <Button onClick={this.handleExport} className="exportButton ghButton accent alt" type="submit">
+                        Export
+                      </Button>
+                    </div>
+                  </Outside>
+                ) : null}
+              </div>
+            </div>
             <h4>
-              <span className={activeTab.group === 'nodes' ? 'circle' : 'line'} />
+              <span style={{ backgroundColor: color }} className={activeTab.group === 'nodes' ? 'circle' : 'line'} />
               {activeTab.type}
             </h4>
             <div className="buttons">
@@ -218,34 +228,58 @@ class DataView extends Component {
           </div>
           <div className="ghGridTableWrapper">
             {activeTab.group === 'nodes' ? (
-              <DataTableNodes title={activeTab.type} nodes={nodesGrouped[activeTab.type]} />
+              <DataTableNodes
+                classNamePos={showExport && 'tablePosition'}
+                title={activeTab.type}
+                nodes={nodesGrouped[activeTab.type]}
+              />
             ) : (
-              <DataTableLinks title={activeTab.type} links={linksGrouped[activeTab.type]} />
+              <DataTableLinks
+                classNamePos={showExport && 'tablePosition'}
+                title={activeTab.type}
+                links={linksGrouped[activeTab.type]}
+              />
             )}
           </div>
           <div className="tabs">
-            <span className="empty" />
-            {_.map(nodesGrouped, (n, type) => (
-              <Button
-                key={type}
-                className={activeTab.type === type && activeTab.group === 'nodes' ? 'active' : ''}
-                onClick={() => this.setActiveTab('nodes', type)}
-              >
-                {type || '__empty__'}
-                <sub>{`[${n.length}]`}</sub>
-              </Button>
-            ))}
-            {_.map(linksGrouped, (n, type) => (
-              <Button
-                key={type}
-                className={activeTab.type === type && activeTab.group === 'links' ? 'active' : ''}
-                onClick={() => this.setActiveTab('links', type)}
-              >
-                {type || '__empty__'}
-                <sub>{`[${n.length}]`}</sub>
-              </Button>
-            ))}
-            <span className="empty" />
+            <div className="nodesMode">
+              <span>
+                Nodes (
+                {nodes.length}
+                )
+              </span>
+            </div>
+            <div>
+              {_.map(nodesGrouped, (n, type) => (
+                <Button
+                  key={type}
+                  className={activeTab.type === type && activeTab.group === 'nodes' ? 'active' : ''}
+                  onClick={() => this.setActiveTab('nodes', type)}
+                >
+                  {type || '__empty__'}
+                  <sub>{`[${n.length}]`}</sub>
+                </Button>
+              ))}
+            </div>
+            <div className="linksMode">
+              <span>
+                Links (
+                {links.length}
+                )
+              </span>
+            </div>
+            <div>
+              {_.map(linksGrouped, (n, type) => (
+                <Button
+                  key={type}
+                  className={activeTab.type === type && activeTab.group === 'links' ? 'active' : ''}
+                  onClick={() => this.setActiveTab('links', type)}
+                >
+                  {type || '__empty__'}
+                  <sub>{`[${n.length}]`}</sub>
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

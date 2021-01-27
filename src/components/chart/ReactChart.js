@@ -12,7 +12,7 @@ import CustomFields from '../../helpers/CustomFields';
 import ChartUtils from '../../helpers/ChartUtils';
 import { socketLabelDataChange } from '../../store/actions/socket';
 import Api from '../../Api';
-import { removeNodeFromCustom } from "../../store/actions/graphs";
+import { removeNodeFromCustom } from '../../store/actions/graphs';
 
 class ReactChart extends Component {
   static propTypes = {
@@ -21,6 +21,7 @@ class ReactChart extends Component {
     customFields: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -128,6 +129,10 @@ class ReactChart extends Component {
       || Chart.newLink.attr('data-source')) {
       return;
     }
+    const { singleGraph } = this.props;
+    if (singleGraph.currentUserRole === 'edit_inside' && singleGraph.share.objectId !== target.getAttribute('data-id')) {
+      return;
+    }
     this.addNewNode(ev);
   }
 
@@ -180,11 +185,18 @@ class ReactChart extends Component {
 
   render() {
     const { ctrlPress, shiftKey } = this.state;
-    const { activeButton } = this.props;
+    const { activeButton, singleGraph: { currentUserRole } } = this.props;
 
     // this.renderChart(singleGraph, embedLabels);
     return (
-      <div id="graph" data-active={activeButton} data-shift={shiftKey} data-ctrl={ctrlPress} className={activeButton}>
+      <div
+        id="graph"
+        data-role={currentUserRole}
+        data-active={activeButton}
+        data-shift={shiftKey}
+        data-ctrl={ctrlPress}
+        className={activeButton}
+      >
         <div className="borderCircle">
           {_.range(0, 6).map((k) => <div key={k} />)}
         </div>
@@ -193,11 +205,13 @@ class ReactChart extends Component {
             <g className="labels">
               <rect className="labelsBoard areaBoard" fill="transparent" width="100%" height="100%" />
             </g>
+            <g className="folders" />
             <g className="directions" />
             <g className="links" />
             <g className="linkText" />
             <g className="nodes" />
             <g className="icons" />
+            <g className="folderIcons" />
             <defs>
               <filter id="labelShadowFilter" x="-50%" y="-50%" width="200%" height="200%">
                 <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
@@ -224,8 +238,42 @@ class ReactChart extends Component {
               <symbol id="labelLock" viewBox="0 0 512 512" width="40" height="40">
                 <path
                   opacity="0.6"
-                  d="M437.333 192h-32v-42.667C405.333 66.99 338.344 0 256 0S106.667 66.99 106.667 149.333V192h-32A10.66 10.66 0 0064 202.667v266.667C64 492.865 83.135 512 106.667 512h298.667C428.865 512 448 492.865 448 469.333V202.667A10.66 10.66 0 00437.333 192zM287.938 414.823a10.67 10.67 0 01-10.604 11.844h-42.667a10.67 10.67 0 01-10.604-11.844l6.729-60.51c-10.927-7.948-17.458-20.521-17.458-34.313 0-23.531 19.135-42.667 42.667-42.667s42.667 19.135 42.667 42.667c0 13.792-6.531 26.365-17.458 34.313l6.728 60.51zM341.333 192H170.667v-42.667C170.667 102.281 208.948 64 256 64s85.333 38.281 85.333 85.333V192z" />
+                  d="M437.333 192h-32v-42.667C405.333 66.99 338.344 0 256 0S106.667 66.99 106.667
+                  149.333V192h-32A10.66 10.66 0 0064 202.667v266.667C64 492.865 83.135 512 106.667
+                  512h298.667C428.865 512 448 492.865 448 469.333V202.667A10.66 10.66 0 00437.333
+                  192zM287.938 414.823a10.67 10.67 0 01-10.604 11.844h-42.667a10.67 10.67 0
+                  01-10.604-11.844l6.729-60.51c-10.927-7.948-17.458-20.521-17.458-34.313 0-23.531 19.135-42.667
+                  42.667-42.667s42.667 19.135 42.667 42.667c0 13.792-6.531 26.365-17.458 34.313l6.728
+                  60.51zM341.333 192H170.667v-42.667C170.667 102.281 208.948 64 256 64s85.333 38.281 85.333 85.333V192z"
+                />
               </symbol>
+              <symbol id="folderIcon" viewBox="0 0 468.293 468.293" width="60" height="60">
+                <path
+                  d="M206.049 72.574V55.559c0-10.345-8.386-18.732-18.732-18.732H18.732C8.386 36.827 0 45.213 0
+                  55.559v110.248h468.293v-62.013c0-10.345-8.386-18.732-18.732-18.732H218.537c-6.897
+                  0-12.488-5.591-12.488-12.488z"
+                  fill="#0047b9"
+                />
+                <path
+                  d="M443.317 431.466H24.976C11.182 431.466 0 420.284 0 406.49V161.35h206.748a18.73 18.73 0
+                  0013.842-6.111l23.013-25.241a18.73 18.73 0 0113.842-6.111h210.848V406.49c0 13.794-11.182
+                  24.976-24.976 24.976z"
+                  fill="#0062FF"
+                />
+              </symbol>
+              <symbol id="folderCloseIcon" viewBox="0 0 512 512" width="30" height="30">
+                <circle cx="256" cy="256" r="256" fill="transparent" />
+                <path
+                  d="M256 0C114.844 0 0 114.844 0 256s114.844 256 256 256 256-114.844 256-256S397.156 0 256
+                  0zm103.54 329.374c4.167 4.165 4.167 10.919 0 15.085l-15.08 15.081c-4.167 4.165-10.919
+                  4.165-15.086 0L256 286.167l-73.374 73.374c-4.167 4.165-10.919 4.165-15.086
+                  0l-15.081-15.082c-4.167-4.165-4.167-10.919
+                  0-15.085l73.374-73.375-73.374-73.374c-4.167-4.165-4.167-10.919 0-15.085l15.081-15.082c4.167-4.165
+                  10.919-4.165 15.086 0L256 225.832l73.374-73.374c4.167-4.165 10.919-4.165 15.086
+                  0l15.081 15.082c4.167 4.165 4.167 10.919 0 15.085l-73.374 73.374 73.373 73.375z"
+                />
+              </symbol>
+
             </defs>
           </g>
         </svg>
@@ -238,6 +286,7 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   embedLabels: state.graphs.embedLabels,
   customFields: state.graphs.singleGraph.customFields || {},
+  singleGraph: state.graphs.singleGraph,
 });
 const mapDispatchToProps = {
   toggleNodeModal,

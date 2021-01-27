@@ -3,19 +3,21 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './form/Button';
+import SearchInput from './search/SearchInput';
 import { setActiveButton } from '../store/actions/app';
-import { ReactComponent as Logo } from '../assets/images/logo.svg';
+import { ReactComponent as Logo, ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
 import { ReactComponent as ViewSvg } from '../assets/images/icons/view.svg';
 import { ReactComponent as FilterSvg } from '../assets/images/icons/filter.svg';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import ShareGraph from './ShareGraph';
-import AccountDropDown from '../components/account/AccountDropDown';
-import Legend from '../components/Legend';
-import MapsButton from '../components/maps/MapsButton';
+import AccountDropDown from './account/AccountDropDown';
+import Legend from './Legend';
+import MapsButton from './maps/MapsButton';
 import Utils from '../helpers/Utils';
-import WikiButton from "./wiki/WikiButton";
-import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
+import WikiButton from './wiki/WikiButton';
+
+import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -24,6 +26,8 @@ class ToolBarHeader extends Component {
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+
   }
 
   handleClick = (button) => {
@@ -38,40 +42,67 @@ class ToolBarHeader extends Component {
   }
 
   render() {
-    const { activeButton, match: { params: { graphId, token = '' } } } = this.props;
+    const { activeButton, location: { pathname }, match: { params: { graphId, token = '' } } } = this.props;
     const isInEmbed = Utils.isInEmbed();
+    const updateLocation = pathname.startsWith('/graphs/update/');
     return (
-      <header id="header">
+      <header className="headerPanel" id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
         <Link to="/" className="logoWrapper">
-        <LogoSvg className="logo orange" />
+          <LogoSvg className="logo orange" />
           <span className="autoSaveText">Saving...</span>
         </Link>
-        <AccountDropDown />
-        <MapsButton />
-        <WikiButton />
         <Legend />
+        {!updateLocation && (
+            <SearchInput />
+        )}
         <div className="graphs">
-          <Button
-            icon={<SearchSvg />}
-            className={activeButton === 'search' ? 'active' : undefined}
-            onClick={() => this.handleClick('search')}
-          >
-            Search
-          </Button>
+          {updateLocation ? (
+            <Button
+              icon={<SearchSvg />}
+              className={activeButton === 'search' ? 'active' : undefined}
+              onClick={() => this.handleClick('search')}
+            >
+              Search
+            </Button>
+          ) : null}
           <ShareGraph graphId={+graphId} setButton />
-          <Button
-            icon={<ViewSvg />}
-            onClick={() => this.props.history.replace(`/graphs/view/${graphId}`)}
-          >
-            View mode
-          </Button>
+          {updateLocation ? (
+            <Button
+              icon={<ViewSvg />}
+              onClick={() => this.props.history.replace(`/graphs/view/${graphId}`)}
+            >
+              View mode
+            </Button>
+          ) : null}
           <Button
             icon={<FilterSvg />}
-            onClick={() => {isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
-             : this.props.history.replace(`/graphs/filter/${graphId}`)}}
+            onClick={() => {
+              isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
+                : this.props.history.replace(`/graphs/filter/${graphId}`);
+            }}
           >
-           Filter
+            Filter
           </Button>
+          {updateLocation ? (
+            <Button
+              icon={<MediaSvg />}
+              className={activeButton === 'media' ? 'active' : undefined}
+              onClick={() => this.handleClick('media')}
+            >
+              Media gallery
+            </Button>
+          ) : null}
+        </div>
+
+        {updateLocation ? (
+          <MapsButton />
+        ) : null}
+        {updateLocation ? (
+          <WikiButton />
+        ) : null}
+
+        <div className="signOut">
+          <AccountDropDown />
         </div>
 
       </header>

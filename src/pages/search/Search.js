@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BackToTop from "react-back-to-top-button";
 import VerticalTabs from '../../components/PageTabs';
 import SearchPeople from './SearchUsers';
 import SearchGraphs from './SearchGraphs';
@@ -6,6 +7,9 @@ import Wrapper from '../../components/Wrapper';
 import Header from '../../components/Header';
 import SearchResult from './SearchResult';
 import SearchSharedGraphs from './SearchSharedGraphs';
+import SearchPictures from './SearchPictures';
+import SearchDocuments from './SearchDocuments';
+import { ReactComponent as ScrollUpSvg } from '../../assets/images/icons/scroll-up.svg';
 
 class Search extends Component {
   handleRouteChange = (tab) => {
@@ -14,6 +18,7 @@ class Search extends Component {
 
   render() {
     return (
+      <>
       <Wrapper className="homePage">
         <Header />
         <VerticalTabs
@@ -25,9 +30,20 @@ class Search extends Component {
             { to: '/search-graph', name: 'Graphs', component: <SearchGraphs /> },
             { to: '/search-shared-graph', name: 'Shared Graphs', component: <SearchSharedGraphs /> },
             { to: '/search-people', name: 'People', component: <SearchPeople /> },
+            { to: '/search-pictures', name: 'Pictures', component: <SearchPictures /> },
+            { to: '/search-documents', name: 'Documents', component: <SearchDocuments /> },
           ]}
         />
       </Wrapper>
+      <BackToTop
+        //showOnScrollUp
+        showAt={100}
+        speed={1500}
+        easing="easeInOutQuint"
+      >
+        <span><ScrollUpSvg className="icon" style={{ height: 40 }} /></span>
+      </BackToTop>
+      </>
     );
   }
 }

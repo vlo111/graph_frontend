@@ -32,8 +32,8 @@ class Shared extends Component {
           {_.isEmpty(shareGraphsList) && shareGraphsListStatus !== 'request' ? (
             <NoGraph />
           ) : null}
-          {shareGraphsList.map((graph) => (
-            <GraphListItem key={graph.id} graph={graph} />
+          {shareGraphsList.map((graph) => (  
+            <GraphListItem key={graph.id} graph={graph} headerTools = {'shared'} />
           ))}
         </div>
         <Pagination totalPages={totalPages} />

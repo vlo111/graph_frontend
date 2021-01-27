@@ -45,8 +45,12 @@ class ContextMenu extends Component {
   onHandleContextMenu = async (ev) => {
     ev.preventDefault();
     const { show } = this.state;
+    const { currentUserRole } = this.props;
     if (show) {
       this.setState({ show: false });
+      return;
+    }
+    if (currentUserRole === 'edit_inside') {
       return;
     }
     const { x, y } = ev;
@@ -60,7 +64,7 @@ class ContextMenu extends Component {
       const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
-    } else if (ev.target.tagName === 'svg') {
+    } else if (ev.target.tagName === 'svg' || ev.target.classList.contains('labelsBoard')) {
       element = 'chart';
     } else if (ev.target.closest('.contentWrapper')) {
       const el = ev.target.closest('.contentWrapper');
@@ -69,8 +73,13 @@ class ContextMenu extends Component {
         element = 'nodeFullInfo';
         params = { fieldName };
       }
-    } else if (ev.target.closest('.labels')) {
+    } else if (ev.target.classList.contains('label')) {
       const id = ev.target.getAttribute('data-id');
+      const label = Chart.getLabels().find((l) => l.id === id);
+      params = { ...label };
+      element = 'label';
+    } else if (ev.target.parentNode.closest('.folder')) {
+      const id = ev.target.parentNode.getAttribute('data-id');
       const label = Chart.getLabels().find((l) => l.id === id);
       params = { ...label };
       element = 'label';
@@ -100,8 +109,10 @@ class ContextMenu extends Component {
       });
       this.props.setActiveButton('deleteModal');
     } else {
-      const { params } = this.state;
+      const { params, x, y } = this.state;
       params.contextMenu = true;
+      params.x = x;
+      params.y = y;
       this.constructor.event.emit(type, params.originalEvent, { ...params, ...additionalParams });
     }
   }
@@ -125,7 +136,7 @@ class ContextMenu extends Component {
     if (params.fieldName === '_location') {
       return null;
     }
-
+    console.log(show);
     // remove curve points
     Chart.wrapper.selectAll('#fcurve, #lcurve').remove();
 
@@ -146,15 +157,13 @@ class ContextMenu extends Component {
                   Paste
                   <Icon className="arrow" value="fa-angle-right" />
                   <div className="contextmenu">
-                    <Button onClick={(ev) => {
-                      LabelUtils.past(x, y);
-                      this.handleClick(ev, 'label.append');
-                    }}
+                    <Button onClick={(ev) => this.handleClick(ev, 'label.append')}
                     >
                       Append
                     </Button>
                     <Button onClick={(ev) => {
-                      LabelUtils.past(x, y, true, graphId);
+                      const data = LabelUtils.getData();
+                      LabelUtils.past(data, [x, y], true, graphId);
                       this.handleClick(ev, 'label.embed');
                     }}
                     >
@@ -177,8 +186,7 @@ class ContextMenu extends Component {
                     )}
                 </>
               ) : null}
-
-              {['node', 'link', 'label', 'chart'].includes(show) && false ? (
+              {['link', 'label', 'chart'].includes(show) ? (
                 <>
                   <div className="ghButton notClose">
                     <Icon value="fa-plus-square" />
@@ -222,6 +230,7 @@ class ContextMenu extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
+  currentUserRole: state.graphs.singleGraph.currentUserRole || '',
 });
 const mapDispatchToProps = {
   setActiveButton,

@@ -50,6 +50,7 @@ class FlexTabs extends Component {
         </div>
 
       </div>
+
     );
   }
 }

@@ -24,12 +24,21 @@ class Editor extends Component {
     label: '',
     placeholder: '',
     error: '',
+    height: 400,
+    toolbarButtonSize: 'middle',
     buttons: [
-      'bold', 'italic', 'underline', '|', 'file', '|', 'video', '|',
-      'left',
-      'center',
-      'right',
-      'justify',
+      'bold', 'italic', 'underline', 'fontsize', 'font', '|', 'file', 'video', '|',
+
+      'ul', 'ol', '|',
+      'outdent', 'indent', '|',
+      'brush',
+      'paragraph', 'table', '|',
+      'align', 'undo', 'redo', '|',
+      'hr',
+      'eraser',
+      'copyformat', '|',
+      'symbol',
+      'fullsize',
     ],
   }
 
@@ -47,6 +56,8 @@ class Editor extends Component {
     if (this.editor) {
       this.editor.destruct();
     }
+    options.iframe = true;
+
     options.buttons = buttons;
 
     options.buttonsMD = options.buttonsMD || buttons;
@@ -102,9 +113,16 @@ class Editor extends Component {
     this.setState({ showPopUp: null });
   }
 
-  insertFile = async (popUpData, tags) => {
-    if (popUpData.file) {
-      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg'].filter((p) => popUpData.fileName.includes(p)));
+  insertFile = (popUpData) => {
+    const file = popUpData.file[0];
+
+    this.props.media(popUpData);
+
+    const { tags } = popUpData;
+
+    if (file) {
+      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg', 'jfif']
+        .filter((p) => file.name.toLocaleLowerCase().includes(p)));
 
       const desc = popUpData.desc ? `${popUpData.desc}` : '';
 
@@ -118,9 +136,8 @@ class Editor extends Component {
 <td>
     <img
  class=scaled
- src=${await Utils.blobToBase64(popUpData.file)} 
- tags="url={${popUpData.file}}, tager={${tags}}" 
- download="${popUpData.fileName}" />
+ src=${file.preview} 
+ download="${file.name}" />
  ${desc}
      </td>
 </tr>
@@ -129,16 +146,14 @@ class Editor extends Component {
         } else {
           anchor = `<img
           className=scaled
-          src=${await Utils.blobToBase64(popUpData.file)}
-          tags="url={${popUpData.file}}, tager={${tags}}"
-          download="${popUpData.fileName}"/>`;
+          src=${file.preview}
+          download="${file.name}"/>`;
         }
       } else {
         anchor = `<a 
-href="${popUpData.file}"
-tags="url={${popUpData.file}}, tager={${tags}}, ${desc}" 
-download="${popUpData.fileName}">
-${popUpData.alt || popUpData.fileName}
+href="${file.preview}"
+download="${file.name}">
+${popUpData.alt || file.name}
 </a>`;
       }
 

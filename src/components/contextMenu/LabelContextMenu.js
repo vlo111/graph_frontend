@@ -15,8 +15,8 @@ class labelContextMenu extends Component {
   }
 
   handleCopyClick = (ev) => {
-    const { params, customFields, match: { params: { graphId = '' } } } = this.props;
-    const data = LabelUtils.copy(graphId, params.id, customFields);
+    const { params, customFields, match: { params: { graphId = '' } }, singleGraph } = this.props;
+    const data = LabelUtils.copy(graphId, params.id, customFields, singleGraph);
     this.props.onClick(ev, 'label.copy', { data, graphId });
   }
 
@@ -24,7 +24,7 @@ class labelContextMenu extends Component {
     const { params: { id } } = this.props;
     const labels = Chart.getLabels().map((l) => {
       if (l.id === id) {
-        l.status = l.status === 'lock' ? undefined : 'lock';
+        l.status = l.status === 'lock' ? 'unlock' : 'lock';
       }
       return l;
     });
@@ -53,6 +53,7 @@ class labelContextMenu extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  singleGraph: state.graphs.singleGraph,
   customFields: state.graphs.singleGraph.customFields || {},
 });
 

@@ -10,8 +10,8 @@ import CustomFields from '../../helpers/CustomFields';
 import NodeTabsFormModal from './NodeTabsFormModal';
 import ContextMenu from '../contextMenu/ContextMenu';
 import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
-import FlexTabs from "../FlexTabs";
-import MapsInfo from "../maps/MapsInfo"; 
+import FlexTabs from '../FlexTabs';
+import MapsInfo from '../maps/MapsInfo';
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -59,7 +59,7 @@ class NodeTabs extends Component {
     const { fieldName } = params;
     const { node } = this.props;
     if (fieldName && window.confirm('Are you sure?')) {
-      this.props.removeNodeCustomFieldKey(node.type, fieldName);
+      this.props.removeNodeCustomFieldKey(node.type, fieldName, node.id);
     }
   }
 

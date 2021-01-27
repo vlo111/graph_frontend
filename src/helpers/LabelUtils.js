@@ -6,12 +6,13 @@ import ChartUtils from './ChartUtils';
 import Utils from './Utils';
 import store from '../store';
 import CustomFields from './CustomFields';
-import { setNodeCustomField } from '../store/actions/graphs';
+import { removeNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } from '../store/actions/graphs';
 import Api from '../Api';
 import { socketLabelDataChange } from '../store/actions/socket';
+import { LABEL_STATUS } from '../data/node';
 
 class LabelUtils {
-  static copy(sourceId, id, customFields) {
+  static copy(sourceId, id, customFields, singleGraph) {
     const labels = Chart.getLabels();
     const nodes = Chart.getNodes().filter((n) => n.labels.includes(id));
     const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
@@ -23,23 +24,100 @@ class LabelUtils {
       nodes,
       links,
       customFields,
+      title: singleGraph.title,
     };
     localStorage.setItem('label.copy', JSON.stringify(data));
 
     return data;
   }
 
-  static async past(x, y, isEmbed, graphId) {
+  static getData() {
     let data;
     try {
       data = JSON.parse(localStorage.getItem('label.copy'));
     } catch (e) {
       //
     }
+    return data || {};
+  }
+
+  static compare() {
+    const data = this.getData();
+    if (!data.label) {
+      return {};
+    }
+    const nodes = Chart.getNodes();
+    const sourceNodes = _.intersectionBy(nodes, data.nodes, 'name');
+    const duplicatedNodes = _.intersectionBy(data.nodes, nodes, 'name');
+    return {
+      duplicatedNodes,
+      sourceNodes,
+    };
+  }
+
+  static pastAndMerge(data, position, sources, duplicates, customFields) {
+    let links = Chart.getLinks();
+    let nodes = Chart.getNodes();
+    data.nodes = data.nodes.map((n) => {
+      const selected = duplicates.find((d) => d.name === n.name);
+      const merge = sources.find((d) => d.name === n.name);
+      if (merge && selected) {
+        const originalId = n.id;
+        n.originalId = originalId;
+        n.id = merge.id;
+        n.merge = true;
+        const customFieldDuplicate = CustomFields.get(data.customFields, n.type, n.id);
+        const customField = CustomFields.get(customFields, merge.type, merge.id);
+        _.forEach(customFieldDuplicate, (k, name) => {
+          if (Object.keys(customField).includes(name)) {
+            store.dispatch(renameNodeCustomFieldKey(merge.type, name, CustomFields.uniqueName(customFields, merge.type, name)));
+          } else {
+            // todo
+          }
+        });
+
+        data.links = data.links.map((l) => {
+          if (l.source === originalId) {
+            l.source = n.id;
+          }
+          if (l.target === originalId) {
+            l.target = n.id;
+          }
+          return l;
+        });
+      } else if (!merge && selected) {
+        nodes = nodes.filter((d) => {
+          if (n.name === d.name) {
+            const customField = Object.keys(CustomFields.get(customFields, d.type, d.id));
+            customField.forEach((name) => {
+              store.dispatch(removeNodeCustomFieldKey(d.type, name, d.id));
+            });
+            return false;
+          }
+          return true;
+        });
+        links = ChartUtils.cleanLinks(links, nodes);
+      } else if (merge && !selected) {
+
+      } else {
+        return undefined;
+      }
+
+      return n;
+    });
+    data.nodes = _.compact(data.nodes);
+    data.links = ChartUtils.cleanLinks(data.links, data.nodes);
+    links = ChartUtils.cleanLinks(links, nodes);
+    Chart.render({ nodes, links });
+    console.log(data.nodes, ' data.nodes')
+    return LabelUtils.past(data, position);
+  }
+
+  static async past(data, position, isEmbed, graphId) {
     if (!data || !data.label) {
       return;
     }
-    const { x: posX, y: posY } = ChartUtils.calcScaledPosition(x, y);
+    const { x: posX, y: posY } = ChartUtils.calcScaledPosition(position[0], position[1]);
 
     // label past
     const labels = Chart.getLabels();
@@ -72,11 +150,18 @@ class LabelUtils {
     });
 
     // nodes past
-    const nodes = Chart.getNodes();
+    let nodes = Chart.getNodes();
     data.nodes.forEach((d) => {
       d.fx = d.fx - minX + posX;
       d.fy = d.fy - minY + posY;
-      d.name = ChartUtils.nodeUniqueName(d);
+      let id;
+      if (d.replace) {
+        id = d.id;
+      } else if (d.merge) {
+        id = nodes.find((n) => n.name === d.name).id;
+      } else {
+        id = ChartUtils.uniqueId(nodes);
+      }
 
       if (isEmbed) {
         d.readOnly = true;
@@ -92,7 +177,6 @@ class LabelUtils {
           return l;
         });
       } else {
-        const id = ChartUtils.uniqueId(nodes);
         d.labels = d.labels.map((l) => {
           if (l === labelOriginalId) {
             return labelId;
@@ -111,18 +195,45 @@ class LabelUtils {
           }
           return l;
         });
+        d.originalId = d.id;
         d.id = id;
       }
 
-      const customField = CustomFields.get(data.customFields, d.type, d.id);
+      d.name = (d.replace || d.merge) ? d.name : ChartUtils.nodeUniqueName(d);
 
-      store.dispatch(setNodeCustomField(d.type, d.id, customField));
+      const customField = CustomFields.get(data.customFields, d.type, d.originalId || d.id);
+      store.dispatch(setNodeCustomField(d.type, d.id, customField, undefined, d.merge));
 
-      nodes.push(d);
+      if (d.replace) {
+        nodes = nodes.map((n) => {
+          if (n.id === d.id) {
+            return d;
+          }
+          return n;
+        });
+      } else if (d.merge) {
+        nodes = nodes.map((n) => {
+          if (n.id === d.id) {
+            n = ChartUtils.merge(d, n);
+            data.links = data.links.map((l) => {
+              if (l.source === d.originalId) {
+                l.source = n.id;
+              }
+              if (l.target === d.originalId) {
+                l.target = n.id;
+              }
+              return l;
+            });
+          }
+          return n;
+        });
+      } else {
+        nodes.push(d);
+      }
     });
 
     // links past
-    const links = Chart.getLinks();
+    let links = Chart.getLinks();
     data.links = data.links.map((d) => {
       if (isEmbed) {
         d.readOnly = true;
@@ -145,6 +256,10 @@ class LabelUtils {
       }, 'past');
       return;
     }
+
+    links = ChartUtils.cleanLinks(links, nodes);
+    links = ChartUtils.uniqueLinks(links);
+
     Chart.render({ links, nodes, labels }, 'past');
   }
 
@@ -157,6 +272,16 @@ class LabelUtils {
       };
       store.dispatch(socketLabelDataChange(graph));
     }
+  }
+  /**
+   * Return label status name for label status
+   * @param {*} status
+   */
+  static lableStatusNane = (status = null) => {
+
+    const labelStatus = LABEL_STATUS.filter((c) => c.value === status);
+    return labelStatus.length ? labelStatus[0].label : null;
+
   }
 }
 

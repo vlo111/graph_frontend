@@ -34,6 +34,21 @@ const initialState = {
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case UPDATE_GRAPH.REQUEST:
+    case UPDATE_GRAPH.FAIL: {
+      return {
+        ...state,
+        customFields: [],
+      };
+    }
+    case UPDATE_GRAPH.SUCCESS: {
+      const { customFields } = action.payload.data;
+      state.singleGraph.customFields = customFields;
+      return {
+        ...state,
+        customFields,
+      };
+    }
     case CONVERT_GRAPH.REQUEST: {
       return {
         ...state,
@@ -107,15 +122,45 @@ export default function reducer(state = initialState, action) {
     }
     case GET_SINGLE_GRAPH_PREVIEW.SUCCESS: {
       const { graph: singleGraph } = action.payload.data;
-      const { nodes, links, labels } = singleGraph;
+      let { nodes, links, labels } = singleGraph;
+      if (_.isEmpty(nodes)) {
+        nodes.push({
+          id: '0',
+          name: '',
+          fx: 0,
+          fy: 0,
+          hidden: -1,
+        });
+      }
+      // nodes = nodes.map((d) => {
+      //   delete d.lx;
+      //   delete d.ly;
+      //   return d;
+      // });
+      links = ChartUtils.cleanLinks(links, nodes);
+      // labels = labels.map((d) => {
+      //   delete d.open;
+      //   return d;
+      // });
       Chart.render({
-        nodes, links: ChartUtils.cleanLinks(links, nodes), labels,
+        nodes, links, labels,
       });
-
       return {
         ...state,
         singleGraph,
       };
+    }
+    case GET_SINGLE_GRAPH_PREVIEW.FAIL: {
+      const nodes = [{
+        id: '0',
+        name: '',
+        fx: 0,
+        fy: 0,
+        hidden: -1,
+      }]
+      Chart.render({
+        nodes,
+      });
     }
     case CLEAR_SINGLE_GRAPH: {
       return {
@@ -135,14 +180,19 @@ export default function reducer(state = initialState, action) {
     case SET_NODE_CUSTOM_FIELD: {
       const singleGraph = { ...state.singleGraph };
       const {
-        type, name, customField, tabData,
+        type, name, customField, tabData, append
       } = action.payload;
-      const res = CustomFields.setValue(singleGraph.customFields, type, name, customField);
+      const res = CustomFields.setValue(singleGraph.customFields, type, name, customField, append);
       singleGraph.customFields = res.customFields;
       if (!res.success) {
         toast.warn('Some tabs are not imported');
       }
       if (tabData) {
+        if (tabData.documents?.length) {
+          singleGraph.file = null;
+          singleGraph.documents = tabData.documents;
+          singleGraph.currentTabName = tabData.name;
+        }
         _.set(singleGraph.customFields, [type, tabData.name, 'subtitle'], tabData.subtitle);
       }
       return {
@@ -170,7 +220,25 @@ export default function reducer(state = initialState, action) {
     }
     case REMOVE_NODE_CUSTOM_FIELD_KEY: {
       const singleGraph = { ...state.singleGraph };
-      const { type, key } = action.payload;
+      const { type, key, nodeId } = action.payload;
+      singleGraph.currentTabName = key;
+
+      if (!singleGraph.dismissFiles) {
+        let deleteTabDocument = [];
+
+        deleteTabDocument.push({
+          tabName: key,
+          nodeId,
+          nodeType: type,
+        });
+        singleGraph.dismissFiles = deleteTabDocument;
+      } else if (!singleGraph.dismissFiles.some(e => e.tabName === key && e.nodeId === nodeId)) {
+        singleGraph.dismissFiles.push({
+          tabName: key,
+          nodeId,
+          nodeType: type,
+        });
+      }
       singleGraph.customFields = CustomFields.removeKey(singleGraph.customFields, type, key);
       return {
         ...state,

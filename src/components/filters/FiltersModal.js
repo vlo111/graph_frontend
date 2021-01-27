@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
+import _ from 'lodash';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodesFilter from './NodeTypesFilter';
@@ -15,8 +16,9 @@ import NodeConnectionFilter from './NodeConnectionFilter';
 import { ReactComponent as CloseIcon } from '../../assets/images/icons/close.svg';
 import KeywordsFilter from './KeywordsFilter';
 import LabelsFilter from './LabelsFilter';
+import LabelStatusFilter from './LabelStatusFilter';
+
 import Utils from '../../helpers/Utils';
-import _ from 'lodash';
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -58,6 +60,16 @@ class FiltersModal extends Component {
     }, 500);
   }
 
+  closeFilter = async () => {
+    const { match: { params: { graphId = '', token = '' } } } = this.props;
+    await this.props.resetFilter();
+    setTimeout(() => {
+      Utils.isInEmbed()
+        ? this.props.history.replace(`/graphs/view/${graphId}/${token}`)
+        : this.props.history.replace(`/graphs/view/${graphId}`);
+    }, 200);
+  }
+
   render() {
     const { nodes, links, labels } = this.state;
     const { userGraphs, match: { params: { graphId = '', token = '' } } } = this.props;
@@ -72,16 +84,17 @@ class FiltersModal extends Component {
         {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
           <>
             <Link
-              to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/update/${graphId}`}
+              to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/view/${graphId}`}
               replace
             >
-              <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
+              <Button className="close" icon={<CloseIcon />} onClick={this.props.resetFilter} />
             </Link>
           </>
         )}
         <div className="row resetAll">
           <Button className="ghButton2" onClick={this.props.resetFilter}>RESET ALL</Button>
-          <span className="nodeCount">{`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${nodes.length}`}</span>
+          <span
+            className="nodeCount">{`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${nodes.length}`}</span>
         </div>
 
         <IsolatedFilter />
@@ -93,6 +106,8 @@ class FiltersModal extends Component {
         <LinkTypesFilter links={links} />
 
         <LabelsFilter labels={labels} nodes={nodes} />
+
+        <LabelStatusFilter labels={labels} nodes={nodes} />
 
         <LinkValueFilter links={links} />
 

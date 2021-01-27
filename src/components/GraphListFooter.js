@@ -10,13 +10,13 @@ import { ReactComponent as ViewPassSvg } from '../assets/images/icons/view.svg';
 import { getActionsCount } from '../store/selectors/graphs';
 import { getActionsCountRequest } from '../store/actions/graphs';
 import Button from './form/Button';
-import ShareTooltip from './ShareTooltip';
+import ShareTooltip from './ShareTooltip/ShareTooltip';
 import CommentModal from './CommentModal';
 import EmbedButton from './embed/EmbedButton';
 
-const TootlipContent = ({ graphId }) => (
+const TootlipContent = ({ graphId, graphOwner }) => (
   <Suspense fallback={<div>Loading...</div>}>
-    <ShareTooltip graphId={graphId} />
+    <ShareTooltip graphId={graphId} graphOwner={graphOwner}/>
   </Suspense>
 );
 TootlipContent.propTypes = {
@@ -51,7 +51,7 @@ const GraphListFooter = ({ graph }) => {
       </Button>
       {actionsCount?.shares
         ? (
-          <Tooltip overlay={<TootlipContent graphId={graph.id} />} trigger={['hover']}>
+          <Tooltip overlay={<TootlipContent graphId={graph.id}  graphOwner={graph.user} />} trigger={['hover']}>
             <Button icon={<ShareSvg />} className="transparent footer-icon">
               <span className="graphListFooter__count">{actionsCount?.shares}</span>
             </Button>

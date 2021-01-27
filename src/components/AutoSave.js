@@ -32,14 +32,18 @@ class AutoSave extends Component {
   }
 
   saveGraph = async () => {
-    const { match: { params: { graphId } }, singleGraph } = this.props;
+    let { match: { params: { graphId } }, singleGraph } = this.props;
     if (!graphId) {
       return;
     }
     document.body.classList.add('autoSave');
     const links = Chart.getLinks();
     const labels = Chart.getLabels();
-    const { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
+    const {
+      nodes, files, customFields,
+    } = await ChartUtils.getNodesWithFiles(this.props.customFields, singleGraph.documents);
+
+    const svg = ChartUtils.getChartSvg();
     await this.props.updateGraphRequest(graphId, {
       ...singleGraph,
       nodes,
@@ -48,7 +52,10 @@ class AutoSave extends Component {
       files,
       customFields,
       autoSave: true,
+      svg,
     });
+    singleGraph.dismissFiles = null;
+    singleGraph.documents = null;
     document.body.classList.remove('autoSave');
   }
 

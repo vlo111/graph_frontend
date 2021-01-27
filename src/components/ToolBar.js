@@ -16,6 +16,7 @@ import { ReactComponent as UploadSvg } from '../assets/images/icons/upload.svg';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import FileInput from './form/FileInput';
 import moment from "moment";
+import ShareTooltip from './ShareTooltip/ShareTooltip';
 
 class ToolBar extends Component {
   static propTypes = {
@@ -24,6 +25,8 @@ class ToolBar extends Component {
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    singleGraphUser: PropTypes.object.isRequired,
+
   }
 
   constructor(props) {
@@ -60,7 +63,7 @@ class ToolBar extends Component {
   }
 
   render() {
-    const { activeButton, match: { params: { graphId } } } = this.props;
+    const { activeButton, match: { params: { graphId } }, currentUserRole, singleGraphUser } = this.props;
 
     return (
       <div id="toolBar">
@@ -76,13 +79,16 @@ class ToolBar extends Component {
             >
               Add Node
             </Button>
-            <Button
-              className={activeButton === 'create-label' ? 'active' : undefined}
-              icon={<TagSvg />}
-              onClick={() => this.handleClick('create-label')}
-            >
-              Create Label
-            </Button>
+            {currentUserRole !== 'edit_inside' ? (
+              <Button
+                className={activeButton === 'create-label' ? 'active' : undefined}
+                icon={<TagSvg />}
+                onClick={() => this.handleClick('create-label')}
+              >
+                Create Label
+              </Button>
+            ) : null}
+
             {false ? <Button
               icon={<LoopSvg />}
               className={activeButton === 'reset' ? 'active' : undefined}
@@ -128,6 +134,10 @@ class ToolBar extends Component {
             </div>
           </div>
         </div>
+
+        <div className="bottom ">
+        <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>
+        </div>
         <div className="bottom helpWrapper">
           <Button icon={<InfoSvg />}>
             Help
@@ -140,6 +150,9 @@ class ToolBar extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
+  currentUserRole: state.graphs.singleGraph.currentUserRole || '',
+  singleGraphUser: state.graphs.singleGraph.user,
+
 });
 const mapDispatchToProps = {
   setActiveButton,

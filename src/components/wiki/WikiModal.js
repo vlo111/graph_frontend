@@ -151,7 +151,7 @@ https://en.wikipedia.org/wiki/${name}
               <input
                 onChange={() => this.checkedWiki(key3)}
                 checked={!getChecked ? getChecked : (key3 === getChecked)}
-                className="wikiCheckbox"
+                className="graphsCheckbox"
                 type="checkbox"
                 name="layout"
                 id={key3}

@@ -32,11 +32,11 @@ const Owner = ({
                 dispatch(setGraphCommentParent(comment));
                 setTimeout(() => {
                   const replyInput = document.getElementById('reply-comment');
-                  if (replyInput) replyInput.focus();
-                  else document.getElementById('add-comment').focus();
+                  // if (replyInput) replyInput.focus();
+                  // else document.getElementById('add-comment').focus();
                 });
               }}
-              className="transparent"
+              className="transparent reply"
               title="reply"
             >
             </Button>
@@ -47,7 +47,7 @@ const Owner = ({
               onClick={() => {
                 dispatch(deleteGraphComment(comment.id));
               }}
-              className="transparent"
+              className="transparent remove"
               title="Remove"
             > 
             </Button>

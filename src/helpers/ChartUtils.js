@@ -7,7 +7,7 @@ import stripHtml from 'string-strip-html';
 import path from 'path';
 import Chart from '../Chart';
 import history from './history';
-import { DASH_TYPES, LINK_COLORS } from '../data/link';
+import { DASH_TYPES, LINK_COLORS, LINK_DRAFT_COLORS } from '../data/link';
 import { NODE_COLOR } from '../data/node';
 import { DEFAULT_FILTERS } from '../data/filter';
 import Api from '../Api';
@@ -33,10 +33,16 @@ class ChartUtils {
       d.hidden = 0;
       return d;
     });
-
+    const hiddenLabels = [];
     data.labels = data.labels.map((d) => {
       if (!params.labels.includes(d.id)) {
         d.hidden = 1;
+        hiddenLabels.push(d.id);
+        return d;
+      }
+      if (!params.labelStatus.includes(d.status || 'unlock')) {
+        d.hidden = 1;
+        hiddenLabels.push(d.id);
         return d;
       }
       d.hidden = 0;
@@ -63,7 +69,7 @@ class ChartUtils {
         return d;
       }
       if (params.labels[0] !== '__ALL__' && d.labels.length && !d.labels.some((l) => params.labels.includes(l))) {
-        d.hidden = -1;
+        d.hidden = 1;
         return d;
       }
       if (params.nodeCustomFields[0] !== '__ALL__' && !params.nodeCustomFields.some((k) => _.get(customFields, [d.type, k, 'values', d.id]))) {
@@ -72,12 +78,17 @@ class ChartUtils {
       }
       if (params.nodeKeywords[0] !== '__ALL__' && !params.nodeKeywords.some((t) => d.keywords.includes(t))) {
         d.hidden = 1;
-        if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keyword)) {
+        if (params.nodeKeywords.includes('[ No Keyword ]') && _.isEmpty(d.keywords)) {
           d.hidden = 0;
+        } else {
+          return d;
         }
-        return d;
       }
       if (params.nodeStatus[0] !== '__ALL__' && !params.nodeStatus.includes(d.status)) {
+        d.hidden = 1;
+        return d;
+      }
+      if (params.labelStatus[0] !== '__ALL__' && _.intersection(d.labels, hiddenLabels).length) {
         d.hidden = 1;
         return d;
       }
@@ -265,7 +276,12 @@ class ChartUtils {
 
   static linkColorArr = _.clone(LINK_COLORS);
 
+  static linkDraftColor = _.clone(LINK_DRAFT_COLORS);
+
   static linkColor = (d) => {
+    if (d.status === 'draft') {
+      return ChartUtils.linkDraftColor;
+    }
     if (!this.linkColorObj[d.type]) {
       if (d.color) {
         this.linkColorArr = this.linkColorArr.filter((c) => d.color !== c);
@@ -382,13 +398,17 @@ class ChartUtils {
   }
 
   static findNodeInDom(node) {
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(0, 0).scale(2));
-    const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
-    const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
-    const left = (x * -1) + (window.innerWidth / 2) - nodeWidth;
-    const top = (y * -1) + (window.innerHeight / 2) - nodeWidth;
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(2));
-    // Chart.event.emit('node.mouseenter', node);
+    try {
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(0, 0).scale(2));
+      const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
+      const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
+      const left = (x * -1) + (window.innerWidth / 2) - nodeWidth;
+      const top = (y * -1) + (window.innerHeight / 2) - nodeWidth;
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(2));
+      // Chart.event.emit('node.mouseenter', node);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   static isNodeInLabel(node, label) {
@@ -396,6 +416,25 @@ class ChartUtils {
     const y = node.fy || node.y;
     const { d } = label;
     let inside = false;
+
+    if (label.type === 'folder') {
+      const nodeOldFolder = node.labels?.find((l) => l.startsWith('f_'));
+      if (nodeOldFolder && nodeOldFolder !== label.id) {
+        return false;
+      }
+      if ((node.lx || node.ly) && (node.lx === label.d[0][0] + 30 && node.ly === label.d[0][1] + 30)) {
+        return true;
+      }
+      if (!label.open && node.labels?.includes(label.id)) {
+        return true;
+      }
+      if (label.open) {
+        const squareSize = 500;
+        const squareX = d[0][0] - (squareSize / 2);
+        const squareY = d[0][1] - (squareSize / 2);
+        return this.isInSquare([squareX, squareY], squareSize, [node.lx || x, node.ly || y]);
+      }
+    }
     for (let i = 0, j = d.length - 1; i < d.length; j = i++) {
       const xi = d[i][0];
       const yi = d[i][1];
@@ -410,7 +449,12 @@ class ChartUtils {
   }
 
   static getNodeLabels(node) {
-    return Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
+    const firstFolder = node.labels?.find((l) => l.startsWith('f_'));
+    const labels = Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
+    if (labels.includes(firstFolder)) {
+      return [firstFolder];
+    }
+    return labels;
   }
 
   // deprecated use getNodeLabels
@@ -472,53 +516,72 @@ class ChartUtils {
     return d;
   }
 
-  static async getNodesWithFiles(customFields = {}) {
+  static async getNodesWithFiles(customFields = {}, documents = []) {
     let nodes = Chart.getNodes(true);
-    const icons = await Promise.all(nodes.map((d) => {
-      if (d.icon && d.icon.startsWith('blob:')) {
-        return Utils.blobToBase64(d.icon);
-      }
-      return d.icon;
-    }));
-    let files = {};
     let fIndex = new Date().getTime();
-    nodes = nodes.map((d, i) => {
-      d.icon = icons[i];
-      d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
-        fIndex += 1;
-        files[fIndex] = Utils.blobToBase64(url);
-        return ` href="<%= file_${fIndex} %>"`;
-      });
-      return d;
-    });
+    let docIndex = fIndex;
+    let files = {};
 
-    for (const nodeType in customFields) {
-      for (const tab in customFields[nodeType]) {
-        if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
-          for (const node in customFields[nodeType][tab].values) {
-            if (customFields[nodeType][tab].values[node]) {
-              customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
-                .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
-                  fIndex += 1;
-                  files[fIndex] = Utils.blobToBase64(url);
-                  return ` href="<%= file_${fIndex} %>"`;
-                });
+    if (documents) {
+      const icons = await Promise.all(nodes.map((d) => {
+        if (d.icon && d.icon.startsWith('blob:')) {
+          return Utils.blobToBase64(d.icon);
+        }
+        return d.icon;
+      }));
+
+      nodes = nodes.map((d, i) => {
+        d.icon = icons[i];
+        d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
+          fIndex += 1;
+          files[fIndex] = Utils.blobToBase64(url);
+          return ` href="<%= file_${fIndex} %>"`;
+        });
+        return d;
+      });
+
+      _.forEach(documents, (doc) => {
+        docIndex++;
+        doc.index = docIndex;
+      });
+
+      for (const nodeType in customFields) {
+        for (const tab in customFields[nodeType]) {
+          if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
+            for (const node in customFields[nodeType][tab].values) {
+              if (customFields[nodeType][tab].values[node]) {
+                customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
+                  .replace(/\ssrc="(blob:[^"]+)"/g, (m, url) => {
+                    fIndex += 1;
+                    files[fIndex] = Utils.blobToBase64(url);
+                    return ` src="<%= file_${fIndex} %>"`;
+                  })
+                  .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
+                    fIndex += 1;
+                    files[fIndex] = Utils.blobToBase64(url);
+                    return ` href ="<%= file_${fIndex} %>"`;
+                  });
+              }
             }
+          } else {
+            delete customFields[nodeType][tab];
           }
-        } else {
-          delete customFields[nodeType][tab];
         }
       }
+      files = await Promise.allValues(files);
     }
-    files = await Promise.allValues(files);
-    return { nodes, files, customFields };
+
+    return {
+      nodes, files, customFields, documents,
+    };
   }
 
-  static uniqueId(data = []) {
-    const graphId = Utils.getGraphIdFormUrl();
+  static uniqueId(data = [], id) {
+    const graphId = id || Utils.getGraphIdFormUrl();
     const ids = [0];
     data.forEach((d) => {
-      const id = +String(d.id || 0).split('.')[0];
+      const [_id = 0] = /[\d.]+/.exec(d.id) || [];
+      const id = +String(_id).split('.')[0];
       if (id && !d.sourceId) {
         ids.push(id);
       }
@@ -540,6 +603,58 @@ class ChartUtils {
     }
     const max = _.max(nodes.map((n) => +(n.name.match(/_(\d+)$/) || [0, 0])[1])) || 0;
     return `${node.name}_${max + 1}`;
+  }
+
+  static getPointPosition(pos1, pos2) {
+    const pos = [pos1[0] - pos2[0], pos1[1] - pos2[1]];
+    const x = pos[0];
+    const y = pos[1];
+    const absX = Math.abs(x);
+    const absY = Math.abs(y);
+    let position = '';
+    if (x === 0 && y === 0) {
+      position = 'center';
+    } else if (x > 0 && y > 0) {
+      position = absX > absY ? 'left' : 'top';
+    } else if (x > 0 && y < 0) {
+      position = absX >= absY ? 'left' : 'bottom';
+    } else if (x < 0 && y < 0) {
+      position = absX >= absY ? 'right' : 'bottom';
+    } else if (x < 0 && y > 0) {
+      position = absX >= absY ? 'right' : 'top';
+    }
+    return position;
+  }
+
+  static isInSquare(areaPos, size, pos) {
+    return pos[0] >= areaPos[0] && pos[0] <= areaPos[0] + size && pos[1] >= areaPos[1] && pos[1] <= areaPos[1] + size;
+  }
+
+  static getChartSvg() {
+    return document.querySelector('#graph svg')?.outerHTML || '';
+  }
+
+  static merge(d1, d2) {
+    const data = { ...d1, ...d2 };
+    for (const i in data) {
+      if (!data[i]) {
+        data[i] = d1[i];
+      }
+    }
+    return data;
+  }
+
+  static uniqueLinks(links) {
+    return _.uniqBy(links, (l) => {
+      if (l.direction) {
+        return JSON.stringify({
+          1: l.name, 2: l.type, 3: l.source, 4: l.target,
+        });
+      }
+      return JSON.stringify({
+        1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
+      });
+    });
   }
 }
 

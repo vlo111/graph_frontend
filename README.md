@@ -1,6 +1,6 @@
 This is was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts mw
+## Available Scripts
 
 In the project directory, you can run:
 

@@ -79,8 +79,7 @@ class DataEditorFiles extends Component {
     const {
       onClose, onChangeText, value, ...props
     } = this.props;
-    const { values } = this.state;
-    console.log(value);
+    const { values } = this.state; 
     this.initValues(value);
     return (
       <div>

@@ -4,29 +4,39 @@ import Notification from './Notification';
 import AccountDropDown from './account/AccountDropDown';
 import SearchGraphs from './search/SearchGraphs';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
+import Button from './form/Button';
 
 class Header extends Component {
+  startGraph = () => {
+    window.location.href = '/graphs/create';
+  }
+
   render() {
     return (
-      <header id="header">
+      <header className="headerPanel" id="header">
         <div className="logo-graphs">
           <Link to="/">
-          <LogoSvg className="logo orange" />
+            <LogoSvg className="logo orange" />
           </Link>
         </div>
         <SearchGraphs />
         <div className="start-graphs">
-          <Link to="/graphs/create">
-            Start a graph
-          </Link>
+          <div className="buttonsWrapper">
+            <Button color="accent" onClick={this.startGraph}>
+              Start a graph
+            </Button>
+            <Link to="/graphs/compare">
+              <Button color="accent">
+                Compare graphs
+              </Button>
+            </Link>
+          </div>
         </div>
-
         <div className="right-elements">
           <Notification />
-          <div className="signOut">
-           <AccountDropDown />
-
-          </div>
+        </div>
+        <div className="signOut">
+          <AccountDropDown />
         </div>
       </header>
     );

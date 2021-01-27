@@ -35,12 +35,11 @@ class AddLabelModal extends Component {
 
   handleFolderCrate = (ev, d) => {
     const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
-    const size = 150;
     const labels = Chart.getLabels();
     const labelData = {
-      id: ChartUtils.uniqueId(labels),
-      color: 'red',
-      d: [[x, y], [x + size, y], [x + size, y], [x + size, y], [x + size, y + size], [x + size, y + size], [x + size, y + size], [x, y + size]],
+      id: `f_${ChartUtils.uniqueId(labels)}`,
+      color: ChartUtils.labelColors(),
+      d: [[x, y]],
       name: '',
       type: 'folder',
     };
@@ -58,7 +57,7 @@ class AddLabelModal extends Component {
   addLabel = async (ev) => {
     ev.preventDefault();
     const { labelData } = this.state;
-    let labels = Chart.getLabels();
+    const labels = Chart.getLabels();
     const errors = {};
     [errors.name, labelData.name] = Validate.labelName(labelData.name);
     if (!Validate.hasError(errors)) {
@@ -96,7 +95,7 @@ class AddLabelModal extends Component {
         <div className="containerModal">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.deleteLabel} />
           <form className="form" onSubmit={this.addLabel}>
-            <h2>Add new label</h2>
+            <h2>{labelData.type === 'folder' ? 'Add new Folder' : 'Add new label'}</h2>
             <Input
               value={labelData.name}
               error={errors.name}
