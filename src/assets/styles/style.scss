@@ -3818,10 +3818,15 @@ body .gh__menu {
   width: calc(100% - 202px);
   height: 100%;
 
-  .gmnoprint {
+  .gmnoprint { 
     .gm-style-mtc:first-child {
-      margin-left: 60px;
+      margin-left: 60px !important;
+      top: 60px !important;
     }
+    .gm-style-mtc:nth-child(2) {
+      top: 60px !important;
+    } 
+     
   }
 
   .closeMap {
@@ -3955,7 +3960,7 @@ body .gh__menu {
   background: $color-white;
   width: 45%;
   height: 94vh;
-  z-index: 2;
+  z-index: 4;
   box-shadow: 0px 6px 20px #0D090526;
   right: 0;
   top: 69px;
