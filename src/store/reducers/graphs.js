@@ -13,7 +13,8 @@ import {
   GET_SINGLE_EMBED_GRAPH,
   SET_GRAPH_CUSTOM_FIELDS,
   GET_SINGLE_GRAPH_PREVIEW,
-  REMOVE_NODE_FROM_CUSTOM_FIELD,
+  UPDATE_GRAPH,
+  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -156,6 +157,15 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         singleGraph,
+      };
+    }
+    case RENAME_NODE_CUSTOM_FIELD_KEY: {
+      const singleGraph = { ...state.singleGraph };
+      const { type, name, oldName } = action.payload;
+      singleGraph.customFields = CustomFields.customFieldRename(singleGraph.customFields, type, oldName, name);
+      return {
+        ...state,
+        singleGraph: { ...singleGraph },
       };
     }
     case REMOVE_NODE_CUSTOM_FIELD_KEY: {

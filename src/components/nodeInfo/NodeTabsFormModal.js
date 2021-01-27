@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import Input from '../form/Input';
 import Editor from '../form/Editor';
-import { addNodeCustomFieldKey, setNodeCustomField } from '../../store/actions/graphs';
+import { addNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } from '../../store/actions/graphs';
 import Button from '../form/Button';
 import Validate from '../../helpers/Validate';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
@@ -27,6 +27,7 @@ class NodeTabsFormModal extends Component {
     if (customField) {
       const tabData = {
         name: fieldName,
+        originalName: fieldName,
         content: customField.values[node.id],
         subtitle: customField.subtitle,
       };
@@ -71,6 +72,10 @@ class NodeTabsFormModal extends Component {
         await this.props.addNodeCustomFieldKey(node.type, tabData.name, tabData.subtitle);
       }
       customField[tabData.name] = tabData.content;
+      if (tabData.originalName !== tabData.name) {
+        delete customField[tabData.originalName];
+        await this.props.renameNodeCustomFieldKey(node.type, tabData.originalName, tabData.name);
+      }
       this.props.setNodeCustomField(node.type, node.id, customField, tabData);
       Chart.setNodeData(node.id, {
         updatedAt: moment().unix(),
@@ -100,7 +105,6 @@ class NodeTabsFormModal extends Component {
             value={tabData.name}
             error={errors.name}
             label="Name"
-            disabled={!!fieldName}
             onChangeText={(v) => this.handleChange('name', v)}
           />
           {/* <Input
