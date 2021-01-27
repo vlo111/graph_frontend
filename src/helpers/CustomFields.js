@@ -27,6 +27,16 @@ class CustomFields {
     };
   }
 
+  static uniqueName(customFields, type, name) {
+    const names = Object.keys(customFields[type])
+      .filter((n) => (n === name || new RegExp(`^${Utils.escRegExp(name)}_\\d+$`).test(n)));
+    if (!names.length) {
+      return names;
+    }
+    const max = _.max(names.map((n) => +(n.match(/_(\d+)$/) || [0, 0])[1])) || 0;
+    return `${name}_${max + 1}`;
+  }
+
   static setKey(customFields = {}, type, key, subtitle = '') {
     if (Object.keys(customFields[type] || {}).length >= this.LIMIT) {
       console.warn('CustomFields limit');
@@ -86,7 +96,18 @@ class CustomFields {
     return customFields;
   }
 
-  static get(customFields, type, name) {
+  static customFieldRename(customFields = {}, type, oldName, name) {
+    const customFieldType = _.get(customFields, type, {});
+    _.forEach(customFieldType, (d, key) => {
+      if (key === oldName) {
+        customFields[type][name] = { ...d };
+        delete customFields[type][key];
+      }
+    });
+    return customFields;
+  }
+
+  static get(customFields, type, id) {
     const customFieldType = _.get(customFields, type, {});
     const data = {};
     _.forEach(customFieldType, (d, key) => {
