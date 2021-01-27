@@ -111,7 +111,7 @@ class CustomFields {
     const customFieldType = _.get(customFields, type, {});
     const data = {};
     _.forEach(customFieldType, (d, key) => {
-      data[key] = _.get(d, ['values', name], undefined);
+      data[key] = _.get(d, ['values', id], undefined);
     });
 
     return data;
