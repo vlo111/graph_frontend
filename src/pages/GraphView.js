@@ -21,6 +21,7 @@ import ShareGraph from '../components/ShareGraph';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
 import ToolBarHeader from '../components/ToolBarHeader';
+import memoizeOne from "memoize-one";
 
 class GraphView extends Component {
   static propTypes = {
@@ -41,15 +42,15 @@ class GraphView extends Component {
       openShareModal: false,
     };
   }
-
-  componentDidMount() {
+  getSingleRequest = memoizeOne(() => {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('view');
     this.props.userGraphRequest();
     if (+graphId) {
       this.props.getSingleGraphRequest(graphId);
     }
-  }
+  })
+
 
   deleteGraph = async () => {
     const { match: { params: { graphId = '' } } } = this.props;
@@ -71,6 +72,7 @@ class GraphView extends Component {
       singleGraph, userGraphs, location: { pathname }, match: { params: { graphId = '' } },
     } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
+    this.getSingleRequest(pathname)
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
