@@ -141,6 +141,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setNodeCustomField,
   addNodeCustomFieldKey,
+  renameNodeCustomFieldKey,
 };
 
 const Container = connect(
