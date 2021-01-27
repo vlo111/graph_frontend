@@ -147,7 +147,9 @@ class GraphCompare extends Component {
 
 
     const customFieldsFull = Utils.mergeDeep(singleGraph2.customFields, customFields);
-
+    console.log({
+      a : singleGraph2.customFields, b: customFields,customFieldsFull
+    })
     for (const type in customFieldsFull) {
       const customField = customFieldsFull[type];
       for (const tab in customField) {
@@ -176,6 +178,8 @@ class GraphCompare extends Component {
                 _.set(customFieldsMerged, [mainNode.type, tab, 'valuecs', mainNode.id], value2);
               }
             }
+          }else {
+            console.log('no name')
           }
         }
       }
