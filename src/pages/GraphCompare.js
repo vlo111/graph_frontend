@@ -161,19 +161,19 @@ class GraphCompare extends Component {
             if (value1 && !value2) {
               _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1);
             } else if (!value1 && value2) {
-              _.set(customFieldsMerged, [mainNode.type, tab, 'valuecs', mainNode.id], value2);
+              _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
             } else if (value1 && value2 && value1 !== value2) {
               if (value1 !== value2) {
                 _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`);
               } else {
-                _.set(customFieldsMerged, [mainNode.type, tab, 'valuecs', mainNode.id], value2);
+                _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
               }
             }
           }
+
         }
       }
     }
-
     this.setState({
       createGraphData: {
         labels, nodes, links, customFields: customFieldsMerged,

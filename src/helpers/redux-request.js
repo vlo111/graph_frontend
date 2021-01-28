@@ -94,7 +94,6 @@ function createRequestMiddleware() {
   };
 }
 
-
 export const on = {
   request: (payload) => payload,
   success: (payload) => payload,

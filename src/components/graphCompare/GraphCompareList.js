@@ -46,6 +46,7 @@ class GraphCompareList extends Component {
     if (_.isEmpty(singleGraph1?.nodes) && _.isEmpty(singleGraph2?.nodes)) {
       return null;
     }
+    console.log(singleGraph2)
     const total = this.getTotal(singleGraph1, singleGraph2);
     const totalSelected = this.getSelectedTotal(selected, singleGraph1, singleGraph2);
     return (
@@ -106,7 +107,7 @@ class GraphCompareList extends Component {
                       <LabelCompareItem
                         node={node2}
                         checked={selected.some((d) => d.id === node2.id)}
-                        customFields={node2.customFields}
+                        customFields={singleGraph2.customFields}
                         onChange={(checked) => this.props.onChange(node2, checked, 2)}
                       />
                     </div>

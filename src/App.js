@@ -19,7 +19,7 @@ import suspense from './helpers/suspense';
 import Search from './pages/search/Search';
 import Profile from './pages/account';
 import GraphThumbnail from './pages/GraphThumbnail';
-import GraphCompare from "./pages/GraphCompare";
+import GraphCompare from './pages/GraphCompare';
 
 const GraphEmbed = React.lazy(() => import('./pages/GraphEmbed'));
 

@@ -17,9 +17,8 @@ class LabelCompareItem extends Component {
   }
 
   render() {
-    const { node, customFields, containerClassName, checked } = this.props;
+    const { node, customFields, checked } = this.props;
     const customField = CustomFields.get(customFields, node.type, node.id);
-    console.log(node)
     return (
       <>
         <input type="checkbox" checked={checked} onChange={this.handleChange} />

@@ -67,7 +67,7 @@ class AddLabelModal extends Component {
       } else {
         labels.push(labelData);
       }
-     Chart.render({ labels });
+      Chart.render({ labels });
       this.setState({ show: false });
     }
     this.setState({ errors });
