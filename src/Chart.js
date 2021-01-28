@@ -636,8 +636,8 @@ class Chart {
           .attr('height', height);
 
         dragFolder.folder.select('.folderResizeIcon')
-          .attr('x', width / 2 - 20)
-          .attr('y', height / 2 - 20);
+          .attr('x', width / 2 - 25)
+          .attr('y', height / 2 - 25);
 
         dragFolder.folder.select('.closeIcon')
           .attr('x', width / 2 - 40)
@@ -879,8 +879,8 @@ class Chart {
           .attr('href', '#folderResizeIcon')
           .attr('opacity', 0)
           .attr('class', 'folderResizeIcon')
-          .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / 2 - 20)
-          .attr('y', (f) => _.get(f, 'd[1][1]', squareSize) / 2 - 20);
+          .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / 2 - 25)
+          .attr('y', (f) => _.get(f, 'd[1][1]', squareSize) / 2 - 25);
 
         this._dataNodes = undefined;
         this.graphMovement();
@@ -922,8 +922,8 @@ class Chart {
       .attr('href', '#folderResizeIcon')
       .attr('opacity', 0)
       .attr('class', 'folderResizeIcon')
-      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / 2 - 20)
-      .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / 2 - 20);
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / 2 - 25)
+      .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / 2 - 25);
 
     this.folders.append('text')
       .text((d) => d.name)
