@@ -1173,7 +1173,7 @@ p {
   }
 }
 
-@media only screen and (min-width: 1300px) {
+@media  screen and (max-width: 1699px) {
   #header-on-graph {
     grid-template-columns: 21% auto auto 5% 5% 25%;
     
@@ -1182,17 +1182,29 @@ p {
     border: none;
     display: flex;
     z-index: 2;
-    left: 26%;
+    left: 28%;
     top: 10px;
     color: #0d0905; 
+    .ghButton { 
+      padding: 7px 7px 6px; 
+   }
    }
    .legends {
-     left: 14%;
+     left: 15%;
+   }
+   .signOut .accountInfo {
+    padding-right: 0px;
+   }
+   .mapButton {
+    right: 26%;
+   }
+   .wikiButton {
+     right: 22%;
    }
   
   }
 }
-@media only screen and (min-width: 1700px) {
+@media  screen and (min-width: 1700px) {
   #header-on-graph {
     grid-template-columns: 21% auto auto 5% 5% 25%;
     .graphs {
