@@ -51,7 +51,10 @@ class Chart {
     // gets the original image coordinates from the service model
     const updatedCoordinates = SvgService.getImageUpdatedCoordinates();
     // auxiliar variables
-    let x; let y; let width; let height;
+    let x;
+    let y;
+    let width;
+    let height;
     // do the resize math based in the direction that the resize started
     switch (direction) {
       // top left
@@ -140,8 +143,7 @@ class Chart {
     d3.select('.controls-group').attr('transform', SvgService.getTransform());
     d3.select(image).attr('transform', SvgService.getTransform());
     // const myImage = d3.select(image);
-    Chart.imageManipulation({
-    }, image);
+    Chart.imageManipulation({}, image);
   }
 
   static getHandleRotatePosition(handleStartPos) {
@@ -172,7 +174,9 @@ class Chart {
 
   static bindControlsDragAndDrop(size, image) {
     // auxiliar variables
-    let target; let targetClass; let rotateHandleStartPos;
+    let target;
+    let targetClass;
+    let rotateHandleStartPos;
 
     // binding the behavior callback functions
     const dragData = d3.drag()
@@ -500,7 +504,6 @@ class Chart {
 
     const lastUid = data.lastUid || this.data?.lastUid || 0;
 
-
     const labels = Object.values(data.labels).map((d) => Object.create(d));
 
     return {
@@ -653,7 +656,6 @@ class Chart {
 
     folderWrapper.selectAll('.folder > *').remove();
 
-
     //
     // const openFolder = d.labels.some((l) => {
     //   const label = ChartUtils.getLabelById(l);
@@ -713,6 +715,10 @@ class Chart {
         const move = (squareSize / 2) + 50;
         this.node.each((n, i, nodesArr) => {
           const inFolder = n.labels.includes(d.id);
+          const inOtherFolder = !inFolder && n.labels.some((l) => l && l.startsWith('f_'));
+          if (inOtherFolder) {
+            return;
+          }
           if (inFolder) {
             n.lx = null;
             n.ly = null;
@@ -1912,7 +1918,7 @@ class Chart {
       if (ev.shiftKey || d.nodeType === 'image') {
         return;
       }
-      //d3.select('.controls-group').remove();
+      // d3.select('.controls-group').remove();
       await Utils.sleep(10);
       if (this.activeButton !== 'create') {
         return;
@@ -1961,7 +1967,7 @@ class Chart {
       if (!ev.target.parentNode || ev.target.parentNode.classList.contains('node')) {
         return;
       }
-      //d3.select('.controls-group').remove();
+      // d3.select('.controls-group').remove();
       if (this.wrapper.select('#fcurve').node() && this.curved) {
         setTimeout(() => {
           this.wrapper.selectAll('#fcurve, #lcurve').remove();
