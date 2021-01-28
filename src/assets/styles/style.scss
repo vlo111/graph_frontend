@@ -1173,6 +1173,43 @@ p {
   }
 }
 
+@media only screen and (min-width: 1300px) {
+  #header-on-graph {
+    grid-template-columns: 21% auto auto 5% 5% 25%;
+    
+   .graphs {
+    position: fixed;
+    border: none;
+    display: flex;
+    z-index: 2;
+    left: 26%;
+    top: 10px;
+    color: #0d0905; 
+   }
+   .legends {
+     left: 14%;
+   }
+  
+  }
+}
+@media only screen and (min-width: 1700px) {
+  #header-on-graph {
+    grid-template-columns: 21% auto auto 5% 5% 25%;
+    .graphs {
+      position: fixed;
+      border: none;
+      display: flex;
+      z-index: 2;
+      left: 24%;
+      top: 10px;
+      color: #0d0905; 
+     }
+     .legends {
+       left: 12%;
+     }
+  }
+ 
+}
 #header-on-view-graph {
   grid-template-columns: 22% auto auto auto 25%;
 
