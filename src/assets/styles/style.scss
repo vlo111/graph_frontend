@@ -1188,40 +1188,50 @@ p {
   #header-on-graph {
     grid-template-columns: 21% auto auto 5% 5% 25%;
 
-    .graphs {
-      position: fixed;
-      border: none;
-      display: flex;
-      z-index: 2;
-      left: 28%;
-      top: 10px;
-      color: #0d0905;
 
-      .ghButton {
-        padding: 7px 7px 6px;
-      }
-    }
-
-    .legends {
-      left: 15%;
-    }
-
-    .signOut .accountInfo {
-      padding-right: 0px;
-    }
-
-    .mapButton {
-      right: 26%;
-    }
-
-    .wikiButton {
-      right: 22%;
-    }
+   .graphs {
+    position: fixed;
+    border: none;
+    display: flex;
+    z-index: 2;
+    left: 28%;
+    top: 10px;
+    color: #0d0905;
+    .ghButton {
+      padding: 7px 7px 6px;
+   }
+   }
+   .legends {
+     left: 15%;
+   }
+   .signOut .accountInfo {
+    padding-right: 0px;
+   }
+   .mapButton {
+    right: 26%;
+   }
+   .wikiButton {
+     right: 22%;
+   }
 
   }
-}
 
-@media screen and (min-width: 1700px) {
+#header-on-view-graph {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr) );
+  .graphs {
+    right: 166px;
+    position: relative;
+  }
+  .searchInputWrapper {
+    width: 50%;
+  }
+  .legends {
+    left: 16%;
+  }
+
+}
+}
+@media  screen and (min-width: 1700px) {
   #header-on-graph {
     grid-template-columns: 21% auto auto 5% 5% 25%;
 
@@ -1232,20 +1242,20 @@ p {
       z-index: 2;
       left: 24%;
       top: 10px;
-      color: #0d0905;
-    }
 
-    .legends {
-      left: 12%;
-    }
+      color: #0d0905;
+     }
+     .legends {
+       left: 12%;
+     }
+  }
+  #header-on-view-graph {
+    grid-template-columns: 22% auto auto auto 25%;
+
   }
 
 }
 
-#header-on-view-graph {
-  grid-template-columns: 22% auto auto auto 25%;
-
-}
 
 
 #header-on-graph, #header-on-view-graph {
@@ -1278,7 +1288,10 @@ p {
     }
 
     .right-elements {
-      right: -30px;
+      right: -48px;
+    }
+    .ghButton {
+      padding: 12px 14px;
     }
 
   }
