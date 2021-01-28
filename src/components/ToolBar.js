@@ -13,8 +13,7 @@ import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg';
 import { ReactComponent as UploadSvg } from '../assets/images/icons/upload.svg';
-import { getSingleGraphRequest } from '../store/actions/graphs';
-import FileInput from './form/FileInput';
+import { getSingleGraphRequest } from '../store/actions/graphs'; 
 import moment from "moment";
 import ShareTooltip from './ShareTooltip/ShareTooltip';
 
@@ -27,29 +26,7 @@ class ToolBar extends Component {
     history: PropTypes.object.isRequired,
     singleGraphUser: PropTypes.object.isRequired,
 
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      nodeData: {
-        fx: 0,
-        fy: 234,
-        name: '',
-        type: 'image',
-        nodeType: 'image',
-        description: '',
-        icon: '',
-        link: '',
-        keywords: [],
-        color: '#1f77b4',
-        createdUser: 33,
-        updatedUser: 33,
-        labels: [],
-      },
-      icon: null,
-    };
-  }
+  } 
 
   handleClick = (button) => {
     this.props.setActiveButton(button);
