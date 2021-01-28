@@ -1236,13 +1236,40 @@ p {
     }
   }
 }
+@media  screen and (max-width: 1699px) {
+  #header {
+    grid-template-columns: 17% 20% auto 5% 20%;    
+    .signOut {
+      right: 2%;
+    } 
+    .right-elements {
+      right: 30px;
+    }
+  }
+}
+@media  screen and (max-width: 1400px) {
+  #header { 
+    .right-elements {
+      right: 8px;
+    }
+  }
+}
+@media  screen and (min-width: 1700px) {
+  #header {
+    grid-template-columns: 349px auto auto auto 20%;   
+    .signOut {
+      right: 6%;
+    }
+    .right-elements {
+      right: 5%;
+    }
+  }
+}
 
 #header {
-  grid-template-columns: 349px auto auto auto 20%;
 
   .right-elements {
-    position: fixed;
-    right: 5%;
+    position: fixed; 
     top: 12px;
 
     #popover-contained {
@@ -1454,10 +1481,6 @@ p {
       box-shadow: 0 1px 6px rgba(0, 98, 255, 0.4);
     }
 
-  }
-
-  .signOut {
-    right: 6%;
   }
 }
 
