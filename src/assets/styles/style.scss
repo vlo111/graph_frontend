@@ -1249,9 +1249,13 @@ p {
 }
 @media  screen and (max-width: 1400px) {
   #header { 
+    .signOut {
+      right: 2%;
+    } 
     .right-elements {
-      right: 8px;
+      right: -9px;
     }
+    
   }
 }
 @media  screen and (min-width: 1700px) {
