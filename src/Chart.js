@@ -712,6 +712,7 @@ class Chart {
       const squareY = y - (height / 2);
       folderWrapper.selectAll(`[data-id="${d.id}"] rect`).remove();
       folderWrapper.selectAll(`[data-id="${d.id}"] .closeIcon`).remove();
+      folderWrapper.selectAll(`[data-id="${d.id}"] .folderResizeIcon`).remove();
       this.wrapper.select(`[href="#${d.id}"]`).attr('class', 'show');
       folderWrapper.select(`[data-id="${d.id}"]`).attr('class', 'folder folderClose');
 
