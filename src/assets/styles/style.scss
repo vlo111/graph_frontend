@@ -1203,6 +1203,21 @@ p {
    }
   
   }
+  
+#header-on-view-graph {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr) );
+  .graphs {
+    right: 166px;
+    position: relative;
+  }
+  .searchInputWrapper {
+    width: 50%;
+  }
+  .legends {
+    left: 16%;
+  }
+
+}
 }
 @media  screen and (min-width: 1700px) {
   #header-on-graph {
@@ -1219,12 +1234,12 @@ p {
      .legends {
        left: 12%;
      }
+  }  
+  #header-on-view-graph {
+    grid-template-columns: 22% auto auto auto 25%;
+
   }
  
-}
-#header-on-view-graph {
-  grid-template-columns: 22% auto auto auto 25%;
-
 }
  
 
@@ -1253,7 +1268,10 @@ p {
       right: 1%;
     } 
     .right-elements {
-      right: -30px;
+      right: -48px;
+    }
+    .ghButton { 
+      padding: 12px 14px;
     }
     
   }
