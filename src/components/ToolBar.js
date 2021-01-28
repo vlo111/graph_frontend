@@ -109,29 +109,7 @@ class ToolBar extends Component {
               onClick={() => this.handleClick('import')}
             >
               Import data
-            </Button>
-            <div className='imageUpload'>
-              <FileInput
-                label="Icon"
-                accept=".png,.jpg,.gif"
-                value={this.state.icon}
-                onChangeFile={(icon) => {
-                  this.setState((state) => ({
-                    nodeData: {
-                      ...state.nodeData,
-                      icon,
-                      index: Chart.getNodes().length,
-                      createdAt: moment().unix(),
-                      updatedAt: moment().unix(),
-                    },
-                  }), () => {
-                    const nodes = Chart.getNodes();
-                    nodes.push(this.state.nodeData);
-                    Chart.render({ nodes });
-                  });
-                }}
-              />
-            </div>
+            </Button> 
           </div>
         </div>
 
