@@ -511,6 +511,14 @@ class Chart {
     };
   }
 
+  static getData = () => ({
+    links: this.getLinks(),
+    nodes: this.getNodes(),
+    labels: this.getLabels(),
+    embedLabels: this.data.embedLabels,
+    lastUid: this.data.lastUid,
+  })
+
   static resizeSvg = () => {
     if (!this.svg) {
       return null;
@@ -591,12 +599,15 @@ class Chart {
 
   static renderFolders() {
     const dragFolder = {};
+
     const handleDragStart = (ev) => {
       const { target } = ev.sourceEvent;
+
       const element = target.closest('.folder');
       if (element) {
         const id = element.getAttribute('data-id');
         dragFolder.folder = folderWrapper.select(`[data-id="${id}"]`);
+        dragFolder.rsize = target.classList.contains('folderResizeIcon');
         dragFolder.nodes = this.getNotesWithLabels().filter((d) => d.labels.includes(id));
       }
     };
@@ -604,12 +615,41 @@ class Chart {
       if (!dragFolder.folder || dragFolder.folder.empty()) {
         return;
       }
+
       const datum = dragFolder.folder.datum();
-      datum.d = datum.d.map((p) => {
-        p[0] = +(p[0] + ev.dx).toFixed(2);
-        p[1] = +(p[1] + ev.dy).toFixed(2);
-        return p;
-      });
+      if (dragFolder.rsize) {
+        if (!datum.d[1]) {
+          datum.d[1] = [500, 500];
+        }
+        if (datum.d[1][0] < 200) datum.d[1][0] = 200;
+
+        if (datum.d[1][1] < 200) datum.d[1][1] = 200;
+
+        datum.d[1][0] = +(datum.d[1][0] + (ev.dx * 2)).toFixed(2);
+        datum.d[1][1] = +(datum.d[1][1] + (ev.dy * 2)).toFixed(2);
+        const [width, height] = datum.d[1];
+        dragFolder.folder.select('rect')
+          .datum(datum)
+          .attr('x', width / -2)
+          .attr('y', height / -2)
+          .attr('width', width)
+          .attr('height', height);
+
+        dragFolder.folder.select('.folderResizeIcon')
+          .attr('x', width / 2 - 20)
+          .attr('y', height / 2 - 20);
+
+        dragFolder.folder.select('.closeIcon')
+          .attr('x', width / 2 - 40)
+          .attr('y', height / -2 + 10);
+
+        this.undoManager.push(this.getData());
+        return;
+      }
+
+      datum.d[0][0] = +(datum.d[0][0] + ev.dx).toFixed(2);
+      datum.d[0][1] = +(datum.d[0][1] + ev.dy).toFixed(2);
+
       dragFolder.folder
         .datum(datum)
         .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`);
@@ -642,9 +682,11 @@ class Chart {
         }
       });
       this._dataNodes = undefined;
+      this.undoManager.push(this.getData());
       this.graphMovement();
     };
     const handleDragEnd = (ev) => {
+      dragFolder.resize = false;
       dragFolder.folder = null;
     };
     const folderWrapper = d3.select('#graph .folders')
@@ -664,10 +706,10 @@ class Chart {
 
     const aaaa = (ev, d) => {
       d.open = false;
-      const x = d.d[0][0];
-      const y = d.d[0][1];
-      const squareX = x - (squareSize / 2);
-      const squareY = y - (squareSize / 2);
+      const [x, y] = d.d[0];
+      const [width, height] = d.d[1];
+      const squareX = x - (width / 2);
+      const squareY = y - (height / 2);
       folderWrapper.selectAll(`[data-id="${d.id}"] rect`).remove();
       folderWrapper.selectAll(`[data-id="${d.id}"] .closeIcon`).remove();
       this.wrapper.select(`[href="#${d.id}"]`).attr('class', 'show');
@@ -679,7 +721,8 @@ class Chart {
           if (nodeOldFolder && nodeOldFolder !== d.id) {
             return false;
           }
-          return ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
+          console.log(width, height);
+          return ChartUtils.isInSquare([squareX, squareY], [width, height], [n.fx, n.fy]);
         })
         .each((n) => {
           n.lx = x + 30;
@@ -703,16 +746,19 @@ class Chart {
         if (d.open) {
           return;
         }
-        const x = d.d[0][0];
-        const y = d.d[0][1];
+        const [x, y] = d.d[0];
+        const [width, height] = d.d[1];
+
         d.open = true;
 
         folderWrapper.select(`[data-id="${d.id}"]`).attr('class', 'folder folderOpen');
-        const squareX = x - (squareSize / 2);
-        const squareY = y - (squareSize / 2);
+
+        const squareX = x - (width / 2);
+        const squareY = y - (height / 2);
         this.wrapper.select(`[href="#${d.id}"]`).attr('class', 'hide');
         const moveLabels = {};
-        const move = (squareSize / 2) + 50;
+        const moveX = (width / 2) + 50;
+        const moveY = (height / 2) + 50;
         this.node.each((n, i, nodesArr) => {
           const inFolder = n.labels.includes(d.id);
           const inOtherFolder = !inFolder && n.labels.some((l) => l && l.startsWith('f_'));
@@ -724,22 +770,26 @@ class Chart {
             n.ly = null;
             nodesArr[i].classList.remove('hideInFolder');
           }
-          const inSquare = ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
+          const inSquare = ChartUtils.isInSquare([squareX, squareY], [width, height], [n.fx, n.fy]);
           if (inSquare && !inFolder) {
             const labelPosition = n.labels.find((l) => moveLabels[l]);
             const position = labelPosition || ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
-            let labelMove;
+            let labelMove = [width, height];
             if (!labelPosition) {
               n.labels.forEach((l) => {
                 if (!l.startsWith('f_')) {
-                  labelMove = this.wrapper.select(`[data-id="${l}"]`).node().getBoundingClientRect().width || move;
+                  // const el = this.wrapper.select(`[data-id="${l}"]`).node().getBoundingClientRect();
+                  // if (el) {
+                  //   const { scale } = ChartUtils.calcScaledPosition();
+                  //   labelMove = [el.width, el.width];
+                  // }
                   moveLabels[l] = {
-                    labelMove,
+                    labelMove: [moveX, moveY],
                     position,
                   };
                 } else {
                   moveLabels[l] = {
-                    labelMove: move,
+                    labelMove: [moveX, moveY],
                     position,
                     type: 'folder',
                   };
@@ -747,16 +797,16 @@ class Chart {
               });
             }
             if (position === 'right') {
-              n.fx += labelMove || move;
+              n.fx += moveX;
             }
             if (position === 'left') {
-              n.fx -= labelMove || move;
+              n.fx -= moveX;
             }
             if (position === 'top') {
-              n.fy -= labelMove || move;
+              n.fy -= moveY;
             }
             if (position === 'bottom') {
-              n.fy += labelMove || move;
+              n.fy += moveY;
             }
             n.x = n.fx;
             n.y = n.fy;
@@ -773,17 +823,18 @@ class Chart {
           const label = this.wrapper.select(`[data-id="${l}"]`);
           const datum = label.datum();
           datum.d = datum.d.map((p) => {
+            console.log(labelMove);
             if (position === 'right') {
-              p[0] = +(p[0] + labelMove).toFixed(2);
+              p[0] = +(p[0] + labelMove[0]).toFixed(2);
             }
             if (position === 'left') {
-              p[0] = +(p[0] - labelMove).toFixed(2);
+              p[0] = +(p[0] - labelMove[0]).toFixed(2);
             }
             if (position === 'top') {
-              p[1] = +(p[1] - labelMove).toFixed(2);
+              p[1] = +(p[1] - labelMove[1]).toFixed(2);
             }
             if (position === 'bottom') {
-              p[1] = +(p[1] + labelMove).toFixed(2);
+              p[1] = +(p[1] + labelMove[1]).toFixed(2);
             }
             return p;
           });
@@ -805,21 +856,31 @@ class Chart {
 
         folderWrapper.select(`[data-id="${d.id}"]`)
           .append('rect')
-          .attr('width', squareSize)
-          .attr('height', squareSize)
           .attr('class', 'nodeCreate')
           .attr('opacity', 0.6)
           .attr('rx', 15)
-          .attr('x', squareSize / -2)
-          .attr('y', squareSize / -2);
+          .attr('width', (f) => _.get(f, 'd[1][0]', squareSize))
+          .attr('height', (f) => _.get(f, 'd[1][1]', squareSize))
+          .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / -2)
+          .attr('y', (f) => _.get(f, 'd[1][1]', squareSize) / -2);
+
         folderWrapper.select(`[data-id="${d.id}"]`)
           .append('use')
           .attr('href', '#folderCloseIcon')
           .attr('class', 'closeIcon')
           .attr('fill', '#58595b')
-          .attr('x', 210)
-          .attr('y', -240)
+          .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / 2 - 40)
+          .attr('y', (f) => _.get(f, 'd[1][1]', squareSize) / -2 + 10)
           .on('click', aaaa);
+
+        folderWrapper.select(`[data-id="${d.id}"]`)
+          .append('use')
+          .attr('href', '#folderResizeIcon')
+          .attr('opacity', 0)
+          .attr('class', 'folderResizeIcon')
+          .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / 2 - 20)
+          .attr('y', (f) => _.get(f, 'd[1][1]', squareSize) / 2 - 20);
+
         this._dataNodes = undefined;
         this.graphMovement();
       });
@@ -839,20 +900,30 @@ class Chart {
     folderWrapper.selectAll('.folderOpen')
       .append('rect')
       .attr('class', 'nodeCreate')
-      .attr('width', squareSize)
-      .attr('height', squareSize)
       .attr('opacity', 0.6)
       .attr('rx', 15)
-      .attr('x', squareSize / -2)
-      .attr('y', squareSize / -2);
+      .attr('width', (d) => _.get(d, 'd[1][0]', squareSize))
+      .attr('height', (d) => _.get(d, 'd[1][1]', squareSize))
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2)
+      .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2);
+
     folderWrapper.selectAll('.folderOpen')
       .append('use')
       .attr('href', '#folderCloseIcon')
       .attr('class', 'closeIcon')
       .attr('fill', '#58595b')
-      .attr('x', 210)
-      .attr('y', -240)
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / 2 - 40)
+      .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 + 10)
       .on('click', aaaa);
+
+    folderWrapper.selectAll('.folderOpen')
+      .append('use')
+      .attr('href', '#folderResizeIcon')
+      .attr('opacity', 0)
+      .attr('class', 'folderResizeIcon')
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / 2 - 20)
+      .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / 2 - 20);
+
     this.folders.append('text')
       .text((d) => d.name)
       .attr('y', 75);

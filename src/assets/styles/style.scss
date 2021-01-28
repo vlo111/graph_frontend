@@ -983,7 +983,18 @@ p {
       cursor: pointer;
     }
 
+    .folderResizeIcon {
+      cursor: pointer;
+      pointer-events: fill;
+    }
+
     .folderOpen {
+      &:hover {
+        .folderResizeIcon {
+          opacity: 1;
+        }
+      }
+
       text,
       .folderIconUse {
         display: none;
@@ -1173,40 +1184,47 @@ p {
   }
 }
 
-@media  screen and (max-width: 1699px) {
+@media screen and (max-width: 1699px) {
   #header-on-graph {
     grid-template-columns: 21% auto auto 5% 5% 25%;
-    
-   .graphs {
-    position: fixed;
-    border: none;
-    display: flex;
-    z-index: 2;
-    left: 28%;
-    top: 10px;
-    color: #0d0905; 
-    .ghButton { 
-      padding: 7px 7px 6px; 
-   }
-   }
-   .legends {
-     left: 15%;
-   }
-   .signOut .accountInfo {
-    padding-right: 0px;
-   }
-   .mapButton {
-    right: 26%;
-   }
-   .wikiButton {
-     right: 22%;
-   }
-  
+
+    .graphs {
+      position: fixed;
+      border: none;
+      display: flex;
+      z-index: 2;
+      left: 28%;
+      top: 10px;
+      color: #0d0905;
+
+      .ghButton {
+        padding: 7px 7px 6px;
+      }
+    }
+
+    .legends {
+      left: 15%;
+    }
+
+    .signOut .accountInfo {
+      padding-right: 0px;
+    }
+
+    .mapButton {
+      right: 26%;
+    }
+
+    .wikiButton {
+      right: 22%;
+    }
+
   }
 }
-@media  screen and (min-width: 1700px) {
+
+@media screen and (min-width: 1700px) {
   #header-on-graph {
     grid-template-columns: 21% auto auto 5% 5% 25%;
+
     .graphs {
       position: fixed;
       border: none;
@@ -1214,19 +1232,21 @@ p {
       z-index: 2;
       left: 24%;
       top: 10px;
-      color: #0d0905; 
-     }
-     .legends {
-       left: 12%;
-     }
+      color: #0d0905;
+    }
+
+    .legends {
+      left: 12%;
+    }
   }
- 
+
 }
+
 #header-on-view-graph {
   grid-template-columns: 22% auto auto auto 25%;
 
 }
- 
+
 
 #header-on-graph, #header-on-view-graph {
   .graphs {
@@ -1236,34 +1256,42 @@ p {
     }
   }
 }
-@media  screen and (max-width: 1699px) {
+
+@media screen and (max-width: 1699px) {
   #header {
-    grid-template-columns: 17% 20% auto 5% 20%;    
+    grid-template-columns: 17% 20% auto 5% 20%;
+
     .signOut {
       right: 2%;
-    } 
+    }
+
     .right-elements {
       right: 30px;
     }
   }
 }
-@media  screen and (max-width: 1400px) {
-  #header { 
+
+@media screen and (max-width: 1400px) {
+  #header {
     .signOut {
       right: 1%;
-    } 
+    }
+
     .right-elements {
       right: -30px;
     }
-    
+
   }
 }
-@media  screen and (min-width: 1700px) {
+
+@media screen and (min-width: 1700px) {
   #header {
-    grid-template-columns: 349px auto auto auto 20%;   
+    grid-template-columns: 349px auto auto auto 20%;
+
     .signOut {
       right: 6%;
     }
+
     .right-elements {
       right: 5%;
     }
@@ -1273,7 +1301,7 @@ p {
 #header {
 
   .right-elements {
-    position: fixed; 
+    position: fixed;
     top: 12px;
 
     #popover-contained {
