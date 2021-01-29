@@ -429,10 +429,10 @@ class ChartUtils {
         return true;
       }
       if (label.open) {
-        const [width, height] = d[1];
-        const squareX = d[0][0] - (width / 2);
-        const squareY = d[0][1] - (height / 2);
-        return this.isInSquare([squareX, squareY], [width, height], [node.lx || x, node.ly || y]);
+        const squareSize = 500;
+        const squareX = d[0][0] - (squareSize / 2);
+        const squareY = d[0][1] - (squareSize / 2);
+        return this.isInSquare([squareX, squareY], squareSize, [node.lx || x, node.ly || y]);
       }
     }
     for (let i = 0, j = d.length - 1; i < d.length; j = i++) {
@@ -627,7 +627,7 @@ class ChartUtils {
   }
 
   static isInSquare(areaPos, size, pos) {
-    return pos[0] >= areaPos[0] && pos[0] <= areaPos[0] + size[0] && pos[1] >= areaPos[1] && pos[1] <= areaPos[1] + size[1];
+    return pos[0] >= areaPos[0] && pos[0] <= areaPos[0] + size && pos[1] >= areaPos[1] && pos[1] <= areaPos[1] + size;
   }
 
   static getChartSvg() {
