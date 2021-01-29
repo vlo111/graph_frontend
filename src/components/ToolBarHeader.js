@@ -71,7 +71,7 @@ class ToolBarHeader extends Component {
               icon={<ViewSvg />}
               onClick={() => this.props.history.replace(`/graphs/view/${graphId}`)}
             >
-              View mode
+              View
             </Button>
           ) : null}
           <Button
@@ -89,7 +89,7 @@ class ToolBarHeader extends Component {
               className={activeButton === 'media' ? 'active' : undefined}
               onClick={() => this.handleClick('media')}
             >
-              Media gallery
+              Media
             </Button>
           ) : null}
         </div>

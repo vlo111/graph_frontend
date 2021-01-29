@@ -50,7 +50,7 @@ class Legend extends Component {
       return (
         <div className={showLegendButton === 'close' ? 'legends' : 'legends open'}>
           <button className="dropdown-btn" onClick={() => this.handleClick()}>
-            Show Legends
+            Legends
             <span className="carret">
               <Arrow />
             </span>
