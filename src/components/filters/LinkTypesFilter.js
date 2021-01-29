@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
 import Button from '../form/Button';
 
@@ -75,33 +74,49 @@ class LinkTypesFilter extends Component {
         <h4 className="title">Link Types</h4>
         <ul className="list">
           <li className="item">
-            <Checkbox
-              label={allChecked ? 'Uncheck All' : 'Check All'}
-              checked={allChecked}
-              onChange={() => this.toggleAll(typesFull, allChecked)}
-            >
-              <span className="badge">
-                {_.sumBy(typesFull, 'length')}
-              </span>
-            </Checkbox>
+            <div className="filterCheckBox">
+              <input
+                onChange={() => this.toggleAll(typesFull, allChecked)}
+                checked={allChecked}
+                className="graphsCheckbox"
+                type="checkbox"
+                name="layout"
+                id="linkCheckAll"
+              />
+              <label className="pull-left" htmlFor="linkCheckAll">Check All</label>
+            </div>
+            <div className="dashed-border" />
+            <span className="badge">
+              {_.sumBy(typesFull, 'length')}
+            </span>
           </li>
           {types.map((item) => (
             <li key={item.type} className="item" style={{ color: ChartUtils.linkColor(item) }}>
-              <Checkbox
-                label={item.type}
-                checked={filters.linkTypes.includes(item.type)}
-                onChange={() => this.handleChange(item.type)}
-              >
-                <span className="badge">
-                  {item.length}
-                </span>
-              </Checkbox>
+              <div className="filterCheckBox">
+                <input
+                  onChange={() => this.handleChange(item.type)}
+                  checked={filters.linkTypes.includes(item.type)}
+                  className="graphsCheckbox"
+                  type="checkbox"
+                  name="layout"
+                  id={item.type}
+                />
+                <label className="pull-left" htmlFor={item.type}>{item.type}</label>
+              </div>
+              <div className="dashed-border" />
+              <span className="badge">
+                {item.length}
+              </span>
             </li>
           ))}
         </ul>
         {typesFull.length > types.length || showMore ? (
-          <Button onClick={this.toggleMore}>
-            {showMore ? '- Less' : '+ More'}
+          <Button
+            icon={showMore ? 'fa-chevron-up' : 'fa-chevron-down'}
+            className="linkMoreButton"
+            onClick={this.toggleMore}
+          >
+            {showMore ? 'less' : 'show more'}
           </Button>
         ) : null}
       </div>

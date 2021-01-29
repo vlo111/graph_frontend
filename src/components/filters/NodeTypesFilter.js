@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
 import Button from '../form/Button';
 
@@ -111,47 +110,67 @@ class NodeTypesFilter extends Component {
         <h4 className="title">Node Types</h4>
         <ul className="list">
           <li className="item">
-            <Checkbox
-              label={allChecked ? 'Uncheck All' : 'Check All'}
-              checked={allChecked}
-              onChange={() => this.toggleAll(typesFull, allChecked)}
-            >
-              <span className="badge">
-                {_.sumBy(typesFull, 'length')}
-              </span>
-            </Checkbox>
+            <div className="filterCheckBox">
+              <input
+                onChange={() => this.toggleAll(typesFull, allChecked)}
+                checked={allChecked}
+                className="graphsCheckbox"
+                type="checkbox"
+                name="layout"
+                id="nodeCheckAll"
+              />
+              <label className="pull-left" htmlFor="nodeCheckAll">Check All</label>
+            </div>
+            <div className="dashed-border" />
+            <span className="badge">
+              {_.sumBy(typesFull, 'length')}
+            </span>
           </li>
           {types.map((item) => (
             <li key={item.type} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
-              <Checkbox
-                label={item.type}
-                checked={filters.nodeTypes.includes(item.type)}
-                onChange={() => this.handleChange(item.type)}
-              >
-                {!_.isEmpty(customFields[item.type]) ? (
-                  <Button
-                    className="dropdownArrow"
-                    icon="fa-chevron-down"
-                    onClick={() => this.toggleDropdown(item.type)}
-                  />
-                ) : null}
-                <span className="badge">
-                  {item.length}
-                </span>
-              </Checkbox>
-              {openList.includes(item.type) && customFields[item.type] ? (
-                <ul className="list subList">
-                  {_.map(customFields[item.type], (val, key) => (
-                    <li key={key} className="item">
-                      <Checkbox
-                        label={key}
-                        checked={filters.nodeCustomFields.includes(key)}
-                        onChange={() => this.handleFilterChange(key)}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
+              <div className="filterCheckBox">
+                <input
+                  onChange={() => this.handleChange(item.type)}
+                  checked={filters.nodeTypes.includes(item.type)}
+                  className="graphsCheckbox"
+                  type="checkbox"
+                  name="layout"
+                  id={item.type}
+                />
+                <label className="pull-left" htmlFor={item.type}>{item.type}</label>
+                <div>
+                  {!_.isEmpty(customFields[item.type]) ? (
+                    <Button
+                      className="dropdownArrow"
+                      icon="fa-chevron-down"
+                      onClick={() => this.toggleDropdown(item.type)}
+                    />
+                  ) : null}
+                  {openList.includes(item.type) && customFields[item.type] ? (
+                    <ul className="list subList">
+                      {_.map(customFields[item.type], (val, key) => (
+                        <li key={key} className="item">
+                          <div className="filterCheckBox nestedCheckBox">
+                            <input
+                              onChange={() => this.handleFilterChange(key)}
+                              checked={filters.nodeCustomFields.includes(key)}
+                              className="graphsCheckbox"
+                              type="checkbox"
+                              name="layout"
+                              id={key}
+                            />
+                            <label className="pull-left" htmlFor={key}>{key}</label>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              </div>
+              <div className="dashed-border" />
+              <span className="badge">
+                {item.length}
+              </span>
             </li>
           ))}
         </ul>
