@@ -1945,6 +1945,13 @@ p {
       margin-top: 100px;
     }
   }
+  @media screen and (max-height: 800px) {
+  
+    .socialButtons {
+      display: flex;
+    }
+
+  }
 }
 
 .authForm {
