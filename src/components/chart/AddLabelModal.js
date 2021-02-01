@@ -39,7 +39,7 @@ class AddLabelModal extends Component {
     const labelData = {
       id: `f_${ChartUtils.uniqueId(labels)}`,
       color: ChartUtils.labelColors(),
-      d: [[x, y]],
+      d: [[x, y], [500, 500]],
       name: '',
       type: 'folder',
     };

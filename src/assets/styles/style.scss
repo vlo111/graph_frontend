@@ -3164,7 +3164,7 @@ p {
 }
 
 .ghModalFiltersOverlay {
-  width: 380px;
+  width: 35%;
   right: 0;
   left: auto;
   z-index: 10;
@@ -3183,17 +3183,75 @@ p {
     margin: 0;
     max-width: unset;
     max-height: 100vh;
-    top: 0;
+    top: 70px;
     border-radius: 0;
     overflow-y: auto;
+    padding-left: 10%;
+    padding-top: 7%;
+    padding-bottom: 15%;
+
+    .dropdownArrow {
+      padding: 0;
+      background-color: transparent;
+      margin: 0 0 3px 10px;
+      box-shadow: transparent;
+
+      .icon {
+        position: static;
+      }
+    }
+
+    .row {
+      span, label {
+        font: normal normal normal 16px/22px Open Sans;
+        color: #8794A3;
+      }
+    }
+
+    .filterCheckBox
+    {
+      width: 50%;
+      margin-left: 5%;
+    }
+
+    .nestedCheckBox {
+      margin-top: 5%;
+      margin-bottom: 10%;
+    }
+
+    .hideIsolated {
+      margin-left: 5%;
+      margin-top: 4%;
+    }
+
+    label {
+      font-size: 14px !important;
+    }
+
+    .graphFilter {
+      h4 {
+        margin-bottom: 5%;
+      }
+
+      .linkMoreButton {
+        background: none;
+      }
+      .labelCheckAllBlock {
+        display: block;
+      }
+
+      .list {
+        .item {
+          display: flex;
+          margin-top: 2%; 
+        }
+      }
+    }
   }
 
   .resetAll {
-    display: flex;
-
-    .nodeCount {
-      font-size: 14px;
-    }
+    display: block;
+    margin-left: -1%;
   }
 }
 
@@ -3279,7 +3337,7 @@ p {
 .graphFilter {
   width: 100%;
   margin-bottom: 15px;
-  padding-left: 14px;
+  margin-top: 15px;
 
   .list {
     .item {
@@ -3306,17 +3364,6 @@ p {
     .badge {
       order: 2;
     }
-
-    .dropdownArrow {
-      padding: 0;
-      background-color: transparent;
-      margin: 0 0 3px 10px;
-      box-shadow: transparent;
-
-      .icon {
-        position: static;
-      }
-    }
   }
 
   &.linkTypesFilter {
@@ -3338,7 +3385,9 @@ p {
       }
 
       .ghCheckbox {
-        cursor: pointer;
+        label {
+          cursor: pointer;
+        }
 
         input {
           display: none;
@@ -6967,4 +7016,10 @@ img.preview-scaled {
     }
   }
 
+}
+
+.resetButton {
+  background-color: white;
+  color: $color-accent;
+  margin-left: 0;
 }
