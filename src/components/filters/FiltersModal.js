@@ -3,7 +3,6 @@ import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
-import _ from 'lodash';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodesFilter from './NodeTypesFilter';
@@ -92,12 +91,14 @@ class FiltersModal extends Component {
           </>
         )}
         <div className="row resetAll">
-           <Button className="ghButton2" onClick={this.props.resetFilter}>RESET ALL</Button>
           <span
             className="nodeCount"
           >
             {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${nodes.length}`}
           </span>
+          <div>
+            <Button className="ghButton2 resetButton" onClick={this.props.resetFilter}>RESET ALL</Button>
+          </div>
         </div>
 
         <IsolatedFilter />
