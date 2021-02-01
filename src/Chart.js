@@ -504,6 +504,13 @@ class Chart {
 
     const lastUid = data.lastUid || this.data?.lastUid || 0;
 
+
+    data.labels = data.labels.map(d => {
+      if (d.type === 'folder' && !d.d[1]) {
+        d.d[1] = [500, 500];
+      }
+      return d;
+    })
     const labels = Object.values(data.labels).map((d) => Object.create(d));
 
     return {
