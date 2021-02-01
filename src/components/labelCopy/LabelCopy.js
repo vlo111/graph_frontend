@@ -81,7 +81,7 @@ class LabelCopy extends Component {
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     data.nodes = data.nodes.filter((n) => !duplicatedNodes.some((d) => n.name === d.name));
-    data.links = data.links.forEach((l) => {
+    data.links = data.links.map((l) => {
       const duplicateNode = duplicatedNodes.find((n) => n.id === l.source);
       if (duplicateNode) {
         const sourceNode = sourceNodes.find((n) => n.name === duplicateNode.name);
