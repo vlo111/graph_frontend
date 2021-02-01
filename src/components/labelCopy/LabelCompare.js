@@ -5,9 +5,6 @@ import _ from 'lodash';
 import LabelUtils from '../../helpers/LabelUtils';
 import LabelCompareItem from './LabelCompareItem';
 import Button from '../form/Button';
-import Chart from '../../Chart';
-import ChartUtils from '../../helpers/ChartUtils';
-import CustomFields from '../../helpers/CustomFields';
 import { removeNodeCustomFieldKey, renameNodeCustomFieldKey } from '../../store/actions/graphs';
 
 class LabelCompare extends Component {

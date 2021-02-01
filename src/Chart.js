@@ -617,7 +617,6 @@ class Chart {
         dragFolder.rsize = target.classList.contains('folderResizeIcon');
         dragFolder.nodes = this.getNotesWithLabels().filter((d) => d.labels.includes(id));
         dragFolder.labelLock = this.wrapper.select(`use[data-label-id="${id}"]`);
-        console.log(dragFolder.labelLock)
       }
     };
     const handleDrag = (ev) => {

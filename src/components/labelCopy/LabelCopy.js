@@ -77,10 +77,30 @@ class LabelCopy extends Component {
   }
 
   skipDuplications = () => {
-    const { compare: { duplicatedNodes }, position } = this.state;
+    const { compare: { duplicatedNodes, sourceNodes }, position } = this.state;
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     data.nodes = data.nodes.filter((n) => !duplicatedNodes.some((d) => n.name === d.name));
+    data.links = data.links.forEach((l) => {
+      const duplicateNode = duplicatedNodes.find((n) => n.id === l.source);
+      if (duplicateNode) {
+        const sourceNode = sourceNodes.find((n) => n.name === duplicateNode.name);
+        if (sourceNode) {
+          console.log(111111)
+          l.source = sourceNode.id;
+        }
+      }
+
+      const duplicateNodeTarget = duplicatedNodes.find((n) => n.id === l.target);
+      if (duplicateNodeTarget) {
+        const sourceNode = sourceNodes.find((n) => n.name === duplicateNodeTarget.name);
+        if (sourceNode) {
+          console.log(2222)
+          l.target = sourceNode.id;
+        }
+      }
+      return l;
+    });
     data.links = ChartUtils.cleanLinks(data.links, data.nodes);
     LabelUtils.past(data, position);
     this.copyDocuments(data.sourceId, id, data.nodes);
@@ -141,7 +161,6 @@ class LabelCopy extends Component {
 
   compareAndMarge = (sources, duplicates) => {
     const { position } = this.state;
-    const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     let nodes = Chart.getNodes();
     let links = Chart.getLinks();

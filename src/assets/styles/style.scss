@@ -1213,9 +1213,9 @@ p {
    .wikiButton {
      right: 22%;
    }
-  
+
   }
-  
+
 #header-on-view-graph {
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr) );
   .graphs {
@@ -1241,7 +1241,7 @@ p {
       z-index: 2;
       left: 24%;
       top: 10px;
-      color: #0d0905; 
+      color: #0d0905;
       button {
         padding: 7px 24px 6px;
       }
@@ -1524,7 +1524,7 @@ p {
       margin: 7px;
     }
 
-    
+
 
   }
 }
@@ -1946,7 +1946,7 @@ p {
     }
   }
   @media screen and (max-height: 800px) {
-  
+
     .socialButtons {
       display: flex;
     }
@@ -3243,7 +3243,7 @@ p {
       .list {
         .item {
           display: flex;
-          margin-top: 2%; 
+          margin-top: 2%;
         }
       }
     }
@@ -3259,20 +3259,6 @@ p {
   .gh__single-value {
     svg {
       width: 100%;
-    }
-  }
-
-  .gh__option {
-    svg {
-      width: 100%;
-    }
-
-    &--is-selected {
-      svg {
-        line, path {
-          stroke: $color-dark;
-        }
-      }
     }
   }
 
@@ -3764,6 +3750,20 @@ body .gh__menu {
   .gh__option--is-selected {
     background-color: #668DF81A;
     color: $color-dark;
+  }
+
+  .gh__option {
+    svg {
+      width: 100%;
+    }
+
+    &--is-selected {
+      svg {
+        line, path {
+          stroke: $color-dark;
+        }
+      }
+    }
   }
 }
 
