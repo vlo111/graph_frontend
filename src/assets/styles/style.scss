@@ -4156,6 +4156,7 @@ body .gh__menu {
 }
 
 .nodeFullContent {
+  height: 100%;
   .name {
     font-size: 26px;
   }
@@ -4244,6 +4245,7 @@ body .gh__menu {
 }
 
 .nodeTabs {
+  height: 100%;
   padding: 19.5px 4.5%;
 
   .previewWrapper {
@@ -4286,6 +4288,7 @@ body .gh__menu {
   }
 
   .contentWrapper {
+    height: 100%;
     box-shadow: 0 5px 12px #E2E7EB29;
     border: 1px solid $color-light-gray;
     border-radius: 13px 24px 24px 24px;

@@ -69,6 +69,18 @@ class NodeTabsFormModal extends Component {
     this.setState({ tabData });
   }
 
+  controlIFrame = (html) => {
+    const path = '^<\\s*p[^>]*><\\s*a[^>]*>(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)<\\s*/\\s*a><\\s*/\\s*p>$';
+
+    if (html.match(path)) {
+      const link = html.substring(html.indexOf('>http') + 1, html.length - 8);
+
+      return `<iframe width="100%" height="100%" src="${link}" />`;
+    }
+
+    return html;
+  }
+
   save = async () => {
     const {
       node, customField, customFields, fieldName, currentUserId,
@@ -76,6 +88,7 @@ class NodeTabsFormModal extends Component {
     const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
 
+    tabData.content = this.controlIFrame(tabData.content);
 
     tabData.documents = tabData.documents?.sort((x, y) => {
       const first = x.file.type.includes('image');

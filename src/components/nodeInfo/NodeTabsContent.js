@@ -32,24 +32,24 @@ class NodeTabsContent extends Component {
   })
 
   render() {
-    const { contentType } = this.state;
+    // const { contentType } = this.state;
     const { content, name } = this.props;
     const html = String(content?.content || content || '');
-    this.getContentType(html);
-    const { result: text } = stripHtml(html);
-    if (['text/html', 'application/pdf'].includes(contentType)) {
-      const query = queryString.stringify({
-        url: text,
-      });
-      return (
-          <div data-field-name={name} className="contentWrapper previewWrapper">
-            <div className="content">
-              <img src={Utils.fileSrc(`/helpers/content-thumbnail?${query}`)} alt="thumbnail" />
-              <a href={text} target="_blank" rel="noopener noreferrer">{text}</a>
-            </div>
-          </div>
-      );
-    }
+    // this.getContentType(html);
+    // const { result: text } = stripHtml(html);
+    // if (['text/html', 'application/pdf'].includes(contentType)) {
+    //   const query = queryString.stringify({
+    //     url: text,
+    //   });
+    //   return (
+    //       <div data-field-name={name} className="contentWrapper previewWrapper">
+    //         <div className="content">
+    //           <img src={Utils.fileSrc(`/helpers/content-thumbnail?${query}`)} alt="thumbnail" />
+    //           <a href={text} target="_blank" rel="noopener noreferrer">{text}</a>
+    //         </div>
+    //       </div>
+    //   );
+    // }
     return (
         <div data-field-name={name} className="contentWrapper">
           <div className="content" dangerouslySetInnerHTML={{ __html: html || 'no content' }} />
