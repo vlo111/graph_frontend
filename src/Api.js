@@ -169,6 +169,10 @@ class Api {
     return api.get('/document/get-documents', { params: { graphId } });
   }
 
+  static copyDocumentForGraph(requestData) {
+    return api.post('/document/copy-documents', requestData);
+  }
+
   static createShareGraph(requestData) {
     return api.post('/share-graphs/create', requestData);
   }

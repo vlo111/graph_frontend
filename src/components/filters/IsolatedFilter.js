@@ -14,19 +14,24 @@ class IsolatedFilter extends Component {
     const { filters } = this.props;
     return (
       <div className="row hideIsolated graphFilter">
-        <Checkbox
-          label="Hide isolated nodes"
-          checked={filters.hideIsolated}
-          labelReverse
-          onChange={() => this.props.setFilter('hideIsolated', !filters.hideIsolated)}
-        />
+        <div>
+          <input
+            onChange={() => this.props.setFilter('hideIsolated', !filters.hideIsolated)}
+            checked={filters.hideIsolated}
+            className="graphsCheckbox"
+            type="checkbox"
+            name="layout"
+            id="isolated"
+          />
+          <label className="pull-left" htmlFor="isolated">Hide isolated nodes</label>
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  filters: state.app.filters
+  filters: state.app.filters,
 });
 
 const mapDispatchToProps = {

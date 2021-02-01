@@ -616,6 +616,8 @@ class Chart {
         dragFolder.folder = folderWrapper.select(`[data-id="${id}"]`);
         dragFolder.rsize = target.classList.contains('folderResizeIcon');
         dragFolder.nodes = this.getNotesWithLabels().filter((d) => d.labels.includes(id));
+        dragFolder.labelLock = this.wrapper.select(`use[data-label-id="${id}"]`);
+        console.log(dragFolder.labelLock)
       }
     };
     const handleDrag = (ev) => {
@@ -688,6 +690,13 @@ class Chart {
           }
         }
       });
+      if (!dragFolder.labelLock.empty()) {
+        let [, x, y] = dragFolder.labelLock.attr('transform').match(/(-?[\d.]+),\s*(-?[\d.]+)/) || [0, 0, 0];
+        x = +x + ev.dx;
+        y = +y + ev.dy;
+        dragFolder.labelLock.attr('transform', `translate(${x}, ${y})`);
+      }
+
       this._dataNodes = undefined;
       this.undoManager.push(this.getData());
       this.graphMovement();
@@ -1111,6 +1120,10 @@ class Chart {
         .attr('class', 'labelLock')
         .attr('href', '#labelLock')
         .attr('transform', (d) => {
+          if (d.type === 'folder') {
+            const [x, y] = d.d[0]
+            return `translate(${x + 30}, ${y - 20})`;
+          }
           const {
             width, height, left, top,
           } = document.querySelector(`[data-id="${d.id}"]`).getBoundingClientRect();

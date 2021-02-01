@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
-import Button from '../form/Button';
 
 class NodesStatusFilter extends Component {
   static propTypes = {
@@ -67,27 +65,39 @@ class NodesStatusFilter extends Component {
         <h4 className="title">Status</h4>
         <ul className="list">
           <li className="item">
-            <Checkbox
-              label={allChecked ? 'Uncheck All' : 'Check All'}
-              checked={allChecked}
-              onChange={() => this.toggleAll(statusFull, allChecked)}
-            >
-              <span className="badge">
-                {_.sumBy(statusFull, 'length')}
-              </span>
-            </Checkbox>
+            <div className="filterCheckBox">
+              <input
+                onChange={() => this.toggleAll(statusFull, allChecked)}
+                checked={allChecked}
+                className="graphsCheckbox"
+                type="checkbox"
+                name="layout"
+                id="statusCheckAll"
+              />
+              <label className="pull-left" htmlFor="statusCheckAll">Check All</label>
+            </div>
+            <div className="dashed-border" />
+            <span className="badge">
+              {_.sumBy(statusFull, 'length')}
+            </span>
           </li>
           {statusFull.map((item) => (
             <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
-              <Checkbox
-                label={item.status}
-                checked={filters.nodeStatus.includes(item.status)}
-                onChange={() => this.handleChange(item.status)}
-              >
-                <span className="badge">
-                  {item.length}
-                </span>
-              </Checkbox>
+              <div className="filterCheckBox">
+                <input
+                  onChange={() => this.handleChange(item.status)}
+                  checked={filters.nodeStatus.includes(item.status)}
+                  className="graphsCheckbox"
+                  type="checkbox"
+                  name="layout"
+                  id={item.status}
+                />
+                <label className="pull-left" htmlFor={item.status}>{item.status}</label>
+              </div>
+              <div className="dashed-border" />
+              <span className="badge">
+                {item.length}
+              </span>
             </li>
           ))}
         </ul>

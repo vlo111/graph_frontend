@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
 import Button from '../form/Button';
 
 class KeywordsFilter extends Component {
@@ -85,27 +84,39 @@ class KeywordsFilter extends Component {
         <h4 className="title">Node Keywords</h4>
         <ul className="list">
           <li className="item">
-            <Checkbox
-              label={allChecked ? 'Uncheck All' : 'Check All'}
-              checked={allChecked}
-              onChange={() => this.toggleAll(typesFull, allChecked)}
-            >
-              <span className="badge">
-                {_.sumBy(typesFull, 'length')}
-              </span>
-            </Checkbox>
+            <div className="filterCheckBox">
+              <input
+                onChange={() => this.toggleAll(typesFull, allChecked)}
+                checked={allChecked}
+                className="graphsCheckbox"
+                type="checkbox"
+                name="layout"
+                id="keywordCheckAll"
+              />
+              <label className="pull-left" htmlFor="keywordCheckAll">Check All</label>
+            </div>
+            <div className="dashed-border" />
+            <span className="badge">
+              {_.sumBy(typesFull, 'length')}
+            </span>
           </li>
           {types.map((item) => (
             <li key={item.keyword} className="item">
-              <Checkbox
-                label={item.keyword}
-                checked={filters.nodeKeywords.includes(item.keyword)}
-                onChange={() => this.handleChange(item.keyword)}
-              >
-                <span className="badge">
+              <div className="filterCheckBox">
+                <input
+                  onChange={() => this.handleChange(item.keyword)}
+                  checked={filters.nodeKeywords.includes(item.keyword)}
+                  className="graphsCheckbox"
+                  type="checkbox"
+                  name="layout"
+                  id={item.keyword}
+                />
+                <label className="pull-left" htmlFor={item.keyword}>{item.keyword}</label>
+              </div>
+              <div className="dashed-border" />
+              <span className="badge">
                   {item.length}
-                </span>
-              </Checkbox>
+              </span>
             </li>
           ))}
         </ul>

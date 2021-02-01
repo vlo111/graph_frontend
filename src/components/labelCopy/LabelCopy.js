@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import ContextMenu from '../contextMenu/ContextMenu';
 import LabelUtils from '../../helpers/LabelUtils';
 import Button from '../form/Button';
@@ -10,8 +11,15 @@ import LabelCompare from './LabelCompare';
 import CustomFields from '../../helpers/CustomFields';
 import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
 import ChartUtils from '../../helpers/ChartUtils';
+import { copyDocumentForGraphRequest } from '../../store/actions/document';
 
 class LabelCopy extends Component {
+  static propTypes = {
+    copyDocumentForGraphRequest: PropTypes.func.isRequired,
+    singleGraph: PropTypes.object.isRequired,
+    customFields: PropTypes.object.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,20 +39,36 @@ class LabelCopy extends Component {
     ContextMenu.event.removeListener('label.append', this.handleLabelAppend);
   }
 
+  copyDocuments = (fromGraphId, toGraphId, nodes) => {
+    this.props.copyDocumentForGraphRequest(
+      {
+        graphId: fromGraphId,
+        toGraphId,
+        nodes,
+      },
+    );
+  }
+
   fixDuplications = () => {
     const { position } = this.state;
+    const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     LabelUtils.past(data, position);
+    this.copyDocuments(data.sourceId, id, data.nodes);
     this.closeModal();
   }
 
   handleLabelAppend = (ev, params) => {
     const { x, y } = params;
+    const { id } = this.props.singleGraph;
     const compare = LabelUtils.compare();
     const position = [x, y];
     const data = LabelUtils.getData();
     if (_.isEmpty(compare.duplicatedNodes)) {
       LabelUtils.past(data, position);
+
+      this.copyDocuments(data.sourceId, id, data.nodes);
+
       return;
     }
     this.setState({
@@ -54,10 +78,12 @@ class LabelCopy extends Component {
 
   skipDuplications = () => {
     const { compare: { duplicatedNodes }, position } = this.state;
+    const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     data.nodes = data.nodes.filter((n) => !duplicatedNodes.some((d) => n.name === d.name));
     data.links = ChartUtils.cleanLinks(data.links, data.nodes);
     LabelUtils.past(data, position);
+    this.copyDocuments(data.sourceId, id, data.nodes);
     this.closeModal();
   }
 
@@ -68,7 +94,7 @@ class LabelCopy extends Component {
   }
 
   replaceDuplications = () => {
-    const { customFields } = this.props;
+    const { customFields, singleGraph } = this.props;
     const { position } = this.state;
     const data = LabelUtils.getData();
     const nodes = Chart.getNodes();
@@ -95,6 +121,8 @@ class LabelCopy extends Component {
       return n;
     });
     LabelUtils.past(data, position);
+    this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
+
     this.closeModal();
   }
 
@@ -103,15 +131,17 @@ class LabelCopy extends Component {
   }
 
   merge = () => {
-    const { customFields } = this.props;
+    const { customFields, singleGraph } = this.props;
     const { position } = this.state;
     const data = LabelUtils.getData();
     LabelUtils.pastAndMerge(data, position, [], data.nodes, customFields);
+
     this.closeModal();
   }
 
   compareAndMarge = (sources, duplicates) => {
     const { position } = this.state;
+    const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     let nodes = Chart.getNodes();
     let links = Chart.getLinks();
@@ -143,6 +173,7 @@ class LabelCopy extends Component {
 
     Chart.render({ nodes, links });
     LabelUtils.past(data, position);
+
     this.setState({
       compare: {}, data: {}, position: [], showQuestionModal: false, showCompareModal: false,
     });
@@ -215,6 +246,7 @@ const mapStateToProps = (state) => ({
   customFields: state.graphs.singleGraph.customFields || {},
 });
 const mapDispatchToProps = {
+  copyDocumentForGraphRequest,
   removeNodeCustomFieldKey,
 };
 const Container = connect(

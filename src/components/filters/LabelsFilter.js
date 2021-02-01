@@ -67,17 +67,25 @@ class LabelsFilter extends Component {
     return (
       <div className="labelsFilter graphFilter">
         <h4 className="title">Labels</h4>
-        <div className="checkAll">
-          <Checkbox
-            label={allChecked ? 'Uncheck All' : 'Check All'}
-            checked={allChecked}
-            onChange={() => this.toggleAll(labelsFormatted, allChecked)}
-          >
+        <ul className="list labelCheckAllBlock">
+          <li className="item">
+            <div className="filterCheckBox">
+              <input
+                  onChange={() => this.toggleAll(labelsFormatted, allChecked)}
+                  checked={allChecked}
+                  className="graphsCheckbox"
+                  type="checkbox"
+                  name="layout"
+                  id="labelCheckAll"
+              />
+              <label className="pull-left" htmlFor="labelCheckAll">Check All</label>
+            </div>
+            <div className="dashed-border" />
             <span className="badge">
-              {_.sumBy(labelsFormatted, (d) => +d.length || 0)}
-            </span>
-          </Checkbox>
-        </div>
+            {_.sumBy(labelsFormatted, (d) => +d.length || 0)}
+          </span>
+          </li>
+        </ul>
         <ul className="list">
           {labelsFormatted.map((item) => (
             <Tooltip key={item.id} overlay={item.name}>
