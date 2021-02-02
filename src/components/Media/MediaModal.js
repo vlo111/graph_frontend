@@ -68,14 +68,14 @@ class MediaModal extends Component {
           >
             <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
             <div className="mediaHeader">
-              <h1>Media gallery</h1>
+              <h2>Media gallery</h2>
             </div>
             {documentSearch && documentSearch.length
               ? (
                 <div className="searchData">
-                  <div className="searchData__wrapper">
+                  <div className="searchData__wrapper mediaContent">
                     <div className="searchMediaContent">
-                      <article className="searchData__graph">
+                      <article className="searchData__graph mediaForm">
                         <div className="searchDocumentContent mediaGallery">
                           {documentSearch.map((document, index, array) => (
                             document.id && (
@@ -84,57 +84,60 @@ class MediaModal extends Component {
                                 ? { gridColumnEnd: 2 } : {}}
                               className="nodeTabs tabDoc"
                             >
-                              <a
-                                className="nodeLink"
-                                href={`/graphs/update/${document.graphId}?info=${document.nodeId}`}
-                              >
-                                <div className="left">
-                                  <NodeIcon node={document.node} />
-                                </div>
-                                <div className="right">
-                                  <span className="name">{document.node.name}</span>
-                                  <span className="type">{document.node.type}</span>
-                                </div>
-                              </a>
+                              <div className="imageFrame">
+                                <a
+                                  className="nodeLink"
+                                  href={`/graphs/update/${document.graphId}?info=${document.nodeId}`}
+                                >
+                                  <div className="left">
+                                    <NodeIcon node={document.node} />
+                                  </div>
+                                  <div className="right">
+                                    <span className="name">{document.node.name}</span>
+                                    <p>{moment(document.updatedAt).calendar()}</p>
+                                  </div>
+                                </a>
 
-                              <p>{moment(document.updatedAt).calendar()}</p>
-                              <p className="createdBy">
-                                <span>uploaded by </span>
-                                <Link to={`/profile/${document.user.id}`}>
-                                  {`${document.user.firstName} ${document.user.lastName}`}
-                                </Link>
-                              </p>
-                              {
-                                  document.altText ? (
-                                    <a target="_blank" href={document.data}>
-                                      {document.altText}
-                                    </a>
-                                  ) : (
-                                    <table className="mediaTable">
-                                      <tbody>
-                                        <tr>
-                                          <td>
-                                            <div className="mediaTumbnail">
-                                              <div className="container">
-                                                <a target="_blank" href={document.data}>
-                                                  <img
-                                                    src={document.data}
-                                                    width="300px"
-                                                  />
-                                                </a>
-                                              </div>
-                                              <p title={document.description}>
-                                                { document.description && document.description.length > 59
-                                                  ? `${document.description.substr(0, 59)}... `
-                                                  : document.description}
-                                              </p>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  )
-                              }
+                                <p className="createdBy">
+                                  <span>uploaded by </span>
+                                  <Link to={`/profile/${document.user.id}`}>
+                                    {`${document.user.firstName} ${document.user.lastName}`}
+                                  </Link>
+                                </p>
+                                <table className="mediaTable">
+                                  <tbody>
+                                    <tr>
+                                      <td>
+                                        <div className="mediaTumbnail">
+                                          <div className="container">
+                                            {document.type.includes('image') ? (
+                                              <a target="_blank" href={document.data}>
+                                                <img
+                                                  src={document.data}
+                                                  width="300px"
+                                                />
+                                              </a>
+                                            ) : (
+                                              <a className="linkDocumentDownload" download={document.altText} href={document.data}>
+                                                <div className="docContainer">
+                                                  <div className="docFrame">
+                                                    {document.data.split('.').pop().toUpperCase()}
+                                                  </div>
+                                                </div>
+                                              </a>
+                                            )}
+                                          </div>
+                                          <p title={document.description}>
+                                            { document.description && document.description.length > 50
+                                              ? `${document.description.substr(0, 50)}... `
+                                              : document.description}
+                                          </p>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
                             </div>
                             )
                           ))}
@@ -147,9 +150,6 @@ class MediaModal extends Component {
               : (!loading
                 ? <Loading />
                 : <h3 className="mediaNotFound">No Media Gallery Found</h3>)}
-            <div className="buttonsWrapper">
-              <Button color="transparent" className="cancel" onClick={this.closeModal}>cancel</Button>
-            </div>
           </Modal>
         </div>
       );
