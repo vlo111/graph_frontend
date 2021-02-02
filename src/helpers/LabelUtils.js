@@ -143,11 +143,19 @@ class LabelUtils {
 
     const minX = Math.min(...data.label.d.map((l) => l[0]));
     const minY = Math.min(...data.label.d.map((l) => l[1]));
-    data.label.d = data.label.d.map((i) => {
-      i[0] = i[0] - minX + posX;
-      i[1] = i[1] - minY + posY;
-      return i;
-    });
+
+    if (data.label.type === 'folder') {
+      console.log(data.label.d)
+      data.label.d[0][0] = data.label.d[0][0] - minX + posX;
+      data.label.d[0][1] = data.label.d[0][1] - minX + posX;
+    } else {
+      data.label.d = data.label.d.map((i) => {
+        i[0] = i[0] - minX + posX;
+        i[1] = i[1] - minY + posY;
+        return i;
+      });
+    }
+
 
     // nodes past
     let nodes = Chart.getNodes();
