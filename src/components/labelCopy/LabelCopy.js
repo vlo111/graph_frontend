@@ -80,6 +80,7 @@ class LabelCopy extends Component {
     const { compare: { duplicatedNodes, sourceNodes }, position } = this.state;
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
+    const nodes = Chart.getNodes();
     data.links = data.links.map((l) => {
       const duplicateNode = data.nodes.find((n) => n.id === l.source);
       if (duplicateNode) {
@@ -100,7 +101,7 @@ class LabelCopy extends Component {
     });
     data.nodes = data.nodes.filter((n) => !duplicatedNodes.some((d) => n.name === d.name));
 
-    data.links = ChartUtils.cleanLinks(data.links, data.nodes);
+    data.links = ChartUtils.cleanLinks(data.links, [...data.nodes, ...nodes]);
     LabelUtils.past(data, position);
     this.copyDocuments(data.sourceId, id, data.nodes);
     this.closeModal();

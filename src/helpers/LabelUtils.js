@@ -145,9 +145,8 @@ class LabelUtils {
     const minY = Math.min(...data.label.d.map((l) => l[1]));
 
     if (data.label.type === 'folder') {
-      console.log(data.label.d)
-      data.label.d[0][0] = data.label.d[0][0] - minX + posX;
-      data.label.d[0][1] = data.label.d[0][1] - minX + posX;
+      data.label.d[0][0] = posX;
+      data.label.d[0][1] = posY;
     } else {
       data.label.d = data.label.d.map((i) => {
         i[0] = i[0] - minX + posX;
