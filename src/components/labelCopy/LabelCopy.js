@@ -161,6 +161,7 @@ class LabelCopy extends Component {
 
   compareAndMarge = (sources, duplicates) => {
     const { position } = this.state;
+    const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     let nodes = Chart.getNodes();
     let links = Chart.getLinks();
