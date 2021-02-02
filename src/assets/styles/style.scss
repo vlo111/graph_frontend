@@ -6887,8 +6887,6 @@ img.preview-scaled {
       img {
         position: absolute;
         border-radius: 10px;
-        width: 100%;
-        height: 100%;
         top: 50%;
         left: 50%;
         max-width: 100%;
@@ -7029,6 +7027,7 @@ img.preview-scaled {
     box-shadow: none;
 
     .mediaGallery {
+      grid-template-columns: 33% 33% 33%;
       padding: 0;
     }
   }
