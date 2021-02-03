@@ -26,6 +26,7 @@ class GraphUsersInfo extends Component {
       lastName: '',
     };
     const updatedUser = singleGraph.users.find((u) => +u.id === +(node.updatedUser || singleGraph.userId));
+    console.log(node, 'node', createdUser, 'createdUser', updatedUser, 'updatedUser');
     return (
       <Modal
         isOpen
