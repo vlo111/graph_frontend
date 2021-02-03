@@ -49,10 +49,10 @@ export function socketInit() {
         });
       }, 500);
     });
-
-    socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
-      data.id = +data.id;
-
+    
+    socket.on(`graphUpdate`, (data) => {  
+      const { graphs: { singleGraph },account: { myAccount: { id: userId } },} = getState();
+      data.id = +data.id; 
       return (
         (data.id === singleGraph.id)
         && dispatch(updateSingleGraph(data))
