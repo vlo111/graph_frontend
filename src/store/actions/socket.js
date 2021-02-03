@@ -50,7 +50,7 @@ export function socketInit() {
       }, 500);
     });
     
-    socket.on(`graphUpdate`, (data) => {  
+    socket.on(`graphUpdate-${singleGraph.id}`, (data) => {  
       const { graphs: { singleGraph },account: { myAccount: { id: userId } },} = getState();
       data.id = +data.id; 
       return (
