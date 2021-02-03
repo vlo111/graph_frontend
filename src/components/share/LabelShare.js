@@ -99,10 +99,13 @@ class LabelShare extends Component {
           loadOptions={this.searchUser}
           getOptionLabel={(d) => {
             let label = `${d.firstName} ${d.lastName}`;
-            if (d.email) {
-              label += `(${d.email})`;
-            }
-            return label;
+            // if (d.email) {
+            //   label += `(${d.email})`;
+            // }   
+               
+            return (
+            label
+            )
           }}
           getOptionValue={(d) => d.id}
         />
