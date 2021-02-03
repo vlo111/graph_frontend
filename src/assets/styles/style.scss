@@ -1011,6 +1011,17 @@ p {
       stroke-width: 10;
     }
 
+    &.infography {
+      &.crop {
+        cursor: url("../images/cut.png") 0 50, auto;
+      }
+
+      rect {
+        stroke: none;
+        stroke-width: 0;
+      }
+    }
+
     &.withIcon {
       :not(text) {
         stroke-width: 1;
@@ -6432,13 +6443,10 @@ body .gh__menu {
 }
 
 .nodeTabs table {
-  text-align: center;
   font-style: italic;
   font-size: smaller;
   text-indent: 0;
   border: thin silver solid;
-  margin: 0.5em;
-  padding: 0.5em;
 }
 
 img.scaled {
@@ -6626,12 +6634,6 @@ img.preview-scaled {
     width: 100%;
   }
 
-  .nodeTabs {
-    padding: 50px 0 30px 0;
-    width: 230px;
-    justify-self: center;
-  }
-
   .tabDoc {
     p {
       margin-top: 10px;
@@ -6645,12 +6647,9 @@ img.preview-scaled {
     padding: 10px;
   }
 
-  .mediaGallery {
-    grid-template-columns: auto auto auto auto;
-  }
-
   .createdBy {
-    font-style: italic;
+    text-align: center;
+    margin-bottom: 15px;
 
     a {
       font-style: normal;
@@ -6680,6 +6679,12 @@ img.preview-scaled {
       display: flex;
       flex-direction: column;
       justify-content: center;
+
+      .name {
+        font: normal normal 600 16px/22px Open Sans;
+        letter-spacing: 0px;
+        color: #0C69FF;
+      }
     }
 
     .left {
@@ -6699,7 +6704,7 @@ img.preview-scaled {
 
 .ghModalMedia {
   top: 10% !important;
-  width: 90%;
+  width: 47%;
   max-width: unset !important;
   padding: 1.6% 2.1% !important;
   min-width: 920px;
@@ -6930,28 +6935,30 @@ img.preview-scaled {
   border: none !important;
 
   .mediaTumbnail {
-    width: 18em;
-    height: 16em;
+    height: 15em;
 
     p {
       margin-top: 10px;
       text-align: left;
       font-size: 15px;
+      width: 225px;
+      font-style: italic;
     }
 
     .container {
-      width: 18em;
-      height: 16em;
+      width: 17em;
+      height: 11em;
       display: inline-block;
       position: relative;
-      box-shadow: 0 0px 13px 11px rgba(113, 102, 248, 0.3);
+      border-radius: 10px;
 
       img {
         position: absolute;
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
         top: 50%;
         left: 50%;
-        width: auto;
-        height: auto;
         max-width: 100%;
         max-height: 100%;
         transform: translate(-50%, -50%);
@@ -7081,3 +7088,45 @@ img.preview-scaled {
   margin-left: 0;
 }
 
+.mediaContent {
+  margin-top: 0;
+
+  .mediaForm {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+
+    .mediaGallery {
+      padding: 0;
+    }
+  }
+
+  .imageFrame {
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 6px 6px 12px 2px #0000000d;
+    border: 1px solid #DBDBDB;
+    border-radius: 19px;
+    padding: 15px 10px;
+  }
+
+  table {
+    font-style: normal;
+  }
+
+  .docContainer {
+    box-shadow: 6px 6px 12px 2px #0000000d;
+    border: 1px solid #DBDBDB;
+    text-align: center;
+    height: 100%;
+
+    .docFrame {
+      font-size: 40px;
+      margin-top: 20%;
+      color: #c8c0bd;
+    }
+  }
+
+  .linkDocumentDownload {
+    text-decoration: none;
+  }
+}

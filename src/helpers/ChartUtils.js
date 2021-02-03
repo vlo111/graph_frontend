@@ -141,11 +141,17 @@ class ChartUtils {
     return links.filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
   }
 
-  static normalizeIcon = (icon) => {
-    if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {
+  static normalizeIcon = (icon, large = false) => {
+    let url = Api.url + icon;
+    if (icon.startsWith(Api.url)) {
+      url = icon;
+    } else if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {
       return icon;
     }
-    return Api.url + icon;
+    if (large) {
+      url += '.large';
+    }
+    return url;
   }
 
   static setFilter(key, value) {
@@ -522,54 +528,52 @@ class ChartUtils {
     let docIndex = fIndex;
     let files = {};
 
-    if (documents) {
-      const icons = await Promise.all(nodes.map((d) => {
-        if (d.icon && d.icon.startsWith('blob:')) {
-          return Utils.blobToBase64(d.icon);
-        }
-        return d.icon;
-      }));
+    const icons = await Promise.all(nodes.map((d) => {
+      if (d.icon && d.icon.startsWith('blob:')) {
+        return Utils.blobToBase64(d.icon);
+      }
+      return d.icon;
+    }));
 
-      nodes = nodes.map((d, i) => {
-        d.icon = icons[i];
-        d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
-          fIndex += 1;
-          files[fIndex] = Utils.blobToBase64(url);
-          return ` href="<%= file_${fIndex} %>"`;
-        });
-        return d;
+    nodes = nodes.map((d, i) => {
+      d.icon = icons[i];
+      d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
+        fIndex += 1;
+        files[fIndex] = Utils.blobToBase64(url);
+        return ` href="<%= file_${fIndex} %>"`;
       });
+      return d;
+    });
 
-      _.forEach(documents, (doc) => {
-        docIndex++;
-        doc.index = docIndex;
-      });
+    _.forEach(documents, (doc) => {
+      docIndex++;
+      doc.index = docIndex;
+    });
 
-      for (const nodeType in customFields) {
-        for (const tab in customFields[nodeType]) {
-          if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
-            for (const node in customFields[nodeType][tab].values) {
-              if (customFields[nodeType][tab].values[node]) {
-                customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
-                  .replace(/\ssrc="(blob:[^"]+)"/g, (m, url) => {
-                    fIndex += 1;
-                    files[fIndex] = Utils.blobToBase64(url);
-                    return ` src="<%= file_${fIndex} %>"`;
-                  })
-                  .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
-                    fIndex += 1;
-                    files[fIndex] = Utils.blobToBase64(url);
-                    return ` href ="<%= file_${fIndex} %>"`;
-                  });
-              }
+    for (const nodeType in customFields) {
+      for (const tab in customFields[nodeType]) {
+        if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
+          for (const node in customFields[nodeType][tab].values) {
+            if (customFields[nodeType][tab].values[node]) {
+              customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
+                .replace(/\ssrc="(blob:[^"]+)"/g, (m, url) => {
+                  fIndex += 1;
+                  files[fIndex] = Utils.blobToBase64(url);
+                  return ` src="<%= file_${fIndex} %>"`;
+                })
+                .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
+                  fIndex += 1;
+                  files[fIndex] = Utils.blobToBase64(url);
+                  return ` href ="<%= file_${fIndex} %>"`;
+                });
             }
-          } else {
-            delete customFields[nodeType][tab];
           }
+        } else {
+          delete customFields[nodeType][tab];
         }
       }
-      files = await Promise.allValues(files);
     }
+    files = await Promise.allValues(files);
 
     return {
       nodes, files, customFields, documents,
