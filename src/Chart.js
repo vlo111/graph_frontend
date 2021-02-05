@@ -6,7 +6,7 @@ import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
 import SvgService from './helpers/SvgService';
-import ChartInfography from "./helpers/ChartInfography";
+import ChartInfography from './helpers/ChartInfography';
 
 class Chart {
   static event = new EventEmitter();
@@ -259,6 +259,11 @@ class Chart {
     let startX;
     let startY;
     const dragstart = (ev, d) => {
+      ChartUtils.keyEvent(ev);
+      if (d.nodeType === 'infography' && ev.ctrlPress) {
+        ChartInfography.dragstart(ev, d);
+        return;
+      }
       this.event.emit('node.dragstart', ev, d);
 
       if (d && !(this.curentTarget && (this.curentTarget.id === 'tc' || this.curentTarget.id === 'sc'))) {
@@ -274,6 +279,11 @@ class Chart {
     };
 
     const dragged = (ev, d) => {
+      ChartUtils.keyEvent(ev);
+      if (d.nodeType === 'infography' && ev.ctrlPress) {
+        ChartInfography.dragged(ev, d);
+        return;
+      }
       this.event.emit('node.drag', ev, d);
       if (this.curentTarget && (this.curentTarget.id === 'tc' || this.curentTarget.id === 'sc')) {
         // drag curve
@@ -301,6 +311,11 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
+      ChartUtils.keyEvent(ev);
+      if (d.nodeType === 'infography' && ev.ctrlPress) {
+        ChartInfography.dragend(ev, d);
+        return;
+      }
       if (!ev.active) simulation.alphaTarget(0);
       if (d !== undefined) {
         if (d.readOnly) {
@@ -548,13 +563,12 @@ class Chart {
 
     const lastUid = data.lastUid || this.data?.lastUid || 0;
 
-
-    data.labels = data.labels.map(d => {
+    data.labels = data.labels.map((d) => {
       if (d.type === 'folder' && !d.d[1]) {
         d.d[1] = [500, 500];
       }
       return d;
-    })
+    });
     const labels = Object.values(data.labels).map((d) => Object.create(d));
 
     return {
@@ -677,7 +691,6 @@ class Chart {
 
         if (datum.d[1][1] < 200) datum.d[1][1] = 200;
 
-
         // const minX = _.minBy(dragFolder.nodes, 'fx');
         // const maxX = _.maxBy(dragFolder.nodes, 'fx');
         //
@@ -688,7 +701,6 @@ class Chart {
         // const posTopRight = [maxX, minY];
         // const posBottomRight = [maxX, maxY];
         // const posBottomLeft = [minX, maxY];
-
 
         datum.d[1][0] = +(datum.d[1][0] + (ev.dx * 2)).toFixed(2);
         datum.d[1][1] = +(datum.d[1][1] + (ev.dy * 2)).toFixed(2);
@@ -847,7 +859,7 @@ class Chart {
           if (inSquare && !inFolder) {
             const labelPosition = n.labels.find((l) => moveLabels[l]);
             const position = labelPosition || ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
-            let labelMove = [width, height];
+            const labelMove = [width, height];
             if (!labelPosition) {
               n.labels.forEach((l) => {
                 if (!l.startsWith('f_')) {
@@ -1177,7 +1189,7 @@ class Chart {
         .attr('href', '#labelLock')
         .attr('transform', (d) => {
           if (d.type === 'folder') {
-            const [x, y] = d.d[0]
+            const [x, y] = d.d[0];
             return `translate(${x + 30}, ${y - 20})`;
           }
           const {
@@ -1272,7 +1284,6 @@ class Chart {
         .append('circle')
         .attr('r', (d) => this.radiusList[d.index]);
 
-
       this.nodesWrapper.selectAll('.square')
         .append('rect')
         .attr('width', (d) => this.radiusList[d.index] * 2)
@@ -1303,13 +1314,31 @@ class Chart {
           return `translate(${r}, ${r})`;
         });
 
+      const infography = this.nodesWrapper.selectAll('.infography')
 
-      this.nodesWrapper.selectAll('.infography')
-        .append('rect')
+      infography
+        .filter((d) => d.d)
+        .append('defs')
+        .append('clipPath')
+        .attr('id', (d) => `cutOff_${d.id}`)
+        .append('path')
+        .attr('d', (d) => ChartInfography.renderPath(d.d));
+
+      infography.append('rect')
         .attr('width', 512)
         .attr('height', 384)
         .attr('x', 512 / -2)
-        .attr('y', 384 / -2);
+        .attr('y', 384 / -2)
+        .attr('clip-path', (d) => (d.d ? `url(#cutOff_${d.id})` : undefined))
+        .attr('transform', (d) => {
+          if (!d.d) {
+            return `translate(0 ${384 / -2})`;
+          }
+          const { width, height, min } = ChartInfography.getPolygonSize(d.d);
+          const cx = (-1 * min[0]) - (width / 2);
+          const cy = -1 * min[1] - height;
+          return `translate(${cx} ${cy})`;
+        });
 
       this.nodesWrapper.selectAll('.node :not(text)')
         .attr('fill', (d) => {
@@ -2134,6 +2163,8 @@ class Chart {
         readOnly: !!d.readOnly || undefined,
         sourceId: +d.sourceId || undefined,
         labels: ChartUtils.getNodeLabels(d),
+        d: d.d,
+        infographyId: d.infographyId,
       }));
     }
     return this._dataNodes;

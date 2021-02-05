@@ -1011,9 +1011,17 @@ p {
       stroke-width: 10;
     }
 
+    .nodeCut{
+      stroke: #2196f3;
+      fill: rgba(33, 150, 243, 0.3);
+      stroke-dasharray: 4;
+    }
+
     &.infography {
       &.crop {
-        cursor: url("../images/cut.png") 0 50, auto;
+        //cursor: url("../images/cut.png") 0 0, auto;
+        cursor: url("../images/pen.png") 0 50, auto;
+
       }
 
       rect {

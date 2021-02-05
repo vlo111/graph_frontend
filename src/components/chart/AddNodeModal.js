@@ -18,7 +18,7 @@ import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
 import Utils from '../../helpers/Utils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import ChartUtils from "../../helpers/ChartUtils";
+import ChartUtils from '../../helpers/ChartUtils';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -33,6 +33,7 @@ class AddNodeModal extends Component {
     const nodes = Chart.getNodes();
     const {
       fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField,
+      d, infographyId,
     } = addNodeParams;
     const _type = type || _.last(nodes)?.type || '';
     this.setState({
@@ -47,6 +48,8 @@ class AddNodeModal extends Component {
         keywords: keywords || [],
         location,
         color: ChartUtils.nodeColorObj[_type] || '',
+        d,
+        infographyId,
       },
       customField,
       index,
@@ -136,6 +139,7 @@ class AddNodeModal extends Component {
   render() {
     const { nodeData, errors, index } = this.state;
     const { addNodeParams, currentUserRole, currentUserId } = this.props;
+    const { editPartial } = addNodeParams;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
     const groups = this.getTypes(nodes);
@@ -183,38 +187,44 @@ class AddNodeModal extends Component {
               error={errors.status}
               onChange={(v) => this.handleChange('status', v?.value || '')}
             />
-            <Select
-              label="Icon shape"
-              portal
-              options={NODE_TYPES}
-              value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
-              error={errors.nodeType}
-              onChange={(v) => this.handleChange('nodeType', v?.value || '')}
-            />
-            <ColorPicker
-              label="Color"
-              value={nodeData.color}
-              error={errors.color}
-              readOnly
-              style={{ color: nodeData.color }}
-              onChangeText={(v) => this.handleChange('color', v)}
-              autocomplete="off"
-            />
-            <FileInput
-              label="Icon"
-              accept=".png,.jpg,.gif"
-              value={nodeData.icon}
-              onChangeFile={(v) => this.handleChange('icon', v)}
-            />
-            <Select
-              label="keywords"
-              isCreatable
-              isMulti
-              value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
-              menuIsOpen={false}
-              placeholder="Add..."
-              onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
-            />
+            {!editPartial ? (
+              <>
+                <Select
+                  label="Icon shape"
+                  portal
+                  options={NODE_TYPES}
+                  value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
+                  error={errors.nodeType}
+                  onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+                />
+                <ColorPicker
+                  label="Color"
+                  value={nodeData.color}
+                  error={errors.color}
+                  readOnly
+                  style={{ color: nodeData.color }}
+                  onChangeText={(v) => this.handleChange('color', v)}
+                  autocomplete="off"
+                />
+
+                <FileInput
+                  label="Icon"
+                  accept=".png,.jpg,.gif"
+                  value={nodeData.icon}
+                  onChangeFile={(v) => this.handleChange('icon', v)}
+                />
+                <Select
+                  label="keywords"
+                  isCreatable
+                  isMulti
+                  value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
+                  menuIsOpen={false}
+                  placeholder="Add..."
+                  onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
+                />
+              </>
+            ) : null}
+
             <LocationInputs
               error={errors.location}
               value={nodeData.location}

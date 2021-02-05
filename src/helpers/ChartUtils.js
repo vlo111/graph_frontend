@@ -359,7 +359,9 @@ class ChartUtils {
   }
 
   static keyEvent(ev) {
-    ev.ctrlPress = Utils.getOS() === 'macos' ? ev.metaKey : ev.ctrlKey;
+    const metaKey = ev.sourceEvent?.metaKey || ev.metaKey;
+    const ctrlKey = ev.sourceEvent?.ctrlKey || ev.ctrlKey;
+    ev.ctrlPress = Utils.getOS() === 'macos' ? metaKey : ctrlKey;
     ev.chartEvent = !['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase());
   }
 
