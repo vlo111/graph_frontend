@@ -11,6 +11,8 @@ $color-warning: #FED300;
 $color-light-blue: #C6E6FF;
 $color-gray: #9BA6B4;
 $color-light-gray: #E2E7EB;
+$color-light-gray2: #EDF1F5;
+
 $color-dark: #0D0905;
 $color-dark-blue: #717EA0;
 
@@ -1240,9 +1242,6 @@ p {
 
   }
 
-
-}
-
 #header-on-view-graph {
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr) );
 
@@ -1260,8 +1259,8 @@ p {
   }
 
 }
-
-@media screen and (min-width: 1700px) {
+}
+@media  screen and (min-width: 1700px) {
   #header-on-graph {
     grid-template-columns: 21% auto auto 5% 5% 25%;
 
@@ -1977,11 +1976,13 @@ p {
     }
   }
   @media screen and (max-height: 800px) {
-    display: flex;
+
+    .socialButtons {
+      display: flex;
+    }
+
   }
-
 }
-
 
 .authForm {
   display: flex;
@@ -6516,8 +6517,9 @@ img.preview-scaled {
 
 .graphCopyOverlay {
   .graphCopy {
-    max-width: 500px;
-    width: 50%;
+    max-width: 45%;
+    width: 45%;
+    background: $color-light-gray2 0% 0% no-repeat padding-box;
 
     .subtitle {
       width: 100%;
@@ -6525,23 +6527,60 @@ img.preview-scaled {
     }
 
     .title {
-      width: 100%;
+      width: 53%;
       text-align: center;
+      margin: 3% auto 2%;
+    }
+
+    .headerContents {
+      font-weight: bold;
+    }
+
+    .ghButton:hover {
+      color: $color-dark;
+    }
+
+    .textContent {
+      font-weight: bold;
+      width: 70%;
+      margin: auto;
+      text-align: center;
+      width: 100%;
     }
 
     .buttonsWrapper {
       padding: 0 10%;
+      margin: 2% auto 1%;
+
+      .part {
+        display: flex;
+        margin-bottom: 15%;
+        height: 140px;
+        justify-content: center;
+
+        .component {
+          display: block;
+          width: 160px;
+        }
+      }
 
       .actionButton {
         background-color: transparent;
         width: 100%;
-        text-align: left;
+        height: 100%;
+        padding: 20px;
 
         > .icon {
-          margin-right: 20px;
+          display: flex;
+          margin: auto;
+          width: 93px;
+          height: 93px;
+          background: white;
+          border-radius: 15px;
 
-          .fa::before {
-            font-size: 28px;
+          svg {
+            width: 30%;
+            height: auto;
           }
         }
       }
@@ -6551,8 +6590,8 @@ img.preview-scaled {
 
 .graphCompareOverlay {
   .graphCompare {
-    max-width: 510px;
-    width: 50%;
+    max-width: 55%;
+    width: 55%;
 
     .title {
       width: 100%;
@@ -6563,7 +6602,56 @@ img.preview-scaled {
     .subtitle {
       width: 100%;
       font-weight: normal;
-      font-size: 16px;
+      font-size: 14px;
+    }
+
+    .graphCompareContainer {
+      width: 100%;
+      padding: 3% 7%;
+
+      .ghButton {
+        float: right;
+      }
+
+      .title, .subtitle {
+        text-align: center;
+      }
+
+      .node {
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 6px 6px 12px 2px #0000000d;
+        border: 1px solid #DBDBDB;
+        border-radius: 19px;
+        padding: 15px 10px;
+        margin-bottom: 25px;
+        display: flex;
+
+        .createdAt {
+          font-size: 13px;
+        }
+
+        label {
+          margin: auto;
+        }
+
+        .compareCheckBox {
+          margin: auto 0;
+          margin-top: -10px;
+          height: 100%;
+          display: flex;
+        }
+
+        .nodeIcon {
+          margin: auto 10px auto;
+          margin-left: 0;
+          min-width: 60px;
+          height: 60px;
+        }
+      }
+
+      .node_left {
+        margin-right: 15px;
+      }
     }
 
   }
@@ -6582,14 +6670,12 @@ img.preview-scaled {
   .item {
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid $color-accent;
-    padding: 15px 0 0;
+    border-bottom: 1px solid #A6AFBC66;
+    padding: 3% 0 0;
     overflow: hidden;
-
 
     .row {
       margin: 0;
-      flex-wrap: nowrap;
 
       .description {
         width: 100%;
@@ -6621,13 +6707,13 @@ img.preview-scaled {
         padding: 10px 0 0 0;
 
         span {
-          padding: 0 10px;
+          padding: 5px 15px;
           margin: 0 4px 4px 0;
           display: flex;
-          border-radius: 5px;
-          border: 1px solid $color-gray;
-          box-shadow: 0px 2px 8px rgba(#0D0905, 0.1);
-          background-color: #ffffff;
+          border-radius: 15px;
+          background: #FFFFFF 0% 0% no-repeat padding-box;
+          border: 1px solid #DBDBDB;
+          font-size: 13px;
         }
       }
     }
@@ -6687,12 +6773,6 @@ img.preview-scaled {
       display: flex;
       flex-direction: column;
       justify-content: center;
-
-      .name {
-        font: normal normal 600 16px/22px Open Sans;
-        letter-spacing: 0px;
-        color: #0C69FF;
-      }
     }
 
     .left {
@@ -7140,4 +7220,10 @@ img.preview-scaled {
 
 .errorRecovery {
   color: $color-error;
+}
+
+.headerName {
+  font: normal normal 600 16px/22px Open Sans;
+  letter-spacing: 0px;
+  color: #0C69FF;
 }

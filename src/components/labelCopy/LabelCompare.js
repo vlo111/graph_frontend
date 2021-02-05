@@ -6,6 +6,7 @@ import LabelUtils from '../../helpers/LabelUtils';
 import LabelCompareItem from './LabelCompareItem';
 import Button from '../form/Button';
 import { removeNodeCustomFieldKey, renameNodeCustomFieldKey } from '../../store/actions/graphs';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class LabelCompare extends Component {
   constructor(props) {
@@ -62,8 +63,9 @@ class LabelCompare extends Component {
 
   render() {
     const {
-      compare: { duplicatedNodes, sourceNodes }, onRequestClose, customFields, singleGraph,
+      compare: { duplicatedNodes, sourceNodes }, onRequestClose, customFields,
     } = this.props;
+
     const { sources, duplicates } = this.state;
     const data = LabelUtils.getData();
     return (
@@ -73,72 +75,51 @@ class LabelCompare extends Component {
         overlayClassName="ghModalOverlay graphCompareOverlay"
         onRequestClose={onRequestClose}
       >
-        <h2 className="title">
-          Which nodes do you want to keep?
-        </h2>
-        <h4 className="subtitle">
-          If you select both versions, the moved node will have a number added to its name.
-        </h4>
-        <ul className="compareList">
-          <li className="item">
-            <div className="bottom">
-              <div className="node node_left">
-                <input
-                  type="checkbox"
-                  checked={duplicates.length === duplicatedNodes.length}
-                  onClick={() => this.toggleAllDuplicate()}
-                />
-                {'Nodes from '}
-                <span>{data.title}</span>
-              </div>
-              <div className="node node_right">
-                <input
-                  type="checkbox"
-                  checked={sources.length === sourceNodes.length}
-                  onClick={() => this.toggleAllSource()}
-                />
-                {'Nodes already in '}
-                <span>{singleGraph.title}</span>
-              </div>
-            </div>
-          </li>
-          {duplicatedNodes.map((nodeDuplicate) => {
-            const nodeSource = sourceNodes.find((n) => n.name === nodeDuplicate.name);
-            return (
-              <li className="item">
-                <div className="top">
-                  <span className="name">{nodeSource.name}</span>
-                </div>
-                <div className="bottom">
-                  <div className="node node_left">
-                    <LabelCompareItem
-                      node={nodeDuplicate}
-                      customFields={data.customFields}
-                      checked={duplicates.some((d) => d.id === nodeDuplicate.id)}
-                      onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplicates')}
-                    />
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={onRequestClose} />
+        <div className="graphCompareContainer">
+          <h2 className="title">
+            Select nodes you want to keep
+          </h2>
+          <h4 className="subtitle">
+            If you select both versions, the moved node will have a number added to its name.
+          </h4>
+          <ul className="compareList">
+            {duplicatedNodes.map((nodeDuplicate) => {
+              const nodeSource = sourceNodes.find((n) => n.name === nodeDuplicate.name);
+              return (
+                <li className="item">
+                  <div className="bottom">
+                    <div className="node node_left">
+                      <LabelCompareItem
+                        node={nodeDuplicate}
+                        customFields={data.customFields}
+                        checked={duplicates.some((d) => d.id === nodeDuplicate.id)}
+                        onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplicates')}
+                      />
+                    </div>
+                    <div className="node node_right">
+                      <LabelCompareItem
+                        node={nodeSource}
+                        customFields={customFields}
+                        checked={sources.some((d) => d.id === nodeSource.id)}
+                        onChange={(checked) => this.handleChange(checked, nodeSource, 'sources')}
+                      />
+                    </div>
                   </div>
-                  <div className="node node_right">
-                    <LabelCompareItem
-                      node={nodeSource}
-                      customFields={customFields}
-                      checked={sources.some((d) => d.id === nodeSource.id)}
-                      onChange={(checked) => this.handleChange(checked, nodeSource, 'sources')}
-                    />
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-        <Button type="submit" onClick={this.handleSubmit}>Save</Button>
+                </li>
+              );
+            })}
+          </ul>
+          <Button onClick={this.handleSubmit} className="ghButton accent alt main main" type="submit">
+            Save
+          </Button>
+        </div>
       </Modal>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  singleGraph: state.graphs.singleGraph,
   customFields: state.graphs.singleGraph.customFields || {},
 });
 

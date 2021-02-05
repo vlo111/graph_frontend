@@ -12,6 +12,12 @@ import CustomFields from '../../helpers/CustomFields';
 import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
 import ChartUtils from '../../helpers/ChartUtils';
 import { copyDocumentForGraphRequest } from '../../store/actions/document';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { ReactComponent as CompareNodesSvg } from '../../assets/images/icons/Compare_nodes.svg';
+import { ReactComponent as KeepBothSvg } from '../../assets/images/icons/Keep_both.svg';
+import { ReactComponent as MergeNodesSvg } from '../../assets/images/icons/Merge_nodes.svg';
+import { ReactComponent as ReplaceSvg } from '../../assets/images/icons/Replace.svg';
+import { ReactComponent as SkipNodesSvg } from '../../assets/images/icons/Skip_these_nodes.svg';
 
 class LabelCopy extends Component {
   static propTypes = {
@@ -161,7 +167,6 @@ class LabelCopy extends Component {
 
   compareAndMarge = (sources, duplicates) => {
     const { position } = this.state;
-    const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     let nodes = Chart.getNodes();
     let links = Chart.getLinks();
@@ -217,32 +222,64 @@ class LabelCopy extends Component {
           overlayClassName="ghModalOverlay graphCopyOverlay"
           onRequestClose={this.closeModal}
         >
-          <h4 className="subtitle">
-            {`Moving ${data.nodes.length} nodes from ${data.title} to ${singleGraph.title}.`}
-          </h4>
+          <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
           <h2 className="title">
             {`The destinations has ${compare.duplicatedNodes?.length || 0} nodes with the same type and name`}
           </h2>
+          <p className="subtitle">
+            Moving
+            {' '}
+            <span className="headerContents">
+              {data.nodes.length}
+            </span>
+            {' '}
+            nodes from
+            {' '}
+            <span className="headerContents">
+              {data.title}
+            </span>
+            {' '}
+            to
+            {' '}
+            <span className="headerContents">
+              {singleGraph.title}
+            </span>
+            .
+          </p>
           <div className="buttonsWrapper">
-            <Button onClick={() => this.toggleCompareNodes(true)} className="actionButton" icon="fa-balance-scale">
-              Compare nodes
-            </Button>
-            <Button
-              onClick={() => this.compareAndMarge(compare.sourceNodes, compare.duplicatedNodes)}
-              className="actionButton"
-              icon="fa-code-fork"
-            >
-              Merge nodes
-            </Button>
-            <Button onClick={this.replaceDuplications} className="actionButton" icon="fa-retweet">
-              Replace the nodes in the destination
-            </Button>
-            <Button onClick={this.skipDuplications} className="actionButton" icon="fa-compress">
-              Skip these nodes
-            </Button>
-            <Button onClick={this.fixDuplications} className="actionButton" icon="fa-clone">
-              Keep both
-            </Button>
+            <div className="part">
+              <div className="component">
+                <Button
+                  onClick={() => this.toggleCompareNodes(true)}
+                  className="actionButton"
+                  icon={<CompareNodesSvg />}
+                />
+                <p className="textContent">Compare nodes</p>
+
+              </div>
+              <div className="component">
+                <Button
+                  onClick={() => this.compareAndMarge(compare.sourceNodes, compare.duplicatedNodes)}
+                  className="actionButton"
+                  icon={<MergeNodesSvg />}
+                />
+                <p className="textContent">Merge nodes</p>
+              </div>
+              <div className="component">
+                <Button onClick={this.skipDuplications} className="actionButton" icon={<SkipNodesSvg />} />
+                <p className="textContent">Skip these nodes</p>
+              </div>
+            </div>
+            <div className="part">
+              <div className="component">
+                <Button onClick={this.replaceDuplications} className="actionButton" icon={<ReplaceSvg />} />
+                <p className="textContent">Replace the nodes in the destination</p>
+              </div>
+              <div className="component">
+                <Button onClick={this.fixDuplications} className="actionButton" icon={<KeepBothSvg />} />
+                <p className="textContent">Keep both</p>
+              </div>
+            </div>
           </div>
         </Modal>
         {showCompareModal

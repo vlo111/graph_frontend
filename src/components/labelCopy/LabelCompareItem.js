@@ -18,31 +18,52 @@ class LabelCompareItem extends Component {
 
   render() {
     const { node, customFields, checked } = this.props;
+
     const customField = CustomFields.get(customFields, node.type, node.id);
+
+    const uniqueCheckboxId = Math.random().toString(36).substring(7);
+
     return (
       <>
-        <input type="checkbox" checked={checked} onChange={this.handleChange} />
+        <div className="compareCheckBox">
+          <input
+            onChange={this.handleChange}
+            checked={checked}
+            className="graphsCheckbox"
+            type="checkbox"
+            name="layout"
+            id={uniqueCheckboxId}
+          />
+          <label className="pull-left" htmlFor={uniqueCheckboxId} />
+        </div>
+
+        <NodeIcon node={node} />
         <div className="row">
-          <NodeIcon node={node} />
           <div className="description">
-            <span className="type">{node.type}</span>
+            <span className="headerName">{node.name}</span>
             {node.createdAt ? (
               <span className="createdAt">{moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}</span>
             ) : null}
+            {/* {(node.attachedFiles && node.attachedFiles.length) ? ( */}
+            {/*  <span className="createdAt"> */}
+            {/*    { node.attachedFiles } */}
+            {/*    {' '} */}
+            {/*    attached files */}
+            {/*  </span> */}
+            {/* ) */}
+            {/*  : <span className="createdAt"> 0 </span>} */}
           </div>
-        </div>
-        <div className="tabs">
-          {_.map(customField, (val, key) => {
-            const { result: text } = stripHtml(val || '');
-            if (!text) {
-              return <span key={key}>{key}</span>;
-            }
-            return (
-              <Tooltip key={key} overlay={text} placement="top">
-                <span>{key}</span>
+          <div className="tabs">
+            {_.map(customField, (val, key) => (
+              <Tooltip key={key} overlay={key} placement="top">
+                <span>
+                  {key && key.length > 10
+                    ? `${key.substr(0, 10)}... `
+                    : key}
+                </span>
               </Tooltip>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </>
     );
