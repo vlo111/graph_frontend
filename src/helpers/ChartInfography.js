@@ -9,7 +9,7 @@ class ChartInfography {
       .on('mousemove', (ev, d) => {
         ChartUtils.keyEvent(ev);
         const { parentNode } = ev.target;
-        if (ev.ctrlPress) {
+        if (ev.shiftKey) {
           if (!parentNode.classList.contains('crop')) {
             parentNode.classList.add('crop');
           }

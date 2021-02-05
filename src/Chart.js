@@ -259,8 +259,7 @@ class Chart {
     let startX;
     let startY;
     const dragstart = (ev, d) => {
-      ChartUtils.keyEvent(ev);
-      if (d.nodeType === 'infography' && ev.ctrlPress) {
+      if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
         ChartInfography.dragstart(ev, d);
         return;
       }
@@ -279,8 +278,7 @@ class Chart {
     };
 
     const dragged = (ev, d) => {
-      ChartUtils.keyEvent(ev);
-      if (d.nodeType === 'infography' && ev.ctrlPress) {
+      if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
         ChartInfography.dragged(ev, d);
         return;
       }
@@ -311,8 +309,7 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
-      ChartUtils.keyEvent(ev);
-      if (d.nodeType === 'infography' && ev.ctrlPress) {
+      if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
         ChartInfography.dragend(ev, d);
         return;
       }
