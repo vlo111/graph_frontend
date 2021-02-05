@@ -1332,11 +1332,12 @@ class Chart {
         .attr('clip-path', (d) => (d.d ? `url(#cutOff_${d.id})` : undefined))
         .attr('transform', (d) => {
           if (!d.d) {
-            return `translate(0 ${384 / -2})`;
+            // return `translate(0 ${384 / -2})`;
+            return null;
           }
           const { width, height, min } = ChartInfography.getPolygonSize(d.d);
           const cx = (-1 * min[0]) - (width / 2);
-          const cy = -1 * min[1] - height;
+          const cy = -1 * min[1] - height / 2;
           return `translate(${cx} ${cy})`;
         });
 
@@ -1831,6 +1832,10 @@ class Chart {
           i += this.radiusList[d.index] / 5;
         } else if (d.nodeType === 'triangle') {
           i += this.radiusList[d.index] / 5;
+        } else if (d.nodeType === 'infography') {
+          const { height = 384 } = d.d ? ChartInfography.getPolygonSize(d.d) : {};
+
+          return height / 2 + 15;
         }
         return this.radiusList[d.index] + i;
       })
