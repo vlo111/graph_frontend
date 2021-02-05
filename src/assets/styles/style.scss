@@ -6542,7 +6542,10 @@ img.preview-scaled {
 
     .textContent {
       font-weight: bold;
-      margin-top: 20%;
+      width: 70%;
+      margin: auto;
+      text-align: center;
+      width: 100%;
     }
 
     .buttonsWrapper {
@@ -6552,18 +6555,26 @@ img.preview-scaled {
       .part {
         display: flex;
         margin-bottom: 15%;
+        height: 140px;
+        justify-content: center;
+
+        .component {
+          display: block;
+          width: 160px;
+        }
       }
 
       .actionButton {
         background-color: transparent;
         width: 100%;
+        height: 100%;
         padding: 20px;
 
         > .icon {
           display: flex;
           margin: auto;
           width: 93px;
-          height: 100%;
+          height: 93px;
           background: white;
           border-radius: 15px;
 

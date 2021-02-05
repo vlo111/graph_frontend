@@ -248,33 +248,37 @@ class LabelCopy extends Component {
           </p>
           <div className="buttonsWrapper">
             <div className="part">
-              <Button
-                onClick={() => this.toggleCompareNodes(true)}
-                className="actionButton"
-                icon={<CompareNodesSvg />}
-              >
-                <span>
-                  <p className="textContent">Compare nodes</p>
-                </span>
-              </Button>
-              <Button
-                onClick={() => this.compareAndMarge(compare.sourceNodes, compare.duplicatedNodes)}
-                className="actionButton"
-                icon={<MergeNodesSvg />}
-              >
+              <div className="component">
+                <Button
+                  onClick={() => this.toggleCompareNodes(true)}
+                  className="actionButton"
+                  icon={<CompareNodesSvg />}
+                />
+                <p className="textContent">Compare nodes</p>
+
+              </div>
+              <div className="component">
+                <Button
+                  onClick={() => this.compareAndMarge(compare.sourceNodes, compare.duplicatedNodes)}
+                  className="actionButton"
+                  icon={<MergeNodesSvg />}
+                />
                 <p className="textContent">Merge nodes</p>
-              </Button>
-              <Button onClick={this.skipDuplications} className="actionButton" icon={<SkipNodesSvg />}>
+              </div>
+              <div className="component">
+                <Button onClick={this.skipDuplications} className="actionButton" icon={<SkipNodesSvg />} />
                 <p className="textContent">Skip these nodes</p>
-              </Button>
+              </div>
             </div>
             <div className="part">
-              <Button onClick={this.replaceDuplications} className="actionButton" icon={<ReplaceSvg />}>
+              <div className="component">
+                <Button onClick={this.replaceDuplications} className="actionButton" icon={<ReplaceSvg />} />
                 <p className="textContent">Replace the nodes in the destination</p>
-              </Button>
-              <Button onClick={this.fixDuplications} className="actionButton" icon={<KeepBothSvg />}>
+              </div>
+              <div className="component">
+                <Button onClick={this.fixDuplications} className="actionButton" icon={<KeepBothSvg />} />
                 <p className="textContent">Keep both</p>
-              </Button>
+              </div>
             </div>
           </div>
         </Modal>
