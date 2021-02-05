@@ -6,6 +6,7 @@ import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
 import SvgService from './helpers/SvgService';
+import ChartInfography from './helpers/ChartInfography';
 
 class Chart {
   static event = new EventEmitter();
@@ -26,9 +27,6 @@ class Chart {
     };
   }
 
-  /**
-   * Function to move the object around
-   * */
   static moveObject(ev, image) {
     // increments the x/y values with the dx/dy values from the d3.event object
     this.tPos.x += ev.dx;
@@ -44,9 +42,6 @@ class Chart {
     d3.select(image).attr('transform', SvgService.getTransform());
   }
 
-  /**
-   * Function to resize the object based in the passed direction
-   * */
   static resizeObject(direction, ev, size, image) {
     // gets the original image coordinates from the service model
     const updatedCoordinates = SvgService.getImageUpdatedCoordinates();
@@ -101,10 +96,6 @@ class Chart {
     }
   }
 
-  /**
-   * Function to rotate the object based in the initial rotation values
-   * present in the rotateHandleStartPos object
-   * */
   static rotateObject(rotateHandleStartPos, ev, image) {
     // gets the current udapted rotate coordinates
     const updatedRotateCoordinates = SvgService.getImageUpdatedRotateCoordinates();
@@ -268,6 +259,11 @@ class Chart {
     let startX;
     let startY;
     const dragstart = (ev, d) => {
+      ChartUtils.keyEvent(ev);
+      if (d.nodeType === 'infography' && ev.ctrlPress) {
+        ChartInfography.dragstart(ev, d);
+        return;
+      }
       this.event.emit('node.dragstart', ev, d);
 
       if (d && !(this.curentTarget && (this.curentTarget.id === 'tc' || this.curentTarget.id === 'sc'))) {
@@ -283,6 +279,11 @@ class Chart {
     };
 
     const dragged = (ev, d) => {
+      ChartUtils.keyEvent(ev);
+      if (d.nodeType === 'infography' && ev.ctrlPress) {
+        ChartInfography.dragged(ev, d);
+        return;
+      }
       this.event.emit('node.drag', ev, d);
       if (this.curentTarget && (this.curentTarget.id === 'tc' || this.curentTarget.id === 'sc')) {
         // drag curve
@@ -310,6 +311,11 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
+      ChartUtils.keyEvent(ev);
+      if (d.nodeType === 'infography' && ev.ctrlPress) {
+        ChartInfography.dragend(ev, d);
+        return;
+      }
       if (!ev.active) simulation.alphaTarget(0);
       if (d !== undefined) {
         if (d.readOnly) {
@@ -342,6 +348,59 @@ class Chart {
       .on('start', dragstart)
       .on('drag', dragged)
       .on('end', dragend);
+  }
+
+  static imageManipulation(size, image) {
+    d3.select('.controls-group').remove();
+    const imageTransform = d3.select(image).attr('transform');
+    const controlsGroup = d3.select('.nodes')
+      .append('g')
+      .attr('class', 'controls-group')
+      .attr('transform', imageTransform);
+    controlsGroup.append('rect')
+      .attr('class', 'move-rect')
+      .attr('fill-opacity', '0')
+      .attr('stroke', '#ffffff')
+      .attr('stroke-width', '2')
+      .attr('width', size.width)
+      .attr('height', size.height)
+      .attr('x', size.x)
+      .attr('y', size.y);
+
+    const addResizeOption = (classAttr, fillAttr, xAttr, yAttr) => {
+      controlsGroup.append('rect')
+        .attr('class', classAttr)
+        .attr('fill-opacity', '0')
+        .attr('stroke', '#ffffff')
+        .attr('stroke-width', '2')
+        .attr('fill', fillAttr)
+        .attr('width', 20)
+        .attr('height', 20)
+        .attr('x', xAttr)
+        .attr('y', yAttr);
+    };
+
+    const addRotateOption = (classAttr, fillAttr, xAttr, yAttr) => {
+      controlsGroup.append('circle')
+        .attr('class', classAttr)
+        .attr('stroke', '#6f2409')
+        .attr('stroke-width', '2')
+        .attr('fill', fillAttr)
+        .attr('r', 12)
+        .attr('cx', xAttr)
+        .attr('cy', yAttr);
+    };
+    addResizeOption('resize-tl', 'white', size.x - 10, size.y - 10);
+    addResizeOption('resize-tr', 'red', size.x + size.width - 10, size.y - 10);
+    addResizeOption('resize-bl', 'blue', size.x - 10, size.y + size.height - 10);
+    addResizeOption('resize-br', 'yellow', size.x + size.width - 10, size.y + size.height - 10);
+
+    addRotateOption('rotate-tl', 'white', size.x - 20, size.y - 20);
+    addRotateOption('rotate-tr', 'red', size.x + size.width + 20, size.y - 20);
+    addRotateOption('rotate-bl', 'blue', size.x - 20, size.height + size.y + 20);
+    addRotateOption('rotate-br', 'yellow', size.x + size.width + 20, size.height + size.y + 20);
+
+    return controlsGroup;
   }
 
   static getSource(l) {
@@ -504,13 +563,12 @@ class Chart {
 
     const lastUid = data.lastUid || this.data?.lastUid || 0;
 
-
-    data.labels = data.labels.map(d => {
+    data.labels = data.labels.map((d) => {
       if (d.type === 'folder' && !d.d[1]) {
         d.d[1] = [500, 500];
       }
       return d;
-    })
+    });
     const labels = Object.values(data.labels).map((d) => Object.create(d));
 
     return {
@@ -632,6 +690,17 @@ class Chart {
         if (datum.d[1][0] < 200) datum.d[1][0] = 200;
 
         if (datum.d[1][1] < 200) datum.d[1][1] = 200;
+
+        // const minX = _.minBy(dragFolder.nodes, 'fx');
+        // const maxX = _.maxBy(dragFolder.nodes, 'fx');
+        //
+        // const minY = _.minBy(dragFolder.nodes, 'fy');
+        // const maxY = _.maxBy(dragFolder.nodes, 'fy');
+        //
+        // const posTopLeft = [minX, minY];
+        // const posTopRight = [maxX, minY];
+        // const posBottomRight = [maxX, maxY];
+        // const posBottomLeft = [minX, maxY];
 
         datum.d[1][0] = +(datum.d[1][0] + (ev.dx * 2)).toFixed(2);
         datum.d[1][1] = +(datum.d[1][1] + (ev.dy * 2)).toFixed(2);
@@ -790,7 +859,7 @@ class Chart {
           if (inSquare && !inFolder) {
             const labelPosition = n.labels.find((l) => moveLabels[l]);
             const position = labelPosition || ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
-            let labelMove = [width, height];
+            const labelMove = [width, height];
             if (!labelPosition) {
               n.labels.forEach((l) => {
                 if (!l.startsWith('f_')) {
@@ -1120,7 +1189,7 @@ class Chart {
         .attr('href', '#labelLock')
         .attr('transform', (d) => {
           if (d.type === 'folder') {
-            const [x, y] = d.d[0]
+            const [x, y] = d.d[0];
             return `translate(${x + 30}, ${y - 20})`;
           }
           const {
@@ -1134,59 +1203,6 @@ class Chart {
     this.labelMovement();
 
     this._dataNodes = null;
-  }
-
-  static imageManipulation(size, image) {
-    d3.select('.controls-group').remove();
-    const imageTransform = d3.select(image).attr('transform');
-    const controlsGroup = d3.select('.nodes')
-      .append('g')
-      .attr('class', 'controls-group')
-      .attr('transform', imageTransform);
-    controlsGroup.append('rect')
-      .attr('class', 'move-rect')
-      .attr('fill-opacity', '0')
-      .attr('stroke', '#ffffff')
-      .attr('stroke-width', '2')
-      .attr('width', size.width)
-      .attr('height', size.height)
-      .attr('x', size.x)
-      .attr('y', size.y);
-
-    const addResizeOption = (classAttr, fillAttr, xAttr, yAttr) => {
-      controlsGroup.append('rect')
-        .attr('class', classAttr)
-        .attr('fill-opacity', '0')
-        .attr('stroke', '#ffffff')
-        .attr('stroke-width', '2')
-        .attr('fill', fillAttr)
-        .attr('width', 20)
-        .attr('height', 20)
-        .attr('x', xAttr)
-        .attr('y', yAttr);
-    };
-
-    const addRotateOption = (classAttr, fillAttr, xAttr, yAttr) => {
-      controlsGroup.append('circle')
-        .attr('class', classAttr)
-        .attr('stroke', '#6f2409')
-        .attr('stroke-width', '2')
-        .attr('fill', fillAttr)
-        .attr('r', 12)
-        .attr('cx', xAttr)
-        .attr('cy', yAttr);
-    };
-    addResizeOption('resize-tl', 'white', size.x - 10, size.y - 10);
-    addResizeOption('resize-tr', 'red', size.x + size.width - 10, size.y - 10);
-    addResizeOption('resize-bl', 'blue', size.x - 10, size.y + size.height - 10);
-    addResizeOption('resize-br', 'yellow', size.x + size.width - 10, size.y + size.height - 10);
-
-    addRotateOption('rotate-tl', 'white', size.x - 20, size.y - 20);
-    addRotateOption('rotate-tr', 'red', size.x + size.width + 20, size.y - 20);
-    addRotateOption('rotate-bl', 'blue', size.x - 20, size.height + size.y + 20);
-    addRotateOption('rotate-br', 'yellow', size.x + size.width + 20, size.height + size.y + 20);
-
-    return controlsGroup;
   }
 
   static render(data = {}, params = {}) {
@@ -1264,7 +1280,7 @@ class Chart {
 
       this.nodesWrapper.selectAll('.node > *').remove();
 
-      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
+      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle):not(.infography)')
         .append('circle')
         .attr('r', (d) => this.radiusList[d.index]);
 
@@ -1298,50 +1314,39 @@ class Chart {
           return `translate(${r}, ${r})`;
         });
 
-      this.nodesWrapper.selectAll('.image')
-        .append('svg:image')
-        .attr('preserveAspectRatio', 'none')
-        .attr('x', (d) => d.x)
-        .attr('y', (d) => d.y)
-        .attr('xlink:href', (d) => {
-          if (d.icon && d.nodeType === 'image') {
-            return d.icon;
+      const infography = this.nodesWrapper.selectAll('.infography')
+
+      infography
+        .filter((d) => d.d)
+        .append('defs')
+        .append('clipPath')
+        .attr('id', (d) => `cutOff_${d.id}`)
+        .append('path')
+        .attr('d', (d) => ChartInfography.renderPath(d.d));
+
+      infography.append('rect')
+        .attr('width', 512)
+        .attr('height', 384)
+        .attr('x', 512 / -2)
+        .attr('y', 384 / -2)
+        .attr('clip-path', (d) => (d.d ? `url(#cutOff_${d.id})` : undefined))
+        .attr('transform', (d) => {
+          if (!d.d) {
+            // return `translate(0 ${384 / -2})`;
+            return null;
           }
-          return '';
-        })
-        .on('click', function () {
-          const size = this.getBoundingClientRect();
-          const imageCoords = SvgService.getImageUpdatedCoordinates();
-          if (!imageCoords.width || !imageCoords.height) {
-            SvgService.updateImageCoordinates(size.width, size.height, size.x, size.y);
-          }
-          SvgService.updateImageTranslateCoordinates(size.x, size.y);
-          Chart.minWidth = 0.1 * size.width;
-          Chart.minHeight = 0.1 * size.height;
-          SvgService.updateImageTranslateCoordinates(size.x, size.y);
-          Chart.tPos = SvgService.getImageUpdatedTranslateCoordinates();
-          const imageNewCoords = SvgService.getImageUpdatedCoordinates();
-          const controlsGroup = Chart.imageManipulation(imageNewCoords, this);
-          const elemCenter = Chart.getElementCenter();
-          if (SvgService.image.rotate.angle) {
-            const transformAttr = SvgService.getTransform();
-            const translateInd = transformAttr.indexOf('translate');
-            const translate = transformAttr.substring(translateInd, transformAttr.length);
-            controlsGroup.attr(
-              'transform', `rotate(${SvgService.image.rotate.angle}, ${elemCenter.x}, ${elemCenter.y}) ${translate}`,
-            );
-          }
-          SvgService.updateImageRotateCoordinates(SvgService.image.rotate.angle || null, elemCenter.x, elemCenter.y);
-          controlsGroup.call(Chart.bindControlsDragAndDrop(size, this));
+          const { width, height, min } = ChartInfography.getPolygonSize(d.d);
+          const cx = (-1 * min[0]) - (width / 2);
+          const cy = -1 * min[1] - height / 2;
+          return `translate(${cx} ${cy})`;
         });
 
       this.nodesWrapper.selectAll('.node :not(text)')
         .attr('fill', (d) => {
-          const color = ChartUtils.nodeColor(d);
           if (d.icon) {
             return `url(#i${d.index})`;
           }
-          return color;
+          return ChartUtils.nodeColor(d);
         });
 
       if (!_.isEmpty(filteredLinks)) {
@@ -1361,6 +1366,7 @@ class Chart {
       this.renderSelectSquare();
       this.nodeFilter();
       this.windowEvents();
+      ChartInfography.render(this);
 
       this.event.emit('render', this);
       return this;
@@ -1771,6 +1777,8 @@ class Chart {
           i = 2.3;
         } else if (d.nodeType === 'triangle') {
           i = 3.1;
+        } else if (d.nodeType === 'infography') {
+          return 384;
         }
         return this.radiusList[d.index] * i;
       })
@@ -1780,6 +1788,8 @@ class Chart {
           i = 2.3;
         } else if (d.nodeType === 'triangle') {
           i = 3.1;
+        } else if (d.nodeType === 'infography') {
+          return 512;
         }
         return this.radiusList[d.index] * i;
       })
@@ -1790,7 +1800,7 @@ class Chart {
         }
         return undefined;
       })
-      .attr('xlink:href', (d) => ChartUtils.normalizeIcon(d.icon));
+      .attr('xlink:href', (d) => ChartUtils.normalizeIcon(d.icon, d.nodeType === 'infography'));
     return defs;
   }
 
@@ -1822,6 +1832,10 @@ class Chart {
           i += this.radiusList[d.index] / 5;
         } else if (d.nodeType === 'triangle') {
           i += this.radiusList[d.index] / 5;
+        } else if (d.nodeType === 'infography') {
+          const { height = 384 } = d.d ? ChartInfography.getPolygonSize(d.d) : {};
+
+          return height / 2 + 15;
         }
         return this.radiusList[d.index] + i;
       })
@@ -2154,6 +2168,8 @@ class Chart {
         readOnly: !!d.readOnly || undefined,
         sourceId: +d.sourceId || undefined,
         labels: ChartUtils.getNodeLabels(d),
+        d: d.d,
+        infographyId: d.infographyId,
       }));
     }
     return this._dataNodes;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
 import SaveGraph from './chart/SaveGraph';
@@ -12,10 +13,10 @@ import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg';
-import { ReactComponent as UploadSvg } from '../assets/images/icons/upload.svg';
+import { ReactComponent as UploadSvg } from '../assets/images/icons/upload.svg'; 
 import { getSingleGraphRequest } from '../store/actions/graphs'; 
-import moment from "moment";
 import ShareTooltip from './ShareTooltip/ShareTooltip';
+import FileInput from './form/FileInput';
 
 class ToolBar extends Component {
   static propTypes = {
@@ -27,6 +28,7 @@ class ToolBar extends Component {
     singleGraphUser: PropTypes.object.isRequired,
 
   } 
+
 
   handleClick = (button) => {
     this.props.setActiveButton(button);
@@ -40,7 +42,9 @@ class ToolBar extends Component {
   }
 
   render() {
-    const { activeButton, match: { params: { graphId } }, currentUserRole, singleGraphUser } = this.props;
+    const {
+      activeButton, match: { params: { graphId } }, currentUserRole, singleGraphUser,
+    } = this.props;
 
     return (
       <div id="toolBar">
@@ -66,13 +70,15 @@ class ToolBar extends Component {
               </Button>
             ) : null}
 
-            {false ? <Button
-              icon={<LoopSvg />}
-              className={activeButton === 'reset' ? 'active' : undefined}
-              onClick={this.resetGraph}
-            >
-              Reset project
-            </Button> : null}
+            {false ? (
+              <Button
+                icon={<LoopSvg />}
+                className={activeButton === 'reset' ? 'active' : undefined}
+                onClick={this.resetGraph}
+              >
+                Reset project
+              </Button>
+            ) : null}
             <Button
               className={activeButton === 'data' ? 'active' : undefined}
               icon={<LoopSvg />}
@@ -86,12 +92,35 @@ class ToolBar extends Component {
               onClick={() => this.handleClick('import')}
             >
               Import data
-            </Button> 
+            </Button>
+            <div className="imageUpload">
+              <FileInput
+                label="Icon"
+                accept=".png,.jpg,.gif"
+                value={this.state.icon}
+                onChangeFile={(icon) => {
+                  this.setState((state) => ({
+                    nodeData: {
+                      ...state.nodeData,
+                      icon,
+                      index: Chart.getNodes().length,
+                      createdAt: moment().unix(),
+                      updatedAt: moment().unix(),
+                    },
+                  }), () => {
+                    const nodes = Chart.getNodes();
+                    nodes.push(this.state.nodeData);
+                    Chart.render({ nodes });
+                  });
+                }}
+              />
+            </div>
+
           </div>
         </div>
 
         <div className="bottom ">
-        <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>
+          <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner="true" />
         </div>
         <div className="bottom helpWrapper">
           <Button icon={<InfoSvg />}>

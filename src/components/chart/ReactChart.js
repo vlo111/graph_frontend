@@ -37,6 +37,7 @@ class ReactChart extends Component {
 
     Chart.event.on('node.click', this.handleNodeClick);
     Chart.event.on('node.dblclick', this.handleDbNodeClick);
+    Chart.event.on('node.edit', this.editNode);
 
     ContextMenu.event.on('node.delete', this.deleteNode);
     ContextMenu.event.on('node.edit', this.editNode);

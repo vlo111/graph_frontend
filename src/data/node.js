@@ -1,5 +1,6 @@
 export const NODE_TYPES = [
   { value: 'circle', label: 'Circle' },
+  { value: 'infography', label: 'Infography' },
   { value: 'square', label: 'Square' },
   { value: 'triangle', label: 'Triangle' },
   { value: 'hexagon', label: 'Hexagon' },
