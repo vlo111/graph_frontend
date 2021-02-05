@@ -40,6 +40,9 @@ class ChartInfography {
   }
 
   static dragged = (ev, d) => {
+    if (!this.activeNode?.line) {
+      return;
+    }
     Chart.event.emit('infography.cut', ev, d);
     const { line, node } = this.activeNode;
     const { x, y } = ChartUtils.calcScaledPosition(ev.sourceEvent.clientX, ev.sourceEvent.clientY);
