@@ -93,7 +93,7 @@ class MediaModal extends Component {
                                     <NodeIcon node={document.node} />
                                   </div>
                                   <div className="right">
-                                    <span className="name">{document.node.name}</span>
+                                    <span className="headerName">{document.node.name}</span>
                                     <p>{moment(document.updatedAt).calendar()}</p>
                                   </div>
                                 </a>
