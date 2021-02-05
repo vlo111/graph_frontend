@@ -58,6 +58,7 @@ class SearchModal extends Component {
           value={search}
           containerClassName="graphSearch"
           onChangeText={this.handleChange}
+          autoFocus 
         />
         <ul className="list">
           {nodes.map((d) => (
