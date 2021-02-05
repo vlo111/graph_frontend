@@ -259,9 +259,11 @@ class Chart {
     let startX;
     let startY;
     const dragstart = (ev, d) => {
-      if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
-        ChartInfography.dragstart(ev, d);
-        return;
+      if (d !== undefined) {
+        if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
+          ChartInfography.dragstart(ev, d);
+          return;
+        }
       }
       this.event.emit('node.dragstart', ev, d);
 
@@ -278,7 +280,7 @@ class Chart {
     };
 
     const dragged = (ev, d) => {
-      if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
+      if (d !== undefined && (d.nodeType === 'infography' && ev.sourceEvent.shiftKey)) {
         ChartInfography.dragged(ev, d);
         return;
       }
@@ -309,9 +311,11 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
-      if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
-        ChartInfography.dragend(ev, d);
-        return;
+      if (d !== undefined) {
+        if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
+          ChartInfography.dragend(ev, d);
+          return;
+        }
       }
       if (!ev.active) simulation.alphaTarget(0);
       if (d !== undefined) {
@@ -1311,7 +1315,7 @@ class Chart {
           return `translate(${r}, ${r})`;
         });
 
-      const infography = this.nodesWrapper.selectAll('.infography')
+      const infography = this.nodesWrapper.selectAll('.infography');
 
       infography
         .filter((d) => d.d)
