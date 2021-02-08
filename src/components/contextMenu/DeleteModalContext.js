@@ -32,9 +32,8 @@ class AddLabelModal extends Component {
   }
 
   render() {
-    const { activeButton, data, params, params: { squareDara } } = this.props;
-    data.type = data.type == 'label.delete' ? ( params.type == 'folder' ?  'folder.delete' : data.type ) :  data.type 
-    
+    const { activeButton, data } = this.props;
+    console.log(data.type);
     if (activeButton !== 'deleteModal') {
       return null;
     }
