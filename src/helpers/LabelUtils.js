@@ -152,10 +152,12 @@ class LabelUtils {
     }
     labels.push(data.label);
 
-    const minX = Math.min(...data.label.d.map((l) => l[0]));
-    const minY = Math.min(...data.label.d.map((l) => l[1]));
+    let minX = Math.min(...data.label.d.map((l) => l[0]));
+    let minY = Math.min(...data.label.d.map((l) => l[1]));
 
     if (data.label.type === 'folder') {
+      minX = data.label.d[0][0];
+      minY = data.label.d[0][1];
       data.label.d[0][0] = posX;
       data.label.d[0][1] = posY;
     } else {
