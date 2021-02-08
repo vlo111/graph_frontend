@@ -49,6 +49,7 @@ class NodeTabsFormModal extends Component {
   }
 
   handleChange = (path, value) => {
+    value = value.replace(/href/g, 'target="_blank" href');
     const { tabData, errors } = this.state;
     _.set(tabData, path, value);
     _.remove(errors, path);
