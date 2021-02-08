@@ -14,9 +14,20 @@ import { LABEL_STATUS } from '../data/node';
 class LabelUtils {
   static copy(sourceId, id, customFields, singleGraph) {
     const labels = Chart.getLabels();
-    const nodes = Chart.getNodes().filter((n) => n.labels.includes(id));
+    let nodes = Chart.getNodes().filter((n) => n.labels.includes(id));
     const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
     const label = labels.find((l) => l.id === id);
+
+    nodes = nodes.map((d) => {
+      delete d.lx;
+      delete d.ly;
+      d.labels = [id];
+      return d;
+    });
+
+    if (label.type === 'folder') {
+      label.open = true;
+    }
 
     const data = {
       sourceId: +sourceId,
@@ -109,7 +120,7 @@ class LabelUtils {
     data.links = ChartUtils.cleanLinks(data.links, data.nodes);
     links = ChartUtils.cleanLinks(links, nodes);
     Chart.render({ nodes, links });
-    console.log(data.nodes, ' data.nodes')
+    console.log(data.nodes, ' data.nodes');
     return LabelUtils.past(data, position);
   }
 
@@ -154,7 +165,6 @@ class LabelUtils {
         return i;
       });
     }
-
 
     // nodes past
     let nodes = Chart.getNodes();
@@ -280,15 +290,14 @@ class LabelUtils {
       store.dispatch(socketLabelDataChange(graph));
     }
   }
+
   /**
    * Return label status name for label status
    * @param {*} status
    */
   static lableStatusNane = (status = null) => {
-
     const labelStatus = LABEL_STATUS.filter((c) => c.value === status);
     return labelStatus.length ? labelStatus[0].label : null;
-
   }
 }
 
