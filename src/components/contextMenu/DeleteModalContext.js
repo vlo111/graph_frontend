@@ -32,8 +32,7 @@ class AddLabelModal extends Component {
   }
 
   render() {
-    const { activeButton, data, params, params: { squareDara } } = this.props;
-    data.type = data.type == 'label.delete' ? ( params.type == 'folder' ?  'folder.delete' : data.type ) :  data.type 
+    const { activeButton, data, params, params: { squareDara } } = this.props; 
     
     if (activeButton !== 'deleteModal') {
       return null;
@@ -52,7 +51,7 @@ class AddLabelModal extends Component {
             <p>
               Do you want to remove this
               {' '}
-              {data.type !== 'selectSquare.delete' ? data.type.replace('.delete', '') : 'part'}
+              {data.type !== 'selectSquare.delete' ? (params.type == 'folder' ? 'folder' :  data.type.replace('.delete', '')) : 'part'}
             </p>
             <div className="buttons">
               <Button className="ghButton cancel transparent alt" onClick={this.closeDelete}>
