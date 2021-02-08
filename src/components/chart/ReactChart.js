@@ -92,10 +92,11 @@ class ReactChart extends Component {
 
   handleLabelDelete = (ev, d) => {
     const labels = Chart.getLabels().filter((l) => l.id !== d.id);
+    const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.id));
+    const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
+
     if (d.sourceId) {
       const { match: { params: { graphId } } } = this.props;
-      const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.id));
-      const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
       const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
       Chart.render({
         labels, nodes, links, embedLabels,
@@ -103,7 +104,7 @@ class ReactChart extends Component {
       Api.labelDelete(d.sourceId, d.id, graphId);
       return;
     }
-    Chart.render({ labels });
+    Chart.render({ labels, nodes, links });
     Chart.event.emit('label.mouseleave', ev, d);
   }
 
