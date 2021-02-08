@@ -204,7 +204,7 @@ class AddNodeModal extends Component {
                   readOnly
                   style={{ color: nodeData.color }}
                   onChangeText={(v) => this.handleChange('color', v)}
-                  autocomplete="off"
+                  autoComplete="off"
                 />
 
                 <FileInput
