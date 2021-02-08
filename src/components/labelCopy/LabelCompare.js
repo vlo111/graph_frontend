@@ -84,6 +84,38 @@ class LabelCompare extends Component {
             If you select both versions, the moved node will have a number added to its name.
           </h4>
           <ul className="compareList">
+            <li className="item allChecked">
+              <div className="bottom">
+                <div className="node node_left">
+                  <div className="allCheckedContent">
+                    <input
+                      onChange={() => this.toggleAllDuplicate()}
+                      checked={duplicates.length === duplicatedNodes.length}
+                      className="graphsCheckbox"
+                      type="checkbox"
+                      name="layout"
+                      id="all_left"
+                      value="All"
+                    />
+                    <label className="pull-left" htmlFor="all_left"> Select all </label>
+                  </div>
+                </div>
+                <div className="node node_right">
+                  <div className="allCheckedContent">
+                    <input
+                      onChange={() => this.toggleAllSource()}
+                      checked={sources.length === sourceNodes.length}
+                      className="graphsCheckbox"
+                      type="checkbox"
+                      name="layout"
+                      id="all_right"
+                      value="All"
+                    />
+                    <label className="pull-left" htmlFor="all_right"> Select all </label>
+                  </div>
+                </div>
+              </div>
+            </li>
             {duplicatedNodes.map((nodeDuplicate) => {
               const nodeSource = sourceNodes.find((n) => n.name === nodeDuplicate.name);
               return (

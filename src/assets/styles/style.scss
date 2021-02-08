@@ -6667,6 +6667,26 @@ img.preview-scaled {
     }
   }
 
+  .allCheckedContent {
+    padding-bottom: 22px;
+  }
+
+  .allChecked {
+    .bottom {
+      height: 50px;
+    }
+
+    .node {
+      box-shadow: none !important;
+      border: none !important;
+    }
+  }
+
+  .pull-left {
+    color: #3e97eb;
+    font-size: 15px;
+  }
+
   .item {
     display: flex;
     flex-direction: column;
