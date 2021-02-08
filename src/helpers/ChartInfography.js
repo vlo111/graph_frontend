@@ -35,7 +35,9 @@ class ChartInfography {
       })
       .attr('class', 'nodeCut');
     this.activeNode = {
-      node, line,
+      node,
+      line,
+      rect: ev.sourceEvent.target
     };
   }
 
@@ -54,12 +56,26 @@ class ChartInfography {
       .attr('d', (i) => this.renderPath(i.d));
   }
 
+  static coordinatesNormalize(coord, target) {
+    if (!target) {
+      return coord;
+    }
+    const transform = target.getAttribute('transform');
+    if (!transform) {
+      return coord;
+    }
+    const [, dx, dy] = target.getAttribute('transform').match(/(-?[\d.]+)\s*(-?[\d.]+)/) || [0, 0, 0];
+
+    return coord.map((c) => ([c[0] - parseFloat(dx), c[1] - parseFloat(dy)]));
+  }
+
   static dragend = (ev, d) => {
     if (!this.activeNode?.line) {
       return;
     }
-    const { line } = this.activeNode;
+    const { line, rect } = this.activeNode;
     const datum = line.datum();
+    datum.d = this.coordinatesNormalize(datum.d, rect);
     datum.d = ChartUtils.coordinatesCompass(datum.d, 3);
     line.datum(datum)
       .attr('d', (i) => this.renderPath(i.d));
