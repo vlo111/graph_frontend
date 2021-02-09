@@ -306,7 +306,7 @@ class LabelUtils {
   }
 
   static getFolderPos(d) {
-    const folderId = d.labels.find((l) => l.startsWith('f_'));
+    const folderId = (d.labels || []).find((l) => l.startsWith('f_'));
     if (folderId) {
       const folder = Chart.getLabels().find((l) => l.id === folderId);
       if (folder && folder.open) {
