@@ -14,20 +14,20 @@ import { LABEL_STATUS } from '../data/node';
 class LabelUtils {
   static copy(sourceId, id, customFields, singleGraph) {
     const labels = Chart.getLabels();
-    let nodes = _.clone(Chart.getNodes().filter((n) => n.labels.includes(id)));
-    const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
     const label = labels.find((l) => l.id === id);
+    if (label.type === 'folder') {
+      label.open = true;
+    }
 
-    nodes = nodes.map((d) => {
+    const nodes = Chart.getNodes().filter((n) => n.labels.includes(id)).map((d) => {
       delete d.lx;
       delete d.ly;
       d.labels = [id];
       return d;
     });
 
-    if (label.type === 'folder') {
-      label.open = true;
-    }
+    const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
+
 
     const data = {
       sourceId: +sourceId,
@@ -301,6 +301,18 @@ class LabelUtils {
   static lableStatusNane = (status = null) => {
     const labelStatus = LABEL_STATUS.filter((c) => c.value === status);
     return labelStatus.length ? labelStatus[0].label : null;
+  }
+
+  static getFolderPos(d) {
+    const folderId = d.labels.find(l => l.startsWith('f_'));
+    if (folderId) {
+      const folder = Chart.getLabels().find(l => l.id === folderId);
+      if (folder) {
+        console.log([folder.d[0][0], folder.d[0][1]])
+        return [folder.d[0][0], folder.d[0][1]]
+      }
+    }
+    return [d.lx, d.ly];
   }
 }
 

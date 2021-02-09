@@ -7,6 +7,7 @@ import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
 import SvgService from './helpers/SvgService';
 import ChartInfography from './helpers/ChartInfography';
+import LabelUtils from './helpers/LabelUtils';
 
 class Chart {
   static event = new EventEmitter();
@@ -1479,7 +1480,7 @@ class Chart {
     const showSelectedNodes = () => {
       this.nodesWrapper.selectAll('.node :not(text)')
         .attr('filter', (n) => (this.squareDara.selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
-        this.nodesWrapper.selectAll('.node :not(text)')
+      this.nodesWrapper.selectAll('.node :not(text)')
         .attr('class', 'selectMultyNodes');
     };
 
@@ -2144,34 +2145,37 @@ class Chart {
       return [];
     }
     if (!this._dataNodes || force) {
-      this._dataNodes = this.data.nodes.map((d) => ({
-        id: d.id,
-        index: d.index,
-        fx: d.fx || d.x || 0,
-        fy: d.fy || d.y || 0,
-        lx: d.lx,
-        ly: d.ly,
-        name: d.name || '',
-        type: d.type || '',
-        status: d.status || 'approved',
-        nodeType: d.nodeType || 'circle',
-        description: d.description || '',
-        icon: d.icon || '',
-        link: d.link || '',
-        hidden: d.hidden,
-        keywords: d.keywords || [],
-        location: d.location || undefined,
-        color: ChartUtils.nodeColor(d),
-        createdAt: d.createdAt,
-        updatedAt: d.updatedAt,
-        createdUser: d.createdUser,
-        updatedUser: d.updatedUser,
-        readOnly: !!d.readOnly || undefined,
-        sourceId: +d.sourceId || undefined,
-        labels: ChartUtils.getNodeLabels(d),
-        d: d.d,
-        infographyId: d.infographyId,
-      }));
+      this._dataNodes = this.data.nodes.map((d) => {
+        const [lx, ly] = LabelUtils.getFolderPos(d);
+        return {
+          id: d.id,
+          index: d.index,
+          fx: d.fx || d.x || 0,
+          fy: d.fy || d.y || 0,
+          lx,
+          ly,
+          name: d.name || '',
+          type: d.type || '',
+          status: d.status || 'approved',
+          nodeType: d.nodeType || 'circle',
+          description: d.description || '',
+          icon: d.icon || '',
+          link: d.link || '',
+          hidden: d.hidden,
+          keywords: d.keywords || [],
+          location: d.location || undefined,
+          color: ChartUtils.nodeColor(d),
+          createdAt: d.createdAt,
+          updatedAt: d.updatedAt,
+          createdUser: d.createdUser,
+          updatedUser: d.updatedUser,
+          readOnly: !!d.readOnly || undefined,
+          sourceId: +d.sourceId || undefined,
+          labels: ChartUtils.getNodeLabels(d),
+          d: d.d,
+          infographyId: d.infographyId,
+        };
+      });
     }
     return this._dataNodes;
   }
