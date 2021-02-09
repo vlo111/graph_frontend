@@ -1481,6 +1481,8 @@ class Chart {
     const showSelectedNodes = () => {
       this.nodesWrapper.selectAll('.node :not(text)')
         .attr('filter', (n) => (this.squareDara.selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
+        this.nodesWrapper.selectAll('.node :not(text)')
+        .attr('class', 'selectMultyNodes');
     };
 
     this.event.on('node.click', (ev, d) => {

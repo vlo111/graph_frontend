@@ -55,12 +55,21 @@ class ContextMenu extends Component {
     }
     const { x, y } = ev;
     let element;
-    let params = {};
-    if (ev.target.closest('.nodes')) {
-      const index = +ev.target.parentNode.getAttribute('data-i');
-      params = Chart.getNodes().find((d) => d.index === index);
-      element = 'node';
-    } else if (ev.target.closest('.links')) {
+    let params = {};     
+    if (ev.target.closest('.nodes') ) {  
+      if( ev.target.classList.contains('selectMultyNodes') ){
+        params = {
+          squareDara: Chart.squareDara || {},
+        };
+        element = 'selectNode';
+      } else{
+        const index = +ev.target.parentNode.getAttribute('data-i');
+        params = Chart.getNodes().find((d) => d.index === index); 
+        element = 'node';
+      }
+
+    } 
+    else if (ev.target.closest('.links')) {
       const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
@@ -172,7 +181,7 @@ class ContextMenu extends Component {
                   </div>
                 </div>
               ) : null}
-              {['node', 'link', 'label', 'selectSquare'].includes(show) ? (
+              {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
                 <>
                   {show === 'node' ? (!params.readOnly ? (
                       <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
