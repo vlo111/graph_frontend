@@ -1214,7 +1214,9 @@ class Chart {
       }
       this._dataNodes = null;
       this._dataLinks = null;
+      console.log(_.cloneDeep(data.nodes));
       data = this.normalizeData(data, params);
+      console.log(data);
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         this.undoManager.push(data);
         if (!_.isEmpty(this.data?.nodes) || !_.isEmpty(this.data?.links)) {
@@ -1271,8 +1273,8 @@ class Chart {
         .data(filteredNodes)
         .join('g')
         .attr('class', (d) => {
-          const [dx, dy] = LabelUtils.getFolderPos(d);
-          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${dx || dy ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`
+          const [lx, ly] = LabelUtils.getFolderPos(d);
+          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${lx || ly ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`
         })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
@@ -1702,7 +1704,10 @@ class Chart {
       return `M${sourceX},${sourceY}A${arc},${arc} 0 0,${arcDirection} ${targetX},${targetY}`;
     });
     this.node
-      .attr('transform', (d) => `translate(${d.lx || d.x || 0}, ${d.ly || d.y || 0})`)
+      .attr('transform', (d) => {
+        const [lx, ly] = LabelUtils.getFolderPos(d);
+        return `translate(${lx || d.x || 0}, ${ly || d.y || 0})`;
+      })
       .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
     this.linkText
@@ -2148,37 +2153,34 @@ class Chart {
       return [];
     }
     if (!this._dataNodes || force) {
-      this._dataNodes = this.data.nodes.map((d) => {
-        const [lx, ly] = LabelUtils.getFolderPos(d);
-        return {
-          id: d.id,
-          index: d.index,
-          fx: d.fx || d.x || 0,
-          fy: d.fy || d.y || 0,
-          lx,
-          ly,
-          name: d.name || '',
-          type: d.type || '',
-          status: d.status || 'approved',
-          nodeType: d.nodeType || 'circle',
-          description: d.description || '',
-          icon: d.icon || '',
-          link: d.link || '',
-          hidden: d.hidden,
-          keywords: d.keywords || [],
-          location: d.location || undefined,
-          color: ChartUtils.nodeColor(d),
-          createdAt: d.createdAt,
-          updatedAt: d.updatedAt,
-          createdUser: d.createdUser,
-          updatedUser: d.updatedUser,
-          readOnly: !!d.readOnly || undefined,
-          sourceId: +d.sourceId || undefined,
-          labels: ChartUtils.getNodeLabels(d),
-          d: d.d,
-          infographyId: d.infographyId,
-        };
-      });
+      this._dataNodes = this.data.nodes.map((d) => ({
+        id: d.id,
+        index: d.index,
+        fx: d.fx || d.x || 0,
+        fy: d.fy || d.y || 0,
+        lx: d.lx,
+        ly: d.ly,
+        name: d.name || '',
+        type: d.type || '',
+        status: d.status || 'approved',
+        nodeType: d.nodeType || 'circle',
+        description: d.description || '',
+        icon: d.icon || '',
+        link: d.link || '',
+        hidden: d.hidden,
+        keywords: d.keywords || [],
+        location: d.location || undefined,
+        color: ChartUtils.nodeColor(d),
+        createdAt: d.createdAt,
+        updatedAt: d.updatedAt,
+        createdUser: d.createdUser,
+        updatedUser: d.updatedUser,
+        readOnly: !!d.readOnly || undefined,
+        sourceId: +d.sourceId || undefined,
+        labels: ChartUtils.getNodeLabels(d),
+        d: d.d,
+        infographyId: d.infographyId,
+      }));
     }
     return this._dataNodes;
   }

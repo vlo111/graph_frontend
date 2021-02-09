@@ -309,13 +309,14 @@ class LabelUtils {
     const folderId = (d.labels || []).find((l) => l.startsWith('f_'));
     if (folderId) {
       const folder = Chart.getLabels().find((l) => l.id === folderId);
-      if (folder && folder.open) {
-        if (folder.open) {
+      if (folder) {
+        if (!folder.open) {
           d.lx = folder.d[0][0];
           d.ly = folder.d[0][1];
         } else {
           delete d.lx;
           delete d.ly;
+          return []
         }
       }
     }
