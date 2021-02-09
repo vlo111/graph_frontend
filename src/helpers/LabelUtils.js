@@ -18,8 +18,6 @@ class LabelUtils {
     }
 
     const nodes = Chart.getNodes().filter((n) => n.labels.includes(id)).map((d) => {
-      delete d.lx;
-      delete d.ly;
       d.labels = [id];
       return d;
     });

@@ -442,8 +442,6 @@ class Chart {
         data.labels = data.labels.map((l) => {
           if (l.id === label.label?.id) {
             l.readOnly = true;
-            label.lx = label.label.d[0][0] - l.d[0][0];
-            label.ly = label.label.d[0][1] - l.d[0][1];
           }
           return l;
         });
@@ -477,8 +475,8 @@ class Chart {
 
         const name = ChartUtils.nodeUniqueName(d);
         // set node right position
-        const fx = labelNode.fx - labelData.lx;
-        const fy = labelNode.fy - labelData.ly;
+        const fx = labelNode.fx - (labelData.lx || 0);
+        const fy = labelNode.fy - (labelData.ly || 0);
         return {
           ...labelNode,
           name,
@@ -675,12 +673,7 @@ class Chart {
         const id = element.getAttribute('data-id');
         dragFolder.folder = folderWrapper.select(`[data-id="${id}"]`);
         dragFolder.rsize = target.classList.contains('folderResizeIcon');
-        dragFolder.nodes = this.getNotesWithLabels().filter((d) => {
-          if(d.name === 'sdasdasd_2_3_5')
-            console.log(d, id)
-
-          return d.labels.includes(id)
-        });
+        dragFolder.nodes = this.getNotesWithLabels().filter((d) => d.labels.includes(id));
         dragFolder.labelLock = this.wrapper.select(`use[data-label-id="${id}"]`);
       }
     };
@@ -754,14 +747,6 @@ class Chart {
 
             d.x = d.fx;
             d.y = d.fy;
-
-            if (datum.open) {
-              d.lx = null;
-              d.ly = null;
-            } else {
-              d.lx += ev.dx;
-              d.ly += ev.dy;
-            }
           }
         }
       });
@@ -810,15 +795,12 @@ class Chart {
       this.node
         .filter((n) => {
           const nodeOldFolder = n.labels?.find((l) => l.startsWith('f_'));
-          if (nodeOldFolder && nodeOldFolder !== d.id) {
+          const inLabel = n.labels?.some((l) => !l.startsWith('f_'));
+          if ((nodeOldFolder && nodeOldFolder !== d.id) || inLabel) {
             return false;
           }
 
           return ChartUtils.isInSquare([squareX, squareY], [width, height], [n.fx, n.fy]);
-        })
-        .each((n) => {
-          n.lx = x + 30;
-          n.ly = y + 30;
         })
         .attr('class', ChartUtils.setClass(() => ({ hideInFolder: true })));
 
@@ -858,14 +840,12 @@ class Chart {
             return;
           }
           if (inFolder) {
-            n.lx = null;
-            n.ly = null;
             nodesArr[i].classList.remove('hideInFolder');
           }
           const inSquare = ChartUtils.isInSquare([squareX, squareY], [width, height], [n.fx, n.fy]);
           if (inSquare && !inFolder) {
             const labelPosition = n.labels.find((l) => moveLabels[l]);
-            const position = labelPosition || ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
+            let position = labelPosition || ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
             const labelMove = [width, height];
             if (!labelPosition) {
               n.labels.forEach((l) => {
@@ -875,10 +855,11 @@ class Chart {
                   //   const { scale } = ChartUtils.calcScaledPosition();
                   //   labelMove = [el.width, el.width];
                   // }
-                  moveLabels[l] = {
-                    labelMove: [moveX, moveY],
-                    position,
-                  };
+                  // moveLabels[l] = {
+                  //   labelMove: [moveX, moveY],
+                  //   position,
+                  // };
+                  position = '';
                 } else {
                   moveLabels[l] = {
                     labelMove: [moveX, moveY],
@@ -934,13 +915,6 @@ class Chart {
           if (type === 'folder') {
             label.datum(datum)
               .attr('transform', (ld) => `translate(${ld.d[0][0]}, ${ld.d[0][1]})`);
-            this.node.each((n) => {
-              if (n.labels.includes(l) && (n.ly || n.lx)) {
-                n.lx = datum.d[0][0] + 30;
-                n.ly = datum.d[0][1] + 30;
-              }
-              return n;
-            });
           } else {
             label.datum(datum).attr('d', (ld) => renderPath(ld.d));
           }
@@ -1278,8 +1252,8 @@ class Chart {
         .data(filteredNodes)
         .join('g')
         .attr('class', (d) => {
-          const [lx, ly, inFolder] = ChartUtils.getFolderPos(d);
-          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`
+          const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(d);
+          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
         })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
@@ -1490,8 +1464,8 @@ class Chart {
     const showSelectedNodes = () => {
       this.nodesWrapper.selectAll('.node :not(text)')
         .attr('filter', (n) => (this.squareDara.selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
-        this.nodesWrapper.selectAll('.node :not(text)')
-        .attr('class',(n) => (this.squareDara.selectedNodes.includes(n.id) ? 'selectMultyNodes' : null));
+      this.nodesWrapper.selectAll('.node :not(text)')
+        .attr('class', (n) => (this.squareDara.selectedNodes.includes(n.id) ? 'selectMultyNodes' : null));
     };
 
     this.event.on('node.click', (ev, d) => {
@@ -1689,8 +1663,8 @@ class Chart {
     this.link.attr('d', (d) => {
       let arc = 0;
       let arcDirection = 0;
-      const [targetX, targetY] = ChartUtils.getFolderPos(d.target);
-      const [sourceX, sourceY] = ChartUtils.getFolderPos(d.source);
+      const [targetX, targetY] = ChartUtils.getNodePositionInFolder(d.target);
+      const [sourceX, sourceY] = ChartUtils.getNodePositionInFolder(d.source);
 
       if (d.curve) {
         return `M${sourceX},${sourceY} C${d.sx || 0},${d.sy || 0} ${`${d.tx || 0},${d.ty || 0} `}${targetX},${targetY}`;
@@ -1707,7 +1681,7 @@ class Chart {
     });
     this.node
       .attr('transform', (d) => {
-        const [lx, ly] = ChartUtils.getFolderPos(d);
+        const [lx, ly] = ChartUtils.getNodePositionInFolder(d);
         return `translate(${lx || d.x || 0}, ${ly || d.y || 0})`;
       })
       .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
@@ -2160,8 +2134,6 @@ class Chart {
         index: d.index,
         fx: d.fx || d.x || 0,
         fy: d.fy || d.y || 0,
-        lx: d.lx,
-        ly: d.ly,
         name: d.name || '',
         type: d.type || '',
         status: d.status || 'approved',

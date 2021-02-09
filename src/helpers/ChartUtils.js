@@ -426,11 +426,14 @@ class ChartUtils {
     let inside = false;
 
     if (label.type === 'folder') {
+      // if(node.labels?.length > 1 && !node.labels.includes(label.id)){
+      //   return false;
+      // }
       const nodeOldFolder = node.labels?.find((l) => l.startsWith('f_'));
       if (nodeOldFolder && nodeOldFolder !== label.id) {
         return false;
       }
-      const [lx, ly, inFolder] = ChartUtils.getFolderPos(node);
+      const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(node);
       if (inFolder && (lx === label.d[0][0] + 30 && ly === label.d[0][1] + 30)) {
         return true;
       }
@@ -441,7 +444,7 @@ class ChartUtils {
         const [width, height] = d[1];
         const squareX = d[0][0] - (width / 2);
         const squareY = d[0][1] - (height / 2);
-        return this.isInSquare([squareX, squareY], [width, height], [ x,  y]);
+        return this.isInSquare([squareX, squareY], [width, height], [x, y]);
       }
     }
     for (let i = 0, j = d.length - 1; i < d.length; j = i++) {
@@ -459,7 +462,11 @@ class ChartUtils {
 
   static getNodeLabels(node) {
     const firstFolder = node.labels?.find((l) => l.startsWith('f_'));
+    const firstLabel = node.labels?.find((l) => !l.startsWith('f_'));
     const labels = Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
+    if (firstLabel) {
+      return labels.filter((l) => !l.startsWith('f_'));
+    }
     if (labels.includes(firstFolder)) {
       return [firstFolder];
     }
@@ -664,21 +671,19 @@ class ChartUtils {
     });
   }
 
-  static getFolderPos(d) {
+  static getNodePositionInFolder(d) {
     const folderId = (d.labels || []).find((l) => l.startsWith('f_'));
     if (folderId) {
       const folder = Chart.getLabels().find((l) => l.id === folderId);
       if (folder) {
         if (!folder.open) {
-          d.lx = folder.d[0][0] + 30;
-          d.ly = folder.d[0][1] + 30;
-          return [d.lx, d.ly, true];
+          const x = folder.d[0][0] + 30;
+          const y = folder.d[0][1] + 30;
+          return [x, y, true];
         }
-        delete d.lx;
-        delete d.ly;
       }
     }
-    return [d.x || d.fx, d.y || d.fy];
+    return [d.x || d.fx, d.y || d.fy, false];
   }
 }
 
