@@ -49,10 +49,10 @@ export function socketInit() {
         });
       }, 500);
     });
-    
-    socket.on(`graphUpdate-${singleGraph.id}`, (data) => {  
-      const { graphs: { singleGraph },account: { myAccount: { id: userId } },} = getState();
-      data.id = +data.id; 
+
+    socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
+      const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
+      data.id = +data.id;
       return (
         (data.id === singleGraph.id)
         && dispatch(updateSingleGraph(data))
@@ -70,8 +70,8 @@ export function socketInit() {
     socket.on('generateThumbnailWorker', (data) => {
       dispatch({
         type: GENERATE_THUMBNAIL_WORKER,
-        payload: { data }
-      })
+        payload: { data },
+      });
     });
 
     socket.on('labelEmbedCopy', (labelEmbed) => {

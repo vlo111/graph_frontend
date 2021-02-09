@@ -28,7 +28,6 @@ class LabelUtils {
 
     const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
 
-
     const data = {
       sourceId: +sourceId,
       label,
@@ -304,12 +303,17 @@ class LabelUtils {
   }
 
   static getFolderPos(d) {
-    const folderId = d.labels.find(l => l.startsWith('f_'));
+    const folderId = d.labels.find((l) => l.startsWith('f_'));
     if (folderId) {
-      const folder = Chart.getLabels().find(l => l.id === folderId);
-      if (folder) {
-        console.log([folder.d[0][0], folder.d[0][1]])
-        return [folder.d[0][0], folder.d[0][1]]
+      const folder = Chart.getLabels().find((l) => l.id === folderId);
+      if (folder && folder.open) {
+        if (folder.open) {
+          d.lx = folder.d[0][0];
+          d.ly = folder.d[0][1];
+        } else {
+          delete d.lx;
+          delete d.ly;
+        }
       }
     }
     return [d.lx, d.ly];
