@@ -132,7 +132,10 @@ class LabelUtils {
     // label past
     const labels = Chart.getLabels();
     const labelOriginalId = data.label.id;
-    const labelId = ChartUtils.uniqueId(labels);
+    let labelId = ChartUtils.uniqueId(labels);
+    if (data.label.type === 'folder') {
+      labelId = `f_${labelId}`;
+    }
 
     if (isEmbed) {
       if (labels.some((l) => l.id === data.label.id)) {
