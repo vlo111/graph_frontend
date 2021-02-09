@@ -14,7 +14,7 @@ import { LABEL_STATUS } from '../data/node';
 class LabelUtils {
   static copy(sourceId, id, customFields, singleGraph) {
     const labels = Chart.getLabels();
-    let nodes = Chart.getNodes().filter((n) => n.labels.includes(id));
+    let nodes = _.clone(Chart.getNodes().filter((n) => n.labels.includes(id)));
     const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
     const label = labels.find((l) => l.id === id);
 
@@ -219,6 +219,7 @@ class LabelUtils {
       }
 
       d.name = (d.replace || d.merge) ? d.name : ChartUtils.nodeUniqueName(d);
+      d.labels = [labelId];
 
       const customField = CustomFields.get(data.customFields, d.type, d.originalId || d.id);
       store.dispatch(setNodeCustomField(d.type, d.id, customField, undefined, d.merge));

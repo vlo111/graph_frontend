@@ -14,7 +14,21 @@ class ChartUndoManager {
     this.data = [];
   }
 
+  normalize = (datum) => {
+    datum.nodes = datum.nodes.map((d) => ({
+      ...d,
+      lx: undefined,
+      ly: undefined,
+      fx: undefined,
+      fy: undefined,
+    }));
+    return datum;
+  }
+
   async push(datum) {
+    if (_.isEmpty(datum?.nodes) && _.isEmpty(datum?.links)) {
+      return;
+    }
     if (_.isEqual(_.last(this.data), datum)) {
       return;
     }
