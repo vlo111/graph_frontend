@@ -675,7 +675,12 @@ class Chart {
         const id = element.getAttribute('data-id');
         dragFolder.folder = folderWrapper.select(`[data-id="${id}"]`);
         dragFolder.rsize = target.classList.contains('folderResizeIcon');
-        dragFolder.nodes = this.getNotesWithLabels().filter((d) => d.labels.includes(id));
+        dragFolder.nodes = this.getNotesWithLabels().filter((d) => {
+          if(d.name === 'sdasdasd_2_3_5')
+            console.log(d, id)
+
+          return d.labels.includes(id)
+        });
         dragFolder.labelLock = this.wrapper.select(`use[data-label-id="${id}"]`);
       }
     };
@@ -808,7 +813,7 @@ class Chart {
           if (nodeOldFolder && nodeOldFolder !== d.id) {
             return false;
           }
-          console.log(width, height);
+
           return ChartUtils.isInSquare([squareX, squareY], [width, height], [n.fx, n.fy]);
         })
         .each((n) => {
@@ -1273,8 +1278,8 @@ class Chart {
         .data(filteredNodes)
         .join('g')
         .attr('class', (d) => {
-          const [lx, ly] = LabelUtils.getFolderPos(d);
-          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${lx || ly ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`
+          const [lx, ly, inFolder] = ChartUtils.getFolderPos(d);
+          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`
         })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
@@ -1684,11 +1689,8 @@ class Chart {
     this.link.attr('d', (d) => {
       let arc = 0;
       let arcDirection = 0;
-      const targetX = d.target.lx || d.target.x || d.target.fx || 0;
-      const targetY = d.target.ly || d.target.y || d.target.fy || 0;
-
-      const sourceX = d.source.lx || d.source.x || d.source.fx || 0;
-      const sourceY = d.source.ly || d.source.y || d.source.fy || 0;
+      const [targetX, targetY] = ChartUtils.getFolderPos(d.target);
+      const [sourceX, sourceY] = ChartUtils.getFolderPos(d.source);
 
       if (d.curve) {
         return `M${sourceX},${sourceY} C${d.sx || 0},${d.sy || 0} ${`${d.tx || 0},${d.ty || 0} `}${targetX},${targetY}`;
@@ -1705,7 +1707,7 @@ class Chart {
     });
     this.node
       .attr('transform', (d) => {
-        const [lx, ly] = LabelUtils.getFolderPos(d);
+        const [lx, ly] = ChartUtils.getFolderPos(d);
         return `translate(${lx || d.x || 0}, ${ly || d.y || 0})`;
       })
       .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));

@@ -430,7 +430,8 @@ class ChartUtils {
       if (nodeOldFolder && nodeOldFolder !== label.id) {
         return false;
       }
-      if ((node.lx || node.ly) && (node.lx === label.d[0][0] + 30 && node.ly === label.d[0][1] + 30)) {
+      const [lx, ly, inFolder] = ChartUtils.getFolderPos(node);
+      if (inFolder && (lx === label.d[0][0] + 30 && ly === label.d[0][1] + 30)) {
         return true;
       }
       if (!label.open && node.labels?.includes(label.id)) {
@@ -440,7 +441,7 @@ class ChartUtils {
         const [width, height] = d[1];
         const squareX = d[0][0] - (width / 2);
         const squareY = d[0][1] - (height / 2);
-        return this.isInSquare([squareX, squareY], [width, height], [node.lx || x, node.ly || y]);
+        return this.isInSquare([squareX, squareY], [width, height], [ x,  y]);
       }
     }
     for (let i = 0, j = d.length - 1; i < d.length; j = i++) {
@@ -661,6 +662,23 @@ class ChartUtils {
         1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
       });
     });
+  }
+
+  static getFolderPos(d) {
+    const folderId = (d.labels || []).find((l) => l.startsWith('f_'));
+    if (folderId) {
+      const folder = Chart.getLabels().find((l) => l.id === folderId);
+      if (folder) {
+        if (!folder.open) {
+          d.lx = folder.d[0][0] + 30;
+          d.ly = folder.d[0][1] + 30;
+          return [d.lx, d.ly, true];
+        }
+        delete d.lx;
+        delete d.ly;
+      }
+    }
+    return [d.x || d.fx, d.y || d.fy];
   }
 }
 

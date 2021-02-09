@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import { uniqueId } from 'react-bootstrap-typeahead/lib/utils';
 import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
-import Utils from './Utils';
 import store from '../store';
 import CustomFields from './CustomFields';
 import { removeNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } from '../store/actions/graphs';
@@ -305,23 +303,6 @@ class LabelUtils {
     return labelStatus.length ? labelStatus[0].label : null;
   }
 
-  static getFolderPos(d) {
-    const folderId = (d.labels || []).find((l) => l.startsWith('f_'));
-    if (folderId) {
-      const folder = Chart.getLabels().find((l) => l.id === folderId);
-      if (folder) {
-        if (!folder.open) {
-          d.lx = folder.d[0][0];
-          d.ly = folder.d[0][1];
-        } else {
-          delete d.lx;
-          delete d.ly;
-          return []
-        }
-      }
-    }
-    return [d.lx, d.ly];
-  }
 }
 
 export default LabelUtils;
