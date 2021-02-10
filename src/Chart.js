@@ -266,7 +266,6 @@ class Chart {
           return;
         }
       }
-      this.event.emit('node.dragstart', ev, d);
 
       if (d && !(this.curentTarget && (this.curentTarget.id === 'tc' || this.curentTarget.id === 'sc'))) {
         if (d.readOnly) {
@@ -278,6 +277,7 @@ class Chart {
         startX = ev.x;
         startY = ev.y;
       }
+      this.event.emit('node.dragstart', ev, d);
     };
 
     const dragged = (ev, d) => {
@@ -443,7 +443,8 @@ class Chart {
             l.readOnly = true;
             if (label.label.type === 'folder') {
               // todo;
-              label.mx = label.label.d[0][0] - l.d[0][0]
+              console.log(l.d)
+              label.mx = label.label.d[0][0] - l.d[0][0];
               label.my = label.label.d[0][1] - l.d[0][1];
             } else {
               label.mx = label.label.d[0][0] - l.d[0][0];
@@ -486,6 +487,7 @@ class Chart {
         // set node right position
         const fx = labelNode.fx - labelData.mx;
         const fy = labelNode.fy - labelData.my;
+        console.log(labelNode);
         return {
           ...labelNode,
           name,
@@ -934,6 +936,7 @@ class Chart {
           .attr('class', 'nodeCreate')
           .attr('opacity', 0.6)
           .attr('rx', 15)
+          .attr('stroke', (f) => (d.sourceId ? '#000' : null))
           .attr('width', (f) => _.get(f, 'd[1][0]', squareSize))
           .attr('height', (f) => _.get(f, 'd[1][1]', squareSize))
           .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / -2)
@@ -949,6 +952,7 @@ class Chart {
           .on('click', aaaa);
 
         folderWrapper.select(`[data-id="${d.id}"]`)
+          .filter(f => !f.sourceId)
           .append('use')
           .attr('href', '#folderResizeIcon')
           .attr('opacity', 0)
@@ -993,6 +997,7 @@ class Chart {
       .on('click', aaaa);
 
     folderWrapper.selectAll('.folderOpen')
+      .filter((f) => !f.sourceId)
       .append('use')
       .attr('href', '#folderResizeIcon')
       .attr('opacity', 0)
