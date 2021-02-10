@@ -430,7 +430,6 @@ class Chart {
           }
           return d;
         });
-
         // synchronize links
         label.links = label.links.map((l) => {
           l.sourceId = label.sourceId;
@@ -442,6 +441,14 @@ class Chart {
         data.labels = data.labels.map((l) => {
           if (l.id === label.label?.id) {
             l.readOnly = true;
+            if (label.label.type === 'folder') {
+              // todo;
+              label.mx = label.label.d[0][0] - l.d[0][0]
+              label.my = label.label.d[0][1] - l.d[0][1];
+            } else {
+              label.mx = label.label.d[0][0] - l.d[0][0];
+              label.my = label.label.d[0][1] - l.d[0][1];
+            }
           }
           return l;
         });
@@ -458,6 +465,8 @@ class Chart {
         const labelData = data.embedLabels.find((l) => d.labels?.includes(l.labelId));
         if (!labelData) {
           console.error('can\'t find label', d);
+          d.remove = true;
+          removedNodes = true;
           return d;
         }
         const labelNode = labelData.nodes.find((n) => n.id === d.id);
@@ -475,8 +484,8 @@ class Chart {
 
         const name = ChartUtils.nodeUniqueName(d);
         // set node right position
-        const fx = labelNode.fx - (labelData.lx || 0);
-        const fy = labelNode.fy - (labelData.ly || 0);
+        const fx = labelNode.fx - labelData.mx;
+        const fy = labelNode.fy - labelData.my;
         return {
           ...labelNode,
           name,
@@ -968,6 +977,7 @@ class Chart {
       .attr('class', 'nodeCreate')
       .attr('opacity', 0.6)
       .attr('rx', 15)
+      .attr('stroke', (d) => (d.sourceId ? '#000' : null))
       .attr('width', (d) => _.get(d, 'd[1][0]', squareSize))
       .attr('height', (d) => _.get(d, 'd[1][1]', squareSize))
       .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2)
