@@ -56,17 +56,34 @@ class NodeFullInfo extends Component {
           />
           <div className="nodeFullContent">
             <div className="headerBanner">
-              <img
-                src={node.icon ? `${node.icon}.large` : bgImage}
-                onError={(ev) => {
-                  if (ev.target.src !== node.icon) {
-                    ev.target.src = node.icon;
-                  } else if (ev.target.src !== bgImage) {
-                    ev.target.src = bgImage;
-                  }
-                }}
-                alt="background"
-              />
+              {node.nodeType === 'infography' && false ? (
+                <div style={{
+
+                  height: '100%',
+                  width: '100%',
+                  clipPath: 'url(#cutOff_508.191)'
+                }} >
+                  <div style={{
+                    backgroundImage:  `url(${node.icon}.large)`,
+                    backgroundSize: '100% auto',
+                    height: '100%',
+                    width: '100%',
+                  }}/>
+                </div>
+              ) : (
+                <img
+                  src={node.icon ? `${node.icon}.large` : bgImage}
+                  onError={(ev) => {
+                    if (ev.target.src !== node.icon) {
+                      ev.target.src = node.icon;
+                    } else if (ev.target.src !== bgImage) {
+                      ev.target.src = bgImage;
+                    }
+                  }}
+                  alt="background"
+                />
+              )}
+
               <div className="textWrapper">
                 <h2 className="name">{node.name}</h2>
                 <h3 className="type">{node.type}</h3>
@@ -87,16 +104,19 @@ class NodeFullInfo extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  singleGraph: state.graphs.singleGraph, // rerender then data changed
-  customFields: state.graphs.singleGraph.customFields || {},
-});
+const
+  mapStateToProps = (state) => ({
+    singleGraph: state.graphs.singleGraph, // rerender then data changed
+    customFields: state.graphs.singleGraph.customFields || {},
+  });
 
-const mapDispatchToProps = {};
+const
+  mapDispatchToProps = {};
 
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NodeFullInfo);
+const
+  Container = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(NodeFullInfo);
 
 export default withRouter(Container);

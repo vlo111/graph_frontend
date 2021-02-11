@@ -32,37 +32,28 @@ class FolderCloseIcon extends Component {
   }
 
   handleNodeClick = (ev, d) => {
-    if (!ev.altKey) {
-      return;
-    }
     const { nodeId } = this.state;
-
-    if (d.nodeType !== 'infography') {
+    if (d.nodeType !== 'infography' || !ev.altKey) {
       if (nodeId) {
         this.setState({ nodeId: null });
       }
       return;
     }
-    const { width, height } = ChartInfography.getPolygonSize(d.d);
-    const scaleX = _.get(d, 'scale[0]') || 1;
-    const scaleY = _.get(d, 'scale[1]') || 1;
-    const rotate = _.get(d, 'scale[2]') || 0;
-
-    const rWidth = width * scaleX;
-    const rHeight = height * scaleY;
-    const rX = ((d.fx || d.x) - rWidth / 2);
-    const rY = ((d.fy || d.y) - rHeight / 2);
+    this.setRsizePosition(d);
     this.setState({
-      x: rX,
-      y: rY,
-      width: rWidth,
-      height: rHeight,
-      nodeId: nodeId ? null : d.id,
+      nodeId: nodeId === d.id ? null : d.id,
     });
   }
 
   handleNodeDrag = (ev, d) => {
     const { nodeId } = this.state;
+    if (!nodeId) {
+      return;
+    }
+    this.setRsizePosition(d);
+  }
+
+  setRsizePosition = (d) => {
     const { width, height } = ChartInfography.getPolygonSize(d.d);
     const scaleX = _.get(d, 'scale[0]') || 1;
     const scaleY = _.get(d, 'scale[1]') || 1;
@@ -77,7 +68,6 @@ class FolderCloseIcon extends Component {
       y: rY,
       width: rWidth,
       height: rHeight,
-      nodeId: d.id,
     });
   }
 
