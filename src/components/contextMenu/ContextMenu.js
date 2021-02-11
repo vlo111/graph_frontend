@@ -55,21 +55,19 @@ class ContextMenu extends Component {
     }
     const { x, y } = ev;
     let element;
-    let params = {};     
-    if (ev.target.closest('.nodes') ) {  
-      if( ev.target.classList.contains('selectMultyNodes') ){
+    let params = {};
+    if (ev.target.closest('.nodes')) {
+      if (ev.target.classList.contains('selectMultyNodes')) {
         params = {
           squareDara: Chart.squareDara || {},
         };
         element = 'selectNode';
-      } else{
+      } else {
         const index = +ev.target.parentNode.getAttribute('data-i');
-        params = Chart.getNodes().find((d) => d.index === index); 
+        params = Chart.getNodes().find((d) => d.index === index);
         element = 'node';
       }
-
-    } 
-    else if (ev.target.closest('.links')) {
+    } else if (ev.target.closest('.links')) {
       const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
@@ -159,12 +157,11 @@ class ContextMenu extends Component {
               {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
-
               {['link', 'label', 'chart'].includes(show) ? (
-                <>                  
+                <>
                   <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
-                      Create node
-                   </Button> 
+                    Create node
+                  </Button>
                 </>
               ) : null}
               {showPast ? (
@@ -173,8 +170,7 @@ class ContextMenu extends Component {
                   Paste
                   <Icon className="arrow" value="fa-angle-right" />
                   <div className="contextmenu">
-                    <Button onClick={(ev) => this.handleClick(ev, 'label.append')}
-                    >
+                    <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
                       Append
                     </Button>
                     <Button onClick={(ev) => {
@@ -189,20 +185,20 @@ class ContextMenu extends Component {
                 </div>
               ) : null}
 
-             {['selectSquare'].includes(show) ? (
-                <>                
+              {['selectSquare'].includes(show) ? (
+                <>
                   <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
-                    Create a folder 
-                  </Button>  
+                    Create a folder
+                  </Button>
                 </>
               ) : null}
               {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
                 <>
                   {show === 'node' ? (!params.readOnly ? (
-                      <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
-                        Delete
-                      </Button>
-                    ) : null)
+                    <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
+                      Delete
+                    </Button>
+                  ) : null)
                     : (
                       <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
                         Delete
@@ -217,7 +213,7 @@ class ContextMenu extends Component {
                     Create
                     <Icon className="arrow" value="fa-angle-right" />
                     <div className="contextmenu">
-                      
+
                       <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.new')}>
                         Folder
                       </Button>

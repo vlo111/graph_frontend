@@ -2051,7 +2051,7 @@ class Chart {
     });
 
     this.event.on('node.click', async (ev, d) => {
-      if (ev.shiftKey || ev.altKey || d.nodeType === 'image') {
+      if (ev.shiftKey || d.nodeType === 'image') {
         return;
       }
       // d3.select('.controls-group').remove();
