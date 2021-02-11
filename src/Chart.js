@@ -1476,6 +1476,10 @@ class Chart {
       selectedNodes: [],
       nodes: [],
       labels: [],
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
     };
 
     let selectSquare;
@@ -1535,6 +1539,10 @@ class Chart {
         selectedNodes: [],
         nodes: [],
         labels: [],
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0,
       };
       showSelectedNodes();
     });
@@ -1559,6 +1567,11 @@ class Chart {
           .filter((l) => this.squareDara.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
           .map((l) => l.id);
         this.squareDara.nodes = this.squareDara.nodes.map((d) => d.id);
+        this.squareDara.width = width;
+        this.squareDara.height = height;
+        this.squareDara.x = x;
+        this.squareDara.y = y;
+
       }
     };
 

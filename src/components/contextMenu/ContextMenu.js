@@ -145,7 +145,6 @@ class ContextMenu extends Component {
     if (params.fieldName === '_location') {
       return null;
     }
-    console.log(show);
     // remove curve points
     Chart.wrapper.selectAll('#fcurve, #lcurve').remove();
 
@@ -180,6 +179,14 @@ class ContextMenu extends Component {
                     </Button>
                   </div>
                 </div>
+              ) : null}
+
+             {['selectSquare'].includes(show) ? (
+                <>                
+                  <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
+                    Folder 
+                  </Button>  
+                </>
               ) : null}
               {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
                 <>
