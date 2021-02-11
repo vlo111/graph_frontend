@@ -49,7 +49,7 @@ class ReactChart extends Component {
     ContextMenu.event.on('node.edit', this.editNode);
 
     ContextMenu.event.on('active-button', this.setActiveButton);
-    Chart.event.on('click', this.handleChartClick);
+   // Chart.event.on('click', this.handleChartClick);
     ContextMenu.event.on('node.create', this.addNewNode);
 
     Chart.event.on('link.click', this.deleteLink);
