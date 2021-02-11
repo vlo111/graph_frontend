@@ -64,6 +64,9 @@ class AddLabelModal extends Component {
     // ); 
      if (width < 200) width = 200;
      if (height < 200) height = 200; 
+     x = x + width / 2;
+     y= y + height / 2;
+     
     const labelData = {
       id: `f_${ChartUtils.uniqueId(labels)}`,
       color: ChartUtils.labelColors(),
