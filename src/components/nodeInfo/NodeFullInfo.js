@@ -62,13 +62,14 @@ class NodeFullInfo extends Component {
                   height: '100%',
                   width: '100%',
                   clipPath: 'url(#cutOff_508.191)'
-                }} >
+                }}>
+                  <svg dangerouslySetInnerHTML={{ __html: document.querySelector('[id="#cutOff_508.191"]')?.outerHTML || '' }} />
                   <div style={{
-                    backgroundImage:  `url(${node.icon}.large)`,
+                    backgroundImage: `url(${node.icon}.large)`,
                     backgroundSize: '100% auto',
                     height: '100%',
                     width: '100%',
-                  }}/>
+                  }} />
                 </div>
               ) : (
                 <img

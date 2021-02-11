@@ -10,9 +10,13 @@ class NodeContextMenu extends Component {
 
   render() {
     const { params } = this.props;
-
     return (
       <>
+        {!params.readOnly && params.nodeType === 'infography' ? (
+          <Button icon="fa-arrows" onClick={(ev) => this.props.onClick(ev, 'node.resize')}>
+            Resize
+          </Button>
+        ) : null}
         {!params.readOnly ? (
           <Button icon="fa-pencil-square-o" onClick={(ev) => this.props.onClick(ev, 'node.edit')}>
             Edit
