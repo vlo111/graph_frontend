@@ -113,7 +113,7 @@ export default function reducer(state = initialState, action) {
       } = singleGraph;
       Chart.render({
         nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels, lastUid,
-      });
+      } );
       return {
         ...state,
         singleGraph,

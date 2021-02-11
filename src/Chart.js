@@ -12,6 +12,8 @@ import LabelUtils from './helpers/LabelUtils';
 class Chart {
   static event = new EventEmitter();
 
+  static autoSave = true;
+
   /* @todo transform i mej avelacnem rotate u translate move y image i arandznacnem */
   static minWidth;
 
@@ -1201,6 +1203,10 @@ class Chart {
     this._dataNodes = null;
   }
 
+  static setAutoSave = (autoSave) => {
+    this.autoSave = autoSave;
+  }
+
   static render(data = {}, params = {}) {
     try {
       if (!this.isCalled('render')) {
@@ -1208,9 +1214,7 @@ class Chart {
       }
       this._dataNodes = null;
       this._dataLinks = null;
-      console.log(_.cloneDeep(data.nodes));
       data = this.normalizeData(data, params);
-      console.log(data);
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         this.undoManager.push(data);
         if (!_.isEmpty(this.data?.nodes) || !_.isEmpty(this.data?.links)) {

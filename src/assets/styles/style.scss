@@ -7247,3 +7247,22 @@ img.preview-scaled {
   letter-spacing: 0px;
   color: #0C69FF;
 }
+
+#nodeResizeIcons{
+  .square{
+    fill: #FFFFFF;
+    stroke: #0D0905;
+    cursor: pointer;
+    rect:hover{
+      fill: $color-light-gray;
+    }
+  }
+  .circle{
+    fill: #FFFFFF;
+    stroke: #0D0905;
+    cursor: pointer;
+    circle:hover{
+      fill: $color-light-gray;
+    }
+  }
+}

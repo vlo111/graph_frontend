@@ -2,11 +2,12 @@ import io from 'socket.io-client';
 import Chart from '../../Chart';
 import Api from '../../Api';
 import Account from '../../helpers/Account';
-import { updateSingleGraph } from './graphs';
+import { GET_SINGLE_GRAPH, getSingleGraphRequest, updateSingleGraph } from './graphs';
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
 import Utils from '../../helpers/Utils';
 import ChartUtils from '../../helpers/ChartUtils';
+import { getSingleGraph } from '../selectors/graphs';
 
 let socket;
 const notPushedEmits = [];
@@ -48,6 +49,17 @@ export function socketInit() {
           socket.emit(...params);
         });
       }, 500);
+    });
+
+    socket.on('graphChange', async (data) => {
+      const { graphs: { singleGraph }, account: { myAccount } } = getState();
+      if (+data.id === +singleGraph.id && +myAccount.id !== +data.userId) {
+        Chart.setAutoSave(false);
+        await dispatch(getSingleGraphRequest(data.id, {}, true));
+        setTimeout(() => {
+          Chart.setAutoSave(true);
+        }, 1000);
+      }
     });
 
     socket.on(`graphUpdate-${singleGraph.id}`, (data) => {

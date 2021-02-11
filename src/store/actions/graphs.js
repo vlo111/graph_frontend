@@ -55,7 +55,6 @@ export function getSingleGraphRequest(graphId, params) {
   return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId, params));
 }
 
-
 export const GET_SINGLE_GRAPH_PREVIEW = define('GET_SINGLE_GRAPH_PREVIEW');
 
 export function getSingleGraphPreviewRequest(graphId, userId, token) {
@@ -83,7 +82,7 @@ export function updateSingleGraph(graph, marge = false) {
   return {
     type: UPDATE_SINGLE_GRAPH,
     payload: {
-      graph, marge
+      graph, marge,
     },
   };
 }
