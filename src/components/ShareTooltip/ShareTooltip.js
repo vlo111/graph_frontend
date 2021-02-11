@@ -15,8 +15,8 @@ const TootlipContent = ({ user, role, type , isOwner }) => (
 TootlipContent.propTypes = {
     user: PropTypes.object.isRequired,
 };
-const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
-    const graphUsers = useSelector(getGraphUsers)[graphId];
+const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => { 
+    const graphUsers = useSelector(getGraphUsers)[graphId]; 
 
 
     const dispatch = useDispatch();
@@ -29,8 +29,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
     }
 
     const count = graphUsers && Object.keys(graphUsers) && Object.keys(graphUsers).length;
-    const countOwner = isOwner ? 1 : 0;
-    console.log(graphId, 'graphIdgraphId')
+    const countOwner = isOwner ? 1 : 0; 
     return (
 
         <div className="contributors-container">

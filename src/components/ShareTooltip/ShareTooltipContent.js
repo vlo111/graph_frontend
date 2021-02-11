@@ -12,8 +12,8 @@ const ShareTooltipContent = React.memo(({ user, role, type }) => {
                 />
                 <div className="info">
                     <div class="username">{`${user.firstName} ${user.lastName}`}</div>
+                    <div class="role">Shared  -  {type}</div>
                     <div class="role">Role  -  {role}</div>
-                    <div class="role">Type  -  {type}</div>
                     <div class="email">{user.email}</div>
                 </div>
 
