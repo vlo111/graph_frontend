@@ -159,6 +159,14 @@ class ContextMenu extends Component {
               {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
+
+              {['link', 'label', 'chart'].includes(show) ? (
+                <>                  
+                  <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
+                      Create node
+                   </Button> 
+                </>
+              ) : null}
               {showPast ? (
                 <div className="ghButton notClose">
                   <Icon value="fa-clipboard" />
@@ -209,9 +217,7 @@ class ContextMenu extends Component {
                     Create
                     <Icon className="arrow" value="fa-angle-right" />
                     <div className="contextmenu">
-                      <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
-                        Node
-                      </Button>
+                      
                       <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.new')}>
                         Folder
                       </Button>
