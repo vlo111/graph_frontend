@@ -32,9 +32,9 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField,
+      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale,
       d, infographyId,
-    } = addNodeParams;
+    } = _.cloneDeep(addNodeParams);
     const _type = type || _.last(nodes)?.type || '';
     this.setState({
       nodeData: {
@@ -49,7 +49,9 @@ class AddNodeModal extends Component {
         location,
         color: ChartUtils.nodeColorObj[_type] || '',
         d,
+        scale,
         infographyId,
+
       },
       customField,
       index,

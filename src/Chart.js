@@ -445,7 +445,6 @@ class Chart {
             l.readOnly = true;
             if (label.label.type === 'folder') {
               // todo;
-              console.log(l.d)
               label.mx = label.label.d[0][0] - l.d[0][0];
               label.my = label.label.d[0][1] - l.d[0][1];
             } else {
@@ -489,7 +488,6 @@ class Chart {
         // set node right position
         const fx = labelNode.fx - labelData.mx;
         const fy = labelNode.fy - labelData.my;
-        console.log(labelNode);
         return {
           ...labelNode,
           name,
@@ -630,6 +628,10 @@ class Chart {
 
   static handleZoom = (ev) => {
     if (this.activeButton === 'create-label' || ev.sourceEvent?.shiftKey) {
+      return;
+    }
+    if (ev.sourceEvent?.target?.closest('.disableZoom')) {
+      this.event.emit('element.drag', ev);
       return;
     }
     const { transform } = ev;
@@ -909,7 +911,6 @@ class Chart {
           const label = this.wrapper.select(`[data-id="${l}"]`);
           const datum = label.datum();
           datum.d = datum.d.map((p) => {
-            console.log(labelMove);
             if (position === 'right') {
               p[0] = +(p[0] + labelMove[0]).toFixed(2);
             }
@@ -954,7 +955,7 @@ class Chart {
           .on('click', aaaa);
 
         folderWrapper.select(`[data-id="${d.id}"]`)
-          .filter(f => !f.sourceId)
+          .filter((f) => !f.sourceId)
           .append('use')
           .attr('href', '#folderResizeIcon')
           .attr('opacity', 0)
@@ -1327,7 +1328,8 @@ class Chart {
         .append('path')
         .attr('d', (d) => ChartInfography.renderPath(d.d));
 
-      infography.append('rect')
+      infography
+        .append('rect')
         .attr('width', 512)
         .attr('height', 384)
         .attr('x', 512 / -2)
@@ -1701,7 +1703,15 @@ class Chart {
     this.node
       .attr('transform', (d) => {
         const [lx, ly] = ChartUtils.getNodePositionInFolder(d);
-        return `translate(${lx || d.x || 0}, ${ly || d.y || 0})`;
+        let transform = `translate(${lx || d.x || 0}, ${ly || d.y || 0})`;
+        if (d.scale) {
+          const scaleX = _.get(d, 'scale[0]') || 1;
+          const scaleY = _.get(d, 'scale[1]') || 1;
+          const rotate = _.get(d, 'scale[2]') || 0;
+          transform += ` scale(${scaleX} ${scaleY}) rotate(${0})`;
+        }
+
+        return transform;
       })
       .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
@@ -1844,7 +1854,10 @@ class Chart {
         }
         return this.radiusList[d.index] + i;
       })
-      .attr('font-size', (d) => 13.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
+      .attr('font-size', (d) => {
+        const s = _.get(d, 's[0]', 1);
+        return (13.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4) * (1 / s);
+      })
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
   }
 
@@ -2025,7 +2038,7 @@ class Chart {
     });
 
     this.event.on('node.click', async (ev, d) => {
-      if (ev.shiftKey || d.nodeType === 'image') {
+      if (ev.shiftKey || ev.altKey || d.nodeType === 'image') {
         return;
       }
       // d3.select('.controls-group').remove();
@@ -2172,6 +2185,7 @@ class Chart {
         sourceId: +d.sourceId || undefined,
         labels: ChartUtils.getNodeLabels(d),
         d: d.d,
+        scale: d.scale,
         infographyId: d.infographyId,
       }));
     }

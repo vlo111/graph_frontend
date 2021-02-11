@@ -7257,11 +7257,11 @@ img.preview-scaled {
       fill: $color-light-gray;
     }
   }
-  .circle{
+  .circleWrapper{
     fill: #FFFFFF;
     stroke: #0D0905;
     cursor: pointer;
-    circle:hover{
+    .circle:hover{
       fill: $color-light-gray;
     }
   }
