@@ -110,7 +110,7 @@ class FolderCloseIcon extends Component {
               <rect
                 width="14"
                 height="14"
-                x={width}
+                x={width - 14}
                 y={0}
                 transform="rotate(45)"
                 data-resize="top-right"
@@ -118,8 +118,8 @@ class FolderCloseIcon extends Component {
               <rect
                 width="14"
                 height="14"
-                x={width}
-                y={height}
+                x={width - 14}
+                y={height - 14}
                 transform="rotate(45)"
                 data-resize="bottom-right"
               />
@@ -127,7 +127,7 @@ class FolderCloseIcon extends Component {
                 width="14"
                 height="14"
                 x={0}
-                y={height}
+                y={height - 14}
                 transform="rotate(45)"
                 data-resize="bottom-left"
               />
@@ -141,20 +141,20 @@ class FolderCloseIcon extends Component {
               />
               <circle
                 r="8"
-                cx={width + 18}
+                cx={width + 4}
                 cy={-4}
                 className="circle"
               />
               <circle
                 r="8"
-                cx={width + 18}
-                cy={height + 18}
+                cx={width + 4}
+                cy={height + 4}
                 className="circle"
               />
               <circle
                 r="8"
                 cx={-4}
-                cy={height + 18}
+                cy={height + 4}
                 className="circle"
               />
             </g>

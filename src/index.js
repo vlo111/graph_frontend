@@ -15,7 +15,6 @@ import 'react-datasheet/lib/react-datasheet.css';
 import 'react-image-crop/lib/ReactCrop.scss';
 import './assets/styles/font-awesome.css';
 import './assets/styles/style.scss';
-
 ReactDOM.render((
   <Provider store={store}>
     <React.StrictMode>
@@ -32,3 +31,4 @@ serviceWorker.unregister();
 window.graphs = {
   version: '0.1.2',
 };
+

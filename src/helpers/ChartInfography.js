@@ -41,14 +41,17 @@ class ChartInfography {
       };
     };
     const handleDrag = (ev) => {
-      const { dx, dy } = ev;
+      let { dx, dy } = ev;
       if (!data.node.scale || !data.node.scale[0]) {
         _.set(data.node, 'scale', [1, 1, 0]);
       }
+      // if(ev.sourceEvent.shiftKey){
+      //   dy = dx;
+      // }
+
       const prevX = data.node.fx || data.node.x;
       const prevY = data.node.fy || data.node.y;
       const [prevScaleX, prevScaleY] = data.node.scale;
-
       const mx = dx / 2;
       const my = dy / 2;
       const sx = mx / 100;

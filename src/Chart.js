@@ -630,10 +630,6 @@ class Chart {
     if (this.activeButton === 'create-label' || ev.sourceEvent?.shiftKey) {
       return;
     }
-    if (ev.sourceEvent?.target?.closest('.disableZoom')) {
-      this.event.emit('element.drag', ev);
-      return;
-    }
     const { transform } = ev;
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
@@ -1346,7 +1342,7 @@ class Chart {
           return `translate(${cx} ${cy})`;
         });
 
-      this.nodesWrapper.selectAll('.node :not(text)')
+      this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
         .attr('fill', (d) => {
           if (d.icon) {
             return `url(#i${d.index})`;
@@ -1573,7 +1569,6 @@ class Chart {
         this.squareDara.height = height;
         this.squareDara.x = x;
         this.squareDara.y = y;
-
       }
     };
 
@@ -1868,7 +1863,7 @@ class Chart {
         return this.radiusList[d.index] + i;
       })
       .attr('font-size', (d) => {
-        const s = _.get(d, 's[0]', 1);
+        const s = _.get(d, 'scale[0]', 1);
         return (13.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4) * (1 / s);
       })
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
