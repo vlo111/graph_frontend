@@ -6,17 +6,17 @@ import { getGraphUsers } from '../../store/selectors/shareGraphs';
 import { graphUsersRequest } from '../../store/actions/shareGraphs';
 import Tooltip from 'rc-tooltip/es';
 import ShareTooltipContent from './ShareTooltipContent'; 
-
-const TootlipContent = ({ user, role, isOwner }) => (
+ 
+const TootlipContent = ({ user, role, type , isOwner }) => (
     <Suspense fallback={<div>Loading...</div>}>
-        <ShareTooltipContent user={user} role={role} isOwner={isOwner} />
+        <ShareTooltipContent user={user} role={role} type={type} isOwner={isOwner} />
     </Suspense>
 );
 TootlipContent.propTypes = {
-    graphId: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
 };
-const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
-    const graphUsers = useSelector(getGraphUsers)[graphId];
+const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => { 
+    const graphUsers = useSelector(getGraphUsers)[graphId]; 
 
 
     const dispatch = useDispatch();
@@ -29,8 +29,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
     }
 
     const count = graphUsers && Object.keys(graphUsers) && Object.keys(graphUsers).length;
-    const countOwner = isOwner ? 1 : 0;
-
+    const countOwner = isOwner ? 1 : 0; 
     return (
 
         <div className="contributors-container">
@@ -44,8 +43,8 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
                 {isOwner && (
                     <Link to={`/profile/${graphOwner.id}`} target="_blank">
 
-                        <li className="mb-2 mr-2">
-                            <Tooltip overlay={<TootlipContent user={graphOwner} role='Owner' />} trigger={['hover']} >
+                        <li className="mb-2 mr-2" key= '0' >
+                            <Tooltip overlay={<TootlipContent user={graphOwner} role='Owner' type='graph' />} trigger={['hover']} >
                                 <div>
 
                                     <img className="avatar-user d-block" src={graphOwner.avatar} alt="" />
@@ -55,29 +54,20 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
                         </li>
                     </Link>
                 )}
-
                 {
-                    graphUsers && graphUsers.map(item =>
-                        <Link to={`/profile/${item.user.id}`} target="_blank">
+                    graphUsers && graphUsers.map((item, index) =>
+                        <Link to={`/profile/${item.user.id}`} target="_blank" key={index.toString()}>
 
-                            <li className="mb-2 mr-2">
-                                <Tooltip overlay={<TootlipContent user={item.user} role={item.role} />} trigger={['hover']}>
-                                    <img className="avatar-user d-block" src={item.user.avatar} alt="" />
+                            <li className="mb-2 mr-2 "  key={index.toString()} >
+                                <Tooltip overlay={<TootlipContent user={item.user} role={item.role} type={item.type} />} trigger={['hover']}>
+                                    <img className="avatar-user d-block" src={item.user.avatar} alt={item.id} />
                                 </Tooltip>
-
                             </li>
                         </Link>
                     )
                 }
-
-
             </ul>
         </div>
     )
 });
-
-ShareTooltip.propTypes = {
-    graphId: PropTypes.number.isRequired,
-}
-
 export default ShareTooltip;

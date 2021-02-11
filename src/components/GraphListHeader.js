@@ -42,22 +42,23 @@ const GraphListHeader = ({ graph, headerTools }) => {
     }
   }
 
-  const handledeleteShareGraph = useCallback((shareGraphId) => {
+  const handleDeleteShareGraph = useCallback((shareGraphId) => {
 
-    if (window.confirm('Are you sure?')) {
+    if (window.confirm('Are you sure?')) { 
       //delete
       dispatch(DeleteShareGraphRequest(shareGraphId));
       history.push("/");
       toast.info('Successfully deleted');
     }
   }, [dispatch]); 
+  
   return (
    
     <div className="graphListHeader">
       {headerTools ? (
         <Button
           icon={<TrashSvg style={{ height: 30 }} />}
-          onClick={() => handledeleteShareGraph(graph?.shareGraph.id)}
+          onClick={() => handleDeleteShareGraph(graph?.share.id)}
           className="transparent delete" />
       ) : (
           <DropdownButton
@@ -90,8 +91,7 @@ const GraphListHeader = ({ graph, headerTools }) => {
 };
 
 GraphListHeader.propTypes = {
-  graph: PropTypes.object.isRequired,
-  deleteGraphRequest: PropTypes.func.isRequired,
+  graph: PropTypes.object.isRequired, 
 };
 
 export default React.memo(GraphListHeader);

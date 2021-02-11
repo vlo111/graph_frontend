@@ -76,8 +76,9 @@ class DataView extends Component {
     this.setState({ fullWidth: !fullWidth });
   }
 
-  close = () => {
-    this.props.setActiveButton('create');
+  close = () => {   
+    this.props.setActiveButton('create');   
+     window.location.reload(false); 
   }
 
   setActiveTab = (group, type) => {

@@ -25,8 +25,7 @@ class SearchSharedGraphs extends Component {
   render() {
     const { setLimit, shareGraphsList } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
-    this.getGraphs(page, searchParam);
-    console.log(shareGraphsList)
+    this.getGraphs(page, searchParam); 
     return (
       <div className="searchData">
         {shareGraphsList && shareGraphsList.length ? (

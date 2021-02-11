@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import SearchData from './SearchData';
 import { getUsersByTextRequest } from '../../../store/actions/account';
-import { updateShareGraphStatusRequest } from '../../../store/actions/shareGraphs';
+import { updateShareGraphStatusRequest, graphUsersRequest } from '../../../store/actions/shareGraphs';
 import Button from '../../form/Button';
 
 const Search = ({ select, setSelect, user, closeModal }) => {
@@ -22,6 +22,8 @@ const Search = ({ select, setSelect, user, closeModal }) => {
 
   const changeStatus = async () => {
     await dispatch(updateShareGraphStatusRequest({ graphId: graph.id }));
+    // reload list user
+    await dispatch(graphUsersRequest({ graphId: graph.id }));
     closeModal();
   }
 
@@ -40,7 +42,7 @@ const Search = ({ select, setSelect, user, closeModal }) => {
         onChange={(selected) => selected && refTypeahead.current.clear()}
         renderMenuItemChildren={(option, props) => <SearchData user={user} option={option} select={select} setSelect={setSelect} />}
       />
-      <Button
+      <Button className="accent alt"
             onClick={() => changeStatus()}
         >Save</Button>
     </div>
