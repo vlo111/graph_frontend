@@ -1256,6 +1256,7 @@ class Chart {
         .attr('stroke', ChartUtils.linkColor)
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
+        .on('dblclick', (...p) => this.event.emit('link.dblclick', ...p))
         .on('click', (...p) => this.event.emit('link.click', ...p));
 
       this.renderDirections();
