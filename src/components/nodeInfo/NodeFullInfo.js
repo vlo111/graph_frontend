@@ -11,7 +11,7 @@ import HeaderMini from '../HeaderMini';
 import ConnectionDetails from './ConnectionDetails';
 import NodeFullInfoModal from './NodeFullInfoModal';
 import ChartUtils from '../../helpers/ChartUtils';
-import ImageCroped from "./ImageCroped";
+import NodeImage from "./NodeImage";
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -56,21 +56,7 @@ class NodeFullInfo extends Component {
           />
           <div className="nodeFullContent">
             <div className="headerBanner">
-              {node.nodeType === 'infography' && node.d ? (
-                <ImageCroped node={node} />
-              ) : (
-                <img
-                  src={node.icon ? `${node.icon}.large` : bgImage}
-                  onError={(ev) => {
-                    if (ev.target.src !== node.icon) {
-                      ev.target.src = node.icon;
-                    } else if (ev.target.src !== bgImage) {
-                      ev.target.src = bgImage;
-                    }
-                  }}
-                  alt="background"
-                />
-              )}
+              <NodeImage node={node} />
 
               <div className="textWrapper">
                 <h2 className="name">{node.name}</h2>

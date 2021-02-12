@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
+import PropTypes from 'prop-types';
 import Chart from '../../Chart';
+import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
 
 class ImageCropped extends Component {
+  static propTypes = {
+    node: PropTypes.object.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -39,11 +45,31 @@ class ImageCropped extends Component {
     this.setSvgParams(node);
   }
 
-  render() {
+  handleImageError = (ev) => {
     const { node } = this.props;
+    if (ev.target.src !== node.icon) {
+      ev.target.src = node.icon;
+    } else if (ev.target.src !== bgImage) {
+      ev.target.src = bgImage;
+    }
+  }
+
+  render() {
+    const { node, ...props } = this.props;
     const {
-      x, y, clipPath, fill, transform, width, height
+      x, y, clipPath, fill, transform, width, height,
     } = this.state;
+
+    if (node.nodeType !== 'infography') {
+      return (
+        <img
+          src={node.icon ? `${node.icon}.large` : bgImage}
+          onError={this.handleImageError}
+          alt="node"
+          {...props}
+        />
+      );
+    }
     if (this.wrapper) {
       this.setSvgParams(node);
     }
@@ -51,7 +77,7 @@ class ImageCropped extends Component {
       <svg
         style={{ width: '100%', backgroundColor: '#F2F4FF' }}
         ref={(ref) => this.wrapper = ref}
-        className="imageCropped"
+        {...props}
       >
         <rect width={width} height={height} x={x} y={y} clipPath={clipPath} transform={transform} fill={fill} />
       </svg>

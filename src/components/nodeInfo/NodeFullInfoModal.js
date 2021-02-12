@@ -10,6 +10,7 @@ import NodeTabs from './NodeTabs';
 import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
 import ConnectionDetails from './ConnectionDetails';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import NodeImage from "./NodeImage";
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -50,15 +51,7 @@ class NodeFullInfo extends Component {
             </div>
             <div className="nodeFullContent">
               <div className="headerBanner">
-                <img
-                  src={node.icon ? `${node.icon}.large` : bgImage}
-                  onError={(ev) => {
-                    if (ev.target.src !== node.icon) {
-                      ev.target.src = node.icon;
-                    }
-                  }}
-                  alt="background"
-                />
+                <NodeImage node={node} />
                 <div className="textWrapper">
                   <h2 className="name">{node.name}</h2>
                   <h3 className="type">{node.type}</h3>
