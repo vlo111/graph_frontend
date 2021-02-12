@@ -42,9 +42,7 @@ const Search = ({ select, setSelect, user, closeModal }) => {
         onChange={(selected) => selected && refTypeahead.current.clear()}
         renderMenuItemChildren={(option, props) => <SearchData user={user} option={option} select={select} setSelect={setSelect} />}
       />
-      <Button className="accent alt"
-            onClick={() => changeStatus()}
-        >Save</Button>
+      <Button className="accent alt" onClick={() => changeStatus()}> Save </Button>
     </div>
   );
 };

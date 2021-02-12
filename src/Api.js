@@ -194,7 +194,7 @@ class Api {
   }
 
   static updateShareGraphStatus(requestData) {
-    return api.post('/share-graphs/update-status/', requestData);
+    return api.post('/share/update-status/', requestData);
   }
 
   static searchGraphsList(page, requestData = {}) {
