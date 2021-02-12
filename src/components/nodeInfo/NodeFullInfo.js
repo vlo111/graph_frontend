@@ -11,7 +11,7 @@ import HeaderMini from '../HeaderMini';
 import ConnectionDetails from './ConnectionDetails';
 import NodeFullInfoModal from './NodeFullInfoModal';
 import ChartUtils from '../../helpers/ChartUtils';
-
+import ImageCroped from "./ImageCroped";
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -56,21 +56,8 @@ class NodeFullInfo extends Component {
           />
           <div className="nodeFullContent">
             <div className="headerBanner">
-              {node.nodeType === 'infography' && false ? (
-                <div style={{
-
-                  height: '100%',
-                  width: '100%',
-                  clipPath: 'url(#cutOff_508.191)'
-                }}>
-                  <svg dangerouslySetInnerHTML={{ __html: document.querySelector('[id="#cutOff_508.191"]')?.outerHTML || '' }} />
-                  <div style={{
-                    backgroundImage: `url(${node.icon}.large)`,
-                    backgroundSize: '100% auto',
-                    height: '100%',
-                    width: '100%',
-                  }} />
-                </div>
+              {node.nodeType === 'infography' && node.d ? (
+                <ImageCroped node={node} />
               ) : (
                 <img
                   src={node.icon ? `${node.icon}.large` : bgImage}
