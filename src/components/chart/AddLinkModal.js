@@ -44,6 +44,7 @@ class AddLinkModal extends Component {
 
   componentDidMount() {
     Chart.event.on('link.new', this.handleAddNewLine);
+    Chart.event.on('link.dblclick', this.handleLineEdit);
     ContextMenu.event.on('link.edit', this.handleLineEdit);
   }
 

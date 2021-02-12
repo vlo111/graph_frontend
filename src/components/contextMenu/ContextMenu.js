@@ -239,6 +239,19 @@ class ContextMenu extends Component {
                   </Button>
                 </>
               ) : null}
+              {['node'].includes(show) ? (
+                <>                   
+                  {showInMap ? (
+                    <Button
+                      icon="fa-globe"
+                      onClick={(ev) => this.handleClick(ev, 'active-button', { button: 'maps-view' })}
+                    >
+                      Show on map
+                    </Button>
+                  ) : null}
+                   
+                </>
+              ) : null}
             </div>
           </div>
         )

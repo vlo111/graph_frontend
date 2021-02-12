@@ -11,7 +11,7 @@ import {
   getSharedWithUsersRequest,
   shareGraphWithUsersRequest,
 } from "../../store/actions/share";
-import { graphUsersRequest } from '../../store/actions/shareGraphs';
+import { updateShareGraphStatusRequest, graphUsersRequest } from '../../store/actions/shareGraphs';
 
 import ShareUserItem from "./ShareUserItem";
 import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
@@ -54,8 +54,9 @@ class LabelShare extends Component {
   };
 
   closeModal = async() => {
-    const {match: {params: { graphId = "" },},} = this.props;
-    console.log(graphId, 'graphIdgraphIdgraphIdgraphId');
+    const {match: {params: { graphId = "" },},} = this.props; 
+    //change status
+    await this.props.updateShareGraphStatusRequest({ graphId });
     // reload list user
     await this.props.graphUsersRequest({graphId });
     this.setState({ labelId: null }); 
@@ -92,10 +93,9 @@ class LabelShare extends Component {
       },
     } = this.props;
     this.props.getSharedWithUsersRequest(graphId, "label", labelId);
-  };
-
-  save = async () => {    
-    toast.info("Successfully confirmed");
+  }; 
+  save = async () => {   
+    toast.info("Successfully confirmed");    
     this.closeModal();
   };
 
@@ -164,6 +164,7 @@ const mapDispatchToProps = {
   getSharedWithUsersRequest,
   shareGraphWithUsersRequest,
   graphUsersRequest,
+  updateShareGraphStatusRequest,
 };
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(LabelShare);
