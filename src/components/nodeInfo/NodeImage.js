@@ -35,11 +35,11 @@ class NodeImage extends Component {
     const height = s.attr('height');
     const svgRect = this.wrapper.getBoundingClientRect();
 
-    let scale =1;
+    let scale = 1;
     if (svgRect.width < width) {
-      scale = svgRect.width / width
+      scale = svgRect.width / width + 0.04;
     }
-    const transform = `translate(${svgRect.width / 2} ${svgRect.height / 2} ) scale(${scale})`;
+    const transform = `translate(${svgRect.width / 2} ${svgRect.height / 2}) scale(${scale})`;
     this.setState({
       x, y, clipPath, fill, transform, width, height,
     });
@@ -51,16 +51,19 @@ class NodeImage extends Component {
   }
 
   handleImageError = (ev) => {
-    if (this.props.onError) {
-      return this.props.onError(ev);
-    }
+
     const { node } = this.props;
     if (ev.target.src !== node.icon) {
       ev.target.src = node.icon;
+      return;
     } else if (ev.target.src !== bgImage) {
       ev.target.src = bgImage;
+      return;
     }
-    return true;
+
+    if (this.props.onError) {
+      this.props.onError(ev);
+    }
   }
 
   render() {
