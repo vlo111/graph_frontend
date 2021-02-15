@@ -3,6 +3,8 @@ import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import Chart from '../../Chart';
 import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
+import Utils from "../../helpers/Utils";
+import ChartUtils from "../../helpers/ChartUtils";
 
 class NodeImage extends Component {
   static propTypes = {
@@ -75,7 +77,7 @@ class NodeImage extends Component {
     if (node.nodeType !== 'infography' || !node.d) {
       return (
         <img
-          src={node.icon ? `${node.icon}.large` : bgImage}
+          src={node.icon ? ChartUtils.normalizeIcon(node.icon, true) : bgImage}
           onError={this.handleImageError}
           alt="node"
           {...props}
