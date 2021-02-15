@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getGraphUsers } from '../../store/selectors/shareGraphs';
 import { graphUsersRequest } from '../../store/actions/shareGraphs';
+import { getId } from '../../store/selectors/account';
 import Tooltip from 'rc-tooltip/es';
 import ShareTooltipContent from './ShareTooltipContent'; 
  
@@ -16,11 +17,9 @@ TootlipContent.propTypes = {
     user: PropTypes.object.isRequired,
 };
 const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => { 
+    const userId = useSelector(getId);
     const graphUsers = useSelector(getGraphUsers)[graphId]; 
-
-
-    const dispatch = useDispatch();
-
+    const dispatch = useDispatch(); 
     useEffect(() => {
         dispatch(graphUsersRequest({ graphId }));
     }, [dispatch, graphId]);
@@ -30,11 +29,12 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
 
     const count = graphUsers && Object.keys(graphUsers) && Object.keys(graphUsers).length;
     const countOwner = isOwner ? 1 : 0; 
+    const isLabelShare =  graphUsers && graphUsers.some((n) => n.type === 'label' && n.userId === userId ); 
     return (
 
         <div className="contributors-container">
             <p className="h4 mb-3 title"> {isOwner ? `Contributors:` : `Shared with : `}
-                {count ? (
+                {count &&  !isLabelShare ? (
                     <span className="counter"> { count + countOwner} </span>
                 ) : null}
             </p>
@@ -54,7 +54,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
                         </li>
                     </Link>
                 )}
-                {
+                { !isLabelShare && (
                     graphUsers && graphUsers.map((item, index) =>
                         <Link to={`/profile/${item.user.id}`} target="_blank" key={index.toString()}>
 
@@ -65,7 +65,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
                             </li>
                         </Link>
                     )
-                }
+                )}
             </ul>
         </div>
     )

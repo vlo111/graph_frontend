@@ -1352,7 +1352,7 @@ p {
 
     #popover-contained {
       inset: 30px auto auto -120px !important;
-      min-width: 340px;
+      min-width: 360px;
       border-radius: 20px !important;
     }
 
@@ -1421,17 +1421,42 @@ p {
         border: none;
         border-radius: 8px !important;
 
+        ul {
+          display: flex;
+        }
+
+        ul:hover {
+          background-color: #f2f2f2;
+          border-radius: 10px;
+        }
+
+        li {
+          strong, p {
+            color: black;
+          }
+          p {
+            text-align: left;
+            font-size: 14px;
+            margin-left: 20px;
+          }
+          strong {
+            font-size: 16px;
+          }
+        }
+
+        a {
+          text-decoration: none;
+        }
+
         .timestamp {
-          color: #A2AAB0;
+          color: #2A7FEF;
           font-size: 11px;
-          display: block;
           text-align: end;
           margin-bottom: 10px;
         }
 
         .notificationUserName {
           font-weight: bold;
-          margin-left: 12px;
         }
 
         .notificationContent {
@@ -1448,11 +1473,15 @@ p {
         }
       }
 
-      .notification-message:after {
-        content: '';
-        border-bottom: 3px solid #E2E7EB;
-        width: auto;
-        display: block;
+      //.notification-message:after {
+      //  content: '';
+      //  border-bottom: 3px solid #E2E7EB;
+      //  width: auto;
+      //  display: block;
+      //}
+      .notification-message:hover {
+        background-color: #f2f2f2;
+        border-radius: 10px;
       }
     }
 
@@ -2849,9 +2878,9 @@ p {
 }
 
 .avatar, .notification-message > .content > img {
-  width: 58px;
-  height: 58px;
-  border-radius: 15px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50px;
   border: 1px solid $color-white;
 
   &.circle {
@@ -4824,8 +4853,8 @@ body .gh__menu {
 
 .ghModalOverlay {
   .commentModal {
-    width: 600px;
-    max-width: 900px;
+    width: 70%;
+    max-width: 70%;
 
     .ghFormField {
       width: 410px;
