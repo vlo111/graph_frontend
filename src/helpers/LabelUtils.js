@@ -128,10 +128,7 @@ class LabelUtils {
     // label past
     const labels = Chart.getLabels();
     const labelOriginalId = data.label.id;
-    let labelId = ChartUtils.uniqueId(labels);
-    if (data.label.type === 'folder') {
-      labelId = `f_${labelId}`;
-    }
+    let labelId = data.label.id;
 
     if (isEmbed) {
       if (labels.some((l) => l.id === data.label.id)) {
@@ -140,13 +137,15 @@ class LabelUtils {
       }
       data.label.readOnly = true;
       data.label.sourceId = data.sourceId;
-      data.label.id = labelId;
-      data.labelId = labelId;
     } else {
       // eslint-disable-next-line no-lonely-if
       if (labels.some((l) => l.color === data.label.color)) {
         delete data.label.color;
         data.label.color = ChartUtils.labelColors(data.label);
+      }
+      labelId = ChartUtils.uniqueId(labels);
+      if (data.label.type === 'folder') {
+        labelId = `f_${labelId}`;
       }
       data.label.id = labelId;
     }
