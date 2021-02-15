@@ -24,7 +24,7 @@ class ImageCropped extends Component {
 
   setSvgParams = memoizeOne((node) => {
     const s = Chart.nodesWrapper.select(`[data-i="${node.index}"] rect`);
-    if (!s || !this.wrapper) {
+    if (s.empty() || !this.wrapper) {
       return;
     }
     const x = +s.attr('x');
