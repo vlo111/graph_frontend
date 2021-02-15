@@ -93,7 +93,7 @@ class NodeTabs extends Component {
               <p>Location</p>
             </Button>
           ) : null}
-          {editable && Object.values(customField).length < CustomFields.LIMIT ? (
+          {editable && !node.sourceId && Object.values(customField).length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
               <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
             </Tooltip>

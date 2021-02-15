@@ -85,7 +85,7 @@ class MapsInfo extends Component {
       return null;
     }
     return (
-      <div data-field-name="_location" className="contentWrapper previewWrapper mapWrapper">
+      <div data-field-name={!node.sourceId ? '_location' : undefined} className="contentWrapper previewWrapper mapWrapper">
         <div className="content">
           <Map
             google={google}

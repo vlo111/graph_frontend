@@ -33,7 +33,7 @@ class NodeTabsContent extends Component {
 
   render() {
     // const { contentType } = this.state;
-    const { content, name } = this.props;
+    const { content, name, node } = this.props;
     const html = String(content?.content || content || '');
     // this.getContentType(html);
     // const { result: text } = stripHtml(html);
@@ -51,9 +51,9 @@ class NodeTabsContent extends Component {
     //   );
     // }
     return (
-        <div data-field-name={name} className="contentWrapper">
-          <div className="content" dangerouslySetInnerHTML={{ __html: html || 'no content' }} />
-        </div>
+      <div data-field-name={!node.sourceId ? name : undefined} className="contentWrapper">
+        <div className="content" dangerouslySetInnerHTML={{ __html: html || 'no content' }} />
+      </div>
     );
   }
 }
