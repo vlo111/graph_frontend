@@ -140,6 +140,8 @@ class LabelUtils {
       }
       data.label.readOnly = true;
       data.label.sourceId = data.sourceId;
+      data.label.id = labelId;
+      data.labelId = labelId;
     } else {
       // eslint-disable-next-line no-lonely-if
       if (labels.some((l) => l.color === data.label.color)) {

@@ -465,6 +465,7 @@ class Chart {
           return d;
         }
         const labelData = data.embedLabels.find((l) => d.labels?.includes(l.labelId));
+        console.log(labelData, 3333)
         if (!labelData) {
           console.error('can\'t find label', d);
           d.remove = true;
@@ -475,9 +476,9 @@ class Chart {
         if (!labelNode) {
           // remove deleted nodes
           if (!data.links.some((l) => !l.sourceId && (l.target === d.id || l.source === d.id))) {
-            d.remove = true;
-            console.log('remove', d);
-            removedNodes = true;
+            // d.remove = true;
+            // console.log('remove', d);
+            // removedNodes = true;
           } else {
             d.deleted = true;
           }
@@ -1074,7 +1075,7 @@ class Chart {
 
         let readOnlyLabel;
         if (datum.readOnly) {
-          readOnlyLabel = this.data.embedLabels.find((l) => l.label.id === datum.id);
+          readOnlyLabel = this.data.embedLabels.find((l) => l.label?.id === datum.id);
         }
         this.node.each((d) => {
           if (dragLabel.nodes.some((n) => n.id === d.id)) {

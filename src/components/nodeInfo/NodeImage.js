@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Chart from '../../Chart';
 import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
 
-class ImageCropped extends Component {
+class NodeImage extends Component {
   static propTypes = {
     node: PropTypes.object.isRequired,
   }
@@ -15,8 +15,8 @@ class ImageCropped extends Component {
       x: -256,
       y: -192,
       clipPath: '',
-      width: '',
-      height: '',
+      width: 0,
+      height: 0,
       transform: [],
       fill: [],
     };
@@ -34,7 +34,12 @@ class ImageCropped extends Component {
     const width = s.attr('width');
     const height = s.attr('height');
     const svgRect = this.wrapper.getBoundingClientRect();
-    const transform = `translate(${svgRect.width / 2} ${svgRect.height / 2} )`;
+
+    let scale =1;
+    if (svgRect.width < width) {
+      scale = svgRect.width / width
+    }
+    const transform = `translate(${svgRect.width / 2} ${svgRect.height / 2} ) scale(${scale})`;
     this.setState({
       x, y, clipPath, fill, transform, width, height,
     });
@@ -46,12 +51,16 @@ class ImageCropped extends Component {
   }
 
   handleImageError = (ev) => {
+    if (this.props.onError) {
+      return this.props.onError(ev);
+    }
     const { node } = this.props;
     if (ev.target.src !== node.icon) {
       ev.target.src = node.icon;
     } else if (ev.target.src !== bgImage) {
       ev.target.src = bgImage;
     }
+    return true;
   }
 
   render() {
@@ -79,10 +88,12 @@ class ImageCropped extends Component {
         ref={(ref) => this.wrapper = ref}
         {...props}
       >
-        <rect width={width} height={height} x={x} y={y} clipPath={clipPath} transform={transform} fill={fill} />
+        <g>
+          <rect width={width} height={height} x={x} y={y} clipPath={clipPath} transform={transform} fill={fill} />
+        </g>
       </svg>
     );
   }
 }
 
-export default ImageCropped;
+export default NodeImage;
