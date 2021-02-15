@@ -40,7 +40,7 @@ export default () => {
       notific_value="text"
       heading="Notification Alerts"
       sortedByKey={false}
-      showDate
+      // showDate
       size={30}
       color="#7166F8"
       onMarkAsRead={() => { dispatch(NotificationsUpdateRequest()); }}
