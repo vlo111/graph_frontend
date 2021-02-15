@@ -106,6 +106,7 @@ class GraphCompare extends Component {
       const node2 = selectedNodes2.find((n) => n.name === node1.name);
       if (node2) {
         node1 = ChartUtils.merge(node2, node1);
+        delete node1.hidden;
         links = links.map((l) => {
           if (l.source === node2.id) {
             l.source = node1.id;
@@ -129,6 +130,7 @@ class GraphCompare extends Component {
         // singleGraph.labels.filter((l) => node2.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
 
         delete node2.color;
+        delete node1.hidden;
 
         nodes.push(node2);
       }

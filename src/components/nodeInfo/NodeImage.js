@@ -24,7 +24,7 @@ class ImageCropped extends Component {
 
   setSvgParams = memoizeOne((node) => {
     const s = Chart.nodesWrapper.select(`[data-i="${node.index}"] rect`);
-    if (!s) {
+    if (!s || !this.wrapper) {
       return;
     }
     const x = +s.attr('x');
@@ -60,7 +60,7 @@ class ImageCropped extends Component {
       x, y, clipPath, fill, transform, width, height,
     } = this.state;
 
-    if (node.nodeType !== 'infography') {
+    if (node.nodeType !== 'infography' || !node.d) {
       return (
         <img
           src={node.icon ? `${node.icon}.large` : bgImage}
