@@ -132,7 +132,7 @@ class FolderCloseIcon extends Component {
                 data-resize="bottom-left"
               />
             </g>
-            <g className="circleWrapper">
+            {/* <g className="circleWrapper">
               <circle
                 r="8"
                 cx={-4}
@@ -157,7 +157,7 @@ class FolderCloseIcon extends Component {
                 cy={height + 4}
                 className="circle"
               />
-            </g>
+            </g> */}
           </>
         ) : null}
       </g>
