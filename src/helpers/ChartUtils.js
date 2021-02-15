@@ -420,6 +420,15 @@ class ChartUtils {
   }
 
   static isNodeInLabel(node, label) {
+    if (label.sourceId || node.sourceId) {
+      if (+label.sourceId !== +node.sourceId) {
+        return false;
+      }
+      if (node.sourceId && node.labels.includes(label.id)) {
+        return true;
+      }
+    }
+
     const x = node.fx || node.x;
     const y = node.fy || node.y;
     const { d } = label;
