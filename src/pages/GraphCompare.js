@@ -14,7 +14,7 @@ import Select from '../components/form/Select';
 import GraphCompareList from '../components/graphCompare/GraphCompareList';
 import ChartUtils from '../helpers/ChartUtils';
 import CreateGraphModal from '../components/CreateGraphModal';
-import Utils from "../helpers/Utils";
+import Utils from '../helpers/Utils';
 
 class GraphCompare extends Component {
   static propTypes = {
@@ -130,7 +130,7 @@ class GraphCompare extends Component {
         // singleGraph.labels.filter((l) => node2.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
 
         delete node2.color;
-        delete node1.hidden;
+        delete node2.hidden;
 
         nodes.push(node2);
       }
@@ -147,20 +147,24 @@ class GraphCompare extends Component {
 
     const customFieldsMerged = {};
 
-
     const customFieldsFull = Utils.mergeDeep(singleGraph2.customFields, customFields);
     for (const type in customFieldsFull) {
       const customField = customFieldsFull[type];
       for (const tab in customField) {
         const { values } = customFieldsFull[type][tab];
         for (const nodeId in values) {
-          const mainNode = nodes.find((n) => n.id === nodeId);
+          const n1 = selectedNodes1.find((n) => n.id === nodeId);
+          const n2 = selectedNodes2.find((n) => n.id === nodeId);
+          const mainNode = nodes.find((n) => n.name === n1?.name || n.name === n2?.name);
           if (mainNode) {
             const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
             const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
-            const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : undefined;
-            const value2 = node2 ? _.get(singleGraph2.customFields, [node2.type, tab, 'values', node2.id]) : undefined;
-            if (value1 && !value2) {
+
+
+            const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : null;
+            const value2 = node2 ? _.get(singleGraph2.customFields, [node2.type, tab, 'values', node2.id]) : null;
+
+            if (!value1 && !value2) {
               _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1);
             } else if (!value1 && value2) {
               _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
@@ -172,7 +176,6 @@ class GraphCompare extends Component {
               }
             }
           }
-
         }
       }
     }
