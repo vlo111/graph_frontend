@@ -34,7 +34,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
 
         <div className="contributors-container">
             <p className="h4 mb-3 title"> {isOwner ? `Contributors:` : `Shared with : `}
-                {count ? (
+                {count &&  !isLabelShare ? (
                     <span className="counter"> { count + countOwner} </span>
                 ) : null}
             </p>
