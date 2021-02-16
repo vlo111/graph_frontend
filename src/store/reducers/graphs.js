@@ -25,6 +25,7 @@ const initialState = {
   importData: {},
   graphsList: [],
   graphsListStatus: '',
+  singleGraphStatus: '',
   singleGraph: {},
   embedLabels: [],
   graphsListInfo: {
@@ -103,6 +104,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         singleGraph: {},
+        singleGraphStatus: 'request',
       };
     }
     case GET_SINGLE_EMBED_GRAPH.SUCCESS:
@@ -113,13 +115,22 @@ export default function reducer(state = initialState, action) {
       } = singleGraph;
       Chart.render({
         nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels, lastUid,
-      } );
+      });
       return {
         ...state,
         singleGraph,
         embedLabels,
+        singleGraphStatus: 'success',
       };
     }
+
+    case GET_SINGLE_GRAPH.FAIL: {
+      return {
+        ...state,
+        singleGraphStatus: 'fail',
+      };
+    }
+
     case GET_SINGLE_GRAPH_PREVIEW.SUCCESS: {
       const { graph: singleGraph } = action.payload.data;
       let { nodes, links, labels } = singleGraph;

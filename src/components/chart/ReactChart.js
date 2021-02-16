@@ -19,6 +19,7 @@ import FolderIcon from './icons/FolderIcon';
 import LabelLock from './icons/LabelLock';
 import SelectedNodeFilter from './icons/SelectedNodeFilter';
 import ResizeIcons from "./icons/ResizeIcons";
+import NotFound from "./NotFound";
 
 class ReactChart extends Component {
   static propTypes = {
@@ -49,7 +50,7 @@ class ReactChart extends Component {
     ContextMenu.event.on('node.edit', this.editNode);
 
     ContextMenu.event.on('active-button', this.setActiveButton);
-   // Chart.event.on('click', this.handleChartClick);
+    // Chart.event.on('click', this.handleChartClick);
     ContextMenu.event.on('node.create', this.addNewNode);
 
     Chart.event.on('link.click', this.deleteLink);
@@ -193,7 +194,8 @@ class ReactChart extends Component {
 
   render() {
     const { ctrlPress, shiftKey } = this.state;
-    const { activeButton, singleGraph: { currentUserRole } } = this.props;
+    const { activeButton, singleGraphStatus, singleGraph: { currentUserRole } } = this.props;
+    console.log(singleGraphStatus)
 
     // this.renderChart(singleGraph, embedLabels);
     return (
@@ -220,7 +222,7 @@ class ReactChart extends Component {
             <g className="nodes" />
             <g className="icons" />
             <g className="folderIcons" />
-             <ResizeIcons />
+            <ResizeIcons />
             <defs>
               <filter id="labelShadowFilter" x="-50%" y="-50%" width="200%" height="200%">
                 <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
@@ -242,6 +244,7 @@ class ReactChart extends Component {
             </defs>
           </g>
         </svg>
+        {singleGraphStatus === 'fail' ? <NotFound /> : null}
       </div>
     );
   }
@@ -252,6 +255,7 @@ const mapStateToProps = (state) => ({
   embedLabels: state.graphs.embedLabels,
   customFields: state.graphs.singleGraph.customFields || {},
   singleGraph: state.graphs.singleGraph,
+  singleGraphStatus: state.graphs.singleGraphStatus,
 });
 const mapDispatchToProps = {
   toggleNodeModal,

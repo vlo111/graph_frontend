@@ -54,15 +54,20 @@ class LabelCompareItem extends Component {
             {/*  : <span className="createdAt"> 0 </span>} */}
           </div>
           <div className="tabs">
-            {_.map(customField, (val, key) => (
-              <Tooltip key={key} overlay={key} placement="top">
-                <span>
-                  {key && key.length > 10
-                    ? `${key.substr(0, 10)}... `
-                    : key}
-                </span>
-              </Tooltip>
-            ))}
+            {_.map(customField, (val, key) => {
+              if (!val) {
+                return null;
+              }
+              return (
+                <Tooltip key={key} overlay={key} placement="top">
+                  <span>
+                    {key && key.length > 10
+                      ? `${key.substr(0, 10)}... `
+                      : key}
+                  </span>
+                </Tooltip>
+              );
+            })}
           </div>
         </div>
       </>
