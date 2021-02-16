@@ -694,6 +694,93 @@ class ChartUtils {
     }
     return [d.x || d.fx, d.y || d.fy, false];
   }
+
+  static margeGraphs = (graph1, graph2, selectedNodes1 = graph1.nodes, selectedNodes2 = graph2.nodes) => {
+    let links = [...graph1.links || [], ...graph2.links || []];
+    let labels = new Set();
+    const nodes = selectedNodes1.map((node1) => {
+      const node2 = selectedNodes2.find((n) => n.name === node1.name);
+      if (node2) {
+        node1 = ChartUtils.merge(node2, node1);
+        delete node1.hidden;
+        links = links.map((l) => {
+          if (l.source === node2.id) {
+            l.source = node1.id;
+          }
+          if (l.target === node2.id) {
+            l.target = node1.id;
+          }
+          return l;
+        });
+      }
+
+      delete node1.color;
+
+      // graph1.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
+      return node1;
+    });
+
+    selectedNodes2.forEach((node2) => {
+      const node1 = selectedNodes1.find((n) => n.name === node2.name);
+      if (!node1) {
+        // graph1.labels.filter((l) => node2.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
+
+        delete node2.color;
+        delete node2.hidden;
+
+        nodes.push(node2);
+      }
+    });
+
+    labels = [...labels];
+
+    links = ChartUtils.uniqueLinks(links).map((l) => {
+      delete l.color;
+      return l;
+    });
+
+    const { customFields } = graph1;
+
+    const customFieldsMerged = {};
+
+    const customFieldsFull = Utils.mergeDeep(graph2.customFields, customFields);
+    for (const type in customFieldsFull) {
+      const customField = customFieldsFull[type];
+      for (const tab in customField) {
+        const { values } = customFieldsFull[type][tab];
+        for (const nodeId in values) {
+          const n1 = selectedNodes1.find((n) => n.id === nodeId);
+          const n2 = selectedNodes2.find((n) => n.id === nodeId);
+          const mainNode = nodes.find((n) => n.name === n1?.name || n.name === n2?.name);
+          if (mainNode) {
+            const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
+            const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
+
+
+            const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : null;
+            const value2 = node2 ? _.get(graph2.customFields, [node2.type, tab, 'values', node2.id]) : null;
+
+            if (value1 && !value2) {
+              _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1);
+            } else if (!value1 && value2) {
+              _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
+            } else if (value1 && value2) {
+              if (value1 !== value2) {
+                _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`);
+              } else {
+                _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
+              }
+            }
+          }
+        }
+      }
+    }
+
+
+    return {
+      labels, nodes, links, customFields: customFieldsMerged,
+    }
+  }
 }
 
 export default ChartUtils;

@@ -21,6 +21,17 @@ class ImportStep2 extends Component {
   }
 
   import = async () => {
+    // const {
+    //   importData,
+    //   singleGraph,
+    // } = this.props;
+    // const {
+    //   nodes, links, labels, customFields,
+    // } = ChartUtils.margeGraphs(singleGraph, importData);
+    // Chart.render({
+    //   nodes, links, labels,
+    // });
+
     const {
       importData: {
         nodes = [], links = [], labels = [], customFields = {},

@@ -7,7 +7,6 @@ import reportWebVitals from './reportWebVitals';
 import './helpers/Promise.allValues';
 import App from './App';
 import store from './store';
-import './helpers/react-memoize';
 
 import 'rc-tooltip/assets/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
