@@ -776,7 +776,6 @@ class ChartUtils {
       }
     }
 
-
     return {
       labels, nodes, links, customFields: customFieldsMerged,
     }
