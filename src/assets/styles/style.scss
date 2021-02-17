@@ -3464,8 +3464,7 @@ p {
 
   &.linkTypesFilter {
     label {
-      text-overflow: ellipsis;
-      overflow: hidden;
+      text-overflow: ellipsis; 
       white-space: nowrap;
     }
   }
@@ -4867,8 +4866,8 @@ body .gh__menu {
 
 .ghModalOverlay {
   .commentModal {
-    width: 70%;
-    max-width: 70%;
+    width: 600px;
+    max-width: 900px;
 
     .ghFormField {
       width: 410px;

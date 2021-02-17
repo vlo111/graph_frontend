@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
+import Checkbox from '../form/Checkbox';
 import Button from '../form/Button';
 
 class KeywordsFilter extends Component {
@@ -84,39 +85,33 @@ class KeywordsFilter extends Component {
         <h4 className="title">Node Keywords</h4>
         <ul className="list">
           <li className="item">
-            <div className="filterCheckBox">
-              <input
-                onChange={() => this.toggleAll(typesFull, allChecked)}
-                checked={allChecked}
-                className="graphsCheckbox"
-                type="checkbox"
-                name="layout"
-                id="keywordCheckAll"
-              />
-              <label className="pull-left" htmlFor="keywordCheckAll">Check All</label>
+          <div className="filterCheckBox">
+            <Checkbox
+              label={allChecked ? 'Uncheck All' : 'Check All'}
+              checked={allChecked}
+              onChange={() => this.toggleAll(typesFull, allChecked)}
+              className="graphsCheckbox"
+            >           
+            </Checkbox>
             </div>
-            <div className="dashed-border" />
             <span className="badge">
-              {_.sumBy(typesFull, 'length')}
-            </span>
+                {_.sumBy(typesFull, 'length')}
+              </span>
           </li>
           {types.map((item) => (
             <li key={item.keyword} className="item">
-              <div className="filterCheckBox">
-                <input
-                  onChange={() => this.handleChange(item.keyword)}
-                  checked={filters.nodeKeywords.includes(item.keyword)}
-                  className="graphsCheckbox"
-                  type="checkbox"
-                  name="layout"
-                  id={item.keyword}
-                />
-                <label className="pull-left" htmlFor={item.keyword}>{item.keyword}</label>
+               <div className="filterCheckBox"> 
+              <Checkbox
+                label={item.keyword}
+                checked={filters.nodeKeywords.includes(item.keyword)}
+                onChange={() => this.handleChange(item.keyword)}
+                className="graphsCheckbox"
+              >               
+              </Checkbox>
               </div>
-              <div className="dashed-border" />
               <span className="badge">
                   {item.length}
-              </span>
+                </span>
             </li>
           ))}
         </ul>

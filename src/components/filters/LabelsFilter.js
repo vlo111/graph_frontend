@@ -67,29 +67,26 @@ class LabelsFilter extends Component {
     return (
       <div className="labelsFilter graphFilter">
         <h4 className="title">Labels</h4>
-        <ul className="list labelCheckAllBlock">
-          <li className="item">
-            <div className="filterCheckBox">
-              <input
-                  onChange={() => this.toggleAll(labelsFormatted, allChecked)}
-                  checked={allChecked}
-                  className="graphsCheckbox"
-                  type="checkbox"
-                  name="layout"
-                  id="labelCheckAll"
-              />
-              <label className="pull-left" htmlFor="labelCheckAll">Check All</label>
-            </div>
-            <div className="dashed-border" />
-            <span className="badge">
-            {_.sumBy(labelsFormatted, (d) => +d.length || 0)}
-          </span>
-          </li>
-        </ul>
+        <div className="checkAll">
+        <div className="filterCheckBox">
+          <Checkbox
+            label={allChecked ? 'Uncheck All' : 'Check All'}
+            checked={allChecked}
+            onChange={() => this.toggleAll(labelsFormatted, allChecked)}
+            className="graphsCheckbox"
+          >
+           
+          </Checkbox>
+          </div>
+          <span className="badge">
+              {_.sumBy(labelsFormatted, (d) => +d.length || 0)}
+            </span>
+        </div>
         <ul className="list">
           {labelsFormatted.map((item) => (
             <Tooltip key={item.id} overlay={item.name}>
               <li className="item">
+              <div className="filterCheckBox">
                 <Checkbox
                   label={(
                     <div className="colorBox" style={{ borderColor: item.color }}>
@@ -98,11 +95,13 @@ class LabelsFilter extends Component {
                   )}
                   checked={filters.labels.includes(item.id)}
                   onChange={() => this.handleChange(item.id)}
-                >
-                  <span className="badge">
+                  className="graphsCheckbox"
+                >                  
+                </Checkbox>
+                </div>
+                <span className="badge">
                     {item.length}
                   </span>
-                </Checkbox>
               </li>
             </Tooltip>
           ))}
