@@ -217,7 +217,7 @@ class LabelUtils {
         d.id = id;
       }
 
-      d.name = (d.replace || d.merge) ? d.name : ChartUtils.nodeUniqueName(d);
+      d.name = (d.replace || d.merge || isEmbed) ? d.name : ChartUtils.nodeUniqueName(d);
       d.labels = [labelId];
 
       const customField = CustomFields.get(data.customFields, d.type, d.originalId || d.id);
@@ -233,16 +233,7 @@ class LabelUtils {
       } else if (d.merge) {
         nodes = nodes.map((n) => {
           if (n.id === d.id) {
-            n = ChartUtils.merge(d, n);
-            data.links = data.links.map((l) => {
-              if (l.source === d.originalId) {
-                l.source = n.id;
-              }
-              if (l.target === d.originalId) {
-                l.target = n.id;
-              }
-              return l;
-            });
+            return ChartUtils.merge(d, n);
           }
           return n;
         });

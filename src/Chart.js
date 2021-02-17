@@ -485,13 +485,12 @@ class Chart {
           return d;
         }
 
-        const name = ChartUtils.nodeUniqueName(d);
+        // const name = ChartUtils.nodeUniqueName(d);
         // set node right position
         const fx = labelNode.fx - labelData.mx;
         const fy = labelNode.fy - labelData.my;
         return {
           ...labelNode,
-          name,
           sourceId: d.sourceId,
           readOnly: true,
           fx,
