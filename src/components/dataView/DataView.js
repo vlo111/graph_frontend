@@ -76,9 +76,9 @@ class DataView extends Component {
     this.setState({ fullWidth: !fullWidth });
   }
 
-  close = () => {   
-    this.props.setActiveButton('create');   
-     window.location.reload(false); 
+  close = () => {
+    this.props.setActiveButton('create');
+    window.location.reload(false);
   }
 
   setActiveTab = (group, type) => {
@@ -180,8 +180,9 @@ class DataView extends Component {
       fullWidth, activeTab, exportType, showExport,
     } = this.state;
 
-    const links = Chart.getLinks();
-    const nodes = Chart.getNodes();
+    const nodes = Chart.getNodes().filter((d) => !d.sourceId);
+    const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
+
     const linksGrouped = _.groupBy(links, 'type');
     const nodesGrouped = _.groupBy(nodes, 'type');
     let color = '';
@@ -192,7 +193,7 @@ class DataView extends Component {
       } else if (activeTab.group === 'nodes') {
         color = nodes.find((p) => p.type === activeTab.type).color;
       } else color = '';
-    } 
+    }
     return (
       <div id="dataTable" className={fullWidth ? 'fullWidth' : undefined}>
         <div className="contentWrapper">

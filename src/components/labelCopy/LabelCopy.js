@@ -165,7 +165,7 @@ class LabelCopy extends Component {
     this.closeModal();
   }
 
-  compareAndMarge = (sources, duplicates) => {
+  compareAndMerge = (sources, duplicates) => {
     const { position } = this.state;
     const data = LabelUtils.getData();
     let nodes = Chart.getNodes();
@@ -259,7 +259,7 @@ class LabelCopy extends Component {
               </div>
               <div className="component">
                 <Button
-                  onClick={() => this.compareAndMarge(compare.sourceNodes, compare.duplicatedNodes)}
+                  onClick={() => this.compareAndMerge(compare.sourceNodes, compare.duplicatedNodes)}
                   className="actionButton"
                   icon={<MergeNodesSvg />}
                 />
@@ -289,7 +289,7 @@ class LabelCopy extends Component {
               compare={compare}
               position={position}
               onRequestClose={() => this.toggleCompareNodes(false)}
-              onSubmit={this.compareAndMarge}
+              onSubmit={this.compareAndMerge}
             />
           )
           : null}
