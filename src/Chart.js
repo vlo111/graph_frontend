@@ -1860,8 +1860,8 @@ class Chart {
         } else if (d.nodeType === 'triangle') {
           i += this.radiusList[d.index] / 5;
         } else if (d.nodeType === 'infography') {
-          const { height = 384, min = [0, 0] } = d.d ? ChartInfography.getPolygonSize(d.d) : {};
-          const cy = -1 * min[1] - height / 2;
+          const { height = 384, min = [-384, -384] } = d.d ? ChartInfography.getPolygonSize(d.d) : {};
+          const cy = height / 2 + 20;
           return cy;
         }
         return this.radiusList[d.index] + i;

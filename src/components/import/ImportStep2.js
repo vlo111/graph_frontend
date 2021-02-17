@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton } from '../../store/actions/app';
@@ -10,8 +11,7 @@ import {
   updateSingleGraph,
 } from '../../store/actions/graphs';
 import ChartUtils from '../../helpers/ChartUtils';
-import _ from "lodash";
-import ImportCompare from "./ImportCompare";
+import ImportCompare from './ImportCompare';
 
 class ImportStep2 extends Component {
   static propTypes = {
@@ -26,28 +26,27 @@ class ImportStep2 extends Component {
     super(props);
     this.state = {
       compare: false,
-    }
+    };
   }
 
-
   import = async () => {
-    const { importData, singleGraph } = this.props;
-    const nodes = Chart.getNodes();
+    const { importData } = this.props;
+    const singleGraph = Chart.getData();
 
-    const duplicates = _.intersectionBy(nodes, importData.nodes, 'name');
+    const duplicates = _.intersectionBy(singleGraph.nodes, importData.nodes, 'name');
     if (duplicates.length) {
-      this.setState({ compare: true })
+      this.setState({ compare: true });
+      return;
     }
-    // const {
-    //   importData,
-    //   singleGraph,
-    // } = this.props;
-    // const {
-    //   nodes, links, labels, customFields,
-    // } = ChartUtils.margeGraphs(singleGraph, importData);
-    // Chart.render({
-    //   nodes, links, labels,
-    // });
+    const {
+      nodes, links, labels, customFields,
+    } = ChartUtils.margeGraphs(singleGraph, importData);
+    Chart.render({
+      nodes, links, labels,
+    });
+    this.props.setGraphCustomFields(customFields);
+    this.props.setActiveButton('create');
+    this.props.updateShowSelect(true);
 
     // const {
     //   importData: {
@@ -80,7 +79,7 @@ class ImportStep2 extends Component {
     const { compare } = this.state;
     const { importData } = this.props;
     if (compare) {
-      return <ImportCompare importData={importData} />
+      return <ImportCompare importData={importData} />;
     }
     return (
       <>

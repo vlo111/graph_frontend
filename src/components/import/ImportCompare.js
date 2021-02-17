@@ -3,8 +3,11 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import GraphCompareList from '../graphCompare/GraphCompareList';
 import { setActiveButton } from '../../store/actions/app';
-import { clearSingleGraph, getSingleGraphRequest } from '../../store/actions/graphs';
+import { clearSingleGraph, getSingleGraphRequest, setGraphCustomFields } from '../../store/actions/graphs';
 import { userGraphRequest } from '../../store/actions/shareGraphs';
+import Chart from "../../Chart";
+import ChartUtils from "../../helpers/ChartUtils";
+import Button from "../form/Button";
 
 class ImportCompare extends Component {
   constructor(props) {
@@ -15,46 +18,68 @@ class ImportCompare extends Component {
     };
   }
 
+
+  handleChange = (d, checked, pos) => {
+    const key = pos === 1 ? 'selectedNodes1' : 'selectedNodes2';
+    const data = this.state[key];
+    const i = data.findIndex((n) => n.id === d.id);
+    if (checked) {
+      if (i === -1) {
+        data.push(d);
+      }
+    } else if (i > -1) {
+      data.splice(i, 1);
+    }
+    this.setState({ [key]: data });
+  }
+
+  merge = () => {
+    const singleGraph = Chart.getData();
+    const { selectedNodes1, selectedNodes2 } = this.state;
+    const { importData: singleGraph2 } = this.props;
+
+    const {
+      nodes, links, labels, customFields,
+    } = ChartUtils.margeGraphs(singleGraph, singleGraph2, selectedNodes1, selectedNodes2);
+
+    Chart.render({
+      nodes, links, labels,
+    });
+    this.props.setGraphCustomFields(customFields);
+    this.props.setActiveButton('create');
+  }
+
   render() {
     const { selectedNodes1, selectedNodes2 } = this.state;
-    const { importData: singleGraph2, singleGraph } = this.props;
+    const singleGraph = Chart.getData();
+    const { importData: singleGraph2 } = this.props;
     const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
     const selected = [...selectedNodes1, ...selectedNodes2];
-    const graph1Nodes = _.differenceBy(singleGraph.nodes, singleGraph2.nodes, 'name');
-    const graph2Nodes = _.differenceBy(singleGraph2.nodes, singleGraph.nodes, 'name');
-
     return (
       <div className="compareWrapper">
-        <GraphCompareList
-          title={`Similar Nodes (${graph1CompareNodes.length}) `}
-          singleGraph1={{ ...singleGraph, nodes: graph1CompareNodes }}
-          singleGraph2={singleGraph2}
-          onChange={this.handleChange}
-          selected={selected}
-        />
-        <GraphCompareList
-          title={2}
-          dropdown
-          singleGraph1={{ ...singleGraph, nodes: graph1Nodes }}
-          onChange={this.handleChange}
-          selected={selected}
-        />
-        <GraphCompareList
-          title={1}
-          dropdown
-          singleGraph2={{ ...singleGraph2, nodes: graph2Nodes }}
-          onChange={this.handleChange}
-          selected={selected}
-        />
+        <div className="compareListWrapper">
+          <GraphCompareList
+            title={`Similar Nodes (${graph1CompareNodes.length}) `}
+            singleGraph1={{ ...singleGraph, nodes: graph1CompareNodes }}
+            singleGraph2={singleGraph2}
+            onChange={this.handleChange}
+            selected={selected}
+            scrollContainer=".ghImportModal"
+          />
+        </div>
+        <Button onClick={this.merge}>Merge</Button>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  singleGraph: state.graphs.singleGraph,
+  customFields: state.graphs.singleGraph.customFields || {},
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setGraphCustomFields,
+  setActiveButton
+};
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
