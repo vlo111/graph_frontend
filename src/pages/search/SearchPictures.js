@@ -129,11 +129,11 @@ class SearchPictures extends Component {
                                     )}
                                   >
                                     <div className="left">
-                                      <NodeIcon node={document.node} />
+                                      {document.node &&<NodeIcon node={document.node} />}
                                     </div>
                                     <div className="right">
-                                      <span className="headerName">{document.node.name}</span>
-                                      <span className="type">{document.node.type}</span>
+                                      <span className="headerName">{document.node?.name}</span>
+                                      <span className="type">{document.node?.type}</span>
                                     </div>
                                   </p>
                                   {document.altText
