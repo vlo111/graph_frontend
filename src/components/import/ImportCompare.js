@@ -5,19 +5,18 @@ import GraphCompareList from '../graphCompare/GraphCompareList';
 import { setActiveButton } from '../../store/actions/app';
 import { clearSingleGraph, getSingleGraphRequest, setGraphCustomFields } from '../../store/actions/graphs';
 import { userGraphRequest } from '../../store/actions/shareGraphs';
-import Chart from "../../Chart";
-import ChartUtils from "../../helpers/ChartUtils";
-import Button from "../form/Button";
+import Chart from '../../Chart';
+import ChartUtils from '../../helpers/ChartUtils';
+import Button from '../form/Button';
 
 class ImportCompare extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedNodes1: [],
-      selectedNodes2: [],
+      selectedNodes1: _.cloneDeep(Chart.getNodes()),
+      selectedNodes2: _.cloneDeep(this.props.importData.nodes),
     };
   }
-
 
   handleChange = (d, checked, pos) => {
     const key = pos === 1 ? 'selectedNodes1' : 'selectedNodes2';
@@ -55,6 +54,9 @@ class ImportCompare extends Component {
     const { importData: singleGraph2 } = this.props;
     const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
     const selected = [...selectedNodes1, ...selectedNodes2];
+    const graph1Nodes = _.differenceBy(singleGraph.nodes, singleGraph2.nodes, 'name');
+    const graph2Nodes = _.differenceBy(singleGraph2.nodes, singleGraph.nodes, 'name');
+
     return (
       <div className="compareWrapper">
         <div className="compareListWrapper">
@@ -78,7 +80,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   setGraphCustomFields,
-  setActiveButton
+  setActiveButton,
 };
 const Container = connect(
   mapStateToProps,
