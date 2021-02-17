@@ -154,6 +154,7 @@ class ContextMenu extends Component {
               {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
+              {show === 'chart'  ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
