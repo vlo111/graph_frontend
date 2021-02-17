@@ -3464,7 +3464,7 @@ p {
 
   &.linkTypesFilter {
     label {
-      text-overflow: ellipsis; 
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
   }
@@ -4762,12 +4762,25 @@ body .gh__menu {
   max-width: 718px;
   display: block !important;
 
+
+  .compareListWrapper {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
   .containerModal {
     min-width: 340px;
     width: auto;
 
+    .mergeButton {
+      margin-bottom: 20px;
+      margin-right: auto;
+    }
+
     .compareWrapper {
       width: 600px;
+      display: flex;
+      flex-direction: column
     }
   }
 

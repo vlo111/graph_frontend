@@ -69,7 +69,7 @@ class ImportCompare extends Component {
             scrollContainer=".ghImportModal"
           />
         </div>
-        <Button onClick={this.merge}>Merge</Button>
+        <Button  className="mergeButton" onClick={this.merge}>Merge</Button>
       </div>
     );
   }
