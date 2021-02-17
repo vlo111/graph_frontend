@@ -10,7 +10,7 @@ import { convertGraphRequest } from '../../store/actions/graphs';
 import Input from '../form/Input';
 import ImportStep2 from './ImportStep2';
 
-class DataImportModal extends Component {
+class ImportGoogle extends Component {
   static propTypes = {
     convertGraphRequest: PropTypes.func.isRequired,
     importData: PropTypes.object.isRequired,
@@ -110,6 +110,6 @@ const mapDispatchToProps = {
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DataImportModal);
+)(ImportGoogle);
 
 export default Container;

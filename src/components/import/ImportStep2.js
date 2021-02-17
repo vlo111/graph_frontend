@@ -7,9 +7,11 @@ import { setActiveButton } from '../../store/actions/app';
 import {
   convertGraphRequest,
   setGraphCustomFields,
-  updateSingleGraph
+  updateSingleGraph,
 } from '../../store/actions/graphs';
 import ChartUtils from '../../helpers/ChartUtils';
+import _ from "lodash";
+import ImportCompare from "./ImportCompare";
 
 class ImportStep2 extends Component {
   static propTypes = {
@@ -20,7 +22,22 @@ class ImportStep2 extends Component {
     singleGraph: PropTypes.object.isRequired,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      compare: false,
+    }
+  }
+
+
   import = async () => {
+    const { importData, singleGraph } = this.props;
+    const nodes = Chart.getNodes();
+
+    const duplicates = _.intersectionBy(nodes, importData.nodes, 'name');
+    if (duplicates.length) {
+      this.setState({ compare: true })
+    }
     // const {
     //   importData,
     //   singleGraph,
@@ -32,27 +49,27 @@ class ImportStep2 extends Component {
     //   nodes, links, labels,
     // });
 
-    const {
-      importData: {
-        nodes = [], links = [], labels = [], customFields = {},
-      },
-      singleGraph: { title, description },
-    } = this.props;
-    ChartUtils.resetColors();
-    this.props.updateSingleGraph({
-      nodes,
-      links,
-      labels,
-      title,
-      description,
-      embedLabels: [],
-    });
-    Chart.render({
-      nodes, links, labels, embedLabels: [],
-    });
-    this.props.setGraphCustomFields(customFields);
-    this.props.setActiveButton('create');
-    this.props.updateShowSelect(true);
+    // const {
+    //   importData: {
+    //     nodes = [], links = [], labels = [], customFields = {},
+    //   },
+    //   singleGraph: { title, description },
+    // } = this.props;
+    // ChartUtils.resetColors();
+    // this.props.updateSingleGraph({
+    //   nodes,
+    //   links,
+    //   labels,
+    //   title,
+    //   description,
+    //   embedLabels: [],
+    // });
+    // Chart.render({
+    //   nodes, links, labels, embedLabels: [],
+    // });
+    // this.props.setGraphCustomFields(customFields);
+    // this.props.setActiveButton('create');
+    // this.props.updateShowSelect(true);
   }
 
   back = () => {
@@ -60,7 +77,11 @@ class ImportStep2 extends Component {
   }
 
   render() {
+    const { compare } = this.state;
     const { importData } = this.props;
+    if (compare) {
+      return <ImportCompare importData={importData} />
+    }
     return (
       <>
         <div className="importST2Node">
@@ -97,7 +118,7 @@ const mapDispatchToProps = {
   setActiveButton,
   convertGraphRequest,
   setGraphCustomFields,
-  updateSingleGraph
+  updateSingleGraph,
 };
 const Container = connect(
   mapStateToProps,

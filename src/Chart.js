@@ -505,6 +505,9 @@ class Chart {
         data.nodes = data.nodes.filter((d) => !d.remove);
         data.links = ChartUtils.cleanLinks(data.links, data.nodes);
       }
+    } else if (data.nodes.filter((d) => d.sourceId)) {
+      data.nodes = data.nodes.filter((d) => !d.sourceId);
+      data.links = ChartUtils.cleanLinks(data.links, data.nodes);
     }
 
     const nodes = data.nodes.map((d) => {

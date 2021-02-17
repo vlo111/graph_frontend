@@ -4759,8 +4759,18 @@ body .gh__menu {
   }
 }
 
-.ghImportModal {
+.ghModalOverlay .ghImportModal {
+  max-width: 600px;
   display: block !important;
+
+  .containerModal {
+    min-width: 340px;
+    width: auto;
+
+    .compareWrapper {
+      width: 600px;
+    }
+  }
 
   .ghTabs {
     margin-bottom: 20px;
