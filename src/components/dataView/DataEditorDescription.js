@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import Button from '../form/Button';
 import Editor from '../form/Editor';
-import stripHtml from "string-strip-html";
+import { stripHtml } from "string-strip-html";
 
 class DataEditorDescription extends Component {
   static propTypes = {

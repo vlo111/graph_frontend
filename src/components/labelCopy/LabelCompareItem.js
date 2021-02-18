@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import Tooltip from 'rc-tooltip';
-import stripHtml from 'string-strip-html';
 import NodeIcon from '../NodeIcon';
 import CustomFields from '../../helpers/CustomFields';
 

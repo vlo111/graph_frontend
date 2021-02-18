@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import stripHtml from 'string-strip-html';
+import { stripHtml } from 'string-strip-html';
 import Api from '../../Api';
 import Utils from '../../helpers/Utils';
 

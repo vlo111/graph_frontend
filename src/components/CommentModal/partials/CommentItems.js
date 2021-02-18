@@ -8,8 +8,6 @@ import { getGraphCommentsRequest } from '../../../store/actions/commentGraphs';
 import { getActionsCountRequest } from '../../../store/actions/graphs';
 import Owner from './Owner';
 import AddComment from './AddComment';
-import stripHtml from 'string-strip-html';
-import queryString from 'query-string';
 
 const CommentItem = ({ comment, isReply }) => {
   const userId = useSelector(getId);
