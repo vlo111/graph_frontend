@@ -126,8 +126,8 @@ class MediaModal extends Component {
                                             href={document.data}
                                           >
                                             <div className="docContainer">
-                                              <div className="docFrame">
-                                                {document.data.split('.').pop().toUpperCase()}
+                                              <div title={document.altText} className="docFrame">
+                                                  {document.altText}
                                               </div>
                                             </div>
                                           </a>
