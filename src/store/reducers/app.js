@@ -3,7 +3,7 @@ import {
   LOADING,
   NEW_NODE_MODAL, PREVIOUS_ACTIVE_BUTTON, RESET_FILTER,
   SET_ACTIVE_BUTTON, SET_FILTER, SET_GRID_INDEXES,
-  TOGGLE_GRID, SET_LEGEND_BUTTON,
+  TOGGLE_GRID, SET_LEGEND_BUTTON, ONLINE_USERS 
 } from '../actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
 import { DEFAULT_FILTERS } from '../../data/filter';
@@ -113,6 +113,12 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         legendButton: action.payload.mode,
+      };
+    }
+    case ONLINE_USERS: {   
+      return {
+        ...state,
+        onlineUsers: action.payload.onlineUsers,
       };
     }
     default: {
