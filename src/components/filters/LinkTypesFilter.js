@@ -83,9 +83,7 @@ class LinkTypesFilter extends Component {
     if (typesFull.length < 2) {
       return null;
     }
-    const allChecked = typesFull.length === filters.linkTypes.length;
-    console.log(types, "labelStatusFull");
-
+    const allChecked = typesFull.length === filters.linkTypes.length; 
     return (
       <div className="linkTypesFilter graphFilter">
         <h4 className="title">Link Types</h4>

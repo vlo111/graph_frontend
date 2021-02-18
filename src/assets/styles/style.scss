@@ -1201,7 +1201,7 @@ p {
   .signOut {
     right: 20px;
     position: fixed;
-    top: 6px;
+    top: 0px;
   }
 }
 
@@ -7009,6 +7009,31 @@ img.preview-scaled {
     font-size: 11px;
     top: 21px;
   }
+  
+   .icon-container { 
+    position: relative;
+   }
+   .status-online {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%; 
+    border: 2px solid white;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    background-color: green; 
+  }
+  .status-in-graph {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%; 
+    border: 2px solid white;
+    bottom: 2px;
+    right: 3px;
+    position: absolute;
+    background-color: #7166f8; 
+  } 
+
 }
 
 

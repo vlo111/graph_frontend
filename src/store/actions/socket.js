@@ -22,6 +22,7 @@ export function socketEmit(...params) {
 
 export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
 export const GENERATE_THUMBNAIL_WORKER = 'GENERATE_THUMBNAIL_WORKER';
+export const ONLINE_USERS = 'ONLINE_USERS';
 
 export function socketInit() {
   return (dispatch, getState) => {
@@ -100,7 +101,17 @@ export function socketInit() {
         },
       });
     });
+    socket.on('online', (data) => {
+      const onlineUsers = JSON.parse(data);
+      console.log(onlineUsers, 'onlineUsersonlineUsers');
+      dispatch({
+        type: ONLINE_USERS,
+        payload: { onlineUsers },
+      });
 
+      
+    });
+    
     socket.on('embedLabelDataChange', (data) => {
       const { labels } = Chart;
 
