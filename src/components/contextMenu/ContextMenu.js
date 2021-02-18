@@ -85,7 +85,7 @@ class ContextMenu extends Component {
       const label = Chart.getLabels().find((l) => l.id === id);
       params = { ...label };
       element = 'label';
-    } else if (ev.target.parentNode?.closest('.folder')) {
+    } else if (ev.target.parentNode && ev.target.parentNode.closest('.folder')) {
       const id = ev.target.parentNode.getAttribute('data-id');
       const label = Chart.getLabels().find((l) => l.id === id);
       params = { ...label };
