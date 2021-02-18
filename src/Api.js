@@ -91,11 +91,15 @@ class Api {
   }
 
   static updateGraph(id, requestData) {
-    return api.put(`/graphs/update/${id}`, requestData);
+    return api.put(`/graphs/update/${id}`, requestData, {
+      cancelToken: this.#cancel('updateGraph'),
+    });
   }
 
   static updateGraphData(id, requestData) {
-    return api.put(`/graphs/update-data/${id}`, requestData);
+    return api.put(`/graphs/update-data/${id}`, requestData, {
+      cancelToken: this.#cancel('updateGraphData'),
+    });
   }
 
   static getActionsCount(id) {
