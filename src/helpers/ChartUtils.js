@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import queryString from 'query-string';
 import randomColor from 'randomcolor';
 import memoizeOne from 'memoize-one';
-import stripHtml from 'string-strip-html';
+import { stripHtml } from 'string-strip-html';
 import path from 'path';
 import Chart from '../Chart';
 import history from './history';
