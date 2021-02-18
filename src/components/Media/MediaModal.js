@@ -70,6 +70,7 @@ class MediaModal extends Component {
             <div className="mediaHeader">
               <h2>Media gallery</h2>
             </div>
+              <hr className="line mediaLine"/>
             {documentSearch && documentSearch.length
               ? (
                 <div className="searchData">
@@ -85,58 +86,63 @@ class MediaModal extends Component {
                               className="nodeTabs tabDoc"
                             >
                               <div className="imageFrame">
-                                <a
-                                  className="nodeLink"
-                                  href={`/graphs/update/${document.graphId}?info=${document.nodeId}`}
-                                >
-                                  <div className="left">
-                                    <NodeIcon node={document.node} />
-                                  </div>
-                                  <div className="right">
-                                    <span className="headerName">{document.node.name}</span>
-                                    <p>{moment(document.updatedAt).calendar()}</p>
-                                  </div>
-                                </a>
+                                <div className="imageFrameHeader">
+                                  <a
+                                    className="nodeLink"
+                                    href={`/graphs/update/${document.graphId}?info=${document.nodeId}`}
+                                  >
+                                    <div className="left">
+                                      <NodeIcon node={document.node} />
+                                    </div>
+                                    <div className="right">
+                                      <span className="headerName">{document.node.name}</span>
+                                      <p>{moment(document.updatedAt).calendar()}</p>
+                                    </div>
+                                  </a>
 
-                                <p className="createdBy">
-                                  <span>uploaded by </span>
-                                  <Link to={`/profile/${document.user.id}`}>
-                                    {`${document.user.firstName} ${document.user.lastName}`}
-                                  </Link>
-                                </p>
-                                <table className="mediaTable">
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <div className="mediaTumbnail">
-                                          <div className="container">
-                                            {document.type.includes('image') ? (
-                                              <a target="_blank" href={document.data}>
-                                                <img
-                                                  src={document.data}
-                                                  width="300px"
-                                                />
-                                              </a>
-                                            ) : (
-                                              <a className="linkDocumentDownload" download={document.altText} href={document.data}>
-                                                <div className="docContainer">
-                                                  <div className="docFrame">
-                                                    {document.data.split('.').pop().toUpperCase()}
-                                                  </div>
-                                                </div>
-                                              </a>
-                                            )}
-                                          </div>
-                                          <p title={document.description}>
-                                            { document.description && document.description.length > 50
-                                              ? `${document.description.substr(0, 50)}... `
-                                              : document.description}
-                                          </p>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
+                                  <p className="createdBy">
+                                    <span>uploaded by </span>
+                                    <Link to={`/profile/${document.user.id}`}>
+                                      {`${document.user.firstName} ${document.user.lastName}`}
+                                    </Link>
+                                  </p>
+                                </div>
+
+                                <div className="gallery-box-container">
+                                  <a href="#" className="gallery-box">
+                                    <span className="gallery-box__img-container">
+                                      <figure className="img-container">
+                                        {document.type.includes('image') ? (
+                                          <a target="_blank" href={document.data}>
+                                            <img
+                                              className="gallery-box__img"
+                                              src={document.data}
+                                            />
+                                          </a>
+                                        ) : (
+                                          <a
+                                            className="linkDocumentDownload"
+                                            download={document.altText}
+                                            href={document.data}
+                                          >
+                                            <div className="docContainer">
+                                              <div className="docFrame">
+                                                {document.data.split('.').pop().toUpperCase()}
+                                              </div>
+                                            </div>
+                                          </a>
+                                        )}
+                                      </figure>
+                                    </span>
+                                    <span className="gallery-box__text-wrapper">
+                                      <span title={document.description} className="gallery-box__text">
+                                        { document.description && document.description.length > 38
+                                          ? `${document.description.substr(0, 38)}... `
+                                          : document.description}
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
                               </div>
                             </div>
                             )
