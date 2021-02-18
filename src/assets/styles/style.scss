@@ -7014,26 +7014,25 @@ img.preview-scaled {
     position: relative;
    }
    .status-online {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%; 
-    border: 2px solid white;
-    bottom: 0;
-    right: 0;
+    border: 1px solid white;
+    bottom: -2px;
+    right: -5px;
     position: absolute;
-    background-color: green; 
+    background-color: #31a24c;  
   }
   .status-in-graph {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%; 
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
     border: 2px solid white;
-    bottom: 2px;
+    bottom: 3px;
     right: 3px;
     position: absolute;
-    background-color: #7166f8; 
+    background-color: white;
   } 
-
 }
 
 
