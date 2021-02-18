@@ -103,7 +103,12 @@ export default function reducer(state = initialState, action) {
     case GET_SINGLE_GRAPH.REQUEST: {
       return {
         ...state,
-        singleGraph: {},
+        singleGraph: {
+          ...state.singleGraph,
+          nodes: [],
+          links: [],
+          labels: [],
+        },
         singleGraphStatus: 'request',
       };
     }
