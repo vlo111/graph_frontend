@@ -433,7 +433,6 @@ class ChartUtils {
     const y = node.fy || node.y;
     const { d } = label;
     let inside = false;
-
     if (label.type === 'folder') {
       // if(node.labels?.length > 1 && !node.labels.includes(label.id)){
       //   return false;
@@ -456,6 +455,19 @@ class ChartUtils {
         return this.isInSquare([squareX, squareY], [width, height], [x, y]);
       }
     }
+
+    let odd = false;
+    let i; let
+      j = d.length - 1;
+    for (i = 0; i < d.length; i++) {
+      if ((d[i][1] < y && d[j][1] >= y || d[j][1] < y && d[i][1] >= y)
+        && (d[i][0] <= x || d[j][0] <= x)) {
+        odd ^= (d[i][0] + (y - d[i][1]) * (d[j][0] - d[i][0]) / (d[j][1] - d[i][1])) < x;
+      }
+
+      j = i;
+    }
+
     for (let i = 0, j = d.length - 1; i < d.length; j = i++) {
       const xi = d[i][0];
       const yi = d[i][1];
@@ -466,17 +478,21 @@ class ChartUtils {
         inside = !inside;
       }
     }
-    return inside;
+    return !!odd;
   }
 
   static getNodeLabels(node) {
     const firstFolder = node.labels?.find((l) => l.startsWith('f_'));
     const firstLabel = node.labels?.find((l) => !l.startsWith('f_'));
     const labels = Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
+    if (node.index === 128) {
+      console.log(labels);
+    }
     if (firstLabel) {
       return labels.filter((l) => !l.startsWith('f_'));
     }
     if (labels.includes(firstFolder)) {
+      console.log(33333);
       return [firstFolder];
     }
     return labels;
@@ -583,7 +599,7 @@ class ChartUtils {
                 .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
                   fIndex += 1;
                   files[fIndex] = Utils.blobToBase64(url);
-                  return ` href ="<%= file_${fIndex} %>"`;
+                  return ` href="<%= file_${fIndex} %>"`;
                 });
             }
           }
@@ -756,7 +772,6 @@ class ChartUtils {
             const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
             const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
 
-
             const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : null;
             const value2 = node2 ? _.get(graph2.customFields, [node2.type, tab, 'values', node2.id]) : null;
 
@@ -778,7 +793,7 @@ class ChartUtils {
 
     return {
       labels, nodes, links, customFields: customFieldsMerged,
-    }
+    };
   }
 }
 

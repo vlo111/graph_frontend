@@ -1034,6 +1034,7 @@ class Chart {
             color: ChartUtils.labelColors(),
             d: [],
           })
+          .attr('fill-rule', 'evenodd')
           .attr('class', 'label nodeCreate')
           .attr('data-id', (d) => d.id);
       } else if (ev.sourceEvent.target.classList.contains('label')) {
@@ -1168,6 +1169,7 @@ class Chart {
       .data(this.data.labels.filter((l) => l.hidden !== 1 && l.type !== 'folder'))
       .join('path')
       .attr('class', 'label nodeCreate')
+      .attr('fill-rule', 'evenodd')
       .attr('opacity', (d) => (d.sourceId ? 0.6 : 0.4))
       .attr('data-id', (d) => d.id)
       .attr('fill', ChartUtils.labelColors)

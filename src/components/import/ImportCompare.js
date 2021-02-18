@@ -54,8 +54,6 @@ class ImportCompare extends Component {
     const { importData: singleGraph2 } = this.props;
     const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
     const selected = [...selectedNodes1, ...selectedNodes2];
-    const graph1Nodes = _.differenceBy(singleGraph.nodes, singleGraph2.nodes, 'name');
-    const graph2Nodes = _.differenceBy(singleGraph2.nodes, singleGraph.nodes, 'name');
 
     return (
       <div className="compareWrapper">
@@ -69,7 +67,7 @@ class ImportCompare extends Component {
             scrollContainer=".ghImportModal"
           />
         </div>
-        <Button  className="mergeButton" onClick={this.merge}>Merge</Button>
+        <Button className="mergeButton" onClick={this.merge}>Merge</Button>
       </div>
     );
   }
