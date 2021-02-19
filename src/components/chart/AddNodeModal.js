@@ -33,7 +33,7 @@ class AddNodeModal extends Component {
     const nodes = Chart.getNodes();
     const {
       fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale,
-      d, infographyId,
+      d, infographyId, manually_size
     } = _.cloneDeep(addNodeParams);
     const _type = type || _.last(nodes)?.type || '';
     this.setState({
@@ -51,6 +51,7 @@ class AddNodeModal extends Component {
         d,
         scale,
         infographyId,
+        manually_size: manually_size || 1,
 
       },
       customField,
@@ -226,7 +227,24 @@ class AddNodeModal extends Component {
                 />
               </>
             ) : null}
-
+            <Input
+              label="Set manually size"
+              value={nodeData.manually_size}
+              error={errors.manually_size}
+              min="1"
+              max="30"
+              type="number"
+              autocomplete="off"
+              onBlur={() => {
+                if (nodeData.value < 1) {
+                  nodeData.value = 1;
+                } else if (nodeData.value > 30) {
+                  nodeData.value = 30;
+                }
+                this.handleChange('value', nodeData.value);
+              }}
+              onChangeText={(v) => this.handleChange('manually_size', v)}
+            />
             <LocationInputs
               error={errors.location}
               value={nodeData.location}

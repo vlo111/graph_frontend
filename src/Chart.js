@@ -1292,31 +1292,31 @@ class Chart {
 
       this.nodesWrapper.selectAll('.square')
         .append('rect')
-        .attr('width', (d) => this.radiusList[d.index] * 2)
-        .attr('height', (d) => this.radiusList[d.index] * 2)
-        .attr('x', (d) => this.radiusList[d.index] * -1)
-        .attr('y', (d) => this.radiusList[d.index] * -1);
+        .attr('width', (d) => (this.radiusList[d.index] + parseInt(d.manually_size))* 2)
+        .attr('height', (d) => (this.radiusList[d.index] + parseInt(d.manually_size))* 2)
+        .attr('x', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * -1)
+        .attr('y', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * -1);
 
       this.nodesWrapper.selectAll('.triangle')
         .append('path')
         .attr('d', (d) => {
-          const s = this.radiusList[d.index] * 2.5;
+          const s = ( this.radiusList[d.index] +  parseInt(d.manually_size)) * 2.5;         
           return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
         })
         .attr('transform', (d) => {
-          const r = this.radiusList[d.index] * -1 - 2;
+          const r = (this.radiusList[d.index] + parseInt(d.manually_size))  * -1 - 2;  
           return `translate(${r * 1.2}, ${r})`;
         });
 
       this.nodesWrapper.selectAll('.hexagon')
         .append('polygon')
         .attr('points', (d) => {
-          const s = this.radiusList[d.index];
+          const s = (this.radiusList[d.index] + parseInt(d.manually_size));
           // eslint-disable-next-line max-len
           return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
         })
         .attr('transform', (d) => {
-          const r = this.radiusList[d.index] * -1.13;
+          const r = (this.radiusList[d.index] + parseInt(d.manually_size))  * -1.13; 
           return `translate(${r}, ${r})`;
         });
 
@@ -1354,6 +1354,11 @@ class Chart {
             return `url(#i${d.index})`;
           }
           return ChartUtils.nodeColor(d);
+        });
+        
+      this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
+        .attr('r', (d) => {
+          return 15 + parseInt(d.manually_size)
         });
 
       if (!_.isEmpty(filteredLinks)) {
@@ -1866,7 +1871,7 @@ class Chart {
           const cy = height / 2 + 20;
           return cy;
         }
-        return this.radiusList[d.index] + i;
+        return this.radiusList[d.index] + i + parseInt(d.manually_size);
       })
       .attr('font-size', (d) => {
         const s = _.get(d, 'scale[0]', 1);
@@ -2201,6 +2206,7 @@ class Chart {
         d: d.d,
         scale: d.scale,
         infographyId: d.infographyId,
+        manually_size: d.manually_size || 1
       }));
     }
     return this._dataNodes;
