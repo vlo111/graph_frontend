@@ -1358,7 +1358,7 @@ class Chart {
         
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
         .attr('r', (d) => {
-          return 15 + parseInt(d.manually_size)
+          return  parseInt(d.manually_size) + 15
         });
 
       if (!_.isEmpty(filteredLinks)) {
@@ -1814,7 +1814,7 @@ class Chart {
         } else if (d.nodeType === 'infography') {
           return 384;
         }
-        return this.radiusList[d.index] * i;
+        return (this.radiusList[d.index] + parseInt(d.manually_size)) * i;
       })
       .attr('width', (d) => {
         let i = 2;
@@ -1825,10 +1825,10 @@ class Chart {
         } else if (d.nodeType === 'infography') {
           return 512;
         }
-        return this.radiusList[d.index] * i;
+        return (this.radiusList[d.index] + parseInt(d.manually_size)) * i;
       })
       .attr('transform', (d) => {
-        const r = this.radiusList[d.index] * -1;
+        const r = (this.radiusList[d.index] + parseInt(d.manually_size)) * -1;
         if (d.nodeType === 'triangle') {
           return `translate(${r / 3.1}, 0)`;
         }

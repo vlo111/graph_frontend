@@ -228,7 +228,7 @@ class AddNodeModal extends Component {
               </>
             ) : null}
             <Input
-              label="Set manually size"
+              label="Set size manually"
               value={nodeData.manually_size}
               error={errors.manually_size}
               min="1"
