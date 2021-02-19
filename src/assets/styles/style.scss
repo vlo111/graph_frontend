@@ -7315,7 +7315,6 @@ img.preview-scaled {
 
       .createdBy {
         margin-bottom: 0;
-        margin-left: 70px;
         text-align: left;
       }
     }
@@ -7327,14 +7326,14 @@ img.preview-scaled {
 
   .docContainer {
     box-shadow: 6px 6px 12px 2px #0000000d;
-    border: 1px solid #DBDBDB;
+    border-bottom: 1px solid #DBDBDB;
     text-align: center;
     height: 100%;
 
     .docFrame {
-      font-size: 40px;
+      font-size: 20px;
       color: #c8c0bd;
-      margin-top: 48%;
+      margin-top: 60%;
     }
   }
 
