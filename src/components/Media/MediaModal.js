@@ -83,6 +83,7 @@ class MediaModal extends Component {
                 nodeType: node.type,
                 added: node.id,
                 type: 'image',
+                graphId: graphIdParam,
               });
             }
           }
