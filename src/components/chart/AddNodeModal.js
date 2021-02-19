@@ -232,14 +232,14 @@ class AddNodeModal extends Component {
               value={nodeData.manually_size}
               error={errors.manually_size}
               min="1"
-              max="30"
+              max="50"
               type="number"
               autocomplete="off"
               onBlur={() => {
                 if (nodeData.value < 1) {
                   nodeData.value = 1;
-                } else if (nodeData.value > 30) {
-                  nodeData.value = 30;
+                } else if (nodeData.value > 50) {
+                  nodeData.value = 50;
                 }
                 this.handleChange('value', nodeData.value);
               }}
