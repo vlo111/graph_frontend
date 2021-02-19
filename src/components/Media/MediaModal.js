@@ -129,8 +129,8 @@ class MediaModal extends Component {
                                       </div>
                                       <div className="right">
                                         <span title={document.node.name} className="headerName">
-                                          { document.node.name && document.node.name.length > 12
-                                            ? `${document.nodeName.substr(0, 12)}... `
+                                          { document.node.name && document.node.name.length > 8
+                                            ? `${document.nodeName.substr(0, 8)}... `
                                             : document.nodeName}
                                         </span>
                                         <p>{moment(document.updatedAt).calendar()}</p>
