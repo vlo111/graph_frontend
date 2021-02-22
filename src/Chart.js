@@ -764,6 +764,9 @@ class Chart {
           }
         }
       });
+
+      this.moveCurveWithLabel(dragFolder, datum, ev);
+
       if (!dragFolder.labelLock.empty()) {
         let [, x, y] = dragFolder.labelLock.attr('transform').match(/(-?[\d.]+),\s*(-?[\d.]+)/) || [0, 0, 0];
         x = +x + ev.dx;
@@ -806,6 +809,14 @@ class Chart {
       this.wrapper.select(`[href="#${d.id}"]`).attr('class', 'show');
       folderWrapper.select(`[data-id="${d.id}"]`).attr('class', 'folder folderClose');
 
+      this.link.filter((n) => {
+        if (n.source.labels.includes(d.id) && n.target.labels.includes(d.id)) {
+          return true;
+        }
+
+        return false;
+      }).style('display', 'none');
+
       this.node
         .filter((n) => {
           const nodeOldFolder = n.labels?.find((l) => l.startsWith('f_'));
@@ -847,6 +858,14 @@ class Chart {
         const moveLabels = {};
         const moveX = (width / 2) + 50;
         const moveY = (height / 2) + 50;
+
+        this.link.filter((n) => {
+          if (n.source.labels.includes(d.id) && n.target.labels.includes(d.id)) {
+            return true;
+          }
+
+          return false;
+        }).style('display', 'inherit');
         this.node.each((n, i, nodesArr) => {
           const inFolder = n.labels.includes(d.id);
           const inOtherFolder = !inFolder && n.labels.some((l) => l && l.startsWith('f_'));
@@ -1095,34 +1114,9 @@ class Chart {
             }
           }
         });
-        this.link.data().map((d) => {
-          if (
-            (!d.readOnly && !datum.readOnly)
-            || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
-          ) {
-            if (dragLabel.nodes.some((n) => n.index === d.source.index || n.index === d.target.index)) {
-              if (this.point) {
-                if (d.sx === this.point.sc.x) {
-                  this.point.sc.x += ev.dx;
-                  this.point.sc.y += ev.dy;
-                  this.point.tc.x += ev.dx;
-                  this.point.tc.y += ev.dy;
 
-                  this.wrapper.select('#fcurve').selectAll('circle').attr('cx', this.point.sc.x);
-                  this.wrapper.select('#fcurve').selectAll('circle').attr('cy', this.point.sc.y);
-                  this.wrapper.select('#lcurve').selectAll('circle').attr('cx', this.point.tc.x);
-                  this.wrapper.select('#lcurve').selectAll('circle').attr('cy', this.point.tc.y);
-                }
-              }
+        this.moveCurveWithLabel(dragLabel, datum, ev);
 
-              d.sx += ev.dx;
-              d.sy += ev.dy;
-
-              d.tx += ev.dx;
-              d.ty += ev.dy;
-            }
-          }
-        });
         this.graphMovement();
 
         this.event.emit('label.drag', ev, dragLabel.label);
@@ -2417,6 +2411,37 @@ class Chart {
   static getCurrentUserRole() {
     const graph = document.querySelector('#graph');
     return graph.getAttribute('data-role');
+  }
+
+  static moveCurveWithLabel(dragLabel, datum, ev) {
+    this.link.data().map((d) => {
+      if (
+        (!d.readOnly && !datum.readOnly)
+          || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
+      ) {
+        if (dragLabel.nodes.some((n) => n.index === d.source.index || n.index === d.target.index)) {
+          if (this.point) {
+            if (d.sx === this.point.sc.x) {
+              this.point.sc.x += ev.dx;
+              this.point.sc.y += ev.dy;
+              this.point.tc.x += ev.dx;
+              this.point.tc.y += ev.dy;
+
+              this.wrapper.select('#fcurve').selectAll('circle').attr('cx', this.point.sc.x);
+              this.wrapper.select('#fcurve').selectAll('circle').attr('cy', this.point.sc.y);
+              this.wrapper.select('#lcurve').selectAll('circle').attr('cx', this.point.tc.x);
+              this.wrapper.select('#lcurve').selectAll('circle').attr('cy', this.point.tc.y);
+            }
+          }
+
+          d.sx += ev.dx;
+          d.sy += ev.dy;
+
+          d.tx += ev.dx;
+          d.ty += ev.dy;
+        }
+      }
+    });
   }
 }
 
