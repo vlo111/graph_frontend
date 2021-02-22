@@ -221,7 +221,9 @@ class LabelUtils {
       d.labels = [labelId];
 
       const customField = CustomFields.get(data.customFields, d.type, d.originalId || d.id);
-      store.dispatch(setNodeCustomField(d.type, d.id, customField, undefined, d.merge));
+      if (!_.isEmpty(customField)) {
+        store.dispatch(setNodeCustomField(d.type, d.id, customField, undefined, d.merge));
+      }
 
       if (d.replace) {
         nodes = nodes.map((n) => {

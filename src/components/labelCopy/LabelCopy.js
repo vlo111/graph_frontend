@@ -192,7 +192,7 @@ class LabelCopy extends Component {
     });
 
     nodes = _.compact(nodes);
-    duplicates = _.compact(duplicates);
+    // duplicates = _.compact(duplicates);
 
     links = ChartUtils.cleanLinks(links, nodes);
 
