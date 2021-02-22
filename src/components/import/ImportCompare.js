@@ -33,9 +33,10 @@ class ImportCompare extends Component {
   }
 
   merge = () => {
-    const singleGraph = Chart.getData();
     const { selectedNodes1, selectedNodes2 } = this.state;
-    const { importData: singleGraph2 } = this.props;
+    const { importData: singleGraph2, customFields: customFieldsGraph1 } = this.props;
+    const singleGraph = Chart.getData();
+    singleGraph.customFields = customFieldsGraph1;
 
     const {
       nodes, links, labels, customFields,
@@ -50,11 +51,11 @@ class ImportCompare extends Component {
 
   render() {
     const { selectedNodes1, selectedNodes2 } = this.state;
+    const { importData: singleGraph2, customFields } = this.props;
     const singleGraph = Chart.getData();
-    const { importData: singleGraph2 } = this.props;
+    singleGraph.customFields = customFields;
     const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
     const selected = [...selectedNodes1, ...selectedNodes2];
-
     return (
       <div className="compareWrapper">
         <div className="compareListWrapper">

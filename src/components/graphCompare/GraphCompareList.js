@@ -46,7 +46,6 @@ class GraphCompareList extends Component {
     if (_.isEmpty(singleGraph1?.nodes) && _.isEmpty(singleGraph2?.nodes)) {
       return null;
     }
-    console.log(singleGraph2)
     const total = this.getTotal(singleGraph1, singleGraph2);
     const totalSelected = this.getSelectedTotal(selected, singleGraph1, singleGraph2);
     return (

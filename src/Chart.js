@@ -1243,7 +1243,7 @@ class Chart {
         .call(this.zoom)
         .on('dblclick.zoom', null)
         .on('click', (...p) => this.event.emit('click', ...p))
-        .on('mousemove', (...p) => this.event.emit('mousemove', ...p));
+        .on('mousemove', (...p) => this.event.emit('mousemove', ...p))
 
       this.resizeSvg();
 
