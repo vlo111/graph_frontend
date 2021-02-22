@@ -5,15 +5,18 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import LazyLoad from 'react-lazyload';
 import { setActiveButton } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
 import { getDocumentsRequest } from '../../store/actions/document';
 import NodeIcon from '../NodeIcon';
 import Loading from '../Loading';
+import { getSingleGraphRequest } from '../../store/actions/graphs';
 
 class MediaModal extends Component {
     static propTypes = {
+      getSingleGraphRequest: PropTypes.func.isRequired,
       setActiveButton: PropTypes.func.isRequired,
       getDocumentsRequest: PropTypes.func.isRequired,
       documentSearch: PropTypes.object.isRequired,
@@ -39,10 +42,19 @@ class MediaModal extends Component {
           this.setState({ loading: false });
         }
       }
+      this.resetGraph();
+    }
+
+    resetGraph = () => {
+      const { id } = this.props.singleGraph;
+      this.props.getSingleGraphRequest(id);
     }
 
     render() {
-      const { documentSearch } = this.props;
+      const { documentSearch, singleGraph } = this.props;
+
+      const { nodes } = singleGraph;
+
       const { loading } = this.state;
       const graphIdParam = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
       this.searchDocuments(graphIdParam);
@@ -54,6 +66,26 @@ class MediaModal extends Component {
         documentSearch.map((p) => {
           if (p.graphs?.nodes && p.graphs?.nodes.length) {
             p.node = p.graphs.nodes.filter((n) => n.id === p.nodeId)[0];
+          }
+        });
+      }
+      if (nodes && nodes.length) {
+        nodes.map((node) => {
+          if (node.icon) {
+            if (!documentSearch.filter((p) => p.added === node.id).length) {
+              documentSearch.push({
+                id: node.id,
+                user: singleGraph.user,
+                node,
+                data: node.icon,
+                nodeId: node.id,
+                nodeName: node.name,
+                nodeType: node.type,
+                added: node.id,
+                type: 'image',
+                graphId: graphIdParam,
+              });
+            }
           }
         });
       }
@@ -70,35 +102,41 @@ class MediaModal extends Component {
             <div className="mediaHeader">
               <h2>Media gallery</h2>
             </div>
-              <hr className="line mediaLine"/>
-            {documentSearch && documentSearch.length
-              ? (
-                <div className="searchData">
-                  <div className="searchData__wrapper mediaContent">
-                    <div className="searchMediaContent">
-                      <article className="searchData__graph mediaForm">
-                        <div className="searchDocumentContent mediaGallery">
-                          {documentSearch.map((document, index, array) => (
-                            document.id && (
-                            <div
-                              style={document.nodeType !== array[index === 0 ? index : index - 1].nodeType
-                                ? { gridColumnEnd: 2 } : {}}
-                              className="nodeTabs tabDoc"
-                            >
-                              <div className="imageFrame">
-                                <div className="imageFrameHeader">
-                                  <a
-                                    className="nodeLink"
-                                    href={`/graphs/update/${document.graphId}?info=${document.nodeId}`}
-                                  >
-                                    <div className="left">
-                                      <NodeIcon node={document.node} />
-                                    </div>
-                                    <div className="right">
-                                      <span className="headerName">{document.node.name}</span>
-                                      <p>{moment(document.updatedAt).calendar()}</p>
-                                    </div>
-                                  </a>
+            <hr className="line mediaLine" />
+            <LazyLoad height={50} offset={500} unmountIfInvisible>
+              {documentSearch && documentSearch.length
+                ? (
+                  <div className="searchData">
+                    <div className="searchData__wrapper mediaContent">
+                      <div className="searchMediaContent">
+                        <article className="searchData__graph mediaForm">
+                          <div className="searchDocumentContent mediaGallery">
+                            {documentSearch.map((document, index, array) => (
+                              document.id && (
+                              <div
+                                // style={!document.added
+                                //     && document.nodeType !== array[index === 0 ? index : index - 1].nodeType
+                                //   ? { gridColumnEnd: 2 } : {}}
+                                className="nodeTabs tabDoc"
+                              >
+                                <div className="imageFrame">
+                                  <div className="imageFrameHeader">
+                                    <a
+                                      className="nodeLink"
+                                      href={`/graphs/update/${document.graphId}?info=${document.nodeId}`}
+                                    >
+                                      <div className="left">
+                                        <NodeIcon node={document.node} />
+                                      </div>
+                                      <div className="right">
+                                        <span title={document.node.name} className="headerName">
+                                          { document.node.name && document.node.name.length > 8
+                                            ? `${document.nodeName.substr(0, 8)}... `
+                                            : document.nodeName}
+                                        </span>
+                                        <p>{moment(document.updatedAt).calendar()}</p>
+                                      </div>
+                                    </a>
 
                                   <p className="createdBy">
                                     <span>uploaded by </span>
@@ -126,36 +164,40 @@ class MediaModal extends Component {
                                             href={document.data}
                                           >
                                             <div className="docContainer">
-                                              <div className="docFrame">
-                                                {document.data.split('.').pop().toUpperCase()}
+                                              <div title={document.altText} className="docFrame">
+                                                  {document.altText}
+                                                </div>
                                               </div>
-                                            </div>
-                                          </a>
-                                        )}
-                                      </figure>
-                                    </span>
-                                    <span className="gallery-box__text-wrapper">
-                                      <span title={document.description} className="gallery-box__text">
-                                        { document.description && document.description.length > 38
-                                          ? `${document.description.substr(0, 38)}... `
-                                          : document.description}
+                                            </a>
+                                          )}
+                                        </figure>
                                       </span>
-                                    </span>
-                                  </a>
+                                      <span className="gallery-box__text-wrapper">
+                                        <span title={document.description} className="gallery-box__text">
+                                          { document.added
+                                            ? (document.nodeType)
+                                            : (document.description && document.description.length > 38
+                                              ? `${document.description.substr(0, 38)}... `
+                                              : document.description)
+                                          }
+                                        </span>
+                                      </span>
+                                    </a>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            )
-                          ))}
-                        </div>
-                      </article>
+                              )
+                            ))}
+                          </div>
+                        </article>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-              : (!loading
-                ? <Loading />
-                : <h3 className="mediaNotFound">No Media Gallery Found</h3>)}
+                )
+                : (!loading
+                  ? <Loading />
+                  : <h3 className="mediaNotFound">No Media Gallery Found</h3>)}
+            </LazyLoad>
           </Modal>
         </div>
       );
@@ -164,11 +206,13 @@ class MediaModal extends Component {
 
 const mapStateToProps = (state) => ({
   documentSearch: state.document.documentSearch,
+  singleGraph: state.graphs.singleGraph,
 });
 
 const mapDispatchToProps = {
   setActiveButton,
   getDocumentsRequest,
+  getSingleGraphRequest,
 };
 
 const Container = connect(

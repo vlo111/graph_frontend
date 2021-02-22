@@ -6,8 +6,7 @@ import { getGraphUsers } from '../../store/selectors/shareGraphs';
 import { graphUsersRequest } from '../../store/actions/shareGraphs';
 import { getOnlineUsersRequest } from '../../store/actions/app';
 import { getOnlineUsers } from '../../store/selectors/app';
-import { getId } from '../../store/selectors/account'; 
-import { getSingleGraphOwner } from '../../store/selectors/graphs'; 
+import { getId } from '../../store/selectors/account';   
 import Tooltip from 'rc-tooltip/es';
 import ShareTooltipContent from './ShareTooltipContent'; 
  
@@ -22,8 +21,7 @@ TootlipContent.propTypes = {
 const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => { 
     const userId = useSelector(getId);
     const graphUsers = useSelector(getGraphUsers)[graphId]; 
-    const onlineUser = useSelector(getOnlineUsers);  
-    const ownerUserId = useSelector(getSingleGraphOwner);  
+    const onlineUser = useSelector(getOnlineUsers);    
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -41,6 +39,8 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
     const count = graphUsers && Object.keys(graphUsers) && Object.keys(graphUsers).length;
     const countOwner = isOwner ? 1 : 0; 
     const isLabelShare =  graphUsers && graphUsers.some((n) => n.type === 'label' && n.userId === userId ); 
+    const graphUsersList =  isLabelShare ? graphUsers.filter((n) => n.type === 'label' && n.userId === userId ) : graphUsers ; 
+
     return (
 
         <div className="contributors-container">
@@ -71,8 +71,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
                         </li>
                     </Link>
                 )} 
-                 { !isLabelShare && (
-                     graphUsers && graphUsers.map((item, index) =>  
+                 { graphUsersList && graphUsersList.map((item, index) =>  
                         <Link to={`/profile/${item.user.id}`} target="_blank" key={index.toString()}>
                         <li className="mb-2 mr-2 "  key={index.toString()} >
                             <Tooltip overlay={<TootlipContent user={item.user} role={item.role} type={item.type} />} trigger={['hover']}>
@@ -89,7 +88,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
                             </Tooltip>
                         </li>
                     </Link>
-                    ))}
+                    )}
             </ul>
         </div>
     )
