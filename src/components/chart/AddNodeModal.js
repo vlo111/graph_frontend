@@ -234,7 +234,7 @@ class AddNodeModal extends Component {
               min="1"
               max="50"
               type="number"
-              autocomplete="off"
+              autoComplete="off"
               onBlur={() => {
                 if (nodeData.value < 1) {
                   nodeData.value = 1;
