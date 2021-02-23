@@ -1198,6 +1198,14 @@ p {
   background: #FFFFFF 0% 0% no-repeat padding-box;
   opacity: 1;
 
+  .searchInputWrapper {
+    .ghButton {
+      background-color: #ffffff;
+      border: 0px;
+      width: 50%;
+    }
+  }
+
   .signOut {
     right: 20px;
     position: fixed;
@@ -7771,4 +7779,8 @@ img.preview-scaled {
       }
     }
   }
+}
+
+.searchView {
+  width: 50% !important;
 }

@@ -46,32 +46,33 @@ class SearchModal extends Component {
         const tabNames = Object.keys(customFields[nmodeType]);
 
         tabNames.forEach((tabName) => {
-          let tabValue = customFields[nmodeType][tabName].values;
+          const tabValue = customFields[nmodeType][tabName].values;
 
-          const nodeId = Object.keys(tabValue)[0];
+          Object.keys(tabValue).forEach((nodeId) => {
 
-          tabValue = tabValue[nodeId];
+            const tabContent = tabValue[nodeId];
 
-          const node = ChartUtils.getNodeById(nodeId);
+            const node = ChartUtils.getNodeById(nodeId);
 
-          const tabContentHtml = document.createElement('div');
+            const tabContentHtml = document.createElement('div');
 
-          tabContentHtml.innerHTML = tabValue;
+            tabContentHtml.innerHTML = tabContent;
 
-          const tabSearchValue = tabContentHtml.textContent;
+            const tabSearchValue = tabContentHtml.textContent;
 
-          if (tabName.toLowerCase().includes(search.toLowerCase())
-              || tabSearchValue.toLowerCase().includes(search.toLowerCase())) {
-            if (nodeId && (nodeId !== 'undefined')) {
-              tabs.push({
-                nodeId: node.id,
-                node,
-                tabName,
-                tabValue,
-                tabSearchValue,
-              });
+            if (tabName.toLowerCase().includes(search.toLowerCase())
+                    || tabSearchValue.toLowerCase().includes(search.toLowerCase())) {
+              if (nodeId && (nodeId !== 'undefined')) {
+                tabs.push({
+                  nodeId: node.id,
+                  node,
+                  tabName,
+                  tabContent,
+                  tabSearchValue,
+                });
+              }
             }
-          }
+          });
         });
       });
     }
@@ -150,7 +151,7 @@ class SearchModal extends Component {
                             <div className="content">
                               <span
                                 className="type"
-                                dangerouslySetInnerHTML={{ __html: this.formatHtml(tabs[item][tab].tabValue) }}
+                                dangerouslySetInnerHTML={{ __html: this.formatHtml(tabs[item][tab].tabContent) }}
                               />
                             </div>
                           </div>
