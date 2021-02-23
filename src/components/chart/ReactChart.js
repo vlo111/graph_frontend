@@ -98,19 +98,22 @@ class ReactChart extends Component {
   }
 
   handleLabelDelete = (ev, d) => {
+    const { match: { params: { graphId } } } = this.props;
     const labels = Chart.getLabels().filter((l) => l.id !== d.id);
     const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.id));
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
-
+    
     if (d.sourceId) {
-      const { match: { params: { graphId } } } = this.props;
-      const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
+       const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
       Chart.render({
         labels, nodes, links, embedLabels,
       });
       Api.labelDelete(d.sourceId, d.id, graphId);
+     
       return;
     }
+    //delete labe  from share list
+    Api.shareLabelDelete(d.id, graphId);
     Chart.render({ labels, nodes, links });
     Chart.event.emit('label.mouseleave', ev, d);
   }
