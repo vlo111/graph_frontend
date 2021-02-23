@@ -25,7 +25,9 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(graphUsersRequest({ graphId })); 
+        if(graphId){
+            dispatch(graphUsersRequest({ graphId })); 
+        }
     }, [dispatch, graphId]);
 
     useEffect(() => { 

@@ -18,7 +18,7 @@ const ShareTooltipContent = React.memo(({ user, role, type, objectId }) => {
                 />
                 <div className="info">
                     <div class="username">{`${user.firstName} ${user.lastName}`}</div>
-                    <div class="role">Shared  -  { !!(objectId) ? (<a onClick={() => findLabelInDom(objectId)}>{type}</a>) : ( type )}</div>
+                    <div class="role">Shared  -  { !!(objectId) ? (<a className="tooltipLabel" onClick={() => findLabelInDom(objectId)}>{type}</a>) : ( type )}</div>
                     <div class="role">Role  -  {role}</div>
                     <div class="email">{user.email}</div>
                 </div>
