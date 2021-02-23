@@ -418,6 +418,28 @@ class ChartUtils {
       console.log(e);
     }
   }
+  static findLabelInDom(label) {
+
+    try {
+      const { id, d } = this.getLabelById(label); 
+      if( !d ) {
+        return false;
+      }
+      const {
+        width, height, left, top,
+      } = document.querySelector(`[data-id="${id}"]`).getBoundingClientRect();
+      const { x, y } = ChartUtils.calcScaledPosition(left + (width / 2) - 20, top + (height / 2) - 20);     
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(0, 0).scale(2)); 
+      const zoomWidth = Math.abs(d[0][0] - d[1][0]);
+      const zoomHeight = Math.abs(d[0][1] - d[1][1]);
+      const l = (2 * x * -1) + (window.innerWidth / 2) -  zoomWidth;
+      const t = (2 * y * -1) + (window.innerHeight / 2)  - zoomHeight; 
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(l, t).scale(2));  
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   static isNodeInLabel(node, label) {
     if (label.sourceId || node.sourceId) {
