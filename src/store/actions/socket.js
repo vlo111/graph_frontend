@@ -2,7 +2,8 @@ import io from 'socket.io-client';
 import Chart from '../../Chart';
 import Api from '../../Api';
 import Account from '../../helpers/Account';
-import { GET_SINGLE_GRAPH, getSingleGraphRequest, updateSingleGraph } from './graphs';
+import { GET_SINGLE_GRAPH, getSingleGraphRequest, updateSingleGraph } from './graphs'; 
+import { graphUsersRequest } from './shareGraphs'; 
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
 import Utils from '../../helpers/Utils';
@@ -23,6 +24,7 @@ export function socketEmit(...params) {
 export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
 export const GENERATE_THUMBNAIL_WORKER = 'GENERATE_THUMBNAIL_WORKER';
 export const ONLINE_USERS = 'ONLINE_USERS';
+export const GRAPH_SHARED_USERS = 'GRAPH_SHARED_USERS';
 
 export function socketInit() {
   return (dispatch, getState) => {
@@ -103,13 +105,24 @@ export function socketInit() {
     });
     socket.on('online', (data) => {
       const onlineUsers = JSON.parse(data);
-      console.log(onlineUsers, 'onlineUsersonlineUsers');
-      dispatch({
+       dispatch({
         type: ONLINE_USERS,
         payload: { onlineUsers },
       });
 
       
+    });
+    /**
+     * Call share graphs user list
+     */
+    socket.on('shareList', async (result) => {
+
+      const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
+      const graphId = +result.graphId; 
+      if( graphId === +singleGraph.id){ 
+            await dispatch(graphUsersRequest(result))
+         
+      }       
     });
     
     socket.on('embedLabelDataChange', (data) => {
