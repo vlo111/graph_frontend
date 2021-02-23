@@ -160,7 +160,7 @@ class SearchModal extends Component {
                             <span
                               className="keywords"
                               dangerouslySetInnerHTML={{
-                                __html: tabs[item][tab].keywords.map((k) => this.formatHtml(k)).join(', '),
+                                __html: tabs[item][tab].keywords?.map((k) => this.formatHtml(k)).join(', '),
                               }}
                             />
                           ) : null}
