@@ -150,3 +150,14 @@ export const ACTIONS_COUNT = define('ACTIONS_COUNT');
 export function getActionsCountRequest(id) {
   return ACTIONS_COUNT.request(() => Api.getActionsCount(id));
 }
+
+export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
+
+export function setActiveTab(tabName) {
+  return {
+    type: SET_ACTIVE_TAB,
+    payload: {
+      tabName,
+    },
+  };
+}
