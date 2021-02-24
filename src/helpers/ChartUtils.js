@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import queryString from 'query-string';
 import randomColor from 'randomcolor';
 import memoizeOne from 'memoize-one';
-import stripHtml  from 'string-strip-html';
+import stripHtml from 'string-strip-html';
 import path from 'path';
 import Chart from '../Chart';
 import history from './history';
@@ -142,6 +142,9 @@ class ChartUtils {
   }
 
   static normalizeIcon = (icon, large = false) => {
+    if (!icon || !_.isString(icon)) {
+      return undefined;
+    }
     let url = Api.url + icon;
     if (icon.startsWith(Api.url)) {
       url = icon;
@@ -457,7 +460,8 @@ class ChartUtils {
     }
 
     let odd = false;
-    let i; let
+    let i;
+    let
       j = d.length - 1;
     for (i = 0; i < d.length; i++) {
       if ((d[i][1] < y && d[j][1] >= y || d[j][1] < y && d[i][1] >= y)

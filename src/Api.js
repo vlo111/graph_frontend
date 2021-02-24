@@ -325,6 +325,18 @@ class Api {
   static getShareGraphsList() {
     return api.get('/share');
   }
+
+  static createNode(graphId, node) {
+    return api.post(`/nodes/create/${graphId}`, { node });
+  }
+
+  static updateNode(graphId, nodeId, node) {
+    return api.put(`/nodes/update/${graphId}/${nodeId}`, { node });
+  }
+
+  static deleteNode(graphId, nodeId) {
+    return api.delete(`/nodes/delete/${graphId}/${nodeId}`);
+  }
 }
 
 export default Api;

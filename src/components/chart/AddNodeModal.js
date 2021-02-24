@@ -19,6 +19,7 @@ import LocationInputs from './LocationInputs';
 import Utils from '../../helpers/Utils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import ChartUtils from '../../helpers/ChartUtils';
+import { createNodeRequest } from "../../store/actions/nodes";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -88,7 +89,7 @@ class AddNodeModal extends Component {
 
   saveNode = async (ev) => {
     ev.preventDefault();
-    const { currentUserId } = this.props;
+    const { currentUserId, graphId } = this.props;
     const { nodeData, index, customField } = this.state;
 
     const errors = {};
@@ -112,9 +113,11 @@ class AddNodeModal extends Component {
       if (update) {
         nodes[index] = { ...nodes[index], ...nodeData };
       } else {
+        nodeData.id = ChartUtils.uniqueId(nodes);
         nodeData.createdAt = moment().unix();
         nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
+        this.props.createNodeRequest(graphId, nodeData);
       }
 
       Chart.render({ nodes, links });
@@ -268,10 +271,13 @@ class AddNodeModal extends Component {
 const mapStateToProps = (state) => ({
   addNodeParams: state.app.addNodeParams,
   currentUserId: state.account.myAccount.id,
+  graphId: state.graphs.singleGraph.id,
   currentUserRole: state.graphs.singleGraph.currentUserRole || '',
 });
+
 const mapDispatchToProps = {
   toggleNodeModal,
+  createNodeRequest,
   setNodeCustomField,
 };
 
