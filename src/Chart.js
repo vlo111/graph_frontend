@@ -1601,6 +1601,31 @@ class Chart {
           }
         }
       });
+
+      this.link.data().map((d) => {
+        if (this.squareDara.nodes.includes(d.source.id) || this.squareDara.selectedNodes.includes(d.source.id)) {
+          if (this.point) {
+            if (d.sx === this.point.sc.x) {
+              this.point.sc.x += ev.dx;
+              this.point.sc.y += ev.dy;
+              this.point.tc.x += ev.dx;
+              this.point.tc.y += ev.dy;
+
+              this.wrapper.select('#fcurve').selectAll('circle').attr('cx', this.point.sc.x);
+              this.wrapper.select('#fcurve').selectAll('circle').attr('cy', this.point.sc.y);
+              this.wrapper.select('#lcurve').selectAll('circle').attr('cx', this.point.tc.x);
+              this.wrapper.select('#lcurve').selectAll('circle').attr('cy', this.point.tc.y);
+            }
+          }
+
+          d.sx += ev.dx;
+          d.sy += ev.dy;
+
+          d.tx += ev.dx;
+          d.ty += ev.dy;
+        }
+      });
+
       this.graphMovement();
       this.labels.each((l) => {
         if (this.squareDara.labels.includes(l.id) && !l.readOnly) {
