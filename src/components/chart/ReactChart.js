@@ -20,6 +20,7 @@ import LabelLock from './icons/LabelLock';
 import SelectedNodeFilter from './icons/SelectedNodeFilter';
 import ResizeIcons from "./icons/ResizeIcons";
 import NotFound from "./NotFound";
+import { deleteNodeRequest } from "../../store/actions/nodes";
 
 class ReactChart extends Component {
   static propTypes = {
@@ -173,6 +174,7 @@ class ReactChart extends Component {
   }
 
   deleteNode = (ev, d) => {
+    const { singleGraph } = this.props;
     if (d.readOnly) {
       return;
     }
@@ -181,7 +183,15 @@ class ReactChart extends Component {
 
     nodes = nodes.filter((n) => n.index !== d.index);
 
-    links = links.filter((l) => !(l.source === d.id || l.target === d.id));
+    this.props.deleteNodeRequest(singleGraph.id, d.id);
+
+    links = links.filter((l) => {
+      if (l.source === d.id || l.target === d.id) {
+        // todo delete links
+        return false;
+      }
+      return true;
+    });
 
     this.props.removeNodeFromCustom(d.id);
 
@@ -261,6 +271,7 @@ const mapDispatchToProps = {
   toggleNodeModal,
   setActiveButton,
   socketLabelDataChange,
+  deleteNodeRequest,
   removeNodeFromCustom,
 };
 

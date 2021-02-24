@@ -7,7 +7,8 @@ import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
 import SvgService from './helpers/SvgService';
 import ChartInfography from './helpers/ChartInfography';
-import LabelUtils from './helpers/LabelUtils';
+import store from './store';
+import { createNodeRequest, updateNodeRequest } from "./store/actions/nodes";
 
 class Chart {
   static event = new EventEmitter();
@@ -309,7 +310,6 @@ class Chart {
         d.x = ev.x;
         d.y = ev.y;
       }
-
       this.graphMovement();
     };
 
@@ -345,6 +345,7 @@ class Chart {
           delete d.fy;
         }
       }
+      store.dispatch(updateNodeRequest(this.graphId, d.id, d));
       this.event.emit('node.dragend', ev, d);
     };
 
@@ -1208,6 +1209,7 @@ class Chart {
       if (!this.isCalled('render')) {
         this.undoManager = new ChartUndoManager();
       }
+      this.graphId = Utils.getGraphIdFormUrl();
       this._dataNodes = null;
       this._dataLinks = null;
       data = this.normalizeData(data, params);
@@ -1286,19 +1288,19 @@ class Chart {
 
       this.nodesWrapper.selectAll('.square')
         .append('rect')
-        .attr('width', (d) => (this.radiusList[d.index] + parseInt(d.manually_size))* 2)
-        .attr('height', (d) => (this.radiusList[d.index] + parseInt(d.manually_size))* 2)
+        .attr('width', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * 2)
+        .attr('height', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * 2)
         .attr('x', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * -1)
         .attr('y', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * -1);
 
       this.nodesWrapper.selectAll('.triangle')
         .append('path')
         .attr('d', (d) => {
-          const s = ( this.radiusList[d.index] +  parseInt(d.manually_size)) * 2.5;         
+          const s = (this.radiusList[d.index] + parseInt(d.manually_size)) * 2.5;
           return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
         })
         .attr('transform', (d) => {
-          const r = (this.radiusList[d.index] + parseInt(d.manually_size))  * -1 - 2;  
+          const r = (this.radiusList[d.index] + parseInt(d.manually_size)) * -1 - 2;
           return `translate(${r * 1.2}, ${r})`;
         });
 
@@ -1310,7 +1312,7 @@ class Chart {
           return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
         })
         .attr('transform', (d) => {
-          const r = (this.radiusList[d.index] + parseInt(d.manually_size))  * -1.13; 
+          const r = (this.radiusList[d.index] + parseInt(d.manually_size)) * -1.13;
           return `translate(${r}, ${r})`;
         });
 
@@ -1349,10 +1351,10 @@ class Chart {
           }
           return ChartUtils.nodeColor(d);
         });
-        
+
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
         .attr('r', (d) => {
-          return  parseInt(d.manually_size) + 15
+          return parseInt(d.manually_size) + 15
         });
 
       if (!_.isEmpty(filteredLinks)) {
@@ -2417,7 +2419,7 @@ class Chart {
     this.link.data().map((d) => {
       if (
         (!d.readOnly && !datum.readOnly)
-          || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
+        || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
       ) {
         if (dragLabel.nodes.some((n) => n.index === d.source.index || n.index === d.target.index)) {
           if (this.point) {

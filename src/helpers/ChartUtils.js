@@ -799,6 +799,10 @@ class ChartUtils {
       labels, nodes, links, customFields: customFieldsMerged,
     };
   }
+
+  static objectAndProto(d) {
+    return { ...Object.getPrototypeOf(d), ...d }
+  }
 }
 
 export default ChartUtils;
