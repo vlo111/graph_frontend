@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import queryString from 'query-string';
 import randomColor from 'randomcolor';
 import memoizeOne from 'memoize-one';
-import stripHtml  from 'string-strip-html';
+import stripHtml from 'string-strip-html';
 import path from 'path';
 import Chart from '../Chart';
 import history from './history';
@@ -142,6 +142,9 @@ class ChartUtils {
   }
 
   static normalizeIcon = (icon, large = false) => {
+    if (!icon || !_.isString(icon)) {
+      return '';
+    }
     let url = Api.url + icon;
     if (icon.startsWith(Api.url)) {
       url = icon;
@@ -418,24 +421,23 @@ class ChartUtils {
       console.log(e);
     }
   }
-  static findLabelInDom(label) {
 
+  static findLabelInDom(label) {
     try {
-      const { id, d } = this.getLabelById(label); 
-      if( !d ) {
+      const { id, d } = this.getLabelById(label);
+      if (!d) {
         return false;
       }
       const {
         width, height, left, top,
       } = document.querySelector(`[data-id="${id}"]`).getBoundingClientRect();
-      const { x, y } = ChartUtils.calcScaledPosition(left + (width / 2) - 20, top + (height / 2) - 20);     
-      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(0, 0).scale(2)); 
+      const { x, y } = ChartUtils.calcScaledPosition(left + (width / 2) - 20, top + (height / 2) - 20);
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(0, 0).scale(2));
       const zoomWidth = Math.abs(d[0][0] - d[1][0]);
       const zoomHeight = Math.abs(d[0][1] - d[1][1]);
-      const l = (2 * x * -1) + (window.innerWidth / 2) -  zoomWidth;
-      const t = (2 * y * -1) + (window.innerHeight / 2)  - zoomHeight; 
-      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(l, t).scale(2));  
-
+      const l = (2 * x * -1) + (window.innerWidth / 2) - zoomWidth;
+      const t = (2 * y * -1) + (window.innerHeight / 2) - zoomHeight;
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(l, t).scale(2));
     } catch (e) {
       console.log(e);
     }
@@ -479,7 +481,8 @@ class ChartUtils {
     }
 
     let odd = false;
-    let i; let
+    let i;
+    let
       j = d.length - 1;
     for (i = 0; i < d.length; i++) {
       if ((d[i][1] < y && d[j][1] >= y || d[j][1] < y && d[i][1] >= y)
@@ -586,7 +589,7 @@ class ChartUtils {
     let files = {};
 
     const icons = await Promise.all(nodes.map((d) => {
-      if (d.icon && d.icon.startsWith('blob:')) {
+      if (d.icon && d.icon.toString().startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);
       }
       return d.icon;

@@ -331,7 +331,10 @@ class Chart {
         if (this.getCurrentUserRole() === 'edit_inside') {
           const node = ChartUtils.getNodeById(d.id);
           if (!node.labels.length) {
+            d.fx = startX;
             d.x = startX;
+
+            d.fy = startY;
             d.y = startY;
             this.graphMovement();
             return;
@@ -1294,11 +1297,11 @@ class Chart {
       this.nodesWrapper.selectAll('.triangle')
         .append('path')
         .attr('d', (d) => {
-          const s = ( this.radiusList[d.index] +  parseInt(d.manually_size)) * 2.5;         
+          const s = ( this.radiusList[d.index] +  parseInt(d.manually_size)) * 2.5;
           return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
         })
         .attr('transform', (d) => {
-          const r = (this.radiusList[d.index] + parseInt(d.manually_size))  * -1 - 2;  
+          const r = (this.radiusList[d.index] + parseInt(d.manually_size))  * -1 - 2;
           return `translate(${r * 1.2}, ${r})`;
         });
 
@@ -1310,7 +1313,7 @@ class Chart {
           return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
         })
         .attr('transform', (d) => {
-          const r = (this.radiusList[d.index] + parseInt(d.manually_size))  * -1.13; 
+          const r = (this.radiusList[d.index] + parseInt(d.manually_size))  * -1.13;
           return `translate(${r}, ${r})`;
         });
 
@@ -1349,7 +1352,7 @@ class Chart {
           }
           return ChartUtils.nodeColor(d);
         });
-        
+
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
         .attr('r', (d) => {
           return  parseInt(d.manually_size) + 15
