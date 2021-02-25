@@ -18,9 +18,11 @@ class FolderCloseIcon extends Component {
   }
 
   componentDidMount() {
+    Chart.event.on('click', this.handleClick);
     Chart.event.on('node.click', this.handleNodeClick);
     ContextMenu.event.on('node.resize', this.handleNodeResize);
 
+    Chart.event.on('node.edit', this.handleClick);
     Chart.event.on('node.drag', this.handleNodeDrag);
     Chart.event.on('node.resize', this.handleNodeDrag);
     ContextMenu.event.on('node.delete', this.handleDeleteNode);
@@ -29,6 +31,13 @@ class FolderCloseIcon extends Component {
   componentWillUnmount() {
     ContextMenu.event.removeListener('node.resize', this.handleNodeResize);
     ContextMenu.event.removeListener('node.delete', this.handleDeleteNode);
+  }
+
+  handleClick = (ev) => {
+    const { nodeId } = this.state;
+    if (nodeId) {
+      this.setState({ nodeId: null });
+    }
   }
 
   handleDeleteNode = () => {

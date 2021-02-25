@@ -279,7 +279,7 @@ class Chart {
 
         dragNode.startX = ev.x;
         dragNode.startY = ev.y;
-        dragNode.labels = [...d.labels];
+        dragNode.labels = [...(d.labels || [])];
       }
       this.event.emit('node.dragstart', ev, d);
     };
