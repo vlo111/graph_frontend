@@ -15,5 +15,5 @@
       - bash .deploy-production.sh
 
     environment:
-      name: production
+      name: production_v2
       url: https://araks.analysed.ai/
