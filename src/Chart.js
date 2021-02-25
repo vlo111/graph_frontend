@@ -1828,7 +1828,7 @@ class Chart {
       .attr('height', 1)
       .attr('width', 1)
       .append('image')
-      .attr('preserveAspectRatio', 'xMidYMid slice')
+      .attr('preserveAspectRatio', (d) => (d.nodeType === 'infography' ? 'xMidYMid meet' : 'xMidYMid slice'))
       .attr('height', (d) => {
         let i = 2;
         if (d.nodeType === 'hexagon') {
