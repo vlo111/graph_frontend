@@ -22,7 +22,7 @@ class Header extends Component {
             <LogoSvg className="logo orange" />
           </Link>
         </div>
-        <SearchGraphs />
+        <SearchGraphs />sss
         <div className="start-graphs">
           <div className="buttonsWrapper">
             <Button color="accent" onClick={this.startGraph}>
