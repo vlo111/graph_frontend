@@ -20,7 +20,7 @@ import LabelLock from './icons/LabelLock';
 import SelectedNodeFilter from './icons/SelectedNodeFilter';
 import ResizeIcons from './icons/ResizeIcons';
 import NotFound from './NotFound';
-import { deleteNodeRequest } from '../../store/actions/nodes';
+import { deleteNodeRequest, updateNodeRequest } from '../../store/actions/nodes';
 import { deleteLinkRequest } from '../../store/actions/links';
 
 class ReactChart extends Component {
@@ -96,7 +96,8 @@ class ReactChart extends Component {
   }
 
   handleNodeDragEnd = (ev, d) => {
-    console.log(d)
+    const { singleGraph } = this.props;
+    this.props.updateNodeRequest(singleGraph.id, d.id, { fx: d.fx, fy: d.fy });
     this.handleRender();
   }
 
@@ -277,6 +278,7 @@ const mapDispatchToProps = {
   socketLabelDataChange,
   deleteNodeRequest,
   deleteLinkRequest,
+  updateNodeRequest,
   removeNodeFromCustom,
 };
 

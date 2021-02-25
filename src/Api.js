@@ -327,27 +327,39 @@ class Api {
   }
 
   static createNode(graphId, node) {
-    return api.post(`/nodes/create/${graphId}`, { node });
+    return api.post(`/nodes/create/${graphId}`, { node }, {
+      cancelToken: this.#cancel('createNode'),
+    });
   }
 
   static updateNode(graphId, nodeId, node) {
-    return api.put(`/nodes/update/${graphId}/${nodeId}`, { node });
+    return api.put(`/nodes/update/${graphId}/${nodeId}`, { node }, {
+      cancelToken: this.#cancel('updateNode'),
+    });
   }
 
   static deleteNode(graphId, nodeId) {
-    return api.delete(`/nodes/delete/${graphId}/${nodeId}`);
+    return api.delete(`/nodes/delete/${graphId}/${nodeId}`, {
+      cancelToken: this.#cancel('deleteNode'),
+    });
   }
 
   static createLink(graphId, link) {
-    return api.post(`/links/create/${graphId}`, { link });
+    return api.post(`/links/create/${graphId}`, { link }, {
+      cancelToken: this.#cancel('createLink'),
+    });
   }
 
   static updateLink(graphId, linkId, link) {
-    return api.put(`/links/update/${graphId}/${linkId}`, { link });
+    return api.put(`/links/update/${graphId}/${linkId}`, { link }, {
+      cancelToken: this.#cancel('updateLink'),
+    });
   }
 
   static deleteLink(graphId, linkId) {
-    return api.delete(`/links/delete/${graphId}/${linkId}`);
+    return api.delete(`/links/delete/${graphId}/${linkId}`, {
+      cancelToken: this.#cancel('deleteLink'),
+    });
   }
 }
 
