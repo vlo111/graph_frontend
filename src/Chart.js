@@ -260,8 +260,7 @@ class Chart {
   }
 
   static drag(simulation) {
-    let startX;
-    let startY;
+    const dragNode = {};
     const dragstart = (ev, d) => {
       if (d !== undefined) {
         if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
@@ -277,8 +276,9 @@ class Chart {
         if (ev.active) simulation.alphaTarget(0.3).restart();
         d.fixed = !!d.fx;
 
-        startX = ev.x;
-        startY = ev.y;
+        dragNode.startX = ev.x;
+        dragNode.startY = ev.y;
+        dragNode.labels = [...d.labels];
       }
       this.event.emit('node.dragstart', ev, d);
     };
@@ -310,6 +310,7 @@ class Chart {
         d.x = ev.x;
         d.y = ev.y;
       }
+
       this.graphMovement();
     };
 
@@ -330,9 +331,14 @@ class Chart {
         }
         if (this.getCurrentUserRole() === 'edit_inside') {
           const node = ChartUtils.getNodeById(d.id);
-          if (!node.labels.length) {
-            d.x = startX;
-            d.y = startY;
+          if (!_.isEqual(node.labels, dragNode.labels)) {
+            d.fx = dragNode.startX;
+            d.x = dragNode.startX;
+
+            d.fy = dragNode.startY;
+            d.y = dragNode.startY;
+
+            this.event.emit('node.mouseleave', ev, d);
             this.graphMovement();
             return;
           }
@@ -345,7 +351,6 @@ class Chart {
           delete d.fy;
         }
       }
-      store.dispatch(updateNodeRequest(this.graphId, d.id, d));
       this.event.emit('node.dragend', ev, d);
     };
 
