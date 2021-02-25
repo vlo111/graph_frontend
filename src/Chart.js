@@ -261,6 +261,7 @@ class Chart {
   static drag(simulation) {
     let startX;
     let startY;
+    const dragNode = {};
     const dragstart = (ev, d) => {
       if (d !== undefined) {
         if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
@@ -276,8 +277,9 @@ class Chart {
         if (ev.active) simulation.alphaTarget(0.3).restart();
         d.fixed = !!d.fx;
 
-        startX = ev.x;
-        startY = ev.y;
+        dragNode.startX = ev.x;
+        dragNode.startY = ev.y;
+        dragNode.labels = [...d.labels];
       }
       this.event.emit('node.dragstart', ev, d);
     };
@@ -330,12 +332,14 @@ class Chart {
         }
         if (this.getCurrentUserRole() === 'edit_inside') {
           const node = ChartUtils.getNodeById(d.id);
-          if (!node.labels.length) {
-            d.fx = startX;
-            d.x = startX;
+          if (!_.isEqual(node.labels, dragNode.labels)) {
+            d.fx = dragNode.startX;
+            d.x = dragNode.startX;
 
-            d.fy = startY;
-            d.y = startY;
+            d.fy = dragNode.startY;
+            d.y = dragNode.startY;
+
+            this.event.emit('node.mouseleave', ev, d);
             this.graphMovement();
             return;
           }
@@ -1240,7 +1244,7 @@ class Chart {
         .call(this.zoom)
         .on('dblclick.zoom', null)
         .on('click', (...p) => this.event.emit('click', ...p))
-        .on('mousemove', (...p) => this.event.emit('mousemove', ...p))
+        .on('mousemove', (...p) => this.event.emit('mousemove', ...p));
 
       this.resizeSvg();
 
@@ -1289,19 +1293,19 @@ class Chart {
 
       this.nodesWrapper.selectAll('.square')
         .append('rect')
-        .attr('width', (d) => (this.radiusList[d.index] + parseInt(d.manually_size))* 2)
-        .attr('height', (d) => (this.radiusList[d.index] + parseInt(d.manually_size))* 2)
+        .attr('width', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * 2)
+        .attr('height', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * 2)
         .attr('x', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * -1)
         .attr('y', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * -1);
 
       this.nodesWrapper.selectAll('.triangle')
         .append('path')
         .attr('d', (d) => {
-          const s = ( this.radiusList[d.index] +  parseInt(d.manually_size)) * 2.5;
+          const s = (this.radiusList[d.index] + parseInt(d.manually_size)) * 2.5;
           return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
         })
         .attr('transform', (d) => {
-          const r = (this.radiusList[d.index] + parseInt(d.manually_size))  * -1 - 2;
+          const r = (this.radiusList[d.index] + parseInt(d.manually_size)) * -1 - 2;
           return `translate(${r * 1.2}, ${r})`;
         });
 
@@ -1313,7 +1317,7 @@ class Chart {
           return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
         })
         .attr('transform', (d) => {
-          const r = (this.radiusList[d.index] + parseInt(d.manually_size))  * -1.13;
+          const r = (this.radiusList[d.index] + parseInt(d.manually_size)) * -1.13;
           return `translate(${r}, ${r})`;
         });
 
@@ -1354,9 +1358,7 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-        .attr('r', (d) => {
-          return  parseInt(d.manually_size) + 15
-        });
+        .attr('r', (d) => parseInt(d.manually_size) + 15);
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
@@ -2228,7 +2230,7 @@ class Chart {
         d: d.d,
         scale: d.scale,
         infographyId: d.infographyId,
-        manually_size: d.manually_size || 1
+        manually_size: d.manually_size || 1,
       }));
     }
     return this._dataNodes;
@@ -2445,7 +2447,7 @@ class Chart {
     this.link.data().map((d) => {
       if (
         (!d.readOnly && !datum.readOnly)
-          || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
+        || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
       ) {
         if (dragLabel.nodes.some((n) => n.index === d.source.index || n.index === d.target.index)) {
           if (this.point) {
