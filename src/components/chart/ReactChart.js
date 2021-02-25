@@ -18,9 +18,10 @@ import FolderCloseIcon from './icons/FolderCloseIcon';
 import FolderIcon from './icons/FolderIcon';
 import LabelLock from './icons/LabelLock';
 import SelectedNodeFilter from './icons/SelectedNodeFilter';
-import ResizeIcons from "./icons/ResizeIcons";
-import NotFound from "./NotFound";
-import { deleteNodeRequest } from "../../store/actions/nodes";
+import ResizeIcons from './icons/ResizeIcons';
+import NotFound from './NotFound';
+import { deleteNodeRequest } from '../../store/actions/nodes';
+import { deleteLinkRequest } from '../../store/actions/links';
 
 class ReactChart extends Component {
   static propTypes = {
@@ -95,6 +96,7 @@ class ReactChart extends Component {
   }
 
   handleNodeDragEnd = (ev, d) => {
+    console.log(d)
     this.handleRender();
   }
 
@@ -162,8 +164,11 @@ class ReactChart extends Component {
     if (d.readOnly) {
       return;
     }
+    const { singleGraph } = this.props;
     const links = Chart.getLinks();
+    const link = links.find((l) => l.index === d.index);
     links.splice(d.index, 1);
+    this.props.deleteLinkRequest(singleGraph.id, link.id);
     Chart.render({ links });
   }
 
@@ -205,7 +210,6 @@ class ReactChart extends Component {
   render() {
     const { ctrlPress, shiftKey } = this.state;
     const { activeButton, singleGraphStatus, singleGraph: { currentUserRole } } = this.props;
-    console.log(singleGraphStatus)
 
     // this.renderChart(singleGraph, embedLabels);
     return (
@@ -272,6 +276,7 @@ const mapDispatchToProps = {
   setActiveButton,
   socketLabelDataChange,
   deleteNodeRequest,
+  deleteLinkRequest,
   removeNodeFromCustom,
 };
 

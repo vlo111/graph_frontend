@@ -337,6 +337,18 @@ class Api {
   static deleteNode(graphId, nodeId) {
     return api.delete(`/nodes/delete/${graphId}/${nodeId}`);
   }
+
+  static createLink(graphId, link) {
+    return api.post(`/links/create/${graphId}`, { link });
+  }
+
+  static updateLink(graphId, linkId, link) {
+    return api.put(`/links/update/${graphId}/${linkId}`, { link });
+  }
+
+  static deleteLink(graphId, linkId) {
+    return api.delete(`/links/delete/${graphId}/${linkId}`);
+  }
 }
 
 export default Api;
