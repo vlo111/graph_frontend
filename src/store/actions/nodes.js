@@ -19,3 +19,9 @@ export const DELETE_NODE = define('DELETE_NODE');
 export function deleteNodeRequest(graphId, nodeId) {
   return DELETE_NODE.request(() => Api.deleteNode(graphId, nodeId));
 }
+
+export const UPDATE_NODES_POSITION = define('UPDATE_NODES_POSITION');
+
+export function updateNodesPositionRequest(graphId, nodes) {
+  return UPDATE_NODES_POSITION.request(() => Api.updateNodePositions(graphId, nodes));
+}

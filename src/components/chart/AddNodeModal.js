@@ -113,7 +113,10 @@ class AddNodeModal extends Component {
       if (update) {
         const d = { ...nodes[index], ...nodeData };
         nodes[index] = d;
-        this.props.updateNodeRequest(graphId, d.id, d);
+        this.props.updateNodeRequest(graphId, d.id, {
+          ...d,
+          icon: await Utils.blobToBase64(d.icon),
+        });
       } else {
         nodeData.id = ChartUtils.uniqueId(nodes);
         nodeData.createdAt = moment().unix();

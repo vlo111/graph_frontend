@@ -338,6 +338,12 @@ class Api {
     });
   }
 
+  static updateNodePositions(graphId, nodes) {
+    return api.put(`/nodes/update-positions/${graphId}`, { nodes }, {
+      cancelToken: this.#cancel('updateNodePositions'),
+    });
+  }
+
   static deleteNode(graphId, nodeId) {
     return api.delete(`/nodes/delete/${graphId}/${nodeId}`, {
       cancelToken: this.#cancel('deleteNode'),
@@ -359,6 +365,24 @@ class Api {
   static deleteLink(graphId, linkId) {
     return api.delete(`/links/delete/${graphId}/${linkId}`, {
       cancelToken: this.#cancel('deleteLink'),
+    });
+  }
+
+  static createLabel(graphId, label) {
+    return api.post(`/labels/create/${graphId}`, { label }, {
+      cancelToken: this.#cancel('createLabel'),
+    });
+  }
+
+  static updateLabel(graphId, labelId, label) {
+    return api.put(`/labels/update/${graphId}/${labelId}`, { label }, {
+      cancelToken: this.#cancel('updateLabel'),
+    });
+  }
+
+  static deleteLabel(graphId, labelId) {
+    return api.delete(`/labels/delete/${graphId}/${labelId}`, {
+      cancelToken: this.#cancel('deleteLabel'),
     });
   }
 }

@@ -9,6 +9,8 @@ import Input from '../form/Input';
 import ChartUtils from '../../helpers/ChartUtils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import ContextMenu from '../contextMenu/ContextMenu';
+import { createLabelRequest } from '../../store/actions/labels';
+import { updateNodesPositionRequest } from '../../store/actions/nodes';
 
 class AddLabelModal extends Component {
   constructor(props) {
@@ -47,10 +49,15 @@ class AddLabelModal extends Component {
     };
     this.setState({ show: true, labelData });
   }
-  handleFolderCrateSquare = async (ev, d) => { 
-    let { squareDara: { x, y, width, height }, originalEvent} = d;   
-    let links = Chart.getLinks();
-    let labels = Chart.getLabels();
+
+  handleFolderCrateSquare = async (ev, d) => {
+    let {
+      squareDara: {
+        x, y, width, height,
+      }, originalEvent,
+    } = d;
+    const links = Chart.getLinks();
+    const labels = Chart.getLabels();
     // eslint-disable-next-line prefer-const
     // let { nodes} = await ChartUtils.getNodesWithFiles(
     //   this.props.customFields
@@ -61,22 +68,22 @@ class AddLabelModal extends Component {
     //   (l) =>
     //     squareDara.nodes.includes(l.source) &&
     //     squareDara.nodes.includes(l.target)
-    // ); 
-     if (width < 200) width = 200;
-     if (height < 200) height = 200; 
-     x = x + width / 2;
-     y= y + height / 2;
-     
+    // );
+    if (width < 200) width = 200;
+    if (height < 200) height = 200;
+    x += width / 2;
+    y += height / 2;
+
     const labelData = {
       id: `f_${ChartUtils.uniqueId(labels)}`,
       color: ChartUtils.labelColors(),
       d: [[x, y], [width, height]],
       name: '',
-      type: "folder",
+      type: 'folder',
       open: true,
     };
 
-     this.setState({ show: true, labelData });
+    this.setState({ show: true, labelData });
   }
 
   deleteLabel = () => {
@@ -90,7 +97,9 @@ class AddLabelModal extends Component {
   addLabel = async (ev) => {
     ev.preventDefault();
     const { labelData } = this.state;
+    const { graphId } = this.props;
     const labels = Chart.getLabels();
+    const nodes = Chart.getNodes();
     const errors = {};
     [errors.name, labelData.name] = Validate.labelName(labelData.name);
     if (!Validate.hasError(errors)) {
@@ -100,6 +109,14 @@ class AddLabelModal extends Component {
       } else {
         labels.push(labelData);
       }
+      this.props.createLabelRequest(graphId, labelData);
+
+      this.props.updateNodesPositionRequest(graphId, nodes.filter((d) => d.labels.includes(labelData.id)).map((n) => ({
+        id: n.id,
+        fx: n.fx,
+        fy: n.fy,
+        labels: n.labels,
+      })));
       Chart.render({ labels });
       this.setState({ show: false });
     }
@@ -150,8 +167,13 @@ class AddLabelModal extends Component {
   }
 }
 
-const mapStateToProps = () => ({});
-const mapDispatchToProps = {};
+const mapStateToProps = (state) => ({
+  graphId: state.graphs.singleGraph.id,
+});
+const mapDispatchToProps = {
+  createLabelRequest,
+  updateNodesPositionRequest,
+};
 
 const Container = connect(
   mapStateToProps,

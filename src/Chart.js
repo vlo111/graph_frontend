@@ -1130,7 +1130,6 @@ class Chart {
     };
 
     const handleDragEnd = (ev) => {
-      dragLabel.label = null;
       if (this.activeButton === 'create-label') {
         const datum = activeLine.datum();
 
@@ -1156,7 +1155,8 @@ class Chart {
         this.event.emit('label.new', ev, datum);
         return;
       }
-      this.event.emit('label.dragend', ev);
+      this.event.emit('label.dragend', ev, dragLabel);
+      dragLabel.label = null;
     };
 
     const labelsWrapper = d3.select('#graph .labels')
