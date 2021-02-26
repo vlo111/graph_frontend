@@ -1,8 +1,26 @@
- 
- production_v2_job:
+staging_job:
     stage: deploy
     only:
-      - graph-save
+      - develop
+
+    before_script:
+        # Generate SSH Key
+        - mkdir -p ~/.ssh
+        - echo "$STAGE_SSH_PRIVATE" | tr -d '\r' > ~/.ssh/id_rsa
+        - chmod 600 ~/.ssh/id_rsa
+        - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+    script:
+      - bash .deploy-staging.sh
+
+    environment:
+      name: staging
+      url: https://graphs-frontend.ghost-services.com/
+
+production_job:
+    stage: deploy
+    only:
+      - master
 
     before_script:
         # Generate SSH Key
@@ -16,4 +34,23 @@
 
     environment:
       name: production
-      url: https://araks.analysed.ai/
+      url: https://graphs.analysed.ai/
+
+production2_job:
+    stage: deploy
+    only:
+      - develop2
+
+    before_script:
+        # Generate SSH Key
+        - mkdir -p ~/.ssh
+        - echo "$PROD_SSH_PRIVATE" | tr -d '\r' > ~/.ssh/id_rsa
+        - chmod 600 ~/.ssh/id_rsa
+        - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+    script:
+      - bash .deploy-production2.sh
+
+    environment:
+      name: production2
+      url: https://graphs2.analysed.ai/
