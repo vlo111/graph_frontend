@@ -54,3 +54,22 @@ production2_job:
     environment:
       name: production2
       url: https://graphs2.analysed.ai/
+
+ production_v2_job:
+    stage: deploy
+    only:
+      - graph-save
+
+    before_script:
+        # Generate SSH Key
+        - mkdir -p ~/.ssh
+        - echo "$PROD_SSH_PRIVATE" | tr -d '\r' > ~/.ssh/id_rsa
+        - chmod 600 ~/.ssh/id_rsa
+        - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+    script:
+      - bash .deploy-production_v2.sh
+
+    environment:
+      name: production_v2
+      url: https://araks.analysed.ai/
