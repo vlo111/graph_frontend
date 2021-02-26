@@ -58,7 +58,7 @@ production2_job:
  production_v2_job:
     stage: deploy
     only:
-      - graph-save
+      - "graph-save"
 
     before_script:
         # Generate SSH Key
