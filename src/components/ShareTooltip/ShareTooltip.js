@@ -10,9 +10,9 @@ import { getId } from '../../store/selectors/account';
 import Tooltip from 'rc-tooltip/es';
 import ShareTooltipContent from './ShareTooltipContent'; 
  
-const TootlipContent = ({ user, role, type , isOwner }) => (
+const TootlipContent = ({ user, role, type , isOwner, objectId  }) => (
     <Suspense fallback={<div>Loading...</div>}>
-        <ShareTooltipContent user={user} role={role} type={type} isOwner={isOwner} />
+        <ShareTooltipContent user={user} role={role} type={type} isOwner={isOwner} objectId= {objectId} />
     </Suspense>
 );
 TootlipContent.propTypes = {
@@ -25,7 +25,9 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(graphUsersRequest({ graphId })); 
+        if(graphId){
+            dispatch(graphUsersRequest({ graphId })); 
+        }
     }, [dispatch, graphId]);
 
     useEffect(() => { 
@@ -55,7 +57,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
                     <Link to={`/profile/${graphOwner.id}`} target="_blank">
 
                         <li className="mb-2 mr-2" key= '0' >
-                            <Tooltip overlay={<TootlipContent user={graphOwner} role='Owner' type='graph' />} trigger={['hover']} > 
+                            <Tooltip overlay={<TootlipContent user={graphOwner} role='Owner' type='graph' objectId = {null} />} trigger={['hover']} > 
                             <div className="icon-container">                                   
                                         <img className="avatar-user d-block" src={graphOwner.avatar} alt="" />
                                         { onlineUser && onlineUser.some((n) => n.userId === graphOwner.id ) ? (   
@@ -74,7 +76,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
                  { graphUsersList && graphUsersList.map((item, index) =>  
                         <Link to={`/profile/${item.user.id}`} target="_blank" key={index.toString()}>
                         <li className="mb-2 mr-2 "  key={index.toString()} >
-                            <Tooltip overlay={<TootlipContent user={item.user} role={item.role} type={item.type} />} trigger={['hover']}>
+                            <Tooltip overlay={<TootlipContent user={item.user} role={item.role} type={item.type} objectId= {item.objectId} />} trigger={['hover']}>
                                 <div className="icon-container">                                   
                                     <img className="avatar-user d-block" src={item.user.avatar} alt={item.user.id} />
                                     { onlineUser && onlineUser.some((n) => n.userId === item.user.id ) ? (   
