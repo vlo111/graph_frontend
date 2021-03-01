@@ -8,7 +8,7 @@ import { addMyFriends } from './userFriends';
 import Utils from '../../helpers/Utils';
 import ChartUtils from '../../helpers/ChartUtils';
 import { getSingleGraph } from '../selectors/graphs';
-import ChartUpdate from "../../helpers/ChartUpdate";
+import ChartUpdate from '../../helpers/ChartUpdate';
 
 let socket;
 const notPushedEmits = [];
@@ -89,15 +89,73 @@ export function socketInit() {
     });
 
     socket.on('node.update-positions', (data) => {
-      ChartUpdate.nodePositionsChange(data.nodes);
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.nodePositionsChange(data.nodes);
+      }
     });
 
     socket.on('node.create', (data) => {
-      ChartUpdate.nodeCrate(data.node);
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.nodeCrate(data.node);
+      }
     });
 
     socket.on('node.delete', (data) => {
-      ChartUpdate.nodeDelete(data.node);
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.nodeDelete(data.node);
+      }
+    });
+
+    socket.on('node.update', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.nodeUpdate(data.node);
+      }
+    });
+
+    socket.on('link.create', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.linkCreate(data.link);
+      }
+    });
+
+    socket.on('link.update', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.linkUpdate(data.link);
+      }
+    });
+
+    socket.on('link.delete', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.linkDelete(data.link);
+      }
+    });
+
+    socket.on('label.create', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.labelCreate(data.label);
+      }
+    });
+    
+    socket.on('label.update', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.labelUpdate(data.label);
+      }
+    });
+
+    socket.on('label.delete', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.labelDelete(data.label);
+      }
     });
 
     socket.on('labelEmbedCopy', (labelEmbed) => {

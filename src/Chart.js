@@ -8,7 +8,7 @@ import Utils from './helpers/Utils';
 import SvgService from './helpers/SvgService';
 import ChartInfography from './helpers/ChartInfography';
 import store from './store';
-import { createNodeRequest, updateNodeRequest } from "./store/actions/nodes";
+import { createNodeRequest, updateNodeRequest } from './store/actions/nodes';
 
 class Chart {
   static event = new EventEmitter();
@@ -1115,8 +1115,14 @@ class Chart {
               d.fx += ev.dx;
               d.fy += ev.dy;
 
-              d.x += ev.dx;
-              d.y += ev.dy;
+              d.x = d.fx;
+              d.y = d.fy;
+
+              this.data.nodes[d.index].fx = d.fx;
+              this.data.nodes[d.index].x = d.fx;
+
+              this.data.nodes[d.index].fy = d.fy;
+              this.data.nodes[d.index].y = d.fy;
             }
           }
         });
@@ -1155,6 +1161,8 @@ class Chart {
         this.event.emit('label.new', ev, datum);
         return;
       }
+      this._dataNodes = null;
+      dragLabel.nodes = dragLabel.nodes.map((n) => ChartUtils.getNodeById(n.id));
       this.event.emit('label.dragend', ev, dragLabel);
       dragLabel.label = null;
     };
@@ -1244,7 +1252,7 @@ class Chart {
         .call(this.zoom)
         .on('dblclick.zoom', null)
         .on('click', (...p) => this.event.emit('click', ...p))
-        .on('mousemove', (...p) => this.event.emit('mousemove', ...p))
+        .on('mousemove', (...p) => this.event.emit('mousemove', ...p));
 
       this.resizeSvg();
 
@@ -1358,9 +1366,7 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-        .attr('r', (d) => {
-          return parseInt(d.manually_size) + 15
-        });
+        .attr('r', (d) => parseInt(d.manually_size) + 15);
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
