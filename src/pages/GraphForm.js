@@ -62,7 +62,7 @@ class GraphForm extends Component {
         <Crop />
         <AddNodeModal />
         {activeButton === 'data' && <DataView />}
-        {activeButton === 'search' && <SearchModal />}
+        {activeButton === 'search' && <SearchModal history={this.props.history}/>}
         {activeButton === 'media' && <MediaModal />}
         {activeButton === 'maps-view' && <MapsGraph />}
         <AddLinkModal />

@@ -14,7 +14,7 @@ import {
   SET_GRAPH_CUSTOM_FIELDS,
   GET_SINGLE_GRAPH_PREVIEW,
   UPDATE_GRAPH,
-  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY,
+  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY, SET_ACTIVE_TAB
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -32,6 +32,7 @@ const initialState = {
     totalPages: 0,
   },
   actionsCount: {},
+  activeTab: '',
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -285,6 +286,15 @@ export default function reducer(state = initialState, action) {
           ...state.actionsCount,
           ...action.payload.data.result,
         },
+      };
+    }
+    case SET_ACTIVE_TAB: {
+      if (state.activeTab === action.payload.tabName) {
+        return state;
+      }
+      return {
+        ...state,
+        activeTab: action.payload.tabName,
       };
     }
     default: {
