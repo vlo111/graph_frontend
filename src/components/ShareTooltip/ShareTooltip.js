@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
  import { getGraphUsers } from '../../store/selectors/shareGraphs';
- import { graphUsersRequest, updateGraphRequest } from '../../store/actions/shareGraphs';
+ import { graphUsersRequest, updateGraphRequest, updateShareGraphStatusRequest } from '../../store/actions/shareGraphs';
 import { getOnlineUsersRequest } from '../../store/actions/app';
 import { getOnlineUsers } from '../../store/selectors/app';
  import { getId } from '../../store/selectors/account';   
@@ -68,6 +68,8 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
         if( owner && role === dragRole ) { 
             dispatch(updateGraphRequest(dropId, { role: newRole }));
             toast.success(`You have changed permission from ${dragRole} to ${newRole} `); 
+            dispatch(updateShareGraphStatusRequest({graphId}));
+            
         } 
     } 
     const handlerShowMore = () => {

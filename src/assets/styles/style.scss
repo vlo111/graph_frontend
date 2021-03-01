@@ -7229,11 +7229,12 @@ img.preview-scaled {
     } 
     .group-header { 
       letter-spacing: 2px;
-      text-transform: uppercase;  
+      //text-transform: uppercase;  
       position: absolute;         
       transform-origin: 0 0;
       transform: rotate(90deg);
-      font-weight: bold;
+      color: #7166f8;
+      //font-weight: bold;
     }
    }
    .scrollY {
