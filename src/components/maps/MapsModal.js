@@ -14,6 +14,7 @@ import Loading from '../Loading';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import CustomFields from '../../helpers/CustomFields';
 import MapsContactCustomField from './MapsContactCustomField';
+import MapsStyle from './MapsStyle';
 
 class MapsModal extends Component {
   static propTypes = {
@@ -42,12 +43,12 @@ class MapsModal extends Component {
   }
 
   componentWillUnmount() {
-    const { google } = this.props;
-    _.forEach(this.events, (ev) => {
-      google.maps.event.removeListener(ev);
-    });
-    document.removeEventListener('mouseup', this.handleMouseUp);
-    document.removeEventListener('mousemove', this.handleMouseMove);
+    // const { google } = this.props;
+    // _.forEach(this.events, (ev) => {
+    //   google.maps.event.removeListener(ev);
+    // });
+    // document.removeEventListener('mouseup', this.handleMouseUp);
+    // document.removeEventListener('mousemove', this.handleMouseMove);
   }
 
   setCurrentLocation = async () => {
@@ -185,8 +186,9 @@ https://en.wikipedia.org/wiki/${selected.name}
         >
           {!_.isNull(initialCenter) ? (
             <Map
+              styles={MapsStyle.mapStyle}
               google={google}
-              zoom={17}
+              zoom={5}
               streetViewControl={false}
               fullscreenControl={false}
               onClick={this.handleClick}
