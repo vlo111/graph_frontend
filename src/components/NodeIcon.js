@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChartUtils from '../helpers/ChartUtils';
+import NodeImage from "./nodeInfo/NodeImage";
 
 class NodeIcon extends Component {
   static propTypes = {
@@ -22,14 +23,13 @@ class NodeIcon extends Component {
     const { error } = this.state;
     const { node } = this.props;
     const showIcon = node.icon && !error;
-
     return (
       <span
         className={`nodeIcon ${node.nodeType} ${showIcon ? 'hasImage' : ''}`}
         style={{ background: !showIcon ? ChartUtils.nodeColor(node) : undefined }}
       >
         {showIcon ? (
-          <img src={node.icon} onError={this.handleError} alt="icon" width={50} height={50} />
+          <NodeImage node={node} width={50} height={50} onError={this.handleError} />
         ) : (
           <span className="text">{node.type[0]}</span>
         )}

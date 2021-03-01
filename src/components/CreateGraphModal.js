@@ -47,7 +47,11 @@ class CreateGraphModal extends Component {
       status: 'active',
     });
     if (data?.graphId) {
-      this.props.history.replace(`/graphs/update/${data.graphId}`);
+      if (window.location.pathname.startsWith('/graphs/create')) {
+        this.props.history.replace(`/graphs/update/${data.graphId}`);
+      } else {
+        this.props.history.push(`/graphs/update/${data.graphId}`);
+      }
       return;
     }
     toast.error('Something went wrong');

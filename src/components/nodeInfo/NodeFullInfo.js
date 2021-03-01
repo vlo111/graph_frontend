@@ -11,7 +11,7 @@ import HeaderMini from '../HeaderMini';
 import ConnectionDetails from './ConnectionDetails';
 import NodeFullInfoModal from './NodeFullInfoModal';
 import ChartUtils from '../../helpers/ChartUtils';
-
+import NodeImage from "./NodeImage";
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -56,17 +56,8 @@ class NodeFullInfo extends Component {
           />
           <div className="nodeFullContent">
             <div className="headerBanner">
-              <img
-                src={node.icon ? `${node.icon}.large` : bgImage}
-                onError={(ev) => {
-                  if (ev.target.src !== node.icon) {
-                    ev.target.src = node.icon;
-                  } else if (ev.target.src !== bgImage) {
-                    ev.target.src = bgImage;
-                  }
-                }}
-                alt="background"
-              />
+              <NodeImage node={node} />
+
               <div className="textWrapper">
                 <h2 className="name">{node.name}</h2>
                 <h3 className="type">{node.type}</h3>
@@ -87,16 +78,19 @@ class NodeFullInfo extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  singleGraph: state.graphs.singleGraph, // rerender then data changed
-  customFields: state.graphs.singleGraph.customFields || {},
-});
+const
+  mapStateToProps = (state) => ({
+    singleGraph: state.graphs.singleGraph, // rerender then data changed
+    customFields: state.graphs.singleGraph.customFields || {},
+  });
 
-const mapDispatchToProps = {};
+const
+  mapDispatchToProps = {};
 
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NodeFullInfo);
+const
+  Container = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(NodeFullInfo);
 
 export default withRouter(Container);

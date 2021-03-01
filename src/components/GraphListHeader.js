@@ -11,6 +11,8 @@ import Button from './form/Button';
 import { updateGraphRequest } from '../store/actions/shareGraphs';
 import UpdateGraphModal from './chart/UpdateGraphModal';
 import { deleteGraphRequest } from '../store/actions/graphs';
+import {deleteGraphRequest as DeleteShareGraphRequest} from '../store/actions/shareGraphs';
+
 import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -40,22 +42,23 @@ const GraphListHeader = ({ graph, headerTools }) => {
     }
   }
 
-  const handledeleteShareGraph = useCallback((shareGraphId) => {
+  const handleDeleteShareGraph = useCallback((shareGraphId) => {
 
-    if (window.confirm('Are you sure?')) {
+    if (window.confirm('Are you sure?')) { 
       //delete
-      dispatch(deleteGraphRequest(shareGraphId));
+      dispatch(DeleteShareGraphRequest(shareGraphId));
       history.push("/");
       toast.info('Successfully deleted');
     }
-  }, [dispatch]);
-
+  }, [dispatch]); 
+  
   return (
+   
     <div className="graphListHeader">
       {headerTools ? (
         <Button
           icon={<TrashSvg style={{ height: 30 }} />}
-          onClick={() => handledeleteShareGraph(graph.id)}
+          onClick={() => handleDeleteShareGraph(graph?.share.id)}
           className="transparent delete" />
       ) : (
           <DropdownButton
@@ -88,8 +91,7 @@ const GraphListHeader = ({ graph, headerTools }) => {
 };
 
 GraphListHeader.propTypes = {
-  graph: PropTypes.object.isRequired,
-  deleteGraphRequest: PropTypes.func.isRequired,
+  graph: PropTypes.object.isRequired, 
 };
 
 export default React.memo(GraphListHeader);

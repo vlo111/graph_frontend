@@ -13,17 +13,42 @@ import ExportNodeTabs from './ExportNode/ExportNodeTabs';
 import GraphUsersInfo from "./GraphUsersInfo";
 import Button from "./form/Button";
 import CommentModal from './CommentNode';
+import ContextMenu from './contextMenu/ContextMenu';
+import CustomFields from '../helpers/CustomFields';
+import { toggleNodeModal } from '../store/actions/app';
+
 import { getActionsCountRequest } from '../store/actions/commentNodes';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg';
+import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 
 class HeaderMini extends Component {
   static propTypes = {
     getActionsCount: PropTypes.func.isRequired,
     commentCount: PropTypes.func.isRequired,
+    toggleNodeModal: PropTypes.func.isRequired,
+
   }
 
+  componentDidMount() {
+    ContextMenu.event.on('node.edit', this.editNode); 
+  }
+
+  componentWillUnmount() {
+    ContextMenu.event.removeListener('node.edit', this.editNode); 
+  }
+
+  editNode = (ev) => {
+    const { node, tabs } = this.props;
+    if (node.readOnly) {
+      return;
+    } 
+    const customField = CustomFields.get(tabs, 'node.edit', node.id);
+    this.props.toggleNodeModal({ ...node, customField });
+  }
+   
+  
   commentCountData() {
     const { match: { params: { graphId } } } = this.props;
 
@@ -97,7 +122,7 @@ class HeaderMini extends Component {
   }
   render() {
     const { showGraphUsersInfo, showNodeComment } = this.state;
-    const { singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props;
+    const { singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props; 
     return (
       <header id="headerMini">
         <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() => this.closeNodeInfoModal()} />
@@ -123,6 +148,13 @@ class HeaderMini extends Component {
             nodeData={this.state.nodeData}
             image={this.state.image}
           />
+          <Button className="commentsInfo"
+            icon={<EditSvg />}
+            title="Comment"
+            className="b-navbar"
+            onClick={(ev) => this.editNode(ev)}>
+            Edit              
+          </Button>
         </div>
 
         {showGraphUsersInfo ? (
@@ -148,7 +180,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   setLoading,
-  getActionsCountRequest
+  getActionsCountRequest,
+  toggleNodeModal
 };
 
 const Container = connect(

@@ -55,7 +55,6 @@ export function getSingleGraphRequest(graphId, params) {
   return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId, params));
 }
 
-
 export const GET_SINGLE_GRAPH_PREVIEW = define('GET_SINGLE_GRAPH_PREVIEW');
 
 export function getSingleGraphPreviewRequest(graphId, userId, token) {
@@ -79,11 +78,11 @@ export function clearSingleGraph() {
 
 export const UPDATE_SINGLE_GRAPH = 'UPDATE_SINGLE_GRAPH';
 
-export function updateSingleGraph(graph, marge = false) {
+export function updateSingleGraph(graph, merge = false) {
   return {
     type: UPDATE_SINGLE_GRAPH,
     payload: {
-      graph, marge
+      graph, merge,
     },
   };
 }
@@ -150,4 +149,15 @@ export const ACTIONS_COUNT = define('ACTIONS_COUNT');
 
 export function getActionsCountRequest(id) {
   return ACTIONS_COUNT.request(() => Api.getActionsCount(id));
+}
+
+export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
+
+export function setActiveTab(tabName) {
+  return {
+    type: SET_ACTIVE_TAB,
+    payload: {
+      tabName,
+    },
+  };
 }

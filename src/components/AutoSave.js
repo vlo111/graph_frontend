@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import Chart from '../Chart';
 import { updateGraphRequest } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
-import Utils from '../helpers/Utils';
 
 class AutoSave extends Component {
   static propTypes = {
@@ -28,6 +27,9 @@ class AutoSave extends Component {
 
   handleChartRender = () => {
     clearTimeout(this.timeout);
+    if (!Chart.autoSave) {
+      return;
+    }
     this.timeout = setTimeout(this.saveGraph, 1000);
   }
 

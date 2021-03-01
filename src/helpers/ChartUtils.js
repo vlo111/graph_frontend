@@ -141,11 +141,20 @@ class ChartUtils {
     return links.filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
   }
 
-  static normalizeIcon = (icon) => {
-    if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {
+  static normalizeIcon = (icon, large = false) => {
+    if (!icon || !_.isString(icon)) {
+      return '';
+    }
+    let url = Api.url + icon;
+    if (icon.startsWith(Api.url)) {
+      url = icon;
+    } else if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {
       return icon;
     }
-    return Api.url + icon;
+    if (large) {
+      url += '.large';
+    }
+    return url;
   }
 
   static setFilter(key, value) {
@@ -353,7 +362,9 @@ class ChartUtils {
   }
 
   static keyEvent(ev) {
-    ev.ctrlPress = Utils.getOS() === 'macos' ? ev.metaKey : ev.ctrlKey;
+    const metaKey = ev.sourceEvent?.metaKey || ev.metaKey;
+    const ctrlKey = ev.sourceEvent?.ctrlKey || ev.ctrlKey;
+    ev.ctrlPress = Utils.getOS() === 'macos' ? metaKey : ctrlKey;
     ev.chartEvent = !['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase());
   }
 
@@ -411,30 +422,77 @@ class ChartUtils {
     }
   }
 
+  static findLabelInDom(label) {
+    try {
+      const { id, d } = this.getLabelById(label);
+      if (!d) {
+        return false;
+      }
+      const {
+        width, height, left, top,
+      } = document.querySelector(`[data-id="${id}"]`).getBoundingClientRect();
+      const { x, y } = ChartUtils.calcScaledPosition(left + (width / 2) - 20, top + (height / 2) - 20);
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(0, 0).scale(2));
+      const zoomWidth = Math.abs(d[0][0] - d[1][0]);
+      const zoomHeight = Math.abs(d[0][1] - d[1][1]);
+      const l = (2 * x * -1) + (window.innerWidth / 2) - zoomWidth;
+      const t = (2 * y * -1) + (window.innerHeight / 2) - zoomHeight;
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(l, t).scale(2));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   static isNodeInLabel(node, label) {
+    if (label.sourceId || node.sourceId) {
+      if (+label.sourceId !== +node.sourceId) {
+        return false;
+      }
+      if (node.sourceId && node.labels.includes(label.id)) {
+        return true;
+      }
+    }
+
     const x = node.fx || node.x;
     const y = node.fy || node.y;
     const { d } = label;
     let inside = false;
-
     if (label.type === 'folder') {
+      // if(node.labels?.length > 1 && !node.labels.includes(label.id)){
+      //   return false;
+      // }
       const nodeOldFolder = node.labels?.find((l) => l.startsWith('f_'));
       if (nodeOldFolder && nodeOldFolder !== label.id) {
         return false;
       }
-      if ((node.lx || node.ly) && (node.lx === label.d[0][0] + 30 && node.ly === label.d[0][1] + 30)) {
+      const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(node);
+      if (inFolder && (lx === label.d[0][0] + 30 && ly === label.d[0][1] + 30)) {
         return true;
       }
       if (!label.open && node.labels?.includes(label.id)) {
         return true;
       }
       if (label.open) {
-        const squareSize = 500;
-        const squareX = d[0][0] - (squareSize / 2);
-        const squareY = d[0][1] - (squareSize / 2);
-        return this.isInSquare([squareX, squareY], squareSize, [node.lx || x, node.ly || y]);
+        const [width, height] = d[1];
+        const squareX = d[0][0] - (width / 2);
+        const squareY = d[0][1] - (height / 2);
+        return this.isInSquare([squareX, squareY], [width, height], [x, y]);
       }
     }
+
+    let odd = false;
+    let i;
+    let
+      j = d.length - 1;
+    for (i = 0; i < d.length; i++) {
+      if ((d[i][1] < y && d[j][1] >= y || d[j][1] < y && d[i][1] >= y)
+        && (d[i][0] <= x || d[j][0] <= x)) {
+        odd ^= (d[i][0] + (y - d[i][1]) * (d[j][0] - d[i][0]) / (d[j][1] - d[i][1])) < x;
+      }
+
+      j = i;
+    }
+
     for (let i = 0, j = d.length - 1; i < d.length; j = i++) {
       const xi = d[i][0];
       const yi = d[i][1];
@@ -445,13 +503,21 @@ class ChartUtils {
         inside = !inside;
       }
     }
-    return inside;
+    return !!odd;
   }
 
   static getNodeLabels(node) {
     const firstFolder = node.labels?.find((l) => l.startsWith('f_'));
+    const firstLabel = node.labels?.find((l) => !l.startsWith('f_'));
     const labels = Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
+    if (node.index === 128) {
+      console.log(labels);
+    }
+    if (firstLabel) {
+      return labels.filter((l) => !l.startsWith('f_'));
+    }
     if (labels.includes(firstFolder)) {
+      console.log(33333);
       return [firstFolder];
     }
     return labels;
@@ -522,54 +588,52 @@ class ChartUtils {
     let docIndex = fIndex;
     let files = {};
 
-    if (documents) {
-      const icons = await Promise.all(nodes.map((d) => {
-        if (d.icon && d.icon.startsWith('blob:')) {
-          return Utils.blobToBase64(d.icon);
-        }
-        return d.icon;
-      }));
+    const icons = await Promise.all(nodes.map((d) => {
+      if (d.icon && d.icon.toString().startsWith('blob:')) {
+        return Utils.blobToBase64(d.icon);
+      }
+      return d.icon;
+    }));
 
-      nodes = nodes.map((d, i) => {
-        d.icon = icons[i];
-        d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
-          fIndex += 1;
-          files[fIndex] = Utils.blobToBase64(url);
-          return ` href="<%= file_${fIndex} %>"`;
-        });
-        return d;
+    nodes = nodes.map((d, i) => {
+      d.icon = icons[i];
+      d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
+        fIndex += 1;
+        files[fIndex] = Utils.blobToBase64(url);
+        return ` href="<%= file_${fIndex} %>"`;
       });
+      return d;
+    });
 
-      _.forEach(documents, (doc) => {
-        docIndex++;
-        doc.index = docIndex;
-      });
+    _.forEach(documents, (doc) => {
+      docIndex++;
+      doc.index = docIndex;
+    });
 
-      for (const nodeType in customFields) {
-        for (const tab in customFields[nodeType]) {
-          if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
-            for (const node in customFields[nodeType][tab].values) {
-              if (customFields[nodeType][tab].values[node]) {
-                customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
-                  .replace(/\ssrc="(blob:[^"]+)"/g, (m, url) => {
-                    fIndex += 1;
-                    files[fIndex] = Utils.blobToBase64(url);
-                    return ` src="<%= file_${fIndex} %>"`;
-                  })
-                  .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
-                    fIndex += 1;
-                    files[fIndex] = Utils.blobToBase64(url);
-                    return ` href ="<%= file_${fIndex} %>"`;
-                  });
-              }
+    for (const nodeType in customFields) {
+      for (const tab in customFields[nodeType]) {
+        if (!_.isEmpty(customFields[nodeType][tab]?.values)) {
+          for (const node in customFields[nodeType][tab].values) {
+            if (customFields[nodeType][tab].values[node]) {
+              customFields[nodeType][tab].values[node] = customFields[nodeType][tab].values[node]
+                .replace(/\ssrc="(blob:[^"]+)"/g, (m, url) => {
+                  fIndex += 1;
+                  files[fIndex] = Utils.blobToBase64(url);
+                  return ` src="<%= file_${fIndex} %>"`;
+                })
+                .replace(/\shref="(blob:[^"]+)"/g, (m, url) => {
+                  fIndex += 1;
+                  files[fIndex] = Utils.blobToBase64(url);
+                  return ` href="<%= file_${fIndex} %>"`;
+                });
             }
-          } else {
-            delete customFields[nodeType][tab];
           }
+        } else {
+          delete customFields[nodeType][tab];
         }
       }
-      files = await Promise.allValues(files);
     }
+    files = await Promise.allValues(files);
 
     return {
       nodes, files, customFields, documents,
@@ -627,7 +691,7 @@ class ChartUtils {
   }
 
   static isInSquare(areaPos, size, pos) {
-    return pos[0] >= areaPos[0] && pos[0] <= areaPos[0] + size && pos[1] >= areaPos[1] && pos[1] <= areaPos[1] + size;
+    return pos[0] >= areaPos[0] && pos[0] <= areaPos[0] + size[0] && pos[1] >= areaPos[1] && pos[1] <= areaPos[1] + size[1];
   }
 
   static getChartSvg() {
@@ -655,6 +719,106 @@ class ChartUtils {
         1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
       });
     });
+  }
+
+  static getNodePositionInFolder(d) {
+    const folderId = (d.labels || []).find((l) => l.startsWith('f_'));
+    if (folderId) {
+      const folder = Chart.getLabels().find((l) => l.id === folderId);
+      if (folder) {
+        if (!folder.open) {
+          const x = folder.d[0][0] + 30;
+          const y = folder.d[0][1] + 30;
+          return [x, y, true];
+        }
+      }
+    }
+    return [d.x || d.fx, d.y || d.fy, false];
+  }
+
+  static margeGraphs = (graph1, graph2, selectedNodes1 = graph1.nodes, selectedNodes2 = graph2.nodes) => {
+    let links = [...graph1.links || [], ...graph2.links || []];
+    let labels = new Set();
+    const nodes = selectedNodes1.map((node1) => {
+      const node2 = selectedNodes2.find((n) => n.name === node1.name);
+      if (node2) {
+        node1 = ChartUtils.merge(node2, node1);
+        delete node1.hidden;
+        links = links.map((l) => {
+          if (l.source === node2.id) {
+            l.source = node1.id;
+          }
+          if (l.target === node2.id) {
+            l.target = node1.id;
+          }
+          return l;
+        });
+      }
+
+      delete node1.color;
+
+      // graph1.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
+      return node1;
+    });
+
+    selectedNodes2.forEach((node2) => {
+      const node1 = selectedNodes1.find((n) => n.name === node2.name);
+      if (!node1) {
+        // graph1.labels.filter((l) => node2.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
+
+        delete node2.color;
+        delete node2.hidden;
+
+        nodes.push(node2);
+      }
+    });
+
+    labels = [...labels];
+
+    links = ChartUtils.uniqueLinks(links).map((l) => {
+      delete l.color;
+      return l;
+    });
+
+    const { customFields } = graph1;
+
+    const customFieldsMerged = {};
+
+    const customFieldsFull = Utils.mergeDeep(graph2.customFields, customFields);
+    for (const type in customFieldsFull) {
+      const customField = customFieldsFull[type];
+      for (const tab in customField) {
+        const { values } = customFieldsFull[type][tab];
+        for (const nodeId in values) {
+          const n1 = selectedNodes1.find((n) => n.id === nodeId);
+          const n2 = selectedNodes2.find((n) => n.id === nodeId);
+          const mainNode = nodes.find((n) => n.name === n1?.name || n.name === n2?.name);
+          if (mainNode) {
+            const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
+            const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
+
+            const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : null;
+            const value2 = node2 ? _.get(graph2.customFields, [node2.type, tab, 'values', node2.id]) : null;
+
+            if (value1 && !value2) {
+              _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1);
+            } else if (!value1 && value2) {
+              _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
+            } else if (value1 && value2) {
+              if (value1 !== value2) {
+                _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`);
+              } else {
+                _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return {
+      labels, nodes, links, customFields: customFieldsMerged,
+    };
   }
 }
 

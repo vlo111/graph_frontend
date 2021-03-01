@@ -9,7 +9,7 @@ import NodeTabsContent from './NodeTabsContent';
 import CustomFields from '../../helpers/CustomFields';
 import NodeTabsFormModal from './NodeTabsFormModal';
 import ContextMenu from '../contextMenu/ContextMenu';
-import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
+import { removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/graphs';
 import FlexTabs from '../FlexTabs';
 import MapsInfo from '../maps/MapsInfo';
 
@@ -18,6 +18,8 @@ class NodeTabs extends Component {
     node: PropTypes.object.isRequired,
     customFields: PropTypes.object.isRequired,
     removeNodeCustomFieldKey: PropTypes.func.isRequired,
+    activeTab: PropTypes.string.isRequired,
+    setActiveTab: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -30,7 +32,14 @@ class NodeTabs extends Component {
   }
 
   setFirstTab = memoizeOne((node, customField) => {
-    this.setState({ activeTab: !_.isEmpty(customField) ? Object.keys(customField)[0] : node.location ? '_location' : '' });
+    this.setState(
+      {
+        activeTab: !_.isEmpty(customField)
+          ? (this.props.activeTab ? this.props.activeTab : Object.keys(customField)[0])
+          : node.location ? '_location' : '',
+      },
+    );
+    this.props.setActiveTab('');
   }, _.isEqual);
 
   componentDidMount() {
@@ -93,7 +102,7 @@ class NodeTabs extends Component {
               <p>Location</p>
             </Button>
           ) : null}
-          {editable && Object.values(customField).length < CustomFields.LIMIT ? (
+          {editable && !node.sourceId && Object.values(customField).length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
               <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
             </Tooltip>
@@ -132,9 +141,11 @@ class NodeTabs extends Component {
 
 const mapStateToProps = (state) => ({
   customFields: state.graphs.singleGraph.customFields || {},
+  activeTab: state.graphs.activeTab,
 });
 
 const mapDispatchToProps = {
+  setActiveTab,
   removeNodeCustomFieldKey,
 };
 

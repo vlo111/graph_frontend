@@ -91,11 +91,15 @@ class Api {
   }
 
   static updateGraph(id, requestData) {
-    return api.put(`/graphs/update/${id}`, requestData);
+    return api.put(`/graphs/update/${id}`, requestData, {
+      cancelToken: this.#cancel('updateGraph'),
+    });
   }
 
   static updateGraphData(id, requestData) {
-    return api.put(`/graphs/update-data/${id}`, requestData);
+    return api.put(`/graphs/update-data/${id}`, requestData, {
+      cancelToken: this.#cancel('updateGraphData'),
+    });
   }
 
   static getActionsCount(id) {
@@ -121,6 +125,7 @@ class Api {
   static getSingleGraph(graphId, params = {}) {
     return api.get(`/graphs/single/${graphId}`, {
       params,
+      cancelToken: this.#cancel('getSingleGraph'),
     });
   }
 
@@ -169,6 +174,10 @@ class Api {
     return api.get('/document/get-documents', { params: { graphId } });
   }
 
+  static copyDocumentForGraph(requestData) {
+    return api.post('/document/copy-documents', requestData);
+  }
+
   static createShareGraph(requestData) {
     return api.post('/share-graphs/create', requestData);
   }
@@ -190,7 +199,7 @@ class Api {
   }
 
   static updateShareGraphStatus(requestData) {
-    return api.post('/share-graphs/update-status/', requestData);
+    return api.post('/share/update-status/', requestData);
   }
 
   static searchGraphsList(page, requestData = {}) {
@@ -312,6 +321,15 @@ class Api {
   static deleteShareGraphWithUsers(shareId) {
     return api.delete(`/share/delete/${shareId}`);
   }
+
+  static shareLabelDelete(labelId, graphId) {
+    return api.delete('/share/label-delete', {
+      params: {
+        labelId, graphId,
+      },
+    });
+  }
+
 
   static getShareGraphsList() {
     return api.get('/share');

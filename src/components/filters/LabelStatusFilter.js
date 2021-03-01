@@ -70,27 +70,35 @@ class LabelStatusFilter extends Component {
         <h4 className="title">Label status</h4>
         <ul className="list">
           <li className="item">
+          <div className="filterCheckBox">
             <Checkbox
               label={allChecked ? 'Uncheck All' : 'Check All'}
               checked={allChecked}
               onChange={() => this.toggleAll(labelStatusFull, allChecked)}
+              className="graphsCheckbox"
             >
-              <span className="badge">
+              
+            </Checkbox>
+            </div>
+            <span className="badge">
                 {_.sumBy(labelStatusFull, 'length')}
               </span>
-            </Checkbox>
           </li>
           {labelStatusFull.map((item) => (
             <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
+               <div className="filterCheckBox"> 
               <Checkbox
                 label={this.statusName(item.status)}
                 checked={filters.labelStatus.includes(item.status)}
                 onChange={() => this.handleChange(item.status)}
+                className="graphsCheckbox"
               >
-                <span className="badge">
+                
+              </Checkbox>
+              </div>
+              <span className="badge">
                   {item.length}
                 </span>
-              </Checkbox>
             </li>
           ))}
         </ul>

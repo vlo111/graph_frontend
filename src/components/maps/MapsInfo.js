@@ -9,6 +9,7 @@ import markerImg from '../../assets/images/icons/marker.svg';
 import Button from '../form/Button';
 import ContextMenu from '../contextMenu/ContextMenu';
 import Chart from '../../Chart';
+import MapsStyle from "./MapsStyle";
 
 class MapsInfo extends Component {
   static propTypes = {
@@ -85,9 +86,10 @@ class MapsInfo extends Component {
       return null;
     }
     return (
-      <div data-field-name="_location" className="contentWrapper previewWrapper mapWrapper">
+      <div data-field-name={!node.sourceId ? '_location' : undefined} className="contentWrapper previewWrapper mapWrapper">
         <div className="content">
           <Map
+            styles={MapsStyle.mapStyle}
             google={google}
             zoom={9}
             streetViewControl={false}

@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import { uniqueId } from 'react-bootstrap-typeahead/lib/utils';
 import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
-import Utils from './Utils';
 import store from '../store';
 import CustomFields from './CustomFields';
 import { removeNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } from '../store/actions/graphs';
@@ -14,9 +12,17 @@ import { LABEL_STATUS } from '../data/node';
 class LabelUtils {
   static copy(sourceId, id, customFields, singleGraph) {
     const labels = Chart.getLabels();
-    const nodes = Chart.getNodes().filter((n) => n.labels.includes(id));
-    const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
     const label = labels.find((l) => l.id === id);
+    if (label.type === 'folder') {
+      label.open = true;
+    }
+
+    const nodes = Chart.getNodes().filter((n) => n.labels.includes(id)).map((d) => {
+      d.labels = [id];
+      return d;
+    });
+
+    const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
 
     const data = {
       sourceId: +sourceId,
@@ -109,7 +115,7 @@ class LabelUtils {
     data.links = ChartUtils.cleanLinks(data.links, data.nodes);
     links = ChartUtils.cleanLinks(links, nodes);
     Chart.render({ nodes, links });
-    console.log(data.nodes, ' data.nodes')
+    console.log(data.nodes, ' data.nodes');
     return LabelUtils.past(data, position);
   }
 
@@ -122,7 +128,7 @@ class LabelUtils {
     // label past
     const labels = Chart.getLabels();
     const labelOriginalId = data.label.id;
-    const labelId = ChartUtils.uniqueId(labels);
+    let labelId = data.label.id;
 
     if (isEmbed) {
       if (labels.some((l) => l.id === data.label.id)) {
@@ -137,17 +143,29 @@ class LabelUtils {
         delete data.label.color;
         data.label.color = ChartUtils.labelColors(data.label);
       }
+      labelId = ChartUtils.uniqueId(labels);
+      if (data.label.type === 'folder') {
+        labelId = `f_${labelId}`;
+      }
       data.label.id = labelId;
     }
     labels.push(data.label);
 
-    const minX = Math.min(...data.label.d.map((l) => l[0]));
-    const minY = Math.min(...data.label.d.map((l) => l[1]));
-    data.label.d = data.label.d.map((i) => {
-      i[0] = i[0] - minX + posX;
-      i[1] = i[1] - minY + posY;
-      return i;
-    });
+    let minX = Math.min(...data.label.d.map((l) => l[0]));
+    let minY = Math.min(...data.label.d.map((l) => l[1]));
+
+    if (data.label.type === 'folder') {
+      minX = data.label.d[0][0];
+      minY = data.label.d[0][1];
+      data.label.d[0][0] = posX;
+      data.label.d[0][1] = posY;
+    } else {
+      data.label.d = data.label.d.map((i) => {
+        i[0] = i[0] - minX + posX;
+        i[1] = i[1] - minY + posY;
+        return i;
+      });
+    }
 
     // nodes past
     let nodes = Chart.getNodes();
@@ -199,10 +217,13 @@ class LabelUtils {
         d.id = id;
       }
 
-      d.name = (d.replace || d.merge) ? d.name : ChartUtils.nodeUniqueName(d);
+      d.name = (d.replace || d.merge || isEmbed) ? d.name : ChartUtils.nodeUniqueName(d);
+      d.labels = [labelId];
 
       const customField = CustomFields.get(data.customFields, d.type, d.originalId || d.id);
-      store.dispatch(setNodeCustomField(d.type, d.id, customField, undefined, d.merge));
+      if (!_.isEmpty(customField)) {
+        store.dispatch(setNodeCustomField(d.type, d.id, customField, undefined, d.merge));
+      }
 
       if (d.replace) {
         nodes = nodes.map((n) => {
@@ -214,16 +235,7 @@ class LabelUtils {
       } else if (d.merge) {
         nodes = nodes.map((n) => {
           if (n.id === d.id) {
-            n = ChartUtils.merge(d, n);
-            data.links = data.links.map((l) => {
-              if (l.source === d.originalId) {
-                l.source = n.id;
-              }
-              if (l.target === d.originalId) {
-                l.target = n.id;
-              }
-              return l;
-            });
+            return ChartUtils.merge(d, n);
           }
           return n;
         });
@@ -273,16 +285,16 @@ class LabelUtils {
       store.dispatch(socketLabelDataChange(graph));
     }
   }
+
   /**
    * Return label status name for label status
    * @param {*} status
    */
   static lableStatusNane = (status = null) => {
-
     const labelStatus = LABEL_STATUS.filter((c) => c.value === status);
     return labelStatus.length ? labelStatus[0].label : null;
-
   }
+
 }
 
 export default LabelUtils;

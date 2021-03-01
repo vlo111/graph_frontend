@@ -15,6 +15,9 @@ class ChartUndoManager {
   }
 
   async push(datum) {
+    if (_.isEmpty(datum?.nodes) && _.isEmpty(datum?.links)) {
+      return;
+    }
     if (_.isEqual(_.last(this.data), datum)) {
       return;
     }

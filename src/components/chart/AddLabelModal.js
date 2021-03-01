@@ -23,10 +23,12 @@ class AddLabelModal extends Component {
   componentDidMount() {
     Chart.event.on('label.new', this.handleLabelCrate);
     ContextMenu.event.on('folder.new', this.handleFolderCrate);
+    ContextMenu.event.on('folder.selectSquare', this.handleFolderCrateSquare);
   }
 
   componentWillUnmount() {
     ContextMenu.event.removeListener('folder.new', this.handleFolderCrate);
+    ContextMenu.event.removeListener('folder.selectSquare', this.handleFolderCrateSquare);
   }
 
   handleLabelCrate = (ev, d) => {
@@ -39,11 +41,42 @@ class AddLabelModal extends Component {
     const labelData = {
       id: `f_${ChartUtils.uniqueId(labels)}`,
       color: ChartUtils.labelColors(),
-      d: [[x, y]],
+      d: [[x, y], [500, 500]],
       name: '',
       type: 'folder',
     };
     this.setState({ show: true, labelData });
+  }
+  handleFolderCrateSquare = async (ev, d) => { 
+    let { squareDara: { x, y, width, height }, originalEvent} = d;   
+    let links = Chart.getLinks();
+    let labels = Chart.getLabels();
+    // eslint-disable-next-line prefer-const
+    // let { nodes} = await ChartUtils.getNodesWithFiles(
+    //   this.props.customFields
+    // );
+
+    // nodes = nodes.filter((d) => squareDara.nodes.includes(d.id));
+    // links = links.filter(
+    //   (l) =>
+    //     squareDara.nodes.includes(l.source) &&
+    //     squareDara.nodes.includes(l.target)
+    // ); 
+     if (width < 200) width = 200;
+     if (height < 200) height = 200; 
+     x = x + width / 2;
+     y= y + height / 2;
+     
+    const labelData = {
+      id: `f_${ChartUtils.uniqueId(labels)}`,
+      color: ChartUtils.labelColors(),
+      d: [[x, y], [width, height]],
+      name: '',
+      type: "folder",
+      open: true,
+    };
+
+     this.setState({ show: true, labelData });
   }
 
   deleteLabel = () => {

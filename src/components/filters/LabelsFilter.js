@@ -68,20 +68,25 @@ class LabelsFilter extends Component {
       <div className="labelsFilter graphFilter">
         <h4 className="title">Labels</h4>
         <div className="checkAll">
+        <div className="filterCheckBox">
           <Checkbox
             label={allChecked ? 'Uncheck All' : 'Check All'}
             checked={allChecked}
             onChange={() => this.toggleAll(labelsFormatted, allChecked)}
+            className="graphsCheckbox"
           >
-            <span className="badge">
+           
+          </Checkbox>
+          </div>
+          <span className="badge">
               {_.sumBy(labelsFormatted, (d) => +d.length || 0)}
             </span>
-          </Checkbox>
         </div>
         <ul className="list">
           {labelsFormatted.map((item) => (
             <Tooltip key={item.id} overlay={item.name}>
               <li className="item">
+              <div className="filterCheckBox">
                 <Checkbox
                   label={(
                     <div className="colorBox" style={{ borderColor: item.color }}>
@@ -90,11 +95,13 @@ class LabelsFilter extends Component {
                   )}
                   checked={filters.labels.includes(item.id)}
                   onChange={() => this.handleChange(item.id)}
-                >
-                  <span className="badge">
+                  className="graphsCheckbox"
+                >                  
+                </Checkbox>
+                </div>
+                <span className="badge">
                     {item.length}
                   </span>
-                </Checkbox>
               </li>
             </Tooltip>
           ))}

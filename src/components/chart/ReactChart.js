@@ -13,6 +13,13 @@ import ChartUtils from '../../helpers/ChartUtils';
 import { socketLabelDataChange } from '../../store/actions/socket';
 import Api from '../../Api';
 import { removeNodeFromCustom } from '../../store/actions/graphs';
+import FolderResizeIcon from './icons/FolderResizeIcon';
+import FolderCloseIcon from './icons/FolderCloseIcon';
+import FolderIcon from './icons/FolderIcon';
+import LabelLock from './icons/LabelLock';
+import SelectedNodeFilter from './icons/SelectedNodeFilter';
+import ResizeIcons from "./icons/ResizeIcons";
+import NotFound from "./NotFound";
 
 class ReactChart extends Component {
   static propTypes = {
@@ -37,12 +44,13 @@ class ReactChart extends Component {
 
     Chart.event.on('node.click', this.handleNodeClick);
     Chart.event.on('node.dblclick', this.handleDbNodeClick);
+    Chart.event.on('node.edit', this.editNode);
 
     ContextMenu.event.on('node.delete', this.deleteNode);
     ContextMenu.event.on('node.edit', this.editNode);
 
     ContextMenu.event.on('active-button', this.setActiveButton);
-    Chart.event.on('click', this.handleChartClick);
+    // Chart.event.on('click', this.handleChartClick);
     ContextMenu.event.on('node.create', this.addNewNode);
 
     Chart.event.on('link.click', this.deleteLink);
@@ -90,19 +98,23 @@ class ReactChart extends Component {
   }
 
   handleLabelDelete = (ev, d) => {
+    const { match: { params: { graphId } } } = this.props;
     const labels = Chart.getLabels().filter((l) => l.id !== d.id);
+    const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.id));
+    const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
+    
     if (d.sourceId) {
-      const { match: { params: { graphId } } } = this.props;
-      const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.id));
-      const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
-      const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
+       const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
       Chart.render({
         labels, nodes, links, embedLabels,
       });
       Api.labelDelete(d.sourceId, d.id, graphId);
+     
       return;
     }
-    Chart.render({ labels });
+    //delete labe  from share list
+    Api.shareLabelDelete(d.id, graphId);
+    Chart.render({ labels, nodes, links });
     Chart.event.emit('label.mouseleave', ev, d);
   }
 
@@ -185,7 +197,8 @@ class ReactChart extends Component {
 
   render() {
     const { ctrlPress, shiftKey } = this.state;
-    const { activeButton, singleGraph: { currentUserRole } } = this.props;
+    const { activeButton, singleGraphStatus, singleGraph: { currentUserRole } } = this.props;
+    console.log(singleGraphStatus)
 
     // this.renderChart(singleGraph, embedLabels);
     return (
@@ -212,6 +225,7 @@ class ReactChart extends Component {
             <g className="nodes" />
             <g className="icons" />
             <g className="folderIcons" />
+            <ResizeIcons />
             <defs>
               <filter id="labelShadowFilter" x="-50%" y="-50%" width="200%" height="200%">
                 <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
@@ -224,59 +238,16 @@ class ReactChart extends Component {
                 <feColorMatrix type="saturate" values="0" />
                 <feColorMatrix type="luminanceToAlpha" result="A" />
               </filter>
-              <filter id="selectedNodeFilter" x="-50%" y="-50%" width="300%" height="300%">
-                <feDropShadow dx="0" dy="0" stdDeviation="1" floodColor="#7166F8" floodOpacity="1">
-                  <animate
-                    attributeName="stdDeviation"
-                    values="1;4;1"
-                    dur="1s"
-                    repeatCount="indefinite"
-                  />
-                </feDropShadow>
-              </filter>
-
-              <symbol id="labelLock" viewBox="0 0 512 512" width="40" height="40">
-                <path
-                  opacity="0.6"
-                  d="M437.333 192h-32v-42.667C405.333 66.99 338.344 0 256 0S106.667 66.99 106.667
-                  149.333V192h-32A10.66 10.66 0 0064 202.667v266.667C64 492.865 83.135 512 106.667
-                  512h298.667C428.865 512 448 492.865 448 469.333V202.667A10.66 10.66 0 00437.333
-                  192zM287.938 414.823a10.67 10.67 0 01-10.604 11.844h-42.667a10.67 10.67 0
-                  01-10.604-11.844l6.729-60.51c-10.927-7.948-17.458-20.521-17.458-34.313 0-23.531 19.135-42.667
-                  42.667-42.667s42.667 19.135 42.667 42.667c0 13.792-6.531 26.365-17.458 34.313l6.728
-                  60.51zM341.333 192H170.667v-42.667C170.667 102.281 208.948 64 256 64s85.333 38.281 85.333 85.333V192z"
-                />
-              </symbol>
-              <symbol id="folderIcon" viewBox="0 0 468.293 468.293" width="60" height="60">
-                <path
-                  d="M206.049 72.574V55.559c0-10.345-8.386-18.732-18.732-18.732H18.732C8.386 36.827 0 45.213 0
-                  55.559v110.248h468.293v-62.013c0-10.345-8.386-18.732-18.732-18.732H218.537c-6.897
-                  0-12.488-5.591-12.488-12.488z"
-                  fill="#0047b9"
-                />
-                <path
-                  d="M443.317 431.466H24.976C11.182 431.466 0 420.284 0 406.49V161.35h206.748a18.73 18.73 0
-                  0013.842-6.111l23.013-25.241a18.73 18.73 0 0113.842-6.111h210.848V406.49c0 13.794-11.182
-                  24.976-24.976 24.976z"
-                  fill="#0062FF"
-                />
-              </symbol>
-              <symbol id="folderCloseIcon" viewBox="0 0 512 512" width="30" height="30">
-                <circle cx="256" cy="256" r="256" fill="transparent" />
-                <path
-                  d="M256 0C114.844 0 0 114.844 0 256s114.844 256 256 256 256-114.844 256-256S397.156 0 256
-                  0zm103.54 329.374c4.167 4.165 4.167 10.919 0 15.085l-15.08 15.081c-4.167 4.165-10.919
-                  4.165-15.086 0L256 286.167l-73.374 73.374c-4.167 4.165-10.919 4.165-15.086
-                  0l-15.081-15.082c-4.167-4.165-4.167-10.919
-                  0-15.085l73.374-73.375-73.374-73.374c-4.167-4.165-4.167-10.919 0-15.085l15.081-15.082c4.167-4.165
-                  10.919-4.165 15.086 0L256 225.832l73.374-73.374c4.167-4.165 10.919-4.165 15.086
-                  0l15.081 15.082c4.167 4.165 4.167 10.919 0 15.085l-73.374 73.374 73.373 73.375z"
-                />
-              </symbol>
+              <SelectedNodeFilter />
+              <LabelLock />
+              <FolderIcon />
+              <FolderCloseIcon />
+              <FolderResizeIcon />
 
             </defs>
           </g>
         </svg>
+        {singleGraphStatus === 'fail' ? <NotFound /> : null}
       </div>
     );
   }
@@ -287,6 +258,7 @@ const mapStateToProps = (state) => ({
   embedLabels: state.graphs.embedLabels,
   customFields: state.graphs.singleGraph.customFields || {},
   singleGraph: state.graphs.singleGraph,
+  singleGraphStatus: state.graphs.singleGraphStatus,
 });
 const mapDispatchToProps = {
   toggleNodeModal,

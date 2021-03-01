@@ -18,7 +18,7 @@ import Validate from '../../helpers/Validate';
 import LocationInputs from './LocationInputs';
 import Utils from '../../helpers/Utils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import ChartUtils from "../../helpers/ChartUtils";
+import ChartUtils from '../../helpers/ChartUtils';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -32,8 +32,9 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField,
-    } = addNodeParams;
+      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale,
+      d, infographyId, manually_size
+    } = _.cloneDeep(addNodeParams);
     const _type = type || _.last(nodes)?.type || '';
     this.setState({
       nodeData: {
@@ -47,6 +48,11 @@ class AddNodeModal extends Component {
         keywords: keywords || [],
         location,
         color: ChartUtils.nodeColorObj[_type] || '',
+        d,
+        scale,
+        infographyId,
+        manually_size: manually_size || 1,
+
       },
       customField,
       index,
@@ -136,6 +142,7 @@ class AddNodeModal extends Component {
   render() {
     const { nodeData, errors, index } = this.state;
     const { addNodeParams, currentUserRole, currentUserId } = this.props;
+    const { editPartial } = addNodeParams;
     this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
     const groups = this.getTypes(nodes);
@@ -183,37 +190,60 @@ class AddNodeModal extends Component {
               error={errors.status}
               onChange={(v) => this.handleChange('status', v?.value || '')}
             />
-            <Select
-              label="Icon shape"
-              portal
-              options={NODE_TYPES}
-              value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
-              error={errors.nodeType}
-              onChange={(v) => this.handleChange('nodeType', v?.value || '')}
-            />
-            <ColorPicker
-              label="Color"
-              value={nodeData.color}
-              error={errors.color}
-              readOnly
-              style={{ color: nodeData.color }}
-              onChangeText={(v) => this.handleChange('color', v)}
-              autocomplete="off"
-            />
-            <FileInput
-              label="Icon"
-              accept=".png,.jpg,.gif"
-              value={nodeData.icon}
-              onChangeFile={(v) => this.handleChange('icon', v)}
-            />
-            <Select
-              label="keywords"
-              isCreatable
-              isMulti
-              value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
-              menuIsOpen={false}
-              placeholder="Add..."
-              onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
+            {!editPartial ? (
+              <>
+                <Select
+                  label="Icon shape"
+                  portal
+                  options={NODE_TYPES}
+                  value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
+                  error={errors.nodeType}
+                  onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+                />
+                <ColorPicker
+                  label="Color"
+                  value={nodeData.color}
+                  error={errors.color}
+                  readOnly
+                  style={{ color: nodeData.color }}
+                  onChangeText={(v) => this.handleChange('color', v)}
+                  autoComplete="off"
+                />
+
+                <FileInput
+                  label={nodeData.nodeType === 'infography' ? 'Image' : 'Icon'}
+                  accept=".png,.jpg,.gif"
+                  value={nodeData.icon}
+                  onChangeFile={(v) => this.handleChange('icon', v)}
+                />
+                <Select
+                  label="keywords"
+                  isCreatable
+                  isMulti
+                  value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
+                  menuIsOpen={false}
+                  placeholder="Add..."
+                  onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
+                />
+              </>
+            ) : null}
+            <Input
+              label="Set size manually"
+              value={nodeData.manually_size}
+              error={errors.manually_size}
+              min="1"
+              max="50"
+              type="number"
+              autoComplete="off"
+              onBlur={() => {
+                if (nodeData.value < 1) {
+                  nodeData.value = 1;
+                } else if (nodeData.value > 50) {
+                  nodeData.value = 50;
+                }
+                this.handleChange('value', nodeData.value);
+              }}
+              onChangeText={(v) => this.handleChange('manually_size', v)}
             />
             <LocationInputs
               error={errors.location}

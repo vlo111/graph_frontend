@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
-import { signInRequest } from '../../store/actions/account';
+import { forgotPasswordRequest, signInRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
@@ -13,7 +13,7 @@ import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
 import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
 import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
 import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
-import PasswordInput from "../../components/form/PasswordInput";
+import PasswordInput from '../../components/form/PasswordInput';
 
 class Login extends Component {
   static propTypes = {
@@ -28,6 +28,7 @@ class Login extends Component {
         email: '',
         password: '',
       },
+      failedLoginAttempts: 0,
     };
   }
 
@@ -45,13 +46,22 @@ class Login extends Component {
     this.setState({ loading: false });
     const { data = {} } = payload;
     if (data.status !== 'ok') {
-      toast.dismiss(this.toast);
-      this.toast = toast.error('Invalid email or password');
+      this.setState({
+        failedLoginAttempts: this.state.failedLoginAttempts + 1,
+      });
+
+      if (this.state.failedLoginAttempts === 3) {
+        await this.props.forgotPasswordRequest(requestData.email, `${origin}/sign/reset-password`);
+      }
+      if (this.state.failedLoginAttempts < 3){
+        toast.dismiss(this.toast);
+        this.toast = toast.error('Invalid email or password');
+      }
     }
   }
 
   render() {
-    const { requestData } = this.state;
+    const { requestData, failedLoginAttempts } = this.state;
     return (
       <WrapperSign>
         <div className="left signIn">
@@ -95,6 +105,13 @@ class Login extends Component {
               />
               <Link to="/sign/forgot-password" className="forgotPassword">Forgot password?</Link>
 
+              {failedLoginAttempts >= 3
+              && (
+              <p className="errorRecovery">
+                Please check your email to recover your account
+              </p>
+              )}
+
               <Button type="submit" className="submit" color="orange">
                 Sign In
               </Button>
@@ -115,6 +132,7 @@ const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {
   signInRequest,
+  forgotPasswordRequest,
 };
 
 const Container = connect(

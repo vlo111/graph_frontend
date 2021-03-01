@@ -44,6 +44,7 @@ class AddLinkModal extends Component {
 
   componentDidMount() {
     Chart.event.on('link.new', this.handleAddNewLine);
+    Chart.event.on('link.dblclick', this.handleLineEdit);
     ContextMenu.event.on('link.edit', this.handleLineEdit);
   }
 
@@ -179,6 +180,7 @@ class AddLinkModal extends Component {
               error={errors.linkType}
               onChange={(v) => this.handleChange('linkType', v)}
               options={dashTypes}
+              portal
               containerClassName="lineTypeSelect"
               getOptionValue={(v) => v}
               getOptionLabel={(v) => <SvgLine type={v} />}

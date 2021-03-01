@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import stripHtml from 'string-strip-html';
+import stripHtml  from 'string-strip-html';
 import Button from './form/Button';
 
 class TextEllipsis extends Component {

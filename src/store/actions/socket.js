@@ -2,11 +2,13 @@ import io from 'socket.io-client';
 import Chart from '../../Chart';
 import Api from '../../Api';
 import Account from '../../helpers/Account';
-import { updateSingleGraph } from './graphs';
+import { GET_SINGLE_GRAPH, getSingleGraphRequest, updateSingleGraph } from './graphs'; 
+import { graphUsersRequest } from './shareGraphs'; 
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
 import Utils from '../../helpers/Utils';
 import ChartUtils from '../../helpers/ChartUtils';
+import { getSingleGraph } from '../selectors/graphs';
 
 let socket;
 const notPushedEmits = [];
@@ -21,6 +23,8 @@ export function socketEmit(...params) {
 
 export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
 export const GENERATE_THUMBNAIL_WORKER = 'GENERATE_THUMBNAIL_WORKER';
+export const ONLINE_USERS = 'ONLINE_USERS';
+export const GRAPH_SHARED_USERS = 'GRAPH_SHARED_USERS';
 
 export function socketInit() {
   return (dispatch, getState) => {
@@ -50,9 +54,20 @@ export function socketInit() {
       }, 500);
     });
 
-    socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
-      data.id = +data.id;
+    socket.on('graphChange', async (data) => {
+      const { graphs: { singleGraph }, account: { myAccount } } = getState();
+      if (+data.id === +singleGraph.id && +myAccount.id !== +data.userId) {
+        Chart.setAutoSave(false);
+        await dispatch(getSingleGraphRequest(data.id, {}, true));
+        setTimeout(() => {
+          Chart.setAutoSave(true);
+        }, 1000);
+      }
+    });
 
+    socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
+      const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
+      data.id = +data.id;
       return (
         (data.id === singleGraph.id)
         && dispatch(updateSingleGraph(data))
@@ -70,8 +85,8 @@ export function socketInit() {
     socket.on('generateThumbnailWorker', (data) => {
       dispatch({
         type: GENERATE_THUMBNAIL_WORKER,
-        payload: { data }
-      })
+        payload: { data },
+      });
     });
 
     socket.on('labelEmbedCopy', (labelEmbed) => {
@@ -88,7 +103,28 @@ export function socketInit() {
         },
       });
     });
+    socket.on('online', (data) => {
+      const onlineUsers = JSON.parse(data);
+       dispatch({
+        type: ONLINE_USERS,
+        payload: { onlineUsers },
+      });
 
+      
+    });
+    /**
+     * Call share graphs user list
+     */
+    socket.on('shareList', async (result) => {
+
+      const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
+      const graphId = +result.graphId; 
+      if( graphId === +singleGraph.id){ 
+            await dispatch(graphUsersRequest(result))
+         
+      }       
+    });
+    
     socket.on('embedLabelDataChange', (data) => {
       const { labels } = Chart;
 

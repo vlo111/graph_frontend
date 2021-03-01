@@ -88,3 +88,14 @@ export function setLegendButton(mode) {
     },
   };
 }
+
+export const ONLINE_USERS = 'ONLINE_USERS';
+
+export function getOnlineUsersRequest(data) {   
+  return {
+    type: ONLINE_USERS,
+    payload: {
+      data,
+    },
+  };
+}

@@ -49,6 +49,7 @@ class NodeTabsFormModal extends Component {
   }
 
   handleChange = (path, value) => {
+    value = value.replace(/href/g, 'target="_blank" href');
     const { tabData, errors } = this.state;
     _.set(tabData, path, value);
     _.remove(errors, path);
@@ -75,7 +76,6 @@ class NodeTabsFormModal extends Component {
     } = this.props;
     const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
-
 
     tabData.documents = tabData.documents?.sort((x, y) => {
       const first = x.file.type.includes('image');

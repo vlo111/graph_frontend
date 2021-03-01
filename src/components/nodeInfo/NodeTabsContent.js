@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
 import stripHtml from 'string-strip-html';
 import Api from '../../Api';
-import Utils from '../../helpers/Utils';
 
 class NodeTabsContent extends Component {
   static propTypes = {
@@ -32,28 +30,28 @@ class NodeTabsContent extends Component {
   })
 
   render() {
-    const { contentType } = this.state;
-    const { content, name } = this.props;
+    // const { contentType } = this.state;
+    const { content, name, node } = this.props;
     const html = String(content?.content || content || '');
-    this.getContentType(html);
-    const { result: text } = stripHtml(html);
-    if (['text/html', 'application/pdf'].includes(contentType)) {
-      const query = queryString.stringify({
-        url: text,
-      });
-      return (
-          <div data-field-name={name} className="contentWrapper previewWrapper">
-            <div className="content">
-              <img src={Utils.fileSrc(`/helpers/content-thumbnail?${query}`)} alt="thumbnail" />
-              <a href={text} target="_blank" rel="noopener noreferrer">{text}</a>
-            </div>
-          </div>
-      );
-    }
+    // this.getContentType(html);
+    // const { result: text } = stripHtml(html);
+    // if (['text/html', 'application/pdf'].includes(contentType)) {
+    //   const query = queryString.stringify({
+    //     url: text,
+    //   });
+    //   return (
+    //       <div data-field-name={name} className="contentWrapper previewWrapper">
+    //         <div className="content">
+    //           <img src={Utils.fileSrc(`/helpers/content-thumbnail?${query}`)} alt="thumbnail" />
+    //           <a href={text} target="_blank" rel="noopener noreferrer">{text}</a>
+    //         </div>
+    //       </div>
+    //   );
+    // }
     return (
-        <div data-field-name={name} className="contentWrapper">
-          <div className="content" dangerouslySetInnerHTML={{ __html: html || 'no content' }} />
-        </div>
+      <div data-field-name={!node.sourceId ? name : undefined} className="contentWrapper">
+        <div className="content" dangerouslySetInnerHTML={{ __html: html || 'no content' }} />
+      </div>
     );
   }
 }

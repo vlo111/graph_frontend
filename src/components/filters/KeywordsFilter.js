@@ -85,27 +85,33 @@ class KeywordsFilter extends Component {
         <h4 className="title">Node Keywords</h4>
         <ul className="list">
           <li className="item">
+          <div className="filterCheckBox">
             <Checkbox
               label={allChecked ? 'Uncheck All' : 'Check All'}
               checked={allChecked}
               onChange={() => this.toggleAll(typesFull, allChecked)}
-            >
-              <span className="badge">
+              className="graphsCheckbox"
+            >           
+            </Checkbox>
+            </div>
+            <span className="badge">
                 {_.sumBy(typesFull, 'length')}
               </span>
-            </Checkbox>
           </li>
           {types.map((item) => (
             <li key={item.keyword} className="item">
+               <div className="filterCheckBox"> 
               <Checkbox
                 label={item.keyword}
                 checked={filters.nodeKeywords.includes(item.keyword)}
                 onChange={() => this.handleChange(item.keyword)}
-              >
-                <span className="badge">
+                className="graphsCheckbox"
+              >               
+              </Checkbox>
+              </div>
+              <span className="badge">
                   {item.length}
                 </span>
-              </Checkbox>
             </li>
           ))}
         </ul>

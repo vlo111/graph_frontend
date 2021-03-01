@@ -14,7 +14,7 @@ import {
   SET_GRAPH_CUSTOM_FIELDS,
   GET_SINGLE_GRAPH_PREVIEW,
   UPDATE_GRAPH,
-  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY,
+  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY, SET_ACTIVE_TAB
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -25,12 +25,14 @@ const initialState = {
   importData: {},
   graphsList: [],
   graphsListStatus: '',
+  singleGraphStatus: '',
   singleGraph: {},
   embedLabels: [],
   graphsListInfo: {
     totalPages: 0,
   },
   actionsCount: {},
+  activeTab: '',
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -78,21 +80,21 @@ export default function reducer(state = initialState, action) {
         graphsListInfo,
       };
     }
-    case GENERATE_THUMBNAIL_WORKER: {
-      const { graph } = action.payload.data;
-
-      const graphsList = [...state.graphsList].map((g) => {
-        if (g.id === graph.id) {
-          g.updatedAt = graph.updatedAt;
-        }
-        return g;
-      });
-
-      return {
-        ...state,
-        graphsList,
-      };
-    }
+    // case GENERATE_THUMBNAIL_WORKER: {
+    //   const { graph } = action.payload.data;
+    //
+    //   const graphsList = [...state.graphsList].map((g) => {
+    //     if (g.id === graph.id) {
+    //       g.updatedAt = graph.updatedAt;
+    //     }
+    //     return g;
+    //   });
+    //
+    //   return {
+    //     ...state,
+    //     graphsList,
+    //   };
+    // }
     case GET_GRAPHS_LIST.FAIL: {
       return {
         ...state,
@@ -102,7 +104,13 @@ export default function reducer(state = initialState, action) {
     case GET_SINGLE_GRAPH.REQUEST: {
       return {
         ...state,
-        singleGraph: {},
+        singleGraph: {
+          ...state.singleGraph,
+          nodes: [],
+          links: [],
+          labels: [],
+        },
+        singleGraphStatus: 'request',
       };
     }
     case GET_SINGLE_EMBED_GRAPH.SUCCESS:
@@ -118,8 +126,17 @@ export default function reducer(state = initialState, action) {
         ...state,
         singleGraph,
         embedLabels,
+        singleGraphStatus: 'success',
       };
     }
+
+    case GET_SINGLE_GRAPH.FAIL: {
+      return {
+        ...state,
+        singleGraphStatus: 'fail',
+      };
+    }
+
     case GET_SINGLE_GRAPH_PREVIEW.SUCCESS: {
       const { graph: singleGraph } = action.payload.data;
       let { nodes, links, labels } = singleGraph;
@@ -255,8 +272,8 @@ export default function reducer(state = initialState, action) {
       };
     }
     case UPDATE_SINGLE_GRAPH: {
-      const { marge, graph } = action.payload;
-      const singleGraph = marge ? { ...state.singleGraph, ...graph } : graph;
+      const { merge, graph } = action.payload;
+      const singleGraph = merge ? { ...state.singleGraph, ...graph } : graph;
       return {
         ...state,
         singleGraph: _.cloneDeep(singleGraph),
@@ -269,6 +286,15 @@ export default function reducer(state = initialState, action) {
           ...state.actionsCount,
           ...action.payload.data.result,
         },
+      };
+    }
+    case SET_ACTIVE_TAB: {
+      if (state.activeTab === action.payload.tabName) {
+        return state;
+      }
+      return {
+        ...state,
+        activeTab: action.payload.tabName,
       };
     }
     default: {

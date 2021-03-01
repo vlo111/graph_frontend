@@ -111,43 +111,51 @@ class NodeTypesFilter extends Component {
         <h4 className="title">Node Types</h4>
         <ul className="list">
           <li className="item">
+          <div className="filterCheckBox"> 
             <Checkbox
               label={allChecked ? 'Uncheck All' : 'Check All'}
               checked={allChecked}
               onChange={() => this.toggleAll(typesFull, allChecked)}
-            >
-              <span className="badge">
+              className="graphsCheckbox" /> 
+            </div>           
+            <span className="badge">
                 {_.sumBy(typesFull, 'length')}
               </span>
-            </Checkbox>
           </li>
           {types.map((item) => (
             <li key={item.type} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
+              <div className="filterCheckBox"> 
               <Checkbox
                 label={item.type}
                 checked={filters.nodeTypes.includes(item.type)}
                 onChange={() => this.handleChange(item.type)}
+                className="graphsCheckbox"
               >
                 {!_.isEmpty(customFields[item.type]) ? (
                   <Button
                     className="dropdownArrow"
                     icon="fa-chevron-down"
                     onClick={() => this.toggleDropdown(item.type)}
+                    style={{position: 'absolute'}}
                   />
-                ) : null}
-                <span className="badge">
+                ) : null}               
+              </Checkbox>              
+              </div>
+              <span className="badge">
                   {item.length}
                 </span>
-              </Checkbox>
               {openList.includes(item.type) && customFields[item.type] ? (
                 <ul className="list subList">
                   {_.map(customFields[item.type], (val, key) => (
                     <li key={key} className="item">
+                      <div className="filterCheckBox">
                       <Checkbox
                         label={key}
                         checked={filters.nodeCustomFields.includes(key)}
                         onChange={() => this.handleFilterChange(key)}
+                        className="graphsCheckbox"
                       />
+                      </div>
                     </li>
                   ))}
                 </ul>

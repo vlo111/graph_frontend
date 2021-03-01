@@ -6,9 +6,13 @@ import ChartUtils from './helpers/ChartUtils';
 import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
 import SvgService from './helpers/SvgService';
+import ChartInfography from './helpers/ChartInfography';
+import LabelUtils from './helpers/LabelUtils';
 
 class Chart {
   static event = new EventEmitter();
+
+  static autoSave = true;
 
   /* @todo transform i mej avelacnem rotate u translate move y image i arandznacnem */
   static minWidth;
@@ -26,9 +30,6 @@ class Chart {
     };
   }
 
-  /**
-   * Function to move the object around
-   * */
   static moveObject(ev, image) {
     // increments the x/y values with the dx/dy values from the d3.event object
     this.tPos.x += ev.dx;
@@ -44,14 +45,14 @@ class Chart {
     d3.select(image).attr('transform', SvgService.getTransform());
   }
 
-  /**
-   * Function to resize the object based in the passed direction
-   * */
   static resizeObject(direction, ev, size, image) {
     // gets the original image coordinates from the service model
     const updatedCoordinates = SvgService.getImageUpdatedCoordinates();
     // auxiliar variables
-    let x; let y; let width; let height;
+    let x;
+    let y;
+    let width;
+    let height;
     // do the resize math based in the direction that the resize started
     switch (direction) {
       // top left
@@ -98,10 +99,6 @@ class Chart {
     }
   }
 
-  /**
-   * Function to rotate the object based in the initial rotation values
-   * present in the rotateHandleStartPos object
-   * */
   static rotateObject(rotateHandleStartPos, ev, image) {
     // gets the current udapted rotate coordinates
     const updatedRotateCoordinates = SvgService.getImageUpdatedRotateCoordinates();
@@ -140,8 +137,7 @@ class Chart {
     d3.select('.controls-group').attr('transform', SvgService.getTransform());
     d3.select(image).attr('transform', SvgService.getTransform());
     // const myImage = d3.select(image);
-    Chart.imageManipulation({
-    }, image);
+    Chart.imageManipulation({}, image);
   }
 
   static getHandleRotatePosition(handleStartPos) {
@@ -172,7 +168,9 @@ class Chart {
 
   static bindControlsDragAndDrop(size, image) {
     // auxiliar variables
-    let target; let targetClass; let rotateHandleStartPos;
+    let target;
+    let targetClass;
+    let rotateHandleStartPos;
 
     // binding the behavior callback functions
     const dragData = d3.drag()
@@ -263,8 +261,14 @@ class Chart {
   static drag(simulation) {
     let startX;
     let startY;
+    const dragNode = {};
     const dragstart = (ev, d) => {
-      this.event.emit('node.dragstart', ev, d);
+      if (d !== undefined) {
+        if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
+          ChartInfography.dragstart(ev, d);
+          return;
+        }
+      }
 
       if (d && !(this.curentTarget && (this.curentTarget.id === 'tc' || this.curentTarget.id === 'sc'))) {
         if (d.readOnly) {
@@ -273,12 +277,18 @@ class Chart {
         if (ev.active) simulation.alphaTarget(0.3).restart();
         d.fixed = !!d.fx;
 
-        startX = ev.x;
-        startY = ev.y;
+        dragNode.startX = ev.x;
+        dragNode.startY = ev.y;
+        dragNode.labels = [...(d.labels || [])];
       }
+      this.event.emit('node.dragstart', ev, d);
     };
 
     const dragged = (ev, d) => {
+      if (d !== undefined && (d.nodeType === 'infography' && ev.sourceEvent.shiftKey)) {
+        ChartInfography.dragged(ev, d);
+        return;
+      }
       this.event.emit('node.drag', ev, d);
       if (this.curentTarget && (this.curentTarget.id === 'tc' || this.curentTarget.id === 'sc')) {
         // drag curve
@@ -306,6 +316,12 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
+      if (d !== undefined) {
+        if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
+          ChartInfography.dragend(ev, d);
+          return;
+        }
+      }
       if (!ev.active) simulation.alphaTarget(0);
       if (d !== undefined) {
         if (d.readOnly) {
@@ -316,9 +332,14 @@ class Chart {
         }
         if (this.getCurrentUserRole() === 'edit_inside') {
           const node = ChartUtils.getNodeById(d.id);
-          if (!node.labels.length) {
-            d.x = startX;
-            d.y = startY;
+          if (!_.isEqual(node.labels, dragNode.labels)) {
+            d.fx = dragNode.startX;
+            d.x = dragNode.startX;
+
+            d.fy = dragNode.startY;
+            d.y = dragNode.startY;
+
+            this.event.emit('node.mouseleave', ev, d);
             this.graphMovement();
             return;
           }
@@ -338,6 +359,59 @@ class Chart {
       .on('start', dragstart)
       .on('drag', dragged)
       .on('end', dragend);
+  }
+
+  static imageManipulation(size, image) {
+    d3.select('.controls-group').remove();
+    const imageTransform = d3.select(image).attr('transform');
+    const controlsGroup = d3.select('.nodes')
+      .append('g')
+      .attr('class', 'controls-group')
+      .attr('transform', imageTransform);
+    controlsGroup.append('rect')
+      .attr('class', 'move-rect')
+      .attr('fill-opacity', '0')
+      .attr('stroke', '#ffffff')
+      .attr('stroke-width', '2')
+      .attr('width', size.width)
+      .attr('height', size.height)
+      .attr('x', size.x)
+      .attr('y', size.y);
+
+    const addResizeOption = (classAttr, fillAttr, xAttr, yAttr) => {
+      controlsGroup.append('rect')
+        .attr('class', classAttr)
+        .attr('fill-opacity', '0')
+        .attr('stroke', '#ffffff')
+        .attr('stroke-width', '2')
+        .attr('fill', fillAttr)
+        .attr('width', 20)
+        .attr('height', 20)
+        .attr('x', xAttr)
+        .attr('y', yAttr);
+    };
+
+    const addRotateOption = (classAttr, fillAttr, xAttr, yAttr) => {
+      controlsGroup.append('circle')
+        .attr('class', classAttr)
+        .attr('stroke', '#6f2409')
+        .attr('stroke-width', '2')
+        .attr('fill', fillAttr)
+        .attr('r', 12)
+        .attr('cx', xAttr)
+        .attr('cy', yAttr);
+    };
+    addResizeOption('resize-tl', 'white', size.x - 10, size.y - 10);
+    addResizeOption('resize-tr', 'red', size.x + size.width - 10, size.y - 10);
+    addResizeOption('resize-bl', 'blue', size.x - 10, size.y + size.height - 10);
+    addResizeOption('resize-br', 'yellow', size.x + size.width - 10, size.y + size.height - 10);
+
+    addRotateOption('rotate-tl', 'white', size.x - 20, size.y - 20);
+    addRotateOption('rotate-tr', 'red', size.x + size.width + 20, size.y - 20);
+    addRotateOption('rotate-bl', 'blue', size.x - 20, size.height + size.y + 20);
+    addRotateOption('rotate-br', 'yellow', size.x + size.width + 20, size.height + size.y + 20);
+
+    return controlsGroup;
   }
 
   static getSource(l) {
@@ -365,7 +439,6 @@ class Chart {
           }
           return d;
         });
-
         // synchronize links
         label.links = label.links.map((l) => {
           l.sourceId = label.sourceId;
@@ -377,8 +450,14 @@ class Chart {
         data.labels = data.labels.map((l) => {
           if (l.id === label.label?.id) {
             l.readOnly = true;
-            label.lx = label.label.d[0][0] - l.d[0][0];
-            label.ly = label.label.d[0][1] - l.d[0][1];
+            if (label.label.type === 'folder') {
+              // todo;
+              label.mx = label.label.d[0][0] - l.d[0][0];
+              label.my = label.label.d[0][1] - l.d[0][1];
+            } else {
+              label.mx = label.label.d[0][0] - l.d[0][0];
+              label.my = label.label.d[0][1] - l.d[0][1];
+            }
           }
           return l;
         });
@@ -395,8 +474,11 @@ class Chart {
         const labelData = data.embedLabels.find((l) => d.labels?.includes(l.labelId));
         if (!labelData) {
           console.error('can\'t find label', d);
+          d.remove = true;
+          removedNodes = true;
           return d;
         }
+
         const labelNode = labelData.nodes.find((n) => n.id === d.id);
         if (!labelNode) {
           // remove deleted nodes
@@ -410,13 +492,12 @@ class Chart {
           return d;
         }
 
-        const name = ChartUtils.nodeUniqueName(d);
+        // const name = ChartUtils.nodeUniqueName(d);
         // set node right position
-        const fx = labelNode.fx - labelData.lx;
-        const fy = labelNode.fy - labelData.ly;
+        const fx = labelNode.fx - labelData.mx;
+        const fy = labelNode.fy - labelData.my;
         return {
           ...labelNode,
-          name,
           sourceId: d.sourceId,
           readOnly: true,
           fx,
@@ -431,6 +512,9 @@ class Chart {
         data.nodes = data.nodes.filter((d) => !d.remove);
         data.links = ChartUtils.cleanLinks(data.links, data.nodes);
       }
+    } else if (data.nodes.filter((d) => d.sourceId)) {
+      data.nodes = data.nodes.filter((d) => !d.sourceId);
+      data.links = ChartUtils.cleanLinks(data.links, data.nodes);
     }
 
     const nodes = data.nodes.map((d) => {
@@ -500,13 +584,26 @@ class Chart {
 
     const lastUid = data.lastUid || this.data?.lastUid || 0;
 
-
+    data.labels = data.labels.map((d) => {
+      if (d.type === 'folder' && !d.d[1]) {
+        d.d[1] = [500, 500];
+      }
+      return d;
+    });
     const labels = Object.values(data.labels).map((d) => Object.create(d));
 
     return {
       links, nodes, labels, embedLabels: data.embedLabels, lastUid,
     };
   }
+
+  static getData = () => ({
+    links: this.getLinks(),
+    nodes: this.getNodes(),
+    labels: this.getLabels(),
+    embedLabels: this.data.embedLabels,
+    lastUid: this.data.lastUid,
+  })
 
   static resizeSvg = () => {
     if (!this.svg) {
@@ -588,25 +685,69 @@ class Chart {
 
   static renderFolders() {
     const dragFolder = {};
+
     const handleDragStart = (ev) => {
       const { target } = ev.sourceEvent;
+
       const element = target.closest('.folder');
       if (element) {
         const id = element.getAttribute('data-id');
         dragFolder.folder = folderWrapper.select(`[data-id="${id}"]`);
+        dragFolder.rsize = target.classList.contains('folderResizeIcon');
         dragFolder.nodes = this.getNotesWithLabels().filter((d) => d.labels.includes(id));
+        dragFolder.labelLock = this.wrapper.select(`use[data-label-id="${id}"]`);
       }
     };
     const handleDrag = (ev) => {
       if (!dragFolder.folder || dragFolder.folder.empty()) {
         return;
       }
+
       const datum = dragFolder.folder.datum();
-      datum.d = datum.d.map((p) => {
-        p[0] = +(p[0] + ev.dx).toFixed(2);
-        p[1] = +(p[1] + ev.dy).toFixed(2);
-        return p;
-      });
+      if (dragFolder.rsize) {
+        if (!datum.d[1]) {
+          datum.d[1] = [500, 500];
+        }
+        if (datum.d[1][0] < 200) datum.d[1][0] = 200;
+
+        if (datum.d[1][1] < 200) datum.d[1][1] = 200;
+
+        // const minX = _.minBy(dragFolder.nodes, 'fx');
+        // const maxX = _.maxBy(dragFolder.nodes, 'fx');
+        //
+        // const minY = _.minBy(dragFolder.nodes, 'fy');
+        // const maxY = _.maxBy(dragFolder.nodes, 'fy');
+        //
+        // const posTopLeft = [minX, minY];
+        // const posTopRight = [maxX, minY];
+        // const posBottomRight = [maxX, maxY];
+        // const posBottomLeft = [minX, maxY];
+
+        datum.d[1][0] = +(datum.d[1][0] + (ev.dx * 2)).toFixed(2);
+        datum.d[1][1] = +(datum.d[1][1] + (ev.dy * 2)).toFixed(2);
+        const [width, height] = datum.d[1];
+        dragFolder.folder.select('rect')
+          .datum(datum)
+          .attr('x', width / -2)
+          .attr('y', height / -2)
+          .attr('width', width)
+          .attr('height', height);
+
+        dragFolder.folder.select('.folderResizeIcon')
+          .attr('x', width / 2 - 25)
+          .attr('y', height / 2 - 25);
+
+        dragFolder.folder.select('.closeIcon')
+          .attr('x', width / 2 - 40)
+          .attr('y', height / -2 + 10);
+
+        this.undoManager.push(this.getData());
+        return;
+      }
+
+      datum.d[0][0] = +(datum.d[0][0] + ev.dx).toFixed(2);
+      datum.d[0][1] = +(datum.d[0][1] + ev.dy).toFixed(2);
+
       dragFolder.folder
         .datum(datum)
         .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`);
@@ -627,21 +768,25 @@ class Chart {
 
             d.x = d.fx;
             d.y = d.fy;
-
-            if (datum.open) {
-              d.lx = null;
-              d.ly = null;
-            } else {
-              d.lx += ev.dx;
-              d.ly += ev.dy;
-            }
           }
         }
       });
+
+      this.moveCurveWithLabel(dragFolder, datum, ev);
+
+      if (!dragFolder.labelLock.empty()) {
+        let [, x, y] = dragFolder.labelLock.attr('transform').match(/(-?[\d.]+),\s*(-?[\d.]+)/) || [0, 0, 0];
+        x = +x + ev.dx;
+        y = +y + ev.dy;
+        dragFolder.labelLock.attr('transform', `translate(${x}, ${y})`);
+      }
+
       this._dataNodes = undefined;
+      this.undoManager.push(this.getData());
       this.graphMovement();
     };
     const handleDragEnd = (ev) => {
+      dragFolder.resize = false;
       dragFolder.folder = null;
     };
     const folderWrapper = d3.select('#graph .folders')
@@ -653,7 +798,6 @@ class Chart {
 
     folderWrapper.selectAll('.folder > *').remove();
 
-
     //
     // const openFolder = d.labels.some((l) => {
     //   const label = ChartUtils.getLabelById(l);
@@ -662,26 +806,33 @@ class Chart {
 
     const aaaa = (ev, d) => {
       d.open = false;
-      const x = d.d[0][0];
-      const y = d.d[0][1];
-      const squareX = x - (squareSize / 2);
-      const squareY = y - (squareSize / 2);
+      const [x, y] = d.d[0];
+      const [width, height] = d.d[1];
+      const squareX = x - (width / 2);
+      const squareY = y - (height / 2);
       folderWrapper.selectAll(`[data-id="${d.id}"] rect`).remove();
       folderWrapper.selectAll(`[data-id="${d.id}"] .closeIcon`).remove();
+      folderWrapper.selectAll(`[data-id="${d.id}"] .folderResizeIcon`).remove();
       this.wrapper.select(`[href="#${d.id}"]`).attr('class', 'show');
       folderWrapper.select(`[data-id="${d.id}"]`).attr('class', 'folder folderClose');
+
+      this.link.filter((n) => {
+        if (n.source.labels.includes(d.id) && n.target.labels.includes(d.id)) {
+          return true;
+        }
+
+        return false;
+      }).style('display', 'none');
 
       this.node
         .filter((n) => {
           const nodeOldFolder = n.labels?.find((l) => l.startsWith('f_'));
-          if (nodeOldFolder && nodeOldFolder !== d.id) {
+          const inLabel = n.labels?.some((l) => !l.startsWith('f_'));
+          if ((nodeOldFolder && nodeOldFolder !== d.id) || inLabel) {
             return false;
           }
-          return ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
-        })
-        .each((n) => {
-          n.lx = x + 30;
-          n.ly = y + 30;
+
+          return ChartUtils.isInSquare([squareX, squareY], [width, height], [n.fx, n.fy]);
         })
         .attr('class', ChartUtils.setClass(() => ({ hideInFolder: true })));
 
@@ -701,39 +852,57 @@ class Chart {
         if (d.open) {
           return;
         }
-        const x = d.d[0][0];
-        const y = d.d[0][1];
+        const [x, y] = d.d[0];
+        const [width, height] = d.d[1];
+
         d.open = true;
 
         folderWrapper.select(`[data-id="${d.id}"]`).attr('class', 'folder folderOpen');
-        const squareX = x - (squareSize / 2);
-        const squareY = y - (squareSize / 2);
+
+        const squareX = x - (width / 2);
+        const squareY = y - (height / 2);
         this.wrapper.select(`[href="#${d.id}"]`).attr('class', 'hide');
         const moveLabels = {};
-        const move = (squareSize / 2) + 50;
+        const moveX = (width / 2) + 50;
+        const moveY = (height / 2) + 50;
+
+        this.link.filter((n) => {
+          if (n.source.labels.includes(d.id) && n.target.labels.includes(d.id)) {
+            return true;
+          }
+
+          return false;
+        }).style('display', 'inherit');
         this.node.each((n, i, nodesArr) => {
           const inFolder = n.labels.includes(d.id);
+          const inOtherFolder = !inFolder && n.labels.some((l) => l && l.startsWith('f_'));
+          if (inOtherFolder) {
+            return;
+          }
           if (inFolder) {
-            n.lx = null;
-            n.ly = null;
             nodesArr[i].classList.remove('hideInFolder');
           }
-          const inSquare = ChartUtils.isInSquare([squareX, squareY], squareSize, [n.fx, n.fy]);
+          const inSquare = ChartUtils.isInSquare([squareX, squareY], [width, height], [n.fx, n.fy]);
           if (inSquare && !inFolder) {
             const labelPosition = n.labels.find((l) => moveLabels[l]);
-            const position = labelPosition || ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
-            let labelMove;
+            let position = labelPosition || ChartUtils.getPointPosition([x, y], [n.fx, n.fy]);
+            const labelMove = [width, height];
             if (!labelPosition) {
               n.labels.forEach((l) => {
                 if (!l.startsWith('f_')) {
-                  labelMove = this.wrapper.select(`[data-id="${l}"]`).node().getBoundingClientRect().width || move;
-                  moveLabels[l] = {
-                    labelMove,
-                    position,
-                  };
+                  // const el = this.wrapper.select(`[data-id="${l}"]`).node().getBoundingClientRect();
+                  // if (el) {
+                  //   const { scale } = ChartUtils.calcScaledPosition();
+                  //   labelMove = [el.width, el.width];
+                  // }
+                  // moveLabels[l] = {
+                  //   labelMove: [moveX, moveY],
+                  //   position,
+                  // };
+                  position = '';
                 } else {
                   moveLabels[l] = {
-                    labelMove: move,
+                    labelMove: [moveX, moveY],
                     position,
                     type: 'folder',
                   };
@@ -741,16 +910,16 @@ class Chart {
               });
             }
             if (position === 'right') {
-              n.fx += labelMove || move;
+              n.fx += moveX;
             }
             if (position === 'left') {
-              n.fx -= labelMove || move;
+              n.fx -= moveX;
             }
             if (position === 'top') {
-              n.fy -= labelMove || move;
+              n.fy -= moveY;
             }
             if (position === 'bottom') {
-              n.fy += labelMove || move;
+              n.fy += moveY;
             }
             n.x = n.fx;
             n.y = n.fy;
@@ -768,16 +937,16 @@ class Chart {
           const datum = label.datum();
           datum.d = datum.d.map((p) => {
             if (position === 'right') {
-              p[0] = +(p[0] + labelMove).toFixed(2);
+              p[0] = +(p[0] + labelMove[0]).toFixed(2);
             }
             if (position === 'left') {
-              p[0] = +(p[0] - labelMove).toFixed(2);
+              p[0] = +(p[0] - labelMove[0]).toFixed(2);
             }
             if (position === 'top') {
-              p[1] = +(p[1] - labelMove).toFixed(2);
+              p[1] = +(p[1] - labelMove[1]).toFixed(2);
             }
             if (position === 'bottom') {
-              p[1] = +(p[1] + labelMove).toFixed(2);
+              p[1] = +(p[1] + labelMove[1]).toFixed(2);
             }
             return p;
           });
@@ -785,13 +954,6 @@ class Chart {
           if (type === 'folder') {
             label.datum(datum)
               .attr('transform', (ld) => `translate(${ld.d[0][0]}, ${ld.d[0][1]})`);
-            this.node.each((n) => {
-              if (n.labels.includes(l) && (n.ly || n.lx)) {
-                n.lx = datum.d[0][0] + 30;
-                n.ly = datum.d[0][1] + 30;
-              }
-              return n;
-            });
           } else {
             label.datum(datum).attr('d', (ld) => renderPath(ld.d));
           }
@@ -799,21 +961,33 @@ class Chart {
 
         folderWrapper.select(`[data-id="${d.id}"]`)
           .append('rect')
-          .attr('width', squareSize)
-          .attr('height', squareSize)
           .attr('class', 'nodeCreate')
           .attr('opacity', 0.6)
           .attr('rx', 15)
-          .attr('x', squareSize / -2)
-          .attr('y', squareSize / -2);
+          .attr('stroke', (f) => (d.sourceId ? '#000' : null))
+          .attr('width', (f) => _.get(f, 'd[1][0]', squareSize))
+          .attr('height', (f) => _.get(f, 'd[1][1]', squareSize))
+          .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / -2)
+          .attr('y', (f) => _.get(f, 'd[1][1]', squareSize) / -2);
+
         folderWrapper.select(`[data-id="${d.id}"]`)
           .append('use')
           .attr('href', '#folderCloseIcon')
           .attr('class', 'closeIcon')
           .attr('fill', '#58595b')
-          .attr('x', 210)
-          .attr('y', -240)
+          .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / 2 - 40)
+          .attr('y', (f) => _.get(f, 'd[1][1]', squareSize) / -2 + 10)
           .on('click', aaaa);
+
+        folderWrapper.select(`[data-id="${d.id}"]`)
+          .filter((f) => !f.sourceId)
+          .append('use')
+          .attr('href', '#folderResizeIcon')
+          .attr('opacity', 0)
+          .attr('class', 'folderResizeIcon')
+          .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / 2 - 25)
+          .attr('y', (f) => _.get(f, 'd[1][1]', squareSize) / 2 - 25);
+
         this._dataNodes = undefined;
         this.graphMovement();
       });
@@ -833,20 +1007,32 @@ class Chart {
     folderWrapper.selectAll('.folderOpen')
       .append('rect')
       .attr('class', 'nodeCreate')
-      .attr('width', squareSize)
-      .attr('height', squareSize)
       .attr('opacity', 0.6)
       .attr('rx', 15)
-      .attr('x', squareSize / -2)
-      .attr('y', squareSize / -2);
+      .attr('stroke', (d) => (d.sourceId ? '#000' : null))
+      .attr('width', (d) => _.get(d, 'd[1][0]', squareSize))
+      .attr('height', (d) => _.get(d, 'd[1][1]', squareSize))
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2)
+      .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2);
+
     folderWrapper.selectAll('.folderOpen')
       .append('use')
       .attr('href', '#folderCloseIcon')
       .attr('class', 'closeIcon')
       .attr('fill', '#58595b')
-      .attr('x', 210)
-      .attr('y', -240)
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / 2 - 40)
+      .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 + 10)
       .on('click', aaaa);
+
+    folderWrapper.selectAll('.folderOpen')
+      .filter((f) => !f.sourceId)
+      .append('use')
+      .attr('href', '#folderResizeIcon')
+      .attr('opacity', 0)
+      .attr('class', 'folderResizeIcon')
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / 2 - 25)
+      .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / 2 - 25);
+
     this.folders.append('text')
       .text((d) => d.name)
       .attr('y', 75);
@@ -874,6 +1060,7 @@ class Chart {
             color: ChartUtils.labelColors(),
             d: [],
           })
+          .attr('fill-rule', 'evenodd')
           .attr('class', 'label nodeCreate')
           .attr('data-id', (d) => d.id);
       } else if (ev.sourceEvent.target.classList.contains('label')) {
@@ -917,7 +1104,7 @@ class Chart {
 
         let readOnlyLabel;
         if (datum.readOnly) {
-          readOnlyLabel = this.data.embedLabels.find((l) => l.label.id === datum.id);
+          readOnlyLabel = this.data.embedLabels.find((l) => l.label?.id === datum.id);
         }
         this.node.each((d) => {
           if (dragLabel.nodes.some((n) => n.id === d.id)) {
@@ -934,34 +1121,9 @@ class Chart {
             }
           }
         });
-        this.link.data().map((d) => {
-          if (
-            (!d.readOnly && !datum.readOnly)
-            || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
-          ) {
-            if (dragLabel.nodes.some((n) => n.index === d.source.index || n.index === d.target.index)) {
-              if (this.point) {
-                if (d.sx === this.point.sc.x) {
-                  this.point.sc.x += ev.dx;
-                  this.point.sc.y += ev.dy;
-                  this.point.tc.x += ev.dx;
-                  this.point.tc.y += ev.dy;
 
-                  this.wrapper.select('#fcurve').selectAll('circle').attr('cx', this.point.sc.x);
-                  this.wrapper.select('#fcurve').selectAll('circle').attr('cy', this.point.sc.y);
-                  this.wrapper.select('#lcurve').selectAll('circle').attr('cx', this.point.tc.x);
-                  this.wrapper.select('#lcurve').selectAll('circle').attr('cy', this.point.tc.y);
-                }
-              }
+        this.moveCurveWithLabel(dragLabel, datum, ev);
 
-              d.sx += ev.dx;
-              d.sy += ev.dy;
-
-              d.tx += ev.dx;
-              d.ty += ev.dy;
-            }
-          }
-        });
         this.graphMovement();
 
         this.event.emit('label.drag', ev, dragLabel.label);
@@ -1008,6 +1170,7 @@ class Chart {
       .data(this.data.labels.filter((l) => l.hidden !== 1 && l.type !== 'folder'))
       .join('path')
       .attr('class', 'label nodeCreate')
+      .attr('fill-rule', 'evenodd')
       .attr('opacity', (d) => (d.sourceId ? 0.6 : 0.4))
       .attr('data-id', (d) => d.id)
       .attr('fill', ChartUtils.labelColors)
@@ -1026,6 +1189,10 @@ class Chart {
         .attr('class', 'labelLock')
         .attr('href', '#labelLock')
         .attr('transform', (d) => {
+          if (d.type === 'folder') {
+            const [x, y] = d.d[0];
+            return `translate(${x + 30}, ${y - 20})`;
+          }
           const {
             width, height, left, top,
           } = document.querySelector(`[data-id="${d.id}"]`).getBoundingClientRect();
@@ -1039,57 +1206,8 @@ class Chart {
     this._dataNodes = null;
   }
 
-  static imageManipulation(size, image) {
-    d3.select('.controls-group').remove();
-    const imageTransform = d3.select(image).attr('transform');
-    const controlsGroup = d3.select('.nodes')
-      .append('g')
-      .attr('class', 'controls-group')
-      .attr('transform', imageTransform);
-    controlsGroup.append('rect')
-      .attr('class', 'move-rect')
-      .attr('fill-opacity', '0')
-      .attr('stroke', '#ffffff')
-      .attr('stroke-width', '2')
-      .attr('width', size.width)
-      .attr('height', size.height)
-      .attr('x', size.x)
-      .attr('y', size.y);
-
-    const addResizeOption = (classAttr, fillAttr, xAttr, yAttr) => {
-      controlsGroup.append('rect')
-        .attr('class', classAttr)
-        .attr('fill-opacity', '0')
-        .attr('stroke', '#ffffff')
-        .attr('stroke-width', '2')
-        .attr('fill', fillAttr)
-        .attr('width', 20)
-        .attr('height', 20)
-        .attr('x', xAttr)
-        .attr('y', yAttr);
-    };
-
-    const addRotateOption = (classAttr, fillAttr, xAttr, yAttr) => {
-      controlsGroup.append('circle')
-        .attr('class', classAttr)
-        .attr('stroke', '#6f2409')
-        .attr('stroke-width', '2')
-        .attr('fill', fillAttr)
-        .attr('r', 12)
-        .attr('cx', xAttr)
-        .attr('cy', yAttr);
-    };
-    addResizeOption('resize-tl', 'white', size.x - 10, size.y - 10);
-    addResizeOption('resize-tr', 'red', size.x + size.width - 10, size.y - 10);
-    addResizeOption('resize-bl', 'blue', size.x - 10, size.y + size.height - 10);
-    addResizeOption('resize-br', 'yellow', size.x + size.width - 10, size.y + size.height - 10);
-
-    addRotateOption('rotate-tl', 'white', size.x - 20, size.y - 20);
-    addRotateOption('rotate-tr', 'red', size.x + size.width + 20, size.y - 20);
-    addRotateOption('rotate-bl', 'blue', size.x - 20, size.height + size.y + 20);
-    addRotateOption('rotate-br', 'yellow', size.x + size.width + 20, size.height + size.y + 20);
-
-    return controlsGroup;
+  static setAutoSave = (autoSave) => {
+    this.autoSave = autoSave;
   }
 
   static render(data = {}, params = {}) {
@@ -1101,9 +1219,7 @@ class Chart {
       this._dataLinks = null;
       data = this.normalizeData(data, params);
       if (!params.dontRemember && _.isEmpty(params.filters)) {
-        if (!_.isEmpty(data?.nodes) || !_.isEmpty(data?.links)) {
-          this.undoManager.push(data);
-        }
+        this.undoManager.push(data);
         if (!_.isEmpty(this.data?.nodes) || !_.isEmpty(this.data?.links)) {
           if (!_.isEqual(data, this.data)) {
             this.event.emit('dataChange', this);
@@ -1146,6 +1262,7 @@ class Chart {
         .attr('stroke', ChartUtils.linkColor)
         .attr('stroke-width', (d) => d.value || 1)
         .attr('marker-end', (d) => (d.direction ? `url(#m${d.index})` : undefined))
+        .on('dblclick', (...p) => this.event.emit('link.dblclick', ...p))
         .on('click', (...p) => this.event.emit('link.click', ...p));
 
       this.renderDirections();
@@ -1157,7 +1274,10 @@ class Chart {
       this.node = this.nodesWrapper.selectAll('.node')
         .data(filteredNodes)
         .join('g')
-        .attr('class', (d) => `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${d.lx || d.ly ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`)
+        .attr('class', (d) => {
+          const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(d);
+          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
+        })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
         .on('mouseenter', (...p) => this.event.emit('node.mouseenter', ...p))
@@ -1167,85 +1287,78 @@ class Chart {
 
       this.nodesWrapper.selectAll('.node > *').remove();
 
-      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle)')
+      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle):not(.infography)')
         .append('circle')
         .attr('r', (d) => this.radiusList[d.index]);
 
       this.nodesWrapper.selectAll('.square')
         .append('rect')
-        .attr('width', (d) => this.radiusList[d.index] * 2)
-        .attr('height', (d) => this.radiusList[d.index] * 2)
-        .attr('x', (d) => this.radiusList[d.index] * -1)
-        .attr('y', (d) => this.radiusList[d.index] * -1);
+        .attr('width', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * 2)
+        .attr('height', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * 2)
+        .attr('x', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * -1)
+        .attr('y', (d) => (this.radiusList[d.index] + parseInt(d.manually_size)) * -1);
 
       this.nodesWrapper.selectAll('.triangle')
         .append('path')
         .attr('d', (d) => {
-          const s = this.radiusList[d.index] * 2.5;
+          const s = (this.radiusList[d.index] + parseInt(d.manually_size)) * 2.5;
           return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
         })
         .attr('transform', (d) => {
-          const r = this.radiusList[d.index] * -1 - 2;
+          const r = (this.radiusList[d.index] + parseInt(d.manually_size)) * -1 - 2;
           return `translate(${r * 1.2}, ${r})`;
         });
 
       this.nodesWrapper.selectAll('.hexagon')
         .append('polygon')
         .attr('points', (d) => {
-          const s = this.radiusList[d.index];
+          const s = (this.radiusList[d.index] + parseInt(d.manually_size));
           // eslint-disable-next-line max-len
           return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
         })
         .attr('transform', (d) => {
-          const r = this.radiusList[d.index] * -1.13;
+          const r = (this.radiusList[d.index] + parseInt(d.manually_size)) * -1.13;
           return `translate(${r}, ${r})`;
         });
 
-      this.nodesWrapper.selectAll('.image')
-        .append('svg:image')
-        .attr('preserveAspectRatio', 'none')
-        .attr('x', (d) => d.x)
-        .attr('y', (d) => d.y)
-        .attr('xlink:href', (d) => {
-          if (d.icon && d.nodeType === 'image') {
-            return d.icon;
+      const infography = this.nodesWrapper.selectAll('.infography');
+
+      infography
+        .filter((d) => d.d)
+        .append('defs')
+        .append('clipPath')
+        .attr('id', (d) => `cutOff_${d.id}`)
+        .append('path')
+        .attr('d', (d) => ChartInfography.renderPath(d.d));
+
+      infography
+        .append('rect')
+        .attr('width', 512)
+        .attr('height', 384)
+        .attr('x', 512 / -2)
+        .attr('y', 384 / -2)
+        .attr('clip-path', (d) => (d.d ? `url(#cutOff_${d.id})` : undefined))
+        .attr('transform', (d) => {
+          if (!d.d) {
+            // return `translate(0 ${384 / -2})`;
+            return null;
           }
-          return '';
-        })
-        .on('click', function () {
-          const size = this.getBoundingClientRect();
-          const imageCoords = SvgService.getImageUpdatedCoordinates();
-          if (!imageCoords.width || !imageCoords.height) {
-            SvgService.updateImageCoordinates(size.width, size.height, size.x, size.y);
-          }
-          SvgService.updateImageTranslateCoordinates(size.x, size.y);
-          Chart.minWidth = 0.1 * size.width;
-          Chart.minHeight = 0.1 * size.height;
-          SvgService.updateImageTranslateCoordinates(size.x, size.y);
-          Chart.tPos = SvgService.getImageUpdatedTranslateCoordinates();
-          const imageNewCoords = SvgService.getImageUpdatedCoordinates();
-          const controlsGroup = Chart.imageManipulation(imageNewCoords, this);
-          const elemCenter = Chart.getElementCenter();
-          if (SvgService.image.rotate.angle) {
-            const transformAttr = SvgService.getTransform();
-            const translateInd = transformAttr.indexOf('translate');
-            const translate = transformAttr.substring(translateInd, transformAttr.length);
-            controlsGroup.attr(
-              'transform', `rotate(${SvgService.image.rotate.angle}, ${elemCenter.x}, ${elemCenter.y}) ${translate}`,
-            );
-          }
-          SvgService.updateImageRotateCoordinates(SvgService.image.rotate.angle || null, elemCenter.x, elemCenter.y);
-          controlsGroup.call(Chart.bindControlsDragAndDrop(size, this));
+          const { width, height, min } = ChartInfography.getPolygonSize(d.d);
+          const cx = (-1 * min[0]) - (width / 2);
+          const cy = -1 * min[1] - height / 2;
+          return `translate(${cx} ${cy})`;
         });
 
-      this.nodesWrapper.selectAll('.node :not(text)')
+      this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
         .attr('fill', (d) => {
-          const color = ChartUtils.nodeColor(d);
           if (d.icon) {
             return `url(#i${d.index})`;
           }
-          return color;
+          return ChartUtils.nodeColor(d);
         });
+
+      this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
+        .attr('r', (d) => parseInt(d.manually_size) + 15);
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
@@ -1264,6 +1377,7 @@ class Chart {
       this.renderSelectSquare();
       this.nodeFilter();
       this.windowEvents();
+      ChartInfography.render(this);
 
       this.event.emit('render', this);
       return this;
@@ -1370,6 +1484,10 @@ class Chart {
       selectedNodes: [],
       nodes: [],
       labels: [],
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
     };
 
     let selectSquare;
@@ -1377,6 +1495,8 @@ class Chart {
     const showSelectedNodes = () => {
       this.nodesWrapper.selectAll('.node :not(text)')
         .attr('filter', (n) => (this.squareDara.selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
+      this.nodesWrapper.selectAll('.node :not(text)')
+        .attr('class', (n) => (this.squareDara.selectedNodes.includes(n.id) ? 'selectMultyNodes' : null));
     };
 
     this.event.on('node.click', (ev, d) => {
@@ -1427,6 +1547,10 @@ class Chart {
         selectedNodes: [],
         nodes: [],
         labels: [],
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0,
       };
       showSelectedNodes();
     });
@@ -1451,6 +1575,10 @@ class Chart {
           .filter((l) => this.squareDara.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
           .map((l) => l.id);
         this.squareDara.nodes = this.squareDara.nodes.map((d) => d.id);
+        this.squareDara.width = width;
+        this.squareDara.height = height;
+        this.squareDara.x = x;
+        this.squareDara.y = y;
       }
     };
 
@@ -1478,6 +1606,31 @@ class Chart {
           }
         }
       });
+
+      this.link.data().map((d) => {
+        if (this.squareDara.nodes.includes(d.source.id) || this.squareDara.selectedNodes.includes(d.source.id)) {
+          if (this.point) {
+            if (d.sx === this.point.sc.x) {
+              this.point.sc.x += ev.dx;
+              this.point.sc.y += ev.dy;
+              this.point.tc.x += ev.dx;
+              this.point.tc.y += ev.dy;
+
+              this.wrapper.select('#fcurve').selectAll('circle').attr('cx', this.point.sc.x);
+              this.wrapper.select('#fcurve').selectAll('circle').attr('cy', this.point.sc.y);
+              this.wrapper.select('#lcurve').selectAll('circle').attr('cx', this.point.tc.x);
+              this.wrapper.select('#lcurve').selectAll('circle').attr('cy', this.point.tc.y);
+            }
+          }
+
+          d.sx += ev.dx;
+          d.sy += ev.dy;
+
+          d.tx += ev.dx;
+          d.ty += ev.dy;
+        }
+      });
+
       this.graphMovement();
       this.labels.each((l) => {
         if (this.squareDara.labels.includes(l.id) && !l.readOnly) {
@@ -1574,11 +1727,8 @@ class Chart {
     this.link.attr('d', (d) => {
       let arc = 0;
       let arcDirection = 0;
-      const targetX = d.target.lx || d.target.x || d.target.fx || 0;
-      const targetY = d.target.ly || d.target.y || d.target.fy || 0;
-
-      const sourceX = d.source.lx || d.source.x || d.source.fx || 0;
-      const sourceY = d.source.ly || d.source.y || d.source.fy || 0;
+      const [targetX, targetY] = ChartUtils.getNodePositionInFolder(d.target);
+      const [sourceX, sourceY] = ChartUtils.getNodePositionInFolder(d.source);
 
       if (d.curve) {
         return `M${sourceX},${sourceY} C${d.sx || 0},${d.sy || 0} ${`${d.tx || 0},${d.ty || 0} `}${targetX},${targetY}`;
@@ -1594,7 +1744,18 @@ class Chart {
       return `M${sourceX},${sourceY}A${arc},${arc} 0 0,${arcDirection} ${targetX},${targetY}`;
     });
     this.node
-      .attr('transform', (d) => `translate(${d.lx || d.x || 0}, ${d.ly || d.y || 0})`)
+      .attr('transform', (d) => {
+        const [lx, ly] = ChartUtils.getNodePositionInFolder(d);
+        let transform = `translate(${lx || d.x || 0}, ${ly || d.y || 0})`;
+        if (d.scale) {
+          const scaleX = _.get(d, 'scale[0]') || 1;
+          const scaleY = _.get(d, 'scale[1]') || 1;
+          const rotate = _.get(d, 'scale[2]') || 0;
+          transform += ` scale(${scaleX} ${scaleY}) rotate(${0})`;
+        }
+
+        return transform;
+      })
       .attr('class', ChartUtils.setClass((d) => ({ auto: d.vx !== 0 })));
 
     this.linkText
@@ -1667,15 +1828,17 @@ class Chart {
       .attr('height', 1)
       .attr('width', 1)
       .append('image')
-      .attr('preserveAspectRatio', 'xMidYMid slice')
+      .attr('preserveAspectRatio', (d) => (d.nodeType === 'infography' ? 'xMidYMid meet' : 'xMidYMid slice'))
       .attr('height', (d) => {
         let i = 2;
         if (d.nodeType === 'hexagon') {
           i = 2.3;
         } else if (d.nodeType === 'triangle') {
           i = 3.1;
+        } else if (d.nodeType === 'infography') {
+          return 384;
         }
-        return this.radiusList[d.index] * i;
+        return (this.radiusList[d.index] + parseInt(d.manually_size)) * i;
       })
       .attr('width', (d) => {
         let i = 2;
@@ -1683,17 +1846,19 @@ class Chart {
           i = 2.3;
         } else if (d.nodeType === 'triangle') {
           i = 3.1;
+        } else if (d.nodeType === 'infography') {
+          return 512;
         }
-        return this.radiusList[d.index] * i;
+        return (this.radiusList[d.index] + parseInt(d.manually_size)) * i;
       })
       .attr('transform', (d) => {
-        const r = this.radiusList[d.index] * -1;
+        const r = (this.radiusList[d.index] + parseInt(d.manually_size)) * -1;
         if (d.nodeType === 'triangle') {
           return `translate(${r / 3.1}, 0)`;
         }
         return undefined;
       })
-      .attr('xlink:href', (d) => ChartUtils.normalizeIcon(d.icon));
+      .attr('xlink:href', (d) => ChartUtils.normalizeIcon(d.icon, d.nodeType === 'infography'));
     return defs;
   }
 
@@ -1725,10 +1890,17 @@ class Chart {
           i += this.radiusList[d.index] / 5;
         } else if (d.nodeType === 'triangle') {
           i += this.radiusList[d.index] / 5;
+        } else if (d.nodeType === 'infography') {
+          const { height = 384, min = [-384, -384] } = d.d ? ChartInfography.getPolygonSize(d.d) : {};
+          const cy = height / 2 + 20;
+          return cy;
         }
-        return this.radiusList[d.index] + i;
+        return this.radiusList[d.index] + i + parseInt(d.manually_size);
       })
-      .attr('font-size', (d) => 13.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
+      .attr('font-size', (d) => {
+        const s = _.get(d, 'scale[0]', 1);
+        return (13.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4) * (1 / s);
+      })
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
   }
 
@@ -1912,7 +2084,7 @@ class Chart {
       if (ev.shiftKey || d.nodeType === 'image') {
         return;
       }
-      //d3.select('.controls-group').remove();
+      // d3.select('.controls-group').remove();
       await Utils.sleep(10);
       if (this.activeButton !== 'create') {
         return;
@@ -1961,7 +2133,7 @@ class Chart {
       if (!ev.target.parentNode || ev.target.parentNode.classList.contains('node')) {
         return;
       }
-      //d3.select('.controls-group').remove();
+      // d3.select('.controls-group').remove();
       if (this.wrapper.select('#fcurve').node() && this.curved) {
         setTimeout(() => {
           this.wrapper.selectAll('#fcurve, #lcurve').remove();
@@ -2037,8 +2209,6 @@ class Chart {
         index: d.index,
         fx: d.fx || d.x || 0,
         fy: d.fy || d.y || 0,
-        lx: d.lx,
-        ly: d.ly,
         name: d.name || '',
         type: d.type || '',
         status: d.status || 'approved',
@@ -2057,6 +2227,10 @@ class Chart {
         readOnly: !!d.readOnly || undefined,
         sourceId: +d.sourceId || undefined,
         labels: ChartUtils.getNodeLabels(d),
+        d: d.d,
+        scale: d.scale,
+        infographyId: d.infographyId,
+        manually_size: d.manually_size || 1,
       }));
     }
     return this._dataNodes;
@@ -2267,6 +2441,37 @@ class Chart {
   static getCurrentUserRole() {
     const graph = document.querySelector('#graph');
     return graph.getAttribute('data-role');
+  }
+
+  static moveCurveWithLabel(dragLabel, datum, ev) {
+    this.link.data().map((d) => {
+      if (
+        (!d.readOnly && !datum.readOnly)
+        || (d.readOnly && datum.readOnly && +d.sourceId === +datum.sourceId)
+      ) {
+        if (dragLabel.nodes.some((n) => n.index === d.source.index || n.index === d.target.index)) {
+          if (this.point) {
+            if (d.sx === this.point.sc.x) {
+              this.point.sc.x += ev.dx;
+              this.point.sc.y += ev.dy;
+              this.point.tc.x += ev.dx;
+              this.point.tc.y += ev.dy;
+
+              this.wrapper.select('#fcurve').selectAll('circle').attr('cx', this.point.sc.x);
+              this.wrapper.select('#fcurve').selectAll('circle').attr('cy', this.point.sc.y);
+              this.wrapper.select('#lcurve').selectAll('circle').attr('cx', this.point.tc.x);
+              this.wrapper.select('#lcurve').selectAll('circle').attr('cy', this.point.tc.y);
+            }
+          }
+
+          d.sx += ev.dx;
+          d.sy += ev.dy;
+
+          d.tx += ev.dx;
+          d.ty += ev.dy;
+        }
+      }
+    });
   }
 }
 

@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton } from '../../store/actions/app';
 import {
   convertGraphRequest,
   setGraphCustomFields,
-  updateSingleGraph
+  updateSingleGraph,
 } from '../../store/actions/graphs';
 import ChartUtils from '../../helpers/ChartUtils';
+import ImportCompare from './ImportCompare';
 
 class ImportStep2 extends Component {
   static propTypes = {
@@ -20,28 +22,53 @@ class ImportStep2 extends Component {
     singleGraph: PropTypes.object.isRequired,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      compare: false,
+    };
+  }
+
   import = async () => {
+    const { importData } = this.props;
+    const singleGraph = Chart.getData();
+
+    const duplicates = _.intersectionBy(singleGraph.nodes, importData.nodes, 'name');
+    if (duplicates.length) {
+      this.setState({ compare: true });
+      return;
+    }
     const {
-      importData: {
-        nodes = [], links = [], labels = [], customFields = {},
-      },
-      singleGraph: { title, description },
-    } = this.props;
-    ChartUtils.resetColors();
-    this.props.updateSingleGraph({
-      nodes,
-      links,
-      labels,
-      title,
-      description,
-      embedLabels: [],
-    });
+      nodes, links, labels, customFields,
+    } = ChartUtils.margeGraphs(singleGraph, importData);
     Chart.render({
-      nodes, links, labels, embedLabels: [],
+      nodes, links, labels,
     });
     this.props.setGraphCustomFields(customFields);
     this.props.setActiveButton('create');
     this.props.updateShowSelect(true);
+
+    // const {
+    //   importData: {
+    //     nodes = [], links = [], labels = [], customFields = {},
+    //   },
+    //   singleGraph: { title, description },
+    // } = this.props;
+    // ChartUtils.resetColors();
+    // this.props.updateSingleGraph({
+    //   nodes,
+    //   links,
+    //   labels,
+    //   title,
+    //   description,
+    //   embedLabels: [],
+    // });
+    // Chart.render({
+    //   nodes, links, labels, embedLabels: [],
+    // });
+    // this.props.setGraphCustomFields(customFields);
+    // this.props.setActiveButton('create');
+    // this.props.updateShowSelect(true);
   }
 
   back = () => {
@@ -49,7 +76,11 @@ class ImportStep2 extends Component {
   }
 
   render() {
+    const { compare } = this.state;
     const { importData } = this.props;
+    if (compare) {
+      return <ImportCompare importData={importData} />;
+    }
     return (
       <>
         <div className="importST2Node">
@@ -86,7 +117,7 @@ const mapDispatchToProps = {
   setActiveButton,
   convertGraphRequest,
   setGraphCustomFields,
-  updateSingleGraph
+  updateSingleGraph,
 };
 const Container = connect(
   mapStateToProps,

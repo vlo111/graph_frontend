@@ -42,6 +42,7 @@ class GraphView extends Component {
       openShareModal: false,
     };
   }
+
   getSingleRequest = memoizeOne(() => {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('view');
@@ -69,16 +70,16 @@ class GraphView extends Component {
 
   render() {
     const {
-      singleGraph, userGraphs, location: { pathname }, match: { params: { graphId = '' } },
+      singleGraph, singleGraphStatus, location: { pathname }, match: { params: { graphId = '' } },
     } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
-    this.getSingleRequest(pathname)
+    this.getSingleRequest(pathname);
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
           <ReactChart />
         </div>
-        {preview ? (
+        {preview && singleGraphStatus === 'ok' ? (
           <div className="graphPreview">
             <h1 className="title">{singleGraph.title}</h1>
             <p className="description">
@@ -101,23 +102,23 @@ class GraphView extends Component {
             </Link>
           </div>
         ) : (
-            <>
+          <>
 
-              {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
-                <Link to={`/graphs/update/${graphId}`}>
-                  <Tooltip overlay="Update">
-                    <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
-                  </Tooltip>
-                </Link>
-              )}
-              <NodeDescription />
-              <Link to="/">
-                <Tooltip overlay="Back">
-                  <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
+            {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
+              <Link to={`/graphs/update/${graphId}`}>
+                <Tooltip overlay="Update">
+                  <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
                 </Tooltip>
               </Link>
-            </>
-          )}
+            )}
+            <NodeDescription />
+            <Link to="/">
+              <Tooltip overlay="Back">
+                <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
+              </Tooltip>
+            </Link>
+          </>
+        )}
         <ToolBarHeader />
         <NodeFullInfo editable={false} />
         <LabelTooltip />
@@ -131,6 +132,7 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
   userGraphs: state.shareGraphs.userGraphs,
+  singleGraphStatus: state.graphs.singleGraphStatus,
 });
 const mapDispatchToProps = {
   setActiveButton,

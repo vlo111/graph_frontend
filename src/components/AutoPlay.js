@@ -53,7 +53,7 @@ class AutoPlay extends Component {
     return (
       <div id="autoPlay" onClick={this.toggle}>
         {play ? (
-          <ControlSvg width={15} height={15} />
+          <ControlSvg width={15} height={22} />
         ) : (
           <PlaySvg width={15} height={15} />
         )}

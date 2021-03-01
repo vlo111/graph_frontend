@@ -41,12 +41,11 @@ class GraphCompareList extends Component {
   render() {
     const { show } = this.state;
     const {
-      singleGraph1, singleGraph2, dropdown, title, selected,
+      singleGraph1, singleGraph2, dropdown, title, selected, scrollContainer,
     } = this.props;
     if (_.isEmpty(singleGraph1?.nodes) && _.isEmpty(singleGraph2?.nodes)) {
       return null;
     }
-    console.log(singleGraph2)
     const total = this.getTotal(singleGraph1, singleGraph2);
     const totalSelected = this.getSelectedTotal(selected, singleGraph1, singleGraph2);
     return (
@@ -66,7 +65,7 @@ class GraphCompareList extends Component {
             {singleGraph1?.nodes?.map((node) => {
               const node2 = singleGraph2?.nodes?.find((n) => n.name === node.name);
               return (
-                <LazyLoad height={150} unmountIfInvisible offset={500}>
+                <LazyLoad height={150} unmountIfInvisible offset={500} scrollContainer={scrollContainer}>
                   <div className="item">
                     <div className="top">
                       <span className="name">{node.name}</span>
@@ -96,7 +95,7 @@ class GraphCompareList extends Component {
               );
             })}
             {!singleGraph1 ? singleGraph2?.nodes?.map((node2) => (
-              <LazyLoad height={158} unmountIfInvisible offset={500}>
+              <LazyLoad height={158} unmountIfInvisible offset={500} scrollContainer={scrollContainer}>
                 <div className="item">
                   <div className="top">
                     <span className="name">{node2.name}</span>

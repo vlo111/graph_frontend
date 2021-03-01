@@ -51,6 +51,9 @@ class NodeDescription extends Component {
 
   showNodeInfo = async (ev, d) => {
     clearTimeout(this.showInfoTimout);
+    if (d.nodeType === 'infography') {
+      return;
+    }
     this.showInfoTimout = setTimeout(() => {
       this.setState({
         node: this.getNode(d.id),
