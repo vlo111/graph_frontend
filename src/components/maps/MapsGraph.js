@@ -15,6 +15,7 @@ import ChartUtils from '../../helpers/ChartUtils';
 import Api from '../../Api';
 import NodeIcon from '../NodeIcon';
 import withGoogleMap from '../../helpers/withGoogleMap';
+import MapsStyle from './MapsStyle';
 
 class MapsGraph extends Component {
   static propTypes = {
@@ -75,6 +76,7 @@ class MapsGraph extends Component {
     return (
       <div id="mapsGraph">
         <Map
+          styles={MapsStyle.mapStyle}
           google={google}
           zoom={7}
           initialCenter={nodes[0].locationObj}

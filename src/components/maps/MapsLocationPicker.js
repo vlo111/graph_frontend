@@ -9,6 +9,7 @@ import markerImg from '../../assets/images/icons/marker.svg';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
+import MapsStyle from './MapsStyle';
 
 class MapsLocationPicker extends Component {
   static propTypes = {
@@ -91,6 +92,7 @@ class MapsLocationPicker extends Component {
         {!_.isNull(initialCenter) ? (
           <>
             <Map
+              styles={MapsStyle.mapStyle}
               google={google}
               zoom={17}
               streetViewControl={false}
