@@ -8,6 +8,7 @@ import { addMyFriends } from './userFriends';
 import Utils from '../../helpers/Utils';
 import ChartUtils from '../../helpers/ChartUtils';
 import { getSingleGraph } from '../selectors/graphs';
+import ChartUpdate from "../../helpers/ChartUpdate";
 
 let socket;
 const notPushedEmits = [];
@@ -87,6 +88,18 @@ export function socketInit() {
       });
     });
 
+    socket.on('node.update-positions', (data) => {
+      ChartUpdate.nodePositionsChange(data.nodes);
+    });
+
+    socket.on('node.create', (data) => {
+      ChartUpdate.nodeCrate(data.node);
+    });
+
+    socket.on('node.delete', (data) => {
+      ChartUpdate.nodeDelete(data.node);
+    });
+
     socket.on('labelEmbedCopy', (labelEmbed) => {
       Chart.data.labels = Chart.data.labels.map((l) => {
         if (l.id === labelEmbed.id) {
@@ -101,6 +114,7 @@ export function socketInit() {
         },
       });
     });
+
     socket.on('online', (data) => {
       const onlineUsers = JSON.parse(data);
       console.log(onlineUsers, 'onlineUsersonlineUsers');
@@ -108,10 +122,8 @@ export function socketInit() {
         type: ONLINE_USERS,
         payload: { onlineUsers },
       });
-
-      
     });
-    
+
     socket.on('embedLabelDataChange', (data) => {
       const { labels } = Chart;
 
