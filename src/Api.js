@@ -321,6 +321,18 @@ class Api {
   static deleteShareGraphWithUsers(shareId) {
     return api.delete(`/share/delete/${shareId}`);
   }
+  static shareLabelDelete(labelId, graphId) {
+    return api.delete('/share/label-delete', {
+      params: {
+        labelId, graphId,
+      },
+    });
+  }
+
+
+  static getShareGraphsList() {
+    return api.get('/share');
+  }
 
   static getShareGraphsList() {
     return api.get('/share');
