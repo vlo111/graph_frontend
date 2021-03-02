@@ -388,6 +388,14 @@ class Api {
       data: { labels },
     });
   }
+
+  static updateCustomFieldsLabels(graphId, customFields) {
+    // nodeType, fieldName, order = 0, nodeId,
+    return api.delete(`/custom-fields/update/${graphId}`, {
+      cancelToken: this.#cancel('updateCustomFieldsLabels'),
+      data: { customFields },
+    });
+  }
 }
 
 export default Api;

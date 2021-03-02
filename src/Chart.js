@@ -2194,6 +2194,7 @@ class Chart {
   }
 
   static setNodeData(nodeId, data, forceRender = false) {
+    // todo autosave fix
     this.data.nodes = this.getNodes().map((d) => {
       if (d.id === nodeId) {
         d = { ...d, ...data };

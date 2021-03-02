@@ -283,8 +283,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   toggleNodeModal,
   createNodesRequest,
-  setNodeCustomField,
   updateNodesRequest,
+  setNodeCustomField,
 };
 
 const Container = connect(

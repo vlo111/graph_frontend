@@ -8,6 +8,7 @@ import { removeNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField 
 import Api from '../Api';
 import { socketLabelDataChange } from '../store/actions/socket';
 import { LABEL_STATUS } from '../data/node';
+import Utils from './Utils';
 
 class LabelUtils {
   static copy(sourceId, id, customFields, singleGraph) {
@@ -121,7 +122,7 @@ class LabelUtils {
 
   static async past(data, position, isEmbed, graphId) {
     if (!data || !data.label) {
-      return;
+      return {};
     }
     const { x: posX, y: posY } = ChartUtils.calcScaledPosition(position[0], position[1]);
 
@@ -133,7 +134,7 @@ class LabelUtils {
     if (isEmbed) {
       if (labels.some((l) => l.id === data.label.id)) {
         toast.info('Label already pasted');
-        return;
+        return {};
       }
       data.label.readOnly = true;
       data.label.sourceId = data.sourceId;
@@ -169,6 +170,10 @@ class LabelUtils {
 
     // nodes past
     let nodes = Chart.getNodes();
+    const createNodes = [];
+    const updateNodes = [];
+    const deleteNodes = [];
+
     data.nodes.forEach((d) => {
       d.fx = d.fx - minX + posX;
       d.fy = d.fy - minY + posY;
@@ -232,6 +237,7 @@ class LabelUtils {
           }
           return n;
         });
+        updateNodes.push(d);
       } else if (d.merge) {
         nodes = nodes.map((n) => {
           if (n.id === d.id) {
@@ -239,7 +245,9 @@ class LabelUtils {
           }
           return n;
         });
+        updateNodes.push(d);
       } else {
+        createNodes.push(d);
         nodes.push(d);
       }
     });
@@ -259,20 +267,31 @@ class LabelUtils {
       const { data: res } = await Api.labelShare(data.sourceId, data.label.id, graphId).catch((e) => e.response);
       if (res.status !== 'ok') {
         toast.error(res.message);
-        return;
+        return {};
       }
       const { labelEmbed } = res;
       const embedLabels = _.uniqBy([...Chart.data.embedLabels, labelEmbed], 'id');
       Chart.render({
         links, nodes, labels, embedLabels,
       }, 'past');
-      return;
+      return {
+        updateNodes,
+        createNodes,
+        createLabel: data.label,
+        createLinks: data.links,
+      };
     }
 
     links = ChartUtils.cleanLinks(links, nodes);
     links = ChartUtils.uniqueLinks(links);
 
     Chart.render({ links, nodes, labels }, 'past');
+    return {
+      updateNodes,
+      createNodes,
+      createLabel: data.label,
+      createLinks: data.links,
+    };
   }
 
   static labelDataChange = (graphId, labelId, force = false) => {
@@ -294,7 +313,6 @@ class LabelUtils {
     const labelStatus = LABEL_STATUS.filter((c) => c.value === status);
     return labelStatus.length ? labelStatus[0].label : null;
   }
-
 }
 
 export default LabelUtils;

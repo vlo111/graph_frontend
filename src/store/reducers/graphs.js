@@ -197,9 +197,9 @@ export default function reducer(state = initialState, action) {
     case SET_NODE_CUSTOM_FIELD: {
       const singleGraph = { ...state.singleGraph };
       const {
-        type, name, customField, tabData, append
+        type, nodeId, customField, tabData, append
       } = action.payload;
-      const res = CustomFields.setValue(singleGraph.customFields, type, name, customField, append);
+      const res = CustomFields.setValue(singleGraph.customFields, type, nodeId, customField, append);
       singleGraph.customFields = res.customFields;
       if (!res.success) {
         toast.warn('Some tabs are not imported');

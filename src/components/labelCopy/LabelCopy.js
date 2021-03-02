@@ -18,6 +18,9 @@ import { ReactComponent as KeepBothSvg } from '../../assets/images/icons/Keep_bo
 import { ReactComponent as MergeNodesSvg } from '../../assets/images/icons/Merge_nodes.svg';
 import { ReactComponent as ReplaceSvg } from '../../assets/images/icons/Replace.svg';
 import { ReactComponent as SkipNodesSvg } from '../../assets/images/icons/Skip_these_nodes.svg';
+import { createNodesRequest, deleteNodesRequest, updateNodesRequest } from '../../store/actions/nodes';
+import { createLinksRequest } from '../../store/actions/links';
+import { createLabelsRequest } from '../../store/actions/labels';
 
 class LabelCopy extends Component {
   static propTypes = {
@@ -55,26 +58,28 @@ class LabelCopy extends Component {
     );
   }
 
-  fixDuplications = () => {
+  fixDuplications = async () => {
     const { position } = this.state;
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
-    LabelUtils.past(data, position);
     this.copyDocuments(data.sourceId, id, data.nodes);
     this.closeModal();
+    const { updateNodes, createNodes } = await LabelUtils.past(data, position);
+    console.log(updateNodes, createNodes);
   }
 
-  handleLabelAppend = (ev, params) => {
+  handleLabelAppend = async (ev, params) => {
     const { x, y } = params;
-    const { id } = this.props.singleGraph;
+    const { singleGraph } = this.props;
     const compare = LabelUtils.compare();
     const position = [x, y];
     const data = LabelUtils.getData();
     if (_.isEmpty(compare.duplicatedNodes)) {
-      LabelUtils.past(data, position);
-
-      this.copyDocuments(data.sourceId, id, data.nodes);
-
+      this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
+      const { createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
+      this.props.createNodesRequest(singleGraph.id, createNodes);
+      this.props.createLinksRequest(singleGraph.id, createLinks);
+      this.props.createLabelsRequest(singleGraph.id, [createLabel]);
       return;
     }
     this.setState({
@@ -82,9 +87,9 @@ class LabelCopy extends Component {
     });
   }
 
-  skipDuplications = () => {
+  skipDuplications = async () => {
     const { compare: { duplicatedNodes, sourceNodes }, position } = this.state;
-    const { id } = this.props.singleGraph;
+    const { singleGraph } = this.props;
     const data = LabelUtils.getData();
     const nodes = Chart.getNodes();
     data.links = data.links.map((l) => {
@@ -108,9 +113,16 @@ class LabelCopy extends Component {
     data.nodes = data.nodes.filter((n) => !duplicatedNodes.some((d) => n.name === d.name));
 
     data.links = ChartUtils.cleanLinks(data.links, [...data.nodes, ...nodes]);
-    LabelUtils.past(data, position);
-    this.copyDocuments(data.sourceId, id, data.nodes);
+    this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
     this.closeModal();
+
+    const {
+      updateNodes, createNodes, createLinks, createLabel,
+    } = await LabelUtils.past(data, position);
+    this.props.updateNodesRequest(singleGraph.id, updateNodes);
+    this.props.createNodesRequest(singleGraph.id, createNodes);
+    this.props.createLinksRequest(singleGraph.id, createLinks);
+    this.props.createLabelsRequest(singleGraph.id, [createLabel]);
   }
 
   closeModal = () => {
@@ -119,7 +131,7 @@ class LabelCopy extends Component {
     });
   }
 
-  replaceDuplications = () => {
+  replaceDuplications = async () => {
     const { customFields, singleGraph } = this.props;
     const { position } = this.state;
     const data = LabelUtils.getData();
@@ -146,34 +158,32 @@ class LabelCopy extends Component {
       }
       return n;
     });
-    LabelUtils.past(data, position);
     this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
 
     this.closeModal();
+    const { updateNodes, createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
+    this.props.updateNodesRequest(singleGraph.id, updateNodes);
+    this.props.createNodesRequest(singleGraph.id, createNodes);
+    this.props.createLinksRequest(singleGraph.id, createLinks);
+    this.props.createLabelsRequest(singleGraph.id, [createLabel]);
   }
 
   toggleCompareNodes = (showCompareModal) => {
     this.setState({ showCompareModal });
   }
 
-  merge = () => {
-    const { customFields, singleGraph } = this.props;
+  compareAndMerge = async (sources, duplicates) => {
     const { position } = this.state;
-    const data = LabelUtils.getData();
-    LabelUtils.pastAndMerge(data, position, [], data.nodes, customFields);
-
-    this.closeModal();
-  }
-
-  compareAndMerge = (sources, duplicates) => {
-    const { position } = this.state;
+    const { singleGraph } = this.props;
     const data = LabelUtils.getData();
     let nodes = Chart.getNodes();
     let links = Chart.getLinks();
+    const deleteNodes = [];
     nodes = nodes.map((n) => {
       const i = duplicates.findIndex((d) => d && d.name === n.name);
       if (!sources.some((s) => s.id === n.id)) {
         if (i !== -1) {
+          deleteNodes.push(n);
           return undefined;
         }
         return n;
@@ -197,11 +207,17 @@ class LabelCopy extends Component {
     links = ChartUtils.cleanLinks(links, nodes);
 
     Chart.render({ nodes, links });
-    LabelUtils.past(data, position);
 
     this.setState({
       compare: {}, data: {}, position: [], showQuestionModal: false, showCompareModal: false,
     });
+    const { updateNodes, createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
+    this.props.updateNodesRequest(singleGraph.id, updateNodes);
+    this.props.createNodesRequest(singleGraph.id, createNodes);
+    this.props.deleteNodesRequest(singleGraph.id, deleteNodes);
+
+    this.props.createLinksRequest(singleGraph.id, createLinks);
+    this.props.createLabelsRequest(singleGraph.id, [createLabel]);
   }
 
   render() {
@@ -305,6 +321,11 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   copyDocumentForGraphRequest,
   removeNodeCustomFieldKey,
+  createNodesRequest,
+  updateNodesRequest,
+  deleteNodesRequest,
+  createLinksRequest,
+  createLabelsRequest,
 };
 const Container = connect(
   mapStateToProps,

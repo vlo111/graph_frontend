@@ -4,7 +4,7 @@ import ChartUtils from '../../helpers/ChartUtils';
 
 export const CREATE_LINKS = define('CREATE_LINKS');
 
-export function createLinkRequest(graphId, node) {
+export function createLinksRequest(graphId, node) {
   return CREATE_LINKS.request(() => Api.createLinks(graphId, ChartUtils.objectAndProto(node)));
 }
 

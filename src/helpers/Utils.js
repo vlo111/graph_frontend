@@ -252,6 +252,19 @@ class Utils {
       return undefined;
     });
   }
+
+  static differenceNested(object, base) {
+    function changes(_object, _base) {
+      return _.transform(_object, (result, value, key) => {
+        console.log(value, _base[key])
+        if (!_.isEqual(value, _base[key])) {
+          result[key] = (_.isObject(value) && _.isObject(_base[key])) ? changes(value, _base[key]) : value;
+        }
+      });
+    }
+
+    return changes(object, base);
+  }
 }
 
 export default Utils;

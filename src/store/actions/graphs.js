@@ -100,11 +100,11 @@ export function setGraphCustomFields(customFields) {
 
 export const SET_NODE_CUSTOM_FIELD = 'SET_NODE_CUSTOM_FIELD';
 
-export function setNodeCustomField(type, name, customField, tabData, append = false) {
+export function setNodeCustomField(type, nodeId, customField, tabData, append = false) {
   return {
     type: SET_NODE_CUSTOM_FIELD,
     payload: {
-      type, name, customField, tabData, append,
+      type, nodeId, customField, tabData, append,
     },
   };
 }
