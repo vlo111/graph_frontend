@@ -2,20 +2,20 @@ import { define } from '../../helpers/redux-request';
 import Api from '../../Api';
 import ChartUtils from '../../helpers/ChartUtils';
 
-export const CREATE_LABEL = define('CREATE_LABEL');
+export const CREATE_LABELS = define('CREATE_LABELS');
 
-export function createLabelRequest(graphId, label) {
-  return CREATE_LABEL.request(() => Api.createLabel(graphId, ChartUtils.objectAndProto(label)));
+export function createLabelsRequest(graphId, labels) {
+  return CREATE_LABELS.request(() => Api.createLabels(graphId, ChartUtils.objectAndProto(labels)));
 }
 
-export const UPDATE_LABEL = define('UPDATE_LABEL');
+export const UPDATE_LABELS = define('UPDATE_LABELS');
 
-export function updateLabelRequest(graphId, labelId, label) {
-  return UPDATE_LABEL.request(() => Api.updateLabel(graphId, labelId, ChartUtils.objectAndProto(label)));
+export function updateLabelsRequest(graphId, labels) {
+  return UPDATE_LABELS.request(() => Api.updateLabels(graphId, ChartUtils.objectAndProto(labels)));
 }
 
-export const DELETE_LABEL = define('DELETE_LABEL');
+export const DELETE_LABELS = define('DELETE_LABELS');
 
-export function deleteLabelRequest(graphId, labelId) {
-  return DELETE_LABEL.request(() => Api.deleteLabel(graphId, labelId));
+export function deleteLabelsRequest(graphId, labels) {
+  return DELETE_LABELS.request(() => Api.deleteLabels(graphId, labels));
 }

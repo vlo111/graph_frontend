@@ -1,4 +1,5 @@
 import Chart from '../Chart';
+import _ from 'lodash';
 import ChartUtils from './ChartUtils';
 
 class ChartUpdate {
@@ -62,15 +63,16 @@ class ChartUpdate {
     Chart.render({ links });
   }
 
-  static labelCreate = (label) => {
+  static labelCreate = (labelsCreate) => {
     const labels = Chart.getLabels();
-    labels.push(label);
+    labels.push(...labelsCreate);
     Chart.render({ labels });
   }
 
-  static labelUpdate = (label) => {
+  static labelUpdate = (labelsUpdate) => {
     const labels = Chart.getLabels().map((d) => {
-      if (d.id === label.id) {
+      const label = labelsUpdate.find((n) => n.id === d.id);
+      if (label) {
         return { ...d, ...label };
       }
       return d;
@@ -78,9 +80,12 @@ class ChartUpdate {
     Chart.render({ labels });
   }
 
-  static labelDelete = (label) => {
-    const labels = Chart.getLabels().filter((d) => d.id !== label.id);
-    const nodes = Chart.getNodes().filter((d) => !d.labels.includes(label.id));
+  static labelDelete = (labelsDelete) => {
+    const labelsDeleteId = labelsDelete.map((l) => l.id);
+
+    const labels = Chart.getLabels().filter((n) => !labelsDeleteId.includes(n.id));
+
+    const nodes = Chart.getNodes().filter((d) => !_.intersection(labelsDeleteId, d.labels).length);
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
 
     Chart.render({ nodes, links, labels });

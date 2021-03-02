@@ -9,7 +9,7 @@ import Input from '../form/Input';
 import ChartUtils from '../../helpers/ChartUtils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import ContextMenu from '../contextMenu/ContextMenu';
-import { createLabelRequest } from '../../store/actions/labels';
+import { createLabelsRequest } from '../../store/actions/labels';
 import { updateNodesPositionRequest } from '../../store/actions/nodes';
 
 class AddLabelModal extends Component {
@@ -109,7 +109,7 @@ class AddLabelModal extends Component {
       } else {
         labels.push(labelData);
       }
-      this.props.createLabelRequest(graphId, labelData);
+      this.props.createLabelsRequest(graphId, [labelData]);
 
       this.props.updateNodesPositionRequest(graphId, nodes.filter((d) => d.labels.includes(labelData.id)).map((n) => ({
         id: n.id,
@@ -171,7 +171,7 @@ const mapStateToProps = (state) => ({
   graphId: state.graphs.singleGraph.id,
 });
 const mapDispatchToProps = {
-  createLabelRequest,
+  createLabelsRequest,
   updateNodesPositionRequest,
 };
 

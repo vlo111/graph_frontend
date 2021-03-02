@@ -140,21 +140,21 @@ export function socketInit() {
     socket.on('label.create', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
-        ChartUpdate.labelCreate(data.label);
+        ChartUpdate.labelCreate(data.labels);
       }
     });
 
     socket.on('label.update', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
-        ChartUpdate.labelUpdate(data.label);
+        ChartUpdate.labelUpdate(data.labels);
       }
     });
 
     socket.on('label.delete', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
-        ChartUpdate.labelDelete(data.label);
+        ChartUpdate.labelDelete(data.labels);
       }
     });
 

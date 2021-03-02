@@ -370,21 +370,22 @@ class Api {
     });
   }
 
-  static createLabel(graphId, label) {
-    return api.post(`/labels/create/${graphId}`, { label }, {
-      cancelToken: this.#cancel('createLabel'),
+  static createLabels(graphId, labels) {
+    return api.post(`/labels/create/${graphId}`, { labels }, {
+      cancelToken: this.#cancel('createLabels'),
     });
   }
 
-  static updateLabel(graphId, labelId, label) {
-    return api.put(`/labels/update/${graphId}/${labelId}`, { label }, {
-      cancelToken: this.#cancel('updateLabel'),
+  static updateLabels(graphId, labels) {
+    return api.put(`/labels/update/${graphId}`, { labels }, {
+      cancelToken: this.#cancel('updateLabels'),
     });
   }
 
-  static deleteLabel(graphId, labelId) {
-    return api.delete(`/labels/delete/${graphId}/${labelId}`, {
-      cancelToken: this.#cancel('deleteLabel'),
+  static deleteLabels(graphId, labels) {
+    return api.delete(`/labels/delete/${graphId}`, {
+      cancelToken: this.#cancel('deleteLabels'),
+      data: { labels },
     });
   }
 }

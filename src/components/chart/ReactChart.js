@@ -22,7 +22,7 @@ import ResizeIcons from './icons/ResizeIcons';
 import NotFound from './NotFound';
 import { deleteNodesRequest, updateNodesRequest, updateNodesPositionRequest } from '../../store/actions/nodes';
 import { deleteLinksRequest } from '../../store/actions/links';
-import { deleteLabelRequest, updateLabelRequest } from '../../store/actions/labels';
+import { deleteLabelsRequest, updateLabelsRequest } from '../../store/actions/labels';
 
 class ReactChart extends Component {
   static propTypes = {
@@ -88,7 +88,7 @@ class ReactChart extends Component {
     const { nodes } = d;
     const label = d.label.datum();
     const { singleGraph } = this.props;
-    this.props.updateLabelRequest(singleGraph.id, label.id, label);
+    this.props.updateLabelsRequest(singleGraph.id, [label]);
     this.props.updateNodesPositionRequest(singleGraph.id, nodes.map((n) => ({
       id: n.id,
       fx: n.fx,
@@ -119,16 +119,16 @@ class ReactChart extends Component {
     const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.id));
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
 
+    this.props.deleteLabelsRequest(graphId, [d.id]);
+
     if (d.sourceId) {
       const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
       Chart.render({
         labels, nodes, links, embedLabels,
       });
-      this.props.deleteLabelRequest(graphId, d.id);
       Api.labelDelete(d.sourceId, d.id, graphId);
       return;
     }
-    this.props.deleteLabelRequest(graphId, d.id);
     Chart.render({ labels, nodes, links });
     Chart.event.emit('label.mouseleave', ev, d);
   }
@@ -294,8 +294,8 @@ const mapDispatchToProps = {
   deleteLinksRequest,
   updateNodesRequest,
   updateNodesPositionRequest,
-  updateLabelRequest,
-  deleteLabelRequest,
+  updateLabelsRequest,
+  deleteLabelsRequest,
   removeNodeFromCustom,
 };
 
