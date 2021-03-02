@@ -7209,6 +7209,47 @@ img.preview-scaled {
     position: absolute;
     background-color: white;
   } 
+   .groups {
+    display: flex;
+    margin: 10px;
+    padding-bottom: 5px;
+    flex-wrap:wrap;
+    margin-top: 5px;
+    flex-direction: column;
+    width: 100%;
+    padding: 9px 12px 0;
+    .group {      
+      // border-top: 1px solid #E2E7EB;
+      display:flex;
+      background: white;
+      margin:2px; 
+      min-height:50px;
+      padding:5px; 
+      border-bottom: 1px solid #E2E7EB;
+    } 
+    .group-header { 
+      letter-spacing: 2px;
+      //text-transform: uppercase;  
+      position: absolute;         
+      transform-origin: 0 0;
+      transform: rotate(90deg);
+      color: #7166f8;
+      //font-weight: bold;
+    }
+   }
+   .scrollY {
+    overflow-y: scroll; 
+
+   }
+   
+   .more {
+    position: relative;     
+
+    left: 148px;
+    bottom: 65px;
+   background-color: $color-white;
+   color: $color-button;
+  } 
 }
 
 
