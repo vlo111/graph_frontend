@@ -822,7 +822,10 @@ class ChartUtils {
   }
 
   static objectAndProto(d) {
-    return { ...Object.getPrototypeOf(d), ...d }
+    if (_.isArray(d)) {
+      return d.map(this.objectAndProto);
+    }
+    return { ...Object.getPrototypeOf(d), ...d };
   }
 }
 

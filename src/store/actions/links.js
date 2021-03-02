@@ -2,20 +2,20 @@ import { define } from '../../helpers/redux-request';
 import Api from '../../Api';
 import ChartUtils from '../../helpers/ChartUtils';
 
-export const CREATE_LINK = define('CREATE_LINK');
+export const CREATE_LINKS = define('CREATE_LINKS');
 
 export function createLinkRequest(graphId, node) {
-  return CREATE_LINK.request(() => Api.createLink(graphId, ChartUtils.objectAndProto(node)));
+  return CREATE_LINKS.request(() => Api.createLinks(graphId, ChartUtils.objectAndProto(node)));
 }
 
-export const UPDATE_LINK = define('UPDATE_LINK');
+export const UPDATE_LINKS = define('UPDATE_LINKS');
 
-export function updateLinkRequest(graphId, nodeId, node) {
-  return UPDATE_LINK.request(() => Api.updateLink(graphId, nodeId, ChartUtils.objectAndProto(node)));
+export function updateLinksRequest(graphId, node) {
+  return UPDATE_LINKS.request(() => Api.updateLinks(graphId, ChartUtils.objectAndProto(node)));
 }
 
-export const DELETE_LINK = define('DELETE_LINK');
+export const DELETE_LINKS = define('DELETE_LINKS');
 
-export function deleteLinkRequest(graphId, nodeId) {
-  return DELETE_LINK.request(() => Api.deleteLink(graphId, nodeId));
+export function deleteLinksRequest(graphId, links) {
+  return DELETE_LINKS.request(() => Api.deleteLinks(graphId, links));
 }

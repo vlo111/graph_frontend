@@ -16,7 +16,7 @@ import SvgLine from '../SvgLine';
 import ContextMenu from '../contextMenu/ContextMenu';
 import Utils from '../../helpers/Utils';
 import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
-import { createLinkRequest, updateLinkRequest } from "../../store/actions/links";
+import { createLinkRequest, updateLinksRequest } from "../../store/actions/links";
 import ChartUtils from "../../helpers/ChartUtils";
 
 class AddLinkModal extends Component {
@@ -102,14 +102,14 @@ class AddLinkModal extends Component {
           }
           return d;
         });
-        this.props.updateLinkRequest(graphId, linkData.id, linkData);
+        this.props.updateLinksRequest(graphId, [linkData]);
       } else {
         linkData.createdAt = moment().unix();
         linkData.createdUser = currentUserId;
         linkData.id = linkData.id || ChartUtils.uniqueId(links);
         links.push(linkData);
 
-        this.props.createLinkRequest(graphId, linkData);
+        this.props.createLinkRequest(graphId, [linkData]);
       }
 
       this.setState({ show: false });
@@ -255,7 +255,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   createLinkRequest,
-  updateLinkRequest
+  updateLinksRequest
 };
 
 const Container = connect(

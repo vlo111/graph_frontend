@@ -1,5 +1,5 @@
 import Chart from '../Chart';
-import ChartUtils from "./ChartUtils";
+import ChartUtils from './ChartUtils';
 
 class ChartUpdate {
   static nodePositionsChange = (nodes) => {
@@ -18,20 +18,21 @@ class ChartUpdate {
     Chart.graphMovement();
   }
 
-  static nodeCrate = (node) => {
+  static nodesCrate = (nodeCreate) => {
     const nodes = Chart.getNodes();
-    nodes.push(node);
+    nodes.push(...nodeCreate);
     Chart.render({ nodes });
   }
 
-  static nodeDelete = (node) => {
-    const nodes = Chart.getNodes().filter((d) => d.id !== node.id);
+  static nodesDelete = (nodesDelete) => {
+    const nodes = Chart.getNodes().filter((n) => !nodesDelete.some((d) => n.id === d.id));
     Chart.render({ nodes });
   }
 
-  static nodeUpdate = (node) => {
+  static nodesUpdate = (nodesUpdate) => {
     const nodes = Chart.getNodes().map((d) => {
-      if (d.id === node.id) {
+      const node = nodesUpdate.find((n) => n.id === d.id);
+      if (node) {
         return { ...d, ...node };
       }
       return d;
@@ -39,15 +40,16 @@ class ChartUpdate {
     Chart.render({ nodes });
   }
 
-  static linkCreate = (link) => {
+  static linkCreate = (linksCreate) => {
     const links = Chart.getLinks();
-    links.push(link);
+    links.push(...linksCreate);
     Chart.render({ links });
   }
 
-  static linkUpdate = (link) => {
+  static linkUpdate = (linksUpdate) => {
     const links = Chart.getLinks().map((d) => {
-      if (d.id === link.id) {
+      const link = linksUpdate.find((n) => n.id === d.id);
+      if (link) {
         return { ...d, ...link };
       }
       return d;
@@ -55,8 +57,8 @@ class ChartUpdate {
     Chart.render({ links });
   }
 
-  static linkDelete = (link) => {
-    const links = Chart.getNodes().filter((d) => d.id !== link.id);
+  static linkDelete = (linksDelete) => {
+    const links = Chart.getNodes().filter((n) => !linksDelete.some((d) => n.id === d.id));
     Chart.render({ links });
   }
 

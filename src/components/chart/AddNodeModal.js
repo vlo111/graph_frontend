@@ -19,7 +19,7 @@ import LocationInputs from './LocationInputs';
 import Utils from '../../helpers/Utils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import ChartUtils from '../../helpers/ChartUtils';
-import { createNodeRequest, updateNodeRequest } from "../../store/actions/nodes";
+import { createNodesRequest, updateNodesRequest } from "../../store/actions/nodes";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -113,16 +113,16 @@ class AddNodeModal extends Component {
       if (update) {
         const d = { ...nodes[index], ...nodeData };
         nodes[index] = d;
-        this.props.updateNodeRequest(graphId, d.id, {
+        this.props.updateNodesRequest(graphId, [{
           ...d,
           icon: await Utils.blobToBase64(d.icon),
-        });
+        }]);
       } else {
         nodeData.id = ChartUtils.uniqueId(nodes);
         nodeData.createdAt = moment().unix();
         nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
-        this.props.createNodeRequest(graphId, nodeData);
+        this.props.createNodesRequest(graphId, [nodeData]);
       }
 
       Chart.render({ nodes, links });
@@ -282,9 +282,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   toggleNodeModal,
-  createNodeRequest,
+  createNodesRequest,
   setNodeCustomField,
-  updateNodeRequest,
+  updateNodesRequest,
 };
 
 const Container = connect(

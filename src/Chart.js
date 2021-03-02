@@ -8,7 +8,7 @@ import Utils from './helpers/Utils';
 import SvgService from './helpers/SvgService';
 import ChartInfography from './helpers/ChartInfography';
 import store from './store';
-import { createNodeRequest, updateNodeRequest } from './store/actions/nodes';
+import { createNodesRequest, updateNodesRequest } from './store/actions/nodes';
 
 class Chart {
   static event = new EventEmitter();

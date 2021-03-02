@@ -2,22 +2,22 @@ import { define } from '../../helpers/redux-request';
 import Api from '../../Api';
 import ChartUtils from '../../helpers/ChartUtils';
 
-export const CREATE_NODE = define('CREATE_NODE');
+export const CREATE_NODES = define('CREATE_NODES');
 
-export function createNodeRequest(graphId, node) {
-  return CREATE_NODE.request(() => Api.createNode(graphId, ChartUtils.objectAndProto(node)));
+export function createNodesRequest(graphId, nodes) {
+  return CREATE_NODES.request(() => Api.createNodes(graphId, ChartUtils.objectAndProto(nodes)));
 }
 
-export const UPDATE_NODE = define('UPDATE_NODE');
+export const UPDATE_NODES = define('UPDATE_NODES');
 
-export function updateNodeRequest(graphId, nodeId, node) {
-  return UPDATE_NODE.request(() => Api.updateNode(graphId, nodeId, ChartUtils.objectAndProto(node)));
+export function updateNodesRequest(graphId, nodes) {
+  return UPDATE_NODES.request(() => Api.updateNodes(graphId, ChartUtils.objectAndProto(nodes)));
 }
 
-export const DELETE_NODE = define('DELETE_NODE');
+export const DELETE_NODES = define('DELETE_NODES');
 
-export function deleteNodeRequest(graphId, nodeId) {
-  return DELETE_NODE.request(() => Api.deleteNode(graphId, nodeId));
+export function deleteNodesRequest(graphId, nodes) {
+  return DELETE_NODES.request(() => Api.deleteNodes(graphId, nodes));
 }
 
 export const UPDATE_NODES_POSITION = define('UPDATE_NODES_POSITION');

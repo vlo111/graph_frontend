@@ -326,15 +326,15 @@ class Api {
     return api.get('/share');
   }
 
-  static createNode(graphId, node) {
-    return api.post(`/nodes/create/${graphId}`, { node }, {
-      cancelToken: this.#cancel('createNode'),
+  static createNodes(graphId, nodes) {
+    return api.post(`/nodes/create/${graphId}`, { nodes }, {
+      cancelToken: this.#cancel('createNodes'),
     });
   }
 
-  static updateNode(graphId, nodeId, node) {
-    return api.put(`/nodes/update/${graphId}/${nodeId}`, { node }, {
-      cancelToken: this.#cancel('updateNode'),
+  static updateNodes(graphId, nodes) {
+    return api.put(`/nodes/update/${graphId}`, { nodes }, {
+      cancelToken: this.#cancel('updateNodes'),
     });
   }
 
@@ -344,27 +344,29 @@ class Api {
     });
   }
 
-  static deleteNode(graphId, nodeId) {
-    return api.delete(`/nodes/delete/${graphId}/${nodeId}`, {
-      cancelToken: this.#cancel('deleteNode'),
+  static deleteNodes(graphId, nodes) {
+    return api.delete(`/nodes/delete/${graphId}`, {
+      cancelToken: this.#cancel('deleteNodes'),
+      data: { nodes },
     });
   }
 
-  static createLink(graphId, link) {
-    return api.post(`/links/create/${graphId}`, { link }, {
-      cancelToken: this.#cancel('createLink'),
+  static createLinks(graphId, links) {
+    return api.post(`/links/create/${graphId}`, { links }, {
+      cancelToken: this.#cancel('createLinks'),
     });
   }
 
-  static updateLink(graphId, linkId, link) {
-    return api.put(`/links/update/${graphId}/${linkId}`, { link }, {
-      cancelToken: this.#cancel('updateLink'),
+  static updateLinks(graphId, links) {
+    return api.put(`/links/update/${graphId}`, { links }, {
+      cancelToken: this.#cancel('updateLinks'),
     });
   }
 
-  static deleteLink(graphId, linkId) {
-    return api.delete(`/links/delete/${graphId}/${linkId}`, {
-      cancelToken: this.#cancel('deleteLink'),
+  static deleteLinks(graphId, links) {
+    return api.delete(`/links/delete/${graphId}`, {
+      cancelToken: this.#cancel('deleteLinks'),
+      data: { links },
     });
   }
 

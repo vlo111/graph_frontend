@@ -20,8 +20,8 @@ import LabelLock from './icons/LabelLock';
 import SelectedNodeFilter from './icons/SelectedNodeFilter';
 import ResizeIcons from './icons/ResizeIcons';
 import NotFound from './NotFound';
-import { deleteNodeRequest, updateNodeRequest, updateNodesPositionRequest } from '../../store/actions/nodes';
-import { deleteLinkRequest } from '../../store/actions/links';
+import { deleteNodesRequest, updateNodesRequest, updateNodesPositionRequest } from '../../store/actions/nodes';
+import { deleteLinksRequest } from '../../store/actions/links';
 import { deleteLabelRequest, updateLabelRequest } from '../../store/actions/labels';
 
 class ReactChart extends Component {
@@ -183,7 +183,7 @@ class ReactChart extends Component {
     const links = Chart.getLinks();
     const link = links.find((l) => l.index === d.index);
     links.splice(d.index, 1);
-    this.props.deleteLinkRequest(singleGraph.id, link.id);
+    this.props.deleteLinksRequest(singleGraph.id, [link.id]);
     Chart.render({ links });
   }
 
@@ -203,7 +203,7 @@ class ReactChart extends Component {
 
     nodes = nodes.filter((n) => n.index !== d.index);
 
-    this.props.deleteNodeRequest(singleGraph.id, d.id);
+    this.props.deleteNodesRequest(singleGraph.id, [d.id]);
 
     links = links.filter((l) => {
       if (l.source === d.id || l.target === d.id) {
@@ -290,9 +290,9 @@ const mapDispatchToProps = {
   toggleNodeModal,
   setActiveButton,
   socketLabelDataChange,
-  deleteNodeRequest,
-  deleteLinkRequest,
-  updateNodeRequest,
+  deleteNodesRequest,
+  deleteLinksRequest,
+  updateNodesRequest,
   updateNodesPositionRequest,
   updateLabelRequest,
   deleteLabelRequest,

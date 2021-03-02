@@ -98,42 +98,42 @@ export function socketInit() {
     socket.on('node.create', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
-        ChartUpdate.nodeCrate(data.node);
+        ChartUpdate.nodesCrate(data.nodes);
       }
     });
 
     socket.on('node.delete', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
-        ChartUpdate.nodeDelete(data.node);
+        ChartUpdate.nodesDelete(data.nodes);
       }
     });
 
     socket.on('node.update', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
-        ChartUpdate.nodeUpdate(data.node);
+        ChartUpdate.nodesUpdate(data.nodes);
       }
     });
 
     socket.on('link.create', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
-        ChartUpdate.linkCreate(data.link);
+        ChartUpdate.linkCreate(data.links);
       }
     });
 
     socket.on('link.update', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
-        ChartUpdate.linkUpdate(data.link);
+        ChartUpdate.linkUpdate(data.links);
       }
     });
 
     socket.on('link.delete', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
-        ChartUpdate.linkDelete(data.link);
+        ChartUpdate.linkDelete(data.links);
       }
     });
 
@@ -143,7 +143,7 @@ export function socketInit() {
         ChartUpdate.labelCreate(data.label);
       }
     });
-    
+
     socket.on('label.update', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
