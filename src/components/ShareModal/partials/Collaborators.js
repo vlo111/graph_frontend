@@ -2,18 +2,13 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip/es';
+import { GRAPH_SHARE_TYPES } from '../../../data/graph';
 import Select from '../../form/Select';
 import { listGraphRequest, updateGraphRequest, deleteGraphRequest } from '../../../store/actions/shareGraphs';
 import { shareGraphs } from '../../../store/selectors/shareGraphs';
 import { getId } from '../../../store/selectors/account';
 import Button from '../../form/Button';
-import { ReactComponent as TrashSvg } from '../../../assets/images/icons/trash.svg';
-
-const selectOptions = [
-  { value: 'view', label: 'View' },
-  { value: 'edit', label: 'Edit' },
-  { value: 'admin', label: 'Admin' },
-];
+import { ReactComponent as TrashSvg } from '../../../assets/images/icons/trash.svg'; 
 
 const Collaborators = ({ select, graph }) => {
   const dispatch = useDispatch();
@@ -50,8 +45,8 @@ const Collaborators = ({ select, graph }) => {
         </div>
         <div className="share-modal__search--selected-action">
           <Select
-            defaultValue={selectOptions.find((i) => i.value === item.role)}
-            options={selectOptions}
+            defaultValue={GRAPH_SHARE_TYPES.find((i) => i.value === item.role)}
+            options={GRAPH_SHARE_TYPES}
             onChange={(newValue) => handleSelectChange(newValue, item.id)}
           />
           <Tooltip overlay="Delete">
