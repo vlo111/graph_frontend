@@ -280,6 +280,7 @@ class Chart {
         dragNode.startY = ev.y;
         dragNode.labels = [...(d.labels || [])];
       }
+      this.oldData.nodes = _.cloneDeep(this.getNodes());
       this.event.emit('node.dragstart', ev, d);
     };
 
@@ -1222,9 +1223,16 @@ class Chart {
       if (!this.isCalled('render')) {
         this.undoManager = new ChartUndoManager();
       }
+      this.oldData = _.cloneDeep({
+        nodes: Chart.getNodes(true, data.nodes),
+        links: Chart.getLinks(data.links),
+        labels: Chart.getLabels(data.labels),
+      });
+
       this.graphId = Utils.getGraphIdFormUrl();
       this._dataNodes = null;
       this._dataLinks = null;
+
       data = this.normalizeData(data, params);
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         this.undoManager.push(data);
@@ -1787,6 +1795,7 @@ class Chart {
     this._dataNodes = null;
     this._dataLinks = null;
     this._dataLabel = null;
+    clearTimeout(this.graphMovementTimeout);
   }
 
   static renderDirections() {
@@ -2208,9 +2217,9 @@ class Chart {
     this.event.emit('setNodeData', nodeId, data);
   }
 
-  static getNodes(force = false) {
-    if (_.isEmpty(this.data)) {
-      return [];
+  static getNodes(force = false, defaults = []) {
+    if (_.isEmpty(this.data?.nodes)) {
+      return defaults;
     }
     if (!this._dataNodes || force) {
       this._dataNodes = this.data.nodes.map((d) => ({
@@ -2251,9 +2260,9 @@ class Chart {
     return this.getNodes();
   }
 
-  static getLinks() {
-    if (_.isEmpty(this.data)) {
-      return [];
+  static getLinks(defaults = []) {
+    if (_.isEmpty(this.data?.links)) {
+      return defaults;
     }
     if (!this._dataLinks) {
       this._dataLinks = this.data.links.map((d) => {
@@ -2286,9 +2295,9 @@ class Chart {
     return this._dataLinks;
   }
 
-  static getLabels() {
-    if (_.isEmpty(this.data)) {
-      return [];
+  static getLabels(defaults = []) {
+    if (_.isEmpty(this.data?.labels)) {
+      return defaults;
     }
     return this.data.labels.map((d) => ({
       id: d.id,
