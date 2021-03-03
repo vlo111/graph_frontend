@@ -471,6 +471,7 @@ class Chart {
         if (!d.sourceId) {
           return d;
         }
+        d.manually_size = d.manually_size || 1;
         const labelData = data.embedLabels.find((l) => d.labels?.includes(l.labelId));
         if (!labelData) {
           console.error('can\'t find label', d);
