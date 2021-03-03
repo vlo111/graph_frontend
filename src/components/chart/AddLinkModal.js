@@ -15,9 +15,9 @@ import Validate from '../../helpers/Validate';
 import SvgLine from '../SvgLine';
 import ContextMenu from '../contextMenu/ContextMenu';
 import Utils from '../../helpers/Utils';
-import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
-import { createLinksRequest, updateLinksRequest } from "../../store/actions/links";
-import ChartUtils from "../../helpers/ChartUtils";
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { createLinksRequest, updateLinksRequest } from '../../store/actions/links';
+import ChartUtils from '../../helpers/ChartUtils';
 
 class AddLinkModal extends Component {
   static propTypes = {
@@ -86,7 +86,7 @@ class AddLinkModal extends Component {
     const { currentUserId, graphId } = this.props;
     const { linkData, index } = this.state;
     const isUpdate = !_.isNull(index);
-    let links = Chart.getLinks();
+    let links = [...Chart.getLinks()];
     const errors = {};
     [errors.type, linkData.type] = Validate.linkType(linkData.type, linkData);
     [, linkData.value] = Validate.linkValue(linkData.value);
@@ -102,14 +102,14 @@ class AddLinkModal extends Component {
           }
           return d;
         });
-        this.props.updateLinksRequest(graphId, [linkData]);
+        // this.props.updateLinksRequest(graphId, [linkData]);
       } else {
         linkData.createdAt = moment().unix();
         linkData.createdUser = currentUserId;
         linkData.id = linkData.id || ChartUtils.uniqueId(links);
         links.push(linkData);
 
-        this.props.createLinksRequest(graphId, [linkData]);
+        // this.props.createLinksRequest(graphId, [linkData]);
       }
 
       this.setState({ show: false });
@@ -137,7 +137,9 @@ class AddLinkModal extends Component {
   }
 
   render() {
-    const { linkData, index, errors, show } = this.state;
+    const {
+      linkData, index, errors, show,
+    } = this.state;
     if (!show) {
       return null;
     }
@@ -255,7 +257,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   createLinksRequest,
-  updateLinksRequest
+  updateLinksRequest,
 };
 
 const Container = connect(

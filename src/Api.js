@@ -339,64 +339,47 @@ class Api {
   }
 
   static createNodes(graphId, nodes) {
-    return api.post(`/nodes/create/${graphId}`, { nodes }, {
-      cancelToken: this.#cancel('createNodes'),
-    });
+    return api.post(`/nodes/create/${graphId}`, { nodes });
   }
 
   static updateNodes(graphId, nodes) {
-    return api.put(`/nodes/update/${graphId}`, { nodes }, {
-      cancelToken: this.#cancel('updateNodes'),
-    });
+    return api.put(`/nodes/update/${graphId}`, { nodes });
   }
 
   static updateNodePositions(graphId, nodes) {
-    return api.put(`/nodes/update-positions/${graphId}`, { nodes }, {
-      cancelToken: this.#cancel('updateNodePositions'),
-    });
+    return api.put(`/nodes/update-positions/${graphId}`, { nodes });
   }
 
   static deleteNodes(graphId, nodes) {
     return api.delete(`/nodes/delete/${graphId}`, {
-      cancelToken: this.#cancel('deleteNodes'),
       data: { nodes },
     });
   }
 
   static createLinks(graphId, links) {
-    return api.post(`/links/create/${graphId}`, { links }, {
-      cancelToken: this.#cancel('createLinks'),
-    });
+    return api.post(`/links/create/${graphId}`, { links });
   }
 
   static updateLinks(graphId, links) {
-    return api.put(`/links/update/${graphId}`, { links }, {
-      cancelToken: this.#cancel('updateLinks'),
-    });
+    return api.put(`/links/update/${graphId}`, { links });
   }
 
   static deleteLinks(graphId, links) {
     return api.delete(`/links/delete/${graphId}`, {
-      cancelToken: this.#cancel('deleteLinks'),
       data: { links },
     });
   }
 
   static createLabels(graphId, labels) {
-    return api.post(`/labels/create/${graphId}`, { labels }, {
-      cancelToken: this.#cancel('createLabels'),
-    });
+    return api.post(`/labels/create/${graphId}`, { labels });
   }
 
   static updateLabels(graphId, labels) {
-    return api.put(`/labels/update/${graphId}`, { labels }, {
-      cancelToken: this.#cancel('updateLabels'),
-    });
+    return api.put(`/labels/update/${graphId}`, { labels });
   }
 
   static deleteLabels(graphId, labels) {
     return api.delete(`/labels/delete/${graphId}`, {
-      cancelToken: this.#cancel('deleteLabels'),
       data: { labels },
     });
   }
@@ -404,7 +387,6 @@ class Api {
   static updateCustomFieldsLabels(graphId, customFields) {
     // nodeType, fieldName, order = 0, nodeId,
     return api.delete(`/custom-fields/update/${graphId}`, {
-      cancelToken: this.#cancel('updateCustomFieldsLabels'),
       data: { customFields },
     });
   }

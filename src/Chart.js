@@ -7,8 +7,6 @@ import ChartUndoManager from './helpers/ChartUndoManager';
 import Utils from './helpers/Utils';
 import SvgService from './helpers/SvgService';
 import ChartInfography from './helpers/ChartInfography';
-import store from './store';
-import { createNodesRequest, updateNodesRequest } from './store/actions/nodes';
 
 class Chart {
   static event = new EventEmitter();
@@ -1069,6 +1067,8 @@ class Chart {
         dragLabel.label = labelsWrapper.select(`[data-id="${id}"]`);
         dragLabel.labelLock = labelsWrapper.select(`use[data-label-id="${id}"]`);
         dragLabel.nodes = this.getNodes().filter((d) => d.labels.includes(id));
+
+        this.oldData.labels = _.cloneDeep(this.getLabels());
       }
     };
 

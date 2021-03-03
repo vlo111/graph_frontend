@@ -6,6 +6,14 @@ import { withRouter } from 'react-router-dom';
 import Chart from '../Chart';
 import { updateGraphRequest } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
+import {
+  createNodesRequest,
+  deleteNodesRequest,
+  updateNodesPositionRequest,
+  updateNodesRequest
+} from "../store/actions/nodes";
+import { createLinksRequest, deleteLinksRequest, updateLinksRequest } from "../store/actions/links";
+import { createLabelsRequest, deleteLabelsRequest, updateLabelsRequest } from "../store/actions/labels";
 
 class AutoSave extends Component {
   static propTypes = {
@@ -34,25 +42,23 @@ class AutoSave extends Component {
     this.timeout = setTimeout(this.saveGraph, 50);
   }
 
-  formatNode = (node) => {
-    return {
-      id: node.id || '',
-      color: node.color || '',
-      d: node.d || '',
-      description: node.description || '',
-      icon: node.icon || '',
-      infographyId: node.infographyId || '',
-      keywords: node.keywords || [],
-      labels: node.labels || [],
-      location: node.location || '',
-      name: node.name || '',
-      nodeType: node.nodeType || '',
-      scale: node.scale || '',
-      sourceId: node.sourceId || '',
-      status: node.status || '',
-      type: node.type || '',
-    }
-  }
+  formatNode = (node) => ({
+    id: node.id || '',
+    color: node.color || '',
+    d: node.d || '',
+    description: node.description || '',
+    icon: node.icon || '',
+    infographyId: node.infographyId || '',
+    keywords: node.keywords || [],
+    labels: node.labels || [],
+    location: node.location || '',
+    name: node.name || '',
+    nodeType: node.nodeType || '',
+    scale: node.scale || '',
+    sourceId: node.sourceId || '',
+    status: node.status || '',
+    type: node.type || '',
+  })
 
   saveGraph = async () => {
     const { match: { params: { graphId } }, singleGraph } = this.props;
@@ -68,8 +74,8 @@ class AutoSave extends Component {
     // } = await ChartUtils.getNodesWithFiles(this.props.customFields, singleGraph.documents);
 
     const svg = ChartUtils.getChartSvg();
-    const deleteNodes = _.differenceBy(Chart.oldData.nodes, Chart.getNodes(), 'id');
-    const createNodes = _.differenceBy(Chart.getNodes(), Chart.oldData.nodes, 'id');
+    const deleteNodes = _.differenceBy(Chart.oldData.nodes, nodes, 'id');
+    const createNodes = _.differenceBy(nodes, Chart.oldData.nodes, 'id');
 
     const updateNodes = [];
     const updateNodePositions = [];
@@ -78,7 +84,6 @@ class AutoSave extends Component {
       const oldNode = Chart.oldData.nodes.find((n) => n.id === node.id);
       if (oldNode) {
         if (!_.isEqual(this.formatNode(node), this.formatNode(oldNode))) {
-          console.log(this.formatNode(node), this.formatNode(oldNode))
           updateNodes.push(node);
         } else if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
           updateNodePositions.push(node);
@@ -86,9 +91,69 @@ class AutoSave extends Component {
       }
     });
 
-    console.log({
-      deleteNodes, createNodes, updateNodes, updateNodePositions,
+    const deleteLinks = _.differenceBy(Chart.oldData.links, links, 'id');
+    const createLinks = _.differenceBy(links, Chart.oldData.links, 'id');
+    const updateLinks = [];
+
+    links.forEach((link) => {
+      const oldLink = Chart.oldData.labels.find((l) => l.id === link.id);
+      if (oldLink) {
+        if (!_.isEqual(oldLink, link)) {
+          updateLinks.push(link);
+        }
+      }
     });
+
+    const deleteLabels = _.differenceBy(Chart.oldData.labels, labels, 'id');
+    const createLabels = _.differenceBy(labels, Chart.oldData.labels, 'id');
+    const updateLabels = [];
+
+    labels.forEach((label) => {
+      const oldLabel = Chart.oldData.labels.find((l) => l.id === label.id);
+      if (oldLabel) {
+        if (!_.isEqual(oldLabel.d, label.d)) {
+          updateLabels.push(label);
+        }
+      }
+    });
+
+    if (createNodes.length) {
+      this.props.createNodesRequest(graphId, createNodes);
+    }
+    if (updateNodes.length) {
+      this.props.updateNodesRequest(graphId, updateNodes);
+    }
+    if (deleteNodes.length) {
+      this.props.deleteNodesRequest(graphId, deleteNodes);
+    }
+    if (updateNodePositions.length) {
+      this.props.updateNodesPositionRequest(graphId, updateNodePositions);
+    }
+
+    if (createLinks.length) {
+      this.props.createLinksRequest(graphId, createLinks);
+    }
+    if (updateLinks.length) {
+      this.props.updateLinksRequest(graphId, updateLinks);
+    }
+    if (deleteLinks.length) {
+      this.props.deleteLinksRequest(graphId, deleteLinks);
+    }
+
+
+    if (createLabels.length) {
+      this.props.createLabelsRequest(graphId, createLabels);
+    }
+    if (updateLabels.length) {
+      this.props.updateLabelsRequest(graphId, updateLabels);
+    }
+    if (deleteLabels.length) {
+      this.props.deleteLabelsRequest(graphId, deleteLabels);
+    }
+
+
+    document.body.classList.remove('autoSave');
+
     return;
     await this.props.updateGraphRequest(graphId, {
       ...singleGraph,
@@ -117,6 +182,19 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   updateGraphRequest,
+
+  updateNodesRequest,
+  createNodesRequest,
+  deleteNodesRequest,
+  updateNodesPositionRequest,
+
+  createLinksRequest,
+  updateLinksRequest,
+  deleteLinksRequest,
+
+  createLabelsRequest,
+  updateLabelsRequest,
+  deleteLabelsRequest,
 };
 
 const Container = connect(

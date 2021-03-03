@@ -109,14 +109,14 @@ class AddLabelModal extends Component {
       } else {
         labels.push(labelData);
       }
-      this.props.createLabelsRequest(graphId, [labelData]);
+      // this.props.createLabelsRequest(graphId, [labelData]);
 
-      this.props.updateNodesPositionRequest(graphId, nodes.filter((d) => d.labels.includes(labelData.id)).map((n) => ({
-        id: n.id,
-        fx: n.fx,
-        fy: n.fy,
-        labels: n.labels,
-      })));
+      // this.props.updateNodesPositionRequest(graphId, nodes.filter((d) => d.labels.includes(labelData.id)).map((n) => ({
+      //   id: n.id,
+      //   fx: n.fx,
+      //   fy: n.fy,
+      //   labels: n.labels,
+      // })));
       Chart.render({ labels });
       this.setState({ show: false });
     }

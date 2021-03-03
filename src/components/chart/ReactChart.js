@@ -85,16 +85,16 @@ class ReactChart extends Component {
   }
 
   handleLabelDragEnd = (ev, d) => {
-    const { nodes } = d;
-    const label = d.label.datum();
-    const { singleGraph } = this.props;
-    this.props.updateLabelsRequest(singleGraph.id, [label]);
-    this.props.updateNodesPositionRequest(singleGraph.id, nodes.map((n) => ({
-      id: n.id,
-      fx: n.fx,
-      fy: n.fy,
-      labels: n.labels,
-    })));
+    // const { nodes } = d;
+    // const label = d.label.datum();
+    // const { singleGraph } = this.props;
+    // this.props.updateLabelsRequest(singleGraph.id, [label]);
+    // this.props.updateNodesPositionRequest(singleGraph.id, nodes.map((n) => ({
+    //   id: n.id,
+    //   fx: n.fx,
+    //   fy: n.fy,
+    //   labels: n.labels,
+    // })));
   }
 
   handleRender = () => {
@@ -109,7 +109,7 @@ class ReactChart extends Component {
 
   handleNodeDragEnd = (ev, d) => {
     const { singleGraph } = this.props;
-    this.props.updateNodesPositionRequest(singleGraph.id, [{ id: d.id, fx: d.fx, fy: d.fy }]);
+    // this.props.updateNodesPositionRequest(singleGraph.id, [{ id: d.id, fx: d.fx, fy: d.fy }]);
     this.handleRender();
   }
 
@@ -119,7 +119,7 @@ class ReactChart extends Component {
     const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.id));
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
 
-    this.props.deleteLabelsRequest(graphId, [d.id]);
+    // this.props.deleteLabelsRequest(graphId, [d.id]);
 
     if (d.sourceId) {
       const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
@@ -180,10 +180,10 @@ class ReactChart extends Component {
       return;
     }
     const { singleGraph } = this.props;
-    const links = Chart.getLinks();
+    const links = [...Chart.getLinks()];
     const link = links.find((l) => l.index === d.index);
     links.splice(d.index, 1);
-    this.props.deleteLinksRequest(singleGraph.id, [link.id]);
+    // this.props.deleteLinksRequest(singleGraph.id, [link.id]);
     Chart.render({ links });
   }
 
@@ -203,7 +203,7 @@ class ReactChart extends Component {
 
     nodes = nodes.filter((n) => n.index !== d.index);
 
-    this.props.deleteNodesRequest(singleGraph.id, [d.id]);
+    // this.props.deleteNodesRequest(singleGraph.id, [d.id]);
 
     links = links.filter((l) => {
       if (l.source === d.id || l.target === d.id) {

@@ -76,10 +76,10 @@ class LabelCopy extends Component {
     const data = LabelUtils.getData();
     if (_.isEmpty(compare.duplicatedNodes)) {
       this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
-      const { createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
-      this.props.createNodesRequest(singleGraph.id, createNodes);
-      this.props.createLinksRequest(singleGraph.id, createLinks);
-      this.props.createLabelsRequest(singleGraph.id, [createLabel]);
+      // const { createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
+      // this.props.createNodesRequest(singleGraph.id, createNodes);
+      // this.props.createLinksRequest(singleGraph.id, createLinks);
+      // this.props.createLabelsRequest(singleGraph.id, [createLabel]);
       return;
     }
     this.setState({
@@ -116,13 +116,13 @@ class LabelCopy extends Component {
     this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
     this.closeModal();
 
-    const {
-      updateNodes, createNodes, createLinks, createLabel,
-    } = await LabelUtils.past(data, position);
-    this.props.updateNodesRequest(singleGraph.id, updateNodes);
-    this.props.createNodesRequest(singleGraph.id, createNodes);
-    this.props.createLinksRequest(singleGraph.id, createLinks);
-    this.props.createLabelsRequest(singleGraph.id, [createLabel]);
+    // const {
+    //   updateNodes, createNodes, createLinks, createLabel,
+    // } = await LabelUtils.past(data, position);
+    // this.props.updateNodesRequest(singleGraph.id, updateNodes);
+    // this.props.createNodesRequest(singleGraph.id, createNodes);
+    // this.props.createLinksRequest(singleGraph.id, createLinks);
+    // this.props.createLabelsRequest(singleGraph.id, [createLabel]);
   }
 
   closeModal = () => {
@@ -161,11 +161,11 @@ class LabelCopy extends Component {
     this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
 
     this.closeModal();
-    const { updateNodes, createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
-    this.props.updateNodesRequest(singleGraph.id, updateNodes);
-    this.props.createNodesRequest(singleGraph.id, createNodes);
-    this.props.createLinksRequest(singleGraph.id, createLinks);
-    this.props.createLabelsRequest(singleGraph.id, [createLabel]);
+    // const { updateNodes, createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
+    // this.props.updateNodesRequest(singleGraph.id, updateNodes);
+    // this.props.createNodesRequest(singleGraph.id, createNodes);
+    // this.props.createLinksRequest(singleGraph.id, createLinks);
+    // this.props.createLabelsRequest(singleGraph.id, [createLabel]);
   }
 
   toggleCompareNodes = (showCompareModal) => {
@@ -211,13 +211,13 @@ class LabelCopy extends Component {
     this.setState({
       compare: {}, data: {}, position: [], showQuestionModal: false, showCompareModal: false,
     });
-    const { updateNodes, createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
-    this.props.updateNodesRequest(singleGraph.id, updateNodes);
-    this.props.createNodesRequest(singleGraph.id, createNodes);
-    this.props.deleteNodesRequest(singleGraph.id, deleteNodes);
-
-    this.props.createLinksRequest(singleGraph.id, createLinks);
-    this.props.createLabelsRequest(singleGraph.id, [createLabel]);
+    // const { updateNodes, createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
+    // this.props.updateNodesRequest(singleGraph.id, updateNodes);
+    // this.props.createNodesRequest(singleGraph.id, createNodes);
+    // this.props.deleteNodesRequest(singleGraph.id, deleteNodes);
+    //
+    // this.props.createLinksRequest(singleGraph.id, createLinks);
+    // this.props.createLabelsRequest(singleGraph.id, [createLabel]);
   }
 
   render() {
