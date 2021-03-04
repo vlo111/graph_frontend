@@ -801,14 +801,14 @@ class ChartUtils {
             const value2 = node2 ? _.get(graph2.customFields, [node2.type, tab, 'values', node2.id]) : null;
 
             if (value1 && !value2) {
-              _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1);
+              _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1, Object);
             } else if (!value1 && value2) {
-              _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
+              _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
             } else if (value1 && value2) {
               if (value1 !== value2) {
-                _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`);
+                _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`, Object);
               } else {
-                _.set(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2);
+                _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
               }
             }
           }

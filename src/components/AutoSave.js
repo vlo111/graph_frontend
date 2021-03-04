@@ -56,7 +56,6 @@ class AutoSave extends Component {
 
   formatNode = (node) => ({
     id: node.id || '',
-    color: node.color || '',
     d: node.d || '',
     description: node.description || '',
     icon: node.icon || '',
@@ -131,40 +130,52 @@ class AutoSave extends Component {
       }
     });
 
+    let update = false;
     if (createNodes.length) {
+      update = true;
       this.props.createNodesRequest(graphId, createNodes);
     }
     if (updateNodes.length) {
+      update = true;
       this.props.updateNodesRequest(graphId, updateNodes);
     }
     if (deleteNodes.length) {
+      update = true;
       this.props.deleteNodesRequest(graphId, deleteNodes);
     }
     if (updateNodePositions.length) {
+      update = true;
       this.props.updateNodesPositionRequest(graphId, updateNodePositions);
     }
 
     if (createLinks.length) {
+      update = true;
       this.props.createLinksRequest(graphId, createLinks);
     }
     if (updateLinks.length) {
+      update = true;
       this.props.updateLinksRequest(graphId, updateLinks);
     }
     if (deleteLinks.length) {
+      update = true;
       this.props.deleteLinksRequest(graphId, deleteLinks);
     }
 
     if (createLabels.length) {
+      update = true;
       this.props.createLabelsRequest(graphId, createLabels);
     }
     if (updateLabels.length) {
+      update = true;
       this.props.updateLabelsRequest(graphId, updateLabels);
     }
     if (deleteLabels.length) {
+      update = true;
       this.props.deleteLabelsRequest(graphId, deleteLabels);
     }
-
-    this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+    if (update) {
+      this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+    }
 
     document.body.classList.remove('autoSave');
 

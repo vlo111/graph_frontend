@@ -2249,6 +2249,7 @@ class Chart {
         scale: d.scale,
         infographyId: d.infographyId,
         manually_size: d.manually_size || 1,
+        customFields: d.customFields || [], // {name, value, subTitle, order,}
       }));
     }
     return this._dataNodes;

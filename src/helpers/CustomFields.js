@@ -1,9 +1,24 @@
 import _ from 'lodash';
+import { values } from 'react-bootstrap-typeahead/lib/utils';
 import Utils from './Utils';
 
 class CustomFields {
   static LIMIT = 10;
 
+  static getCustomField(node, nodes) {
+    const { customFields = [] } = node;
+    nodes.forEach((n) => {
+      if (n.type === node.type && n.customFields) {
+        n.customFields.forEach((f) => {
+          if (!customFields.some((c) => c.name === f.name)) {
+            customFields.push({ ...f, value: undefined });
+          }
+        });
+      }
+    });
+
+    return customFields;
+  }
 
   static setValue(customFields = {}, type, nodeId, values, append = false) {
     let i = 0;

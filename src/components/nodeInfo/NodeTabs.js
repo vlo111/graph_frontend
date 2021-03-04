@@ -12,6 +12,7 @@ import ContextMenu from '../contextMenu/ContextMenu';
 import { removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/graphs';
 import FlexTabs from '../FlexTabs';
 import MapsInfo from '../maps/MapsInfo';
+import Chart from '../../Chart';
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -31,14 +32,13 @@ class NodeTabs extends Component {
     };
   }
 
-  setFirstTab = memoizeOne((node, customField) => {
-    this.setState(
-      {
-        activeTab: !_.isEmpty(customField)
-          ? (this.props.activeTab ? this.props.activeTab : Object.keys(customField)[0])
-          : node.location ? '_location' : '',
-      },
-    );
+  setFirstTab = memoizeOne((node, customFields) => {
+    if (node.location) {
+      this.setState({ activeTab: '_location' });
+    } else {
+      this.setState({ activeTab: _.get(customFields, '[0].name', '') });
+    }
+
     this.props.setActiveTab('');
   }, _.isEqual);
 
@@ -78,20 +78,19 @@ class NodeTabs extends Component {
 
   render() {
     const { activeTab, formModalOpen } = this.state;
-    const { node, customFields, editable } = this.props;
-    const customField = CustomFields.get(customFields, node.type, node.id);
-    const content = customField[activeTab];
-    this.setFirstTab(node, customField);
+    const { node, editable } = this.props;
+    const customFields = CustomFields.getCustomField(node, Chart.getNodes())
+    this.setFirstTab(node, customFields);
     return (
       <div className="nodeTabs">
         <FlexTabs>
-          {_.map(customField, (val, key) => (
+          {customFields.map((val) => (
             <Button
-              className={activeTab === key ? 'active' : undefined}
-              key={key}
-              onClick={() => this.setActiveTab(key)}
+              className={activeTab === val.name ? 'active' : undefined}
+              key={val.name}
+              onClick={() => this.setActiveTab(val.name)}
             >
-              <p>{key.length > 15 ? `${key.substr(0, 13)}..` : key}</p>
+              <p>{val.name}</p>
             </Button>
           ))}
           {node.location ? (
@@ -102,7 +101,7 @@ class NodeTabs extends Component {
               <p>Location</p>
             </Button>
           ) : null}
-          {editable && !node.sourceId && Object.values(customField).length < CustomFields.LIMIT ? (
+          {editable && !node.sourceId && node.customFields?.length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
               <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
             </Tooltip>
@@ -113,7 +112,6 @@ class NodeTabs extends Component {
           <NodeTabsFormModal
             node={node}
             fieldName={formModalOpen}
-            customField={customField}
             onClose={this.closeFormModal}
           />
         ) : null}
@@ -124,7 +122,12 @@ class NodeTabs extends Component {
                 ? <MapsInfo node={node} />
                 : (
                   <div className="contentWrapper">
-                    <Button icon="fa-globe" className=" ghButton2  mapTabButton" href="#" onClick={() => this.showLocation()}>
+                    <Button
+                      icon="fa-globe"
+                      className=" ghButton2  mapTabButton"
+                      href="#"
+                      onClick={() => this.showLocation()}
+                    >
                       Show on Map
                     </Button>
                   </div>
@@ -132,7 +135,7 @@ class NodeTabs extends Component {
             ),
           ]
         ) : (
-          <NodeTabsContent name={activeTab} node={node} content={content} />
+          <NodeTabsContent name={activeTab} node={node} />
         )}
       </div>
     );
