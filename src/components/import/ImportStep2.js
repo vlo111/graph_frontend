@@ -41,6 +41,8 @@ class ImportStep2 extends Component {
     const {
       nodes, links, labels, customFields,
     } = ChartUtils.margeGraphs(singleGraph, importData);
+    console.log(customFields);
+    return;
     Chart.render({
       nodes, links, labels,
     });
