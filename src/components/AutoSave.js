@@ -111,7 +111,9 @@ class AutoSave extends Component {
     labels.forEach((label) => {
       const oldLabel = Chart.oldData.labels.find((l) => l.id === label.id);
       if (oldLabel) {
-        if (!_.isEqual(oldLabel.d, label.d)) {
+        if (!oldLabel.name && label.name) {
+          createLabels.push(label)
+        } else if (!_.isEqual(oldLabel.d, label.d)) {
           updateLabels.push(label);
         }
       }
@@ -140,7 +142,6 @@ class AutoSave extends Component {
       this.props.deleteLinksRequest(graphId, deleteLinks);
     }
 
-
     if (createLabels.length) {
       this.props.createLabelsRequest(graphId, createLabels);
     }
@@ -150,7 +151,6 @@ class AutoSave extends Component {
     if (deleteLabels.length) {
       this.props.deleteLabelsRequest(graphId, deleteLabels);
     }
-
 
     document.body.classList.remove('autoSave');
 

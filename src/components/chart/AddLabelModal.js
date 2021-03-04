@@ -98,7 +98,7 @@ class AddLabelModal extends Component {
     ev.preventDefault();
     const { labelData } = this.state;
     const { graphId } = this.props;
-    const labels = Chart.getLabels();
+    const labels = [...Chart.getLabels()];
     const nodes = Chart.getNodes();
     const errors = {};
     [errors.name, labelData.name] = Validate.labelName(labelData.name);
