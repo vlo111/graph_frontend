@@ -41,8 +41,6 @@ class ImportCompare extends Component {
     const {
       nodes, links, labels, customFields,
     } = ChartUtils.margeGraphs(singleGraph, singleGraph2, selectedNodes1, selectedNodes2);
-    console.log(customFields);
-    return;
     Chart.render({
       nodes, links, labels,
     });
