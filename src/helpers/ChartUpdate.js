@@ -42,8 +42,18 @@ class ChartUpdate {
   }
 
   static linkCreate = (linksCreate) => {
-    const links = Chart.getLinks();
-    links.push(...linksCreate);
+    let links = Chart.getLinks();
+    links.push(..._.compact(linksCreate));
+    links = _.uniqBy(links, (l) => {
+      if (l.direction) {
+        return JSON.stringify({
+          1: l.name, 2: l.type, 3: l.source, 4: l.target,
+        });
+      }
+      return JSON.stringify({
+        1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
+      });
+    });
     Chart.render({ links });
   }
 
