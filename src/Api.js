@@ -332,11 +332,6 @@ class Api {
     });
   }
 
-
-  static getShareGraphsList() {
-    return api.get('/share');
-  }
-
   static getShareGraphsList() {
     return api.get('/share');
   }
