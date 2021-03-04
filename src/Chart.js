@@ -1223,6 +1223,7 @@ class Chart {
       if (!this.isCalled('render')) {
         this.undoManager = new ChartUndoManager();
       }
+      this.ignoreAutoSave = params.ignoreAutoSave;
       this.oldData = _.cloneDeep({
         nodes: Chart.getNodes(true, data.nodes),
         links: Chart.getLinks(data.links),

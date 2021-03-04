@@ -22,7 +22,7 @@ class ChartUpdate {
   static nodesCrate = (nodeCreate) => {
     const nodes = Chart.getNodes();
     nodes.push(...nodeCreate);
-    Chart.render({ nodes });
+    Chart.render({ nodes }, { ignoreAutoSave: false });
   }
 
   static nodesDelete = (nodesDelete) => {
@@ -38,7 +38,7 @@ class ChartUpdate {
       }
       return d;
     });
-    Chart.render({ nodes });
+    Chart.render({ nodes }, { ignoreAutoSave: false });
   }
 
   static linkCreate = (linksCreate) => {
@@ -55,18 +55,18 @@ class ChartUpdate {
       }
       return d;
     });
-    Chart.render({ links });
+    Chart.render({ links }, { ignoreAutoSave: false });
   }
 
   static linkDelete = (linksDelete) => {
     const links = Chart.getNodes().filter((n) => !linksDelete.some((d) => n.id === d.id));
-    Chart.render({ links });
+    Chart.render({ links }, { ignoreAutoSave: false });
   }
 
   static labelCreate = (labelsCreate) => {
     const labels = Chart.getLabels();
     labels.push(...labelsCreate);
-    Chart.render({ labels });
+    Chart.render({ labels }, { ignoreAutoSave: false });
   }
 
   static labelUpdate = (labelsUpdate) => {
@@ -77,7 +77,7 @@ class ChartUpdate {
       }
       return d;
     });
-    Chart.render({ labels });
+    Chart.render({ labels }, { ignoreAutoSave: false });
   }
 
   static labelDelete = (labelsDelete) => {
@@ -88,7 +88,7 @@ class ChartUpdate {
     const nodes = Chart.getNodes().filter((d) => !_.intersection(labelsDeleteId, d.labels).length);
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
 
-    Chart.render({ nodes, links, labels });
+    Chart.render({ nodes, links, labels }, { ignoreAutoSave: false });
   }
 }
 

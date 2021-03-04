@@ -73,7 +73,7 @@ class AutoSave extends Component {
 
   saveGraph = async () => {
     const { match: { params: { graphId } }, singleGraph } = this.props;
-    if (!graphId) {
+    if (!graphId || Chart.ignoreAutoSave) {
       return;
     }
     document.body.classList.add('autoSave');
