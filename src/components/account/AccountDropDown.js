@@ -32,8 +32,7 @@ class AccountDropDown extends Component {
     const { showDropDown } = this.state;
     const { mini, myAccount: { firstName, lastName, avatar }, match: { params: { graphId = '' } } } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
-    const visible = ['/', '/account', '/templates', '/shared', '/friends'].includes(window.location.pathname);
-    return (
+     return (
       <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
           <img src={avatar} className="avatar" alt={name} />
@@ -49,13 +48,7 @@ class AccountDropDown extends Component {
               <ul>
                 <li className="item">
                   <Link to="/account">Account</Link>
-                </li>
-                {!visible
-                && (
-                <li className="item">
-                  <Link to={`/graphs/filter/${graphId}`}>Filters</Link>
-                </li>
-                )}
+                </li> 
                 <li className="item">
                   <Link to="/sign/sign-out">Sign Out</Link>
                 </li>
