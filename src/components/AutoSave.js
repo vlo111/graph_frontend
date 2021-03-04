@@ -4,23 +4,35 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Chart from '../Chart';
-import { updateGraphRequest } from '../store/actions/graphs';
+import { updateGraphRequest, updateGraphThumbnailRequest } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
 import {
   createNodesRequest,
   deleteNodesRequest,
   updateNodesPositionRequest,
-  updateNodesRequest
-} from "../store/actions/nodes";
-import { createLinksRequest, deleteLinksRequest, updateLinksRequest } from "../store/actions/links";
-import { createLabelsRequest, deleteLabelsRequest, updateLabelsRequest } from "../store/actions/labels";
+  updateNodesRequest,
+} from '../store/actions/nodes';
+import { createLinksRequest, deleteLinksRequest, updateLinksRequest } from '../store/actions/links';
+import { createLabelsRequest, deleteLabelsRequest, updateLabelsRequest } from '../store/actions/labels';
 
 class AutoSave extends Component {
   static propTypes = {
     updateGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
-    customFields: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
+
+    createNodesRequest: PropTypes.func.isRequired,
+    deleteNodesRequest: PropTypes.func.isRequired,
+    updateNodesPositionRequest: PropTypes.func.isRequired,
+    updateNodesRequest: PropTypes.func.isRequired,
+
+    createLinksRequest: PropTypes.func.isRequired,
+    deleteLinksRequest: PropTypes.func.isRequired,
+    updateLinksRequest: PropTypes.func.isRequired,
+
+    createLabelsRequest: PropTypes.func.isRequired,
+    deleteLabelsRequest: PropTypes.func.isRequired,
+    updateLabelsRequest: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
@@ -112,7 +124,7 @@ class AutoSave extends Component {
       const oldLabel = Chart.oldData.labels.find((l) => l.id === label.id);
       if (oldLabel) {
         if (!oldLabel.name && label.name) {
-          createLabels.push(label)
+          createLabels.push(label);
         } else if (!_.isEqual(oldLabel.d, label.d)) {
           updateLabels.push(label);
         }
@@ -152,6 +164,8 @@ class AutoSave extends Component {
       this.props.deleteLabelsRequest(graphId, deleteLabels);
     }
 
+    this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+
     document.body.classList.remove('autoSave');
 
     return;
@@ -182,6 +196,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   updateGraphRequest,
+
+  updateGraphThumbnailRequest,
 
   updateNodesRequest,
   createNodesRequest,

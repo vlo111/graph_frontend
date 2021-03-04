@@ -110,8 +110,10 @@ class Api {
     return api.delete(`/graphs/delete/${id}`);
   }
 
-  static updateGraphThumbnail(id, svg) {
-    return api.patch(`/graphs/thumbnail/${id}`, { svg });
+  static updateGraphThumbnail(id, svg, size) {
+    return api.patch(`/graphs/thumbnail/${id}`, { svg, size }, {
+      cancelToken: this.#cancel('updateGraphThumbnail'),
+    });
   }
 
   static getGraphsList(page, requestData = {}) {
@@ -321,6 +323,7 @@ class Api {
   static deleteShareGraphWithUsers(shareId) {
     return api.delete(`/share/delete/${shareId}`);
   }
+
   static shareLabelDelete(labelId, graphId) {
     return api.delete('/share/label-delete', {
       params: {

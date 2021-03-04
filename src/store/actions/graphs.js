@@ -39,8 +39,8 @@ export function deleteGraphRequest(id) {
 
 export const UPDATE_GRAPH_THUMBNAIL = define('UPDATE_GRAPH_THUMBNAIL');
 
-export function updateGraphThumbnailRequest(id, svg) {
-  return UPDATE_GRAPH_THUMBNAIL.request(() => Api.updateGraphThumbnail(id, svg));
+export function updateGraphThumbnailRequest(id, svg, size) {
+  return UPDATE_GRAPH_THUMBNAIL.request(() => Api.updateGraphThumbnail(id, svg, size));
 }
 
 export const GET_GRAPHS_LIST = define('GET_GRAPHS_LIST');
