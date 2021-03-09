@@ -116,8 +116,6 @@ class InsertMediaTabsModal extends Component {
                     <button type="button" onClick={() => { this.removeTag(i); }}>+</button>
                   </li>
                 ))}
-                {/* <li className="input-tag__tags__input"> */}
-                {/* </li> */}
               </ul>
             </div>
             <Input

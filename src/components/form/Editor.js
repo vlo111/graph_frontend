@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import InsertMediaTabsModal from '../nodeInfo/InsertMediaTabsModal';
 import Utils from '../../helpers/Utils';
+import Api from "../../Api";
 
 class Editor extends Component {
   static propTypes = {
@@ -113,11 +114,12 @@ class Editor extends Component {
     this.setState({ showPopUp: null });
   }
 
-  insertFile = (popUpData) => {
+  insertFile = async (popUpData) => {
     const file = popUpData.file[0];
 
     this.props.media(popUpData);
 
+    const { node } = this.props;
     const { tags } = popUpData;
 
     if (file) {
@@ -127,6 +129,9 @@ class Editor extends Component {
       const desc = popUpData.desc ? `${popUpData.desc}` : '';
 
       let anchor = '';
+
+      const { data = {} } = await Api.uploadNodeFile(Utils.getGraphIdFormUrl(), node.id, [file]).catch((d) => d);
+      file.preview = data.files[0];
 
       if (isImg && !popUpData.alt) {
         if (desc) {

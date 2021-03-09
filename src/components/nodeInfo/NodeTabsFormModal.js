@@ -132,6 +132,7 @@ class NodeTabsFormModal extends Component {
           media={this.media}
           error={errors.value}
           label="ContentTabs"
+          node={node}
           onChange={(v) => this.handleChange('value', v)}
         />
         <div className="buttonsWrapper">

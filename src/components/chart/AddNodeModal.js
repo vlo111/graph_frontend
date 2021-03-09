@@ -122,15 +122,10 @@ class AddNodeModal extends Component {
       if (update) {
         const d = { ...nodes[index], ...nodeData };
         nodes[index] = d;
-        // this.props.updateNodesRequest(graphId, [{
-        //   ...d,
-        //   icon: await Utils.blobToBase64(d.icon),
-        // }]);
       } else {
         nodeData.createdAt = moment().unix();
         nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
-        // this.props.createNodesRequest(graphId, [nodeData]);
       }
 
       Chart.render({ nodes, links });

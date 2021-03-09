@@ -35,7 +35,7 @@ class Api {
   }
 
   static toFormData(data) {
-    return serialize({ ...data }, { indices: true });
+    return serialize({ ...data });
   }
 
   static singIn(email, password) {
@@ -353,10 +353,17 @@ class Api {
   }
 
   static uploadNodeIcon(graphId, nodeId, nodeIcon) {
-    const formData = new FormData();
-    formData.append('id', nodeId);
-    formData.append('icon', nodeIcon);
-    return api.post(`/nodes/upload/icon/${graphId}`, formData);
+    return api.post(`/nodes/upload/icon/${graphId}`, this.toFormData({
+      id: nodeId,
+      icon: nodeIcon,
+    }));
+  }
+
+  static uploadNodeFile(graphId, nodeId, files) {
+    return api.post(`/nodes/upload/files/${graphId}`, this.toFormData({
+      id: nodeId,
+      files,
+    }));
   }
 
   static deleteNodes(graphId, nodes) {

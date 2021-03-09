@@ -84,6 +84,7 @@ class AddNodeCustomFields extends Component {
               value={data[key] || ''}
               buttons={[]}
               minHeight={30}
+              node={node}
               onChange={(v) => this.handleChange(key, v)}
             />
             <Button
