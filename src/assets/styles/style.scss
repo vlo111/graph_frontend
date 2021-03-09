@@ -717,6 +717,12 @@ p {
       margin-right: 0;
     }
 
+    &.loading{
+      position: absolute;
+      right: 10px;
+      margin-right: 0;
+    }
+
     img {
       height: 14px;
       width: auto;

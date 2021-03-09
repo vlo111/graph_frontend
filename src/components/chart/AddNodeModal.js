@@ -19,7 +19,8 @@ import LocationInputs from './LocationInputs';
 import Utils from '../../helpers/Utils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import ChartUtils from '../../helpers/ChartUtils';
-import { createNodesRequest, updateNodesRequest } from "../../store/actions/nodes";
+import { createNodesRequest, updateNodesRequest } from '../../store/actions/nodes';
+import Api from '../../Api';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -34,7 +35,7 @@ class AddNodeModal extends Component {
     const nodes = Chart.getNodes();
     const {
       fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale,
-      d, infographyId, manually_size
+      d, infographyId, manually_size,
     } = _.cloneDeep(addNodeParams);
     const _type = type || _.last(nodes)?.type || '';
     this.setState({
@@ -89,6 +90,7 @@ class AddNodeModal extends Component {
 
   saveNode = async (ev) => {
     ev.preventDefault();
+    this.setState({ loading: true });
     const { currentUserId, graphId } = this.props;
     const { nodeData, index, customField } = this.state;
 
@@ -110,6 +112,13 @@ class AddNodeModal extends Component {
       if (nodeData.color) {
         ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
       }
+
+      nodeData.id = update ? nodeData.id : ChartUtils.uniqueId(nodes);
+
+      if (_.isObject(nodeData.icon)) {
+        const { data = {} } = await Api.uploadNodeIcon(graphId, nodeData.id, nodeData.icon).catch((d) => d);
+        nodeData.icon = data.icon;
+      }
       if (update) {
         const d = { ...nodes[index], ...nodeData };
         nodes[index] = d;
@@ -118,7 +127,6 @@ class AddNodeModal extends Component {
         //   icon: await Utils.blobToBase64(d.icon),
         // }]);
       } else {
-        nodeData.id = ChartUtils.uniqueId(nodes);
         nodeData.createdAt = moment().unix();
         nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
@@ -129,7 +137,7 @@ class AddNodeModal extends Component {
       this.props.setNodeCustomField(nodeData.type, nodeData.id, customField);
       this.props.toggleNodeModal();
     }
-    this.setState({ errors, nodeData });
+    this.setState({ errors, nodeData, loading: false });
   }
 
   handleChange = (path, value) => {
@@ -148,7 +156,7 @@ class AddNodeModal extends Component {
   }
 
   render() {
-    const { nodeData, errors, index } = this.state;
+    const { nodeData, errors, index, loading } = this.state;
     const { addNodeParams, currentUserRole, currentUserId } = this.props;
     const { editPartial } = addNodeParams;
     this.initNodeData(addNodeParams);
@@ -222,7 +230,7 @@ class AddNodeModal extends Component {
                   label={nodeData.nodeType === 'infography' ? 'Image' : 'Icon'}
                   accept=".png,.jpg,.gif"
                   value={nodeData.icon}
-                  onChangeFile={(v) => this.handleChange('icon', v)}
+                  onChangeFile={(v, file) => this.handleChange('icon', file)}
                 />
                 <Select
                   label="keywords"
@@ -262,7 +270,7 @@ class AddNodeModal extends Component {
               <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
                 Cancel
               </Button>
-              <Button className="ghButton accent alt main main" type="submit">
+              <Button className="ghButton accent alt main main" type="submit" loading={loading}>
                 {_.isNull(index) ? 'Add' : 'Save'}
               </Button>
             </div>

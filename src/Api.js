@@ -352,6 +352,13 @@ class Api {
     return api.put(`/nodes/update-fields/${graphId}`, { nodes });
   }
 
+  static uploadNodeIcon(graphId, nodeId, nodeIcon) {
+    const formData = new FormData();
+    formData.append('id', nodeId);
+    formData.append('icon', nodeIcon);
+    return api.post(`/nodes/upload/icon/${graphId}`, formData);
+  }
+
   static deleteNodes(graphId, nodes) {
     return api.delete(`/nodes/delete/${graphId}`, {
       data: { nodes },
