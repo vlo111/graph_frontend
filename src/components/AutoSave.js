@@ -8,7 +8,7 @@ import { updateGraphRequest, updateGraphThumbnailRequest } from '../store/action
 import ChartUtils from '../helpers/ChartUtils';
 import {
   createNodesRequest,
-  deleteNodesRequest,
+  deleteNodesRequest, updateNodesCustomFieldsRequest,
   updateNodesPositionRequest,
   updateNodesRequest,
 } from '../store/actions/nodes';
@@ -24,6 +24,7 @@ class AutoSave extends Component {
     createNodesRequest: PropTypes.func.isRequired,
     deleteNodesRequest: PropTypes.func.isRequired,
     updateNodesPositionRequest: PropTypes.func.isRequired,
+    updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
     updateNodesRequest: PropTypes.func.isRequired,
 
     createLinksRequest: PropTypes.func.isRequired,
@@ -90,6 +91,7 @@ class AutoSave extends Component {
 
     const updateNodes = [];
     const updateNodePositions = [];
+    const updateNodeCustomFields = [];
 
     nodes.forEach((node) => {
       const oldNode = Chart.oldData.nodes.find((n) => n.id === node.id);
@@ -98,6 +100,8 @@ class AutoSave extends Component {
           updateNodes.push(node);
         } else if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
           updateNodePositions.push(node);
+        } else if (!_.isEqual(node.customFields, oldNode.customFields)) {
+          updateNodeCustomFields.push(node);
         }
       }
     });
@@ -146,6 +150,11 @@ class AutoSave extends Component {
     if (updateNodePositions.length) {
       update = true;
       this.props.updateNodesPositionRequest(graphId, updateNodePositions);
+    }
+
+    if (updateNodeCustomFields.length) {
+      update = true;
+      this.props.updateNodesCustomFieldsRequest(graphId, updateNodeCustomFields);
     }
 
     if (createLinks.length) {
@@ -214,6 +223,7 @@ const mapDispatchToProps = {
   createNodesRequest,
   deleteNodesRequest,
   updateNodesPositionRequest,
+  updateNodesCustomFieldsRequest,
 
   createLinksRequest,
   updateLinksRequest,

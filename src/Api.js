@@ -348,6 +348,10 @@ class Api {
     return api.put(`/nodes/update-positions/${graphId}`, { nodes });
   }
 
+  static updateNodeCustomFields(graphId, nodes) {
+    return api.put(`/nodes/update-fields/${graphId}`, { nodes });
+  }
+
   static deleteNodes(graphId, nodes) {
     return api.delete(`/nodes/delete/${graphId}`, {
       data: { nodes },

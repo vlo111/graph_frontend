@@ -60,8 +60,8 @@ class NodeTabs extends Component {
     this.setState({ formModalOpen: params?.fieldName || '' });
   }
 
-  closeFormModal = () => {
-    this.setState({ formModalOpen: null });
+  closeFormModal = (data) => {
+    this.setState({ formModalOpen: null, activeTab: data.name });
   }
 
   deleteCustomField = (ev, params = {}) => {

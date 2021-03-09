@@ -79,24 +79,21 @@ class NodeTabsFormModal extends Component {
 
     if (!Validate.hasError(errors)) {
       const { customFields } = node;
+      const data = {
+        name: tabData.name,
+        value: tabData.value,
+        subtitle: tabData.subtitle,
+      };
       if (!isUpdate) {
-        customFields.push({
-          name: tabData.name,
-          value: tabData.value,
-          subtitle: tabData.subtitle,
-        });
+        customFields.push(data);
       } else {
         const i = customFields.findIndex((f) => f.name === tabData.originalName);
         if (i > -1) {
-          customFields[i] = {
-            name: tabData.name,
-            value: tabData.value,
-            subtitle: tabData.subtitle,
-          };
+          customFields[i] = data;
         }
       }
       Chart.setNodeData(node.id, { customFields });
-      this.props.onClose();
+      this.props.onClose(data);
     }
     this.setState({ errors, tabData });
   }
