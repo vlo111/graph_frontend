@@ -79,7 +79,7 @@ class NodeTabs extends Component {
   render() {
     const { activeTab, formModalOpen } = this.state;
     const { node, editable } = this.props;
-    const customFields = CustomFields.getCustomField(node, Chart.getNodes())
+    const customFields = CustomFields.getCustomField(node, Chart.getNodes());
     this.setFirstTab(node, customFields);
     return (
       <div className="nodeTabs">
@@ -116,24 +116,20 @@ class NodeTabs extends Component {
           />
         ) : null}
         {activeTab === '_location' ? (
-          [
-            (
-              this.state.showLocation
-                ? <MapsInfo node={node} />
-                : (
-                  <div className="contentWrapper">
-                    <Button
-                      icon="fa-globe"
-                      className=" ghButton2  mapTabButton"
-                      href="#"
-                      onClick={() => this.showLocation()}
-                    >
-                      Show on Map
-                    </Button>
-                  </div>
-                )
-            ),
-          ]
+          this.state.showLocation
+            ? <MapsInfo node={node} />
+            : (
+              <div className="contentWrapper">
+                <Button
+                  icon="fa-globe"
+                  className=" ghButton2  mapTabButton"
+                  href="#"
+                  onClick={() => this.showLocation()}
+                >
+                  Show on Map
+                </Button>
+              </div>
+            )
         ) : (
           <NodeTabsContent name={activeTab} node={node} />
         )}

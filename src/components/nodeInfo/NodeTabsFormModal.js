@@ -9,7 +9,7 @@ import Editor from '../form/Editor';
 import Button from '../form/Button';
 import Validate from '../../helpers/Validate';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import Chart from "../../Chart";
+import Chart from '../../Chart';
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -66,18 +66,16 @@ class NodeTabsFormModal extends Component {
   }
 
   save = async () => {
-    const {
-      node, customFields, fieldName,
-    } = this.props;
+    const { node, fieldName } = this.props;
     const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
 
-
-    // if (!isUpdate || (tabData.originalName !== tabData.name)) {
-    //   [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node.type, customFields);
-    // }
-    // [errors.value, tabData.value] = Validate.customFieldContent(tabData.value);
-    // [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
+    if (!isUpdate || (tabData.originalName !== tabData.name)) {
+      [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node);
+    }
+    // return;
+    [errors.value, tabData.value] = Validate.customFieldContent(tabData.value);
+    [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
 
     if (!Validate.hasError(errors)) {
       const { customFields } = node;
@@ -86,7 +84,16 @@ class NodeTabsFormModal extends Component {
           name: tabData.name,
           value: tabData.value,
           subtitle: tabData.subtitle,
-        })
+        });
+      } else {
+        const i = customFields.findIndex((f) => f.name === tabData.originalName);
+        if (i > -1) {
+          customFields[i] = {
+            name: tabData.name,
+            value: tabData.value,
+            subtitle: tabData.subtitle,
+          };
+        }
       }
       Chart.setNodeData(node.id, { customFields });
       this.props.onClose();

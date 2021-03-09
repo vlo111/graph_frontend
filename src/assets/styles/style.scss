@@ -7185,19 +7185,19 @@ img.preview-scaled {
     font-size: 11px;
     top: 21px;
   }
-  
-   .icon-container { 
+
+   .icon-container {
     position: relative;
    }
    .status-online {
     width: 16px;
     height: 16px;
-    border-radius: 50%; 
+    border-radius: 50%;
     border: 1px solid white;
     bottom: -2px;
     right: -5px;
     position: absolute;
-    background-color: #31a24c;  
+    background-color: #31a24c;
   }
   .status-in-graph {
     width: 8px;
@@ -7208,7 +7208,7 @@ img.preview-scaled {
     right: 3px;
     position: absolute;
     background-color: white;
-  } 
+  }
    .groups {
     display: flex;
     margin: 10px;
@@ -7218,19 +7218,19 @@ img.preview-scaled {
     flex-direction: column;
     width: 100%;
     padding: 9px 12px 0;
-    .group {      
+    .group {
       // border-top: 1px solid #E2E7EB;
       display:flex;
       background: white;
-      margin:2px; 
+      margin:2px;
       min-height:50px;
-      padding:5px; 
+      padding:5px;
       border-bottom: 1px solid #E2E7EB;
-    } 
-    .group-header { 
+    }
+    .group-header {
       letter-spacing: 2px;
-      //text-transform: uppercase;  
-      position: absolute;         
+      //text-transform: uppercase;
+      position: absolute;
       transform-origin: 0 0;
       transform: rotate(90deg);
       color: #7166f8;
@@ -7238,18 +7238,18 @@ img.preview-scaled {
     }
    }
    .scrollY {
-    overflow-y: scroll; 
+    overflow-y: scroll;
 
    }
-   
+
    .more {
-    position: relative;     
+    position: relative;
 
     left: 148px;
     bottom: 65px;
    background-color: $color-white;
    color: $color-button;
-  } 
+  }
 }
 
 
@@ -7275,7 +7275,7 @@ img.preview-scaled {
       justify-content: center;
       margin-right: 40px;
     }
-    .tooltipLabel { 
+    .tooltipLabel {
       color: $color-accent;
       font-weight: bold;
     }
@@ -7377,6 +7377,7 @@ img.preview-scaled {
 }
 
 .container-tabs {
+  margin-top: 10px;
   @media only screen and (max-width: 1200px) {
     .grid-wrapper {
       grid-template-columns: repeat( auto-fit, minmax(140px, 1fr) );
@@ -7403,7 +7404,6 @@ img.preview-scaled {
 
     width: 20%;
     text-align: center;
-    padding: 5px;
     text-align: center;
     margin-right: auto;
     margin-left: 4%;
