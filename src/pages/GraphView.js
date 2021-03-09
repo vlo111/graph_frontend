@@ -79,7 +79,7 @@ class GraphView extends Component {
         <div className="graphWrapper">
           <ReactChart />
         </div>
-        {preview && singleGraphStatus === 'ok' ? (
+        {preview && singleGraphStatus === 'success' ? (
           <div className="graphPreview">
             <h1 className="title">{singleGraph.title}</h1>
             <p className="description">

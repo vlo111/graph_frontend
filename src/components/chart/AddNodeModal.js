@@ -37,6 +37,7 @@ class AddNodeModal extends Component {
       fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale,
       d, infographyId, manually_size,
     } = _.cloneDeep(addNodeParams);
+    console.log(addNodeParams)
     const _type = type || _.last(nodes)?.type || '';
     this.setState({
       nodeData: {
@@ -54,8 +55,8 @@ class AddNodeModal extends Component {
         scale,
         infographyId,
         manually_size: manually_size || 1,
-
       },
+      nodeId: addNodeParams.id,
       customField,
       index,
       errors: {},
@@ -92,7 +93,9 @@ class AddNodeModal extends Component {
     ev.preventDefault();
     this.setState({ loading: true });
     const { currentUserId, graphId } = this.props;
-    const { nodeData, index, customField } = this.state;
+    const {
+      nodeData, index, nodeId, customField,
+    } = this.state;
 
     const errors = {};
     const nodes = Chart.getNodes();
@@ -113,7 +116,7 @@ class AddNodeModal extends Component {
         ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
       }
 
-      nodeData.id = nodeData.id ? nodeData.id : ChartUtils.uniqueId(nodes);
+      nodeData.id = nodeId || ChartUtils.uniqueId(nodes);
 
       if (_.isObject(nodeData.icon)) {
         const { data = {} } = await Api.uploadNodeIcon(graphId, nodeData.id, nodeData.icon).catch((d) => d);
@@ -151,7 +154,9 @@ class AddNodeModal extends Component {
   }
 
   render() {
-    const { nodeData, errors, index, loading } = this.state;
+    const {
+      nodeData, errors, index, loading,
+    } = this.state;
     const { addNodeParams, currentUserRole, currentUserId } = this.props;
     const { editPartial } = addNodeParams;
     this.initNodeData(addNodeParams);
