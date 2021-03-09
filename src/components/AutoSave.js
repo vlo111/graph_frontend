@@ -62,7 +62,7 @@ class AutoSave extends Component {
     icon: node.icon || '',
     infographyId: node.infographyId || '',
     keywords: node.keywords || [],
-    labels: node.labels || [],
+    labels: ChartUtils.getNodeLabels(node),
     location: node.location || '',
     name: node.name || '',
     nodeType: node.nodeType || '',
@@ -211,7 +211,6 @@ class AutoSave extends Component {
 
 const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
-  customFields: state.graphs.singleGraph.customFields || {},
 });
 
 const mapDispatchToProps = {

@@ -2,8 +2,8 @@ import io from 'socket.io-client';
 import Chart from '../../Chart';
 import Api from '../../Api';
 import Account from '../../helpers/Account';
-import { GET_SINGLE_GRAPH, getSingleGraphRequest, updateSingleGraph } from './graphs'; 
-import { graphUsersRequest } from './shareGraphs'; 
+import { GET_SINGLE_GRAPH, getSingleGraphRequest, updateSingleGraph } from './graphs';
+import { graphUsersRequest } from './shareGraphs';
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
 import Utils from '../../helpers/Utils';
@@ -91,6 +91,13 @@ export function socketInit() {
     });
 
     socket.on('node.update-positions', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.nodePositionsChange(data.nodes);
+      }
+    });
+
+    socket.on('node.update-fields', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
         ChartUpdate.nodePositionsChange(data.nodes);
@@ -185,13 +192,13 @@ export function socketInit() {
     socket.on('shareList', async (result) => {
 
       const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
-      const graphId = +result.graphId; 
-      if( graphId === +singleGraph.id){ 
+      const graphId = +result.graphId;
+      if( graphId === +singleGraph.id){
             await dispatch(graphUsersRequest(result))
-         
-      }       
+
+      }
     });
-    
+
     socket.on('embedLabelDataChange', (data) => {
       const { labels } = Chart;
 
