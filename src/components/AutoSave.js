@@ -62,7 +62,8 @@ class AutoSave extends Component {
     icon: node.icon || '',
     infographyId: node.infographyId || '',
     keywords: node.keywords || [],
-    labels: ChartUtils.getNodeLabels(node),
+    // labels: ChartUtils.getNodeLabels(node),
+    labels: node.labels || [],
     location: node.location || '',
     name: node.name || '',
     nodeType: node.nodeType || '',
@@ -96,10 +97,10 @@ class AutoSave extends Component {
     nodes.forEach((node) => {
       const oldNode = Chart.oldData.nodes.find((n) => n.id === node.id);
       if (oldNode) {
-        if (!_.isEqual(this.formatNode(node), this.formatNode(oldNode))) {
-          updateNodes.push(node);
-        } else if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
+        if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
           updateNodePositions.push(node);
+        } else if (!_.isEqual(this.formatNode(node), this.formatNode(oldNode))) {
+          updateNodes.push(node);
         } else if (!_.isEqual(node.customFields, oldNode.customFields)) {
           updateNodeCustomFields.push(node);
         }

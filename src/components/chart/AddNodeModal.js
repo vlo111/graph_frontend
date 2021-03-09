@@ -99,7 +99,6 @@ class AddNodeModal extends Component {
 
     const errors = {};
     const nodes = Chart.getNodes();
-    let links;
 
     const update = !_.isNull(index);
 
@@ -131,8 +130,8 @@ class AddNodeModal extends Component {
         nodes.push(nodeData);
       }
 
-      Chart.render({ nodes, links });
-      this.props.setNodeCustomField(nodeData.type, nodeData.id, customField);
+      Chart.render({ nodes });
+      // this.props.setNodeCustomField(nodeData.type, nodeData.id, customField);
       this.props.toggleNodeModal();
     }
     this.setState({ errors, nodeData, loading: false });
