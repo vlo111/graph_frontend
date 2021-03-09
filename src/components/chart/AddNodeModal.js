@@ -113,7 +113,7 @@ class AddNodeModal extends Component {
         ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
       }
 
-      nodeData.id = update ? nodeData.id : ChartUtils.uniqueId(nodes);
+      nodeData.id = nodeData.id ? nodeData.id : ChartUtils.uniqueId(nodes);
 
       if (_.isObject(nodeData.icon)) {
         const { data = {} } = await Api.uploadNodeIcon(graphId, nodeData.id, nodeData.icon).catch((d) => d);
