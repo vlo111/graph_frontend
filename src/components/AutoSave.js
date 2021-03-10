@@ -41,6 +41,7 @@ class AutoSave extends Component {
     Chart.event.on('node.dragend', this.handleChartRender);
     Chart.event.on('label.dragend', this.handleChartRender);
     Chart.event.on('setNodeData', this.handleChartRender);
+    Chart.event.on('square.dragend', this.handleChartRender);
   }
 
   componentWillUnmount() {
@@ -72,6 +73,11 @@ class AutoSave extends Component {
     status: node.status || '',
     type: node.type || '',
   })
+
+  handleSquareDragEnd = (ev, d) => {
+    const nodes = Chart.getNodes().filter((n) => d.nodes.includes(n.id) || d.selectedNodes.includes(n.id));
+    console.log(nodes);
+  }
 
   saveGraph = async () => {
     const { match: { params: { graphId } }, singleGraph } = this.props;

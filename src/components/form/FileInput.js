@@ -36,6 +36,7 @@ class FileInput extends Component {
     const url = Utils.fileToBlob(file);
     this.constructor.blobs[url] = file.name;
     this.props.onChangeFile(url, file);
+    ev.target.value = '';
   }
 
   handleTextChange = (name) => {
@@ -52,10 +53,11 @@ class FileInput extends Component {
   }
 
   handleInputFocus = () => {
-    this.setState({ focused: true })
+    this.setState({ focused: true });
   }
+
   handleInputBlur = () => {
-    this.setState({ focused: false })
+    this.setState({ focused: false });
   }
 
   render() {

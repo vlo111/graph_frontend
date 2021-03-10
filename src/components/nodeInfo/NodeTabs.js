@@ -106,7 +106,6 @@ class NodeTabs extends Component {
               <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
             </Tooltip>
           ) : null}
-          <div className="empty" />
         </FlexTabs>
         {!_.isNull(formModalOpen) ? (
           <NodeTabsFormModal

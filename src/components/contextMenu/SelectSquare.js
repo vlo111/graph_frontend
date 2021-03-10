@@ -9,7 +9,7 @@ import { setActiveButton, setGridIndexes } from '../../store/actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
 import { createGraphRequest } from '../../store/actions/graphs';
 
-class NodeFullInfoContext extends Component {
+class SelectSquare extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
@@ -84,6 +84,6 @@ const mapDispatchToProps = {
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(NodeFullInfoContext);
+)(SelectSquare);
 
 export default withRouter(Container);

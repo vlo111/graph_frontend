@@ -1666,7 +1666,8 @@ class Chart {
       handleSquareDragStart();
     };
 
-    const handleSquareDragEnd = () => {
+    const handleSquareDragEnd = (ev) => {
+      this.event.emit('square.dragend', ev, this.squareDara);
       handleSquareDragStart();
     };
 

@@ -65,7 +65,6 @@ class ReactChart extends Component {
     Chart.event.on('node.dragend', this.handleNodeDragEnd);
     Chart.event.on('render', this.handleRender);
 
-    Chart.event.on('label.dragend', this.handleLabelDragEnd);
   }
 
   componentWillUnmount() {
@@ -106,6 +105,8 @@ class ReactChart extends Component {
     //   });
     // }, 500);
   }
+
+
 
   handleNodeDragEnd = (ev, d) => {
     const { singleGraph } = this.props;
