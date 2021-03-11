@@ -3,9 +3,12 @@ import { Jodit } from 'jodit';
 import 'jodit/build/jodit.min.css';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import ReactDOMServer from 'react-dom/server';
 import InsertMediaTabsModal from '../nodeInfo/InsertMediaTabsModal';
 import Utils from '../../helpers/Utils';
-import Api from "../../Api";
+import Api from '../../Api';
+import EditorMedia from './EditorMedia';
+import ImportLinkedinCustomField from '../import/ImportLinkedinCustomField';
 
 class Editor extends Component {
   static propTypes = {
@@ -114,63 +117,29 @@ class Editor extends Component {
     this.setState({ showPopUp: null });
   }
 
-  insertFile = async (popUpData) => {
-    const file = popUpData.file[0];
-
-    this.props.media(popUpData);
-
-    const { node } = this.props;
-    const { tags } = popUpData;
-
-    if (file) {
-      const isImg = !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg', 'jfif']
-        .filter((p) => file.name.toLocaleLowerCase().includes(p)));
-
-      const desc = popUpData.desc ? `${popUpData.desc}` : '';
-
-      let anchor = '';
-
-      const { data = {} } = await Api.uploadNodeFile(Utils.getGraphIdFormUrl(), node.id, [file]).catch((d) => d);
-      file.preview = data.files[0];
-
-      if (isImg && !popUpData.alt) {
-        if (desc) {
-          anchor = `
-<table style="width: 200px;"><tbody>
-<tr>
-<td>
-    <img
- class=scaled
- src=${file.preview} 
- download="${file.name}" />
- ${desc}
-     </td>
-</tr>
-</tbody>
-</table>`;
-        } else {
-          anchor = `<img
-          className=scaled
-          src=${file.preview}
-          download="${file.name}"/>`;
-        }
-      } else {
-        anchor = `<a 
-href="${file.preview}"
-download="${file.name}">
-${popUpData.alt || file.name}
-</a>`;
-      }
-
-      let html;
-      if (popUpData.update) {
-        html = this.editor.value.replace(popUpData.update, anchor);
-      } else {
-        html = this.editor.value + anchor;
-      }
-      this.editor.value = html;
+  insertFile = async (file, fileData) => {
+    if (!file) {
+      return;
     }
+    const { node } = this.props;
 
+    fileData.createDocument = true;
+    const { data = {} } = await Api.uploadNodeFile(Utils.getGraphIdFormUrl(), node, file, fileData).catch((d) => d);
+    file.preview = data.file;
+
+    const mediaHtml = ReactDOMServer.renderToString(<EditorMedia file={file} fileData={fileData} />);
+
+    let html;
+    if (fileData.update) {
+      html = this.editor.value.replace(fileData.update, mediaHtml);
+    } else {
+      html = this.editor.value + mediaHtml;
+    }
+    this.editor.value = html;
+
+    if (this.props.insertFile) {
+      this.props.insertFile(file);
+    }
     this.setState({ showPopUp: null });
   }
 

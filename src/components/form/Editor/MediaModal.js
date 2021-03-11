@@ -95,7 +95,7 @@ class MediaModal extends Component {
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeInsertMedia} />
           <div className="form">
             <h2>Select media</h2>
-            <FileUpload addFile={this.addFile} file={popUpData.file} />      
+            <FileUpload addFile={this.addFile} file={popUpData.file} />
             <div className="buttons">
               <Button className="cancel transparent alt" onClick={this.closeInsertMedia}>
                 Back

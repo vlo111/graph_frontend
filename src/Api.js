@@ -359,10 +359,11 @@ class Api {
     }));
   }
 
-  static uploadNodeFile(graphId, nodeId, files) {
-    return api.post(`/nodes/upload/files/${graphId}`, this.toFormData({
-      id: nodeId,
-      files,
+  static uploadNodeFile(graphId, node, file, data) {
+    return api.post(`/nodes/upload/file/${graphId}`, this.toFormData({
+      node,
+      file,
+      ...data,
     }));
   }
 

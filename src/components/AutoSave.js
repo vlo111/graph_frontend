@@ -34,6 +34,8 @@ class AutoSave extends Component {
     createLabelsRequest: PropTypes.func.isRequired,
     deleteLabelsRequest: PropTypes.func.isRequired,
     updateLabelsRequest: PropTypes.func.isRequired,
+
+    updateGraphThumbnailRequest: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
@@ -194,7 +196,7 @@ class AutoSave extends Component {
     }
 
     document.body.classList.remove('autoSave');
-
+    
     return;
     await this.props.updateGraphRequest(graphId, {
       ...singleGraph,
