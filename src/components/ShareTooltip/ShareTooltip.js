@@ -134,8 +134,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
        const allItemsLimit = roles.view.length > roles.edit.length ? (roles.view.length) : (roles.edit.length);
        const numberOfItems = showMore ? allItemsLimit : limit; 
        const subLimitCount = allItemsLimit - numberOfItems;
-       console.log(graphUsersList, 'graphUsersList', roles, 'roles');
-      return (
+       return (
 
         <div className="contributors-container"> 
             <p className="h4 mb-3 title"> {isOwner ? `Contributors:` : `Shared with : `}
