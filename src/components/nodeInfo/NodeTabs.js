@@ -68,7 +68,11 @@ class NodeTabs extends Component {
     const { fieldName } = params;
     const { node } = this.props;
     if (fieldName && window.confirm('Are you sure?')) {
-      this.props.removeNodeCustomFieldKey(node.type, fieldName, node.id);
+      if (node.customFields) {
+        this.props.removeNodeCustomFieldKey(node.type, fieldName, node.id);
+        const customFields = node.customFields.filter((f) => f.name !== fieldName);
+        Chart.setNodeData(node.id, { customFields });
+      }
     }
   }
 
