@@ -64,7 +64,6 @@ class ReactChart extends Component {
 
     Chart.event.on('node.dragend', this.handleNodeDragEnd);
     Chart.event.on('render', this.handleRender);
-
   }
 
   componentWillUnmount() {
@@ -106,8 +105,6 @@ class ReactChart extends Component {
     // }, 500);
   }
 
-
-
   handleNodeDragEnd = (ev, d) => {
     const { singleGraph } = this.props;
     // this.props.updateNodesPositionRequest(singleGraph.id, [{ id: d.id, fx: d.fx, fy: d.fy }]);
@@ -128,8 +125,11 @@ class ReactChart extends Component {
         labels, nodes, links, embedLabels,
       });
       Api.labelDelete(d.sourceId, d.id, graphId);
+
       return;
     }
+    // delete labe  from share list
+    Api.shareLabelDelete(d.id, graphId);
     Chart.render({ labels, nodes, links });
     Chart.event.emit('label.mouseleave', ev, d);
   }

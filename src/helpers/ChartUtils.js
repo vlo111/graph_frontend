@@ -143,7 +143,7 @@ class ChartUtils {
 
   static normalizeIcon = (icon, large = false) => {
     if (!icon || !_.isString(icon)) {
-      return undefined;
+      return '';
     }
     let url = Api.url + icon;
     if (icon.startsWith(Api.url)) {
@@ -589,7 +589,7 @@ class ChartUtils {
     let files = {};
 
     const icons = await Promise.all(nodes.map((d) => {
-      if (d.icon && d.icon.startsWith('blob:')) {
+      if (d.icon && d.icon.toString().startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);
       }
       return d.icon;

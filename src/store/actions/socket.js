@@ -184,18 +184,27 @@ export function socketInit() {
 
     socket.on('online', (data) => {
       const onlineUsers = JSON.parse(data);
-       dispatch({
+      dispatch({
         type: ONLINE_USERS,
         payload: { onlineUsers },
       });
     });
     socket.on('shareList', async (result) => {
-
       const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
       const graphId = +result.graphId;
-      if( graphId === +singleGraph.id){
-            await dispatch(graphUsersRequest(result))
+      if (graphId === +singleGraph.id) {
+        await dispatch(graphUsersRequest(result));
+      }
+    });
 
+    /**
+     * Call share graphs user list
+     */
+    socket.on('shareList', async (result) => {
+      const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
+      const graphId = +result.graphId;
+      if (graphId === +singleGraph.id) {
+        await dispatch(graphUsersRequest(result));
       }
     });
 

@@ -7228,6 +7228,7 @@ img.preview-scaled {
     right: 3px;
     position: absolute;
     background-color: white;
+
   }
 
   .groups {
@@ -7259,6 +7260,7 @@ img.preview-scaled {
       color: #7166f8;
       //font-weight: bold;
     }
+
   }
 
   .scrollY {
@@ -7664,6 +7666,11 @@ img.preview-scaled {
 
 .gallery-box-container {
   justify-content: space-between;
+
+  iframe {
+    max-width: 100%;
+    max-height: 200px;
+  }
 
   iframe {
     max-width: 100%;

@@ -38,7 +38,6 @@ class NodeTabs extends Component {
     } else {
       this.setState({ activeTab: _.get(customFields, '[0].name', '') });
     }
-
     this.props.setActiveTab('');
   }, _.isEqual);
 
