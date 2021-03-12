@@ -472,7 +472,7 @@ class Chart {
           return d;
         }
         d.manually_size = d.manually_size || 1;
-		
+
         const labelData = data.embedLabels.find((l) => d.labels?.includes(l.labelId));
         if (!labelData) {
           console.error('can\'t find label', d);
@@ -2372,13 +2372,15 @@ class Chart {
         .attr('data-scale', oScale)
         .attr('data-x', oX)
         .attr('data-y', oY);
+
+      this.wrapper.selectAll('.unChecked')
+        .attr('style', undefined);
     }
 
     this.linksWrapper.selectAll('path')
       .attr('fill', undefined);
 
-    // this.wrapper.selectAll('.unChecked')
-    //   .attr('style', undefined);
+
     //
     // this.nodesWrapper.selectAll('.node text')
     //   .attr('font-family', undefined)
