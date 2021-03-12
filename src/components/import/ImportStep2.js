@@ -44,6 +44,18 @@ class ImportStep2 extends Component {
     Chart.render({
       nodes, links, labels,
     });
+    const {
+      singleGraph: { title, description },
+    } = this.props;
+    ChartUtils.resetColors();
+    // this.props.updateSingleGraph({
+    //   nodes,
+    //   links,
+    //   labels,
+    //   title,
+    //   description,
+    // });
+
     this.props.setGraphCustomFields(customFields);
     this.props.setActiveButton('create');
     this.props.updateShowSelect(true);
@@ -111,6 +123,7 @@ class ImportStep2 extends Component {
 const mapStateToProps = (state) => ({
   importData: state.graphs.importData,
   singleGraph: state.graphs.singleGraph,
+  embedLabels: state.graphs.embedLabels,
 });
 
 const mapDispatchToProps = {

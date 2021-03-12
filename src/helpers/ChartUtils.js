@@ -736,9 +736,19 @@ class ChartUtils {
     return [d.x || d.fx, d.y || d.fy, false];
   }
 
-  static margeGraphs = (graph1, graph2, selectedNodes1 = graph1.nodes, selectedNodes2 = graph2.nodes) => {
+  static margeGraphs = (graph1, graph2, selectedNodes1, selectedNodes2) => {
+    graph1.nodes = [...graph1.nodes];
+    graph2.nodes = [...graph2.nodes];
+
     let links = [...graph1.links || [], ...graph2.links || []];
     let labels = new Set();
+    if (!selectedNodes1) {
+      selectedNodes1 = graph1.nodes;
+    }
+    if (!selectedNodes2) {
+      selectedNodes2 = graph2.nodes;
+    }
+
     const nodes = selectedNodes1.map((node1) => {
       const node2 = selectedNodes2.find((n) => n.name === node1.name);
       if (node2) {
@@ -757,6 +767,8 @@ class ChartUtils {
 
       delete node1.color;
 
+      node1.import = true;
+
       // graph1.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
       return node1;
     });
@@ -768,6 +780,8 @@ class ChartUtils {
 
         delete node2.color;
         delete node2.hidden;
+
+        node2.import = true;
 
         nodes.push(node2);
       }

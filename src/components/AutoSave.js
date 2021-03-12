@@ -105,7 +105,9 @@ class AutoSave extends Component {
     nodes.forEach((node) => {
       const oldNode = Chart.oldData.nodes.find((n) => n.id === node.id);
       if (oldNode) {
-        if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
+        if (oldNode.import) {
+          createNodes.push(node);
+        } else if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
           updateNodePositions.push(node);
         } else if (!_.isEqual(this.formatNode(node), this.formatNode(oldNode))) {
           updateNodes.push(node);
@@ -146,7 +148,7 @@ class AutoSave extends Component {
     let update = false;
     if (createNodes.length) {
       update = true;
-      this.props.createNodesRequest(graphId, createNodes);
+      await this.props.createNodesRequest(graphId, createNodes);
     }
     if (updateNodes.length) {
       update = true;
@@ -196,7 +198,7 @@ class AutoSave extends Component {
     }
 
     document.body.classList.remove('autoSave');
-    
+
     return;
     await this.props.updateGraphRequest(graphId, {
       ...singleGraph,
