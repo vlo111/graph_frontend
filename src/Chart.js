@@ -1354,7 +1354,15 @@ class Chart {
 
       infography
         .append('rect')
-        .attr('width', 512)
+        .attr('width', (d, i, el) => {
+          // el[i].setAttribute('opacity', 0);
+          // Utils.getInfographyImageWidth(`${d.icon}.large`).then((width) => {
+          //   el[i].setAttribute('width', width);
+          //   el[i].setAttribute('x', width / -2);
+          //   el[i].setAttribute('opacity', 1);
+          // });
+          return 512;
+        })
         .attr('height', 384)
         .attr('x', 512 / -2)
         .attr('y', 384 / -2)

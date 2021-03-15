@@ -256,7 +256,7 @@ class Utils {
   static differenceNested(object, base) {
     function changes(_object, _base) {
       return _.transform(_object, (result, value, key) => {
-        console.log(value, _base[key])
+        console.log(value, _base[key]);
         if (!_.isEqual(value, _base[key])) {
           result[key] = (_.isObject(value) && _.isObject(_base[key])) ? changes(value, _base[key]) : value;
         }
@@ -265,6 +265,23 @@ class Utils {
 
     return changes(object, base);
   }
+
+  static #InfographyImageWidth = {};
+
+  static getInfographyImageWidth = (icon) => new Promise((resolve) => {
+    if (this.#InfographyImageWidth[icon]) {
+      resolve(this.#InfographyImageWidth[icon]);
+      return;
+    }
+    const img = new Image();
+    img.onload = () => {
+      const acceptRatio = img.naturalWidth / img.naturalHeight; // 384
+      const width = (512 * acceptRatio).toFixed(2);
+      this.#InfographyImageWidth[icon] = width;
+      resolve(width);
+    };
+    img.src = icon;
+  })
 }
 
 export default Utils;

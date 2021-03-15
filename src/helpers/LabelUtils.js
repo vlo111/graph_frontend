@@ -263,6 +263,7 @@ class LabelUtils {
     });
 
     links.push(...data.links);
+
     if (isEmbed) {
       const { data: res } = await Api.labelShare(data.sourceId, data.label.id, graphId).catch((e) => e.response);
       if (res.status !== 'ok') {
