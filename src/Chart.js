@@ -700,7 +700,7 @@ class Chart {
         dragFolder.labelLock = this.wrapper.select(`use[data-label-id="${id}"]`);
       }
     };
-    const handleDrag = (ev) => {
+    const handleDrag = (ev, d) => {
       if (!dragFolder.folder || dragFolder.folder.empty()) {
         return;
       }
@@ -744,6 +744,7 @@ class Chart {
           .attr('y', height / -2 + 10);
 
         this.undoManager.push(this.getData());
+        this.event.emit('label.dragend', ev, d);
         return;
       }
 
@@ -785,6 +786,7 @@ class Chart {
 
       this._dataNodes = undefined;
       this.undoManager.push(this.getData());
+      this.event.emit('label.dragend', ev, d);
       this.graphMovement();
     };
     const handleDragEnd = (ev) => {
