@@ -129,7 +129,6 @@ class AutoSave extends Component {
         }
       }
     });
-
     const deleteLabels = _.differenceBy(Chart.oldData.labels, labels, 'id');
     const createLabels = _.differenceBy(labels, Chart.oldData.labels, 'id');
     const updateLabels = [];
@@ -137,7 +136,9 @@ class AutoSave extends Component {
     labels.forEach((label) => {
       const oldLabel = Chart.oldData.labels.find((l) => l.id === label.id);
       if (oldLabel) {
-        if (!oldLabel.name && label.name) {
+        if (oldLabel.new) {
+          createLabels.push(label);
+        } else if (!oldLabel.name && label.name) {
           createLabels.push(label);
         } else if (!_.isEqual(oldLabel.d, label.d)) {
           updateLabels.push(label);

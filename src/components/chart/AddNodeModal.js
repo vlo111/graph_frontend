@@ -117,7 +117,7 @@ class AddNodeModal extends Component {
 
       nodeData.id = nodeId || ChartUtils.uniqueId(nodes);
 
-      if (_.isObject(nodeData.icon)) {
+      if (_.isObject(nodeData.icon) && !_.isEmpty(nodeData.icon)) {
         const { data = {} } = await Api.uploadNodeIcon(graphId, nodeData.id, nodeData.icon).catch((d) => d);
         nodeData.icon = data.icon;
       }

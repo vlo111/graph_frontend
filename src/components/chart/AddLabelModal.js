@@ -97,11 +97,10 @@ class AddLabelModal extends Component {
   addLabel = async (ev) => {
     ev.preventDefault();
     const { labelData } = this.state;
-    const { graphId } = this.props;
     const labels = [...Chart.getLabels()];
-    const nodes = Chart.getNodes();
     const errors = {};
     [errors.name, labelData.name] = Validate.labelName(labelData.name);
+    labelData.new = true;
     if (!Validate.hasError(errors)) {
       const i = labels.findIndex((l) => l.id === labelData.id);
       if (i > -1) {
