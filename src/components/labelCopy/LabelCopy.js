@@ -263,6 +263,7 @@ class LabelCopy extends Component {
             <div className="part">
               <div className="component">
                 <Button
+                  onClick={() => this.toggleCompareNodes(true)}
                   className="actionButton"
                   icon={<CompareNodesSvg />}
                 />
@@ -271,6 +272,7 @@ class LabelCopy extends Component {
               </div>
               <div className="component">
                 <Button
+                  onClick={() => this.copyDocument('merge')}
                   className="actionButton"
                   icon={<MergeNodesSvg />}
                 />
