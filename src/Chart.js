@@ -521,6 +521,7 @@ class Chart {
 
     const nodes = data.nodes.map((d) => {
       d.id = d.id || ChartUtils.uniqueId(data.nodes);
+      d.name = d.name || '';
       return Object.create(d);
     });
 

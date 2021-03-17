@@ -21,6 +21,7 @@ import { ReactComponent as SkipNodesSvg } from '../../assets/images/icons/Skip_t
 import { createNodesRequest, deleteNodesRequest, updateNodesRequest } from '../../store/actions/nodes';
 import { createLinksRequest } from '../../store/actions/links';
 import { createLabelsRequest } from '../../store/actions/labels';
+import Api from '../../Api';
 
 class LabelCopy extends Component {
   static propTypes = {
@@ -62,24 +63,30 @@ class LabelCopy extends Component {
     const { position } = this.state;
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
-    this.copyDocuments(data.sourceId, id, data.nodes);
+    // this.copyDocuments(data.sourceId, id, data.nodes);
     this.closeModal();
-    const { updateNodes, createNodes } = await LabelUtils.past(data, position);
-    console.log(updateNodes, createNodes);
+    await Api.labelPast(id, undefined, data.label, data.nodes, data.links, position);
+    // const { updateNodes, createNodes } = await LabelUtils.past(data, position);
+  }
+
+  copyDocument = async (action) => {
+    const { position } = this.state;
+    const { id } = this.props.singleGraph;
+    const data = LabelUtils.getData();
+    this.closeModal();
+    await Api.labelPast(id, undefined, data.label, data.nodes, data.links, position, action);
   }
 
   handleLabelAppend = async (ev, params) => {
     const { x, y } = params;
     const { singleGraph } = this.props;
-    const compare = LabelUtils.compare();
-    const position = [x, y];
     const data = LabelUtils.getData();
+
+    // todo global loading
+    const { data: compare } = await Api.labelPastCompare(singleGraph.id, data.nodes).catch((e) => e.response);
+
+    const position = [x, y];
     if (_.isEmpty(compare.duplicatedNodes)) {
-      this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
-      // const { createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
-      // this.props.createNodesRequest(singleGraph.id, createNodes);
-      // this.props.createLinksRequest(singleGraph.id, createLinks);
-      // this.props.createLabelsRequest(singleGraph.id, [createLabel]);
       return;
     }
     this.setState({
@@ -161,11 +168,6 @@ class LabelCopy extends Component {
     this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
 
     this.closeModal();
-    // const { updateNodes, createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
-    // this.props.updateNodesRequest(singleGraph.id, updateNodes);
-    // this.props.createNodesRequest(singleGraph.id, createNodes);
-    // this.props.createLinksRequest(singleGraph.id, createLinks);
-    // this.props.createLabelsRequest(singleGraph.id, [createLabel]);
   }
 
   toggleCompareNodes = (showCompareModal) => {
@@ -243,30 +245,24 @@ class LabelCopy extends Component {
             {`The destinations has ${compare.duplicatedNodes?.length || 0} nodes with the same type and name`}
           </h2>
           <p className="subtitle">
-            Moving
-            {' '}
+            {'Moving '}
             <span className="headerContents">
               {data.nodes.length}
             </span>
-            {' '}
-            nodes from
-            {' '}
+            {' nodes from '}
             <span className="headerContents">
               {data.title}
             </span>
-            {' '}
-            to
-            {' '}
+            {' to '}
             <span className="headerContents">
               {singleGraph.title}
             </span>
-            .
+            {'. '}
           </p>
           <div className="buttonsWrapper">
             <div className="part">
               <div className="component">
                 <Button
-                  onClick={() => this.toggleCompareNodes(true)}
                   className="actionButton"
                   icon={<CompareNodesSvg />}
                 />
@@ -275,24 +271,23 @@ class LabelCopy extends Component {
               </div>
               <div className="component">
                 <Button
-                  onClick={() => this.compareAndMerge(compare.sourceNodes, compare.duplicatedNodes)}
                   className="actionButton"
                   icon={<MergeNodesSvg />}
                 />
                 <p className="textContent">Merge nodes</p>
               </div>
               <div className="component">
-                <Button onClick={this.skipDuplications} className="actionButton" icon={<SkipNodesSvg />} />
+                <Button onClick={() => this.copyDocument('skip')} className="actionButton" icon={<SkipNodesSvg />} />
                 <p className="textContent">Skip these nodes</p>
               </div>
             </div>
             <div className="part">
               <div className="component">
-                <Button onClick={this.replaceDuplications} className="actionButton" icon={<ReplaceSvg />} />
+                <Button onClick={() => this.copyDocument('replace')} className="actionButton" icon={<ReplaceSvg />} />
                 <p className="textContent">Replace the nodes in the destination</p>
               </div>
               <div className="component">
-                <Button onClick={this.fixDuplications} className="actionButton" icon={<KeepBothSvg />} />
+                <Button onClick={() => this.copyDocument('keep')} className="actionButton" icon={<KeepBothSvg />} />
                 <p className="textContent">Keep both</p>
               </div>
             </div>

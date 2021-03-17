@@ -401,6 +401,18 @@ class Api {
     });
   }
 
+  static labelPastCompare(graphId, nodes) {
+    return api.post(`/labels/past-compare/${graphId}`, {
+      nodes,
+    });
+  }
+
+  static labelPast(graphId, sourceId, label, nodes, links, position = [0, 0], action) {
+    return api.post(`/labels/past/${graphId}`, {
+      sourceId, label, nodes, links, position, action,
+    });
+  }
+
   static updateCustomFieldsLabels(graphId, customFields) {
     // nodeType, fieldName, order = 0, nodeId,
     return api.delete(`/custom-fields/update/${graphId}`, {
