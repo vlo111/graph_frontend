@@ -27,7 +27,7 @@ class ChartUpdate {
 
   static nodesDelete = (nodesDelete) => {
     const nodes = Chart.getNodes().filter((n) => !nodesDelete.some((d) => n.id === d.id));
-    Chart.render({ nodes });
+    Chart.render({ nodes }, { ignoreAutoSave: false });
   }
 
   static nodesUpdate = (nodesUpdate) => {
@@ -54,7 +54,7 @@ class ChartUpdate {
         1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
       });
     });
-    Chart.render({ links });
+    Chart.render({ links }, { ignoreAutoSave: false });
   }
 
   static linkUpdate = (linksUpdate) => {
