@@ -472,7 +472,7 @@ class Chart {
           return d;
         }
         d.manually_size = d.manually_size || 1;
-		
+
         const labelData = data.embedLabels.find((l) => d.labels?.includes(l.labelId));
         if (!labelData) {
           console.error('can\'t find label', d);
@@ -1749,7 +1749,7 @@ class Chart {
       .attr('transform', (d) => {
         const [lx, ly] = ChartUtils.getNodePositionInFolder(d);
         let transform = `translate(${lx || d.x || 0}, ${ly || d.y || 0})`;
-        if (d.scale) {
+        if (d.scale && d.nodeType === 'infography') {
           const scaleX = _.get(d, 'scale[0]') || 1;
           const scaleY = _.get(d, 'scale[1]') || 1;
           const rotate = _.get(d, 'scale[2]') || 0;
@@ -1900,7 +1900,7 @@ class Chart {
         return this.radiusList[d.index] + i + (+d.manually_size || 1);
       })
       .attr('font-size', (d) => {
-        const s = _.get(d, 'scale[0]', 1);
+        const s = d.nodeType === 'infography' ? _.get(d, 'scale[0]', 1) : 1;
         return (13.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4) * (1 / s);
       })
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
