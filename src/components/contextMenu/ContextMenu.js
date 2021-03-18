@@ -157,7 +157,7 @@ class ContextMenu extends Component {
               {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
-              {['link', 'label', 'chart'].includes(show) ? (
+              {['label', 'chart'].includes(show) ? (
                 <>
                   <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
                     Create node
@@ -206,7 +206,7 @@ class ContextMenu extends Component {
                     )}
                 </>
               ) : null}
-              {['link', 'label', 'chart'].includes(show) ? (
+              {['label', 'chart'].includes(show) ? (
                 <>
                   <div className="ghButton notClose">
                     <Icon value="fa-plus-square" />
