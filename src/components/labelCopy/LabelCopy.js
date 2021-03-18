@@ -3,6 +3,7 @@ import _ from 'lodash';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import ContextMenu from '../contextMenu/ContextMenu';
 import LabelUtils from '../../helpers/LabelUtils';
 import Button from '../form/Button';
@@ -180,12 +181,15 @@ class LabelCopy extends Component {
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     this.closeModal();
-    await Api.labelPast(id, undefined, [x, y], 'merge-compare', {
+    const { data: res } = await Api.labelPast(id, undefined, [x, y], 'merge-compare', {
       label: data.label,
       nodes: data.nodes,
       links: data.links,
       merge,
-    });
+    }).catch((e) => e.response);
+    if (res.status === 'error') {
+      toast.error(res.message);
+    }
   }
 
   copyDocument = async (action, sourceId = undefined) => {
@@ -194,11 +198,14 @@ class LabelCopy extends Component {
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     this.closeModal();
-    await Api.labelPast(id, sourceId, [x, y], action, {
+    const { data: res } = await Api.labelPast(id, sourceId, [x, y], action, {
       label: data.label,
       nodes: data.nodes,
       links: data.links,
-    });
+    }).catch((e) => e.response);
+    if (res.status === 'error') {
+      toast.error(res.message);
+    }
   }
 
   handleLabelEmbed = () => {
