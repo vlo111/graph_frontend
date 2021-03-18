@@ -18,6 +18,7 @@ class AddLabelModal extends Component {
     this.state = {
       labelData: {},
       show: false,
+      edit: false,
       errors: {},
     };
   }
@@ -30,6 +31,7 @@ class AddLabelModal extends Component {
 
   componentWillUnmount() {
     ContextMenu.event.removeListener('folder.new', this.handleFolderCrate);
+    ContextMenu.event.removeListener('label.edit', this.handleFolderEdit);
     ContextMenu.event.removeListener('folder.selectSquare', this.handleFolderCrateSquare);
   }
 
@@ -49,7 +51,9 @@ class AddLabelModal extends Component {
     };
     this.setState({ show: true, labelData });
   }
-
+  handleFolderEdit = (ev, labelData) => {   
+    this.setState({ show: true, labelData, edit: true });
+  }
   handleFolderCrateSquare = async (ev, d) => {
     let {
       squareDara: {
@@ -87,11 +91,13 @@ class AddLabelModal extends Component {
   }
 
   deleteLabel = () => {
-    const { labelData } = this.state;
-    let labels = Chart.getLabels();
-    labels = labels.filter((l) => l.id !== labelData.id);
-    Chart.render({ labels });
-    this.setState({ show: false });
+    const { labelData, edit } = this.state;
+    if(!edit) {
+      let labels = Chart.getLabels();
+      labels = labels.filter((l) => l.id !== labelData.id);
+      Chart.render({ labels });
+    }
+    this.setState({ show: false, edit: false });
   }
 
   addLabel = async (ev) => {
@@ -130,7 +136,7 @@ class AddLabelModal extends Component {
   }
 
   render() {
-    const { labelData, errors, show } = this.state;
+    const { labelData, errors, show, edit } = this.state;
     if (!show) {
       return null;
     }
@@ -144,8 +150,11 @@ class AddLabelModal extends Component {
         <div className="containerModal">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.deleteLabel} />
           <form className="form" onSubmit={this.addLabel}>
-            <h2>{labelData.type === 'folder' ? 'Add new Folder' : 'Add new label'}</h2>
-            <Input
+            <h2>{labelData.type === 'folder' ?  
+              ( edit ? 'Edit Folder' : 'Add new Folder') :
+              ( edit ? 'Edit label' : 'Add new label')} 
+             </h2>
+             <Input
               value={labelData.name}
               error={errors.name}
               label="Name"

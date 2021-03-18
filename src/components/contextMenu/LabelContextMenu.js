@@ -38,6 +38,11 @@ class labelContextMenu extends Component {
     }
     return (
       <>
+        
+        <Button icon="fa-pencil-square-o" onClick={(ev) => this.props.onClick(ev, 'label.edit')}>
+          Edit
+        </Button>
+        
         <Button icon="fa-copy" onClick={this.handleCopyClick}>
           Copy
         </Button>
