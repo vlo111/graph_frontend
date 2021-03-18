@@ -122,7 +122,7 @@ class HeaderMini extends Component {
   }
   render() {
     const { showGraphUsersInfo, showNodeComment } = this.state;
-    const { singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props; 
+    const { editable, singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props; 
     return (
       <header id="headerMini">
         <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() => this.closeNodeInfoModal()} />
@@ -148,13 +148,14 @@ class HeaderMini extends Component {
             nodeData={this.state.nodeData}
             image={this.state.image}
           />
-          <Button className="commentsInfo"
+          {editable ? (<Button className="commentsInfo"
             icon={<EditSvg />}
             title="Comment"
             className="b-navbar"
             onClick={(ev) => this.editNode(ev)}>
             Edit              
           </Button>
+          ) : null} 
         </div>
 
         {showGraphUsersInfo ? (
