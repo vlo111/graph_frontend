@@ -407,9 +407,9 @@ class Api {
     });
   }
 
-  static labelPast(graphId, sourceId, label, nodes, links, position = [0, 0], action) {
+  static labelPast(graphId, sourceId, position = [0, 0], action, data) {
     return api.post(`/labels/past/${graphId}`, {
-      sourceId, label, nodes, links, position, action,
+      sourceId, position, action, ...data,
     });
   }
 

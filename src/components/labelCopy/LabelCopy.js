@@ -22,6 +22,7 @@ import { createNodesRequest, deleteNodesRequest, updateNodesRequest } from '../.
 import { createLinksRequest } from '../../store/actions/links';
 import { createLabelsRequest } from '../../store/actions/labels';
 import Api from '../../Api';
+import Utils from '../../helpers/Utils';
 
 class LabelCopy extends Component {
   static propTypes = {
@@ -67,14 +68,6 @@ class LabelCopy extends Component {
     this.closeModal();
     await Api.labelPast(id, undefined, data.label, data.nodes, data.links, position);
     // const { updateNodes, createNodes } = await LabelUtils.past(data, position);
-  }
-
-  copyDocument = async (action) => {
-    const { position } = this.state;
-    const { id } = this.props.singleGraph;
-    const data = LabelUtils.getData();
-    this.closeModal();
-    await Api.labelPast(id, undefined, data.label, data.nodes, data.links, position, action);
   }
 
   handleLabelAppend = async (ev, params) => {
@@ -134,7 +127,7 @@ class LabelCopy extends Component {
 
   closeModal = () => {
     this.setState({
-      compare: {}, data: {}, position: [], showQuestionModal: false,
+      compare: {}, data: {}, position: [], showQuestionModal: false, showCompareModal: false,
     });
   }
 
@@ -175,51 +168,34 @@ class LabelCopy extends Component {
   }
 
   compareAndMerge = async (sources, duplicates) => {
+    const merge = {
+      sources: sources.map((d) => d.id),
+      duplicates: duplicates.map((d) => d.id),
+    };
     const { position } = this.state;
-    const { singleGraph } = this.props;
+    const { x, y } = ChartUtils.calcScaledPosition(position[0], position[1]);
+    const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
-    let nodes = Chart.getNodes();
-    let links = Chart.getLinks();
-    const deleteNodes = [];
-    nodes = nodes.map((n) => {
-      const i = duplicates.findIndex((d) => d && d.name === n.name);
-      if (!sources.some((s) => s.id === n.id)) {
-        if (i !== -1) {
-          deleteNodes.push(n);
-          return undefined;
-        }
-        return n;
-      }
-      if (i > -1) {
-        data.nodes = data.nodes.filter((d) => {
-          if (d.name === n.name) {
-            d.merge = true;
-          }
-          return d;
-        });
-      } else {
-        data.nodes = data.nodes.filter((d) => d.name !== n.name);
-      }
-      return n;
+    this.closeModal();
+    await Api.labelPast(id, undefined, [x, y], 'merge-compare', {
+      label: data.label,
+      nodes: data.nodes,
+      links: data.links,
+      merge,
     });
+  }
 
-    nodes = _.compact(nodes);
-    // duplicates = _.compact(duplicates);
-
-    links = ChartUtils.cleanLinks(links, nodes);
-
-    Chart.render({ nodes, links });
-
-    this.setState({
-      compare: {}, data: {}, position: [], showQuestionModal: false, showCompareModal: false,
+  copyDocument = async (action) => {
+    const { position } = this.state;
+    const { x, y } = ChartUtils.calcScaledPosition(position[0], position[1]);
+    const { id } = this.props.singleGraph;
+    const data = LabelUtils.getData();
+    this.closeModal();
+    await Api.labelPast(id, undefined, [x, y], action, {
+      label: data.label,
+      nodes: data.nodes,
+      data: data.links,
     });
-    // const { updateNodes, createNodes, createLinks, createLabel } = await LabelUtils.past(data, position);
-    // this.props.updateNodesRequest(singleGraph.id, updateNodes);
-    // this.props.createNodesRequest(singleGraph.id, createNodes);
-    // this.props.deleteNodesRequest(singleGraph.id, deleteNodes);
-    //
-    // this.props.createLinksRequest(singleGraph.id, createLinks);
-    // this.props.createLabelsRequest(singleGraph.id, [createLabel]);
   }
 
   render() {
@@ -247,7 +223,7 @@ class LabelCopy extends Component {
           <p className="subtitle">
             {'Moving '}
             <span className="headerContents">
-              {data.nodes.length}
+              {data.nodes?.length}
             </span>
             {' nodes from '}
             <span className="headerContents">
@@ -298,7 +274,6 @@ class LabelCopy extends Component {
         {showCompareModal
           ? (
             <LabelCompare
-              nodes={Chart.getNodes()}
               compare={compare}
               position={position}
               onRequestClose={() => this.toggleCompareNodes(false)}
