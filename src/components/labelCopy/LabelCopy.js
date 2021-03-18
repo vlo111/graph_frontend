@@ -44,10 +44,12 @@ class LabelCopy extends Component {
 
   componentDidMount() {
     ContextMenu.event.on('label.append', this.handleLabelAppend);
+    ContextMenu.event.on('label.embed', this.handleLabelEmbed);
   }
 
   componentWillUnmount() {
     ContextMenu.event.removeListener('label.append', this.handleLabelAppend);
+    ContextMenu.event.removeListener('label.embed', this.handleLabelEmbed);
   }
 
   copyDocuments = (fromGraphId, toGraphId, nodes) => {
@@ -186,17 +188,22 @@ class LabelCopy extends Component {
     });
   }
 
-  copyDocument = async (action) => {
+  copyDocument = async (action, sourceId = undefined) => {
     const { position } = this.state;
     const { x, y } = ChartUtils.calcScaledPosition(position[0], position[1]);
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     this.closeModal();
-    await Api.labelPast(id, undefined, [x, y], action, {
+    await Api.labelPast(id, sourceId, [x, y], action, {
       label: data.label,
       nodes: data.nodes,
       links: data.links,
     });
+  }
+
+  handleLabelEmbed = () => {
+    const { sourceId } = LabelUtils.getData();
+    this.copyDocument('skip', sourceId);
   }
 
   render() {

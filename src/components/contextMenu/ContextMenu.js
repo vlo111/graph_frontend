@@ -14,6 +14,8 @@ import LabelUtils from '../../helpers/LabelUtils';
 import SelectSquare from './SelectSquare';
 import DeleteModalContext from './DeleteModalContext';
 import { setActiveButton } from '../../store/actions/app';
+import ChartUtils from "../../helpers/ChartUtils";
+import Api from "../../Api";
 
 class ContextMenu extends Component {
   static propTypes = {
@@ -173,13 +175,8 @@ class ContextMenu extends Component {
                     <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
                       Append
                     </Button>
-                    <Button onClick={(ev) => {
-                      const data = LabelUtils.getData();
-                      LabelUtils.past(data, [x, y], true, graphId);
-                      this.handleClick(ev, 'label.embed');
-                    }}
-                    >
-                      Paste Embedded
+                    <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
+                      Past Embedded
                     </Button>
                   </div>
                 </div>
@@ -195,10 +192,10 @@ class ContextMenu extends Component {
               {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
                 <>
                   {show === 'node' ? (!params.readOnly ? (
-                    <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
-                      Delete
-                    </Button>
-                  ) : null)
+                      <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
+                        Delete
+                      </Button>
+                    ) : null)
                     : (
                       <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
                         Delete
