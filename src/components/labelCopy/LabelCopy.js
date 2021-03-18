@@ -80,6 +80,7 @@ class LabelCopy extends Component {
 
     const position = [x, y];
     if (_.isEmpty(compare.duplicatedNodes)) {
+      this.copyDocument('keep');
       return;
     }
     this.setState({
