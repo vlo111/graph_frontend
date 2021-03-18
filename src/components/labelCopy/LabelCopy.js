@@ -194,7 +194,7 @@ class LabelCopy extends Component {
     await Api.labelPast(id, undefined, [x, y], action, {
       label: data.label,
       nodes: data.nodes,
-      data: data.links,
+      links: data.links,
     });
   }
 
