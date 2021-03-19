@@ -35,7 +35,9 @@ class Sortable extends Component {
 
   render() {
     const SortableList = this.sortableList;
-    const { items, onChange, keyExtractor, renderItem, ...props } = this.props;
+    const {
+      items, onChange, keyExtractor, renderItem, ...props
+    } = this.props;
     return (
       <SortableList
         axis="x"

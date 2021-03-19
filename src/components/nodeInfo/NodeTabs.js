@@ -93,6 +93,7 @@ class NodeTabs extends Component {
     const node = ChartUtils.getNodeById(nodeId);
     const customFields = CustomFields.getCustomField(node, Chart.getNodes());
     this.setFirstTab(node, customFields);
+    console.log(customFields);
     return (
       <div className="nodeTabs">
 
@@ -114,7 +115,7 @@ class NodeTabs extends Component {
               <Button
                 className={activeTab === p.value.name ? 'active' : undefined}
                 key={p.value.name}
-                onClick={() => this.setActiveTab(p.value.name)}
+                onMouseDown={() => this.setActiveTab(p.value.name)}
               >
                 <p>{p.value.name}</p>
               </Button>
