@@ -76,9 +76,7 @@ class Utils {
       reject(new Error("Error: Your browser doesn't support geolocation."));
       return;
     }
-    navigator.geolocation.getCurrentPosition((position) => {
-      resolve(position);
-    }, reject);
+    navigator.geolocation.getCurrentPosition(resolve, reject);
   }))
 
   static popupWindow = (url, title, width, height) => {
@@ -281,7 +279,23 @@ class Utils {
       resolve(width);
     };
     img.src = icon;
-  })
+  });
+
+  static arrayMove = (array, from, to) => {
+    const arrayMoveMutate = (arr, f, t) => {
+      const startIndex = f < 0 ? arr.length + f : f;
+
+      if (startIndex >= 0 && startIndex < arr.length) {
+        const endIndex = t < 0 ? arr.length + t : t;
+
+        const [item] = arr.splice(f, 1);
+        arr.splice(endIndex, 0, item);
+      }
+    };
+    array = [...array];
+    arrayMoveMutate(array, from, to);
+    return array;
+  }
 }
 
 export default Utils;

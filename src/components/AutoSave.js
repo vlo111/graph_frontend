@@ -101,17 +101,16 @@ class AutoSave extends Component {
     const updateNodes = [];
     const updateNodePositions = [];
     const updateNodeCustomFields = [];
-
     nodes.forEach((node) => {
       const oldNode = Chart.oldData.nodes.find((n) => n.id === node.id);
       if (oldNode) {
-        if (oldNode.import) {
+        if (oldNode.import || oldNode.create) {
           createNodes.push(node);
         } else if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
           updateNodePositions.push(node);
         } else if (!_.isEqual(this.formatNode(node), this.formatNode(oldNode))) {
           updateNodes.push(node);
-        } else if (!_.isEqual(node.customFields, oldNode.customFields)) {
+        } else if (oldNode.customFields && !_.isEqual(node.customFields, oldNode.customFields)) {
           updateNodeCustomFields.push(node);
         }
       }

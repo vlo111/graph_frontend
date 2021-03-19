@@ -66,7 +66,7 @@ class NodeFullInfo extends Component {
                 Expand
               </Link>
             </div>
-            <NodeTabs node={node} editable={editable} />
+            <NodeTabs nodeId={node.id} editable={editable} />
           </div>
           <ConnectionDetails nodeId={node.id} />
         </div>

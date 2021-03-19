@@ -13,6 +13,8 @@ import { removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/grap
 import FlexTabs from '../FlexTabs';
 import MapsInfo from '../maps/MapsInfo';
 import Chart from '../../Chart';
+import Sortable from './Sortable';
+import ChartUtils from '../../helpers/ChartUtils';
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -79,23 +81,22 @@ class NodeTabs extends Component {
     this.setState({ showLocation: true });
   }
 
+  handleOrderChange = (customFields) => {
+    const { nodeId } = this.props;
+    Chart.setNodeData(nodeId, { customFields });
+    this.forceUpdate();
+  }
+
   render() {
     const { activeTab, formModalOpen } = this.state;
-    const { node, editable } = this.props;
+    const { nodeId, editable } = this.props;
+    const node = ChartUtils.getNodeById(nodeId);
     const customFields = CustomFields.getCustomField(node, Chart.getNodes());
     this.setFirstTab(node, customFields);
     return (
       <div className="nodeTabs">
-        <FlexTabs>
-          {customFields.map((val) => (
-            <Button
-              className={activeTab === val.name ? 'active' : undefined}
-              key={val.name}
-              onClick={() => this.setActiveTab(val.name)}
-            >
-              <p>{val.name}</p>
-            </Button>
-          ))}
+
+        <div className="container-tabs">
           {node.location ? (
             <Button
               className={activeTab === '_location' ? 'active activeNoShadow' : undefined}
@@ -104,12 +105,28 @@ class NodeTabs extends Component {
               <p>Location</p>
             </Button>
           ) : null}
+
+          <Sortable
+            onChange={this.handleOrderChange}
+            items={customFields}
+            keyExtractor={(v) => v.name}
+            renderItem={(p) => (
+              <Button
+                className={activeTab === p.value.name ? 'active' : undefined}
+                key={p.value.name}
+                onClick={() => this.setActiveTab(p.value.name)}
+              >
+                <p>{p.value.name}</p>
+              </Button>
+            )}
+          />
+
           {editable && !node.sourceId && node.customFields?.length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
               <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
             </Tooltip>
           ) : null}
-        </FlexTabs>
+        </div>
         {!_.isNull(formModalOpen) ? (
           <NodeTabsFormModal
             node={node}

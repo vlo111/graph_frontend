@@ -55,9 +55,9 @@ class MapsLocationPicker extends Component {
     try {
       const { coords } = await Utils.getCurrentPosition();
       const initialCenter = { lat: coords.latitude, lng: coords.longitude };
-
       this.setState({ initialCenter });
     } catch (e) {
+      console.warn(e)
       this.setState({ initialCenter: undefined });
     }
   }

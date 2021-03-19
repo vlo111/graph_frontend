@@ -58,7 +58,7 @@ class NodeFullInfo extends Component {
                 </div>
               </div>
               <div className="nodeDescription" dangerouslySetInnerHTML={{ __html: node.description }} />
-              <NodeTabs node={node} />
+              <NodeTabs nodeId={node.id} />
             </div>
           </div>
           <div className="right">

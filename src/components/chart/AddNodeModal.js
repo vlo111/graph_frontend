@@ -98,7 +98,7 @@ class AddNodeModal extends Component {
     } = this.state;
 
     const errors = {};
-    const nodes = Chart.getNodes();
+    const nodes = [...Chart.getNodes()];
 
     const update = !_.isNull(index);
 
@@ -124,7 +124,9 @@ class AddNodeModal extends Component {
       if (update) {
         const d = { ...nodes[index], ...nodeData };
         nodes[index] = d;
+        nodeData.update = true;
       } else {
+        nodeData.create = true;
         nodeData.createdAt = moment().unix();
         nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
