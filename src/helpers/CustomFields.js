@@ -154,6 +154,21 @@ class CustomFields {
       .value();
     return customFieldType;
   }
+  
+  static getOrder(customFields, type, key) { 
+    if (!customFields[type]) {
+      return [];
+    }
+    const customFieldType = _.chain(customFields[type])
+      .map((val, key) => ({
+        key,
+        order: val.order,
+      }))
+      .filter((d)=> (d.key == key)) 
+      .map((d) =>  d.order )
+      .value(); 
+    return customFieldType;
+  } 
 }
 
 export default CustomFields;
