@@ -127,7 +127,6 @@ class Api {
   static getSingleGraph(graphId, params = {}) {
     return api.get(`/graphs/single/${graphId}`, {
       params,
-      cancelToken: this.#cancel('getSingleGraph'),
     });
   }
 

@@ -83,7 +83,6 @@ class GraphCompareList extends Component {
                             <LabelCompareItem
                               node={node}
                               checked={selected.some((d) => d.id === node.id)}
-                              customFields={singleGraph1.customFields}
                               onChange={(checked) => this.props.onChange(node, checked, 1)}
                             />
                           </div>
@@ -92,7 +91,6 @@ class GraphCompareList extends Component {
                               <LabelCompareItem
                                 node={node2}
                                 checked={selected.some((d) => d.id === node2.id)}
-                                customFields={singleGraph2.customFields}
                                 onChange={(checked) => this.props.onChange(node2, checked, 2)}
                               />
                             ) : null}

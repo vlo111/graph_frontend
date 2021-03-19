@@ -144,7 +144,9 @@ class AutoSave extends Component {
         }
       }
     });
-
+    if (deleteNodes.length === nodes.length) {
+      return;
+    }
     let update = false;
     if (createNodes.length) {
       update = true;

@@ -4,6 +4,7 @@ import moment from 'moment';
 import Tooltip from 'rc-tooltip';
 import NodeIcon from '../NodeIcon';
 import CustomFields from '../../helpers/CustomFields';
+import Chart from "../../Chart";
 
 class LabelCompareItem extends Component {
   constructor(props) {
@@ -16,9 +17,9 @@ class LabelCompareItem extends Component {
   }
 
   render() {
-    const { node, customFields, checked } = this.props;
+    const { node, checked } = this.props;
 
-    const customField = CustomFields.get(customFields, node.type, node.id);
+    const customFields = CustomFields.getCustomField(node, Chart.getNodes());
 
     const uniqueCheckboxId = Math.random().toString(36).substring(7);
 
@@ -53,12 +54,12 @@ class LabelCompareItem extends Component {
             {/*  : <span className="createdAt"> 0 </span>} */}
           </div>
           <div className="tabs">
-            {_.map(customField, (val, key) => (
-              <Tooltip key={key} overlay={key} placement="top">
+            {_.map(customFields, (val, key) => (
+              <Tooltip key={val.name} overlay={val.name} placement="top">
                 <span>
-                  {key && key.length > 10
-                    ? `${key.substr(0, 10)}... `
-                    : key}
+                  {val.name && val.name.length > 10
+                    ? `${val.name.substr(0, 10)}... `
+                    : val.name}
                 </span>
               </Tooltip>
             ))}

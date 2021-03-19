@@ -699,7 +699,31 @@ class ChartUtils {
   }
 
   static merge(d1, d2) {
-    const data = { ...d1, ...d2 };
+    const customFields = d1.customFields || [];
+    (d2.customFields || []).forEach((f) => {
+      const i = d1.customFields.findIndex((d) => d.name === f.name);
+      const value1 = i > -1 ? d1.customFields[i].value : undefined;
+      const value2 = f.value;
+      if (value1 && !value2) {
+        f.value = value1;
+      } else if (!value1 && value2) {
+        f.value = value2;
+      } else if (value1 && value2) {
+        if (value1 !== value2) {
+          f.value = `${value1}\n<hr />\n${value2}`;
+        } else {
+          f.value = value2;
+        }
+      }
+      if (i > -1) {
+        customFields[i].value = f.value;
+        customFields[i].subtitle = customFields[i].subtitle || f.subtitle;
+      } else {
+        customFields.push(f);
+      }
+    });
+
+    const data = { ...d1, ...d2, customFields };
     for (const i in data) {
       if (!data[i]) {
         data[i] = d1[i];
@@ -794,44 +818,44 @@ class ChartUtils {
       return l;
     });
 
-    const { customFields } = graph1;
-
-    const customFieldsMerged = {};
-
-    const customFieldsFull = Utils.mergeDeep(graph2.customFields, customFields);
-    for (const type in customFieldsFull) {
-      const customField = customFieldsFull[type];
-      for (const tab in customField) {
-        const { values } = customFieldsFull[type][tab];
-        for (const nodeId in values) {
-          const n1 = selectedNodes1.find((n) => n.id === nodeId);
-          const n2 = selectedNodes2.find((n) => n.id === nodeId);
-          const mainNode = nodes.find((n) => n.name === n1?.name || n.name === n2?.name);
-          if (mainNode) {
-            const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
-            const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
-
-            const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : null;
-            const value2 = node2 ? _.get(graph2.customFields, [node2.type, tab, 'values', node2.id]) : null;
-
-            if (value1 && !value2) {
-              _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1, Object);
-            } else if (!value1 && value2) {
-              _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
-            } else if (value1 && value2) {
-              if (value1 !== value2) {
-                _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`, Object);
-              } else {
-                _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
-              }
-            }
-          }
-        }
-      }
-    }
+    // const { customFields } = graph1;
+    //
+    // const customFieldsMerged = {};
+    //
+    // const customFieldsFull = Utils.mergeDeep(graph2.customFields, customFields);
+    // for (const type in customFieldsFull) {
+    //   const customField = customFieldsFull[type];
+    //   for (const tab in customField) {
+    //     const { values } = customFieldsFull[type][tab];
+    //     for (const nodeId in values) {
+    //       const n1 = selectedNodes1.find((n) => n.id === nodeId);
+    //       const n2 = selectedNodes2.find((n) => n.id === nodeId);
+    //       const mainNode = nodes.find((n) => n.name === n1?.name || n.name === n2?.name);
+    //       if (mainNode) {
+    //         const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
+    //         const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
+    //
+    //         const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : null;
+    //         const value2 = node2 ? _.get(graph2.customFields, [node2.type, tab, 'values', node2.id]) : null;
+    //
+    //         if (value1 && !value2) {
+    //           _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1, Object);
+    //         } else if (!value1 && value2) {
+    //           _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
+    //         } else if (value1 && value2) {
+    //           if (value1 !== value2) {
+    //             _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`, Object);
+    //           } else {
+    //             _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
 
     return {
-      labels, nodes, links, customFields: customFieldsMerged,
+      labels, nodes, links,
     };
   }
 

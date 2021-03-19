@@ -93,7 +93,6 @@ class NodeTabs extends Component {
     const node = ChartUtils.getNodeById(nodeId);
     const customFields = CustomFields.getCustomField(node, Chart.getNodes());
     this.setFirstTab(node, customFields);
-    console.log(customFields);
     return (
       <div className="nodeTabs">
 

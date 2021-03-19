@@ -100,7 +100,6 @@ class GraphCompare extends Component {
     const { singleGraph2 } = this.state;
     const { selectedNodes1, selectedNodes2 } = this.state;
     const createGraphData = ChartUtils.margeGraphs(singleGraph, singleGraph2, selectedNodes1, selectedNodes2);
-
     this.setState({ createGraphData });
   }
 
