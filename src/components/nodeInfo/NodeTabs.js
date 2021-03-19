@@ -29,6 +29,7 @@ class NodeTabs extends Component {
       activeTab: '',
       formModalOpen: null,
       showLocation: false,
+      dragId: null,
     };
   }
 
@@ -79,6 +80,36 @@ class NodeTabs extends Component {
     this.setState({ showLocation: true });
   }
 
+  handleDrag = (e, key) => {
+    const { dragId } = this.state;
+    this.setState({ dragId: key }); 
+  };
+  handleDrop = (e, key) => {
+    const { dragId } = this.state;
+    let { customFields } = this.props;
+    const { node } = this.props;
+     const orderTo = CustomFields.getOrder(customFields, node.type, key);
+    const orderFrom = CustomFields.getOrder(customFields, node.type, dragId);
+
+     const dragBoxOrder = orderTo[0];
+    const dropBoxOrder = orderFrom[0];
+  
+ 
+    const newcustomFieldsState = _.chain(customFields[node.type])    
+     .map((d, index) =>  {
+      if(index  === key){ 
+      d.order = dropBoxOrder;
+    }
+    if(index  === dragId){ 
+      d.order = dragBoxOrder;
+    }  
+     return d;
+     } )
+    .value(); 
+    customFields =  _.cloneDeep(newcustomFieldsState);   
+  }
+
+
   render() {
     const { activeTab, formModalOpen } = this.state;
     const { node, editable } = this.props;
@@ -92,6 +123,10 @@ class NodeTabs extends Component {
               className={activeTab === val.name ? 'active' : undefined}
               key={val.name}
               onClick={() => this.setActiveTab(val.name)}
+              draggable={true}
+              onDragOver={(ev) => ev.preventDefault()}
+              onDragStart={(e)=> this.handleDrag(e, val.name)}
+              onDrop={(e)=> this.handleDrop(e, val.name)}
             >
               <p>{val.name}</p>
             </Button>
