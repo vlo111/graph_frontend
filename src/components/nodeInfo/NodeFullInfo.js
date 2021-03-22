@@ -53,6 +53,7 @@ class NodeFullInfo extends Component {
             headerImg={node.icon ? node.icon : bgImage}
             node={node}
             tabs={customFields}
+            editable={editable}
           />
           <div className="nodeFullContent">
             <div className="headerBanner">
