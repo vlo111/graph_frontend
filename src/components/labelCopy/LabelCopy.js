@@ -205,6 +205,13 @@ class LabelCopy extends Component {
     }).catch((e) => e.response);
     if (res.status === 'error') {
       toast.error(res.message);
+      return;
+    }
+    if (sourceId) {
+      const { data: a } = await Api.getSingleGraph(id);
+      Chart.render({
+        embedLabels: a.embedLabels,
+      });
     }
   }
 
