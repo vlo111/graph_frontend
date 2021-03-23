@@ -72,7 +72,7 @@ class AutoSave extends Component {
     nodeType: node.nodeType || '',
     scale: node.scale || '',
     sourceId: node.sourceId || '',
-    status: node.status || '',
+    status: node.status || 'approved',
     type: node.type || '',
   })
 
@@ -97,14 +97,14 @@ class AutoSave extends Component {
     const svg = ChartUtils.getChartSvg();
     const deleteNodes = _.differenceBy(Chart.oldData.nodes, nodes, 'id');
     const createNodes = _.differenceBy(nodes, Chart.oldData.nodes, 'id');
-
     const updateNodes = [];
     const updateNodePositions = [];
     const updateNodeCustomFields = [];
     nodes.forEach((node) => {
       const oldNode = Chart.oldData.nodes.find((n) => n.id === node.id);
       if (oldNode) {
-        if (oldNode.import || oldNode.create) {
+        // if (oldNode.import || oldNode.create) {
+        if (oldNode.create) {
           createNodes.push(node);
         } else if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
           updateNodePositions.push(node);
@@ -165,10 +165,10 @@ class AutoSave extends Component {
       this.props.updateNodesPositionRequest(graphId, updateNodePositions);
     }
 
-    if (updateNodeCustomFields.length) {
-      update = true;
-      this.props.updateNodesCustomFieldsRequest(graphId, updateNodeCustomFields);
-    }
+    // if (updateNodeCustomFields.length) {
+    //   update = true;
+    //   this.props.updateNodesCustomFieldsRequest(graphId, updateNodeCustomFields);
+    // }
 
     if (createLinks.length) {
       update = true;

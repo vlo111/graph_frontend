@@ -13,7 +13,7 @@ class LabelCompare extends Component {
     super(props);
     this.state = {
       sources: [],
-      duplicates: [],
+      duplications: [],
     };
   }
 
@@ -47,18 +47,18 @@ class LabelCompare extends Component {
     const {
       compare: { duplicatedNodes },
     } = this.props;
-    let { duplicates } = this.state;
-    if (duplicatedNodes.length !== duplicates.length) {
-      duplicates = _.cloneDeep(duplicatedNodes);
+    let { duplications } = this.state;
+    if (duplicatedNodes.length !== duplications.length) {
+      duplications = _.cloneDeep(duplicatedNodes);
     } else {
-      duplicates = [];
+      duplications = [];
     }
-    this.setState({ duplicates });
+    this.setState({ duplications });
   }
 
   handleSubmit = () => {
-    const { sources, duplicates } = this.state;
-    this.props.onSubmit(sources, duplicates);
+    const { sources, duplications } = this.state;
+    this.props.onSubmit(sources, duplications);
   }
 
   render() {
@@ -66,7 +66,7 @@ class LabelCompare extends Component {
       compare: { duplicatedNodes, sourceNodes }, onRequestClose, customFields,
     } = this.props;
 
-    const { sources, duplicates } = this.state;
+    const { sources, duplications } = this.state;
     const data = LabelUtils.getData();
     return (
       <Modal
@@ -90,7 +90,7 @@ class LabelCompare extends Component {
                   <div className="allCheckedContent">
                     <input
                       onChange={() => this.toggleAllDuplicate()}
-                      checked={duplicates.length === duplicatedNodes.length}
+                      checked={duplications.length === duplicatedNodes.length}
                       className="graphsCheckbox"
                       type="checkbox"
                       name="layout"
@@ -125,8 +125,8 @@ class LabelCompare extends Component {
                       <LabelCompareItem
                         node={nodeDuplicate}
                         customFields={data.customFields}
-                        checked={duplicates.some((d) => d.id === nodeDuplicate.id)}
-                        onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplicates')}
+                        checked={duplications.some((d) => d.id === nodeDuplicate.id)}
+                        onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplications')}
                       />
                     </div>
                     <div className="node node_right">

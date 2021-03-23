@@ -109,6 +109,12 @@ export function setNodeCustomField(type, nodeId, customField, tabData, append = 
   };
 }
 
+export const GET_NODE_CUSTOM_FIELDS = define('GET_NODE_CUSTOM_FIELDS');
+
+export function getNodeCustomFieldsRequest(graphId, nodeId) {
+  return GET_NODE_CUSTOM_FIELDS.request(() => Api.getNodeCustomFields(graphId, nodeId));
+}
+
 export const ADD_NODE_CUSTOM_FIELD_KEY = 'ADD_NODE_CUSTOM_FIELD_KEY';
 
 export function addNodeCustomFieldKey(type, key, subtitle) {

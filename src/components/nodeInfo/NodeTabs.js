@@ -9,12 +9,12 @@ import NodeTabsContent from './NodeTabsContent';
 import CustomFields from '../../helpers/CustomFields';
 import NodeTabsFormModal from './NodeTabsFormModal';
 import ContextMenu from '../contextMenu/ContextMenu';
-import { removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/graphs';
-import FlexTabs from '../FlexTabs';
+import { getNodeCustomFieldsRequest, removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/graphs';
 import MapsInfo from '../maps/MapsInfo';
 import Chart from '../../Chart';
 import Sortable from './Sortable';
 import ChartUtils from '../../helpers/ChartUtils';
+import { updateNodesCustomFieldsRequest } from "../../store/actions/nodes";
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -34,13 +34,17 @@ class NodeTabs extends Component {
     };
   }
 
-  setFirstTab = memoizeOne((node, customFields) => {
-    if (node.location) {
+  setFirstTab = memoizeOne((location, customField) => {
+    if (location) {
       this.setState({ activeTab: '_location' });
     } else {
-      this.setState({ activeTab: _.get(customFields, '[0].name', '') });
+      this.setState({ activeTab: _.get(customField, 'name', '') });
     }
     this.props.setActiveTab('');
+  }, _.isEqual);
+
+  getCustomFields = memoizeOne((graphId, nodeId) => {
+    this.props.getNodeCustomFieldsRequest(graphId, nodeId);
   }, _.isEqual);
 
   componentDidMount() {
@@ -82,17 +86,22 @@ class NodeTabs extends Component {
   }
 
   handleOrderChange = (customFields) => {
-    const { nodeId } = this.props;
-    Chart.setNodeData(nodeId, { customFields });
+    const { nodeId, graphId } = this.props;
+    this.props.updateNodesCustomFieldsRequest(graphId, [{
+      id: nodeId,
+      customFields,
+    }]);
+    // Chart.setNodeData(nodeId, { customFields });
     this.forceUpdate();
   }
 
   render() {
     const { activeTab, formModalOpen } = this.state;
-    const { nodeId, editable } = this.props;
+    const { graphId, nodeId, editable, nodeCustomFields } = this.props;
     const node = ChartUtils.getNodeById(nodeId);
-    const customFields = CustomFields.getCustomField(node, Chart.getNodes());
-    this.setFirstTab(node, customFields);
+    // const customFields = CustomFields.getCustomField(node, Chart.getNodes());
+    this.getCustomFields(graphId, nodeId);
+    this.setFirstTab(node.location, nodeCustomFields[0]);
     return (
       <div className="nodeTabs">
 
@@ -108,7 +117,7 @@ class NodeTabs extends Component {
 
           <Sortable
             onChange={this.handleOrderChange}
-            items={customFields}
+            items={nodeCustomFields}
             keyExtractor={(v) => v.name}
             renderItem={(p) => (
               <Button
@@ -130,6 +139,7 @@ class NodeTabs extends Component {
         {!_.isNull(formModalOpen) ? (
           <NodeTabsFormModal
             node={node}
+            customFields={nodeCustomFields}
             fieldName={formModalOpen}
             onClose={this.closeFormModal}
           />
@@ -150,7 +160,7 @@ class NodeTabs extends Component {
               </div>
             )
         ) : (
-          <NodeTabsContent name={activeTab} node={node} />
+          <NodeTabsContent name={activeTab} node={node} customFields={nodeCustomFields} />
         )}
       </div>
     );
@@ -158,13 +168,16 @@ class NodeTabs extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  customFields: state.graphs.singleGraph.customFields || {},
   activeTab: state.graphs.activeTab,
+  graphId: state.graphs.singleGraph.id,
+  nodeCustomFields: state.graphs.nodeCustomFields,
 });
 
 const mapDispatchToProps = {
   setActiveTab,
   removeNodeCustomFieldKey,
+  getNodeCustomFieldsRequest,
+  updateNodesCustomFieldsRequest,
 };
 
 const Container = connect(

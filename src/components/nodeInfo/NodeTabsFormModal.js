@@ -10,6 +10,7 @@ import Button from '../form/Button';
 import Validate from '../../helpers/Validate';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Chart from '../../Chart';
+import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -17,8 +18,8 @@ class NodeTabsFormModal extends Component {
     node: PropTypes.object.isRequired,
   }
 
-  initValues = memoizeOne((node, fieldName) => {
-    const customField = node.customFields.find((f) => f.name === fieldName);
+  initValues = memoizeOne((node, fieldName, customFields) => {
+    const customField = customFields.find((f) => f.name === fieldName);
     if (customField) {
       const tabData = {
         name: fieldName,
@@ -66,7 +67,9 @@ class NodeTabsFormModal extends Component {
   }
 
   save = async () => {
-    const { node, fieldName } = this.props;
+    const {
+      node, fieldName, graphId, customFields,
+    } = this.props;
     const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
 
@@ -78,7 +81,6 @@ class NodeTabsFormModal extends Component {
     [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
 
     if (!Validate.hasError(errors)) {
-      const { customFields } = node;
       const data = {
         name: tabData.name,
         value: tabData.value,
@@ -92,7 +94,11 @@ class NodeTabsFormModal extends Component {
           customFields[i] = data;
         }
       }
-      Chart.setNodeData(node.id, { customFields });
+      this.props.updateNodesCustomFieldsRequest(graphId, [{
+        id: node.id,
+        customFields,
+      }]);
+      // Chart.setNodeData(node.id, { customFields });
       this.props.onClose(data);
     }
     this.setState({ errors, tabData });
@@ -100,8 +106,8 @@ class NodeTabsFormModal extends Component {
 
   render() {
     const { tabData, errors } = this.state;
-    const { node, fieldName } = this.props;
-    this.initValues(node, fieldName);
+    const { node, fieldName, customFields } = this.props;
+    this.initValues(node, fieldName, customFields);
     const isUpdate = !!fieldName;
     return (
       <Modal
@@ -148,9 +154,12 @@ class NodeTabsFormModal extends Component {
 
 const mapStateToProps = (state) => ({
   currentUserId: state.account.myAccount.id,
+  graphId: state.graphs.singleGraph.id,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateNodesCustomFieldsRequest,
+};
 
 const Container = connect(
   mapStateToProps,

@@ -29,7 +29,6 @@ class LabelCopy extends Component {
   static propTypes = {
     copyDocumentForGraphRequest: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
-    customFields: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -171,10 +170,10 @@ class LabelCopy extends Component {
     this.setState({ showCompareModal });
   }
 
-  compareAndMerge = async (sources, duplicates) => {
+  compareAndMerge = async (sources, duplications) => {
     const merge = {
       sources: sources.map((d) => d.id),
-      duplicates: duplicates.map((d) => d.id),
+      duplications: duplications.map((d) => d.id),
     };
     const { position } = this.state;
     const { x, y } = ChartUtils.calcScaledPosition(position[0], position[1]);
@@ -310,7 +309,6 @@ class LabelCopy extends Component {
 
 const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
-  customFields: state.graphs.singleGraph.customFields || {},
 });
 const mapDispatchToProps = {
   copyDocumentForGraphRequest,

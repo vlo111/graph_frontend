@@ -31,8 +31,8 @@ class NodeTabsContent extends Component {
 
   render() {
     // const { contentType } = this.state;
-    const { content, name, node } = this.props;
-    const html = node.customFields.find(f => f.name === name)?.value || '';
+    const { name, node, customFields } = this.props;
+    const html = customFields.find((f) => f.name === name)?.value || '';
     // this.getContentType(html);
     // const { result: text } = stripHtml(html);
     // if (['text/html', 'application/pdf'].includes(contentType)) {

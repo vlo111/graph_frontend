@@ -28,7 +28,6 @@ class ReactChart extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
-    customFields: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,

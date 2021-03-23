@@ -33,8 +33,8 @@ class ImportStep2 extends Component {
     const { importData } = this.props;
     const singleGraph = Chart.getData();
 
-    const duplicates = _.intersectionBy(singleGraph.nodes, importData.nodes, 'name');
-    if (duplicates.length) {
+    const duplications = _.intersectionBy(singleGraph.nodes, importData.nodes, 'name');
+    if (duplications.length) {
       this.setState({ compare: true });
       return;
     }

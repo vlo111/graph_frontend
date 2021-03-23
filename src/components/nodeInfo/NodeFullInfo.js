@@ -31,7 +31,7 @@ class NodeFullInfo extends Component {
   }
 
   render() {
-    const { editable, customFields } = this.props;
+    const { editable } = this.props;
     const queryObj = queryString.parse(window.location.search);
     const { info: nodeId, expand } = queryObj;
     if (!nodeId) {
@@ -52,7 +52,6 @@ class NodeFullInfo extends Component {
           <HeaderMini
             headerImg={node.icon ? node.icon : bgImage}
             node={node}
-            tabs={customFields}
           />
           <div className="nodeFullContent">
             <div className="headerBanner">
@@ -78,19 +77,15 @@ class NodeFullInfo extends Component {
   }
 }
 
-const
-  mapStateToProps = (state) => ({
-    singleGraph: state.graphs.singleGraph, // rerender then data changed
-    customFields: state.graphs.singleGraph.customFields || {},
-  });
+const mapStateToProps = (state) => ({
+  singleGraph: state.graphs.singleGraph, // rerender then data changed
+});
 
-const
-  mapDispatchToProps = {};
+const mapDispatchToProps = {};
 
-const
-  Container = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(NodeFullInfo);
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NodeFullInfo);
 
 export default withRouter(Container);

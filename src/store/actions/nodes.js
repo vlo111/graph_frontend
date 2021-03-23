@@ -29,5 +29,5 @@ export function updateNodesPositionRequest(graphId, nodes) {
 export const UPDATE_NODES_CUSTOM_FIELDS = define('UPDATE_NODES_CUSTOM_FIELDS');
 
 export function updateNodesCustomFieldsRequest(graphId, nodes) {
-  return UPDATE_NODES_CUSTOM_FIELDS.request(() => Api.updateNodeCustomFields(graphId, nodes));
+  return UPDATE_NODES_CUSTOM_FIELDS.request(() => Api.updateNodeCustomFields(graphId, nodes), { graphId, nodes });
 }

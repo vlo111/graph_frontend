@@ -7419,7 +7419,7 @@ img.preview-scaled {
     background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
     position: absolute;
     right: 12px;
-    top: 45px;
+    top: 30px;
     z-index: 9999;
   }
 }
@@ -7462,6 +7462,7 @@ img.preview-scaled {
   background-color: $color-light-gray !important;
   color: $color-button !important;
   opacity: 0.9;
+  min-width: 70px;
 
   &:before,
   &:after {

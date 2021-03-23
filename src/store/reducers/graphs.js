@@ -14,12 +14,13 @@ import {
   SET_GRAPH_CUSTOM_FIELDS,
   GET_SINGLE_GRAPH_PREVIEW,
   UPDATE_GRAPH,
-  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY, SET_ACTIVE_TAB
+  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY, SET_ACTIVE_TAB, GET_NODE_CUSTOM_FIELDS,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 import { GENERATE_THUMBNAIL_WORKER } from '../actions/socket';
+import { UPDATE_NODES_CUSTOM_FIELDS } from '../actions/nodes';
 
 const initialState = {
   importData: {},
@@ -32,6 +33,7 @@ const initialState = {
     totalPages: 0,
   },
   actionsCount: {},
+  nodeCustomFields: [],
   activeTab: '',
 };
 export default function reducer(state = initialState, action) {
@@ -174,7 +176,7 @@ export default function reducer(state = initialState, action) {
         fx: 0,
         fy: 0,
         hidden: -1,
-      }]
+      }];
       Chart.render({
         nodes,
       });
@@ -197,7 +199,7 @@ export default function reducer(state = initialState, action) {
     case SET_NODE_CUSTOM_FIELD: {
       const singleGraph = { ...state.singleGraph };
       const {
-        type, nodeId, customField, tabData, append
+        type, nodeId, customField, tabData, append,
       } = action.payload;
       const res = CustomFields.setValue(singleGraph.customFields, type, nodeId, customField, append);
       singleGraph.customFields = res.customFields;
@@ -235,13 +237,27 @@ export default function reducer(state = initialState, action) {
         singleGraph: { ...singleGraph },
       };
     }
+    case GET_NODE_CUSTOM_FIELDS.SUCCESS: {
+      const { customFields: nodeCustomFields } = action.payload.data;
+      return {
+        ...state,
+        nodeCustomFields,
+      };
+    }
+    case UPDATE_NODES_CUSTOM_FIELDS.REQUEST: {
+      const { nodes } = action.payload;
+      return {
+        ...state,
+        nodeCustomFields: nodes[0].customFields || [],
+      };
+    }
     case REMOVE_NODE_CUSTOM_FIELD_KEY: {
       const singleGraph = { ...state.singleGraph };
       const { type, key, nodeId } = action.payload;
       singleGraph.currentTabName = key;
 
       if (!singleGraph.dismissFiles) {
-        let deleteTabDocument = [];
+        const deleteTabDocument = [];
 
         deleteTabDocument.push({
           tabName: key,
@@ -249,7 +265,7 @@ export default function reducer(state = initialState, action) {
           nodeType: type,
         });
         singleGraph.dismissFiles = deleteTabDocument;
-      } else if (!singleGraph.dismissFiles.some(e => e.tabName === key && e.nodeId === nodeId)) {
+      } else if (!singleGraph.dismissFiles.some((e) => e.tabName === key && e.nodeId === nodeId)) {
         singleGraph.dismissFiles.push({
           tabName: key,
           nodeId,
