@@ -23,13 +23,13 @@ class SaveGraph extends Component {
 
   componentDidMount() {
     Chart.event.on('dataChange', this.handleChartChange);
-    window.addEventListener('beforeunload', this.handleUnload);
+    // window.addEventListener('beforeunload', this.handleUnload);
     window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
     Chart.event.removeListener('dataChange', this.handleChartChange);
-    window.removeEventListener('beforeunload', this.handleUnload);
+    // window.removeEventListener('beforeunload', this.handleUnload);
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
@@ -84,10 +84,10 @@ class SaveGraph extends Component {
             Save Graph
         </Button>
 
-          <Prompt
-            when={preventReload}
-            message={this.handleRouteChange}
-          />
+          {/*<Prompt*/}
+          {/*  when={preventReload}*/}
+          {/*  message={this.handleRouteChange}*/}
+          {/*/>*/}
 
           {showModal ? (
             <SaveGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
