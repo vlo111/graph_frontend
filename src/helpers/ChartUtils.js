@@ -267,17 +267,16 @@ class ChartUtils {
   static getRadiusList() {
     let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.id, 'all').length * 2 + (d.icon ? 6.5 : 2));
     let max = Math.max(...radiusList);
-    if (max > 40) {
-      radiusList = radiusList.map((d) => {
-        if (d > 40) {
-          d -= 20;
-        }
-        return d;
-      });
-    }
+    // if (max > 40) {
+    //   radiusList = radiusList.map((d) => {
+    //     if (d > 40) {
+    //       d -= 20;
+    //     }
+    //     return d;
+    //   });
+    // }
     max = Math.max(...radiusList);
     const r = max > 20 ? Math.max(...radiusList) / 20 : 1;
-
     return radiusList.map((d) => d / r + 10 || 10);
   }
 

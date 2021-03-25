@@ -52,6 +52,7 @@ class NodeFullInfo extends Component {
           <HeaderMini
             headerImg={node.icon ? node.icon : bgImage}
             node={node}
+            editable={editable}
           />
           <div className="nodeFullContent">
             <div className="headerBanner">
