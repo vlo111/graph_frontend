@@ -15,6 +15,7 @@ import Chart from '../../Chart';
 import Sortable from './Sortable';
 import ChartUtils from '../../helpers/ChartUtils';
 import { updateNodesCustomFieldsRequest } from "../../store/actions/nodes";
+import Loading from "../Loading";
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -30,6 +31,7 @@ class NodeTabs extends Component {
     this.state = {
       activeTab: '',
       formModalOpen: null,
+      loading: false,
       showLocation: false,
     };
   }
@@ -43,6 +45,11 @@ class NodeTabs extends Component {
     this.props.setActiveTab('');
   }, _.isEqual);
 
+  getCustomFields = memoizeOne(async (graphId, nodeId) => {
+    this.setState({ loading: true });
+    await this.props.getNodeCustomFieldsRequest(graphId, nodeId);
+    this.setState({ loading: false });
+  }, _.isEqual);
 
   componentDidMount() {
     ContextMenu.event.on('node.fields-edit', this.openFormModal);
@@ -93,14 +100,19 @@ class NodeTabs extends Component {
   }
 
   render() {
-    const { activeTab, formModalOpen } = this.state;
-    const { nodeId, editable, nodeCustomFields } = this.props;
+    const { activeTab, formModalOpen, loading } = this.state;
+    const { graphId, nodeId, editable, nodeCustomFields } = this.props;
     const node = ChartUtils.getNodeById(nodeId);
     // const customFields = CustomFields.getCustomField(node, Chart.getNodes());
+    this.getCustomFields(graphId, nodeId);
     this.setFirstTab(node.location, nodeCustomFields[0]);
     return (
       <div className="nodeTabs">
-
+        {loading ? (
+          <div className="loadingWrapper">
+            <Loading />
+          </div>
+        ) : null}
         <div className="container-tabs">
           {node.location ? (
             <Button
@@ -172,6 +184,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setActiveTab,
   removeNodeCustomFieldKey,
+  getNodeCustomFieldsRequest,
   updateNodesCustomFieldsRequest,
 };
 

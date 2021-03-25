@@ -4410,7 +4410,7 @@ body .gh__menu {
 }
 
 .nodeFullContent {
-  .loadingWrapper{
+  .loadingWrapper {
     position: absolute;
     background: rgba(255, 255, 255, 0.5);
     width: 100%;
@@ -4418,7 +4418,9 @@ body .gh__menu {
     top: 0;
     z-index: 50;
     display: flex;
+    padding-top: 75px;
   }
+
   .name {
     font-size: 26px;
   }
@@ -7483,6 +7485,7 @@ img.preview-scaled {
 .container-tabs button,
 .sortableListItem {
   margin: 0 5px;
+  min-height: 46px;
   color: $color-dark-blue;
   scroll-snap-align: start;
   white-space: nowrap;

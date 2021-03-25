@@ -15,7 +15,6 @@ import NodeImage from "./NodeImage";
 import memoizeOne from "memoize-one";
 import _ from "lodash";
 import { getNodeCustomFieldsRequest } from "../../store/actions/graphs";
-import Loading from "../Loading";
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -28,18 +27,8 @@ class NodeFullInfo extends Component {
     editable: true,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-    }
-  }
-
-
-  getCustomFields = memoizeOne(async (graphId, nodeId) => {
-    this.setState({ loading: true })
-    await this.props.getNodeCustomFieldsRequest(graphId, nodeId);
-    this.setState({ loading: false })
+  getCustomFields = memoizeOne((graphId, nodeId) => {
+    this.props.getNodeCustomFieldsRequest(graphId, nodeId);
   });
 
   closeNodeInfo = () => {
@@ -50,15 +39,12 @@ class NodeFullInfo extends Component {
   }
 
   render() {
-    const { loading } = this.state;
-    const { editable, graphId } = this.props;
+    const { editable } = this.props;
     const queryObj = queryString.parse(window.location.search);
     const { info: nodeId, expand } = queryObj;
     if (!nodeId) {
       return null;
     }
-    this.getCustomFields(graphId, nodeId);
-
     const node = Chart.getNodes().find((n) => n.id === nodeId);
 
     if (!node) {
@@ -85,11 +71,6 @@ class NodeFullInfo extends Component {
                 Expand
               </Link>
             </div>
-            {loading  ? (
-              <div className="loadingWrapper">
-                <Loading />
-              </div>
-            ) : null}
             <NodeTabs nodeId={node.id} editable={editable} />
           </div>
           <ConnectionDetails nodeId={node.id} />
@@ -104,7 +85,6 @@ class NodeFullInfo extends Component {
 
 const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
-  graphId: state.graphs.singleGraph.id,
 });
 
 const mapDispatchToProps = {
