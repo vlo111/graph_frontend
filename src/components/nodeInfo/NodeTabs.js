@@ -43,9 +43,6 @@ class NodeTabs extends Component {
     this.props.setActiveTab('');
   }, _.isEqual);
 
-  getCustomFields = memoizeOne((graphId, nodeId) => {
-    this.props.getNodeCustomFieldsRequest(graphId, nodeId);
-  }, _.isEqual);
 
   componentDidMount() {
     ContextMenu.event.on('node.fields-edit', this.openFormModal);
@@ -97,10 +94,9 @@ class NodeTabs extends Component {
 
   render() {
     const { activeTab, formModalOpen } = this.state;
-    const { graphId, nodeId, editable, nodeCustomFields } = this.props;
+    const { nodeId, editable, nodeCustomFields } = this.props;
     const node = ChartUtils.getNodeById(nodeId);
     // const customFields = CustomFields.getCustomField(node, Chart.getNodes());
-    this.getCustomFields(graphId, nodeId);
     this.setFirstTab(node.location, nodeCustomFields[0]);
     return (
       <div className="nodeTabs">
@@ -176,7 +172,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setActiveTab,
   removeNodeCustomFieldKey,
-  getNodeCustomFieldsRequest,
   updateNodesCustomFieldsRequest,
 };
 
