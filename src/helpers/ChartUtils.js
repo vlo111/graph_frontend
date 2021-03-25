@@ -277,8 +277,7 @@ class ChartUtils {
     // }
     max = Math.max(...radiusList);
     const r = max > 20 ? Math.max(...radiusList) / 20 : 1;
-
-    return radiusList.map((d) => d || 10);
+    return radiusList.map((d) => d / r + 10 || 10);
   }
 
   static linkColorObj = {};

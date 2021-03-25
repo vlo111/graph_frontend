@@ -1398,7 +1398,7 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-        .attr('r', (d) => (+d.manually_size || 1) + 15 + ( +Math.sqrt(this.radiusList[d.index]) || 1 )) ;
+        .attr('r', (d) => (+d.manually_size || 1) + 15 + ( +Math.sqrt(this.radiusList[d.index]) || 1 )) 
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
@@ -1937,7 +1937,7 @@ class Chart {
           const cy = height / 2 + 20;
           return cy;
         }
-        return this.radiusList[d.index] + i + (+d.manually_size || 1) + (+Math.sqrt(this.radiusList[d.index] || 1) );
+        return this.radiusList[d.index] + i + (+d.manually_size || 1);
       })
       .attr('font-size', (d) => {
         const s = d.nodeType === 'infography' ? _.get(d, 'scale[0]', 1) : 1;
