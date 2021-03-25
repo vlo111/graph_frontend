@@ -26,6 +26,7 @@ class AddLabelModal extends Component {
   componentDidMount() {
     Chart.event.on('label.new', this.handleLabelCrate);
     ContextMenu.event.on('folder.new', this.handleFolderCrate);
+    ContextMenu.event.on('label.edit', this.handleFolderEdit);
     ContextMenu.event.on('folder.selectSquare', this.handleFolderCrateSquare);
   }
 
