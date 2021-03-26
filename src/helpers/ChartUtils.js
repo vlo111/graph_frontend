@@ -516,7 +516,6 @@ class ChartUtils {
       return labels.filter((l) => !l.startsWith('f_'));
     }
     if (labels.includes(firstFolder)) {
-      console.log(33333);
       return [firstFolder];
     }
     return labels;

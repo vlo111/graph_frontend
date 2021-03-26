@@ -12,16 +12,24 @@ import ConnectionDetails from './ConnectionDetails';
 import NodeFullInfoModal from './NodeFullInfoModal';
 import ChartUtils from '../../helpers/ChartUtils';
 import NodeImage from "./NodeImage";
+import memoizeOne from "memoize-one";
+import _ from "lodash";
+import { getNodeCustomFieldsRequest } from "../../store/actions/graphs";
 
 class NodeFullInfo extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
     editable: PropTypes.bool,
+    getNodeCustomFieldsRequest: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     editable: true,
   }
+
+  getCustomFields = memoizeOne((graphId, nodeId) => {
+    this.props.getNodeCustomFieldsRequest(graphId, nodeId);
+  });
 
   closeNodeInfo = () => {
     const queryObj = queryString.parse(window.location.search);
@@ -39,9 +47,6 @@ class NodeFullInfo extends Component {
     }
     const node = Chart.getNodes().find((n) => n.id === nodeId);
 
-    if (node) {
-      ChartUtils.findNodeInDom(node);
-    }
     if (!node) {
       return null;
     }
@@ -79,10 +84,12 @@ class NodeFullInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  singleGraph: state.graphs.singleGraph, // rerender then data changed
+  singleGraph: state.graphs.singleGraph,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getNodeCustomFieldsRequest,
+};
 
 const Container = connect(
   mapStateToProps,

@@ -787,12 +787,13 @@ class Chart {
 
       this._dataNodes = undefined;
       this.undoManager.push(this.getData());
-      this.event.emit('label.dragend', ev, d);
+      // this.event.emit('label.dragend', ev, d);
       this.graphMovement();
     };
     const handleDragEnd = (ev) => {
       dragFolder.resize = false;
       dragFolder.folder = null;
+      this.event.emit('square.dragend', ev);
     };
     const folderWrapper = d3.select('#graph .folders')
       .call(d3.drag()
@@ -1365,15 +1366,14 @@ class Chart {
 
       infography
         .append('rect')
-        .attr('width', (d, i, el) => {
+        .attr('width', (d, i, el) =>
           // el[i].setAttribute('opacity', 0);
           // Utils.getInfographyImageWidth(`${d.icon}.large`).then((width) => {
           //   el[i].setAttribute('width', width);
           //   el[i].setAttribute('x', width / -2);
           //   el[i].setAttribute('opacity', 1);
           // });
-          return 512;
-        })
+          512)
         .attr('height', 384)
         .attr('x', 512 / -2)
         .attr('y', 384 / -2)
@@ -1398,7 +1398,8 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-        .attr('r', (d) => (+d.manually_size || 1) + 15 + ( +Math.sqrt(this.radiusList[d.index]) || 1 )) 
+        .filter((d) => d.manually_size > 1)
+        .attr('r', (d) => +d.manually_size + 15);
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
@@ -1690,7 +1691,6 @@ class Chart {
     };
 
     const handleSquareDragEnd = (ev) => {
-      this.event.emit('square.dragend', ev, this.squareDara);
       handleSquareDragStart();
     };
 
@@ -2228,7 +2228,6 @@ class Chart {
   }
 
   static setNodeData(nodeId, data, forceRender = false) {
-    // todo autosave fix
     this.data.nodes = this.getNodes().map((d) => {
       if (d.id === nodeId) {
         d = { ...d, ...data };

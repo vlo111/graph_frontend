@@ -237,6 +237,12 @@ export default function reducer(state = initialState, action) {
         singleGraph: { ...singleGraph },
       };
     }
+    case GET_NODE_CUSTOM_FIELDS.REQUEST: {
+      return {
+        ...state,
+        nodeCustomFields: [],
+      };
+    }
     case GET_NODE_CUSTOM_FIELDS.SUCCESS: {
       const { customFields: nodeCustomFields } = action.payload.data;
       return {
