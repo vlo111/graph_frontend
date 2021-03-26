@@ -43,7 +43,7 @@ class AutoSave extends Component {
     Chart.event.on('setNodeData', this.handleChartRender);
     Chart.event.on('square.dragend', this.handleChartRender);
 
-    this.thumbnailListener = this.props.history.listen(this.updateThumbnail);
+    this.thumbnailListener = this.props.history.listen(this.handleRouteChange);
     window.addEventListener('beforeunload', this.handleUnload);
     this.thumbnailTimeout = setTimeout(this.updateThumbnail, 1000 * 60);
   }
@@ -193,6 +193,13 @@ class AutoSave extends Component {
     ev.preventDefault();
     this.updateThumbnail();
     ev.returnValue = 'Changes you made may not be saved.';
+  }
+
+  handleRouteChange = (newLocation) => {
+    const { location } = this.props;
+    if (location.pathname !== newLocation.pathname) {
+      this.updateThumbnail();
+    }
   }
 
   updateThumbnail = async () => {
