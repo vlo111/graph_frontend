@@ -7950,13 +7950,7 @@ img.preview-scaled {
                 font-size: 12px;
                 line-height: 21px;
                 color: rgba(34, 47, 62, 0.7);
-              }
-              .locationExpandForm {
-                overflow: auto;
-                max-height: 250px;
-                height: auto;
-                bottom: 25px;
-              }
+              }              
             }
           }
         }
@@ -8002,7 +7996,8 @@ img.preview-scaled {
 
     .locationExpandForm {
       overflow: auto;
-      height: 45%;
+      max-height: 250px;
+      height: auto;
       bottom: 25px;
     }
 
