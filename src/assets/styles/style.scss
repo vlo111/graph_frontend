@@ -7951,6 +7951,12 @@ img.preview-scaled {
                 line-height: 21px;
                 color: rgba(34, 47, 62, 0.7);
               }
+              .locationExpandForm {
+                overflow: auto;
+                max-height: 250px;
+                height: auto;
+                bottom: 25px;
+              }
             }
           }
         }
