@@ -2141,6 +2141,21 @@ p {
       margin-left: auto;
     }
 
+    .addLocation {
+      font: normal normal 600 14px/17px Open Sans;
+      cursor: pointer;
+      background-color: #a5a6a9a8;
+      border-radius: 5px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      border: 2px dashed #ffffff;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      margin: 25px 50px;
+    }
+
     .ghModalContent {
       height: 100%;
       width: calc(100% + 10px);
