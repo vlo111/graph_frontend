@@ -1943,6 +1943,12 @@ class Chart {
         const s = d.nodeType === 'infography' ? _.get(d, 'scale[0]', 1) : 1;
         return (13.5 + (( +Math.sqrt(this.radiusList[d.index]) || 1) + this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4) * (1 / s);
       })
+      .attr('fill', (d) => {
+          if (d.icon) {
+          return `url(#i${d.index})`;
+        }
+        return ChartUtils.nodeColor(d);
+      })
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
   }
 
