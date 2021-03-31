@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
-import lockSvg from '../../assets/images/icons/lock.svg';
 import Chart from '../../Chart';
 import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../contextMenu/ContextMenu';
@@ -61,8 +60,8 @@ class ReactChart extends Component {
     ContextMenu.event.on('label.delete', this.handleLabelDelete);
     Chart.event.on('label.click', this.handleLabelClick);
 
-    Chart.event.on('node.dragend', this.handleNodeDragEnd);
-    Chart.event.on('render', this.handleRender);
+    Chart.event.on('folder.open', this.handleFolderOpen);
+    Chart.event.on('folder.close', this.handleFolderClose);
   }
 
   componentWillUnmount() {
@@ -75,39 +74,45 @@ class ReactChart extends Component {
     ContextMenu.event.removeListener('node.create', this.addNewNode);
   }
 
+  handleFolderOpen = async (ev, d) => {
+    const { match: { params: { graphId } } } = this.props;
+    const { data } = await Api.labelData(graphId, d.id);
+
+    const nodes = Chart.getNodes();
+    nodes.push(...data.label.nodes);
+
+    let links = Chart.getLinks();
+    links.push(...data.label.links);
+    links = ChartUtils.uniqueLinks(links);
+
+    // const labels = Chart.getLabels();
+    // console.log(nodes)
+    Chart.render({ nodes, links },{ ignoreAutoSave: false });
+  }
+
+  handleFolderClose = async (ev, d) => {
+    // const { match: { params: { graphId } }, singleGraph } = this.props;
+    // const { data } = await Api.labelData(graphId, d.id);
+    //
+    // const fakeNode = singleGraph.nodes.find((n) => n.fake && n.labels.includes(d.id));
+    // const fakeLinks = singleGraph.links.filter((l) => fakeNode.id === l.source || fakeNode.id === l.target);
+    //
+    // const nodes = Chart.getNodes().filter((n) => !n.labels.includes(d.id));
+    // nodes.push(fakeNode);
+    //
+    // let links = Chart.getLinks();
+    // links.push(...fakeLinks);
+    // links = ChartUtils.uniqueLinks(links);
+    // console.log(fakeNode, fakeLinks)
+    // // const labels = Chart.getLabels();
+    // // console.log(nodes)
+    // Chart.render({ nodes, links }, { ignoreAutoSave: false });
+  }
+
   handleLabelClick = (ev, d) => {
     if (Chart.activeButton === 'delete') {
       this.handleLabelDelete(ev, d);
     }
-  }
-
-  handleLabelDragEnd = (ev, d) => {
-    // const { nodes } = d;
-    // const label = d.label.datum();
-    // const { singleGraph } = this.props;
-    // this.props.updateLabelsRequest(singleGraph.id, [label]);
-    // this.props.updateNodesPositionRequest(singleGraph.id, nodes.map((n) => ({
-    //   id: n.id,
-    //   fx: n.fx,
-    //   fy: n.fy,
-    //   labels: n.labels,
-    // })));
-  }
-
-  handleRender = () => {
-    // clearTimeout(this.renderTimeout);
-    // this.renderTimeout = setTimeout(() => {
-    //   const { match: { params: { graphId } } } = this.props;
-    //   Chart.getLabels().forEach((l) => {
-    //     LabelUtils.labelDataChange(graphId, l.id);
-    //   });
-    // }, 500);
-  }
-
-  handleNodeDragEnd = (ev, d) => {
-    const { singleGraph } = this.props;
-    // this.props.updateNodesPositionRequest(singleGraph.id, [{ id: d.id, fx: d.fx, fy: d.fy }]);
-    this.handleRender();
   }
 
   handleLabelDelete = (ev, d) => {

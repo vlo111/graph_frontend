@@ -842,8 +842,10 @@ class Chart {
         })
         .attr('class', ChartUtils.setClass(() => ({ hideInFolder: true })));
 
+
       this._dataNodes = undefined;
       this.graphMovement();
+      this.event.emit('folder.close', ev, d);
     };
 
     this.folders = folderWrapper.selectAll('.folder')
@@ -879,6 +881,9 @@ class Chart {
 
           return false;
         }).style('display', 'inherit');
+
+
+        // todo optimize
         this.node.each((n, i, nodesArr) => {
           const inFolder = n.labels.includes(d.id);
           const inOtherFolder = !inFolder && n.labels.some((l) => l && l.startsWith('f_'));
@@ -1000,6 +1005,7 @@ class Chart {
 
         this._dataNodes = undefined;
         this.graphMovement();
+        this.event.emit('folder.open', ev, d);
       });
 
     const folderIconsWrapper = d3.select('#graph .folderIcons');
@@ -1941,7 +1947,7 @@ class Chart {
       })
       .attr('font-size', (d) => {
         const s = d.nodeType === 'infography' ? _.get(d, 'scale[0]', 1) : 1;
-        return (13.5 + (( +Math.sqrt(this.radiusList[d.index]) || 1) + this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4) * (1 / s);
+        return (13.5 + ((+Math.sqrt(this.radiusList[d.index]) || 1) + this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4) * (1 / s);
       })
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
   }
@@ -2273,8 +2279,9 @@ class Chart {
         scale: d.scale,
         infographyId: d.infographyId,
         manually_size: +d.manually_size || 1,
+        fake: d.fake || undefined,
         customFields: d.customFields || [], // {name, value, subTitle, order,}
-      }));
+      })).filter((d) => !d.fake);
     }
     return this._dataNodes;
   }
@@ -2315,7 +2322,7 @@ class Chart {
           sourceId: +pd.sourceId || undefined,
           status: d.status || 'approved',
         };
-      });
+      }).filter((d) => !d.fake);
     }
     return this._dataLinks;
   }

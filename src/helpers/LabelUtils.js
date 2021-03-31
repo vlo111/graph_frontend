@@ -23,7 +23,7 @@ class LabelUtils {
       return d;
     });
 
-    const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
+    const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
 
     const data = {
       sourceId: +sourceId,

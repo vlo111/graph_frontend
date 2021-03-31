@@ -416,6 +416,10 @@ class Api {
     });
   }
 
+  static labelData(graphId, labelId) {
+    return api.get(`/labels/${graphId}/${labelId}`);
+  }
+
   static updateCustomFieldsLabels(graphId, customFields) {
     // nodeType, fieldName, order = 0, nodeId,
     return api.delete(`/custom-fields/update/${graphId}`, {

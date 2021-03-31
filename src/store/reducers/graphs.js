@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { toast } from 'react-toastify';
+import { uniqueId } from 'react-bootstrap-typeahead/lib/utils';
 import {
   CLEAR_SINGLE_GRAPH,
   UPDATE_SINGLE_GRAPH,
@@ -118,11 +119,19 @@ export default function reducer(state = initialState, action) {
     case GET_SINGLE_EMBED_GRAPH.SUCCESS:
     case GET_SINGLE_GRAPH.SUCCESS: {
       const { graph: singleGraph, embedLabels } = action.payload.data;
-      const {
+      let {
         nodes, links, labels, lastUid,
       } = singleGraph;
+
+      const fakeLinks = [];
+      const fakeNodes = [];
+
       Chart.render({
-        nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels, lastUid,
+        nodes,
+        links: ChartUtils.cleanLinks(links, nodes),
+        labels,
+        embedLabels,
+        lastUid,
       });
       return {
         ...state,
