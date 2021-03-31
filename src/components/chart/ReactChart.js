@@ -77,7 +77,7 @@ class ReactChart extends Component {
   handleFolderOpen = async (ev, d) => {
     const { match: { params: { graphId } } } = this.props;
     const { data } = await Api.labelData(graphId, d.id);
-
+    console.log(data)
     const nodes = Chart.getNodes();
     nodes.push(...data.label.nodes);
 
@@ -87,26 +87,24 @@ class ReactChart extends Component {
 
     // const labels = Chart.getLabels();
     // console.log(nodes)
-    Chart.render({ nodes, links },{ ignoreAutoSave: false });
+    Chart.render({ nodes, links }, { ignoreAutoSave: true });
   }
 
   handleFolderClose = async (ev, d) => {
-    // const { match: { params: { graphId } }, singleGraph } = this.props;
-    // const { data } = await Api.labelData(graphId, d.id);
-    //
-    // const fakeNode = singleGraph.nodes.find((n) => n.fake && n.labels.includes(d.id));
-    // const fakeLinks = singleGraph.links.filter((l) => fakeNode.id === l.source || fakeNode.id === l.target);
-    //
-    // const nodes = Chart.getNodes().filter((n) => !n.labels.includes(d.id));
-    // nodes.push(fakeNode);
-    //
-    // let links = Chart.getLinks();
-    // links.push(...fakeLinks);
-    // links = ChartUtils.uniqueLinks(links);
-    // console.log(fakeNode, fakeLinks)
-    // // const labels = Chart.getLabels();
-    // // console.log(nodes)
-    // Chart.render({ nodes, links }, { ignoreAutoSave: false });
+    const { match: { params: { graphId } }, singleGraph } = this.props;
+    const { data: { label } } = await Api.labelData(graphId, d.id);
+
+
+    const nodes = Chart.getNodes().filter((n) => !n.labels.includes(d.id));
+    nodes.push(label.fakeData.node);
+
+    let links = Chart.getLinks();
+    links.push(...label.fakeData.links);
+    links = ChartUtils.cleanLinks(links, nodes);
+    links = ChartUtils.uniqueLinks(links);
+    // const labels = Chart.getLabels();
+    // console.log(nodes)
+    Chart.render({ nodes, links }, { ignoreAutoSave: true });
   }
 
   handleLabelClick = (ev, d) => {

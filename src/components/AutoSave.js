@@ -49,14 +49,16 @@ class AutoSave extends Component {
   }
 
   componentWillUnmount() {
-    Chart.event.removeListener('node.dragend', this.handleChartRender);
     clearTimeout(this.thumbnailTimeout);
     this.thumbnailListener();
     window.removeEventListener('beforeunload', this.handleUnload);
   }
 
-  handleChartRender = () => {
+  handleChartRender = (ev) => {
     clearTimeout(this.timeout);
+    if (ev === Chart && Chart.ignoreAutoSave) {
+      return;
+    }
     if (!Chart.autoSave) {
       return;
     }
@@ -88,7 +90,8 @@ class AutoSave extends Component {
 
   saveGraph = async () => {
     const { match: { params: { graphId } } } = this.props;
-    if (!graphId || Chart.ignoreAutoSave) {
+    console.log(Chart.ignoreAutoSave)
+    if (!graphId) {
       return;
     }
     document.body.classList.add('autoSave');

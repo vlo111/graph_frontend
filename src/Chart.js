@@ -1246,11 +1246,15 @@ class Chart {
         this.undoManager = new ChartUndoManager();
       }
       this.ignoreAutoSave = params.ignoreAutoSave;
-      this.oldData = _.cloneDeep({
-        nodes: Chart.getNodes(true, data.nodes),
-        links: Chart.getLinks(data.links),
-        labels: Chart.getLabels(data.labels),
-      });
+
+      if (!this.ignoreAutoSave) {
+        this.oldData = _.cloneDeep({
+          nodes: Chart.getNodes(true, data.nodes),
+          links: Chart.getLinks(data.links),
+          labels: Chart.getLabels(data.labels),
+        });
+      }
+
 
       this.graphId = Utils.getGraphIdFormUrl();
       this._dataNodes = null;
@@ -1267,6 +1271,15 @@ class Chart {
       }
       data = ChartUtils.filter(data, params.filters, params.customFields);
       this.data = data;
+
+      if (this.ignoreAutoSave) {
+        this.oldData = _.cloneDeep({
+          nodes: Chart.getNodes(true, data.nodes),
+          links: Chart.getLinks(data.links),
+          labels: Chart.getLabels(data.labels),
+        });
+      }
+
       this.radiusList = ChartUtils.getRadiusList();
       const filteredLinks = this.data.links.filter((d) => d.hidden !== 1);
       const filteredNodes = this.data.nodes.filter((d) => d.hidden !== 1);
@@ -1404,7 +1417,7 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-        .attr('r', (d) => (+d.manually_size || 1) + 15 + ( +Math.sqrt(this.radiusList[d.index]) || 1 )) 
+        .attr('r', (d) => (+d.manually_size || 1) + 15 + (+Math.sqrt(this.radiusList[d.index]) || 1))
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
