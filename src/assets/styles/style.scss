@@ -1049,7 +1049,7 @@ p {
     text {
       font-family: $font-family;
       dominant-baseline: central;
-      fill: $color-dark;
+      //fill: $color-dark;
       text-anchor: middle;
     }
 
@@ -2139,6 +2139,21 @@ p {
 
     .importButton {
       margin-left: auto;
+    }
+
+    .addLocation {
+      font: normal normal 600 14px/17px Open Sans;
+      cursor: pointer;
+      background-color: #a5a6a9a8;
+      border-radius: 5px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      border: 2px dashed #ffffff;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      margin: 25px 50px;
     }
 
     .ghModalContent {
@@ -7935,7 +7950,7 @@ img.preview-scaled {
                 font-size: 12px;
                 line-height: 21px;
                 color: rgba(34, 47, 62, 0.7);
-              }
+              }              
             }
           }
         }
@@ -7952,3 +7967,141 @@ img.preview-scaled {
   width: 50% !important;
 }
 
+.expandAddNode {
+  width: 900px;
+  max-width: 900px !important;
+
+  .ghColorPickerPopUp {
+    position: relative;
+    left: 0;
+    top: 0;
+  }
+
+  .addLocation {
+    margin: 25px 100px !important;
+  }
+
+  .containerModal {
+    width: 100%;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    list-style: none;
+    min-height: 30em;
+    height: 66em;
+
+    .locationExpandForm {
+      overflow: auto;
+      max-height: 250px;
+      height: auto;
+      bottom: 25px;
+    }
+
+    > .footerButtons {
+      position: relative;
+      flex: 1;
+
+      .buttons {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+
+    .ghFileInput {
+      .ghInput {
+        width: 100%;
+        padding-right: 0;
+      }
+      .buttons {
+        top: 13.5px;
+        right: 25px;
+      }
+    }
+  }
+
+  .ghFileInput {
+    margin-bottom: 18px;
+  }
+
+  .ghFormField, .ghFileInput  {
+    height: 85px;
+    float: left;
+    width: 50%;
+    padding-right: 22px;
+
+    .limit {
+      position: absolute;
+      right: 25px;
+    }
+  }
+}
+
+.addNodeContainer {
+
+  .locMarker {
+    width: 30px;
+  }
+
+  .showMore {
+    margin: 0 auto;
+    cursor: pointer;
+  }
+
+  .locationExpandForm {
+    .locForm {
+      display: flex;
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      margin-bottom: 10px;
+
+      .locName {
+        border-right: none;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        flex: 80%;
+      }
+
+      .locEdit {
+        border-right: none;
+        flex: 10%;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .locDelete {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        flex: 10%;
+        text-align: center;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .expandButton {
+    background-color: white;
+    padding: 0;
+    margin: -2px 0 0 0;
+    right: 35px;
+    position: absolute;
+
+    &{
+    box-shadow: none;
+    }
+
+    svg {
+      height: 10px;
+      opacity: .5;
+
+      &:hover{
+        opacity: 1;
+      }
+    }
+  }
+}

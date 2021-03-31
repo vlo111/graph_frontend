@@ -1404,8 +1404,7 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-        .filter((d) => d.manually_size > 1)
-        .attr('r', (d) => +d.manually_size + 15);
+        .attr('r', (d) => (+d.manually_size || 1) + 15 + ( +Math.sqrt(this.radiusList[d.index]) || 1 )) 
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
@@ -1948,6 +1947,12 @@ class Chart {
       .attr('font-size', (d) => {
         const s = d.nodeType === 'infography' ? _.get(d, 'scale[0]', 1) : 1;
         return (13.5 + ((+Math.sqrt(this.radiusList[d.index]) || 1) + this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4) * (1 / s);
+      })
+      .attr('fill', (d) => {
+        //   if (d.icon) {
+        //   return `url(#i${d.index})`;
+        // }
+        return ChartUtils.nodeColor(d);
       })
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
   }

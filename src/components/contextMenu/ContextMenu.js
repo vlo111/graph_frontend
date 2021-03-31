@@ -203,7 +203,7 @@ class ContextMenu extends Component {
                     )}
                 </>
               ) : null}
-              {['label', 'chart'].includes(show) ? (
+              {['chart'].includes(show) ? (
                 <>
                   <div className="ghButton notClose">
                     <Icon value="fa-plus-square" />

@@ -135,7 +135,7 @@ https://en.wikipedia.org/wiki/${selected.name}
       name: selected.name,
       icon: selected.photo,
       type: selected.type,
-      location: [selected.location.lat, selected.location.lng].join(','),
+      location: [selected],
       customField,
     });
   }

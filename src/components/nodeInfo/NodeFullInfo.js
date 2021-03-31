@@ -46,7 +46,10 @@ class NodeFullInfo extends Component {
       return null;
     }
     const node = Chart.getNodes().find((n) => n.id === nodeId);
-
+    
+    if (node) {
+      ChartUtils.findNodeInDom(node);
+    }
     if (!node) {
       return null;
     }

@@ -19,7 +19,7 @@ class MapsInfo extends Component {
   }
 
   initLocation = memoizeOne((location) => {
-    const [lat, lng] = location.split(',');
+    const { lat, lng } = location[0].location;
     this.setState({ location: { lat, lng } });
   })
 
@@ -97,18 +97,19 @@ class MapsInfo extends Component {
             onClick={this.handleLocationChange}
             initialCenter={location}
           >
-            <Marker
-              title={node.name}
-              name={node.name}
-              position={location}
-              draggable={edit}
-              onDragend={this.handleLocationChange}
-              icon={{
-                url: markerImg,
-                anchor: new google.maps.Point(25, 35),
-                scaledSize: new google.maps.Size(50, 50),
-              }}
-            />
+            {node.location.map((p) => (
+              <Marker
+                title={p.name}
+                name={p.name}
+                position={p.location}
+                onDragend={this.handleLocationChange}
+                icon={{
+                  url: markerImg,
+                  anchor: new google.maps.Point(25, 35),
+                  scaledSize: new google.maps.Size(50, 50),
+                }}
+              />
+            ))}
           </Map>
           {edit ? (
             <Button className="selectLocation" onClick={this.saveLocation}>Save</Button>
