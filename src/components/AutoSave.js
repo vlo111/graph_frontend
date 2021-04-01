@@ -90,14 +90,14 @@ class AutoSave extends Component {
 
   saveGraph = async () => {
     const { match: { params: { graphId } } } = this.props;
-    console.log(Chart.ignoreAutoSave)
+    console.log(Chart.ignoreAutoSave);
     if (!graphId) {
       return;
     }
     document.body.classList.add('autoSave');
-    const links = Chart.getLinks();
+    const links = Chart.getLinks().filter((d) => !d.fake);
     const labels = Chart.getLabels();
-    const nodes = Chart.getNodes();
+    const nodes = Chart.getNodes().filter((d) => !d.fake);
 
     const deleteNodes = _.differenceBy(Chart.oldData.nodes, nodes, 'id');
     const createNodes = _.differenceBy(nodes, Chart.oldData.nodes, 'id');

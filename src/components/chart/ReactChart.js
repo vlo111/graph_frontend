@@ -80,32 +80,47 @@ class ReactChart extends Component {
     const nodes = Chart.getNodes();
     nodes.push(...data.label.nodes);
 
-    let links = Chart.getLinks();
-    links.push(...data.label.links);
+    const fakeId = `fake_${data.label.label.id}`;
+
+    const folders = Chart.getLabels().filter((l) => l.type === 'folder' && l.id !== data.label.label.id);
+    // let links = Chart.getLinks();
+    let links = Chart.getLinks().filter((l) => l.source !== fakeId && l.target !== fakeId);
+    data.label.links.forEach((link) => {
+      folders.forEach((folder) => {
+        const fId = `fake_${folder.id}`;
+        if (!folder.open) {
+          if (folder.nodes.includes(link.source)) {
+            link._source = link.source;
+            link.source = fId;
+            link.fale = true;
+          } else if (folder.nodes.includes(link.target)) {
+            link._target = link.target;
+            link.target = fId;
+            link.fale = true;
+          }
+        }
+      });
+      links.push(link);
+    });
     links = ChartUtils.uniqueLinks(links);
-    // const labels = Chart.getLabels();
-    // console.log(nodes)
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
   }
 
   handleFolderClose = async (ev, d) => {
     const fakeId = `fake_${d.id}`;
 
-    // const links = Chart.getLinks();
-    const nodes = Chart.getNodes().filter((n) => !n.labels.includes(d.id));
-    nodes.push({
-      id: fakeId,
-      fx: d.d[0][0] + 30,
-      fy: d.d[0][1] + 30,
-      fake: true,
-      labels: [d.id],
+    const nodes = Chart.getNodes().filter((n) => n.fake || !n.labels.includes(d.id));
+    const links = Chart.getLinks().map((l) => {
+      if (d.nodes.includes(l.source)) {
+        l.source = fakeId;
+        l.fake = true;
+      } else if (d.nodes.includes(l.target)) {
+        l.target = fakeId;
+        l.fake = true;
+      }
+      return l;
     });
-
-    // links = ChartUtils.cleanLinks(links, nodes);
-    // links = ChartUtils.uniqueLinks(links);
-    // const labels = Chart.getLabels();
-    // console.log(nodes)
-    Chart.render({ nodes }, { ignoreAutoSave: true });
+    Chart.render({ nodes, links }, { ignoreAutoSave: true });
   }
 
   handleLabelClick = (ev, d) => {

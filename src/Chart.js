@@ -587,42 +587,41 @@ class Chart {
 
     const lastUid = data.lastUid || this.data?.lastUid || 0;
 
-    data.labels = data.labels.map((d) => {
-      if (d.type === 'folder') {
-        if (!d.d[1]) {
-          d.d[1] = [500, 500];
-        }
-        const fakeId = `fake_${d.id}`;
-        if (d.open) {
-          console.log(d)
-          data.links.forEach((link) => {
-            if (d.nodes?.includes(link._source)) {
-              link.source = link._source;
-              delete link._source;
-            } else if (d.nodes?.includes(link._target)) {
-              link.target = link._target;
-              delete link._target;
-            }
-          });
-        } else {
-          data.links.forEach((link) => {
-            if (d.nodes?.includes(link.source)) {
-              console.log(5555)
-              link._source = link.source;
-              link.source = fakeId;
-              link.fake = true;
-            } else if (d.nodes?.includes(link.target)) {
-              console.log(6666)
-              link._target = link.target;
-              link.target = fakeId;
-              link.fake = true;
-            }
-          });
-        }
-        console.log(d.nodes);
-      }
-      return d;
-    });
+    // data.labels = data.labels.map((d) => {
+    //   if (d.type === 'folder') {
+    //     if (!d.d[1]) {
+    //       d.d[1] = [500, 500];
+    //     }
+    //     const fakeId = `fake_${d.id}`;
+    //     if (d.open) {
+    //       console.log(d)
+    //       data.links.forEach((link) => {
+    //         if (d.nodes?.includes(link._source)) {
+    //           link.source = link._source;
+    //           delete link._source;
+    //         } else if (d.nodes?.includes(link._target)) {
+    //           link.target = link._target;
+    //           delete link._target;
+    //         }
+    //       });
+    //     } else {
+    //       data.links.forEach((link) => {
+    //         if (d.nodes?.includes(link.source)) {
+    //           console.log(5555)
+    //           link._source = link.source;
+    //           link.source = fakeId;
+    //           link.fake = true;
+    //         } else if (d.nodes?.includes(link.target)) {
+    //           link._target = link.target;
+    //           link.target = fakeId;
+    //           link.fake = true;
+    //         }
+    //       });
+    //     }
+    //     console.log(d.nodes);
+    //   }
+    //   return d;
+    // });
     const labels = Object.values(data.labels).map((d) => Object.create(d));
 
     return {
@@ -1286,7 +1285,6 @@ class Chart {
       this.graphId = Utils.getGraphIdFormUrl();
       this._dataNodes = null;
       this._dataLinks = null;
-
       data = this.normalizeData(data, params);
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         this.undoManager.push(data);
@@ -1355,7 +1353,7 @@ class Chart {
         .join('g')
         .attr('class', (d) => {
           const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(d);
-          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
+          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder || d.fake ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
         })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
@@ -2326,7 +2324,7 @@ class Chart {
         manually_size: +d.manually_size || 1,
         fake: d.fake || undefined,
         customFields: d.customFields || [], // {name, value, subTitle, order,}
-      })).filter((d) => !d.fake);
+      }))
     }
     return this._dataNodes;
   }
@@ -2369,7 +2367,7 @@ class Chart {
           sourceId: +pd.sourceId || undefined,
           status: d.status || 'approved',
         };
-      }).filter((d) => !d.fake);
+      })
     }
     return this._dataLinks;
   }
@@ -2388,7 +2386,7 @@ class Chart {
       status: d.status || 'unlock',
       sourceId: d.sourceId,
       readOnly: d.readOnly,
-      nodes: d.d.nodes,
+      nodes: d.nodes,
     }));
   }
 
