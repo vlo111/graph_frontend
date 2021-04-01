@@ -11,7 +11,7 @@ class FileInput extends Component {
     onChangeFile: PropTypes.func.isRequired,
     accept: PropTypes.string,
     selectLabel: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.any,
   }
 
   static defaultProps = {
@@ -33,9 +33,11 @@ class FileInput extends Component {
   handleFileSelect = (ev) => {
     const file = ev.target.files[0] || {};
     this.setState({ file });
-    const url = Utils.fileToBlob(file);
-    this.constructor.blobs[url] = file.name;
-    this.props.onChangeFile(url, file);
+    const uri = Utils.fileToBlob(file);
+    this.constructor.blobs[uri] = file.name;
+    file.uri = uri;
+    this.props.onChangeFile(uri, file);
+
     ev.target.value = '';
   }
 

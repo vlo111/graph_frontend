@@ -52,7 +52,10 @@ class Utils {
   }
 
   static fileSrc(src) {
-    if (/^https?:\/\//.test(src) || src.toString().includes('base64,')) {
+    if (src.uri) {
+      src = src.uri;
+    }
+    if (/^https?:\/\//.test(src) || src.toString().includes('base64,') || src.toString().startsWith('blob:')) {
       return src;
     }
 

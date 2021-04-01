@@ -158,7 +158,9 @@ class AddNodeModal extends Component {
         }
       }
       _.set(nodeData, path, !nodeData.location ? [value] : nodeData.location);
-    } else _.set(nodeData, path, value);
+    } else {
+      _.set(nodeData, path, value);
+    }
     _.remove(errors, path);
     if (path === 'type') {
       _.set(nodeData, 'color', ChartUtils.nodeColorObj[value] || '');
@@ -303,10 +305,10 @@ class AddNodeModal extends Component {
                   label={nodeData.nodeType === 'infography' ? 'Image' : 'Icon'}
                   accept=".png,.jpg,.gif"
                   value={nodeData.icon}
-                  onChangeFile={(v) => this.handleChange('icon', v)}
+                  onChangeFile={(v, file) => this.handleChange('icon', file)}
                 />
                 {expand
-                && <img style={{ marginTop: '-30px' }} width={365} src={nodeData.icon} alt="" />}
+                && <img style={{ marginTop: '-30px' }} width={365} src={Utils.fileSrc(nodeData.icon)} alt="" />}
                 <Select
                   label="Keywords"
                   isCreatable
