@@ -77,39 +77,22 @@ class ReactChart extends Component {
   handleFolderOpen = async (ev, d) => {
     const { match: { params: { graphId } } } = this.props;
     const { data } = await Api.labelData(graphId, d.id);
-    console.log(data);
     const nodes = Chart.getNodes();
     nodes.push(...data.label.nodes);
 
     let links = Chart.getLinks();
     links.push(...data.label.links);
     links = ChartUtils.uniqueLinks(links);
-
     // const labels = Chart.getLabels();
     // console.log(nodes)
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
   }
 
   handleFolderClose = async (ev, d) => {
-    const { match: { params: { graphId } }, singleGraph } = this.props;
-
     const fakeId = `fake_${d.id}`;
 
-    let links = Chart.getLinks();
-    const nodes = _.compact(Chart.getNodes().map((n) => {
-      if (n.labels.includes(d.id)) {
-        links = links.map((l) => {
-          if (l.source === n.id) {
-            l.source = fakeId;
-          } else if (l.target === n.id) {
-            l.target = fakeId;
-          }
-          return l;
-        });
-        return undefined;
-      }
-      return n;
-    }));
+    // const links = Chart.getLinks();
+    const nodes = Chart.getNodes().filter((n) => !n.labels.includes(d.id));
     nodes.push({
       id: fakeId,
       fx: d.d[0][0] + 30,
@@ -118,11 +101,11 @@ class ReactChart extends Component {
       labels: [d.id],
     });
 
-    links = ChartUtils.cleanLinks(links, nodes);
-    links = ChartUtils.uniqueLinks(links);
+    // links = ChartUtils.cleanLinks(links, nodes);
+    // links = ChartUtils.uniqueLinks(links);
     // const labels = Chart.getLabels();
     // console.log(nodes)
-    Chart.render({ nodes, links }, { ignoreAutoSave: true });
+    Chart.render({ nodes }, { ignoreAutoSave: true });
   }
 
   handleLabelClick = (ev, d) => {

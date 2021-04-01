@@ -588,8 +588,38 @@ class Chart {
     const lastUid = data.lastUid || this.data?.lastUid || 0;
 
     data.labels = data.labels.map((d) => {
-      if (d.type === 'folder' && !d.d[1]) {
-        d.d[1] = [500, 500];
+      if (d.type === 'folder') {
+        if (!d.d[1]) {
+          d.d[1] = [500, 500];
+        }
+        const fakeId = `fake_${d.id}`;
+        if (d.open) {
+          console.log(d)
+          data.links.forEach((link) => {
+            if (d.nodes?.includes(link._source)) {
+              link.source = link._source;
+              delete link._source;
+            } else if (d.nodes?.includes(link._target)) {
+              link.target = link._target;
+              delete link._target;
+            }
+          });
+        } else {
+          data.links.forEach((link) => {
+            if (d.nodes?.includes(link.source)) {
+              console.log(5555)
+              link._source = link.source;
+              link.source = fakeId;
+              link.fake = true;
+            } else if (d.nodes?.includes(link.target)) {
+              console.log(6666)
+              link._target = link.target;
+              link.target = fakeId;
+              link.fake = true;
+            }
+          });
+        }
+        console.log(d.nodes);
       }
       return d;
     });
@@ -842,7 +872,6 @@ class Chart {
         })
         .attr('class', ChartUtils.setClass(() => ({ hideInFolder: true })));
 
-
       this._dataNodes = undefined;
       this.graphMovement();
       this.event.emit('folder.close', ev, d);
@@ -881,7 +910,6 @@ class Chart {
 
           return false;
         }).style('display', 'inherit');
-
 
         // todo optimize
         this.node.each((n, i, nodesArr) => {
@@ -1255,7 +1283,6 @@ class Chart {
         });
       }
 
-
       this.graphId = Utils.getGraphIdFormUrl();
       this._dataNodes = null;
       this._dataLinks = null;
@@ -1417,7 +1444,7 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-        .attr('r', (d) => (+d.manually_size || 1) + 15 + (+Math.sqrt(this.radiusList[d.index]) || 1))
+        .attr('r', (d) => (+d.manually_size || 1) + 15 + (+Math.sqrt(this.radiusList[d.index]) || 1));
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
@@ -1961,12 +1988,11 @@ class Chart {
         const s = d.nodeType === 'infography' ? _.get(d, 'scale[0]', 1) : 1;
         return (13.5 + ((+Math.sqrt(this.radiusList[d.index]) || 1) + this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4) * (1 / s);
       })
-      .attr('fill', (d) => {
+      .attr('fill', (d) =>
         //   if (d.icon) {
         //   return `url(#i${d.index})`;
         // }
-        return ChartUtils.nodeColor(d);
-      })
+        ChartUtils.nodeColor(d))
       .text((d) => (d.name.length > 30 ? `${d.name.substring(0, 28)}...` : d.name));
   }
 
@@ -2326,6 +2352,8 @@ class Chart {
           ty: d.ty,
           source: Chart.getSource(pd) || Chart.getSource(d) || '',
           target: Chart.getTarget(pd) || Chart.getTarget(d) || '',
+          _source: d._source,
+          _target: d._target,
           value: +pd.value || +d.value || 1,
           linkType: pd.linkType || d.linkType || '',
           type: pd.type || d.type || '',
@@ -2359,6 +2387,7 @@ class Chart {
       status: d.status || 'unlock',
       sourceId: d.sourceId,
       readOnly: d.readOnly,
+      nodes: d.d.nodes,
     }));
   }
 
