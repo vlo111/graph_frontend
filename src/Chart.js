@@ -1444,7 +1444,8 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-        .attr('r', (d) => (+d.manually_size || 1) + 15 + (+Math.sqrt(this.radiusList[d.index]) || 1));
+        .filter((d) => d.manually_size > 1)
+        .attr('r', (d) => +d.manually_size + 15);
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
