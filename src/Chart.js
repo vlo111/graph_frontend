@@ -1657,7 +1657,10 @@ class Chart {
         this.squareDara.nodes = allNodes
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
         this.squareDara.labels = this.getLabels()
-          .filter((l) => this.squareDara.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
+          .filter((l) => {
+            return (l.type === 'folder' && !l.open && this.squareDara.nodes.some(n => n.labels.includes(l.id)))
+              || this.squareDara.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length;
+          })
           .map((l) => l.id);
         this.squareDara.nodes = this.squareDara.nodes.map((d) => d.id);
         this.squareDara.width = width;
@@ -1716,7 +1719,6 @@ class Chart {
         }
       });
 
-      this.graphMovement();
       this.labels.each((l) => {
         if (this.squareDara.labels.includes(l.id) && !l.readOnly) {
           l.d = l.d.map((p) => {
@@ -1727,6 +1729,15 @@ class Chart {
         }
         return l;
       });
+      this.folders.each((l) => {
+        if (this.squareDara.labels.includes(l.id) && !l.readOnly) {
+          l.d[0][0] = +(l.d[0][0] + ev.dx).toFixed(2);
+          l.d[0][1] = +(l.d[0][1] + ev.dy).toFixed(2);
+        }
+        return l;
+      }).attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`);
+
+      this.graphMovement();
       this.labelMovement();
     };
 
@@ -2324,7 +2335,7 @@ class Chart {
         manually_size: +d.manually_size || 1,
         fake: d.fake || undefined,
         customFields: d.customFields || [], // {name, value, subTitle, order,}
-      }))
+      }));
     }
     return this._dataNodes;
   }
@@ -2367,7 +2378,7 @@ class Chart {
           sourceId: +pd.sourceId || undefined,
           status: d.status || 'approved',
         };
-      })
+      });
     }
     return this._dataLinks;
   }

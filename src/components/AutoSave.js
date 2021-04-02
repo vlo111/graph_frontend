@@ -99,13 +99,17 @@ class AutoSave extends Component {
     const labels = Chart.getLabels();
     const nodes = Chart.getNodes().filter((d) => !d.fake);
 
-    const deleteNodes = _.differenceBy(Chart.oldData.nodes, nodes, 'id');
-    const createNodes = _.differenceBy(nodes, Chart.oldData.nodes, 'id');
+    const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake);
+    const oldLinks = Chart.oldData.links.filter((d) => !d.fake);
+    const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
+
+    const deleteNodes = _.differenceBy(oldNodes, nodes, 'id');
+    const createNodes = _.differenceBy(nodes, oldNodes, 'id');
     const updateNodes = [];
     const updateNodePositions = [];
     const updateNodeCustomFields = [];
     nodes.forEach((node) => {
-      const oldNode = Chart.oldData.nodes.find((n) => n.id === node.id);
+      const oldNode = oldNodes.find((n) => n.id === node.id);
       if (oldNode) {
         // if (oldNode.import || oldNode.create) {
         if (oldNode.create) {
@@ -120,24 +124,24 @@ class AutoSave extends Component {
       }
     });
 
-    const deleteLinks = _.differenceBy(Chart.oldData.links, links, 'id');
-    const createLinks = _.differenceBy(links, Chart.oldData.links, 'id');
+    const deleteLinks = _.differenceBy(oldLinks, links, 'id');
+    const createLinks = _.differenceBy(links, oldLinks, 'id');
     const updateLinks = [];
 
     links.forEach((link) => {
-      const oldLink = Chart.oldData.labels.find((l) => l.id === link.id);
+      const oldLink = oldLabels.find((l) => l.id === link.id);
       if (oldLink) {
         if (!_.isEqual(oldLink, link)) {
           updateLinks.push(link);
         }
       }
     });
-    const deleteLabels = _.differenceBy(Chart.oldData.labels, labels, 'id');
-    const createLabels = _.differenceBy(labels, Chart.oldData.labels, 'id');
+    const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
+    const createLabels = _.differenceBy(labels, oldLabels, 'id');
     const updateLabels = [];
 
     labels.forEach((label) => {
-      const oldLabel = Chart.oldData.labels.find((l) => l.id === label.id);
+      const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
         if (oldLabel.new) {
           createLabels.push(label);
