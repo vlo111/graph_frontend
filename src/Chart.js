@@ -1739,6 +1739,7 @@ class Chart {
 
       this.graphMovement();
       this.labelMovement();
+      Chart.event.emit('selected.dragend');
     };
 
     const handleDragEnd = () => {
@@ -2377,6 +2378,7 @@ class Chart {
           readOnly: pd.readOnly,
           sourceId: +pd.sourceId || undefined,
           status: d.status || 'approved',
+          fake: d.fake,
         };
       });
     }

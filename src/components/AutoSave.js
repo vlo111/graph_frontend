@@ -42,6 +42,7 @@ class AutoSave extends Component {
     Chart.event.on('label.dragend', this.handleChartRender);
     Chart.event.on('setNodeData', this.handleChartRender);
     Chart.event.on('square.dragend', this.handleChartRender);
+    Chart.event.on('selected.dragend', this.handleChartRender);
 
     this.thumbnailListener = this.props.history.listen(this.handleRouteChange);
     window.addEventListener('beforeunload', this.handleUnload);
