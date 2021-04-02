@@ -56,10 +56,37 @@ class NodeFullInfoContext extends Component {
       toast.error('Something went wrong');
     }
   }
+  handleCopyClick = async () => {
+    const { singleGraph, params: { squareDara } } = this.props;
+        let links = Chart.getLinks();
+        let labels = Chart.getLabels();
+        // eslint-disable-next-line prefer-const
+        let { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
 
+        nodes = nodes.filter((d) => squareDara.nodes.includes(d.id));
+        labels = labels.filter((l) => squareDara.labels.includes(l.id));
+        links = links.filter((l) => squareDara.nodes.includes(l.source) && squareDara.nodes.includes(l.target));
+        console.log(labels, 'labelslabelslabelslabelslabels');
+        const data = {
+          sourceId: +singleGraph.id,
+          label: labels,
+          nodes,
+          links,
+          customFields,
+          title: singleGraph.title,
+        };
+        localStorage.setItem('label.copy', JSON.stringify(data));
+        console.log(data, 'datadatadatadata', squareDara);
+        return data;
+
+
+  }
   render() {
     return (
       <>
+       <Button icon="fa-copy" onClick={this.handleCopyClick}>
+          Copy
+        </Button>
         <Button icon="fa-plus-circle" onClick={this.createNewGraph}>
           New Graph
         </Button>
