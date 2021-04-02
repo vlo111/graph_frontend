@@ -4,24 +4,20 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
+import memoizeOne from 'memoize-one';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
 import { setActiveButton } from '../store/actions/app';
 import Button from '../components/form/Button';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
-import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import Filters from '../components/filters/Filters';
-import AccountDropDown from '../components/account/AccountDropDown';
 import NodeDescription from '../components/NodeDescription';
-import { deleteGraphRequest, getSingleGraphRequest } from '../store/actions/graphs';
+import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import { userGraphRequest } from '../store/actions/shareGraphs';
-import ShareGraph from '../components/ShareGraph';
 import LabelTooltip from '../components/LabelTooltip';
-import Legend from '../components/Legend';
 import ToolBarHeader from '../components/ToolBarHeader';
-import memoizeOne from "memoize-one";
 
 class GraphView extends Component {
   static propTypes = {
@@ -30,9 +26,9 @@ class GraphView extends Component {
     getSingleGraphRequest: PropTypes.func.isRequired,
     userGraphRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
+    graphInfo: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
-    userGraphs: PropTypes.array.isRequired,
     location: PropTypes.object.isRequired,
   }
 
@@ -49,9 +45,9 @@ class GraphView extends Component {
     this.props.userGraphRequest();
     if (+graphId) {
       this.props.getSingleGraphRequest(graphId);
+      this.props.getGraphInfoRequest(graphId);
     }
   })
-
 
   deleteGraph = async () => {
     const { match: { params: { graphId = '' } } } = this.props;
@@ -70,7 +66,8 @@ class GraphView extends Component {
 
   render() {
     const {
-      singleGraph, singleGraphStatus, location: { pathname }, match: { params: { graphId = '' } },
+      singleGraph, singleGraphStatus, graphInfo,
+      location: { pathname }, match: { params: { graphId = '' } },
     } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
     this.getSingleRequest(pathname);
@@ -87,11 +84,11 @@ class GraphView extends Component {
             </p>
             <div>
               <strong>{'Nodes: '}</strong>
-              {singleGraph.nodes?.length}
+              {graphInfo.totalNodes}
             </div>
             <div>
               <strong>{'Links: '}</strong>
-              {singleGraph.links?.length}
+              {graphInfo.totalLinks}
             </div>
             <div>
               <strong>{'Views: '}</strong>
@@ -132,6 +129,7 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   singleGraph: state.graphs.singleGraph,
   userGraphs: state.shareGraphs.userGraphs,
+  graphInfo: state.graphs.graphInfo,
   singleGraphStatus: state.graphs.singleGraphStatus,
 });
 const mapDispatchToProps = {
@@ -139,6 +137,7 @@ const mapDispatchToProps = {
   getSingleGraphRequest,
   deleteGraphRequest,
   userGraphRequest,
+  getGraphInfoRequest,
 };
 const Container = connect(
   mapStateToProps,
