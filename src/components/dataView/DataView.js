@@ -17,13 +17,17 @@ import Utils from '../../helpers/Utils';
 import Select from '../form/Select';
 import Outside from '../Outside';
 import { EXPORT_TYPES } from '../../data/export';
+import { getGraphInfoRequest } from '../../store/actions/graphs';
 
 class DataView extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
+    getGraphInfoRequest: PropTypes.func.isRequired,
+    graphId: PropTypes.string.isRequired,
     customFields: PropTypes.object.isRequired,
+    graphInfo: PropTypes.object.isRequired,
     selectedGrid: PropTypes.objectOf(PropTypes.array).isRequired,
   }
 
@@ -43,8 +47,10 @@ class DataView extends Component {
   }
 
   componentDidMount() {
+    const { graphId } = this.props;
     this.checkAllGrids();
     Chart.resizeSvg();
+    this.props.getGraphInfoRequest(graphId);
   }
 
   componentWillUnmount() {
@@ -178,6 +184,7 @@ class DataView extends Component {
     const {
       fullWidth, activeTab, exportType, showExport,
     } = this.state;
+    const { graphInfo } = this.props;
 
     const nodes = Chart.getNodes().filter((d) => !d.sourceId && !d.fake);
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
@@ -245,9 +252,7 @@ class DataView extends Component {
           <div className="tabs">
             <div className="nodesMode">
               <span>
-                Nodes (
-                {nodes.length}
-                )
+                {`Nodes (${graphInfo.totalNodes})`}
               </span>
             </div>
             <div>
@@ -264,9 +269,7 @@ class DataView extends Component {
             </div>
             <div className="linksMode">
               <span>
-                Links (
-                {links.length}
-                )
+                {`Links (${graphInfo.totalLinks})`}
               </span>
             </div>
             <div>
@@ -291,6 +294,8 @@ class DataView extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   selectedGrid: state.app.selectedGrid,
+  graphId: state.graphs.singleGraph.id,
+  graphInfo: state.graphs.graphInfo,
   customFields: state.graphs.singleGraph.customFields || {},
 });
 
@@ -298,6 +303,7 @@ const mapDispatchToProps = {
   setActiveButton,
   setLoading,
   setGridIndexes,
+  getGraphInfoRequest,
 };
 
 const Container = connect(

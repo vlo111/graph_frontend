@@ -29,6 +29,7 @@ const initialState = {
   graphsListStatus: '',
   singleGraphStatus: '',
   singleGraph: {},
+  graphInfo: {},
   embedLabels: [],
   graphsListInfo: {
     totalPages: 0,
@@ -118,13 +119,10 @@ export default function reducer(state = initialState, action) {
     }
     case GET_SINGLE_EMBED_GRAPH.SUCCESS:
     case GET_SINGLE_GRAPH.SUCCESS: {
-      const { graph: singleGraph, embedLabels } = action.payload.data;
-      let {
+      const { graph: singleGraph, embedLabels, info } = action.payload.data;
+      const {
         nodes, links, labels, lastUid,
       } = singleGraph;
-
-      const fakeLinks = [];
-      const fakeNodes = [];
 
       Chart.render({
         nodes,
@@ -137,6 +135,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         singleGraph,
         embedLabels,
+        graphInfo: info,
         singleGraphStatus: 'success',
       };
     }

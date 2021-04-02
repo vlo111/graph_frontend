@@ -265,7 +265,7 @@ class ChartUtils {
   static nodesDistance = (d) => this.distance([d.target.x, d.target.y], [d.source.x, d.source.y])
 
   static getRadiusList() {
-    let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.id, 'all').length * 2 + (d.icon ? 6.5 : 2));
+    const radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.id, 'all').length * 2 + (d.icon ? 6.5 : 2));
     let max = Math.max(...radiusList);
     // if (max > 40) {
     //   radiusList = radiusList.map((d) => {
@@ -862,6 +862,18 @@ class ChartUtils {
       return d.map(this.objectAndProto);
     }
     return { ...Object.getPrototypeOf(d), ...d };
+  }
+
+  static getTotalNodes(nodes, labels) {
+    const nodeIds = nodes.filter((n) => !n.fake).map((n) => n.id);
+    nodeIds.push(...labels.map((d) => d.nodes).flat(1));
+    return _.uniq(nodes).length;
+  }
+
+  static getTotalLinks(nodes, labels) {
+    const nodeIds = nodes.filter((n) => !n.fake).map((n) => n.id);
+    nodeIds.push(...labels.map((d) => d.nodes).flat(1));
+    return _.uniq(nodes).length;
   }
 }
 

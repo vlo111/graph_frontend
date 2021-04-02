@@ -130,6 +130,10 @@ class Api {
     });
   }
 
+  static getGraphInfo(graphId) {
+    return api.get(`/graphs/info/${graphId}`);
+  }
+
   static getNodeCustomFields(graphId, nodeId) {
     return api.get(`/nodes/get-fields/${graphId}/${nodeId}`);
   }
