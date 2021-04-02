@@ -19,6 +19,8 @@ class AutoSave extends Component {
     Chart.event.on('node.dragend', this.handleChartRender);
     Chart.event.on('label.dragend', this.handleChartRender);
     Chart.event.on('setNodeData', this.handleChartRender);
+    Chart.event.on('setNodeData', this.handleChartRender);
+    Chart.event.on('selected.dragend', this.handleChartRender);
   }
 
   componentWillUnmount() {
