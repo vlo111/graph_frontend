@@ -741,6 +741,7 @@ class ChartUtils {
     let links = [...graph1.links || [], ...graph2.links || []];
     // let labels = new Set();
     let labels = !_.isEmpty(graph1.labels) ? graph1.labels : graph2.labels; 
+    console.log(graph1.labels, graph2.labels, 'graph2.labels', !_.isEmpty(graph1.labels), 'sssss', labels)
     const nodes = selectedNodes1.map((node1) => {
       const node2 = selectedNodes2.find((n) => n.name === node1.name);
       if (node2) {
