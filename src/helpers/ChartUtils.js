@@ -737,8 +737,10 @@ class ChartUtils {
   }
 
   static margeGraphs = (graph1, graph2, selectedNodes1 = graph1.nodes, selectedNodes2 = graph2.nodes) => {
+  
     let links = [...graph1.links || [], ...graph2.links || []];
-    let labels = new Set();
+    // let labels = new Set();
+    let labels = !_.isEmpty(graph1.labels) ? graph1.labels : graph2.labels; 
     const nodes = selectedNodes1.map((node1) => {
       const node2 = selectedNodes2.find((n) => n.name === node1.name);
       if (node2) {
