@@ -179,7 +179,7 @@ class DataView extends Component {
       fullWidth, activeTab, exportType, showExport,
     } = this.state;
 
-    const nodes = Chart.getNodes().filter((d) => !d.sourceId);
+    const nodes = Chart.getNodes().filter((d) => !d.sourceId && !d.fake);
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
 
     const linksGrouped = _.groupBy(links, 'type');
