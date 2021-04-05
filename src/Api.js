@@ -420,6 +420,10 @@ class Api {
     });
   }
 
+  static labelCopy(sourceId, labelId) {
+    return api.get(`/labels/copy/${sourceId}/${labelId}`);
+  }
+
   static labelData(graphId, labelId) {
     return api.get(`/labels/${graphId}/${labelId}`);
   }

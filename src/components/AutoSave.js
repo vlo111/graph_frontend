@@ -119,9 +119,10 @@ class AutoSave extends Component {
           updateNodePositions.push(node);
         } else if (!_.isEqual(this.formatNode(node), this.formatNode(oldNode))) {
           updateNodes.push(node);
-        } else if (oldNode.customFields && !_.isEqual(node.customFields, oldNode.customFields)) {
-          updateNodeCustomFields.push(node);
         }
+        // if ((oldNode.customFields && !_.isEqual(node.customFields, oldNode.customFields))) {
+        //   updateNodeCustomFields.push(node);
+        // }
       }
     });
 
@@ -169,10 +170,9 @@ class AutoSave extends Component {
       this.props.updateNodesPositionRequest(graphId, updateNodePositions);
     }
 
-    // if (updateNodeCustomFields.length) {
-    //   update = true;
-    //   this.props.updateNodesCustomFieldsRequest(graphId, updateNodeCustomFields);
-    // }
+    if (updateNodeCustomFields.length) {
+      this.props.updateNodesCustomFieldsRequest(graphId, updateNodeCustomFields);
+    }
 
     if (createLinks.length) {
       this.props.createLinksRequest(graphId, createLinks);

@@ -11,29 +11,9 @@ import { LABEL_STATUS } from '../data/node';
 import Utils from './Utils';
 
 class LabelUtils {
-  static copy(sourceId, id, customFields, singleGraph) {
-    const labels = Chart.getLabels();
-    const label = labels.find((l) => l.id === id);
-    if (label.type === 'folder') {
-      label.open = true;
-    }
-
-    const nodes = Chart.getNodes().filter((n) => n.labels.includes(id)).map((d) => {
-      d.labels = [id];
-      return d;
-    });
-
-    const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
-
-    const data = {
-      sourceId: +sourceId,
-      label,
-      nodes,
-      links,
-      customFields,
-      title: singleGraph.title,
-    };
-    localStorage.setItem('label.copy', JSON.stringify(data));
+  static async copy(sourceId, labelId, singleGraph) {
+    const { data } = await Api.labelCopy(sourceId, labelId);
+    localStorage.setItem('label.copy', JSON.stringify(data.data));
 
     return data;
   }
