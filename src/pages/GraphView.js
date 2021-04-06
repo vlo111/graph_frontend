@@ -84,11 +84,11 @@ class GraphView extends Component {
             </p>
             <div>
               <strong>{'Nodes: '}</strong>
-              {graphInfo.total?.nodes}
+              {graphInfo.totalNodes}
             </div>
             <div>
               <strong>{'Links: '}</strong>
-              {graphInfo.total?.links}
+              {graphInfo.totalLinks}
             </div>
             <div>
               <strong>{'Views: '}</strong>

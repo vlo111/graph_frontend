@@ -111,13 +111,16 @@ class ReactChart extends Component {
 
     const nodes = Chart.getNodes().filter((n) => n.fake || !n.labels.includes(d.id));
     const links = Chart.getLinks().map((l) => {
-      if (d.nodes.includes(l.source)) {
-        l.source = fakeId;
-        l.fake = true;
-      } else if (d.nodes.includes(l.target)) {
-        l.target = fakeId;
-        l.fake = true;
+      if(d.nodes){
+        if (d.nodes.includes(l.source)) {
+          l.source = fakeId;
+          l.fake = true;
+        } else if (d.nodes.includes(l.target)) {
+          l.target = fakeId;
+          l.fake = true;
+        }
       }
+
       return l;
     });
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
