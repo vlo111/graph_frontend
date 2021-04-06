@@ -11,7 +11,8 @@ import { LABEL_STATUS } from '../data/node';
 import Utils from './Utils';
 
 class LabelUtils {
-  static async copy(sourceId, labelId, singleGraph) {
+  static async copy(sourceId, labelId) {
+    localStorage.removeItem('label.copy');
     const { data } = await Api.labelCopy(sourceId, labelId);
     localStorage.setItem('label.copy', JSON.stringify(data.data));
 

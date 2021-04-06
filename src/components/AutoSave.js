@@ -33,6 +33,8 @@ class AutoSave extends Component {
     deleteLabelsRequest: PropTypes.func.isRequired,
     updateLabelsRequest: PropTypes.func.isRequired,
 
+    updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
+
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
   }
 
@@ -155,45 +157,48 @@ class AutoSave extends Component {
       }
     });
     if (deleteNodes.length === nodes.length) {
+      document.body.classList.remove('autoSave');
       return;
     }
+
     if (createNodes.length) {
       await this.props.createNodesRequest(graphId, createNodes);
     }
+    const promise = [];
     if (updateNodes.length) {
-      this.props.updateNodesRequest(graphId, updateNodes);
+      promise.push(this.props.updateNodesRequest(graphId, updateNodes));
     }
     if (deleteNodes.length) {
-      this.props.deleteNodesRequest(graphId, deleteNodes);
+      promise.push(this.props.deleteNodesRequest(graphId, deleteNodes));
     }
     if (updateNodePositions.length) {
-      this.props.updateNodesPositionRequest(graphId, updateNodePositions);
+      promise.push(this.props.updateNodesPositionRequest(graphId, updateNodePositions));
     }
 
     if (updateNodeCustomFields.length) {
-      this.props.updateNodesCustomFieldsRequest(graphId, updateNodeCustomFields);
+      promise.push(this.props.updateNodesCustomFieldsRequest(graphId, updateNodeCustomFields));
     }
 
     if (createLinks.length) {
-      this.props.createLinksRequest(graphId, createLinks);
+      promise.push(this.props.createLinksRequest(graphId, createLinks));
     }
     if (updateLinks.length) {
-      this.props.updateLinksRequest(graphId, updateLinks);
+      promise.push(this.props.updateLinksRequest(graphId, updateLinks));
     }
     if (deleteLinks.length) {
-      this.props.deleteLinksRequest(graphId, deleteLinks);
+      promise.push(this.props.deleteLinksRequest(graphId, deleteLinks));
     }
 
     if (createLabels.length) {
-      this.props.createLabelsRequest(graphId, createLabels);
+      promise.push(this.props.createLabelsRequest(graphId, createLabels));
     }
     if (updateLabels.length) {
-      this.props.updateLabelsRequest(graphId, updateLabels);
+      promise.push(this.props.updateLabelsRequest(graphId, updateLabels));
     }
     if (deleteLabels.length) {
-      this.props.deleteLabelsRequest(graphId, deleteLabels);
+      promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
-
+    await Promise.all(promise);
     document.body.classList.remove('autoSave');
   }
 
