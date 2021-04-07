@@ -327,9 +327,11 @@ class Chart {
         if (d.readOnly) {
           return;
         }
-        if (this.activeButton === 'view') {
-          this.detectLabels(d);
-        }
+        // if (this.activeButton === 'view') {
+        //   this.detectLabels(d);
+        // }
+        this.detectLabels(d);
+
         if (this.getCurrentUserRole() === 'edit_inside') {
           const node = ChartUtils.getNodeById(d.id);
           if (!_.isEqual(node.labels, dragNode.labels)) {

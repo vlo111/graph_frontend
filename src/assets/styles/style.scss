@@ -931,6 +931,7 @@ p {
     transform: translate(5px, 45px);
     fill: #ffffff !important;
     font-size: 14px;
+    pointer-events: none;
   }
 
   .links {

@@ -509,13 +509,21 @@ class ChartUtils {
     const firstFolder = node.labels?.find((l) => l.startsWith('f_'));
     const firstLabel = node.labels?.find((l) => !l.startsWith('f_'));
     const labels = Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
-    if (node.index === 128) {
-      console.log(labels);
-    }
+
     if (firstLabel) {
       return labels.filter((l) => !l.startsWith('f_'));
     }
     if (labels.includes(firstFolder)) {
+      Chart.data.labels = Chart.data.labels.map((l) => {
+        if (l.id === firstFolder) {
+          l.nodes = l.nodes || [];
+          if (!l.nodes.includes(node.id) && !node.fake) {
+            l.nodes.push(node.id);
+          }
+        }
+        return l;
+      });
+
       return [firstFolder];
     }
     return labels;
