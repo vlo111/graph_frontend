@@ -31,7 +31,7 @@ class LabelStatusFilter extends Component {
     } else {
       filters.labelStatus.push(value);
     }
-    this.props.setFilter('labelStatus', filters.labelStatus);
+    this.props.setFilter('labelStatus', _.uniq(filters.labelStatus));
   }
 
   toggleAll = (fullData, allChecked) => {

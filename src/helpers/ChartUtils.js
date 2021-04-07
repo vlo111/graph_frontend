@@ -20,6 +20,10 @@ class ChartUtils {
     }
     console.log(params);
     data.links = data.links.map((d) => {
+      if (d.fake) {
+        d.hidden = 0;
+        return d;
+      }
       if (params.linkTypes[0] !== '__ALL__' && !params.linkTypes.includes(d.type)) {
         d.hidden = 1;
         return d;
@@ -53,6 +57,10 @@ class ChartUtils {
       //   d.hidden = 1;
       //   return d;
       // }
+      if (d.fake) {
+        d.hidden = 0;
+        return d;
+      }
       if (params.linkConnection?.min > -1) {
         const { length = 0 } = data.links.filter((l) => l.source === d.id || l.target === d.id) || {};
         if (length < params.linkConnection.min || length > params.linkConnection.max) {
