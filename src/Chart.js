@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+﻿import * as d3 from 'd3';
 import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
@@ -1002,7 +1002,7 @@ class Chart {
           .attr('class', 'nodeCreate')
           .attr('opacity', 0.6)
           .attr('rx', 15)
-          .attr('stroke', (f) => (d.sourceId ? '#000' : null))
+          .attr('stroke', (f) => (f.sourceId ? '#000' : null))
           .attr('width', (f) => _.get(f, 'd[1][0]', squareSize))
           .attr('height', (f) => _.get(f, 'd[1][1]', squareSize))
           .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / -2)
@@ -1079,6 +1079,13 @@ class Chart {
       .attr('class', 'folderResizeIcon')
       .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / 2 - 25)
       .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / 2 - 25);
+
+    folderWrapper.selectAll('.folderClose')
+      .filter((d) => !_.isEmpty(d.nodes))
+      .append('text')
+      .attr('class', 'folderBadge')
+
+      .text((d) => d.nodes.length)
 
     this.folders.append('text')
       .text((d) => d.name)

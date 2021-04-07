@@ -927,6 +927,11 @@ p {
       display: none;
     }
   }
+  .folderBadge{
+    transform: translate(5px, 45px);
+    fill: #ffffff !important;
+    font-size: 14px;
+  }
 
   .links {
     path {
@@ -7950,7 +7955,7 @@ img.preview-scaled {
                 font-size: 12px;
                 line-height: 21px;
                 color: rgba(34, 47, 62, 0.7);
-              }              
+              }
             }
           }
         }
