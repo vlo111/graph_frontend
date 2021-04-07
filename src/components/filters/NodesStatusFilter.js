@@ -16,36 +16,11 @@ class NodesStatusFilter extends Component {
     nodes: PropTypes.array.isRequired,
   };
 
-  getNodeStatus = memoizeOne((nodes) => {
-    const status = _.chain(nodes)
-      .groupBy('status')
-      .map((d, key) => ({
-        length: d.length,
-        status: key,
-      }))
-      .orderBy('length', 'desc')
-      .value();
+  checkAllNodes = memoizeOne((status) => {
     if (status.length) {
-      this.props.setFilter(
-        'nodeStatus',
-        status.map((d) => d.status),
-        true,
-      );
+      this.props.setFilter('nodeStatus', status.map((d) => d.status), true,);
     }
-    return status;
-  },
-  (a, b) => _.isEqual(
-    a[0].map((d) => d.status),
-    b[0].map((d) => d.status),
-  ));
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      showMore: false,
-      openList: [],
-    };
-  }
+  }, _.isEqual);
 
   handleChange = (value) => {
     const { filters } = this.props;
@@ -70,9 +45,9 @@ class NodesStatusFilter extends Component {
   };
 
   render() {
-    const { nodes, filters } = this.props;
-    const statusFull = this.getNodeStatus(nodes);
-    const allChecked = statusFull.length === filters.nodeStatus.length;
+    const { filters, graphFilterInfo: { nodeStatus = [] } } = this.props;
+    this.checkAllNodes(nodeStatus);
+    const allChecked = nodeStatus.length === filters.nodeStatus.length;
     return (
       <div className="nodesStatusFilter graphFilter">
         <h4 className="title">Status</h4>
@@ -82,13 +57,13 @@ class NodesStatusFilter extends Component {
               <Checkbox
                 label={allChecked ? 'Uncheck All' : 'Check All'}
                 checked={allChecked}
-                onChange={() => this.toggleAll(statusFull, allChecked)}
+                onChange={() => this.toggleAll(nodeStatus, allChecked)}
                 className="graphsCheckbox"
               />
             </div>
-            <span className="badge">{_.sumBy(statusFull, 'length')}</span>
+            <span className="badge">{_.sumBy(nodeStatus, 'length')}</span>
           </li>
-          {statusFull.map((item) => (
+          {nodeStatus.map((item) => (
             <li
               key={item.status}
               className="item"
@@ -114,6 +89,7 @@ class NodesStatusFilter extends Component {
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
   customFields: state.graphs.singleGraph.customFields || {},
+  graphFilterInfo: state.graphs.graphFilterInfo,
 });
 
 const mapDispatchToProps = {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
@@ -16,22 +16,11 @@ class LabelStatusFilter extends Component {
     nodes: PropTypes.array.isRequired,
   }
 
-
-  formatLabels = memoizeOne((labels) => {
-
-    const labelsFormatted = _.chain(labels)
-      .groupBy('status')
-      .map((d, key) => ({
-        length: d.length,
-        status: key
-      }))
-      .orderBy('length', 'desc')
-      .value();
+  checkALlLabels = memoizeOne((labelsFormatted) => {
     if (labelsFormatted.length) {
       this.props.setFilter('labelStatus', labelsFormatted.map((d) => d.status), true);
     }
-    return labelsFormatted;
-  }, (a, b) => _.isEqual(a[0].map((d) => d.status), b[0].map((d) => d.status)));
+  }, _.isEqual);
 
   handleChange = (value) => {
     const { filters } = this.props;
@@ -46,22 +35,20 @@ class LabelStatusFilter extends Component {
   }
 
   toggleAll = (fullData, allChecked) => {
-
     if (allChecked) {
       this.props.setFilter('labelStatus', []);
     } else {
       this.props.setFilter('labelStatus', fullData.map((d) => d.status));
     }
+  }
 
-  }
-  statusName = (label) => {
-    return LabelUtils.lableStatusNane(label);
-  }
+  statusName = (label) => LabelUtils.lableStatusNane(label)
+
   render() {
-    const { labels, filters } = this.props;
-    const labelStatusFull = this.formatLabels(labels);
-    const allChecked = labelStatusFull.length === filters.labelStatus.length;
-    if (labelStatusFull.length < 1) {
+    const { labels, filters, graphFilterInfo: { labelsStatus = [] } } = this.props;
+    this.checkALlLabels(labels);
+    const allChecked = labelsStatus.length === filters.labelStatus.length;
+    if (labelsStatus.length < 1) {
       return null;
     }
 
@@ -70,35 +57,31 @@ class LabelStatusFilter extends Component {
         <h4 className="title">Label status</h4>
         <ul className="list">
           <li className="item">
-          <div className="filterCheckBox">
-            <Checkbox
-              label={allChecked ? 'Uncheck All' : 'Check All'}
-              checked={allChecked}
-              onChange={() => this.toggleAll(labelStatusFull, allChecked)}
-              className="graphsCheckbox"
-            >
-              
-            </Checkbox>
+            <div className="filterCheckBox">
+              <Checkbox
+                label={allChecked ? 'Uncheck All' : 'Check All'}
+                checked={allChecked}
+                onChange={() => this.toggleAll(labelsStatus, allChecked)}
+                className="graphsCheckbox"
+              />
             </div>
             <span className="badge">
-                {_.sumBy(labelStatusFull, 'length')}
-              </span>
+              {_.sumBy(labelsStatus, 'length')}
+            </span>
           </li>
-          {labelStatusFull.map((item) => (
+          {labelsStatus.map((item) => (
             <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
-               <div className="filterCheckBox"> 
-              <Checkbox
-                label={this.statusName(item.status)}
-                checked={filters.labelStatus.includes(item.status)}
-                onChange={() => this.handleChange(item.status)}
-                className="graphsCheckbox"
-              >
-                
-              </Checkbox>
+              <div className="filterCheckBox">
+                <Checkbox
+                  label={this.statusName(item.status)}
+                  checked={filters.labelStatus.includes(item.status)}
+                  onChange={() => this.handleChange(item.status)}
+                  className="graphsCheckbox"
+                />
               </div>
               <span className="badge">
-                  {item.length}
-                </span>
+                {item.length}
+              </span>
             </li>
           ))}
         </ul>
@@ -109,6 +92,7 @@ class LabelStatusFilter extends Component {
 
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
+  graphFilterInfo: state.graphs.graphFilterInfo,
 });
 
 const mapDispatchToProps = {

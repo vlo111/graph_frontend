@@ -15,30 +15,12 @@ class LinkTypesFilter extends Component {
     links: PropTypes.array.isRequired,
   };
 
-  getLinkTypes = memoizeOne(
-    (links) => {
-      const types = _.chain(links)
-        .groupBy('type')
-        .map((d, key) => ({
-          length: d.length,
-          type: key,
-        }))
-        .orderBy('length', 'desc')
-        .value();
-      if (types.length) {
-        this.props.setFilter(
-          'linkTypes',
-          types.map((d) => d.type),
-          true,
-        );
-      }
-      return types;
-    },
-    (a, b) => _.isEqual(
-      a[0].map((d) => d.type),
-      b[0].map((d) => d.type),
-    ),
-  );
+  checkAllLinks = memoizeOne((types) => {
+    if (types.length) {
+      this.props.setFilter('linkTypes', types.map((d) => d.type), true);
+    }
+    return types;
+  }, _.isEqual);
 
   constructor(props) {
     super(props);
@@ -76,13 +58,13 @@ class LinkTypesFilter extends Component {
 
   render() {
     const { showMore } = this.state;
-    const { links, filters } = this.props;
-    const typesFull = this.getLinkTypes(links);
-    const types = showMore ? typesFull : _.chunk(typesFull, 5)[0] || [];
-    if (typesFull.length < 2) {
+    const { filters, graphFilterInfo: { linkTypes = [] } } = this.props;
+    this.checkAllLinks(linkTypes);
+    const types = showMore ? linkTypes : _.chunk(linkTypes, 5)[0] || [];
+    if (linkTypes.length < 2) {
       return null;
     }
-    const allChecked = typesFull.length === filters.linkTypes.length;
+    const allChecked = linkTypes.length === filters.linkTypes.length;
     return (
       <div className="linkTypesFilter graphFilter">
         <h4 className="title">Link Types</h4>
@@ -92,11 +74,11 @@ class LinkTypesFilter extends Component {
               <Checkbox
                 label={allChecked ? 'Uncheck All' : 'Check All'}
                 checked={allChecked}
-                onChange={() => this.toggleAll(typesFull, allChecked)}
+                onChange={() => this.toggleAll(linkTypes, allChecked)}
                 className="graphsCheckbox"
               />
             </div>
-            <span className="badge">{_.sumBy(typesFull, 'length')}</span>
+            <span className="badge">{_.sumBy(linkTypes, 'length')}</span>
           </li>
           {types.map((item) => (
             <li
@@ -116,7 +98,7 @@ class LinkTypesFilter extends Component {
             </li>
           ))}
         </ul>
-        {typesFull.length > types.length || showMore ? (
+        {linkTypes.length > types.length || showMore ? (
           <Button onClick={this.toggleMore}>
             {showMore ? '- Less' : '+ More'}
           </Button>
@@ -128,6 +110,7 @@ class LinkTypesFilter extends Component {
 
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
+  graphFilterInfo: state.graphs.graphFilterInfo,
 });
 
 const mapDispatchToProps = {

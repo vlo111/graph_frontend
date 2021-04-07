@@ -55,6 +55,10 @@ class FiltersModal extends Component {
   }
 
   handleChartRender = () => {
+    // const { match: { params: { graphId } } } = this.props;
+    // this.props.getGraphInfoRequest(graphId);
+
+    // todo remove me
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       const nodes = Chart.getNodes(true);
