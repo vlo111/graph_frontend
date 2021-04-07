@@ -15,7 +15,7 @@ import {
   SET_GRAPH_CUSTOM_FIELDS,
   GET_SINGLE_GRAPH_PREVIEW,
   UPDATE_GRAPH,
-  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY, SET_ACTIVE_TAB, GET_NODE_CUSTOM_FIELDS,
+  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY, SET_ACTIVE_TAB, GET_NODE_CUSTOM_FIELDS, GET_GRAPH_INFO,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -30,6 +30,7 @@ const initialState = {
   singleGraphStatus: '',
   singleGraph: {},
   graphInfo: {},
+  graphFilterInfo: {},
   embedLabels: [],
   graphsListInfo: {
     totalPages: 0,
@@ -137,6 +138,15 @@ export default function reducer(state = initialState, action) {
         embedLabels,
         graphInfo: info,
         singleGraphStatus: 'success',
+      };
+    }
+
+    case GET_GRAPH_INFO.SUCCESS: {
+      const { filter, info } = action.payload.data;
+      return {
+        ...state,
+        graphFilterInfo: filter,
+        graphInfo: info,
       };
     }
 
