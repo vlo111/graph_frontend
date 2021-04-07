@@ -82,7 +82,8 @@ class FiltersModal extends Component {
     const { nodes, links, labels } = this.state;
     const { userGraphs, match: { params: { graphId = '', token = '' } } } = this.props;
     const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId);
-    const hiddenNodes = nodes.filter((d) => !d.hidden).length;
+    const hiddenNodes = nodes.filter((d) => !d.hidden && !d.fake).length;
+    const totalNodes = nodes.filter((d) => !d.fake).length;
     return (
       <Modal
         className="ghModal ghModalFilters"
@@ -103,7 +104,7 @@ class FiltersModal extends Component {
           <span
             className="nodeCount"
           >
-            {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${nodes.length}`}
+            {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${totalNodes}`}
           </span>
           <div>
             <Button className="ghButton2 resetButton" onClick={this.props.resetFilter}>RESET ALL</Button>
