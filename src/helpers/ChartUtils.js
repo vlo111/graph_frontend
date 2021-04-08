@@ -18,10 +18,9 @@ class ChartUtils {
     if (_.isEmpty(params) || !window.location.pathname.startsWith('/graphs/filter/')) {
       return data;
     }
-    console.log(params);
     data.links = data.links.map((d) => {
+      d.hidden = 0;
       if (d.fake) {
-        d.hidden = 0;
         return d;
       }
       if (params.linkTypes[0] !== '__ALL__' && !params.linkTypes.includes(d.type)) {
@@ -34,11 +33,14 @@ class ChartUtils {
           return d;
         }
       }
-      d.hidden = 0;
       return d;
     });
     const hiddenLabels = [];
     data.labels = data.labels.map((d) => {
+      d.hidden = 0;
+      if (d.type === 'folder') { // todo
+        return d;
+      }
       if (!params.labels.includes(d.id)) {
         d.hidden = 1;
         hiddenLabels.push(d.id);
@@ -49,16 +51,15 @@ class ChartUtils {
         hiddenLabels.push(d.id);
         return d;
       }
-      d.hidden = 0;
       return d;
     });
     data.nodes = data.nodes.map((d) => {
+      d.hidden = 0;
       // if (data.links.some((l) => l.hidden && d.name === l.source)) {
       //   d.hidden = 1;
       //   return d;
       // }
       if (d.fake) {
-        d.hidden = 0;
         return d;
       }
       if (params.linkConnection?.min > -1) {
@@ -100,7 +101,6 @@ class ChartUtils {
         d.hidden = 1;
         return d;
       }
-      d.hidden = 0;
       return d;
     });
 
