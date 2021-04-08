@@ -424,6 +424,10 @@ class Api {
     return api.get(`/labels/copy/${sourceId}/${labelId}`);
   }
 
+  static squareCopy(sourceId, square) {
+    return api.post(`/graphs/square/copy/${sourceId}`, { square });
+  }
+
   static labelData(graphId, labelId) {
     return api.get(`/labels/${graphId}/${labelId}`);
   }

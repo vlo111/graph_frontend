@@ -3,6 +3,7 @@ import EventEmitter from 'events';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodeContextMenu from './NodeContextMenu';
@@ -14,8 +15,6 @@ import LabelUtils from '../../helpers/LabelUtils';
 import SelectSquare from './SelectSquare';
 import DeleteModalContext from './DeleteModalContext';
 import { setActiveButton } from '../../store/actions/app';
-import ChartUtils from "../../helpers/ChartUtils";
-import Api from "../../Api";
 
 class ContextMenu extends Component {
   static propTypes = {
@@ -61,7 +60,7 @@ class ContextMenu extends Component {
     if (ev.target.closest('.nodes')) {
       if (ev.target.classList.contains('selectMultyNodes')) {
         params = {
-          squareDara: Chart.squareDara || {},
+          squareData: Chart.squareData || {},
         };
         element = 'selectNode';
       } else {
@@ -94,7 +93,7 @@ class ContextMenu extends Component {
       element = 'label';
     } else if (ev.target.classList.contains('selectSquare')) {
       params = {
-        squareDara: Chart.squareDara || {},
+        squareData: Chart.squareData || {},
       };
       element = 'selectSquare';
     }
@@ -140,8 +139,9 @@ class ContextMenu extends Component {
     const { match: { params: { graphId = '' } } } = this.props;
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
-    const showPast = !!localStorage.getItem('label.copy')
-      && (show === 'chart' || show === 'label');
+    const pastData = LabelUtils.getData();
+
+    const showPast = !_.isEmpty(pastData) && (show === 'chart' || show === 'label');
     if (params.fieldName === '_location') {
       return null;
     }
@@ -175,9 +175,11 @@ class ContextMenu extends Component {
                     <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
                       Append
                     </Button>
-                    <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
-                      Past Embedded
-                    </Button>
+                    {pastData.type === 'label' ? (
+                      <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
+                        Past Embedded
+                      </Button>
+                    ) : null}
                   </div>
                 </div>
               ) : null}

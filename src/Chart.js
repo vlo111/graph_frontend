@@ -1574,7 +1574,7 @@ class Chart {
       return;
     }
 
-    this.squareDara = {
+    this.squareData = {
       selectedNodes: [],
       nodes: [],
       labels: [],
@@ -1588,20 +1588,20 @@ class Chart {
 
     const showSelectedNodes = () => {
       this.nodesWrapper.selectAll('.node :not(text)')
-        .attr('filter', (n) => (this.squareDara.selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
+        .attr('filter', (n) => (this.squareData.selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
       this.nodesWrapper.selectAll('.node :not(text)')
-        .attr('class', (n) => (this.squareDara.selectedNodes.includes(n.id) ? 'selectMultyNodes' : null));
+        .attr('class', (n) => (this.squareData.selectedNodes.includes(n.id) ? 'selectMultyNodes' : null));
     };
 
     this.event.on('node.click', (ev, d) => {
       if (!ev.shiftKey) {
         return;
       }
-      const i = this.squareDara.selectedNodes.indexOf(d.id);
+      const i = this.squareData.selectedNodes.indexOf(d.id);
       if (i > -1) {
-        this.squareDara.selectedNodes.splice(i, 1);
+        this.squareData.selectedNodes.splice(i, 1);
       } else {
-        this.squareDara.selectedNodes.push(d.id);
+        this.squareData.selectedNodes.push(d.id);
       }
 
       showSelectedNodes();
@@ -1637,7 +1637,7 @@ class Chart {
       this.wrapper.selectAll('.selectBoard').remove();
       this.wrapper.selectAll('.selectSquare').remove();
       selectSquare = null;
-      this.squareDara = {
+      this.squareData = {
         selectedNodes: [],
         nodes: [],
         labels: [],
@@ -1663,19 +1663,19 @@ class Chart {
           y -= height;
         }
         const allNodes = this.getNodes();
-        this.squareDara.nodes = allNodes
+        this.squareData.nodes = allNodes
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
-        this.squareDara.labels = this.getLabels()
+        this.squareData.labels = this.getLabels()
           .filter((l) => {
-            return (l.type === 'folder' && !l.open && this.squareDara.nodes.some(n => n.labels.includes(l.id)))
-              || this.squareDara.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length;
+            return (l.type === 'folder' && !l.open && this.squareData.nodes.some(n => n.labels.includes(l.id)))
+              || this.squareData.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length;
           })
           .map((l) => l.id);
-        this.squareDara.nodes = this.squareDara.nodes.map((d) => d.id);
-        this.squareDara.width = width;
-        this.squareDara.height = height;
-        this.squareDara.x = x;
-        this.squareDara.y = y;
+        this.squareData.nodes = this.squareData.nodes.map((d) => d.id);
+        this.squareData.width = width;
+        this.squareData.height = height;
+        this.squareData.x = x;
+        this.squareData.y = y;
       }
     };
 
@@ -1693,7 +1693,7 @@ class Chart {
       }
 
       this.node.each((d) => {
-        if (this.squareDara.nodes.includes(d.id) || this.squareDara.selectedNodes.includes(d.id)) {
+        if (this.squareData.nodes.includes(d.id) || this.squareData.selectedNodes.includes(d.id)) {
           if (!d.readOnly) {
             d.fx += ev.dx;
             d.x += ev.dx;
@@ -1705,7 +1705,7 @@ class Chart {
       });
 
       this.link.data().map((d) => {
-        if (this.squareDara.nodes.includes(d.source.id) || this.squareDara.selectedNodes.includes(d.source.id)) {
+        if (this.squareData.nodes.includes(d.source.id) || this.squareData.selectedNodes.includes(d.source.id)) {
           if (this.point) {
             if (d.sx === this.point.sc.x) {
               this.point.sc.x += ev.dx;
@@ -1729,7 +1729,7 @@ class Chart {
       });
 
       this.labels.each((l) => {
-        if (this.squareDara.labels.includes(l.id) && !l.readOnly) {
+        if (this.squareData.labels.includes(l.id) && !l.readOnly) {
           l.d = l.d.map((p) => {
             p[0] = +(p[0] + ev.dx).toFixed(2);
             p[1] = +(p[1] + ev.dy).toFixed(2);
@@ -1739,7 +1739,7 @@ class Chart {
         return l;
       });
       this.folders.each((l) => {
-        if (this.squareDara.labels.includes(l.id) && !l.readOnly) {
+        if (this.squareData.labels.includes(l.id) && !l.readOnly) {
           l.d[0][0] = +(l.d[0][0] + ev.dx).toFixed(2);
           l.d[0][1] = +(l.d[0][1] + ev.dy).toFixed(2);
         }

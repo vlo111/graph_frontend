@@ -57,7 +57,7 @@ class AddLabelModal extends Component {
   }
   handleFolderCrateSquare = async (ev, d) => {
     let {
-      squareDara: {
+      squareData: {
         x, y, width, height,
       }, originalEvent,
     } = d;
@@ -68,11 +68,11 @@ class AddLabelModal extends Component {
     //   this.props.customFields
     // );
 
-    // nodes = nodes.filter((d) => squareDara.nodes.includes(d.id));
+    // nodes = nodes.filter((d) => squareData.nodes.includes(d.id));
     // links = links.filter(
     //   (l) =>
-    //     squareDara.nodes.includes(l.source) &&
-    //     squareDara.nodes.includes(l.target)
+    //     squareData.nodes.includes(l.source) &&
+    //     squareData.nodes.includes(l.target)
     // );
     if (width < 200) width = 200;
     if (height < 200) height = 200;

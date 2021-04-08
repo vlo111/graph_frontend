@@ -4,18 +4,16 @@ import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
 import store from '../store';
 import CustomFields from './CustomFields';
-import { removeNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } from '../store/actions/graphs';
+import { setNodeCustomField } from '../store/actions/graphs';
 import Api from '../Api';
 import { socketLabelDataChange } from '../store/actions/socket';
 import { LABEL_STATUS } from '../data/node';
-import Utils from './Utils';
 
 class LabelUtils {
   static async copy(sourceId, labelId) {
     localStorage.removeItem('label.copy');
     const { data } = await Api.labelCopy(sourceId, labelId);
     localStorage.setItem('label.copy', JSON.stringify(data.data));
-
     return data;
   }
 
