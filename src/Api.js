@@ -428,6 +428,10 @@ class Api {
     return api.post(`/graphs/square/copy/${sourceId}`, { square });
   }
 
+  static squarePast(graphId, position = [0, 0], data) {
+    return api.post(`/graphs/square/past/${graphId}`, { position, ...data });
+  }
+
   static labelData(graphId, labelId) {
     return api.get(`/labels/${graphId}/${labelId}`);
   }

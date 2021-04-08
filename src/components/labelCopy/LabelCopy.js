@@ -81,7 +81,7 @@ class LabelCopy extends Component {
     const { data: compare } = await Api.labelPastCompare(singleGraph.id, data.nodes).catch((e) => e.response);
 
     const position = [x, y];
-    if (_.isEmpty(compare.duplicatedNodes)) {
+    if (data.type === 'square' || _.isEmpty(compare.duplicatedNodes)) {
       this.copyDocument('keep');
       return;
     }
@@ -197,15 +197,29 @@ class LabelCopy extends Component {
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     this.closeModal();
-    const { data: res } = await Api.labelPast(id, sourceId, [x, y], action, {
-      label: data.label,
-      nodes: data.nodes,
-      links: data.links,
-    }).catch((e) => e.response);
-    if (res.status === 'error') {
-      toast.error(res.message);
-      return;
+
+    if (data.type === 'square') {
+      const { data: res } = await Api.squarePast(id, [x, y], {
+        labels: data.labels,
+        nodes: data.nodes,
+        links: data.links,
+      }).catch((e) => e.response);
+      if (res.status === 'error') {
+        toast.error(res.message);
+        return;
+      }
+    } else {
+      const { data: res } = await Api.labelPast(id, sourceId, [x, y], action, {
+        label: data.label,
+        nodes: data.nodes,
+        links: data.links,
+      }).catch((e) => e.response);
+      if (res.status === 'error') {
+        toast.error(res.message);
+        return;
+      }
     }
+
     if (sourceId) {
       const { data: a } = await Api.getSingleGraph(id);
       Chart.render({
