@@ -408,8 +408,16 @@ class Api {
     });
   }
 
-  static labelPastCompare(graphId, nodes) {
-    return api.post(`/labels/past-compare/${graphId}`, {
+  static labelCopy(sourceId, labelId) {
+    return api.get(`/labels/copy/${sourceId}/${labelId}`);
+  }
+
+  static dataCopy(sourceId, square) {
+    return api.post(`/graphs/data/copy/${sourceId}`, { square });
+  }
+
+  static dataPastCompare(graphId, nodes) {
+    return api.post(`/graphs/data/past-compare/${graphId}`, {
       nodes,
     });
   }
@@ -420,16 +428,10 @@ class Api {
     });
   }
 
-  static labelCopy(sourceId, labelId) {
-    return api.get(`/labels/copy/${sourceId}/${labelId}`);
-  }
-
-  static squareCopy(sourceId, square) {
-    return api.post(`/graphs/square/copy/${sourceId}`, { square });
-  }
-
-  static squarePast(graphId, position = [0, 0], data) {
-    return api.post(`/graphs/square/past/${graphId}`, { position, ...data });
+  static dataPast(graphId, sourceId, position = [0, 0], action, data) {
+    return api.post(`/graphs/data/past/${graphId}`, {
+      sourceId, position, action, ...data,
+    });
   }
 
   static labelData(graphId, labelId) {

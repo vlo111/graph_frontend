@@ -63,7 +63,7 @@ class SelectSquare extends Component {
     const {
       width, height, x, y,
     } = squareData;
-    const { data } = await Api.squareCopy(singleGraph.id, {
+    const { data } = await Api.dataCopy(singleGraph.id, {
       width, height, x, y,
     });
     console.log(data);

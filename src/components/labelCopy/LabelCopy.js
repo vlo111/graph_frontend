@@ -62,26 +62,16 @@ class LabelCopy extends Component {
     );
   }
 
-  fixDuplications = async () => {
-    const { position } = this.state;
-    const { id } = this.props.singleGraph;
-    const data = LabelUtils.getData();
-    // this.copyDocuments(data.sourceId, id, data.nodes);
-    this.closeModal();
-    await Api.labelPast(id, undefined, data.label, data.nodes, data.links, position);
-    // const { updateNodes, createNodes } = await LabelUtils.past(data, position);
-  }
-
   handleLabelAppend = async (ev, params) => {
     const { x, y } = params;
     const { singleGraph } = this.props;
     const data = LabelUtils.getData();
 
     // todo global loading
-    const { data: compare } = await Api.labelPastCompare(singleGraph.id, data.nodes).catch((e) => e.response);
+    const { data: compare } = await Api.dataPastCompare(singleGraph.id, data.nodes).catch((e) => e.response);
 
     const position = [x, y];
-    if (data.type === 'square' || _.isEmpty(compare.duplicatedNodes)) {
+    if (_.isEmpty(compare.duplicatedNodes)) {
       this.copyDocument('keep');
       return;
     }
@@ -180,7 +170,7 @@ class LabelCopy extends Component {
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
     this.closeModal();
-    const { data: res } = await Api.labelPast(id, undefined, [x, y], 'merge-compare', {
+    const { data: res } = await Api.dataPast(id, undefined, [x, y], 'merge-compare', {
       label: data.label,
       nodes: data.nodes,
       links: data.links,
@@ -198,26 +188,14 @@ class LabelCopy extends Component {
     const data = LabelUtils.getData();
     this.closeModal();
 
-    if (data.type === 'square') {
-      const { data: res } = await Api.squarePast(id, [x, y], {
-        labels: data.labels,
-        nodes: data.nodes,
-        links: data.links,
-      }).catch((e) => e.response);
-      if (res.status === 'error') {
-        toast.error(res.message);
-        return;
-      }
-    } else {
-      const { data: res } = await Api.labelPast(id, sourceId, [x, y], action, {
-        label: data.label,
-        nodes: data.nodes,
-        links: data.links,
-      }).catch((e) => e.response);
-      if (res.status === 'error') {
-        toast.error(res.message);
-        return;
-      }
+    const { data: res } = await Api.dataPast(id, sourceId, [x, y], action, {
+      labels: data.labels,
+      nodes: data.nodes,
+      links: data.links,
+    }).catch((e) => e.response);
+    if (res.status === 'error') {
+      toast.error(res.message);
+      return;
     }
 
     if (sourceId) {
