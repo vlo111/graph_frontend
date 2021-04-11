@@ -127,11 +127,11 @@ class AutoSave extends Component {
         // }
       }
     });
-
     const deleteLinks = _.differenceBy(oldLinks, links, 'id');
     const createLinks = _.differenceBy(links, oldLinks, 'id');
     const updateLinks = [];
 
+    createLinks.push(...oldLinks.filter((l) => !('index' in l)));
     links.forEach((link) => {
       const oldLink = oldLabels.find((l) => l.id === link.id);
       if (oldLink) {
