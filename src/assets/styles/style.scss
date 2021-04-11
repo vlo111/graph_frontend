@@ -938,6 +938,7 @@ p {
     path {
       fill: transparent;
       cursor: pointer;
+      pointer-events: stroke;
 
       &.hidden {
         opacity: 0.2 !important;
@@ -991,6 +992,10 @@ p {
       dominant-baseline: central;
       fill: #0D0905;
       //text-anchor: middle;
+    }
+
+    .folderClose{
+      pointer-events: all;
     }
 
     .closeIcon {
