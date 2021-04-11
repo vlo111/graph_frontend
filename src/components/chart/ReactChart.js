@@ -110,8 +110,9 @@ class ReactChart extends Component {
     const fakeId = `fake_${d.id}`;
 
     const nodes = Chart.getNodes().filter((n) => n.fake || !n.labels.includes(d.id));
+    console.log(nodes, Chart.getLinks())
     const links = Chart.getLinks().map((l) => {
-      if(d.nodes){
+      if (d.nodes) {
         if (d.nodes.includes(l.source)) {
           l.source = fakeId;
           l.fake = true;
@@ -120,9 +121,9 @@ class ReactChart extends Component {
           l.fake = true;
         }
       }
-
       return l;
     });
+    console.log(1, links)
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
   }
 

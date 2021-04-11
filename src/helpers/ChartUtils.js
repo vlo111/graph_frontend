@@ -521,6 +521,7 @@ class ChartUtils {
     if (firstLabel) {
       return labels.filter((l) => !l.startsWith('f_'));
     }
+
     if (labels.includes(firstFolder)) {
       Chart.data.labels = Chart.data.labels.map((l) => {
         if (l.id === firstFolder) {
@@ -534,6 +535,19 @@ class ChartUtils {
 
       return [firstFolder];
     }
+    if (firstFolder) {
+      Chart.data.labels = Chart.data.labels.map((l) => {
+        if (l.id === firstFolder) {
+          l.nodes = l.nodes || [];
+          const i = l.nodes.indexOf(node.id);
+          if (i > -1 && !node.fake) {
+            l.nodes.splice(i, 1);
+          }
+        }
+        return l;
+      });
+    }
+
     return labels;
   }
 
