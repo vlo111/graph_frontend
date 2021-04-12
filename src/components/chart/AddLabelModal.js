@@ -11,6 +11,7 @@ import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg'
 import ContextMenu from '../contextMenu/ContextMenu';
 import { createLabelsRequest } from '../../store/actions/labels';
 import { updateNodesPositionRequest } from '../../store/actions/nodes';
+import Utils from '../../helpers/Utils';
 
 class AddLabelModal extends Component {
   constructor(props) {
@@ -52,9 +53,11 @@ class AddLabelModal extends Component {
     };
     this.setState({ show: true, labelData });
   }
-  handleFolderEdit = (ev, labelData) => {   
+
+  handleFolderEdit = (ev, labelData) => {
     this.setState({ show: true, labelData, edit: true });
   }
+
   handleFolderCrateSquare = async (ev, d) => {
     let {
       squareData: {
@@ -93,7 +96,7 @@ class AddLabelModal extends Component {
 
   deleteLabel = () => {
     const { labelData, edit } = this.state;
-    if(!edit) {
+    if (!edit) {
       let labels = Chart.getLabels();
       labels = labels.filter((l) => l.id !== labelData.id);
       Chart.render({ labels });
@@ -115,15 +118,17 @@ class AddLabelModal extends Component {
       } else {
         labels.push(labelData);
       }
-      // this.props.createLabelsRequest(graphId, [labelData]);
-
-      // this.props.updateNodesPositionRequest(graphId, nodes.filter((d) => d.labels.includes(labelData.id)).map((n) => ({
-      //   id: n.id,
-      //   fx: n.fx,
-      //   fy: n.fy,
-      //   labels: n.labels,
-      // })));
-      Chart.render({ labels });
+      const nodes = Chart.getNodes();
+      if (labelData.type === 'folder') {
+        nodes.push({
+          fake: true,
+          fx: labelData.d[0][0] + 30,
+          fy: labelData.d[0][1] + 30,
+          id: `fake_${labelData.id}`,
+          labels: [labelData.id],
+        });
+      }
+      Chart.render({ labels, nodes });
       this.setState({ show: false });
     }
     this.setState({ errors });
@@ -137,7 +142,9 @@ class AddLabelModal extends Component {
   }
 
   render() {
-    const { labelData, errors, show, edit } = this.state;
+    const {
+      labelData, errors, show, edit,
+    } = this.state;
     if (!show) {
       return null;
     }
@@ -151,11 +158,12 @@ class AddLabelModal extends Component {
         <div className="containerModal">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.deleteLabel} />
           <form className="form" onSubmit={this.addLabel}>
-            <h2>{labelData.type === 'folder' ?  
-              ( edit ? 'Edit Folder' : 'Add new Folder') :
-              ( edit ? 'Edit label' : 'Add new label')} 
-             </h2>
-             <Input
+            <h2>
+              {labelData.type === 'folder'
+                ? (edit ? 'Edit Folder' : 'Add new Folder')
+                : (edit ? 'Edit label' : 'Add new label')}
+            </h2>
+            <Input
               value={labelData.name}
               error={errors.name}
               label="Name"
