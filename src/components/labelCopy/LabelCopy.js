@@ -171,7 +171,7 @@ class LabelCopy extends Component {
     const data = LabelUtils.getData();
     this.closeModal();
     const { data: res } = await Api.dataPast(id, undefined, [x, y], 'merge-compare', {
-      label: data.label,
+      labels: data.labels,
       nodes: data.nodes,
       links: data.links,
       merge,
