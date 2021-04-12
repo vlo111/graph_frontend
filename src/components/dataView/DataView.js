@@ -180,13 +180,17 @@ class DataView extends Component {
     }
   }
 
+  loadFolderNodes = (folder) => {
+    console.log(folder)
+  }
+
   render() {
     const {
       fullWidth, activeTab, exportType, showExport,
     } = this.state;
     const { graphInfo } = this.props;
 
-    const nodes = Chart.getNodes().filter((d) => !d.sourceId && !d.fake);
+    const nodes = Chart.getNodes().filter((d) => !d.sourceId);
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
 
     const linksGrouped = _.groupBy(links, 'type');
@@ -240,6 +244,7 @@ class DataView extends Component {
                 classNamePos={showExport && 'tablePosition'}
                 title={activeTab.type}
                 nodes={nodesGrouped[activeTab.type]}
+                loadFolderNodes={this.loadFolderNodes}
               />
             ) : (
               <DataTableLinks

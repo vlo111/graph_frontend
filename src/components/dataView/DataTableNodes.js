@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import stripHtml  from 'string-strip-html';
+import stripHtml from 'string-strip-html';
 import { setActiveButton, setGridIndexes, toggleGrid } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Input from '../form/Input';
@@ -17,8 +17,11 @@ import { NODE_STATUS, NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
+import Utils from '../../helpers/Utils';
+import Button from '../form/Button';
 
 let CHECKED = false;
+
 class DataTableNodes extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -127,6 +130,8 @@ class DataTableNodes extends Component {
     );
   }
 
+  nodeRow = undefined;
+
   renderCell = (props, className) => {
     const { selectedNodes } = this.props;
     const position = className || '';
@@ -139,11 +144,26 @@ class DataTableNodes extends Component {
       this.onMouseDown = onMouseDown;
       onMouseDown = undefined;
     }
-
     if (cell.key === 'index') {
+      this.nodeRow = Chart.getNodes().find((n) => n.index === +cell.value);
       if (selectedNodes.includes(cell.value)) {
         CHECKED = true;
-      } else CHECKED = false;
+      } else {
+        CHECKED = false;
+      }
+      if (this.nodeRow?.fake) {
+        const folder = Chart.getLabels().find((l) => l.id === this.nodeRow.labels[0]);
+        return (
+          <td colSpan={10} className={`${position} cell index ${CHECKED && 'checked'}`}>
+            <span className="value-viewer">
+              <Button onClick={() => this.props.loadFolderNodes(folder)}>
+                {'Load Nodes from '}
+                <strong>{folder.name}</strong>
+              </Button>
+            </span>
+          </td>
+        );
+      }
       return (
         <td className={`${position} cell index ${CHECKED && 'checked'}`}>
           <label>
@@ -162,6 +182,9 @@ class DataTableNodes extends Component {
           </label>
         </td>
       );
+    }
+    if (this.nodeRow?.fake) {
+      return null;
     }
     return (
       <td
