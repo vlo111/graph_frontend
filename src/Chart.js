@@ -722,8 +722,12 @@ class Chart {
 
     const handleDragStart = (ev) => {
       const { target } = ev.sourceEvent;
-
-      const element = target.closest('.folder');
+      let element = target.closest('.folder');
+      if (target.classList.contains('show')) {
+        const href = target.getAttribute('href');
+        const id = href.replace('#', '');
+        element = document.querySelector(`[id="${id}"]`);
+      }
       if (element) {
         const id = element.getAttribute('data-id');
         dragFolder.folder = folderWrapper.select(`[data-id="${id}"]`);
@@ -826,7 +830,13 @@ class Chart {
       dragFolder.folder = null;
       this.event.emit('square.dragend', ev);
     };
-    const folderWrapper = d3.select('#graph .folders')
+    const folderWrapper = d3.selectAll('#graph .folders')
+      .call(d3.drag()
+        .on('start', handleDragStart)
+        .on('drag', handleDrag)
+        .on('end', handleDragEnd));
+
+    d3.selectAll('#graph .folderIcons')
       .call(d3.drag()
         .on('start', handleDragStart)
         .on('drag', handleDrag)
