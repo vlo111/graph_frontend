@@ -75,13 +75,13 @@ class NodeTabs extends Component {
 
   deleteCustomField = (ev, params = {}) => {
     const { fieldName } = params;
-    const { node } = this.props;
+    const { nodeId, graphId } = this.props;
     if (fieldName && window.confirm('Are you sure?')) {
-      if (node.customFields) {
-        this.props.removeNodeCustomFieldKey(node.type, fieldName, node.id);
-        const customFields = node.customFields.filter((f) => f.name !== fieldName);
-        Chart.setNodeData(node.id, { customFields });
-      }
+      const { nodeCustomFields } = this.props;
+      this.props.updateNodesCustomFieldsRequest(graphId, [{
+        id: nodeId,
+        customFields: nodeCustomFields.filter(f => f.name !== fieldName),
+      }]);
     }
   }
 
