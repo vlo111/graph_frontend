@@ -34,25 +34,21 @@ class SelectSquare extends Component {
 
   createNewGraph = async () => {
     const { singleGraph, params: { squareData } } = this.props;
-    let links = Chart.getLinks();
-    let labels = Chart.getLabels();
-    // eslint-disable-next-line prefer-const
-    let { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
-
-    nodes = nodes.filter((d) => squareData.nodes.includes(d.id));
-    labels = labels.filter((l) => squareData.labels.includes(l.id));
-    links = links.filter((l) => squareData.nodes.includes(l.source) && squareData.nodes.includes(l.target));
+    const {
+      width, height, x, y,
+    } = squareData;
+    const { data: copyData } = await Api.dataCopy(singleGraph.id, {
+      width, height, x, y,
+    });
+    const { nodes, links, labels } = copyData.data || {};
 
     const { payload: { data } } = await this.props.createGraphRequest({
-      ...singleGraph,
       nodes,
       links,
       labels,
-      files,
-      customFields,
     });
     if (data.graphId) {
-      window.location.href = `/graphs/update/${data.graphId}`;
+      window.location.href = `/graphs/update/${data.graphId}?new=1`;
     } else {
       toast.error('Something went wrong');
     }
@@ -66,7 +62,6 @@ class SelectSquare extends Component {
     const { data } = await Api.dataCopy(singleGraph.id, {
       width, height, x, y,
     });
-    console.log(data);
     localStorage.setItem('label.copy', JSON.stringify(data.data));
   }
 
