@@ -1372,7 +1372,7 @@ class Chart {
         .join('g')
         .attr('class', (d) => {
           const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(d);
-          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder || d.fake ? 'hideInFolder' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
+          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
         })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))

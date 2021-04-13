@@ -1096,6 +1096,11 @@ p {
       display: none;
     }
 
+    &.fakeNode{
+      opacity: 0 !important;
+      display: none;
+    }
+
     &.deleted {
       opacity: 0.5 !important;
       filter: url(#grayscaleFilter);
