@@ -18,8 +18,16 @@ import Select from '../form/Select';
 import Outside from '../Outside';
 import { EXPORT_TYPES } from '../../data/export';
 import { getGraphInfoRequest } from '../../store/actions/graphs';
+import memoizeOne from "memoize-one";
 
 class DataView extends Component {
+  mergeNodes = memoizeOne((nodes, extraNodes) => {
+    let n = Chart.getNodes().filter((d) => !d.sourceId && !d.fake);
+    n.push(...extraNodes);
+    n = _.uniqBy(n, 'id');
+    return n
+  })
+
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
@@ -37,6 +45,7 @@ class DataView extends Component {
 
     this.state = {
       fullWidth: false,
+      extraNodes: [],
       activeTab: {
         group: 'nodes',
         type: nodes[0]?.type || '',
@@ -46,8 +55,17 @@ class DataView extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { graphId } = this.props;
+    const folders = Chart.getLabels().filter((l) => l.type === 'folder');
+
+    let foldersData = [];
+    folders.forEach((f) => {
+      foldersData.push(Api.labelData(graphId, f.id));
+    });
+
+    foldersData = await Promise.all(foldersData);
+    this.setState({ extraNodes: foldersData.map((d) => d.data.label.nodes).flat(1) });
     this.checkAllGrids();
     Chart.resizeSvg();
     this.props.getGraphInfoRequest(graphId);
@@ -180,17 +198,19 @@ class DataView extends Component {
     }
   }
 
-  loadFolderNodes = (folder) => {
-    console.log(folder)
+  loadFolderNodes = async (folder) => {
+    const { graphId } = this.props;
+    const { data } = await Api.labelData(graphId, folder.id).catch((e) => e);
+    console.log(data);
   }
 
   render() {
     const {
-      fullWidth, activeTab, exportType, showExport,
+      fullWidth, activeTab, exportType, showExport, extraNodes,
     } = this.state;
     const { graphInfo } = this.props;
 
-    const nodes = Chart.getNodes().filter((d) => !d.sourceId);
+    const nodes = this.mergeNodes(Chart.getNodes(), extraNodes);
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
 
     const linksGrouped = _.groupBy(links, 'type');

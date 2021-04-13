@@ -6,7 +6,6 @@ import Button from '../form/Button';
 import SaveGraphModal from './SaveGraphModal';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
-import queryString from 'query-string';
 
 class SaveGraph extends Component {
   static propTypes = {
