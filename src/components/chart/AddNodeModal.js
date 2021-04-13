@@ -24,6 +24,7 @@ import markerImg from '../../assets/images/icons/marker.svg';
 import delImg from '../../assets/images/icons/del.gif';
 import showMore from '../../assets/images/icons/showMore.gif';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
+import { updateNodesCustomFieldsRequest } from "../../store/actions/nodes";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -38,7 +39,7 @@ class AddNodeModal extends Component {
     const nodes = Chart.getNodes();
     const {
       fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale,
-      d, infographyId, manually_size,
+      d, infographyId, manually_size, customFields,
     } = _.cloneDeep(addNodeParams);
     const _type = type || _.last(nodes)?.type || '';
     this.setState({
@@ -57,6 +58,7 @@ class AddNodeModal extends Component {
         scale,
         infographyId,
         manually_size: manually_size || 1,
+        customFields,
       },
       nodeId: addNodeParams.id,
       customField,
@@ -122,7 +124,6 @@ class AddNodeModal extends Component {
       }
 
       nodeData.id = nodeId || ChartUtils.uniqueId(nodes);
-
       if (_.isObject(nodeData.icon) && !_.isEmpty(nodeData.icon)) {
         const { data = {} } = await Api.uploadNodeIcon(graphId, nodeData.id, nodeData.icon).catch((d) => d);
         nodeData.icon = data.icon;
@@ -134,8 +135,15 @@ class AddNodeModal extends Component {
       } else {
         nodeData.create = true;
         nodeData.createdAt = moment().unix();
-        nodeData.createdUser = currentUserId;
+        nodeData.createdUser =  currentUserId;
         nodes.push(nodeData);
+
+        if(!_.isEmpty(nodeData.customFields)){
+          this.props.updateNodesCustomFieldsRequest(graphId, [{
+            id: nodeData.id,
+            customFields: nodeData.customFields,
+          }]);
+        }
       }
 
       Chart.render({ nodes });
@@ -227,7 +235,8 @@ class AddNodeModal extends Component {
         onRequestClose={this.closeModal}
       >
         <div className="addNodeContainer containerModal">
-          <Button className="expandButton" icon={expand ? <CompressScreen /> : <FullScreen />} onClick={this.toggleExpand} />
+          <Button className="expandButton" icon={expand ? <CompressScreen /> : <FullScreen />}
+                  onClick={this.toggleExpand} />
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
           <h2>{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
           <form className="form" onSubmit={this.saveNode}>
@@ -322,20 +331,20 @@ class AddNodeModal extends Component {
             ) : null}
             <div className="addLocation" onClick={this.openMap}>+ Add Location</div>
             {openMap && (
-            <MapsLocationPicker
-              onClose={this.toggleMap}
-              value={editLocation != null
-                ? nodeData.location.filter((p, index) => index === editLocation) : nodeData.location}
-              onChange={(v, edit) => this.handleChange('location', v, edit)}
-              edit={Number.isInteger(editLocation) ? editLocation : null}
-            />
+              <MapsLocationPicker
+                onClose={this.toggleMap}
+                value={editLocation != null
+                  ? nodeData.location.filter((p, index) => index === editLocation) : nodeData.location}
+                onChange={(v, edit) => this.handleChange('location', v, edit)}
+                edit={Number.isInteger(editLocation) ? editLocation : null}
+              />
             )}
             <div className="ghFormField locationExpandForm">
               {_.isObject(nodeData?.location) && nodeData?.location?.map((p, index) => (
                 <div className="locForm">
                   <div className="locName">
                     <p title={p.address}>
-                      { p.address && p.address.length > (!expand ? 20 : 37)
+                      {p.address && p.address.length > (!expand ? 20 : 37)
                         ? `${p.address.substr(0, !expand ? 20 : 37)} ...`
                         : p.address}
                     </p>
@@ -361,14 +370,14 @@ class AddNodeModal extends Component {
                 </div>
               )).slice(!expand ? -2 : nodeData.location)}
               {(!expand && (nodeData.location && nodeData.location.length) > 2) && (
-              <div className="showMore" onClick={this.toggleExpand}>
-                <img
-                  src={showMore}
-                  className="locMarker"
-                  alt="marker"
-                />
-              </div>
-              ) }
+                <div className="showMore" onClick={this.toggleExpand}>
+                  <img
+                    src={showMore}
+                    className="locMarker"
+                    alt="marker"
+                  />
+                </div>
+              )}
             </div>
             <div className="footerButtons">
               <div className="buttons">
@@ -396,6 +405,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   toggleNodeModal,
+  updateNodesCustomFieldsRequest,
 };
 
 const Container = connect(

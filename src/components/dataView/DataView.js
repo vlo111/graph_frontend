@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import memoizeOne from 'memoize-one';
 import { setActiveButton, setGridIndexes, setLoading } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
@@ -18,15 +19,19 @@ import Select from '../form/Select';
 import Outside from '../Outside';
 import { EXPORT_TYPES } from '../../data/export';
 import { getGraphInfoRequest } from '../../store/actions/graphs';
-import memoizeOne from "memoize-one";
 
 class DataView extends Component {
   mergeNodes = memoizeOne((nodes, extraNodes) => {
     let n = Chart.getNodes().filter((d) => !d.sourceId && !d.fake);
     n.push(...extraNodes);
     n = _.uniqBy(n, 'id');
-    return n
-  })
+    return n;
+  }, _.isEqual)
+
+  mergeLinks = memoizeOne((links, extraLinks, nodes) => {
+    const l = ChartUtils.cleanLinks([...Chart.getLinks(), ...extraLinks], nodes);
+    return ChartUtils.uniqueLinks(l);
+  }, _.isEqual)
 
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -46,6 +51,7 @@ class DataView extends Component {
     this.state = {
       fullWidth: false,
       extraNodes: [],
+      extraLinks: [],
       activeTab: {
         group: 'nodes',
         type: nodes[0]?.type || '',
@@ -65,7 +71,10 @@ class DataView extends Component {
     });
 
     foldersData = await Promise.all(foldersData);
-    this.setState({ extraNodes: foldersData.map((d) => d.data.label.nodes).flat(1) });
+    this.setState({
+      extraNodes: foldersData.map((d) => d.data.label.nodes).flat(1),
+      extraLinks: foldersData.map((d) => d.data.label.links).flat(1),
+    });
     this.checkAllGrids();
     Chart.resizeSvg();
     this.props.getGraphInfoRequest(graphId);
@@ -113,10 +122,10 @@ class DataView extends Component {
   }
 
   export = async (type) => {
-    const { extraNodes } = this.state;
+    const { extraNodes, extraLinks } = this.state;
     const { selectedGrid, customFields } = this.props;
     let nodes = this.mergeNodes(Chart.getNodes(), extraNodes).filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
-    const links = Chart.getLinks().filter((d) => ChartUtils.isCheckedLink(selectedGrid, d));
+    const links = this.mergeLinks(Chart.getLinks(), extraLinks, nodes).filter((d) => ChartUtils.isCheckedLink(selectedGrid, d));
     const labels = Chart.getLabels(); // todo filter empty labels
 
     const icons = await Promise.all(nodes.map((d) => {
@@ -207,12 +216,12 @@ class DataView extends Component {
 
   render() {
     const {
-      fullWidth, activeTab, exportType, showExport, extraNodes,
+      fullWidth, activeTab, exportType, showExport, extraNodes, extraLinks,
     } = this.state;
     const { graphInfo } = this.props;
 
     const nodes = this.mergeNodes(Chart.getNodes(), extraNodes);
-    const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
+    const links = this.mergeLinks(Chart.getLinks(), extraLinks, nodes);
 
     const linksGrouped = _.groupBy(links, 'type');
     const nodesGrouped = _.groupBy(nodes, 'type');

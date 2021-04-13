@@ -26,7 +26,7 @@ class MapsLocationPicker extends Component {
   }
 
   initPosition = memoizeOne((value) => {
-    if (_.isObject(value) && value?.length) { 
+    if (_.isObject(value) && value?.length) {
       const { lat, lng } = value[0].location;
       const { selected: { location } } = this.state;
       if (location?.lat !== lat || location?.lat !== lng) {
