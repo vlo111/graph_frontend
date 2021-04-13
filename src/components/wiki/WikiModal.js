@@ -107,9 +107,8 @@ class WikiModal extends Component {
 
       const wikiImageData = await Utils.getWikiImage(firstImageUrl);
 
-      const customField = {};
 
-      customField.About = `<div>
+      const abount = `<div>
 <strong class="tabHeader">About</strong><br>
 <br>${wikiContentData}<br>
 <a href="https://en.wikipedia.org/wiki/${name}" target="_blank">
@@ -127,12 +126,15 @@ https://en.wikipedia.org/wiki/${name}
         type: 'wikipedia',
         description: desc,
         icon: wikiImageData,
-        customField,
+        customFields: [{
+          name: 'About',
+          subtitle: '',
+          value: abount,
+        }],
       });
     }
 
     checkedWiki = (param) => {
-
       this.setState({
         getChecked: param,
       });

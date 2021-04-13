@@ -24,7 +24,7 @@ import markerImg from '../../assets/images/icons/marker.svg';
 import delImg from '../../assets/images/icons/del.gif';
 import showMore from '../../assets/images/icons/showMore.gif';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
-import { updateNodesCustomFieldsRequest } from "../../store/actions/nodes";
+import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -135,10 +135,10 @@ class AddNodeModal extends Component {
       } else {
         nodeData.create = true;
         nodeData.createdAt = moment().unix();
-        nodeData.createdUser =  currentUserId;
+        nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
 
-        if(!_.isEmpty(nodeData.customFields)){
+        if (!_.isEmpty(nodeData.customFields)) {
           this.props.updateNodesCustomFieldsRequest(graphId, [{
             id: nodeData.id,
             customFields: nodeData.customFields,
@@ -235,8 +235,11 @@ class AddNodeModal extends Component {
         onRequestClose={this.closeModal}
       >
         <div className="addNodeContainer containerModal">
-          <Button className="expandButton" icon={expand ? <CompressScreen /> : <FullScreen />}
-                  onClick={this.toggleExpand} />
+          <Button
+            className="expandButton"
+            icon={expand ? <CompressScreen /> : <FullScreen />}
+            onClick={this.toggleExpand}
+          />
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
           <h2>{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
           <form className="form" onSubmit={this.saveNode}>
