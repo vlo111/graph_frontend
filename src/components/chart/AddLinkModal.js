@@ -102,8 +102,11 @@ class AddLinkModal extends Component {
           }
           return d;
         });
+        linkData.update = true;
         // this.props.updateLinksRequest(graphId, [linkData]);
       } else {
+        linkData.create = true;
+
         linkData.createdAt = moment().unix();
         linkData.createdUser = currentUserId;
         linkData.id = linkData.id || ChartUtils.uniqueId(links);
