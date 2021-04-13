@@ -340,7 +340,7 @@ class AddNodeModal extends Component {
               />
             )}
             <div className="ghFormField locationExpandForm">
-              {_.isObject(nodeData?.location) && nodeData?.location?.map((p, index) => (
+              {_.isObject(nodeData?.location) && nodeData.location.map((p, index) => (
                 <div className="locForm">
                   <div className="locName">
                     <p title={p.address}>
