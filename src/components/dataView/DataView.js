@@ -113,8 +113,9 @@ class DataView extends Component {
   }
 
   export = async (type) => {
+    const { extraNodes } = this.state;
     const { selectedGrid, customFields } = this.props;
-    let nodes = _.clone(Chart.getNodes()).filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
+    let nodes = this.mergeNodes(Chart.getNodes(), extraNodes).filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
     const links = Chart.getLinks().filter((d) => ChartUtils.isCheckedLink(selectedGrid, d));
     const labels = Chart.getLabels(); // todo filter empty labels
 
