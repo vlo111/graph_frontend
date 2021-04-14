@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Chart from '../Chart';
 import { updateGraphThumbnailRequest } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
@@ -118,7 +119,11 @@ class AutoSave extends Component {
         if (oldNode.create) {
           createNodes.push(node);
         } else if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
-          updateNodePositions.push(node);
+          updateNodePositions.push({
+            id: node.id,
+            fx: node.fx,
+            fy: node.fy,
+          });
         } else if (!_.isEqual(this.formatNode(node), this.formatNode(oldNode))) {
           updateNodes.push(node);
         }
@@ -197,7 +202,13 @@ class AutoSave extends Component {
     if (deleteLabels.length) {
       promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
-    await Promise.all(promise);
+    const res = await Promise.all(promise);
+    res.forEach((d) => {
+      if (d.payload.data.status !== 'ok') {
+        console.log(d.payload.data)
+        toast.error('Graph save error');
+      }
+    });
     document.body.classList.remove('autoSave');
   }
 
