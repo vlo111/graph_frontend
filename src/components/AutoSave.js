@@ -203,12 +203,11 @@ class AutoSave extends Component {
       promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
     const res = await Promise.all(promise);
-    res.forEach((d) => {
-      if (d.payload.data.status !== 'ok') {
-        console.log(d.payload.data)
-        toast.error('Graph save error');
-      }
-    });
+    // res.forEach((d) => {
+    //   if (d.payload.data.status !== 'ok') {
+    //     toast.error('Graph save error');
+    //   }
+    // });
     document.body.classList.remove('autoSave');
   }
 
