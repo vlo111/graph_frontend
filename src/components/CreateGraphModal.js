@@ -80,6 +80,7 @@ class CreateGraphModal extends Component {
             label="Title"
             value={requestData.title}
             onChangeText={(v) => this.handleChange('title', v)}
+            autoComplete="off"
           />
           <Input
             label="Description"
