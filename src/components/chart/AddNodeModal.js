@@ -264,6 +264,7 @@ class AddNodeModal extends Component {
               limit={250}
               autoFocus
               onChangeText={(v) => this.handleChange('name', v)}
+              autoComplete="off"
             />
             <Select
               label="Status"
