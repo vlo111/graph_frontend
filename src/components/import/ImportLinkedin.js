@@ -47,7 +47,6 @@ class DataImportModal extends Component {
     const x = window.innerWidth / 2;
     const y = window.innerHeight / 2;
     const { x: fx, y: fy } = ChartUtils.calcScaledPosition(x, y);
-    const customField = {};
 
     await Promise.all(node.education.map(async (p) => {
       const url = Utils.wikiContentUrlByName(p.institution);
@@ -60,19 +59,33 @@ class DataImportModal extends Component {
       return p;
     }));
 
+    const customFields = [];
+
     const experience = ReactDOMServer.renderToString(<ImportLinkedinCustomField type="experience" data={node} />);
     if (experience) {
-      customField.Experience = experience;
+      customFields.push({
+        name: 'Experience',
+        subtitle: '',
+        value: experience,
+      });
     }
 
     const education = ReactDOMServer.renderToString(<ImportLinkedinCustomField type="education" data={node} />);
     if (education) {
-      customField.Education = education;
+      customFields.push({
+        name: 'Education',
+        subtitle: '',
+        value: education,
+      });
     }
 
     const skills = ReactDOMServer.renderToString(<ImportLinkedinCustomField type="skills" data={node} />);
     if (skills) {
-      customField.Skills = skills;
+      customFields.push({
+        name: 'Skills',
+        subtitle: '',
+        value: skills,
+      });
     }
     this.props.toggleNodeModal({
       fx,
@@ -80,7 +93,7 @@ class DataImportModal extends Component {
       name: node.name,
       type: node.type,
       description: node.summary,
-      customField,
+      customFields,
     });
     this.setState({ loading: false });
   }
