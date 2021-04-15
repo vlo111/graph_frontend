@@ -337,12 +337,18 @@ class ChartUtils {
 
   static labelColorsArr = _.clone(LINK_COLORS);
 
+  static labelColorsObj = {};
+
   static labelColors = (d = {}) => {
     if (d.color) {
       this.labelColorsArr = this.labelColorsArr.filter((c) => d.color !== c);
       return d.color;
     }
-    return this.labelColorsArr.shift() || randomColor({ luminosity: 'light' });
+    if (!this.labelColorsObj[d.id]) {
+      this.labelColorsObj[d.id] = this.labelColorsArr.shift() || randomColor({ luminosity: 'light' });
+    }
+
+    return this.labelColorsObj[d.id];
   }
 
   static resetColors() {
@@ -351,6 +357,7 @@ class ChartUtils {
     this.linkColorArr = _.clone(LINK_COLORS);
     this.nodeColorsArr = _.clone(NODE_COLOR);
     this.labelColorsArr = _.clone(LINK_COLORS);
+    this.labelColorsObj = {};
   }
 
   static setClass = (fn) => (d, index, g) => {

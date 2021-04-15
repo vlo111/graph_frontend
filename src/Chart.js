@@ -1122,11 +1122,12 @@ class Chart {
         return;
       }
       if (this.activeButton === 'create-label') {
+        const id = ChartUtils.uniqueId(this.data.labels);
         activeLine = labelsWrapper.append('path')
           .datum({
-            id: ChartUtils.uniqueId(this.data.labels),
+            id,
             name: '',
-            color: ChartUtils.labelColors(),
+            color: ChartUtils.labelColors({ id }),
             d: [],
           })
           .attr('fill-rule', 'evenodd')

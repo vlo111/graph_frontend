@@ -44,9 +44,10 @@ class AddLabelModal extends Component {
   handleFolderCrate = (ev, d) => {
     const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
     const labels = Chart.getLabels();
+    const id = `f_${ChartUtils.uniqueId(labels)}`;
     const labelData = {
-      id: `f_${ChartUtils.uniqueId(labels)}`,
-      color: ChartUtils.labelColors(),
+      id,
+      color: ChartUtils.labelColors({ id }),
       d: [[x, y], [500, 500]],
       name: '',
       type: 'folder',
@@ -81,10 +82,10 @@ class AddLabelModal extends Component {
     if (height < 200) height = 200;
     x += width / 2;
     y += height / 2;
-
+    const id = `f_${ChartUtils.uniqueId(labels)}`;
     const labelData = {
-      id: `f_${ChartUtils.uniqueId(labels)}`,
-      color: ChartUtils.labelColors(),
+      id,
+      color: ChartUtils.labelColors({ id }),
       d: [[x, y], [width, height]],
       name: '',
       type: 'folder',
