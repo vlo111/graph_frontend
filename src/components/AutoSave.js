@@ -147,7 +147,6 @@ class AutoSave extends Component {
     const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
     const createLabels = _.differenceBy(labels, oldLabels, 'id');
     const updateLabels = [];
-
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
@@ -160,7 +159,7 @@ class AutoSave extends Component {
         }
       }
     });
-    if (deleteNodes.length === nodes.length) {
+    if (deleteNodes.length && deleteNodes.length === nodes.length) {
       document.body.classList.remove('autoSave');
       return;
     }
