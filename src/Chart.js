@@ -720,6 +720,7 @@ class Chart {
   static renderFolders() {
     const dragFolder = {};
 
+    let isFolderDraged = false;
     const handleDragStart = (ev) => {
       const { target } = ev.sourceEvent;
       let element = target.closest('.folder');
@@ -740,7 +741,7 @@ class Chart {
       if (!dragFolder.folder || dragFolder.folder.empty()) {
         return;
       }
-
+      isFolderDraged = ev.dx !== 0 || ev.dy !== 0;
       const datum = dragFolder.folder.datum();
       if (dragFolder.rsize) {
         if (!datum.d[1]) {
@@ -783,7 +784,6 @@ class Chart {
         this.event.emit('label.dragend', ev, d);
         return;
       }
-
       datum.d[0][0] = +(datum.d[0][0] + ev.dx).toFixed(2);
       datum.d[0][1] = +(datum.d[0][1] + ev.dy).toFixed(2);
 
@@ -828,7 +828,10 @@ class Chart {
     const handleDragEnd = (ev) => {
       dragFolder.resize = false;
       dragFolder.folder = null;
-      this.event.emit('square.dragend', ev);
+      if (isFolderDraged) {
+        console.log(1111111)
+        this.event.emit('square.dragend', ev);
+      }
     };
     const folderWrapper = d3.selectAll('#graph .folders')
       .call(d3.drag()
