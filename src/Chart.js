@@ -867,13 +867,13 @@ class Chart {
       this.wrapper.select(`[href="#${d.id}"]`).attr('class', 'show');
       folderWrapper.select(`[data-id="${d.id}"]`).attr('class', 'folder folderClose');
 
-      this.link.filter((n) => {
-        if (n.source.labels.includes(d.id) && n.target.labels.includes(d.id)) {
-          return true;
-        }
-
-        return false;
-      }).style('display', 'none');
+      // this.link.filter((n) => {
+      //   if (n.source.labels.includes(d.id) && n.target.labels.includes(d.id)) {
+      //     return true;
+      //   }
+      //
+      //   return false;
+      // }).style('display', 'none');
 
       this.node
         .filter((n) => {
@@ -918,13 +918,13 @@ class Chart {
         const moveX = (width / 2) + 50;
         const moveY = (height / 2) + 50;
 
-        this.link.filter((n) => {
-          if (n.source.labels.includes(d.id) && n.target.labels.includes(d.id)) {
-            return true;
-          }
-
-          return false;
-        }).style('display', 'inherit');
+        // this.link.filter((n) => {
+        //   if (n.source.labels.includes(d.id) && n.target.labels.includes(d.id)) {
+        //     return true;
+        //   }
+        //
+        //   return false;
+        // }).style('display', 'inherit');
 
         // todo optimize
         this.node.each((n, i, nodesArr) => {
