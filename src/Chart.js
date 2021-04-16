@@ -2381,10 +2381,10 @@ class Chart {
         return {
           id: d.id || ChartUtils.uniqueId(this.data.links), // todo
           index: d.index,
-          sx: d.sx,
-          sy: d.sy,
-          tx: d.tx,
-          ty: d.ty,
+          sx: d.linkType === 'a1' ? d.sx : undefined,
+          sy: d.linkType === 'a1' ? d.sy : undefined,
+          tx: d.linkType === 'a1' ? d.tx : undefined,
+          ty: d.linkType === 'a1' ? d.ty : undefined,
           source: Chart.getSource(pd) || Chart.getSource(d) || '',
           target: Chart.getTarget(pd) || Chart.getTarget(d) || '',
           _source: d._source,

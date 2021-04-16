@@ -123,7 +123,7 @@ class AutoSave extends Component {
             id: node.id,
             fx: node.fx,
             fy: node.fy,
-            labels: node.labels
+            labels: node.labels,
           });
         } else if (!_.isEqual(this.formatNode(node), this.formatNode(oldNode))) {
           updateNodes.push(node);
