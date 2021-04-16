@@ -720,7 +720,6 @@ class Chart {
   static renderFolders() {
     const dragFolder = {};
 
-    let isFolderDraged = false;
     const handleDragStart = (ev) => {
       const { target } = ev.sourceEvent;
       let element = target.closest('.folder');
@@ -735,13 +734,15 @@ class Chart {
         dragFolder.rsize = target.classList.contains('folderResizeIcon');
         dragFolder.nodes = this.getNotesWithLabels().filter((d) => d.labels.includes(id));
         dragFolder.labelLock = this.wrapper.select(`use[data-label-id="${id}"]`);
+        dragFolder.move = [0, 0];
       }
     };
     const handleDrag = (ev, d) => {
       if (!dragFolder.folder || dragFolder.folder.empty()) {
         return;
       }
-      isFolderDraged = ev.dx !== 0 || ev.dy !== 0;
+      dragFolder.move[0] += ev.dx;
+      dragFolder.move[1] += ev.dy;
       const datum = dragFolder.folder.datum();
       if (dragFolder.rsize) {
         if (!datum.d[1]) {
@@ -826,12 +827,12 @@ class Chart {
       this.graphMovement();
     };
     const handleDragEnd = (ev) => {
-      dragFolder.resize = false;
-      dragFolder.folder = null;
-      if (isFolderDraged) {
-        console.log(1111111)
+      if (+dragFolder.move[0].toFixed(3) || +dragFolder.move[1].toFixed(3)) {
         this.event.emit('square.dragend', ev);
       }
+      dragFolder.resize = false;
+      dragFolder.folder = null;
+      dragFolder.move = [0, 0];
     };
     const folderWrapper = d3.selectAll('#graph .folders')
       .call(d3.drag()
