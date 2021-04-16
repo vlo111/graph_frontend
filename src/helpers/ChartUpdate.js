@@ -69,7 +69,7 @@ class ChartUpdate {
   }
 
   static linkDelete = (linksDelete) => {
-    const links = Chart.getNodes().filter((n) => !linksDelete.some((d) => n.id === d.id));
+    const links = Chart.getLinks().filter((n) => !linksDelete.some((d) => n.id === d.id));
     Chart.render({ links }, { ignoreAutoSave: false });
   }
 
