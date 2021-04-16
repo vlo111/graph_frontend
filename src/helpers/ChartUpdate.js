@@ -26,13 +26,13 @@ class ChartUpdate {
   }
 
   static nodesDelete = (nodesDelete) => {
-    const nodes = Chart.getNodes().filter((n) => !nodesDelete.some((d) => n.id === d.id));
+    const nodes = Chart.getNodes().filter((n) => !nodesDelete?.some((d) => n.id === d.id));
     Chart.render({ nodes }, { ignoreAutoSave: false });
   }
 
   static nodesUpdate = (nodesUpdate) => {
     const nodes = Chart.getNodes().map((d) => {
-      const node = nodesUpdate.find((n) => n.id === d.id);
+      const node = nodesUpdate?.find((n) => n.id === d.id);
       if (node) {
         return { ...d, ...node };
       }
