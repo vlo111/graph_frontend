@@ -21,6 +21,7 @@ import ToolBarHeader from '../components/ToolBarHeader';
 import AnalysisUtils from '../helpers/AnalysisUtils';
 import Chart from '../Chart';
 import AnalyticalTab from '../components/Analysis/AnalyticalTab';
+import ChartUtils from '../helpers/ChartUtils';
 
 class GraphView extends Component {
   static propTypes = {
@@ -99,10 +100,13 @@ class GraphView extends Component {
         });
 
         // shortestLinks = originalListPath;
+        listNodes.map((p) => shortestNodes.push(nodes.filter((n) => n.id === p)[0]));
 
-        shortestNodes = nodes.filter((p) => listNodes.includes(p.id));
+        shortestNodes = shortestNodes.reverse();
 
         Chart.showPath(originalListPath, listNodes);
+
+        // ChartUtils.findNodeInDom(shortestNodes[0]);
       }
     }
     this.getSingleRequest(pathname);

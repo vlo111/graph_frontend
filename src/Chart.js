@@ -836,6 +836,7 @@ class Chart {
       this.graphMovement();
     };
     const handleDragEnd = (ev) => {
+      if (this.nodesPath) return;
       if (+dragFolder.move[0].toFixed(3) || +dragFolder.move[1].toFixed(3)) {
         this.event.emit('square.dragend', ev);
       }
@@ -910,6 +911,7 @@ class Chart {
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
       .on('dblclick', (ev, d) => {
+        if (this.nodesPath) return;
         if (d.open) {
           return;
         }
@@ -1110,7 +1112,7 @@ class Chart {
       .append('text')
       .attr('class', 'folderBadge')
 
-      .text((d) => d.nodes.length)
+      .text((d) => d.nodes.length);
 
     this.folders.append('text')
       .text((d) => d.name)
@@ -1699,10 +1701,8 @@ class Chart {
         this.squareData.nodes = allNodes
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
         this.squareData.labels = this.getLabels()
-          .filter((l) => {
-            return (l.type === 'folder' && !l.open && this.squareData.nodes.some(n => n.labels.includes(l.id)))
-              || this.squareData.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length;
-          })
+          .filter((l) => (l.type === 'folder' && !l.open && this.squareData.nodes.some((n) => n.labels.includes(l.id)))
+              || this.squareData.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
           .map((l) => l.id);
         this.squareData.nodes = this.squareData.nodes.map((d) => d.id);
         this.squareData.width = width;
