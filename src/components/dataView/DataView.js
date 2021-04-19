@@ -229,10 +229,12 @@ class DataView extends Component {
 
     if (links.length) {
       if (activeTab.group === 'links') {
-        color = links.find((p) => p.type === activeTab.type).color;
+        color = links.find((p) => p.type === activeTab.type)?.color;
       } else if (activeTab.group === 'nodes') {
-        color = nodes.find((p) => p.type === activeTab.type).color;
-      } else color = '';
+        color = nodes.find((p) => p.type === activeTab.type)?.color;
+      } else {
+        color = '';
+      }
     }
     return (
       <div id="dataTable" className={fullWidth ? 'fullWidth' : undefined}>
