@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Prompt } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
@@ -18,6 +18,9 @@ import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
+import AnalysisUtils from '../helpers/AnalysisUtils';
+import Chart from '../Chart';
+import AnalyticalTab from '../components/Analysis/AnalyticalTab';
 
 class GraphView extends Component {
   static propTypes = {
@@ -32,12 +35,7 @@ class GraphView extends Component {
     location: PropTypes.object.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      openShareModal: false,
-    };
-  }
+  preventReload = true;
 
   getSingleRequest = memoizeOne(() => {
     const { match: { params: { graphId } } } = this.props;
@@ -63,63 +61,110 @@ class GraphView extends Component {
       this.setState({ openShareModal: true });
     }
   }
+  
+  handleRouteChange = () => {
+    Chart.nodesPath = false;
+    Chart.clearLinkShortestPath();
+  }
 
   render() {
     const {
       singleGraph, singleGraphStatus, graphInfo,
-      location: { pathname }, match: { params: { graphId = '' } },
+      location: { pathname, search }, match: { params: { graphId = '' } },
     } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
+
+    let shortestNodes = [];
+    // let shortestLinks = [];
+
+    // view the shortest path to the analysis field
+    if (search.includes('nodeStart=')) {
+      const { nodes, links } = singleGraph;
+
+      if (nodes?.length && links?.length) {
+        const start = search.substring(search.indexOf('nodeStart=') + 10, search.indexOf('nodeEnd='));
+        const end = search.substring(search.indexOf('nodeEnd=') + 8, search.length);
+
+        const { listNodes, listLinks } = AnalysisUtils.getShortestPath(start, end, nodes, links);
+
+        const originalListPath = links.filter((p) => {
+          let listChack = false;
+          listLinks.forEach((l) => {
+            if ((l.source === p.source || l.target === p.source)
+                && (l.source === p.target || l.target === p.target)) {
+              listChack = true;
+            }
+          });
+          return listChack;
+        });
+
+        // shortestLinks = originalListPath;
+
+        shortestNodes = nodes.filter((p) => listNodes.includes(p.id));
+
+        Chart.showPath(originalListPath, listNodes);
+      }
+    }
     this.getSingleRequest(pathname);
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
           <ReactChart />
         </div>
-        {preview && singleGraphStatus === 'success' ? (
-          <div className="graphPreview">
-            <h1 className="title">{singleGraph.title}</h1>
-            <p className="description">
-              {singleGraph.description}
-            </p>
+        <Prompt
+          when={this.preventReload}
+          message={this.handleRouteChange}
+        />
+        {search.includes('nodeStart=')
+          ? <AnalyticalTab nodes={shortestNodes} />
+          : (
             <div>
-              <strong>{'Nodes: '}</strong>
-              {graphInfo.totalNodes}
-            </div>
-            <div>
-              <strong>{'Links: '}</strong>
-              {graphInfo.totalLinks}
-            </div>
-            <div>
-              <strong>{'Views: '}</strong>
-              {singleGraph.views}
-            </div>
-            <Link className="ghButton view" to={`/graphs/view/${graphId}`} replace>
-              View Graph
-            </Link>
-          </div>
-        ) : (
-          <>
+              {preview && singleGraphStatus === 'success' ? (
+                <div className="graphPreview">
+                  <h1 className="title">{singleGraph.title}</h1>
+                  <p className="description">
+                    {singleGraph.description}
+                  </p>
+                  <div>
+                    <strong>{'Nodes: '}</strong>
+                    {graphInfo.totalNodes}
+                  </div>
+                  <div>
+                    <strong>{'Links: '}</strong>
+                    {graphInfo.totalLinks}
+                  </div>
+                  <div>
+                    <strong>{'Views: '}</strong>
+                    {singleGraph.views}
+                  </div>
+                  <Link className="ghButton view" to={`/graphs/view/${graphId}`} replace>
+                    View Graph
+                  </Link>
+                </div>
+              ) : (
+                <>
 
-            {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
-              <Link to={`/graphs/update/${graphId}`}>
-                <Tooltip overlay="Update">
-                  <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
-                </Tooltip>
-              </Link>
-            )}
-            <NodeDescription />
-            <Link to="/">
-              <Tooltip overlay="Back">
-                <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
-              </Tooltip>
-            </Link>
-          </>
-        )}
-        <ToolBarHeader />
-        <NodeFullInfo editable={false} />
-        <LabelTooltip />
-        <Filters />
+                  {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
+                    <Link to={`/graphs/update/${graphId}`}>
+                      <Tooltip overlay="Update">
+                        <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
+                      </Tooltip>
+                    </Link>
+                  )}
+                  <NodeDescription />
+                  <Link to="/">
+                    <Tooltip overlay="Back">
+                      <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
+                    </Tooltip>
+                  </Link>
+                </>
+              )}
+              <ToolBarHeader />
+              <NodeFullInfo editable={false} />
+              <LabelTooltip />
+              <Filters />
+            </div>
+          )}
       </Wrapper>
     );
   }
