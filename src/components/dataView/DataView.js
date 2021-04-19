@@ -220,8 +220,8 @@ class DataView extends Component {
     } = this.state;
     const { graphInfo } = this.props;
 
-    const nodes = this.mergeNodes(Chart.getNodes(), extraNodes);
-    const links = this.mergeLinks(Chart.getLinks(), extraLinks, nodes);
+    const nodes = this.mergeNodes(Chart.getNodes().filter(d => !d.fake), extraNodes);
+    const links = this.mergeLinks(Chart.getLinks().filter(d => !d.fake), extraLinks, nodes);
 
     const linksGrouped = _.groupBy(links, 'type');
     const nodesGrouped = _.groupBy(nodes, 'type');
