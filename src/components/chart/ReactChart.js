@@ -76,6 +76,7 @@ class ReactChart extends Component {
 
   handleFolderOpen = async (ev, d) => {
     const { match: { params: { graphId } } } = this.props;
+    Chart.loading(true);
     const { data } = await Api.labelData(graphId, d.id);
     const nodes = Chart.getNodes();
     nodes.push(...data.label.nodes);
@@ -104,13 +105,14 @@ class ReactChart extends Component {
     });
     links = ChartUtils.uniqueLinks(links);
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
+    Chart.loading(false);
   }
 
   handleFolderClose = async (ev, d) => {
     const fakeId = `fake_${d.id}`;
 
     const nodes = Chart.getNodes().filter((n) => n.fake || !n.labels.includes(d.id));
-    console.log(nodes, Chart.getLinks())
+    console.log(nodes, Chart.getLinks());
     const links = Chart.getLinks().map((l) => {
       if (d.nodes) {
         if (d.nodes.includes(l.source)) {
@@ -123,7 +125,7 @@ class ReactChart extends Component {
       }
       return l;
     });
-    console.log(1, links)
+    console.log(1, links);
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
   }
 
@@ -259,6 +261,9 @@ class ReactChart extends Component {
         data-ctrl={ctrlPress}
         className={activeButton}
       >
+        <div className="loading">
+          {_.range(0, 4).map((k) => <div key={k} />)}
+        </div>
         <div className="borderCircle">
           {_.range(0, 6).map((k) => <div key={k} />)}
         </div>

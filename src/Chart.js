@@ -20,6 +20,15 @@ class Chart {
 
   static tPos;
 
+  static loading = (show) => {
+    const loading = document.querySelector('#graph .loading');
+    if (show) {
+      loading.classList.add('show');
+    } else {
+      loading.classList.remove('show');
+    }
+  }
+
   // gets the passed d3 element center coordinates
   static getElementCenter() {
     const uCords = SvgService.getImageUpdatedCoordinates();
@@ -1101,7 +1110,7 @@ class Chart {
       .append('text')
       .attr('class', 'folderBadge')
 
-      .text((d) => d.nodes.length)
+      .text((d) => d.nodes.length);
 
     this.folders.append('text')
       .text((d) => d.name)
@@ -1681,10 +1690,8 @@ class Chart {
         this.squareData.nodes = allNodes
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
         this.squareData.labels = this.getLabels()
-          .filter((l) => {
-            return (l.type === 'folder' && !l.open && this.squareData.nodes.some(n => n.labels.includes(l.id)))
-              || this.squareData.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length;
-          })
+          .filter((l) => (l.type === 'folder' && !l.open && this.squareData.nodes.some((n) => n.labels.includes(l.id)))
+              || this.squareData.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
           .map((l) => l.id);
         this.squareData.nodes = this.squareData.nodes.map((d) => d.id);
         this.squareData.width = width;
