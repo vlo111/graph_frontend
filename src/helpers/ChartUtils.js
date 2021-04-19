@@ -844,9 +844,8 @@ class ChartUtils {
         nodes.push(node2);
       }
     });
-
-    const labels = [...graph1.labels, ...graph2.labels.filter((l) => nodes.labels.includes(l.id))];
-
+    const labels = [...graph1.labels, ...graph2.labels];
+    console.log(labels)
     links = ChartUtils.uniqueLinks(links).map((l) => {
       delete l.color;
       return l;

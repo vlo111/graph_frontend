@@ -88,15 +88,13 @@ class AutoSave extends Component {
   })
 
   formatLink = (d) => ({
-    id: d.id || '', // todo
-    sx: d.linkType === 'a1' ? d.sx : undefined,
-    sy: d.linkType === 'a1' ? d.sy : undefined,
-    tx: d.linkType === 'a1' ? d.tx : undefined,
-    ty: d.linkType === 'a1' ? d.ty : undefined,
+    id: d.id || '',
+    sx: d.linkType === 'a1' ? d.sx : '',
+    sy: d.linkType === 'a1' ? d.sy : '',
+    tx: d.linkType === 'a1' ? d.tx : '',
+    ty: d.linkType === 'a1' ? d.ty : '',
     source: d.source,
     target: d.target,
-    _source: d._source,
-    _target: d._target,
     value: +d.value || 1,
     linkType: d.linkType || '',
     type: d.type || '',
@@ -140,8 +138,8 @@ class AutoSave extends Component {
     nodes.forEach((node) => {
       const oldNode = oldNodes.find((n) => n.id === node.id);
       if (oldNode) {
-        // if (node.import || oldNode.create) {
-        if (oldNode.create) {
+        if (node.import || oldNode.create) {
+        // if (oldNode.create) {
           createNodes.push(node);
         } else if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
           updateNodePositions.push({
