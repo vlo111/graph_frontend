@@ -21,16 +21,30 @@ import { EXPORT_TYPES } from '../../data/export';
 import { getGraphInfoRequest } from '../../store/actions/graphs';
 
 class DataView extends Component {
-  mergeNodes = memoizeOne((nodes, extraNodes) => {
-    let n = Chart.getNodes().filter((d) => !d.sourceId && !d.fake);
-    n.push(...extraNodes);
-    n = _.uniqBy(n, 'id');
+  mergeNodes = memoizeOne((nodes, extraNodes, selectedGrid) => {
+    let n = [...nodes];
+    if (extraNodes) {
+      n.push(extraNodes);
+    }
+    n = _.uniqBy(n, 'id').filter((d) => !d.sourceId && !d.fake);
+
+    if (extraNodes && _.isEmpty(selectedGrid.nodes)) {
+      this.props.setGridIndexes('nodes', _.range(n.length));
+    }
+
     return n;
   }, _.isEqual)
 
-  mergeLinks = memoizeOne((links, extraLinks, nodes) => {
-    const l = ChartUtils.cleanLinks([...Chart.getLinks(), ...extraLinks], nodes);
-    return ChartUtils.uniqueLinks(l);
+  mergeLinks = memoizeOne((links, extraLinks, nodes, selectedGrid) => {
+    let l = [...links];
+    if (extraLinks) {
+      l.push(extraLinks);
+    }
+    l = ChartUtils.cleanLinks(ChartUtils.uniqueLinks(l), nodes).filter((d) => !d.sourceId && !d.fake);
+    if (extraLinks && _.isEmpty(selectedGrid.nodes)) {
+      this.props.setGridIndexes('links', _.range(l.length));
+    }
+    return l;
   }, _.isEqual)
 
   static propTypes = {
@@ -50,8 +64,8 @@ class DataView extends Component {
 
     this.state = {
       fullWidth: false,
-      extraNodes: [],
-      extraLinks: [],
+      extraNodes: null,
+      extraLinks: null,
       activeTab: {
         group: 'nodes',
         type: nodes[0]?.type || '',
@@ -75,7 +89,7 @@ class DataView extends Component {
       extraNodes: foldersData.map((d) => d.data.label.nodes).flat(1),
       extraLinks: foldersData.map((d) => d.data.label.links).flat(1),
     });
-    this.checkAllGrids();
+    // this.checkAllGrids();
     Chart.resizeSvg();
     this.props.getGraphInfoRequest(graphId);
   }
@@ -127,7 +141,6 @@ class DataView extends Component {
     let nodes = this.mergeNodes(Chart.getNodes(), extraNodes).filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
     const links = this.mergeLinks(Chart.getLinks(), extraLinks, nodes).filter((d) => ChartUtils.isCheckedLink(selectedGrid, d));
     const labels = Chart.getLabels(); // todo filter empty labels
-
     const icons = await Promise.all(nodes.map((d) => {
       if (d.icon && d.icon.startsWith('blob:')) {
         return Utils.blobToBase64(d.icon);
@@ -218,13 +231,16 @@ class DataView extends Component {
     const {
       fullWidth, activeTab, exportType, showExport, extraNodes, extraLinks,
     } = this.state;
-    const { graphInfo } = this.props;
 
-    const nodes = this.mergeNodes(Chart.getNodes().filter(d => !d.fake), extraNodes);
-    const links = this.mergeLinks(Chart.getLinks().filter(d => !d.fake), extraLinks, nodes);
+    const { graphInfo, selectedGrid } = this.props;
+
+    const nodes = this.mergeNodes(Chart.getNodes(), extraNodes, selectedGrid);
+    const links = this.mergeLinks(Chart.getLinks(), extraLinks, nodes, selectedGrid);
 
     const linksGrouped = _.groupBy(links, 'type');
+    delete linksGrouped.undefined;
     const nodesGrouped = _.groupBy(nodes, 'type');
+    delete nodesGrouped.undefined;
     let color = '';
 
     if (links.length) {
