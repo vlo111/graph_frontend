@@ -841,10 +841,9 @@ class Chart {
 
       this._dataNodes = undefined;
       this.undoManager.push(this.getData());
-      // this.event.emit('label.dragend', ev, d);
       this.graphMovement();
     };
-    const handleDragEnd = (ev) => {
+    const handleDragEnd = (ev, d) => {
       if (this.nodesPath) return;
       if (+dragFolder.move[0].toFixed(3) || +dragFolder.move[1].toFixed(3)) {
         this.event.emit('square.dragend', ev);
@@ -852,6 +851,7 @@ class Chart {
       dragFolder.resize = false;
       dragFolder.folder = null;
       dragFolder.move = [0, 0];
+      this.event.emit('label.dragend', ev, d);
     };
     const folderWrapper = d3.selectAll('#graph .folders')
       .call(d3.drag()

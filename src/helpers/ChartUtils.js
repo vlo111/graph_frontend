@@ -800,12 +800,11 @@ class ChartUtils {
     graph2.nodes = [...graph2.nodes];
 
     let links = [...graph1.links || [], ...graph2.links || []];
-    let labels = new Set();
     if (!selectedNodes1) {
-      selectedNodes1 = graph1.nodes;
+      selectedNodes1 = [...graph1.nodes];
     }
     if (!selectedNodes2) {
-      selectedNodes2 = graph2.nodes;
+      selectedNodes2 = [...graph2.nodes];
     }
 
     const nodes = selectedNodes1.map((node1) => {
@@ -846,7 +845,7 @@ class ChartUtils {
       }
     });
 
-    labels = [...labels];
+    const labels = [...graph1.labels, ...graph2.labels.filter((l) => nodes.labels.includes(l.id))];
 
     links = ChartUtils.uniqueLinks(links).map((l) => {
       delete l.color;

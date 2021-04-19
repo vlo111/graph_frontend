@@ -87,6 +87,31 @@ class AutoSave extends Component {
     type: node.type || '',
   })
 
+  formatLink = (d) => ({
+    id: d.id || '', // todo
+    sx: d.linkType === 'a1' ? d.sx : undefined,
+    sy: d.linkType === 'a1' ? d.sy : undefined,
+    tx: d.linkType === 'a1' ? d.tx : undefined,
+    ty: d.linkType === 'a1' ? d.ty : undefined,
+    source: d.source,
+    target: d.target,
+    _source: d._source,
+    _target: d._target,
+    value: +d.value || 1,
+    linkType: d.linkType || '',
+    type: d.type || '',
+    direction: d.direction || '',
+    hidden: d.hidden,
+    color: d.color || '',
+    createdAt: d.createdAt,
+    updatedAt: d.updatedAt,
+    createdUser: d.createdUser,
+    updatedUser: d.updatedUser,
+    readOnly: d.readOnly,
+    status: d.status || 'approved',
+    fake: d.fake,
+  })
+
   handleSquareDragEnd = (ev, d) => {
     const nodes = Chart.getNodes().filter((n) => d.nodes.includes(n.id) || d.selectedNodes.includes(n.id));
     console.log(nodes);
@@ -115,7 +140,7 @@ class AutoSave extends Component {
     nodes.forEach((node) => {
       const oldNode = oldNodes.find((n) => n.id === node.id);
       if (oldNode) {
-        // if (oldNode.import || oldNode.create) {
+        // if (node.import || oldNode.create) {
         if (oldNode.create) {
           createNodes.push(node);
         } else if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
@@ -140,7 +165,7 @@ class AutoSave extends Component {
     links.forEach((link) => {
       const oldLink = oldLinks.find((l) => l.id === link.id);
       if (oldLink) {
-        if (!_.isEqual(oldLink, link) && !link.create) {
+        if (!_.isEqual(this.formatLink(oldLink), this.formatLink(link)) && !link.create) {
           updateLinks.push(link);
         }
       }

@@ -28,7 +28,7 @@ class DataView extends Component {
     }
     n = _.uniqBy(n, 'id').filter((d) => !d.sourceId && !d.fake);
 
-    if (extraNodes && _.isEmpty(selectedGrid.nodes)) {
+    if (extraNodes && _.isEmpty(selectedGrid?.nodes)) {
       this.props.setGridIndexes('nodes', _.range(n.length));
     }
 
@@ -41,7 +41,7 @@ class DataView extends Component {
       l.push(extraLinks);
     }
     l = ChartUtils.cleanLinks(ChartUtils.uniqueLinks(l), nodes).filter((d) => !d.sourceId && !d.fake);
-    if (extraLinks && _.isEmpty(selectedGrid.nodes)) {
+    if (extraLinks && _.isEmpty(selectedGrid?.links)) {
       this.props.setGridIndexes('links', _.range(l.length));
     }
     return l;
@@ -137,44 +137,20 @@ class DataView extends Component {
 
   export = async (type) => {
     const { extraNodes, extraLinks } = this.state;
-    const { selectedGrid, customFields } = this.props;
-    let nodes = this.mergeNodes(Chart.getNodes(), extraNodes).filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
-    const links = this.mergeLinks(Chart.getLinks(), extraLinks, nodes).filter((d) => ChartUtils.isCheckedLink(selectedGrid, d));
-    const labels = Chart.getLabels(); // todo filter empty labels
-    const icons = await Promise.all(nodes.map((d) => {
-      if (d.icon && d.icon.startsWith('blob:')) {
-        return Utils.blobToBase64(d.icon);
-      }
-      return d.icon;
-    }));
+    const { selectedGrid, graphId } = this.props;
 
-    const files = [];
-    /* eslint-disable */
-    for (const d of nodes) {
-      const reg = /\shref="(blob:[^"]+)"/g;
-      let m;
-      while (m = reg.exec(d.description)) {
-        const file = await Utils.blobToBase64(m[1]);
-        files.push(file);
-      }
-    }
-    /* eslint-enable */
+    const nodes = this.mergeNodes(Chart.getNodes(), extraNodes)
+      .filter((d) => ChartUtils.isCheckedNode(selectedGrid, d))
 
-    nodes = nodes.map((d, i) => {
-      d.icon = icons[i];
-      d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, () => ` href="${files.shift()}"`);
-      return d;
-    });
+    const nodesId = nodes.map((n) => n.id);
 
-    if (type === 'csv') {
-      Api.download('csv-nodes', { nodes });
-      if (!_.isEmpty(links)) {
-        Api.download('csv-links', { links });
-      }
-      return;
-    }
+    const linksId = this.mergeLinks(Chart.getLinks(), extraLinks, nodes)
+      .filter((d) => ChartUtils.isCheckedLink(selectedGrid, d))
+      .map((l) => l.id);
+    const labelsId = Chart.getLabels().map((l) => l.id);
+
     Api.download(type, {
-      nodes, links, labels, customFields,
+      graphId, nodesId, linksId, labelsId,
     });
   }
 
