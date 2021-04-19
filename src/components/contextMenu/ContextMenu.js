@@ -116,6 +116,8 @@ class ContextMenu extends Component {
         deleteDataModal: { ev, type },
       });
       this.props.setActiveButton('deleteModal');
+    } else if (type === 'findPath') {
+      this.props.setActiveButton(`findPath.${this.state.params.id}`);
     } else {
       const { params, x, y } = this.state;
       params.contextMenu = true;

@@ -12,6 +12,9 @@ class NodeContextMenu extends Component {
     const { params } = this.props;
     return (
       <>
+        <Button icon="fa-link" title="find path" onClick={(ev) => this.props.onClick(ev, 'findPath')}>
+          Find Path
+        </Button>
         {!params.readOnly && params.nodeType === 'infography' ? (
           <Button icon="fa-arrows" onClick={(ev) => this.props.onClick(ev, 'node.resize')}>
             Resize

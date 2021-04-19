@@ -13,6 +13,9 @@ class Chart {
 
   static autoSave = true;
 
+  /* @todo in view mode for show shortest path */
+  static nodesPath = false;
+
   /* @todo transform i mej avelacnem rotate u translate move y image i arandznacnem */
   static minWidth;
 
@@ -190,6 +193,7 @@ class Chart {
      * For the drag action starts
      * */
     function dragStart(ev) {
+      if (this.nodesPath) return;
       // gets the current target element where the drag event started
       target = d3.select(ev.sourceEvent.target);
       // and saves the target element class in a aux variable
@@ -294,6 +298,7 @@ class Chart {
     };
 
     const dragged = (ev, d) => {
+      if (this.nodesPath) return;
       if (d !== undefined && (d.nodeType === 'infography' && ev.sourceEvent.shiftKey)) {
         ChartInfography.dragged(ev, d);
         return;
@@ -325,6 +330,7 @@ class Chart {
     };
 
     const dragend = (ev, d) => {
+      if (this.nodesPath) return;
       if (d !== undefined) {
         if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
           ChartInfography.dragend(ev, d);
@@ -690,6 +696,7 @@ class Chart {
       .attr('data-y', transform.y);
 
     this.setAreaBoardZoom(transform);
+    if (this.nodesPath) return;
     this.renderNodeText(transform.k);
     this.renderNodeStatusText(transform.k);
   }
@@ -730,6 +737,7 @@ class Chart {
     const dragFolder = {};
 
     const handleDragStart = (ev) => {
+      if (this.nodesPath) return;
       const { target } = ev.sourceEvent;
       let element = target.closest('.folder');
       if (target.classList.contains('show')) {
@@ -750,8 +758,9 @@ class Chart {
       if (!dragFolder.folder || dragFolder.folder.empty()) {
         return;
       }
-      dragFolder.move[0] += ev.dx;
-      dragFolder.move[1] += ev.dy;
+
+      if (this.nodesPath) return;
+
       const datum = dragFolder.folder.datum();
       if (dragFolder.rsize) {
         if (!datum.d[1]) {
@@ -836,6 +845,7 @@ class Chart {
       this.graphMovement();
     };
     const handleDragEnd = (ev) => {
+      if (this.nodesPath) return;
       if (+dragFolder.move[0].toFixed(3) || +dragFolder.move[1].toFixed(3)) {
         this.event.emit('square.dragend', ev);
       }
@@ -910,6 +920,7 @@ class Chart {
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
       .on('dblclick', (ev, d) => {
+        if (this.nodesPath) return;
         if (d.open) {
           return;
         }
@@ -1128,6 +1139,8 @@ class Chart {
     const dragLabel = {};
 
     const handleDragStart = (ev) => {
+      if (this.nodesPath) return;
+
       if (this.getCurrentUserRole() === 'edit_inside') {
         return;
       }
@@ -1155,6 +1168,8 @@ class Chart {
     };
 
     const handleDrag = (ev) => {
+      if (this.nodesPath) return;
+
       if (this.activeButton === 'create-label') {
         const { x, y } = ev;
         const datum = activeLine.datum();
@@ -1219,6 +1234,8 @@ class Chart {
     };
 
     const handleDragEnd = (ev) => {
+      if (this.nodesPath) return;
+
       if (this.activeButton === 'create-label') {
         const datum = activeLine.datum();
 
@@ -1621,6 +1638,7 @@ class Chart {
       if (!ev.shiftKey) {
         return;
       }
+      if (this.nodesPath) return;
       const i = this.squareData.selectedNodes.indexOf(d.id);
       if (i > -1) {
         this.squareData.selectedNodes.splice(i, 1);
@@ -1658,6 +1676,7 @@ class Chart {
       if (ev.shiftKey || ev.which === 3) {
         return;
       }
+      if (this.nodesPath) return;
       this.wrapper.selectAll('.selectBoard').remove();
       this.wrapper.selectAll('.selectSquare').remove();
       selectSquare = null;
@@ -1674,6 +1693,7 @@ class Chart {
     });
 
     const handleSquareDragStart = () => {
+      if (this.nodesPath) return;
       if (selectSquare) {
         let {
           width, height, x, y,
@@ -1702,6 +1722,8 @@ class Chart {
     };
 
     const handleSquareDrag = (ev) => {
+      if (this.nodesPath) return;
+
       if (!ev.sourceEvent.shiftKey) {
         return;
       }
@@ -1782,6 +1804,8 @@ class Chart {
     };
 
     const handleDragStart = (ev) => {
+      if (this.nodesPath) return;
+
       this.wrapper.select('.selectSquare').remove();
       selectSquare = this.wrapper.append('path')
         .datum({
@@ -1804,6 +1828,8 @@ class Chart {
     this.event.on('node.dragend', handleSquareDragEnd);
 
     const handleDrag = (ev) => {
+      if (this.nodesPath) return;
+
       const datum = selectSquare.datum();
       datum.width += ev.dx;
       datum.height += ev.dy;
@@ -2132,22 +2158,26 @@ class Chart {
     }
     let dragActive = false;
     this.event.on('node.dragstart', () => {
+      if (this.nodesPath) return;
       dragActive = true;
     });
 
     this.event.on('node.dragend', () => {
+      if (this.nodesPath) return;
+
       dragActive = false;
     });
 
     this.event.on('node.mouseenter', (ev, d) => {
       if (dragActive || ev.shiftKey) return;
-      const links = this.getNodeLinks(d.id, 'all');
-      links.push({ source: d.id, target: d.id });
-      const nodeIds = new Set();
-      links.forEach((l) => {
-        nodeIds.add(l.source);
-        nodeIds.add(l.target);
-      });
+      if (!this.nodesPath) {
+        const links = this.getNodeLinks(d.id, 'all');
+        links.push({ source: d.id, target: d.id });
+        const nodeIds = new Set();
+        links.forEach((l) => {
+          nodeIds.add(l.source);
+          nodeIds.add(l.target);
+        });
 
       const hideNodes = this.node.filter((n) => !nodeIds.has(n.id));
       hideNodes.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
@@ -2158,18 +2188,23 @@ class Chart {
       const hideDirections = this.directions.filter((n) => !links.some((l) => l.index === n.index));
       hideDirections.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
 
-      this.renderLinkText(links);
+        this.renderLinkText(links);
+      }
     });
 
     this.event.on('node.mouseleave', () => {
       if (dragActive) return;
-      this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
-      this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
-      this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
-      this.renderLinkText();
-      this.renderLinkStatusText();
+      if (!this.nodesPath) {
+        this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+        this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+        this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+        this.renderLinkText();
+        this.renderLinkStatusText();
+      }
     });
     this.event.on('link.click', (event, ...params) => {
+      if (this.nodesPath) return;
+
       const currentLink = params[0];
 
       const isEmbed = currentLink.source.readOnly && currentLink.target.readOnly;
@@ -2208,6 +2243,8 @@ class Chart {
 
     let cancel = false;
     this.event.on('node.dblclick', () => {
+      if (this.nodesPath) return;
+
       cancel = true;
       setTimeout(() => {
         cancel = false;
@@ -2218,6 +2255,7 @@ class Chart {
       if (ev.shiftKey || d.nodeType === 'image') {
         return;
       }
+      if (this.nodesPath) return;
       // d3.select('.controls-group').remove();
       await Utils.sleep(10);
       if (this.activeButton !== 'create') {
@@ -2267,6 +2305,7 @@ class Chart {
       if (!ev.target.parentNode || ev.target.parentNode.classList.contains('node')) {
         return;
       }
+      if (this.nodesPath) return;
       // d3.select('.controls-group').remove();
       if (this.wrapper.select('#fcurve').node() && this.curved) {
         setTimeout(() => {
@@ -2612,6 +2651,67 @@ class Chart {
         }
       }
     });
+  }
+
+  static showPath(links, nodes) {
+    this.nodesPath = true;
+
+    const hideNodes = this.node.filter((n) => !nodes.includes(n.id));
+    hideNodes.attr('class', 'shortestData');
+
+    const hideLinks = this.link.filter((n) => !links.some((l) => l.id === n.id));
+    hideLinks.attr('class', 'shortestData');
+
+    const hideDirections = this.directions.filter((n) => !links.some((l) => l.id === n.id));
+    hideDirections.attr('class', 'shortestData');
+
+    this.renderLinkShortestPath(links, nodes);
+  }
+
+  static renderLinkShortestPath(links = [], nodes = []) {
+    const wrapper = this.svg.select('.linkText');
+    const backgrondChart = this.svg.select('.borderCircle');
+    const linksData = this.data.links;// .filter((d) => links.filter((z) => z.id === d.id).length);
+
+    wrapper.selectAll('text textPath').remove();
+    backgrondChart.selectAll('div').attr('class', 'shortestBackground');
+
+    this.linkText = wrapper.selectAll('text')
+      .data(linksData.filter((d) => d.hidden !== 1))
+      .join('text')
+      .attr('text-anchor', 'middle')
+      .attr('startOffset', '50%')
+      .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
+
+    this.linkText.append('textPath')
+      .attr('class', (d) => (links.filter((z) => z.id === d.id).length
+        ? 'shortestLinkTPath'
+        : 'shortestInactiveLinkPath'))
+      .attr('startOffset', '50%')
+      .attr('href', (d) => `#l${d.index}`)
+      .text((d) => (d.status === 'draft'
+        ? `  DRAFT ( ${d.type} ) `
+        : (links.filter((z) => z.id === d.id).length
+          ? ` ${d.type}(${d.value}) `
+          : ` ${d.value} `)));
+
+    this.nodesWrapper.selectAll('.node text')
+      .attr('class', (d) => (nodes.includes(d.id) ? 'nodeTextStyle' : ''));
+
+    this.link
+      .attr('stroke', (d) => (links.filter((x) => x.id === d.id).length ? '#2dc126' : d.color))
+      .attr('stroke-width', (d) => (links.filter((x) => x.id === d.id).length ? +d.value + 15 : +d.value || 1));
+
+    this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
+      .attr('class', (d) => (nodes.includes(d.id) ? 'nodeStyle' : ''));
+
+    this.directions
+      .attr('stroke-width', (d) => (links.filter((x) => x.id === d.id).length ? 0.8 : undefined))
+      .attr('stroke', (d) => (links.filter((x) => x.id === d.id).length ? ChartUtils.linkColor(d) : undefined));
+  }
+
+  static clearLinkShortestPath() {
+    this.nodesWrapper.selectAll('.shortestData > *').remove();
   }
 }
 

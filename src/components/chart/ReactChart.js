@@ -159,6 +159,8 @@ class ReactChart extends Component {
   }
 
   handleDbNodeClick = (ev, d) => {
+    if (Chart.nodesPath) return;
+
     const queryObj = queryString.parse(window.location.search);
     queryObj.info = d.id;
     const query = queryString.stringify(queryObj);

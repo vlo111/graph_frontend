@@ -23,6 +23,12 @@ $color-button: #0062FF;
 
 $color-darkgreen: #f2f3f5;
 
+$color-linkText: #9e0b0b;
+
+$color-linkFill: #2dc126;
+
+$color-nodeFill: #6700ff;
+
 $color-hover-sheet: #e6e5f1;
 
 $font-family: 'Open Sans', sans-serif;
@@ -8171,3 +8177,137 @@ img.preview-scaled {
 }
 
 
+.findPath {
+  .list {
+    .content {
+      background-color: #e6e6e6 !important;
+      color: black;
+      cursor: auto;
+      box-shadow: none;
+
+      .nodeIcon {
+        background: #cacaca !important;
+      }
+
+      .error {
+        margin: 0 auto;
+        margin-right: 0;
+        color: red;
+      }
+      .right {
+        flex-direction: inherit !important;
+      }
+    }
+  }
+}
+
+.nodeStyle {
+  stroke-width: 50px !important;
+  stroke: #bb09b1 !important;
+  stroke-dasharray: 5 !important;
+  fill: $color-linkText !important;
+  r: 10;
+  animation: spin 10s linear infinite;
+}
+
+.shortestData {
+  opacity: 0.7 !important;
+}
+
+.nodeTextStyle {
+  font-size: 30px !important;
+  dominant-baseline: text-before-edge !important;
+  fill: $color-linkText;
+}
+
+.shortestLinkTPath {
+  fill: $color-linkFill !important;
+  font-size: 40px !important;
+  dominant-baseline: text-before-edge;
+}
+
+.shortestInactiveLinkPath {
+  font-size: 20px !important;
+  fill: $color-linkText !important;
+  dominant-baseline: text-before-edge;
+}
+
+.shortestBackground {
+  border: 3px dashed $color-linkText !important;
+  background-color: #00c9ff1f !important;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.analyticalResult {
+  height: 100% !important;
+  top: 0 !important;
+  width: 40% !important;
+  background: none !important;
+
+  .shortest-tab-title {
+    text-align: center;
+    color: crimson;
+  }
+
+  .shortest-goToBack {
+    margin: 0 auto;
+    width: 100px;
+    color: #ffffff;
+    background-color: #9d00ff8f;
+    box-shadow: 1px 3px 9px 7px #9d00ff8c;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+  }
+
+  .container-shortest-tab {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-row-gap: 15%;
+    width: 90%;
+    margin: 0 auto;
+    margin-left: 10%;
+    margin-top: 5%;
+
+    .left {
+      width: 150px;
+
+      .shortest-node-title {
+        font-size: 16px;
+        color: #6700ff;
+        font-weight: bold;
+      }
+
+      .nodeIcon {
+        z-index: 1;
+        position: relative;
+      }
+
+      .shortest-link {
+        border: 5px solid #ff9400;
+        border-radius: 5px;
+        position: absolute;
+        width: 20%;
+        margin: 0 auto;
+        margin-top: -30px;
+        margin-left: 35px;
+      }
+
+      .shortest-thirdLink {
+        border-radius: 50%/50px 50px 0 0;
+        width: 10%;
+        height: 30px;
+        border-color: #ff9400 transparent transparent transparent !important;
+        border: 10px solid;
+        transform: rotate(90deg);
+        position: absolute;
+        margin-top: -15px;
+      }
+    }
+  }
+}
