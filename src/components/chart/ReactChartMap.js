@@ -13,9 +13,8 @@ class ReactChartMap extends Component {
   }
 
   render() {
-    return null;
     const nodes = Chart.getNodes();
-    console.log(nodes)
+    console.log(nodes);
     return (
       <div>
         <svg
@@ -24,7 +23,9 @@ class ReactChartMap extends Component {
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
         >
-          <use href="#reactChart" />
+          {nodes.map((n) => (
+            <circle key={n.id} cx={n.fx / 25} cy={n.fy / 25} r="8" fill="rgba(255,0,0,0.6)" />
+          ))}
         </svg>
       </div>
     );

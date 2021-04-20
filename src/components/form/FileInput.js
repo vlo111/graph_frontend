@@ -82,7 +82,6 @@ class FileInput extends Component {
           onFocus={this.handleInputFocus}
           onBlur={this.handleInputBlur}
           value={value}
-          title={value}
           disabled={localFile}
           onChangeText={this.handleTextChange}
         />
