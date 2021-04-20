@@ -74,7 +74,7 @@ class FileInput extends Component {
     } else if (value.toString().startsWith('blob:')) {
       localFile = true;
       value = this.constructor.blobs[value] || 'Selected';
-    } else if (value.toString().startsWith('data')) {
+    } else if (value.toString().startsWith('data:')) {
       value = '';
     }
     return (
