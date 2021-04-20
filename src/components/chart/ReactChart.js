@@ -271,36 +271,38 @@ class ReactChart extends Component {
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" className="nodeCreate">
           <g className="wrapper" transform-origin="top left">
-            <g className="labels">
-              <rect className="labelsBoard areaBoard" fill="transparent" width="100%" height="100%" />
-            </g>
-            <g className="folders" />
-            <g className="directions" />
-            <g className="links" />
-            <g className="linkText" />
-            <g className="nodes" />
-            <g className="icons" />
-            <g className="folderIcons" />
-            <ResizeIcons />
-            <defs>
-              <filter id="labelShadowFilter" x="-50%" y="-50%" width="200%" height="200%">
-                <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
-                <feDropShadow dx="1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
-                <feDropShadow dx="0" dy="-1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
-                <feDropShadow dx="-1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
-                <feDropShadow dx="0" dy="0" stdDeviation="10" floodColor="#0d090554" floodOpacity="1" />
-              </filter>
-              <filter id="grayscaleFilter">
-                <feColorMatrix type="saturate" values="0" />
-                <feColorMatrix type="luminanceToAlpha" result="A" />
-              </filter>
-              <SelectedNodeFilter />
-              <LabelLock />
-              <FolderIcon />
-              <FolderCloseIcon />
-              <FolderResizeIcon />
+            <g id="reactChart">
+              <g className="labels">
+                <rect className="labelsBoard areaBoard" fill="transparent" width="100%" height="100%" />
+              </g>
+              <g className="folders" />
+              <g className="directions" />
+              <g className="links" />
+              <g className="linkText" />
+              <g className="nodes" />
+              <g className="icons" />
+              <g className="folderIcons" />
+              <ResizeIcons />
+              <defs>
+                <filter id="labelShadowFilter" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow dx="0" dy="1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                  <feDropShadow dx="1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                  <feDropShadow dx="0" dy="-1" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                  <feDropShadow dx="-1" dy="0" stdDeviation="0" floodColor="#0D0905" floodOpacity="1" />
+                  <feDropShadow dx="0" dy="0" stdDeviation="10" floodColor="#0d090554" floodOpacity="1" />
+                </filter>
+                <filter id="grayscaleFilter">
+                  <feColorMatrix type="saturate" values="0" />
+                  <feColorMatrix type="luminanceToAlpha" result="A" />
+                </filter>
+                <SelectedNodeFilter />
+                <LabelLock />
+                <FolderIcon />
+                <FolderCloseIcon />
+                <FolderResizeIcon />
 
-            </defs>
+              </defs>
+            </g>
           </g>
         </svg>
         {singleGraphStatus === 'fail' ? <NotFound /> : null}

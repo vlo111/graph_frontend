@@ -29,6 +29,7 @@ import LabelShare from '../components/share/LabelShare';
 import MediaModal from '../components/Media/MediaModal';
 import LabelCopy from '../components/labelCopy/LabelCopy';
 import FindPath from '../components/FindPath';
+import ReactChartMap from "../components/chart/ReactChartMap";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -57,6 +58,7 @@ class GraphForm extends Component {
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
         <div className="graphWrapper">
           <ReactChart />
+          <ReactChartMap />
         </div>
         <ToolBarHeader />
         <ToolBar />

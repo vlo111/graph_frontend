@@ -695,6 +695,8 @@ class Chart {
       .attr('data-x', transform.x)
       .attr('data-y', transform.y);
 
+    this.event.emit('zoom', ev, { transform });
+
     this.setAreaBoardZoom(transform);
     if (this.nodesPath) return;
     this.renderNodeText(transform.k);
@@ -921,7 +923,7 @@ class Chart {
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
       .on('dblclick', (ev, d) => {
         if (this.nodesPath) return;
-        if (d.open) {
+        if (d.open || document.body.classList.contains('autoSave')) {
           return;
         }
         const [x, y] = d.d[0];
@@ -1711,7 +1713,7 @@ class Chart {
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
         this.squareData.labels = this.getLabels()
           .filter((l) => (l.type === 'folder' && !l.open && this.squareData.nodes.some((n) => n.labels.includes(l.id)))
-              || this.squareData.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
+            || this.squareData.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
           .map((l) => l.id);
         this.squareData.nodes = this.squareData.nodes.map((d) => d.id);
         this.squareData.width = width;
@@ -2179,14 +2181,14 @@ class Chart {
           nodeIds.add(l.target);
         });
 
-      const hideNodes = this.node.filter((n) => !nodeIds.has(n.id));
-      hideNodes.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+        const hideNodes = this.node.filter((n) => !nodeIds.has(n.id));
+        hideNodes.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
 
-      const hideLinks = this.link.filter((n) => !links.some((l) => l.index === n.index));
-      hideLinks.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+        const hideLinks = this.link.filter((n) => !links.some((l) => l.index === n.index));
+        hideLinks.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
 
-      const hideDirections = this.directions.filter((n) => !links.some((l) => l.index === n.index));
-      hideDirections.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+        const hideDirections = this.directions.filter((n) => !links.some((l) => l.index === n.index));
+        hideDirections.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
 
         this.renderLinkText(links);
       }
