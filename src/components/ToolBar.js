@@ -52,6 +52,13 @@ class ToolBar extends Component {
             >
               Add Node
             </Button>
+            <Button
+              className={activeButton === 'findNode' ? 'active' : undefined}
+              icon={<LoopSvg />}
+              onClick={() => this.handleClick('findNode')}
+            >
+              Find Node
+            </Button>
             {currentUserRole !== 'edit_inside' ? (
               <Button
                 className={activeButton === 'create-label' ? 'active' : undefined}

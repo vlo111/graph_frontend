@@ -4022,6 +4022,59 @@ body .gh__menu {
   }
 }
 
+.ghModalFind {
+  width: 55% !important;
+  .findNodeList {
+    .findNodesTitle {
+      text-align: center;
+      color: #717ea0;
+      font-weight: bold;
+      width: 40%;
+    }
+
+    .item > .ghButton {
+      grid-template-columns: 35% 20% auto;
+      display: grid !important;
+
+      &:hover {
+        color: $color-dark;
+        box-shadow: none;
+        cursor: auto;
+      }
+    }
+
+    .leftPanel {
+      width: 30%;
+      display: flex;
+      cursor: pointer;
+      .left {
+        img {
+          width: 50px;
+        }
+      }
+
+      .right {
+        line-height: 50px;
+        width: auto !important;
+
+        .name {
+          max-width: 100% !important;
+        }
+      }
+    }
+
+    .aboutNode {
+        display: flex;
+
+      a {
+        color: #0095ff;
+        margin: 0 10px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
 .ghModalSearch {
   width: 50%;
   min-height: 15%;

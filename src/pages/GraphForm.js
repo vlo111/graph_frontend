@@ -30,6 +30,7 @@ import MediaModal from '../components/Media/MediaModal';
 import LabelCopy from '../components/labelCopy/LabelCopy';
 import FindPath from '../components/FindPath';
 import ReactChartMap from "../components/chart/ReactChartMap";
+import FindNode from '../components/FindNode';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -79,6 +80,7 @@ class GraphForm extends Component {
         <AddLabelModal />
         <ContextMenu />
         <DataImport />
+        <FindNode />
         <NodeDescription />
         <NodeFullInfo />
         <AutoPlay />

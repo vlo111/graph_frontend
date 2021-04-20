@@ -124,6 +124,13 @@ class Api {
     });
   }
 
+  static getGraphNodes(page, requestData = {}) {
+    const params = { page, ...requestData };
+    return api.get('/graphs/nodes', {
+      params,
+    });
+  }
+
   static getSingleGraph(graphId, params = {}) {
     return api.get(`/graphs/single/${graphId}`, {
       params,

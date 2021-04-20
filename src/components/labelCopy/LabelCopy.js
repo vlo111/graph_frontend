@@ -44,11 +44,13 @@ class LabelCopy extends Component {
 
   componentDidMount() {
     ContextMenu.event.on('label.append', this.handleLabelAppend);
+    ContextMenu.event.on('node.append', this.handleNodeAppend);
     ContextMenu.event.on('label.embed', this.handleLabelEmbed);
   }
 
   componentWillUnmount() {
     ContextMenu.event.removeListener('label.append', this.handleLabelAppend);
+    ContextMenu.event.removeListener('node.append', this.handleNodeAppend);
     ContextMenu.event.removeListener('label.embed', this.handleLabelEmbed);
   }
 
@@ -77,6 +79,13 @@ class LabelCopy extends Component {
     }
     this.setState({
       compare, data, position, showQuestionModal: true,
+    });
+  }
+
+  handleNodeAppend = (ev, params) => {
+    const data = LabelUtils.getData();
+    this.setState({
+      compare: params.compare, data, position: [params.x, params.y], showQuestionModal: true,
     });
   }
 

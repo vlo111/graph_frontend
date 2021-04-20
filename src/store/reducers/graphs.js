@@ -6,6 +6,7 @@ import {
   UPDATE_SINGLE_GRAPH,
   CONVERT_GRAPH,
   GET_GRAPHS_LIST,
+  GET_NODES_LIST,
   GET_SINGLE_GRAPH,
   SET_NODE_CUSTOM_FIELD,
   ADD_NODE_CUSTOM_FIELD_KEY,
@@ -26,6 +27,7 @@ import { UPDATE_NODES_CUSTOM_FIELDS } from '../actions/nodes';
 const initialState = {
   importData: {},
   graphsList: [],
+  graphNodes: [],
   graphsListStatus: '',
   singleGraphStatus: '',
   singleGraph: {},
@@ -33,6 +35,9 @@ const initialState = {
   graphFilterInfo: {},
   embedLabels: [],
   graphsListInfo: {
+    totalPages: 0,
+  },
+  nodesListInfo: {
     totalPages: 0,
   },
   actionsCount: {},
@@ -104,6 +109,28 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         graphsListStatus: 'fail',
+      };
+    }
+    case GET_NODES_LIST.REQUEST: {
+      return {
+        ...state,
+        graphsListStatus: 'request',
+        graphNodes: [],
+      };
+    }
+    case GET_NODES_LIST.SUCCESS: {
+      const { graphs: graphNodes, ...nodesListInfo } = action.payload.data;
+      return {
+        ...state,
+        nodesListStatus: 'success',
+        graphNodes,
+        nodesListInfo,
+      };
+    }
+    case GET_NODES_LIST.FAIL: {
+      return {
+        ...state,
+        nodesListStatus: 'fail',
       };
     }
     case GET_SINGLE_GRAPH.REQUEST: {
