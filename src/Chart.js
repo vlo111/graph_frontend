@@ -1659,7 +1659,7 @@ class Chart {
       const x = -1 * (+Chart.wrapper?.attr('data-x') || 0);
       const y = -1 * (+Chart.wrapper?.attr('data-y') || 0);
       const size = scale * 100;
-
+      console.log( Chart.wrapper)
       this.wrapper
         .insert('rect', '.nodes')
         .attr('class', 'selectBoard areaBoard')

@@ -871,9 +871,11 @@ p {
     padding-top: 73px;
     padding-left: 15px;
     z-index: 99;
-    &.show{
+
+    &.show {
       display: flex;
     }
+
     div {
       box-sizing: border-box;
       display: block;
@@ -889,13 +891,16 @@ p {
       &:nth-child(1) {
         animation-delay: -0.45s;
       }
+
       &:nth-child(2) {
         animation-delay: -0.3s;
       }
+
       &:nth-child(3) {
         animation-delay: -0.15s;
       }
     }
+
     @keyframes graphLoading {
       0% {
         transform: rotate(0deg);
@@ -905,7 +910,6 @@ p {
       }
     }
   }
-
 
 
   .selectSquare {
@@ -981,7 +985,8 @@ p {
       display: none;
     }
   }
-  .folderBadge{
+
+  .folderBadge {
     transform: translate(5px, 45px);
     fill: #ffffff !important;
     font-size: 14px;
@@ -1048,7 +1053,7 @@ p {
       //text-anchor: middle;
     }
 
-    .folderClose{
+    .folderClose {
       pointer-events: all;
     }
 
@@ -1150,7 +1155,7 @@ p {
       display: none;
     }
 
-    &.fakeNode{
+    &.fakeNode {
       opacity: 0 !important;
       display: none;
     }
@@ -8087,6 +8092,7 @@ img.preview-scaled {
         width: 100%;
         padding-right: 0;
       }
+
       .buttons {
         top: 13.5px;
         right: 25px;
@@ -8098,7 +8104,7 @@ img.preview-scaled {
     margin-bottom: 18px;
   }
 
-  .ghFormField, .ghFileInput  {
+  .ghFormField, .ghFileInput {
     height: 85px;
     float: left;
     width: 50%;
@@ -8161,15 +8167,15 @@ img.preview-scaled {
     right: 35px;
     position: absolute;
 
-    &{
-    box-shadow: none;
+    & {
+      box-shadow: none;
     }
 
     svg {
       height: 10px;
       opacity: .5;
 
-      &:hover{
+      &:hover {
         opacity: 1;
       }
     }
@@ -8194,6 +8200,7 @@ img.preview-scaled {
         margin-right: 0;
         color: red;
       }
+
       .right {
         flex-direction: inherit !important;
       }
@@ -8312,7 +8319,7 @@ img.preview-scaled {
   }
 }
 
-#reactChartMap{
+#reactChartMap {
   position: fixed;
   right: 0;
   bottom: 0;
@@ -8320,7 +8327,8 @@ img.preview-scaled {
   width: 25%;
   height: 20%;
   border: 1px solid red;
-  use{
+
+  use {
     top: 0;
     right: 0;
     transform: translate(0, 0) scale(0.25, 0.2);

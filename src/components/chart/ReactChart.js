@@ -271,7 +271,6 @@ class ReactChart extends Component {
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" className="nodeCreate">
           <g className="wrapper" transform-origin="top left">
-            <g id="reactChart">
               <g className="labels">
                 <rect className="labelsBoard areaBoard" fill="transparent" width="100%" height="100%" />
               </g>
@@ -303,7 +302,6 @@ class ReactChart extends Component {
 
               </defs>
             </g>
-          </g>
         </svg>
         {singleGraphStatus === 'fail' ? <NotFound /> : null}
       </div>
