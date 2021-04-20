@@ -13,6 +13,9 @@ class ReactChartMap extends Component {
   }
 
   render() {
+    return null;
+    const nodes = Chart.getNodes();
+    console.log(nodes)
     return (
       <div>
         <svg
