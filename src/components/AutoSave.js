@@ -66,7 +66,8 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    this.timeout = setTimeout(this.saveGraph, 50);
+    this.saveGraph();
+    // this.timeout = setTimeout(this.saveGraph, 50);
   }
 
   formatNode = (node) => ({
