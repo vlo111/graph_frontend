@@ -8410,6 +8410,14 @@ img.preview-scaled {
       }
     }
   }
+  .close {
+    background-color: #fff;
+    padding: 0;
+    position: absolute;
+    left: 15px;
+    z-index: 2;
+    top: 4px;
+  }
 }
 
 .reactChartMapWrapper {

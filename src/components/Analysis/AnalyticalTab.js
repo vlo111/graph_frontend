@@ -32,6 +32,7 @@ class AnalyticalTab extends Component {
           <div id="nodeFullInfo" className="analyticalResult">
             <h2 className="shortest-tab-title">Shortest path</h2>
             <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.goToBackHandle} /> 
+            
             <div className="container-shortest-tab">
               {nodes.map((p) => (
                 <div className="left">
