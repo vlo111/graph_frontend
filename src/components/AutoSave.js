@@ -131,6 +131,22 @@ class AutoSave extends Component {
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake);
     const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
 
+    const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
+    const createLabels = _.differenceBy(labels, oldLabels, 'id');
+    const updateLabels = [];
+    labels.forEach((label) => {
+      const oldLabel = oldLabels.find((l) => l.id === label.id);
+      if (oldLabel) {
+        if (oldLabel.new) {
+          createLabels.push(label);
+        } else if (!oldLabel.name && label.name) {
+          createLabels.push(label);
+        } else if (!_.isEqual(oldLabel.d, label.d)) {
+          updateLabels.push(label);
+        }
+      }
+    });
+
     const deleteNodes = _.differenceBy(oldNodes, nodes, 'id');
     const createNodes = _.differenceBy(nodes, oldNodes, 'id');
     const updateNodes = [];
@@ -151,6 +167,13 @@ class AutoSave extends Component {
           });
         } else if (!_.isEqual(this.formatNode(node), this.formatNode(oldNode))) {
           updateNodes.push(node);
+        } else if (createLabels.length && createLabels.some((l) => node.labels.includes(l.id))) {
+          updateNodePositions.push({
+            id: node.id,
+            fx: node.fx,
+            fy: node.fy,
+            labels: node.labels,
+          });
         }
         // if ((oldNode.customFields && !_.isEqual(node.customFields, oldNode.customFields))) {
         //   updateNodeCustomFields.push(node);
@@ -169,21 +192,7 @@ class AutoSave extends Component {
         }
       }
     });
-    const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
-    const createLabels = _.differenceBy(labels, oldLabels, 'id');
-    const updateLabels = [];
-    labels.forEach((label) => {
-      const oldLabel = oldLabels.find((l) => l.id === label.id);
-      if (oldLabel) {
-        if (oldLabel.new) {
-          createLabels.push(label);
-        } else if (!oldLabel.name && label.name) {
-          createLabels.push(label);
-        } else if (!_.isEqual(oldLabel.d, label.d)) {
-          updateLabels.push(label);
-        }
-      }
-    });
+
     if (deleteNodes.length && deleteNodes.length === nodes.length) {
       document.body.classList.remove('autoSave');
       return;
@@ -226,7 +235,7 @@ class AutoSave extends Component {
     if (deleteLabels.length) {
       promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
-    Chart.event.emit('auto-save')
+    Chart.event.emit('auto-save');
 
     const res = await Promise.all(promise);
     // res.forEach((d) => {
