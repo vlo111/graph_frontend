@@ -5,6 +5,8 @@ import { withRouter } from 'react-router-dom';
 import Outside from '../Outside';
 import { getNodeCustomFieldsRequest } from '../../store/actions/graphs';
 import NodeIcon from '../NodeIcon';
+import Button from "../form/Button";
+
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class AnalyticalTab extends Component {
