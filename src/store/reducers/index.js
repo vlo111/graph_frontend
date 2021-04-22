@@ -11,6 +11,7 @@ import profile from './profile';
 import commentNodes from './commentNodes';
 import share from './share';
 import document from './document';
+import graphsHistory from './graphsHistory';
 
 export default combineReducers({
   app,
@@ -25,4 +26,5 @@ export default combineReducers({
   commentNodes,
   share,
   document,
+  graphsHistory,
 });

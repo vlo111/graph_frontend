@@ -31,3 +31,10 @@ export const UPDATE_NODES_CUSTOM_FIELDS = define('UPDATE_NODES_CUSTOM_FIELDS');
 export function updateNodesCustomFieldsRequest(graphId, nodes) {
   return UPDATE_NODES_CUSTOM_FIELDS.request(() => Api.updateNodeCustomFields(graphId, nodes), { graphId, nodes });
 }
+
+
+export const  NODE_HISTORY = define('NODE_HISTORY');
+
+export function getNodeHistoryRequest(graphId, nodeId) { 
+  return NODE_HISTORY.request(() => Api.getNodeHistory(graphId, nodeId));
+} 
