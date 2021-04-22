@@ -4024,6 +4024,7 @@ body .gh__menu {
 
 .ghModalFind {
   width: 55% !important;
+
   .findNodeList {
     .findNodesTitle {
       text-align: center;
@@ -4047,6 +4048,7 @@ body .gh__menu {
       width: 30%;
       display: flex;
       cursor: pointer;
+
       .left {
         img {
           width: 50px;
@@ -4064,7 +4066,7 @@ body .gh__menu {
     }
 
     .aboutNode {
-        display: flex;
+      display: flex;
 
       a {
         color: #0095ff;
@@ -8372,18 +8374,39 @@ img.preview-scaled {
   }
 }
 
-#reactChartMap {
+.reactChartMapWrapper {
   position: fixed;
-  right: 0;
-  bottom: 0;
+  right: 70px;
+
+  bottom: 20px;
   z-index: 99999;
   width: 25%;
   height: 20%;
-  border: 1px solid red;
+  border: 1px solid #ebebeb;
+  background-color: white;
 
-  use {
-    top: 0;
-    right: 0;
-    transform: translate(0, 0) scale(0.25, 0.2);
+  svg {
+    height: 100%;
+    width: 100%;
+
+    use {
+      top: 0;
+      right: 0;
+      transform: translate(0, 0) scale(0.25, 0.2);
+    }
+
+    circle {
+      opacity: 0.5;
+    }
+
+    rect {
+      opacity: 0.5;
+    }
+  }
+
+  .viewArea {
+    fill: rgba($color-accent, 0.2);
+    stroke: $color-accent;
+    cursor: move;
   }
 }

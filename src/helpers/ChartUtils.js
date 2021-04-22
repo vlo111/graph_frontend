@@ -845,7 +845,7 @@ class ChartUtils {
       }
     });
     const labels = [...graph1.labels, ...graph2.labels];
-    console.log(labels)
+    console.log(labels);
     links = ChartUtils.uniqueLinks(links).map((l) => {
       delete l.color;
       return l;
@@ -909,6 +909,59 @@ class ChartUtils {
     const nodeIds = nodes.filter((n) => !n.fake).map((n) => n.id);
     nodeIds.push(...labels.map((d) => d.nodes).flat(1));
     return _.uniq(nodes).length;
+  }
+
+  static getDimensions() {
+    const nodes = Chart.getNodes();
+    const labels = Chart.getLabels();
+    const minXArr = [];
+    const minYArr = [];
+    nodes.forEach((n) => {
+      minXArr.push(n.fx);
+      minYArr.push(n.fy);
+    });
+    labels.forEach((l) => {
+      if (l.type === 'folder') {
+        minXArr.push(l.d[0][0]);
+        minYArr.push(l.d[0][1]);
+      } else {
+        minXArr.push(...l.d.map((p) => p[0]));
+        minYArr.push(...l.d.map((p) => p[1]));
+      }
+    });
+    const min = [_.min(minXArr), _.min(minYArr)];
+    const max = [_.max(minXArr), _.max(minYArr)];
+    const width = _.max([min[0] + max[0], window.innerWidth]);
+    const height = _.max([min[1] + max[1], window.innerHeight]);
+    return {
+      min,
+      max,
+      width,
+      height,
+    };
+  }
+
+  static renderPath = d3.line()
+    .x((d) => d[0])
+    .y((d) => d[1])
+    .curve(d3.curveBasis)
+
+  static pathToSquare = (d) => {
+    const xList = d.map((p) => p[0]);
+    const yList = d.map((p) => p[1]);
+    const minX = _.min(xList);
+    const maxX = _.max(xList);
+
+    const minY = _.min(yList);
+    const maxY = _.max(yList);
+
+    const x = +minX.toFixed(3);
+    const y = +minY.toFixed(3);
+    const width = +Math.abs(maxX - minX).toFixed(3);
+    const height = +Math.abs(maxY - minY).toFixed(3);
+    return {
+      x, y, width, height,
+    };
   }
 }
 

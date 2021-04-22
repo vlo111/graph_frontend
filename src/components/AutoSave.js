@@ -226,6 +226,8 @@ class AutoSave extends Component {
     if (deleteLabels.length) {
       promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
+    Chart.event.emit('auto-save')
+
     const res = await Promise.all(promise);
     // res.forEach((d) => {
     //   if (d.payload.data.status !== 'ok') {
