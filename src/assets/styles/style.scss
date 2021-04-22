@@ -8405,8 +8405,9 @@ img.preview-scaled {
   }
 
   .viewArea {
-    fill: rgba($color-accent, 0.2);
+    fill: rgba($color-accent, 0.15);
     stroke: $color-accent;
     cursor: move;
+    opacity: 1;
   }
 }
