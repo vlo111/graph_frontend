@@ -451,6 +451,17 @@ class Api {
       data: { customFields },
     });
   }
+
+  //History
+
+  static getNodeHistory(graphId, nodeId) { 
+    return api.get(`/graph-history/node-history/${graphId}/${nodeId}`);
+  }
+  static getGraphHistory(graphId) { 
+    return api.get(`/graph-history/graph-history/${graphId}`);
+  }
+
+
 }
 
 export default Api;

@@ -10,7 +10,7 @@ import Utils from '../helpers/Utils';
 import Chart from '../Chart';
 import { setLoading } from '../store/actions/app';
 import ExportNodeTabs from './ExportNode/ExportNodeTabs';
-import GraphUsersInfo from "./GraphUsersInfo";
+import GraphUsersInfo from "./graphHistory/GraphUsersInfo";
 import Button from "./form/Button";
 import CommentModal from './CommentNode';
 import ContextMenu from './contextMenu/ContextMenu';
@@ -22,6 +22,7 @@ import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
+import { ReactComponent as HistorySvg } from '../assets/images/icons/history.svg';
 
 class HeaderMini extends Component {
   static propTypes = {
@@ -159,7 +160,10 @@ class HeaderMini extends Component {
         </div>
 
         {showGraphUsersInfo ? (
-          <GraphUsersInfo onClose={() => this.toggleGraphUsersInfo(false)} />
+          <GraphUsersInfo   
+            closeModal={() => this.toggleGraphUsersInfo(false)}
+            graph={singleGraph}
+          />
         ) : null}
         {showNodeComment ? (
           <CommentModal
