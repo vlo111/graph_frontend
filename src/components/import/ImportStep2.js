@@ -31,7 +31,7 @@ class ImportStep2 extends Component {
 
   import = async () => {
     const { importData } = this.props;
-    const singleGraph = Chart.getData();
+    const singleGraph = _.cloneDeep(Chart.getData());
 
     const duplications = _.intersectionBy(singleGraph.nodes, importData.nodes, 'name');
     if (duplications.length) {

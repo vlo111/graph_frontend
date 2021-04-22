@@ -139,8 +139,8 @@ class AutoSave extends Component {
     nodes.forEach((node) => {
       const oldNode = oldNodes.find((n) => n.id === node.id);
       if (oldNode) {
-        if (node.import || oldNode.create) {
-        // if (oldNode.create) {
+        if (node.import || oldNode.create || !('index' in oldNode)) {
+          // if (oldNode.create) {
           createNodes.push(node);
         } else if (oldNode.fx !== node.fx || oldNode.fy !== node.fy) {
           updateNodePositions.push({
