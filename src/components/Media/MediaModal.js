@@ -11,7 +11,7 @@ import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg'
 import Button from '../form/Button';
 import { getDocumentsRequest } from '../../store/actions/document';
 import NodeIcon from '../NodeIcon';
-import { getSingleGraphRequest, setActiveTab } from '../../store/actions/graphs';
+import { getSingleGraphRequest, getAllTabsRequest, setActiveTab } from '../../store/actions/graphs';
 import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
 import Input from '../form/Input';
@@ -19,24 +19,29 @@ import Input from '../form/Input';
 class MediaModal extends Component {
     static propTypes = {
       getSingleGraphRequest: PropTypes.func.isRequired,
+      getAllTabsRequest: PropTypes.func.isRequired,
       setActiveButton: PropTypes.func.isRequired,
       getDocumentsRequest: PropTypes.func.isRequired,
       documentSearch: PropTypes.object.isRequired,
       setActiveTab: PropTypes.func.isRequired,
     }
 
-    constructor() {
-      super();
-      this.state = {
-        loading: true,
-        getCheckedNodes: true,
-        getCheckedDocs: true,
-        getCheckedImages: true,
-        getCheckedVideos: true,
-        search: '',
-      };
-      this.iframes = [];
-    }
+  initTabs = memoizeOne(() => {
+    this.props.getAllTabsRequest(window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1));
+  })
+
+  constructor() {
+    super();
+    this.state = {
+      loading: true,
+      getCheckedNodes: true,
+      getCheckedDocs: true,
+      getCheckedImages: true,
+      getCheckedVideos: true,
+      search: '',
+    };
+    this.iframes = [];
+  }
 
     closeModal = () => {
       this.props.setActiveButton('create');
@@ -109,14 +114,16 @@ class MediaModal extends Component {
     }
 
     render() {
-      let { documentSearch, singleGraph } = this.props;
+      let { documentSearch, singleGraph, graphTabs } = this.props;
+
+      this.initTabs();
 
       const { nodes } = singleGraph;
 
       const {
         getCheckedNodes, getCheckedDocs, getCheckedImages, getCheckedVideos, search,
       } = this.state;
-      console.log(search);
+
       const graphIdParam = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
       this.searchDocuments(graphIdParam);
 
@@ -165,34 +172,26 @@ class MediaModal extends Component {
       }
 
       // Insert tab video
-      const nodeTypes = Object.keys(singleGraph.customFields);
+      if (graphTabs && graphTabs.length && !_.isEmpty(singleGraph?.nodes)) {
+        graphTabs.forEach((p) => {
+          const node = singleGraph.nodes.filter((g) => g.id === p.nodeId)[0];
 
-      nodeTypes.forEach((nmodeType) => {
-        const tabNames = Object.keys(singleGraph.customFields[nmodeType]);
+          const tabData = p.tab;
 
-        tabNames.forEach((tabName) => {
-          const tabValue = singleGraph.customFields[nmodeType][tabName].values;
-
-          Object.keys(tabValue).forEach((nodeId) => {
-            const tabContent = tabValue[nodeId];
-
+          tabData.forEach((tab) => {
             const mediaVideoHtml = document.createElement('div');
-
-            mediaVideoHtml.innerHTML = tabContent;
-
+            mediaVideoHtml.innerHTML = tab.value;
             Array.from(mediaVideoHtml.getElementsByTagName('iframe')).forEach((el) => {
-              const node = ChartUtils.getNodeById(nodeId);
-
               if (getCheckedVideos) {
                 documentSearch.push({
-                  id: nodeId,
+                  id: node.id,
                   user: singleGraph.user,
                   node,
                   data: el,
                   nodeId: node.id,
                   nodeName: node.name,
                   nodeType: node.type,
-                  tabName,
+                  tabName: tab.name,
                   added: node.id,
                   type: 'video',
                   graphId: graphIdParam,
@@ -201,7 +200,7 @@ class MediaModal extends Component {
             });
           });
         });
-      });
+      }
 
       // Search media
       documentSearch = documentSearch.filter((p) => p.nodeName.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
@@ -369,6 +368,7 @@ class MediaModal extends Component {
 const mapStateToProps = (state) => ({
   documentSearch: state.document.documentSearch,
   singleGraph: state.graphs.singleGraph,
+  graphTabs: state.graphs.graphTabs,
 });
 
 const mapDispatchToProps = {
@@ -376,6 +376,7 @@ const mapDispatchToProps = {
   setActiveTab,
   getDocumentsRequest,
   getSingleGraphRequest,
+  getAllTabsRequest,
 };
 
 const Container = connect(

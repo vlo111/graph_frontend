@@ -137,6 +137,12 @@ class Api {
     });
   }
 
+  static getAllTabs(graphId, params = {}) {
+    return api.get(`/graphs/getAllTabs/${graphId}`, {
+      params,
+    });
+  }
+
   static getGraphInfo(graphId) {
     return api.get(`/graphs/info/${graphId}`);
   }

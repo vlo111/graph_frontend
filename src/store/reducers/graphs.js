@@ -8,6 +8,7 @@ import {
   GET_GRAPHS_LIST,
   GET_NODES_LIST,
   GET_SINGLE_GRAPH,
+  GET_ALL_TABS,
   SET_NODE_CUSTOM_FIELD,
   ADD_NODE_CUSTOM_FIELD_KEY,
   REMOVE_NODE_CUSTOM_FIELD_KEY,
@@ -16,7 +17,11 @@ import {
   SET_GRAPH_CUSTOM_FIELDS,
   GET_SINGLE_GRAPH_PREVIEW,
   UPDATE_GRAPH,
-  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY, SET_ACTIVE_TAB, GET_NODE_CUSTOM_FIELDS, GET_GRAPH_INFO,
+  REMOVE_NODE_FROM_CUSTOM_FIELD,
+  RENAME_NODE_CUSTOM_FIELD_KEY,
+  SET_ACTIVE_TAB,
+  GET_NODE_CUSTOM_FIELDS,
+  GET_GRAPH_INFO,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -43,6 +48,8 @@ const initialState = {
   actionsCount: {},
   nodeCustomFields: [],
   activeTab: '',
+  graphTabs: [],
+  graphTabsStatus: '',
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -362,6 +369,28 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         activeTab: action.payload.tabName,
+      };
+    }
+    case GET_ALL_TABS.REQUEST: {
+      return {
+        ...state,
+        graphTabs: [],
+        graphTabsStatus: 'request',
+      };
+    }
+    case GET_ALL_TABS.SUCCESS: {
+      const { graphTabs } = action.payload.data;
+
+      return {
+        ...state,
+        graphTabs,
+        graphTabsStatus: 'success',
+      };
+    }
+    case GET_ALL_TABS.FAIL: {
+      return {
+        ...state,
+        graphTabsStatus: 'fail',
       };
     }
     default: {
