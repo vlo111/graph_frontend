@@ -117,6 +117,7 @@ class AddLabelModal extends Component {
       if (i > -1) {
         labels[i] = labelData;
       } else {
+        labelData.update = true;
         labels.push(labelData);
       }
       const nodes = Chart.getNodes();

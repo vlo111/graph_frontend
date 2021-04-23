@@ -142,7 +142,7 @@ class AutoSave extends Component {
           createLabels.push(label);
         } else if (!oldLabel.name && label.name) {
           createLabels.push(label);
-        } else if (!_.isEqual(oldLabel.d, label.d)) {
+        } else if (!_.isEqual(oldLabel.d, label.d) || !_.isEqual(oldLabel.name, label.name)) {
           updateLabels.push(label);
         }
       }
