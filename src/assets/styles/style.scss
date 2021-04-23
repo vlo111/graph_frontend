@@ -6106,8 +6106,8 @@ body .gh__menu {
     min-height: 350px;
     display: inline-flex;
     align-items:center;
-    justify-content:center;    
- 
+    justify-content:center;
+
     .close {
       position: absolute;
     }
@@ -6115,7 +6115,7 @@ body .gh__menu {
     h2 {
       font-size: 22px;
       font-weight: 600;
-    } 
+    }
     .table {
       width: 100%;
       display: flex;
@@ -6124,11 +6124,11 @@ body .gh__menu {
       margin: 0.5rem;
       line-height: 1.5;
       //border-bottom: 1px solid #d0d0d0;
-      flex: 1 1 auto;      
+      flex: 1 1 auto;
       align-items: flex-start;
       overflow-y: hidden;
       padding-bottom:230px;
-     
+
     }
     .row {
       display: flex;
@@ -6144,8 +6144,8 @@ body .gh__menu {
         // word-break: break-all;
         display: flex;
         color: black;
-        align-items: center; 
-        justify-content: center; 
+        align-items: center;
+        justify-content: center;
 
         .userName {
           display: flex;
@@ -6161,14 +6161,14 @@ body .gh__menu {
         }
         &.lg {
           flex: 3;
-        } 
-        
+        }
+
       }
       &.header {
       //  border: none;
         position: sticky;
         top: 10px;
-        font-weight: 700; 
+        font-weight: 700;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         background-color: #cad0da;
         min-height: 50px;
@@ -6184,7 +6184,7 @@ body .gh__menu {
         padding-left: 31px;
       }
 
-    } 
+    }
   }
 }
 
@@ -8427,7 +8427,7 @@ img.preview-scaled {
 
   bottom: 20px;
   z-index: 99999;
-  width: 25%;
+  width: 20%;
   height: 20%;
   border: 1px solid #ebebeb;
   background-color: white;

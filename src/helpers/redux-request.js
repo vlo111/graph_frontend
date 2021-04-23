@@ -89,7 +89,6 @@ function createRequestMiddleware() {
         });
       }
     }
-
     return next(action);
   };
 }
