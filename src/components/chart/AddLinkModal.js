@@ -95,6 +95,7 @@ class AddLinkModal extends Component {
       linkData.updatedAt = moment().unix();
       linkData.updatedUser = currentUserId;
       if (isUpdate) {
+        linkData.update = true;
         links = links.map((d) => {
           if (d.index === linkData.index) {
             d.sx = undefined;
@@ -102,7 +103,6 @@ class AddLinkModal extends Component {
           }
           return d;
         });
-        linkData.update = true;
         // this.props.updateLinksRequest(graphId, [linkData]);
       } else {
         linkData.create = true;

@@ -110,6 +110,7 @@ class AutoSave extends Component {
     readOnly: d.readOnly,
     status: d.status || 'approved',
     fake: d.fake,
+    update: d.update,
   })
 
   handleSquareDragEnd = (ev, d) => {
@@ -194,6 +195,8 @@ class AutoSave extends Component {
         }
       }
     });
+
+    console.log({ oldLinks, links })
 
     if (deleteNodes.length && deleteNodes.length === nodes.length) {
       document.body.classList.remove('autoSave');
