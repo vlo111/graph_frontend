@@ -1793,7 +1793,6 @@ class Chart {
 
       this.graphMovement();
       this.labelMovement();
-      Chart.event.emit('selected.dragend');
     };
 
     const handleDragEnd = () => {
@@ -1802,6 +1801,7 @@ class Chart {
 
     const handleSquareDragEnd = (ev) => {
       handleSquareDragStart();
+      Chart.event.emit('selected.dragend', ev);
     };
 
     const handleDragStart = (ev) => {
