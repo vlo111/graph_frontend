@@ -5,6 +5,9 @@ import { withRouter } from 'react-router-dom';
 import Outside from '../Outside';
 import { getNodeCustomFieldsRequest } from '../../store/actions/graphs';
 import NodeIcon from '../NodeIcon';
+import Button from "../form/Button";
+
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class AnalyticalTab extends Component {
     static propTypes = {
@@ -27,8 +30,9 @@ class AnalyticalTab extends Component {
       return (
         <Outside exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
           <div id="nodeFullInfo" className="analyticalResult">
-            <h2 className="shortest-tab-title">Find shortest path</h2>
-            <div onClick={this.goToBackHandle} className="shortest-goToBack">go to back</div>
+            <h3 className="shortest-tab-title">Shortest path</h3>
+            <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.goToBackHandle} /> 
+            
             <div className="container-shortest-tab">
               {nodes.map((p) => (
                 <div className="left">

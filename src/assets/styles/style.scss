@@ -6181,6 +6181,7 @@ body .gh__menu {
         justify-content: center;
         align-items: center;
         width: 25px;
+        padding-left: 31px;
       }
 
     }
@@ -8346,12 +8347,12 @@ img.preview-scaled {
 .analyticalResult {
   height: 100% !important;
   top: 0 !important;
-  width: 40% !important;
-  background: none !important;
+  width: 40% !important; 
 
   .shortest-tab-title {
-    text-align: center;
-    color: crimson;
+    text-align: center; 
+    padding-bottom: 44px;
+    padding-top: 11px;
   }
 
   .shortest-goToBack {
@@ -8409,6 +8410,14 @@ img.preview-scaled {
         margin-top: -15px;
       }
     }
+  }
+  .close {
+    background-color: #fff;
+    padding: 0;
+    position: absolute;
+    left: 15px;
+    z-index: 2;
+    top: 4px;
   }
 }
 
