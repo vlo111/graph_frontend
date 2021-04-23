@@ -59,7 +59,7 @@ class AutoSave extends Component {
   }
 
   handleChartRender = (ev) => {
-    console.log(ev)
+    console.log(ev);
     clearTimeout(this.timeout);
     if (ev === Chart && Chart.ignoreAutoSave) {
       return;
@@ -187,7 +187,9 @@ class AutoSave extends Component {
     links.forEach((link) => {
       const oldLink = oldLinks.find((l) => l.id === link.id);
       if (oldLink) {
-        if (!_.isEqual(this.formatLink(oldLink), this.formatLink(link)) && !link.create) {
+        if (!('index' in oldLink)) {
+          createLinks.push(link);
+        } else if (!_.isEqual(this.formatLink(oldLink), this.formatLink(link)) && !link.create) {
           updateLinks.push(link);
         }
       }
@@ -199,7 +201,7 @@ class AutoSave extends Component {
     }
 
     if (createNodes.length) {
-      console.log(createNodes, this.props.createNodesRequest, 444)
+      console.log(createNodes, this.props.createNodesRequest, 444);
       await this.props.createNodesRequest(graphId, createNodes);
     }
     const promise = [];
