@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import * as d3 from 'd3';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -19,7 +18,20 @@ class ReactChartMap extends Component {
   componentDidMount() {
     Chart.event.on('zoom', this.handleChartZoom);
     Chart.event.on('auto-save', this.autoSave);
+    this.viewArea = d3.select('#reactChartMap .viewArea');
+    this.viewArea.call(
+      d3.drag()
+        .on('drag', this.handleDrag),
+    );
   }
+
+  componentWillUnmount() {
+    this.viewArea.call(
+      d3.drag()
+        .on('drag', null),
+    );
+  }
+
 
   autoSave = () => {
     clearTimeout(this.timeOut);
@@ -33,22 +45,21 @@ class ReactChartMap extends Component {
     }, 200);
   }
 
-  handleMouseDown = () => {
-    this.dragActive = true;
+  zoom = (scale = 1, x = 0, y = 0) => {
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
   }
 
-  handleMouseUp = () => {
-    this.dragActive = false;
-  }
-
-  handleMouseMove = (ev) => {
-    if (!this.dragActive) {
-      return;
-    }
-    console.log(ev)
+  handleDrag = (ev) => {
+    const { transform } = this.state;
+    const { dx, dy } = ev;
+    transform.x -= dx;
+    transform.y -= dy;
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(transform.x, transform.y));
+    this.setState({ transform });
   }
 
   render() {
+    return  null;
     const { transform } = this.state;
     const nodes = Chart.getNodes();
     const labels = Chart.getLabels();
@@ -94,16 +105,12 @@ class ReactChartMap extends Component {
             ))}
 
             <rect
-              fill="red"
               className="viewArea"
               x={(-1 * transform.x) / transform.k}
               y={(-1 * transform.y) / transform.k}
               strokeWidth={originalWidth / window.innerWidth * 2}
               width={(originalWidth / window.innerWidth + window.innerWidth) / transform.k}
               height={(originalHeight / window.innerHeight + window.innerHeight / transform.k)}
-              onMouseDown={this.handleMouseDown}
-              onMouseUp={this.handleMouseUp}
-              onMouseMove={this.handleMouseMove}
             />
           </g>
         </svg>

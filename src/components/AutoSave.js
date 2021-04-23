@@ -66,8 +66,8 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    this.saveGraph();
-    // this.timeout = setTimeout(this.saveGraph, 50);
+    // this.saveGraph();
+    this.timeout = setTimeout(this.saveGraph, 0);
   }
 
   formatNode = (node) => ({
@@ -118,7 +118,6 @@ class AutoSave extends Component {
 
   saveGraph = async () => {
     const { match: { params: { graphId } } } = this.props;
-    console.log(Chart.ignoreAutoSave);
     if (!graphId) {
       return;
     }
@@ -199,6 +198,7 @@ class AutoSave extends Component {
     }
 
     if (createNodes.length) {
+      console.log(createNodes, this.props.createNodesRequest, 444)
       await this.props.createNodesRequest(graphId, createNodes);
     }
     const promise = [];

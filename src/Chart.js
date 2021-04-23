@@ -803,7 +803,6 @@ class Chart {
           .attr('y', height / -2 + 10);
 
         this.undoManager.push(this.getData());
-        this.event.emit('label.dragend', ev, d);
         return;
       }
       datum.d[0][0] = +(datum.d[0][0] + ev.dx).toFixed(2);
@@ -1935,7 +1934,6 @@ class Chart {
     this._dataNodes = null;
     this._dataLinks = null;
     this._dataLabel = null;
-    clearTimeout(this.graphMovementTimeout);
   }
 
   static renderDirections() {
