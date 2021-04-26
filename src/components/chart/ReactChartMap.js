@@ -54,7 +54,7 @@ class ReactChartMap extends Component {
     const {dx, dy} = ev;
     transform.x -= dx;
     transform.y -= dy;
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(transform.x, transform.y));
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(transform.x, transform.y).scale(transform.k));
     this.setState({transform});
   }
 
