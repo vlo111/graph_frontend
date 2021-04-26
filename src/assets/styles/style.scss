@@ -4290,7 +4290,7 @@ body .gh__menu {
 
 #autoPlay {
   position: absolute;
-  bottom: 130px;
+  bottom: 160px;
   right: 10px;
   background-color: $color-white;
   width: 40px;
@@ -8431,7 +8431,6 @@ img.preview-scaled {
   height: 20%;
   border: 1px solid #ebebeb;
   background-color: white;
-
   svg {
     height: 100%;
     width: 100%;
@@ -8456,5 +8455,15 @@ img.preview-scaled {
     stroke: $color-accent;
     cursor: move;
     opacity: 1;
+  }
+
+  .button{
+    position: absolute;
+    background-color: transparent;
+    margin: 0;
+    padding: 10px;
+    line-height: 0;
+    top: 0;
+    right: 0;
   }
 }

@@ -91,11 +91,22 @@ export function setLegendButton(mode) {
 
 export const ONLINE_USERS = 'ONLINE_USERS';
 
-export function getOnlineUsersRequest(data) {   
+export function getOnlineUsersRequest(data) {
   return {
     type: ONLINE_USERS,
     payload: {
       data,
+    },
+  };
+}
+
+export const TOGGLE_GRAPH_MAP = 'TOGGLE_GRAPH_MAP';
+
+export function toggleGraphMap(open) {
+  return {
+    type: TOGGLE_GRAPH_MAP,
+    payload: {
+      open,
     },
   };
 }

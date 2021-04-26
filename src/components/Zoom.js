@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as d3 from 'd3';
 import Icon from './form/Icon';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
+import {toggleGraphMap} from "../store/actions/app";
+import {connect} from "react-redux";
 
 class Zoom extends Component {
   componentDidMount() {
@@ -73,12 +75,25 @@ class Zoom extends Component {
   render() {
     return (
       <div id="chartZoom">
-        <Icon value="fa-arrows-alt" onClick={() => this.zoom()} className="button" />
-        <Icon value="fa-plus" onClick={this.zoomIn} className="button" />
-        <Icon value="fa-minus" onClick={this.zoomOut} className="button" />
+        <Icon value="fa-map-o" style={{ marginLeft: 7, marginRight: 0 }} onClick={this.props.toggleGraphMap} className="button"/>
+        <Icon value="fa-arrows-alt" onClick={() => this.zoom()} className="button"/>
+        <Icon value="fa-plus" onClick={this.zoomIn} className="button"/>
+        <Icon value="fa-minus" onClick={this.zoomOut} className="button"/>
       </div>
     );
   }
 }
 
-export default Zoom;
+const mapStateToProps = (state) => ({
+  showGraphMap: state.app.showGraphMap
+});
+const mapDispatchToProps = {
+  toggleGraphMap
+};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Zoom);
+
+export default Container;

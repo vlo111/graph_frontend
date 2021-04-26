@@ -59,7 +59,6 @@ class AutoSave extends Component {
   }
 
   handleChartRender = (ev) => {
-    console.log(ev);
     clearTimeout(this.timeout);
     if (ev === Chart && Chart.ignoreAutoSave) {
       return;

@@ -2,126 +2,39 @@ import React, {Component} from 'react';
 import * as d3 from 'd3';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
+import ReactChartMapSvg from "./ReactChartMapSvg";
+import * as PropTypes from "prop-types";
+import Button from "../form/Button";
+import {setActiveButton, setGridIndexes, toggleGraphMap} from "../../store/actions/app";
+import {connect} from "react-redux";
+
 
 class ReactChartMap extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      transform: {
-        k: 1,
-        x: 0,
-        y: 0,
-      },
-    };
-  }
-
-  componentDidMount() {
-    Chart.event.on('zoom', this.handleChartZoom);
-    Chart.event.on('auto-save', this.autoSave);
-    this.viewArea = d3.select('#reactChartMap .viewArea');
-    this.viewArea.call(
-      d3.drag()
-        .on('drag', this.handleDrag),
-    );
-  }
-
-  componentWillUnmount() {
-    this.viewArea.call(
-      d3.drag()
-        .on('drag', null),
-    );
-  }
-
-
-  autoSave = () => {
-    clearTimeout(this.timeOut);
-    this.timeOut = setTimeout(() => this.forceUpdate(), 500);
-  }
-
-  handleChartZoom = (ev, d) => {
-    clearTimeout(this.timeOutZoom);
-    this.timeOutZoom = setTimeout(() => {
-      this.setState({transform: d.transform});
-    }, 200);
-  }
-
-  zoom = (scale = 1, x = 0, y = 0) => {
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
-  }
-
-  handleDrag = (ev) => {
-    const {transform} = this.state;
-    const {dx, dy} = ev;
-    transform.x -= (dx * transform.k);
-    transform.y -= (dy * transform.k);
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(transform.x, transform.y).scale(transform.k));
-    this.setState({transform});
-  }
 
   render() {
-    const {transform} = this.state;
-    const nodes = Chart.getNodes();
-    const labels = Chart.getLabels();
-    const {innerWidth, innerHeight} = window;
-    const {
-      width, height, min, max,
-    } = ChartUtils.getDimensions();
-
-    const originalWidth = max[0] - min[0];
-    const originalHeight = max[1] - min[1];
-    let r = originalWidth / 180;
-    if (r > 100) {
-      r = 100
-    }else if (r < 50) {
-      r = 50;
+    const { showGraphMap } = this.props;
+    if (!showGraphMap) {
+      return null;
     }
     return (
       <div className="reactChartMapWrapper">
-        <svg
-          ref={(ref) => this.ref = ref}
-          id="reactChartMap"
-          viewBox={`${min[0]} ${min[1]} ${originalWidth} ${originalHeight}`}
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-        >
-          <g>
-            {labels.filter((l) => l.type !== 'folder').map((l) => {
-              const square = ChartUtils.pathToSquare(l.d);
-              return (
-                <rect
-                  key={l.id}
-                  width={square.width}
-                  height={square.height}
-                  x={square.x}
-                  y={square.y}
-                  fill={ChartUtils.labelColors(l)}
-                />
-              );
-            })}
-            {nodes.map((n) => (
-              <circle
-                key={n.id}
-                cx={+n.fx.toFixed(3)}
-                cy={+n.fy.toFixed(3)}
-                r={+r.toFixed(3)}
-                fill={ChartUtils.nodeColor(n)}
-              />
-            ))}
-
-            <rect
-              className="viewArea"
-              x={(-1 * transform.x) / transform.k}
-              y={(-1 * transform.y) / transform.k}
-              strokeWidth={originalWidth / window.innerWidth * 2}
-              width={(originalWidth / window.innerWidth + window.innerWidth) / transform.k}
-              height={(originalHeight / window.innerHeight + window.innerHeight / transform.k)}
-            />
-          </g>
-        </svg>
-
+        <ReactChartMapSvg/>
       </div>
     );
   }
 }
 
-export default ReactChartMap;
+
+const mapStateToProps = (state) => ({
+  showGraphMap: state.app.showGraphMap
+});
+const mapDispatchToProps = {
+  toggleGraphMap
+};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ReactChartMap);
+
+export default Container;

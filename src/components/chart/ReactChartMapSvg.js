@@ -41,7 +41,7 @@ class ReactChartMap extends Component {
   handleChartZoom = (ev, d) => {
     clearTimeout(this.timeOutZoom);
     this.timeOutZoom = setTimeout(() => {
-      this.setState({transform: d.transform});
+      this.setState({ transform: d.transform });
     }, 200);
   }
 
@@ -52,17 +52,17 @@ class ReactChartMap extends Component {
   handleDrag = (ev) => {
     const {transform} = this.state;
     const {dx, dy} = ev;
-    transform.x -= dx;
-    transform.y -= dy;
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(transform.x, transform.y));
+    transform.x -= (dx * transform.k);
+    transform.y -= (dy * transform.k);
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(transform.x, transform.y).scale(transform.k));
     this.setState({transform});
   }
 
   render() {
-    const {transform} = this.state;
+    const { transform } = this.state;
     const nodes = Chart.getNodes();
     const labels = Chart.getLabels();
-    const {innerWidth, innerHeight} = window;
+    const { innerWidth, innerHeight } = window;
     const {
       width, height, min, max,
     } = ChartUtils.getDimensions();
@@ -72,54 +72,51 @@ class ReactChartMap extends Component {
     let r = originalWidth / 180;
     if (r > 100) {
       r = 100
-    }else if (r < 50) {
+    } else if (r < 50) {
       r = 50;
     }
     return (
-      <div className="reactChartMapWrapper">
-        <svg
-          ref={(ref) => this.ref = ref}
-          id="reactChartMap"
-          viewBox={`${min[0]} ${min[1]} ${originalWidth} ${originalHeight}`}
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-        >
-          <g>
-            {labels.filter((l) => l.type !== 'folder').map((l) => {
-              const square = ChartUtils.pathToSquare(l.d);
-              return (
-                <rect
-                  key={l.id}
-                  width={square.width}
-                  height={square.height}
-                  x={square.x}
-                  y={square.y}
-                  fill={ChartUtils.labelColors(l)}
-                />
-              );
-            })}
-            {nodes.map((n) => (
-              <circle
-                key={n.id}
-                cx={+n.fx.toFixed(3)}
-                cy={+n.fy.toFixed(3)}
-                r={+r.toFixed(3)}
-                fill={ChartUtils.nodeColor(n)}
+      <svg
+        ref={(ref) => this.ref = ref}
+        id="reactChartMap"
+        viewBox={`${min[0]} ${min[1]} ${originalWidth} ${originalHeight}`}
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+      >
+        <g>
+          {labels.filter((l) => l.type !== 'folder').map((l) => {
+            const square = ChartUtils.pathToSquare(l.d);
+            return (
+              <rect
+                key={l.id}
+                width={square.width}
+                height={square.height}
+                x={square.x}
+                y={square.y}
+                fill={ChartUtils.labelColors(l)}
               />
-            ))}
-
-            <rect
-              className="viewArea"
-              x={(-1 * transform.x) / transform.k}
-              y={(-1 * transform.y) / transform.k}
-              strokeWidth={originalWidth / window.innerWidth * 2}
-              width={(originalWidth / window.innerWidth + window.innerWidth) / transform.k}
-              height={(originalHeight / window.innerHeight + window.innerHeight / transform.k)}
+            );
+          })}
+          {nodes.map((n) => (
+            <circle
+              key={n.id}
+              cx={+n.fx.toFixed(3)}
+              cy={+n.fy.toFixed(3)}
+              r={+r.toFixed(3)}
+              fill={ChartUtils.nodeColor(n)}
             />
-          </g>
-        </svg>
+          ))}
 
-      </div>
+          <rect
+            className="viewArea"
+            x={(-1 * transform.x) / transform.k}
+            y={(-1 * transform.y) / transform.k}
+            strokeWidth={originalWidth / window.innerWidth * 2}
+            width={(originalWidth / window.innerWidth + window.innerWidth) / transform.k}
+            height={(originalHeight / window.innerHeight + window.innerHeight / transform.k)}
+          />
+        </g>
+      </svg>
     );
   }
 }
