@@ -8347,10 +8347,10 @@ img.preview-scaled {
 .analyticalResult {
   height: 100% !important;
   top: 0 !important;
-  width: 40% !important; 
+  width: 40% !important;
 
   .shortest-tab-title {
-    text-align: center; 
+    text-align: center;
     padding-bottom: 44px;
     padding-top: 11px;
   }
@@ -8452,7 +8452,7 @@ img.preview-scaled {
   }
 
   .viewArea {
-    fill: rgba($color-accent, 0.15);
+    fill: rgba($color-accent, 0.05);
     stroke: $color-accent;
     cursor: move;
     opacity: 1;
