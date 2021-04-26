@@ -70,8 +70,8 @@ class ReactChartMap extends Component {
     const originalWidth = max[0] - min[0];
     const originalHeight = max[1] - min[1];
     let r = originalWidth / 180;
-    if (r > 100) {
-      r = 100
+    if (r > 150) {
+      r = 150
     } else if (r < 50) {
       r = 50;
     }
