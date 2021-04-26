@@ -52,8 +52,8 @@ class ReactChartMap extends Component {
   handleDrag = (ev) => {
     const {transform} = this.state;
     const {dx, dy} = ev;
-    transform.x -= dx;
-    transform.y -= dy;
+    transform.x -= (dx * transform.k);
+    transform.y -= (dy * transform.k);
     Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(transform.x, transform.y).scale(transform.k));
     this.setState({transform});
   }
