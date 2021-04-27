@@ -125,7 +125,7 @@ class AutoSave extends Component {
     document.body.classList.add('autoSave');
     const links = Chart.getLinks().filter((d) => !d.fake);
     const labels = Chart.getLabels();
-    const nodes = Chart.getNodes().filter((d) => !d.fake);
+    const nodes = Chart.getNodes(true).filter((d) => !d.fake);
 
     const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake);
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake);
