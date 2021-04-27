@@ -127,23 +127,22 @@ class MediaModal extends Component {
       const graphIdParam = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
       this.searchDocuments(graphIdParam);
 
-      // Node documents and images of tabs
-      if (documentSearch && documentSearch.length) {
-        documentSearch.map((p) => {
-          if (p.graphs?.nodes && p.graphs?.nodes.length) {
-            p.node = p.graphs.nodes.filter((n) => n.id === p.nodeId)[0];
-          }
-        });
-        documentSearch = documentSearch.filter((p) => {
-          if (p.altText && getCheckedDocs) {
-            return true;
-          }
-          if (p.type.includes('image') && getCheckedImages) {
-            return true;
-          }
-          return false;
-        });
-      }
+    // Node documents and images of tabs
+    if (documentSearch && documentSearch.length) {
+      documentSearch.map((p) => {
+        if (p.graphs?.nodes && p.graphs?.nodes.length) {
+          p.node = p.graphs.nodes.filter((n) => n.id === p.nodeId)[0];
+        }
+      });
+      documentSearch = documentSearch.filter((p) => {
+        if (p.type.includes('image') && getCheckedImages) {
+          return true;
+        } if (!p.type.includes('image') && !p.type.includes('video') && getCheckedDocs) {
+          return true;
+        }
+        return false;
+      });
+    }
 
       // Insert node icon
       if (nodes && nodes.length) {
@@ -296,73 +295,72 @@ class MediaModal extends Component {
                                       </p>
                                     </div>
 
-                                    <div className="gallery-box-container">
-                                      <a href="#" className="gallery-box">
-                                        {
-                                          document.type.includes('video')
-                                            ? (
-                                              <span
-                                                ref={(nodeElement) => {
-                                                  nodeElement && nodeElement.appendChild(document.data);
-                                                }}
-                                              />
-                                            )
-                                            : (
-                                              <div>
-                                                <span className="gallery-box__img-container">
-                                                  <figure className="img-container">
-                                                    {document.type.includes('image') ? (
-                                                      <a target="_blank" href={document.data}>
-                                                        <img
-                                                          className="gallery-box__img"
-                                                          src={document.data}
-                                                        />
-                                                      </a>
-                                                    ) : (
-                                                      <a
-                                                        className="linkDocumentDownload"
-                                                        download={document.altText}
-                                                        href={document.data}
-                                                      >
-                                                        <div className="docContainer">
-                                                          <div title={document.altText} className="docFrame">
-                                                            {document.altText}
-                                                          </div>
-                                                        </div>
-                                                      </a>
-                                                    )}
-                                                  </figure>
-                                                </span>
-                                                <span className="gallery-box__text-wrapper">
-                                                  <span title={document.description} className="gallery-box__text">
-                                                    { document.added
-                                                      ? (document.nodeType)
-                                                      : (document.description && document.description.length > 38
-                                                        ? `${document.description.substr(0, 38)}... `
-                                                        : document.description)}
-                                                  </span>
-                                                </span>
-                                              </div>
-                                            )
-                                        }
-                                      </a>
+                                  <div className="gallery-box-container">
+                                    <div className="gallery-box">
+                                      { document.type.includes('video')
+                                        ? (
+                                          <span
+                                            ref={(nodeElement) => {
+                                              nodeElement && nodeElement.appendChild(document.data);
+                                            }}
+                                          />
+                                        )
+                                        : (
+                                          <div>
+                                            <span className="gallery-box__img-container">
+                                              <figure className="img-container">
+                                                {document.type.includes('image') ? (
+                                                  <a target="_blank" href={document.data}>
+                                                    <img
+                                                      className="gallery-box__img"
+                                                      src={document.data}
+                                                    />
+                                                  </a>
+                                                ) : (
+                                                  <a
+                                                    className="linkDocumentDownload"
+                                                    download={document.nodeName}
+                                                    href={document.data}
+                                                    target="_blank"
+                                                  >
+                                                    <div className="docContainer">
+                                                      <div className="docFrame">
+                                                        {document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}
+                                                      </div>
+                                                    </div>
+                                                  </a>
+                                                )}
+                                              </figure>
+                                            </span>
+                                            <span className="gallery-box__text-wrapper">
+                                              <span title={document.description} className="gallery-box__text">
+                                                { document.added
+                                                  ? (document.nodeType)
+                                                  : (document.description && document.description.length > 38
+                                                    ? `${document.description.substr(0, 38)}... `
+                                                    : document.description)}
+                                              </span>
+                                            </span>
+                                          </div>
+                                        )}
                                     </div>
                                   </div>
                                 </div>
-                                )
-                              ))}
-                            </div>
-                          </article>
-                        </div>
+                              </div>
+                              )
+                            ))}
+                          </div>
+                        </article>
                       </div>
                     </div>
                   </div>
                 </div>
-              ) : <h3 className="mediaNotFound">No Media Found</h3>}
-          </Modal>
-        </div>
-      );
-    }
+              </div>
+            ) : <h3 className="mediaNotFound">No Media Found</h3>}
+        </Modal>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
