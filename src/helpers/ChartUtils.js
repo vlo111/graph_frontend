@@ -7,9 +7,9 @@ import stripHtml from 'string-strip-html';
 import path from 'path';
 import Chart from '../Chart';
 import history from './history';
-import { DASH_TYPES, LINK_COLORS, LINK_DRAFT_COLORS } from '../data/link';
-import { NODE_COLOR } from '../data/node';
-import { DEFAULT_FILTERS } from '../data/filter';
+import {DASH_TYPES, LINK_COLORS, LINK_DRAFT_COLORS} from '../data/link';
+import {NODE_COLOR} from '../data/node';
+import {DEFAULT_FILTERS} from '../data/filter';
 import Api from '../Api';
 import Utils from './Utils';
 
@@ -771,11 +771,11 @@ class ChartUtils {
     return _.uniqBy(links, (l) => {
       if (l.direction) {
         return JSON.stringify({
-          1: l.name, 2: l.type, 3: l.source, 4: l.target,
+          2: l.type, 3: l.source, 4: l.target,
         });
       }
       return JSON.stringify({
-        1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
+        2: l.type, 3: [l.source, l.target].sort(),
       });
     });
   }
