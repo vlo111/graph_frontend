@@ -63,8 +63,8 @@ class SearchDocuments extends Component {
             result[obj[key]].user = obj.user;
           }
 
-          obj.graphName = obj.graphs.title;
-          obj.graphCreated = obj.graphs.createdAt;
+          obj.graphName = obj.graphs?.title;
+          obj.graphCreated = obj.graphs?.createdAt;
 
           obj.node = obj.graphs?.nodes.filter((p) => p.id === obj.nodeId)[0];
 
@@ -129,11 +129,11 @@ class SearchDocuments extends Component {
                                       )}
                                     >
                                       <div className="left">
-                                        <NodeIcon node={document.node} />
+                                       {document.node &&  <NodeIcon node={document?.node} /> }
                                       </div>
                                       <div className="right">
-                                        <span className="headerName">{document.node.name}</span>
-                                        <span className="type">{document.node.type}</span>
+                                        <span className="headerName">{document?.node?.name}</span>
+                                        <span className="type">{document?.node?.type}</span>
                                       </div>
                                     </p>
                                     {
