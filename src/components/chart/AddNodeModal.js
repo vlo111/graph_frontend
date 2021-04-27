@@ -316,7 +316,7 @@ class AddNodeModal extends Component {
 
                 <FileInput
                   label={nodeData.nodeType === 'infography' ? 'Image' : 'Icon'}
-                  accept=".png,.jpg,.gif"
+                  accept=".png,.jpg,.gif,.svg"
                   value={nodeData.icon}
                   onChangeFile={(v, file) => this.handleChange('icon', file)}
                 />
