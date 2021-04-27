@@ -188,7 +188,7 @@ class AutoSave extends Component {
       const oldLink = oldLinks.find((l) => l.id === link.id);
       if (oldLink) {
         if (!('index' in oldLink)) {
-          createLinks.push(link);
+          // createLinks.push(link);
         } else if (!_.isEqual(this.formatLink(oldLink), this.formatLink(link)) && !link.create) {
           updateLinks.push(link);
         }

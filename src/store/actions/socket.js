@@ -100,7 +100,7 @@ export function socketInit() {
     socket.on('node.update-fields', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
-        // ChartUpdate.nodePositionsChange(data.nodes);
+        // ChartUpdate.nodeCustomFieldsChange(data.nodes);
       }
     });
 

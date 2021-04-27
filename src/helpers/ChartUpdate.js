@@ -41,6 +41,10 @@ class ChartUpdate {
     Chart.render({ nodes }, { ignoreAutoSave: true });
   }
 
+  static nodeCustomFieldsChange = () => {
+
+  }
+
   static linkCreate = (linksCreate) => {
     let links = Chart.getLinks();
     links.push(..._.compact(linksCreate));
