@@ -114,14 +114,6 @@ class NodeTabs extends Component {
           </div>
         ) : null}
         <div className="container-tabs">
-          {node.location ? (
-            <Button
-              className={activeTab === '_location' ? 'active activeNoShadow' : undefined}
-              onClick={() => this.setActiveTab('_location')}
-            >
-              <p>Location</p>
-            </Button>
-          ) : null}
 
           <Sortable
             onChange={this.handleOrderChange}
@@ -137,6 +129,14 @@ class NodeTabs extends Component {
               </Button>
             )}
           />
+          {node.location ? (
+            <Button
+              className={activeTab === '_location' ? 'active activeNoShadow' : undefined}
+              onClick={() => this.setActiveTab('_location')}
+            >
+              <p>Location</p>
+            </Button>
+          ) : null}
 
           {editable && !node.sourceId && node.customFields?.length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">

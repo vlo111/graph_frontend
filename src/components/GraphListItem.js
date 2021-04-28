@@ -34,27 +34,34 @@ class GraphListItem extends Component {
             </div>
           </div>
         </div>
-        <Link to={`/graphs/preview/${graph.id}`}>
+        <div className="dashboard-onhover">
+          <div className="dashboard-onhover-content">
+          <div className="dashboard-buttons flex-column d-flex" >
+              <Link className="ghButton view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>
+              <Link className="ghButton view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
+          </div>
+          </div>
+        </div>
+       
           <h3 className="title">
             {graph.title}
             {s && graph.status !== 'active' ? (
               <span>{` (${graph.status})`}</span>
             ) : null}
           </h3>
-        </Link>
-        <Link to={`/graphs/preview/${graph.id}`}>
+      
           <p className="description">
             {graph.description.length > 600 ? `${graph.description.substr(0, 600)}... ` : graph.description}
           </p>
-        </Link>
-        <Link to={`/graphs/preview/${graph.id}`}>
+       
           <img
             className="thumbnail"
             src={`${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
             alt={graph.title}
           />
-        </Link>
         <GraphListFooter graph={graph} />
+
+
       </article>
     );
   }
