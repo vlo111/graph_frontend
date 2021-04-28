@@ -212,8 +212,12 @@ class Api {
     return api.put(`/share-graphs/update/${id}`, requestData);
   }
 
-  static deleteShareGraph(id) {
-    return api.delete(`/share-graphs/delete/${id}`);
+  static deleteShareGraph(id, notification = true ) {  
+    return api.delete(`/share-graphs/delete/${id}`, {
+      params: {
+        notification
+      },
+    });
   }
 
   static listShareGraph(requestData) {

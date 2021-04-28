@@ -23,7 +23,8 @@ const GraphListHeader = ({ graph, headerTools }) => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const history = useHistory()
   const { page = 1, s: searchParam } = queryString.parse(window.location.search); 
-
+  const notification = false;
+  
   async function deleteGraph(event) {
     event.preventDefault();
     try {
@@ -46,7 +47,7 @@ const GraphListHeader = ({ graph, headerTools }) => {
 
     if (window.confirm('Are you sure?')) { 
       //delete
-      dispatch(DeleteShareGraphRequest(shareGraphId));
+      dispatch(DeleteShareGraphRequest(shareGraphId, notification));
       history.push("/");
       toast.info('Successfully deleted');
     }
