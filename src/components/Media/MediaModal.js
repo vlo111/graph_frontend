@@ -58,7 +58,7 @@ class MediaModal extends Component {
           this.setState({ loading: false });
         }
       }
-      this.resetGraph();
+      // this.resetGraph();
     }
 
     resetGraph = () => {
