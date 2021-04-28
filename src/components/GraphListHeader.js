@@ -59,13 +59,13 @@ const GraphListHeader = ({ graph, headerTools }) => {
           onClick={() => handleDeleteShareGraph(graph?.share.id)}
           className="transparent delete" />
       ) : (
-       <div> 
+       <div>         
           <Popover
             showArrow
-            triggerNode={<Button className="popover-trigger" ><EllipsisVSvg style={{ height: 23 }} /></Button>}
+            triggerNode={<Button className="ar-popover-trigger" ><EllipsisVSvg style={{ height: 23 }} /></Button>}
             trigger='click'
           >
-            <div className="popover-list">
+            <div className="ar-popover-list">
               <Button
                   icon={<EditSvg style={{ height: 30 }} />}
                   className="transparent edit"

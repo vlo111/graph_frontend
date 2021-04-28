@@ -37,11 +37,11 @@ class PopoverContent extends Component {
           ref={node => this.node = node}
           tabIndex="-1"
           onKeyDown={this.onKeyDown.bind(this)}
-          className={`popover-content${this.props.className ? ' ' + this.props.className : ''}${this.props.placement ? ' ' + this.props.placement : ''}${this.props.showArrow ? ' -arrow':''}`}
+          className={`ar-popover-content${this.props.className ? ' ' + this.props.className : ''}${this.props.placement ? ' ' + this.props.placement : ''}${this.props.showArrow ? ' -arrow':''}`}
           style={this.props.style}
         >
           <div
-            className="popover-inner"
+            className="ar-popover-inner"
           >
             {this.props.children}
           </div>
@@ -79,7 +79,7 @@ class PopoverContent extends Component {
   
     render() {
       return (
-        <div className="popover">
+        <div className="ar-popover">
           {this.props.triggerNode && React.cloneElement(this.props.triggerNode, {
             onClick: this.props.trigger === 'click' || this.props.trigger === 'hover' ? this.onToggle.bind(this) : null,
             onMouseOver: this.props.trigger === 'hover' ? this.onShow.bind(this) : null
