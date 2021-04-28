@@ -8470,6 +8470,10 @@ img.preview-scaled {
 
 .popover {
   position: relative;
+  
+  .popover-trigger {
+    background: none;
+  }
 }
 
 .popover-content {

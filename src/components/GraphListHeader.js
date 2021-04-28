@@ -13,6 +13,7 @@ import { deleteGraphRequest } from '../store/actions/graphs';
 import {deleteGraphRequest as DeleteShareGraphRequest} from '../store/actions/shareGraphs';
 import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg'; 
+import { ReactComponent as EllipsisVSvg } from '../assets/images/icons/ellipsis.svg'; 
 import { getGraphsListRequest } from '../store/actions/graphs';
 
 const GraphListHeader = ({ graph, headerTools }) => {
@@ -61,7 +62,7 @@ const GraphListHeader = ({ graph, headerTools }) => {
        <div> 
           <Popover
             showArrow
-            triggerNode={<button className="popover-trigger"><span><i className="fa fa-bars fa-ellipsis-v "></i> </span></button>}
+            triggerNode={<Button className="popover-trigger" ><EllipsisVSvg style={{ height: 23 }} /></Button>}
             trigger='click'
           >
             <div className="popover-list">
