@@ -1,11 +1,11 @@
-import { Component } from 'react';
-import { connect } from 'react-redux';
+import {Component} from 'react';
+import {connect} from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import {withRouter} from 'react-router-dom';
+import {toast} from 'react-toastify';
 import Chart from '../Chart';
-import { updateGraphThumbnailRequest } from '../store/actions/graphs';
+import {updateGraphThumbnailRequest} from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
 import {
   createNodesRequest,
@@ -13,8 +13,9 @@ import {
   updateNodesPositionRequest,
   updateNodesRequest,
 } from '../store/actions/nodes';
-import { createLinksRequest, deleteLinksRequest, updateLinksRequest } from '../store/actions/links';
-import { createLabelsRequest, deleteLabelsRequest, updateLabelsRequest } from '../store/actions/labels';
+import {createLinksRequest, deleteLinksRequest, updateLinksRequest} from '../store/actions/links';
+import {createLabelsRequest, deleteLabelsRequest, updateLabelsRequest} from '../store/actions/labels';
+import Utils from "../helpers/Utils";
 
 class AutoSave extends Component {
   static propTypes = {
@@ -181,9 +182,9 @@ class AutoSave extends Component {
       }
     });
     const deleteLinks = _.differenceBy(oldLinks, links, 'id');
-    const createLinks = _.differenceBy(links, oldLinks, 'id');
+    let createLinks = _.differenceBy(links, oldLinks, 'id');
     const updateLinks = [];
-    // createLinks.push(...oldLinks.filter((l) => l.create));
+    createLinks.push(...oldLinks.filter((l) => l.create));
     links.forEach((link) => {
       const oldLink = oldLinks.find((l) => l.id === link.id);
       if (oldLink) {
@@ -194,8 +195,7 @@ class AutoSave extends Component {
         }
       }
     });
-
-    console.log({ oldLinks, links })
+    createLinks = ChartUtils.uniqueLinks(createLinks);
 
     if (deleteNodes.length && deleteNodes.length === nodes.length) {
       document.body.classList.remove('autoSave');
