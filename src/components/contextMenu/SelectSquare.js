@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+import {toast} from 'react-toastify';
 import Button from '../form/Button';
 import Chart from '../../Chart';
-import { setActiveButton, setGridIndexes } from '../../store/actions/app';
+import {setActiveButton, setGridIndexes} from '../../store/actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
-import { createGraphRequest } from '../../store/actions/graphs';
+import {createGraphRequest} from '../../store/actions/graphs';
 import Api from '../../Api';
 
 class SelectSquare extends Component {

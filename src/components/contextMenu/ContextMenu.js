@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import EventEmitter from 'events';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Button from '../form/Button';
@@ -14,7 +14,7 @@ import Icon from '../form/Icon';
 import LabelUtils from '../../helpers/LabelUtils';
 import SelectSquare from './SelectSquare';
 import DeleteModalContext from './DeleteModalContext';
-import { setActiveButton } from '../../store/actions/app';
+import {setActiveButton} from '../../store/actions/app';
 
 class ContextMenu extends Component {
   static propTypes = {
@@ -143,7 +143,7 @@ class ContextMenu extends Component {
     const showInMap = Chart.getNodes().some((d) => d.location);
     const pastData = LabelUtils.getData();
 
-    const showPast = !_.isEmpty(pastData) && (show === 'chart' || show === 'label');
+    const showPast = !_.isEmpty(pastData) && !_.isEmpty(pastData.nodes) && (show === 'chart' || show === 'label');
     if (params.fieldName === '_location') {
       return null;
     }
@@ -151,15 +151,15 @@ class ContextMenu extends Component {
     Chart.wrapper.selectAll('#fcurve, #lcurve').remove();
 
     return (
-      activeButton === 'deleteModal' ? <DeleteModalContext data={deleteDataModal} params={params} />
+      activeButton === 'deleteModal' ? <DeleteModalContext data={deleteDataModal} params={params}/>
         : (
           <div className={`contextmenuOverlay ${x + 360 > window.innerWidth ? 'toLeft' : ''}`} onClick={this.closeMenu}>
             <div className="contextmenu" style={{ left: x, top: y }}>
-              {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
-              {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
-              {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
-              {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
-              {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
+              {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params}/> : null}
+              {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params}/> : null}
+              {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params}/> : null}
+              {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params}/> : null}
+              {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params}/> : null}
 
               {['label', 'chart'].includes(show) ? (
                 <>
@@ -170,9 +170,9 @@ class ContextMenu extends Component {
               ) : null}
               {showPast ? (
                 <div className="ghButton notClose">
-                  <Icon value="fa-clipboard" />
+                  <Icon value="fa-clipboard"/>
                   Paste
-                  <Icon className="arrow" value="fa-angle-right" />
+                  <Icon className="arrow" value="fa-angle-right"/>
                   <div className="contextmenu">
                     <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
                       Append
@@ -210,9 +210,9 @@ class ContextMenu extends Component {
               {['chart'].includes(show) ? (
                 <>
                   <div className="ghButton notClose">
-                    <Icon value="fa-plus-square" />
+                    <Icon value="fa-plus-square"/>
                     Create
-                    <Icon className="arrow" value="fa-angle-right" />
+                    <Icon className="arrow" value="fa-angle-right"/>
                     <div className="contextmenu">
 
                       <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.new')}>
