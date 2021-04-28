@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
-import { setActiveButton } from '../../store/actions/app';
+import {setActiveButton} from '../../store/actions/app';
 import Input from '../form/Input';
 import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
 import Utils from '../../helpers/Utils';
-import { setActiveTab, getAllTabsRequest } from '../../store/actions/graphs';
+import {setActiveTab, getAllTabsRequest} from '../../store/actions/graphs';
 import Chart from '../../Chart';
 
 class SearchModal extends Component {
@@ -38,11 +38,12 @@ class SearchModal extends Component {
   }
 
   handleChange = async (search = '') => {
-    if (!search.trim().toLowerCase()) {
+    const s = search.trim().toLowerCase()
+    if (!s) {
       this.setState({ nodes: [], search });
       return;
     }
-    const nodes = Chart.getNodes(true);
+    const nodes = Chart.getNodes().filter(n => _.lowerCase(n.name).includes(s) || _.lowerCase(n.type).includes(s));
 
     const tabs = [];
 
@@ -134,7 +135,7 @@ class SearchModal extends Component {
             <li className="item" key={tabs[item].node.id}>
               <div tabIndex="0" role="button" className="ghButton tabButton">
                 <div className="header">
-                  <NodeIcon node={tabs[item].node} />
+                  <NodeIcon node={tabs[item].node}/>
                   <div className="headerArea">
                     <span className="name">{tabs[item].node.name}</span>
                     <span className="type">{tabs[item].node.type}</span>
@@ -144,7 +145,7 @@ class SearchModal extends Component {
                   {
                     Object.keys(tabs[item]).map((tab) => (
                       tabs[item][tab].nodeId && (
-                      <div className="contentTabs">
+                        <div className="contentTabs">
                         <span className="row nodeTabs">
                           <div
                             className="contentWrapper"
@@ -163,7 +164,7 @@ class SearchModal extends Component {
                             </div>
                           </div>
                         </span>
-                        {!tabs[item][tab].tabName.toLowerCase().includes(search)
+                          {!tabs[item][tab].tabName.toLowerCase().includes(search)
                           && !tabs[item][tab].tabSearchValue.toLowerCase().includes(search) ? (
                             <span
                               className="keywords"
@@ -172,7 +173,7 @@ class SearchModal extends Component {
                               }}
                             />
                           ) : null}
-                      </div>
+                        </div>
                       )
                     ))
                   }
@@ -185,7 +186,7 @@ class SearchModal extends Component {
             <li className="item" key={d.index}>
               <div tabIndex="0" role="button" className="ghButton" onClick={() => this.findNode(d)}>
                 <div className="left">
-                  <NodeIcon node={d} />
+                  <NodeIcon node={d}/>
                 </div>
                 <div className="right">
                   <span className="row">
