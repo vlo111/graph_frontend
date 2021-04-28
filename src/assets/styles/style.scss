@@ -8524,7 +8524,7 @@ img.preview-scaled {
     z-index: 1;
     display: block;
     width: 90%;
-    height: 29vw;
+    height: calc(5% - 3vh);
     text-align: center;
     cursor: pointer;
     border-radius: 24px;
