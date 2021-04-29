@@ -6,8 +6,17 @@ import ChartUtils from '../helpers/ChartUtils';
 import { toggleGraphMap } from "../store/actions/app";
 import { connect } from "react-redux";
 import memoizeOne from "memoize-one";
+import ReactChartMap from "./chart/ReactChartMap";
+import ReactChartMapSvg from "./chart/ReactChartMapSvg";
 
 class Zoom extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showMap: false,
+    }
+  }
+
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
     Chart.event.on('render', this.handleRender)
@@ -23,10 +32,7 @@ class Zoom extends Component {
     const {
       width, height, min, max,
     } = ChartUtils.getDimensions(false);
-    if(!width){
-      return
-    }
-    if (Chart.svg) {
+    if (width && Chart.svg) {
       window.removeEventListener('keydown', this.handleKeyDown);
       const scaleW = (window.innerWidth - 450) / width;
       const scaleH = (window.innerHeight - 70) / height;
@@ -103,17 +109,27 @@ class Zoom extends Component {
 
     this.zoom(scale, x, y);
   }
+  toggleGraphMap = () => {
+    this.setState({ showMap: true })
+  }
 
   render() {
-    const { singleGraph } = this.props;
+    const { showMap } = this.state;
     return (
-      <div id="chartZoom">
-        <Icon value="fa-map-o" style={{ marginLeft: 7, marginRight: 0 }} onClick={this.props.toggleGraphMap}
-              className="button"/>
-        <Icon value="fa-arrows-alt" onClick={() => this.zoom()} className="button"/>
-        <Icon value="fa-plus" onClick={this.zoomIn} className="button"/>
-        <Icon value="fa-minus" onClick={this.zoomOut} className="button"/>
-      </div>
+      <>
+        {showMap ? (
+          <div className="reactChartMapWrapper">
+            <ReactChartMapSvg/>
+          </div>
+        ) : null}
+        <div id="chartZoom">
+          <Icon value="fa-map-o" style={{ marginLeft: 7, marginRight: 0 }} onClick={this.toggleGraphMap}
+                className="button"/>
+          <Icon value="fa-arrows-alt" onClick={() => this.zoom()} className="button"/>
+          <Icon value="fa-plus" onClick={this.zoomIn} className="button"/>
+          <Icon value="fa-minus" onClick={this.zoomOut} className="button"/>
+        </div>
+      </>
     );
   }
 }

@@ -59,7 +59,6 @@ class GraphForm extends Component {
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
         <div className="graphWrapper">
           <ReactChart />
-          <ReactChartMap />
         </div>
         <ToolBarHeader />
         <ToolBar />

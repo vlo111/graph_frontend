@@ -8,9 +8,9 @@ class ReactChartMap extends Component {
     super(props);
     this.state = {
       transform: {
-        k: 1,
-        x: 0,
-        y: 0,
+        k:  +Chart.wrapper.attr('data-scale') || 1,
+        x: Chart.wrapper.attr('data-x') || 0,
+        y: Chart.wrapper.attr('data-y') || 0,
       },
     };
   }
