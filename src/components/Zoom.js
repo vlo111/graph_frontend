@@ -10,7 +10,7 @@ import memoizeOne from "memoize-one";
 class Zoom extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
-    Chart.event.once('render', this.handleRender)
+    Chart.event.on('render', this.handleRender)
 
   }
 
@@ -20,11 +20,14 @@ class Zoom extends Component {
 
 
   handleRender = (() => {
-    return;
     const {
       width, height, min, max,
     } = ChartUtils.getDimensions(false);
+    if(!width){
+      return
+    }
     if (Chart.svg) {
+      window.removeEventListener('keydown', this.handleKeyDown);
       const scaleW = (window.innerWidth - 450) / width;
       const scaleH = (window.innerHeight - 70) / height;
       const scale = Math.min(scaleW, scaleH);

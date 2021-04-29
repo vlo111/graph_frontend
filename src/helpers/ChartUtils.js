@@ -940,8 +940,8 @@ class ChartUtils {
     return {
       min,
       max,
-      width,
-      height,
+      width: Math.abs(width),
+      height: Math.abs(height),
     };
   }
 
