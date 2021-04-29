@@ -700,6 +700,7 @@ class Chart {
     this.setAreaBoardZoom(transform);
     if (this.nodesPath) return;
     this.renderNodeText(transform.k);
+    this.renderIcons(transform.k);
     this.renderNodeStatusText(transform.k);
   }
 
@@ -1397,7 +1398,6 @@ class Chart {
       this.renderDirections();
       this.renderLabels();
       this.renderFolders();
-      this.icons = this.renderIcons();
 
       this.nodesWrapper = this.svg.select('.nodes');
       this.node = this.nodesWrapper.selectAll('.node')
@@ -1486,16 +1486,10 @@ class Chart {
         });
 
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-        .attr('fill', (d) => {
-          if (d.icon) {
-            return `url(#i${d.index})`;
-          }
-          return ChartUtils.nodeColor(d);
-        });
-
-      this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
         .filter((d) => d.manually_size > 1)
         .attr('r', (d) => +d.manually_size + 15);
+
+
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
@@ -1506,6 +1500,7 @@ class Chart {
         }
       }
 
+      this.renderIcons();
       this.renderLinkText();
       this.renderLinkStatusText();
       this.renderNodeText();
@@ -1968,14 +1963,26 @@ class Chart {
       .text('➤');
   }
 
-  static renderIcons() {
+  static  renderIcons(scale) {
     const icons = this.wrapper.select('.icons');
 
     icons.selectAll('defs pattern').remove();
 
     const defs = icons.selectAll('defs')
       .data(this.data.nodes.filter((d) => d.icon))
-      .join('defs');
+      .join('defs')
+      .filter((d) => {
+        if (scale < 0.45 && d.nodeType !== 'infography') {
+          return false;
+        }
+        if (scale < 0.1 && d.nodeType === 'infography') {
+          return false;
+        }
+        // if (this.radiusList[d.index] < 30) {
+        //   return false;
+        // }
+        return true;
+      })
 
     defs.append('pattern')
       .attr('id', (d) => `i${d.index}`)
@@ -2014,7 +2021,30 @@ class Chart {
         return undefined;
       })
       .attr('xlink:href', (d) => ChartUtils.normalizeIcon(d.icon, d.nodeType === 'infography'));
+
+
+    this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
+      .attr('fill', (d) => {
+        if (d.icon) {
+          if (scale < 0.45 && d.nodeType !== 'infography') {
+            return ChartUtils.nodeColor(d);
+          }
+          if (scale < 0.15 && d.nodeType === 'infography') {
+            return ChartUtils.nodeColor(d);
+          }
+          return `url(#i${d.index})`;
+        }
+
+
+
+        return ChartUtils.nodeColor(d);
+      });
+
     return defs;
+  }
+
+  static renderNodeIcon(scale) {
+
   }
 
   static renderNodeText(scale) {

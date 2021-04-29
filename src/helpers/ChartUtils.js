@@ -7,9 +7,9 @@ import stripHtml from 'string-strip-html';
 import path from 'path';
 import Chart from '../Chart';
 import history from './history';
-import {DASH_TYPES, LINK_COLORS, LINK_DRAFT_COLORS} from '../data/link';
-import {NODE_COLOR} from '../data/node';
-import {DEFAULT_FILTERS} from '../data/filter';
+import { DASH_TYPES, LINK_COLORS, LINK_DRAFT_COLORS } from '../data/link';
+import { NODE_COLOR } from '../data/node';
+import { DEFAULT_FILTERS } from '../data/filter';
 import Api from '../Api';
 import Utils from './Utils';
 
@@ -911,7 +911,7 @@ class ChartUtils {
     return _.uniq(nodes).length;
   }
 
-  static getDimensions() {
+  static getDimensions(windowWidth = true) {
     const nodes = Chart.getNodes();
     const labels = Chart.getLabels();
     const minXArr = [];
@@ -931,8 +931,12 @@ class ChartUtils {
     });
     const min = [_.min(minXArr), _.min(minYArr)];
     const max = [_.max(minXArr), _.max(minYArr)];
-    const width = _.max([min[0] + max[0], window.innerWidth]);
-    const height = _.max([min[1] + max[1], window.innerHeight]);
+    let width = min[0] + max[0];
+    let height = min[1] + max[1];
+    if (windowWidth) {
+      width = _.max([min[0] + max[0], window.innerWidth]);
+      height = _.max([min[1] + max[1], window.innerHeight]);
+    }
     return {
       min,
       max,
