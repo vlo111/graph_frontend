@@ -10,7 +10,7 @@ import memoizeOne from "memoize-one";
 class Zoom extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
-
+    Chart.event.once('render', this.handleRender)
 
   }
 
@@ -19,11 +19,11 @@ class Zoom extends Component {
   }
 
 
-  autoScale = memoizeOne(() => {
+  handleRender = (() => {
+    return;
     const {
       width, height, min, max,
     } = ChartUtils.getDimensions(false);
-    console.log(width, height, min, max,)
     if (Chart.svg) {
       const scaleW = (window.innerWidth - 450) / width;
       const scaleH = (window.innerHeight - 70) / height;
@@ -32,7 +32,7 @@ class Zoom extends Component {
       let top = min[1] * scale * -1 + 75;
       // top += 70 / scale
       // left += 600 * scale
-      console.log(scaleH , scaleW)
+      console.log(scaleH, scaleW)
       if (scaleH < scaleW) {
         console.log(2323333)
         // left += (min[1] + width) * scale / 2
@@ -40,7 +40,6 @@ class Zoom extends Component {
         console.log(2222)
         // top += (min[0] + height) * scale / 2
       }
-      console.log(scale)
       Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(scale));
     }
   })
@@ -104,7 +103,6 @@ class Zoom extends Component {
 
   render() {
     const { singleGraph } = this.props;
-    this.autoScale(singleGraph);
     return (
       <div id="chartZoom">
         <Icon value="fa-map-o" style={{ marginLeft: 7, marginRight: 0 }} onClick={this.props.toggleGraphMap}

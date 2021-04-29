@@ -1490,7 +1490,6 @@ class Chart {
         .attr('r', (d) => +d.manually_size + 15);
 
 
-
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
 
@@ -1963,7 +1962,7 @@ class Chart {
       .text('➤');
   }
 
-  static  renderIcons(scale) {
+  static renderIcons(scale) {
     const icons = this.wrapper.select('.icons');
 
     icons.selectAll('defs pattern').remove();
@@ -1972,7 +1971,7 @@ class Chart {
       .data(this.data.nodes.filter((d) => d.icon))
       .join('defs')
       .filter((d) => {
-        if (scale < 0.45 && d.nodeType !== 'infography') {
+        if (scale < 0.25 && d.nodeType !== 'infography') {
           return false;
         }
         if (scale < 0.1 && d.nodeType === 'infography') {
@@ -2026,15 +2025,14 @@ class Chart {
     this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
       .attr('fill', (d) => {
         if (d.icon) {
-          if (scale < 0.45 && d.nodeType !== 'infography') {
+          if (scale < 0.25 && d.nodeType !== 'infography') {
             return ChartUtils.nodeColor(d);
           }
-          if (scale < 0.15 && d.nodeType === 'infography') {
+          if (scale < 0.1 && d.nodeType === 'infography') {
             return ChartUtils.nodeColor(d);
           }
           return `url(#i${d.index})`;
         }
-
 
 
         return ChartUtils.nodeColor(d);
@@ -2504,7 +2502,8 @@ class Chart {
   }
 
   static get activeButton() {
-    return d3.select('#graph').attr('data-active');
+    const graphs = d3.select('#graph');
+    return graphs ? graphs.attr('data-active') : '';
   }
 
   static printMode(svgWidth, svgHeight, crop = false, preventInitial = false) {
