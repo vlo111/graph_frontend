@@ -8565,6 +8565,9 @@ img.preview-scaled {
       top: 15px;
       right: -32px;
       opacity: 0;
+      button {
+        background-color: white !important;
+      }
        
     }
      
@@ -8583,7 +8586,8 @@ img.preview-scaled {
 .dashboard:hover .sub-menus {
   opacity: 1;
   .ar-popover .ar-popover-trigger {
-    background: white;
+    background: white !important;
+    
   }
  }
 .dashboard:hover {
