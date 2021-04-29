@@ -67,7 +67,8 @@ class SearchModal extends Component {
 
             if (tab.name.toLowerCase().includes(search.toLowerCase())
               || tabSearchValue.toLowerCase().includes(search.toLowerCase())) {
-              if (node.id && (node.id !== 'undefined')) {
+               
+              if (node !== undefined && node.id && (node.id !== 'undefined')) {
                 tabs.push({
                   nodeId: node.id,
                   node,
