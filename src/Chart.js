@@ -1971,10 +1971,10 @@ class Chart {
       .data(this.data.nodes.filter((d) => d.icon))
       .join('defs')
       .filter((d) => {
-        if (scale < 0.25 && d.nodeType !== 'infography') {
+        if (scale <= 0.25 && d.nodeType !== 'infography') {
           return false;
         }
-        if (scale < 0.1 && d.nodeType === 'infography') {
+        if (scale <= 0.05 && d.nodeType === 'infography') {
           return false;
         }
         // if (this.radiusList[d.index] < 30) {
@@ -2025,10 +2025,10 @@ class Chart {
     this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
       .attr('fill', (d) => {
         if (d.icon) {
-          if (scale < 0.25 && d.nodeType !== 'infography') {
+          if (scale <= 0.25 && d.nodeType !== 'infography') {
             return ChartUtils.nodeColor(d);
           }
-          if (scale < 0.1 && d.nodeType === 'infography') {
+          if (scale <= 0.05 && d.nodeType === 'infography') {
             return ChartUtils.nodeColor(d);
           }
           return `url(#i${d.index})`;
