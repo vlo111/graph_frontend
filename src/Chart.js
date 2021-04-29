@@ -1490,7 +1490,6 @@ class Chart {
         .attr('r', (d) => +d.manually_size + 15);
 
 
-
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
 
@@ -1963,7 +1962,7 @@ class Chart {
       .text('➤');
   }
 
-  static  renderIcons(scale) {
+  static renderIcons(scale) {
     const icons = this.wrapper.select('.icons');
 
     icons.selectAll('defs pattern').remove();
@@ -2034,7 +2033,6 @@ class Chart {
           }
           return `url(#i${d.index})`;
         }
-
 
 
         return ChartUtils.nodeColor(d);
@@ -2504,7 +2502,8 @@ class Chart {
   }
 
   static get activeButton() {
-    return d3.select('#graph').attr('data-active');
+    const graphs = d3.select('#graph');
+    return graphs ? graphs.attr('data-active') : '';
   }
 
   static printMode(svgWidth, svgHeight, crop = false, preventInitial = false) {
