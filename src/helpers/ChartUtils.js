@@ -932,10 +932,10 @@ class ChartUtils {
     const min = [_.min(minXArr), _.min(minYArr)];
     const max = [_.max(minXArr), _.max(minYArr)];
     let width = min[0] + max[0];
-    let height = min[1] + max[1];
+    let height = max[1] + max[1];
     if (windowWidth) {
       width = _.max([min[0] + max[0], window.innerWidth]);
-      height = _.max([min[1] + max[1], window.innerHeight]);
+      height = _.max([max[1] + max[1], window.innerHeight]);
     }
     return {
       min,
