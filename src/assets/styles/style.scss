@@ -8552,11 +8552,11 @@ img.preview-scaled {
         border-radius: 12px;
         padding: 15px 35px;
         z-index: 1;
+      }      
+      h3, p {
+        color: white;
+        padding: 4px;
       }
-    }
-    h3, p {
-      color: white;
-      padding: 1rem;
     }
     .sub-menus {
       color: white;
@@ -8566,6 +8566,16 @@ img.preview-scaled {
       right: -32px;
       opacity: 0;
        
+    }
+     
+
+    .flex-column {
+      flex-direction: column !important; 
+    }
+    .d-flex {
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
     }
   }
  
@@ -8580,15 +8590,6 @@ img.preview-scaled {
   border-radius: 24px;
   background: rgba(0,0,0,.5);
  
-}
-
-.flex-column {
-    flex-direction: column !important; 
-}
-.d-flex {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
 }
 
 .dashboard:hover .thumbnail, 
