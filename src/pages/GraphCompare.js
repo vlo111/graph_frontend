@@ -27,14 +27,14 @@ class GraphCompare extends Component {
 
   getGraph1Request = memoizeOne(async (graphId) => {
     if (+graphId) {
-      const { payload: { data = {} } } = await this.props.getSingleGraphRequest(graphId);
+      const { payload: { data = {} } } = await this.props.getSingleGraphRequest(graphId, { full: true });
       this.setState({ selectedNodes1: _.cloneDeep(data.graph?.nodes || []) });
     }
   })
 
   getGraph2Request = memoizeOne(async (graph2Id) => {
     if (+graph2Id) {
-      const { data = {} } = await Api.getSingleGraph(graph2Id).catch((e) => e);
+      const { data = {} } = await Api.getSingleGraph(graph2Id, { full: true }).catch((e) => e);
       this.setState({ singleGraph2: data.graph || {}, selectedNodes2: _.cloneDeep(data.graph?.nodes || []) });
     }
   })
@@ -61,11 +61,11 @@ class GraphCompare extends Component {
       onlyTitle: 1,
     });
     const graphs = data.graphs
-      .filter((g) => +g.id !== +graphId && +g.id !== +graph2Id)
-      .map((g) => ({
-        value: g.id,
-        label: `${g.title} (${g.nodesCount})`,
-      }));
+                       .filter((g) => +g.id !== +graphId && +g.id !== +graph2Id)
+                       .map((g) => ({
+                         value: g.id,
+                         label: `${g.title} (${g.nodesCount})`,
+                       }));
     return graphs;
   }
 
@@ -129,7 +129,7 @@ class GraphCompare extends Component {
     const selected = [...selectedNodes1, ...selectedNodes2];
     return (
       <Wrapper className="graphCompare" showFooter={false}>
-        <Header />
+        <Header/>
         <div className="compareListWrapper">
           <ul className="compareList">
             <li className="item itemSearch">
@@ -202,7 +202,7 @@ class GraphCompare extends Component {
         </Button>
 
         {!_.isEmpty(createGraphData) ? (
-          <CreateGraphModal show data={createGraphData} />
+          <CreateGraphModal show data={createGraphData}/>
         ) : null}
       </Wrapper>
     );
