@@ -2028,7 +2028,7 @@ class Chart {
           if (scale < 0.25 && d.nodeType !== 'infography') {
             return ChartUtils.nodeColor(d);
           }
-          if (scale < 0.15 && d.nodeType === 'infography') {
+          if (scale < 0.1 && d.nodeType === 'infography') {
             return ChartUtils.nodeColor(d);
           }
           return `url(#i${d.index})`;
