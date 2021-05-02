@@ -30,11 +30,14 @@ class ReactChartMap extends Component {
   }
 
   componentWillUnmount() {
+    Chart.event.removeListener('zoom', this.handleChartZoom);
+    Chart.event.removeListener('auto-save', this.autoSave);
+
     this.viewArea.call(
       d3.drag()
         .on('drag', null),
     );
-    this.board.on('click', null)
+    this.board.on('click', null);
   }
 
 
