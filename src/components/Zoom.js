@@ -19,8 +19,7 @@ class Zoom extends Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
-    Chart.event.on('render', this.handleRender)
-
+    Chart.event.on('render', this.autoScale)
   }
 
   componentWillUnmount() {
@@ -28,12 +27,12 @@ class Zoom extends Component {
   }
 
 
-  handleRender = (() => {
+  autoScale = () => {
     const {
       width, height, min, max,
     } = ChartUtils.getDimensions(false);
     if (width && Chart.svg) {
-      window.removeEventListener('keydown', this.handleKeyDown);
+      window.removeEventListener('render', this.autoScale);
       const scaleW = (window.innerWidth - 450) / width;
       const scaleH = (window.innerHeight - 70) / height;
       const scale = Math.min(scaleW, scaleH);
@@ -51,7 +50,7 @@ class Zoom extends Component {
       }
       Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(scale));
     }
-  })
+  }
 
   handleKeyDown = (ev) => {
     ChartUtils.keyEvent(ev);
@@ -125,7 +124,7 @@ class Zoom extends Component {
         <div id="chartZoom">
           <Icon value="fa-map-o" style={{ marginLeft: 7, marginRight: 0 }} onClick={this.toggleGraphMap}
                 className="button"/>
-          <Icon value="fa-arrows-alt" onClick={() => this.zoom()} className="button"/>
+          <Icon value="fa-arrows-alt" onClick={this.autoScale} className="button"/>
           <Icon value="fa-plus" onClick={this.zoomIn} className="button"/>
           <Icon value="fa-minus" onClick={this.zoomOut} className="button"/>
         </div>

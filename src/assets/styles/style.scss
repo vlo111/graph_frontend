@@ -4541,7 +4541,7 @@ body .gh__menu {
   background: $color-white;
   width: 45%;
   height: 94vh;
-  z-index: 4;
+  z-index: 5;
   box-shadow: 0px 6px 20px #0D090526;
   right: 0;
   top: 69px;
@@ -8470,7 +8470,7 @@ img.preview-scaled {
 
 .ar-popover {
   position: relative;
-  
+
   .ar-popover-trigger {
     background: none;
   }
@@ -8519,26 +8519,26 @@ img.preview-scaled {
   border-right: 20px solid transparent;
   border-bottom: 29px solid #fff
 }
- .dashboard-onhover { 
-    position: absolute;     
+ .dashboard-onhover {
+    position: absolute;
     z-index: 1;
     display: block;
-    width: calc(100% - 13.4%); 
+    width: calc(100% - 13.4%);
     align-items: center;
     text-align: center;
     justify-content: center;
     cursor: pointer;
     border-radius: 24px;
-    height: 450px;   
+    height: 450px;
 
-    
+
     .dashboard-onhover-content {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: 100%;  
+      height: 100%;
     }
     .dashboard-buttons {
      opacity: 0;
@@ -8552,7 +8552,7 @@ img.preview-scaled {
         border-radius: 12px;
         padding: 15px 35px;
         z-index: 1;
-      }      
+      }
       h3, p {
         color: white;
         padding: 4px;
@@ -8568,12 +8568,12 @@ img.preview-scaled {
       button {
         background-color: white !important;
       }
-       
+
     }
-     
+
 
     .flex-column {
-      flex-direction: column !important; 
+      flex-direction: column !important;
     }
     .d-flex {
       display: flex !important;
@@ -8581,23 +8581,23 @@ img.preview-scaled {
       align-items: center;
     }
   }
- 
+
 
 .dashboard:hover .sub-menus {
   opacity: 1;
   .ar-popover .ar-popover-trigger {
     background: white !important;
-    
+
   }
  }
 .dashboard:hover {
   border-radius: 24px;
   background: rgba(0,0,0,.5);
- 
+
 }
 
-.dashboard:hover .thumbnail, 
-.dashboard:hover .description, 
+.dashboard:hover .thumbnail,
+.dashboard:hover .description,
 .dashboard:hover  .title {
   opacity: 0;
 }
