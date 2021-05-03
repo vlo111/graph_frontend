@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import * as d3 from 'd3';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -8,9 +8,9 @@ class ReactChartMap extends Component {
     super(props);
     this.state = {
       transform: {
-        k: 1,
-        x: 0,
-        y: 0,
+        k:  +Chart.wrapper.attr('data-scale') || 1,
+        x: Chart.wrapper.attr('data-x') || 0,
+        y: Chart.wrapper.attr('data-y') || 0,
       },
     };
   }
@@ -23,19 +23,37 @@ class ReactChartMap extends Component {
       d3.drag()
         .on('drag', this.handleDrag),
     );
+
+    this.board = d3.select('#reactChartMap .board')
+    console.log(this.board)
+    // this.board.on('click', this.handleBoardClick)
   }
 
   componentWillUnmount() {
+    Chart.event.removeListener('zoom', this.handleChartZoom);
+    Chart.event.removeListener('auto-save', this.autoSave);
+
     this.viewArea.call(
       d3.drag()
         .on('drag', null),
     );
+    this.board.on('click', null);
   }
 
 
   autoSave = () => {
     clearTimeout(this.timeOut);
     this.timeOut = setTimeout(() => this.forceUpdate(), 500);
+  }
+  handleBoardClick = (ev) => {
+    const {transform  } = this.state;
+    const { layerX, layerY } = ev;
+    const {
+      width, height, min, max,
+    } = ChartUtils.getDimensions();
+    const  x = layerX  + (min[0] /4);
+    const  y = layerY  * (min[1] / 4);
+    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(transform.k));
   }
 
   handleChartZoom = (ev, d) => {
@@ -50,12 +68,12 @@ class ReactChartMap extends Component {
   }
 
   handleDrag = (ev) => {
-    const {transform} = this.state;
-    const {dx, dy} = ev;
+    const { transform } = this.state;
+    const { dx, dy } = ev;
     transform.x -= (dx * transform.k);
     transform.y -= (dy * transform.k);
     Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(transform.x, transform.y).scale(transform.k));
-    this.setState({transform});
+    this.setState({ transform });
   }
 
   render() {
@@ -106,7 +124,7 @@ class ReactChartMap extends Component {
               fill={ChartUtils.nodeColor(n)}
             />
           ))}
-
+          {/*<rect className="board" opacity={0} width={originalWidth} height={originalHeight} x={min[0]} y={min[1]}/>*/}
           <rect
             className="viewArea"
             x={(-1 * transform.x) / transform.k}

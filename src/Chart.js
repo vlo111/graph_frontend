@@ -1974,7 +1974,7 @@ class Chart {
         if (scale <= 0.25 && d.nodeType !== 'infography') {
           return false;
         }
-        if (scale <= 0.05 && d.nodeType === 'infography') {
+        if (scale <= 0.08 && d.nodeType === 'infography') {
           return false;
         }
         // if (this.radiusList[d.index] < 30) {
@@ -2028,7 +2028,7 @@ class Chart {
           if (scale <= 0.25 && d.nodeType !== 'infography') {
             return ChartUtils.nodeColor(d);
           }
-          if (scale <= 0.05 && d.nodeType === 'infography') {
+          if (scale <= 0.08 && d.nodeType === 'infography') {
             return ChartUtils.nodeColor(d);
           }
           return `url(#i${d.index})`;

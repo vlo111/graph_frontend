@@ -3517,25 +3517,6 @@ p {
   }
 }
 
-#chartZoom {
-  position: fixed;
-  right: 10px;
-  bottom: 0;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-
-  .button {
-    margin: 0 10px 10px;
-
-    .icon {
-      font-size: 25px;
-      cursor: pointer;
-    }
-  }
-
-}
-
 .graphFilter {
   width: 100%;
   margin-bottom: 15px;
@@ -4290,8 +4271,8 @@ body .gh__menu {
 
 #autoPlay {
   position: absolute;
-  bottom: 160px;
-  right: 10px;
+  bottom: 70px;
+  right: 17px;
   background-color: $color-white;
   width: 40px;
   height: 40px;
@@ -4541,7 +4522,7 @@ body .gh__menu {
   background: $color-white;
   width: 45%;
   height: 94vh;
-  z-index: 4;
+  z-index: 5;
   box-shadow: 0px 6px 20px #0D090526;
   right: 0;
   top: 69px;
@@ -6105,8 +6086,8 @@ body .gh__menu {
     min-width: 900px;
     min-height: 350px;
     display: inline-flex;
-    align-items:center;
-    justify-content:center;
+    align-items: center;
+    justify-content: center;
 
     .close {
       position: absolute;
@@ -6116,6 +6097,7 @@ body .gh__menu {
       font-size: 22px;
       font-weight: 600;
     }
+
     .table {
       width: 100%;
       display: flex;
@@ -6127,9 +6109,10 @@ body .gh__menu {
       flex: 1 1 auto;
       align-items: flex-start;
       overflow-y: hidden;
-      padding-bottom:230px;
+      padding-bottom: 230px;
 
     }
+
     .row {
       display: flex;
       flex-flow: row nowrap;
@@ -6156,16 +6139,19 @@ body .gh__menu {
           font-size: 16px;
           margin-top: 6px;
         }
+
         &.sm {
           flex: 1;
         }
+
         &.lg {
           flex: 3;
         }
 
       }
+
       &.header {
-      //  border: none;
+        //  border: none;
         position: sticky;
         top: 10px;
         font-weight: 700;
@@ -6176,6 +6162,7 @@ body .gh__menu {
         justify-content: center;
         align-items: center;
       }
+
       .number {
         display: flex;
         justify-content: center;
@@ -8411,6 +8398,7 @@ img.preview-scaled {
       }
     }
   }
+
   .close {
     background-color: #fff;
     padding: 0;
@@ -8421,56 +8409,10 @@ img.preview-scaled {
   }
 }
 
-.reactChartMapWrapper {
-  position: fixed;
-  right: 70px;
-
-  bottom: 20px;
-  z-index: 4;
-  width: 20%;
-  height: 20%;
-  border: 1px solid #ebebeb;
-  background-color: white;
-  svg {
-    height: 100%;
-    width: 100%;
-
-    use {
-      top: 0;
-      right: 0;
-      transform: translate(0, 0) scale(0.25, 0.2);
-    }
-
-    circle {
-      opacity: 0.5;
-    }
-
-    rect {
-      opacity: 0.5;
-    }
-  }
-
-  .viewArea {
-    fill: rgba($color-accent, 0.05);
-    stroke: $color-accent;
-    cursor: move;
-    opacity: 1;
-  }
-
-  .button{
-    position: absolute;
-    background-color: transparent;
-    margin: 0;
-    padding: 10px;
-    line-height: 0;
-    top: 0;
-    right: 0;
-  }
-}
 
 .ar-popover {
   position: relative;
-  
+
   .ar-popover-trigger {
     background: none;
   }
@@ -8493,6 +8435,7 @@ img.preview-scaled {
   margin-top: 3px;
   left: -55px;
 }
+
 .ar-popover-list {
   display: grid;
 }
@@ -8519,88 +8462,220 @@ img.preview-scaled {
   border-right: 20px solid transparent;
   border-bottom: 29px solid #fff
 }
- .dashboard-onhover { 
-    position: absolute;     
-    z-index: 1;
-    display: block;
-    width: calc(100% - 13.4%); 
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 24px;
-    height: 450px;   
 
-    
-    .dashboard-onhover-content {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;  
-    }
-    .dashboard-buttons {
-     opacity: 0;
-      a {
-        width: 200px;
-        padding: 12px 48px;
-        text-align: center;
-        color: white;
-        border: solid 2px white;
-        background: #fe794f 0 0 no-repeat padding-box;
-        border-radius: 12px;
-        padding: 15px 35px;
-        z-index: 1;
-      }      
-      h3, p {
-        color: white;
-        padding: 4px;
-      }
-    }
-    .sub-menus {
+.dashboard-onhover {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: calc(100% - 13.4%);
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 24px;
+  height: 450px;
+
+
+  .dashboard-onhover-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .dashboard-buttons {
+    opacity: 0;
+
+    a {
+      width: 200px;
+      padding: 12px 48px;
+      text-align: center;
       color: white;
       border: solid 2px white;
-      position: absolute;
-      top: 15px;
-      right: -32px;
-      opacity: 0;
-      button {
-        background-color: white !important;
-      }
-       
+      background: #fe794f 0 0 no-repeat padding-box;
+      border-radius: 12px;
+      padding: 15px 35px;
+      z-index: 1;
     }
-     
 
-    .flex-column {
-      flex-direction: column !important; 
-    }
-    .d-flex {
-      display: flex !important;
-      justify-content: center;
-      align-items: center;
+    h3, p {
+      color: white;
+      padding: 4px;
     }
   }
- 
+
+  .sub-menus {
+    color: white;
+    border: solid 2px white;
+    position: absolute;
+    top: 15px;
+    right: -32px;
+    opacity: 0;
+
+    button {
+      background-color: white !important;
+    }
+
+  }
+
+
+  .flex-column {
+    flex-direction: column !important;
+  }
+
+  .d-flex {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 
 .dashboard:hover .sub-menus {
   opacity: 1;
+
   .ar-popover .ar-popover-trigger {
     background: white !important;
-    
+
   }
- }
-.dashboard:hover {
-  border-radius: 24px;
-  background: rgba(0,0,0,.5);
- 
 }
 
-.dashboard:hover .thumbnail, 
-.dashboard:hover .description, 
-.dashboard:hover  .title {
+.dashboard:hover {
+  border-radius: 24px;
+  background: rgba(0, 0, 0, .5);
+
+}
+
+.dashboard:hover .thumbnail,
+.dashboard:hover .description,
+.dashboard:hover .title {
   opacity: 0;
 }
+
 .dashboard:hover .dashboard-buttons {
   opacity: 1;
+}
+
+
+.graphControlPanel {
+  position: fixed;
+  z-index: 4;
+  bottom: 15px;
+  right: 15px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding-top: 10px;
+  width: 50px;
+  &:hover{
+    width: 280px;
+  }
+
+  &.shoMap{
+    width: auto !important;
+  }
+
+  .reactChartMapWrapper {
+    z-index: 4;
+    width: 20vw;
+    height: 20vh;
+    margin-bottom: 10px;
+    svg {
+      height: 100%;
+      width: 100%;
+      overflow: visible;
+
+      use {
+        top: 0;
+        right: 0;
+        transform: translate(0, 0) scale(0.25, 0.2);
+      }
+
+      circle {
+        opacity: 0.5;
+      }
+
+      rect {
+        opacity: 0.5;
+      }
+    }
+
+    .viewArea {
+      //fill: rgba($color-accent, 0.05);
+      fill: transparent;
+      stroke: $color-accent;
+      cursor: move;
+      opacity: 1;
+    }
+
+    .button {
+      position: absolute;
+      background-color: transparent;
+      margin: 0;
+      padding: 10px;
+      line-height: 0;
+      top: 0;
+      right: 0;
+    }
+  }
+
+
+  .buttons {
+    margin: 0;
+    background-color: white;
+    z-index: 5;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 0 10px 0;
+
+    .button {
+      width: 40px;
+      height: 100%;
+      margin: 0 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      svg {
+        height: 22px;
+        width: 22px;
+      }
+
+      &.map {
+        margin-left: 0;
+        margin-right: 5px;
+        padding-right: 10px;
+        border-right: 1px solid $color-gray;
+      }
+
+      &.plus,
+      &.minus {
+        width: 35px;
+      }
+
+      .fa {
+        font-size: 16px;
+      }
+    }
+
+    .zoomLevel{
+      font-size: 12px;
+      color: $color-button;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      min-width: 50px;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
