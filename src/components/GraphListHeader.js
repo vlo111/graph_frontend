@@ -54,13 +54,7 @@ const GraphListHeader = ({ graph, headerTools }) => {
   }, [dispatch]);  
   return (
    
-    <div className="graphListHeader">
-      {headerTools ? (
-        <Button
-          icon={<TrashSvg style={{ height: 30 }} />}
-          onClick={() => handleDeleteShareGraph(graph?.share.id)}
-          className="delete" />
-      ) : (
+    <div className="graphListHeader">      
        <div>         
           <Popover
             showArrow
@@ -68,28 +62,34 @@ const GraphListHeader = ({ graph, headerTools }) => {
             trigger='click'
           >
             <div className="ar-popover-list">
-                <Button
-                  // icon={<EditSvg style={{ height: 30 }} />}
+            {headerTools ? (
+              <Button 
+                onClick={() => handleDeleteShareGraph(graph?.share.id)}
+                className="child dashboard-delete" >
+                Delete
+              </Button>
+             ) : (
+             <>
+                <Button 
                   className="child "
                   onClick={() => setOpenEditModal(true)} > 
                   Rename
                   </Button>             
-                <Button
-                  // icon={<EditSvg style={{ height: 30 }} />}
+                <Button 
                   className="child "
                   onClick={() => setOpenShareModal(true)} > 
                   Share
                   </Button>             
-                <Button
-                  // icon={<TrashSvg style={{ height: 30 }} />}
+                <Button 
                   onClick={deleteGraph}
                   className="child dashboard-delete" >  
                   Delete
                   </Button>
+              </>
+             )}
               </div>
             </Popover>
-         </div>
-        )}
+         </div> 
       {openEditModal && (
         <UpdateGraphModal
           closeModal={() => setOpenEditModal(false)}
