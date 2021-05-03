@@ -15,10 +15,12 @@ import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg'; 
 import { ReactComponent as EllipsisVSvg } from '../assets/images/icons/ellipsis.svg'; 
 import { getGraphsListRequest } from '../store/actions/graphs';
+import ShareModal from './ShareModal';
 
 const GraphListHeader = ({ graph, headerTools }) => {
   const dispatch = useDispatch();
   const [openEditModal, setOpenEditModal] = useState(false); 
+  const [openShareModal, setOpenShareModal] = useState(false); 
   const history = useHistory()
   const { page = 1, s: searchParam } = queryString.parse(window.location.search); 
   const notification = false;
@@ -57,7 +59,7 @@ const GraphListHeader = ({ graph, headerTools }) => {
         <Button
           icon={<TrashSvg style={{ height: 30 }} />}
           onClick={() => handleDeleteShareGraph(graph?.share.id)}
-          className="transparent delete" />
+          className="delete" />
       ) : (
        <div>         
           <Popover
@@ -66,14 +68,24 @@ const GraphListHeader = ({ graph, headerTools }) => {
             trigger='click'
           >
             <div className="ar-popover-list">
-              <Button
-                  icon={<EditSvg style={{ height: 30 }} />}
-                  className="transparent edit"
-                  onClick={() => setOpenEditModal(true)} /> 
                 <Button
-                  icon={<TrashSvg style={{ height: 30 }} />}
+                  // icon={<EditSvg style={{ height: 30 }} />}
+                  className="child "
+                  onClick={() => setOpenEditModal(true)} > 
+                  Rename
+                  </Button>             
+                <Button
+                  // icon={<EditSvg style={{ height: 30 }} />}
+                  className="child "
+                  onClick={() => setOpenShareModal(true)} > 
+                  Share
+                  </Button>             
+                <Button
+                  // icon={<TrashSvg style={{ height: 30 }} />}
                   onClick={deleteGraph}
-                  className="transparent delete" />  
+                  className="child " >  
+                  Delete
+                  </Button>
               </div>
             </Popover>
          </div>
@@ -84,6 +96,13 @@ const GraphListHeader = ({ graph, headerTools }) => {
           graph={graph}
         />
       )}
+      {openShareModal && (
+        <ShareModal 
+          closeModal={() => setOpenShareModal(false)} 
+          graph={graph} 
+          setButton
+        />
+     )}
     </div>
   );
 };
