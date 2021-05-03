@@ -42,12 +42,15 @@ class Zoom extends Component {
       width, height, min, max,
     } = ChartUtils.getDimensions(false);
     if (width && Chart.svg) {
-      window.removeEventListener('render', this.autoScale);
-      const scaleW = (window.innerWidth - 450) / width;
-      const scaleH = (window.innerHeight - 70) / height;
+      Chart.event.removeListener('render', this.autoScale);
+      console.log(width)
+      const scaleW = (window.innerWidth - 201) / width;
+      const scaleH = (window.innerHeight - 75) / height;
       const scale = Math.min(scaleW, scaleH);
+
       let left = min[0] * scale * -1 + 201;
-      let top = min[1] * scale * -1 + 75;
+      let top = min[1] * scale * -1 + 75 ;
+
       // top += 70 / scale
       // left += 600 * scale
       // console.log(scaleH, scaleW)

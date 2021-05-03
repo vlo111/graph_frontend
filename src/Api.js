@@ -212,10 +212,10 @@ class Api {
     return api.put(`/share-graphs/update/${id}`, requestData);
   }
 
-  static deleteShareGraph(id, notification = true ) {  
+  static deleteShareGraph(id, notification = true) {
     return api.delete(`/share-graphs/delete/${id}`, {
       params: {
-        notification
+        notification,
       },
     });
   }
@@ -425,6 +425,10 @@ class Api {
     });
   }
 
+  static updateLabelPositions(graphId, labels) {
+    return api.put(`/labels/update-positions/${graphId}`, { labels });
+  }
+
   static labelCopy(sourceId, labelId) {
     return api.get(`/labels/copy/${sourceId}/${labelId}`);
   }
@@ -462,16 +466,15 @@ class Api {
     });
   }
 
-  //History
+  // History
 
-  static getNodeHistory(graphId, nodeId) { 
+  static getNodeHistory(graphId, nodeId) {
     return api.get(`/graph-history/node-history/${graphId}/${nodeId}`);
   }
-  static getGraphHistory(graphId) { 
+
+  static getGraphHistory(graphId) {
     return api.get(`/graph-history/graph-history/${graphId}`);
   }
-
-
 }
 
 export default Api;

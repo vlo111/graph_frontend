@@ -31,14 +31,14 @@ class AutoPlay extends Component {
   toggle = () => {
     const labels = Chart.getLabels();
     toast.dismiss(this.notification);
-    if (labels.length) {
-      this.notification = toast.info('You can not use this feature because you have a label(s)');
-      return;
-    }
     const { play: _play } = this.state;
     const play = !_play;
     const nodes = Chart.getNodes();
     if (play) {
+      if (labels.length) {
+        this.notification = toast.info('You can not use this feature because you have a label(s)');
+        return;
+      }
       nodes.forEach((d, i) => {
         delete nodes[i].fx;
         delete nodes[i].fy;
