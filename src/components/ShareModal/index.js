@@ -47,7 +47,7 @@ const ShareModal = React.memo(({ graph, closeModal }) => {
         </div>
         <Owner user={graph.user} />
         {select && <Collaborators graph={graph} select={select} />}
-        <Search select={select} setSelect={setSelect} user={graph.user} closeModal={closeModal} />
+        <Search select={select} setSelect={setSelect} user={graph.user} singleGraph={graph} closeModal={closeModal} />
       </Modal>
     )
   );

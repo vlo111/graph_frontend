@@ -68,15 +68,16 @@ const GraphUsersInfo = ({ graph, closeModal }) => {
       <span className="item "> <h4>Change position count: {nodePositionCount}</h4> </span> 
       <span className="item "> <h4>Tabs view count: {nodeTabsViewCount}</h4> </span> 
       </div>
-      <div className="row">
-      <span className="item "> Created by: </span>
-      <span className="item ">  <img src={createdUser.avatar} className="avatar" alt="" /> </span>
-      <span className="item ">  {`${createdUser.firstName} ${createdUser.lastName}`} </span> 
-      <div className="item "></div>
-      <div className="item "></div>
-      <span className="item time"> {node.createdAt ? moment(node.createdAt * 1000).calendar() : ''} </span>      
-    </div>
-     <div className="row header">
+      <div className="row info">
+        <span className="item "> Created by: </span>
+        <span className="item ">  <img src={createdUser.avatar} className="avatar" alt="" /> </span>
+        <span className="item ">  {`${createdUser.firstName} ${createdUser.lastName}`} </span> 
+        <div className="item "></div>
+        <span className="item time"> {node.createdAt ? moment(node.createdAt * 1000).calendar() : ''} </span>      
+        <div className=""></div>
+      </div>
+          <p className="all-count"> Showing {nodeHistory.length} changes </p>
+         <div className="row header">
             <span className=" number"> No: </span>
             <span className="item "> User </span> 
             <span className="item ">  </span> 
