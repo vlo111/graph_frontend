@@ -83,7 +83,7 @@ const GraphListHeader = ({ graph, headerTools }) => {
                 <Button
                   // icon={<TrashSvg style={{ height: 30 }} />}
                   onClick={deleteGraph}
-                  className="child " >  
+                  className="child dashboard-delete" >  
                   Delete
                   </Button>
               </div>
