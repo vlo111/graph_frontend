@@ -185,7 +185,7 @@ class LabelCopy extends Component {
       nodes: data.nodes,
       links: data.links,
       merge,
-    }).catch((e) => e.response);
+    }).catch((e) => e.response || {});
     if (res.status === 'error') {
       toast.error(res.message);
     }
