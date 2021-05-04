@@ -59,10 +59,12 @@ class SelectSquare extends Component {
     const {
       width, height, x, y,
     } = squareData;
+    Chart.loading(true);
     const { data } = await Api.dataCopy(singleGraph.id, {
       width, height, x, y,
     });
     localStorage.setItem('label.copy', JSON.stringify(data.data));
+    Chart.loading(false);
   }
 
   render() {

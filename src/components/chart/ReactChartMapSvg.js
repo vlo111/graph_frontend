@@ -8,7 +8,7 @@ class ReactChartMap extends Component {
     super(props);
     this.state = {
       transform: {
-        k:  +Chart.wrapper.attr('data-scale') || 1,
+        k: +Chart.wrapper.attr('data-scale') || 1,
         x: Chart.wrapper.attr('data-x') || 0,
         y: Chart.wrapper.attr('data-y') || 0,
       },
@@ -24,8 +24,8 @@ class ReactChartMap extends Component {
         .on('drag', this.handleDrag),
     );
 
-    this.board = d3.select('#reactChartMap .board')
-    console.log(this.board)
+    this.board = d3.select('#reactChartMap .board');
+    console.log(this.board);
     // this.board.on('click', this.handleBoardClick)
   }
 
@@ -40,19 +40,19 @@ class ReactChartMap extends Component {
     this.board.on('click', null);
   }
 
-
   autoSave = () => {
     clearTimeout(this.timeOut);
     this.timeOut = setTimeout(() => this.forceUpdate(), 500);
   }
+
   handleBoardClick = (ev) => {
-    const {transform  } = this.state;
+    const { transform } = this.state;
     const { layerX, layerY } = ev;
     const {
       width, height, min, max,
     } = ChartUtils.getDimensions();
-    const  x = layerX  + (min[0] /4);
-    const  y = layerY  * (min[1] / 4);
+    const x = layerX + (min[0] / 4);
+    const y = layerY * (min[1] / 4);
     Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(transform.k));
   }
 
@@ -89,7 +89,7 @@ class ReactChartMap extends Component {
     const originalHeight = max[1] - min[1];
     let r = originalWidth / 180;
     if (r > 150) {
-      r = 150
+      r = 150;
     } else if (r < 50) {
       r = 50;
     }
@@ -124,7 +124,7 @@ class ReactChartMap extends Component {
               fill={ChartUtils.nodeColor(n)}
             />
           ))}
-          {/*<rect className="board" opacity={0} width={originalWidth} height={originalHeight} x={min[0]} y={min[1]}/>*/}
+          {/* <rect className="board" opacity={0} width={originalWidth} height={originalHeight} x={min[0]} y={min[1]}/> */}
           <rect
             className="viewArea"
             x={(-1 * transform.x) / transform.k}
