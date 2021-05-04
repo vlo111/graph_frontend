@@ -166,6 +166,7 @@ export default function reducer(state = initialState, action) {
         embedLabels,
         lastUid,
       });
+      Chart.loading(false);
       return {
         ...state,
         singleGraph,

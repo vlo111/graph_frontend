@@ -41,6 +41,7 @@ class ReactChart extends Component {
   }
 
   componentDidMount() {
+    Chart.loading(true);
     Chart.render({ nodes: [], links: [], labels: [] });
 
     Chart.event.on('node.click', this.handleNodeClick);
