@@ -43,24 +43,19 @@ class Zoom extends Component {
     } = ChartUtils.getDimensions(false);
     if (width && Chart.svg) {
       Chart.event.removeListener('render', this.autoScale);
-      console.log(width)
-      const scaleW = (window.innerWidth - 201) / width;
-      const scaleH = (window.innerHeight - 75) / height;
+
+      const LEFT_PADDING = 201;
+      const RIGHT_PADDING = 75;
+
+      const scaleW = (window.innerWidth - LEFT_PADDING) / width;
+      const scaleH = (window.innerHeight - RIGHT_PADDING) / height;
       const scale = Math.min(scaleW, scaleH);
+      let left = min[0] * scale * -1 + LEFT_PADDING;
+      let top = min[1] * scale * -1 + RIGHT_PADDING;
 
-      let left = min[0] * scale * -1 + 201;
-      let top = min[1] * scale * -1 + 75 ;
+      left += ((window.innerWidth - LEFT_PADDING) - (scale * width)) / 2;
+      top += ((window.innerHeight - RIGHT_PADDING) - (scale * height)) / 2;
 
-      // top += 70 / scale
-      // left += 600 * scale
-      // console.log(scaleH, scaleW)
-      // if (scaleH < scaleW) {
-      //   console.log(2323333)
-      //   // left += (min[1] + width) * scale / 2
-      // } else {
-      //   console.log(2222)
-      //   // top += (min[0] + height) * scale / 2
-      // }
       Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(scale));
     }
   }
