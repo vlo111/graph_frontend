@@ -160,6 +160,13 @@ export function socketInit() {
       }
     });
 
+    socket.on('label.update-positions', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.labelUpdatePosition(data.labels, data.nodes);
+      }
+    });
+
     socket.on('label.delete', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {

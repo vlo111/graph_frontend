@@ -18,9 +18,9 @@ import {
   createLabelsRequest,
   deleteLabelsRequest,
   updateLabelPositionsRequest,
-  updateLabelsRequest
+  updateLabelsRequest,
 } from '../store/actions/labels';
-import Utils from "../helpers/Utils";
+import Utils from '../helpers/Utils';
 
 class AutoSave extends Component {
   static propTypes = {
@@ -148,14 +148,12 @@ class AutoSave extends Component {
           createLabels.push(label);
         } else if (!oldLabel.name && label.name) {
           createLabels.push(label);
-        }
-        // else if (!_.isEqual(label.d, oldLabel.d)) {
-        //   updateLabelPositions.push({
-        //     id: label.id,
-        //     d: label.d,
-        //   });
-        // }
-        else if (!_.isEqual(oldLabel.d, label.d) || !_.isEqual(oldLabel.name, label.name)) {
+        } else if (!_.isEqual(label.d, oldLabel.d)) {
+          updateLabelPositions.push({
+            id: label.id,
+            d: label.d,
+          });
+        } else if (!_.isEqual(oldLabel.d, label.d) || !_.isEqual(oldLabel.name, label.name)) {
           updateLabels.push(label);
         }
       }

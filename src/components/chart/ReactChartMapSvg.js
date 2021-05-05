@@ -24,9 +24,8 @@ class ReactChartMap extends Component {
         .on('drag', this.handleDrag),
     );
 
-    this.board = d3.select('#reactChartMap .board');
-    console.log(this.board);
-    // this.board.on('click', this.handleBoardClick)
+    this.board = d3.select('#reactChartMap');
+    this.board.on('click', this.handleBoardClick)
   }
 
   componentWillUnmount() {
@@ -51,8 +50,8 @@ class ReactChartMap extends Component {
     const {
       width, height, min, max,
     } = ChartUtils.getDimensions();
-    const x = layerX + (min[0] / 4);
-    const y = layerY * (min[1] / 4);
+    const x = layerX * transform.k * 4;
+    const y = layerY;
     Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(transform.k));
   }
 

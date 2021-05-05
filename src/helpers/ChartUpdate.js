@@ -1,5 +1,5 @@
-import Chart from '../Chart';
 import _ from 'lodash';
+import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
 
 class ChartUpdate {
@@ -92,6 +92,18 @@ class ChartUpdate {
       return d;
     });
     Chart.render({ labels }, { ignoreAutoSave: true });
+  }
+
+  static labelUpdatePosition = (labelsUpdate, updateNodes) => {
+    const labels = Chart.getLabels().map((label) => {
+      const updateLabel = labelsUpdate.find((n) => n.id === label.id);
+      if (updateLabel) {
+        label.d = updateLabel.d;
+      }
+      return label;
+    });
+    Chart.render({ labels }, { ignoreAutoSave: true });
+    this.nodePositionsChange(updateNodes);
   }
 
   static labelDelete = (labelsDelete) => {

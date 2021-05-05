@@ -49,13 +49,12 @@ class Zoom extends Component {
 
       const scaleW = (window.innerWidth - LEFT_PADDING) / width;
       const scaleH = (window.innerHeight - RIGHT_PADDING) / height;
-      const scale = Math.min(scaleW, scaleH);
+      const scale = Math.min(scaleW, scaleH, 1);
       let left = min[0] * scale * -1 + LEFT_PADDING;
       let top = min[1] * scale * -1 + RIGHT_PADDING;
 
       left += ((window.innerWidth - LEFT_PADDING) - (scale * width)) / 2;
       top += ((window.innerHeight - RIGHT_PADDING) - (scale * height)) / 2;
-
       Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(scale));
     }
   }

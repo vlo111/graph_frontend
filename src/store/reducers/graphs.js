@@ -160,7 +160,7 @@ export default function reducer(state = initialState, action) {
       } = singleGraph;
 
       Chart.render({
-        nodes: nodes.filter(n => n.name),
+        nodes: nodes.filter((n) => n.name),
         links: ChartUtils.cleanLinks(links, nodes),
         labels,
         embedLabels,
