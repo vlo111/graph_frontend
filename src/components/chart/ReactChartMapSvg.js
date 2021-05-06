@@ -25,7 +25,7 @@ class ReactChartMap extends Component {
     );
 
     this.board = d3.select('#reactChartMap');
-    this.board.on('click', this.handleBoardClick)
+    this.board.on('click', this.handleBoardClick);
   }
 
   componentWillUnmount() {
@@ -47,11 +47,12 @@ class ReactChartMap extends Component {
   handleBoardClick = (ev) => {
     const { transform } = this.state;
     const { layerX, layerY } = ev;
-    const {
-      width, height, min, max,
-    } = ChartUtils.getDimensions();
-    const x = layerX * transform.k * 4;
-    const y = layerY;
+    const { min, max } = ChartUtils.getDimensions();
+    const originalWidth = max[0] - min[0];
+    const { width } = this.ref.getBoundingClientRect();
+    const areaSize = this.getAreaSize();
+    const x = ((layerX * originalWidth / width * -1) - min[0] + (areaSize.width / 2)) * transform.k;
+    const y = ((layerY * originalWidth / width * -1) - min[1] + (areaSize.height / 2)) * transform.k;
     Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(transform.k));
   }
 
@@ -75,17 +76,26 @@ class ReactChartMap extends Component {
     this.setState({ transform });
   }
 
+  getAreaSize = () => {
+    const { min, max } = ChartUtils.getDimensions();
+    const { transform } = this.state;
+    const originalWidth = max[0] - min[0];
+    const originalHeight = max[1] - min[1];
+    const width = (originalWidth / window.innerWidth + window.innerWidth) / transform.k;
+    const height = (originalHeight / window.innerHeight + window.innerHeight / transform.k);
+    return {
+      width, height,
+    };
+  }
+
   render() {
     const { transform } = this.state;
     const nodes = Chart.getNodes();
     const labels = Chart.getLabels();
-    const { innerWidth, innerHeight } = window;
-    const {
-      width, height, min, max,
-    } = ChartUtils.getDimensions();
-
+    const { min, max } = ChartUtils.getDimensions();
     const originalWidth = max[0] - min[0];
     const originalHeight = max[1] - min[1];
+    const areaSize = this.getAreaSize();
     let r = originalWidth / 180;
     if (r > 150) {
       r = 150;
@@ -129,8 +139,8 @@ class ReactChartMap extends Component {
             x={(-1 * transform.x) / transform.k}
             y={(-1 * transform.y) / transform.k}
             strokeWidth={originalWidth / window.innerWidth * 2}
-            width={(originalWidth / window.innerWidth + window.innerWidth) / transform.k}
-            height={(originalHeight / window.innerHeight + window.innerHeight / transform.k)}
+            width={areaSize.width}
+            height={areaSize.height}
           />
         </g>
       </svg>
