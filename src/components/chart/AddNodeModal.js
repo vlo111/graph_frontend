@@ -266,6 +266,8 @@ class AddNodeModal extends Component {
               onChangeText={(v) => this.handleChange('name', v)}
               autoComplete="off"
             />
+        {expand ? (
+             <> 
             <Select
               label="Status"
               portal
@@ -320,8 +322,8 @@ class AddNodeModal extends Component {
                   value={nodeData.icon}
                   onChangeFile={(v, file) => this.handleChange('icon', file)}
                 />
-                {expand
-                && <img style={{ marginTop: '-30px' }} width={365} src={Utils.fileSrc(nodeData.icon)} alt="" />}
+                 
+               <img className="img-thumbnail" src={Utils.fileSrc(nodeData.icon)} alt="" /> 
                 <Select
                   label="Keywords"
                   isCreatable
@@ -373,7 +375,7 @@ class AddNodeModal extends Component {
                   </div>
                 </div>
               )).slice(!expand ? -2 : nodeData.location)}
-              {(!expand && (nodeData.location && nodeData.location.length) > 2) && (
+              {((nodeData.location && nodeData.location.length) > 2) && (
                 <div className="showMore" onClick={this.toggleExpand}>
                   <img
                     src={showMore}
@@ -383,6 +385,8 @@ class AddNodeModal extends Component {
                 </div>
               )}
             </div>
+           </>
+          ) : null }
             <div className="footerButtons">
               <div className="buttons">
                 <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
