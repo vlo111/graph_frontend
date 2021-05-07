@@ -25,6 +25,7 @@ import delImg from '../../assets/images/icons/del.gif';
 import showMore from '../../assets/images/icons/showMore.gif';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
+import { Link } from 'react-router-dom';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -387,6 +388,11 @@ class AddNodeModal extends Component {
             </div>
            </>
           ) : null }
+          <div className="row advanced right">
+              <Link className="" onClick={this.toggleExpand} >
+              { !expand ? `Advanced` : `Primitive` } 
+              </Link>
+          </div>
             <div className="footerButtons">
               <div className="buttons">
                 <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
