@@ -139,7 +139,7 @@ class AddLabelModal extends Component {
       }
       Chart.render({ labels, nodes });
       this.setState({ show: false });
-      this.props.setActiveButton(avtiveButton);
+      this.props.setActiveButton(setAvtiveButton);
     }
     this.setState({ errors });
   }
