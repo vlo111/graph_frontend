@@ -53,6 +53,8 @@ class AutoSave extends Component {
     Chart.event.on('square.dragend', this.handleChartRender);
     Chart.event.on('selected.dragend', this.handleChartRender);
 
+    Chart.event.on('auto-position.change', this.handleAutoPositionChange);
+
     this.thumbnailListener = this.props.history.listen(this.handleRouteChange);
     window.addEventListener('beforeunload', this.handleUnload);
     this.thumbnailTimeout = setTimeout(this.updateThumbnail, 1000 * 60);
@@ -123,9 +125,25 @@ class AutoSave extends Component {
     console.log(nodes);
   }
 
+  handleAutoPositionChange = async (isAutoPosition) => {
+    if (isAutoPosition) {
+      return;
+    }
+    const { match: { params: { graphId } } } = this.props;
+    const updateNodePositions = Chart.getNodes().filter((d) => !d.fake).map((node) => ({
+      id: node.id,
+      fx: node.fx,
+      fy: node.fy,
+      labels: node.labels,
+    }));
+    document.body.classList.add('autoSave');
+    await this.props.updateNodesPositionRequest(graphId, updateNodePositions);
+    document.body.classList.remove('autoSave');
+  }
+
   saveGraph = async () => {
     const { match: { params: { graphId } } } = this.props;
-    if (!graphId) {
+    if (!graphId || Chart.isAutoPosition) {
       return;
     }
     document.body.classList.add('autoSave');
@@ -136,7 +154,6 @@ class AutoSave extends Component {
     const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake);
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake);
     const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
-
     const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
     const createLabels = _.differenceBy(labels, oldLabels, 'id');
     const updateLabels = [];

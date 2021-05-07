@@ -6,11 +6,8 @@ class ChartUpdate {
   static nodePositionsChange = (nodes) => {
     Chart.data.nodes = Chart.data.nodes.map((node) => {
       const d = nodes.find((d) => d.id === node.id);
-      if (d) {
-        node.x = d.fx;
+      if (d && !Chart.autoPosition) {
         node.fx = d.fx;
-
-        node.y = d.fy;
         node.fy = d.fy;
       }
       return node;
