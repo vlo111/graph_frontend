@@ -8677,3 +8677,13 @@ img.preview-scaled {
     }
   }
 }
+
+.img-thumbnail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em 1em;
+  border-radius: 1.7em;
+  max-width: 370px;
+  max-height: 370px;
+}
