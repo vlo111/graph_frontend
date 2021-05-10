@@ -425,6 +425,10 @@ class Api {
     });
   }
 
+  static updateGraphPositions(graphId, nodes, labels) {
+    return api.put(`/graphs/update-positions/${graphId}`, { nodes, labels });
+  }
+
   static updateLabelPositions(graphId, labels) {
     return api.put(`/labels/update-positions/${graphId}`, { labels });
   }

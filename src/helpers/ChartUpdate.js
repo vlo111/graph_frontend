@@ -6,7 +6,7 @@ class ChartUpdate {
   static nodePositionsChange = (nodes) => {
     Chart.data.nodes = Chart.data.nodes.map((node) => {
       const d = nodes.find((d) => d.id === node.id);
-      if (d && !Chart.autoPosition) {
+      if (d && !Chart.isAutoPosition) {
         node.fx = d.fx;
         node.fy = d.fy;
       }
@@ -14,6 +14,26 @@ class ChartUpdate {
     });
     Chart._dataNodes = null;
     Chart.graphMovement();
+  }
+
+  static graphPositionsChange = (updateNodes, labelsUpdate) => {
+    const labels = Chart.getLabels().map((label) => {
+      const d = labelsUpdate.find((l) => l.id === label.id);
+      if (d) {
+        label.d = d.d;
+      }
+      return label;
+    });
+    const nodes = Chart.getNodes().map((node) => {
+      const d = updateNodes.find(((n) => n.id === node.id));
+      if (d && !Chart.isAutoPosition) {
+        node.fx = d.fx;
+        node.fy = d.fy;
+        node.labels = d.labels || node.labels;
+      }
+      return node;
+    });
+    Chart.render({ labels, nodes }, { ignoreAutoSave: true });
   }
 
   static nodesCrate = (nodeCreate) => {

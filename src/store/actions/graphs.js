@@ -1,5 +1,6 @@
 import { define } from '../../helpers/redux-request';
 import Api from '../../Api';
+import { UPDATE_NODES_POSITION } from "./nodes";
 
 export const CONVERT_GRAPH = define('CONVERT_GRAPH');
 
@@ -184,4 +185,10 @@ export function setActiveTab(tabName) {
       tabName,
     },
   };
+}
+
+const UPDATE_GRAPH_POSITIONS = define('UPDATE_GRAPH_POSITIONS');
+
+export function updateGraphPositionsRequest(graphId, nodes, labels) {
+  return UPDATE_GRAPH_POSITIONS.request(() => Api.updateGraphPositions(graphId, nodes, labels));
 }

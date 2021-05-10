@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Chart from '../Chart';
-import { updateGraphThumbnailRequest } from '../store/actions/graphs';
+import { updateGraphPositionsRequest, updateGraphThumbnailRequest } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
 import {
   createNodesRequest,
@@ -241,8 +241,12 @@ class AutoSave extends Component {
     if (deleteNodes.length) {
       promise.push(this.props.deleteNodesRequest(graphId, deleteNodes));
     }
-    if (updateNodePositions.length) {
-      promise.push(this.props.updateNodesPositionRequest(graphId, updateNodePositions));
+    // if (updateNodePositions.length) {
+    //   promise.push(this.props.updateNodesPositionRequest(graphId, updateNodePositions));
+    // }
+
+    if (updateNodePositions.length || updateLabelPositions.length) {
+      promise.push(this.props.updateGraphPositionsRequest(graphId, updateNodePositions, updateLabelPositions));
     }
 
     if (updateNodeCustomFields.length) {
@@ -265,9 +269,9 @@ class AutoSave extends Component {
     if (updateLabels.length) {
       promise.push(this.props.updateLabelsRequest(graphId, updateLabels));
     }
-    if (updateLabelPositions.length) {
-      promise.push(this.props.updateLabelPositionsRequest(graphId, updateLabelPositions));
-    }
+    // if (updateLabelPositions.length) {
+    //   promise.push(this.props.updateLabelPositionsRequest(graphId, updateLabelPositions));
+    // }
     if (deleteLabels.length) {
       promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
@@ -323,6 +327,8 @@ const mapDispatchToProps = {
   updateLinksRequest,
   updateLabelPositionsRequest,
   deleteLinksRequest,
+
+  updateGraphPositionsRequest,
 
   createLabelsRequest,
   updateLabelsRequest,

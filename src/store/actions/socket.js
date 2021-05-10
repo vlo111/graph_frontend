@@ -97,6 +97,14 @@ export function socketInit() {
       }
     });
 
+
+    socket.on('graph.update-positions', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.graphPositionsChange(data.nodes, data.labels);
+      }
+    });
+
     socket.on('node.update-fields', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
