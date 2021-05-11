@@ -34,7 +34,6 @@
     "react-lazyload": "^3.2.0",
     "react-lines-ellipsis": "^0.14.1",
     "react-modal": "^3.11.2",
-    "react-native-camera": "^3.43.6",
     "react-notification-timeline": "github:davoasrn/notifyme",
     "react-paginate": "^6.5.0",
     "react-redux": "^7.2.2",
