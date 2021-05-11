@@ -118,6 +118,20 @@ class ChartUpdate {
     Chart.render({ labels }, { ignoreAutoSave: true });
   }
 
+  static labelToggle = (updateLabel) => {
+    if (updateLabel.open) {
+      const folder = document.querySelector(`[id="${updateLabel.id}"]`);
+      if (folder) {
+        folder.dispatchEvent(new Event('dblclick'));
+      }
+    } else {
+      const folderCloseButton = document.querySelector(`[id="${updateLabel.id}"] .closeIcon`);
+      if (folderCloseButton) {
+        folderCloseButton.dispatchEvent(new Event('click'));
+      }
+    }
+  }
+
   static labelUpdatePosition = (labelsUpdate, updateNodes) => {
     const labels = Chart.getLabels().map((label) => {
       const updateLabel = labelsUpdate.find((n) => n.id === label.id);

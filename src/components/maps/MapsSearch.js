@@ -10,10 +10,8 @@ class MapsSearch extends Component {
   }
 
   static defaultProps = {
-    onSelect: () => {
-    },
+    onSelect: () => undefined,
   }
-
 
   componentDidMount() {
     const { google } = this.props;
@@ -56,7 +54,7 @@ class MapsSearch extends Component {
         <Input
           placeholder="Search ..."
           autoComplete="off"
-          onRef={ref => this.input = ref}
+          onRef={(ref) => this.input = ref}
         />
       </div>
     );

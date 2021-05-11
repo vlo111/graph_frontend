@@ -16,7 +16,7 @@ import {
 import { createLinksRequest, deleteLinksRequest, updateLinksRequest } from '../store/actions/links';
 import {
   createLabelsRequest,
-  deleteLabelsRequest,
+  deleteLabelsRequest, toggleFolderRequest,
   updateLabelPositionsRequest,
   updateLabelsRequest,
 } from '../store/actions/labels';
@@ -41,6 +41,7 @@ class AutoSave extends Component {
     createLabelsRequest: PropTypes.func.isRequired,
     deleteLabelsRequest: PropTypes.func.isRequired,
     updateLabelsRequest: PropTypes.func.isRequired,
+    toggleFolderRequest: PropTypes.func.isRequired,
 
     updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
 
@@ -54,6 +55,8 @@ class AutoSave extends Component {
     Chart.event.on('setNodeData', this.handleChartRender);
     Chart.event.on('square.dragend', this.handleChartRender);
     Chart.event.on('selected.dragend', this.handleChartRender);
+    Chart.event.on('folder.open', this.handleFolderToggle);
+    Chart.event.on('folder.close', this.handleFolderToggle);
 
     Chart.event.on('auto-position.change', this.handleAutoPositionChange);
 
@@ -66,6 +69,20 @@ class AutoSave extends Component {
     clearTimeout(this.thumbnailTimeout);
     this.thumbnailListener();
     window.removeEventListener('beforeunload', this.handleUnload);
+  }
+
+  handleFolderToggle = async (ev, d) => {
+    if (ev === Chart && Chart.ignoreAutoSave) {
+      return;
+    }
+    if (!Chart.autoSave) {
+      return;
+    }
+    const { match: { params: { graphId } } } = this.props;
+    await this.props.toggleFolderRequest(graphId, {
+      id: d.id,
+      open: d.open,
+    });
   }
 
   handleChartRender = (ev) => {
@@ -273,6 +290,7 @@ class AutoSave extends Component {
     if (updateLabels.length) {
       promise.push(this.props.updateLabelsRequest(graphId, updateLabels));
     }
+
     // if (updateLabelPositions.length) {
     //   promise.push(this.props.updateLabelPositionsRequest(graphId, updateLabelPositions));
     // }
@@ -337,6 +355,7 @@ const mapDispatchToProps = {
   createLabelsRequest,
   updateLabelsRequest,
   deleteLabelsRequest,
+  toggleFolderRequest,
 };
 
 const Container = connect(

@@ -25,3 +25,9 @@ export const UPDATE_LABEL_POSITIONS = define('UPDATE_LABEL_POSITIONS');
 export function updateLabelPositionsRequest(graphId, labels) {
   return UPDATE_LABEL_POSITIONS.request(() => Api.updateLabelPositions(graphId, labels));
 }
+
+export const TOGGLE_FOLDER_REQUEST = define('TOGGLE_FOLDER_REQUEST');
+
+export function toggleFolderRequest(graphId, label) {
+  return TOGGLE_FOLDER_REQUEST.request(() => Api.toggleFolder(graphId, ChartUtils.objectAndProto(label)));
+}

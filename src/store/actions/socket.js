@@ -97,7 +97,6 @@ export function socketInit() {
       }
     });
 
-
     socket.on('graph.update-positions', (data) => {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
@@ -165,6 +164,12 @@ export function socketInit() {
       const graphId = +Utils.getGraphIdFormUrl();
       if (graphId === +data.graphId) {
         ChartUpdate.labelUpdate(data.labels);
+      }
+    });
+    socket.on('label.toggle', (data) => {
+      const graphId = +Utils.getGraphIdFormUrl();
+      if (graphId === +data.graphId) {
+        ChartUpdate.labelToggle(data.label);
       }
     });
 

@@ -419,6 +419,10 @@ class Api {
     return api.put(`/labels/update/${graphId}`, { labels });
   }
 
+  static toggleFolder(graphId, label) {
+    return api.put(`/labels/toggle/${graphId}`, { label });
+  }
+
   static deleteLabels(graphId, labels) {
     return api.delete(`/labels/delete/${graphId}`, {
       data: { labels },
