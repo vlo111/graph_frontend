@@ -36,6 +36,8 @@ class AutoSave extends Component {
     deleteLinksRequest: PropTypes.func.isRequired,
     updateLinksRequest: PropTypes.func.isRequired,
 
+    updateGraphPositionsRequest: PropTypes.func.isRequired,
+
     createLabelsRequest: PropTypes.func.isRequired,
     deleteLabelsRequest: PropTypes.func.isRequired,
     updateLabelsRequest: PropTypes.func.isRequired,

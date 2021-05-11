@@ -30,7 +30,6 @@ import { Link } from 'react-router-dom';
 class AddNodeModal extends Component {
   static propTypes = {
     toggleNodeModal: PropTypes.func.isRequired,
-    setNodeCustomField: PropTypes.func.isRequired,
     currentUserId: PropTypes.number.isRequired,
     addNodeParams: PropTypes.object.isRequired,
     currentUserRole: PropTypes.string.isRequired,
@@ -268,7 +267,7 @@ class AddNodeModal extends Component {
               autoComplete="off"
             />
         {expand ? (
-             <> 
+             <>
             <Select
               label="Status"
               portal
@@ -323,8 +322,8 @@ class AddNodeModal extends Component {
                   value={nodeData.icon}
                   onChangeFile={(v, file) => this.handleChange('icon', file)}
                 />
-                 
-               <img className="img-thumbnail" src={Utils.fileSrc(nodeData.icon)} alt="" /> 
+
+               <img className="img-thumbnail" src={Utils.fileSrc(nodeData.icon)} alt="" />
                 <Select
                   label="Keywords"
                   isCreatable
@@ -390,7 +389,7 @@ class AddNodeModal extends Component {
           ) : null }
           <div className="row advanced right">
               <Link className="" onClick={this.toggleExpand} >
-              { !expand ? `Advanced` : `Primitive` } 
+              { !expand ? `Advanced` : `Primitive` }
               </Link>
           </div>
             <div className="footerButtons">

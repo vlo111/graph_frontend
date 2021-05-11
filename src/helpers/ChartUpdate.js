@@ -5,7 +5,7 @@ import ChartUtils from './ChartUtils';
 class ChartUpdate {
   static nodePositionsChange = (nodes) => {
     Chart.data.nodes = Chart.data.nodes.map((node) => {
-      const d = nodes.find((d) => d.id === node.id);
+      const d = nodes.find((n) => n.id === node.id);
       if (d && !Chart.isAutoPosition) {
         node.fx = d.fx;
         node.fy = d.fy;
