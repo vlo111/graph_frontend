@@ -171,6 +171,8 @@ class AutoSave extends Component {
           updateLabelPositions.push({
             id: label.id,
             d: label.d,
+            type: label.type,
+            open: label.open,
           });
         } else if (!_.isEqual(oldLabel.d, label.d) || !_.isEqual(oldLabel.name, label.name)) {
           updateLabels.push(label);
