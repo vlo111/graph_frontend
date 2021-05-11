@@ -1372,7 +1372,6 @@ class Chart {
       this.radiusList = ChartUtils.getRadiusList();
       const filteredLinks = this.data.links.filter((d) => d.hidden !== 1);
       const filteredNodes = this.data.nodes.filter((d) => d.hidden !== 1);
-
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(filteredLinks).id((d) => d.id))
         .on('tick', this.graphMovement);
