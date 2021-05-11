@@ -1095,7 +1095,7 @@ class Chart {
       .attr('href', '#folderIcon')
       .attr('class', 'folderIconUse')
       .attr('width', 60)
-      .attr('height', 60)
+      .attr('height', 60);
 
     folderWrapper.selectAll('.folderOpen')
       .append('rect')

@@ -31,6 +31,13 @@ class ChartUpdate {
         node.fy = d.fy;
         node.labels = d.labels || node.labels;
       }
+      if (node.fake) {
+        const label = labelsUpdate.find((l) => `fake_${l.id}` === node.id);
+        if (label) {
+          node.fx = label.d[0][0] + 30;
+          node.fy = label.d[0][1] + 30;
+        }
+      }
       return node;
     });
     Chart.render({ labels, nodes }, { ignoreAutoSave: true });
