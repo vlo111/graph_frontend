@@ -61,11 +61,11 @@ class GraphCompare extends Component {
       onlyTitle: 1,
     });
     const graphs = data.graphs
-                       .filter((g) => +g.id !== +graphId && +g.id !== +graph2Id)
-                       .map((g) => ({
-                         value: g.id,
-                         label: `${g.title} (${g.nodesCount})`,
-                       }));
+      .filter((g) => +g.id !== +graphId && +g.id !== +graph2Id)
+      .map((g) => ({
+        value: g.id,
+        label: `${g.title} (${g.nodesCount})`,
+      }));
     return graphs;
   }
 
@@ -129,7 +129,7 @@ class GraphCompare extends Component {
     const selected = [...selectedNodes1, ...selectedNodes2];
     return (
       <Wrapper className="graphCompare" showFooter={false}>
-        <Header/>
+        <Header />
         <div className="compareListWrapper">
           <ul className="compareList">
             <li className="item itemSearch">
@@ -202,7 +202,7 @@ class GraphCompare extends Component {
         </Button>
 
         {!_.isEmpty(createGraphData) ? (
-          <CreateGraphModal show data={createGraphData}/>
+          <CreateGraphModal show data={createGraphData} />
         ) : null}
       </Wrapper>
     );

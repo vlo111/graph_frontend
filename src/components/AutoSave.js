@@ -234,6 +234,9 @@ class AutoSave extends Component {
     let createLinks = _.differenceBy(links, oldLinks, 'id');
     const updateLinks = [];
     createLinks.push(...oldLinks.filter((l) => l.create));
+    oldLinks.forEach((l) => {
+      delete l.create;
+    });
     links.forEach((link) => {
       const oldLink = oldLinks.find((l) => l.id === link.id);
       if (oldLink) {

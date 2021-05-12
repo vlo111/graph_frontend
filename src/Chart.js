@@ -25,6 +25,9 @@ class Chart {
 
   static loading = (show) => {
     const loading = document.querySelector('#graph .loading');
+    if (!loading) {
+      return;
+    }
     if (show) {
       loading.classList.add('show');
     } else {
