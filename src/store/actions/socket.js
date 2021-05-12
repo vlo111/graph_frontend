@@ -278,16 +278,20 @@ export function socketInit() {
       }
       Chart.render({ embedLabels }, { filters, embeded: true });
     });
-    
+
     socket.on('mousemoving', (data) => {
       const { account: { myAccount: { id: userId } } } = getState();
       let fullName = ' '; 
       const graphId = +Utils.getGraphIdFormUrl();
-      const cursor = JSON.parse(data);  
-      if (graphId === +cursor.graphId && +cursor.userId !== +userId) {  
-        fullName = cursor.firstName + ' ' + cursor.lastName; 
-        ChartUpdate.mouseMovePositions(fullName, cursor.mousePosition);       
-      }
+      const cursors = JSON.parse(data);  
+      cursors.forEach((cursor) => {
+        if (graphId === +cursor.graphId && +cursor.userId !== +userId) {  
+          fullName = cursor?.firstName + ' ' + cursor?.lastName; 
+          ChartUpdate.mouseMovePositions(fullName, cursor?.mousePosition);       
+        }
+      });
+     
+      
        
     });
   };
