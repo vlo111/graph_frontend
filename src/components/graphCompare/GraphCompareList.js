@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import LazyLoad from 'react-lazyload';
 import memoizeOne from 'memoize-one';
 import { List } from 'react-virtualized';
 import LabelCompareItem from '../labelCopy/LabelCompareItem';
@@ -66,7 +65,7 @@ class GraphCompareList extends Component {
             {singleGraph1?.nodes?.length ? (
               <List
                 width={Math.min(window.innerWidth - 220, 1024)}
-                height={window.innerHeight - 450}
+                height={singleGraph1?.nodes?.length < 2 ? 200 :window.innerHeight - 450}
                 rowCount={singleGraph1?.nodes?.length || 0}
                 rowHeight={200}
                 rowRenderer={({ key, style, index }) => {
@@ -106,7 +105,7 @@ class GraphCompareList extends Component {
             {!singleGraph1 ? (
               <List
                 width={Math.min(window.innerWidth - 220, 1024)}
-                height={window.innerHeight - 450}
+                height={singleGraph2?.nodes?.length < 2 ? 200 :window.innerHeight - 450}
                 rowCount={singleGraph2?.nodes?.length || 0}
                 rowHeight={200}
                 rowRenderer={({ key, style, index }) => {
