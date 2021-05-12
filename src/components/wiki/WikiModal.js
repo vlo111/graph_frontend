@@ -19,24 +19,25 @@ class WikiModal extends Component {
     };
   }
 
-    useWikiSearchEngine = (e) => {
-      e.preventDefault();
+  useWikiSearchEngine = (e) => {
+    e.preventDefault();
+    if (this.state.WikiSearchTerms === undefined) {
+      return 0
+    }
+    this.setState({
+      wikiSearchReturnValues: [],
+    });
 
-      this.setState({
-        wikiSearchReturnValues: [],
-      });
+    const pointerToThis = this;
 
-      const pointerToThis = this;
+    let url = 'https://en.wikipedia.org/w/api.php';
 
-      let url = 'https://en.wikipedia.org/w/api.php';
-
-      const params = {
-        action: 'query',
-        list: 'search',
-        srsearch: this.state.WikiSearchTerms,
-        format: 'json',
-      };
-
+    const params = {
+      action: 'query',
+      list: 'search',
+      srsearch: this.state.WikiSearchTerms,
+      format: 'json',
+    };
       url = `${url}?origin=*`;
       Object.keys(params).forEach((key) => {
         url += `&${key}=${params[key]}`;
@@ -115,7 +116,6 @@ class WikiModal extends Component {
 https://en.wikipedia.org/wiki/${name}
 </a>
 </div>`;
-
       const x = 100;
       const y = 100;
       this.props.onClose(ev);
