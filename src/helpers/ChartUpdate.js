@@ -154,6 +154,10 @@ class ChartUpdate {
 
     Chart.render({ nodes, links, labels }, { ignoreAutoSave: true });
   }
+  static mouseMovePositions = (fullName, position) => {
+    Chart.mouseMovePositions(fullName, position);
+    
+  }
 }
 
 export default ChartUpdate;
