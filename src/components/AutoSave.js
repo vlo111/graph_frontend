@@ -1,11 +1,11 @@
-import {Component} from 'react';
-import {connect} from 'react-redux';
+import { Component } from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import {withRouter} from 'react-router-dom';
-import {toast} from 'react-toastify';
+import { withRouter } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Chart from '../Chart';
-import {updateGraphThumbnailRequest} from '../store/actions/graphs';
+import { updateGraphPositionsRequest, updateGraphThumbnailRequest } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
 import {
   createNodesRequest,
@@ -13,9 +13,14 @@ import {
   updateNodesPositionRequest,
   updateNodesRequest,
 } from '../store/actions/nodes';
-import {createLinksRequest, deleteLinksRequest, updateLinksRequest} from '../store/actions/links';
-import {createLabelsRequest, deleteLabelsRequest, updateLabelsRequest} from '../store/actions/labels';
-import Utils from "../helpers/Utils";
+import { createLinksRequest, deleteLinksRequest, updateLinksRequest } from '../store/actions/links';
+import {
+  createLabelsRequest,
+  deleteLabelsRequest, toggleFolderRequest,
+  updateLabelPositionsRequest,
+  updateLabelsRequest,
+} from '../store/actions/labels';
+import Utils from '../helpers/Utils';
 
 class AutoSave extends Component {
   static propTypes = {
@@ -31,9 +36,12 @@ class AutoSave extends Component {
     deleteLinksRequest: PropTypes.func.isRequired,
     updateLinksRequest: PropTypes.func.isRequired,
 
+    updateGraphPositionsRequest: PropTypes.func.isRequired,
+
     createLabelsRequest: PropTypes.func.isRequired,
     deleteLabelsRequest: PropTypes.func.isRequired,
     updateLabelsRequest: PropTypes.func.isRequired,
+    toggleFolderRequest: PropTypes.func.isRequired,
 
     updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
 
@@ -47,6 +55,10 @@ class AutoSave extends Component {
     Chart.event.on('setNodeData', this.handleChartRender);
     Chart.event.on('square.dragend', this.handleChartRender);
     Chart.event.on('selected.dragend', this.handleChartRender);
+    Chart.event.on('folder.open', this.handleFolderToggle);
+    Chart.event.on('folder.close', this.handleFolderToggle);
+
+    Chart.event.on('auto-position.change', this.handleAutoPositionChange);
 
     this.thumbnailListener = this.props.history.listen(this.handleRouteChange);
     window.addEventListener('beforeunload', this.handleUnload);
@@ -57,6 +69,20 @@ class AutoSave extends Component {
     clearTimeout(this.thumbnailTimeout);
     this.thumbnailListener();
     window.removeEventListener('beforeunload', this.handleUnload);
+  }
+
+  handleFolderToggle = async (ev, d) => {
+    if (ev === Chart && Chart.ignoreAutoSave) {
+      return;
+    }
+    if (!Chart.autoSave) {
+      return;
+    }
+    const { match: { params: { graphId } } } = this.props;
+    await this.props.toggleFolderRequest(graphId, {
+      id: d.id,
+      open: d.open,
+    });
   }
 
   handleChartRender = (ev) => {
@@ -118,9 +144,25 @@ class AutoSave extends Component {
     console.log(nodes);
   }
 
+  handleAutoPositionChange = async (isAutoPosition) => {
+    if (isAutoPosition) {
+      return;
+    }
+    const { match: { params: { graphId } } } = this.props;
+    const updateNodePositions = Chart.getNodes().filter((d) => !d.fake).map((node) => ({
+      id: node.id,
+      fx: node.fx,
+      fy: node.fy,
+      labels: node.labels,
+    }));
+    document.body.classList.add('autoSave');
+    await this.props.updateNodesPositionRequest(graphId, updateNodePositions);
+    document.body.classList.remove('autoSave');
+  }
+
   saveGraph = async () => {
     const { match: { params: { graphId } } } = this.props;
-    if (!graphId) {
+    if (!graphId || Chart.isAutoPosition) {
       return;
     }
     document.body.classList.add('autoSave');
@@ -131,10 +173,10 @@ class AutoSave extends Component {
     const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake);
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake);
     const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
-
     const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
     const createLabels = _.differenceBy(labels, oldLabels, 'id');
     const updateLabels = [];
+    const updateLabelPositions = [];
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
@@ -142,6 +184,13 @@ class AutoSave extends Component {
           createLabels.push(label);
         } else if (!oldLabel.name && label.name) {
           createLabels.push(label);
+        } else if (!_.isEqual(label.d, oldLabel.d)) {
+          updateLabelPositions.push({
+            id: label.id,
+            d: label.d,
+            type: label.type,
+            open: label.open,
+          });
         } else if (!_.isEqual(oldLabel.d, label.d) || !_.isEqual(oldLabel.name, label.name)) {
           updateLabels.push(label);
         }
@@ -213,8 +262,12 @@ class AutoSave extends Component {
     if (deleteNodes.length) {
       promise.push(this.props.deleteNodesRequest(graphId, deleteNodes));
     }
-    if (updateNodePositions.length) {
-      promise.push(this.props.updateNodesPositionRequest(graphId, updateNodePositions));
+    // if (updateNodePositions.length) {
+    //   promise.push(this.props.updateNodesPositionRequest(graphId, updateNodePositions));
+    // }
+
+    if (updateNodePositions.length || updateLabelPositions.length) {
+      promise.push(this.props.updateGraphPositionsRequest(graphId, updateNodePositions, updateLabelPositions));
     }
 
     if (updateNodeCustomFields.length) {
@@ -237,6 +290,10 @@ class AutoSave extends Component {
     if (updateLabels.length) {
       promise.push(this.props.updateLabelsRequest(graphId, updateLabels));
     }
+
+    // if (updateLabelPositions.length) {
+    //   promise.push(this.props.updateLabelPositionsRequest(graphId, updateLabelPositions));
+    // }
     if (deleteLabels.length) {
       promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
@@ -290,11 +347,15 @@ const mapDispatchToProps = {
 
   createLinksRequest,
   updateLinksRequest,
+  updateLabelPositionsRequest,
   deleteLinksRequest,
+
+  updateGraphPositionsRequest,
 
   createLabelsRequest,
   updateLabelsRequest,
   deleteLabelsRequest,
+  toggleFolderRequest,
 };
 
 const Container = connect(

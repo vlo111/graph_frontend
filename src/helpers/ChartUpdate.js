@@ -1,22 +1,46 @@
-import Chart from '../Chart';
 import _ from 'lodash';
+import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
 
 class ChartUpdate {
   static nodePositionsChange = (nodes) => {
     Chart.data.nodes = Chart.data.nodes.map((node) => {
-      const d = nodes.find((d) => d.id === node.id);
-      if (d) {
-        node.x = d.fx;
+      const d = nodes.find((n) => n.id === node.id);
+      if (d && !Chart.isAutoPosition) {
         node.fx = d.fx;
-
-        node.y = d.fy;
         node.fy = d.fy;
       }
       return node;
     });
     Chart._dataNodes = null;
     Chart.graphMovement();
+  }
+
+  static graphPositionsChange = (updateNodes, labelsUpdate) => {
+    const labels = Chart.getLabels().map((label) => {
+      const d = labelsUpdate.find((l) => l.id === label.id);
+      if (d) {
+        label.d = d.d;
+      }
+      return label;
+    });
+    const nodes = Chart.getNodes().map((node) => {
+      const d = updateNodes.find(((n) => n.id === node.id));
+      if (d && !Chart.isAutoPosition) {
+        node.fx = d.fx;
+        node.fy = d.fy;
+        node.labels = d.labels || node.labels;
+      }
+      if (node.fake) {
+        const label = labelsUpdate.find((l) => `fake_${l.id}` === node.id);
+        if (label) {
+          node.fx = label.d[0][0] + 30;
+          node.fy = label.d[0][1] + 30;
+        }
+      }
+      return node;
+    });
+    Chart.render({ labels, nodes }, { ignoreAutoSave: true });
   }
 
   static nodesCrate = (nodeCreate) => {
@@ -92,6 +116,32 @@ class ChartUpdate {
       return d;
     });
     Chart.render({ labels }, { ignoreAutoSave: true });
+  }
+
+  static labelToggle = (updateLabel) => {
+    if (updateLabel.open) {
+      const folder = document.querySelector(`[id="${updateLabel.id}"]`);
+      if (folder) {
+        folder.dispatchEvent(new Event('dblclick'));
+      }
+    } else {
+      const folderCloseButton = document.querySelector(`[id="${updateLabel.id}"] .closeIcon`);
+      if (folderCloseButton) {
+        folderCloseButton.dispatchEvent(new Event('click'));
+      }
+    }
+  }
+
+  static labelUpdatePosition = (labelsUpdate, updateNodes) => {
+    const labels = Chart.getLabels().map((label) => {
+      const updateLabel = labelsUpdate.find((n) => n.id === label.id);
+      if (updateLabel) {
+        label.d = updateLabel.d;
+      }
+      return label;
+    });
+    Chart.render({ labels }, { ignoreAutoSave: true });
+    this.nodePositionsChange(updateNodes);
   }
 
   static labelDelete = (labelsDelete) => {

@@ -158,14 +158,14 @@ export default function reducer(state = initialState, action) {
       const {
         nodes, links, labels, lastUid,
       } = singleGraph;
-
       Chart.render({
-        nodes: nodes.filter(n => n.name),
+        nodes,
         links: ChartUtils.cleanLinks(links, nodes),
         labels,
         embedLabels,
         lastUid,
       });
+      Chart.loading(false);
       return {
         ...state,
         singleGraph,

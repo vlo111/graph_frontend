@@ -914,28 +914,28 @@ class ChartUtils {
   static getDimensions(windowWidth = true) {
     const nodes = Chart.getNodes();
     const labels = Chart.getLabels();
-    const minXArr = [];
-    const minYArr = [];
+    const arrX = [];
+    const arrY = [];
     nodes.forEach((n) => {
-      minXArr.push(n.fx);
-      minYArr.push(n.fy);
+      arrX.push(n.fx);
+      arrY.push(n.fy);
     });
     labels.forEach((l) => {
       if (l.type === 'folder') {
-        minXArr.push(l.d[0][0]);
-        minYArr.push(l.d[0][1]);
+        arrX.push(l.d[0][0]);
+        arrY.push(l.d[0][1]);
       } else {
-        minXArr.push(...l.d.map((p) => p[0]));
-        minYArr.push(...l.d.map((p) => p[1]));
+        arrX.push(...l.d.map((p) => p[0]));
+        arrY.push(...l.d.map((p) => p[1]));
       }
     });
-    const min = [_.min(minXArr), _.min(minYArr)];
-    const max = [_.max(minXArr), _.max(minYArr)];
-    let width = min[0] + max[0];
-    let height = max[1] + max[1];
+    const min = [_.min(arrX), _.min(arrY)];
+    const max = [_.max(arrX), _.max(arrY)];
+    let width = max[0] - min[0];
+    let height = max[1] - min[1];
     if (windowWidth) {
       width = _.max([min[0] + max[0], window.innerWidth]);
-      height = _.max([max[1] + max[1], window.innerHeight]);
+      height = _.max([min[1] + max[1], window.innerHeight]);
     }
     return {
       min,

@@ -41,6 +41,7 @@ class ReactChart extends Component {
   }
 
   componentDidMount() {
+    Chart.loading(true);
     Chart.render({ nodes: [], links: [], labels: [] });
 
     Chart.event.on('node.click', this.handleNodeClick);
@@ -118,14 +119,14 @@ class ReactChart extends Component {
         if (d.nodes.includes(l.source)) {
           l.source = fakeId;
           l.fake = true;
-        } else if (d.nodes.includes(l.target)) {
+        }
+        if (d.nodes.includes(l.target)) {
           l.target = fakeId;
           l.fake = true;
         }
       }
       return l;
-    });
-    console.log(1, links);
+    }).filter((l) => l.source !== l.target);
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
   }
 

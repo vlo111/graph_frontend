@@ -170,6 +170,7 @@ class LabelCopy extends Component {
   }
 
   compareAndMerge = async (sources, duplications) => {
+    Chart.loading(true);
     const merge = {
       sources: sources.map((d) => d.id),
       duplications: duplications.map((d) => d.id),
@@ -184,13 +185,15 @@ class LabelCopy extends Component {
       nodes: data.nodes,
       links: data.links,
       merge,
-    }).catch((e) => e.response);
+    }).catch((e) => e.response || {});
     if (res.status === 'error') {
       toast.error(res.message);
     }
+    Chart.loading(false);
   }
 
   copyDocument = async (action, sourceId = undefined) => {
+    Chart.loading(true);
     const { position } = this.state;
     const { x, y } = ChartUtils.calcScaledPosition(position[0], position[1]);
     const { id } = this.props.singleGraph;
@@ -213,6 +216,8 @@ class LabelCopy extends Component {
         embedLabels: a.embedLabels,
       });
     }
+
+    Chart.loading(false);
   }
 
   handleLabelEmbed = () => {

@@ -11,6 +11,8 @@ import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg'
 import ContextMenu from '../contextMenu/ContextMenu';
 import { createLabelsRequest } from '../../store/actions/labels';
 import { updateNodesPositionRequest } from '../../store/actions/nodes';
+import { setActiveButton } from '../../store/actions/app';
+
 import Utils from '../../helpers/Utils';
 
 class AddLabelModal extends Component {
@@ -22,6 +24,9 @@ class AddLabelModal extends Component {
       edit: false,
       errors: {},
     };
+  }
+  static defaultProps = {
+    setAvtiveButton: 'create',
   }
 
   componentDidMount() {
@@ -108,6 +113,8 @@ class AddLabelModal extends Component {
   addLabel = async (ev) => {
     ev.preventDefault();
     const { labelData } = this.state;
+    const { setAvtiveButton } = this.props;
+
     const labels = [...Chart.getLabels()];
     const errors = {};
     [errors.name, labelData.name] = Validate.labelName(labelData.name);
@@ -132,6 +139,7 @@ class AddLabelModal extends Component {
       }
       Chart.render({ labels, nodes });
       this.setState({ show: false });
+      this.props.setActiveButton(setAvtiveButton);
     }
     this.setState({ errors });
   }
@@ -192,6 +200,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   createLabelsRequest,
   updateNodesPositionRequest,
+  setActiveButton,
 };
 
 const Container = connect(

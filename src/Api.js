@@ -212,10 +212,10 @@ class Api {
     return api.put(`/share-graphs/update/${id}`, requestData);
   }
 
-  static deleteShareGraph(id, notification = true ) {  
+  static deleteShareGraph(id, notification = true) {
     return api.delete(`/share-graphs/delete/${id}`, {
       params: {
-        notification
+        notification,
       },
     });
   }
@@ -419,10 +419,22 @@ class Api {
     return api.put(`/labels/update/${graphId}`, { labels });
   }
 
+  static toggleFolder(graphId, label) {
+    return api.put(`/labels/toggle/${graphId}`, { label });
+  }
+
   static deleteLabels(graphId, labels) {
     return api.delete(`/labels/delete/${graphId}`, {
       data: { labels },
     });
+  }
+
+  static updateGraphPositions(graphId, nodes, labels) {
+    return api.put(`/graphs/update-positions/${graphId}`, { nodes, labels });
+  }
+
+  static updateLabelPositions(graphId, labels) {
+    return api.put(`/labels/update-positions/${graphId}`, { labels });
   }
 
   static labelCopy(sourceId, labelId) {
@@ -462,16 +474,15 @@ class Api {
     });
   }
 
-  //History
+  // History
 
-  static getNodeHistory(graphId, nodeId) { 
+  static getNodeHistory(graphId, nodeId) {
     return api.get(`/graph-history/node-history/${graphId}/${nodeId}`);
   }
-  static getGraphHistory(graphId) { 
+
+  static getGraphHistory(graphId) {
     return api.get(`/graph-history/graph-history/${graphId}`);
   }
-
-
 }
 
 export default Api;

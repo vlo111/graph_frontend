@@ -531,15 +531,24 @@ class Chart {
         data.nodes = data.nodes.filter((d) => !d.remove);
         data.links = ChartUtils.cleanLinks(data.links, data.nodes);
       }
-    } else if (data.nodes.filter((d) => d.sourceId)) {
+    } else if (data.nodes.some((d) => d.sourceId)) {
       data.nodes = data.nodes.filter((d) => !d.sourceId);
       data.links = ChartUtils.cleanLinks(data.links, data.nodes);
     }
 
-    const nodes = data.nodes.map((d) => {
+    _.forEach(data.nodes, (d, i) => {
       d.id = d.id || ChartUtils.uniqueId(data.nodes);
       d.name = d.name || '';
-      return Object.create(d);
+      if (this.isAutoPosition) {
+        d.x = d.fx || 0;
+        d.y = d.fy || 0;
+        delete d.fx;
+        delete d.fy;
+      } else if (_.isUndefined(d.fx) || _.isUndefined(d.fy)) {
+        d.fx = d.x || 0;
+        d.fy = d.y || 0;
+      }
+      data.nodes[i] = Object.create(d);
     });
 
     let embedLinks = [];
@@ -642,7 +651,7 @@ class Chart {
     const labels = Object.values(data.labels).map((d) => Object.create(d));
 
     return {
-      links, nodes, labels, embedLabels: data.embedLabels, lastUid,
+      links, nodes: data.nodes, labels, embedLabels: data.embedLabels, lastUid,
     };
   }
 
@@ -670,7 +679,7 @@ class Chart {
   }
 
   static autoPosition() {
-    if (this.data.nodes[0] && this.data.nodes[0].fx === undefined) {
+    if (this.isAutoPosition) {
       const graph = document.querySelector('#graph');
       if (!graph) {
         return null;
@@ -678,7 +687,7 @@ class Chart {
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('charge', d3.forceManyBody().strength((d, i) => (i === 0 ? -2000 : -1000)).distanceMin(200).distanceMax(1000));
+        .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -2000 : -1000)).distanceMin(200).distanceMax(1000));
       // .force('y', d3.forceY(0.01))
       // .force('x', d3.forceX(0.01));
     }
@@ -1084,7 +1093,9 @@ class Chart {
     folderWrapper.selectAll('.folder')
       .append('use')
       .attr('href', '#folderIcon')
-      .attr('class', 'folderIconUse');
+      .attr('class', 'folderIconUse')
+      .attr('width', 60)
+      .attr('height', 60);
 
     folderWrapper.selectAll('.folderOpen')
       .append('rect')
@@ -1335,6 +1346,8 @@ class Chart {
         });
       }
 
+      this.isAutoPosition = !_.isUndefined(params.isAutoPosition) ? params.isAutoPosition : this.isAutoPosition;
+
       this.graphId = Utils.getGraphIdFormUrl();
       this._dataNodes = null;
       this._dataLinks = null;
@@ -1361,7 +1374,6 @@ class Chart {
       this.radiusList = ChartUtils.getRadiusList();
       const filteredLinks = this.data.links.filter((d) => d.hidden !== 1);
       const filteredNodes = this.data.nodes.filter((d) => d.hidden !== 1);
-
       this.simulation = d3.forceSimulation(this.data.nodes)
         .force('link', d3.forceLink(filteredLinks).id((d) => d.id))
         .on('tick', this.graphMovement);
@@ -1488,7 +1500,6 @@ class Chart {
       this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
         .filter((d) => d.manually_size > 1)
         .attr('r', (d) => +d.manually_size + 15);
-
 
       if (!_.isEmpty(filteredLinks)) {
         const currentLink = filteredLinks[filteredLinks.length - 1];
@@ -1981,7 +1992,7 @@ class Chart {
         //   return false;
         // }
         return true;
-      })
+      });
 
     defs.append('pattern')
       .attr('id', (d) => `i${d.index}`)
@@ -2021,7 +2032,6 @@ class Chart {
       })
       .attr('xlink:href', (d) => ChartUtils.normalizeIcon(d.icon, d.nodeType === 'infography'));
 
-
     this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
       .attr('fill', (d) => {
         if (d.icon) {
@@ -2033,7 +2043,6 @@ class Chart {
           }
           return `url(#i${d.index})`;
         }
-
 
         return ChartUtils.nodeColor(d);
       });
