@@ -22,6 +22,7 @@ import NotFound from './NotFound';
 import { deleteNodesRequest, updateNodesRequest, updateNodesPositionRequest } from '../../store/actions/nodes';
 import { deleteLinksRequest } from '../../store/actions/links';
 import { deleteLabelsRequest, updateLabelsRequest } from '../../store/actions/labels';
+import Utils from '../../helpers/Utils';
 
 class ReactChart extends Component {
   static propTypes = {
@@ -112,21 +113,31 @@ class ReactChart extends Component {
   handleFolderClose = async (ev, d) => {
     const fakeId = `fake_${d.id}`;
 
+    console.log(d)
     const nodes = Chart.getNodes().filter((n) => n.fake || !n.labels.includes(d.id));
-    console.log(nodes, Chart.getLinks());
-    const links = Chart.getLinks().map((l) => {
+    let links = Chart.getLinks().map((l) => {
       if (d.nodes) {
+        d.totalLinks = 0;
         if (d.nodes.includes(l.source)) {
+          d.totalLinks += 1;
           l.source = fakeId;
           l.fake = true;
         }
         if (d.nodes.includes(l.target)) {
+          d.totalLinks += 1;
           l.target = fakeId;
           l.fake = true;
         }
       }
       return l;
-    }).filter((l) => l.source !== l.target);
+    }).filter((l) => {
+      if (l.source === l.target) {
+        d.totalLinks -= 1;
+        return false;
+      }
+      return true;
+    });
+    links = ChartUtils.uniqueLinks(links, true);
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
   }
 

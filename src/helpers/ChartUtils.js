@@ -767,15 +767,15 @@ class ChartUtils {
     return data;
   }
 
-  static uniqueLinks(links) {
+  static uniqueLinks(links, excludeTypes = false) {
     return _.uniqBy(links, (l) => {
       if (l.direction) {
         return JSON.stringify({
-          2: l.type, 3: l.source, 4: l.target,
+          1: l.name, 2: (excludeTypes ? '' : l.type), 3: l.source, 4: l.target,
         });
       }
       return JSON.stringify({
-        2: l.type, 3: [l.source, l.target].sort(),
+        1: l.name, 2: (excludeTypes ? '' : l.type), 3: [l.source, l.target].sort(),
       });
     });
   }

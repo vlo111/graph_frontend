@@ -57,6 +57,7 @@ class AutoSave extends Component {
     Chart.event.on('selected.dragend', this.handleChartRender);
     Chart.event.on('folder.open', this.handleFolderToggle);
     Chart.event.on('folder.close', this.handleFolderToggle);
+    Chart.event.on('node.resize-end', this.handleNodeResizeEnd);
 
     Chart.event.on('auto-position.change', this.handleAutoPositionChange);
 
@@ -109,7 +110,6 @@ class AutoSave extends Component {
     location: node.location || '',
     name: node.name || '',
     nodeType: node.nodeType || '',
-    scale: node.scale || '',
     sourceId: node.sourceId || '',
     status: node.status || 'approved',
     type: node.type || '',
@@ -160,6 +160,13 @@ class AutoSave extends Component {
     document.body.classList.remove('autoSave');
   }
 
+  handleNodeResizeEnd = async (ev, d) => {
+    const { match: { params: { graphId } } } = this.props;
+    document.body.classList.add('autoSave');
+    await this.props.updateNodesRequest(graphId, [d]);
+    document.body.classList.remove('autoSave');
+  }
+
   saveGraph = async () => {
     const { match: { params: { graphId } } } = this.props;
     if (!graphId || Chart.isAutoPosition) {
@@ -177,6 +184,7 @@ class AutoSave extends Component {
     const createLabels = _.differenceBy(labels, oldLabels, 'id');
     const updateLabels = [];
     const updateLabelPositions = [];
+
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
@@ -253,7 +261,6 @@ class AutoSave extends Component {
       document.body.classList.remove('autoSave');
       return;
     }
-
     if (createNodes.length) {
       console.log(createNodes, this.props.createNodesRequest, 444);
       await this.props.createNodesRequest(graphId, createNodes);

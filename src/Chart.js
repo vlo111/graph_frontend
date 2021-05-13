@@ -2754,21 +2754,21 @@ class Chart {
   static clearLinkShortestPath() {
     this.nodesWrapper.selectAll('.shortestData > *').remove();
   }
-  static mouseMovePositions (fullName = '', position = []) {
-    
-     
-    const wrapper = this.svg.select('.mouseCursorPosition');  
-    wrapper.selectAll('text').remove();
-    wrapper.append("text")  
-    .attr("fill", ChartUtils.nodeColor(fullName))
-    .attr("x", position.x)
-    .attr("y", position.y)
-    .attr("width", 50)
-    .attr("height", 50)
-    .text(' ☝ '+  fullName);
-     
 
-      
+  static mouseMovePositions(fullName = '', position = []) {
+
+
+    const wrapper = this.svg.select('.mouseCursorPosition');
+    wrapper.selectAll('text').remove();
+    wrapper.append("text")
+      .attr("fill", ChartUtils.nodeColor(fullName))
+      .attr("x", position.x)
+      .attr("y", position.y)
+      .attr("width", 50)
+      .attr("height", 50)
+      .text(' ☝ ' + fullName);
+
+
   }
 }
 
