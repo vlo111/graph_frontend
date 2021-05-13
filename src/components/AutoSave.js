@@ -180,19 +180,19 @@ class AutoSave extends Component {
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
-        if (oldLabel.new) {
-          createLabels.push(label);
-        } else if (!oldLabel.name && label.name) {
-          createLabels.push(label);
-        } else if (!_.isEqual(label.d, oldLabel.d)) {
+        if (!_.isEqual(label.d, oldLabel.d)) {
           updateLabelPositions.push({
             id: label.id,
             d: label.d,
             type: label.type,
             open: label.open,
           });
+        } else if (!oldLabel.name && label.name) {
+          createLabels.push(label);
         } else if (!_.isEqual(oldLabel.d, label.d) || !_.isEqual(oldLabel.name, label.name)) {
           updateLabels.push(label);
+        } else if (oldLabel.new) {
+          createLabels.push(label);
         }
       }
     });
