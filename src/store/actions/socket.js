@@ -283,14 +283,8 @@ export function socketInit() {
       const { account: { myAccount: { id: userId } } } = getState();
       let fullName = ' '; 
       const graphId = +Utils.getGraphIdFormUrl();
-      const cursors = JSON.parse(data);  
-      cursors.forEach((cursor) => {
-        if (graphId === +cursor.graphId && +cursor.userId !== +userId) {  
-          fullName = cursor?.firstName + ' ' + cursor?.lastName; 
-          ChartUpdate.mouseMovePositions(fullName, cursor?.mousePosition);       
-        }
-      });
-     
+      const cursors = JSON.parse(data);
+      ChartUpdate.mouseMovePositions(graphId, userId, cursors);  
       
        
     });
@@ -324,8 +318,17 @@ export function socketSetActiveGraph(graphId) {
 export const SOCKET_MOUSE_POSITION = 'SOCKET_MOUSE_POSITION';
 
 export function socketMousePosition(graphId, userId, mousePosition) { 
+  if(graphId === undefined || userId === undefined)
+  return {
+    type: SOCKET_MOUSE_POSITION,
+    payload: {
+      graphId,
+      userId, 
+      mousePosition
+    },
+  };
   
-  socketEmit('mousemove', {  graphId, userId, mousePosition });
+  //socketEmit('mousemove', {  graphId, userId, mousePosition });
   return {
     type: SOCKET_MOUSE_POSITION,
     payload: {

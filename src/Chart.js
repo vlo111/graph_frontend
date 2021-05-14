@@ -706,6 +706,10 @@ class Chart {
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
       .attr('data-y', transform.y);
+    this.mouseCursorPosition.attr('transform', transform)
+      .attr('data-scale', transform.k)
+      .attr('data-x', transform.x)
+      .attr('data-y', transform.y);
 
     this.event.emit('zoom', ev, { transform });
 
@@ -1394,6 +1398,7 @@ class Chart {
       this.resizeSvg();
 
       this.wrapper = this.svg.select('.wrapper');
+      this.mouseCursorPosition = this.svg.select('.mouseCursorPosition');
 
       this.linksWrapper = this.svg.select('.links');
 
@@ -1679,6 +1684,14 @@ class Chart {
           .on('start', handleDragStart)
           .on('drag', handleDrag)
           .on('end', handleDragEnd));
+      this.mouseCursorPosition
+        .insert('rect', '.cursor')
+        .attr('class', 'selectBoard areaBoard')
+        .attr('fill', 'transparent')
+        .attr('width', `${size}%`)
+        .attr('height', `${size}%`)
+        .attr('x', x * scale)
+        .attr('y', y * scale);
     });
 
     this.event.on('window.mousedown', (ev) => {
@@ -2137,7 +2150,7 @@ class Chart {
     const wrapper = this.svg.select('.linkText');
     const linkIndexes = links.map((d) => d.index);
     const linksData = this.data.links.filter((d) => linkIndexes.includes(d.index) || d.total > 1);
-    console.log(linksData)
+    console.log(linksData);
     wrapper.selectAll('text textPath').remove();
 
     this.linkText = wrapper.selectAll('text')
@@ -2765,9 +2778,8 @@ class Chart {
     this.nodesWrapper.selectAll('.shortestData > *').remove();
   }
 
-  static mouseMovePositions(fullName = '', position = []) {
+  static mouseMovePositions(fullName, position) {
     const wrapper = this.svg.select('.mouseCursorPosition');
-    wrapper.selectAll('text').remove();
     wrapper.append('text')
       .attr('fill', ChartUtils.nodeColor(fullName))
       .attr('x', position.x)
