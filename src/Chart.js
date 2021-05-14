@@ -706,10 +706,11 @@ class Chart {
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
       .attr('data-y', transform.y);
-  this.mouseCursorPosition.attr('transform', transform)
-      .attr('data-scale', transform.k)
-      .attr('data-x', transform.x)
-      .attr('data-y', transform.y);
+
+    //  this.mouseCursorPosition.attr('transform', transform)
+    //   .attr('data-scale', transform.k)
+    //   .attr('data-x', transform.x)
+    //   .attr('data-y', transform.y);
 
 
     this.event.emit('zoom', ev, { transform });
@@ -1399,7 +1400,7 @@ class Chart {
       this.resizeSvg();
 
       this.wrapper = this.svg.select('.wrapper');
-      this.mouseCursorPosition = this.svg.select('.mouseCursorPosition');
+      // this.mouseCursorPosition = this.svg.select('.mouseCursorPosition');
 
       this.linksWrapper = this.svg.select('.links');
 
@@ -1684,19 +1685,7 @@ class Chart {
         .call(d3.drag()
           .on('start', handleDragStart)
           .on('drag', handleDrag)
-          .on('end', handleDragEnd));
-      this.mouseCursorPosition
-        .insert('rect', '.cursor')
-        .attr('class', 'selectBoard areaBoard')
-        .attr('fill', 'transparent')
-        .attr('width', `${size}%`)
-        .attr('height', `${size}%`)
-        .attr('x', x * scale)
-        .attr('y', y * scale);
-
-
-
-
+          .on('end', handleDragEnd));      
     });
 
     this.event.on('window.mousedown', (ev) => {
