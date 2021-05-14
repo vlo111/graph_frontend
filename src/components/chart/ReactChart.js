@@ -314,7 +314,7 @@ class ReactChart extends Component {
 
             </defs>
           </g>
-          <g className="mouseCursorPosition" />
+          <g className="mouseCursorPosition" transform-origin="top left"/>
         </svg>
         {singleGraphStatus === 'fail' ? <NotFound /> : null}
       </div>
