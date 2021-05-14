@@ -93,19 +93,17 @@ class ReactChart extends Component {
         const fId = `fake_${folder.id}`;
         if (!folder.open) {
           if (folder.nodes.includes(link.source)) {
-            link._source = link.source;
             link.source = fId;
-            link.fale = true;
+            link.fake = true;
           } else if (folder.nodes.includes(link.target)) {
-            link._target = link.target;
             link.target = fId;
-            link.fale = true;
+            link.fake = true;
           }
         }
       });
       links.push(link);
     });
-    links = ChartUtils.uniqueLinks(links);
+    links = ChartUtils.uniqueLinks(links, true);
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
     Chart.loading(false);
   }
@@ -113,29 +111,25 @@ class ReactChart extends Component {
   handleFolderClose = async (ev, d) => {
     const fakeId = `fake_${d.id}`;
 
-    console.log(d)
-    const nodes = Chart.getNodes().filter((n) => n.fake || !n.labels.includes(d.id));
+    const nodes = Chart.getNodes().filter((n) => {
+      if (!n.fake && n.labels.includes(d.id)) {
+        return false;
+      }
+      return true;
+    });
     let links = Chart.getLinks().map((l) => {
       if (d.nodes) {
-        d.totalLinks = 0;
         if (d.nodes.includes(l.source)) {
-          d.totalLinks += 1;
           l.source = fakeId;
+          l.name += 1;
           l.fake = true;
         }
         if (d.nodes.includes(l.target)) {
-          d.totalLinks += 1;
           l.target = fakeId;
           l.fake = true;
         }
       }
       return l;
-    }).filter((l) => {
-      if (l.source === l.target) {
-        d.totalLinks -= 1;
-        return false;
-      }
-      return true;
     });
     links = ChartUtils.uniqueLinks(links, true);
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
