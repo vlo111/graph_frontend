@@ -1399,6 +1399,7 @@ class Chart {
       this.resizeSvg();
 
       this.wrapper = this.svg.select('.wrapper');
+      this.mouseCursorPosition = this.svg.select('.mouseCursorPosition');
 
       this.linksWrapper = this.svg.select('.links');
 
@@ -2771,13 +2772,12 @@ class Chart {
   static clearLinkShortestPath() {
     this.nodesWrapper.selectAll('.shortestData > *').remove();
   }
-
-  static mouseMovePositions(fullName = '', position = []) {
-
-
-    const wrapper = this.svg.select('.mouseCursorPosition');
-    wrapper.selectAll('text').remove();
-    wrapper.append("text")
+  static mouseMovePositions (fullName, position) {
+    
+     
+     const wrapper = this.svg.select('.mouseCursorPosition');  
+     wrapper.selectAll('text').remove();
+     wrapper.append("text")  
       .attr("fill", ChartUtils.nodeColor(fullName))
       .attr("x", position.x)
       .attr("y", position.y)
