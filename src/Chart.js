@@ -2776,7 +2776,7 @@ class Chart {
     
      
      const wrapper = this.svg.select('.mouseCursorPosition');  
-     wrapper.selectAll('text').remove();
+    // wrapper.selectAll('text').remove();
      wrapper.append("text")  
       .attr("fill", ChartUtils.nodeColor(fullName))
       .attr("x", position.x)
