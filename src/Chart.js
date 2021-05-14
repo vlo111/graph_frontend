@@ -706,6 +706,11 @@ class Chart {
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
       .attr('data-y', transform.y);
+  this.mouseCursorPosition.attr('transform', transform)
+      .attr('data-scale', transform.k)
+      .attr('data-x', transform.x)
+      .attr('data-y', transform.y);
+
 
     this.event.emit('zoom', ev, { transform });
 
@@ -1679,6 +1684,18 @@ class Chart {
           .on('start', handleDragStart)
           .on('drag', handleDrag)
           .on('end', handleDragEnd));
+      this.mouseCursorPosition
+        .insert('rect', '.cursor')
+        .attr('class', 'selectBoard areaBoard')
+        .attr('fill', 'transparent')
+        .attr('width', `${size}%`)
+        .attr('height', `${size}%`)
+        .attr('x', x * scale)
+        .attr('y', y * scale);
+
+
+
+
     });
 
     this.event.on('window.mousedown', (ev) => {
