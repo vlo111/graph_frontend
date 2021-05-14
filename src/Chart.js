@@ -2136,8 +2136,8 @@ class Chart {
   static renderLinkText(links = []) {
     const wrapper = this.svg.select('.linkText');
     const linkIndexes = links.map((d) => d.index);
-    const linksData = this.data.links.filter((d) => linkIndexes.includes(d.index));
-
+    const linksData = this.data.links.filter((d) => linkIndexes.includes(d.index) || d.total > 1);
+    console.log(linksData)
     wrapper.selectAll('text textPath').remove();
 
     this.linkText = wrapper.selectAll('text')
@@ -2151,7 +2151,16 @@ class Chart {
     this.linkText.append('textPath')
       .attr('startOffset', '50%')
       .attr('href', (d) => `#l${d.index}`)
-      .text((d) => (d.status === 'draft' ? `  DRAFT ( ${d.type} ) ` : ` ${d.type} `));
+      .text((d) => {
+        if (d.total > 1) {
+          return ` ${d.total} `;
+        }
+        if (d.status === 'draft') {
+          return `  DRAFT ( ${d.type} ) `;
+        }
+
+        return ` ${d.type} `;
+      });
     this.link
       .attr('stroke-width', (d) => (linkIndexes.includes(d.index) ? +d.value + 1.5 : +d.value || 1));
 
@@ -2161,6 +2170,7 @@ class Chart {
   }
 
   static renderLinkStatusText() {
+    return;
     const links = this.getLinks().filter((d) => d.status === 'draft') || [];
     const wrapper = this.svg.select('.linkText');
     const linkIndexes = links.map((d) => d.index);
@@ -2756,19 +2766,15 @@ class Chart {
   }
 
   static mouseMovePositions(fullName = '', position = []) {
-
-
     const wrapper = this.svg.select('.mouseCursorPosition');
     wrapper.selectAll('text').remove();
-    wrapper.append("text")
-      .attr("fill", ChartUtils.nodeColor(fullName))
-      .attr("x", position.x)
-      .attr("y", position.y)
-      .attr("width", 50)
-      .attr("height", 50)
-      .text(' ☝ ' + fullName);
-
-
+    wrapper.append('text')
+      .attr('fill', ChartUtils.nodeColor(fullName))
+      .attr('x', position.x)
+      .attr('y', position.y)
+      .attr('width', 50)
+      .attr('height', 50)
+      .text(` ☝ ${fullName}`);
   }
 }
 
