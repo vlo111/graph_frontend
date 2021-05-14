@@ -328,7 +328,7 @@ export function socketMousePosition(graphId, userId, mousePosition) {
     },
   };
   
-  socketEmit('mousemove', {  graphId, userId, mousePosition });
+  //socketEmit('mousemove', {  graphId, userId, mousePosition });
   return {
     type: SOCKET_MOUSE_POSITION,
     payload: {
