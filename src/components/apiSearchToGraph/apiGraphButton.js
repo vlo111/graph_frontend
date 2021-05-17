@@ -6,8 +6,8 @@ import ApiGraphModal from "./ApiGraphModal";
 
 class ApiButton extends Component {
     static propTypes = {
-      activeButton: PropTypes.string.isRequired,
-      setActiveButton: PropTypes.func.isRequired,
+      // activeButton: PropTypes.string.isRequired,
+      // setActiveButton: PropTypes.func.isRequired,
     }
 
     toggleModal = () => {
