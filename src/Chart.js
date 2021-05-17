@@ -1995,11 +1995,16 @@ class Chart {
 
       this.labels.each((l) => {
         if (this.squareData.labels.includes(l.id) && !l.readOnly) {
-          l.d = l.d.map((p) => {
-            p[0] = +(p[0] + ev.dx).toFixed(2);
-            p[1] = +(p[1] + ev.dy).toFixed(2);
-            return p;
-          });
+          if (l.type === 'square' || l.type === 'ellipse') {
+            l.size.x = +(l.size.x + ev.dx).toFixed(2);
+            l.size.y = +(l.size.y + ev.dy).toFixed(2);
+          } else {
+            l.d = l.d.map((p) => {
+              p[0] = +(p[0] + ev.dx).toFixed(2);
+              p[1] = +(p[1] + ev.dy).toFixed(2);
+              return p;
+            });
+          }
         }
         return l;
       });
