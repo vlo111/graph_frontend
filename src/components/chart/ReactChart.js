@@ -22,6 +22,7 @@ import NotFound from './NotFound';
 import { deleteNodesRequest, updateNodesRequest, updateNodesPositionRequest } from '../../store/actions/nodes';
 import { deleteLinksRequest } from '../../store/actions/links';
 import { deleteLabelsRequest, updateLabelsRequest } from '../../store/actions/labels';
+import Utils from '../../helpers/Utils';
 
 class ReactChart extends Component {
   static propTypes = {
@@ -92,19 +93,17 @@ class ReactChart extends Component {
         const fId = `fake_${folder.id}`;
         if (!folder.open) {
           if (folder.nodes.includes(link.source)) {
-            link._source = link.source;
             link.source = fId;
-            link.fale = true;
+            link.fake = true;
           } else if (folder.nodes.includes(link.target)) {
-            link._target = link.target;
             link.target = fId;
-            link.fale = true;
+            link.fake = true;
           }
         }
       });
       links.push(link);
     });
-    links = ChartUtils.uniqueLinks(links);
+    links = ChartUtils.uniqueLinks(links, true);
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
     Chart.loading(false);
   }
@@ -112,12 +111,17 @@ class ReactChart extends Component {
   handleFolderClose = async (ev, d) => {
     const fakeId = `fake_${d.id}`;
 
-    const nodes = Chart.getNodes().filter((n) => n.fake || !n.labels.includes(d.id));
-    console.log(nodes, Chart.getLinks());
-    const links = Chart.getLinks().map((l) => {
+    const nodes = Chart.getNodes().filter((n) => {
+      if (!n.fake && n.labels.includes(d.id)) {
+        return false;
+      }
+      return true;
+    });
+    let links = Chart.getLinks().map((l) => {
       if (d.nodes) {
         if (d.nodes.includes(l.source)) {
           l.source = fakeId;
+          l.name += 1;
           l.fake = true;
         }
         if (d.nodes.includes(l.target)) {
@@ -126,7 +130,8 @@ class ReactChart extends Component {
         }
       }
       return l;
-    }).filter((l) => l.source !== l.target);
+    });
+    links = ChartUtils.uniqueLinks(links, true);
     Chart.render({ nodes, links }, { ignoreAutoSave: true });
   }
 
@@ -303,6 +308,7 @@ class ReactChart extends Component {
 
             </defs>
           </g>
+          <g className="mouseCursorPosition" transform-origin="top left"/>
         </svg>
         {singleGraphStatus === 'fail' ? <NotFound /> : null}
       </div>

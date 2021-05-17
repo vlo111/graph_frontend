@@ -31,6 +31,7 @@ import LabelCopy from '../components/labelCopy/LabelCopy';
 import FindPath from '../components/FindPath';
 import ReactChartMap from "../components/chart/ReactChartMap";
 import FindNode from '../components/FindNode';
+import MousePosition from '../components/chart/MousePosition'
 
 class GraphForm extends Component {
   static propTypes = {

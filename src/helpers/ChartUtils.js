@@ -767,15 +767,39 @@ class ChartUtils {
     return data;
   }
 
-  static uniqueLinks(links) {
+  static uniqueLinks(links, margeFakeLinks = false) {
+    console.log(links, margeFakeLinks);
+    if (margeFakeLinks || 1) {
+      return _.chain(links)
+        .filter((l) => l.source !== l.target)
+        .groupBy((l) => {
+          if (l.fake) {
+            return JSON.stringify([l.source, l.target].sort());
+          }
+          if (l.direction) {
+            return JSON.stringify({
+              1: l.name, 2: l.type, 3: l.source, 4: l.target,
+            });
+          }
+          return JSON.stringify({
+            1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
+          });
+        })
+        .map((values) => ({
+          ...values[0],
+          total: values[0].fake ? values.length : undefined,
+        }))
+        .value();
+    }
+
     return _.uniqBy(links, (l) => {
       if (l.direction) {
         return JSON.stringify({
-          2: l.type, 3: l.source, 4: l.target,
+          1: l.name, 2: l.type, 3: l.source, 4: l.target,
         });
       }
       return JSON.stringify({
-        2: l.type, 3: [l.source, l.target].sort(),
+        1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
       });
     });
   }

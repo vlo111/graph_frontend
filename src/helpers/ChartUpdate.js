@@ -154,6 +154,20 @@ class ChartUpdate {
 
     Chart.render({ nodes, links, labels }, { ignoreAutoSave: true });
   }
+  static mouseMovePositions = (graphId, userId, cursors) => {
+    Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();
+    let fullName = ' '; 
+       cursors.forEach((cursor) => { console.log(cursor, 'ssssss');
+        if (graphId === +cursor?.graphId && +cursor.userId !== +userId) {  
+          fullName = cursor?.firstName + ' ' + cursor?.lastName; 
+           
+          Chart.mouseMovePositions(fullName, cursor?.mousePosition);       
+        }
+      });
+
+    //Chart.mouseMovePositions(graphId, userId, cursors);
+    
+  }
 }
 
 export default ChartUpdate;
