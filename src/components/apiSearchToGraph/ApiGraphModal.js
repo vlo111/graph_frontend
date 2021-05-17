@@ -28,6 +28,7 @@ class ApiGraphModal extends Component {
   }
 
     useApiSearchEngine = async (e) => {
+      this.setState({searchResults: NaN})
       e.preventDefault();
       if (this.state.apiTitleSearchTerms === undefined && 
         this.state.apiAuthorSearchTerms
@@ -42,19 +43,21 @@ class ApiGraphModal extends Component {
       const currentUser = await Api.getMyAccount()
       this.setState({currentUserId: currentUser.data.user.id})
       // combine author name and topic fields and put it in arxivUrl
-      const arxivUrl = `https://export.arxiv.org/api/query?search_query=all:${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}&sortBy=relevance&max_results=10`
-      // const coreUrl = `https://core.ac.uk:443/api-v2/articles/search/${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}?page=1&pageSize=10&apiKey=uRj8cMByiodHF0Z61XQxzVUfqpkYJW2D`
+      const arxivUrl = `https://export.arxiv.org/api/query?search_query=all:${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}&sortBy=relevance&max_results=100`
       const arxivResponse = await fetch(arxivUrl);
-      // const coreResponse = await fetch(coreUrl);
       const arxivXml = await arxivResponse.text();
+      const arxivJsonData = await parseStringPromise(arxivXml);
+      
+      // const coreUrl = `https://core.ac.uk:443/api-v2/articles/search/${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}?page=1&pageSize=10&apiKey=uRj8cMByiodHF0Z61XQxzVUfqpkYJW2D`
+      // const coreResponse = await fetch(coreUrl);
       // const coreXml = await coreResponse.text();
       // const coreJsonData = JSON.parse(coreXml)
-      const arxivJsonData = await parseStringPromise(arxivXml);
+
       // Handle undefined !!!
-      if (!arxivJsonData && arxivJsonData.feed.entry === undefined ) {
+      if (!arxivJsonData || arxivJsonData.feed.entry === undefined ) {
+        this.setState({searchResults: 0})
         return 0;
       }
-      // add the length of core results too
       // this.setState({searchResults: arxivJsonData.feed.entry.length + coreJsonData.data.length });
       this.setState({searchResults: arxivJsonData.feed.entry.length });
 
@@ -264,7 +267,7 @@ class ApiGraphModal extends Component {
         apiSearchResults.push(
           <div className="wikiSearch apiSearch" key={key3}>
             {key3 === getChecked
-            && <button onClick={(ev) => this.getAllNodes(ev)} className="ghButton accent alt WikiCreateNode">Create Node</button>}
+            && <button onClick={(ev) => this.getAllNodes(ev)} className="ghButton accent alt WikiCreateNode">Create Nodes</button>}
             <div>
               <input
                 onChange={() => this.checkedApi(key3)}
@@ -314,7 +317,7 @@ class ApiGraphModal extends Component {
               </form>
             </div>
             <div className="Wiki">
-              <p style={{color:'#1a0dab', fontSize:'2em', textAlign:'left', margin:'1em 0 1em 1em'}}>{resultAmount}</p>
+              <p className="resultAmount" >{resultAmount}</p>
               {apiSearchResults}
             </div>
           </Modal>
