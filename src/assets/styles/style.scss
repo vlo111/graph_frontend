@@ -939,7 +939,7 @@ p {
     }
   }
 
-  &.create-label {
+  &.create-label, &.create-label-ellipse, &.create-label-square {
     .labels {
       cursor: url("../images/pen.png") 0 50, auto;
 
@@ -8686,4 +8686,52 @@ img.preview-scaled {
   border-radius: 1.7em;
   max-width: 370px;
   max-height: 370px;
+}
+
+.labelForm{
+  position: fixed;
+  z-index: 4;
+  left: 203px;
+  top: 255px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 5px rgb(0 0 0 / 10%);
+  padding-top: 10px;
+  width: 0px;
+  height: 275px;
+
+  .buttons {
+    margin: 0;
+    background-color: white;
+    z-index: 5;
+    width: 100%;
+    display: contents;
+    align-items: center;
+    padding: 0 0 10px 0;
+
+    svg {
+      width: 50px;
+    }
+  }
+
+  .lblFreeForm, .lblEllipse {
+    border-bottom: 1px solid #9BA6B4;
+    padding-bottom: 5px;
+    padding-top: 15px;
+    cursor: pointer;
+  }
+
+  .lblSquare {
+    cursor: pointer;
+    padding-top: 15px;
+  }
+}
+
+.showLabelForm {
+  width: 90px;
 }
