@@ -1332,6 +1332,9 @@ p {
     .wikiButton {
       right: 22%;
     }
+    .newGraph {
+      right: 31%;
+    }
 
   }
 
@@ -6368,6 +6371,10 @@ body .gh__menu {
   line-height: 16px;
   text-decoration: none;
 }
+.apiSearch h3 a {
+  font-size: .7em;
+  margin-right: 15%;
+}
 
 .wikiSearch h3 a:hover {
   border-bottom: 3px solid;
@@ -6411,12 +6418,24 @@ body .gh__menu {
   position: absolute;
   margin-right: 15%;
 }
+.wikiSearch  .apiDescription{
+  max-height: 42px;
+  overflow-y: clip;
+}
 
 .Wiki {
   margin: 0 auto;
   text-align: center;
   font-family: 'Roboto', sans-serif;
   margin-bottom: 50px;
+}
+
+.newGraph{
+  z-index: 1000;
+  border-radius: 50%;
+  width: 1.8em;
+  position: absolute;
+  right: 23%;
 }
 
 .wikiButton {
@@ -6433,29 +6452,49 @@ body .gh__menu {
   }
 }
 
-.Wiki form {
+.Wiki form, .Api form  {
   border-radius: 20px;
   box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
   margin-bottom: 30px;
 }
 
-.Wiki input {
+.Wiki input, .Api input {
   line-height: 40px;
   border-radius: 20px 0 0 20px;
   border: none;
   width: 400px;
   padding: 0 20px;
 }
+.Api {
+  margin: 2em;
+  margin-bottom: 0px;
+}
+.Api input {
+  line-height: 40px;
+  border-radius: 20px;
+  width: 350px;
+  padding: 0 20px;
+}
+.ApiOne {
+  border-radius: 20px 50px 0 20px;
+  border-right: 1px solid gray;
+}
 
 .Wiki input:focus {
   outline: none;
+}
+.resultAmount {
+  color:#1a0dab;
+  font-size:1.5em;
+  text-align:center; 
+  margin:0em 0 1em 1em
 }
 
 .Wiki input:focus {
   outline: none;
 }
 
-.Wiki button {
+.Wiki button, .Api button {
   line-height: 40px;
   border: none;
   background-color: #f6f6f6;
@@ -6463,6 +6502,15 @@ body .gh__menu {
   border-radius: 0 20px 20px 0;
   cursor: pointer;
   margin-left: 50px !important;
+}
+.ApiModal {
+  img {
+    margin: 0 auto;
+    width: 100px;
+  }
+}
+.Api button {
+  margin: 0px !important;
 }
 
 .Wiki button:focus {

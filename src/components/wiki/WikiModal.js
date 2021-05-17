@@ -19,12 +19,14 @@ class WikiModal extends Component {
     };
   }
 
-    useWikiSearchEngine = (e) => {
-      e.preventDefault();
-
-      this.setState({
-        wikiSearchReturnValues: [],
-      });
+  useWikiSearchEngine = (e) => {
+    e.preventDefault();
+    if (this.state.WikiSearchTerms === undefined) {
+      return 0
+    }
+    this.setState({
+      wikiSearchReturnValues: [],
+    });
 
       const pointerToThis = this;
 
