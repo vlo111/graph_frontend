@@ -90,7 +90,6 @@ class GraphForm extends Component {
         <LabelShare />
         <LabelCopy />
         <AutoSave />
-        <MousePosition />
       </Wrapper>
     );
   }
