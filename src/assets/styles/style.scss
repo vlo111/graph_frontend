@@ -6467,7 +6467,7 @@ body .gh__menu {
 }
 .Api {
   margin: 2em;
-
+  margin-bottom: 0px;
 }
 .Api input {
   line-height: 40px;
@@ -6482,6 +6482,12 @@ body .gh__menu {
 
 .Wiki input:focus {
   outline: none;
+}
+.resultAmount {
+  color:#1a0dab;
+  font-size:1.5em;
+  text-align:center; 
+  margin:0em 0 1em 1em
 }
 
 .Wiki input:focus {
