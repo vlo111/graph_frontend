@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setActiveButton } from '../../store/actions/app';
 import ApiGraphModal from "./ApiGraphModal";
-import ScienceSvg from '../../assets/images/icons/science.svg';
+//import ScienceSvg from '../../assets/images/icons/science.svg';
 import Button from '../form/Button';
+import ApiImg from '../../assets/images/kgg.png';
 
 class ApiButton extends Component {
     static propTypes = {
@@ -25,7 +26,7 @@ class ApiButton extends Component {
           className="newGraph wikiButton"
           onClick={this.toggleModal}
         >
-          <img src={ScienceSvg} alt="wikipedia" />
+          <img src={ApiImg} alt="science" />
         </button>
 
         {activeButton === 'api' ? (
