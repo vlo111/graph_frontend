@@ -36,8 +36,9 @@ class LabelCompareItem extends Component {
           />
           <label className="pull-left" htmlFor={uniqueCheckboxId} />
         </div>
-
-        <NodeIcon node={node} />
+        <div title={node.type}>
+          <NodeIcon node={node} />
+        </div>
         <div className="row">
           <div className="description">
             <span title={node.name} className="headerName">
