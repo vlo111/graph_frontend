@@ -469,7 +469,7 @@ class ChartUtils {
 
     const x = node.fx || node.x;
     const y = node.fy || node.y;
-    const { d } = label;
+    const { d, size } = label;
     let inside = false;
     if (label.type === 'folder') {
       // if(node.labels?.length > 1 && !node.labels.includes(label.id)){
@@ -492,6 +492,25 @@ class ChartUtils {
         const squareY = d[0][1] - (height / 2);
         return this.isInSquare([squareX, squareY], [width, height], [x, y]);
       }
+    }
+
+    if (label.type === 'square') {
+      if ((x > size.x && x < (size.x + size.width)) && (y > size.y && y < (size.y + size.height))) {
+        return true;
+      }
+      return false;
+    }
+    if (label.type === 'ellipse') {
+      const width = size.width * 2;
+      const height = size.height * 2;
+
+      const cx = size.x - size.width;
+      const cy = size.y - size.height;
+
+      if ((x > cx && x < (cx + width)) && (y > cy && y < (cy + height))) {
+        return true;
+      }
+      return false;
     }
 
     let odd = false;
@@ -948,8 +967,13 @@ class ChartUtils {
         arrX.push(l.d[0][0]);
         arrY.push(l.d[0][1]);
       } else {
-        arrX.push(...l.d.map((p) => p[0]));
-        arrY.push(...l.d.map((p) => p[1]));
+        if (l.type === 'square' || l.type === 'ellipse') {
+          arrX.push(l.size.x);
+          arrY.push(l.size.y);
+        } else {
+          arrX.push(...l.d.map((p) => p[0]));
+          arrY.push(...l.d.map((p) => p[1]));
+        }
       }
     });
     const min = [_.min(arrX), _.min(arrY)];

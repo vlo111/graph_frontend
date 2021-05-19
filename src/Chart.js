@@ -1160,98 +1160,243 @@ class Chart {
 
     const dragLabel = {};
 
+    let startX;
+    let startY;
+    let minX;
+    let minY;
+
     const handleDragStart = (ev) => {
       if (this.nodesPath) return;
 
       if (this.getCurrentUserRole() === 'edit_inside') {
         return;
       }
-      if (this.activeButton === 'create-label') {
-        const id = ChartUtils.uniqueId(this.data.labels);
-        activeLine = labelsWrapper.append('path')
-          .datum({
-            id,
-            name: '',
-            color: ChartUtils.labelColors({ id }),
-            d: [],
-          })
-          .attr('fill-rule', 'evenodd')
-          .attr('class', 'label nodeCreate')
-          .attr('data-id', (d) => d.id);
-      } else if (ev.sourceEvent.target.classList.contains('label')) {
-        const id = ev.sourceEvent.target.getAttribute('data-id');
-        this.detectLabels();
-        dragLabel.label = labelsWrapper.select(`[data-id="${id}"]`);
-        dragLabel.labelLock = labelsWrapper.select(`use[data-label-id="${id}"]`);
-        dragLabel.nodes = this.getNodes().filter((d) => d.labels.includes(id));
 
-        this.oldData.labels = _.cloneDeep(this.getLabels());
+      switch (this.activeButton) {
+        case 'create-label': {
+          const id = ChartUtils.uniqueId(this.data.labels);
+          activeLine = labelsWrapper.append('path')
+            .datum({
+              id,
+              name: '',
+              color: ChartUtils.labelColors({ id }),
+              d: [],
+            })
+            .attr('fill-rule', 'evenodd')
+            .attr('class', 'label nodeCreate')
+            .attr('data-id', (d) => d.id);
+
+          break;
+        }
+        case 'create-label-square': {
+          const id = ChartUtils.uniqueId(this.data.labels);
+
+          const { x, y } = ev;
+
+          startX = x;
+          startY = y;
+
+          activeLine = labelsWrapper.append('rect')
+            .datum({
+              id,
+              name: '',
+              color: ChartUtils.labelColors({ id }),
+              type: 'square',
+              size: {
+                x,
+                y,
+                height: 0,
+                width: 0,
+              },
+            })
+            .attr('x', x)
+            .attr('y', y)
+            .attr('fill-rule', 'evenodd')
+            .attr('class', 'label nodeCreate')
+            .attr('data-id', (d) => d.id);
+
+          break;
+        }
+        case 'create-label-ellipse': {
+          const id = ChartUtils.uniqueId(this.data.labels);
+
+          const { x, y } = ev;
+
+          startX = x;
+          startY = y;
+
+          activeLine = labelsWrapper.append('ellipse')
+            .datum({
+              id,
+              name: '',
+              color: ChartUtils.labelColors({ id }),
+              type: 'ellipse',
+              size: {
+                x,
+                y,
+                height: 0,
+                width: 0,
+              },
+            })
+            .attr('cx', x)
+            .attr('cy', y)
+            .attr('fill-rule', 'evenodd')
+            .attr('class', 'label nodeCreate')
+            .attr('data-id', (d) => d.id);
+          break;
+        }
+        default: {
+          if (!this.activeButton.includes('create-label') && ev.sourceEvent.target.classList.contains('label')) {
+            const id = ev.sourceEvent.target.getAttribute('data-id');
+            this.detectLabels();
+            dragLabel.label = labelsWrapper.select(`[data-id="${id}"]`);
+            dragLabel.labelLock = labelsWrapper.select(`use[data-label-id="${id}"]`);
+            dragLabel.nodes = this.getNodes().filter((d) => d.labels.includes(id));
+
+            this.oldData.labels = _.cloneDeep(this.getLabels());
+          }
+          break;
+        }
       }
     };
 
     const handleDrag = (ev) => {
       if (this.nodesPath) return;
+      const { x, y } = ev;
 
-      if (this.activeButton === 'create-label') {
-        const { x, y } = ev;
-        const datum = activeLine.datum();
-        datum.d.push([+x.toFixed(2), +y.toFixed(2)]);
-        activeLine
-          .datum(datum)
-          .attr('d', (d) => renderPath(d.d))
-          .attr('opacity', 1)
-          .attr('fill', 'transparent')
-          .attr('stroke', '#0D0905')
-          .attr('stroke-width', 2);
-      } else if (dragLabel.label) {
-        const datum = dragLabel.label.datum();
-        datum.d = datum.d.map((p) => {
-          p[0] = +(p[0] + ev.dx).toFixed(2);
-          p[1] = +(p[1] + ev.dy).toFixed(2);
-          return p;
-        });
-        dragLabel.label
-          .datum(datum)
-          .attr('d', (d) => renderPath(d.d));
-
-        if (!dragLabel.labelLock.empty()) {
-          let [, x, y] = dragLabel.labelLock.attr('transform').match(/(-?[\d.]+),\s*(-?[\d.]+)/) || [0, 0, 0];
-          x = +x + ev.dx;
-          y = +y + ev.dy;
-          dragLabel.labelLock.attr('transform', `translate(${x}, ${y})`);
+      switch (this.activeButton) {
+        case 'create-label': {
+          const datum = activeLine.datum();
+          datum.d.push([+x.toFixed(2), +y.toFixed(2)]);
+          activeLine
+            .datum(datum)
+            .attr('d', (d) => renderPath(d.d))
+            .attr('opacity', 1)
+            .attr('fill', 'transparent')
+            .attr('stroke', '#0D0905')
+            .attr('stroke-width', 2);
+          break;
         }
+        case 'create-label-square': {
+          minX = x - startX > 0 ? startX : x;
+          minY = y - startY > 0 ? startY : y;
 
-        let readOnlyLabel;
-        if (datum.readOnly) {
-          readOnlyLabel = this.data.embedLabels.find((l) => l.label?.id === datum.id);
+          const datum = activeLine.datum();
+
+          datum.size.x = minX;
+          datum.size.y = minY;
+
+          datum.size.width = x - startX > 0 ? x - startX : (x - startX) * -1;
+          datum.size.height = y - startY > 0 ? y - startY : (y - startY) * -1;
+
+          activeLine
+            .datum(datum)
+            .attr('x', (d) => d.size.x)
+            .attr('y', (d) => d.size.y)
+            .attr('width', (d) => d.size.width)
+            .attr('height', (d) => d.size.height)
+            .attr('opacity', 1)
+            .attr('fill', 'transparent')
+            .attr('stroke', '#0088ff')
+            .attr('stroke-width', 2);
+
+          break;
         }
-        this.node.each((d) => {
-          if (dragLabel.nodes.some((n) => n.id === d.id)) {
-            if (
-              (!d.readOnly && !datum.readOnly)
-              || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
-              || (d.deleted && d.sourceId === datum.sourceId)
-            ) {
-              d.fx += ev.dx;
-              d.fy += ev.dy;
+        case 'create-label-ellipse': {
+          minX = x - startX > 0 ? startX : x;
+          minY = y - startY > 0 ? startY : y;
 
-              d.x = d.fx;
-              d.y = d.fy;
+          const datum = activeLine.datum();
 
-              this.data.nodes[d.index].fx = d.fx;
-              this.data.nodes[d.index].x = d.fx;
+          datum.size.x = minX;
+          datum.size.y = minY;
 
-              this.data.nodes[d.index].fy = d.fy;
-              this.data.nodes[d.index].y = d.fy;
+          datum.size.width = x - startX > 0 ? x - startX : (x - startX) * -1;
+          datum.size.height = y - startY > 0 ? y - startY : (y - startY) * -1;
+
+          activeLine
+            .datum(datum)
+            .attr('cx', (d) => d.size.x)
+            .attr('cy', (d) => d.size.y)
+            .attr('rx', (d) => d.size.width)
+            .attr('ry', (d) => d.size.height)
+            .attr('opacity', 1)
+            .attr('fill', 'transparent')
+            .attr('stroke', '#0088ff')
+            .attr('stroke-width', 2);
+
+          break;
+        }
+        default: {
+          if (!this.activeButton.includes('create-label') && dragLabel.label) {
+            const datum = dragLabel.label.datum();
+            if (datum && datum.d) {
+              datum.d = datum.d.map((p) => {
+                p[0] = +(p[0] + ev.dx).toFixed(2);
+                p[1] = +(p[1] + ev.dy).toFixed(2);
+                return p;
+              });
+              dragLabel.label
+                .datum(datum)
+                .attr('d', (d) => renderPath(d.d));
+            } else {
+              datum.size.x = +(datum.size.x + ev.dx).toFixed(2);
+              datum.size.y = +(datum.size.y + ev.dy).toFixed(2);
+
+              if (datum.type === 'square') {
+                dragLabel.label
+                  .datum(datum)
+                  .attr('x', (d) => d.size.x)
+                  .attr('y', (d) => d.size.y);
+              } else {
+                dragLabel.label
+                  .datum(datum)
+                  .attr('cx', (d) => d.size.x)
+                  .attr('cy', (d) => d.size.y);
+              }
             }
+
+            if (!dragLabel.labelLock.empty()) {
+              let [, x, y] = dragLabel.labelLock.attr('transform').match(/(-?[\d.]+),\s*(-?[\d.]+)/) || [0, 0, 0];
+              x = +x + ev.dx;
+              y = +y + ev.dy;
+              dragLabel.labelLock.attr('transform', `translate(${x}, ${y})`);
+            }
+
+            let readOnlyLabel;
+            if (datum.readOnly) {
+              readOnlyLabel = this.data.embedLabels.find((l) => l.label?.id === datum.id);
+            }
+            this.node.each((d) => {
+              if (dragLabel.nodes.some((n) => n.id === d.id)) {
+                if (
+                  (!d.readOnly && !datum.readOnly)
+                    || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
+                    || (d.deleted && d.sourceId === datum.sourceId)
+                ) {
+                  d.fx += ev.dx;
+                  d.fy += ev.dy;
+
+                  d.x = d.fx;
+                  d.y = d.fy;
+
+                  this.data.nodes[d.index].fx = d.fx;
+                  this.data.nodes[d.index].x = d.fx;
+
+                  this.data.nodes[d.index].fy = d.fy;
+                  this.data.nodes[d.index].y = d.fy;
+                }
+              }
+            });
+
+            this.moveCurveWithLabel(dragLabel, datum, ev);
+
+            this.graphMovement();
+
+            this.event.emit('label.drag', ev, dragLabel.label);
           }
-        });
-
-        this.moveCurveWithLabel(dragLabel, datum, ev);
-
-        this.graphMovement();
-
-        this.event.emit('label.drag', ev, dragLabel.label);
+          break;
+        }
       }
     };
 
@@ -1283,6 +1428,43 @@ class Chart {
         this.event.emit('label.new', ev, datum);
         return;
       }
+
+      if (this.activeButton === 'create-label-square') {
+        const datum = activeLine.datum();
+
+        activeLine
+          .attr('x', minX)
+          .attr('y', minY)
+          .attr('opacity', 0.4)
+          .attr('fill', (d) => d.color)
+          .attr('stroke', undefined)
+          .attr('stroke-width', undefined);
+
+        this.data.labels.push(datum);
+        this.detectLabels();
+        activeLine = null;
+        this.event.emit('label.new', ev, datum);
+        return;
+      }
+
+      if (this.activeButton === 'create-label-ellipse') {
+        const datum = activeLine.datum();
+
+        activeLine
+          .attr('cx', minX)
+          .attr('cy', minY)
+          .attr('opacity', 0.4)
+          .attr('fill', (d) => d.color)
+          .attr('stroke', undefined)
+          .attr('stroke-width', undefined);
+
+        this.data.labels.push(datum);
+        this.detectLabels();
+        activeLine = null;
+        this.event.emit('label.new', ev, datum);
+        return;
+      }
+
       this._dataNodes = null;
       dragLabel.nodes = dragLabel.nodes.map((n) => ChartUtils.getNodeById(n.id));
       this.event.emit('label.dragend', ev, dragLabel);
@@ -1295,19 +1477,48 @@ class Chart {
         .on('drag', handleDrag)
         .on('end', handleDragEnd));
 
-    this.labels = labelsWrapper.selectAll('.label')
-      .data(this.data.labels.filter((l) => l.hidden !== 1 && l.type !== 'folder'))
-      .join('path')
-      .attr('class', 'label nodeCreate')
-      .attr('fill-rule', 'evenodd')
-      .attr('opacity', (d) => (d.sourceId ? 0.6 : 0.4))
-      .attr('data-id', (d) => d.id)
-      .attr('fill', ChartUtils.labelColors)
-      .attr('filter', (d) => (d.sourceId ? 'url(#labelShadowFilter)' : null))
-      .on('click', (ev, d) => this.event.emit('label.click', ev, d))
-      .on('mouseenter', (ev, d) => this.event.emit('label.mouseenter', ev, d))
-      .on('mousemove', (ev, d) => this.event.emit('label.mousemove', ev, d))
-      .on('mouseleave', (ev, d) => this.event.emit('label.mouseleave', ev, d));
+    labelsWrapper.selectAll('.label').remove();
+
+    this.data.labels.map((d) => {
+      if (d.hidden !== 1 && d.type !== 'folder') {
+        let currentLabel;
+        if (d.type === 'square') {
+          currentLabel = labelsWrapper
+            .append('rect')
+            .datum(d)
+            .attr('x', d.size.x)
+            .attr('y', d.size.y)
+            .attr('width', d.size.width)
+            .attr('height', d.size.height);
+        } else if (d.type === 'ellipse') {
+          currentLabel = labelsWrapper
+            .append('ellipse')
+            .datum(d)
+            .attr('cx', d.size.x)
+            .attr('cy', d.size.y)
+            .attr('rx', d.size.width)
+            .attr('ry', d.size.height);
+        } else {
+          currentLabel = labelsWrapper
+            .append('path')
+            .datum(d)
+            .attr('d', renderPath(d.d));
+        }
+
+        currentLabel.attr('class', 'label nodeCreate')
+          .attr('fill-rule', 'evenodd')
+          .attr('opacity', d.sourceId ? 0.6 : 0.4)
+          .attr('data-id', d.id)
+          .attr('fill', ChartUtils.labelColors)
+          .attr('filter', d.sourceId ? 'url(#labelShadowFilter)' : null)
+          .on('click', (ev) => this.event.emit('label.click', ev, d))
+          .on('mouseenter', (ev) => this.event.emit('label.mouseenter', ev, d))
+          .on('mousemove', (ev) => this.event.emit('label.mousemove', ev, d))
+          .on('mouseleave', (ev) => this.event.emit('label.mouseleave', ev, d));
+      }
+    });
+
+    this.labels = labelsWrapper.selectAll('.label');
 
     this.labelsLock = [];
     setTimeout(() => {
@@ -1330,7 +1541,7 @@ class Chart {
         });
     }, 10);
 
-    this.labelMovement();
+    // this.labelMovement();
 
     this._dataNodes = null;
   }
@@ -1789,11 +2000,16 @@ class Chart {
 
       this.labels.each((l) => {
         if (this.squareData.labels.includes(l.id) && !l.readOnly) {
-          l.d = l.d.map((p) => {
-            p[0] = +(p[0] + ev.dx).toFixed(2);
-            p[1] = +(p[1] + ev.dy).toFixed(2);
-            return p;
-          });
+          if (l.type === 'square' || l.type === 'ellipse') {
+            l.size.x = +(l.size.x + ev.dx).toFixed(2);
+            l.size.y = +(l.size.y + ev.dy).toFixed(2);
+          } else {
+            l.d = l.d.map((p) => {
+              p[0] = +(p[0] + ev.dx).toFixed(2);
+              p[1] = +(p[1] + ev.dy).toFixed(2);
+              return p;
+            });
+          }
         }
         return l;
       });
@@ -1859,7 +2075,11 @@ class Chart {
       .x((d) => d[0])
       .y((d) => d[1])
       .curve(d3.curveBasis);
-    this.labels.attr('d', (d) => renderPath(d.d));
+    this.labels.attr('d', (d) => {
+      if (d && d.d) {
+        return renderPath(d.d);
+      }
+    });
   }
 
   static graphMovement = () => {
@@ -2515,18 +2735,35 @@ class Chart {
     if (_.isEmpty(this.data?.labels)) {
       return defaults;
     }
-    return this.data.labels.map((d) => ({
-      id: d.id,
-      name: d.name,
-      open: d.open,
-      color: ChartUtils.labelColors(d),
-      d: d.d,
-      type: d.type,
-      status: d.status || 'unlock',
-      sourceId: d.sourceId,
-      readOnly: d.readOnly,
-      nodes: d.nodes,
-    }));
+    return this.data.labels.map((d) => {
+      if (d.type === 'square' || d.type === 'ellipse') {
+        return {
+          id: d.id,
+          name: d.name,
+          open: d.open,
+          color: ChartUtils.labelColors(d),
+          size: d.size,
+          type: d.type,
+          status: d.status || 'unlock',
+          sourceId: d.sourceId,
+          readOnly: d.readOnly,
+          nodes: d.nodes,
+        };
+      }
+
+      return {
+        id: d.id,
+        name: d.name,
+        open: d.open,
+        color: ChartUtils.labelColors(d),
+        d: d.d,
+        type: d.type,
+        status: d.status || 'unlock',
+        sourceId: d.sourceId,
+        readOnly: d.readOnly,
+        nodes: d.nodes,
+      };
+    });
   }
 
   static get activeButton() {
@@ -2780,6 +3017,28 @@ class Chart {
       .attr('width', 50)
       .attr('height', 50)
       .text(` ☝ ${fullName}`);
+  }
+
+  static getDimensionsLabelDatum = (datum) => {
+    const arrX = datum.map((p) => p[0]);
+
+    const arrY = datum.map((p) => p[1]);
+
+    const minX = Math.min.apply(Math, arrX);
+
+    const maxX = Math.max.apply(Math, arrX);
+
+    const minY = Math.min.apply(Math, arrY);
+
+    const maxY = Math.max.apply(Math, arrY);
+
+    const width = (minX - maxX) * (-1);
+
+    const height = (minY - maxY) * (-1);
+
+    return {
+      height, width, minX, minY,
+    };
   }
 }
 

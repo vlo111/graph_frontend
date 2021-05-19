@@ -13,6 +13,7 @@ import Convert from '../../helpers/Convert';
 import { DASH_TYPES } from '../../data/link';
 import SvgLine from '../SvgLine';
 import Validate from '../../helpers/Validate';
+import ChartUtils from '../../helpers/ChartUtils';
 
 let CHECKED = false;
 class DataTableLinks extends Component {
@@ -28,6 +29,17 @@ class DataTableLinks extends Component {
   initGridValues = memoizeOne((links) => {
     if (!_.isEmpty(links)) {
       const grid = Convert.linkDataToGrid(links);
+
+      grid.map((cells) => {
+        cells.forEach((cell) => {
+          if (cell.key === 'source' || cell.key === 'target') {
+            const node = ChartUtils.getNodeById(cell.value);
+            if (node) {
+              cell.value = node.name;
+            }
+          }
+        });
+      });
       this.setState({ grid });
     }
   }, _.isEqual)
