@@ -222,7 +222,7 @@ class LabelCopy extends Component {
 
   handleLabelEmbed = () => {
     const { sourceId } = LabelUtils.getData();
-    this.copyDocument('skip', sourceId);
+    this.copyDocument('embed', sourceId);
   }
 
   render() {

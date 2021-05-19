@@ -48,7 +48,8 @@ class AutoSave extends Component {
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await Utils.sleep(500);
     Chart.event.on('render', this.handleChartRender);
     Chart.event.on('node.dragend', this.handleChartRender);
     Chart.event.on('label.dragend', this.handleChartRender);
@@ -173,13 +174,13 @@ class AutoSave extends Component {
       return;
     }
     document.body.classList.add('autoSave');
-    const links = Chart.getLinks().filter((d) => !d.fake);
-    const labels = Chart.getLabels();
-    const nodes = Chart.getNodes(true).filter((d) => !d.fake);
+    const links = Chart.getLinks().filter((d) => !d.fake && !d.sourceId);
+    const labels = Chart.getLabels().filter((d) => !d.sourceId);
+    const nodes = Chart.getNodes(true).filter((d) => !d.fake && !d.sourceId);
 
-    const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake);
-    const oldLinks = Chart.oldData.links.filter((d) => !d.fake);
-    const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
+    const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake && !d.sourceId);
+    const oldLinks = Chart.oldData.links.filter((d) => !d.fake && !d.sourceId);
+    const oldLabels = Chart.oldData.labels.filter((d) => !d.fake && !d.sourceId);
     const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
     const createLabels = _.differenceBy(labels, oldLabels, 'id');
     const updateLabels = [];
@@ -195,7 +196,7 @@ class AutoSave extends Component {
             type: label.type,
             open: label.open,
           });
-        } else if(!_.isEqual(label.size, oldLabel.size)) {
+        } else if (!_.isEqual(label.size, oldLabel.size)) {
           updateLabelPositions.push({
             id: label.id,
             size: label.size,

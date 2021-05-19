@@ -484,7 +484,7 @@ class Chart {
 
         return label;
       });
-      data.links = ChartUtils.uniqueLinks(data.links)
+      data.links = ChartUtils.uniqueLinks(data.links);
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
@@ -534,7 +534,6 @@ class Chart {
         data.nodes = data.nodes.filter((d) => !d.remove);
       }
       data.links = ChartUtils.cleanLinks(data.links, data.nodes);
-
     } else if (data.nodes.some((d) => d.sourceId)) {
       data.nodes = data.nodes.filter((d) => !d.sourceId);
       data.links = ChartUtils.cleanLinks(data.links, data.nodes);
@@ -1744,8 +1743,10 @@ class Chart {
       this.event.emit('render', this);
       return this;
     } catch (e) {
-      toast.error(`Chart Error :: ${e.message}`);
       console.error(e);
+      if (!e.message.startsWith('node not found:')) {
+        toast.error(`Chart Error :: ${e.message}`);
+      }
       return this;
     }
   }
