@@ -3013,6 +3013,28 @@ class Chart {
       .attr('height', 50)
       .text(` ☝ ${fullName}`);
   }
+
+  static getDimensionsLabelDatum = (datum) => {
+    const arrX = datum.map((p) => p[0]);
+
+    const arrY = datum.map((p) => p[1]);
+
+    const minX = Math.min.apply(Math, arrX);
+
+    const maxX = Math.max.apply(Math, arrX);
+
+    const minY = Math.min.apply(Math, arrY);
+
+    const maxY = Math.max.apply(Math, arrY);
+
+    const width = (minX - maxX) * (-1);
+
+    const height = (minY - maxY) * (-1);
+
+    return {
+      height, width, minX, minY,
+    };
+  }
 }
 
 export default Chart;
