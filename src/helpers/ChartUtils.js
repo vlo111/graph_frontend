@@ -869,7 +869,6 @@ class ChartUtils {
       }
     });
     const labels = [...graph1.labels, ...graph2.labels];
-    console.log(labels);
     links = ChartUtils.uniqueLinks(links).map((l) => {
       delete l.color;
       return l;

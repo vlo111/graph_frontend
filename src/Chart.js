@@ -445,7 +445,7 @@ class Chart {
   static normalizeData(data, param) {
     data.nodes = data.nodes || Chart.getNodes();
     data.links = data.links || _.cloneDeep(Chart.getLinks());
-    data.labels = data.labels?.filter((d) => d.id) || Chart.getLabels();
+    data.labels = data.labels || Chart.getLabels();
     data.embedLabels = _.cloneDeep(data.embedLabels || this.data?.embedLabels || []);
 
     if (data.embedLabels.length) {
@@ -484,7 +484,7 @@ class Chart {
 
         return label;
       });
-      data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.target}//${d.type}`);
+      data.links = ChartUtils.uniqueLinks(data.links)
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
@@ -532,8 +532,9 @@ class Chart {
       // remove unused data
       if (removedNodes) {
         data.nodes = data.nodes.filter((d) => !d.remove);
-        data.links = ChartUtils.cleanLinks(data.links, data.nodes);
       }
+      data.links = ChartUtils.cleanLinks(data.links, data.nodes);
+
     } else if (data.nodes.some((d) => d.sourceId)) {
       data.nodes = data.nodes.filter((d) => !d.sourceId);
       data.links = ChartUtils.cleanLinks(data.links, data.nodes);
@@ -562,6 +563,7 @@ class Chart {
     // data.embedLabels.map((e) => e.links)[0];
 
     _.forEach(data.links, (link) => {
+      link.id = link.id || ChartUtils.uniqueId(data.links);
       if (param.embeded) {
         _.forEach(embedLinks, (embedLink) => {
           if (link.source === embedLink.source && link.target === embedLink.target) {
@@ -651,7 +653,10 @@ class Chart {
     //   }
     //   return d;
     // });
-    const labels = Object.values(data.labels).map((d) => Object.create(d));
+    const labels = Object.values(data.labels).map((d) => {
+      d.id = d.id || ChartUtils.uniqueId(data.labels);
+      return Object.create(d);
+    });
 
     return {
       links, nodes: data.nodes, labels, embedLabels: data.embedLabels, lastUid,
@@ -705,7 +710,7 @@ class Chart {
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
-      .attr('data-y', transform.y); 
+      .attr('data-y', transform.y);
 
     this.event.emit('zoom', ev, { transform });
 
@@ -1678,9 +1683,9 @@ class Chart {
         .attr('y', y * scale)
         .call(d3.drag()
           .on('start', handleDragStart)
-          .on('drag', handleDrag) 
-          .on('end', handleDragEnd));   
-     });
+          .on('drag', handleDrag)
+          .on('end', handleDragEnd));
+    });
 
     this.event.on('window.mousedown', (ev) => {
       if (ev.shiftKey || ev.which === 3) {

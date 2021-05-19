@@ -94,8 +94,8 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    // this.saveGraph();
-    this.timeout = setTimeout(this.saveGraph, 0);
+    this.saveGraph();
+    // this.timeout = setTimeout(this.saveGraph, 0);
   }
 
   formatNode = (node) => ({
@@ -220,6 +220,9 @@ class AutoSave extends Component {
             fy: node.fy,
             labels: node.labels,
           });
+        } else if (node.import || oldNode.create || !('index' in oldNode)) {
+          // if (oldNode.create) {
+          createNodes.push(node);
         } else if (!_.isEqual(this.formatNode(node), this.formatNode(oldNode))) {
           updateNodes.push(node);
         } else if (createLabels.length && createLabels.some((l) => node.labels.includes(l.id))) {
@@ -229,9 +232,6 @@ class AutoSave extends Component {
             fy: node.fy,
             labels: node.labels,
           });
-        } else if (node.import || oldNode.create || !('index' in oldNode)) {
-          // if (oldNode.create) {
-          createNodes.push(node);
         }
         // if ((oldNode.customFields && !_.isEqual(node.customFields, oldNode.customFields))) {
         //   updateNodeCustomFields.push(node);
