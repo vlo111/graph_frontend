@@ -6428,13 +6428,6 @@ body .gh__menu {
   margin-bottom: 50px;
 }
 
-.scienceGraph{
-  z-index: 1000;
-  border-radius: 50%;
-  width: 1.8em;
-  position: absolute;
-  right: 23%;
-}
 
 .wikiButton {
   background: transparent;
@@ -6448,6 +6441,13 @@ body .gh__menu {
     width: 40px;
     height: 40px;
   }
+}
+.scienceGraph{
+  z-index: 1000;
+  border-radius: 50%;
+  width: 1.8em;
+  position: absolute;
+  right: 31% ;
 }
 
 .Wiki form {
