@@ -103,6 +103,10 @@ class GraphCompare extends Component {
     this.setState({ createGraphData });
   }
 
+  closeCreateModal = () => {
+    this.setState({ createGraphData: false });
+  }
+
   renderSelectOption = (props) => {
     const {
       innerProps, children, getStyles, cx, ...params
@@ -202,7 +206,7 @@ class GraphCompare extends Component {
         </Button>
 
         {!_.isEmpty(createGraphData) ? (
-          <CreateGraphModal show data={createGraphData} />
+          <CreateGraphModal show data={createGraphData} onChange={this.closeCreateModal} />
         ) : null}
       </Wrapper>
     );
