@@ -1332,8 +1332,8 @@ p {
     .wikiButton {
       right: 22%;
     }
-    .newGraph {
-      right: 31% !important;
+    .scienceGraph {
+      right: 31%;
     }
 
   }
@@ -6371,10 +6371,6 @@ body .gh__menu {
   line-height: 16px;
   text-decoration: none;
 }
-.apiSearch h3 a {
-  font-size: .7em;
-  margin-right: 15%;
-}
 
 .wikiSearch h3 a:hover {
   border-bottom: 3px solid;
@@ -6418,11 +6414,13 @@ body .gh__menu {
   position: absolute;
   margin-right: 15%;
 }
-.wikiSearch  .apiDescription{
-  max-height: 42px;
-  overflow-y: clip;
+.wikiSearch .link a {
+  line-height: 1.5em;
 }
 
+.scienceAuthor {
+  margin-bottom: .3em
+}
 .Wiki {
   margin: 0 auto;
   text-align: center;
@@ -6430,12 +6428,12 @@ body .gh__menu {
   margin-bottom: 50px;
 }
 
-.newGraph{
+.scienceGraph{
   z-index: 1000;
   border-radius: 50%;
   width: 1.8em;
   position: absolute;
-  right: 31% !important;
+  right: 23%;
 }
 
 .wikiButton {
@@ -6452,32 +6450,18 @@ body .gh__menu {
   }
 }
 
-.Wiki form, .Api form  {
+.Wiki form {
   border-radius: 20px;
   box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
   margin-bottom: 30px;
 }
 
-.Wiki input, .Api input {
+.Wiki input {
   line-height: 40px;
   border-radius: 20px 0 0 20px;
   border: none;
   width: 400px;
   padding: 0 20px;
-}
-.Api {
-  margin: 2em;
-  margin-bottom: 0px;
-}
-.Api input {
-  line-height: 40px;
-  border-radius: 20px;
-  width: 350px;
-  padding: 0 20px;
-}
-.ApiOne {
-  border-radius: 20px 50px 0 20px;
-  border-right: 1px solid gray;
 }
 
 .Wiki input:focus {
@@ -6494,7 +6478,7 @@ body .gh__menu {
   outline: none;
 }
 
-.Wiki button, .Api button {
+.Wiki button {
   line-height: 40px;
   border: none;
   background-color: #f6f6f6;
@@ -6503,14 +6487,10 @@ body .gh__menu {
   cursor: pointer;
   margin-left: 50px !important;
 }
-.ApiModal {
-  img {
-    margin: 0 auto;
-    width: 100px;
-  }
-}
-.Api button {
-  margin: 0px !important;
+.sourceLogo {
+  margin-left: 1em !important;
+  max-width: 3em;
+  margin-top: .5em;
 }
 
 .Wiki button:focus {
@@ -8780,6 +8760,163 @@ img.preview-scaled {
   }
 }
 
+
+// science article search page
+//----------------------------
 .showLabelForm {
   width: 90px;
 }
+.scienceModalLoading {
+  right: 50% !important;  
+}
+.scienceLogo {
+  margin: 0.7em auto;
+  width: 100px;
+}
+
+// style for search form
+.scienceForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100% ;
+}
+.scienceForm form{
+  border-radius: 20px;
+  box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
+  margin-bottom: 30px;
+  max-height: 40px;
+  display: flex;
+}
+.scienceForm input, .scienceForm button{
+  line-height: 3em;
+  border-radius: 2em 0 0 2em;
+  border: none;
+  padding: 0 20px;
+}
+.scienceForm input {
+  width: 43%
+}
+.scienceAuthorInput {
+  flex:4;
+  order:1;
+}
+.scienceTitleInput {
+  flex:4;
+  order:2;
+}
+.scienceForm button {
+  flex: 1;
+  order:3;
+  border-radius: 2em;
+}
+.scienceResultAmount {
+  margin-left: 3em;
+}
+
+// style for search results
+.scienceResultsList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.scienceCheckBox{
+  flex: .7;
+  display: flex;
+  justify-content: center;
+  margin: 0 5px;
+}
+.scienceCheckBox input {
+  margin-top: .7em;
+  height: 1.5em;
+  width: 1.5em;
+}
+.scienceArticleData{
+  flex:10
+}
+.scienceArticleData .scienceArticleDescription {
+  max-height: 4em;
+  overflow: hidden;
+}
+.scienceArticleData h3{
+  font-weight: 700;
+  font-size: 1.2em;
+  line-height: 1em;
+  margin: .5em 0;
+}
+.scienceCreateNodeButton{
+  flex:1
+}
+.scienceCreateNodeButton button {
+  font-size: 0.7em !important;
+  padding: 1em 1.5em !important;
+  margin-right: 3px;
+}
+.scienceResultAmountBox {
+  display: flex;
+  justify-content: center;
+}
+.scienceResultAmountBox p {
+  font-size: 1em;
+}
+
+.scienceFormInside {
+  width:90%
+}
+
+// media for search form 
+@media only screen and (max-width: 900px) {
+  .scienceForm form {
+    flex-direction: column;
+    height: 10em;
+    max-height: 10em;
+  }
+  .scienceForm input, .scienceForm button{
+    line-height: 1em;
+    border-radius: 2em;
+    border: none;
+    padding: 0 2em;
+    width: 100%;
+  }
+  .scienceAuthorInput {
+    flex:1;
+  }
+  .scienceTitleInput {
+    flex:1;
+  }
+  .scienceForm button {
+    flex: 1;
+  }
+}
+
+// media for search results
+@media only screen and (max-width: 530px) {
+  .scienceResultsList {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: .6em 0;
+    justify-content: center;
+  }
+  .scienceCheckBox {
+    order: 1;
+    margin-left: .6em
+  }
+  .scienceCreateNodeButton {
+    order: 3;
+    display: flex;
+    justify-content: space-around;
+  }
+  .scienceArticleData {
+    min-width: 80%;
+    order: 2;
+    margin-left: .5em;
+  }
+  .scienceCreateNodeButton button {
+    max-width: 50%;
+  }
+  .scienceArticleDescription {
+    height: 11em;
+    max-height: 11em;
+  }
+}
+//-----------------------------------
