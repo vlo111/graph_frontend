@@ -8320,12 +8320,9 @@ img.preview-scaled {
 }
 
 .nodeStyle {
-  stroke-width: 50px !important;
-  stroke: #bb09b1 !important;
-  stroke-dasharray: 5 !important;
-  fill: $color-linkText !important;
-  r: 10;
-  animation: spin 10s linear infinite;
+  stroke-width: 0px !important;
+  fill: #67b96a !important;
+  r: 38;
 }
 
 .shortestData {
@@ -8338,27 +8335,23 @@ img.preview-scaled {
   fill: $color-linkText;
 }
 
-.shortestLinkTPath {
-  fill: $color-linkFill !important;
+.nodeInactiveTextStyle {
+  visibility: hidden !important;
+}
+
+.shortestLinkPath {
+  stroke: #c1c1c1 !important;
   font-size: 40px !important;
   dominant-baseline: text-before-edge;
 }
 
-.shortestInactiveLinkPath {
-  font-size: 20px !important;
-  fill: $color-linkText !important;
-  dominant-baseline: text-before-edge;
+.showLinksInactive {
+  stroke: #c5c5c596;
 }
 
 .shortestBackground {
   border: 3px dashed $color-linkText !important;
   background-color: #00c9ff1f !important;
-}
-
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
 }
 
 .analyticalResult {
@@ -8370,17 +8363,6 @@ img.preview-scaled {
     text-align: center;
     padding-bottom: 44px;
     padding-top: 11px;
-  }
-
-  .shortest-goToBack {
-    margin: 0 auto;
-    width: 100px;
-    color: #ffffff;
-    background-color: #9d00ff8f;
-    box-shadow: 1px 3px 9px 7px #9d00ff8c;
-    cursor: pointer;
-    text-align: center;
-    border-radius: 5px;
   }
 
   .container-shortest-tab {

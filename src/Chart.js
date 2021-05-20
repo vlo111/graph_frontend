@@ -2965,36 +2965,41 @@ class Chart {
   static renderLinkShortestPath(links = [], nodes = []) {
     const wrapper = this.svg.select('.linkText');
     const backgrondChart = this.svg.select('.borderCircle');
-    const linksData = this.data.links;// .filter((d) => links.filter((z) => z.id === d.id).length);
+    // const linksData = this.data.links;// .filter((d) => links.filter((z) => z.id === d.id).length);
 
     wrapper.selectAll('text textPath').remove();
     backgrondChart.selectAll('div').attr('class', 'shortestBackground');
 
-    this.linkText = wrapper.selectAll('text')
-      .data(linksData.filter((d) => d.hidden !== 1))
-      .join('text')
-      .attr('text-anchor', 'middle')
-      .attr('startOffset', '50%')
-      .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
+    // this.linkText = wrapper.selectAll('text')
+    //   .data(linksData.filter((d) => d.hidden !== 1))
+    //   .join('text')
+    //   .attr('text-anchor', 'middle')
+    //   .attr('startOffset', '50%')
+    //   .attr('class', 'shortestLinkPath')
+    //   .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
-    this.linkText.append('textPath')
-      .attr('class', (d) => (links.filter((z) => z.id === d.id).length
-        ? 'shortestLinkTPath'
-        : 'shortestInactiveLinkPath'))
-      .attr('startOffset', '50%')
-      .attr('href', (d) => `#l${d.index}`)
-      .text((d) => (d.status === 'draft'
-        ? `  DRAFT ( ${d.type} ) `
-        : (links.filter((z) => z.id === d.id).length
-          ? ` ${d.type}(${d.value}) `
-          : ` ${d.value} `)));
+    // this.linkText.append('textPath')
+    //   .attr('class', (d) => (links.filter((z) => z.id === d.id).length
+    //     ? 'shortestLinkTPath'
+    //     : 'shortestInactiveLinkPath'))
+    //   .attr('startOffset', '50%')
+    //   .attr('href', (d) => `#l${d.index}`)
+    //   .text((d) => (d.status === 'draft'
+    //     ? `  DRAFT ( ${d.type} ) `
+    //     : (links.filter((z) => z.id === d.id).length
+    //       ? ` ${d.type}(${d.value}) `
+    //       : ` ${d.value} `)));
 
     this.nodesWrapper.selectAll('.node text')
-      .attr('class', (d) => (nodes.includes(d.id) ? 'nodeTextStyle' : ''));
+      .attr('class', 'nodeTextStyle');
+
+    this.nodesWrapper.selectAll('.shortestData text')
+      .attr('class', 'nodeInactiveTextStyle');
 
     this.link
       .attr('stroke', (d) => (links.filter((x) => x.id === d.id).length ? '#2dc126' : d.color))
-      .attr('stroke-width', (d) => (links.filter((x) => x.id === d.id).length ? +d.value + 15 : +d.value || 1));
+      .attr('stroke-width', (d) => (links.filter((x) => x.id === d.id).length ? +d.value + 5 : +d.value || 1))
+        .attr('class', (d) => (links.filter((x) => x.id === d.id).length ? 'showLinks' : 'showLinksInactive'));
 
     this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
       .attr('class', (d) => (nodes.includes(d.id) ? 'nodeStyle' : ''));
