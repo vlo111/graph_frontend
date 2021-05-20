@@ -29,6 +29,8 @@ class DataTableNodes extends Component {
     setGridIndexes: PropTypes.func.isRequired,
     selectedNodes: PropTypes.array.isRequired,
     nodes: PropTypes.array.isRequired,
+    allNodes: PropTypes.array.isRequired,
+    allLinks: PropTypes.array.isRequired,
   }
 
   initGridValues = memoizeOne((nodes) => {
@@ -55,8 +57,8 @@ class DataTableNodes extends Component {
       grid[d.row][d.col] = { ...grid[d.row][d.col], value };
     });
     const nodesChanged = Convert.gridDataToNode(grid);
-    const links = Chart.getLinks();
-    const nodes = Chart.getNodes().map((d) => {
+    const links = this.props.allLinks;
+    const nodes = this.props.allNodes.map((d) => {
       const changed = nodesChanged.find((c) => c.index === d.index);
       if (changed) {
         return changed;
@@ -145,24 +147,10 @@ class DataTableNodes extends Component {
       onMouseDown = undefined;
     }
     if (cell.key === 'index') {
-      this.nodeRow = Chart.getNodes().find((n) => n.index === +cell.value);
       if (selectedNodes.includes(cell.value)) {
         CHECKED = true;
       } else {
         CHECKED = false;
-      }
-      if (this.nodeRow?.fake) {
-        const folder = Chart.getLabels().find((l) => l.id === this.nodeRow.labels[0]);
-        return (
-          <td colSpan={10} className={`${position} cell index ${CHECKED && 'checked'}`}>
-            <span className="value-viewer">
-              <Button onClick={() => this.props.loadFolderNodes(folder)}>
-                {'Load Nodes from '}
-                <strong>{folder.name}</strong>
-              </Button>
-            </span>
-          </td>
-        );
       }
       return (
         <td className={`${position} cell index ${CHECKED && 'checked'}`}>
@@ -170,7 +158,7 @@ class DataTableNodes extends Component {
             <div>
               <input
                 onChange={() => this.toggleGrid(cell.value)}
-                checked={selectedNodes.includes(cell.value)}
+                checked={CHECKED}
                 className="graphsCheckbox"
                 type="checkbox"
                 name="layout"
@@ -183,9 +171,7 @@ class DataTableNodes extends Component {
         </td>
       );
     }
-    if (this.nodeRow?.fake) {
-      return null;
-    }
+
     return (
       <td
         onContextMenu={onContextMenu}
@@ -289,7 +275,7 @@ class DataTableNodes extends Component {
       );
     }
     if (props.cell.key === 'type') {
-      let types = Chart.getNodes()
+      let types = this.props.allNodes
         .filter((d) => d.type)
         .map((d) => ({
           value: d.type,

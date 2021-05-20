@@ -1089,7 +1089,6 @@ class Chart {
         this.graphMovement();
         this.event.emit('folder.open', ev, d);
       });
-
     const folderIconsWrapper = d3.select('#graph .folderIcons');
     folderIconsWrapper.selectAll('.folderIcons use')
       .data(this.data.labels.filter((l) => l.type === 'folder'))

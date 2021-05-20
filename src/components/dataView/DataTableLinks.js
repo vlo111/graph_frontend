@@ -23,6 +23,8 @@ class DataTableLinks extends Component {
     setGridIndexes: PropTypes.array.isRequired,
     selectedLinks: PropTypes.array.isRequired,
     links: PropTypes.array.isRequired,
+    allNodes: PropTypes.array.isRequired,
+    allLinks: PropTypes.array.isRequired,
     toggleGrid: PropTypes.func.isRequired,
   }
 
@@ -62,7 +64,7 @@ class DataTableLinks extends Component {
     });
     this.setState({ grid });
     const linksChanged = Convert.gridDataToLink(grid);
-    const links = Chart.getLinks().map((d) => {
+    const links = this.props.allLinks.map((d) => {
       const changed = linksChanged.find((c) => c.index === d.index);
       if (changed) {
         // eslint-disable-next-line no-param-reassign
@@ -133,7 +135,7 @@ class DataTableLinks extends Component {
 
   cellRenderer = (props, className) => {
     const { selectedLinks } = this.props;
-    
+
     const position = className || '';
     const {
       cell, children, ...p
@@ -142,7 +144,7 @@ class DataTableLinks extends Component {
       if (selectedLinks.includes(cell.value)) {
         CHECKED = true;
       } else CHECKED = false;
-     
+
       return (
         <td className={`${position} cell index ${CHECKED && 'checked'}`}>
           <label>
@@ -158,15 +160,15 @@ class DataTableLinks extends Component {
           </label>
         </td>
       );
-    } 
-    return ( 
+    }
+    return (
       <td {...p} className={`${position} cell ${cell.key || ''} ${CHECKED && 'checked'}`}>
         {children}
       </td>
     );
   }
 
-  renderDataEditor = (props) => { 
+  renderDataEditor = (props) => {
     const defaultProps = {
       autoFocus: true,
       value: props.value,
@@ -174,7 +176,7 @@ class DataTableLinks extends Component {
       onChangeText: props.onChange,
     };
     if (['source', 'target'].includes(props.cell.key)) {
-      const nodes = Chart.getNodes();
+      const nodes = this.props.allNodes;
       return (
         <Select
           {...defaultProps}

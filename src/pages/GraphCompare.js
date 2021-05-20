@@ -28,7 +28,7 @@ class GraphCompare extends Component {
   getGraph1Request = memoizeOne(async (graphId) => {
     if (+graphId) {
       const { payload: { data = {} } } = await this.props.getSingleGraphRequest(graphId, { full: true });
-      this.setState({ selectedNodes1: _.cloneDeep(data.graph?.nodes || []) });
+      this.setState({ selectedNodes1: _.cloneDeep(ChartUtils.objectAndProto(data.graph?.nodes || [])) });
     }
   })
 

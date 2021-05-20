@@ -38,8 +38,9 @@ class ChartUtils {
     const hiddenLabels = [];
     data.labels = data.labels.map((d) => {
       d.hidden = 0;
-      if (d.type === 'folder') { // todo
-        return d;
+      if (d.type === 'folder') {
+        // todo
+        // return d;
       }
       if (!params.labels.includes(d.id)) {
         d.hidden = 1;
