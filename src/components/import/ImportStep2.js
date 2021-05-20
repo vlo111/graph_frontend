@@ -39,15 +39,19 @@ class ImportStep2 extends Component {
       return;
     }
     const {
-      nodes, links, labels, customFields,
+      nodes, links, labels,
     } = ChartUtils.margeGraphs(singleGraph, importData);
+
     Chart.render({
       nodes, links, labels,
     });
-    const {
-      singleGraph: { title, description },
-    } = this.props;
     ChartUtils.resetColors();
+
+    // this.props.updateNodesCustomFieldsRequest(singleGraph.id, nodes.map(d => ({
+    //   id: d.id,
+    //   customFields: d.customFields,
+    // })));
+
     // this.props.updateSingleGraph({
     //   nodes,
     //   links,
@@ -56,7 +60,6 @@ class ImportStep2 extends Component {
     //   description,
     // });
 
-    this.props.setGraphCustomFields(customFields);
     this.props.setActiveButton('create');
     this.props.updateShowSelect(true);
 

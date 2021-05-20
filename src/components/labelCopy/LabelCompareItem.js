@@ -4,7 +4,7 @@ import moment from 'moment';
 import Tooltip from 'rc-tooltip';
 import NodeIcon from '../NodeIcon';
 import CustomFields from '../../helpers/CustomFields';
-import Chart from "../../Chart";
+import Chart from '../../Chart';
 
 class LabelCompareItem extends Component {
   constructor(props) {
@@ -36,11 +36,16 @@ class LabelCompareItem extends Component {
           />
           <label className="pull-left" htmlFor={uniqueCheckboxId} />
         </div>
-
-        <NodeIcon node={node} />
+        <div title={node.type}>
+          <NodeIcon node={node} />
+        </div>
         <div className="row">
           <div className="description">
-            <span className="headerName">{node.type}</span>
+            <span title={node.name} className="headerName">
+              {node.name && node.name.length > 13
+                ? `${node.name.substr(0, 13)}... `
+                : node.name}
+            </span>
             {node.createdAt ? (
               <span className="createdAt">{moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}</span>
             ) : null}

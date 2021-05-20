@@ -13,6 +13,7 @@ import Convert from '../../helpers/Convert';
 import { DASH_TYPES } from '../../data/link';
 import SvgLine from '../SvgLine';
 import Validate from '../../helpers/Validate';
+import ChartUtils from '../../helpers/ChartUtils';
 
 let CHECKED = false;
 class DataTableLinks extends Component {
@@ -22,12 +23,25 @@ class DataTableLinks extends Component {
     setGridIndexes: PropTypes.array.isRequired,
     selectedLinks: PropTypes.array.isRequired,
     links: PropTypes.array.isRequired,
+    allNodes: PropTypes.array.isRequired,
+    allLinks: PropTypes.array.isRequired,
     toggleGrid: PropTypes.func.isRequired,
   }
 
   initGridValues = memoizeOne((links) => {
     if (!_.isEmpty(links)) {
       const grid = Convert.linkDataToGrid(links);
+
+      grid.map((cells) => {
+        cells.forEach((cell) => {
+          if (cell.key === 'source' || cell.key === 'target') {
+            const node = ChartUtils.getNodeById(cell.value);
+            if (node) {
+              cell.value = node.name;
+            }
+          }
+        });
+      });
       this.setState({ grid });
     }
   }, _.isEqual)
@@ -50,7 +64,7 @@ class DataTableLinks extends Component {
     });
     this.setState({ grid });
     const linksChanged = Convert.gridDataToLink(grid);
-    const links = Chart.getLinks().map((d) => {
+    const links = this.props.allLinks.map((d) => {
       const changed = linksChanged.find((c) => c.index === d.index);
       if (changed) {
         // eslint-disable-next-line no-param-reassign
@@ -121,7 +135,7 @@ class DataTableLinks extends Component {
 
   cellRenderer = (props, className) => {
     const { selectedLinks } = this.props;
-    
+
     const position = className || '';
     const {
       cell, children, ...p
@@ -130,7 +144,7 @@ class DataTableLinks extends Component {
       if (selectedLinks.includes(cell.value)) {
         CHECKED = true;
       } else CHECKED = false;
-     
+
       return (
         <td className={`${position} cell index ${CHECKED && 'checked'}`}>
           <label>
@@ -146,15 +160,15 @@ class DataTableLinks extends Component {
           </label>
         </td>
       );
-    } 
-    return ( 
+    }
+    return (
       <td {...p} className={`${position} cell ${cell.key || ''} ${CHECKED && 'checked'}`}>
         {children}
       </td>
     );
   }
 
-  renderDataEditor = (props) => { 
+  renderDataEditor = (props) => {
     const defaultProps = {
       autoFocus: true,
       value: props.value,
@@ -162,7 +176,7 @@ class DataTableLinks extends Component {
       onChangeText: props.onChange,
     };
     if (['source', 'target'].includes(props.cell.key)) {
-      const nodes = Chart.getNodes();
+      const nodes = this.props.allNodes;
       return (
         <Select
           {...defaultProps}

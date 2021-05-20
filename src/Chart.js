@@ -445,7 +445,7 @@ class Chart {
   static normalizeData(data, param) {
     data.nodes = data.nodes || Chart.getNodes();
     data.links = data.links || _.cloneDeep(Chart.getLinks());
-    data.labels = data.labels?.filter((d) => d.id) || Chart.getLabels();
+    data.labels = data.labels || Chart.getLabels();
     data.embedLabels = _.cloneDeep(data.embedLabels || this.data?.embedLabels || []);
 
     if (data.embedLabels.length) {
@@ -484,7 +484,7 @@ class Chart {
 
         return label;
       });
-      data.links = _.uniqBy(data.links, (d) => `${d.source}//${d.target}//${d.type}`);
+      data.links = ChartUtils.uniqueLinks(data.links);
 
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
@@ -532,8 +532,8 @@ class Chart {
       // remove unused data
       if (removedNodes) {
         data.nodes = data.nodes.filter((d) => !d.remove);
-        data.links = ChartUtils.cleanLinks(data.links, data.nodes);
       }
+      data.links = ChartUtils.cleanLinks(data.links, data.nodes);
     } else if (data.nodes.some((d) => d.sourceId)) {
       data.nodes = data.nodes.filter((d) => !d.sourceId);
       data.links = ChartUtils.cleanLinks(data.links, data.nodes);
@@ -562,6 +562,7 @@ class Chart {
     // data.embedLabels.map((e) => e.links)[0];
 
     _.forEach(data.links, (link) => {
+      link.id = link.id || ChartUtils.uniqueId(data.links);
       if (param.embeded) {
         _.forEach(embedLinks, (embedLink) => {
           if (link.source === embedLink.source && link.target === embedLink.target) {
@@ -651,7 +652,10 @@ class Chart {
     //   }
     //   return d;
     // });
-    const labels = Object.values(data.labels).map((d) => Object.create(d));
+    const labels = Object.values(data.labels).map((d) => {
+      d.id = d.id || ChartUtils.uniqueId(data.labels);
+      return Object.create(d);
+    });
 
     return {
       links, nodes: data.nodes, labels, embedLabels: data.embedLabels, lastUid,
@@ -705,7 +709,7 @@ class Chart {
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
-      .attr('data-y', transform.y); 
+      .attr('data-y', transform.y);
 
     this.event.emit('zoom', ev, { transform });
 
@@ -1085,7 +1089,6 @@ class Chart {
         this.graphMovement();
         this.event.emit('folder.open', ev, d);
       });
-
     const folderIconsWrapper = d3.select('#graph .folderIcons');
     folderIconsWrapper.selectAll('.folderIcons use')
       .data(this.data.labels.filter((l) => l.type === 'folder'))
@@ -1739,8 +1742,10 @@ class Chart {
       this.event.emit('render', this);
       return this;
     } catch (e) {
-      toast.error(`Chart Error :: ${e.message}`);
       console.error(e);
+      if (!e.message.startsWith('node not found:')) {
+        toast.error(`Chart Error :: ${e.message}`);
+      }
       return this;
     }
   }
@@ -1889,9 +1894,9 @@ class Chart {
         .attr('y', y * scale)
         .call(d3.drag()
           .on('start', handleDragStart)
-          .on('drag', handleDrag) 
-          .on('end', handleDragEnd));   
-     });
+          .on('drag', handleDrag)
+          .on('end', handleDragEnd));
+    });
 
     this.event.on('window.mousedown', (ev) => {
       if (ev.shiftKey || ev.which === 3) {
@@ -1995,11 +2000,16 @@ class Chart {
 
       this.labels.each((l) => {
         if (this.squareData.labels.includes(l.id) && !l.readOnly) {
-          l.d = l.d.map((p) => {
-            p[0] = +(p[0] + ev.dx).toFixed(2);
-            p[1] = +(p[1] + ev.dy).toFixed(2);
-            return p;
-          });
+          if (l.type === 'square' || l.type === 'ellipse') {
+            l.size.x = +(l.size.x + ev.dx).toFixed(2);
+            l.size.y = +(l.size.y + ev.dy).toFixed(2);
+          } else {
+            l.d = l.d.map((p) => {
+              p[0] = +(p[0] + ev.dx).toFixed(2);
+              p[1] = +(p[1] + ev.dy).toFixed(2);
+              return p;
+            });
+          }
         }
         return l;
       });
@@ -3006,6 +3016,28 @@ class Chart {
       .attr('width', 50)
       .attr('height', 50)
       .text(` ☝ ${fullName}`);
+  }
+
+  static getDimensionsLabelDatum = (datum) => {
+    const arrX = datum.map((p) => p[0]);
+
+    const arrY = datum.map((p) => p[1]);
+
+    const minX = Math.min.apply(Math, arrX);
+
+    const maxX = Math.max.apply(Math, arrX);
+
+    const minY = Math.min.apply(Math, arrY);
+
+    const maxY = Math.max.apply(Math, arrY);
+
+    const width = (minX - maxX) * (-1);
+
+    const height = (minY - maxY) * (-1);
+
+    return {
+      height, width, minX, minY,
+    };
   }
 }
 

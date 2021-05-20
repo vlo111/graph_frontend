@@ -25,7 +25,8 @@ const GraphEmbed = React.lazy(() => import('./pages/GraphEmbed'));
 
 class App extends Component {
   componentDidMount() {
-    document.body.classList.add(`${Utils.getOS()}_${Utils.getBrowser()}`);
+    const className = ` ${Utils.getOS()}_${Utils.getBrowser()}`;
+    document.body.className += className;
   }
 
   render() {

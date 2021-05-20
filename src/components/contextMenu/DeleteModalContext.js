@@ -7,7 +7,7 @@ import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg'
 import { setActiveButton } from '../../store/actions/app';
 import ContextMenu from './ContextMenu';
 import Chart from '../../Chart';
-import ChartUtils from "../../helpers/ChartUtils";
+import ChartUtils from '../../helpers/ChartUtils';
 
 class AddLabelModal extends Component {
   closeDelete = () => {
@@ -20,9 +20,54 @@ class AddLabelModal extends Component {
     if (data.type === 'selectSquare.delete') {
       let nodes = Chart.getNodes();
       let links = Chart.getLinks();
+      let labels = Chart.getLabels();
+
+      let x;
+      let y;
+      let width;
+      let height;
+
+      labels = labels.filter((l) => {
+        if (squareData.labels.includes(l.id)) {
+          const { size } = l;
+
+          if (l.type === 'square' || l.type === 'ellipse') {
+            x = size.x;
+            y = size.y;
+            width = size.width;
+            height = size.height;
+          } else if (l.type === 'folder') {
+            if (l.open) {
+              width = l.d[1][0];
+              height = l.d[1][1];
+
+              x = l.d[0][0] - (width / 2);
+              y = l.d[0][1] - (height / 2);
+            } else {
+              x = l.d[0][0];
+              y = l.d[0][1];
+
+              height = 60;
+              width = 60;
+            }
+          } else {
+            const labelSize = Chart.getDimensionsLabelDatum(l.d);
+
+            x = labelSize.minX;
+            y = labelSize.minY;
+            width = labelSize.width;
+            height = labelSize.height;
+          }
+
+          return this.checkSize(x, y, width, height, squareData);
+        }
+        return true;
+      });
+
       nodes = nodes.filter((d) => d.sourceId || !squareData.nodes.includes(d.id));
       links = ChartUtils.cleanLinks(links, nodes);
-      Chart.render({ links, nodes });
+
+      Chart.render({ labels, links, nodes });
     } else if (data.type === 'selectNode.delete') {
       let nodes = Chart.getNodes();
       let links = Chart.getLinks();
@@ -37,8 +82,43 @@ class AddLabelModal extends Component {
     this.props.setActiveButton('create');
   }
 
+  module = (x, y) => {
+    if (x < 0) {
+      y += (x * (-1));
+      x *= (-1);
+    }
+
+    if (y < 0) {
+      x += (y * (-1));
+      y *= (-1);
+    }
+    return { x, y };
+  }
+
+  checkSize = (x, y, width, height, square) => {
+    // const modeleLabel = this.module(x, y);
+    //
+    // x = modeleLabel.x;
+    // y = modeleLabel.y;
+    //
+    // const moduleSquare = this.module(square.x, square.y);
+    //
+    // square.x = moduleSquare.x;
+    // square.y = moduleSquare.y;
+
+    if (x > square.x
+        && y > square.y
+        && (x + width) < (square.x + square.width)
+        && (y + height) < (square.y + square.height)) {
+      return false;
+    }
+    return true;
+  }
+
   render() {
-    const { activeButton, data, params, params: { squareData } } = this.props;
+    const {
+      activeButton, data, params, params: { squareData },
+    } = this.props;
 
     if (activeButton !== 'deleteModal') {
       return null;

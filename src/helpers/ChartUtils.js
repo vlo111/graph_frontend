@@ -38,8 +38,9 @@ class ChartUtils {
     const hiddenLabels = [];
     data.labels = data.labels.map((d) => {
       d.hidden = 0;
-      if (d.type === 'folder') { // todo
-        return d;
+      if (d.type === 'folder') {
+        // todo
+        // return d;
       }
       if (!params.labels.includes(d.id)) {
         d.hidden = 1;
@@ -888,7 +889,6 @@ class ChartUtils {
       }
     });
     const labels = [...graph1.labels, ...graph2.labels];
-    console.log(labels);
     links = ChartUtils.uniqueLinks(links).map((l) => {
       delete l.color;
       return l;

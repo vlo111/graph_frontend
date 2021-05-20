@@ -28,7 +28,7 @@ class GraphCompare extends Component {
   getGraph1Request = memoizeOne(async (graphId) => {
     if (+graphId) {
       const { payload: { data = {} } } = await this.props.getSingleGraphRequest(graphId, { full: true });
-      this.setState({ selectedNodes1: _.cloneDeep(data.graph?.nodes || []) });
+      this.setState({ selectedNodes1: _.cloneDeep(ChartUtils.objectAndProto(data.graph?.nodes || [])) });
     }
   })
 
@@ -101,6 +101,10 @@ class GraphCompare extends Component {
     const { selectedNodes1, selectedNodes2 } = this.state;
     const createGraphData = ChartUtils.margeGraphs(singleGraph, singleGraph2, selectedNodes1, selectedNodes2);
     this.setState({ createGraphData });
+  }
+
+  closeCreateModal = () => {
+    this.setState({ createGraphData: false });
   }
 
   renderSelectOption = (props) => {
@@ -202,7 +206,7 @@ class GraphCompare extends Component {
         </Button>
 
         {!_.isEmpty(createGraphData) ? (
-          <CreateGraphModal show data={createGraphData} />
+          <CreateGraphModal show data={createGraphData} onChange={this.closeCreateModal} />
         ) : null}
       </Wrapper>
     );

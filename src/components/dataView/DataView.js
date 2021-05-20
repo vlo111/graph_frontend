@@ -21,39 +21,12 @@ import { EXPORT_TYPES } from '../../data/export';
 import { getGraphInfoRequest } from '../../store/actions/graphs';
 
 class DataView extends Component {
-  mergeNodes = memoizeOne((nodes, extraNodes, selectedGrid) => {
-    let n = [...nodes];
-    if (extraNodes) {
-      n.push(extraNodes);
-    }
-    n = _.uniqBy(n, 'id').filter((d) => !d.sourceId && !d.fake);
-
-    if (extraNodes && _.isEmpty(selectedGrid?.nodes)) {
-      this.props.setGridIndexes('nodes', _.range(n.length));
-    }
-
-    return n;
-  }, _.isEqual)
-
-  mergeLinks = memoizeOne((links, extraLinks, nodes, selectedGrid) => {
-    let l = [...links];
-    if (extraLinks) {
-      l.push(extraLinks);
-    }
-    l = ChartUtils.cleanLinks(ChartUtils.uniqueLinks(l), nodes).filter((d) => !d.sourceId && !d.fake);
-    if (extraLinks && _.isEmpty(selectedGrid?.links)) {
-      this.props.setGridIndexes('links', _.range(l.length));
-    }
-    return l;
-  }, _.isEqual)
-
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
     getGraphInfoRequest: PropTypes.func.isRequired,
     graphId: PropTypes.string.isRequired,
-    customFields: PropTypes.object.isRequired,
     graphInfo: PropTypes.object.isRequired,
     selectedGrid: PropTypes.objectOf(PropTypes.array).isRequired,
   }
@@ -61,11 +34,12 @@ class DataView extends Component {
   constructor(props) {
     super(props);
     const nodes = Chart.getNodes();
+    const links = Chart.getLinks();
 
     this.state = {
       fullWidth: false,
-      extraNodes: null,
-      extraLinks: null,
+      nodes,
+      links,
       activeTab: {
         group: 'nodes',
         type: nodes[0]?.type || '',
@@ -76,7 +50,8 @@ class DataView extends Component {
   }
 
   async componentDidMount() {
-    const { graphId } = this.props;
+    const { graphId, selectedGrid } = this.props;
+    Chart.loading(true);
     const folders = Chart.getLabels().filter((l) => l.type === 'folder');
 
     let foldersData = [];
@@ -85,13 +60,15 @@ class DataView extends Component {
     });
 
     foldersData = await Promise.all(foldersData);
-    this.setState({
-      extraNodes: foldersData.map((d) => d.data.label.nodes).flat(1),
-      extraLinks: foldersData.map((d) => d.data.label.links).flat(1),
-    });
+
+    const nodes = this.mergeNodes(Chart.getNodes(), foldersData.map((d) => d.data.label.nodes).flat(1), selectedGrid);
+    const links = this.mergeLinks(Chart.getLinks(), foldersData.map((d) => d.data.label.links).flat(1), nodes, selectedGrid);
+    this.setState({ nodes, links });
+
     // this.checkAllGrids();
     Chart.resizeSvg();
     this.props.getGraphInfoRequest(graphId);
+    Chart.loading(false);
   }
 
   componentWillUnmount() {
@@ -101,6 +78,41 @@ class DataView extends Component {
     }, 100);
   }
 
+  mergeNodes = (nodes, extraNodes, selectedGrid) => {
+    let n = [...nodes.filter((d) => !d.fake)];
+    if (extraNodes) {
+      extraNodes.forEach((d, i) => {
+        n.push({
+          ...d,
+          index: nodes.length - 1 + i,
+        });
+      });
+    }
+    n = _.uniqBy(n, 'id').filter((d) => !d.sourceId && !d.fake);
+    if (_.isEmpty(selectedGrid?.nodes)) {
+      this.props.setGridIndexes('nodes', _.range(n.length));
+    }
+
+    return n;
+  }
+
+  mergeLinks = (links, extraLinks, nodes, selectedGrid) => {
+    let l = [...links.filter((d) => !d.fake)];
+    if (extraLinks) {
+      extraLinks.forEach((d, i) => {
+        l.push({
+          ...d,
+          index: links.length - 1 + i,
+        });
+      });
+    }
+    l = ChartUtils.cleanLinks(ChartUtils.uniqueLinks(l), nodes).filter((d) => !d.sourceId && !d.fake);
+    if (_.isEmpty(selectedGrid?.links)) {
+      this.props.setGridIndexes('links', _.range(l.length));
+    }
+    return l;
+  }
+
   unCheckAllGrids = () => {
     this.props.setGridIndexes('nodes', []);
     this.props.setGridIndexes('links', []);
@@ -108,12 +120,11 @@ class DataView extends Component {
 
   checkAllGrids = () => {
     const { selectedGrid } = this.props;
+    const { nodes, links } = this.state;
     if (_.isEmpty(selectedGrid.nodes)) {
-      const nodes = Chart.getNodes();
       this.props.setGridIndexes('nodes', _.range(nodes.length));
     }
     if (_.isEmpty(selectedGrid.links)) {
-      const links = Chart.getLinks();
       this.props.setGridIndexes('links', _.range(links.length));
     }
   }
@@ -136,16 +147,13 @@ class DataView extends Component {
   }
 
   export = async (type) => {
-    const { extraNodes, extraLinks } = this.state;
     const { selectedGrid, graphId } = this.props;
 
-    const nodes = this.mergeNodes(Chart.getNodes(), extraNodes)
-      .filter((d) => ChartUtils.isCheckedNode(selectedGrid, d))
+    const nodes = this.state.nodes.filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
 
     const nodesId = nodes.map((n) => n.id);
 
-    const linksId = this.mergeLinks(Chart.getLinks(), extraLinks, nodes)
-      .filter((d) => ChartUtils.isCheckedLink(selectedGrid, d))
+    const linksId = this.state.links.filter((d) => ChartUtils.isCheckedLink(selectedGrid, d))
       .map((l) => l.id);
     const labelsId = Chart.getLabels().map((l) => l.id);
 
@@ -205,13 +213,10 @@ class DataView extends Component {
 
   render() {
     const {
-      fullWidth, activeTab, exportType, showExport, extraNodes, extraLinks,
+      fullWidth, activeTab, exportType, showExport, nodes, links,
     } = this.state;
 
-    const { graphInfo, selectedGrid } = this.props;
-
-    const nodes = this.mergeNodes(Chart.getNodes(), extraNodes, selectedGrid);
-    const links = this.mergeLinks(Chart.getLinks(), extraLinks, nodes, selectedGrid);
+    const { graphInfo } = this.props;
 
     const linksGrouped = _.groupBy(links, 'type');
     delete linksGrouped.undefined;
@@ -268,12 +273,16 @@ class DataView extends Component {
                 classNamePos={showExport && 'tablePosition'}
                 title={activeTab.type}
                 nodes={nodesGrouped[activeTab.type]}
+                allNodes={nodes}
+                allLinks={links}
                 loadFolderNodes={this.loadFolderNodes}
               />
             ) : (
               <DataTableLinks
                 classNamePos={showExport && 'tablePosition'}
                 title={activeTab.type}
+                allNodes={nodes}
+                allLinks={links}
                 links={linksGrouped[activeTab.type]}
               />
             )}
