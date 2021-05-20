@@ -14,6 +14,9 @@ import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg'; 
 import { getSingleGraphRequest } from '../store/actions/graphs'; 
 import ShareTooltip from './ShareTooltip/ShareTooltip';
+import { ReactComponent as SquareSvg } from '../assets/images/icons/square.svg';
+import { ReactComponent as EllipseSvg } from '../assets/images/icons/ellipse.svg';
+import { ReactComponent as FreeFormSvg } from '../assets/images/icons/freeForm.svg';
 
 class ToolBar extends Component {
   static propTypes = {
@@ -24,7 +27,13 @@ class ToolBar extends Component {
     history: PropTypes.object.isRequired,
   } 
 
+  constructor() {
+    super();
+    this.state = { showLabelForm: false };
+  }
+
   handleClick = (button) => {
+    this.setState({showLabelForm: false});
     this.props.setActiveButton(button);
   }
 
@@ -36,7 +45,13 @@ class ToolBar extends Component {
   }
 
   render() {
-    const { activeButton, match: { params: { graphId } }, currentUserRole, singleGraphUser } = this.props;
+    const {
+      activeButton, match: { params: { graphId } }, currentUserRole, singleGraphUser,
+    } = this.props;
+
+    const {
+      showLabelForm,
+    } = this.state;
 
     return (
       <div id="toolBar">
@@ -63,11 +78,27 @@ class ToolBar extends Component {
               <Button
                 className={activeButton === 'create-label' ? 'active' : undefined}
                 icon={<TagSvg />}
-                onClick={() => this.handleClick('create-label')}
+                onClick={() => this.setState({ showLabelForm: !showLabelForm })}
               >
                 Create Label
               </Button>
             ) : null}
+             <div
+              onMouseLeave={() => this.setState({ showLabelForm: false })}
+              className={`labelForm ${showLabelForm ? 'showLabelForm' : null}`}
+            >
+              <div className="buttons">
+                <span className="lblFreeForm" onClick={() => this.handleClick('create-label')}>
+                  <FreeFormSvg />
+                </span>
+                <span className="lblEllipse" onClick={() => this.handleClick('create-label-ellipse')}>
+                  <EllipseSvg />
+                </span>
+                <span className="lblSquare" onClick={() => this.handleClick('create-label-square')}>
+                  <SquareSvg />
+                </span>
+              </div>
+            </div>
 
             {false ? <Button
               icon={<LoopSvg />}
@@ -76,6 +107,7 @@ class ToolBar extends Component {
             >
               Reset project
             </Button> : null}
+            
             <Button
               className={activeButton === 'data' ? 'active' : undefined}
               icon={<LoopSvg />}

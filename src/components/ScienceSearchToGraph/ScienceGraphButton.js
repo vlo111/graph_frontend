@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setActiveButton } from '../../store/actions/app';
-import ApiGraphModal from "./ApiGraphModal";
+import ScienceGraphModal from "./ScienceGraphModal";
+import Button from '../form/Button';
+import ApiImg from '../../assets/images/icons/science.png';
 
-class ApiButton extends Component {
+class ScienceButton extends Component {
     static propTypes = {
       // activeButton: PropTypes.string.isRequired,
       // setActiveButton: PropTypes.func.isRequired,
@@ -19,12 +21,15 @@ class ApiButton extends Component {
     const { activeButton } = this.props;
     return (
       <>
-        <button className="newGraph" onClick={this.toggleModal}>
-          G
+        <button
+          className="scienceGraph wikiButton"
+          onClick={this.toggleModal}
+        >
+          <img src={ApiImg} alt="science" />
         </button>
 
         {activeButton === 'api' ? (
-          <ApiGraphModal onClose={this.toggleModal} />
+          <ScienceGraphModal onClose={this.toggleModal} />
         ) : null}
       </>
     );
@@ -40,6 +45,6 @@ const mapDispatchToProps = {
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ApiButton);
+)(ScienceButton);
 
 export default Container;
