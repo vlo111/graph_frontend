@@ -13,10 +13,13 @@ import ApiImg from '../../assets/images/icons/science.png';
 import arxivImg from '../../assets/images/icons/arxiv.jpg';
 import coreImg from '../../assets/images/icons/core.png';
 import Api from '../../Api';
-const { REACT_APP_ARXIV_URL } = process.env;
-const { REACT_APP_CORE_URL } = process.env;
-const { REACT_APP_SEMANTIC_URL } = process.env;
 import Loading from '../Loading';
+
+//global
+const REACT_APP_ARXIV_URL='https://export.arxiv.org/api/query?';
+const REACT_APP_CORE_URL='https://core.ac.uk:443/api-v2/search/';
+const REACT_APP_SEMANTIC_URL='https://api.semanticscholar.org/v1/paper/arXiv';
+
 
 class ScienceGraphModal extends Component {
   constructor(props) {
