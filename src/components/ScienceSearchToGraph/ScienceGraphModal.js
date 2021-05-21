@@ -17,6 +17,7 @@ const { REACT_APP_ARXIV_URL } = process.env;
 const { REACT_APP_CORE_URL } = process.env;
 const { REACT_APP_SEMANTIC_URL } = process.env;
 import Loading from '../Loading';
+import { index } from 'd3-array';
 
 class ScienceGraphModal extends Component {
   constructor(props) {
@@ -29,7 +30,8 @@ class ScienceGraphModal extends Component {
       getChecked: false,
       searchResults: NaN,
       currentUserId: 0,
-      isLoading: null
+      isLoading: null,
+      checkedList: []
     };
   }
 
@@ -178,81 +180,121 @@ class ScienceGraphModal extends Component {
     // };
 
     getAllNodes = async (ev) => {
-      const { getChecked } = this.state;
-      if (getChecked === false) {
+      const { checkedList } = this.state;
+      if (!checkedList.length) {
         return;
       }
-      // part of semantic scholar
+      // code for semantic scholar
       // if (this.state.apiSearchReturnValues[this.state.getChecked].queryResultPageOrigin === 'arxiv') {
       //   const contentarxivUrl = this.state.apiSearchReturnValues[this.state.getChecked].queryResultPageFullarxivURL;
       //   const arixId = contentarxivUrl.split('/').slice(-1)[0].split('v')[0];
       //   const semantic = await this.getByArixId(arixId);
       // } else {
       // }
-      const articleJson = this.state.apiSearchReturnValues[this.state.getChecked]
-
-      const { abstract, title, url, authorsList } = articleJson;
-      const nodes = [...Chart.getNodes()];
-      const links = [...Chart.getLinks()];
-      const article = await this.createNodes(
-        nodes, 
-        title, 
-        url, 
-        'article', 
-        abstract
-      );
-      const checkedArticle = await this.compareArticle(nodes, article, ev);
-      if (!checkedArticle.isDuplicate) {
-        nodes.push(checkedArticle.node);
-      }
-
-      const getData = async () => {
-        if (!authorsList) {
+      const chosenArticles = this.state.checkedList.map( articleIndex => {
+        return this.state.apiSearchReturnValues[parseInt(articleIndex)]
+      })
+      const getArticlesData = async () => {
+        if (!chosenArticles.length) {
           return
         }
+        const theAuthorsData = []
+        const nodes = [...Chart.getNodes()];
+        const links = [...Chart.getLinks()];
+        
         return Promise.all(
-          authorsList.map( async (author, index) => {
-            const type = "author"
-            const authorData = await this.createNodes(nodes, author, author.url, type)
-            const checkedAuthor = await this.compareArticle(nodes, authorData, ev)
-            const target = checkedAuthor.node.id
-            const source = checkedArticle.node.id
-            const new_links = [...(await Chart.getLinks())]
-            const existingLink = new_links.find(link => (link.target === target && link.source === source))
-            
-            if (!existingLink) {
-              const _type = type || _.last(links)?.type || '';
-              const link = {
-                create: true,
-                // color: "#82abd1", 
-                createdAt: moment().unix(),
-                createdUser: this.state.currentUserId, // get users
-                direction: "",
-                id: ChartUtils.uniqueId(links),
-                index: 0,
-                linkType: "a",
-                source: checkedArticle.node.id,
-                status: "approved",
-                target: checkedAuthor.node.id,
-                type: _type,
-                updatedAt: moment().unix(),
-                updatedUser: this.state.currentUserId, // get userId
-                value: 2,
-              }
-              links.push(link);
+          chosenArticles.map(async chosenArticle => {
+            const new_nodes = []
+            const new_links = []
+            const articleJson = chosenArticle
+            const { abstract, title, url, authorsList } = articleJson;
+            const article = await this.createNodes(
+              nodes, 
+              title.trim(), 
+              url, 
+              'article', 
+              abstract
+            );
+            const checkedArticle = await this.compareArticle(nodes, article, ev);
+            if (!checkedArticle.isDuplicate) {
+              new_nodes.push(checkedArticle.node);
             }
-            if (!checkedAuthor.isDuplicate) {
-              nodes.push(checkedAuthor.node);
-            } 
-            return {nodes: nodes, links: links};
+
+            const getAuthorsData = async () => {
+              if (!authorsList) {
+                return
+              }
+              return Promise.all(
+                authorsList.map( async (author, index) => {
+                  const type = "author"
+                  const authorData = await this.createNodes(nodes, author.trim(), author.url, type)
+                  const checkedAuthor = await this.compareArticle(nodes, authorData, ev)
+                  const target = checkedAuthor.node.id
+                  const source = checkedArticle.node.id
+                  const links = [...(await Chart.getLinks())]
+
+                  const existingLink = links.find(link => (link.target === target && link.source === source))
+                  
+                  if (!existingLink) {
+                    const _type = type || _.last(links)?.type || '';
+                    const link = {
+                      create: true,
+                      createdAt: moment().unix(),
+                      createdUser: this.state.currentUserId, 
+                      direction: "",
+                      id: ChartUtils.uniqueId(links),
+                      index: 0,
+                      linkType: "a",
+                      source: checkedArticle.node.id,
+                      status: "approved",
+                      target: checkedAuthor.node.id,
+                      type: _type,
+                      updatedAt: moment().unix(),
+                      updatedUser: this.state.currentUserId,
+                      value: 2,
+                    }
+                    new_links.push(link);
+                  }
+                  if (!checkedAuthor.isDuplicate) {
+                    new_nodes.push(checkedAuthor.node);
+                  } 
+                  return {nodes: new_nodes, links: new_links};
+                })
+              )
+            }
+            return await getAuthorsData().then( async res => {
+              // write validations !!!
+              // theAuthorsData.push({ nodes: res[0].nodes, links: res[0].links })
+              // this.props.onClose(ev);
+
+              // const graphId =  window.location.pathname.substring(
+              //   window.location.pathname.lastIndexOf('/') + 1
+              // ) Api.dataPast(id, undefined, [x, y], 'merge-compare',
+              await Api.dataPast(8, undefined, [0, 0], 'merge', {
+                labels: [],
+                nodes: res[0].nodes,
+                links: res[0].links,
+              }).catch((e) => e.response);
+              if (res.status === 'error') {
+                toast.error(res.message);
+                return;
+              }
+              console.log('inside getAuthorsData', { nodes: res[0].nodes, links: res[0].links });
+              debugger
+              // Chart.render({ nodes: res[0].nodes, links: res[0].links });
+              return { nodes: res[0].nodes, links: res[0].links }
+            })
           })
         )
       }
-      await getData().then(res => {
+      await getArticlesData().then(res => {
         // write validations !!!
+        // theArticlesData.push(res)
+        // debugger
+        // Chart.render({ nodes: res[0].nodes, links: res[0].links });
         this.props.onClose(ev);
-        Chart.render({ nodes: res[0].nodes, links: res[0].links });
       })
+      return 
     }
     
     compareArticle = async (nodes, node, ev) => {
@@ -326,14 +368,21 @@ class ScienceGraphModal extends Component {
       return node;
     }
 
-    checkedApi = (param) => {
+    handleCheckedButton = (param) => {
+      const oldCheckedList = this.state.checkedList
+      if (oldCheckedList.includes(param)) {
+        this.setState({
+          checkedList: oldCheckedList.filter(checkedItems => checkedItems !== param)
+        }) 
+      } else {
+        this.state.checkedList.push(param)
+      }
       this.setState({
         getChecked: param
       });
     };
 
     render() {
-      const { getChecked } = this.state;
       const apiSearchResults = [];
       const resultAmount =  Number.isInteger(this.state.searchResults) ? `Got ${this.state.searchResults} results` : ''
       for (const key3 in this.state.apiSearchReturnValues) {
@@ -341,8 +390,8 @@ class ScienceGraphModal extends Component {
           <div className="scienceResultsList" key={key3}>
             <div className="scienceCheckBox">
               <input
-                onChange={() => this.checkedApi(key3)}
-                checked={!getChecked ? getChecked : (key3 === getChecked)}
+                onChange={() => this.handleCheckedButton(key3)}
+                checked={this.state.checkedList.includes(key3)}
                 className="scienceArticleCheckbox"
                 type="checkbox"
                 name="layout"
@@ -362,8 +411,8 @@ class ScienceGraphModal extends Component {
               <p className="scienceAuthor"> <b>Authors:</b> {this.state.apiSearchReturnValues[key3].authors}</p>
               <p
                 className=" scienceArticleDescription"
-                dangerouslySetInnerHTML={{ __html: this.state.apiSearchReturnValues[key3].abstract }}
-                />
+                dangerouslySetInnerHTML={{ __html: "Abstract:"+ this.state.apiSearchReturnValues[key3].abstract.slice(0,300)+"..." }}
+              />
               <div>
                 {
                   this.state.apiSearchReturnValues[key3].origin.includes("arxiv") 
@@ -377,18 +426,6 @@ class ScienceGraphModal extends Component {
                 }
               </div>
             </div>
-
-            <div className="scienceCreateNodeButton">
-              {
-                key3 === getChecked
-                && <button 
-                onClick={(ev) => this.getAllNodes(ev)} 
-                className="ghButton accent alt scienceCreateNodeButton">
-                    Create Nodes
-                  </button>
-              }
-            </div>
-
           </div>,
         );
       }
@@ -401,26 +438,44 @@ class ScienceGraphModal extends Component {
             overlayClassName="ghModalOverlay ghMapsModalOverlay"
             onRequestClose={this.props.onClose}
           >
-            <img src={ApiImg} alt="api" className="scienceLogo" />
-            <div className="scienceForm">
-              <div className="scienceFormInside">
-                <form action="">
-                  <input className="scienceAuthorInput" type="text" value={this.state.apiTitleSearchTerms || ''} onChange={this.changeApiTitleSearchTerms} placeholder="Search Authors" />
-                  <input className="scienceTitleInput" type="text" value={this.state.apiAuthorSearchTerms || ''} onChange={this.changeApiAuthorSearchTerms} placeholder="Search  Articles" />
-                  <button className="scienceSearchSubmit button" type="submit" onClick={this.useApiSearchEngine}>Search</button>
-                </form>
+            <div className="scienceModalsubBox">
+              <img src={ApiImg} alt="api" className="scienceLogo" />
+              <div className="scienceForm">
+                <div className="scienceFormInside">
+                  <form action="">
+                    <input className="scienceAuthorInput" type="text" value={this.state.apiTitleSearchTerms || ''} onChange={this.changeApiTitleSearchTerms} placeholder="Search Authors" />
+                    <input className="scienceTitleInput" type="text" value={this.state.apiAuthorSearchTerms || ''} onChange={this.changeApiAuthorSearchTerms} placeholder="Search  Articles" />
+                    <button className="scienceSearchSubmit button" type="submit" onClick={this.useApiSearchEngine}>Search</button>
+                  </form>
+                </div>
+              </div>
+              
+              {this.state.isLoading ? (
+                <Loading className="mainLoading scienceModalLoading" size={50} />
+                ) : null}
+              <div className="scienceResultBox">
+                <div className="scienceResultAmountBox">
+                  <p className="scienceResultAmount" >{resultAmount}</p>
+                </div>
+                {apiSearchResults}
               </div>
             </div>
-            
-            {this.state.isLoading ? (
-              <Loading className="mainLoading scienceModalLoading" size={50} />
-            ) : null}
-            <div className="scienceResultBox">
-              <div className="scienceResultAmountBox">
-                <p className="scienceResultAmount" >{resultAmount}</p>
-              </div>
-              {apiSearchResults}
+            <div className="createGraphButton">
+              {
+                this.state.checkedList.length
+                ? 
+                  <>
+                    <button 
+                      onClick={(ev) => this.getAllNodes(ev)} 
+                      className="ghButton accent alt ">
+                      Create Graph 
+                    </button>
+                    <p className="selectedArticlesAmount">Selected Articles {this.state.checkedList.length}</p>
+                  </>
+                : ""
+              }
             </div>
+
           </Modal>
 
         </>

@@ -6428,13 +6428,6 @@ body .gh__menu {
   margin-bottom: 50px;
 }
 
-.scienceGraph{
-  z-index: 1000;
-  border-radius: 50%;
-  width: 1.8em;
-  position: absolute;
-  right: 23%;
-}
 
 .wikiButton {
   background: transparent;
@@ -6448,6 +6441,14 @@ body .gh__menu {
     width: 40px;
     height: 40px;
   }
+}
+
+.scienceGraph{
+  z-index: 1000;
+  border-radius: 50%;
+  width: 1.8em;
+  position: absolute;
+  right: 23%;
 }
 
 .Wiki form {
@@ -8763,6 +8764,12 @@ img.preview-scaled {
 
 // science article search page
 //----------------------------
+.scienceModalsubBox{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: scroll;
+}
 .showLabelForm {
   width: 90px;
 }
@@ -8918,5 +8925,16 @@ img.preview-scaled {
     height: 11em;
     max-height: 11em;
   }
+}
+.createGraphButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+}
+.selectedArticlesAmount {
+  font-size: 1.5em;
+  margin-left: 1em;
 }
 //-----------------------------------
