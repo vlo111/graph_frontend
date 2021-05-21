@@ -112,7 +112,8 @@ class ReactChartMap extends Component {
       >
         <g>
           {labels.filter((l) => l.type !== 'folder').map((l) => {
-            const square = ChartUtils.pathToSquare(l.d);
+            const square = (l.type !== 'square' && l.type !== 'ellipse')
+              ? ChartUtils.pathToSquare(l.d) : l.size;
             return (
               <rect
                 key={l.id}

@@ -15,7 +15,7 @@ import Legend from './Legend';
 import MapsButton from './maps/MapsButton';
 import Utils from '../helpers/Utils';
 import WikiButton from './wiki/WikiButton';
-import ApiButton from './apiSearchToGraph/apiGraphButton';
+import ScienceButton from './ScienceSearchToGraph/ScienceGraphButton';
 
 import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 import SearchModal from './search/SearchModal';
@@ -112,7 +112,7 @@ class ToolBarHeader extends Component {
           ) : null}
 
           {updateLocation ? (
-            <ApiButton />
+            <ScienceButton />
           ) : null}
 
           <div className="signOut">
