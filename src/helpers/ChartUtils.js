@@ -119,8 +119,8 @@ class ChartUtils {
     if (_.isEmpty(selectedGrid.nodes)) {
       return true;
     }
-    const { index: sourceIndex } = this.getNodeById(d.source.id || d.source);
-    const { index: targetIndex } = this.getNodeById(d.target.id || d.target);
+    const { index: sourceIndex } = this.getNodeById(d.source.id || d.source) || {};
+    const { index: targetIndex } = this.getNodeById(d.target.id || d.target) || {};
     if (!selectedGrid.nodes.includes(sourceIndex) || !selectedGrid.nodes.includes(targetIndex)) {
       return false;
     }
