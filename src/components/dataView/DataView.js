@@ -153,7 +153,8 @@ class DataView extends Component {
 
     const nodesId = nodes.map((n) => n.id);
 
-    const linksId = ChartUtils.cleanLinks(this.state.links.filter((d) => selectedGrid.links.includes(d.index))).map((l) => l.id);
+    const linksId = ChartUtils.cleanLinks(this.state.links.filter((d) => selectedGrid.links.includes(d.index)), nodes)
+      .map((l) => l.id);
 
     const labelsId = Chart.getLabels().map((l) => l.id);
 
