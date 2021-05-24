@@ -20,7 +20,11 @@ class ChartUpdate {
     const labels = Chart.getLabels().map((label) => {
       const d = labelsUpdate.find((l) => l.id === label.id);
       if (d) {
-        label.d = d.d;
+        if (label.size) {
+          label.size = d.size;
+        } else {
+          label.d = d.d;
+        }
       }
       return label;
     });
@@ -34,8 +38,13 @@ class ChartUpdate {
       if (node.fake) {
         const label = labelsUpdate.find((l) => `fake_${l.id}` === node.id);
         if (label) {
-          node.fx = label.d[0][0] + 30;
-          node.fy = label.d[0][1] + 30;
+          if (label.type === 'square' || label.type === 'ellipce') {
+            node.fx = label.size.x + 30;
+            node.fy = label.size.y + 30;
+          } else {
+            node.fx = label.d[0][0] + 30;
+            node.fy = label.d[0][1] + 30;
+          }
         }
       }
       return node;
@@ -136,7 +145,11 @@ class ChartUpdate {
     const labels = Chart.getLabels().map((label) => {
       const updateLabel = labelsUpdate.find((n) => n.id === label.id);
       if (updateLabel) {
-        label.d = updateLabel.d;
+        if (label.size) {
+          label.size = updateLabel.size;
+        } else {
+          label.d = updateLabel.d;
+        }
       }
       return label;
     });

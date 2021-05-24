@@ -1936,9 +1936,20 @@ class Chart {
         this.squareData.nodes = allNodes
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
         this.squareData.labels = this.getLabels()
-          .filter((l) => (l.type === 'folder' && !l.open && this.squareData.nodes.some((n) => n.labels.includes(l.id)))
-            || this.squareData.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
-          .map((l) => l.id);
+          .filter((l) => {
+            const nodes = this.squareData.nodes.filter((n) => n.labels.includes(l.id));
+
+            const existNodes = allNodes.filter((n) => n.labels.includes(l.id));
+
+            if (l.type === 'folder' && !l.open && this.squareData.nodes.some((n) => n.labels.includes(l.id))) {
+              return true;
+            }
+
+            if (nodes.length > 0 && (nodes.length === existNodes.length)) {
+              return true;
+            }
+          }).map((l) => l.id);
+
         this.squareData.nodes = this.squareData.nodes.map((d) => d.id);
         this.squareData.width = width;
         this.squareData.height = height;
@@ -2027,6 +2038,8 @@ class Chart {
 
     const handleDragEnd = () => {
       handleSquareDragStart();
+      this.squareData.labels = null;
+      this.squareData.nodes = null;
     };
 
     const handleSquareDragEnd = (ev) => {
@@ -2078,6 +2091,30 @@ class Chart {
     this.labels.attr('d', (d) => {
       if (d && d.d) {
         return renderPath(d.d);
+      }
+    });
+
+    this.labels.attr('x', (l) => {
+      if (l.type === 'square') {
+        return l.size.x;
+      }
+    });
+
+    this.labels.attr('y', (l) => {
+      if (l.type === 'square' ) {
+        return l.size.y;
+      }
+    });
+
+    this.labels.attr('cx', (l) => {
+      if (l.type === 'ellipse') {
+        return l.size.x;
+      }
+    });
+
+    this.labels.attr('cy', (l) => {
+      if (l.type === 'ellipse') {
+        return l.size.y;
       }
     });
   }
