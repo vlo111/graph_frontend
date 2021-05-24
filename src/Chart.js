@@ -3013,17 +3013,41 @@ class Chart {
     this.nodesWrapper.selectAll('.shortestData > *').remove();
   }
 
-  static mouseMovePositions(fullName, position) {
-    const wrapper = this.svg.select('.mouseCursorPosition');
-    wrapper.append('text')
-      .attr('fill', ChartUtils.nodeColor(fullName))
-      .attr('x', position.x)
-      .attr('y', position.y)
-      .attr('width', 50)
-      .attr('height', 50)
-      .text(` ☝ ${fullName}`);
+ /**
+   * create mouse cusror 
+   * @param {*} fullName 
+   * @param {*} position 
+   */
+  static mouseMovePositions (fullName, position) { 
+      
+     const mouseCursorPosition = this.svg.select('.mouseCursorPosition');  
+    // wrapper.selectAll('text').remove();
+    mouseCursorPosition
+      .append('g')  
+      .attr('class', 'mouseCursor') 
+      .attr("fill", "#000") 
+      .append('use') 
+      .attr('fill', ChartUtils.cursorColor(fullName))
+      .attr('href', '#mouseCursor')  
+      .attr("x", position.x)
+      .attr("y", position.y );
+    mouseCursorPosition
+      .append("text")  
+      .attr("fill", ChartUtils.cursorColor(fullName))
+      .attr("x", position.x)
+      .attr("y", position.y + 50) 
+      .attr("width", 50)
+      .attr("height", 50)
+      .attr('class', 'mouseCursorText') 
+      .text(fullName);  
+  } 
+ /**
+  * Remove List
+  */
+  static cursorTrackerListRemove = () => {
+    Chart.svg.select('.mouseCursorPosition').selectAll('g').remove();
+    Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();      
   }
-
   static getDimensionsLabelDatum = (datum) => {
     const arrX = datum.map((p) => p[0]);
 

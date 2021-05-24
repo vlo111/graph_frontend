@@ -154,19 +154,22 @@ class ChartUpdate {
 
     Chart.render({ nodes, links, labels }, { ignoreAutoSave: true });
   }
+  /**
+   * create cursor to acvive users
+   * @param {*} graphId 
+   * @param {*} userId 
+   * @param {*} cursors 
+   */
   static mouseMovePositions = (graphId, userId, cursors) => {
+    Chart.svg.select('.mouseCursorPosition').selectAll('g').remove();
     Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();
     let fullName = ' '; 
-       cursors.forEach((cursor) => { console.log(cursor, 'ssssss');
+       cursors.forEach((cursor) => { 
         if (graphId === +cursor?.graphId && +cursor.userId !== +userId) {  
-          fullName = cursor?.firstName + ' ' + cursor?.lastName; 
-           
+          fullName = cursor?.firstName + ' ' + cursor?.lastName;  
           Chart.mouseMovePositions(fullName, cursor?.mousePosition);       
         }
-      });
-
-    //Chart.mouseMovePositions(graphId, userId, cursors);
-    
+      });     
   }
 }
 

@@ -26,3 +26,7 @@ export const getSingleGraphOwner = createSelector(
   getGraph,
   (items) => items.singleGraph.userId,
 );
+export const getMouseMoveTracker = createSelector(
+  getGraph,
+  (items) => items.mouseMoveTracker,
+);
