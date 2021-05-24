@@ -71,19 +71,6 @@ const Profile = React.memo((props) => {
                       {profile.website}
                     </span>
 
-                    {/* <span className="facebook">
-                      <strong>facebook : </strong> {profile.facebook}
-                    </span> */}
-                    {/* <span className="twitter">
-                      <strong>twitter : </strong> {profile.twitter}
-                    </span> */}
-                    {/* <span className="linkedin">
-                      <strong>linkedin : </strong> {profile.linkedin}
-                    </span> */}
-                    {/* <span className="skype">
-                      <strong>skype : </strong> {profile.skype}
-                    </span> */}
-
                     <span className="profile__description">
                       <span>
                         {' '}
@@ -103,39 +90,39 @@ const Profile = React.memo((props) => {
         )}
         <div className="social-list">
           {profile.facebook && (
-          <div className="social-list-item1">
+          <div className="social-list-facebook">
             <a href={profile.facebook} target=" ">
               {' '}
-              <i className="fab fa-facebook-square" />
+              <i className="fa fa-facebook-square" />
               {' '}
             </a>
           </div>
           )}
 
           {profile.twitter && (
-          <div className="social-list-item2">
+          <div className="social-list-twitter">
             <a href={profile.twitter} target=" ">
               {' '}
-              <i className="fab fa-twitter" />
+              <i className="fa fa-twitter" />
               {' '}
             </a>
           </div>
           )}
 
           {profile.linkedin && (
-          <div className="social-list-item3">
+          <div className="social-list-linkedin">
             <a href={profile.skype} target=" ">
               {' '}
-              <i className="fab fa-linkedin"> </i>
+              <i className="fa fa-linkedin"> </i>
               {' '}
             </a>
           </div>
           )}
           {profile.skype && (
-          <div className="social-list-item4">
+          <div className="social-list-skype">
             <a href={profile.skype} target=" ">
               {' '}
-              <i className="fab fa-skype" />
+              <i className="fa fa-skype" />
               {' '}
             </a>
           </div>

@@ -45,6 +45,7 @@ class Profile extends Component {
   saveAccount = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
+    const { myAccount } = this.props;
     const { payload: { data } } = await this.props.updateMyAccountRequest(requestData);
     if (data.status === 'ok') {
       toast.info('Successfully saved');
@@ -53,6 +54,7 @@ class Profile extends Component {
     } else {
       toast.error('Something went wrong');
     }
+    window.location.href = `/profile/${myAccount.id}`;
   }
 
   toggleChangePassword = (changePassword) => {
@@ -127,9 +129,9 @@ class Profile extends Component {
             </div>
             <div className="rigt-input">
               <div className="row">
-                <div className="asdfghjkl">
+                <div className="social_icon">
                   {' '}
-                  <i className="fab fa-facebook-square" />
+                  <i className="fa fa-facebook-square" />
                 </div>
                 <Input
                   name="facebook"
@@ -141,9 +143,9 @@ class Profile extends Component {
                 />
               </div>
               <div className="row">
-                <div className="asdfghjkl">
+                <div className="social_icon">
                   {' '}
-                  <i className="fab fa-twitter" />
+                  <i className="fa fa-twitter" />
                 </div>
                 <Input
                   name="twitter"
@@ -155,9 +157,9 @@ class Profile extends Component {
                 />
               </div>
               <div className="row">
-                <div className="asdfghjkl">
+                <div className="social_icon">
                   {' '}
-                  <i className="fab fa-linkedin"> </i>
+                  <i className="fa fa-linkedin"> </i>
                 </div>
                 <Input
                   name="linkedin"
@@ -169,9 +171,9 @@ class Profile extends Component {
                 />
               </div>
               <div className="row">
-                <div className="asdfghjkl">
+                <div className="social_icon">
                   {' '}
-                  <i className="fab fa-skype" />
+                  <i className="fa fa-skype" />
                 </div>
                 <Input
                   name="skype"
@@ -187,6 +189,7 @@ class Profile extends Component {
             <Button className="changePassword" onClick={() => this.toggleChangePassword(!changePassword)}>
               Change Password
             </Button>
+
             <Button className="save" color="accent" type="submit">Save Changes</Button>
           </div>
         </form>
