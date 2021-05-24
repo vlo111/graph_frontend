@@ -73,9 +73,13 @@ class ScienceGraphModal extends Component {
         name: 'core'
       }
     ]
-    const fetchedSources = await this.fetchUrls(urls);
+    const fetchedSources = await this.fetchUrls(urls)
     // if couldn't find any results return
     if (!fetchedSources.filter(source => source != undefined)) {
+      this.setState({
+        searchResults: 0,
+        isLoading:true
+      })
       return 
     }
 
@@ -171,22 +175,11 @@ class ScienceGraphModal extends Component {
 
     const result = await Promise.all(
       urls.map(async url => {
-        try {
-          const articles = await fetchTimeout(
-            url.url,
-            {method:'GET'}, 
-            8000, 
-            'My custom timeout error string'
-            )
-        
         const result = {
-          articles: articles,
+          articles: await fetch(url.url),
           name: url.name,
         }
         return result
-      } catch (error) { 
-        return undefined
-      }
       })
     )
     return result
