@@ -74,8 +74,10 @@ class Profile extends Component {
             />
           </div>
           <div className="right">
-          <div className="row"> 
-           <strong className="email">Email : </strong> {requestData.email}
+            <div className="row">
+              <strong className="email">Email : </strong>
+              {' '}
+              {requestData.email}
             </div>
             <div className="row">
               <Input
@@ -105,6 +107,7 @@ class Profile extends Component {
                 onChangeText={this.handleChange}
               />
             </div>
+            <div />
             <div className="row">
               <Input
                 name="website"
@@ -114,6 +117,72 @@ class Profile extends Component {
                 error={errors.website}
                 onChangeText={this.handleChange}
               />
+            </div>
+            <div className="socialright">
+              {' '}
+              <i className="fas fa-globe-americas" />
+              {' '}
+              <span> SOCIAL</span>
+              {' '}
+            </div>
+            <div className="rigt-input">
+              <div className="row">
+                <div className="asdfghjkl">
+                  {' '}
+                  <i className="fab fa-facebook-square" />
+                </div>
+                <Input
+                  name="facebook"
+                  label="Facebook"
+                  type="url"
+                  value={requestData.facebook}
+                  error={errors.facebook}
+                  onChangeText={this.handleChange}
+                />
+              </div>
+              <div className="row">
+                <div className="asdfghjkl">
+                  {' '}
+                  <i className="fab fa-twitter" />
+                </div>
+                <Input
+                  name="twitter"
+                  label="Twitter"
+                  type="url"
+                  value={requestData.twitter}
+                  error={errors.twitter}
+                  onChangeText={this.handleChange}
+                />
+              </div>
+              <div className="row">
+                <div className="asdfghjkl">
+                  {' '}
+                  <i className="fab fa-linkedin"> </i>
+                </div>
+                <Input
+                  name="linkedin"
+                  label="Linkedin"
+                  type="url"
+                  value={requestData.linkedin}
+                  error={errors.linkedin}
+                  onChangeText={this.handleChange}
+                />
+              </div>
+              <div className="row">
+                <div className="asdfghjkl">
+                  {' '}
+                  <i className="fab fa-skype" />
+                </div>
+                <Input
+                  name="skype"
+                  label="Skype"
+                  type="url"
+                  value={requestData.skype}
+                  error={errors.skype}
+                  onChangeText={this.handleChange}
+                />
+              </div>
+
             </div>
             <Button className="changePassword" onClick={() => this.toggleChangePassword(!changePassword)}>
               Change Password

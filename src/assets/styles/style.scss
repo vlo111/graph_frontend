@@ -8902,3 +8902,97 @@ img.preview-scaled {
   }
 }
 //-----------------------------------
+
+
+.button-group {
+  padding: .25em .5em; 
+  border-radius: 4px;
+  display: flex;
+  text-align: center;
+}
+.social-button-group {
+  position: absolute;
+  right: 30%;
+  .active {
+    color: $color-dark !important;
+    background-color: $color-gray !important;
+
+    svg {
+      fill: $color-dark;
+    }
+  }
+}
+
+
+.socialright {
+  width: 100%;
+    background-color: #f3f7f9;
+    height: 35px;
+    padding: 7px;
+}
+.social-list{
+  width: 60px;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 36%;
+  position: relative;
+  left: 40%;
+   
+}
+.social-list > div{
+  // border: 2px solid red;
+  width: 32px;
+  // border-radius: 50%;
+  line-height: center;
+  line-height: calc(2rem - 2px );
+  padding: 0px 7px;
+}
+
+.social-list>.social-list-item1{
+  border: 2px solid #6658dd;
+  border-radius: 50%;
+}
+.fa-facebook-square{
+  color:  #6658dd;
+}
+
+.social-list>.social-list-item2{
+  border: 2px solid #4fc6e1;
+  border-radius: 50%;
+}
+.fa-twitter{
+  color: #4fc6e1;
+}
+
+.social-list>.social-list-item3{
+  border: 2px solid #0a66c2;
+  border-radius: 50%;
+}
+.fa-linkedin{
+color: #0a66c2;
+}
+
+.social-list>.social-list-item4{
+  border: 2px solid #2962ff;
+  border-radius: 50%;
+}
+.fa-skype{
+color: #2962ff;
+}
+
+.accountedit{
+  color: #0D0905;
+  font-size: 19px;
+}
+.fa-pencil{
+  color: #0D0905;
+  padding: 5px;
+
+}
+
+.editrect>a{
+  // text-decoration: none;
+  position: relative;
+  left: 93%;
+  top:30px;
+}
