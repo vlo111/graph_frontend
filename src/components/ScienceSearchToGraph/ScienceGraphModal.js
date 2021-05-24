@@ -31,60 +31,66 @@ class ScienceGraphModal extends Component {
       searchResults: NaN,
       currentUserId: 0,
       isLoading: null,
-      checkedList: []
+      checkedList: [],
+      graphId: window.location.pathname.substring(
+        window.location.pathname.lastIndexOf('/') + 1
+      )
     };
   }
 
-    useApiSearchEngine = async (e) => {
-      this.setState({searchResults: NaN})
-      e.preventDefault();
-      if ((this.state.apiTitleSearchTerms === undefined && 
-        this.state.apiAuthorSearchTerms === undefined) || (
-        this.state.apiTitleSearchTerms === '' && 
-        this.state.apiAuthorSearchTerms === '')
-      ) {
-        return 0;
-      }
-      this.setState({
-        apiSearchReturnValues: [],
-      });
-      this.setState({isLoading:true})
-      const pointerToThis = this;
-      const currentUser = await Api.getMyAccount()
-      this.setState({currentUserId: currentUser.data.user.id})
-      // combine author name and topic fields and put it in arxivUrl
-      const arxivUrl = REACT_APP_ARXIV_URL+`search_query=all:${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}&sortBy=relevance&max_results=10`
-      const coreUrl = REACT_APP_CORE_URL+`${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}?page=1&pageSize=10&apiKey=uRj8cMByiodHF0Z61XQxzVUfqpkYJW2D`
-      
-      const urls = [
-        {
-          url:arxivUrl,
-          name: 'arxiv'
-        }, {
-          url: coreUrl,
-          name: 'core'
-        }
-      ]
-      const fetchedSources = await this.fetchUrls(urls)
+  useApiSearchEngine = async (e) => {
+    this.setState({searchResults: NaN})
+    e.preventDefault();
 
-      // if couldn't find any results
-      if (!fetchedSources) {
-        return 
-      }
-      const arxivResponse = (fetchedSources.find(source => source.name === 'arxiv')).articles;
-      const arxivXml = await arxivResponse.text();
-      const arxivJsonData = await parseStringPromise(arxivXml);
-      
-      const coreResponse = (fetchedSources.find(source => source.name === 'core')).articles;
-      const coreString = await coreResponse.text();
-      const coreJsonData = JSON.parse(coreString)
+    if ((this.state.apiTitleSearchTerms === undefined && 
+      this.state.apiAuthorSearchTerms === undefined) || (
+      this.state.apiTitleSearchTerms === '' && 
+      this.state.apiAuthorSearchTerms === '')
+    ) {
+      return 0;
+    }
+    const currentUser = await Api.getMyAccount()
+    this.setState({
+      apiSearchReturnValues: [],
+      isLoading:true,
+      currentUserId: currentUser.data.user.id
+    });
+    const pointerToThis = this;
 
-      // Handle undefined !!!
-      if (!arxivJsonData || arxivJsonData.feed.entry === undefined ) {
-        this.setState({searchResults: 0})
-        return 0;
+    // combined author and topic fields and putted it in arxivUrl and coreUrl
+    const arxivUrl = REACT_APP_ARXIV_URL+`search_query=all:${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}&sortBy=relevance&max_results=10`
+    const coreUrl = REACT_APP_CORE_URL+`${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}?page=1&pageSize=10&apiKey=uRj8cMByiodHF0Z61XQxzVUfqpkYJW2D`
+    
+    const urls = [
+      {
+        url:arxivUrl,
+        name: 'arxiv'
+      }, {
+        url: coreUrl,
+        name: 'core'
       }
+    ]
+    const fetchedSources = await this.fetchUrls(urls)
 
+    // if couldn't find any results return
+    if (!fetchedSources) {
+      return 
+    }
+    const arxivResponse = (fetchedSources.find(source => source.name === 'arxiv')).articles;
+    const arxivXml = await arxivResponse.text();
+    const arxivJsonData = await parseStringPromise(arxivXml);
+    
+    const coreResponse = (fetchedSources.find(source => source.name === 'core')).articles;
+    const coreString = await coreResponse.text();
+    const coreJsonData = JSON.parse(coreString)
+
+    // Handle undefined !!!
+    if ((!arxivJsonData || arxivJsonData.feed.entry === undefined) 
+    && (!coreJsonData  || !coreJsonData.data)) {
+      this.setState({searchResults: 0})
+      return 0;
+    }
+    if (arxivJsonData.feed.entry) {
       // collect articles from arix
       await arxivJsonData.feed.entry.map(article => {
         let authors = "";
@@ -99,213 +105,193 @@ class ScienceGraphModal extends Component {
           origin: ['arxiv'],
         });
       })
+    }
 
-      // collect articles from core 
-      if (coreJsonData && coreJsonData.data) {
-        await coreJsonData.data.map(article => {
-           
-          const articleAlreadyExists = pointerToThis.state.apiSearchReturnValues.find(
-            (arxivArticle, index) => {
-              if (arxivArticle.title === article._source.title) {
+    // collect articles from core 
+    // do we need to merge nodes by here or it will be done in back end
+    if (coreJsonData && coreJsonData.data) {
+      await coreJsonData.data.map(article => {
+        const articleAlreadyExists = pointerToThis.state.apiSearchReturnValues.find(
+          (arxivArticle, index) => {
+            
+            if (arxivArticle.title === article.title) {
 
-                if (!(pointerToThis.state.apiSearchReturnValues[index].origin.includes("core"))) {
-                  pointerToThis.state.apiSearchReturnValues[index].origin.push("core")
-                }
-                return arxivArticle
+              if (!(pointerToThis.state.apiSearchReturnValues[index].origin.includes("core"))) {
+                pointerToThis.state.apiSearchReturnValues[index].origin.push("core")
               }
-              return false
-          })
-
-          if (articleAlreadyExists) {
-            return
-          }
-
-          const url = article._source.downloadUrl !== "" 
-            ? article._source.downloadUrl
-            : article._source.urls[0]
-
-          // article url validation  change to regex
-          if (!url || !(url.split('/')[0] === "http:" || url.split('/')[0] !== "https:")) {
-            return
-          }
-
-          let authors = "";
-          article._source.authors.map(auth => authors += auth + ", ");
-          pointerToThis.state.apiSearchReturnValues.push({
-            authors: authors,
-            authorsList: article._source.authors,
-            url: url,
-            queryResultPageID: article._source.id,
-            title: article._source.title,
-            abstract: article._source.description,
-            origin: ['core'],
-          });
+              return arxivArticle
+            }
+            return false
         })
-      }
-      this.setState({searchResults: pointerToThis.state.apiSearchReturnValues.length });
-      this.setState({isLoading:false})
-      pointerToThis.forceUpdate();
-    }
 
-    fetchUrls = async (urls) => {
-      if (!urls || urls.length < 1 || !Array.isArray(urls)) {
-        return 'error'
-      }
-      return Promise.all(
-        urls.map(async url => {
-          return {
-            articles: await fetch(url.url),
-            name: url.name
-          }
-        })
-      )
-    }
-
-    changeApiTitleSearchTerms = (e) => {
-      this.setState({
-        apiTitleSearchTerms: e.target.value,
-      });
-    };
-    changeApiAuthorSearchTerms = (e) => {
-      this.setState({
-        apiAuthorSearchTerms: e.target.value
-      });
-    };
-
-    // will use semanticschollar in future hopefully
-    // getByArixId = async (arixId) => {
-    //   const sematicarxivURL = REACT_APP_SEMANTIC_URL+arixId;
-    //   const fetchSemantic = await fetch(sematicarxivURL);
-    //   return await fetchSemantic.json();
-    // };
-
-    getAllNodes = async (ev) => {
-      const { checkedList } = this.state;
-      if (!checkedList.length) {
-        return;
-      }
-      // code for semantic scholar
-      // if (this.state.apiSearchReturnValues[this.state.getChecked].queryResultPageOrigin === 'arxiv') {
-      //   const contentarxivUrl = this.state.apiSearchReturnValues[this.state.getChecked].queryResultPageFullarxivURL;
-      //   const arixId = contentarxivUrl.split('/').slice(-1)[0].split('v')[0];
-      //   const semantic = await this.getByArixId(arixId);
-      // } else {
-      // }
-      const chosenArticles = this.state.checkedList.map( articleIndex => {
-        return this.state.apiSearchReturnValues[parseInt(articleIndex)]
-      })
-      const getArticlesData = async () => {
-        if (!chosenArticles.length) {
+        if (articleAlreadyExists) {
           return
         }
-        const theAuthorsData = []
-        const nodes = [...Chart.getNodes()];
-        const links = [...Chart.getLinks()];
-        
-        return Promise.all(
-          chosenArticles.map(async chosenArticle => {
-            const new_nodes = []
-            const new_links = []
-            const articleJson = chosenArticle
-            const { abstract, title, url, authorsList } = articleJson;
-            const article = await this.createNodes(
-              nodes, 
-              title.trim(), 
-              url, 
-              'article', 
-              abstract
-            );
-            const checkedArticle = await this.compareArticle(nodes, article, ev);
-            if (!checkedArticle.isDuplicate) {
-              new_nodes.push(checkedArticle.node);
-            }
+        const url = article.downloadUrl ?? article.urls[0] ??  article.relations[0]
+        // article url validation change to regex
+        if (!url || (url.split('/')[0] !== "http:" && url.split('/')[0] !== "https:") || !article.description) {
+          return
+        }
 
-            const getAuthorsData = async () => {
-              if (!authorsList) {
-                return
-              }
-              return Promise.all(
-                authorsList.map( async (author, index) => {
-                  const type = "author"
-                  const authorData = await this.createNodes(nodes, author.trim(), author.url, type)
-                  const checkedAuthor = await this.compareArticle(nodes, authorData, ev)
-                  const target = checkedAuthor.node.id
-                  const source = checkedArticle.node.id
-                  const links = [...(await Chart.getLinks())]
-
-                  const existingLink = links.find(link => (link.target === target && link.source === source))
-                  
-                  if (!existingLink) {
-                    const _type = type || _.last(links)?.type || '';
-                    const link = {
-                      create: true,
-                      createdAt: moment().unix(),
-                      createdUser: this.state.currentUserId, 
-                      direction: "",
-                      id: ChartUtils.uniqueId(links),
-                      index: 0,
-                      linkType: "a",
-                      source: checkedArticle.node.id,
-                      status: "approved",
-                      target: checkedAuthor.node.id,
-                      type: _type,
-                      updatedAt: moment().unix(),
-                      updatedUser: this.state.currentUserId,
-                      value: 2,
-                    }
-                    new_links.push(link);
-                  }
-                  if (!checkedAuthor.isDuplicate) {
-                    new_nodes.push(checkedAuthor.node);
-                  } 
-                  return {nodes: new_nodes, links: new_links};
-                })
-              )
-            }
-            return await getAuthorsData().then( async res => {
-              // write validations !!!
-              // theAuthorsData.push({ nodes: res[0].nodes, links: res[0].links })
-              // this.props.onClose(ev);
-
-              // const graphId =  window.location.pathname.substring(
-              //   window.location.pathname.lastIndexOf('/') + 1
-              // ) Api.dataPast(id, undefined, [x, y], 'merge-compare',
-              await Api.dataPast(8, undefined, [0, 0], 'merge', {
-                labels: [],
-                nodes: res[0].nodes,
-                links: res[0].links,
-              }).catch((e) => e.response);
-              if (res.status === 'error') {
-                toast.error(res.message);
-                return;
-              }
-              console.log('inside getAuthorsData', { nodes: res[0].nodes, links: res[0].links });
-              debugger
-              // Chart.render({ nodes: res[0].nodes, links: res[0].links });
-              return { nodes: res[0].nodes, links: res[0].links }
-            })
-          })
-        )
-      }
-      await getArticlesData().then(res => {
-        // write validations !!!
-        // theArticlesData.push(res)
-        // debugger
-        // Chart.render({ nodes: res[0].nodes, links: res[0].links });
-        this.props.onClose(ev);
+        let authors = "";
+        article.authors.map(auth => authors += auth + ", ");
+        pointerToThis.state.apiSearchReturnValues.push({
+          authors: authors,
+          authorsList: article.authors,
+          url: url,
+          queryResultPageID: article.id,
+          title: article.title,
+          abstract: article.description,
+          origin: ['core'],
+        });
       })
-      return 
+    }
+    this.setState({
+      searchResults: pointerToThis.state.apiSearchReturnValues.length,
+      isLoading:false 
+    });
+    pointerToThis.forceUpdate();
+  }
+// check this before production
+  fetchUrls = async (urls) => {
+    if (!urls || urls.length <= 1 || !Array.isArray(urls)) {
+      return 'error'
+    }
+    const controller = new AbortController();
+
+    const result = await Promise.all(
+      urls.map(async url => {
+        const id = setTimeout(() => controller.abort(), 8000);
+
+        const result =  {
+          articles: await fetch(url.url, {
+            signal: controller.signal 
+          }),
+          name: url.name,
+        }
+        clearTimeout(id);
+        return result
+      })
+    )
+    return result
+  }
+
+  changeApiTitleSearchTerms = (e) => {
+    this.setState({
+      apiTitleSearchTerms: e.target.value,
+    });
+  };
+  changeApiAuthorSearchTerms = (e) => {
+    this.setState({
+      apiAuthorSearchTerms: e.target.value
+    });
+  };
+
+  // will use semanticschollar in future hopefully
+  // getByArixId = async (arixId) => {
+  //   const sematicarxivURL = REACT_APP_SEMANTIC_URL+arixId;
+  //   const fetchSemantic = await fetch(sematicarxivURL);
+  //   return await fetchSemantic.json();
+  // };
+
+  getAllNodes = async (ev) => {
+    const { checkedList } = this.state;
+    if (!checkedList.length) {
+      return;
+    }
+    // code for semantic scholar
+    // if (this.state.apiSearchReturnValues[this.state.getChecked].queryResultPageOrigin === 'arxiv') {
+    //   const contentarxivUrl = this.state.apiSearchReturnValues[this.state.getChecked].queryResultPageFullarxivURL;
+    //   const arixId = contentarxivUrl.split('/').slice(-1)[0].split('v')[0];
+    //   const semantic = await this.getByArixId(arixId);
+    // } else {
+    // }
+    const chosenArticles = this.state.checkedList.map( articleIndex => {
+      return this.state.apiSearchReturnValues[parseInt(articleIndex)]
+    })
+    await this.getArticlesData(ev, chosenArticles).then(res => {
+      // handle empty res case !!!
+      this.props.onClose(ev);
+    })
+    return 
+  }
+
+  getArticlesData = async (ev, chosenArticles) => {
+    if (!chosenArticles.length) {
+      return
+    }
+    const nodes = [...Chart.getNodes()];
+    const ArticleList = []
+    // return Promise.all(
+      // chosenArticles.map(async chosenArticle => {
+      for (const chosenArticle in chosenArticles) {
+        const new_nodes = []
+        const new_links = []
+        const articleJson = chosenArticles[chosenArticle]
+        const { abstract, title, url, authorsList } = articleJson;
+
+        const article = await this.createNode(
+          nodes, 
+          title.trim(), 
+          url, 
+          'article', 
+          abstract
+        );
+        const checkedArticle = await this.compareArticle(article);
+        if (!checkedArticle.isDuplicate) {
+          new_nodes.push(checkedArticle.node);
+        }
+
+        const getAuthorsData = async () => {
+          if (!authorsList) {
+            return
+          }
+          return this.getAuthors(
+            authorsList, 
+            nodes, 
+            ev, 
+            checkedArticle, 
+            new_links, 
+            new_nodes
+          )
+        }
+        // handle empty getAuthorsData
+        // return await getAuthorsData().then(this.sendResultsToBackEnd)
+        let AuthorsData =  await getAuthorsData().then(this.sendResultsToBackEnd)
+        ArticleList.push(AuthorsData)
+      }
+      // })
+    // )
+    return ArticleList
+  }
+
+    sendResultsToBackEnd = async res => {
+      // write validations !!!
+      await Api.dataPast(this.state.graphId, undefined, [0, 0], 'merge', {
+        labels: [],
+        nodes: res[0].nodes,
+        links: res[0].links,
+      }).catch((e) => e.response);
+      if (res.status === 'error') {
+        toast.error(res.message);
+        return;
+      }
+      return { nodes: res[0].nodes, links: res[0].links }
     }
     
-    compareArticle = async (nodes, node, ev) => {
+    compareArticle = async node => {
+      // in case of author, get the name slice it compare each element to others 
+      // to get all nodes from backend Api.getGraphNodes() 
+      // or just use search function after making it use all nodes of graphs
+      // const allNodes = await Api.getGraphNodes(1, {s:'a',graphId:this.state.graphId})
+      debugger
       const { 
         data: compare 
       } = await Api.dataPastCompare(
-        window.location.pathname.substring(
-          window.location.pathname.lastIndexOf('/') + 1
-        ), 
+        this.state.graphId, 
         [node]
       );
+
       if (!(compare.duplicatedNodes && compare.duplicatedNodes.length)) {
         return {node: node, isDuplicate: false}
       }
@@ -314,7 +300,47 @@ class ScienceGraphModal extends Component {
       }
     }
 
-    createNodes = (nodes, name, arxivUrl, type, contentData=false) => {
+    getAuthors = (authorsList, nodes, ev, checkedArticle, new_links, new_nodes) => {
+      return Promise.all(
+        authorsList.map( async (author) => {
+          const type = "author"
+          const authorData = await this.createNode(nodes, author.trim(), author.url, type)
+          const checkedAuthor = await this.compareArticle(authorData)
+          const target = checkedAuthor.node.id
+          const source = checkedArticle.node.id
+          const links = [...(await Chart.getLinks())]
+
+          const existingLink = links.find(link => (link.target === target && link.source === source))
+          
+          if (!existingLink) {
+            const _type = type || _.last(links)?.type || '';
+            const link = {
+              create: true,
+              createdAt: moment().unix(),
+              createdUser: this.state.currentUserId, 
+              direction: "",
+              id: ChartUtils.uniqueId(links),
+              index: 0,
+              linkType: "a",
+              source: checkedArticle.node.id,
+              status: "approved",
+              target: checkedAuthor.node.id,
+              type: _type,
+              updatedAt: moment().unix(),
+              updatedUser: this.state.currentUserId,
+              value: 2,
+            }
+            new_links.push(link);
+          }
+          if (!checkedAuthor.isDuplicate) {
+            new_nodes.push(checkedAuthor.node);
+          } 
+          return {nodes: new_nodes, links: new_links};
+        })
+      )
+    }
+
+    createNode = (nodes, name, arxivUrl, type, contentData=false) => {
       const updatedAt = moment().unix();
       const arxivHref = arxivUrl != undefined  
         ? `
@@ -356,6 +382,7 @@ class ScienceGraphModal extends Component {
         d: undefined,
         infographyId: undefined,
         location: undefined,
+        labels: [],
         link: arxivUrl, 
         manually_size: 1,
         name: name, 
@@ -411,7 +438,12 @@ class ScienceGraphModal extends Component {
               <p className="scienceAuthor"> <b>Authors:</b> {this.state.apiSearchReturnValues[key3].authors}</p>
               <p
                 className=" scienceArticleDescription"
-                dangerouslySetInnerHTML={{ __html: "Abstract:"+ this.state.apiSearchReturnValues[key3].abstract.slice(0,300)+"..." }}
+                dangerouslySetInnerHTML={{ __html: 
+                  "Abstract:"
+                  + this.state.apiSearchReturnValues[key3].abstract !== undefined
+                      ? this.state.apiSearchReturnValues[key3].abstract + "..."
+                      : ''
+                }}
               />
               <div>
                 {
