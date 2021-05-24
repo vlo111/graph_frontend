@@ -1332,10 +1332,21 @@ p {
     .wikiButton {
       right: 22%;
     }
-    .scienceGraph {
-      right: 31% !important;
-    }
 
+  }
+  .account-edit{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: gainsboro;
+    
+    cursor: pointer;
+  }
+  .account-edit i{
+    font-size: 33px;
+    margin: 21px 25px auto;
+    cursor: pointer;
+    color: blue;
   }
 
   #header-on-view-graph {
@@ -8971,6 +8982,7 @@ img.preview-scaled {
     padding: 7px;
 }
 .social-list{
+  margin: auto 1px;
   width: 60px;
   display: grid;
   grid-template-columns: auto auto auto auto;
@@ -9014,6 +9026,7 @@ color: #0a66c2;
 .social-list>.social-list-skype{
   border: 2px solid #2962ff;
   border-radius: 50%;
+   margin-left:0 auto ;
 }
 .fa-skype{
 color: #2962ff;
