@@ -8745,6 +8745,12 @@ img.preview-scaled {
 
 // science article search page
 //----------------------------
+.scienceModalsubBox{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: scroll;
+}
 .showLabelForm {
   width: 90px;
 }
@@ -8901,6 +8907,18 @@ img.preview-scaled {
     max-height: 11em;
   }
 }
+.createGraphButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+}
+.selectedArticlesAmount {
+  font-size: 1.5em;
+  margin-left: 1em;
+}
+
 //-----------------------------------
 
 
@@ -8912,7 +8930,7 @@ img.preview-scaled {
 }
 .social-button-group {
   position: absolute;
-  right: 30%;
+  right: 35%;
   .active {
     color: $color-dark !important;
     background-color: $color-gray !important;
@@ -8921,23 +8939,10 @@ img.preview-scaled {
       fill: $color-dark;
     }
   }
-}
-
-
-.socialright {
-  width: 100%;
-    background-color: #f3f7f9;
-    height: 35px;
-    padding: 7px;
-}
-.social-list{
-  width: 60px;
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  grid-gap: 36%;
-  position: relative;
-  left: 40%;
-   
+  svg { 
+    width: 40px;
+    height: 40px;
+  }
 }
 .social-list > div{
   // border: 2px solid red;

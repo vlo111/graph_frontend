@@ -128,7 +128,11 @@ class ToolBarHeader extends Component {
           {updateLocation ? (
             <WikiButton />
           ) : null}
+
           {updateLocation ? (
+            <ScienceButton />
+          ) : null}
+                    {updateLocation ? (
           <div className="button-group social-button-group">
             
             <Button
