@@ -8,7 +8,9 @@ import { ReactComponent as Logo, ReactComponent as LogoSvg } from '../assets/ima
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
 import { ReactComponent as ViewSvg } from '../assets/images/icons/view.svg';
 import { ReactComponent as FilterSvg } from '../assets/images/icons/filter.svg';
-import { getSingleGraphRequest } from '../store/actions/graphs';
+import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
+import { getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/graphs';
+import {  socketMousePositionTracker } from '../store/actions/socket';
 import ShareGraph from './ShareGraph';
 import AccountDropDown from './account/AccountDropDown';
 import Legend from './Legend';
@@ -19,7 +21,8 @@ import ScienceButton from './ScienceSearchToGraph/ScienceGraphButton';
 
 import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 import SearchModal from './search/SearchModal';
-
+import Chart from '../Chart';
+ 
 class ToolBarHeader extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -28,11 +31,24 @@ class ToolBarHeader extends Component {
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
+    setActiveMouseTracker: PropTypes.func.isRequired,
+    currentUserId: PropTypes.number.isRequired,
 
+  } 
+  constructor(props) {
+    super(props);
+    this.state = {
+      mouseTracker: false,
+    };
   }
-
   handleClick = (button) => {
     this.props.setActiveButton(button);
+  }
+  handleCursor = (tracker) => {
+    const {currentUserId, match: { params: { graphId } } } = this.props;
+    this.setState({mouseTracker: !tracker})
+    Chart.cursorTrackerListRemove();      
+     this.props.socketMousePositionTracker(graphId, !tracker, currentUserId);     
   }
 
   resetGraph = () => {
@@ -43,7 +59,9 @@ class ToolBarHeader extends Component {
   }
 
   render() {
-    const { activeButton, location: { pathname }, match: { params: { graphId, token = '' } } } = this.props;
+    const { activeButton, currentUserId,  location: { pathname }, match: { params: { graphId, token = '' } } } = this.props;      
+    const { mouseTracker } = this.state;  
+    this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId)    
     const isInEmbed = Utils.isInEmbed();
     const updateLocation = pathname.startsWith('/graphs/update/');
     return (
@@ -110,11 +128,16 @@ class ToolBarHeader extends Component {
           {updateLocation ? (
             <WikiButton />
           ) : null}
-
           {updateLocation ? (
-            <ScienceButton />
-          ) : null}
-
+          <div className="button-group social-button-group">
+            
+            <Button
+              icon={<CursorSvg />} 
+              className={`transparent alt ${mouseTracker ? 'active' : ''}`}
+              onClick={() => this.handleCursor(mouseTracker)}
+            /> 
+          </div>
+           ) : null}
           <div className="signOut">
             <AccountDropDown />
           </div>
@@ -128,10 +151,14 @@ class ToolBarHeader extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
+  mouseTracker: state.graphs.mouseTracker,
+  currentUserId: state.account.myAccount.id,
 });
 const mapDispatchToProps = {
   setActiveButton,
   getSingleGraphRequest,
+  setActiveMouseTracker,
+  socketMousePositionTracker,
 };
 const Container = connect(
   mapStateToProps,
