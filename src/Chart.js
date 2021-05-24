@@ -1369,8 +1369,8 @@ class Chart {
               if (dragLabel.nodes.some((n) => n.id === d.id)) {
                 if (
                   (!d.readOnly && !datum.readOnly)
-                    || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
-                    || (d.deleted && d.sourceId === datum.sourceId)
+                  || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
+                  || (d.deleted && d.sourceId === datum.sourceId)
                 ) {
                   d.fx += ev.dx;
                   d.fy += ev.dy;
@@ -2791,9 +2791,14 @@ class Chart {
       return '';
     }
 
+    const nodes = this.getNodes();
+
     if (crop) {
       this.wrapper.selectAll('.unChecked')
         .attr('style', 'display:none');
+      this.wrapper.selectAll('.unChecked.fakeNode').each((d) => {
+        this.wrapper.select(`.folders [id="${d.labels[0]}"]`).attr('style', 'display:none');
+      });
     }
 
     const {
@@ -2848,9 +2853,11 @@ class Chart {
     this.linksWrapper.selectAll('path')
       .attr('fill', undefined);
 
-    // this.wrapper.selectAll('.unChecked')
-    //   .attr('style', undefined);
-    //
+    this.wrapper.selectAll('.unChecked')
+      .attr('style', undefined);
+
+    this.wrapper.select('.folders > g').attr('style', undefined);
+
     // this.nodesWrapper.selectAll('.node text')
     //   .attr('font-family', undefined)
     //   .attr('dominant-baseline', undefined)
