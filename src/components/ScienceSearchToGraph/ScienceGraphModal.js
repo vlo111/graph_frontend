@@ -73,8 +73,7 @@ class ScienceGraphModal extends Component {
         name: 'core'
       }
     ]
-    const fetchedSources = await this.fetchUrls(urls)
-    debugger
+    const fetchedSources = await this.fetchUrls(urls);
     // if couldn't find any results return
     if (!fetchedSources.filter(source => source != undefined)) {
       return 
@@ -300,8 +299,7 @@ class ScienceGraphModal extends Component {
       // in case of author, get the name slice it compare each element to others 
       // to get all nodes from backend Api.getGraphNodes() 
       // or just use search function after making it use all nodes of graphs
-      // const allNodes = await Api.getGraphNodes(1, {s:'a',graphId:this.state.graphId})
-      debugger
+      // const allNodes = await Api.getGraphNodes(1, {s:'a',graphId:this.state.graphId}) 
       const { 
         data: compare 
       } = await Api.dataPastCompare(
