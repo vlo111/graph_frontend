@@ -2038,8 +2038,6 @@ class Chart {
 
     const handleDragEnd = () => {
       handleSquareDragStart();
-      this.squareData.labels = null;
-      this.squareData.nodes = null;
     };
 
     const handleSquareDragEnd = (ev) => {
