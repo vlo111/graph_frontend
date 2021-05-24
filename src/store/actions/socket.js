@@ -291,8 +291,7 @@ export function socketInit() {
       const { graphs: { mouseMoveTracker, mouseTracker } , account: { myAccount: { id: userId } } } = getState(); 
      const isTracker = mouseMoveTracker && mouseMoveTracker.some(
         (m) => m.userId === userId && m.tracker === true
-        );
-      console.log(mouseMoveTracker, isTracker, 'isTrackerisTracker');
+        );       
       if(!mouseMoveTracker || !isTracker) return; 
       const graphId = +Utils.getGraphIdFormUrl();
       const cursors = JSON.parse(data);  
