@@ -140,6 +140,12 @@ class AutoSave extends Component {
     update: d.update,
   })
 
+  formatLabel = (d) => ({
+    d: d.d || '',
+    status: d.status || '',
+    name: d.name || '',
+  })
+
   handleSquareDragEnd = (ev, d) => {
     const nodes = Chart.getNodes().filter((n) => d.nodes.includes(n.id) || d.selectedNodes.includes(n.id));
     console.log(nodes);
@@ -205,7 +211,7 @@ class AutoSave extends Component {
           });
         } else if (!oldLabel.name && label.name) {
           createLabels.push(label);
-        } else if (!_.isEqual(oldLabel.d, label.d) || !_.isEqual(oldLabel.name, label.name)) {
+        } else if (!_.isEqual(this.formatLabel(label), this.formatLabel(oldLabel))) {
           updateLabels.push(label);
         } else if (oldLabel.new) {
           createLabels.push(label);

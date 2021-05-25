@@ -4,6 +4,9 @@ import ChartUtils from './ChartUtils';
 
 class ChartUpdate {
   static nodePositionsChange = (nodes) => {
+    if (Chart.isAutoPosition) {
+      return;
+    }
     Chart.data.nodes = Chart.data.nodes.map((node) => {
       const d = nodes.find((n) => n.id === node.id);
       if (d && !Chart.isAutoPosition) {
@@ -17,6 +20,9 @@ class ChartUpdate {
   }
 
   static graphPositionsChange = (updateNodes, labelsUpdate) => {
+    if (Chart.isAutoPosition) {
+      return;
+    }
     const labels = Chart.getLabels().map((label) => {
       const d = labelsUpdate.find((l) => l.id === label.id);
       if (d) {
@@ -25,11 +31,12 @@ class ChartUpdate {
       return label;
     });
     const nodes = Chart.getNodes().map((node) => {
-      const d = updateNodes.find(((n) => n.id === node.id));
-      if (d && !Chart.isAutoPosition) {
-        node.fx = d.fx;
-        node.fy = d.fy;
-        node.labels = d.labels || node.labels;
+      const i = updateNodes.findIndex(((n) => n.id === node.id));
+      if (i > -1) {
+        node.fx = updateNodes[i].fx;
+        node.fy = updateNodes[i].fy;
+        node.labels = updateNodes[i].labels || node.labels;
+        updateNodes.splice(i, 1);
       }
       if (node.fake) {
         const label = labelsUpdate.find((l) => `fake_${l.id}` === node.id);
@@ -40,6 +47,9 @@ class ChartUpdate {
       }
       return node;
     });
+    if (updateNodes.length) {
+      nodes.push(...updateNodes);
+    }
     Chart.render({ labels, nodes }, { ignoreAutoSave: true });
   }
 
@@ -156,17 +166,18 @@ class ChartUpdate {
   }
   static mouseMovePositions = (graphId, userId, cursors) => {
     Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();
-    let fullName = ' '; 
-       cursors.forEach((cursor) => { console.log(cursor, 'ssssss');
-        if (graphId === +cursor?.graphId && +cursor.userId !== +userId) {  
-          fullName = cursor?.firstName + ' ' + cursor?.lastName; 
-           
-          Chart.mouseMovePositions(fullName, cursor?.mousePosition);       
-        }
-      });
+    let fullName = ' ';
+    cursors.forEach((cursor) => {
+      console.log(cursor, 'ssssss');
+      if (graphId === +cursor?.graphId && +cursor.userId !== +userId) {
+        fullName = cursor?.firstName + ' ' + cursor?.lastName;
+
+        Chart.mouseMovePositions(fullName, cursor?.mousePosition);
+      }
+    });
 
     //Chart.mouseMovePositions(graphId, userId, cursors);
-    
+
   }
 }
 

@@ -359,6 +359,8 @@ class Chart {
             d.fy = dragNode.startY;
             d.y = dragNode.startY;
 
+            d.labels = dragNode.labels;
+
             this.event.emit('node.mouseleave', ev, d);
             this.graphMovement();
             return;
@@ -1464,7 +1466,7 @@ class Chart {
       }
 
       this._dataNodes = null;
-      dragLabel.nodes = dragLabel.nodes.map((n) => ChartUtils.getNodeById(n.id));
+      dragLabel.nodes = (dragLabel.nodes || []).map((n) => ChartUtils.getNodeById(n.id));
       this.event.emit('label.dragend', ev, dragLabel);
       dragLabel.label = null;
     };
@@ -2791,8 +2793,6 @@ class Chart {
       return '';
     }
 
-    const nodes = this.getNodes();
-
     if (crop) {
       this.wrapper.selectAll('.unChecked')
         .attr('style', 'display:none');
@@ -2856,7 +2856,9 @@ class Chart {
     this.wrapper.selectAll('.unChecked')
       .attr('style', undefined);
 
-    this.wrapper.select('.folders > g').attr('style', undefined);
+    this.wrapper.selectAll('.unChecked.fakeNode').each((d) => {
+      this.wrapper.select(`.folders [id="${d.labels[0]}"]`).attr('style', undefined);
+    });
 
     // this.nodesWrapper.selectAll('.node text')
     //   .attr('font-family', undefined)
