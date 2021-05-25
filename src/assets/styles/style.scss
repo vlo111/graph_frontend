@@ -1332,10 +1332,21 @@ p {
     .wikiButton {
       right: 22%;
     }
-    .scienceGraph {
-      right: 31% !important;
-    }
 
+  }
+  .account-edit{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: gainsboro;
+    
+    cursor: pointer;
+  }
+  .account-edit i{
+    font-size: 33px;
+    margin: 21px 25px auto;
+    cursor: pointer;
+    color: blue;
   }
 
   #header-on-view-graph {
@@ -8320,12 +8331,9 @@ img.preview-scaled {
 }
 
 .nodeStyle {
-  stroke-width: 50px !important;
-  stroke: #bb09b1 !important;
-  stroke-dasharray: 5 !important;
-  fill: $color-linkText !important;
-  r: 10;
-  animation: spin 10s linear infinite;
+  stroke-width: 0px !important;
+  fill: #67b96a !important;
+  r: 38;
 }
 
 .shortestData {
@@ -8338,27 +8346,23 @@ img.preview-scaled {
   fill: $color-linkText;
 }
 
-.shortestLinkTPath {
-  fill: $color-linkFill !important;
+.nodeInactiveTextStyle {
+  visibility: hidden !important;
+}
+
+.shortestLinkPath {
+  stroke: #c1c1c1 !important;
   font-size: 40px !important;
   dominant-baseline: text-before-edge;
 }
 
-.shortestInactiveLinkPath {
-  font-size: 20px !important;
-  fill: $color-linkText !important;
-  dominant-baseline: text-before-edge;
+.showLinksInactive {
+  stroke: #c5c5c596;
 }
 
 .shortestBackground {
   border: 3px dashed $color-linkText !important;
   background-color: #00c9ff1f !important;
-}
-
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
 }
 
 .analyticalResult {
@@ -8370,17 +8374,6 @@ img.preview-scaled {
     text-align: center;
     padding-bottom: 44px;
     padding-top: 11px;
-  }
-
-  .shortest-goToBack {
-    margin: 0 auto;
-    width: 100px;
-    color: #ffffff;
-    background-color: #9d00ff8f;
-    box-shadow: 1px 3px 9px 7px #9d00ff8c;
-    cursor: pointer;
-    text-align: center;
-    border-radius: 5px;
   }
 
   .container-shortest-tab {
@@ -8763,6 +8756,12 @@ img.preview-scaled {
 
 // science article search page
 //----------------------------
+.scienceModalsubBox{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: scroll;
+}
 .showLabelForm {
   width: 90px;
 }
@@ -8919,4 +8918,137 @@ img.preview-scaled {
     max-height: 11em;
   }
 }
+.createGraphButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+}
+.selectedArticlesAmount {
+  font-size: 1.5em;
+  margin-left: 1em;
+}
+
 //-----------------------------------
+
+
+.button-group {
+   
+  border-radius: 4px;
+  display: flex;
+  text-align: center;
+}
+.social-button-group {
+  position: absolute;
+  right: 34%;
+  .active {
+    color: $color-dark !important;
+    background-color: $color-gray !important;
+
+    svg {
+      fill: $color-dark;
+    }
+  }
+  svg { 
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.social_icon{
+  padding: 7px 11px;
+  height: 36px;
+  width: 35px;
+  position: relative;
+  top: 32px;
+  border: 1px solid #E2E7EB;
+  border-radius: 5px 0px 0px 5px;
+  background-color: #f3f7f9;
+  color: #6c757d;
+}   
+
+.rigt-input{
+  display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    grid-gap: 10%;
+}
+
+.socialright{
+  width: 100%;
+    background-color: #f3f7f9;
+    height: 35px;
+    padding: 7px;
+}
+.social-list{
+  margin: auto 1px;
+  width: 60px;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 36%;
+  position: relative;
+  left: 40%;
+   
+}
+.social-list>div{
+  width: 32px;
+  // border-radius: 50%;
+  line-height: center;
+  line-height: calc(2rem - 2px );
+  padding: 0px 7px;
+}
+
+.social-list>.social-list-facebook{
+  border: 2px solid #6658dd;
+  border-radius: 50%;
+}
+.fa-facebook-square{
+  color:  #6658dd;
+}
+
+.social-list>.social-list-twitter{
+  border: 2px solid #4fc6e1;
+  border-radius: 50%;
+}
+.fa-twitter{
+  color: #4fc6e1;
+}
+
+.social-list>.social-list-linkedin{
+  border: 2px solid #0a66c2;
+  border-radius: 50%;
+}
+.fa-linkedin{
+color: #0a66c2;
+}
+
+.social-list>.social-list-skype{
+  border: 2px solid #2962ff;
+  border-radius: 50%;
+   margin-left:0 auto ;
+}
+.fa-skype{
+color: #2962ff;
+}
+
+.accountedit{
+  color: #0D0905;
+  font-size: 19px;
+}
+.fa-pencil{
+  color: #0D0905;
+  padding: 5px;
+
+}
+
+.editrect>a{
+  // text-decoration: none;
+  position: relative;
+  left: 93%;
+  top:30px;
+}
+.mouseCursor {
+  
+  transform-origin: top left; 
+}

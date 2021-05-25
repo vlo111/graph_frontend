@@ -22,12 +22,14 @@ import {
   SET_ACTIVE_TAB,
   GET_NODE_CUSTOM_FIELDS,
   GET_GRAPH_INFO,
+  ACTIVE_MOUSE_TRACKER
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
-import { GENERATE_THUMBNAIL_WORKER } from '../actions/socket';
+import { GENERATE_THUMBNAIL_WORKER, SOCKET_ACTIVE_MOUSE_TRACKER  } from '../actions/socket';
 import { UPDATE_NODES_CUSTOM_FIELDS } from '../actions/nodes';
+import { ONLINE_USERS } from '../actions/app';
 
 const initialState = {
   importData: {},
@@ -50,6 +52,10 @@ const initialState = {
   activeTab: '',
   graphTabs: [],
   graphTabsStatus: '',
+  mouseTracker: false,
+  mouseMoveTracker: [],
+  onlineUsers: [],
+  trackers: [],
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -393,6 +399,44 @@ export default function reducer(state = initialState, action) {
         graphTabsStatus: 'fail',
       };
     }
+    case ONLINE_USERS: {  
+      const singleGraph = { ...state.singleGraph }; 
+      const { onlineUsers } = action.payload; 
+      const online = onlineUsers && onlineUsers.filter((d) => {
+          return +d.activeGraphId === +singleGraph?.id 
+         },
+        ); 
+      return {
+        ...state, 
+        onlineUsers: online,
+      };
+    }
+    
+    case ACTIVE_MOUSE_TRACKER: {  
+      const { onlineUsers, singleGraph: { id } } = state;
+      const { userId, tracker: mouseTracker } = action.payload;  
+      const trackers = onlineUsers.filter((d) => {
+          return +d.activeGraphId === +id && +d.userId !== +userId;
+         },
+        );  
+      return {
+        ...state,  
+        trackers: trackers,
+        mouseTracker: mouseTracker,
+      };
+    }
+    case SOCKET_ACTIVE_MOUSE_TRACKER: {    
+      const { mouseMoveTracker } = action.payload; 
+      const { singleGraph: { id }  } = state;      
+      const trackers = mouseMoveTracker && mouseMoveTracker.filter((d) => {
+        return +d.graphId === +id ;
+       },
+      ); 
+      return {
+        ...state, 
+        mouseMoveTracker: trackers, 
+      };
+    } 
     default: {
       return state;
     }

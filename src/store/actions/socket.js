@@ -26,6 +26,9 @@ export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
 export const GENERATE_THUMBNAIL_WORKER = 'GENERATE_THUMBNAIL_WORKER';
 export const ONLINE_USERS = 'ONLINE_USERS';
 export const GRAPH_SHARED_USERS = 'GRAPH_SHARED_USERS';
+export const ACTIVE_MOUSE_TRACKER = 'ACTIVE_MOUSE_TRACKER';
+export const MOUSE_POSITION_TRACKER = 'MOUSE_POSITION_TRACKER';
+export const SOCKET_ACTIVE_MOUSE_TRACKER  = 'SOCKET_ACTIVE_MOUSE_TRACKER ';
 
 export function socketInit() {
   return (dispatch, getState) => {
@@ -204,9 +207,14 @@ export function socketInit() {
 
     socket.on('online', (data) => {
       const onlineUsers = JSON.parse(data);
+      const {account: { myAccount: { id: userId } } } = getState();
       dispatch({
         type: ONLINE_USERS,
         payload: { onlineUsers },
+      });
+      dispatch({
+        type: ACTIVE_MOUSE_TRACKER,
+        payload: { userId },
       });
     });
     socket.on('shareList', async (result) => {
@@ -280,12 +288,22 @@ export function socketInit() {
     });
 
     socket.on('mousemoving', (data) => {
-      const { account: { myAccount: { id: userId } } } = getState();
-      let fullName = ' '; 
+      const { graphs: { mouseMoveTracker, mouseTracker } , account: { myAccount: { id: userId } } } = getState(); 
+     const isTracker = mouseMoveTracker && mouseMoveTracker.some(
+        (m) => m.userId === userId && m.tracker === true
+        );       
+      if(!mouseMoveTracker || !isTracker) return; 
       const graphId = +Utils.getGraphIdFormUrl();
-      const cursors = JSON.parse(data);
-      ChartUpdate.mouseMovePositions(graphId, userId, cursors);  
-      
+      const cursors = JSON.parse(data);  
+      ChartUpdate.mouseMovePositions(graphId, userId, cursors);   
+    });
+    socket.on('mouseMoveTracker', (data) => {  
+      const mouseMoveTracker = JSON.parse(data);
+
+      dispatch({
+        type: SOCKET_ACTIVE_MOUSE_TRACKER,
+        payload: { mouseMoveTracker },
+      });
        
     });
   };
@@ -317,7 +335,7 @@ export function socketSetActiveGraph(graphId) {
 
 export const SOCKET_MOUSE_POSITION = 'SOCKET_MOUSE_POSITION';
 
-export function socketMousePosition(graphId, userId, mousePosition) { 
+export function socketMousePosition(graphId, userId, mousePosition) {   
   if(graphId === undefined || userId === undefined)
   return {
     type: SOCKET_MOUSE_POSITION,
@@ -328,7 +346,7 @@ export function socketMousePosition(graphId, userId, mousePosition) {
     },
   };
   
-  //socketEmit('mousemove', {  graphId, userId, mousePosition });
+  socketEmit('mousemove', {  graphId, userId, mousePosition });
   return {
     type: SOCKET_MOUSE_POSITION,
     payload: {
@@ -338,4 +356,16 @@ export function socketMousePosition(graphId, userId, mousePosition) {
     },
   };
 }
+export const SOCKET_MOUSE_POSITION_TRACKER = 'SOCKET_MOUSE_POSITION_TRACKER';
+
+export function socketMousePositionTracker(graphId, tracker, userId) {  
+  socketEmit('mouseMoveTracker', { graphId, tracker, userId });
+  return {
+    type: SOCKET_MOUSE_POSITION_TRACKER,
+    payload: {
+      graphId, tracker, userId
+    },
+  };
+}
+
 

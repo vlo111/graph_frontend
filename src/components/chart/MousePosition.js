@@ -1,24 +1,23 @@
 import { useState, useEffect } from "react";
 import { socketMousePosition } from '../../store/actions/socket';
 import { useDispatch, useSelector } from 'react-redux';
-import { getId } from '../../store/selectors/account';
-import { getSingleGraph } from '../../store/selectors/graphs';
+import { getId } from '../../store/selectors/account'; 
+import ChartUtils from '../../helpers/ChartUtils';
 
-
-const MousePosition = ({props}) => {
-  const [mousePosition, setMousePosition] = useState({ x: null, y: null });
+const MousePosition = ({graphId}) => { 
+  const [mousePosition, setMousePosition] = useState({ x: null, y: null});
   const dispatch = useDispatch();
-  const userId = useSelector(getId);
-  const singleGraph = useSelector(getSingleGraph);
-  useEffect(
+  const userId = useSelector(getId);  
+   useEffect(
     () => {
       const update = (e) => {
-        setMousePosition({ x: e.x, y: e.y });
+        const { x, y } = ChartUtils.calcScaledPosition(e.x, e.y);
+        setMousePosition({ x: x, y: y});
        
       }
       window.addEventListener('mousemove', update)
       window.addEventListener('touchmove', update)
-      return () => {
+      return () => {       
         window.removeEventListener('mousemove', update)
         window.removeEventListener('touchmove', update)
         
@@ -26,7 +25,7 @@ const MousePosition = ({props}) => {
     },
     [setMousePosition]
   )
-  dispatch(socketMousePosition(singleGraph.id, userId, mousePosition));
+  dispatch(socketMousePosition(graphId, userId, mousePosition));
   return setMousePosition;
 };
 

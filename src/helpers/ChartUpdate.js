@@ -26,7 +26,11 @@ class ChartUpdate {
     const labels = Chart.getLabels().map((label) => {
       const d = labelsUpdate.find((l) => l.id === label.id);
       if (d) {
-        label.d = d.d;
+        if (label.size) {
+          label.size = d.size;
+        } else {
+          label.d = d.d;
+        }
       }
       return label;
     });
@@ -41,8 +45,13 @@ class ChartUpdate {
       if (node.fake) {
         const label = labelsUpdate.find((l) => `fake_${l.id}` === node.id);
         if (label) {
-          node.fx = label.d[0][0] + 30;
-          node.fy = label.d[0][1] + 30;
+          if (label.type === 'square' || label.type === 'ellipce') {
+            node.fx = label.size.x + 30;
+            node.fy = label.size.y + 30;
+          } else {
+            node.fx = label.d[0][0] + 30;
+            node.fy = label.d[0][1] + 30;
+          }
         }
       }
       return node;
@@ -146,7 +155,11 @@ class ChartUpdate {
     const labels = Chart.getLabels().map((label) => {
       const updateLabel = labelsUpdate.find((n) => n.id === label.id);
       if (updateLabel) {
-        label.d = updateLabel.d;
+        if (label.size) {
+          label.size = updateLabel.size;
+        } else {
+          label.d = updateLabel.d;
+        }
       }
       return label;
     });
@@ -164,20 +177,23 @@ class ChartUpdate {
 
     Chart.render({ nodes, links, labels }, { ignoreAutoSave: true });
   }
+
+  /**
+   * create cursor to acvive users
+   * @param {*} graphId
+   * @param {*} userId
+   * @param {*} cursors
+   */
   static mouseMovePositions = (graphId, userId, cursors) => {
+    Chart.svg.select('.mouseCursorPosition').selectAll('g').remove();
     Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();
     let fullName = ' ';
     cursors.forEach((cursor) => {
-      console.log(cursor, 'ssssss');
       if (graphId === +cursor?.graphId && +cursor.userId !== +userId) {
         fullName = cursor?.firstName + ' ' + cursor?.lastName;
-
         Chart.mouseMovePositions(fullName, cursor?.mousePosition);
       }
     });
-
-    //Chart.mouseMovePositions(graphId, userId, cursors);
-
   }
 }
 

@@ -17,20 +17,31 @@ const Profile = React.memo((props) => {
   const dispatch = useDispatch();
   const profile = useSelector(getProfile);
   const friends = useSelector(getUserFriendsList);
-  //select current user id
+  // select current user id
   const currentUserId = useSelector(getId);
 
   useEffect(() => {
     dispatch(getUserRequest(userId));
     dispatch(getFriendsRequest(userId));
-  }, [dispatch, getUserRequest]); 
-  
+  }, [dispatch, getUserRequest]);
+
   return (
     <Wrapper>
       <Header />
       <div className="profile">
         {profile.id && (
           <>
+            <div className="editrect">
+              { currentUserId === profile.id && (
+              <a className="accountedit" href="/account">
+                {' '}
+                <i className="fa fa-pencil" />
+                {' '}
+                Edit
+              </a>
+              )}
+              {' '}
+            </div>
             <h3 className="profile__title">{`Welcome to ${profile.firstName} ${profile.lastName}'s profile page`}</h3>
             <div className="profile__my">
               <article key={profile.id}>
@@ -42,20 +53,32 @@ const Profile = React.memo((props) => {
                 <div className="profile__user">
 
                   <div className="profile__user-details">
+
                     <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
                     <div style={{ position: 'absolute', right: '500px' }}>
                       <AddButton user={profile} />
                     </div>
                     {currentUserId == userId && (
                       <span className="email">
-                        <strong>Email : </strong> {profile.email}
+                        <strong>Email : </strong>
+                        {' '}
+                        {profile.email}
                       </span>
                     )}
                     <span className="website">
-                      <strong>Website : </strong> {profile.website}
+                      <strong>Website : </strong>
+                      {' '}
+                      {profile.website}
                     </span>
+
                     <span className="profile__description">
-                      <span> <strong>Short description/ bio : </strong>   {profile.bio} </span>
+                      <span>
+                        {' '}
+                        <strong>About : </strong>
+                        {' '}
+                        {profile.bio}
+                        {' '}
+                      </span>
                     </span>
 
                   </div>
@@ -65,6 +88,47 @@ const Profile = React.memo((props) => {
             </div>
           </>
         )}
+        <div className="social-list">
+          {profile.facebook && (
+          <div className="social-list-facebook">
+            <a href={profile.facebook} target=" ">
+              {' '}
+              <i className="fa fa-facebook-square" />
+              {' '}
+            </a>
+          </div>
+          )}
+
+          {profile.twitter && (
+          <div className="social-list-twitter">
+            <a href={profile.twitter} target=" ">
+              {' '}
+              <i className="fa fa-twitter" />
+              {' '}
+            </a>
+          </div>
+          )}
+
+          {profile.linkedin && (
+          <div className="social-list-linkedin">
+            <a href={profile.skype} target=" ">
+              {' '}
+              <i className="fa fa-linkedin"> </i>
+              {' '}
+            </a>
+          </div>
+          )}
+          {profile.skype && (
+          <div className="social-list-skype">
+            <a href={profile.skype} target=" ">
+              {' '}
+              <i className="fa fa-skype" />
+              {' '}
+            </a>
+          </div>
+          )}
+        </div>
+
         {currentUserId == userId && (
           <div className="profile__friends">
             <h4>Friend requests</h4>
@@ -86,7 +150,7 @@ const Profile = React.memo((props) => {
                         <div className="searchData__graphInfo-details">
                           <Link to={`/profile/${friend.id}`}>
                             {`${friend.firstName} ${friend.lastName}`}
-                          </Link>                          
+                          </Link>
                         </div>
                       </div>
                       <AddButton user={friend} />
