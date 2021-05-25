@@ -42,6 +42,10 @@ class Api {
     return api.post('/users/sign-in', { email, password });
   }
 
+  static exp(userId, search) {
+    return api.get(`/nodes/search/${userId}?${search}`);
+  }
+
   static singUp(data) {
     return api.post('/users/sign-up', data);
   }

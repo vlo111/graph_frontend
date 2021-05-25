@@ -11,6 +11,9 @@ import ChartUtils from '../../helpers/ChartUtils';
 import Utils from '../../helpers/Utils';
 import {setActiveTab, getAllTabsRequest} from '../../store/actions/graphs';
 import Chart from '../../Chart';
+import queryString from 'query-string';
+import Api from '../../Api';
+
 
 class SearchModal extends Component {
   static propTypes = {
@@ -23,9 +26,11 @@ class SearchModal extends Component {
 
   constructor(props) {
     super(props);
+    const { s } = queryString.parse(window.location.search);
     this.state = {
       nodes: [],
       tabs: [],
+      text: s || '',
     };
   }
 
@@ -43,8 +48,14 @@ class SearchModal extends Component {
       this.setState({ nodes: [], search });
       return;
     }
-    const nodes = Chart.getNodes().filter(n => _.lowerCase(n.name).includes(s) || _.lowerCase(n.type).includes(s));
+    // get nodes from server
+    const query = queryString.stringify({ s: search });
+    const graphId = window.location.pathname.substring(
+      window.location.pathname.lastIndexOf('/') + 1)
+    const allNodes = await Api.exp(graphId, `name=${search}`)
+    console.log(allNodes)
 
+    const nodes = Chart.getNodes().filter(n => _.lowerCase(n.name).includes(s) || _.lowerCase(n.type).includes(s));
     const tabs = [];
 
     if (search.length > 2) {
@@ -133,7 +144,7 @@ class SearchModal extends Component {
         />
         <ul className="list">
           {Object.keys(tabs) && Object.keys(tabs).map((item) => (
-            <li className="item" key={tabs[item].node.id}>
+            <li className="item" key={tabs[item]?.node?.id}>
               <div tabIndex="0" role="button" className="ghButton tabButton">
                 <div className="header">
                   <NodeIcon node={tabs[item].node}/>
