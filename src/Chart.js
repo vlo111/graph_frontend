@@ -359,6 +359,8 @@ class Chart {
             d.fy = dragNode.startY;
             d.y = dragNode.startY;
 
+            d.labels = dragNode.labels;
+
             this.event.emit('node.mouseleave', ev, d);
             this.graphMovement();
             return;
@@ -1369,8 +1371,8 @@ class Chart {
               if (dragLabel.nodes.some((n) => n.id === d.id)) {
                 if (
                   (!d.readOnly && !datum.readOnly)
-                    || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
-                    || (d.deleted && d.sourceId === datum.sourceId)
+                  || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
+                  || (d.deleted && d.sourceId === datum.sourceId)
                 ) {
                   d.fx += ev.dx;
                   d.fy += ev.dy;
@@ -1464,7 +1466,7 @@ class Chart {
       }
 
       this._dataNodes = null;
-      dragLabel.nodes = dragLabel.nodes.map((n) => ChartUtils.getNodeById(n.id));
+      dragLabel.nodes = (dragLabel.nodes || []).map((n) => ChartUtils.getNodeById(n.id));
       this.event.emit('label.dragend', ev, dragLabel);
       dragLabel.label = null;
     };
@@ -1936,9 +1938,20 @@ class Chart {
         this.squareData.nodes = allNodes
           .filter((d) => d.fx >= x && d.fx <= x + width && d.fy >= y && d.fy <= y + height);
         this.squareData.labels = this.getLabels()
-          .filter((l) => (l.type === 'folder' && !l.open && this.squareData.nodes.some((n) => n.labels.includes(l.id)))
-            || this.squareData.nodes.filter((n) => n.labels.includes(l.id)).length === allNodes.filter((n) => n.labels.includes(l.id)).length)
-          .map((l) => l.id);
+          .filter((l) => {
+            const nodes = this.squareData.nodes.filter((n) => n.labels.includes(l.id));
+
+            const existNodes = allNodes.filter((n) => n.labels.includes(l.id));
+
+            if (l.type === 'folder' && !l.open && this.squareData.nodes.some((n) => n.labels.includes(l.id))) {
+              return true;
+            }
+
+            if (nodes.length > 0 && (nodes.length === existNodes.length)) {
+              return true;
+            }
+          }).map((l) => l.id);
+
         this.squareData.nodes = this.squareData.nodes.map((d) => d.id);
         this.squareData.width = width;
         this.squareData.height = height;
@@ -2078,6 +2091,30 @@ class Chart {
     this.labels.attr('d', (d) => {
       if (d && d.d) {
         return renderPath(d.d);
+      }
+    });
+
+    this.labels.attr('x', (l) => {
+      if (l.type === 'square') {
+        return l.size.x;
+      }
+    });
+
+    this.labels.attr('y', (l) => {
+      if (l.type === 'square' ) {
+        return l.size.y;
+      }
+    });
+
+    this.labels.attr('cx', (l) => {
+      if (l.type === 'ellipse') {
+        return l.size.x;
+      }
+    });
+
+    this.labels.attr('cy', (l) => {
+      if (l.type === 'ellipse') {
+        return l.size.y;
       }
     });
   }
@@ -2793,6 +2830,9 @@ class Chart {
     if (crop) {
       this.wrapper.selectAll('.unChecked')
         .attr('style', 'display:none');
+      this.wrapper.selectAll('.unChecked.fakeNode').each((d) => {
+        this.wrapper.select(`.folders [id="${d.labels[0]}"]`).attr('style', 'display:none');
+      });
     }
 
     const {
@@ -2847,9 +2887,13 @@ class Chart {
     this.linksWrapper.selectAll('path')
       .attr('fill', undefined);
 
-    // this.wrapper.selectAll('.unChecked')
-    //   .attr('style', undefined);
-    //
+    this.wrapper.selectAll('.unChecked')
+      .attr('style', undefined);
+
+    this.wrapper.selectAll('.unChecked.fakeNode').each((d) => {
+      this.wrapper.select(`.folders [id="${d.labels[0]}"]`).attr('style', undefined);
+    });
+
     // this.nodesWrapper.selectAll('.node text')
     //   .attr('font-family', undefined)
     //   .attr('dominant-baseline', undefined)
@@ -2964,36 +3008,41 @@ class Chart {
   static renderLinkShortestPath(links = [], nodes = []) {
     const wrapper = this.svg.select('.linkText');
     const backgrondChart = this.svg.select('.borderCircle');
-    const linksData = this.data.links;// .filter((d) => links.filter((z) => z.id === d.id).length);
+    // const linksData = this.data.links;// .filter((d) => links.filter((z) => z.id === d.id).length);
 
     wrapper.selectAll('text textPath').remove();
     backgrondChart.selectAll('div').attr('class', 'shortestBackground');
 
-    this.linkText = wrapper.selectAll('text')
-      .data(linksData.filter((d) => d.hidden !== 1))
-      .join('text')
-      .attr('text-anchor', 'middle')
-      .attr('startOffset', '50%')
-      .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
+    // this.linkText = wrapper.selectAll('text')
+    //   .data(linksData.filter((d) => d.hidden !== 1))
+    //   .join('text')
+    //   .attr('text-anchor', 'middle')
+    //   .attr('startOffset', '50%')
+    //   .attr('class', 'shortestLinkPath')
+    //   .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
-    this.linkText.append('textPath')
-      .attr('class', (d) => (links.filter((z) => z.id === d.id).length
-        ? 'shortestLinkTPath'
-        : 'shortestInactiveLinkPath'))
-      .attr('startOffset', '50%')
-      .attr('href', (d) => `#l${d.index}`)
-      .text((d) => (d.status === 'draft'
-        ? `  DRAFT ( ${d.type} ) `
-        : (links.filter((z) => z.id === d.id).length
-          ? ` ${d.type}(${d.value}) `
-          : ` ${d.value} `)));
+    // this.linkText.append('textPath')
+    //   .attr('class', (d) => (links.filter((z) => z.id === d.id).length
+    //     ? 'shortestLinkTPath'
+    //     : 'shortestInactiveLinkPath'))
+    //   .attr('startOffset', '50%')
+    //   .attr('href', (d) => `#l${d.index}`)
+    //   .text((d) => (d.status === 'draft'
+    //     ? `  DRAFT ( ${d.type} ) `
+    //     : (links.filter((z) => z.id === d.id).length
+    //       ? ` ${d.type}(${d.value}) `
+    //       : ` ${d.value} `)));
 
     this.nodesWrapper.selectAll('.node text')
-      .attr('class', (d) => (nodes.includes(d.id) ? 'nodeTextStyle' : ''));
+      .attr('class', 'nodeTextStyle');
+
+    this.nodesWrapper.selectAll('.shortestData text')
+      .attr('class', 'nodeInactiveTextStyle');
 
     this.link
       .attr('stroke', (d) => (links.filter((x) => x.id === d.id).length ? '#2dc126' : d.color))
-      .attr('stroke-width', (d) => (links.filter((x) => x.id === d.id).length ? +d.value + 15 : +d.value || 1));
+      .attr('stroke-width', (d) => (links.filter((x) => x.id === d.id).length ? +d.value + 5 : +d.value || 1))
+        .attr('class', (d) => (links.filter((x) => x.id === d.id).length ? 'showLinks' : 'showLinksInactive'));
 
     this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
       .attr('class', (d) => (nodes.includes(d.id) ? 'nodeStyle' : ''));
@@ -3007,17 +3056,41 @@ class Chart {
     this.nodesWrapper.selectAll('.shortestData > *').remove();
   }
 
-  static mouseMovePositions(fullName, position) {
-    const wrapper = this.svg.select('.mouseCursorPosition');
-    wrapper.append('text')
-      .attr('fill', ChartUtils.nodeColor(fullName))
-      .attr('x', position.x)
-      .attr('y', position.y)
-      .attr('width', 50)
-      .attr('height', 50)
-      .text(` ☝ ${fullName}`);
+ /**
+   * create mouse cusror 
+   * @param {*} fullName 
+   * @param {*} position 
+   */
+  static mouseMovePositions (fullName, position) { 
+      
+     const mouseCursorPosition = this.svg.select('.mouseCursorPosition');  
+    // wrapper.selectAll('text').remove();
+    mouseCursorPosition
+      .append('g')  
+      .attr('class', 'mouseCursor') 
+      .attr("fill", "#000") 
+      .append('use') 
+      .attr('fill', ChartUtils.cursorColor(fullName))
+      .attr('href', '#mouseCursor')  
+      .attr("x", position.x)
+      .attr("y", position.y );
+    mouseCursorPosition
+      .append("text")  
+      .attr("fill", ChartUtils.cursorColor(fullName))
+      .attr("x", position.x)
+      .attr("y", position.y + 50) 
+      .attr("width", 50)
+      .attr("height", 50)
+      .attr('class', 'mouseCursorText') 
+      .text(fullName);  
+  } 
+ /**
+  * Remove List
+  */
+  static cursorTrackerListRemove = () => {
+    Chart.svg.select('.mouseCursorPosition').selectAll('g').remove();
+    Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();      
   }
-
   static getDimensionsLabelDatum = (datum) => {
     const arrX = datum.map((p) => p[0]);
 

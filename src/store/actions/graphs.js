@@ -192,3 +192,14 @@ const UPDATE_GRAPH_POSITIONS = define('UPDATE_GRAPH_POSITIONS');
 export function updateGraphPositionsRequest(graphId, nodes, labels) {
   return UPDATE_GRAPH_POSITIONS.request(() => Api.updateGraphPositions(graphId, nodes, labels));
 }
+
+export const ACTIVE_MOUSE_TRACKER = 'ACTIVE_MOUSE_TRACKER';
+
+export function setActiveMouseTracker(tracker, userId) {   
+  return {
+    type: ACTIVE_MOUSE_TRACKER,
+    payload: { 
+      tracker, userId
+    },
+  };
+}

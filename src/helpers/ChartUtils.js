@@ -311,8 +311,10 @@ class ChartUtils {
   }
 
   static nodeColorObj = {};
+  static cursorColorObj = {};
 
   static nodeColorsArr = _.clone(NODE_COLOR);
+  static cursorColorsArr = _.clone(NODE_COLOR);
 
   static nodeColor = (d) => {
     if (!this.nodeColorObj[d.type]) {
@@ -322,8 +324,15 @@ class ChartUtils {
         return d.color;
       }
       this.nodeColorObj[d.type] = this.nodeColorsArr.shift() || randomColor();
-    }
+    }  
     return this.nodeColorObj[d.type];
+  }
+
+  static cursorColor = (cursor) => {
+    if (!this.cursorColorObj[cursor]) { 
+      this.cursorColorObj[cursor] = this.cursorColorsArr.shift() || randomColor();
+    }  
+    return this.cursorColorObj[cursor];
   }
 
   static setNodeTypeColor = (type, color) => {

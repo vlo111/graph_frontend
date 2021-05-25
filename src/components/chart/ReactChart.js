@@ -22,7 +22,7 @@ import NotFound from './NotFound';
 import { deleteNodesRequest, updateNodesRequest, updateNodesPositionRequest } from '../../store/actions/nodes';
 import { deleteLinksRequest } from '../../store/actions/links';
 import { deleteLabelsRequest, updateLabelsRequest } from '../../store/actions/labels';
-import Utils from '../../helpers/Utils';
+import MouseCursor from './icons/MouseCursor';
 
 class ReactChart extends Component {
   static propTypes = {
@@ -305,6 +305,7 @@ class ReactChart extends Component {
               <FolderIcon />
               <FolderCloseIcon />
               <FolderResizeIcon />
+              <MouseCursor />
 
             </defs>
           </g>

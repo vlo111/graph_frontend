@@ -12,7 +12,7 @@ import DataView from '../components/dataView/DataView';
 import DataImport from '../components/import/DataImportModal';
 import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
-import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
+import { clearSingleGraph, getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
 import SearchModal from '../components/search/SearchModal';
@@ -40,7 +40,8 @@ class GraphForm extends Component {
     clearSingleGraph: PropTypes.func.isRequired,
     socketSetActiveGraph: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
-    match: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired, 
+    currentUserId: PropTypes.number.isRequired,
   }
 
   getSingleGraph = memoizeOne((graphId) => {
@@ -52,9 +53,16 @@ class GraphForm extends Component {
     }
     this.props.socketSetActiveGraph(+graphId || null);
   })
+  getMouseMoveTracker = () => {
+    const { mouseMoveTracker,  currentUserId } = this.props;       
+    return mouseMoveTracker && mouseMoveTracker.some(
+      (m) => m.userId !== currentUserId && m.tracker === true
+      );
+  }
 
   render() {
-    const { activeButton, match: { params: { graphId } } } = this.props;
+    const { activeButton, mouseMoveTracker,  match: { params: { graphId } } } = this.props;  
+    const isTracker = this.getMouseMoveTracker(); 
     this.getSingleGraph(graphId);
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
@@ -90,14 +98,18 @@ class GraphForm extends Component {
         <LabelShare />
         <LabelCopy />
         <AutoSave />
+        {isTracker && <MousePosition graphId={graphId}/> }   
       </Wrapper>
+     
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
-  singleGraphLabels: state.graphs.singleGraph.labels || [],
+  singleGraphLabels: state.graphs.singleGraph.labels || [], 
+  mouseMoveTracker: state.graphs.mouseMoveTracker,
+  currentUserId: state.account.myAccount.id,
 });
 const mapDispatchToProps = {
   setActiveButton,

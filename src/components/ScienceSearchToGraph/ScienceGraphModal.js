@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import fetchTimeout from 'fetch-timeout';
 import { toggleNodeModal } from '../../store/actions/app';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import {parseStringPromise} from 'xml2js'
@@ -498,7 +499,6 @@ class ScienceGraphModal extends Component {
               <div className="scienceResultAmountBox">
                 <p className="scienceResultAmount" >{resultAmount}</p>
               </div>
-              {apiSearchResults}
             </div>
           </div>
           <div className="createGraphButton">

@@ -45,6 +45,7 @@ class Profile extends Component {
   saveAccount = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
+    const { myAccount } = this.props;
     const { payload: { data } } = await this.props.updateMyAccountRequest(requestData);
     if (data.status === 'ok') {
       toast.info('Successfully saved');
@@ -53,6 +54,7 @@ class Profile extends Component {
     } else {
       toast.error('Something went wrong');
     }
+    window.location.href = `/profile/${myAccount.id}`;
   }
 
   toggleChangePassword = (changePassword) => {
@@ -74,8 +76,10 @@ class Profile extends Component {
             />
           </div>
           <div className="right">
-          <div className="row"> 
-           <strong className="email">Email : </strong> {requestData.email}
+            <div className="row">
+              <strong className="email">Email : </strong>
+              {' '}
+              {requestData.email}
             </div>
             <div className="row">
               <Input
@@ -105,6 +109,7 @@ class Profile extends Component {
                 onChangeText={this.handleChange}
               />
             </div>
+            <div />
             <div className="row">
               <Input
                 name="website"
@@ -115,9 +120,76 @@ class Profile extends Component {
                 onChangeText={this.handleChange}
               />
             </div>
+            <div className="socialright">
+              {' '}
+              <i className="fas fa-globe-americas" />
+              {' '}
+              <span> SOCIAL</span>
+              {' '}
+            </div>
+            <div className="rigt-input">
+              <div className="row">
+                <div className="social_icon">
+                  {' '}
+                  <i className="fa fa-facebook-square" />
+                </div>
+                <Input
+                  name="facebook"
+                  label="Facebook"
+                  type="url"
+                  value={requestData.facebook}
+                  error={errors.facebook}
+                  onChangeText={this.handleChange}
+                />
+              </div>
+              <div className="row">
+                <div className="social_icon">
+                  {' '}
+                  <i className="fa fa-twitter" />
+                </div>
+                <Input
+                  name="twitter"
+                  label="Twitter"
+                  type="url"
+                  value={requestData.twitter}
+                  error={errors.twitter}
+                  onChangeText={this.handleChange}
+                />
+              </div>
+              <div className="row">
+                <div className="social_icon">
+                  {' '}
+                  <i className="fa fa-linkedin"> </i>
+                </div>
+                <Input
+                  name="linkedin"
+                  label="Linkedin"
+                  type="url"
+                  value={requestData.linkedin}
+                  error={errors.linkedin}
+                  onChangeText={this.handleChange}
+                />
+              </div>
+              <div className="row">
+                <div className="social_icon">
+                  {' '}
+                  <i className="fa fa-skype" />
+                </div>
+                <Input
+                  name="skype"
+                  label="Skype"
+                  type="url"
+                  value={requestData.skype}
+                  error={errors.skype}
+                  onChangeText={this.handleChange}
+                />
+              </div>
+
+            </div>
             <Button className="changePassword" onClick={() => this.toggleChangePassword(!changePassword)}>
               Change Password
             </Button>
+
             <Button className="save" color="accent" type="submit">Save Changes</Button>
           </div>
         </form>

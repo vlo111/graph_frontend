@@ -4,6 +4,9 @@ import ChartUtils from './ChartUtils';
 
 class ChartUpdate {
   static nodePositionsChange = (nodes) => {
+    if (Chart.isAutoPosition) {
+      return;
+    }
     Chart.data.nodes = Chart.data.nodes.map((node) => {
       const d = nodes.find((n) => n.id === node.id);
       if (d && !Chart.isAutoPosition) {
@@ -17,29 +20,45 @@ class ChartUpdate {
   }
 
   static graphPositionsChange = (updateNodes, labelsUpdate) => {
+    if (Chart.isAutoPosition) {
+      return;
+    }
     const labels = Chart.getLabels().map((label) => {
       const d = labelsUpdate.find((l) => l.id === label.id);
       if (d) {
-        label.d = d.d;
+        if (label.size) {
+          label.size = d.size;
+        } else {
+          label.d = d.d;
+        }
       }
       return label;
     });
     const nodes = Chart.getNodes().map((node) => {
-      const d = updateNodes.find(((n) => n.id === node.id));
-      if (d && !Chart.isAutoPosition) {
-        node.fx = d.fx;
-        node.fy = d.fy;
-        node.labels = d.labels || node.labels;
+      const i = updateNodes.findIndex(((n) => n.id === node.id));
+      if (i > -1) {
+        node.fx = updateNodes[i].fx;
+        node.fy = updateNodes[i].fy;
+        node.labels = updateNodes[i].labels || node.labels;
+        updateNodes.splice(i, 1);
       }
       if (node.fake) {
         const label = labelsUpdate.find((l) => `fake_${l.id}` === node.id);
         if (label) {
-          node.fx = label.d[0][0] + 30;
-          node.fy = label.d[0][1] + 30;
+          if (label.type === 'square' || label.type === 'ellipce') {
+            node.fx = label.size.x + 30;
+            node.fy = label.size.y + 30;
+          } else {
+            node.fx = label.d[0][0] + 30;
+            node.fy = label.d[0][1] + 30;
+          }
         }
       }
       return node;
     });
+    if (updateNodes.length) {
+      nodes.push(...updateNodes);
+    }
     Chart.render({ labels, nodes }, { ignoreAutoSave: true });
   }
 
@@ -136,7 +155,11 @@ class ChartUpdate {
     const labels = Chart.getLabels().map((label) => {
       const updateLabel = labelsUpdate.find((n) => n.id === label.id);
       if (updateLabel) {
-        label.d = updateLabel.d;
+        if (label.size) {
+          label.size = updateLabel.size;
+        } else {
+          label.d = updateLabel.d;
+        }
       }
       return label;
     });
@@ -154,19 +177,23 @@ class ChartUpdate {
 
     Chart.render({ nodes, links, labels }, { ignoreAutoSave: true });
   }
-  static mouseMovePositions = (graphId, userId, cursors) => {
-    Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();
-    let fullName = ' '; 
-       cursors.forEach((cursor) => { console.log(cursor, 'ssssss');
-        if (graphId === +cursor?.graphId && +cursor.userId !== +userId) {  
-          fullName = cursor?.firstName + ' ' + cursor?.lastName; 
-           
-          Chart.mouseMovePositions(fullName, cursor?.mousePosition);       
-        }
-      });
 
-    //Chart.mouseMovePositions(graphId, userId, cursors);
-    
+  /**
+   * create cursor to acvive users
+   * @param {*} graphId
+   * @param {*} userId
+   * @param {*} cursors
+   */
+  static mouseMovePositions = (graphId, userId, cursors) => {
+    Chart.svg.select('.mouseCursorPosition').selectAll('g').remove();
+    Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();
+    let fullName = ' ';
+    cursors.forEach((cursor) => {
+      if (graphId === +cursor?.graphId && +cursor.userId !== +userId) {
+        fullName = cursor?.firstName + ' ' + cursor?.lastName;
+        Chart.mouseMovePositions(fullName, cursor?.mousePosition);
+      }
+    });
   }
 }
 
