@@ -3,7 +3,6 @@ import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import fetchTimeout from 'fetch-timeout';
 import { toggleNodeModal } from '../../store/actions/app';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import {parseStringPromise} from 'xml2js'
@@ -45,9 +44,9 @@ class ScienceGraphModal extends Component {
     })
     e.preventDefault();
 
-    if ((this.state.apiTitleSearchTerms === undefined && 
+    if ((this.state.apiTitleSearchTerms === undefined &&
       this.state.apiAuthorSearchTerms === undefined) || (
-      this.state.apiTitleSearchTerms === '' && 
+      this.state.apiTitleSearchTerms === '' &&
       this.state.apiAuthorSearchTerms === '')
     ) {
       return 0;
@@ -63,7 +62,7 @@ class ScienceGraphModal extends Component {
     // combined author and topic fields and putted it in arxivUrl and coreUrl
     const arxivUrl = REACT_APP_ARXIV_URL+`search_query=all:${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}&sortBy=relevance&max_results=10`
     const coreUrl = REACT_APP_CORE_URL+`${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}?page=1&pageSize=10&apiKey=uRj8cMByiodHF0Z61XQxzVUfqpkYJW2D`
-    
+
     const urls = [
       {
         url:arxivUrl,
@@ -80,7 +79,7 @@ class ScienceGraphModal extends Component {
         searchResults: 0,
         isLoading:true
       })
-      return 
+      return
     }
 
     let arxivJsonData = ''
@@ -121,13 +120,13 @@ class ScienceGraphModal extends Component {
       })
     }
 
-    // collect articles from core 
+    // collect articles from core
     // do we need to merge nodes by here or it will be done in back end
     if (coreJsonData && coreJsonData.data) {
       await coreJsonData.data.map(article => {
         const articleAlreadyExists = pointerToThis.state.apiSearchReturnValues.find(
           (arxivArticle, index) => {
-            
+
             if (arxivArticle.title === article.title) {
 
               if (!(pointerToThis.state.apiSearchReturnValues[index].origin.includes("core"))) {
@@ -162,7 +161,7 @@ class ScienceGraphModal extends Component {
     }
     this.setState({
       searchResults: pointerToThis.state.apiSearchReturnValues.length,
-      isLoading:false 
+      isLoading:false
     });
     pointerToThis.forceUpdate();
   }
@@ -222,7 +221,7 @@ class ScienceGraphModal extends Component {
       // handle empty res case !!!
       this.props.onClose(ev);
     })
-    return 
+    return
   }
 
   getArticlesData = async (ev, chosenArticles) => {
@@ -240,10 +239,10 @@ class ScienceGraphModal extends Component {
         const { abstract, title, url, authorsList } = articleJson;
 
         const article = await this.createNode(
-          nodes, 
-          title.trim(), 
-          url, 
-          'article', 
+          nodes,
+          title.trim(),
+          url,
+          'article',
           abstract
         );
         const checkedArticle = await this.compareArticle(article);
@@ -256,11 +255,11 @@ class ScienceGraphModal extends Component {
             return
           }
           return this.getAuthors(
-            authorsList, 
-            nodes, 
-            ev, 
-            checkedArticle, 
-            new_links, 
+            authorsList,
+            nodes,
+            ev,
+            checkedArticle,
+            new_links,
             new_nodes
           )
         }
@@ -287,16 +286,16 @@ class ScienceGraphModal extends Component {
       }
       return { nodes: res[0].nodes, links: res[0].links }
     }
-    
+
     compareArticle = async node => {
-      // in case of author, get the name slice it compare each element to others 
-      // to get all nodes from backend Api.getGraphNodes() 
+      // in case of author, get the name slice it compare each element to others
+      // to get all nodes from backend Api.getGraphNodes()
       // or just use search function after making it use all nodes of graphs
-      // const allNodes = await Api.getGraphNodes(1, {s:'a',graphId:this.state.graphId}) 
-      const { 
-        data: compare 
+      // const allNodes = await Api.getGraphNodes(1, {s:'a',graphId:this.state.graphId})
+      const {
+        data: compare
       } = await Api.dataPastCompare(
-        this.state.graphId, 
+        this.state.graphId,
         [node]
       );
 
@@ -319,13 +318,13 @@ class ScienceGraphModal extends Component {
           const links = [...(await Chart.getLinks())]
 
           const existingLink = links.find(link => (link.target === target && link.source === source))
-          
+
           if (!existingLink) {
             const _type = type || _.last(links)?.type || '';
             const link = {
               create: true,
               createdAt: moment().unix(),
-              createdUser: this.state.currentUserId, 
+              createdUser: this.state.currentUserId,
               direction: "",
               id: ChartUtils.uniqueId(links),
               index: 0,
@@ -342,7 +341,7 @@ class ScienceGraphModal extends Component {
           }
           if (!checkedAuthor.isDuplicate) {
             new_nodes.push(checkedAuthor.node);
-          } 
+          }
           return {nodes: new_nodes, links: new_links};
         })
       )
@@ -350,21 +349,21 @@ class ScienceGraphModal extends Component {
 
     createNode = (nodes, name, arxivUrl, type, contentData=false) => {
       const updatedAt = moment().unix();
-      const arxivHref = arxivUrl != undefined  
+      const arxivHref = arxivUrl != undefined
         ? `
           <a href="${arxivUrl}" target="_blank">
             Go to site
           </a>
         ` : ''
-      const about = contentData 
+      const about = contentData
       ? `<div>
           <strong class="tabHeader">About</strong><br>
           <br>${contentData}<br>
           ${arxivHref}
-        </div>` 
+        </div>`
       : false;
 
-      const customFields = about 
+      const customFields = about
         ? [
           {
             name: "About",
@@ -376,11 +375,11 @@ class ScienceGraphModal extends Component {
       const node = {
         create: true,
         color: ChartUtils.nodeColorObj[_type] || '',
-        createdAt: updatedAt, 
+        createdAt: updatedAt,
         createdUser: this.state.currentUserId, // get user id
-        customFields: customFields, 
-        description: contentData, 
-        fx: -189.21749877929688 + (Math.random()*150), 
+        customFields: customFields,
+        description: contentData,
+        fx: -189.21749877929688 + (Math.random()*150),
         fy: -61.72186279296875 + (Math.random()*150),
         icon: "",
         id: ChartUtils.uniqueId(nodes), // what is this
@@ -391,13 +390,13 @@ class ScienceGraphModal extends Component {
         infographyId: undefined,
         location: undefined,
         labels: [],
-        link: arxivUrl, 
+        link: arxivUrl,
         manually_size: 1,
-        name: name, 
+        name: name,
         nodeType: "circle",
         status: "approved",
-        type: _type, 
-        updatedAt: updatedAt, 
+        type: _type,
+        updatedAt: updatedAt,
         updatedUser: this.state.currentUserId, // remove this guy
       }
       return node;
@@ -408,7 +407,7 @@ class ScienceGraphModal extends Component {
       if (oldCheckedList.includes(param)) {
         this.setState({
           checkedList: oldCheckedList.filter(checkedItems => checkedItems !== param)
-        }) 
+        })
       } else {
         this.state.checkedList.push(param)
       }
@@ -433,10 +432,10 @@ class ScienceGraphModal extends Component {
                 id={key3}
                 value="option1"
               />
-              
+
               <label className="pull-left" htmlFor={key3} />
             </div>
-            
+
             <div className="scienceArticleData">
               <h3>
                 <a target="_blank" rel="noreferrer" href={this.state.apiSearchReturnValues[key3].url}>
@@ -446,7 +445,7 @@ class ScienceGraphModal extends Component {
               <p className="scienceAuthor"> <b>Authors:</b> {this.state.apiSearchReturnValues[key3].authors}</p>
               <p
                 className=" scienceArticleDescription"
-                dangerouslySetInnerHTML={{ __html: 
+                dangerouslySetInnerHTML={{ __html:
                   "Abstract:"
                   + this.state.apiSearchReturnValues[key3].abstract !== undefined
                       ? this.state.apiSearchReturnValues[key3].abstract + "..."
@@ -455,7 +454,7 @@ class ScienceGraphModal extends Component {
               />
               <div>
                 {
-                  this.state.apiSearchReturnValues[key3].origin.includes("arxiv") 
+                  this.state.apiSearchReturnValues[key3].origin.includes("arxiv")
                   ?  <img src={arxivImg} alt="arxiv" className="arxivLogo sourceLogo" />
                   :  ""
                 }
@@ -489,7 +488,7 @@ class ScienceGraphModal extends Component {
                   </form>
                 </div>
               </div>
-              
+
               {this.state.isLoading ? (
                 <Loading className="mainLoading scienceModalLoading" size={50} />
                 ) : null}
@@ -503,12 +502,12 @@ class ScienceGraphModal extends Component {
             <div className="createGraphButton">
               {
                 this.state.checkedList.length
-                ? 
+                ?
                   <>
-                    <button 
-                      onClick={(ev) => this.getAllNodes(ev)} 
+                    <button
+                      onClick={(ev) => this.getAllNodes(ev)}
                       className="ghButton accent alt ">
-                      Create Graph 
+                      Create Graph
                     </button>
                     <p className="selectedArticlesAmount">Selected Articles {this.state.checkedList.length}</p>
                   </>
