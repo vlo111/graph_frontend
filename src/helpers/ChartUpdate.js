@@ -19,7 +19,7 @@ class ChartUpdate {
     Chart.graphMovement();
   }
 
-  static graphPositionsChange = (updateNodes, labelsUpdate) => {
+  static graphPositionsChange = (updateNodes = [], labelsUpdate = []) => {
     if (Chart.isAutoPosition) {
       return;
     }

@@ -47,7 +47,7 @@ class AccountDropDown extends Component {
             <div className="dropdown">
               <ul>
                 <li className="item">
-                  <Link to={`profile/${id}`}>Account</Link>
+                  <Link to="/account">Account</Link>
                 </li>
                 <li className="item">
                   <Link to="/sign/sign-out">Sign Out</Link>

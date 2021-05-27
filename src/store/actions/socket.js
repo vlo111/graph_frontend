@@ -28,7 +28,7 @@ export const ONLINE_USERS = 'ONLINE_USERS';
 export const GRAPH_SHARED_USERS = 'GRAPH_SHARED_USERS';
 export const ACTIVE_MOUSE_TRACKER = 'ACTIVE_MOUSE_TRACKER';
 export const MOUSE_POSITION_TRACKER = 'MOUSE_POSITION_TRACKER';
-export const SOCKET_ACTIVE_MOUSE_TRACKER  = 'SOCKET_ACTIVE_MOUSE_TRACKER ';
+export const SOCKET_ACTIVE_MOUSE_TRACKER = 'SOCKET_ACTIVE_MOUSE_TRACKER ';
 
 export function socketInit() {
   return (dispatch, getState) => {
@@ -207,7 +207,7 @@ export function socketInit() {
 
     socket.on('online', (data) => {
       const onlineUsers = JSON.parse(data);
-      const {account: { myAccount: { id: userId } } } = getState();
+      const { account: { myAccount: { id: userId } } } = getState();
       dispatch({
         type: ONLINE_USERS,
         payload: { onlineUsers },
@@ -239,30 +239,31 @@ export function socketInit() {
     socket.on('embedLabelDataChange', (data) => {
       const { labels } = Chart;
 
-      let embededLabel = labels.data().filter((p) => p.readOnly && p.id === data.label.id);
+      let embededLabel = labels.data().filter((p) => p.readOnly && p.id === data.label?.id);
 
       if (embededLabel.length) {
         embededLabel = embededLabel[0].id;
-        const curentEmbed = labels._groups[0].filter((p) => p.__data__.id === embededLabel)[0];
+        if (labels._groups[0]) {
+          const curentEmbed = [...labels._groups[0]].filter((p) => p.__data__.id === embededLabel)[0];
+          const { x: lx, y: ly } = curentEmbed.getBoundingClientRect();
 
-        const { x: lx, y: ly } = curentEmbed.getBoundingClientRect();
+          const { x: posX, y: posY } = ChartUtils.calcScaledPosition(lx, ly);
 
-        const { x: posX, y: posY } = ChartUtils.calcScaledPosition(lx, ly);
+          const minX = Math.min(...data.label.d.map((l) => l[0]));
+          const minY = Math.min(...data.label.d.map((l) => l[1]));
 
-        const minX = Math.min(...data.label.d.map((l) => l[0]));
-        const minY = Math.min(...data.label.d.map((l) => l[1]));
-
-        data.links = data.links.map((l) => {
-          if (l.sx && l.linkType === 'a1') {
-            l.sx = l.sx - minX + posX;
-            l.sy = l.sy - minY + posY;
-            l.tx = l.tx - minX + posX;
-            l.ty = l.ty - minY + posY;
-          } else {
-            l.sx = undefined;
-          }
-          return l;
-        });
+          data.links = data.links.map((l) => {
+            if (l.sx && l.linkType === 'a1') {
+              l.sx = l.sx - minX + posX;
+              l.sy = l.sy - minY + posY;
+              l.tx = l.tx - minX + posX;
+              l.ty = l.ty - minY + posY;
+            } else {
+              l.sx = undefined;
+            }
+            return l;
+          });
+        }
       }
 
       const graphId = Utils.getGraphIdFormUrl();
@@ -284,27 +285,26 @@ export function socketInit() {
       if (!changed) {
         embedLabels.push(data);
       }
-      Chart.render({ embedLabels }, { filters, embeded: true });
+      Chart.render({ embedLabels }, { filters, embeded: true, ignoreAutoSave: true });
     });
 
     socket.on('mousemoving', (data) => {
-      const { graphs: { mouseMoveTracker, mouseTracker } , account: { myAccount: { id: userId } } } = getState(); 
-     const isTracker = mouseMoveTracker && mouseMoveTracker.some(
-        (m) => m.userId === userId && m.tracker === true
-        );       
-      if(!mouseMoveTracker || !isTracker) return; 
+      const { graphs: { mouseMoveTracker, mouseTracker }, account: { myAccount: { id: userId } } } = getState();
+      const isTracker = mouseMoveTracker && mouseMoveTracker.some(
+        (m) => m.userId === userId && m.tracker === true,
+      );
+      if (!mouseMoveTracker || !isTracker) return;
       const graphId = +Utils.getGraphIdFormUrl();
-      const cursors = JSON.parse(data);  
-      ChartUpdate.mouseMovePositions(graphId, userId, cursors);   
+      const cursors = JSON.parse(data);
+      ChartUpdate.mouseMovePositions(graphId, userId, cursors);
     });
-    socket.on('mouseMoveTracker', (data) => {  
+    socket.on('mouseMoveTracker', (data) => {
       const mouseMoveTracker = JSON.parse(data);
 
       dispatch({
         type: SOCKET_ACTIVE_MOUSE_TRACKER,
         payload: { mouseMoveTracker },
       });
-       
     });
   };
 }
@@ -335,37 +335,37 @@ export function socketSetActiveGraph(graphId) {
 
 export const SOCKET_MOUSE_POSITION = 'SOCKET_MOUSE_POSITION';
 
-export function socketMousePosition(graphId, userId, mousePosition) {   
-  if(graphId === undefined || userId === undefined)
+export function socketMousePosition(graphId, userId, mousePosition) {
+  if (graphId === undefined || userId === undefined) {
+    return {
+      type: SOCKET_MOUSE_POSITION,
+      payload: {
+        graphId,
+        userId,
+        mousePosition,
+      },
+    };
+  }
+
+  socketEmit('mousemove', { graphId, userId, mousePosition });
   return {
     type: SOCKET_MOUSE_POSITION,
     payload: {
       graphId,
-      userId, 
-      mousePosition
-    },
-  };
-  
-  socketEmit('mousemove', {  graphId, userId, mousePosition });
-  return {
-    type: SOCKET_MOUSE_POSITION,
-    payload: {
-      graphId,
-      userId, 
-      mousePosition
+      userId,
+      mousePosition,
     },
   };
 }
+
 export const SOCKET_MOUSE_POSITION_TRACKER = 'SOCKET_MOUSE_POSITION_TRACKER';
 
-export function socketMousePositionTracker(graphId, tracker, userId) {  
+export function socketMousePositionTracker(graphId, tracker, userId) {
   socketEmit('mouseMoveTracker', { graphId, tracker, userId });
   return {
     type: SOCKET_MOUSE_POSITION_TRACKER,
     payload: {
-      graphId, tracker, userId
+      graphId, tracker, userId,
     },
   };
 }
-
-
