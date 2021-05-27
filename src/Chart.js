@@ -477,6 +477,9 @@ class Chart {
               // todo;
               label.mx = label.label.d[0][0] - l.d[0][0];
               label.my = label.label.d[0][1] - l.d[0][1];
+            } else if (l.type === 'ellipse' || l.type === 'square') {
+              label.mx = label.label.size.x - l.size.x;
+              label.my = label.label.size.y - l.size.y;
             } else {
               label.mx = label.label.d[0][0] - l.d[0][0];
               label.my = label.label.d[0][1] - l.d[0][1];

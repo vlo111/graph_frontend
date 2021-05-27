@@ -65,12 +65,12 @@ const Profile = React.memo((props) => {
                         {profile.email}
                       </span>
                     )}
-                    <span className="website">
+                    <div>
                       <strong>Website : </strong>
-                      {' '}
-                      {profile.website}
-                    </span>
-
+                      <a href={profile.website} target="_blank" rel="noreferrer">
+                        {profile.website}
+                      </a>
+                    </div>
                     <span className="profile__description">
                       <span>
                         {' '}
@@ -111,7 +111,7 @@ const Profile = React.memo((props) => {
 
           {profile.linkedin && (
           <div className="social-list-linkedin">
-            <a href={profile.skype} target=" ">
+            <a href={profile.linkedin} target=" ">
               {' '}
               <i className="fa fa-linkedin"> </i>
               {' '}

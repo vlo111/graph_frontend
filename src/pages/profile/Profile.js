@@ -54,7 +54,9 @@ class Profile extends Component {
     } else {
       toast.error('Something went wrong');
     }
-    window.location.href = `/profile/${myAccount.id}`;
+    if (requestData.firstName && requestData.lastName) {
+      window.location.href = `/profile/${myAccount.id}`;
+    }
   }
 
   toggleChangePassword = (changePassword) => {
@@ -122,7 +124,7 @@ class Profile extends Component {
             </div>
             <div className="socialright">
               {' '}
-              <i className="fas fa-globe-americas" />
+              <i className="fa fa-globe" />
               {' '}
               <span> SOCIAL</span>
               {' '}
@@ -140,6 +142,7 @@ class Profile extends Component {
                   value={requestData.facebook}
                   error={errors.facebook}
                   onChangeText={this.handleChange}
+                  pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:facebook\.com|fb(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
                 />
               </div>
               <div className="row">
@@ -150,10 +153,12 @@ class Profile extends Component {
                 <Input
                   name="twitter"
                   label="Twitter"
-                  type="url"
+                  type="url "
                   value={requestData.twitter}
                   error={errors.twitter}
                   onChangeText={this.handleChange}
+                  pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:twitter\.com|tw(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
+
                 />
               </div>
               <div className="row">
@@ -168,6 +173,7 @@ class Profile extends Component {
                   value={requestData.linkedin}
                   error={errors.linkedin}
                   onChangeText={this.handleChange}
+                  pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:linkedin\.com|in(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
                 />
               </div>
               <div className="row">
@@ -182,6 +188,7 @@ class Profile extends Component {
                   value={requestData.skype}
                   error={errors.skype}
                   onChangeText={this.handleChange}
+                  pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:skype\.com|sk(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
                 />
               </div>
 
