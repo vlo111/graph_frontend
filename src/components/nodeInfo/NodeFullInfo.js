@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import queryString from 'query-string';
+import memoizeOne from 'memoize-one';
+import _ from 'lodash';
 import Chart from '../../Chart';
 import Outside from '../Outside';
 import NodeTabs from './NodeTabs';
@@ -11,10 +13,8 @@ import HeaderMini from '../HeaderMini';
 import ConnectionDetails from './ConnectionDetails';
 import NodeFullInfoModal from './NodeFullInfoModal';
 import ChartUtils from '../../helpers/ChartUtils';
-import NodeImage from "./NodeImage";
-import memoizeOne from "memoize-one";
-import _ from "lodash";
-import { getNodeCustomFieldsRequest } from "../../store/actions/graphs";
+import NodeImage from './NodeImage';
+import { getNodeCustomFieldsRequest } from '../../store/actions/graphs';
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -46,7 +46,7 @@ class NodeFullInfo extends Component {
       return null;
     }
     const node = Chart.getNodes().find((n) => n.id === nodeId);
-    
+
     if (node) {
       ChartUtils.findNodeInDom(node);
     }
@@ -63,12 +63,21 @@ class NodeFullInfo extends Component {
             editable={editable}
           />
           <div className="nodeFullContent">
-            <div className="headerBanner">
-              <NodeImage node={node} />
-
+            <div className="headerBanner ">
               <div className="textWrapper">
-                <h2 className="name">{node.name}</h2>
-                <h3 className="type">{node.type}</h3>
+                <h2 title={node.name} className="name">
+                  { node.name && (node.name.length > 10)
+                    ? `${node.name.substr(0, 10)}`
+                    : node.name}
+                </h2>
+                <h3 title={node.type} className="type">
+                  { node.type && (node.type.length > 10)
+                    ? `${node.type.substr(0, 10)}`
+                    : node.type}
+                </h3>
+              </div>
+              <div className="frame">
+                <NodeImage node={node} />
               </div>
               <Link replace className="expand" to={`?${queryString.stringify({ ...queryObj, expand: '1' })}`}>
                 Expand

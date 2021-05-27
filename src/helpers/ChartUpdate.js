@@ -19,7 +19,7 @@ class ChartUpdate {
     Chart.graphMovement();
   }
 
-  static graphPositionsChange = (updateNodes, labelsUpdate) => {
+  static graphPositionsChange = (updateNodes = [], labelsUpdate = []) => {
     if (Chart.isAutoPosition) {
       return;
     }
@@ -190,7 +190,7 @@ class ChartUpdate {
     let fullName = ' ';
     cursors.forEach((cursor) => {
       if (graphId === +cursor?.graphId && +cursor.userId !== +userId) {
-        fullName = cursor?.firstName + ' ' + cursor?.lastName;
+        fullName = `${cursor?.firstName} ${cursor?.lastName}`;
         Chart.mouseMovePositions(fullName, cursor?.mousePosition);
       }
     });

@@ -51,9 +51,9 @@ class ScienceGraphModal extends Component {
     })
     e.preventDefault();
 
-    if ((this.state.apiTitleSearchTerms === undefined && 
+    if ((this.state.apiTitleSearchTerms === undefined &&
       this.state.apiAuthorSearchTerms === undefined) || (
-      this.state.apiTitleSearchTerms === '' && 
+      this.state.apiTitleSearchTerms === '' &&
       this.state.apiAuthorSearchTerms === '')
     ) {
       return ;
@@ -92,7 +92,7 @@ class ScienceGraphModal extends Component {
         searchResults: 0,
         isLoading:true
       })
-      return 
+      return
     }
 
     let arxivJsonData = ''
@@ -143,7 +143,7 @@ class ScienceGraphModal extends Component {
       await coreJsonData.data.map(article => {
         const articleAlreadyExists = pointerToThis.state.apiSearchReturnValues.find(
           (arxivArticle, index) => {
-            
+
             if (arxivArticle.title === article.title) {
 
               if (!(pointerToThis.state.apiSearchReturnValues[index].origin.includes("core"))) {
@@ -184,7 +184,7 @@ class ScienceGraphModal extends Component {
     }
     this.setState({
       searchResults: pointerToThis.state.apiSearchReturnValues.length,
-      isLoading:false 
+      isLoading:false
     });
     pointerToThis.forceUpdate();
   }
@@ -247,7 +247,7 @@ class ScienceGraphModal extends Component {
         this.props.onClose(ev);
       }, 2000)
     })
-    return 
+    return
   }
 
   getArticlesData = async (ev, chosenArticles) => {
