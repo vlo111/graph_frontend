@@ -56,7 +56,7 @@ class ScienceGraphModal extends Component {
       this.state.apiTitleSearchTerms === '' && 
       this.state.apiAuthorSearchTerms === '')
     ) {
-      return 0;
+      return ;
     }
     const currentUser = await Api.getMyAccount()
     this.setState({
@@ -113,7 +113,7 @@ class ScienceGraphModal extends Component {
         searchResults: 0,
         isLoading:false
       })
-      return 0;
+      return ;
     }
     if (arxivJsonData.feed.entry) {
       // collect articles from arix
@@ -151,7 +151,7 @@ class ScienceGraphModal extends Component {
               }
               return arxivArticle
             }
-            return false
+            return
         })
 
         if (articleAlreadyExists) {
