@@ -397,7 +397,6 @@ class ScienceGraphModal extends Component {
       createdAt: updatedAt, 
       createdUser: this.state.currentUserId,
       customFields: customFields, 
-      description: contentData.abstract, 
       fx: -189.21749877929688 + (Math.random()*150), 
       fy: -61.72186279296875 + (Math.random()*150),
       icon: icon,
@@ -565,17 +564,17 @@ class ScienceGraphModal extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  customFields: state.graphs.customFields || {},
-});
+// const mapStateToProps = (state) => ({
+//   customFields: state.graphs.customFields || {},
+// });
 
-const mapDispatchToProps = {
-  toggleNodeModal,
-};
+// const mapDispatchToProps = {
+//   toggleNodeModal,
+// };
 
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ScienceGraphModal);
+// const Container = connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// )(ScienceGraphModal);
 
-export default withGoogleMap(Container);
+export default ScienceGraphModal;
