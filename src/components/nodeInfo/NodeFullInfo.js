@@ -66,13 +66,13 @@ class NodeFullInfo extends Component {
             <div className="headerBanner ">
               <div className="textWrapper">
                 <h2 title={node.name} className="name">
-                  { node.name && (node.name.length > 15)
-                    ? `${node.name.substr(0, 15)} `
+                  { node.name && (node.name.length > 10)
+                    ? `${node.name.substr(0, 10)}`
                     : node.name}
                 </h2>
                 <h3 title={node.type} className="type">
-                  { node.type && (node.type.length > 15)
-                    ? `${node.type.substr(0, 15)} `
+                  { node.type && (node.type.length > 10)
+                    ? `${node.type.substr(0, 10)}`
                     : node.type}
                 </h3>
               </div>
