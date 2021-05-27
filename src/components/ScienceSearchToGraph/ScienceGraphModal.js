@@ -44,7 +44,7 @@ class ScienceGraphModal extends Component {
     };
   }
 
-  useApiSearchEngine = async (e) => {
+  handleSearch = async (e) => {
     this.setState({
       searchResults: NaN,
       checkedList: []
@@ -56,7 +56,7 @@ class ScienceGraphModal extends Component {
       this.state.apiTitleSearchTerms === '' &&
       this.state.apiAuthorSearchTerms === '')
     ) {
-      return 0;
+      return ;
     }
     const currentUser = await Api.getMyAccount()
     this.setState({
@@ -113,7 +113,7 @@ class ScienceGraphModal extends Component {
         searchResults: 0,
         isLoading:false
       })
-      return 0;
+      return ;
     }
     if (arxivJsonData.feed.entry) {
       // collect articles from arix
@@ -152,7 +152,7 @@ class ScienceGraphModal extends Component {
               }
               return arxivArticle
             }
-            return false
+            return
         })
 
         if (articleAlreadyExists) {
@@ -412,7 +412,6 @@ class ScienceGraphModal extends Component {
       createdAt: updatedAt, 
       createdUser: this.state.currentUserId,
       customFields: customFields, 
-      description: contentData.abstract, 
       fx: -189.21749877929688 + (Math.random()*150), 
       fy: -61.72186279296875 + (Math.random()*150),
       icon: icon,
@@ -538,7 +537,7 @@ class ScienceGraphModal extends Component {
                 <form action="">
                   <input className="scienceAuthorInput scienceInput" type="text" value={this.state.apiAuthorSearchTerms || ''} onChange={this.changeApiTitleSearchTerms} placeholder="Search Authors" />
                   <input className="scienceTitleInput scienceInput" type="text" value={this.state.apiTitleSearchTerms || ''} onChange={this.changeApiAuthorSearchTerms} placeholder="Search  Articles" />
-                  <button className="scienceSearchSubmit button" type="submit" onClick={this.useApiSearchEngine}>Search</button>
+                  <button className="scienceSearchSubmit button" type="submit" onClick={this.handleSearch}>Search</button>
                 </form>
               </div>
             </div>

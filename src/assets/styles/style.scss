@@ -8916,14 +8916,17 @@ img.preview-scaled {
 .createGraphButton {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   margin: 0px;
 }
 .selectedArticlesAmount {
-  font-size: 1.5em;
   margin-left: 1em;
 }
+.scienceInput:focus {
+  outline: none;
+}
+//-----------------------------------
 
 //-----------------------------------
 
