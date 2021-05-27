@@ -557,11 +557,11 @@ class ScienceGraphModal extends Component {
               this.state.checkedList.length
               ? 
                 <>
-                  <button 
+                  {/* <button 
                     onClick={(ev) => this.handleCheckAll(ev)} 
                     className="ghButton accent alt ">
                     {this.state.selectAllArticlesButtonText} 
-                  </button>
+                  </button> */}
                   <button 
                     onClick={(ev) => this.getAllNodes(ev)} 
                     className="ghButton accent alt ">
