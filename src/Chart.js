@@ -476,6 +476,9 @@ class Chart {
               // todo;
               label.mx = label.label.d[0][0] - l.d[0][0];
               label.my = label.label.d[0][1] - l.d[0][1];
+            } else if (l.type === 'ellipse' || l.type === 'square') {
+              label.mx = label.label.size.x - l.size.x;
+              label.my = label.label.size.y - l.size.y;
             } else {
               label.mx = label.label.d[0][0] - l.d[0][0];
               label.my = label.label.d[0][1] - l.d[0][1];
@@ -3063,19 +3066,19 @@ class Chart {
     mouseCursorPosition
       .append('g')
       .attr('class', 'mouseCursor')
-      .attr("fill", "#000")
+      .attr('fill', '#000')
       .append('use')
       .attr('fill', ChartUtils.cursorColor(fullName))
       .attr('href', '#mouseCursor')
-      .attr("x", position.x)
-      .attr("y", position.y );
+      .attr('x', position.x)
+      .attr('y', position.y);
     mouseCursorPosition
-      .append("text")
-      .attr("fill", ChartUtils.cursorColor(fullName))
-      .attr("x", position.x)
-      .attr("y", position.y + 50)
-      .attr("width", 50)
-      .attr("height", 50)
+      .append('text')
+      .attr('fill', ChartUtils.cursorColor(fullName))
+      .attr('x', position.x)
+      .attr('y', position.y + 50)
+      .attr('width', 50)
+      .attr('height', 50)
       .attr('class', 'mouseCursorText')
       .text(fullName);
   }
