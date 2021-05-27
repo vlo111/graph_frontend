@@ -8957,15 +8957,16 @@ img.preview-scaled {
 }
 
 .social_icon{
-  padding: 7px 11px;
-  height: 36px;
+  padding: 5px 11px;
+  height: 35px;
   width: 35px;
   position: relative;
   top: 32px;
   border: 1px solid #E2E7EB;
-  border-radius: 5px 0px 0px 5px;
   background-color: #f3f7f9;
   color: #6c757d;
+  left: -1%;
+  border-radius: 8px;
 }   
 
 .rigt-input{
@@ -8982,18 +8983,17 @@ img.preview-scaled {
     padding: 7px;
 }
 .social-list{
-  margin: auto 1px;
+  margin: auto ;
   width: 60px;
   display: grid;
   grid-template-columns: auto auto auto auto;
   grid-gap: 36%;
   position: relative;
-  left: 40%;
+  // left: 40%;
    
 }
 .social-list>div{
   width: 32px;
-  // border-radius: 50%;
   line-height: center;
   line-height: calc(2rem - 2px );
   padding: 0px 7px;
@@ -9034,21 +9034,24 @@ color: #2962ff;
 
 .accountedit{
   color: #0D0905;
-  font-size: 19px;
+  font-size: 16px;
 }
 .fa-pencil{
   color: #0D0905;
-  padding: 5px;
+  padding: 3px;
 
 }
 
 .editrect>a{
-  // text-decoration: none;
   position: relative;
   left: 93%;
-  top:30px;
+  top: 30px;
+  text-decoration: none;
+  padding: 4px 8px 4px 8px;
 }
-.mouseCursor {
-  
-  transform-origin: top left; 
+.editrect>a:hover{
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 9px rgb(2 47 119 / 20%);
+  color: black;
 }
