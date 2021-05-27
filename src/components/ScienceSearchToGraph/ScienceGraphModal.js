@@ -20,7 +20,8 @@ const {
   REACT_APP_ARXIV_URL,
   REACT_APP_CORE_URL,
   REACT_APP_ARTICLE_URL,
-  REACT_APP_AUTHOR_URL, } = Api
+  REACT_APP_AUTHOR_URL
+} = Api
 
 
 class ScienceGraphModal extends Component {
