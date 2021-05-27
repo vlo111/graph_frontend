@@ -452,6 +452,7 @@ class Chart {
 
     if (data.embedLabels.length) {
       data.embedLabels = data.embedLabels.map((label) => {
+        data.links = data.links.filter((d) => +d.sourceId !== +label.sourceId);
         const labelNodes = data.nodes.filter((n) => +label.sourceId === +n.sourceId);
         label.nodes = label.nodes.map((d) => {
           d.sourceId = label.sourceId;
@@ -487,7 +488,6 @@ class Chart {
         return label;
       });
       data.links = ChartUtils.uniqueLinks(data.links);
-
       let removedNodes = false;
       data.nodes = data.nodes.map((d) => {
         if (!d.sourceId) {
@@ -2101,7 +2101,7 @@ class Chart {
     });
 
     this.labels.attr('y', (l) => {
-      if (l.type === 'square' ) {
+      if (l.type === 'square') {
         return l.size.y;
       }
     });
@@ -2888,7 +2888,6 @@ class Chart {
     this.wrapper.selectAll('.unChecked')
       .attr('style', undefined);
 
-
     // this.nodesWrapper.selectAll('.node text')
     //   .attr('font-family', undefined)
     //   .attr('dominant-baseline', undefined)
@@ -3037,7 +3036,7 @@ class Chart {
     this.link
       .attr('stroke', (d) => (links.filter((x) => x.id === d.id).length ? '#2dc126' : d.color))
       .attr('stroke-width', (d) => (links.filter((x) => x.id === d.id).length ? +d.value + 5 : +d.value || 1))
-        .attr('class', (d) => (links.filter((x) => x.id === d.id).length ? 'showLinks' : 'showLinksInactive'));
+      .attr('class', (d) => (links.filter((x) => x.id === d.id).length ? 'showLinks' : 'showLinksInactive'));
 
     this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
       .attr('class', (d) => (nodes.includes(d.id) ? 'nodeStyle' : ''));
@@ -3051,41 +3050,42 @@ class Chart {
     this.nodesWrapper.selectAll('.shortestData > *').remove();
   }
 
- /**
+  /**
    * create mouse cusror
    * @param {*} fullName
    * @param {*} position
    */
-  static mouseMovePositions (fullName, position) {
-
-     const mouseCursorPosition = this.svg.select('.mouseCursorPosition');
+  static mouseMovePositions(fullName, position) {
+    const mouseCursorPosition = this.svg.select('.mouseCursorPosition');
     // wrapper.selectAll('text').remove();
     mouseCursorPosition
       .append('g')
       .attr('class', 'mouseCursor')
-      .attr("fill", "#000")
+      .attr('fill', '#000')
       .append('use')
       .attr('fill', ChartUtils.cursorColor(fullName))
       .attr('href', '#mouseCursor')
-      .attr("x", position.x)
-      .attr("y", position.y );
+      .attr('x', position.x)
+      .attr('y', position.y);
     mouseCursorPosition
-      .append("text")
-      .attr("fill", ChartUtils.cursorColor(fullName))
-      .attr("x", position.x)
-      .attr("y", position.y + 50)
-      .attr("width", 50)
-      .attr("height", 50)
+      .append('text')
+      .attr('fill', ChartUtils.cursorColor(fullName))
+      .attr('x', position.x)
+      .attr('y', position.y + 50)
+      .attr('width', 50)
+      .attr('height', 50)
       .attr('class', 'mouseCursorText')
       .text(fullName);
   }
- /**
-  * Remove List
-  */
+
+  /**
+   * Remove List
+   */
   static cursorTrackerListRemove = () => {
     Chart.svg.select('.mouseCursorPosition').selectAll('g').remove();
     Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();
   }
+
   static getDimensionsLabelDatum = (datum) => {
     const arrX = datum.map((p) => p[0]);
 
