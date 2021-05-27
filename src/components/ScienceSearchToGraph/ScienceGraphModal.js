@@ -3,7 +3,6 @@ import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import fetchTimeout from 'fetch-timeout';
 import { toggleNodeModal } from '../../store/actions/app';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import {parseStringPromise} from 'xml2js'
@@ -16,11 +15,12 @@ import coreImg from '../../assets/images/icons/core.png';
 import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
 import Loading from '../Loading';
-import { updateNodesPositionRequest } from '../../store/actions/nodes';
 
-const { REACT_APP_ARXIV_URL } = process.env;
-const { REACT_APP_CORE_URL } = process.env;
-const { REACT_APP_SEMANTIC_URL } = process.env;
+const REACT_APP_ARXIV_URL = Api.arxivUrl;
+const REACT_APP_CORE_URL = Api.coreUrl;
+const articleImg  = Api.articleImg;
+const authorImg = Api.authorImg;
+
 
 class ScienceGraphModal extends Component {
   constructor(props) {
@@ -359,8 +359,8 @@ class ScienceGraphModal extends Component {
   createNode = (nodes, name, url, type, contentData=false) => {
     const updatedAt = moment().unix();
     const icon = !!contentData.published
-      ? "http://localhost:5000/public/article.svg"
-      : "http://localhost:5000/public/person.svg"
+      ? articleImg
+      : authorImg
     const keywords = !!contentData.topics 
       ? contentData.topics
       : []
