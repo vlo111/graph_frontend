@@ -15,10 +15,12 @@ import arxivImg from '../../assets/images/icons/arxiv.jpg';
 import coreImg from '../../assets/images/icons/core.png';
 import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
+import Loading from '../Loading';
+import { updateNodesPositionRequest } from '../../store/actions/nodes';
+
 const { REACT_APP_ARXIV_URL } = process.env;
 const { REACT_APP_CORE_URL } = process.env;
 const { REACT_APP_SEMANTIC_URL } = process.env;
-import Loading from '../Loading';
 
 class ScienceGraphModal extends Component {
   constructor(props) {
@@ -33,6 +35,7 @@ class ScienceGraphModal extends Component {
       currentUserId: 0,
       isLoading: null,
       checkedList: [],
+      selectAllArticlesButtonText: 'Select All',
       graphId: window.location.pathname.substring(
         window.location.pathname.lastIndexOf('/') + 1
       )
@@ -62,8 +65,14 @@ class ScienceGraphModal extends Component {
     const pointerToThis = this;
 
     // combined author and topic fields and putted it in arxivUrl and coreUrl
-    const arxivUrl = REACT_APP_ARXIV_URL+`search_query=all:${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}&sortBy=relevance&max_results=10`
-    const coreUrl = REACT_APP_CORE_URL+`"${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}"?page=1&pageSize=10&apiKey=uRj8cMByiodHF0Z61XQxzVUfqpkYJW2D`
+    const arxivUrl = REACT_APP_ARXIV_URL+`search_query=all:${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}&sortBy=relevance&max_results=20`
+    const author = !!this.state.apiAuthorSearchTerms 
+      ? this.state.apiAuthorSearchTerms
+      : ''
+    const title = !!this.state.apiTitleSearchTerms 
+      ? 'title:' + this.state.apiTitleSearchTerms
+      : ''
+    const coreUrl = REACT_APP_CORE_URL+`"${title} ${author}"?page=1&pageSize=10&fulltext=false&citations=true&metadata=true&apiKey=uRj8cMByiodHF0Z61XQxzVUfqpkYJW2D`
     
     const urls = [
       {
@@ -109,7 +118,7 @@ class ScienceGraphModal extends Component {
       await arxivJsonData.feed.entry.map(article => {
         const categoryAcronim = article.category[0].$.term.trim()
         const category = ScienceCategories.find(category => category.acronym.trim() == categoryAcronim)
-        
+        const topics = !!category ? [category.fullName] : undefined
         let authors = "";
         article.author.map(auth => authors += auth.name + ", ");
         
@@ -120,7 +129,7 @@ class ScienceGraphModal extends Component {
           queryResultPageID: article.id[0].split('/').slice(-1)[0],
           title: article.title[0],
           abstract: article.summary[0],
-          topics: [category.fullName],
+          topics: topics,
           published: article.published[0].split('T')[0],
           origin: ['arxiv'],
         });
@@ -154,6 +163,10 @@ class ScienceGraphModal extends Component {
 
         let authors = "";
         article.authors.map(auth => authors += auth + ", ");
+        const topics = Array.isArray(article.topics) 
+          ? article.topics
+          : article.topics.split(';')
+
         pointerToThis.state.apiSearchReturnValues.push({
           authors: authors,
           authorsList: article.authors,
@@ -161,7 +174,7 @@ class ScienceGraphModal extends Component {
           queryResultPageID: article.id,
           title: article.title,
           abstract: article.description,
-          topics: article.topics,
+          topics: topics,
           published: article.year < (new Date().getFullYear()) ? article.year : '', // some articles in core have year 10000
           origin: ['core'],
         });
@@ -194,26 +207,43 @@ class ScienceGraphModal extends Component {
 
   changeApiTitleSearchTerms = (e) => {
     this.setState({
-      apiTitleSearchTerms: e.target.value,
+      apiAuthorSearchTerms: e.target.value
     });
   };
   changeApiAuthorSearchTerms = (e) => {
     this.setState({
-      apiAuthorSearchTerms: e.target.value
+      apiTitleSearchTerms: e.target.value,
     });
   };
 
   getAllNodes = async (ev) => {
     const { checkedList } = this.state;
+    this.setState({isLoading: true})
     if (!checkedList.length) {
       return;
     }
     const chosenArticles = this.state.checkedList.map( articleIndex => {
       return this.state.apiSearchReturnValues[parseInt(articleIndex)]
     })
-    await this.getArticlesData(ev, chosenArticles).then(res => {
-      // handle empty res case !!!
-      this.props.onClose(ev);
+    await this.getArticlesData(ev, chosenArticles).then(async res => {
+      const newNodes = []
+      res.map(graph => {
+        graph.nodes.map(node => newNodes.push(node))
+      })
+      const updateNodePositions = newNodes.filter((d) => !d.fake).map((node) => ({
+        id: node.id,
+        fx: node.fx,
+        fy: node.fy,
+        labels: node.labels,
+      }));
+      
+      Chart.render({}, { isAutoPosition: true });
+      await setTimeout(() => {
+        Chart.render({}, { isAutoPosition: false })
+        this.setState({isLoading: false})
+        Chart.event.emit('auto-position.change', false);
+        this.props.onClose(ev);
+      }, 2000)
     })
     return 
   }
@@ -239,10 +269,7 @@ class ScienceGraphModal extends Component {
           'article', 
           articleJson
         );
-        const checkedArticle = await this.compareArticle(article);
-        if (!checkedArticle.isDuplicate) {
-          new_nodes.push(checkedArticle.node);
-        }
+        new_nodes.push(article);
 
         const getAuthorsData = async () => {
           if (!authorsList) {
@@ -251,8 +278,7 @@ class ScienceGraphModal extends Component {
           return this.getAuthors(
             authorsList, 
             nodes, 
-            ev, 
-            checkedArticle, 
+            article, 
             new_links, 
             new_nodes
           )
@@ -268,6 +294,12 @@ class ScienceGraphModal extends Component {
 
   sendResultsToBackEnd = async res => {
     // write validations !!!
+    if (!res) {
+      return
+    }
+    if(! (res.filter(obj => obj !== undefined).length) ) {
+      return
+    }
     await Api.dataPast(this.state.graphId, undefined, [0, 0], 'merge', {
       labels: [],
       nodes: res[0].nodes,
@@ -280,35 +312,20 @@ class ScienceGraphModal extends Component {
     return { nodes: res[0].nodes, links: res[0].links }
   }
     
-  compareArticle = async node => {
-    const { 
-      data: compare
-    } = await Api.dataPastCompare(
-      this.state.graphId,
-      [node]
-    );
-
-    if (!(compare.duplicatedNodes && compare.duplicatedNodes.length)) {
-      return {node: node, isDuplicate: false}
-    }
-    if (compare.duplicatedNodes && compare.duplicatedNodes.length) {
-      return {node: compare.duplicatedNodes[0], isDuplicate: true};
-    }
-  }
-  
 // create author nodes compare and connect to article node
-  getAuthors = (authorsList, nodes, checkedArticle, new_links, new_nodes) => {
+  getAuthors = (authorsList, nodes, article, new_links, new_nodes) => {
     return Promise.all(
       authorsList.map( async (author) => {
+        const type = "author"
         const authorData = await this.createNode(
-          nodes, author.trim(), 
+          nodes, 
+          author.trim(), 
           author.url, 
-          "author", 
-          {topics: checkedArticle.node.keywords}
+          type, 
+          {topics: article.keywords}
         )
-        const checkedAuthor = await this.compareArticle(authorData)
-        const target = checkedAuthor.node.id
-        const source = checkedArticle.node.id
+        const target = authorData.id
+        const source = article.id
         const links = [...(await Chart.getLinks())]
 
         const existingLink = links.find(link => (link.target === target && link.source === source))
@@ -323,9 +340,9 @@ class ScienceGraphModal extends Component {
             id: ChartUtils.uniqueId(links),
             index: 0,
             linkType: "a",
-            source: checkedArticle.node.id,
+            source: article.id,
             status: "approved",
-            target: checkedAuthor.node.id,
+            target: authorData.id,
             type: _type,
             updatedAt: moment().unix(),
             updatedUser: this.state.currentUserId,
@@ -333,9 +350,7 @@ class ScienceGraphModal extends Component {
           }
           new_links.push(link);
         }
-        if (!checkedAuthor.isDuplicate) {
-          new_nodes.push(checkedAuthor.node);
-        } 
+        new_nodes.push(authorData);
         return {nodes: new_nodes, links: new_links};
       })
     )
@@ -343,6 +358,9 @@ class ScienceGraphModal extends Component {
 
   createNode = (nodes, name, url, type, contentData=false) => {
     const updatedAt = moment().unix();
+    const icon = !!contentData.published
+      ? "http://localhost:5000/public/article.svg"
+      : "http://localhost:5000/public/person.svg"
     const keywords = !!contentData.topics 
       ? contentData.topics
       : []
@@ -356,6 +374,7 @@ class ScienceGraphModal extends Component {
     ? `<div>
         <strong class="tabHeader">About</strong><br>
         <br>Published at: ${contentData.published}<br>
+        <br>Topics: ${contentData.topics}<br>
         <br>${contentData.abstract}<br>
         ${arxivHref}
       </div>` 
@@ -379,11 +398,10 @@ class ScienceGraphModal extends Component {
       description: contentData.abstract, 
       fx: -189.21749877929688 + (Math.random()*150), 
       fy: -61.72186279296875 + (Math.random()*150),
-      icon: "",
-      id: ChartUtils.uniqueId(nodes), // what is this
+      icon: icon,
+      id: ChartUtils.uniqueId(nodes), 
       index: 0, // will it generate an index or I should give it by hand
-      keywords: keywords, // in case of article keywords could be added
-      // labels: [],
+      keywords: keywords, 
       d: undefined,
       infographyId: undefined,
       location: undefined,
@@ -395,7 +413,7 @@ class ScienceGraphModal extends Component {
       status: "approved",
       type: _type, 
       updatedAt: updatedAt, 
-      updatedUser: this.state.currentUserId, // remove this guy
+      updatedUser: this.state.currentUserId,
     }
     return node;
   }
@@ -413,6 +431,23 @@ class ScienceGraphModal extends Component {
       getChecked: param
     });
   };
+
+  handleCheckAll = () => {
+    const selectAllButtonText = ['Unselect All', 'Select All']
+    const resultsLength = this.state.apiSearchReturnValues.length
+    if (this.state.checkedList.length === resultsLength) {
+      this.setState({
+        checkedList: [],
+        selectAllArticlesButtonText: selectAllButtonText[1],
+      })
+      return
+    }
+    const lengthToIndex = [...Array(resultsLength).keys()].map( key => ''+key)
+    this.setState({
+      selectAllArticlesButtonText: selectAllButtonText[0],
+      checkedList: lengthToIndex
+    })
+  }
 
   render() {
     const apiSearchResults = [];
@@ -442,7 +477,7 @@ class ScienceGraphModal extends Component {
             </h3>
             <p className="scienceAuthor"> <b>Authors:</b> {this.state.apiSearchReturnValues[key3].authors}</p>
             {
-              this.state.apiSearchReturnValues[key3].topics.length
+              !!this.state.apiSearchReturnValues[key3].topics
               ? <p className="scienceAuthor"> <b>Topic:</b> {this.state.apiSearchReturnValues[key3].topics.join(', ')}</p>
               : '' 
             }
@@ -471,7 +506,6 @@ class ScienceGraphModal extends Component {
         </div>,
       );
     }
-
     return (
       <>
         <Modal
@@ -485,13 +519,12 @@ class ScienceGraphModal extends Component {
             <div className="scienceForm">
               <div className="scienceFormInside">
                 <form action="">
-                  <input className="scienceAuthorInput scienceInput" type="text" value={this.state.apiTitleSearchTerms || ''} onChange={this.changeApiTitleSearchTerms} placeholder="Search Authors" />
-                  <input className="scienceTitleInput scienceInput" type="text" value={this.state.apiAuthorSearchTerms || ''} onChange={this.changeApiAuthorSearchTerms} placeholder="Search  Articles" />
+                  <input className="scienceAuthorInput scienceInput" type="text" value={this.state.apiAuthorSearchTerms || ''} onChange={this.changeApiTitleSearchTerms} placeholder="Search Authors" />
+                  <input className="scienceTitleInput scienceInput" type="text" value={this.state.apiTitleSearchTerms || ''} onChange={this.changeApiAuthorSearchTerms} placeholder="Search  Articles" />
                   <button className="scienceSearchSubmit button" type="submit" onClick={this.useApiSearchEngine}>Search</button>
                 </form>
               </div>
             </div>
-            
             {this.state.isLoading ? (
               <Loading className="mainLoading scienceModalLoading" size={50} />
               ) : null}
@@ -500,12 +533,18 @@ class ScienceGraphModal extends Component {
                 <p className="scienceResultAmount" >{resultAmount}</p>
               </div>
             </div>
+          {apiSearchResults}
           </div>
           <div className="createGraphButton">
             {
               this.state.checkedList.length
               ? 
                 <>
+                  <button 
+                    onClick={(ev) => this.handleCheckAll(ev)} 
+                    className="ghButton accent alt ">
+                    {this.state.selectAllArticlesButtonText} 
+                  </button>
                   <button 
                     onClick={(ev) => this.getAllNodes(ev)} 
                     className="ghButton accent alt ">
