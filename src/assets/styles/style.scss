@@ -1333,7 +1333,7 @@ p {
       right: 22%;
     }
     .scienceGraph {
-      right: 31%;
+      right: 31% !important;
     }
 
   }
@@ -6452,19 +6452,7 @@ body .gh__menu {
   }
 }
 .scienceGraph{
-  z-index: 1000;
-  border-radius: 50%;
-  width: 1.8em;
-  position: absolute;
-  right: 31% ;
-}
-
-.scienceGraph{
-  z-index: 1000;
-  border-radius: 50%;
-  width: 1.8em;
-  position: absolute;
-  right: 23%;
+  right: 31% !important;
 }
 
 .Wiki form {
