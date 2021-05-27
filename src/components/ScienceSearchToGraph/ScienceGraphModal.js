@@ -44,7 +44,7 @@ class ScienceGraphModal extends Component {
     };
   }
 
-  useApiSearchEngine = async (e) => {
+  handleSearch = async (e) => {
     this.setState({
       searchResults: NaN,
       checkedList: []
@@ -523,7 +523,7 @@ class ScienceGraphModal extends Component {
                 <form action="">
                   <input className="scienceAuthorInput scienceInput" type="text" value={this.state.apiAuthorSearchTerms || ''} onChange={this.changeApiTitleSearchTerms} placeholder="Search Authors" />
                   <input className="scienceTitleInput scienceInput" type="text" value={this.state.apiTitleSearchTerms || ''} onChange={this.changeApiAuthorSearchTerms} placeholder="Search  Articles" />
-                  <button className="scienceSearchSubmit button" type="submit" onClick={this.useApiSearchEngine}>Search</button>
+                  <button className="scienceSearchSubmit button" type="submit" onClick={this.handleSearch}>Search</button>
                 </form>
               </div>
             </div>
