@@ -16,10 +16,11 @@ import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
 import Loading from '../Loading';
 
-const REACT_APP_ARXIV_URL = Api.arxivUrl;
-const REACT_APP_CORE_URL = Api.coreUrl;
-const articleImg  = Api.articleImg;
-const authorImg = Api.authorImg;
+const { 
+  REACT_APP_ARXIV_URL,
+  REACT_APP_CORE_URL,
+  REACT_APP_ARTICLE_URL,
+  REACT_APP_AUTHOR_URL, } = Api
 
 
 class ScienceGraphModal extends Component {
@@ -359,8 +360,8 @@ class ScienceGraphModal extends Component {
   createNode = (nodes, name, url, type, contentData=false) => {
     const updatedAt = moment().unix();
     const icon = !!contentData.published
-      ? articleImg
-      : authorImg
+      ? REACT_APP_ARTICLE_URL
+      : REACT_APP_AUTHOR_URL
     const keywords = !!contentData.topics 
       ? contentData.topics
       : []
