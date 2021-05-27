@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, Route } from 'react-router-dom';
 import Outside from '../Outside';
 import Icon from '../form/Icon';
 
@@ -30,9 +30,9 @@ class AccountDropDown extends Component {
 
   render() {
     const { showDropDown } = this.state;
-    const { mini, myAccount: { firstName, lastName, avatar }, match: { params: { graphId = '' } } } = this.props;
+    const { mini, myAccount: { firstName, lastName, id, avatar }, match: { params: { graphId = '' } } } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
-     return (
+    return (
       <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
           <img src={avatar} className="avatar" alt={name} />
@@ -47,8 +47,8 @@ class AccountDropDown extends Component {
             <div className="dropdown">
               <ul>
                 <li className="item">
-                  <Link to="/account">Account</Link>
-                </li> 
+                  <Link to={`profile/${id}`}>Account</Link>
+                </li>
                 <li className="item">
                   <Link to="/sign/sign-out">Sign Out</Link>
                 </li>

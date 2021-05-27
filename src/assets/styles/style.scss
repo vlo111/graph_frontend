@@ -6048,6 +6048,7 @@ body .gh__menu {
 
   &__title {
     margin-bottom: 12px;
+    text-align: center;
   }
 
   &__my {
@@ -6064,25 +6065,28 @@ body .gh__menu {
   }
 
   &__avatar {
-    width: 14.1vw;
-    height: 14.1vw;
-    min-width: 200px;
-    min-height: 200px;
+    width: 7.1vw;
+    height: 7.1vw;
+    min-width: 100px;
+    min-height: 100px;
     border-radius: 50%;
     object-fit: cover;
     position: absolute;
-    top: 126px;
-    left: 282px;
+    top: 200px;
+    // left: 282px;
   }
 
-  &__description {
-    margin-top: 25px;
-  }
+  // &__description {
+  //   margin-top: 25px;
+  // }
 
   &__user-details {
-    display: flex;
+    display: grid;
+    grid-gap: 10%;
+    position: relative;
     flex-direction: column;
-    margin: 0 16px;
+    margin: 0 110px;
+    top: 2px;
   }
 
   &__friends {
@@ -6199,7 +6203,7 @@ body .gh__menu {
 }
 
 .linkedin {
-  padding: 3px 72px 1px 14px;
+  // padding: 3px 72px 1px 14px;
 
   .company, .institution {
     color: #181818;
