@@ -1575,7 +1575,7 @@ class Chart {
       this._dataLinks = null;
       data = this.normalizeData(data, params);
       if (!params.dontRemember && _.isEmpty(params.filters)) {
-        this.undoManager.push(data);
+        this.undoManager.push(data, params.eventId);
         if (!_.isEmpty(this.data?.nodes) || !_.isEmpty(this.data?.links)) {
           if (!_.isEqual(data, this.data)) {
             this.event.emit('dataChange', this);

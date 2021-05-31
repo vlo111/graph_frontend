@@ -3,10 +3,12 @@ import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
 
 class ChartUpdate {
-  static nodePositionsChange = (nodes) => {
+  static nodePositionsChange = (data) => {
+    const { nodes, eventId } = data;
     if (Chart.isAutoPosition) {
       return;
     }
+    //todo
     Chart.data.nodes = Chart.data.nodes.map((node) => {
       const d = nodes.find((n) => n.id === node.id);
       if (d && !Chart.isAutoPosition) {
@@ -19,7 +21,8 @@ class ChartUpdate {
     Chart.graphMovement();
   }
 
-  static graphPositionsChange = (updateNodes = [], labelsUpdate = []) => {
+  static graphPositionsChange = (data) => {
+    const { nodes: updateNodes = [], label: labelsUpdate = [], eventId } = data;
     if (Chart.isAutoPosition) {
       return;
     }
@@ -59,21 +62,24 @@ class ChartUpdate {
     if (updateNodes.length) {
       nodes.push(...updateNodes);
     }
-    Chart.render({ labels, nodes }, { ignoreAutoSave: true });
+    Chart.render({ labels, nodes }, { ignoreAutoSave: true, eventId });
   }
 
-  static nodesCrate = (nodeCreate) => {
+  static nodesCrate = (data) => {
+    const { nodes: nodeCreate, eventId } = data;
     const nodes = Chart.getNodes();
     nodes.push(...nodeCreate);
-    Chart.render({ nodes }, { ignoreAutoSave: true });
+    Chart.render({ nodes }, { ignoreAutoSave: true, eventId });
   }
 
-  static nodesDelete = (nodesDelete) => {
+  static nodesDelete = (data) => {
+    const { nodes: nodesDelete, eventId } = data;
     const nodes = Chart.getNodes().filter((n) => !nodesDelete?.some((d) => n.id === d.id));
-    Chart.render({ nodes }, { ignoreAutoSave: true });
+    Chart.render({ nodes }, { ignoreAutoSave: true, eventId });
   }
 
-  static nodesUpdate = (nodesUpdate) => {
+  static nodesUpdate = (data) => {
+    const { nodes: nodesUpdate, eventId } = data;
     const nodes = Chart.getNodes().map((d) => {
       const node = nodesUpdate?.find((n) => n.id === d.id);
       if (node) {
@@ -81,14 +87,15 @@ class ChartUpdate {
       }
       return d;
     });
-    Chart.render({ nodes }, { ignoreAutoSave: true });
+    Chart.render({ nodes }, { ignoreAutoSave: true, eventId });
   }
 
   static nodeCustomFieldsChange = () => {
 
   }
 
-  static linkCreate = (linksCreate) => {
+  static linkCreate = (data) => {
+    const { links: linksCreate, eventId } = data;
     let links = Chart.getLinks();
     links.push(..._.compact(linksCreate));
     links = _.uniqBy(links, (l) => {
@@ -101,10 +108,12 @@ class ChartUpdate {
         1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
       });
     });
-    Chart.render({ links }, { ignoreAutoSave: true });
+    Chart.render({ links }, { ignoreAutoSave: true, eventId });
   }
 
-  static linkUpdate = (linksUpdate) => {
+  static linkUpdate = (data) => {
+    const { links: linksUpdate, eventId } = data;
+
     const links = Chart.getLinks().map((d) => {
       const link = linksUpdate.find((n) => n.id === d.id);
       if (link) {
@@ -112,21 +121,27 @@ class ChartUpdate {
       }
       return d;
     });
-    Chart.render({ links }, { ignoreAutoSave: true });
+    Chart.render({ links }, { ignoreAutoSave: true, eventId });
   }
 
-  static linkDelete = (linksDelete) => {
+  static linkDelete = (data) => {
+    const { links: linksDelete, eventId } = data;
+
     const links = Chart.getLinks().filter((n) => !linksDelete.some((d) => n.id === d.id));
-    Chart.render({ links }, { ignoreAutoSave: true });
+    Chart.render({ links }, { ignoreAutoSave: true, eventId });
   }
 
-  static labelCreate = (labelsCreate) => {
+  static labelCreate = (data) => {
+    const { labels: labelsCreate, eventId } = data;
+
     const labels = Chart.getLabels();
     labels.push(...labelsCreate);
-    Chart.render({ labels }, { ignoreAutoSave: true });
+    Chart.render({ labels }, { ignoreAutoSave: true, eventId });
   }
 
-  static labelUpdate = (labelsUpdate) => {
+  static labelUpdate = (data) => {
+    const { labels: labelsUpdate, eventId } = data;
+
     const labels = Chart.getLabels().map((d) => {
       const label = labelsUpdate.find((n) => n.id === d.id);
       if (label) {
@@ -134,10 +149,12 @@ class ChartUpdate {
       }
       return d;
     });
-    Chart.render({ labels }, { ignoreAutoSave: true });
+    Chart.render({ labels }, { ignoreAutoSave: true, eventId });
   }
 
-  static labelToggle = (updateLabel) => {
+  static labelToggle = (data) => {
+    const { labels: updateLabel } = data;
+
     if (updateLabel.open) {
       const folder = document.querySelector(`[id="${updateLabel.id}"]`);
       if (folder) {
@@ -151,7 +168,8 @@ class ChartUpdate {
     }
   }
 
-  static labelUpdatePosition = (labelsUpdate, updateNodes) => {
+  static labelUpdatePosition = (data) => {
+    const { labels: labelsUpdate, nodes: updateNodes, eventId } = data;
     const labels = Chart.getLabels().map((label) => {
       const updateLabel = labelsUpdate.find((n) => n.id === label.id);
       if (updateLabel) {
@@ -163,11 +181,13 @@ class ChartUpdate {
       }
       return label;
     });
-    Chart.render({ labels }, { ignoreAutoSave: true });
+    Chart.render({ labels }, { ignoreAutoSave: true, eventId });
     this.nodePositionsChange(updateNodes);
   }
 
-  static labelDelete = (labelsDelete) => {
+  static labelDelete = (data) => {
+    const { labels: labelsDelete, eventId } = data;
+
     const labelsDeleteId = labelsDelete.map((l) => l.id);
 
     const labels = Chart.getLabels().filter((n) => !labelsDeleteId.includes(n.id));
@@ -175,7 +195,7 @@ class ChartUpdate {
     const nodes = Chart.getNodes().filter((d) => !_.intersection(labelsDeleteId, d.labels).length);
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
 
-    Chart.render({ nodes, links, labels }, { ignoreAutoSave: true });
+    Chart.render({ nodes, links, labels }, { ignoreAutoSave: true, eventId });
   }
 
   /**
