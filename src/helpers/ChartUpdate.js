@@ -22,7 +22,7 @@ class ChartUpdate {
   }
 
   static graphPositionsChange = (data) => {
-    const { nodes: updateNodes = [], label: labelsUpdate = [], eventId } = data;
+    const { nodes: updateNodes = [], labels: labelsUpdate = [], eventId } = data;
     if (Chart.isAutoPosition) {
       return;
     }
