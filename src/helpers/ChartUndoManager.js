@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import Chart from '../Chart';
+import ChartUtils from "./ChartUtils";
 
 const MAX_COUNT = 10;
 
@@ -14,7 +15,7 @@ class ChartUndoManager {
     this.data = [];
   }
 
-  async push(datum) {
+  async push(datum, eventId) {
     if (_.isEmpty(datum?.nodes) && _.isEmpty(datum?.links)) {
       return;
     }
@@ -24,7 +25,12 @@ class ChartUndoManager {
     if (this.data.length > MAX_COUNT - 1) {
       this.data.shift();
     }
-    this.data.push(_.cloneDeep(datum));
+    const i = this.data.findIndex((d) => d.eventId === eventId);
+    if (i > -1) {
+      this.data[i] = _.cloneDeep({ ...datum, eventId });
+    } else {
+      this.data.push(_.cloneDeep({ ...datum, eventId }));
+    }
   }
 
   undoCount() {
@@ -42,6 +48,7 @@ class ChartUndoManager {
       this.pointer += 1;
     }
     const datum = this.data[this.data.length - this.pointer - 1];
+    console.log(this.data, 888)
     if (datum) {
       Chart.render(datum, { dontRemember: true });
     }

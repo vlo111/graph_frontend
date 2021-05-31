@@ -714,7 +714,13 @@ class Chart {
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
-      .attr('data-y', transform.y);
+      .attr('data-y', transform.y); 
+      // mouse cursor
+    const mouseCursorPosition = this.svg.select('.mouseCursorPosition'); 
+     mouseCursorPosition.attr('transform', transform)
+      .attr('data-scale', transform.k)
+      .attr('data-x', transform.x)
+      .attr('data-y', transform.y); 
 
     this.event.emit('zoom', ev, { transform });
 
@@ -1575,7 +1581,7 @@ class Chart {
       this._dataLinks = null;
       data = this.normalizeData(data, params);
       if (!params.dontRemember && _.isEmpty(params.filters)) {
-        this.undoManager.push(data);
+        this.undoManager.push(data, params.eventId);
         if (!_.isEmpty(this.data?.nodes) || !_.isEmpty(this.data?.links)) {
           if (!_.isEqual(data, this.data)) {
             this.event.emit('dataChange', this);
