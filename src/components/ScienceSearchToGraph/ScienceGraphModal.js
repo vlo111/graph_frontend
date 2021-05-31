@@ -43,7 +43,12 @@ class ScienceGraphModal extends Component {
       )
     };
   }
-
+  /**
+   * Search user input in core and arxiv APIs
+   * 
+   * @param {object} e 
+   * @returns 
+   */
   handleSearch = async (e) => {
     this.setState({
       searchResults: NaN,
@@ -188,13 +193,14 @@ class ScienceGraphModal extends Component {
     });
     pointerToThis.forceUpdate();
   }
-// check this before production
-  fetchUrls = async (urls) => {
-    if (!urls || urls.length <= 1 || !Array.isArray(urls)) {
-      return 'error'
-    }
-    const controller = new AbortController();
 
+  /**
+   * Get results from core and arix
+   * 
+   * @param {object[]} urls 
+   * @returns {object[]}
+   */
+  fetchUrls = async (urls) => {
     const result = await Promise.all(
       urls.map(async url => {
         const result = {
@@ -218,7 +224,11 @@ class ScienceGraphModal extends Component {
     });
   };
 
-  getAllNodes = async (ev) => {
+  /**
+   * Create nodes for selected Articles
+   * @param {object} ev 
+   */
+  createSelectedNodes = async (ev) => {
     const { checkedList } = this.state;
     this.setState({isLoading: true})
     if (!checkedList.length) {
@@ -227,42 +237,41 @@ class ScienceGraphModal extends Component {
     const chosenArticles = this.state.checkedList.map( articleIndex => {
       return this.state.apiSearchReturnValues[parseInt(articleIndex)]
     })
-    await this.getArticlesData(ev, chosenArticles).then(async res => {
-      const newNodes = []
-      res.map(graph => {
-        graph.nodes.map(node => newNodes.push(node))
-      })
-      const updateNodePositions = newNodes.filter((d) => !d.fake).map((node) => ({
-        id: node.id,
-        fx: node.fx,
-        fy: node.fy,
-        labels: node.labels,
-      }));
-      
-      Chart.render({}, { isAutoPosition: true });
-      await setTimeout(() => {
-        Chart.render({}, { isAutoPosition: false })
-        this.setState({isLoading: false})
-        Chart.event.emit('auto-position.change', false);
-        this.props.onClose(ev);
-      }, 2000)
+    await this.getArticlesData(chosenArticles)
+      .then(async res => {
+        const newNodes = []
+        res.map(graph => {
+          graph.nodes.map(node => newNodes.push(node))
+        })
+        
+        Chart.render({}, { isAutoPosition: true });
+        await setTimeout(() => {
+          Chart.render({}, { isAutoPosition: false })
+          this.setState({isLoading: false})
+          Chart.event.emit('auto-position.change', false);
+          this.props.onClose(ev);
+        }, 2000)
     })
     return
   }
 
-  getArticlesData = async (ev, chosenArticles) => {
+  /**
+   * Get articles data from state by selected articles
+   * 
+   * @param {object[]} chosenArticles 
+   * @returns {object[]}
+   */
+  getArticlesData = async (chosenArticles) => {
     if (!chosenArticles.length) {
       return
     }
     const nodes = [...Chart.getNodes()];
     const ArticleList = []
-    // return Promise.all(
-      // chosenArticles.map(async chosenArticle => {
       for (const chosenArticle in chosenArticles) {
         const new_nodes = []
         const new_links = []
         const articleJson = chosenArticles[chosenArticle]
-        const { abstract, title, url, authorsList } = articleJson;
+        const { title, url, authorsList } = articleJson;
 
         const article = await this.createNode(
           nodes, 
@@ -286,35 +295,94 @@ class ScienceGraphModal extends Component {
           )
         }
         // handle empty getAuthorsData
-        let AuthorsData =  await getAuthorsData().then(this.sendResultsToBackEnd)
+        let AuthorsData =  await getAuthorsData()
+          .then(this.sendResultsToBackEnd)
         ArticleList.push(AuthorsData)
       }
-      // })
-    // )
     return ArticleList
   }
 
-  sendResultsToBackEnd = async res => {
-    // write validations !!!
-    if (!res) {
-      return
-    }
-    if(! (res.filter(obj => obj !== undefined).length) ) {
-      return
-    }
-    await Api.dataPast(this.state.graphId, undefined, [0, 0], 'merge', {
+  /**
+   * Create Article/Author Node 
+   * 
+   * @param {object[]} nodes 
+   * @param {string} name 
+   * @param {string} url 
+   * @param {string} type 
+   * @param {object} contentData 
+   * @returns {object}
+   */
+  createNode = (nodes, name, url, type, contentData=false) => {
+    const updatedAt = moment().unix();
+    const icon = !!contentData.published
+      ? REACT_APP_ARTICLE_URL
+      : REACT_APP_AUTHOR_URL
+    const keywords = !!contentData.topics 
+      ? contentData.topics
+      : []
+    const arxivHref = url != undefined  
+      ? `
+        <a href="${url}" target="_blank">
+          Go to article
+        </a>
+      ` : ''
+    const about = !!contentData.published
+    ? `<div>
+        <strong class="tabHeader">About</strong><br>
+        <br>Topics: ${contentData.topics}<br>
+        <br>Published at: ${contentData.published}<br>
+        <br>${contentData.abstract}<br>
+        ${arxivHref}
+      </div>` 
+    : false;
+
+    const customFields = about 
+      ? [
+        {
+          name: "About",
+          subtitle: "",
+          value: about,
+        }
+      ] : "";
+    const _type = type || _.last(nodes)?.type || '';
+    const node = {
+      create: true,
+      color: ChartUtils.nodeColorObj[_type] || '',
+      createdAt: updatedAt, 
+      createdUser: this.state.currentUserId,
+      customFields: customFields, 
+      fx: -189.21749877929688 + (Math.random()*150), 
+      fy: -61.72186279296875 + (Math.random()*150),
+      icon: icon,
+      id: ChartUtils.uniqueId(nodes), 
+      index: 0, // will it generate an index or I should give it by hand
+      keywords: keywords, 
+      d: undefined,
+      infographyId: undefined,
+      location: undefined,
       labels: [],
-      nodes: res[0].nodes,
-      links: res[0].links,
-    }).catch((e) => e.response);
-    if (res.status === 'error') {
-      toast.error(res.message);
-      return;
+      link: url, 
+      manually_size: 1,
+      name: name, 
+      nodeType: "circle",
+      status: "approved",
+      type: _type, 
+      updatedAt: updatedAt, 
+      updatedUser: this.state.currentUserId,
     }
-    return { nodes: res[0].nodes, links: res[0].links }
+    return node;
   }
-    
-// create author nodes compare and connect to article node
+
+  /**
+   * Create author nodes compare and connect to article node
+   * 
+   * @param {string[]} authorsList 
+   * @param {object[]} nodes 
+   * @param {object} article 
+   * @param {object[]} new_links 
+   * @param {object[]} new_nodes 
+   * @returns {object}
+   */
   getAuthors = (authorsList, nodes, article, new_links, new_nodes) => {
     return Promise.all(
       authorsList.map( async (author) => {
@@ -358,66 +426,30 @@ class ScienceGraphModal extends Component {
     )
   }
 
-  createNode = (nodes, name, url, type, contentData=false) => {
-    const updatedAt = moment().unix();
-    const icon = !!contentData.published
-      ? REACT_APP_ARTICLE_URL
-      : REACT_APP_AUTHOR_URL
-    const keywords = !!contentData.topics 
-      ? contentData.topics
-      : []
-    const arxivHref = url != undefined  
-      ? `
-        <a href="${url}" target="_blank">
-          Go to article
-        </a>
-      ` : ''
-    const about = !!contentData.published
-    ? `<div>
-        <strong class="tabHeader">About</strong><br>
-        <br>Published at: ${contentData.published}<br>
-        <br>Topics: ${contentData.topics}<br>
-        <br>${contentData.abstract}<br>
-        ${arxivHref}
-      </div>` 
-    : false;
-
-    const customFields = about 
-      ? [
-        {
-          name: "About",
-          subtitle: "",
-          value: about,
-        }
-      ] : "";
-    const _type = type || _.last(nodes)?.type || '';
-    const node = {
-      create: true,
-      color: ChartUtils.nodeColorObj[_type] || '',
-      createdAt: updatedAt, 
-      createdUser: this.state.currentUserId,
-      customFields: customFields, 
-      fx: -189.21749877929688 + (Math.random()*150), 
-      fy: -61.72186279296875 + (Math.random()*150),
-      icon: icon,
-      id: ChartUtils.uniqueId(nodes), 
-      index: 0, // will it generate an index or I should give it by hand
-      keywords: keywords, 
-      d: undefined,
-      infographyId: undefined,
-      location: undefined,
-      labels: [],
-      link: url, 
-      manually_size: 1,
-      name: name, 
-      nodeType: "circle",
-      status: "approved",
-      type: _type, 
-      updatedAt: updatedAt, 
-      updatedUser: this.state.currentUserId,
+  /**
+   * Merge all new cerated nodes and links
+   * 
+   * @param {object} res 
+   * @returns {object}
+   */
+  sendResultsToBackEnd = async res => {
+    if (!res) {
+      return
     }
-    return node;
-  }
+    if(! (res.filter(obj => obj !== undefined).length) ) {
+      return
+    }
+    await Api.dataPast(this.state.graphId, undefined, [0, 0], 'merge', {
+      labels: [],
+      nodes: res[0].nodes,
+      links: res[0].links,
+    }).catch((e) => e.response);
+    if (res.status === 'error') {
+      toast.error(res.message);
+      return;
+    }
+    return { nodes: res[0].nodes, links: res[0].links }
+  }  
 
   handleCheckedButton = (param) => {
     const oldCheckedList = this.state.checkedList
@@ -433,7 +465,7 @@ class ScienceGraphModal extends Component {
     });
   };
 
-  handleCheckAll = () => {
+  handleSelectedAll = () => {
     const selectAllButtonText = ['Unselect All', 'Select All']
     const resultsLength = this.state.apiSearchReturnValues.length
     if (this.state.checkedList.length === resultsLength) {
@@ -542,12 +574,12 @@ class ScienceGraphModal extends Component {
               ? 
                 <>
                   <button 
-                    onClick={(ev) => this.handleCheckAll(ev)} 
+                    onClick={(ev) => this.handleSelectedAll(ev)} 
                     className="ghButton accent alt ">
                     {this.state.selectAllArticlesButtonText} 
                   </button>
                   <button 
-                    onClick={(ev) => this.getAllNodes(ev)} 
+                    onClick={(ev) => this.createSelectedNodes(ev)} 
                     className="ghButton accent alt ">
                     Create Graph 
                   </button>
@@ -564,17 +596,17 @@ class ScienceGraphModal extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   customFields: state.graphs.customFields || {},
-// });
+const mapStateToProps = (state) => ({
+  customFields: state.graphs.customFields || {},
+});
 
-// const mapDispatchToProps = {
-//   toggleNodeModal,
-// };
+const mapDispatchToProps = {
+  toggleNodeModal,
+};
 
-// const Container = connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(ScienceGraphModal);
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ScienceGraphModal);
 
 export default ScienceGraphModal;
