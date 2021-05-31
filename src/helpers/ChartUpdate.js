@@ -207,8 +207,7 @@ class ChartUpdate {
   static mouseMovePositions = (graphId, userId, cursors) => {
     Chart.svg.select('.mouseCursorPosition').selectAll('g').remove();
     Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();
-    let fullName = ' ';
-    console.log(graphId, 'graphIdgraphIdgraphId');
+    let fullName = ' '; 
     cursors.forEach((cursor) => {
       if (graphId === +cursor?.graphId && +cursor.userId !== +userId) {
         fullName = `${cursor?.firstName} ${cursor?.lastName}`;
