@@ -3,6 +3,8 @@ import fileDownload from 'js-file-download';
 import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
 
+const { REACT_APP_ARXIV_URL } = process.env;
+const { REACT_APP_CORE_URL } = process.env;
 const { REACT_APP_API_URL } = process.env;
 
 const api = axios.create({
@@ -22,6 +24,10 @@ api.interceptors.request.use((config) => {
 
 class Api {
   static url = REACT_APP_API_URL;
+  static REACT_APP_ARXIV_URL = REACT_APP_ARXIV_URL;
+  static REACT_APP_CORE_URL = REACT_APP_CORE_URL;
+  static REACT_APP_ARTICLE_URL = REACT_APP_API_URL + "/public/article.svg"
+  static REACT_APP_AUTHOR_URL = REACT_APP_API_URL + "/public/person.svg"
 
   static #cancelSource = [];
 

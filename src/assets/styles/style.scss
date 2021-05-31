@@ -1332,6 +1332,9 @@ p {
     .wikiButton {
       right: 22%;
     }
+    .scienceGraph {
+      right: 31%;
+    }
 
   }
   .account-edit{
@@ -4565,10 +4568,11 @@ body .gh__menu {
 
   .headerBanner {
     position: relative;
-    height: 200px;
+    margin-left: 13px;
+    height: 250px;
     min-height: 150px;
     display: grid;
-    grid-template-columns: 35% 65%;
+    grid-template-columns: 35% 53%;
     background: #f2f6fb;
     grid-gap: 16px;
 
@@ -4577,26 +4581,23 @@ body .gh__menu {
     }
 
     img {
-      height: 200px;
-      width: 300px;
+      height: 250px;
+      width: 100%;
       object-fit: contain;
-      margin-left: 10px;
-      border-radius: 20px;
-      -webkit-border-radius: 20px;
-      -moz-border-radius: 20px;
+      border-radius: 30px;
     }
 
     .textWrapper {
-      margin: 0 auto;
-      margin-top: 20%;
+      margin-top: 15%;
 
       .name {
-        font-size: 35px;
+        font-size: 25px;
+        text-align: left;
       }
 
       .type {
         font-weight: 600;
-        font-size: 30px;
+        font-size: 23px;
         color: #717EA0;
       }
     }
@@ -5035,7 +5036,7 @@ body .gh__menu {
     }
 
     .headerBanner {
-      height: 11vw;
+      height: 250px;
     }
 
     .nodeDescription {
@@ -6448,11 +6449,7 @@ body .gh__menu {
     height: 40px;
   }
 }
-.scienceGraph{
-  z-index: 1000;
-  border-radius: 50%;
-  width: 1.8em;
-  position: absolute;
+.scienceGraph{ 
   right: 31% ;
 }
 
@@ -8922,9 +8919,14 @@ img.preview-scaled {
   margin: 0px;
 }
 .selectedArticlesAmount {
-  font-size: 1.5em;
   margin-left: 1em;
+  margin-bottom: 0px;
 }
+
+.scienceInput:focus {
+  outline: none;
+}
+//-----------------------------------
 
 //-----------------------------------
 

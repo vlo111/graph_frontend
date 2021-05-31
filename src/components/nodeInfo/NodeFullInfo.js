@@ -64,20 +64,16 @@ class NodeFullInfo extends Component {
           />
           <div className="nodeFullContent">
             <div className="headerBanner ">
-              <div className="textWrapper">
-                <h2 title={node.name} className="name">
-                  { node.name && (node.name.length > 10)
-                    ? `${node.name.substr(0, 10)}`
-                    : node.name}
-                </h2>
-                <h3 title={node.type} className="type">
-                  { node.type && (node.type.length > 10)
-                    ? `${node.type.substr(0, 10)}`
-                    : node.type}
-                </h3>
-              </div>
               <div className="frame">
                 <NodeImage node={node} />
+              </div>
+              <div className="textWrapper">
+                <h2 className="name">
+                  {node.name}
+                </h2>
+                <h3 className="type">
+                  {node.type}
+                </h3>
               </div>
               <Link replace className="expand" to={`?${queryString.stringify({ ...queryObj, expand: '1' })}`}>
                 Expand
