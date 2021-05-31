@@ -714,7 +714,13 @@ class Chart {
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
-      .attr('data-y', transform.y);
+      .attr('data-y', transform.y); 
+      // mouse cursor
+    const mouseCursorPosition = this.svg.select('.mouseCursorPosition'); 
+     mouseCursorPosition.attr('transform', transform)
+      .attr('data-scale', transform.k)
+      .attr('data-x', transform.x)
+      .attr('data-y', transform.y); 
 
     this.event.emit('zoom', ev, { transform });
 

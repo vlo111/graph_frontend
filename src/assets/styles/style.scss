@@ -4568,7 +4568,6 @@ body .gh__menu {
 
   .headerBanner {
     position: relative;
-    margin-left: 13px;
     height: 250px;
     min-height: 150px;
     display: grid;
@@ -4586,7 +4585,9 @@ body .gh__menu {
       object-fit: contain;
       border-radius: 30px;
     }
-
+     .frame {     
+       margin-left: 13px;
+     }
     .textWrapper {
       margin-top: 15%;
 
