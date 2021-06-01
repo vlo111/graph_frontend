@@ -79,32 +79,35 @@ class ReactChart extends Component {
   handleFolderOpen = async (ev, d) => {
     const { match: { params: { graphId } } } = this.props;
     Chart.loading(true);
-    const { data } = await Api.labelData(graphId, d.id);
-    const nodes = Chart.getNodes();
-    nodes.push(...data.label.nodes);
+    const { data } = await Api.labelData(graphId, d.id).catch((e) => e.response);
+    if (data && data.label) {
+      const nodes = Chart.getNodes();
+      nodes.push(...data.label.nodes);
 
-    const fakeId = `fake_${data.label.label.id}`;
+      const fakeId = `fake_${data.label.label.id}`;
 
-    const folders = Chart.getLabels().filter((l) => l.type === 'folder' && l.id !== data.label.label.id);
-    // let links = Chart.getLinks();
-    let links = Chart.getLinks().filter((l) => l.source !== fakeId && l.target !== fakeId);
-    data.label.links.forEach((link) => {
-      folders.forEach((folder) => {
-        const fId = `fake_${folder.id}`;
-        if (!folder.open) {
-          if (folder.nodes.includes(link.source)) {
-            link.source = fId;
-            link.fake = true;
-          } else if (folder.nodes.includes(link.target)) {
-            link.target = fId;
-            link.fake = true;
+      const folders = Chart.getLabels().filter((l) => l.type === 'folder' && l.id !== data.label.label.id);
+      // let links = Chart.getLinks();
+      let links = Chart.getLinks().filter((l) => l.source !== fakeId && l.target !== fakeId);
+      data.label.links.forEach((link) => {
+        folders.forEach((folder) => {
+          const fId = `fake_${folder.id}`;
+          if (!folder.open) {
+            if (folder.nodes.includes(link.source)) {
+              link.source = fId;
+              link.fake = true;
+            } else if (folder.nodes.includes(link.target)) {
+              link.target = fId;
+              link.fake = true;
+            }
           }
-        }
+        });
+        links.push(link);
       });
-      links.push(link);
-    });
-    links = ChartUtils.uniqueLinks(links, true);
-    Chart.render({ nodes, links }, { ignoreAutoSave: true });
+      links = ChartUtils.uniqueLinks(links, true);
+      Chart.render({ nodes, links }, { ignoreAutoSave: true });
+    }
+
     Chart.loading(false);
   }
 
@@ -309,7 +312,7 @@ class ReactChart extends Component {
 
             </defs>
           </g>
-          <g className="mouseCursorPosition" transform-origin="top left"/>
+          <g className="mouseCursorPosition" transform-origin="top left" />
         </svg>
         {singleGraphStatus === 'fail' ? <NotFound /> : null}
       </div>

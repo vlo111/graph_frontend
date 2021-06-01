@@ -142,7 +142,7 @@ class AutoSave extends Component {
 
   formatLabel = (d) => ({
     d: d.d || '',
-    status: d.status || '',
+    status: d.status || 'unlock',
     name: d.name || '',
   })
 
@@ -191,7 +191,7 @@ class AutoSave extends Component {
     const createLabels = _.differenceBy(labels, oldLabels, 'id');
     const updateLabels = [];
     const updateLabelPositions = [];
-
+    console.log(labels, oldLabels)
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
