@@ -28,8 +28,8 @@ class GraphListItem extends Component {
               <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
             </Link>
             <div className="info"> 
-              <span>{moment(graph.updatedAt).calendar()}</span>
-              <span>{`${graph.nodesCount} nodes`}</span>
+              <span>{moment(graph.updatedAt).calendar()}</span>     
+              <span>{` ${graph.nodesCount} nodes `}</span>
             </div>
           </div>
         </div> 

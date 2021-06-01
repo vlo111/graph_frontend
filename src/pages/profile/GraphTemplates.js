@@ -49,9 +49,7 @@ class Home extends Component {
           ) : null}
           {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
             <NoGraph />
-          ) : null}
-     
-            
+          ) : null}            
               {graphsList.map((graph) => (
                 <article key={graph.id} className="graphsItem"> 
                   <div className="top">
@@ -66,12 +64,10 @@ class Home extends Component {
                       </Link>
                       <div className="info">
                         <span>{moment(graph.updatedAt).calendar()}</span>
-                        <span>{`${graph.nodesCount} nodes`}</span>
+                        <span>{` ${graph.nodesCount} nodes`}</span>
                       </div>
                     </div>
                   </div>
-
-
                   <div className="dashboard" >
                   <div className="dashboard-onhover">
                     <div className="dashboard-onhover-content">
