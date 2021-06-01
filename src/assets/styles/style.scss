@@ -6053,7 +6053,7 @@ body .gh__menu {
   }
 
   &__user {
-    display: flex;
+    // display: flex;
     align-items: center;
     margin-bottom: 20px;
     color: #808080;
@@ -6064,13 +6064,13 @@ body .gh__menu {
   &__avatar {
     width: 7.1vw;
     height: 7.1vw;
-    min-width: 100px;
-    min-height: 100px;
+    min-width: 180px;
+    min-height: 180px;
     border-radius: 50%;
     object-fit: cover;
     position: absolute;
-    top: 200px;
-    // left: 282px;
+    top: 180px;
+    padding: 20px;
   }
 
   // &__description {
@@ -6078,12 +6078,11 @@ body .gh__menu {
   // }
 
   &__user-details {
-    display: grid;
-    grid-gap: 10%;
     position: relative;
     flex-direction: column;
     margin: 0 110px;
-    top: 2px;
+    top: 18px;
+    line-height: 30px;
   }
 
   &__friends {
