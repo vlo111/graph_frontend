@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Modal from 'react-modal';
-import PropTypes from 'prop-types';
+import PropTypes, { node } from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import {setActiveButton} from '../../store/actions/app';
@@ -13,6 +13,7 @@ import {setActiveTab, getAllTabsRequest} from '../../store/actions/graphs';
 import Chart from '../../Chart';
 import queryString from 'query-string';
 import Api from '../../Api';
+import { getGraphNodesRequest } from '../../store/actions/graphs'
 
 
 class SearchModal extends Component {
@@ -43,67 +44,71 @@ class SearchModal extends Component {
   }
 
   handleChange = async (search = '') => {
-    const s = search.trim().toLowerCase()
-    if (!s) {
-      this.setState({ nodes: [], search });
+    this.setState({ nodes: [], search, tabs:[]});
+    if (!search) {
       return;
     }
-    // get nodes from server
-    const query = queryString.stringify({ s: search });
-    const graphId = window.location.pathname.substring(
-      window.location.pathname.lastIndexOf('/') + 1)
-    const allNodes = await Api.exp(graphId, `name=${search}`)
-    console.log(allNodes)
-
-    const nodes = Chart.getNodes().filter(n => _.lowerCase(n.name).includes(s) || _.lowerCase(n.type).includes(s));
-    const tabs = [];
 
     if (search.length > 2) {
-      const { graphTabs } = this.props;
-
-      if (graphTabs && graphTabs.length && !_.isEmpty(nodes)) {
-        graphTabs.forEach((p) => {
-          const node = nodes.filter((g) => g.id === p.nodeId)[0];
-
-          const tabData = p.tab;
-
-          tabData.forEach((tab) => {
-            const tabContent = tab.value;
-
-            const tabContentHtml = document.createElement('div');
-
-            tabContentHtml.innerHTML = tabContent;
-
-            const tabSearchValue = tabContentHtml.textContent;
-
-            if (tab.name.toLowerCase().includes(search.toLowerCase())
-              || tabSearchValue.toLowerCase().includes(search.toLowerCase())) {
-               
-              if (node !== undefined && node.id && (node.id !== 'undefined')) {
-                tabs.push({
-                  nodeId: node.id,
-                  node,
-                  tabName: tab.name,
-                  tabContent,
-                  tabSearchValue,
-                });
-              }
-            }
-          });
-        });
-      }
+      this.displayChanges(search)
     }
-
-    const groupBy = (array, key) => array.reduce((result, obj) => {
-      (result[obj[key]] = result[obj[key]] || []).push(obj);
-      result[obj[key]].node = obj.node;
-      return result;
-    }, {});
-
-    const tabArray = groupBy(tabs, 'nodeId');
-
-    this.setState({ nodes, search, tabs: tabArray });
   }
+
+  displayChanges = async search => {
+    const tabs = [];
+    let myNodes = []
+    
+    const argument = {
+      s: search,
+      graphId: window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1),
+      findNode: false
+    };
+    
+    const findedNodes = await this.props.getGraphNodesRequest(1, argument)
+    
+    try {
+      const nodesList = findedNodes.payload.data.graphs[0].nodes
+      if (nodesList.length > 1) {
+        myNodes = nodesList
+      }
+      
+      nodesList.map(node => {
+        if (node.customFields.length) {
+          const tabContent = node.customFields[0].value;
+          const tabName = node.customFields[0].value;
+          const tabContentHtml = document.createElement('div');
+          tabContentHtml.innerHTML = tabContent;
+          const tabSearchValue = tabContentHtml.textContent;
+          
+          tabs.push({
+            nodeId: node.id,
+            node,
+            tabName,
+            tabContent,
+            tabSearchValue,
+          });
+        }
+      })
+
+      const groupBy = (array, key) => array.reduce((result, obj) => {
+        (result[obj[key]] = result[obj[key]] || []).push(obj);
+        debugger
+        if (obj.node.name.length > 42) {
+          obj.node.name = obj.node.name.slice(0,40) + '...'
+        }
+        result[obj[key]].node = obj.node;
+        return result;
+      }, {});
+  
+      const tabArray = groupBy(tabs, 'nodeId');
+      const tabNodes = Object.keys(tabArray)
+      myNodes = myNodes.filter(node => !tabNodes.includes(node.id))
+      this.setState({ nodes: myNodes, search, tabs: tabArray });
+    } catch(e) {
+      console.log('e', e)
+    }
+  }
+
 
   formatHtml = (text) => {
     const { search } = this.state;
@@ -238,6 +243,7 @@ const mapDispatchToProps = {
   setActiveTab,
   setActiveButton,
   getAllTabsRequest,
+  getGraphNodesRequest
 };
 
 const Container = connect(
