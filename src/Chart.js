@@ -714,13 +714,13 @@ class Chart {
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
-      .attr('data-y', transform.y); 
-      // mouse cursor
-    const mouseCursorPosition = this.svg.select('.mouseCursorPosition'); 
-     mouseCursorPosition.attr('transform', transform)
+      .attr('data-y', transform.y);
+    // mouse cursor
+    const mouseCursorPosition = this.svg.select('.mouseCursorPosition');
+    mouseCursorPosition.attr('transform', transform)
       .attr('data-scale', transform.k)
       .attr('data-x', transform.x)
-      .attr('data-y', transform.y); 
+      .attr('data-y', transform.y);
 
     this.event.emit('zoom', ev, { transform });
 
@@ -1566,20 +1566,23 @@ class Chart {
       }
       this.ignoreAutoSave = params.ignoreAutoSave;
 
-      if (!this.ignoreAutoSave) {
-        this.oldData = _.cloneDeep({
-          nodes: Chart.getNodes(true, data.nodes),
-          links: Chart.getLinks(data.links),
-          labels: Chart.getLabels(data.labels),
-        });
-      }
-
       this.isAutoPosition = !_.isUndefined(params.isAutoPosition) ? params.isAutoPosition : this.isAutoPosition;
 
       this.graphId = Utils.getGraphIdFormUrl();
       this._dataNodes = null;
       this._dataLinks = null;
       data = this.normalizeData(data, params);
+
+      if (!this.ignoreAutoSave) {
+        this.oldData = JSON.parse(JSON.stringify({
+          nodes: Chart.getNodes(true, ChartUtils.objectAndProto(data.nodes)),
+          links: Chart.getLinks(true, ChartUtils.objectAndProto(data.links)),
+          labels: Chart.getLabels(ChartUtils.objectAndProto(data.labels)),
+        }));
+        console.log(Chart.getLinks(true, data.links));
+
+      }
+
       if (!params.dontRemember && _.isEmpty(params.filters)) {
         this.undoManager.push(data, params.eventId);
         if (!_.isEmpty(this.data?.nodes) || !_.isEmpty(this.data?.links)) {
@@ -1590,13 +1593,12 @@ class Chart {
       }
       data = ChartUtils.filter(data, params.filters, params.customFields);
       this.data = data;
-
       if (this.ignoreAutoSave) {
-        this.oldData = _.cloneDeep({
-          nodes: Chart.getNodes(true, data.nodes),
-          links: Chart.getLinks(data.links),
-          labels: Chart.getLabels(data.labels),
-        });
+        this.oldData = JSON.parse(JSON.stringify({
+          nodes: Chart.getNodes(true, ChartUtils.objectAndProto(data.nodes)),
+          links: Chart.getLinks(true, ChartUtils.objectAndProto(data.links)),
+          labels: Chart.getLabels(ChartUtils.objectAndProto(data.labels)),
+        }));
       }
 
       this.radiusList = ChartUtils.getRadiusList();
@@ -2416,7 +2418,7 @@ class Chart {
       .join('text')
       .attr('text-anchor', 'middle')
       .attr('fill', ChartUtils.linkColor)
-      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + d.value / 2 : (5 + d.value / 2) * -1))
+      .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + (d.value || 1) / 2 : (5 + (d.value || 1) / 2) * -1))
       .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
     this.linkText.append('textPath')
@@ -2738,11 +2740,11 @@ class Chart {
     return this.getNodes();
   }
 
-  static getLinks(defaults = []) {
+  static getLinks(force = false, defaults = []) {
     if (_.isEmpty(this.data?.links)) {
       return defaults;
     }
-    if (!this._dataLinks) {
+    if (!this._dataLinks || force) {
       this._dataLinks = this.data.links.map((d) => {
         const pd = Object.getPrototypeOf(d);
         return {

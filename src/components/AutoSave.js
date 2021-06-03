@@ -142,7 +142,7 @@ class AutoSave extends Component {
 
   formatLabel = (d) => ({
     d: d.d || '',
-    status: d.status || '',
+    status: d.status || 'unlock',
     name: d.name || '',
   })
 
@@ -191,21 +191,15 @@ class AutoSave extends Component {
     const createLabels = _.differenceBy(labels, oldLabels, 'id');
     const updateLabels = [];
     const updateLabelPositions = [];
-
+    console.log(oldLabels, labels);
+    let newLabel = false;
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
-        if (!_.isEqual(label.d, oldLabel.d)) {
+        if (!_.isEqual(label.d, oldLabel.d) || !_.isEqual(label.size, oldLabel.size)) {
           updateLabelPositions.push({
             id: label.id,
             d: label.d,
-            type: label.type,
-            open: label.open,
-          });
-        } else if (!_.isEqual(label.size, oldLabel.size)) {
-          updateLabelPositions.push({
-            id: label.id,
-            size: label.size,
             type: label.type,
             open: label.open,
           });
@@ -213,11 +207,19 @@ class AutoSave extends Component {
           createLabels.push(label);
         } else if (!_.isEqual(this.formatLabel(label), this.formatLabel(oldLabel))) {
           updateLabels.push(label);
-        } else if (oldLabel.new) {
+        } else if (oldLabel.new || oldLabel.import) {
+          newLabel = true;
           createLabels.push(label);
         }
       }
     });
+    if (newLabel) {
+      Chart.oldData.labels = Chart.oldData.labels.map((d) => {
+        delete d.new;
+        delete d.import;
+        return d;
+      });
+    }
 
     const deleteNodes = _.differenceBy(oldNodes, nodes, 'id');
     const createNodes = _.differenceBy(nodes, oldNodes, 'id');
@@ -255,6 +257,7 @@ class AutoSave extends Component {
     const deleteLinks = _.differenceBy(oldLinks, links, 'id');
     let createLinks = _.differenceBy(links, oldLinks, 'id');
     const updateLinks = [];
+
     createLinks.push(...oldLinks.filter((l) => l.create));
     oldLinks.forEach((l) => {
       delete l.create;
@@ -262,8 +265,8 @@ class AutoSave extends Component {
     links.forEach((link) => {
       const oldLink = oldLinks.find((l) => l.id === link.id);
       if (oldLink) {
-        if (!('index' in oldLink)) {
-          // createLinks.push(link);
+        if (_.isUndefined(link.index)) {
+          createLinks.push(link);
         } else if (!_.isEqual(this.formatLink(oldLink), this.formatLink(link)) && !link.create) {
           updateLinks.push(link);
         }

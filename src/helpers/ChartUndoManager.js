@@ -25,7 +25,7 @@ class ChartUndoManager {
     if (this.data.length > MAX_COUNT - 1) {
       this.data.shift();
     }
-    const i = this.data.findIndex((d) => d.eventId === eventId);
+    const i = eventId ? this.data.findIndex((d) => d.eventId === eventId) : -1;
     if (i > -1) {
       this.data[i] = _.cloneDeep({ ...datum, eventId });
     } else {
@@ -48,7 +48,6 @@ class ChartUndoManager {
       this.pointer += 1;
     }
     const datum = this.data[this.data.length - this.pointer - 1];
-    console.log(this.data, 888)
     if (datum) {
       Chart.render(datum, { dontRemember: true });
     }
