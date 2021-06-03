@@ -49,10 +49,24 @@ class ReactChartMap extends Component {
     const { layerX, layerY } = ev;
     const { min, max } = ChartUtils.getDimensions();
     const originalWidth = max[0] - min[0];
-    const { width } = this.ref.getBoundingClientRect();
+    const originalHeight = max[1] - min[1];
+    const { width, height } = this.ref.getBoundingClientRect();
     const areaSize = this.getAreaSize();
-    const x = ((layerX * originalWidth / width * -1) - min[0] + (areaSize.width / 2)) * transform.k;
-    const y = ((layerY * originalWidth / width * -1) - min[1] + (areaSize.height / 2)) * transform.k;
+
+    const { width: gWidth, height: gHeight } = this.objects.getBoundingClientRect();
+    const x1 = layerX - ((width - gWidth) / 2);
+    const y1 = layerY - ((height - gHeight) / 2);
+
+    let x;
+    let y;
+    if (originalWidth > originalHeight) {
+      x = ((x1 * originalWidth / width * -1) - min[0] + (areaSize.width / 2)) * transform.k;
+      y = ((y1 * originalWidth / width * -1) - min[1] + (areaSize.height / 2)) * transform.k;
+    } else {
+      x = ((x1 * originalHeight / height * -1) - min[0] + (areaSize.width / 2)) * transform.k;
+      y = ((y1 * originalHeight / height * -1) - min[1] + (areaSize.height / 2)) * transform.k;
+    }
+
     Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(transform.k));
   }
 
@@ -110,7 +124,7 @@ class ReactChartMap extends Component {
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
       >
-        <g>
+        <g ref={(ref) => this.objects = ref}>
           {labels.filter((l) => l.type !== 'folder').map((l) => {
             const square = (l.type !== 'square' && l.type !== 'ellipse')
               ? ChartUtils.pathToSquare(l.d) : l.size;
@@ -135,15 +149,16 @@ class ReactChartMap extends Component {
             />
           ))}
           {/* <rect className="board" opacity={0} width={originalWidth} height={originalHeight} x={min[0]} y={min[1]}/> */}
-          <rect
-            className="viewArea"
-            x={(-1 * transform.x) / transform.k}
-            y={(-1 * transform.y) / transform.k}
-            strokeWidth={originalWidth / window.innerWidth * 2}
-            width={areaSize.width}
-            height={areaSize.height}
-          />
+
         </g>
+        <rect
+          className="viewArea"
+          x={(-1 * transform.x) / transform.k}
+          y={(-1 * transform.y) / transform.k}
+          strokeWidth={originalWidth / window.innerWidth * 2}
+          width={areaSize.width}
+          height={areaSize.height}
+        />
       </svg>
     );
   }

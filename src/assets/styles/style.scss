@@ -1342,7 +1342,7 @@ p {
     height: 80px;
     border-radius: 50%;
     background-color: gainsboro;
-    
+
     cursor: pointer;
   }
   .account-edit i{
@@ -4585,7 +4585,7 @@ body .gh__menu {
       object-fit: contain;
       border-radius: 30px;
     }
-     .frame {     
+     .frame {
        margin-left: 13px;
      }
     .textWrapper {
@@ -6449,7 +6449,7 @@ body .gh__menu {
     height: 40px;
   }
 }
-.scienceGraph{ 
+.scienceGraph{
   right: 31% ;
 }
 
@@ -6473,7 +6473,7 @@ body .gh__menu {
 .resultAmount {
   color:#1a0dab;
   font-size:1.5em;
-  text-align:center; 
+  text-align:center;
   margin:0em 0 1em 1em
 }
 
@@ -8597,7 +8597,7 @@ img.preview-scaled {
   .reactChartMapWrapper {
     z-index: 4;
     width: 20vw;
-    height: 20vh;
+    height: calc(20vw / 4 * 3);
     margin-bottom: 10px;
     svg {
       height: 100%;
@@ -8759,7 +8759,7 @@ img.preview-scaled {
   width: 90px;
 }
 .scienceModalLoading {
-  right: 50% !important;  
+  right: 50% !important;
 }
 .scienceLogo {
   margin: 0.7em auto;
@@ -8856,7 +8856,7 @@ img.preview-scaled {
   width:90%
 }
 
-// media for search form 
+// media for search form
 @media only screen and (max-width: 900px) {
   .scienceForm form {
     flex-direction: column;
@@ -8932,7 +8932,7 @@ img.preview-scaled {
 
 
 .button-group {
-   
+
   border-radius: 4px;
   display: flex;
   text-align: center;
@@ -8948,7 +8948,7 @@ img.preview-scaled {
       fill: $color-dark;
     }
   }
-  svg { 
+  svg {
     width: 40px;
     height: 40px;
   }
@@ -8965,7 +8965,7 @@ img.preview-scaled {
   color: #6c757d;
   left: -1%;
   border-radius: 8px;
-}   
+}
 
 .rigt-input{
   display: grid;
@@ -8988,7 +8988,7 @@ img.preview-scaled {
   grid-gap: 36%;
   position: relative;
   // left: 40%;
-   
+
 }
 .social-list>div{
   width: 32px;
