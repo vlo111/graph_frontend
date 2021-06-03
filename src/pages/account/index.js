@@ -55,7 +55,7 @@ const Profile = React.memo((props) => {
                   <div className="profile__user-details">
 
                     <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
-                    <div style={{ position: 'absolute', right: '500px' }}>
+                    <div style={{ position: 'absolute', right: '-30%',left: '100%',top:'1px' }}>
                       <AddButton user={profile} />
                     </div>
                     {currentUserId == userId && (
@@ -66,10 +66,11 @@ const Profile = React.memo((props) => {
                       </span>
                     )}
                     <div>
-                      <strong>Website : </strong>
-                      <a href={profile.website} target="_blank" rel="noreferrer">
-                        {profile.website}
-                      </a>
+                    <strong>Website : </strong>
+                    <a className="website" href={profile.website} target="_blank" > 
+                      
+                      {profile.website}        
+                    </a>
                     </div>
                     <span className="profile__description">
                       <span>
