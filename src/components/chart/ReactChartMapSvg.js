@@ -67,7 +67,7 @@ class ReactChartMap extends Component {
       y = ((y1 * originalHeight / height * -1) - min[1] + (areaSize.height / 2)) * transform.k;
     }
 
-    Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(x, y).scale(transform.k));
+    this.zoom(transform.k, x, y);
   }
 
   handleChartZoom = (ev, d) => {
@@ -149,7 +149,6 @@ class ReactChartMap extends Component {
             />
           ))}
           {/* <rect className="board" opacity={0} width={originalWidth} height={originalHeight} x={min[0]} y={min[1]}/> */}
-
         </g>
         <rect
           className="viewArea"

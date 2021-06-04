@@ -1933,6 +1933,7 @@ class Chart {
 
     const handleSquareDragStart = () => {
       if (this.nodesPath) return;
+
       if (selectSquare) {
         let {
           width, height, x, y,
@@ -2054,8 +2055,10 @@ class Chart {
     };
 
     const handleSquareDragEnd = (ev) => {
-      handleSquareDragStart();
-      Chart.event.emit('selected.dragend', ev);
+      if(selectSquare){
+        handleSquareDragStart();
+        Chart.event.emit('selected.dragend', ev);
+      }
     };
 
     const handleDragStart = (ev) => {

@@ -226,6 +226,7 @@ class AutoSave extends Component {
     const updateNodes = [];
     const updateNodePositions = [];
     const updateNodeCustomFields = [];
+    console.log(3333)
     nodes.forEach((node) => {
       const oldNode = oldNodes.find((n) => n.id === node.id);
       if (oldNode) {
