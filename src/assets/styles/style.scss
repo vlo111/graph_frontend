@@ -9053,3 +9053,187 @@ color: #2962ff;
   box-shadow: 0 2px 9px rgb(2 47 119 / 20%);
   color: black;
 }
+// ----- analytical
+
+.analyticBottomPage {
+  width: 100%;
+  height: 35%;
+  position: fixed;
+  z-index: 1;
+  bottom: 25px;
+
+  .close {
+    position: fixed;
+    right: 285px;
+    top: 0;
+    z-index: 2;
+    display: none;
+
+    .icon {
+      width: 12px;
+    }
+  }
+
+  .analitycBack {
+    top: -130px;
+    position: fixed;
+  }
+
+  .bottomTool {
+    position: fixed;
+    bottom: 40%;
+    right: 1%;
+    display: flex;
+
+    div {
+      margin-left: 10px;;
+    }
+
+    #autoPlay {
+      position: initial;
+      right: 0;
+    }
+    
+    .graphControlPanel {
+      padding-right: 5px;
+      right: 0;
+      position: initial;
+    }
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-gap: 10px;
+    max-width: 100%;
+    height: 100%;
+
+    .localAnalyse {
+      padding-left: 20px;
+      padding-top: 24px;
+      line-height: 30px;
+
+      h3 {
+        font-weight: 600;
+        margin: 5px 15px;
+        padding: 5px 5px 1px;
+        color: #da9393;
+        font-size: 17px;
+      }
+
+      strong {
+        color: #717EA0;
+        font-weight: 600;
+      }
+    }
+
+    .localAnalyse > div {
+      margin: 6px;
+    }
+
+    .pieChart {
+      padding-top: 20px;
+
+      .recharts-surface {
+        height: 300px;
+      }
+    }
+
+    .containerBarChart, .diag2, .localAnalyse, .pieChart {
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 6px 20px rgb(13 9 5 / 15%);
+      display: flex;
+      border-radius: 10px;
+    }
+
+    .containerBarChart {
+      .recharts-surface {
+        width: 100%;
+        height: 320px;
+      }
+
+      .recharts-wrapper {
+        max-width: 81% !important;
+        left: 8%;
+      }
+    }
+
+    .recharts-responsive-container {
+      max-height: 500px;
+      height: 300px !important;
+    }
+
+  }
+
+  .recharts {
+    position: absolute !important;
+    right: 0;
+    background: white;
+    border-radius: 10px;
+  }
+
+  .recharts-tooltip-wrapper {
+    .custom-tooltip {
+      background-color: white;
+      border-radius: 14px;
+      padding: 25px;
+      opacity: 0.8;
+
+      .more {
+        margin-left: 5%;
+      }
+
+      .tooltipHover {
+        display: flex;
+        align-items: center;
+      }
+
+      .tooltipHover > div {
+        margin: 6px;
+      }
+
+      p {
+        margin:0;
+        line-height: 35px;
+        font-family: Julius Sans One;
+      }
+
+      .circle {
+        clip-path: circle(50%);
+        height: 1em;
+        width: 1em;
+      }
+    }
+  }
+  .recharts-surface {
+    .recharts-tooltip-cursor {
+      fill: #96969629;
+    }
+  }
+}
+
+.analyticRightPage {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 53%;
+  width: 350px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgb(0 0 0 / 10%);
+  transition: all 0.6s ease-in-out 0s;
+  transform-origin: left top;
+  transform: scaleY(0);
+
+  .container {
+    line-height: 50px;
+    font-size: 15px;
+    padding-left: 50px;
+    padding-top: 30px;
+  }
+}
+
+.recharts-sector {
+  transition: all 0.6s ease-in-out 0s;
+}

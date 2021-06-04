@@ -95,7 +95,7 @@ class DataTableNodes extends Component {
         }
       });
     }
-    console.log(grid)
+
     return (
       <table className={props.className}>
         <thead>

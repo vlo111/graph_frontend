@@ -17,6 +17,7 @@ import ShareTooltip from './ShareTooltip/ShareTooltip';
 import { ReactComponent as SquareSvg } from '../assets/images/icons/square.svg';
 import { ReactComponent as EllipseSvg } from '../assets/images/icons/ellipse.svg';
 import { ReactComponent as FreeFormSvg } from '../assets/images/icons/freeForm.svg';
+import { ReactComponent as AnalyticsSvg } from '../assets/images/icons/analytics.svg';
 
 class ToolBar extends Component {
   static propTypes = {
@@ -33,8 +34,16 @@ class ToolBar extends Component {
   }
 
   handleClick = (button) => {
-    this.setState({showLabelForm: false});
-    this.props.setActiveButton(button);
+    if (button === 'analytic') {
+      const {
+        match: { params: { graphId } },
+      } = this.props;
+
+      this.props.history.replace(`/graphs/view/${graphId}?analytics`);
+    } else {
+      this.setState({ showLabelForm: false });
+      this.props.setActiveButton(button);
+    }
   }
 
   resetGraph = () => {
@@ -121,7 +130,13 @@ class ToolBar extends Component {
               onClick={() => this.handleClick('import')}
             >
               Import data
-            </Button> 
+            </Button>
+            <Button
+              icon={<AnalyticsSvg />}
+              onClick={() => this.handleClick('analytic')}
+            >
+              Analysis
+            </Button>
           </div>
         </div>
 
