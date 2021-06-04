@@ -8,7 +8,7 @@ class ChartUpdate {
     if (Chart.isAutoPosition) {
       return;
     }
-    //todo
+    // todo
     Chart.data.nodes = Chart.data.nodes.map((node) => {
       const d = nodes.find((n) => n.id === node.id);
       if (d && !Chart.isAutoPosition) {
@@ -75,7 +75,8 @@ class ChartUpdate {
   static nodesDelete = (data) => {
     const { nodes: nodesDelete, eventId } = data;
     const nodes = Chart.getNodes().filter((n) => !nodesDelete?.some((d) => n.id === d.id));
-    Chart.render({ nodes }, { ignoreAutoSave: true, eventId });
+    const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
+    Chart.render({ nodes, links }, { ignoreAutoSave: true, eventId });
   }
 
   static nodesUpdate = (data) => {
@@ -108,6 +109,8 @@ class ChartUpdate {
         1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
       });
     });
+    links = ChartUtils.cleanLinks(links, Chart.getNodes());
+
     Chart.render({ links }, { ignoreAutoSave: true, eventId });
   }
 
@@ -207,7 +210,7 @@ class ChartUpdate {
   static mouseMovePositions = (graphId, userId, cursors) => {
     Chart.svg.select('.mouseCursorPosition').selectAll('g').remove();
     Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();
-    let fullName = ' '; 
+    let fullName = ' ';
     cursors.forEach((cursor) => {
       if (graphId === +cursor?.graphId && +cursor.userId !== +userId) {
         fullName = `${cursor?.firstName} ${cursor?.lastName}`;

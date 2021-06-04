@@ -352,7 +352,7 @@ class Chart {
 
         if (this.getCurrentUserRole() === 'edit_inside') {
           const node = ChartUtils.getNodeById(d.id);
-          if (!_.isEqual(node.labels, dragNode.labels)) {
+          if (node && !_.isEqual(node.labels, dragNode.labels)) {
             d.fx = dragNode.startX;
             d.x = dragNode.startX;
 
