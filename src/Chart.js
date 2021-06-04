@@ -3120,6 +3120,27 @@ class Chart {
       height, width, minX, minY,
     };
   }
+
+  static showSpecifiedNodes = (nodes) => {
+    this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+
+    const hideNodes = this.node.filter((n) => !nodes.filter((c) => c.id === n.id).length);
+    const notHideNodes = this.node.filter((n) => nodes.filter((c) => c.id === n.id).length);
+    hideNodes.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+    notHideNodes.attr('r', '30').attr('stroke-width', '20');
+
+    this.link.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+
+    this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+  }
+
+  static showAllNodes = () => {
+    this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+
+    this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+
+    this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+  }
 }
 
 export default Chart;

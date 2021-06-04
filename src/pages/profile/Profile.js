@@ -120,7 +120,7 @@ class Profile extends Component {
                 value={requestData.website}
                 error={errors.website}
                 onChangeText={this.handleChange}   
-                pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:google\.com|go(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
+                //pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:google\.com|go(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
               />
             </div>
             <div className="socialright">
