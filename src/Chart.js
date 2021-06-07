@@ -1325,10 +1325,10 @@ class Chart {
 
           activeLine
             .datum(datum)
-            .attr('cx', (d) => d.size.x)
-            .attr('cy', (d) => d.size.y)
-            .attr('rx', (d) => d.size.width)
-            .attr('ry', (d) => d.size.height)
+            .attr('cx', (d) => d.size?.x || 0)
+            .attr('cy', (d) => d.size?.y || 0)
+            .attr('rx', (d) => d.size?.width || 0)
+            .attr('ry', (d) => d.size?.height || 0)
             .attr('opacity', 1)
             .attr('fill', 'transparent')
             .attr('stroke', '#0088ff')
