@@ -1300,10 +1300,10 @@ class Chart {
 
           activeLine
             .datum(datum)
-            .attr('x', (d) => d.size.x)
-            .attr('y', (d) => d.size.y)
-            .attr('width', (d) => d.size.width)
-            .attr('height', (d) => d.size.height)
+            .attr('x', (d) => d.size?.x || 0)
+            .attr('y', (d) => d.size?.y || 0)
+            .attr('width', (d) => d.size?.width || 0)
+            .attr('height', (d) => d.size?.height || 0)
             .attr('opacity', 1)
             .attr('fill', 'transparent')
             .attr('stroke', '#0088ff')
@@ -1355,13 +1355,13 @@ class Chart {
               if (datum.type === 'square') {
                 dragLabel.label
                   .datum(datum)
-                  .attr('x', (d) => d.size.x)
-                  .attr('y', (d) => d.size.y);
+                  .attr('x', (d) => d.size?.x || 0)
+                  .attr('y', (d) => d.size?.y || 0);
               } else {
                 dragLabel.label
                   .datum(datum)
-                  .attr('cx', (d) => d.size.x)
-                  .attr('cy', (d) => d.size.y);
+                  .attr('cx', (d) => d.size?.x || 0)
+                  .attr('cy', (d) => d.size?.y || 0);
               }
             }
 
@@ -1495,18 +1495,18 @@ class Chart {
           currentLabel = labelsWrapper
             .append('rect')
             .datum(d)
-            .attr('x', d.size.x)
-            .attr('y', d.size.y)
-            .attr('width', d.size.width)
-            .attr('height', d.size.height);
+            .attr('x', d.size?.x || 0)
+            .attr('y', d.size?.y || 0)
+            .attr('width', d.size?.width || 0)
+            .attr('height', d.size?.height || 0);
         } else if (d.type === 'ellipse') {
           currentLabel = labelsWrapper
             .append('ellipse')
             .datum(d)
-            .attr('cx', d.size.x)
-            .attr('cy', d.size.y)
-            .attr('rx', d.size.width)
-            .attr('ry', d.size.height);
+            .attr('cx', d.size?.x || 0)
+            .attr('cy', d.size?.y || 0)
+            .attr('rx', d.size?.width || 0)
+            .attr('ry', d.size?.height || 0);
         } else {
           currentLabel = labelsWrapper
             .append('path')
