@@ -397,8 +397,8 @@ class Chart {
       .attr('stroke-width', '2')
       .attr('width', size.width)
       .attr('height', size.height)
-      .attr('x', size.x)
-      .attr('y', size.y);
+      .attr('x', size?.x)
+      .attr('y', size?.y);
 
     const addResizeOption = (classAttr, fillAttr, xAttr, yAttr) => {
       controlsGroup.append('rect')
@@ -2025,7 +2025,7 @@ class Chart {
 
       this.labels.each((l) => {
         if (this.squareData.labels.includes(l.id) && !l.readOnly) {
-          if (l.type === 'square' || l.type === 'ellipse') {
+          if (l.size && (l.type === 'square' || l.type === 'ellipse')) {
             l.size.x = +(l.size.x + ev.dx).toFixed(2);
             l.size.y = +(l.size.y + ev.dy).toFixed(2);
           } else {
@@ -2110,25 +2110,25 @@ class Chart {
 
     this.labels.attr('x', (l) => {
       if (l.type === 'square') {
-        return l.size.x;
+        return l.size?.x;
       }
     });
 
     this.labels.attr('y', (l) => {
       if (l.type === 'square') {
-        return l.size.y;
+        return l.size?.y;
       }
     });
 
     this.labels.attr('cx', (l) => {
       if (l.type === 'ellipse') {
-        return l.size.x;
+        return l.size?.x;
       }
     });
 
     this.labels.attr('cy', (l) => {
       if (l.type === 'ellipse') {
-        return l.size.y;
+        return l.size?.y;
       }
     });
   }
