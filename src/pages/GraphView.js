@@ -11,7 +11,6 @@ import { setActiveButton } from '../store/actions/app';
 import Button from '../components/form/Button';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
-import { ReactComponent as BackSvg } from '../assets/images/icons/back-arrow.svg';
 import Filters from '../components/filters/Filters';
 import NodeDescription from '../components/NodeDescription';
 import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
@@ -22,7 +21,6 @@ import ToolBarHeader from '../components/ToolBarHeader';
 import AnalysisUtils from '../helpers/AnalysisUtils';
 import Chart from '../Chart';
 import AnalyticalTab from '../components/Analysis/AnalyticalTab';
-import ChartUtils from '../helpers/ChartUtils';
 import AnalyticalPage from '../components/Analysis/AnalyticalPage';
 
 class GraphView extends Component {
@@ -122,7 +120,14 @@ class GraphView extends Component {
           message={this.handleRouteChange}
         />
         {search.includes('analytics')
-          ? <AnalyticalPage graphId={graphId} nodes={singleGraph.nodes} links={singleGraph.links} /> : (search.includes('nodeStart=')
+          ? (
+            <AnalyticalPage
+              graphId={graphId}
+              nodes={singleGraph.nodes}
+              links={singleGraph.links}
+            />
+          )
+          : (search.includes('nodeStart=')
             ? <AnalyticalTab nodes={shortestNodes} />
             : (
               <div>

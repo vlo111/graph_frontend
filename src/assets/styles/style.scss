@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css?family=K2D:500&subset=latin-ext');
 
 $color-main: #7166F8;
 $color-main2: #FE794F;
@@ -1298,159 +1298,11 @@ p {
   }
 }
 
-@media screen and (max-width: 1699px) {
-  #header-on-graph {
-    grid-template-columns: 21% auto auto 5% 5% 25%;
-
-
-    .graphs {
-      position: fixed;
-      border: none;
-      display: flex;
-      z-index: 2;
-      left: 28%;
-      top: 10px;
-      color: #0d0905;
-
-      .ghButton {
-        padding: 7px 7px 6px;
-      }
-    }
-
-    .legends {
-      left: 19%;
-    }
-
-    .signOut .accountInfo {
-      padding-right: 0px;
-    }
-
-    .mapButton {
-      right: 26%;
-    }
-
-    .wikiButton {
-      right: 22%;
-    }
-    .scienceGraph {
-      right: 31%;
-    }
-
-  }
-  .account-edit{
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: gainsboro;
-
-    cursor: pointer;
-  }
-  .account-edit i{
-    font-size: 33px;
-    margin: 21px 25px auto;
-    cursor: pointer;
-    color: blue;
-  }
-
-  #header-on-view-graph {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr) );
-
-    .graphs {
-      right: 166px;
-      position: relative;
-    }
-
-    .searchInputWrapper {
-      width: 50%;
-    }
-
-    .legends {
-      left: 19%;
-    }
-
-  }
-}
-
-@media screen and (min-width: 1700px) {
-  #header-on-graph {
-    grid-template-columns: 21% auto auto 5% 5% 25%;
-
-    .graphs {
-      position: fixed;
-      border: none;
-      display: flex;
-      z-index: 2;
-      left: 24%;
-      top: 10px;
-      color: #0d0905;
-
-      button {
-        padding: 7px 24px 6px;
-      }
-    }
-
-    .legends {
-      left: 15%;
-    }
-  }
-  #header-on-view-graph {
-    grid-template-columns: 22% auto auto auto 25%;
-
-  }
-
-}
-
-
 #header-on-graph, #header-on-view-graph {
   .graphs {
     button {
       background-color: $color-white;
       border: 0px;
-    }
-  }
-}
-
-@media screen and (max-width: 1699px) {
-  #header {
-    grid-template-columns: 17% 20% auto 5% 20%;
-
-    .signOut {
-      right: 2%;
-    }
-
-    .right-elements {
-      right: 30px;
-    }
-  }
-}
-
-@media screen and (max-width: 1400px) {
-  #header {
-    .signOut {
-      right: 1%;
-    }
-
-    .right-elements {
-      right: -48px;
-    }
-
-    .ghButton {
-      padding: 12px 14px;
-    }
-
-  }
-}
-
-@media screen and (min-width: 1700px) {
-  #header {
-    grid-template-columns: 349px auto auto auto 20%;
-
-    .signOut {
-      right: 6%;
-    }
-
-    .right-elements {
-      right: 5%;
     }
   }
 }
@@ -3080,7 +2932,6 @@ p {
           position: relative;
 
           &:after {
-            content: ' ';
             position: absolute;
             top: -4px;
             right: -14px;
@@ -3870,30 +3721,6 @@ p {
         text-align: right;
         padding: 5px 10px;
       }
-    }
-  }
-}
-
-@media screen and (max-width: 900px) {
-  #accountDropDown {
-    .accountInfo {
-      padding: 0;
-
-      .name {
-        display: none;
-      }
-
-    }
-
-    .dropdown {
-      position: absolute;
-      right: 15px;
-      top: 59px;
-      width: 200px;
-      left: auto;
-      padding: 0;
-      border: 1px solid #E2E7EB;
-      border-radius: 15px;
     }
   }
 }
@@ -7913,8 +7740,6 @@ img.preview-scaled {
   text-decoration: underline;
 }
 
-@import url('https://fonts.googleapis.com/css?family=K2D:500&subset=latin-ext');
-
 .gallery-box-container {
   justify-content: space-between;
 
@@ -8856,61 +8681,6 @@ img.preview-scaled {
   width:90%
 }
 
-// media for search form
-@media only screen and (max-width: 900px) {
-  .scienceForm form {
-    flex-direction: column;
-    height: 10em;
-    max-height: 10em;
-  }
-  .scienceForm input, .scienceForm button{
-    line-height: 1em;
-    border-radius: 2em;
-    border: none;
-    padding: 0 2em;
-    width: 100%;
-  }
-  .scienceAuthorInput {
-    flex:1;
-  }
-  .scienceTitleInput {
-    flex:1;
-  }
-  .scienceForm button {
-    flex: 1;
-  }
-}
-
-// media for search results
-@media only screen and (max-width: 530px) {
-  .scienceResultsList {
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin: .6em 0;
-    justify-content: center;
-  }
-  .scienceCheckBox {
-    order: 1;
-    margin-left: .6em
-  }
-  .scienceCreateNodeButton {
-    order: 3;
-    display: flex;
-    justify-content: space-around;
-  }
-  .scienceArticleData {
-    min-width: 80%;
-    order: 2;
-    margin-left: .5em;
-  }
-  .scienceCreateNodeButton button {
-    max-width: 50%;
-  }
-  .scienceArticleDescription {
-    height: 11em;
-    max-height: 11em;
-  }
-}
 .createGraphButton {
   width: 100%;
   display: flex;
@@ -8927,9 +8697,6 @@ img.preview-scaled {
   outline: none;
 }
 //-----------------------------------
-
-//-----------------------------------
-
 
 .button-group {
 
@@ -9112,13 +8879,14 @@ color: #2962ff;
       padding-left: 20px;
       padding-top: 24px;
       line-height: 30px;
+      display: grid !important;
+      grid-template-columns: 33% 33% 33%;
 
       h3 {
         font-weight: 600;
-        margin: 5px 15px;
-        padding: 5px 5px 1px;
         color: #da9393;
-        font-size: 17px;
+        font-size: 15px;
+        width: 100px;
       }
 
       strong {
@@ -9133,9 +8901,54 @@ color: #2962ff;
 
     .pieChart {
       padding-top: 20px;
+      display: grid !important;
+      grid-template-rows: 10% 80% 10%;
+
+      .recharts-responsive-container {
+        height: 120% !important;
+      }
+
+      .headerPie {
+        text-align: center;
+        font-size: 15px;
+        color: #717ea0;
+      }
+
+      .footerPie {
+        padding-left: 30px;
+        display: flex;
+        padding-top: 5px;
+
+        .dot {
+          display: none;
+          height: 15px;
+          width: 15px;
+          border-radius: 50%;
+        }
+
+        .selectedText {
+          font-size: 14px;
+          margin-left: 5px;
+          display: flex;
+          margin-top: -4px;
+
+          > * {
+            margin-right: 8px;
+          }
+
+          p {
+            font-weight: 600;
+            color: #717ea0;
+          }
+
+          span {
+            font-style: italic;
+          }
+        }
+      }
 
       .recharts-surface {
-        height: 300px;
+        height: 250px;
       }
     }
 
@@ -9143,27 +8956,56 @@ color: #2962ff;
       overflow: hidden;
       background: #fff;
       box-shadow: 0 6px 20px rgb(13 9 5 / 15%);
-      display: flex;
+      display: block;
       border-radius: 10px;
     }
 
     .containerBarChart {
-      .recharts-surface {
-        width: 100%;
-        height: 320px;
+      display: grid;
+      grid-template-rows: 5% 90% 5%;
+
+      .headerTextDegreeBlock, .bottomTextDegreeBlock, .leftTextDegreeBlock {
+        text-align: center;
+
+        h4 {
+          font-size: 15px;
+          color: #717ea0;
+        }
       }
 
-      .recharts-wrapper {
-        max-width: 81% !important;
-        left: 8%;
+      .bottomTextDegreeBlock {
+        margin-top: -10px;
+      }
+
+      .barContainer {
+        display: grid;
+        grid-template-columns: 1% 99%;
+
+        .recharts-responsive-container {
+          height: 260px;
+          max-width: 620px;
+          width: 90% !important;
+
+          .recharts-wrapper {
+            width: 100%;
+          }
+        }
+      }
+
+      .headerTextDegreeBlock {
+        margin-top: 20px;
+      }
+
+      .leftTextDegreeBlock {
+        width: 65px;
+
+        h4 {
+          transform: translate(20px, 155px) rotate(
+                          270deg
+          );
+        }
       }
     }
-
-    .recharts-responsive-container {
-      max-height: 500px;
-      height: 300px !important;
-    }
-
   }
 
   .recharts {
@@ -9211,6 +9053,10 @@ color: #2962ff;
       fill: #96969629;
     }
   }
+
+  .recharts-sector {
+    transition: all 0.6s ease-in-out 0s;
+  }
 }
 
 .analyticRightPage {
@@ -9234,6 +9080,280 @@ color: #2962ff;
   }
 }
 
-.recharts-sector {
+.analitycLeft {
   transition: all 0.6s ease-in-out 0s;
+  transform-origin: left top;
+}
+
+.ghModalAnalyse {
+  max-width: 100% !important;
+  width: 40%;
+
+  h3 {
+    margin: 25px auto;
+  }
+
+  .buttons {
+    margin: 0 auto;
+  }
+}
+
+
+@media only screen and (max-width: 530px) {
+  .scienceResultsList {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: .6em 0;
+    justify-content: center;
+  }
+  .scienceCheckBox {
+    order: 1;
+    margin-left: .6em
+  }
+  .scienceCreateNodeButton {
+    order: 3;
+    display: flex;
+    justify-content: space-around;
+  }
+  .scienceArticleData {
+    min-width: 80%;
+    order: 2;
+    margin-left: .5em;
+  }
+  .scienceCreateNodeButton button {
+    max-width: 50%;
+  }
+  .scienceArticleDescription {
+    height: 11em;
+    max-height: 11em;
+  }
+}
+
+
+@media only screen and (max-width: 900px) {
+  .scienceForm form {
+    flex-direction: column;
+    height: 10em;
+    max-height: 10em;
+  }
+  .scienceForm input, .scienceForm button{
+    line-height: 1em;
+    border-radius: 2em;
+    border: none;
+    padding: 0 2em;
+    width: 100%;
+  }
+  .scienceAuthorInput {
+    flex:1;
+  }
+  .scienceTitleInput {
+    flex:1;
+  }
+  .scienceForm button {
+    flex: 1;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #accountDropDown {
+    .accountInfo {
+      padding: 0;
+
+      .name {
+        display: none;
+      }
+
+    }
+
+    .dropdown {
+      position: absolute;
+      right: 15px;
+      top: 59px;
+      width: 200px;
+      left: auto;
+      padding: 0;
+      border: 1px solid #E2E7EB;
+      border-radius: 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  #header {
+    .signOut {
+      right: 1%;
+    }
+
+    .right-elements {
+      right: -48px;
+    }
+
+    .ghButton {
+      padding: 12px 14px;
+    }
+
+  }
+
+  .barContainer {
+    .recharts-surface {
+      width: 400px !important;
+    }
+  }
+
+  .pieChart {
+    .recharts-surface {
+      height: 180px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .barContainer {
+    .recharts-surface {
+      width: 450px !important;
+    }
+  }
+
+  .pieChart {
+    .recharts-surface {
+      height: 200px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  .barContainer {
+    .recharts-surface {
+      width: 500px !important;
+    }
+  }
+
+  .pieChart {
+    .recharts-surface {
+      height: 220px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 1699px) {
+  #header {
+    grid-template-columns: 17% 20% auto 5% 20%;
+
+    .signOut {
+      right: 2%;
+    }
+
+    .right-elements {
+      right: 30px;
+    }
+  }
+
+  #header-on-graph {
+    grid-template-columns: 21% auto auto 5% 5% 25%;
+
+
+    .graphs {
+      position: fixed;
+      border: none;
+      display: flex;
+      z-index: 2;
+      left: 28%;
+      top: 10px;
+      color: #0d0905;
+
+      .ghButton {
+        padding: 7px 7px 6px;
+      }
+    }
+
+    .legends {
+      left: 19%;
+    }
+
+    .signOut .accountInfo {
+      padding-right: 0px;
+    }
+
+    .mapButton {
+      right: 26%;
+    }
+
+    .wikiButton {
+      right: 22%;
+    }
+
+  }
+  .account-edit{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: gainsboro;
+
+    cursor: pointer;
+  }
+  .account-edit i{
+    font-size: 33px;
+    margin: 21px 25px auto;
+    cursor: pointer;
+    color: blue;
+  }
+
+  #header-on-view-graph {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr) );
+
+    .graphs {
+      right: 166px;
+      position: relative;
+    }
+
+    .searchInputWrapper {
+      width: 50%;
+    }
+
+    .legends {
+      left: 19%;
+    }
+
+  }
+}
+
+@media screen and (min-width: 1700px) {
+  #header {
+    grid-template-columns: 349px auto auto auto 20%;
+
+    .signOut {
+      right: 6%;
+    }
+
+    .right-elements {
+      right: 5%;
+    }
+  }
+
+  #header-on-graph {
+    grid-template-columns: 21% auto auto 5% 5% 25%;
+
+    .graphs {
+      position: fixed;
+      border: none;
+      display: flex;
+      z-index: 2;
+      left: 24%;
+      top: 10px;
+      color: #0d0905;
+
+      button {
+        padding: 7px 24px 6px;
+      }
+    }
+
+    .legends {
+      left: 15%;
+    }
+  }
+
+  #header-on-view-graph {
+    grid-template-columns: 22% auto auto auto 25%;
+
+  }
 }
