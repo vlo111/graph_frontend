@@ -659,6 +659,9 @@ class Chart {
     // });
     const labels = Object.values(data.labels).map((d) => {
       d.id = d.id || ChartUtils.uniqueId(data.labels);
+      d.size = d.size || {
+        x: 0, y: 0, width: 0, height: 0,
+      };
       return Object.create(d);
     });
 
@@ -1580,7 +1583,6 @@ class Chart {
           labels: Chart.getLabels(ChartUtils.objectAndProto(data.labels)),
         }));
         console.log(Chart.getLinks(true, data.links));
-
       }
 
       if (!params.dontRemember && _.isEmpty(params.filters)) {
@@ -2055,7 +2057,7 @@ class Chart {
     };
 
     const handleSquareDragEnd = (ev) => {
-      if(selectSquare){
+      if (selectSquare) {
         handleSquareDragStart();
         Chart.event.emit('selected.dragend', ev);
       }
