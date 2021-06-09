@@ -191,7 +191,7 @@ class AutoSave extends Component {
     const createLabels = _.differenceBy(labels, oldLabels, 'id');
     const updateLabels = [];
     const updateLabelPositions = [];
-    console.log(oldLabels, labels);
+    console.log(oldLabels, labels, deleteLabels, 5555);
     let newLabel = false;
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
@@ -226,6 +226,7 @@ class AutoSave extends Component {
     const updateNodes = [];
     const updateNodePositions = [];
     const updateNodeCustomFields = [];
+    console.log(3333)
     nodes.forEach((node) => {
       const oldNode = oldNodes.find((n) => n.id === node.id);
       if (oldNode) {
@@ -275,8 +276,8 @@ class AutoSave extends Component {
     createLinks = ChartUtils.uniqueLinks(createLinks);
 
     if (deleteNodes.length && deleteNodes.length === nodes.length) {
-      document.body.classList.remove('autoSave');
-      return;
+      // document.body.classList.remove('autoSave');
+      // return;
     }
     if (createNodes.length) {
       console.log(createNodes, this.props.createNodesRequest, 444);
@@ -322,6 +323,7 @@ class AutoSave extends Component {
     //   promise.push(this.props.updateLabelPositionsRequest(graphId, updateLabelPositions));
     // }
     if (deleteLabels.length) {
+      alert(111);
       promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
     Chart.event.emit('auto-save');

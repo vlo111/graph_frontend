@@ -1,14 +1,55 @@
 class AnalysisUtils {
-    static getComponent = (nodes, links) => this.dfsAlghoritm(nodes, links)
+    /**
+     * Calculate node degree, min + max + mean degree and degree distribution
+     * @param nodes
+     * @param links
+     * @returns {{min: string, max: string, mean: string}|
+     * {min: number, max: number, degree distribution: [], mean: number}}
+     */
+    static degree = (nodes, links) => {
+      if (!(nodes && nodes.length && links && links.length)) {
+        return {
+          min: '',
+          max: '',
+          mean: '',
+        };
+      }
+      const degrees = [];
 
-    static getAdjacentNodes = (generalDegree, nodeId) => {
-      const source = [...new Set(generalDegree.map((p) => p.source))].filter((p) => p !== nodeId);
+      const degreeDistribution = [];
 
-      const target = [...new Set(generalDegree.map((p) => p.target))].filter((p) => p !== nodeId);
+      nodes.map((node) => {
+        const degree = links.filter((x) => x.source === node.id || x.target === node.id).length;
+        degrees.push(degree);
 
-      return [...new Set(source.concat(target))];
+        degreeDistribution.push({
+          id: node.id,
+          name: node.name,
+          color: node.color,
+          degree,
+        });
+      });
+
+      const min = Math.min.apply(null, degrees);
+      const max = Math.max.apply(null, degrees);
+      const mean = degrees.reduce((a, b) => a + b) / nodes.length;
+
+      return {
+        min,
+        max,
+        mean: parseFloat(mean).toFixed(3),
+        degreeDistribution: _.groupBy(degreeDistribution, 'degree'),
+      };
     }
 
+    /**
+   * Depth-first search (DFS) is an algorithm for traversing or searching tree or graph data structures
+   * The algorithm starts at the root node
+   * The shortest possible path between the two nodes is the weight of the connection
+   * @param nodes
+   * @param links
+   * @returns {null|{components: []}}
+   */
     static dfsAlghoritm = (nodes, links) => {
       if (nodes.length && links.length) {
         const components = [];
@@ -83,6 +124,34 @@ class AnalysisUtils {
       return null;
     }
 
+    /**
+     * @param nodes
+     * @param links
+     * @returns {{components: []}|null}
+     */
+    static getComponent = (nodes, links) => this.dfsAlghoritm(nodes, links)
+
+    /**
+     * Find all adjacent nodes
+     * @param generalDegree
+     * @param nodeId
+     * @returns {any[]}
+     */
+    static getAdjacentNodes = (generalDegree, nodeId) => {
+      const source = [...new Set(generalDegree.map((p) => p.source))].filter((p) => p !== nodeId);
+
+      const target = [...new Set(generalDegree.map((p) => p.target))].filter((p) => p !== nodeId);
+
+      return [...new Set(source.concat(target))];
+    }
+
+    /**
+     * @param start
+     * @param end
+     * @param nodes
+     * @param links
+     * @returns {{listLinks: [], listNodes: []}}
+     */
     static getShortestPath = (start, end, nodes, links) => {
       const stack = [{
         node: start,
@@ -203,6 +272,118 @@ class AnalysisUtils {
 
       return { listLinks, listNodes };
     }
+
+    /**
+   * Calculate global cluster
+   * @param nodes
+   * @param links
+   * @returns {number}
+   */
+    static getGlobalCluster = (nodes, links) => {
+      if (!(nodes?.length && links?.length)) {
+        return '';
+      }
+      let numberOfTriangle = 0;
+
+      const allAdjacentNodes = [];
+
+      nodes.map((node) => {
+        const generalDegree = links.filter((x) => x.source === node.id || x.target === node.id);
+
+        const adjacentNodes = this.getAdjacentNodes(generalDegree, node.id);
+
+        const triangles = this.getTriangles(links, adjacentNodes);
+
+        numberOfTriangle += triangles;
+
+        allAdjacentNodes.push(adjacentNodes);
+      });
+
+      let clusterCoefficient;
+
+      if (!numberOfTriangle) {
+        clusterCoefficient = 0;
+      } else {
+        clusterCoefficient = parseFloat(this.calculateGlobalCluster(numberOfTriangle, allAdjacentNodes).toFixed(5));
+      }
+
+      return clusterCoefficient;
+    }
+
+    /**
+   * Get global clustering coefficient
+   * @param triangles
+   * @param adjacentNodes
+   * @returns {number}, we need triangles / allTriplesCount
+   */
+    static calculateGlobalCluster = (triangles, adjacentNodes) => {
+      const allTriples = [];
+      let allTriplesCount = 0;
+      adjacentNodes.forEach((triple) => {
+        if (triple.length === 2) {
+          allTriples.push(1);
+        } else if (triple.length > 2) {
+          const beforeTriple = triple.length - 1;
+
+          let index = beforeTriple;
+
+          for (let i = beforeTriple; i > 0; i -= 1) {
+            index += (i - 1);
+          }
+
+          allTriples.push(index);
+        }
+      });
+
+      allTriplesCount = allTriples.reduce((a, b) => a + b);
+
+      return triangles / allTriplesCount;
+    }
+
+    /**
+   * Calculate all triangles of the current graph
+   * @param links
+   * @param adjacentNodes
+   * @returns {number}, count of triangles
+   */
+    static getTriangles = (links, adjacentNodes) => {
+      let result = 0;
+
+      adjacentNodes.forEach((adjacentNode) => {
+        const neighbors = links.filter((l) => l.source === adjacentNode || l.target === adjacentNode);
+
+        const adjacentNeighbors = adjacentNodes.filter((p) => p !== adjacentNode);
+
+        const trangles = neighbors.filter((p) => ((p.source === adjacentNode) && adjacentNeighbors.includes(p.target))
+          || ((p.target === adjacentNode) && adjacentNeighbors.includes(p.source)));
+
+        const source = [...new Set(trangles.map((p) => p.source))].filter((p) => p !== adjacentNode);
+
+        const target = [...new Set(trangles.map((p) => p.target))].filter((p) => p !== adjacentNode);
+
+        const res = [...new Set(source.concat(target))];
+
+        result += res.length;
+      });
+
+      return result / 2;
+    }
+
+    static getLocalDegree = (nodes, links, nodeId) => {
+      const generalDegree = links.filter((x) => x.source === nodeId || x.target === nodeId);
+
+      const sideDegree = generalDegree.filter((x) => !x.direction);
+
+      const inDegree = generalDegree.filter((x) => x.direction && x.target === nodeId);
+
+      const outDegree = generalDegree.filter((x) => x.direction && x.source === nodeId);
+
+      return {
+        generalDegree, sideDegree, inDegree, outDegree,
+      };
+    }
+
+  static getCluster = (triangles, linkCount) => triangles / ((linkCount * (linkCount - 1)) / 2)
 }
 
 export default AnalysisUtils;

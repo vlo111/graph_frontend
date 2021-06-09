@@ -352,7 +352,7 @@ class Chart {
 
         if (this.getCurrentUserRole() === 'edit_inside') {
           const node = ChartUtils.getNodeById(d.id);
-          if (!_.isEqual(node.labels, dragNode.labels)) {
+          if (node && !_.isEqual(node.labels, dragNode.labels)) {
             d.fx = dragNode.startX;
             d.x = dragNode.startX;
 
@@ -397,8 +397,8 @@ class Chart {
       .attr('stroke-width', '2')
       .attr('width', size.width)
       .attr('height', size.height)
-      .attr('x', size.x)
-      .attr('y', size.y);
+      .attr('x', size?.x)
+      .attr('y', size?.y);
 
     const addResizeOption = (classAttr, fillAttr, xAttr, yAttr) => {
       controlsGroup.append('rect')
@@ -659,6 +659,9 @@ class Chart {
     // });
     const labels = Object.values(data.labels).map((d) => {
       d.id = d.id || ChartUtils.uniqueId(data.labels);
+      d.size = d.size || {
+        x: 0, y: 0, width: 0, height: 0,
+      };
       return Object.create(d);
     });
 
@@ -1300,10 +1303,10 @@ class Chart {
 
           activeLine
             .datum(datum)
-            .attr('x', (d) => d.size.x)
-            .attr('y', (d) => d.size.y)
-            .attr('width', (d) => d.size.width)
-            .attr('height', (d) => d.size.height)
+            .attr('x', (d) => d.size?.x || 0)
+            .attr('y', (d) => d.size?.y || 0)
+            .attr('width', (d) => d.size?.width || 0)
+            .attr('height', (d) => d.size?.height || 0)
             .attr('opacity', 1)
             .attr('fill', 'transparent')
             .attr('stroke', '#0088ff')
@@ -1325,10 +1328,10 @@ class Chart {
 
           activeLine
             .datum(datum)
-            .attr('cx', (d) => d.size.x)
-            .attr('cy', (d) => d.size.y)
-            .attr('rx', (d) => d.size.width)
-            .attr('ry', (d) => d.size.height)
+            .attr('cx', (d) => d.size?.x || 0)
+            .attr('cy', (d) => d.size?.y || 0)
+            .attr('rx', (d) => d.size?.width || 0)
+            .attr('ry', (d) => d.size?.height || 0)
             .attr('opacity', 1)
             .attr('fill', 'transparent')
             .attr('stroke', '#0088ff')
@@ -1355,13 +1358,13 @@ class Chart {
               if (datum.type === 'square') {
                 dragLabel.label
                   .datum(datum)
-                  .attr('x', (d) => d.size.x)
-                  .attr('y', (d) => d.size.y);
+                  .attr('x', (d) => d.size?.x || 0)
+                  .attr('y', (d) => d.size?.y || 0);
               } else {
                 dragLabel.label
                   .datum(datum)
-                  .attr('cx', (d) => d.size.x)
-                  .attr('cy', (d) => d.size.y);
+                  .attr('cx', (d) => d.size?.x || 0)
+                  .attr('cy', (d) => d.size?.y || 0);
               }
             }
 
@@ -1495,18 +1498,18 @@ class Chart {
           currentLabel = labelsWrapper
             .append('rect')
             .datum(d)
-            .attr('x', d.size.x)
-            .attr('y', d.size.y)
-            .attr('width', d.size.width)
-            .attr('height', d.size.height);
+            .attr('x', d.size?.x || 0)
+            .attr('y', d.size?.y || 0)
+            .attr('width', d.size?.width || 0)
+            .attr('height', d.size?.height || 0);
         } else if (d.type === 'ellipse') {
           currentLabel = labelsWrapper
             .append('ellipse')
             .datum(d)
-            .attr('cx', d.size.x)
-            .attr('cy', d.size.y)
-            .attr('rx', d.size.width)
-            .attr('ry', d.size.height);
+            .attr('cx', d.size?.x || 0)
+            .attr('cy', d.size?.y || 0)
+            .attr('rx', d.size?.width || 0)
+            .attr('ry', d.size?.height || 0);
         } else {
           currentLabel = labelsWrapper
             .append('path')
@@ -1580,7 +1583,6 @@ class Chart {
           labels: Chart.getLabels(ChartUtils.objectAndProto(data.labels)),
         }));
         console.log(Chart.getLinks(true, data.links));
-
       }
 
       if (!params.dontRemember && _.isEmpty(params.filters)) {
@@ -1933,6 +1935,7 @@ class Chart {
 
     const handleSquareDragStart = () => {
       if (this.nodesPath) return;
+
       if (selectSquare) {
         let {
           width, height, x, y,
@@ -2024,7 +2027,7 @@ class Chart {
 
       this.labels.each((l) => {
         if (this.squareData.labels.includes(l.id) && !l.readOnly) {
-          if (l.type === 'square' || l.type === 'ellipse') {
+          if (l.size && (l.type === 'square' || l.type === 'ellipse')) {
             l.size.x = +(l.size.x + ev.dx).toFixed(2);
             l.size.y = +(l.size.y + ev.dy).toFixed(2);
           } else {
@@ -2054,8 +2057,10 @@ class Chart {
     };
 
     const handleSquareDragEnd = (ev) => {
-      handleSquareDragStart();
-      Chart.event.emit('selected.dragend', ev);
+      if (selectSquare) {
+        handleSquareDragStart();
+        Chart.event.emit('selected.dragend', ev);
+      }
     };
 
     const handleDragStart = (ev) => {
@@ -2107,25 +2112,25 @@ class Chart {
 
     this.labels.attr('x', (l) => {
       if (l.type === 'square') {
-        return l.size.x;
+        return l.size?.x;
       }
     });
 
     this.labels.attr('y', (l) => {
       if (l.type === 'square') {
-        return l.size.y;
+        return l.size?.y;
       }
     });
 
     this.labels.attr('cx', (l) => {
       if (l.type === 'ellipse') {
-        return l.size.x;
+        return l.size?.x;
       }
     });
 
     this.labels.attr('cy', (l) => {
       if (l.type === 'ellipse') {
-        return l.size.y;
+        return l.size?.y;
       }
     });
   }
@@ -3116,6 +3121,27 @@ class Chart {
     return {
       height, width, minX, minY,
     };
+  }
+
+  static showSpecifiedNodes = (nodes) => {
+    this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+
+    const hideNodes = this.node.filter((n) => !nodes.filter((c) => c.id === n.id).length);
+    const notHideNodes = this.node.filter((n) => nodes.filter((c) => c.id === n.id).length);
+    hideNodes.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+    notHideNodes.attr('r', '30').attr('stroke-width', '20');
+
+    this.link.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+
+    this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
+  }
+
+  static showAllNodes = () => {
+    this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+
+    this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+
+    this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
   }
 }
 

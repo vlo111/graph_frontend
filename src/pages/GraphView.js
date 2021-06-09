@@ -21,7 +21,7 @@ import ToolBarHeader from '../components/ToolBarHeader';
 import AnalysisUtils from '../helpers/AnalysisUtils';
 import Chart from '../Chart';
 import AnalyticalTab from '../components/Analysis/AnalyticalTab';
-import ChartUtils from '../helpers/ChartUtils';
+import AnalyticalPage from '../components/Analysis/AnalyticalPage';
 
 class GraphView extends Component {
   static propTypes = {
@@ -62,7 +62,7 @@ class GraphView extends Component {
       this.setState({ openShareModal: true });
     }
   }
-  
+
   handleRouteChange = () => {
     Chart.nodesPath = false;
     Chart.clearLinkShortestPath();
@@ -119,56 +119,64 @@ class GraphView extends Component {
           when={this.preventReload}
           message={this.handleRouteChange}
         />
-        {search.includes('nodeStart=')
-          ? <AnalyticalTab nodes={shortestNodes} />
-          : (
-            <div>
-              {preview && singleGraphStatus === 'success' ? (
-                <div className="graphPreview">
-                  <h1 className="title">{singleGraph.title}</h1>
-                  <p className="description">
-                    {singleGraph.description}
-                  </p>
-                  <div>
-                    <strong>{'Nodes: '}</strong>
-                    {graphInfo.totalNodes}
+        {search.includes('analytics')
+          ? (
+            <AnalyticalPage
+              graphId={graphId}
+              nodes={singleGraph.nodes}
+              links={singleGraph.links}
+            />
+          )
+          : (search.includes('nodeStart=')
+            ? <AnalyticalTab nodes={shortestNodes} />
+            : (
+              <div>
+                {preview && singleGraphStatus === 'success' ? (
+                  <div className="graphPreview">
+                    <h1 className="title">{singleGraph.title}</h1>
+                    <p className="description">
+                      {singleGraph.description}
+                    </p>
+                    <div>
+                      <strong>{'Nodes: '}</strong>
+                      {graphInfo.totalNodes}
+                    </div>
+                    <div>
+                      <strong>{'Links: '}</strong>
+                      {graphInfo.totalLinks}
+                    </div>
+                    <div>
+                      <strong>{'Views: '}</strong>
+                      {singleGraph.views}
+                    </div>
+                    <Link className="ghButton view" to={`/graphs/view/${graphId}`} replace>
+                      View Graph
+                    </Link>
                   </div>
-                  <div>
-                    <strong>{'Links: '}</strong>
-                    {graphInfo.totalLinks}
-                  </div>
-                  <div>
-                    <strong>{'Views: '}</strong>
-                    {singleGraph.views}
-                  </div>
-                  <Link className="ghButton view" to={`/graphs/view/${graphId}`} replace>
-                    View Graph
-                  </Link>
-                </div>
-              ) : (
-                <>
+                ) : (
+                  <>
 
-                  {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
-                    <Link to={`/graphs/update/${graphId}`}>
-                      <Tooltip overlay="Update">
-                        <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
+                    {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
+                      <Link to={`/graphs/update/${graphId}`}>
+                        <Tooltip overlay="Update">
+                          <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
+                        </Tooltip>
+                      </Link>
+                    )}
+                    <NodeDescription />
+                    <Link to="/">
+                      <Tooltip overlay="Back">
+                        <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
                       </Tooltip>
                     </Link>
-                  )}
-                  <NodeDescription />
-                  <Link to="/">
-                    <Tooltip overlay="Back">
-                      <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
-                    </Tooltip>
-                  </Link>
-                </>
-              )}
-              <ToolBarHeader />
-              <NodeFullInfo editable={false} />
-              <LabelTooltip />
-              <Filters />
-            </div>
-          )}
+                  </>
+                )}
+                <ToolBarHeader />
+                <NodeFullInfo editable={false} />
+                <LabelTooltip />
+                <Filters />
+              </div>
+            ))}
       </Wrapper>
     );
   }
