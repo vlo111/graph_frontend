@@ -72,7 +72,7 @@ class ScienceGraphModal extends Component {
     const pointerToThis = this;
 
     // combined author and topic fields and putted it in arxivUrl and coreUrl
-    const arxivUrl = REACT_APP_ARXIV_URL+`search_query=all:${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}&sortBy=relevance&max_results=20`
+    const arxivUrl = REACT_APP_ARXIV_URL+`search_query=all:${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}&sortBy=relevance&max_results=30`
     const author = !!this.state.apiAuthorSearchTerms 
       ? this.state.apiAuthorSearchTerms
       : ''
@@ -328,7 +328,6 @@ class ScienceGraphModal extends Component {
       ` : ''
     const about = !!contentData.published
     ? `<div>
-        <strong class="tabHeader">About</strong><br>
         <br>Topics: ${contentData.topics}<br>
         <br>Published at: ${contentData.published}<br>
         <br>${contentData.abstract}<br>
