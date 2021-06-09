@@ -243,14 +243,14 @@ class ScienceGraphModal extends Component {
         res.map(graph => {
           graph.nodes.map(node => newNodes.push(node))
         })
-        
-        Chart.render({}, { isAutoPosition: true });
-        await setTimeout(() => {
-          Chart.render({}, { isAutoPosition: false })
-          this.setState({isLoading: false})
-          Chart.event.emit('auto-position.change', false);
-          this.props.onClose(ev);
-        }, 2000)
+        // this code will be used after auto position is fixed for folders
+        // Chart.render({}, { isAutoPosition: true });
+        // await setTimeout(() => {
+          //   Chart.event.emit('auto-position.change', false);
+          // }, 2000)
+        Chart.render()
+        this.setState({isLoading: false})
+        this.props.onClose(ev);
     })
     return
   }
