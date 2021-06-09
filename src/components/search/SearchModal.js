@@ -151,7 +151,16 @@ class SearchModal extends Component {
     links.push(...labelData.data.label.links);
 
     this.closeModal();
-    await Chart.render({ nodes, links, labels: [label] });
+    const lbs = Chart.getLabels().map(lb => {
+      if(lb.id === label.id) {
+        lb.open === true
+      }
+      return label
+    })
+    debugger
+
+    // why I am sending only one label ???
+    await Chart.render({ nodes, links, labels: lbs });
     const updatedNodesListInFront = Chart.getNodes()
     const theNode = updatedNodesListInFront.find(n => n.name === node.name)
     setTimeout(async () => {
