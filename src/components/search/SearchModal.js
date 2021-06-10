@@ -157,18 +157,16 @@ class SearchModal extends Component {
       }
       return label
     })
-    debugger
-
-    // why I am sending only one label ???
+    
     await Chart.render({ nodes, links, labels: lbs });
     const updatedNodesListInFront = Chart.getNodes()
-    const theNode = updatedNodesListInFront.find(n => n.name === node.name)
+    const theNode = updatedNodesListInFront.find(n => n.id === node.id) 
     setTimeout(async () => {
-      await ChartUtils.findNodeInDom(theNode);
       if (tabName) {
         this.props.setActiveTab(tabName);
       }
-    }, 10);
+      await ChartUtils.findNodeInDom(theNode);
+    }, 1);
     return theNode
   } 
 
