@@ -73,6 +73,8 @@ class AnalyticalPage extends Component {
 
     const clusterCoefficient = AnalysisUtils.getGlobalCluster(nodes, links);
 
+    const closenessCentrality = AnalysisUtils.getClosenessCentrality(nodes, links);
+
     return (
       <Outside exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
         <div className="analyticBottomPage">
@@ -102,12 +104,12 @@ class AnalyticalPage extends Component {
                 <strong>Mean Degree</strong>
                 <h3>{mean}</h3>
               </div>
-              <div>
+              <div className="componentContainer">
                 <strong> Components :</strong>
                 <strong>
                   {` ${components.length}`}
                 </strong>
-                <div style={{ marginLeft: '25px', marginTop: '10px' }}>
+                <div className="componentsData" style={{ marginLeft: '25px', marginTop: '10px' }}>
                   {components.map((component, index) => (
                       <h3>
                         {`${index + 1}: Nodes(${component.length})`}
