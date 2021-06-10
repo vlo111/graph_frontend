@@ -156,7 +156,7 @@ class ChartUpdate {
   }
 
   static labelToggle = (data) => {
-    const { labels: updateLabel } = data;
+    const { label: updateLabel } = data;
 
     if (updateLabel.open) {
       const folder = document.querySelector(`[id="${updateLabel.id}"]`);
@@ -196,7 +196,7 @@ class ChartUpdate {
     const labels = Chart.getLabels().filter((n) => !labelsDeleteId.includes(n.id));
 
     labelsDelete.forEach((l) => {
-      Chart.data.embedLabels = Chart.data.embedLabels.filter(em => em.labelId !== l.id);
+      Chart.data.embedLabels = Chart.data.embedLabels.filter((em) => em.labelId !== l.id);
     });
 
     const nodes = Chart.getNodes().filter((d) => labelsDelete.some((l) => d.labels.includes(l)));
