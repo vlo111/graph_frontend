@@ -186,6 +186,7 @@ class AutoSave extends Component {
     const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake && !d.sourceId);
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake && !d.sourceId);
     const oldLabels = Chart.oldData.labels.filter((d) => !d.fake && !d.sourceId);
+
     const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
     const createLabels = _.differenceBy(labels, oldLabels, 'id');
     const updateLabels = [];
@@ -194,7 +195,7 @@ class AutoSave extends Component {
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
-        if (!_.isEqual(label.d, oldLabel.d) || !_.isEqual(label.size, oldLabel.size)) {
+        if (!_.isEqual(label.d, oldLabel.d)) {
           updateLabelPositions.push({
             id: label.id,
             d: label.d,
@@ -208,6 +209,13 @@ class AutoSave extends Component {
         } else if (oldLabel.new || oldLabel.import) {
           newLabel = true;
           createLabels.push(label);
+        } else if (!_.isEqual(label.size, oldLabel.size)) {
+          updateLabelPositions.push({
+            id: label.id,
+            d: label.d,
+            type: label.type,
+            open: label.open,
+          });
         }
       }
     });
