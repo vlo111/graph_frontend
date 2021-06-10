@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes, { node } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import Outside from '../Outside';
@@ -73,10 +73,6 @@ class AnalyticalPage extends Component {
 
     const clusterCoefficient = AnalysisUtils.getGlobalCluster(nodes, links);
 
-    if (!(nodes && nodes.length && links && links.length)) {
-      return <div />;
-    }
-
     return (
       <Outside exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
         <div className="analyticBottomPage">
@@ -113,13 +109,9 @@ class AnalyticalPage extends Component {
                 </strong>
                 <div style={{ marginLeft: '25px', marginTop: '10px' }}>
                   {components.map((component, index) => (
-                    <h3>
-                      {index + 1}
-                      {': '}
-                      Nodes (
-                      {component.length}
-                      )
-                    </h3>
+                      <h3>
+                        {`${index + 1}: Nodes(${component.length})`}
+                      </h3>
                   ))}
                 </div>
               </div>

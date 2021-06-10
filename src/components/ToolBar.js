@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
 import SaveGraph from './chart/SaveGraph';
 import Undo from './Undo';
-import Chart from '../Chart';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
 import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
-import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
-import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg'; 
-import { getSingleGraphRequest } from '../store/actions/graphs'; 
+import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg';
+import { getSingleGraphRequest } from '../store/actions/graphs';
 import ShareTooltip from './ShareTooltip/ShareTooltip';
 import { ReactComponent as SquareSvg } from '../assets/images/icons/square.svg';
 import { ReactComponent as EllipseSvg } from '../assets/images/icons/ellipse.svg';
 import { ReactComponent as FreeFormSvg } from '../assets/images/icons/freeForm.svg';
 import { ReactComponent as AnalyticsSvg } from '../assets/images/icons/analytics.svg';
+import AnalyseModal from './Analysis/AnalyseModal';
 
 class ToolBar extends Component {
   static propTypes = {
@@ -26,7 +25,8 @@ class ToolBar extends Component {
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-  } 
+    singleGraph: PropTypes.object.isRequired,
+  }
 
   constructor() {
     super();
@@ -39,7 +39,13 @@ class ToolBar extends Component {
         match: { params: { graphId } },
       } = this.props;
 
-      this.props.history.replace(`/graphs/view/${graphId}?analytics`);
+      const { nodes, links } = this.props.singleGraph;
+
+      if (!(nodes && nodes.length && links && links.length)) {
+        this.props.setActiveButton('analyse');
+      } else {
+        this.props.history.replace(`/graphs/view/${graphId}?analytics`);
+      }
     } else {
       this.setState({ showLabelForm: false });
       this.props.setActiveButton(button);
@@ -149,6 +155,7 @@ class ToolBar extends Component {
             Help
           </Button>
         </div>
+        <AnalyseModal />
       </div>
     );
   }
@@ -158,6 +165,7 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   currentUserRole: state.graphs.singleGraph.currentUserRole || '',
   singleGraphUser: state.graphs.singleGraph.user,
+  singleGraph: state.graphs.singleGraph,
 
 });
 const mapDispatchToProps = {

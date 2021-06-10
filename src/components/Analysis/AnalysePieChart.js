@@ -3,7 +3,6 @@ import {
   ResponsiveContainer, PieChart, Pie, Cell, Sector,
 } from 'recharts';
 import CustomPieChartLabel from './CustomPieChartLabel';
-import { COLORS } from '../../data/colors';
 import Chart from '../../Chart';
 
 class AnalyticalPage extends Component {
@@ -16,9 +15,30 @@ class AnalyticalPage extends Component {
   }
 
   onShowPartPie = (data, index) => {
+    const {
+      color, type, value, percent,
+    } = data;
+
     this.setState({
       effectPie: index,
     });
+
+    const footerPie = document.getElementsByClassName('selectedText')[0];
+    const footerPieCircle = document.getElementsByClassName('dot')[0];
+
+    const resultPie = footerPie.getElementsByTagName('span');
+
+    footerPie.innerHTML = `
+                           <p>Type:    </p><span> ${type} </span>
+                           <p>Count:   </p><span> ${value} </span>
+                           <p>Percent: </p><span> ${parseFloat(percent * 100).toFixed(2)}%</span>`;
+
+    for (let i = 0; i < resultPie.length; i++) {
+      resultPie[i].style.color = color;
+    }
+
+    footerPieCircle.style.display = 'inline-block';
+    footerPieCircle.style.backgroundColor = color;
   }
 
   onClosePartPie = () => {
@@ -26,6 +46,9 @@ class AnalyticalPage extends Component {
       effectPie: null,
     });
     Chart.showAllNodes();
+
+    document.getElementsByClassName('selectedText')[0].innerHTML = '';
+    document.getElementsByClassName('dot')[0].style.display = 'none';
   }
 
   renderActiveShape = (props) => {
@@ -39,6 +62,7 @@ class AnalyticalPage extends Component {
       endAngle,
       midAngle,
       type,
+      color,
     } = props;
     const sin = Math.sin(-RADIAN * midAngle);
     const cos = Math.cos(-RADIAN * midAngle);
@@ -53,7 +77,7 @@ class AnalyticalPage extends Component {
         outerRadius={outerRadius}
         startAngle={startAngle}
         endAngle={endAngle}
-        fill="#bf3755"
+        fill={color}
       />
     );
   };
@@ -64,6 +88,7 @@ class AnalyticalPage extends Component {
     const typeData = nodes.map((p) => ({
       name: p.name,
       type: p.type,
+      color: p.color,
     }));
 
     const groupTypes = _.groupBy(typeData, 'type');
@@ -72,11 +97,14 @@ class AnalyticalPage extends Component {
 
     Object.keys(groupTypes).forEach((l) => {
       const currentType = groupTypes[l];
-      types.push({ type: currentType[0].type, count: currentType.length });
+      types.push({ type: currentType[0].type, count: currentType.length, color: currentType[0].color });
     });
 
     return (
       <div className="pieChart">
+        <div className="headerPie">
+          <h4>Node types</h4>
+        </div>
         <ResponsiveContainer>
           <PieChart
             margin={{
@@ -102,12 +130,16 @@ class AnalyticalPage extends Component {
                 <Cell
                   className={`partPie_${index}`}
                   key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
+                  fill={entry.color}
                 />
               ))}
             </Pie>
           </PieChart>
         </ResponsiveContainer>
+        <div className="footerPie">
+          <span className="dot" />
+          <span className="selectedText" />
+        </div>
       </div>
     );
   }
