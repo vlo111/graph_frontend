@@ -797,7 +797,6 @@ class ChartUtils {
   }
 
   static uniqueLinks(links, margeFakeLinks = false) {
-    console.log(links, margeFakeLinks);
     if (margeFakeLinks || 1) {
       return _.chain(links)
         .filter((l) => l.source !== l.target)
