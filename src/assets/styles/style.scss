@@ -8627,6 +8627,9 @@ img.preview-scaled {
   order:3;
   border-radius: 2em;
 }
+.scienceSearchSubmit {
+  outline: none;
+}
 .scienceResultAmount {
   margin-left: 3em;
 }
@@ -8692,10 +8695,9 @@ img.preview-scaled {
   margin-left: 1em;
   margin-bottom: 0px;
 }
-
 .scienceInput:focus {
   outline: none;
-}
+} 
 //-----------------------------------
 
 .button-group {
@@ -9280,6 +9282,10 @@ color: #2962ff;
 
     .wikiButton {
       right: 22%;
+    }
+
+    .scienceGraph {
+      right: 31%;
     }
 
   }

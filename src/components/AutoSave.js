@@ -148,7 +148,6 @@ class AutoSave extends Component {
 
   handleSquareDragEnd = (ev, d) => {
     const nodes = Chart.getNodes().filter((n) => d.nodes.includes(n.id) || d.selectedNodes.includes(n.id));
-    console.log(nodes);
   }
 
   handleAutoPositionChange = async (isAutoPosition) => {
@@ -286,7 +285,6 @@ class AutoSave extends Component {
       // return;
     }
     if (createNodes.length) {
-      console.log(createNodes, this.props.createNodesRequest, 444);
       await this.props.createNodesRequest(graphId, createNodes);
     }
     const promise = [];
@@ -329,7 +327,6 @@ class AutoSave extends Component {
     //   promise.push(this.props.updateLabelPositionsRequest(graphId, updateLabelPositions));
     // }
     if (deleteLabels.length) {
-      alert(111);
       promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
     Chart.event.emit('auto-save');
