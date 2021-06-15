@@ -4,7 +4,6 @@ import Modal from 'react-modal';
 import PropTypes, { node } from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
-// import EventEmitter from 'events';
 import {setActiveButton} from '../../store/actions/app';
 import Input from '../form/Input';
 import NodeIcon from '../NodeIcon';
@@ -13,15 +12,11 @@ import Utils from '../../helpers/Utils';
 import {setActiveTab, getAllTabsRequest} from '../../store/actions/graphs';
 import Chart from '../../Chart';
 import queryString from 'query-string';
-import Api from '../../Api';
-// import ReactChart from '../chart/ReactChart';
-// import handleFolderToggle from '../AutoSave';
+// import Api from '../../Api';
 import { getGraphNodesRequest } from '../../store/actions/graphs'
-// import { toggleFolderRequest } from '../../store/actions/labels'
 
 
 class SearchModal extends Component {
-  // static event = new EventEmitter();
   static propTypes = {
     getAllTabsRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
@@ -49,6 +44,12 @@ class SearchModal extends Component {
     this.props.setActiveButton('create');
   }
 
+  /**
+   * If search query have more then one symbol search it in back end 
+   * 
+   * @param {string} search 
+   * @returns 
+   */
   handleChange = async (search = '') => {
     this.setState({ nodes: [], search, tabs:[], docs:[]});
     if (!search) {
@@ -59,6 +60,11 @@ class SearchModal extends Component {
     }
   }
 
+  /**
+   * Search query in nodes, media tags, and node tabs and display result as a list
+   * 
+   * @param {string} search 
+   */
   displaySearchResultList = async search => {
     const tabs = [];
     let tabArray = [];
@@ -70,7 +76,7 @@ class SearchModal extends Component {
       findNode: false
     };
     
-    const findedNodes = await this.props.getGraphNodesRequest(1, argument)
+    const foundNodes = await this.props.getGraphNodesRequest(1, argument)
     let docs = []
 
     const ifNodeExists = (node) => {
@@ -85,26 +91,28 @@ class SearchModal extends Component {
       return false
     }
 
-    if (findedNodes.payload.data.documents && findedNodes.payload.data.documents.length > 0) {
-      docs = findedNodes.payload.data.documents[0]
-      docs = docs.filter(nd => ifNodeExists(nd))
+    if (foundNodes.payload.data.documents && foundNodes.payload.data.documents.length > 0) {
+      docs = foundNodes.payload.data.documents[0];
+      docs = docs.filter(nd => ifNodeExists(nd));
     }
     try {
-      if (findedNodes.payload.data.graphs.length > 0) {
-        const nodesList = findedNodes.payload.data.graphs[0].nodes
+      if (foundNodes.payload.data.graphs.length > 0) {
+        const nodesList = foundNodes.payload.data.graphs[0].nodes
         nodesList.map(node => {
-          if (nodesList.length > 1) {
-            myNodes = nodesList
+          if (nodesList.length > 0) {
+            myNodes = nodesList;
           }
           if (node.customFields.length) {
             node.customFields.map(tab => {
-              if (tab.value === undefined) {return}
+              if (tab.value === undefined) {
+                return;
+              }
               const tabContent = tab.value;
-              const tabName = tab.name;
-              const tabContentHtml = document.createElement('div');
-              tabContentHtml.innerHTML = tabContent;
-              const tabSearchValue = tabContentHtml.textContent;
               if (tabContent.toLowerCase().includes(search.toLowerCase())) {
+                const tabName = tab.name;
+                const tabContentHtml = document.createElement('div');
+                tabContentHtml.innerHTML = tabContent;
+                const tabSearchValue = tabContentHtml.textContent;
                 tabs.push({
                   nodeId: node.id,
                   node,
@@ -116,6 +124,7 @@ class SearchModal extends Component {
             })
           }
         })
+
         const groupBy = (array, key) => array.reduce((result, obj) => {
           (result[obj[key]] = result[obj[key]] || []).push(obj);
           if (obj.node.name.length > 40) {
@@ -127,7 +136,7 @@ class SearchModal extends Component {
         tabArray = groupBy(tabs, 'nodeId');
       }
     } catch(e) {
-      console.log(e)
+      console.log(e);
     }
     this.setState({ nodes: myNodes, search, tabs: tabArray, docs });
   }
@@ -137,93 +146,114 @@ class SearchModal extends Component {
     return text.replace(new RegExp(Utils.escRegExp(search), 'ig'), '<b>$&</b>');
   }
 
-  openFolder = async (label, node, tabName=false) => {
+  /**
+   * Toggle folder and bring nodes inside it
+   * 
+   * @param {object} e 
+   * @param {object} label 
+   * @param {object} node 
+   * @param {string} tabName 
+   */
+  openFolder =  (e, label, node, tabName=false) => {
     label.open = true
-    const graphId = window.location.pathname.substring(
-      window.location.pathname.lastIndexOf('/') + 1
-    )
-    Api.toggleFolder(graphId, {id:label.id, open: true})
-
-    const labelData = await Api.labelData(graphId, label.id)
-    const nodes = await Chart.getNodes();
-    const links = Chart.getLinks();
-    nodes.push(...labelData.data.label.nodes);
-    links.push(...labelData.data.label.links);
-
-    this.closeModal();
+    Chart.event.emit('folder.open', e, label)
     const lbs = Chart.getLabels().map(lb => {
       if(lb.id === label.id) {
-        lb.open === true
+        lb.open = true
       }
       return label
     })
-    
-    await Chart.render({ nodes, links, labels: lbs });
-    const updatedNodesListInFront = Chart.getNodes()
-    const theNode = updatedNodesListInFront.find(n => n.id === node.id) 
-    setTimeout(async () => {
+    Chart.render({labels:lbs})
+    this.closeModal();
+
+    setTimeout(() => {
+      const nodes = Chart.getNodes()
+      // use to navigate through tabs
+      const theNode = nodes.find(n => n.id === node.id)
+      if (theNode) {
+        ChartUtils.findNodeInDom(node);
+      }
+      this.props.history.replace(`${window.location.pathname}?info=${node.id}`);
       if (tabName) {
+        console.log('tabName: ', tabName);
         this.props.setActiveTab(tabName);
       }
-      await ChartUtils.findNodeInDom(theNode);
-    }, 1);
-    return theNode
+    }, 500);
   } 
 
-  findNodeByTag = async (e, tagNode) => {
+  /**
+   * Open node which contains searched tags if it's inside folder call openFolder
+   * 
+   * @param {object} e 
+   * @param {object} tagNode 
+   */
+  openNodeByTag = async (e, tagNode) => {
     const availableNodes = Chart.getNodes()
     const labels = Chart.getLabels()
     const isNodeAvailable =  availableNodes.find(nd => nd.id === tagNode.id)
     if(isNodeAvailable) {
-      ChartUtils.findNodeInDom(isNodeAvailable);
       this.closeModal();
+      ChartUtils.findNodeInDom(isNodeAvailable);
+      this.props.history.replace(`${window.location.pathname}?info=${isNodeAvailable.id}`);
     } else {
       const label = labels.find(label => label.nodes.includes(tagNode.id))
-      this.openFolder(label, tagNode)
+      this.openFolder(e, label, tagNode)
     }
   }
 
-  findNode = async (e, node) => {
+  /**
+   * Open chosen node if it's inside folder call openFolder
+   * 
+   * @param {object} e 
+   * @param {object} node 
+   */
+  openNode = async (e, node) => {
     const availableNodes = Chart.getNodes()
     const labels = Chart.getLabels()
     const ifNode = !!node.tags ? false : true
     const isNodeAvailable =  availableNodes.find(nd => nd.id === node.id)
-    
     if (isNodeAvailable) {
       ChartUtils.findNodeInDom(node);
+      this.props.history.replace(`${window.location.pathname}?info=${isNodeAvailable.id}`);
       this.closeModal();
     }
 
     else if(ifNode) {
       await node.labels.map(async labelId => {
         const label = labels.find(lb => lb.id === labelId)
-        if (label.type === "folder") {
+        if (label && label.type === "folder") {
           if (label.open === false) {
-            this.openFolder(label, node)
+            this.openFolder(e, label, node)
           } 
         }
       })
     } 
   }
 
-  openTab = async (node, tabName) => {
+  /**
+   * Open chosen tab of node if it's inside folder call openFolder
+   * @param {*} e 
+   * @param {*} node 
+   * @param {*} tabName 
+   */
+  openTab = (e, node, tabName) => {
     const availableNodes = Chart.getNodes()
     const labels = Chart.getLabels()
     const isNodeAvailable =  availableNodes.find(nd => nd.id === node.id)
     if(isNodeAvailable) {
       ChartUtils.findNodeInDom(node);
+      this.props.history.replace(`${window.location.pathname}?info=${isNodeAvailable.id}`);
       this.closeModal();
     } else {
       const label = labels.find(label => label.nodes.includes(node.id))
-      await this.openFolder(label, node, tabName)
+      if (label) {
+        this.openFolder(e, label, node, tabName)
+      }
     }
-    // this.props.setActiveTab(tabName);
-    this.props.history.replace(`${window.location.pathname}?info=${node.id}`);
   }
 
   render() {
     const { nodes, tabs, search, docs } = this.state;
-
     this.initTabs();
 
     return (
@@ -260,7 +290,7 @@ class SearchModal extends Component {
                         <span className="row nodeTabs">
                           <div
                             className="contentWrapper"
-                            onClick={() => this.openTab(tabs[item].node, tabs[item][tab].tabName)}
+                            onClick={(e) => this.openTab(e, tabs[item].node, tabs[item][tab].tabName)}
                           >
                             <span
                               className="name"
@@ -294,7 +324,7 @@ class SearchModal extends Component {
           ))}
           {nodes.map((d) => (
             <li className="item" key={d.index}>
-              <div tabIndex="0" role="button" className="ghButton" onClick={(e) => this.findNode(e, d)}>
+              <div tabIndex="0" role="button" className="ghButton" onClick={(e) => this.openNode(e, d)}>
                 <div className="left">
                   <NodeIcon node={d}/>
                 </div>
@@ -324,7 +354,7 @@ class SearchModal extends Component {
           ))}
           {docs.map((d, index) => (
             <li className="item" key={index}>
-              <div tabIndex="0" role="button" className="ghButton" onClick={(e) => this.findNodeByTag(e, d)}>
+              <div tabIndex="0" role="button" className="ghButton" onClick={(e) => this.openNodeByTag(e, d)}>
                 <div className="right">
                   <span className="row">
                     <span
