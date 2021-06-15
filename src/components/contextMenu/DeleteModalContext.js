@@ -8,6 +8,7 @@ import { setActiveButton } from '../../store/actions/app';
 import ContextMenu from './ContextMenu';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
+import Api from '../../Api';
 
 class AddLabelModal extends Component {
   closeDelete = () => {
@@ -15,7 +16,7 @@ class AddLabelModal extends Component {
   }
 
   remove = () => {
-    const { data, params, params: { squareData } } = this.props;
+    const { data, params, params: { squareData }, graphId } = this.props;
 
     if (data.type === 'selectSquare.delete') {
       let nodes = Chart.getNodes();
@@ -30,6 +31,12 @@ class AddLabelModal extends Component {
       labels = labels.filter((l) => {
         if (squareData.labels.includes(l.id)) {
           const { size } = l;
+
+          if (l.sourceId) {
+            Chart.data.embedLabels = Chart.data.embedLabels.filter((d) => d.labelId !== l.id);
+            Api.labelDelete(l.sourceId, l.id, graphId);
+            return;
+          }
 
           if (l.type === 'square' || l.type === 'ellipse') {
             x = size.x;
@@ -107,9 +114,9 @@ class AddLabelModal extends Component {
     // square.y = moduleSquare.y;
 
     if (x > square.x
-        && y > square.y
-        && (x + width) < (square.x + square.width)
-        && (y + height) < (square.y + square.height)) {
+      && y > square.y
+      && (x + width) < (square.x + square.width)
+      && (y + height) < (square.y + square.height)) {
       return false;
     }
     return true;
@@ -156,6 +163,7 @@ class AddLabelModal extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
+  graphId: state.graphs.singleGraph.id,
 });
 const mapDispatchToProps = {
   setActiveButton,

@@ -220,8 +220,11 @@ class LabelCopy extends Component {
     Chart.loading(false);
   }
 
-  handleLabelEmbed = () => {
+  handleLabelEmbed = async (params) => {
+    const { x, y } = params;
     const { sourceId } = LabelUtils.getData();
+    const position = [x, y];
+    await this.setState({ position })
     this.copyDocument('embed', sourceId);
   }
 

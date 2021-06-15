@@ -73,7 +73,7 @@ class AnalyticalPage extends Component {
 
     const clusterCoefficient = AnalysisUtils.getGlobalCluster(nodes, links);
 
-    const closenessCentrality = AnalysisUtils.getClosenessCentrality(nodes, links);
+   // const closenessCentrality = AnalysisUtils.getClosenessCentrality(nodes, links);
 
     return (
       <Outside exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
