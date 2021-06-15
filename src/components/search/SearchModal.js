@@ -12,7 +12,6 @@ import Utils from '../../helpers/Utils';
 import {setActiveTab, getAllTabsRequest} from '../../store/actions/graphs';
 import Chart from '../../Chart';
 import queryString from 'query-string';
-// import Api from '../../Api';
 import { getGraphNodesRequest } from '../../store/actions/graphs'
 
 
@@ -136,11 +135,16 @@ class SearchModal extends Component {
         tabArray = groupBy(tabs, 'nodeId');
       }
     } catch(e) {
-      console.log(e);
     }
     this.setState({ nodes: myNodes, search, tabs: tabArray, docs });
   }
 
+  /**
+   * find search string in text and make it bold
+   * 
+   * @param {string} text 
+   * @returns 
+   */
   formatHtml = (text) => {
     const { search } = this.state;
     return text.replace(new RegExp(Utils.escRegExp(search), 'ig'), '<b>$&</b>');
@@ -161,7 +165,7 @@ class SearchModal extends Component {
       if(lb.id === label.id) {
         lb.open = true
       }
-      return label
+      return lb
     })
     Chart.render({labels:lbs})
     this.closeModal();
@@ -173,11 +177,10 @@ class SearchModal extends Component {
       if (theNode) {
         ChartUtils.findNodeInDom(node);
       }
-      this.props.history.replace(`${window.location.pathname}?info=${node.id}`);
       if (tabName) {
-        console.log('tabName: ', tabName);
         this.props.setActiveTab(tabName);
       }
+      this.props.history.replace(`${window.location.pathname}?info=${node.id}`);
     }, 500);
   } 
 
@@ -242,6 +245,7 @@ class SearchModal extends Component {
     const isNodeAvailable =  availableNodes.find(nd => nd.id === node.id)
     if(isNodeAvailable) {
       ChartUtils.findNodeInDom(node);
+      this.props.setActiveTab(tabName)
       this.props.history.replace(`${window.location.pathname}?info=${isNodeAvailable.id}`);
       this.closeModal();
     } else {
@@ -272,6 +276,37 @@ class SearchModal extends Component {
           autoFocus
         />
         <ul className="list">
+        {nodes.map((d) => (
+            <li className="item" key={d.index}>
+              <div tabIndex="0" role="button" className="ghButton" onClick={(e) => this.openNode(e, d)}>
+                <div className="left">
+                  <NodeIcon node={d}/>
+                </div>
+                <div className="right">
+                  <span className="row">
+                    <span
+                      className="name"
+                      dangerouslySetInnerHTML={{ __html: this.formatHtml(d.name) }}
+                    />
+                    <span
+                      className="type"
+                      dangerouslySetInnerHTML={{ __html: this.formatHtml(d.type) }}
+                    />
+                  </span>
+
+                  {!d.name.toLowerCase().includes(search) && !d.type.toLowerCase().includes(search) ? (
+                    <span
+                      className="keywords"
+                      dangerouslySetInnerHTML={{ __html: d.keywords.map((k) => this.formatHtml(k)).join(', ') }}
+                    />
+                  ) : null}
+
+                </div>
+
+              </div>
+            </li>
+          ))}
+          
           {Object.keys(tabs) && Object.keys(tabs).map((item) => (
             <li className="item" key={tabs[item]?.node?.id}>
               <div tabIndex="0" role="button" className="ghButton tabButton">
@@ -322,36 +357,7 @@ class SearchModal extends Component {
               </div>
             </li>
           ))}
-          {nodes.map((d) => (
-            <li className="item" key={d.index}>
-              <div tabIndex="0" role="button" className="ghButton" onClick={(e) => this.openNode(e, d)}>
-                <div className="left">
-                  <NodeIcon node={d}/>
-                </div>
-                <div className="right">
-                  <span className="row">
-                    <span
-                      className="name"
-                      dangerouslySetInnerHTML={{ __html: this.formatHtml(d.name) }}
-                    />
-                    <span
-                      className="type"
-                      dangerouslySetInnerHTML={{ __html: this.formatHtml(d.type) }}
-                    />
-                  </span>
-
-                  {!d.name.toLowerCase().includes(search) && !d.type.toLowerCase().includes(search) ? (
-                    <span
-                      className="keywords"
-                      dangerouslySetInnerHTML={{ __html: d.keywords.map((k) => this.formatHtml(k)).join(', ') }}
-                    />
-                  ) : null}
-
-                </div>
-
-              </div>
-            </li>
-          ))}
+          
           {docs.map((d, index) => (
             <li className="item" key={index}>
               <div tabIndex="0" role="button" className="ghButton" onClick={(e) => this.openNodeByTag(e, d)}>
@@ -394,7 +400,6 @@ const mapDispatchToProps = {
   setActiveButton,
   getAllTabsRequest,
   getGraphNodesRequest
-  // toggleFolderRequest,
 };
 
 const Container = connect(
