@@ -497,6 +497,7 @@ class Chart {
           return d;
         }
         d.manually_size = d.manually_size || 1;
+        // d.labels = ChartUtils.getNodeLabels(d);
 
         const labelData = data.embedLabels.find((l) => d.labels?.includes(l.labelId));
         if (!labelData) {
