@@ -1,5 +1,6 @@
 import { define } from '../../helpers/redux-request';
 import Api from '../../Api';
+import { UPDATE_NODES_POSITION } from "./nodes";
 
 export const CONVERT_GRAPH = define('CONVERT_GRAPH');
 
@@ -39,8 +40,8 @@ export function deleteGraphRequest(id) {
 
 export const UPDATE_GRAPH_THUMBNAIL = define('UPDATE_GRAPH_THUMBNAIL');
 
-export function updateGraphThumbnailRequest(id, svg) {
-  return UPDATE_GRAPH_THUMBNAIL.request(() => Api.updateGraphThumbnail(id, svg));
+export function updateGraphThumbnailRequest(id, svg, size) {
+  return UPDATE_GRAPH_THUMBNAIL.request(() => Api.updateGraphThumbnail(id, svg, size));
 }
 
 export const GET_GRAPHS_LIST = define('GET_GRAPHS_LIST');
@@ -49,10 +50,28 @@ export function getGraphsListRequest(page = 1, requestData = {}) {
   return GET_GRAPHS_LIST.request(() => Api.getGraphsList(page, requestData)).takeLatest();
 }
 
+export const GET_NODES_LIST = define('GET_NODES_LIST');
+
+export function getGraphNodesRequest(page = 1, requestData = {}) {
+  return GET_NODES_LIST.request(() => Api.getGraphNodes(page, requestData)).takeLatest();
+}
+
 export const GET_SINGLE_GRAPH = define('GET_SINGLE_GRAPH');
 
 export function getSingleGraphRequest(graphId, params) {
   return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId, params));
+}
+
+export const GET_ALL_TABS = define('GET_ALL_TABS');
+
+export function getAllTabsRequest(graphId) {
+  return GET_ALL_TABS.request(() => Api.getAllTabs(graphId));
+}
+
+export const GET_GRAPH_INFO = define('GET_GRAPH_INFO');
+
+export function getGraphInfoRequest(graphId) {
+  return GET_GRAPH_INFO.request(() => Api.getGraphInfo(graphId));
 }
 
 export const GET_SINGLE_GRAPH_PREVIEW = define('GET_SINGLE_GRAPH_PREVIEW');
@@ -100,13 +119,19 @@ export function setGraphCustomFields(customFields) {
 
 export const SET_NODE_CUSTOM_FIELD = 'SET_NODE_CUSTOM_FIELD';
 
-export function setNodeCustomField(type, name, customField, tabData, append = false) {
+export function setNodeCustomField(type, nodeId, customField, tabData, append = false) {
   return {
     type: SET_NODE_CUSTOM_FIELD,
     payload: {
-      type, name, customField, tabData, append,
+      type, nodeId, customField, tabData, append,
     },
   };
+}
+
+export const GET_NODE_CUSTOM_FIELDS = define('GET_NODE_CUSTOM_FIELDS');
+
+export function getNodeCustomFieldsRequest(graphId, nodeId) {
+  return GET_NODE_CUSTOM_FIELDS.request(() => Api.getNodeCustomFields(graphId, nodeId));
 }
 
 export const ADD_NODE_CUSTOM_FIELD_KEY = 'ADD_NODE_CUSTOM_FIELD_KEY';
@@ -158,6 +183,23 @@ export function setActiveTab(tabName) {
     type: SET_ACTIVE_TAB,
     payload: {
       tabName,
+    },
+  };
+}
+
+const UPDATE_GRAPH_POSITIONS = define('UPDATE_GRAPH_POSITIONS');
+
+export function updateGraphPositionsRequest(graphId, nodes, labels) {
+  return UPDATE_GRAPH_POSITIONS.request(() => Api.updateGraphPositions(graphId, nodes, labels));
+}
+
+export const ACTIVE_MOUSE_TRACKER = 'ACTIVE_MOUSE_TRACKER';
+
+export function setActiveMouseTracker(tracker, userId) {   
+  return {
+    type: ACTIVE_MOUSE_TRACKER,
+    payload: { 
+      tracker, userId
     },
   };
 }

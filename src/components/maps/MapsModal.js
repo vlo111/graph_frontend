@@ -94,7 +94,6 @@ class MapsModal extends Component {
   })
 
   handleMouseUp = async (ev) => {
-    const { customFields } = this.props;
     const { markerDrag } = this.state;
     let { selected } = this.state;
     if (!markerDrag) return;
@@ -107,27 +106,10 @@ class MapsModal extends Component {
     if (!selected.name) {
       selected = await this.getPlaceInformation(selected.location);
     }
-    const customField = CustomFields.get(customFields, selected.type);
-    const contact = ReactDOMServer.renderToString(<MapsContactCustomField data={selected} />);
-
     const url = Utils.wikiContentUrlByName(selected.name);
-
     const wikiData = await Utils.getWikiContent(url);
 
-    if (wikiData && customField) {
-      if (contact) {
-        customField.About = `<div>
-<strong class="tabHeader">Contact</strong><br>
-<br>${contact}<br>
-</div>`;
-      }
-      customField.About += `<div>
-<strong class="tabHeader">About</strong><br>
-<br>${wikiData}<br>
-<a href="https://en.wikipedia.org/wiki/${selected.name}" target="_blank">
-https://en.wikipedia.org/wiki/${selected.name}
-</a></div>`;
-    }
+    const contact = ReactDOMServer.renderToString(<MapsContactCustomField data={selected} wikiData={wikiData} />);
 
     this.props.toggleNodeModal({
       fx: x,
@@ -135,12 +117,16 @@ https://en.wikipedia.org/wiki/${selected.name}
       name: selected.name,
       icon: selected.photo,
       type: selected.type,
-      location: [selected.location.lat, selected.location.lng].join(','),
-      customField,
+      location: [selected],
+      customFields: [{
+        name: 'About',
+        subtitle: '',
+        value: contact,
+      }],
     });
   }
 
-  handleMarkerMouseDown = async(ev) => {
+  handleMarkerMouseDown = async (ev) => {
     const { clientX, clientY } = ev;
     this.setState({ markerDrag: true, virtualMarkerPos: [clientX, clientY] });
   }

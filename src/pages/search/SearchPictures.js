@@ -63,10 +63,10 @@ class SearchPictures extends Component {
           result[obj[key]].user = obj.user;
         }
 
-        obj.graphName = obj.graphs.title;
-        obj.graphCreated = obj.graphs.createdAt;
+        obj.graphName = obj.graphs?.title;
+        obj.graphCreated = obj.graphs?.createdAt;
 
-        obj.node = obj.graphs.nodes.filter((p) => p.id === obj.nodeId)[0];
+        obj.node = obj.graphs?.nodes.filter((p) => p.id === obj.nodeId)[0];
 
         return result;
       }, {});

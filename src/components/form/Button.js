@@ -35,6 +35,7 @@ class Button extends Component {
       >
         <Icon value={icon} />
         {children}
+        {loading ? <Icon className="loading" value="fa-spinner fa-pulse fa-fw" /> : null}
       </button>
     );
   }

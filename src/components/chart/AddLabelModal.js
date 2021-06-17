@@ -9,6 +9,11 @@ import Input from '../form/Input';
 import ChartUtils from '../../helpers/ChartUtils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import ContextMenu from '../contextMenu/ContextMenu';
+import { createLabelsRequest } from '../../store/actions/labels';
+import { updateNodesPositionRequest } from '../../store/actions/nodes';
+import { setActiveButton } from '../../store/actions/app';
+
+import Utils from '../../helpers/Utils';
 
 class AddLabelModal extends Component {
   constructor(props) {
@@ -19,6 +24,9 @@ class AddLabelModal extends Component {
       edit: false,
       errors: {},
     };
+  }
+  static defaultProps = {
+    setAvtiveButton: 'create',
   }
 
   componentDidMount() {
@@ -41,53 +49,60 @@ class AddLabelModal extends Component {
   handleFolderCrate = (ev, d) => {
     const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
     const labels = Chart.getLabels();
+    const id = `f_${ChartUtils.uniqueId(labels)}`;
     const labelData = {
-      id: `f_${ChartUtils.uniqueId(labels)}`,
-      color: ChartUtils.labelColors(),
+      id,
+      color: ChartUtils.labelColors({ id }),
       d: [[x, y], [500, 500]],
       name: '',
       type: 'folder',
     };
     this.setState({ show: true, labelData });
   }
-  handleFolderEdit = (ev, labelData) => {   
+
+  handleFolderEdit = (ev, labelData) => {
     this.setState({ show: true, labelData, edit: true });
   }
-  handleFolderCrateSquare = async (ev, d) => { 
-    let { squareDara: { x, y, width, height }, originalEvent} = d;   
-    let links = Chart.getLinks();
-    let labels = Chart.getLabels();
+
+  handleFolderCrateSquare = async (ev, d) => {
+    let {
+      squareData: {
+        x, y, width, height,
+      }, originalEvent,
+    } = d;
+    const links = Chart.getLinks();
+    const labels = Chart.getLabels();
     // eslint-disable-next-line prefer-const
     // let { nodes} = await ChartUtils.getNodesWithFiles(
     //   this.props.customFields
     // );
 
-    // nodes = nodes.filter((d) => squareDara.nodes.includes(d.id));
+    // nodes = nodes.filter((d) => squareData.nodes.includes(d.id));
     // links = links.filter(
     //   (l) =>
-    //     squareDara.nodes.includes(l.source) &&
-    //     squareDara.nodes.includes(l.target)
-    // ); 
-     if (width < 200) width = 200;
-     if (height < 200) height = 200; 
-     x = x + width / 2;
-     y= y + height / 2;
-     
+    //     squareData.nodes.includes(l.source) &&
+    //     squareData.nodes.includes(l.target)
+    // );
+    if (width < 200) width = 200;
+    if (height < 200) height = 200;
+    x += width / 2;
+    y += height / 2;
+    const id = `f_${ChartUtils.uniqueId(labels)}`;
     const labelData = {
-      id: `f_${ChartUtils.uniqueId(labels)}`,
-      color: ChartUtils.labelColors(),
+      id,
+      color: ChartUtils.labelColors({ id }),
       d: [[x, y], [width, height]],
       name: '',
-      type: "folder",
+      type: 'folder',
       open: true,
     };
 
-     this.setState({ show: true, labelData });
+    this.setState({ show: true, labelData });
   }
 
   deleteLabel = () => {
     const { labelData, edit } = this.state;
-    if(!edit) {
+    if (!edit) {
       let labels = Chart.getLabels();
       labels = labels.filter((l) => l.id !== labelData.id);
       Chart.render({ labels });
@@ -98,18 +113,33 @@ class AddLabelModal extends Component {
   addLabel = async (ev) => {
     ev.preventDefault();
     const { labelData } = this.state;
-    const labels = Chart.getLabels();
+    const { setAvtiveButton } = this.props;
+
+    const labels = [...Chart.getLabels()];
     const errors = {};
     [errors.name, labelData.name] = Validate.labelName(labelData.name);
+    labelData.new = true;
     if (!Validate.hasError(errors)) {
       const i = labels.findIndex((l) => l.id === labelData.id);
       if (i > -1) {
         labels[i] = labelData;
       } else {
+        labelData.update = true;
         labels.push(labelData);
       }
-      Chart.render({ labels });
+      const nodes = Chart.getNodes();
+      if (labelData.type === 'folder') {
+        nodes.push({
+          fake: true,
+          fx: labelData.d[0][0] + 30,
+          fy: labelData.d[0][1] + 30,
+          id: `fake_${labelData.id}`,
+          labels: [labelData.id],
+        });
+      }
+      Chart.render({ labels, nodes });
       this.setState({ show: false });
+      this.props.setActiveButton(setAvtiveButton);
     }
     this.setState({ errors });
   }
@@ -122,7 +152,9 @@ class AddLabelModal extends Component {
   }
 
   render() {
-    const { labelData, errors, show, edit } = this.state;
+    const {
+      labelData, errors, show, edit,
+    } = this.state;
     if (!show) {
       return null;
     }
@@ -136,11 +168,12 @@ class AddLabelModal extends Component {
         <div className="containerModal">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.deleteLabel} />
           <form className="form" onSubmit={this.addLabel}>
-            <h2>{labelData.type === 'folder' ?  
-              ( edit ? 'Edit Folder' : 'Add new Folder') :
-              ( edit ? 'Edit label' : 'Add new label')} 
-             </h2>
-             <Input
+            <h2>
+              {labelData.type === 'folder'
+                ? (edit ? 'Edit Folder' : 'Add new Folder')
+                : (edit ? 'Edit label' : 'Add new label')}
+            </h2>
+            <Input
               value={labelData.name}
               error={errors.name}
               label="Name"
@@ -161,8 +194,14 @@ class AddLabelModal extends Component {
   }
 }
 
-const mapStateToProps = () => ({});
-const mapDispatchToProps = {};
+const mapStateToProps = (state) => ({
+  graphId: state.graphs.singleGraph.id,
+});
+const mapDispatchToProps = {
+  createLabelsRequest,
+  updateNodesPositionRequest,
+  setActiveButton,
+};
 
 const Container = connect(
   mapStateToProps,

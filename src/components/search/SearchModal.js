@@ -1,20 +1,24 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
-import { setActiveButton } from '../../store/actions/app';
+import memoizeOne from 'memoize-one';
+import _ from 'lodash';
+import {setActiveButton} from '../../store/actions/app';
 import Input from '../form/Input';
 import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
 import Utils from '../../helpers/Utils';
-import { setActiveTab } from '../../store/actions/graphs';
+import {setActiveTab, getAllTabsRequest} from '../../store/actions/graphs';
+import Chart from '../../Chart';
 
 class SearchModal extends Component {
   static propTypes = {
+    getAllTabsRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
-    customFields: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     setActiveTab: PropTypes.func.isRequired,
+    graphTabs: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -25,34 +29,35 @@ class SearchModal extends Component {
     };
   }
 
+  initTabs = memoizeOne(() => {
+    this.props.getAllTabsRequest(window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1));
+  })
+
   closeModal = () => {
     this.props.setActiveButton('create');
   }
 
-  handleChange = (search = '') => {
-    if (!search.trim().toLowerCase()) {
+  handleChange = async (search = '') => {
+    const s = search.trim().toLowerCase()
+    if (!s) {
       this.setState({ nodes: [], search });
       return;
     }
-    const { customFields } = this.props;
-    const nodes = ChartUtils.nodeSearch(search);
+    const nodes = Chart.getNodes().filter(n => _.lowerCase(n.name).includes(s) || _.lowerCase(n.type).includes(s));
 
     const tabs = [];
 
     if (search.length > 2) {
-      const nodeTypes = Object.keys(customFields);
+      const { graphTabs } = this.props;
 
-      nodeTypes.forEach((nmodeType) => {
-        const tabNames = Object.keys(customFields[nmodeType]);
+      if (graphTabs && graphTabs.length && !_.isEmpty(nodes)) {
+        graphTabs.forEach((p) => {
+          const node = nodes.filter((g) => g.id === p.nodeId)[0];
 
-        tabNames.forEach((tabName) => {
-          const tabValue = customFields[nmodeType][tabName].values;
+          const tabData = p.tab;
 
-          Object.keys(tabValue).forEach((nodeId) => {
-
-            const tabContent = tabValue[nodeId];
-
-            const node = ChartUtils.getNodeById(nodeId);
+          tabData.forEach((tab) => {
+            const tabContent = tab.value;
 
             const tabContentHtml = document.createElement('div');
 
@@ -60,13 +65,14 @@ class SearchModal extends Component {
 
             const tabSearchValue = tabContentHtml.textContent;
 
-            if (tabName.toLowerCase().includes(search.toLowerCase())
-                    || tabSearchValue.toLowerCase().includes(search.toLowerCase())) {
-              if (nodeId && (nodeId !== 'undefined')) {
+            if (tab.name.toLowerCase().includes(search.toLowerCase())
+              || tabSearchValue.toLowerCase().includes(search.toLowerCase())) {
+               
+              if (node !== undefined && node.id && (node.id !== 'undefined')) {
                 tabs.push({
                   nodeId: node.id,
                   node,
-                  tabName,
+                  tabName: tab.name,
                   tabContent,
                   tabSearchValue,
                 });
@@ -74,7 +80,7 @@ class SearchModal extends Component {
             }
           });
         });
-      });
+      }
     }
 
     const groupBy = (array, key) => array.reduce((result, obj) => {
@@ -107,6 +113,9 @@ class SearchModal extends Component {
 
   render() {
     const { nodes, tabs, search } = this.state;
+
+    this.initTabs();
+
     return (
       <Modal
         isOpen
@@ -127,7 +136,7 @@ class SearchModal extends Component {
             <li className="item" key={tabs[item].node.id}>
               <div tabIndex="0" role="button" className="ghButton tabButton">
                 <div className="header">
-                  <NodeIcon node={tabs[item].node} />
+                  <NodeIcon node={tabs[item].node}/>
                   <div className="headerArea">
                     <span className="name">{tabs[item].node.name}</span>
                     <span className="type">{tabs[item].node.type}</span>
@@ -137,7 +146,7 @@ class SearchModal extends Component {
                   {
                     Object.keys(tabs[item]).map((tab) => (
                       tabs[item][tab].nodeId && (
-                      <div className="contentTabs">
+                        <div className="contentTabs">
                         <span className="row nodeTabs">
                           <div
                             className="contentWrapper"
@@ -156,7 +165,7 @@ class SearchModal extends Component {
                             </div>
                           </div>
                         </span>
-                        {!tabs[item][tab].tabName.toLowerCase().includes(search)
+                          {!tabs[item][tab].tabName.toLowerCase().includes(search)
                           && !tabs[item][tab].tabSearchValue.toLowerCase().includes(search) ? (
                             <span
                               className="keywords"
@@ -165,7 +174,7 @@ class SearchModal extends Component {
                               }}
                             />
                           ) : null}
-                      </div>
+                        </div>
                       )
                     ))
                   }
@@ -178,7 +187,7 @@ class SearchModal extends Component {
             <li className="item" key={d.index}>
               <div tabIndex="0" role="button" className="ghButton" onClick={() => this.findNode(d)}>
                 <div className="left">
-                  <NodeIcon node={d} />
+                  <NodeIcon node={d}/>
                 </div>
                 <div className="right">
                   <span className="row">
@@ -211,12 +220,13 @@ class SearchModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  customFields: state.graphs.singleGraph.customFields || {},
+  graphTabs: state.graphs.graphTabs,
 });
 
 const mapDispatchToProps = {
   setActiveTab,
   setActiveButton,
+  getAllTabsRequest,
 };
 
 const Container = connect(

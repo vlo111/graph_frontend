@@ -1,10 +1,26 @@
 import _ from 'lodash';
+import { values } from 'react-bootstrap-typeahead/lib/utils';
 import Utils from './Utils';
 
 class CustomFields {
   static LIMIT = 10;
 
-  static setValue(customFields = {}, type, name, values, append = false) {
+  static getCustomField(node, nodes) {
+    const { customFields = [] } = node;
+    nodes.forEach((n) => {
+      if (n.type === node.type && n.customFields) {
+        n.customFields.forEach((f) => {
+          if (!customFields.some((c) => c.name === f.name)) {
+            customFields.push({ ...f, value: undefined });
+          }
+        });
+      }
+    });
+
+    return customFields;
+  }
+
+  static setValue(customFields = {}, type, nodeId, values, append = false) {
     let i = 0;
     let success = true;
     _.forEach(values, (value, key) => {
@@ -12,13 +28,13 @@ class CustomFields {
         customFields = this.setKey(customFields, type, key, '');
       }
       if (customFields[type] && customFields[type][key]) {
-        const v = customFields[type][key].values[name];
+        const v = customFields[type][key].values[nodeId];
         if (append && v && v !== value) {
           if (value) {
-            customFields[type][key].values[name] = `${v}\n<hr />\n${value}`;
+            customFields[type][key].values[nodeId] = `${v}\n<hr />\n${value}`;
           }
         } else {
-          customFields[type][key].values[name] = value;
+          customFields[type][key].values[nodeId] = value;
         }
         if (customFields[type][key].order === undefined) {
           customFields[type][key].order = i;
@@ -138,6 +154,21 @@ class CustomFields {
       .value();
     return customFieldType;
   }
+  
+  static getOrder(customFields, type, key) { 
+    if (!customFields[type]) {
+      return [];
+    }
+    const customFieldType = _.chain(customFields[type])
+      .map((val, key) => ({
+        key,
+        order: val.order,
+      }))
+      .filter((d)=> (d.key == key)) 
+      .map((d) =>  d.order )
+      .value(); 
+    return customFieldType;
+  } 
 }
 
 export default CustomFields;

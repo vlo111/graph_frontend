@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import memoizeOne from "memoize-one";
-import _ from "lodash";
-import { setFilter } from "../../store/actions/app";
-import Checkbox from "../form/Checkbox";
-import ChartUtils from "../../helpers/ChartUtils";
-import Button from "../form/Button";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import memoizeOne from 'memoize-one';
+import _ from 'lodash';
+import { setFilter } from '../../store/actions/app';
+import Checkbox from '../form/Checkbox';
+import ChartUtils from '../../helpers/ChartUtils';
+import Button from '../form/Button';
 
 class NodesStatusFilter extends Component {
   static propTypes = {
@@ -16,39 +16,11 @@ class NodesStatusFilter extends Component {
     nodes: PropTypes.array.isRequired,
   };
 
-  getNodeStatus = memoizeOne(
-    (nodes) => {
-      const status = _.chain(nodes)
-        .groupBy("status")
-        .map((d, key) => ({
-          length: d.length,
-          status: key,
-        }))
-        .orderBy("length", "desc")
-        .value();
-      if (status.length) {
-        this.props.setFilter(
-          "nodeStatus",
-          status.map((d) => d.status),
-          true
-        );
-      }
-      return status;
-    },
-    (a, b) =>
-      _.isEqual(
-        a[0].map((d) => d.status),
-        b[0].map((d) => d.status)
-      )
-  );
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      showMore: false,
-      openList: [],
-    };
-  }
+  checkAllNodes = memoizeOne((status) => {
+    if (status.length) {
+      this.props.setFilter('nodeStatus', status.map((d) => d.status), true,);
+    }
+  }, _.isEqual);
 
   handleChange = (value) => {
     const { filters } = this.props;
@@ -58,24 +30,24 @@ class NodesStatusFilter extends Component {
     } else {
       filters.nodeStatus.push(value);
     }
-    this.props.setFilter("nodeStatus", filters.nodeStatus);
+    this.props.setFilter('nodeStatus', filters.nodeStatus);
   };
 
   toggleAll = (fullData, allChecked) => {
     if (allChecked) {
-      this.props.setFilter("nodeStatus", []);
+      this.props.setFilter('nodeStatus', []);
     } else {
       this.props.setFilter(
-        "nodeStatus",
-        fullData.map((d) => d.status)
+        'nodeStatus',
+        fullData.map((d) => d.status),
       );
     }
   };
 
   render() {
-    const { nodes, filters } = this.props;
-    const statusFull = this.getNodeStatus(nodes);
-    const allChecked = statusFull.length === filters.nodeStatus.length;
+    const { filters, graphFilterInfo: { nodeStatus = [] } } = this.props;
+    this.checkAllNodes(nodeStatus);
+    const allChecked = nodeStatus.length === filters.nodeStatus.length;
     return (
       <div className="nodesStatusFilter graphFilter">
         <h4 className="title">Status</h4>
@@ -83,14 +55,15 @@ class NodesStatusFilter extends Component {
           <li className="item">
             <div className="filterCheckBox">
               <Checkbox
-                label={allChecked ? "Uncheck All" : "Check All"}
+                label={allChecked ? 'Uncheck All' : 'Check All'}
                 checked={allChecked}
-                onChange={() => this.toggleAll(statusFull, allChecked)}
-                className="graphsCheckbox"  /> 
+                onChange={() => this.toggleAll(nodeStatus, allChecked)}
+                className="graphsCheckbox"
+              />
             </div>
-            <span className="badge">{_.sumBy(statusFull, "length")}</span>
+            <span className="badge">{_.sumBy(nodeStatus, 'length')}</span>
           </li>
-          {statusFull.map((item) => (
+          {nodeStatus.map((item) => (
             <li
               key={item.status}
               className="item"
@@ -101,7 +74,8 @@ class NodesStatusFilter extends Component {
                   label={item.status}
                   checked={filters.nodeStatus.includes(item.status)}
                   onChange={() => this.handleChange(item.status)}
-                  className="graphsCheckbox" /> 
+                  className="graphsCheckbox"
+                />
               </div>
               <span className="badge">{item.length}</span>
             </li>
@@ -115,6 +89,7 @@ class NodesStatusFilter extends Component {
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
   customFields: state.graphs.singleGraph.customFields || {},
+  graphFilterInfo: state.graphs.graphFilterInfo,
 });
 
 const mapDispatchToProps = {
@@ -123,7 +98,7 @@ const mapDispatchToProps = {
 
 const Container = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(NodesStatusFilter);
 
 export default Container;

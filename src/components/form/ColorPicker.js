@@ -42,31 +42,64 @@ class ColorPicker extends Component {
     this.setState({ target: !target ? ev.target : null });
   }
 
-  renderPicker = () => {
+  renderPicker = (left = 0, top = 0, pickerHeight) => {
     const { target } = this.state;
     const { value, onChangeText } = this.props;
 
-    const { x, y, height } = target.getBoundingClientRect();
+    let x;
+    let y;
+    let height;
+
+    if (pickerHeight) {
+      x = left;
+      y = top;
+      height = pickerHeight;
+    } else {
+      x = target.getBoundingClientRect().x;
+      y = target.getBoundingClientRect().y;
+      height = target.getBoundingClientRect().height;
+    }
+
     return (
-      ReactDOM.createPortal((
-        <Outside exclude=".ghColorPicker" onClick={this.closePicker}>
-          <div className="ghColorPickerPopUp" onClick={this.handleColorClick} style={{ left: x, top: y + height - 35 }}>
-            <SketchPicker
-              width={230}
-              color={value}
-              disableAlpha
-              onChange={(v) => onChangeText(v.hex)}
-              presetColors={[...NODE_COLOR].splice(0, 18)}
-            />
-          </div>
-        </Outside>
-      ), document.body)
+      <Outside exclude=".ghColorPicker" onClick={this.closePicker}>
+        {left !== 0
+          ? (ReactDOM.createPortal((
+            <div
+              className="ghColorPickerPopUp"
+              onClick={this.handleColorClick}
+              style={{ left: x, top: y + height - 35 }}
+            >
+              <SketchPicker
+                width={230}
+                color={value}
+                disableAlpha
+                onChange={(v) => onChangeText(v.hex)}
+                presetColors={[...NODE_COLOR].splice(0, 18)}
+              />
+            </div>
+          ), document.body))
+          : (
+            <div
+              className="ghColorPickerPopUp"
+              onClick={this.handleColorClick}
+              style={{ left: x, top: y }}
+            >
+              <SketchPicker
+                width={230}
+                color={value}
+                disableAlpha
+                onChange={(v) => onChangeText(v.hex)}
+                presetColors={[...NODE_COLOR].splice(0, 18)}
+              />
+            </div>
+          )}
+      </Outside>
     );
   }
 
   render() {
     const {
-      excludeClose, containerClassName, ...props
+      excludeClose, containerClassName, expand, ...props
     } = this.props;
     const { target } = this.state;
     return (
@@ -76,7 +109,7 @@ class ColorPicker extends Component {
           containerClassName={classNames(containerClassName, 'ghColorPicker')}
           onClick={this.toggleColorPicker}
         />
-        {target ? this.renderPicker() : null}
+        {expand ? this.renderPicker(0, -30, 200) : (target ? this.renderPicker() : null)}
       </>
     );
   }

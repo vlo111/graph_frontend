@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import stripHtml  from 'string-strip-html';
+import stripHtml from 'string-strip-html';
 import { setActiveButton, setGridIndexes, toggleGrid } from '../../store/actions/app';
 import Chart from '../../Chart';
 import Input from '../form/Input';
@@ -17,8 +17,11 @@ import { NODE_STATUS, NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
+import Utils from '../../helpers/Utils';
+import Button from '../form/Button';
 
 let CHECKED = false;
+
 class DataTableNodes extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -26,6 +29,8 @@ class DataTableNodes extends Component {
     setGridIndexes: PropTypes.func.isRequired,
     selectedNodes: PropTypes.array.isRequired,
     nodes: PropTypes.array.isRequired,
+    allNodes: PropTypes.array.isRequired,
+    allLinks: PropTypes.array.isRequired,
   }
 
   initGridValues = memoizeOne((nodes) => {
@@ -52,8 +57,8 @@ class DataTableNodes extends Component {
       grid[d.row][d.col] = { ...grid[d.row][d.col], value };
     });
     const nodesChanged = Convert.gridDataToNode(grid);
-    const links = Chart.getLinks();
-    const nodes = Chart.getNodes().map((d) => {
+    const links = this.props.allLinks;
+    const nodes = this.props.allNodes.map((d) => {
       const changed = nodesChanged.find((c) => c.index === d.index);
       if (changed) {
         return changed;
@@ -127,6 +132,8 @@ class DataTableNodes extends Component {
     );
   }
 
+  nodeRow = undefined;
+
   renderCell = (props, className) => {
     const { selectedNodes } = this.props;
     const position = className || '';
@@ -139,18 +146,19 @@ class DataTableNodes extends Component {
       this.onMouseDown = onMouseDown;
       onMouseDown = undefined;
     }
-
     if (cell.key === 'index') {
       if (selectedNodes.includes(cell.value)) {
         CHECKED = true;
-      } else CHECKED = false;
+      } else {
+        CHECKED = false;
+      }
       return (
         <td className={`${position} cell index ${CHECKED && 'checked'}`}>
           <label>
             <div>
               <input
                 onChange={() => this.toggleGrid(cell.value)}
-                checked={selectedNodes.includes(cell.value)}
+                checked={CHECKED}
                 className="graphsCheckbox"
                 type="checkbox"
                 name="layout"
@@ -163,6 +171,7 @@ class DataTableNodes extends Component {
         </td>
       );
     }
+
     return (
       <td
         onContextMenu={onContextMenu}
@@ -266,7 +275,7 @@ class DataTableNodes extends Component {
       );
     }
     if (props.cell.key === 'type') {
-      let types = Chart.getNodes()
+      let types = this.props.allNodes
         .filter((d) => d.type)
         .map((d) => ({
           value: d.type,

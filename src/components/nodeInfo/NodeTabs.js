@@ -9,9 +9,13 @@ import NodeTabsContent from './NodeTabsContent';
 import CustomFields from '../../helpers/CustomFields';
 import NodeTabsFormModal from './NodeTabsFormModal';
 import ContextMenu from '../contextMenu/ContextMenu';
-import { removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/graphs';
-import FlexTabs from '../FlexTabs';
+import { getNodeCustomFieldsRequest, removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/graphs';
 import MapsInfo from '../maps/MapsInfo';
+import Chart from '../../Chart';
+import Sortable from './Sortable';
+import ChartUtils from '../../helpers/ChartUtils';
+import { updateNodesCustomFieldsRequest } from "../../store/actions/nodes";
+import Loading from "../Loading";
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -27,19 +31,24 @@ class NodeTabs extends Component {
     this.state = {
       activeTab: '',
       formModalOpen: null,
+      loading: false,
       showLocation: false,
     };
   }
 
-  setFirstTab = memoizeOne((node, customField) => {
-    this.setState(
-      {
-        activeTab: !_.isEmpty(customField)
-          ? (this.props.activeTab ? this.props.activeTab : Object.keys(customField)[0])
-          : node.location ? '_location' : '',
-      },
-    );
+  setFirstTab = memoizeOne((location, customField) => {
+    if (location) {
+      this.setState({ activeTab: '_location' });
+    } else {
+      this.setState({ activeTab: _.get(customField, 'name', '') });
+    }
     this.props.setActiveTab('');
+  }, _.isEqual);
+
+  getCustomFields = memoizeOne(async (graphId, nodeId) => {
+    this.setState({ loading: true });
+    await this.props.getNodeCustomFieldsRequest(graphId, nodeId);
+    this.setState({ loading: false });
   }, _.isEqual);
 
   componentDidMount() {
@@ -60,15 +69,19 @@ class NodeTabs extends Component {
     this.setState({ formModalOpen: params?.fieldName || '' });
   }
 
-  closeFormModal = () => {
-    this.setState({ formModalOpen: null });
+  closeFormModal = (data) => {
+    this.setState({ formModalOpen: null, activeTab: data.name });
   }
 
   deleteCustomField = (ev, params = {}) => {
     const { fieldName } = params;
-    const { node } = this.props;
+    const { nodeId, graphId } = this.props;
     if (fieldName && window.confirm('Are you sure?')) {
-      this.props.removeNodeCustomFieldKey(node.type, fieldName, node.id);
+      const { nodeCustomFields } = this.props;
+      this.props.updateNodesCustomFieldsRequest(graphId, [{
+        id: nodeId,
+        customFields: nodeCustomFields.filter(f => f.name !== fieldName),
+      }]);
     }
   }
 
@@ -76,24 +89,46 @@ class NodeTabs extends Component {
     this.setState({ showLocation: true });
   }
 
+  handleOrderChange = (customFields) => {
+    const { nodeId, graphId } = this.props;
+    this.props.updateNodesCustomFieldsRequest(graphId, [{
+      id: nodeId,
+      customFields,
+    }]);
+    // Chart.setNodeData(nodeId, { customFields });
+    this.forceUpdate();
+  }
+
   render() {
-    const { activeTab, formModalOpen } = this.state;
-    const { node, customFields, editable } = this.props;
-    const customField = CustomFields.get(customFields, node.type, node.id);
-    const content = customField[activeTab];
-    this.setFirstTab(node, customField);
+    const { activeTab, formModalOpen, loading } = this.state;
+    const { graphId, nodeId, editable, nodeCustomFields } = this.props;
+    const node = ChartUtils.getNodeById(nodeId);
+    // const customFields = CustomFields.getCustomField(node, Chart.getNodes());
+    this.getCustomFields(graphId, nodeId);
+    this.setFirstTab(node.location, nodeCustomFields[0]);
     return (
       <div className="nodeTabs">
-        <FlexTabs>
-          {_.map(customField, (val, key) => (
-            <Button
-              className={activeTab === key ? 'active' : undefined}
-              key={key}
-              onClick={() => this.setActiveTab(key)}
-            >
-              <p>{key.length > 15 ? `${key.substr(0, 13)}..` : key}</p>
-            </Button>
-          ))}
+        {loading ? (
+          <div className="loadingWrapper">
+            <Loading />
+          </div>
+        ) : null}
+        <div className="container-tabs">
+
+          <Sortable
+            onChange={this.handleOrderChange}
+            items={nodeCustomFields}
+            keyExtractor={(v) => v.name}
+            renderItem={(p) => (
+              <Button
+                className={activeTab === p.value.name ? 'active' : undefined}
+                key={p.value.name}
+                onMouseDown={() => this.setActiveTab(p.value.name)}
+              >
+                <p>{p.value.name}</p>
+              </Button>
+            )}
+          />
           {node.location ? (
             <Button
               className={activeTab === '_location' ? 'active activeNoShadow' : undefined}
@@ -102,37 +137,38 @@ class NodeTabs extends Component {
               <p>Location</p>
             </Button>
           ) : null}
-          {editable && !node.sourceId && Object.values(customField).length < CustomFields.LIMIT ? (
+
+          {editable && !node.sourceId && node.customFields?.length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
               <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
             </Tooltip>
           ) : null}
-          <div className="empty" />
-        </FlexTabs>
+        </div>
         {!_.isNull(formModalOpen) ? (
           <NodeTabsFormModal
             node={node}
+            customFields={nodeCustomFields}
             fieldName={formModalOpen}
-            customField={customField}
             onClose={this.closeFormModal}
           />
         ) : null}
         {activeTab === '_location' ? (
-          [
-            (
-              this.state.showLocation
-                ? <MapsInfo node={node} />
-                : (
-                  <div className="contentWrapper">
-                    <Button icon="fa-globe" className=" ghButton2  mapTabButton" href="#" onClick={() => this.showLocation()}>
-                      Show on Map
-                    </Button>
-                  </div>
-                )
-            ),
-          ]
+          this.state.showLocation
+            ? <MapsInfo node={node} />
+            : (
+              <div className="contentWrapper">
+                <Button
+                  icon="fa-globe"
+                  className=" ghButton2  mapTabButton"
+                  href="#"
+                  onClick={() => this.showLocation()}
+                >
+                  Show on Map
+                </Button>
+              </div>
+            )
         ) : (
-          <NodeTabsContent name={activeTab} node={node} content={content} />
+          <NodeTabsContent name={activeTab} node={node} customFields={nodeCustomFields} />
         )}
       </div>
     );
@@ -140,13 +176,16 @@ class NodeTabs extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  customFields: state.graphs.singleGraph.customFields || {},
   activeTab: state.graphs.activeTab,
+  graphId: state.graphs.singleGraph.id,
+  nodeCustomFields: state.graphs.nodeCustomFields,
 });
 
 const mapDispatchToProps = {
   setActiveTab,
   removeNodeCustomFieldKey,
+  getNodeCustomFieldsRequest,
+  updateNodesCustomFieldsRequest,
 };
 
 const Container = connect(

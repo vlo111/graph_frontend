@@ -52,7 +52,10 @@ class Utils {
   }
 
   static fileSrc(src) {
-    if (/^https?:\/\//.test(src) || src.toString().includes('base64,')) {
+    if (src.uri) {
+      src = src.uri;
+    }
+    if (/^https?:\/\//.test(src) || src.toString().includes('base64,') || src.toString().startsWith('blob:')) {
       return src;
     }
 
@@ -76,9 +79,7 @@ class Utils {
       reject(new Error("Error: Your browser doesn't support geolocation."));
       return;
     }
-    navigator.geolocation.getCurrentPosition((position) => {
-      resolve(position);
-    }, reject);
+    navigator.geolocation.getCurrentPosition(resolve, reject);
   }))
 
   static popupWindow = (url, title, width, height) => {
@@ -251,6 +252,52 @@ class Utils {
       }
       return undefined;
     });
+  }
+
+  static differenceNested(object, base) {
+    function changes(_object, _base) {
+      return _.transform(_object, (result, value, key) => {
+        console.log(value, _base[key]);
+        if (!_.isEqual(value, _base[key])) {
+          result[key] = (_.isObject(value) && _.isObject(_base[key])) ? changes(value, _base[key]) : value;
+        }
+      });
+    }
+
+    return changes(object, base);
+  }
+
+  static #InfographyImageWidth = {};
+
+  static getInfographyImageWidth = (icon) => new Promise((resolve) => {
+    if (this.#InfographyImageWidth[icon]) {
+      resolve(this.#InfographyImageWidth[icon]);
+      return;
+    }
+    const img = new Image();
+    img.onload = () => {
+      const acceptRatio = img.naturalWidth / img.naturalHeight; // 384
+      const width = (512 * acceptRatio).toFixed(2);
+      this.#InfographyImageWidth[icon] = width;
+      resolve(width);
+    };
+    img.src = icon;
+  });
+
+  static arrayMove = (array, from, to) => {
+    const arrayMoveMutate = (arr, f, t) => {
+      const startIndex = f < 0 ? arr.length + f : f;
+
+      if (startIndex >= 0 && startIndex < arr.length) {
+        const endIndex = t < 0 ? arr.length + t : t;
+
+        const [item] = arr.splice(f, 1);
+        arr.splice(endIndex, 0, item);
+      }
+    };
+    array = [...array];
+    arrayMoveMutate(array, from, to);
+    return array;
   }
 }
 

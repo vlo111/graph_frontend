@@ -89,9 +89,7 @@ class SaveGraphModal extends Component {
     const { match: { params: { graphId } } } = this.props;
 
     this.props.setLoading(true);
-    const links = Chart.getLinks();
     const labels = Chart.getLabels();
-    const { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
     const svg = ChartUtils.getChartSvg();
     // const svg = Chart.printMode(400, 223);
 
@@ -99,23 +97,15 @@ class SaveGraphModal extends Component {
     if (forceCreate || !graphId) {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
-        nodes,
-        links,
-        labels,
         status,
-        files,
-        customFields,
         svg,
       });
       resGraphId = data.graphId;
     } else {
       const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
         ...requestData,
-        nodes,
-        links,
         labels,
         status,
-        customFields,
         svg,
       });
       resGraphId = data.graphId;

@@ -2,21 +2,24 @@ import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
+import isEmpty from 'lodash/isEmpty';
 import SearchData from './SearchData';
 import { getUsersByTextRequest } from '../../../store/actions/account';
 import { updateShareGraphStatusRequest, graphUsersRequest } from '../../../store/actions/shareGraphs';
 import Button from '../../form/Button';
 
-const Search = ({ select, setSelect, user, closeModal }) => {
+const Search = ({ select, setSelect, user, singleGraph,  closeModal }) => {
   const dispatch = useDispatch();
   const options = useSelector((state) => state.account.userSearch);
-  const graph = useSelector((state) => state.graphs.singleGraph);
+  let graph = useSelector((state) => state.graphs.singleGraph);
   const [isLoading, setIsLoading] = useState(false);
   const refTypeahead = useRef();
+  
+  graph = !isEmpty(graph) ? graph : singleGraph; 
 
-  const handleSearch = async (query) => {
+  const handleSearch = async (query) => { 
     setIsLoading(true);
-    await dispatch(getUsersByTextRequest(query));
+    await dispatch(getUsersByTextRequest(query)); 
     setIsLoading(false);
   };
 
@@ -40,7 +43,7 @@ const Search = ({ select, setSelect, user, closeModal }) => {
         placeholder="Search user..."
         ref={refTypeahead}
         onChange={(selected) => selected && refTypeahead.current.clear()}
-        renderMenuItemChildren={(option, props) => <SearchData user={user} option={option} select={select} setSelect={setSelect} />}
+        renderMenuItemChildren={(option, props) => <SearchData user={user} singleGraph = {graph} option={option} select={select} setSelect={setSelect} />}
       />
       <Button className="accent alt" onClick={() => changeStatus()}> Save </Button>
     </div>

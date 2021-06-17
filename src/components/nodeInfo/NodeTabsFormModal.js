@@ -2,33 +2,29 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import Input from '../form/Input';
 import Editor from '../form/Editor';
-import { addNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } from '../../store/actions/graphs';
 import Button from '../form/Button';
 import Validate from '../../helpers/Validate';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Chart from '../../Chart';
+import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
     onClose: PropTypes.func.isRequired,
-    setNodeCustomField: PropTypes.func.isRequired,
     node: PropTypes.object.isRequired,
-    customField: PropTypes.object.isRequired,
-    addNodeCustomFieldKey: PropTypes.func.isRequired,
   }
 
-  initValues = memoizeOne((customFields, node, fieldName) => {
-    const customField = _.get(customFields, [node.type, fieldName]);
+  initValues = memoizeOne((node, fieldName, customFields) => {
+    const customField = customFields.find((f) => f.name === fieldName);
     if (customField) {
       const tabData = {
         name: fieldName,
         originalName: fieldName,
-        content: customField.values[node.id],
+        value: customField.value,
         subtitle: customField.subtitle,
       };
       this.setState({ tabData });
@@ -41,7 +37,7 @@ class NodeTabsFormModal extends Component {
       errors: {},
       tabData: {
         name: '',
-        content: '',
+        value: '',
         subtitle: '',
         documents: [],
       },
@@ -72,46 +68,46 @@ class NodeTabsFormModal extends Component {
 
   save = async () => {
     const {
-      node, customField, customFields, fieldName, currentUserId,
+      node, fieldName, graphId, customFields,
     } = this.props;
     const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
 
-    tabData.documents = tabData.documents?.sort((x, y) => {
-      const first = x.file.type.includes('image');
-      const second = y.file.type.includes('image');
-      return (first === second) ? 0 : first ? -1 : 1;
-    });
-
     if (!isUpdate || (tabData.originalName !== tabData.name)) {
-      [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node.type, customFields);
+      [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node);
     }
-    [errors.content, tabData.content] = Validate.customFieldContent(tabData.content);
-    //[errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
+    // return;
+    [errors.value, tabData.value] = Validate.customFieldContent(tabData.value);
+    [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
 
     if (!Validate.hasError(errors)) {
+      const data = {
+        name: tabData.name,
+        value: tabData.value,
+        subtitle: tabData.subtitle,
+      };
       if (!isUpdate) {
-        await this.props.addNodeCustomFieldKey(node.type, tabData.name, tabData.subtitle);
+        customFields.push(data);
+      } else {
+        const i = customFields.findIndex((f) => f.name === tabData.originalName);
+        if (i > -1) {
+          customFields[i] = data;
+        }
       }
-      customField[tabData.name] = tabData.content;
-      if (tabData.originalName !== tabData.name) {
-        delete customField[tabData.originalName];
-        await this.props.renameNodeCustomFieldKey(node.type, tabData.originalName, tabData.name);
-      }
-      this.props.setNodeCustomField(node.type, node.id, customField, tabData);
-      Chart.setNodeData(node.id, {
-        updatedAt: moment().unix(),
-        updatedUser: currentUserId,
-      });
-      this.props.onClose();
+      this.props.updateNodesCustomFieldsRequest(graphId, [{
+        id: node.id,
+        customFields,
+      }]);
+      // Chart.setNodeData(node.id, { customFields });
+      this.props.onClose(data);
     }
     this.setState({ errors, tabData });
   }
 
   render() {
     const { tabData, errors } = this.state;
-    const { node, customFields, fieldName } = this.props;
-    this.initValues(customFields, node, fieldName);
+    const { node, fieldName, customFields } = this.props;
+    this.initValues(node, fieldName, customFields);
     const isUpdate = !!fieldName;
     return (
       <Modal
@@ -138,11 +134,12 @@ class NodeTabsFormModal extends Component {
         </div>
 
         <Editor
-          value={tabData.content}
+          value={tabData.value}
           media={this.media}
-          error={errors.content}
+          error={errors.value}
           label="ContentTabs"
-          onChange={(v) => this.handleChange('content', v)}
+          node={node}
+          onChange={(v) => this.handleChange('value', v)}
         />
         <div className="buttonsWrapper">
           <Button color="transparent" className="cancel" onClick={this.props.onClose}>Cancel</Button>
@@ -156,14 +153,12 @@ class NodeTabsFormModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  customFields: state.graphs.singleGraph.customFields || {},
   currentUserId: state.account.myAccount.id,
+  graphId: state.graphs.singleGraph.id,
 });
 
 const mapDispatchToProps = {
-  setNodeCustomField,
-  addNodeCustomFieldKey,
-  renameNodeCustomFieldKey,
+  updateNodesCustomFieldsRequest,
 };
 
 const Container = connect(

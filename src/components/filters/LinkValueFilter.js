@@ -65,8 +65,14 @@ class LinkValueFilter extends Component {
 
   render() {
     const { padding } = this.state;
-    const { links, linkValue } = this.props;
-    const { values, max, min } = this.getLinkValue(links);
+    const { linkValue, graphFilterInfo: { linksValue = [] } } = this.props;
+    const maxLength = _.maxBy(linksValue, (v) => v.length)?.length || 1;
+    const values = linksValue.map((v) => {
+      v.percentage = (v.length / maxLength) * 100;
+      return v;
+    });
+    const max = _.maxBy(values, (v) => v.value)?.value || 1;
+    const min = _.minBy(values, (v) => v.value)?.value || 1;
     if (min === max) {
       return null;
     }
@@ -107,6 +113,7 @@ class LinkValueFilter extends Component {
 
 const mapStateToProps = (state) => ({
   linkValue: state.app.filters.linkValue,
+  graphFilterInfo: state.graphs.graphFilterInfo,
 });
 
 const mapDispatchToProps = {

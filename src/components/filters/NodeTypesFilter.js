@@ -16,20 +16,11 @@ class NodeTypesFilter extends Component {
     nodes: PropTypes.array.isRequired,
   }
 
-  getNodeTypes = memoizeOne((nodes) => {
-    const types = _.chain(nodes)
-      .groupBy('type')
-      .map((d, key) => ({
-        length: d.length,
-        type: key,
-      }))
-      .orderBy('length', 'desc')
-      .value();
+  checkAllNodes = memoizeOne((types) => {
     if (types.length) {
       this.props.setFilter('nodeTypes', types.map((d) => d.type), true);
     }
-    return types;
-  }, (a, b) => _.isEqual(a[0].map((d) => d.type), b[0].map((d) => d.type)));
+  }, _.isEqual);
 
   getCustomFields = memoizeOne((customFields) => {
     const keys = [];
@@ -98,29 +89,31 @@ class NodeTypesFilter extends Component {
 
   render() {
     const { showMore, openList } = this.state;
-    const { nodes, filters, customFields } = this.props;
-    const typesFull = this.getNodeTypes(nodes);
-    const types = showMore ? typesFull : _.chunk(typesFull, 5)[0] || [];
-    if (typesFull.length < 2) {
+    const {
+      nodes, filters, customFields, graphFilterInfo: { nodeTypes = [] },
+    } = this.props;
+    this.checkAllNodes(nodeTypes);
+    const types = showMore ? nodeTypes : _.chunk(nodeTypes, 5)[0] || [];
+    if (nodeTypes.length < 2) {
       return null;
     }
-    const allChecked = typesFull.length === filters.nodeTypes.length;
-
+    const allChecked = nodeTypes.length === filters.nodeTypes.length;
     return (
       <div className="nodesTypesFilter graphFilter">
         <h4 className="title">Node Types</h4>
         <ul className="list">
           <li className="item">
-          <div className="filterCheckBox"> 
-            <Checkbox
-              label={allChecked ? 'Uncheck All' : 'Check All'}
-              checked={allChecked}
-              onChange={() => this.toggleAll(typesFull, allChecked)}
-              className="graphsCheckbox" /> 
-            </div>           
+            <div className="filterCheckBox">
+              <Checkbox
+                label={allChecked ? 'Uncheck All' : 'Check All'}
+                checked={allChecked}
+                onChange={() => this.toggleAll(nodeTypes, allChecked)}
+                className="graphsCheckbox"
+              />
+            </div>
             <span className="badge">
-                {_.sumBy(typesFull, 'length')}
-              </span>
+              {_.sumBy(nodeTypes, 'length')}
+            </span>
           </li>
           {types.map((item) => (
             <li key={item.type} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
@@ -169,8 +162,8 @@ class NodeTypesFilter extends Component {
               </span>
             </li>
           ))}
-           </ul>
-        {typesFull.length > types.length || showMore ? (
+        </ul>
+        {nodeTypes.length > types.length || showMore ? (
           <Button onClick={this.toggleMore}>
             {showMore ? '- Less' : '+ More'}
           </Button>
@@ -183,6 +176,7 @@ class NodeTypesFilter extends Component {
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
   customFields: state.graphs.singleGraph.customFields || {},
+  graphFilterInfo: state.graphs.graphFilterInfo,
 });
 
 const mapDispatchToProps = {

@@ -57,6 +57,14 @@ class CreateGraphModal extends Component {
     toast.error('Something went wrong');
   }
 
+  closeModal = async () => {
+    if (this.props.onChange) {
+      this.props.onChange();
+    } else {
+      this.props.history.goBack();
+    }
+  }
+
   render() {
     const { singleGraph, match: { params: { graphId = '' } }, show } = this.props;
     const { requestData } = this.state;
@@ -71,7 +79,7 @@ class CreateGraphModal extends Component {
         overlayClassName="ghModalOverlay"
         isOpen
       >
-        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.props.history.goBack} />
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
         <div className="form">
           <h2>
             Create Graph
@@ -80,6 +88,7 @@ class CreateGraphModal extends Component {
             label="Title"
             value={requestData.title}
             onChangeText={(v) => this.handleChange('title', v)}
+            autoComplete="off"
           />
           <Input
             label="Description"
@@ -88,7 +97,7 @@ class CreateGraphModal extends Component {
             onChangeText={(v) => this.handleChange('description', v)}
           />
           <div className="buttons">
-            <Button className="cancel transparent alt" onClick={this.props.history.goBack}>
+            <Button className="cancel transparent alt" onClick={this.closeModal}>
               Cancel
             </Button>
             <Button

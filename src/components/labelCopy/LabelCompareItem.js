@@ -4,6 +4,7 @@ import moment from 'moment';
 import Tooltip from 'rc-tooltip';
 import NodeIcon from '../NodeIcon';
 import CustomFields from '../../helpers/CustomFields';
+import Chart from '../../Chart';
 
 class LabelCompareItem extends Component {
   constructor(props) {
@@ -16,9 +17,9 @@ class LabelCompareItem extends Component {
   }
 
   render() {
-    const { node, customFields, checked } = this.props;
+    const { node, checked } = this.props;
 
-    const customField = CustomFields.get(customFields, node.type, node.id);
+    const customFields = CustomFields.getCustomField(node, Chart.getNodes());
 
     const uniqueCheckboxId = Math.random().toString(36).substring(7);
 
@@ -35,11 +36,16 @@ class LabelCompareItem extends Component {
           />
           <label className="pull-left" htmlFor={uniqueCheckboxId} />
         </div>
-
-        <NodeIcon node={node} />
+        <div title={node.type}>
+          <NodeIcon node={node} />
+        </div>
         <div className="row">
           <div className="description">
-            <span className="headerName">{node.type}</span>
+            <span title={node.name} className="headerName">
+              {node.name && node.name.length > 13
+                ? `${node.name.substr(0, 13)}... `
+                : node.name}
+            </span>
             {node.createdAt ? (
               <span className="createdAt">{moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}</span>
             ) : null}
@@ -53,12 +59,12 @@ class LabelCompareItem extends Component {
             {/*  : <span className="createdAt"> 0 </span>} */}
           </div>
           <div className="tabs">
-            {_.map(customField, (val, key) => (
-              <Tooltip key={key} overlay={key} placement="top">
+            {_.map(customFields, (val, key) => (
+              <Tooltip key={val.name} overlay={val.name} placement="top">
                 <span>
-                  {key && key.length > 10
-                    ? `${key.substr(0, 10)}... `
-                    : key}
+                  {val.name && val.name.length > 10
+                    ? `${val.name.substr(0, 10)}... `
+                    : val.name}
                 </span>
               </Tooltip>
             ))}

@@ -18,8 +18,11 @@ class ChartUtils {
     if (_.isEmpty(params) || !window.location.pathname.startsWith('/graphs/filter/')) {
       return data;
     }
-    console.log(params);
     data.links = data.links.map((d) => {
+      d.hidden = 0;
+      if (d.fake) {
+        return d;
+      }
       if (params.linkTypes[0] !== '__ALL__' && !params.linkTypes.includes(d.type)) {
         d.hidden = 1;
         return d;
@@ -30,11 +33,15 @@ class ChartUtils {
           return d;
         }
       }
-      d.hidden = 0;
       return d;
     });
     const hiddenLabels = [];
     data.labels = data.labels.map((d) => {
+      d.hidden = 0;
+      if (d.type === 'folder') {
+        // todo
+        // return d;
+      }
       if (!params.labels.includes(d.id)) {
         d.hidden = 1;
         hiddenLabels.push(d.id);
@@ -45,14 +52,17 @@ class ChartUtils {
         hiddenLabels.push(d.id);
         return d;
       }
-      d.hidden = 0;
       return d;
     });
     data.nodes = data.nodes.map((d) => {
+      d.hidden = 0;
       // if (data.links.some((l) => l.hidden && d.name === l.source)) {
       //   d.hidden = 1;
       //   return d;
       // }
+      if (d.fake) {
+        return d;
+      }
       if (params.linkConnection?.min > -1) {
         const { length = 0 } = data.links.filter((l) => l.source === d.id || l.target === d.id) || {};
         if (length < params.linkConnection.min || length > params.linkConnection.max) {
@@ -92,7 +102,6 @@ class ChartUtils {
         d.hidden = 1;
         return d;
       }
-      d.hidden = 0;
       return d;
     });
 
@@ -110,8 +119,8 @@ class ChartUtils {
     if (_.isEmpty(selectedGrid.nodes)) {
       return true;
     }
-    const { index: sourceIndex } = this.getNodeById(d.source.id || d.source);
-    const { index: targetIndex } = this.getNodeById(d.target.id || d.target);
+    const { index: sourceIndex } = this.getNodeById(d.source.id || d.source) || {};
+    const { index: targetIndex } = this.getNodeById(d.target.id || d.target) || {};
     if (!selectedGrid.nodes.includes(sourceIndex) || !selectedGrid.nodes.includes(targetIndex)) {
       return false;
     }
@@ -265,19 +274,18 @@ class ChartUtils {
   static nodesDistance = (d) => this.distance([d.target.x, d.target.y], [d.source.x, d.source.y])
 
   static getRadiusList() {
-    let radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.id, 'all').length * 2 + (d.icon ? 6.5 : 2));
+    const radiusList = Chart.data.nodes.map((d) => Chart.getNodeLinks(d.id, 'all').length * 2 + (d.icon ? 6.5 : 2));
     let max = Math.max(...radiusList);
-    if (max > 40) {
-      radiusList = radiusList.map((d) => {
-        if (d > 40) {
-          d -= 20;
-        }
-        return d;
-      });
-    }
+    // if (max > 40) {
+    //   radiusList = radiusList.map((d) => {
+    //     if (d > 40) {
+    //       d -= 20;
+    //     }
+    //     return d;
+    //   });
+    // }
     max = Math.max(...radiusList);
     const r = max > 20 ? Math.max(...radiusList) / 20 : 1;
-
     return radiusList.map((d) => d / r + 10 || 10);
   }
 
@@ -303,8 +311,10 @@ class ChartUtils {
   }
 
   static nodeColorObj = {};
+  static cursorColorObj = {};
 
   static nodeColorsArr = _.clone(NODE_COLOR);
+  static cursorColorsArr = _.clone(NODE_COLOR);
 
   static nodeColor = (d) => {
     if (!this.nodeColorObj[d.type]) {
@@ -316,6 +326,13 @@ class ChartUtils {
       this.nodeColorObj[d.type] = this.nodeColorsArr.shift() || randomColor();
     }
     return this.nodeColorObj[d.type];
+  }
+
+  static cursorColor = (cursor) => {
+    if (!this.cursorColorObj[cursor]) {
+      this.cursorColorObj[cursor] = this.cursorColorsArr.shift() || randomColor();
+    }
+    return this.cursorColorObj[cursor];
   }
 
   static setNodeTypeColor = (type, color) => {
@@ -330,12 +347,18 @@ class ChartUtils {
 
   static labelColorsArr = _.clone(LINK_COLORS);
 
+  static labelColorsObj = {};
+
   static labelColors = (d = {}) => {
     if (d.color) {
       this.labelColorsArr = this.labelColorsArr.filter((c) => d.color !== c);
       return d.color;
     }
-    return this.labelColorsArr.shift() || randomColor({ luminosity: 'light' });
+    if (!this.labelColorsObj[d.id]) {
+      this.labelColorsObj[d.id] = this.labelColorsArr.shift() || randomColor({ luminosity: 'light' });
+    }
+
+    return this.labelColorsObj[d.id];
   }
 
   static resetColors() {
@@ -344,6 +367,7 @@ class ChartUtils {
     this.linkColorArr = _.clone(LINK_COLORS);
     this.nodeColorsArr = _.clone(NODE_COLOR);
     this.labelColorsArr = _.clone(LINK_COLORS);
+    this.labelColorsObj = {};
   }
 
   static setClass = (fn) => (d, index, g) => {
@@ -455,7 +479,7 @@ class ChartUtils {
 
     const x = node.fx || node.x;
     const y = node.fy || node.y;
-    const { d } = label;
+    const { d, size } = label;
     let inside = false;
     if (label.type === 'folder') {
       // if(node.labels?.length > 1 && !node.labels.includes(label.id)){
@@ -478,6 +502,25 @@ class ChartUtils {
         const squareY = d[0][1] - (height / 2);
         return this.isInSquare([squareX, squareY], [width, height], [x, y]);
       }
+    }
+
+    if (label.type === 'square') {
+      if ((x > size.x && x < (size.x + size.width)) && (y > size.y && y < (size.y + size.height))) {
+        return true;
+      }
+      return false;
+    }
+    if (label.type === 'ellipse') {
+      const width = size.width * 2;
+      const height = size.height * 2;
+
+      const cx = size.x - size.width;
+      const cy = size.y - size.height;
+
+      if ((x > cx && x < (cx + width)) && (y > cy && y < (cy + height))) {
+        return true;
+      }
+      return false;
     }
 
     let odd = false;
@@ -510,16 +553,36 @@ class ChartUtils {
     const firstFolder = node.labels?.find((l) => l.startsWith('f_'));
     const firstLabel = node.labels?.find((l) => !l.startsWith('f_'));
     const labels = Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
-    if (node.index === 128) {
-      console.log(labels);
-    }
     if (firstLabel) {
       return labels.filter((l) => !l.startsWith('f_'));
     }
+
     if (labels.includes(firstFolder)) {
-      console.log(33333);
+      Chart.data.labels = Chart.data.labels.map((l) => {
+        if (l.id === firstFolder) {
+          l.nodes = l.nodes || [];
+          if (!l.nodes.includes(node.id) && !node.fake) {
+            l.nodes.push(node.id);
+          }
+        }
+        return l;
+      });
+
       return [firstFolder];
     }
+    if (firstFolder) {
+      Chart.data.labels = Chart.data.labels.map((l) => {
+        if (l.id === firstFolder) {
+          l.nodes = l.nodes || [];
+          const i = l.nodes.indexOf(node.id);
+          if (i > -1 && !node.fake) {
+            l.nodes.splice(i, 1);
+          }
+        }
+        return l;
+      });
+    }
+
     return labels;
   }
 
@@ -699,7 +762,31 @@ class ChartUtils {
   }
 
   static merge(d1, d2) {
-    const data = { ...d1, ...d2 };
+    const customFields = d1.customFields || [];
+    (d2.customFields || []).forEach((f) => {
+      const i = d1.customFields.findIndex((d) => d.name === f.name);
+      const value1 = i > -1 ? d1.customFields[i].value : undefined;
+      const value2 = f.value;
+      if (value1 && !value2) {
+        f.value = value1;
+      } else if (!value1 && value2) {
+        f.value = value2;
+      } else if (value1 && value2) {
+        if (value1 !== value2) {
+          f.value = `${value1}\n<hr />\n${value2}`;
+        } else {
+          f.value = value2;
+        }
+      }
+      if (i > -1) {
+        customFields[i].value = f.value;
+        customFields[i].subtitle = customFields[i].subtitle || f.subtitle;
+      } else {
+        customFields.push(f);
+      }
+    });
+
+    const data = { ...d1, ...d2, customFields };
     for (const i in data) {
       if (!data[i]) {
         data[i] = d1[i];
@@ -708,7 +795,30 @@ class ChartUtils {
     return data;
   }
 
-  static uniqueLinks(links) {
+  static uniqueLinks(links, margeFakeLinks = false) {
+    if (margeFakeLinks || 1) {
+      return _.chain(links)
+        .filter((l) => l.source !== l.target)
+        .groupBy((l) => {
+          if (l.fake) {
+            return JSON.stringify([l.source, l.target].sort());
+          }
+          if (l.direction) {
+            return JSON.stringify({
+              1: l.name, 2: l.type, 3: l.source, 4: l.target,
+            });
+          }
+          return JSON.stringify({
+            1: l.name, 2: l.type, 3: [l.source, l.target].sort(),
+          });
+        })
+        .map((values) => ({
+          ...values[0],
+          total: values[0].fake ? values.length : undefined,
+        }))
+        .value();
+    }
+
     return _.uniqBy(links, (l) => {
       if (l.direction) {
         return JSON.stringify({
@@ -736,12 +846,18 @@ class ChartUtils {
     return [d.x || d.fx, d.y || d.fy, false];
   }
 
-  static margeGraphs = (graph1, graph2, selectedNodes1 = graph1.nodes, selectedNodes2 = graph2.nodes) => {
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+  static margeGraphs = (graph1, graph2, selectedNodes1, selectedNodes2) => {
+    graph1.nodes = [...graph1.nodes];
+    graph2.nodes = [...graph2.nodes];
+
     let links = [...graph1.links || [], ...graph2.links || []];
-    // let labels = new Set();
-    let labels = !_.isEmpty(graph1.labels) ? graph1.labels : graph2.labels; 
-    console.log(graph1.labels, graph2.labels, 'graph2.labels', !_.isEmpty(graph1.labels), 'sssss', labels)
+    if (!selectedNodes1) {
+      selectedNodes1 = [...graph1.nodes];
+    }
+    if (!selectedNodes2) {
+      selectedNodes2 = [...graph2.nodes];
+    }
+
     const nodes = selectedNodes1.map((node1) => {
       const node2 = selectedNodes2.find((n) => n.name === node1.name);
       if (node2) {
@@ -760,6 +876,8 @@ class ChartUtils {
 
       delete node1.color;
 
+      node1.import = true;
+
       // graph1.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
       return node1;
     });
@@ -772,55 +890,136 @@ class ChartUtils {
         delete node2.color;
         delete node2.hidden;
 
+        node2.import = true;
+
         nodes.push(node2);
       }
     });
-
-    labels = [...labels];
-
+    const labels = [...graph1.labels, ...graph2.labels];
     links = ChartUtils.uniqueLinks(links).map((l) => {
       delete l.color;
       return l;
     });
 
-    const { customFields } = graph1;
-
-    const customFieldsMerged = {};
-
-    const customFieldsFull = Utils.mergeDeep(graph2.customFields, customFields);
-    for (const type in customFieldsFull) {
-      const customField = customFieldsFull[type];
-      for (const tab in customField) {
-        const { values } = customFieldsFull[type][tab];
-        for (const nodeId in values) {
-          const n1 = selectedNodes1.find((n) => n.id === nodeId);
-          const n2 = selectedNodes2.find((n) => n.id === nodeId);
-          const mainNode = nodes.find((n) => n.name === n1?.name || n.name === n2?.name);
-          if (mainNode) {
-            const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
-            const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
-
-            const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : null;
-            const value2 = node2 ? _.get(graph2.customFields, [node2.type, tab, 'values', node2.id]) : null;
-
-            if (value1 && !value2) {
-              _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1, Object);
-            } else if (!value1 && value2) {
-              _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
-            } else if (value1 && value2) {
-              if (value1 !== value2) {
-                _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`, Object);
-              } else {
-                _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
-              }
-            }
-          }
-        }
-      }
-    }
+    // const { customFields } = graph1;
+    //
+    // const customFieldsMerged = {};
+    //
+    // const customFieldsFull = Utils.mergeDeep(graph2.customFields, customFields);
+    // for (const type in customFieldsFull) {
+    //   const customField = customFieldsFull[type];
+    //   for (const tab in customField) {
+    //     const { values } = customFieldsFull[type][tab];
+    //     for (const nodeId in values) {
+    //       const n1 = selectedNodes1.find((n) => n.id === nodeId);
+    //       const n2 = selectedNodes2.find((n) => n.id === nodeId);
+    //       const mainNode = nodes.find((n) => n.name === n1?.name || n.name === n2?.name);
+    //       if (mainNode) {
+    //         const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
+    //         const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
+    //
+    //         const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : null;
+    //         const value2 = node2 ? _.get(graph2.customFields, [node2.type, tab, 'values', node2.id]) : null;
+    //
+    //         if (value1 && !value2) {
+    //           _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1, Object);
+    //         } else if (!value1 && value2) {
+    //           _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
+    //         } else if (value1 && value2) {
+    //           if (value1 !== value2) {
+    //             _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`, Object);
+    //           } else {
+    //             _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
 
     return {
-      labels, nodes, links, customFields: customFieldsMerged,
+      labels, nodes, links,
+    };
+  }
+
+  static objectAndProto(d) {
+    if (_.isArray(d)) {
+      return d.map(this.objectAndProto);
+    }
+    return { ...Object.getPrototypeOf(d), ...d };
+  }
+
+  static getTotalNodes(nodes, labels) {
+    const nodeIds = nodes.filter((n) => !n.fake).map((n) => n.id);
+    nodeIds.push(...labels.map((d) => d.nodes).flat(1));
+    return _.uniq(nodes).length;
+  }
+
+  static getTotalLinks(nodes, labels) {
+    const nodeIds = nodes.filter((n) => !n.fake).map((n) => n.id);
+    nodeIds.push(...labels.map((d) => d.nodes).flat(1));
+    return _.uniq(nodes).length;
+  }
+
+  static getDimensions(windowWidth = true) {
+    const nodes = Chart.getNodes();
+    const labels = Chart.getLabels();
+    const arrX = [];
+    const arrY = [];
+    nodes.forEach((n) => {
+      arrX.push(n.fx);
+      arrY.push(n.fy);
+    });
+    labels.forEach((l) => {
+      if (l.type === 'folder') {
+        arrX.push(l.d[0][0]);
+        arrY.push(l.d[0][1]);
+      } else {
+        if (l.type === 'square' || l.type === 'ellipse') {
+          arrX.push(l.size.x);
+          arrY.push(l.size.y);
+        } else {
+          arrX.push(...l.d.map((p) => p[0]));
+          arrY.push(...l.d.map((p) => p[1]));
+        }
+      }
+    });
+    const min = [_.min(arrX), _.min(arrY)];
+    const max = [_.max(arrX), _.max(arrY)];
+    let width = max[0] - min[0];
+    let height = max[1] - min[1];
+    if (windowWidth) {
+      width = _.max([min[0] + max[0], window.innerWidth]);
+      height = _.max([min[1] + max[1], window.innerHeight]);
+    }
+    return {
+      min,
+      max,
+      width: Math.abs(width),
+      height: Math.abs(height),
+    };
+  }
+
+  static renderPath = d3.line()
+    .x((d) => d[0])
+    .y((d) => d[1])
+    .curve(d3.curveBasis)
+
+  static pathToSquare = (d) => {
+    const xList = d.map((p) => p[0]);
+    const yList = d.map((p) => p[1]);
+    const minX = _.min(xList);
+    const maxX = _.max(xList);
+
+    const minY = _.min(yList);
+    const maxY = _.max(yList);
+
+    const x = +minX.toFixed(3);
+    const y = +minY.toFixed(3);
+    const width = +Math.abs(maxX - minX).toFixed(3);
+    const height = +Math.abs(maxY - minY).toFixed(3);
+    return {
+      x, y, width, height,
     };
   }
 }

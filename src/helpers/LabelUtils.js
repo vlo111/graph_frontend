@@ -4,36 +4,16 @@ import Chart from '../Chart';
 import ChartUtils from './ChartUtils';
 import store from '../store';
 import CustomFields from './CustomFields';
-import { removeNodeCustomFieldKey, renameNodeCustomFieldKey, setNodeCustomField } from '../store/actions/graphs';
+import { setNodeCustomField } from '../store/actions/graphs';
 import Api from '../Api';
 import { socketLabelDataChange } from '../store/actions/socket';
 import { LABEL_STATUS } from '../data/node';
 
 class LabelUtils {
-  static copy(sourceId, id, customFields, singleGraph) {
-    const labels = Chart.getLabels();
-    const label = labels.find((l) => l.id === id);
-    if (label.type === 'folder') {
-      label.open = true;
-    }
-
-    const nodes = Chart.getNodes().filter((n) => n.labels.includes(id)).map((d) => {
-      d.labels = [id];
-      return d;
-    });
-
-    const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
-
-    const data = {
-      sourceId: +sourceId,
-      label,
-      nodes,
-      links,
-      customFields,
-      title: singleGraph.title,
-    };
-    localStorage.setItem('label.copy', JSON.stringify(data));
-
+  static async copy(sourceId, labelId) {
+    localStorage.removeItem('label.copy');
+    const { data } = await Api.labelCopy(sourceId, labelId);
+    localStorage.setItem('label.copy', JSON.stringify(data.data));
     return data;
   }
 
@@ -47,81 +27,9 @@ class LabelUtils {
     return data || {};
   }
 
-  static compare() {
-    const data = this.getData();
-    if (!data.label) {
-      return {};
-    }
-    const nodes = Chart.getNodes();
-    const sourceNodes = _.intersectionBy(nodes, data.nodes, 'name');
-    const duplicatedNodes = _.intersectionBy(data.nodes, nodes, 'name');
-    return {
-      duplicatedNodes,
-      sourceNodes,
-    };
-  }
-
-  static pastAndMerge(data, position, sources, duplicates, customFields) {
-    let links = Chart.getLinks();
-    let nodes = Chart.getNodes();
-    data.nodes = data.nodes.map((n) => {
-      const selected = duplicates.find((d) => d.name === n.name);
-      const merge = sources.find((d) => d.name === n.name);
-      if (merge && selected) {
-        const originalId = n.id;
-        n.originalId = originalId;
-        n.id = merge.id;
-        n.merge = true;
-        const customFieldDuplicate = CustomFields.get(data.customFields, n.type, n.id);
-        const customField = CustomFields.get(customFields, merge.type, merge.id);
-        _.forEach(customFieldDuplicate, (k, name) => {
-          if (Object.keys(customField).includes(name)) {
-            store.dispatch(renameNodeCustomFieldKey(merge.type, name, CustomFields.uniqueName(customFields, merge.type, name)));
-          } else {
-            // todo
-          }
-        });
-
-        data.links = data.links.map((l) => {
-          if (l.source === originalId) {
-            l.source = n.id;
-          }
-          if (l.target === originalId) {
-            l.target = n.id;
-          }
-          return l;
-        });
-      } else if (!merge && selected) {
-        nodes = nodes.filter((d) => {
-          if (n.name === d.name) {
-            const customField = Object.keys(CustomFields.get(customFields, d.type, d.id));
-            customField.forEach((name) => {
-              store.dispatch(removeNodeCustomFieldKey(d.type, name, d.id));
-            });
-            return false;
-          }
-          return true;
-        });
-        links = ChartUtils.cleanLinks(links, nodes);
-      } else if (merge && !selected) {
-
-      } else {
-        return undefined;
-      }
-
-      return n;
-    });
-    data.nodes = _.compact(data.nodes);
-    data.links = ChartUtils.cleanLinks(data.links, data.nodes);
-    links = ChartUtils.cleanLinks(links, nodes);
-    Chart.render({ nodes, links });
-    console.log(data.nodes, ' data.nodes');
-    return LabelUtils.past(data, position);
-  }
-
   static async past(data, position, isEmbed, graphId) {
     if (!data || !data.label) {
-      return;
+      return {};
     }
     const { x: posX, y: posY } = ChartUtils.calcScaledPosition(position[0], position[1]);
 
@@ -133,7 +41,7 @@ class LabelUtils {
     if (isEmbed) {
       if (labels.some((l) => l.id === data.label.id)) {
         toast.info('Label already pasted');
-        return;
+        return {};
       }
       data.label.readOnly = true;
       data.label.sourceId = data.sourceId;
@@ -169,6 +77,10 @@ class LabelUtils {
 
     // nodes past
     let nodes = Chart.getNodes();
+    const createNodes = [];
+    const updateNodes = [];
+    const deleteNodes = [];
+
     data.nodes.forEach((d) => {
       d.fx = d.fx - minX + posX;
       d.fy = d.fy - minY + posY;
@@ -232,6 +144,7 @@ class LabelUtils {
           }
           return n;
         });
+        updateNodes.push(d);
       } else if (d.merge) {
         nodes = nodes.map((n) => {
           if (n.id === d.id) {
@@ -239,7 +152,9 @@ class LabelUtils {
           }
           return n;
         });
+        updateNodes.push(d);
       } else {
+        createNodes.push(d);
         nodes.push(d);
       }
     });
@@ -255,24 +170,36 @@ class LabelUtils {
     });
 
     links.push(...data.links);
+
     if (isEmbed) {
       const { data: res } = await Api.labelShare(data.sourceId, data.label.id, graphId).catch((e) => e.response);
       if (res.status !== 'ok') {
         toast.error(res.message);
-        return;
+        return {};
       }
       const { labelEmbed } = res;
       const embedLabels = _.uniqBy([...Chart.data.embedLabels, labelEmbed], 'id');
       Chart.render({
         links, nodes, labels, embedLabels,
       }, 'past');
-      return;
+      return {
+        updateNodes,
+        createNodes,
+        createLabel: data.label,
+        createLinks: data.links,
+      };
     }
 
     links = ChartUtils.cleanLinks(links, nodes);
     links = ChartUtils.uniqueLinks(links);
 
     Chart.render({ links, nodes, labels }, 'past');
+    return {
+      updateNodes,
+      createNodes,
+      createLabel: data.label,
+      createLinks: data.links,
+    };
   }
 
   static labelDataChange = (graphId, labelId, force = false) => {
@@ -294,7 +221,6 @@ class LabelUtils {
     const labelStatus = LABEL_STATUS.filter((c) => c.value === status);
     return labelStatus.length ? labelStatus[0].label : null;
   }
-
 }
 
 export default LabelUtils;

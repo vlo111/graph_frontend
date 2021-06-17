@@ -3,6 +3,7 @@ import EventEmitter from 'events';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodeContextMenu from './NodeContextMenu';
@@ -59,7 +60,7 @@ class ContextMenu extends Component {
     if (ev.target.closest('.nodes')) {
       if (ev.target.classList.contains('selectMultyNodes')) {
         params = {
-          squareDara: Chart.squareDara || {},
+          squareData: Chart.squareData || {},
         };
         element = 'selectNode';
       } else {
@@ -92,7 +93,7 @@ class ContextMenu extends Component {
       element = 'label';
     } else if (ev.target.classList.contains('selectSquare')) {
       params = {
-        squareDara: Chart.squareDara || {},
+        squareData: Chart.squareData || {},
       };
       element = 'selectSquare';
     }
@@ -115,6 +116,8 @@ class ContextMenu extends Component {
         deleteDataModal: { ev, type },
       });
       this.props.setActiveButton('deleteModal');
+    } else if (type === 'findPath') {
+      this.props.setActiveButton(`findPath.${this.state.params.id}`);
     } else {
       const { params, x, y } = this.state;
       params.contextMenu = true;
@@ -138,14 +141,14 @@ class ContextMenu extends Component {
     const { match: { params: { graphId = '' } } } = this.props;
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
-    const showPast = !!localStorage.getItem('label.copy')
-      && (show === 'chart' || show === 'label');
+    const pastData = LabelUtils.getData();
+
+    const showPast = !_.isEmpty(pastData) && !_.isEmpty(pastData.nodes) && (show === 'chart' || show === 'label');
     if (params.fieldName === '_location') {
       return null;
     }
     // remove curve points
     Chart.wrapper.selectAll('#fcurve, #lcurve').remove();
-
     return (
       activeButton === 'deleteModal' ? <DeleteModalContext data={deleteDataModal} params={params} />
         : (
@@ -153,7 +156,7 @@ class ContextMenu extends Component {
             <div className="contextmenu" style={{ left: x, top: y }}>
               {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
-              {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null} 
+              {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
@@ -173,14 +176,11 @@ class ContextMenu extends Component {
                     <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
                       Append
                     </Button>
-                    <Button onClick={(ev) => {
-                      const data = LabelUtils.getData();
-                      LabelUtils.past(data, [x, y], true, graphId);
-                      this.handleClick(ev, 'label.embed');
-                    }}
-                    >
-                      Paste Embedded
-                    </Button>
+                    {pastData.type === 'label' ? (
+                      <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
+                        Past Embedded
+                      </Button>
+                    ) : null}
                   </div>
                 </div>
               ) : null}
@@ -195,10 +195,10 @@ class ContextMenu extends Component {
               {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
                 <>
                   {show === 'node' ? (!params.readOnly ? (
-                    <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
-                      Delete
-                    </Button>
-                  ) : null)
+                      <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
+                        Delete
+                      </Button>
+                    ) : null)
                     : (
                       <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
                         Delete
@@ -240,7 +240,7 @@ class ContextMenu extends Component {
                 </>
               ) : null}
               {['node'].includes(show) ? (
-                <>                   
+                <>
                   {showInMap ? (
                     <Button
                       icon="fa-globe"
@@ -249,7 +249,7 @@ class ContextMenu extends Component {
                       Show on map
                     </Button>
                   ) : null}
-                   
+
                 </>
               ) : null}
             </div>

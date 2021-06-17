@@ -15,7 +15,9 @@ import Validate from '../../helpers/Validate';
 import SvgLine from '../SvgLine';
 import ContextMenu from '../contextMenu/ContextMenu';
 import Utils from '../../helpers/Utils';
-import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { createLinksRequest, updateLinksRequest } from '../../store/actions/links';
+import ChartUtils from '../../helpers/ChartUtils';
 
 class AddLinkModal extends Component {
   static propTypes = {
@@ -81,10 +83,10 @@ class AddLinkModal extends Component {
 
   addLink = async (ev) => {
     ev.preventDefault();
-    const { currentUserId } = this.props;
+    const { currentUserId, graphId } = this.props;
     const { linkData, index } = this.state;
     const isUpdate = !_.isNull(index);
-    let links = Chart.getLinks();
+    let links = [...Chart.getLinks()];
     const errors = {};
     [errors.type, linkData.type] = Validate.linkType(linkData.type, linkData);
     [, linkData.value] = Validate.linkValue(linkData.value);
@@ -93,6 +95,7 @@ class AddLinkModal extends Component {
       linkData.updatedAt = moment().unix();
       linkData.updatedUser = currentUserId;
       if (isUpdate) {
+        linkData.update = true;
         links = links.map((d) => {
           if (d.index === linkData.index) {
             d.sx = undefined;
@@ -100,10 +103,16 @@ class AddLinkModal extends Component {
           }
           return d;
         });
+        // this.props.updateLinksRequest(graphId, [linkData]);
       } else {
+        linkData.create = true;
+
         linkData.createdAt = moment().unix();
         linkData.createdUser = currentUserId;
+        linkData.id = linkData.id || ChartUtils.uniqueId(links);
         links.push(linkData);
+
+        // this.props.createLinksRequest(graphId, [linkData]);
       }
 
       this.setState({ show: false });
@@ -114,7 +123,9 @@ class AddLinkModal extends Component {
         checkLinkCurve = 'updateCurve';
       } else if (linkData.linkType === 'a1') {
         checkLinkCurve = 'createCurve';
-      } else checkLinkCurve = '';
+      } else {
+        checkLinkCurve = '';
+      }
 
       Chart.render({ links }, checkLinkCurve);
     }
@@ -129,7 +140,9 @@ class AddLinkModal extends Component {
   }
 
   render() {
-    const { linkData, index, errors, show } = this.state;
+    const {
+      linkData, index, errors, show,
+    } = this.state;
     if (!show) {
       return null;
     }
@@ -243,8 +256,12 @@ class AddLinkModal extends Component {
 
 const mapStateToProps = (state) => ({
   currentUserId: state.account.myAccount.id,
+  graphId: state.graphs.singleGraph.id,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  createLinksRequest,
+  updateLinksRequest,
+};
 
 const Container = connect(
   mapStateToProps,

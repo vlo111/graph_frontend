@@ -6,3 +6,7 @@ export const getOnlineUsers = createSelector(
   getApp,
   (items) => items.onlineUsers,
 ); 
+export const getMouseTracker = createSelector(
+  getApp,
+  (items) => items.mouseTracker,
+); 

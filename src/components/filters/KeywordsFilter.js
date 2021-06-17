@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
@@ -14,30 +14,11 @@ class KeywordsFilter extends Component {
     nodes: PropTypes.array.isRequired,
   }
 
-  getKeywords = memoizeOne((nodes) => {
-    const keywords = _.chain(nodes)
-      .map((d) => d.keywords)
-      .flatten(1)
-      .groupBy()
-      .map((d, key) => ({
-        length: d.length,
-        keyword: key,
-      }))
-      .value();
-
-    const empty = nodes.filter((d) => _.isEmpty(d.keywords))?.length;
-    if (empty && keywords.length) {
-      keywords.push({
-        length: empty,
-        keyword: '[ No Keyword ]',
-      });
-    }
+  getKeywords = memoizeOne((keywords) => {
     if (keywords.length) {
       this.props.setFilter('nodeKeywords', keywords.map((d) => d.keyword), true);
     }
-
-    return _.orderBy(keywords, 'length', 'desc');
-  }, (a, b) => _.isEqual(a[0].map((d) => d.keyword), b[0].map((d) => d.keyword)));
+  }, _.isEqual);
 
   constructor(props) {
     super(props);
@@ -73,41 +54,41 @@ class KeywordsFilter extends Component {
 
   render() {
     const { showMore } = this.state;
-    const { nodes, filters } = this.props;
-    const typesFull = this.getKeywords(nodes);
-    const types = showMore ? typesFull : _.chunk(typesFull, 5)[0] || [];
-    if (typesFull.length < 2) {
+    const { filters, graphFilterInfo: { keywords = [] } } = this.props;
+    this.getKeywords(keywords);
+    const types = showMore ? keywords : _.chunk(keywords, 5)[0] || [];
+    if (keywords.length < 2) {
       return null;
     }
-    const allChecked = typesFull.length === filters.nodeKeywords.length;
+    const allChecked = keywords.length === filters.nodeKeywords.length;
     return (
       <div className="tagsFilter graphFilter">
         <h4 className="title">Node Keywords</h4>
         <ul className="list">
           <li className="item">
-          <div className="filterCheckBox">
-            <Checkbox
-              label={allChecked ? 'Uncheck All' : 'Check All'}
-              checked={allChecked}
-              onChange={() => this.toggleAll(typesFull, allChecked)}
-              className="graphsCheckbox"
-            >           
-            </Checkbox>
+            <div className="filterCheckBox">
+              <Checkbox
+                label={allChecked ? 'Uncheck All' : 'Check All'}
+                checked={allChecked}
+                onChange={() => this.toggleAll(keywords, allChecked)}
+                className="graphsCheckbox"
+              >
+              </Checkbox>
             </div>
             <span className="badge">
-                {_.sumBy(typesFull, 'length')}
+                {_.sumBy(keywords, 'length')}
               </span>
           </li>
           {types.map((item) => (
             <li key={item.keyword} className="item">
-               <div className="filterCheckBox"> 
-              <Checkbox
-                label={item.keyword}
-                checked={filters.nodeKeywords.includes(item.keyword)}
-                onChange={() => this.handleChange(item.keyword)}
-                className="graphsCheckbox"
-              >               
-              </Checkbox>
+              <div className="filterCheckBox">
+                <Checkbox
+                  label={item.keyword}
+                  checked={filters.nodeKeywords.includes(item.keyword)}
+                  onChange={() => this.handleChange(item.keyword)}
+                  className="graphsCheckbox"
+                >
+                </Checkbox>
               </div>
               <span className="badge">
                   {item.length}
@@ -115,7 +96,7 @@ class KeywordsFilter extends Component {
             </li>
           ))}
         </ul>
-        {typesFull.length > types.length || showMore ? (
+        {keywords.length > types.length || showMore ? (
           <Button onClick={this.toggleMore}>
             {showMore ? '- Less' : '+ More'}
           </Button>
@@ -127,6 +108,7 @@ class KeywordsFilter extends Component {
 
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
+  graphFilterInfo: state.graphs.graphFilterInfo,
 });
 
 const mapDispatchToProps = {

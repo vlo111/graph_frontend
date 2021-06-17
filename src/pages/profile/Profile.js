@@ -45,6 +45,7 @@ class Profile extends Component {
   saveAccount = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
+    const { myAccount } = this.props;
     const { payload: { data } } = await this.props.updateMyAccountRequest(requestData);
     if (data.status === 'ok') {
       toast.info('Successfully saved');
@@ -52,6 +53,9 @@ class Profile extends Component {
       this.setState({ errors: data.errors });
     } else {
       toast.error('Something went wrong');
+    }
+    if (requestData.firstName && requestData.lastName) {
+      window.location.href = `/profile/${myAccount.id}`;
     }
   }
 
@@ -74,8 +78,10 @@ class Profile extends Component {
             />
           </div>
           <div className="right">
-          <div className="row"> 
-           <strong className="email">Email : </strong> {requestData.email}
+            <div className="row">
+              <strong className="email">Email : </strong>
+              {' '}
+              {requestData.email}
             </div>
             <div className="row">
               <Input
@@ -105,6 +111,7 @@ class Profile extends Component {
                 onChangeText={this.handleChange}
               />
             </div>
+            <div />
             <div className="row">
               <Input
                 name="website"
@@ -112,12 +119,85 @@ class Profile extends Component {
                 type="url"
                 value={requestData.website}
                 error={errors.website}
-                onChangeText={this.handleChange}
+                onChangeText={this.handleChange}   
+                //pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:google\.com|go(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
               />
+            </div>
+            <div className="socialright">
+              {' '}
+              <i className="fa fa-globe" />
+              {' '}
+              <span> SOCIAL</span>
+              {' '}
+            </div>
+            <div className="rigt-input">
+              <div className="row">
+                <div className="social_icon">
+                  {' '}
+                  <i className="fa fa-facebook-square" />
+                </div>
+                <Input
+                  name="facebook"
+                  label="Facebook"
+                  type="url"
+                  value={requestData.facebook}
+                  error={errors.facebook}
+                  onChangeText={this.handleChange}
+                  pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:facebook\.com|fb(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
+                />
+              </div>
+              <div className="row">
+                <div className="social_icon">
+                  {' '}
+                  <i className="fa fa-twitter" />
+                </div>
+                <Input
+                  name="twitter"
+                  label="Twitter"
+                  type="url "
+                  value={requestData.twitter}
+                  error={errors.twitter}
+                  onChangeText={this.handleChange}
+                  pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:twitter\.com|tw(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
+
+                />
+              </div>
+              <div className="row">
+                <div className="social_icon">
+                  {' '}
+                  <i className="fa fa-linkedin"> </i>
+                </div>
+                <Input
+                  name="linkedin"
+                  label="Linkedin"
+                  type="url"
+                  value={requestData.linkedin}
+                  error={errors.linkedin}
+                  onChangeText={this.handleChange}
+                  pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:linkedin\.com|in(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
+                />
+              </div>
+              <div className="row">
+                <div className="social_icon">
+                  {' '}
+                  <i className="fa fa-skype" />
+                </div>
+                <Input
+                  name="skype"
+                  label="Skype"
+                  type="url"
+                  value={requestData.skype}
+                  error={errors.skype}
+                  onChangeText={this.handleChange}
+                  pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:skype\.com|sk(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
+                />
+              </div>
+
             </div>
             <Button className="changePassword" onClick={() => this.toggleChangePassword(!changePassword)}>
               Change Password
             </Button>
+
             <Button className="save" color="accent" type="submit">Save Changes</Button>
           </div>
         </form>

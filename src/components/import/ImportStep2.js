@@ -31,20 +31,35 @@ class ImportStep2 extends Component {
 
   import = async () => {
     const { importData } = this.props;
-    const singleGraph = Chart.getData();
+    const singleGraph = _.cloneDeep(Chart.getData());
 
-    const duplicates = _.intersectionBy(singleGraph.nodes, importData.nodes, 'name');console.log(duplicates.length, 'duplicates.lengthduplicates.lengthduplicates.lengthduplicates.length')
-    if (duplicates.length) {
+    const duplications = _.intersectionBy(singleGraph.nodes, importData.nodes, 'name');
+    if (duplications.length) {
       this.setState({ compare: true });
       return;
     }
     const {
-      nodes, links, labels, customFields,
+      nodes, links, labels,
     } = ChartUtils.margeGraphs(singleGraph, importData);
+
     Chart.render({
       nodes, links, labels,
     });
-    this.props.setGraphCustomFields(customFields);
+    ChartUtils.resetColors();
+
+    // this.props.updateNodesCustomFieldsRequest(singleGraph.id, nodes.map(d => ({
+    //   id: d.id,
+    //   customFields: d.customFields,
+    // })));
+
+    // this.props.updateSingleGraph({
+    //   nodes,
+    //   links,
+    //   labels,
+    //   title,
+    //   description,
+    // });
+
     this.props.setActiveButton('create');
     this.props.updateShowSelect(true);
 
@@ -111,6 +126,7 @@ class ImportStep2 extends Component {
 const mapStateToProps = (state) => ({
   importData: state.graphs.importData,
   singleGraph: state.graphs.singleGraph,
+  embedLabels: state.graphs.embedLabels,
 });
 
 const mapDispatchToProps = {

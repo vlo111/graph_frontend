@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import LazyLoad from 'react-lazyload';
 import memoizeOne from 'memoize-one';
+import { List } from 'react-virtualized';
 import LabelCompareItem from '../labelCopy/LabelCompareItem';
 import Icon from '../form/Icon';
 
@@ -62,60 +62,80 @@ class GraphCompareList extends Component {
         </div>
         {show ? (
           <>
-            {singleGraph1?.nodes?.map((node) => {
-              const node2 = singleGraph2?.nodes?.find((n) => n.name === node.name);
-              return (
-                <LazyLoad height={150} unmountIfInvisible offset={500} scrollContainer={scrollContainer}>
-                  <div className="item">
-                    <div className="top">
-                      <span className="name">{node.name}</span>
-                    </div>
-                    <div className="bottom">
-                      <div className="node node_left">
-                        <LabelCompareItem
-                          node={node}
-                          checked={selected.some((d) => d.id === node.id)}
-                          customFields={singleGraph1.customFields}
-                          onChange={(checked) => this.props.onChange(node, checked, 1)}
-                        />
+            {singleGraph1?.nodes?.length ? (
+              <List
+                width={Math.min(window.innerWidth - 220, 1024)}
+                height={singleGraph1?.nodes?.length < 2 ? 200 :window.innerHeight - 450}
+                rowCount={singleGraph1?.nodes?.length || 0}
+                rowHeight={200}
+                rowRenderer={({ key, style, index }) => {
+                  const node = singleGraph1?.nodes[index];
+                  const node2 = singleGraph2?.nodes?.find((n) => n.name === node.name);
+                  return (
+                    <div key={key} style={style}>
+                      <div className="item">
+                        <div className="top">
+                          <span className="name">{node.name}</span>
+                        </div>
+                        <div className="bottom">
+                          <div className="node node_left">
+                            <LabelCompareItem
+                              node={node}
+                              checked={selected.some((d) => d.id === node.id)}
+                              onChange={(checked) => this.props.onChange(node, checked, 1)}
+                            />
+                          </div>
+                          <div className="node node_right">
+                            {node2 ? (
+                              <LabelCompareItem
+                                node={node2}
+                                checked={selected.some((d) => d.id === node2.id)}
+                                onChange={(checked) => this.props.onChange(node2, checked, 2)}
+                              />
+                            ) : null}
+                          </div>
+                        </div>
                       </div>
-                      <div className="node node_right">
-                        {node2 ? (
-                          <LabelCompareItem
-                            node={node2}
-                            checked={selected.some((d) => d.id === node2.id)}
-                            customFields={singleGraph2.customFields}
-                            onChange={(checked) => this.props.onChange(node2, checked, 2)}
-                          />
-                        ) : null}
+                    </div>
+                  );
+                }}
+              />
+            ) : null}
+
+            {!singleGraph1 ? (
+              <List
+                width={Math.min(window.innerWidth - 220, 1024)}
+                height={singleGraph2?.nodes?.length < 2 ? 200 :window.innerHeight - 450}
+                rowCount={singleGraph2?.nodes?.length || 0}
+                rowHeight={200}
+                rowRenderer={({ key, style, index }) => {
+                  const node2 = singleGraph2?.nodes[index];
+                  return (
+                    <div key={key} style={style}>
+                      <div className="item">
+                        <div className="top">
+                          <span className="name">{node2.name}</span>
+                        </div>
+                        <div className="bottom">
+                          <div className="node node_left" />
+                          <div className="node node_right">
+                            <LabelCompareItem
+                              node={node2}
+                              checked={selected.some((d) => d.id === node2.id)}
+                              customFields={singleGraph2.customFields}
+                              onChange={(checked) => this.props.onChange(node2, checked, 2)}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </LazyLoad>
-              );
-            })}
-            {!singleGraph1 ? singleGraph2?.nodes?.map((node2) => (
-              <LazyLoad height={158} unmountIfInvisible offset={500} scrollContainer={scrollContainer}>
-                <div className="item">
-                  <div className="top">
-                    <span className="name">{node2.name}</span>
-                  </div>
-                  <div className="bottom">
-                    <div className="node node_left" />
-                    <div className="node node_right">
-                      <LabelCompareItem
-                        node={node2}
-                        checked={selected.some((d) => d.id === node2.id)}
-                        customFields={singleGraph2.customFields}
-                        onChange={(checked) => this.props.onChange(node2, checked, 2)}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </LazyLoad>
-            )) : null}
+                  );
+                }}
+              />
+            ) : null}
           </>
         ) : null}
+
       </div>
     );
   }

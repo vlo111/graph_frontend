@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import memoizeOne from 'memoize-one';
 import { setActiveButton, setGridIndexes, setLoading } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
@@ -17,22 +18,28 @@ import Utils from '../../helpers/Utils';
 import Select from '../form/Select';
 import Outside from '../Outside';
 import { EXPORT_TYPES } from '../../data/export';
+import { getGraphInfoRequest } from '../../store/actions/graphs';
 
 class DataView extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     setGridIndexes: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
-    customFields: PropTypes.object.isRequired,
+    getGraphInfoRequest: PropTypes.func.isRequired,
+    graphId: PropTypes.string.isRequired,
+    graphInfo: PropTypes.object.isRequired,
     selectedGrid: PropTypes.objectOf(PropTypes.array).isRequired,
   }
 
   constructor(props) {
     super(props);
     const nodes = Chart.getNodes();
+    const links = Chart.getLinks();
 
     this.state = {
       fullWidth: false,
+      nodes,
+      links,
       activeTab: {
         group: 'nodes',
         type: nodes[0]?.type || '',
@@ -42,9 +49,26 @@ class DataView extends Component {
     };
   }
 
-  componentDidMount() {
-    this.checkAllGrids();
+  async componentDidMount() {
+    const { graphId, selectedGrid } = this.props;
+    Chart.loading(true);
+    const folders = Chart.getLabels().filter((l) => l.type === 'folder');
+
+    let foldersData = [];
+    folders.forEach((f) => {
+      foldersData.push(Api.labelData(graphId, f.id));
+    });
+
+    foldersData = await Promise.all(foldersData);
+
+    const nodes = this.mergeNodes(Chart.getNodes(), foldersData.map((d) => d.data.label.nodes).flat(1), selectedGrid);
+    const links = this.mergeLinks(Chart.getLinks(), foldersData.map((d) => d.data.label.links).flat(1), nodes, selectedGrid);
+    this.setState({ nodes, links });
+
+    // this.checkAllGrids();
     Chart.resizeSvg();
+    this.props.getGraphInfoRequest(graphId);
+    Chart.loading(false);
   }
 
   componentWillUnmount() {
@@ -54,6 +78,41 @@ class DataView extends Component {
     }, 100);
   }
 
+  mergeNodes = (nodes, extraNodes, selectedGrid) => {
+    let n = [...nodes.filter((d) => !d.fake)];
+    if (extraNodes) {
+      extraNodes.forEach((d, i) => {
+        n.push({
+          ...d,
+          index: nodes.length - 1 + i,
+        });
+      });
+    }
+    n = _.uniqBy(n, 'id').filter((d) => !d.sourceId && !d.fake);
+    if (_.isEmpty(selectedGrid?.nodes)) {
+      this.props.setGridIndexes('nodes', _.range(n.length));
+    }
+
+    return n;
+  }
+
+  mergeLinks = (links, extraLinks, nodes, selectedGrid) => {
+    let l = [...links.filter((d) => !d.fake)];
+    if (extraLinks) {
+      extraLinks.forEach((d, i) => {
+        l.push({
+          ...d,
+          index: links.length - 1 + i,
+        });
+      });
+    }
+    l = ChartUtils.cleanLinks(ChartUtils.uniqueLinks(l), nodes).filter((d) => !d.sourceId && !d.fake);
+    if (_.isEmpty(selectedGrid?.links)) {
+      this.props.setGridIndexes('links', _.range(l.length));
+    }
+    return l;
+  }
+
   unCheckAllGrids = () => {
     this.props.setGridIndexes('nodes', []);
     this.props.setGridIndexes('links', []);
@@ -61,12 +120,11 @@ class DataView extends Component {
 
   checkAllGrids = () => {
     const { selectedGrid } = this.props;
+    const { nodes, links } = this.state;
     if (_.isEmpty(selectedGrid.nodes)) {
-      const nodes = Chart.getNodes();
       this.props.setGridIndexes('nodes', _.range(nodes.length));
     }
     if (_.isEmpty(selectedGrid.links)) {
-      const links = Chart.getLinks();
       this.props.setGridIndexes('links', _.range(links.length));
     }
   }
@@ -78,7 +136,6 @@ class DataView extends Component {
 
   close = () => {
     this.props.setActiveButton('create');
-    window.location.reload(false);
   }
 
   setActiveTab = (group, type) => {
@@ -90,45 +147,19 @@ class DataView extends Component {
   }
 
   export = async (type) => {
-    const { selectedGrid, customFields } = this.props;
-    let nodes = _.clone(Chart.getNodes()).filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
-    const links = Chart.getLinks().filter((d) => ChartUtils.isCheckedLink(selectedGrid, d));
-    const labels = Chart.getLabels(); // todo filter empty labels
+    const { selectedGrid, graphId } = this.props;
 
-    const icons = await Promise.all(nodes.map((d) => {
-      if (d.icon && d.icon.startsWith('blob:')) {
-        return Utils.blobToBase64(d.icon);
-      }
-      return d.icon;
-    }));
+    const nodes = this.state.nodes.filter((d) => ChartUtils.isCheckedNode(selectedGrid, d));
 
-    const files = [];
-    /* eslint-disable */
-    for (const d of nodes) {
-      const reg = /\shref="(blob:[^"]+)"/g;
-      let m;
-      while (m = reg.exec(d.description)) {
-        const file = await Utils.blobToBase64(m[1]);
-        files.push(file);
-      }
-    }
-    /* eslint-enable */
+    const nodesId = nodes.map((n) => n.id);
 
-    nodes = nodes.map((d, i) => {
-      d.icon = icons[i];
-      d.description = d.description.replace(/\shref="(blob:[^"]+)"/g, () => ` href="${files.shift()}"`);
-      return d;
-    });
+    const linksId = ChartUtils.cleanLinks(this.state.links.filter((d) => selectedGrid.links.includes(d.index)), nodes)
+      .map((l) => l.id);
 
-    if (type === 'csv') {
-      Api.download('csv-nodes', { nodes });
-      if (!_.isEmpty(links)) {
-        Api.download('csv-links', { links });
-      }
-      return;
-    }
+    const labelsId = Chart.getLabels().map((l) => l.id);
+
     Api.download(type, {
-      nodes, links, labels, customFields,
+      graphId, nodesId, linksId, labelsId,
     });
   }
 
@@ -175,24 +206,33 @@ class DataView extends Component {
     }
   }
 
+  loadFolderNodes = async (folder) => {
+    const { graphId } = this.props;
+    const { data } = await Api.labelData(graphId, folder.id).catch((e) => e);
+    console.log(data);
+  }
+
   render() {
     const {
-      fullWidth, activeTab, exportType, showExport,
+      fullWidth, activeTab, exportType, showExport, nodes, links,
     } = this.state;
 
-    const nodes = Chart.getNodes().filter((d) => !d.sourceId);
-    const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
+    const { graphInfo } = this.props;
 
     const linksGrouped = _.groupBy(links, 'type');
+    delete linksGrouped.undefined;
     const nodesGrouped = _.groupBy(nodes, 'type');
+    delete nodesGrouped.undefined;
     let color = '';
 
     if (links.length) {
       if (activeTab.group === 'links') {
-        color = links.find((p) => p.type === activeTab.type).color;
+        color = links.find((p) => p.type === activeTab.type)?.color;
       } else if (activeTab.group === 'nodes') {
-        color = nodes.find((p) => p.type === activeTab.type).color;
-      } else color = '';
+        color = nodes.find((p) => p.type === activeTab.type)?.color;
+      } else {
+        color = '';
+      }
     }
     return (
       <div id="dataTable" className={fullWidth ? 'fullWidth' : undefined}>
@@ -234,11 +274,16 @@ class DataView extends Component {
                 classNamePos={showExport && 'tablePosition'}
                 title={activeTab.type}
                 nodes={nodesGrouped[activeTab.type]}
+                allNodes={nodes}
+                allLinks={links}
+                loadFolderNodes={this.loadFolderNodes}
               />
             ) : (
               <DataTableLinks
                 classNamePos={showExport && 'tablePosition'}
                 title={activeTab.type}
+                allNodes={nodes}
+                allLinks={links}
                 links={linksGrouped[activeTab.type]}
               />
             )}
@@ -246,9 +291,7 @@ class DataView extends Component {
           <div className="tabs">
             <div className="nodesMode">
               <span>
-                Nodes (
-                {nodes.length}
-                )
+                {`Nodes (${graphInfo.totalNodes})`}
               </span>
             </div>
             <div>
@@ -265,9 +308,7 @@ class DataView extends Component {
             </div>
             <div className="linksMode">
               <span>
-                Links (
-                {links.length}
-                )
+                {`Links (${graphInfo.totalLinks})`}
               </span>
             </div>
             <div>
@@ -292,6 +333,8 @@ class DataView extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   selectedGrid: state.app.selectedGrid,
+  graphId: state.graphs.singleGraph.id,
+  graphInfo: state.graphs.graphInfo,
   customFields: state.graphs.singleGraph.customFields || {},
 });
 
@@ -299,6 +342,7 @@ const mapDispatchToProps = {
   setActiveButton,
   setLoading,
   setGridIndexes,
+  getGraphInfoRequest,
 };
 
 const Container = connect(

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import queryString from 'query-string';
+import memoizeOne from 'memoize-one';
+import _ from 'lodash';
 import Chart from '../../Chart';
 import Outside from '../Outside';
 import NodeTabs from './NodeTabs';
@@ -11,17 +13,23 @@ import HeaderMini from '../HeaderMini';
 import ConnectionDetails from './ConnectionDetails';
 import NodeFullInfoModal from './NodeFullInfoModal';
 import ChartUtils from '../../helpers/ChartUtils';
-import NodeImage from "./NodeImage";
+import NodeImage from './NodeImage';
+import { getNodeCustomFieldsRequest } from '../../store/actions/graphs';
 
 class NodeFullInfo extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
     editable: PropTypes.bool,
+    getNodeCustomFieldsRequest: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     editable: true,
   }
+
+  getCustomFields = memoizeOne((graphId, nodeId) => {
+    this.props.getNodeCustomFieldsRequest(graphId, nodeId);
+  });
 
   closeNodeInfo = () => {
     const queryObj = queryString.parse(window.location.search);
@@ -31,7 +39,7 @@ class NodeFullInfo extends Component {
   }
 
   render() {
-    const { editable, customFields } = this.props;
+    const { editable } = this.props;
     const queryObj = queryString.parse(window.location.search);
     const { info: nodeId, expand } = queryObj;
     if (!nodeId) {
@@ -52,22 +60,26 @@ class NodeFullInfo extends Component {
           <HeaderMini
             headerImg={node.icon ? node.icon : bgImage}
             node={node}
-            tabs={customFields}
             editable={editable}
           />
           <div className="nodeFullContent">
-            <div className="headerBanner">
-              <NodeImage node={node} />
-
+            <div className="headerBanner ">
+              <div className="frame">
+                <NodeImage node={node} />
+              </div>
               <div className="textWrapper">
-                <h2 className="name">{node.name}</h2>
-                <h3 className="type">{node.type}</h3>
+                <h2 className="name">
+                  {node.name}
+                </h2>
+                <h3 className="type">
+                  {node.type}
+                </h3>
               </div>
               <Link replace className="expand" to={`?${queryString.stringify({ ...queryObj, expand: '1' })}`}>
                 Expand
               </Link>
             </div>
-            <NodeTabs node={node} editable={editable} />
+            <NodeTabs nodeId={node.id} editable={editable} />
           </div>
           <ConnectionDetails nodeId={node.id} />
         </div>
@@ -79,19 +91,17 @@ class NodeFullInfo extends Component {
   }
 }
 
-const
-  mapStateToProps = (state) => ({
-    singleGraph: state.graphs.singleGraph, // rerender then data changed
-    customFields: state.graphs.singleGraph.customFields || {},
-  });
+const mapStateToProps = (state) => ({
+  singleGraph: state.graphs.singleGraph,
+});
 
-const
-  mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getNodeCustomFieldsRequest,
+};
 
-const
-  Container = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(NodeFullInfo);
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NodeFullInfo);
 
 export default withRouter(Container);

@@ -3,6 +3,8 @@ import fileDownload from 'js-file-download';
 import { serialize } from 'object-to-formdata';
 import Account from './helpers/Account';
 
+const { REACT_APP_ARXIV_URL } = process.env;
+const { REACT_APP_CORE_URL } = process.env;
 const { REACT_APP_API_URL } = process.env;
 
 const api = axios.create({
@@ -22,6 +24,10 @@ api.interceptors.request.use((config) => {
 
 class Api {
   static url = REACT_APP_API_URL;
+  static REACT_APP_ARXIV_URL = REACT_APP_ARXIV_URL;
+  static REACT_APP_CORE_URL = REACT_APP_CORE_URL;
+  static REACT_APP_ARTICLE_URL = REACT_APP_API_URL + "/public/article.svg"
+  static REACT_APP_AUTHOR_URL = REACT_APP_API_URL + "/public/person.svg"
 
   static #cancelSource = [];
 
@@ -35,7 +41,7 @@ class Api {
   }
 
   static toFormData(data) {
-    return serialize({ ...data }, { indices: true });
+    return serialize({ ...data });
   }
 
   static singIn(email, password) {
@@ -110,8 +116,10 @@ class Api {
     return api.delete(`/graphs/delete/${id}`);
   }
 
-  static updateGraphThumbnail(id, svg) {
-    return api.patch(`/graphs/thumbnail/${id}`, { svg });
+  static updateGraphThumbnail(id, svg, size) {
+    return api.patch(`/graphs/thumbnail/${id}`, { svg, size }, {
+      cancelToken: this.#cancel('updateGraphThumbnail'),
+    });
   }
 
   static getGraphsList(page, requestData = {}) {
@@ -122,11 +130,31 @@ class Api {
     });
   }
 
+  static getGraphNodes(page, requestData = {}) {
+    const params = { page, ...requestData };
+    return api.get('/graphs/nodes', {
+      params,
+    });
+  }
+
   static getSingleGraph(graphId, params = {}) {
     return api.get(`/graphs/single/${graphId}`, {
       params,
-      cancelToken: this.#cancel('getSingleGraph'),
     });
+  }
+
+  static getAllTabs(graphId, params = {}) {
+    return api.get(`/graphs/getAllTabs/${graphId}`, {
+      params,
+    });
+  }
+
+  static getGraphInfo(graphId) {
+    return api.get(`/graphs/info/${graphId}`);
+  }
+
+  static getNodeCustomFields(graphId, nodeId) {
+    return api.get(`/nodes/get-fields/${graphId}/${nodeId}`);
   }
 
   static getSingleGraphWithAccessToken(graphId, userId, token) {
@@ -190,8 +218,12 @@ class Api {
     return api.put(`/share-graphs/update/${id}`, requestData);
   }
 
-  static deleteShareGraph(id) {
-    return api.delete(`/share-graphs/delete/${id}`);
+  static deleteShareGraph(id, notification = true) {
+    return api.delete(`/share-graphs/delete/${id}`, {
+      params: {
+        notification,
+      },
+    });
   }
 
   static listShareGraph(requestData) {
@@ -330,9 +362,132 @@ class Api {
     });
   }
 
-
   static getShareGraphsList() {
     return api.get('/share');
+  }
+
+  static createNodes(graphId, nodes) {
+    return api.post(`/nodes/create/${graphId}`, { nodes });
+  }
+
+  static updateNodes(graphId, nodes) {
+    return api.put(`/nodes/update/${graphId}`, { nodes });
+  }
+
+  static updateNodePositions(graphId, nodes) {
+    return api.put(`/nodes/update-positions/${graphId}`, { nodes });
+  }
+
+  static updateNodeCustomFields(graphId, nodes) {
+    return api.put(`/nodes/update-fields/${graphId}`, { nodes });
+  }
+
+  static uploadNodeIcon(graphId, nodeId, nodeIcon) {
+    return api.post(`/nodes/upload/icon/${graphId}`, this.toFormData({
+      id: nodeId,
+      icon: nodeIcon,
+    }));
+  }
+
+  static uploadNodeFile(graphId, node, file, data) {
+    return api.post(`/nodes/upload/file/${graphId}`, this.toFormData({
+      node,
+      file,
+      ...data,
+    }));
+  }
+
+  static deleteNodes(graphId, nodes) {
+    return api.delete(`/nodes/delete/${graphId}`, {
+      data: { nodes },
+    });
+  }
+
+  static createLinks(graphId, links) {
+    return api.post(`/links/create/${graphId}`, { links });
+  }
+
+  static updateLinks(graphId, links) {
+    return api.put(`/links/update/${graphId}`, { links });
+  }
+
+  static deleteLinks(graphId, links) {
+    return api.delete(`/links/delete/${graphId}`, {
+      data: { links },
+    });
+  }
+
+  static createLabels(graphId, labels) {
+    return api.post(`/labels/create/${graphId}`, { labels });
+  }
+
+  static updateLabels(graphId, labels) {
+    return api.put(`/labels/update/${graphId}`, { labels });
+  }
+
+  static toggleFolder(graphId, label) {
+    return api.put(`/labels/toggle/${graphId}`, { label });
+  }
+
+  static deleteLabels(graphId, labels) {
+    return api.delete(`/labels/delete/${graphId}`, {
+      data: { labels },
+    });
+  }
+
+  static updateGraphPositions(graphId, nodes, labels) {
+    return api.put(`/graphs/update-positions/${graphId}`, { nodes, labels });
+  }
+
+  static updateLabelPositions(graphId, labels) {
+    return api.put(`/labels/update-positions/${graphId}`, { labels });
+  }
+
+  static labelCopy(sourceId, labelId) {
+    return api.get(`/labels/copy/${sourceId}/${labelId}`);
+  }
+
+  static dataCopy(sourceId, square) {
+    return api.post(`/graphs/data/copy/${sourceId}`, { square });
+  }
+
+  static dataPastCompare(graphId, nodes) {
+    return api.post(`/graphs/data/past-compare/${graphId}`, {
+      nodes,
+    });
+  }
+
+  static labelPast(graphId, sourceId, position = [0, 0], action, data) {
+    return api.post(`/labels/past/${graphId}`, {
+      sourceId, position, action, ...data,
+    });
+  }
+
+  static dataPast(graphId, sourceId, position = [0, 0], action, data) {
+    return api.post(`/graphs/data/past/${graphId}`, {
+      sourceId, position, action, ...data,
+    });
+  }
+
+  static labelData(graphId, labelId) {
+    return api.get(`/labels/${graphId}/${labelId}`);
+  }
+
+  static updateCustomFieldsLabels(graphId, customFields) {
+    // nodeType, fieldName, order = 0, nodeId,
+    return api.delete(`/custom-fields/update/${graphId}`, {
+      data: { customFields },
+    });
+  }
+
+  // History
+
+  static getNodeHistory(graphId, nodeId) {
+    return api.get(`/graph-history/node-history/${graphId}/${nodeId}`);
+  }
+
+  static getGraphHistory(graphId) {
+    return api.get(`/graph-history/graph-history/${graphId}`);
   }
 }
 

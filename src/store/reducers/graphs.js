@@ -1,11 +1,14 @@
 import _ from 'lodash';
 import { toast } from 'react-toastify';
+import { uniqueId } from 'react-bootstrap-typeahead/lib/utils';
 import {
   CLEAR_SINGLE_GRAPH,
   UPDATE_SINGLE_GRAPH,
   CONVERT_GRAPH,
   GET_GRAPHS_LIST,
+  GET_NODES_LIST,
   GET_SINGLE_GRAPH,
+  GET_ALL_TABS,
   SET_NODE_CUSTOM_FIELD,
   ADD_NODE_CUSTOM_FIELD_KEY,
   REMOVE_NODE_CUSTOM_FIELD_KEY,
@@ -14,25 +17,45 @@ import {
   SET_GRAPH_CUSTOM_FIELDS,
   GET_SINGLE_GRAPH_PREVIEW,
   UPDATE_GRAPH,
-  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY, SET_ACTIVE_TAB
+  REMOVE_NODE_FROM_CUSTOM_FIELD,
+  RENAME_NODE_CUSTOM_FIELD_KEY,
+  SET_ACTIVE_TAB,
+  GET_NODE_CUSTOM_FIELDS,
+  GET_GRAPH_INFO,
+  ACTIVE_MOUSE_TRACKER
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
-import { GENERATE_THUMBNAIL_WORKER } from '../actions/socket';
+import { GENERATE_THUMBNAIL_WORKER, SOCKET_ACTIVE_MOUSE_TRACKER  } from '../actions/socket';
+import { UPDATE_NODES_CUSTOM_FIELDS } from '../actions/nodes';
+import { ONLINE_USERS } from '../actions/app';
 
 const initialState = {
   importData: {},
   graphsList: [],
+  graphNodes: [],
   graphsListStatus: '',
   singleGraphStatus: '',
   singleGraph: {},
+  graphInfo: {},
+  graphFilterInfo: {},
   embedLabels: [],
   graphsListInfo: {
     totalPages: 0,
   },
+  nodesListInfo: {
+    totalPages: 0,
+  },
   actionsCount: {},
+  nodeCustomFields: [],
   activeTab: '',
+  graphTabs: [],
+  graphTabsStatus: '',
+  mouseTracker: false,
+  mouseMoveTracker: [],
+  onlineUsers: [],
+  trackers: [],
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -101,6 +124,28 @@ export default function reducer(state = initialState, action) {
         graphsListStatus: 'fail',
       };
     }
+    case GET_NODES_LIST.REQUEST: {
+      return {
+        ...state,
+        graphsListStatus: 'request',
+        graphNodes: [],
+      };
+    }
+    case GET_NODES_LIST.SUCCESS: {
+      const { graphs: graphNodes, ...nodesListInfo } = action.payload.data;
+      return {
+        ...state,
+        nodesListStatus: 'success',
+        graphNodes,
+        nodesListInfo,
+      };
+    }
+    case GET_NODES_LIST.FAIL: {
+      return {
+        ...state,
+        nodesListStatus: 'fail',
+      };
+    }
     case GET_SINGLE_GRAPH.REQUEST: {
       return {
         ...state,
@@ -115,18 +160,33 @@ export default function reducer(state = initialState, action) {
     }
     case GET_SINGLE_EMBED_GRAPH.SUCCESS:
     case GET_SINGLE_GRAPH.SUCCESS: {
-      const { graph: singleGraph, embedLabels } = action.payload.data;
+      const { graph: singleGraph, embedLabels, info } = action.payload.data;
       const {
         nodes, links, labels, lastUid,
       } = singleGraph;
       Chart.render({
-        nodes, links: ChartUtils.cleanLinks(links, nodes), labels, embedLabels, lastUid,
+        nodes,
+        links: ChartUtils.cleanLinks(links, nodes),
+        labels,
+        embedLabels,
+        lastUid,
       });
+      Chart.loading(false);
       return {
         ...state,
         singleGraph,
         embedLabels,
+        graphInfo: info,
         singleGraphStatus: 'success',
+      };
+    }
+
+    case GET_GRAPH_INFO.SUCCESS: {
+      const { filter, info } = action.payload.data;
+      return {
+        ...state,
+        graphFilterInfo: filter,
+        graphInfo: info,
       };
     }
 
@@ -174,7 +234,7 @@ export default function reducer(state = initialState, action) {
         fx: 0,
         fy: 0,
         hidden: -1,
-      }]
+      }];
       Chart.render({
         nodes,
       });
@@ -197,9 +257,9 @@ export default function reducer(state = initialState, action) {
     case SET_NODE_CUSTOM_FIELD: {
       const singleGraph = { ...state.singleGraph };
       const {
-        type, name, customField, tabData, append
+        type, nodeId, customField, tabData, append,
       } = action.payload;
-      const res = CustomFields.setValue(singleGraph.customFields, type, name, customField, append);
+      const res = CustomFields.setValue(singleGraph.customFields, type, nodeId, customField, append);
       singleGraph.customFields = res.customFields;
       if (!res.success) {
         toast.warn('Some tabs are not imported');
@@ -235,13 +295,33 @@ export default function reducer(state = initialState, action) {
         singleGraph: { ...singleGraph },
       };
     }
+    case GET_NODE_CUSTOM_FIELDS.REQUEST: {
+      return {
+        ...state,
+        nodeCustomFields: [],
+      };
+    }
+    case GET_NODE_CUSTOM_FIELDS.SUCCESS: {
+      const { customFields: nodeCustomFields } = action.payload.data;
+      return {
+        ...state,
+        nodeCustomFields,
+      };
+    }
+    case UPDATE_NODES_CUSTOM_FIELDS.REQUEST: {
+      const { nodes } = action.payload;
+      return {
+        ...state,
+        nodeCustomFields: nodes[0].customFields || [],
+      };
+    }
     case REMOVE_NODE_CUSTOM_FIELD_KEY: {
       const singleGraph = { ...state.singleGraph };
       const { type, key, nodeId } = action.payload;
       singleGraph.currentTabName = key;
 
       if (!singleGraph.dismissFiles) {
-        let deleteTabDocument = [];
+        const deleteTabDocument = [];
 
         deleteTabDocument.push({
           tabName: key,
@@ -249,7 +329,7 @@ export default function reducer(state = initialState, action) {
           nodeType: type,
         });
         singleGraph.dismissFiles = deleteTabDocument;
-      } else if (!singleGraph.dismissFiles.some(e => e.tabName === key && e.nodeId === nodeId)) {
+      } else if (!singleGraph.dismissFiles.some((e) => e.tabName === key && e.nodeId === nodeId)) {
         singleGraph.dismissFiles.push({
           tabName: key,
           nodeId,
@@ -297,6 +377,66 @@ export default function reducer(state = initialState, action) {
         activeTab: action.payload.tabName,
       };
     }
+    case GET_ALL_TABS.REQUEST: {
+      return {
+        ...state,
+        graphTabs: [],
+        graphTabsStatus: 'request',
+      };
+    }
+    case GET_ALL_TABS.SUCCESS: {
+      const { graphTabs } = action.payload.data;
+
+      return {
+        ...state,
+        graphTabs,
+        graphTabsStatus: 'success',
+      };
+    }
+    case GET_ALL_TABS.FAIL: {
+      return {
+        ...state,
+        graphTabsStatus: 'fail',
+      };
+    }
+    case ONLINE_USERS: {  
+      const singleGraph = { ...state.singleGraph }; 
+      const { onlineUsers } = action.payload; 
+      const online = onlineUsers && onlineUsers.filter((d) => {
+          return +d.activeGraphId === +singleGraph?.id 
+         },
+        ); 
+      return {
+        ...state, 
+        onlineUsers: online,
+      };
+    }
+    
+    case ACTIVE_MOUSE_TRACKER: {  
+      const { onlineUsers, singleGraph: { id } } = state;
+      const { userId, tracker: mouseTracker } = action.payload;  
+      const trackers = onlineUsers.filter((d) => {
+          return +d.activeGraphId === +id && +d.userId !== +userId;
+         },
+        );  
+      return {
+        ...state,  
+        trackers: trackers,
+        mouseTracker: mouseTracker,
+      };
+    }
+    case SOCKET_ACTIVE_MOUSE_TRACKER: {    
+      const { mouseMoveTracker } = action.payload; 
+      const { singleGraph: { id }  } = state;      
+      const trackers = mouseMoveTracker && mouseMoveTracker.filter((d) => {
+        return +d.graphId === +id ;
+       },
+      ); 
+      return {
+        ...state, 
+        mouseMoveTracker: trackers, 
+      };
+    } 
     default: {
       return state;
     }

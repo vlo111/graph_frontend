@@ -41,20 +41,20 @@ class SearchSharedGraphs extends Component {
                   />
                   <div className="searchData__graphInfo-details">
                     <Link to={`/graphs/preview/${shGraph.graph.id}`}>
-                      {shGraph.graph.title}
-                      {searchParam && shGraph.graph.status !== 'active'
+                      {shGraph.graph?.title}
+                      {searchParam && shGraph?.graph?.status !== 'active'
                         ? (
-                          <span>{` (${shGraph.graph.status})`}</span>
+                          <span>{` (${shGraph?.graph?.status})`}</span>
                         ) : null}
                     </Link>
                     <span className="description">
-                      {shGraph.graph.description.length > 300
-                        ? `${shGraph.graph.description.substr(0, 300)}... `
+                      {shGraph?.graph?.description.length > 300
+                        ? `${shGraph.graph?.description.substr(0, 300)}... `
                         : shGraph.graph.description}
                     </span>
                   </div>
                   <div>
-                    <span className="author">{`${shGraph.graph.user.firstName} ${shGraph.graph.user.lastName}`}</span>
+                    <span className="author">{`${shGraph.graph?.user.firstName} ${shGraph.graph?.user.lastName}`}</span>
                     <div className="info">
                       <span>{moment(shGraph.graph.updatedAt).calendar()}</span>
                       <span>{`  (${shGraph.graph.nodesCount} nodes) `}</span>

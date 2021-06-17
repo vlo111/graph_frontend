@@ -15,27 +15,12 @@ class LabelsFilter extends Component {
     nodes: PropTypes.array.isRequired,
   }
 
-  formatLabels = memoizeOne((labels, nodes) => {
-    const labelsFormatted = _.chain(labels)
-      .map((l) => ({
-        id: l.id,
-        color: l.color,
-        name: l.name || l.color,
-        length: nodes.filter((d) => (d.labels || []).includes(l.id)).length,
-      }))
-      .orderBy('length', 'desc')
-      .value();
-    // labelsFormatted.push({
-    //   id: -1,
-    //   color: '#8dc5f0',
-    //   name: 'No Label',
-    //   length: 'No Label',
-    // });
-    if (labelsFormatted.length) {
-      this.props.setFilter('labels', labelsFormatted.map((d) => d.id), true);
+  checkALlLabels = memoizeOne((labelsInfo) => {
+    if (labelsInfo.length) {
+      this.props.setFilter('labels', labelsInfo.map((d) => d.id), true);
     }
-    return labelsFormatted;
-  }, (a, b) => _.isEqual(a[0].map((d) => d.id), b[0].map((d) => d.id)));
+    return labelsInfo;
+  }, _.isEqual);
 
   handleChange = (value) => {
     const { filters } = this.props;
@@ -57,57 +42,58 @@ class LabelsFilter extends Component {
   }
 
   render() {
-    const { labels, nodes, filters } = this.props;
-    const labelsFormatted = this.formatLabels(labels, nodes);
-    if (labelsFormatted.length < 1) {
+    const {
+      labels, nodes, filters, graphFilterInfo: { labelsInfo = [] },
+    } = this.props;
+    this.checkALlLabels(labelsInfo);
+    if (labelsInfo.length < 1) {
       return null;
     }
-    const allChecked = labelsFormatted.length === filters.labels.length;
+    const allChecked = labelsInfo.length === filters.labels.length;
 
     return (
       <div className="labelsFilter graphFilter">
         <h4 className="title">Labels</h4>
-        
+
         <ul className="list labelCheckAllBlock">
           <li className="item">
             <div className="filterCheckBox">
               <input
-                  onChange={() => this.toggleAll(labelsFormatted, allChecked)}
-                  checked={allChecked}
-                  className="graphsCheckbox"
-                  type="checkbox"
-                  name="layout"
-                  id="labelCheckAll"
+                onChange={() => this.toggleAll(labelsInfo, allChecked)}
+                checked={allChecked}
+                className="graphsCheckbox"
+                type="checkbox"
+                name="layout"
+                id="labelCheckAll"
               />
               <label className="pull-left" htmlFor="labelCheckAll">{allChecked ? 'Uncheck All' : 'Check All'}</label>
             </div>
             <div className="dashed-border" />
             <span className="badge">
-            {_.sumBy(labelsFormatted, (d) => +d.length || 0)}
-          </span>
+              {_.sumBy(labelsInfo, (d) => +d.length || 0)}
+            </span>
           </li>
         </ul>
         <ul className="list ">
-          {labelsFormatted.map((item) => (
+          {labelsInfo.map((item) => (
             <Tooltip key={item.id} overlay={item.name}>
               <li className="item">
-              <div className="filterCheckBox">
-                <Checkbox
-                  label={(
-                    <div className="colorBox" style={{ borderColor: item.color }}>
-                      <div style={{ backgroundColor: item.color }} />
-                    </div>
-                  )}
-                  checked={filters.labels.includes(item.id)}
-                  onChange={() => this.handleChange(item.id)}
-                 
-                >     
-                <span className="badge">
-                    {item.length}
-                  </span>             
-                </Checkbox>
+                <div className="filterCheckBox">
+                  <Checkbox
+                    label={(
+                      <div className="colorBox" style={{ borderColor: item.color }}>
+                        <div style={{ backgroundColor: item.color }} />
+                      </div>
+                    )}
+                    checked={filters.labels.includes(item.id)}
+                    onChange={() => this.handleChange(item.id)}
+                  >
+                    <span className="badge">
+                      {item.length}
+                    </span>
+                  </Checkbox>
                 </div>
-                
+
               </li>
             </Tooltip>
           ))}
@@ -119,6 +105,7 @@ class LabelsFilter extends Component {
 
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
+  graphFilterInfo: state.graphs.graphFilterInfo,
 });
 
 const mapDispatchToProps = {

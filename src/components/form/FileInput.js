@@ -11,7 +11,7 @@ class FileInput extends Component {
     onChangeFile: PropTypes.func.isRequired,
     accept: PropTypes.string,
     selectLabel: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.any,
   }
 
   static defaultProps = {
@@ -33,9 +33,12 @@ class FileInput extends Component {
   handleFileSelect = (ev) => {
     const file = ev.target.files[0] || {};
     this.setState({ file });
-    const url = Utils.fileToBlob(file);
-    this.constructor.blobs[url] = file.name;
-    this.props.onChangeFile(url, file);
+    const uri = Utils.fileToBlob(file);
+    this.constructor.blobs[uri] = file.name;
+    file.uri = uri;
+    this.props.onChangeFile(uri, file);
+
+    ev.target.value = '';
   }
 
   handleTextChange = (name) => {
@@ -52,10 +55,11 @@ class FileInput extends Component {
   }
 
   handleInputFocus = () => {
-    this.setState({ focused: true })
+    this.setState({ focused: true });
   }
+
   handleInputBlur = () => {
-    this.setState({ focused: false })
+    this.setState({ focused: false });
   }
 
   render() {
@@ -70,6 +74,8 @@ class FileInput extends Component {
     } else if (value.toString().startsWith('blob:')) {
       localFile = true;
       value = this.constructor.blobs[value] || 'Selected';
+    } else if (value.toString().startsWith('data:')) {
+      value = '';
     }
     return (
       <div className={`ghFileInput ${focused ? 'focused' : ''}`}>
@@ -78,7 +84,6 @@ class FileInput extends Component {
           onFocus={this.handleInputFocus}
           onBlur={this.handleInputBlur}
           value={value}
-          title={value}
           disabled={localFile}
           onChangeText={this.handleTextChange}
         />

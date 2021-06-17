@@ -18,10 +18,12 @@ import LabelsFilter from './LabelsFilter';
 import LabelStatusFilter from './LabelStatusFilter';
 
 import Utils from '../../helpers/Utils';
+import { getGraphInfoRequest } from "../../store/actions/graphs";
 
 class FiltersModal extends Component {
   static propTypes = {
     resetFilter: PropTypes.func.isRequired,
+    getGraphInfoRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     userGraphs: PropTypes.array.isRequired,
   }
@@ -39,6 +41,9 @@ class FiltersModal extends Component {
   }
 
   componentDidMount() {
+    const { match: { params: { graphId } } } = this.props;
+    this.props.getGraphInfoRequest(graphId);
+
     Chart.event.on('render', this.handleChartRender);
     Chart.event.on('node.dragend', this.handleChartRender);
   }
@@ -50,6 +55,10 @@ class FiltersModal extends Component {
   }
 
   handleChartRender = () => {
+    // const { match: { params: { graphId } } } = this.props;
+    // this.props.getGraphInfoRequest(graphId);
+
+    // todo remove me
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       const nodes = Chart.getNodes(true);
@@ -73,7 +82,8 @@ class FiltersModal extends Component {
     const { nodes, links, labels } = this.state;
     const { userGraphs, match: { params: { graphId = '', token = '' } } } = this.props;
     const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId);
-    const hiddenNodes = nodes.filter((d) => !d.hidden).length;
+    const hiddenNodes = nodes.filter((d) => !d.hidden && !d.fake).length;
+    const totalNodes = nodes.filter((d) => !d.fake).length;
     return (
       <Modal
         className="ghModal ghModalFilters"
@@ -94,7 +104,7 @@ class FiltersModal extends Component {
           <span
             className="nodeCount"
           >
-            {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${nodes.length}`}
+            {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${totalNodes}`}
           </span>
           <div>
             <Button className="ghButton2 resetButton" onClick={this.props.resetFilter}>RESET ALL</Button>
@@ -130,6 +140,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   resetFilter,
+  getGraphInfoRequest
 };
 
 const Container = connect(

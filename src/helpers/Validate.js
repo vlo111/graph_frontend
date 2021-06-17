@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import Chart from '../Chart';
 import CustomFields from './CustomFields';
-import ChartUtils from "./ChartUtils";
+import ChartUtils from './ChartUtils';
 
 class Validate {
   static nodeName(val, update) {
@@ -42,7 +42,6 @@ class Validate {
     }
     return [error, value.join(',')];
   }
-
 
   static nodeColor(val, type) {
     const value = (val || '').trim();
@@ -118,14 +117,15 @@ class Validate {
     return _.some(errors, (e) => e);
   }
 
-  static customFieldType(val, nodeType, customFields) {
+  static customFieldType(val, node) {
+    const customFields = CustomFields.getCustomField(node, Chart.getNodes());
     const value = (val || '').trim();
     let error;
     if (!value) {
       error = 'Field is required';
-    } else if (customFields[nodeType] && customFields[nodeType][val]) {
+    } else if (customFields.some((f) => f.name === val)) {
       error = 'Field already exists';
-    } else if (!CustomFields.canAddKey(customFields, nodeType)) {
+    } else if (false) { // todo
       error = 'You can\'t add more tabs';
     }
     return [error, value];

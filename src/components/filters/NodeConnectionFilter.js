@@ -78,8 +78,18 @@ class NodeConnectionFilter extends Component {
 
   render() {
     const { padding } = this.state;
-    const { links, nodes, linkConnection } = this.props;
-    const { connections, max, min } = this.getNodeConnections(nodes, links);
+    const { links, nodes, linkConnection, graphFilterInfo: { nodeConnections = [] } } = this.props;
+
+    const max = _.maxBy(nodeConnections, (v) => v.count)?.count || 0;
+    const maxLength = _.maxBy(nodeConnections, (v) => v.length)?.length || 0;
+
+    const hasNoConnected = nodes.some((n) => !links.some((l) => l.source === n.name || l.target === n.name));
+    const min = hasNoConnected ? 0 : _.minBy(nodeConnections, (v) => v.count)?.count || 0;
+
+    const connections = nodeConnections.map((v) => {
+      v.percentage = (v.length / maxLength) * 100;
+      return v;
+    });
     if (min === max) {
       return null;
     }
@@ -120,6 +130,7 @@ class NodeConnectionFilter extends Component {
 
 const mapStateToProps = (state) => ({
   linkConnection: state.app.filters.linkConnection,
+  graphFilterInfo: state.graphs.graphFilterInfo,
 });
 
 const mapDispatchToProps = {

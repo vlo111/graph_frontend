@@ -6,6 +6,7 @@ import Button from '../form/Button';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import FileUpload from '../form/FileUpload';
 import Input from '../form/Input';
+import Select from '../form/Select';
 
 class InsertMediaTabsModal extends Component {
   static propTypes = {
@@ -21,11 +22,17 @@ class InsertMediaTabsModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      popUpData: {
-        file: [],
+      files: [],
+      fileData: {
         tags: [],
       },
     };
+  }
+
+  handleChange = (path, value) => {
+    const { fileData } = this.state;
+    _.set(fileData, path, value);
+    this.setState({ fileData });
   }
 
   closeInsertMedia = () => {
@@ -33,56 +40,17 @@ class InsertMediaTabsModal extends Component {
   }
 
   insertData = () => {
-    const { popUpData } = this.state;
-    this.props.insertFile(popUpData);
+    const { files, fileData } = this.state;
+    this.props.insertFile(files[0], fileData);
     this.props.close();
   }
 
-  handleTextChange = (path, value) => {
-    const { popUpData } = this.state;
-    _.set(popUpData, path, value);
-    this.setState({ popUpData });
-  }
-
-  removeTag = (i) => {
-    const { popUpData } = this.state;
-
-    const newTags = [...popUpData.tags];
-    newTags.splice(i, 1);
-
-    _.set(popUpData, 'tags', newTags);
-    this.setState({ popUpData });
-  }
-
-  inputTagKeyDown = (e) => {
-    const val = e.target.value;
-    const { popUpData } = this.state;
-
-    if (e.key === 'Enter' && val) {
-      if (popUpData.tags.find((tag) => tag.toLowerCase() === val.toLowerCase())) {
-        return;
-      }
-      _.set(popUpData, 'tags', [...popUpData.tags, val]);
-      this.tagInput.value = null;
-
-      e.target.value = '';
-      this.setState({ popUpData });
-    } else if (e.key === 'Backspace' && !val) {
-      this.removeTag(popUpData.tags.length - 1);
-    }
-  }
-
-  addFile = (file) => {
-    this.setState({
-      popUpData: {
-        file,
-        tags: [],
-      },
-    });
+  addFile = (files) => {
+    this.setState({ files });
   };
 
   render() {
-    const { popUpData } = this.state;
+    const { files, fileData } = this.state;
 
     return (
       <Modal
@@ -95,42 +63,33 @@ class InsertMediaTabsModal extends Component {
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeInsertMedia} />
           <div className="form">
             <h2>Select media</h2>
-            <FileUpload addFile={this.addFile} file={popUpData.file} />
+            <FileUpload addFile={this.addFile} file={files} />
             <Input
               type="text"
-              value={popUpData.desc || ''}
+              value={fileData.description || ''}
               label="Description"
-              onChange={(ev) => this.handleTextChange('desc', ev.target.value)}
+              onChange={(ev) => this.handleChange('description', ev.target.value)}
             />
             <Input
               type="text"
-              value={popUpData.alt || ''}
+              value={fileData.alt || ''}
               label="Alternative text"
-              onChange={(ev) => this.handleTextChange('alt', ev.target.value)}
+              onChange={(ev) => this.handleChange('alt', ev.target.value)}
             />
-            <div className="input-tag">
-              <ul className="input-tag__tags">
-                { popUpData.tags.map((tag, i) => (
-                  <li key={tag}>
-                    {tag}
-                    <button type="button" onClick={() => { this.removeTag(i); }}>+</button>
-                  </li>
-                ))}
-                {/* <li className="input-tag__tags__input"> */}
-                {/* </li> */}
-              </ul>
-            </div>
-            <Input
-              placeholder="Insert tag"
-              type="text"
-              onKeyDown={this.inputTagKeyDown}
-              ref={(c) => { this.tagInput = c; }}
+            <Select
+              label="Tags"
+              isCreatable
+              isMulti
+              value={fileData.tags.map((v) => ({ value: v, label: v }))}
+              menuIsOpen={false}
+              placeholder="Add..."
+              onChange={(value) => this.handleChange('tags', (value || []).map((v) => v.value))}
             />
             <div className="buttons">
               <Button className="cancel transparent alt" onClick={this.closeInsertMedia}>
                 Back
               </Button>
-              <Button onClick={this.insertData} className="accent alt" type="submit">
+              <Button onClick={this.insertData} className="accent alt">
                 Insert
               </Button>
             </div>

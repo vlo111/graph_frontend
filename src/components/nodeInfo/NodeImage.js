@@ -25,6 +25,9 @@ class NodeImage extends Component {
   }
 
   setSvgParams = memoizeOne((node) => {
+    if (!Chart.nodesWrapper) {
+      return;
+    }
     const s = Chart.nodesWrapper.select(`[data-i="${node.index}"] rect`);
     if (s.empty() || !this.wrapper) {
       return;

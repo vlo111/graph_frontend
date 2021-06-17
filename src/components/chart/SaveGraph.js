@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter, Prompt } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Button from '../form/Button';
 import SaveGraphModal from './SaveGraphModal';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
-import { connect } from 'react-redux';
 
 class SaveGraph extends Component {
   static propTypes = {
@@ -16,6 +16,7 @@ class SaveGraph extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // showModal: !!queryString.parse(window.location.search).new,
       showModal: false,
       preventReload: false,
     };
@@ -23,13 +24,13 @@ class SaveGraph extends Component {
 
   componentDidMount() {
     Chart.event.on('dataChange', this.handleChartChange);
-    window.addEventListener('beforeunload', this.handleUnload);
+    // window.addEventListener('beforeunload', this.handleUnload);
     window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
     Chart.event.removeListener('dataChange', this.handleChartChange);
-    window.removeEventListener('beforeunload', this.handleUnload);
+    // window.removeEventListener('beforeunload', this.handleUnload);
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
@@ -82,18 +83,22 @@ class SaveGraph extends Component {
         <div className="saveGraphWrapper">
           <Button className="saveGraph" onClick={() => this.toggleModal(true)}>
             Save Graph
-        </Button>
+          </Button>
 
-          <Prompt
-            when={preventReload}
-            message={this.handleRouteChange}
-          />
+          {/* <Prompt */}
+          {/*  when={preventReload} */}
+          {/*  message={this.handleRouteChange} */}
+          {/* /> */}
 
           {showModal ? (
             <SaveGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
           ) : null}
         </div>
-        <span className="graphsName"> Name : {singleGraph.title}</span>
+        <span className="graphsName">
+          {' '}
+          Name :
+          {singleGraph.title}
+        </span>
       </div>
 
     );

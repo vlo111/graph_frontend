@@ -12,7 +12,7 @@ import DataView from '../components/dataView/DataView';
 import DataImport from '../components/import/DataImportModal';
 import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
-import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
+import { clearSingleGraph, getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
 import SearchModal from '../components/search/SearchModal';
@@ -26,8 +26,12 @@ import CreateGraphModal from '../components/CreateGraphModal';
 import { socketSetActiveGraph } from '../store/actions/socket';
 import AutoSave from '../components/AutoSave';
 import LabelShare from '../components/share/LabelShare';
-import MediaModal from "../components/Media/MediaModal";
-import LabelCopy from "../components/labelCopy/LabelCopy";
+import MediaModal from '../components/Media/MediaModal';
+import LabelCopy from '../components/labelCopy/LabelCopy';
+import FindPath from '../components/FindPath';
+import ReactChartMap from "../components/chart/ReactChartMap";
+import FindNode from '../components/FindNode';
+import MousePosition from '../components/chart/MousePosition'
 
 class GraphForm extends Component {
   static propTypes = {
@@ -36,7 +40,8 @@ class GraphForm extends Component {
     clearSingleGraph: PropTypes.func.isRequired,
     socketSetActiveGraph: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
-    match: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired, 
+    currentUserId: PropTypes.number.isRequired,
   }
 
   getSingleGraph = memoizeOne((graphId) => {
@@ -48,9 +53,16 @@ class GraphForm extends Component {
     }
     this.props.socketSetActiveGraph(+graphId || null);
   })
+  getMouseMoveTracker = () => {
+    const { mouseMoveTracker,  currentUserId } = this.props;       
+    return mouseMoveTracker && mouseMoveTracker.some(
+      (m) => m.userId !== currentUserId && m.tracker === true
+      );
+  }
 
   render() {
-    const { activeButton, match: { params: { graphId } } } = this.props;
+    const { activeButton, mouseMoveTracker,  match: { params: { graphId } } } = this.props;  
+    const isTracker = this.getMouseMoveTracker(); 
     this.getSingleGraph(graphId);
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
@@ -62,6 +74,13 @@ class GraphForm extends Component {
         <Crop />
         <AddNodeModal />
         {activeButton === 'data' && <DataView />}
+        {activeButton.includes('findPath')
+        && (
+        <FindPath
+          history={this.props.history}
+          start={activeButton.substring(activeButton.length, activeButton.indexOf('.') + 1)}
+        />
+        )}
         {activeButton === 'search' && <SearchModal history={this.props.history} />}
         {activeButton === 'media' && <MediaModal history={this.props.history} /> }
         {activeButton === 'maps-view' && <MapsGraph />}
@@ -69,23 +88,28 @@ class GraphForm extends Component {
         <AddLabelModal />
         <ContextMenu />
         <DataImport />
+        <FindNode />
         <NodeDescription />
         <NodeFullInfo />
         <AutoPlay />
         <Zoom />
         <LabelTooltip />
         <CreateGraphModal />
-        <AutoSave />
         <LabelShare />
         <LabelCopy />
+        <AutoSave />
+        {isTracker && <MousePosition graphId={graphId}/> }   
       </Wrapper>
+     
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
-  singleGraphLabels: state.graphs.singleGraph.labels || [],
+  singleGraphLabels: state.graphs.singleGraph.labels || [], 
+  mouseMoveTracker: state.graphs.mouseMoveTracker,
+  currentUserId: state.account.myAccount.id,
 });
 const mapDispatchToProps = {
   setActiveButton,

@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
-import lockSvg from '../../assets/images/icons/lock.svg';
 import Chart from '../../Chart';
 import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import ContextMenu from '../contextMenu/ContextMenu';
@@ -18,14 +17,17 @@ import FolderCloseIcon from './icons/FolderCloseIcon';
 import FolderIcon from './icons/FolderIcon';
 import LabelLock from './icons/LabelLock';
 import SelectedNodeFilter from './icons/SelectedNodeFilter';
-import ResizeIcons from "./icons/ResizeIcons";
-import NotFound from "./NotFound";
+import ResizeIcons from './icons/ResizeIcons';
+import NotFound from './NotFound';
+import { deleteNodesRequest, updateNodesRequest, updateNodesPositionRequest } from '../../store/actions/nodes';
+import { deleteLinksRequest } from '../../store/actions/links';
+import { deleteLabelsRequest, updateLabelsRequest } from '../../store/actions/labels';
+import MouseCursor from './icons/MouseCursor';
 
 class ReactChart extends Component {
   static propTypes = {
     activeButton: PropTypes.string.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
-    customFields: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
@@ -40,6 +42,7 @@ class ReactChart extends Component {
   }
 
   componentDidMount() {
+    Chart.loading(true);
     Chart.render({ nodes: [], links: [], labels: [] });
 
     Chart.event.on('node.click', this.handleNodeClick);
@@ -59,8 +62,8 @@ class ReactChart extends Component {
     ContextMenu.event.on('label.delete', this.handleLabelDelete);
     Chart.event.on('label.click', this.handleLabelClick);
 
-    Chart.event.on('node.dragend', this.handleNodeDragEnd);
-    Chart.event.on('render', this.handleRender);
+    Chart.event.on('folder.open', this.handleFolderOpen);
+    Chart.event.on('folder.close', this.handleFolderClose);
   }
 
   componentWillUnmount() {
@@ -73,28 +76,72 @@ class ReactChart extends Component {
     ContextMenu.event.removeListener('node.create', this.addNewNode);
   }
 
+  handleFolderOpen = async (ev, d) => {
+    const { match: { params: { graphId } } } = this.props;
+    Chart.loading(true);
+    const { data } = await Api.labelData(graphId, d.id).catch((e) => e.response);
+    if (data && data.label) {
+      const nodes = Chart.getNodes();
+      nodes.push(...data.label.nodes);
+
+      const fakeId = `fake_${data.label.label.id}`;
+
+      const folders = Chart.getLabels().filter((l) => l.type === 'folder' && l.id !== data.label.label.id);
+      // let links = Chart.getLinks();
+      let links = Chart.getLinks().filter((l) => l.source !== fakeId && l.target !== fakeId);
+      data.label.links.forEach((link) => {
+        folders.forEach((folder) => {
+          const fId = `fake_${folder.id}`;
+          if (!folder.open) {
+            if (folder.nodes.includes(link.source)) {
+              link.source = fId;
+              link.fake = true;
+            } else if (folder.nodes.includes(link.target)) {
+              link.target = fId;
+              link.fake = true;
+            }
+          }
+        });
+        links.push(link);
+      });
+      links = ChartUtils.uniqueLinks(links, true);
+      Chart.render({ nodes, links }, { ignoreAutoSave: true });
+    }
+
+    Chart.loading(false);
+  }
+
+  handleFolderClose = async (ev, d) => {
+    const fakeId = `fake_${d.id}`;
+
+    const nodes = Chart.getNodes().filter((n) => {
+      if (!n.fake && n.labels.includes(d.id)) {
+        return false;
+      }
+      return true;
+    });
+    let links = Chart.getLinks().map((l) => {
+      if (d.nodes) {
+        if (d.nodes.includes(l.source)) {
+          l.source = fakeId;
+          l.name += 1;
+          l.fake = true;
+        }
+        if (d.nodes.includes(l.target)) {
+          l.target = fakeId;
+          l.fake = true;
+        }
+      }
+      return l;
+    });
+    links = ChartUtils.uniqueLinks(links, true);
+    Chart.render({ nodes, links }, { ignoreAutoSave: true });
+  }
+
   handleLabelClick = (ev, d) => {
     if (Chart.activeButton === 'delete') {
       this.handleLabelDelete(ev, d);
     }
-  }
-
-  handleLabelCrate = (ev, d) => {
-    console.log(d);
-  }
-
-  handleRender = () => {
-    // clearTimeout(this.renderTimeout);
-    // this.renderTimeout = setTimeout(() => {
-    //   const { match: { params: { graphId } } } = this.props;
-    //   Chart.getLabels().forEach((l) => {
-    //     LabelUtils.labelDataChange(graphId, l.id);
-    //   });
-    // }, 500);
-  }
-
-  handleNodeDragEnd = (ev, d) => {
-    this.handleRender();
   }
 
   handleLabelDelete = (ev, d) => {
@@ -102,23 +149,27 @@ class ReactChart extends Component {
     const labels = Chart.getLabels().filter((l) => l.id !== d.id);
     const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.id));
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
-    
+
+    // this.props.deleteLabelsRequest(graphId, [d.id]);
+
     if (d.sourceId) {
-       const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
+      const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
       Chart.render({
         labels, nodes, links, embedLabels,
       });
       Api.labelDelete(d.sourceId, d.id, graphId);
-     
+
       return;
     }
-    //delete labe  from share list
+    // delete labe  from share list
     Api.shareLabelDelete(d.id, graphId);
     Chart.render({ labels, nodes, links });
     Chart.event.emit('label.mouseleave', ev, d);
   }
 
   handleDbNodeClick = (ev, d) => {
+    if (Chart.nodesPath) return;
+
     const queryObj = queryString.parse(window.location.search);
     queryObj.info = d.id;
     const query = queryString.stringify(queryObj);
@@ -164,8 +215,11 @@ class ReactChart extends Component {
     if (d.readOnly) {
       return;
     }
-    const links = Chart.getLinks();
+    const { singleGraph } = this.props;
+    const links = [...Chart.getLinks()];
+    const link = links.find((l) => l.index === d.index);
     links.splice(d.index, 1);
+    // this.props.deleteLinksRequest(singleGraph.id, [link.id]);
     Chart.render({ links });
   }
 
@@ -176,6 +230,7 @@ class ReactChart extends Component {
   }
 
   deleteNode = (ev, d) => {
+    const { singleGraph } = this.props;
     if (d.readOnly) {
       return;
     }
@@ -184,7 +239,15 @@ class ReactChart extends Component {
 
     nodes = nodes.filter((n) => n.index !== d.index);
 
-    links = links.filter((l) => !(l.source === d.id || l.target === d.id));
+    // this.props.deleteNodesRequest(singleGraph.id, [d.id]);
+
+    links = links.filter((l) => {
+      if (l.source === d.id || l.target === d.id) {
+        // todo delete links
+        return false;
+      }
+      return true;
+    });
 
     this.props.removeNodeFromCustom(d.id);
 
@@ -198,7 +261,6 @@ class ReactChart extends Component {
   render() {
     const { ctrlPress, shiftKey } = this.state;
     const { activeButton, singleGraphStatus, singleGraph: { currentUserRole } } = this.props;
-    console.log(singleGraphStatus)
 
     // this.renderChart(singleGraph, embedLabels);
     return (
@@ -210,6 +272,9 @@ class ReactChart extends Component {
         data-ctrl={ctrlPress}
         className={activeButton}
       >
+        <div className="loading">
+          {_.range(0, 4).map((k) => <div key={k} />)}
+        </div>
         <div className="borderCircle">
           {_.range(0, 6).map((k) => <div key={k} />)}
         </div>
@@ -243,9 +308,11 @@ class ReactChart extends Component {
               <FolderIcon />
               <FolderCloseIcon />
               <FolderResizeIcon />
+              <MouseCursor />
 
             </defs>
           </g>
+          <g className="mouseCursorPosition" transform-origin="top left" />
         </svg>
         {singleGraphStatus === 'fail' ? <NotFound /> : null}
       </div>
@@ -264,6 +331,12 @@ const mapDispatchToProps = {
   toggleNodeModal,
   setActiveButton,
   socketLabelDataChange,
+  deleteNodesRequest,
+  deleteLinksRequest,
+  updateNodesRequest,
+  updateNodesPositionRequest,
+  updateLabelsRequest,
+  deleteLabelsRequest,
   removeNodeFromCustom,
 };
 
