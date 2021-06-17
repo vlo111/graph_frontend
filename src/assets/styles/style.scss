@@ -3906,13 +3906,13 @@ body .gh__menu {
 
 .ghModalSearch {
   width: 50%;
-  min-height: 15%;
+  min-height: 35%;
   max-width: 90% !important;
   display: flex;
   flex-direction: column;
 
   .graphSearch {
-    width: 50%;
+    width: 70%;
     align-self: center;
     align-items: center;
 
@@ -4100,7 +4100,7 @@ body .gh__menu {
 
         .name {
           font-size: 15px;
-          max-width: 50%;
+          max-width: 80%;
           white-space: nowrap;
           text-overflow: ellipsis;
         }
@@ -9366,3 +9366,53 @@ color: #2962ff;
 
   }
 }
+
+// Search modal inside graph
+
+.searchBox {
+  display: flex;
+  flex-direction: row;
+  width: 100%
+}
+
+.searchFieldCheckBox  {
+  justify-content: center;
+  flex: 1;
+  margin-top: 1.5em;
+  display: flex;
+  flex-direction: column
+}
+.searchFieldCheckBoxList {
+  display: none;
+}
+.searchFieldCheckBox:hover .searchFieldCheckBoxList {
+  display: flex;
+}
+.searchFieldCheckBoxList {
+  flex-direction: column;
+  position: absolute;
+  top: 5.3em;
+  border: 1px solid #e5e9ed;;
+  border-radius: 7px;
+  background-color: white;
+}
+.searchFieldCheckBoxList div {
+  padding: 0 .5em;
+}
+.searchFieldCheckBoxList div input {
+  margin-right: .5em;
+}
+.searchInputBox {
+  flex: 4.5;
+  margin-right: 6em;
+}
+.chooseSearchFields {
+  border: 1px solid #e5e9ed;;
+  display: flex;
+  justify-content: center;
+  border-radius: 7px;
+  height: 35px;
+  align-items: center;
+}
+
+// End search modal inside graph
