@@ -81,13 +81,16 @@ class ChartUpdate {
 
   static nodesUpdate = (data) => {
     const { nodes: nodesUpdate, eventId } = data;
-    const nodes = Chart.getNodes().map((d) => {
-      const node = nodesUpdate?.find((n) => n.id === d.id);
-      if (node) {
-        return { ...d, ...node };
+    const nodes = Chart.getNodes();
+    nodesUpdate.forEach((d) => {
+      const i = nodes.findIndex((n) => n.id === d.id);
+      if (i > -1) {
+        nodes[i] = { ...d, ...nodes[i] };
+      } else {
+        nodes.push(d);
       }
-      return d;
     });
+
     Chart.render({ nodes }, { ignoreAutoSave: true, eventId });
   }
 

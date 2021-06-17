@@ -180,16 +180,16 @@ class AutoSave extends Component {
     }
     document.body.classList.add('autoSave');
     const links = Chart.getLinks().filter((d) => !d.fake && !d.sourceId);
-    const labels = Chart.getLabels().filter((d) => !d.sourceId);
+    const labels = Chart.getLabels();
     const nodes = Chart.getNodes(true).filter((d) => !d.fake && !d.sourceId);
 
     const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake && !d.sourceId);
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake && !d.sourceId);
-    const oldLabels = Chart.oldData.labels.filter((d) => !d.fake && !d.sourceId);
+    const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
 
-    const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
-    const createLabels = _.differenceBy(labels, oldLabels, 'id');
-    const updateLabels = [];
+    let deleteLabels = _.differenceBy(oldLabels, labels, 'id');
+    let createLabels = _.differenceBy(labels, oldLabels, 'id');
+    let updateLabels = [];
     const updateLabelPositions = [];
     let newLabel = false;
     labels.forEach((label) => {
@@ -219,6 +219,11 @@ class AutoSave extends Component {
         }
       }
     });
+
+    createLabels = createLabels.filter((d) => !d.sourceId);
+    updateLabels = updateLabels.filter((d) => !d.sourceId);
+    deleteLabels = deleteLabels.filter((d) => !d.sourceId);
+
     if (newLabel) {
       Chart.oldData.labels = Chart.oldData.labels.map((d) => {
         delete d.new;
