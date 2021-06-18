@@ -1583,7 +1583,6 @@ class Chart {
           links: Chart.getLinks(true, ChartUtils.objectAndProto(data.links)),
           labels: Chart.getLabels(ChartUtils.objectAndProto(data.labels)),
         }));
-        console.log(Chart.getLinks(true, data.links));
       }
 
       if (!params.dontRemember && _.isEmpty(params.filters)) {
