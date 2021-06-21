@@ -130,7 +130,10 @@ class ToolBarHeader extends Component {
           ) : null}
 
           {updateLocation ? (
-            <ScienceButton />
+            <ScienceButton  
+              graphId={graphId} 
+              currentUserId={currentUserId}
+            />
           ) : null}
                     {updateLocation ? (
           <div className="button-group social-button-group">
@@ -147,7 +150,11 @@ class ToolBarHeader extends Component {
           </div>
 
         </header>
-        {activeButton === 'search' && <SearchModal history={this.props.history} />}
+        {activeButton === 'search' && 
+          <SearchModal 
+            graphId={graphId} 
+            history={this.props.history} 
+          />}
       </div>
     );
   }

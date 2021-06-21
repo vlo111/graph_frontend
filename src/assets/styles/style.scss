@@ -870,7 +870,7 @@ p {
     justify-content: flex-end;
     padding-top: 73px;
     padding-left: 15px;
-    z-index: 99;
+    z-index: 110;
     justify-content: center;
     align-items: center;
 
@@ -3912,7 +3912,7 @@ body .gh__menu {
   flex-direction: column;
 
   .graphSearch {
-    width: 70%;
+    width: 50%;
     align-self: center;
     align-items: center;
 
@@ -9368,17 +9368,25 @@ color: #2962ff;
 }
 
 // Search modal inside graph
-
+.searchNodes {
+  min-height: 45%;
+}
 .searchBox {
   display: flex;
   flex-direction: row;
-  width: 100%
+  width: 100%;
+  justify-content: center
+}
+.searchBoxInside {
+  border: 1px solid #7166F8;
+  border-radius: 5px;
+  display: flex;
+  width: 87%
 }
 
 .searchFieldCheckBox  {
   justify-content: center;
   flex: 1;
-  margin-top: 1.5em;
   display: flex;
   flex-direction: column;
 }
@@ -9391,29 +9399,61 @@ color: #2962ff;
 .searchFieldCheckBoxList {
   flex-direction: column;
   position: absolute;
-  top: 5.3em;
-  border: 1px solid #e5e9ed;;
-  border-radius: 7px;
+  top: 6.1em;
   background-color: white;
-  z-index: 2;
+  z-index: 103;
+  border-radius: 3px;
+  box-shadow: 0px 4px 16px rgb(0 0 0 / 25%);
 }
 .searchFieldCheckBoxList div {
-  padding: 0 .5em;
-}
-.searchFieldCheckBoxList div input {
-  margin-right: .5em;
+  padding: .1em .5em;
 }
 .searchInputBox {
   flex: 4.5;
   margin-right: 6em;
+  width: 100%;
+  display: flex; 
+  justify-content: center
 }
-.chooseSearchFields {
-  border: 1px solid #e5e9ed;;
+.searchInputBoxChild {
+  width: 100%;
   display: flex;
   justify-content: center;
-  border-radius: 7px;
-  height: 35px;
-  align-items: center;
 }
+.chooseSearchFields {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #7166F8;
+}
+.nodeSearch {
+  height: 36px;
+  flex: 6;
+  border: none;
+  border-left: 1px solid #7166F8;
+  border-radius: 0px;
+  outline: none;
+  margin-right: .2em;
+  padding-left: 1em;
+}
+.checkBox {
+  color: #7166F8;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.searchField {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.searchText {
+  display: flex;
+  justify-content: center;
+  font-size: 2em;
+ }
+ .dropDownSvg {
+  margin-left: 7px;
+  width: 10px;
+ }
 
 // End search modal inside graph

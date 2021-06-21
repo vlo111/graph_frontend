@@ -5,7 +5,6 @@ import PropTypes, { node } from "prop-types";
 import memoizeOne from "memoize-one";
 import _ from "lodash";
 import { setActiveButton } from "../../store/actions/app";
-import Input from "../form/Input";
 import NodeIcon from "../NodeIcon";
 import ChartUtils from "../../helpers/ChartUtils";
 import Utils from "../../helpers/Utils";
@@ -37,17 +36,14 @@ class SearchModal extends Component {
         tag: true,
         tab: true,
         keyword: true,
-        all: true,
       },
+      checkBoxAll: true
     };
   }
 
   initTabs = memoizeOne(() => {
-    this.props.getAllTabsRequest(
-      window.location.pathname.substring(
-        window.location.pathname.lastIndexOf("/") + 1
-      )
-    );
+    const { graphId } = this.props
+    this.props.getAllTabsRequest(graphId);
   });
 
   closeModal = () => {
@@ -76,15 +72,13 @@ class SearchModal extends Component {
    * @returns
    */
   sendSearchInBackEnd = async (search) => {
+    const { graphId } = this.props
     const argument = {
       s: search,
-      graphId: window.location.pathname.substring(
-        window.location.pathname.lastIndexOf("/") + 1
-      ),
+      graphId,
       findNode: false,
       searchParameters: this.state.checkBoxValues,
     };
-    debugger;
     const searchResults = await this.props.getGraphNodesRequest(1, argument);
     return searchResults.payload.data;
   };
@@ -100,9 +94,8 @@ class SearchModal extends Component {
     let keywords = [];
     let docs = [];
     let nodes = [];
-
+    
     const foundNodes = await this.sendSearchInBackEnd(search);
-    debugger;
     const ifNodeExists = (node) => {
       const frontNodes = Chart.getNodes();
       if (frontNodes.filter((nd) => nd.id === node.id).length) {
@@ -164,7 +157,7 @@ class SearchModal extends Component {
         tabArray = groupBy(tabs, "nodeId");
       }
     } catch (e) {}
-    // document.getElementsByClassName('list')
+
     this.setState({ nodes: [], search, tabs: [], docs: [] });
     this.setState({ nodes, search, tabs: tabArray, docs, keywords });
   };
@@ -296,19 +289,38 @@ class SearchModal extends Component {
    */
   handleCheckBoxChange = (e) => {
     const target = e.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-
+    const name = target.innerText.toLowerCase();
     if (name == "all") {
+      let value = true
       const checkBoxValues = this.state.checkBoxValues;
+      const checkBoxFields = Object.values(checkBoxValues).filter(el => el === value)
+      if (checkBoxFields.length === 4) {
+        value = false
+      } else {
+        value = true
+      }
+      const allCheckElements = Array.from(document.getElementsByClassName("checkBox"))
+
+      allCheckElements.map(element => {
+        element.style.color = value ? "#7166F8" : "#BEBEBE";
+      })
+      this.setState({checkBoxAll:value})
       for (const key in checkBoxValues) {
         _.set(checkBoxValues, key, value);
         this.setState({ checkBoxValues });
       }
+
     } else {
+      const value = !this.state.checkBoxValues[name]
       const checkBoxValues = this.state.checkBoxValues;
       _.set(checkBoxValues, name, value);
       this.setState({ checkBoxValues });
+      target.style.color = value ? "#7166F8" : "#BEBEBE";
+      const checkBoxFields = Object.values(checkBoxValues).filter(el => el === value)
+      if (checkBoxFields.length === 4) {
+        this.setState({checkBoxAll:value})
+        Array.from(document.getElementsByClassName("checkBoxall")).map(element => element.style.color = value ? "#7166F8" : "#BEBEBE")
+      }
     }
     this.handleChange(this.state.search);
   };
@@ -320,82 +332,48 @@ class SearchModal extends Component {
     return (
       <Modal
         isOpen
-        className="ghModal ghModalSearch"
+        className="ghModal ghModalSearch searchNodes"
         overlayClassName="ghModalOverlay"
         onRequestClose={this.closeModal}
       >
+        <div className="searchField">
+        <div className="searchText">Search</div>
         <div className="searchBox">
-          <div className="searchFieldCheckBox">
-            <div className="chooseSearchFields">Search By</div>
-            <div className="searchFieldCheckBoxList">
-              <div>
-                <input
-                  name="all"
-                  type="checkbox"
-                  checked={this.state.checkBoxValues.all}
-                  onChange={this.handleCheckBoxChange}
-                />
-                All
+          <div className="searchBoxInside">
+            <div className="searchFieldCheckBox">
+              <div className="chooseSearchFields">
+                Filters
+                <svg className="dropDownSvg" width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15.313 0H0.692176C0.25364 0 0.00877185 0.463023 0.280353 0.779125L7.59077 9.25601C7.80002 9.49865 8.20294 9.49865 8.41442 9.25601L15.7248 0.779125C15.9964 0.463023 15.7516 0 15.313 0Z" fill="#7166F8"/>
+                </svg>
+
               </div>
-              <div>
-                <input
-                  name="name"
-                  type="checkbox"
-                  checked={this.state.checkBoxValues.name}
-                  onChange={this.handleCheckBoxChange}
-                />
-                Name
-              </div>
-              <div>
-                <input
-                  name="tag"
-                  type="checkbox"
-                  checked={this.state.checkBoxValues.tag}
-                  onChange={this.handleCheckBoxChange}
-                />
-                Tag
-              </div>
-              <div>
-                <input
-                  name="tab"
-                  type="checkbox"
-                  checked={this.state.checkBoxValues.tab}
-                  onChange={this.handleCheckBoxChange}
-                />
-                Tab
-              </div>
-              <div>
-                <input
-                  name="keyword"
-                  type="checkbox"
-                  checked={this.state.checkBoxValues.keyword}
-                  onChange={this.handleCheckBoxChange}
-                />
-                Keyword
+              <div className="searchFieldCheckBoxList">
+                <div 
+                  onClick={this.handleCheckBoxChange}
+                  className={"checkBox checkBoxall"}
+                >
+                  All
+                </div>
+                {Object.keys(this.state.checkBoxValues).map( field => (
+                  <div 
+                    onClick={this.handleCheckBoxChange}
+                    className={"checkBox checkBox"+field}
+                  >
+                  {field}
+                  </div>
+                ))}
               </div>
             </div>
+            <input
+              autoComplete="off"
+              value={search}
+              className="nodeSearch"
+              onChange={(e) => this.handleChange(e.target.value)}
+              autoFocus
+            />
           </div>
-          <div
-            className="searchInputBox"
-            style={{ width: "100%", display: "flex", justifyContent: "center" }}
-          >
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Input
-                label="Search"
-                autoComplete="off"
-                value={search}
-                containerClassName="graphSearch"
-                onChangeText={this.handleChange}
-                autoFocus
-              />
-            </div>
-          </div>
+        </div>
         </div>
         <ul className="list">
           {nodes.map((d) => (
