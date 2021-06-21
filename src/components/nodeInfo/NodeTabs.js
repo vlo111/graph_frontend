@@ -20,6 +20,8 @@ import Sortable from "./Sortable";
 import ChartUtils from "../../helpers/ChartUtils";
 import { updateNodesCustomFieldsRequest } from "../../store/actions/nodes";
 import Loading from "../Loading";
+import Utils from "../../helpers/Utils";
+import Api from "../../Api";
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -39,6 +41,10 @@ class NodeTabs extends Component {
       showLocation: false,
     };
   }
+
+  setDocumentsPath = memoizeOne(async () => {
+        await this.updateTabFilePath();
+    }, _.isEqual);
 
   setFirstTab = memoizeOne((location, customField) => {
     if (location) {
