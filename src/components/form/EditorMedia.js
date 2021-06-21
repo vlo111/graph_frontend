@@ -10,32 +10,56 @@ class EditorMedia extends Component {
   render() {
     const { file, fileData } = this.props;
 
-    if (!file.type.startsWith('image/')) {
-      return (
-        <a href={file.preview} download={file.name}>
-          {file.name}
-        </a>
-      );
+    const displayStyle = {display: 'none'};
+
+        const data =
+            <div>
+                <span id="docId" style={displayStyle}>{file.id}</span>
+                <p style={displayStyle} className="tags">{fileData.tags.toString()}</p>
+            </div>
+
+        if (!file.type.startsWith('image/')) {
+            return (
+                <div className="document">
+                    {data}
+                    <p style={displayStyle} className="description">{fileData.description}</p>
+
+                    <div className="documentContainer">
+                        <a className="documentLink" target="_blank" href={file.preview} download={file.name} contentEditable="false">
+                            {file.name}
+                        </a>
+                    </div>
+                </div>
+            );
+        }
+
+        if (!fileData.description) {
+            return (
+                <div className="document">
+                    {data}
+                    <img width="200" className="scaled" src={file.preview} alt={fileData.alt || file.name}/>
+                </div>
+            );
+        }
+
+        return (
+            <table className="document" style={{width: 200}}>
+                <tbody>
+                <tr>
+                    <td>
+                        {data}
+                        <img width="200" className="scaled" src={file.preview} alt={fileData.alt || file.name}/>
+                        <p className="description">{fileData.description}</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        );
     }
 
-    if (!fileData.description) {
-      return (
-        <img width="200" className="scaled" src={file.preview} alt={fileData.alt || file.name} />
-      );
+    handleKeyDown(event) {
+      this.props.onKeyDown(event)
     }
-    return (
-      <table style={{ width: 200 }}>
-        <tbody>
-        <tr>
-          <td>
-            <img width="200" className="scaled" src={file.preview} alt={fileData.alt || file.name} />
-            {fileData.description}
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    );
-  }
 }
 
 export default EditorMedia;
