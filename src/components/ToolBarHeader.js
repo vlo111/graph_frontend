@@ -152,7 +152,6 @@ class ToolBarHeader extends Component {
         </header>
         {activeButton === 'search' && 
           <SearchModal 
-            graphId={graphId} 
             history={this.props.history} 
           />}
       </div>

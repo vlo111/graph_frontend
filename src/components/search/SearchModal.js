@@ -20,6 +20,7 @@ class SearchModal extends Component {
     history: PropTypes.object.isRequired,
     setActiveTab: PropTypes.func.isRequired,
     graphTabs: PropTypes.object.isRequired,
+    graphId: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -108,9 +109,9 @@ class SearchModal extends Component {
       }
       return false;
     };
-
-    if (foundNodes.documents && foundNodes.documents.length > 0) {
-      docs = foundNodes.documents[0];
+    debugger
+    if (foundNodes.tags && foundNodes.tags.length > 0) {
+      docs = foundNodes.tags;
       docs = docs.filter((nd) => ifNodeExists(nd));
     }
     nodes = foundNodes.nodes;
@@ -157,8 +158,7 @@ class SearchModal extends Component {
         tabArray = groupBy(tabs, "nodeId");
       }
     } catch (e) {}
-
-    this.setState({ nodes: [], search, tabs: [], docs: [] });
+    this.setState({ nodes: [], search, tabs: [], docs: [] }); // remove this
     this.setState({ nodes, search, tabs: tabArray, docs, keywords });
   };
 
@@ -553,17 +553,10 @@ class SearchModal extends Component {
                     <span
                       className="type"
                       dangerouslySetInnerHTML={{
-                        __html: this.formatHtml(d.tags.join(", ")),
+                        __html: this.formatHtml(d.type),
                       }}
                     />
                   </span>
-
-                  {d.description ? (
-                    <span
-                      className="keywords"
-                      dangerouslySetInnerHTML={{ __html: d.description }}
-                    />
-                  ) : null}
                 </div>
               </div>
             </li>
@@ -576,6 +569,7 @@ class SearchModal extends Component {
 
 const mapStateToProps = (state) => ({
   graphTabs: state.graphs.graphTabs,
+  graphId: state.graphs.singleGraph.id,
 });
 
 const mapDispatchToProps = {
