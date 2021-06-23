@@ -95,8 +95,8 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    this.saveGraph();
-    // this.timeout = setTimeout(this.saveGraph, 0);
+    // this.saveGraph();
+    this.timeout = setTimeout(this.saveGraph, 0);
   }
 
   formatNode = (node) => ({
@@ -186,7 +186,6 @@ class AutoSave extends Component {
     const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake && !d.sourceId);
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake && !d.sourceId);
     const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
-
     let deleteLabels = _.differenceBy(oldLabels, labels, 'id');
     let createLabels = _.differenceBy(labels, oldLabels, 'id');
     let updateLabels = [];
