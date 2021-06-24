@@ -1,23 +1,18 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import _ from "lodash";
-import memoizeOne from "memoize-one";
-import Tooltip from "rc-tooltip";
-import Button from "../form/Button";
-import NodeTabsContent from "./NodeTabsContent";
-import CustomFields from "../../helpers/CustomFields";
-import NodeTabsFormModal from "./NodeTabsFormModal";
-import ContextMenu from "../contextMenu/ContextMenu";
-import {
-  getNodeCustomFieldsRequest,
-  removeNodeCustomFieldKey,
-  setActiveTab,
-} from "../../store/actions/graphs";
-import MapsInfo from "../maps/MapsInfo";
-import Chart from "../../Chart";
-import Sortable from "./Sortable";
-import ChartUtils from "../../helpers/ChartUtils";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import memoizeOne from 'memoize-one';
+import Tooltip from 'rc-tooltip';
+import Button from '../form/Button';
+import NodeTabsContent from './NodeTabsContent';
+import CustomFields from '../../helpers/CustomFields';
+import NodeTabsFormModal from './NodeTabsFormModal';
+import ContextMenu from '../contextMenu/ContextMenu';
+import { getNodeCustomFieldsRequest, removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/graphs';
+import MapsInfo from '../maps/MapsInfo';
+import Sortable from './Sortable';
+import ChartUtils from '../../helpers/ChartUtils';
 import { updateNodesCustomFieldsRequest } from "../../store/actions/nodes";
 import Loading from "../Loading";
 import Utils from "../../helpers/Utils";
@@ -33,13 +28,53 @@ class NodeTabs extends Component {
   };
 
   constructor(props) {
-    super(props);
-    this.state = {
-      activeTab: "",
-      formModalOpen: null,
-      loading: false,
-      showLocation: false,
-    };
+        super(props);
+        this.state = {
+            activeTab: '',
+            formModalOpen: null,
+            loading: false,
+            showLocation: false,
+            updateCustomField: null,
+        };
+    }
+
+  updateTabFilePath = async (data) => {
+      const {graphId, nodeId, nodeCustomFields} = this.props;
+      let changedPath = false;
+
+      for (let i = 0; i < nodeCustomFields.length; i++) {
+          const tab = nodeCustomFields[i];
+
+          if (tab.value.includes('blob')) {
+
+              const { documentElement } = Utils.tabHtmlFile(tab.value);
+
+              for (let j = 0; j < documentElement.length; j++) {
+                  const media = documentElement[j];
+
+                  let documentPath = media.querySelector('img')?.src ?? media.querySelector('a')?.href;
+
+                  if (documentPath) {
+                      const id = media.querySelector('#docId').innerText;
+                      const path = await Api.documentPath(graphId, id).catch((d) => d);
+
+                      nodeCustomFields[i].value = nodeCustomFields[i].value.replace(documentPath, path.data?.path);
+
+                      changedPath = true;
+                  }
+              }
+          }
+      }
+
+      if (changedPath) {
+          this.props.updateNodesCustomFieldsRequest(graphId, [{
+              id: nodeId,
+              customFields: nodeCustomFields,
+          }]);
+      }
+      if (data) {
+          this.setState({formModalOpen: null, activeTab: data.name});
+      }
   }
 
   setDocumentsPath = memoizeOne(async () => {
@@ -88,9 +123,9 @@ class NodeTabs extends Component {
     this.setState({ formModalOpen: params?.fieldName || "" });
   };
 
-  closeFormModal = (data) => {
-    this.setState({ formModalOpen: null, activeTab: "" });
-  };
+  closeFormModal = async (data) => {
+        await this.updateTabFilePath(data);
+  }
 
   deleteCustomField = (ev, params = {}) => {
     const { fieldName } = params;
@@ -122,21 +157,26 @@ class NodeTabs extends Component {
     this.forceUpdate();
   };
 
-  render() {
-    const { activeTab, formModalOpen, loading } = this.state;
-    const { graphId, nodeId, editable, nodeCustomFields } = this.props;
-    const node = ChartUtils.getNodeById(nodeId);
-    // const customFields = CustomFields.getCustomField(node, Chart.getNodes());
-    this.getCustomFields(graphId, nodeId);
-    this.setFirstTab(node.location, nodeCustomFields[0]);
-    return (
-      <div className="nodeTabs">
-        {loading ? (
-          <div className="loadingWrapper">
-            <Loading />
-          </div>
-        ) : null}
-        <div className="container-tabs">
+    render() {
+        const {activeTab, formModalOpen, loading } = this.state;
+        const {graphId, nodeId, editable, nodeCustomFields} = this.props;
+        const node = ChartUtils.getNodeById(nodeId);
+        // const customFields = CustomFields.getCustomField(node, Chart.getNodes());
+        this.getCustomFields(graphId, nodeId);
+
+        this.setFirstTab(node.location, nodeCustomFields[0]);
+
+        this.setDocumentsPath();
+
+        return (
+            <div className="nodeTabs">
+                {loading ? (
+                    <div className="loadingWrapper">
+                        <Loading/>
+                    </div>
+                ) : null}
+                <div className="container-tabs">
+
           <Sortable
             onChange={this.handleOrderChange}
             items={nodeCustomFields}
