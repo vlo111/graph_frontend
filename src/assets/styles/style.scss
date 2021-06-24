@@ -7001,6 +7001,10 @@ img.preview-scaled {
     display: inline-block;
     margin-left: 0;
     width: 100%;
+
+    .documentContainer {
+      grid-template-columns: 50% 50%;
+    }
   }
 
   .tabDoc {
@@ -7081,11 +7085,8 @@ img.preview-scaled {
   }
 
   .mediaContainer {
-    width: 100%;
-
-    .mediaRightContent {
-      width: 97%;
-    }
+    width: 97%;
+    margin-top: 0;
   }
 
   .uploatedBy {

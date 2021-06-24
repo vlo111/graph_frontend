@@ -291,14 +291,50 @@ class Utils {
       if (startIndex >= 0 && startIndex < arr.length) {
         const endIndex = t < 0 ? arr.length + t : t;
 
-        const [item] = arr.splice(f, 1);
-        arr.splice(endIndex, 0, item);
-      }
-    };
-    array = [...array];
-    arrayMoveMutate(array, from, to);
-    return array;
-  }
+                const [item] = arr.splice(f, 1);
+                arr.splice(endIndex, 0, item);
+            }
+        };
+        array = [...array];
+        arrayMoveMutate(array, from, to);
+        return array;
+    }
+
+    /**
+     * Generate id uuidv4 version 4
+     * @returns {string} // uniq id
+     */
+    static generateUUID = () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    /**
+     * Tab editor element
+     * @param customField
+     * @returns {{documentElement: NodeListOf<Element>}}
+     */
+    static tabHtmlFile = (customField) => {
+        let tempDiv = document.createElement('div');
+
+        tempDiv.innerHTML = customField.trim();
+
+        const documentElement = tempDiv.querySelectorAll('.document');
+
+        return {documentElement};
+    }
+
+  /**
+   * check img on path
+   * @param link
+   * @returns {boolean}
+   */
+  static isImg = (link) => {
+      return !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg', 'jfif']
+          .filter((v) => link.includes(v)));
+    }
 }
 
 export default Utils;
