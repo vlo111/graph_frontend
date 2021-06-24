@@ -24,7 +24,8 @@ const {
 class ScienceGraphModal extends Component {
   static propTypes = {
     currentUserId: PropTypes.number.isRequired,
-    graphId: PropTypes.number.isRequired,
+    singleGraphId: PropTypes.number.isRequired,
+    onClose: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -33,12 +34,12 @@ class ScienceGraphModal extends Component {
       apiSearchReturnValues: [],
       apiTitleSearchTerms: "",
       apiAuthorSearchTerms: "",
-      onClose: PropTypes.func.isRequired,
       getChecked: false,
-      searchResults: NaN,
+      searchResults: null,
       checkedList: [],
     };
   }
+
   /**
    * Search user input in core and arxiv APIs
    *
@@ -46,18 +47,15 @@ class ScienceGraphModal extends Component {
    * @returns
    */
   handleSearch = async (e) => {
+    const { apiTitleSearchTerms, apiAuthorSearchTerms } = this.state
     this.setState({
-      searchResults: NaN,
+      searchResults: null,
       checkedList: [],
     });
     e.preventDefault();
 
-    if (
-      (this.state.apiTitleSearchTerms === undefined &&
-        this.state.apiAuthorSearchTerms === undefined) ||
-      (this.state.apiTitleSearchTerms === "" &&
-        this.state.apiAuthorSearchTerms === "")
-    ) {
+    if ( apiTitleSearchTerms?.length > 0 &&
+        apiAuthorSearchTerms?.length > 0) {
       return;
     }
     this.setState({
@@ -65,17 +63,17 @@ class ScienceGraphModal extends Component {
     });
 
     Chart.loading(true);
-    const pointerToThis = this;
+    const apiSearchReturnValues = [];
 
     // combined author and topic fields and putted it in arxivUrl and coreUrl
     const arxivUrl =
       REACT_APP_ARXIV_URL +
-      `search_query=all:${this.state.apiTitleSearchTerms} ${this.state.apiAuthorSearchTerms}&sortBy=relevance&max_results=30`;
-    const author = !!this.state.apiAuthorSearchTerms
-      ? this.state.apiAuthorSearchTerms
+      `search_query=all:${apiTitleSearchTerms} ${apiAuthorSearchTerms}&sortBy=relevance&max_results=30`;
+    const author = !!apiAuthorSearchTerms
+      ? apiAuthorSearchTerms
       : "";
-    const title = !!this.state.apiTitleSearchTerms
-      ? "title:" + this.state.apiTitleSearchTerms
+    const title = !!apiTitleSearchTerms
+      ? "title:" + apiTitleSearchTerms
       : "";
     const coreUrl =
       REACT_APP_CORE_URL +
@@ -91,13 +89,13 @@ class ScienceGraphModal extends Component {
         name: "core",
       },
     ];
+
     const fetchedSources = await this.fetchUrls(urls);
-    // if couldn't find any results return
     if (!fetchedSources.filter((source) => source != undefined)) {
       this.setState({
         searchResults: 0,
       });
-      Chart.loading(true);
+      Chart.loading(false);
       return;
     }
 
@@ -126,20 +124,19 @@ class ScienceGraphModal extends Component {
       return;
     }
     if (arxivJsonData.feed.entry) {
-      // collect articles from arix
       await arxivJsonData.feed.entry.map((article) => {
         const categoryAcronim = article.category[0].$.term.trim();
         const category = ScienceCategories.find(
           (category) => category.acronym.trim() == categoryAcronim
         );
         const topics = !!category ? [category.fullName] : undefined;
+        const url = article?.id[0]?.replace("abs", "pdf") + ".pdf"
         let authors = "";
         article.author.map((auth) => (authors += auth.name + ", "));
-
-        pointerToThis.state.apiSearchReturnValues.push({
+        apiSearchReturnValues.push({
           authorsList: authors.split(",").slice(0, -1),
           authors: authors,
-          url: article.id[0].replace("abs", "pdf") + ".pdf",
+          url: url,
           queryResultPageID: article.id[0].split("/").slice(-1)[0],
           title: article.title[0],
           abstract: article.summary[0],
@@ -150,19 +147,18 @@ class ScienceGraphModal extends Component {
       });
     }
 
-    // collect articles from core
     if (coreJsonData && coreJsonData.data) {
       await coreJsonData.data.map((article) => {
         const articleAlreadyExists =
-          pointerToThis.state.apiSearchReturnValues.find(
+          apiSearchReturnValues.find(
             (arxivArticle, index) => {
               if (arxivArticle.title === article.title) {
                 if (
-                  !pointerToThis.state.apiSearchReturnValues[
+                  !apiSearchReturnValues[
                     index
                   ].origin.includes("core")
                 ) {
-                  pointerToThis.state.apiSearchReturnValues[index].origin.push(
+                  apiSearchReturnValues[index].origin.push(
                     "core"
                   );
                 }
@@ -176,7 +172,7 @@ class ScienceGraphModal extends Component {
           return;
         }
         let url = article.downloadUrl;
-        if ((url === undefined || url === "") && article.urls) {
+        if ((url?.length > 0) && article.urls) {
           url = article.urls[0];
         }
         if ((url === undefined || url === "") && article.relations) {
@@ -196,7 +192,7 @@ class ScienceGraphModal extends Component {
           ? article.topics
           : article.topics.split(";");
 
-        pointerToThis.state.apiSearchReturnValues.push({
+        apiSearchReturnValues.push({
           authors: authors,
           authorsList: article.authors,
           url: url,
@@ -211,10 +207,10 @@ class ScienceGraphModal extends Component {
       });
     }
     this.setState({
-      searchResults: pointerToThis.state.apiSearchReturnValues.length,
+      searchResults: apiSearchReturnValues.length,
+      apiSearchReturnValues
     });
     Chart.loading(false);
-    pointerToThis.forceUpdate();
   };
 
   /**
@@ -249,30 +245,31 @@ class ScienceGraphModal extends Component {
 
   /**
    * Create nodes for selected Articles
+   * 
    * @param {object} ev
    */
   createSelectedNodes = async (ev) => {
-    const { checkedList } = this.state;
+    const { checkedList, apiSearchReturnValues } = this.state;
+    const { onClose } = this.props
     Chart.loading(true);
     if (!checkedList.length) {
       return;
     }
-    const chosenArticles = this.state.checkedList.map((articleIndex) => {
-      return this.state.apiSearchReturnValues[parseInt(articleIndex)];
+    const chosenArticles = checkedList.map((articleIndex) => {
+      return apiSearchReturnValues[parseInt(articleIndex)];
     });
     await this.getArticlesData(chosenArticles).then(async (res) => {
-      const newNodes = [];
-      res.map((graph) => {
-        graph.nodes.map((node) => newNodes.push(node));
-      });
-      // This code will be used after auto position is fixed for folders
-      // Chart.render({}, { isAutoPosition: true });
-      // await setTimeout(() => {
-      //   Chart.event.emit('auto-position.change', false);
-      // }, 2000)
-      Chart.render();
+      if (res?.length) {
+        const firstNode = res[0]
+        const nodes = Chart.getNodes()
+        const nodeInDom = nodes.find(node => node.id === firstNode.id)
+        if (nodeInDom) {
+          ChartUtils.findNodeInDom(nodeInDom)
+        }
+      }
+      debugger
       Chart.loading(false);
-      this.props.onClose(ev);
+      onClose(ev);
     });
     return;
   };
@@ -317,7 +314,6 @@ class ScienceGraphModal extends Component {
           new_nodes
         );
       };
-      // handle empty getAuthorsData
       let AuthorsData = await getAuthorsData().then(this.sendResultsToBackEnd);
       ArticleList.push(AuthorsData);
     }
@@ -371,26 +367,19 @@ class ScienceGraphModal extends Component {
     const node = {
       create: true,
       color: ChartUtils.nodeColorObj[_type] || "",
-      createdAt: updatedAt,
-      createdUser: currentUserId,
-      customFields: customFields,
       fx: -189.21749877929688 + Math.random() * 150,
       fy: -61.72186279296875 + Math.random() * 150,
       icon: icon,
       id: ChartUtils.uniqueId(nodes),
-      index: 0,
       keywords: keywords,
-      d: undefined,
-      infographyId: undefined,
-      location: undefined,
       labels: [],
       link: url,
-      manually_size: 1,
       name: name,
-      nodeType: "circle",
-      status: "approved",
       type: _type,
+      createdAt: updatedAt,
       updatedAt: updatedAt,
+      customFields: customFields,
+      createdUser: currentUserId,
       updatedUser: currentUserId,
     };
     return node;
@@ -407,9 +396,10 @@ class ScienceGraphModal extends Component {
    * @returns {object}
    */
   getAuthors = (authorsList, nodes, article, new_links, new_nodes) => {
+    const { currentUserId } = this.props;
+    const type = "Author";
     return Promise.all(
       authorsList.map(async (author) => {
-        const type = "author";
         const authorData = await this.createNode(
           nodes,
           author.trim(),
@@ -420,7 +410,6 @@ class ScienceGraphModal extends Component {
         const target = authorData.id;
         const source = article.id;
         const links = [...(await Chart.getLinks())];
-        const { currentUserId } = this.props;
 
         const existingLink = links.find(
           (link) => link.target === target && link.source === source
@@ -431,18 +420,16 @@ class ScienceGraphModal extends Component {
           const link = {
             create: true,
             createdAt: moment().unix(),
-            createdUser: currentUserId,
             direction: "",
             id: ChartUtils.uniqueId(links),
-            index: 0,
-            linkType: "a",
+            linkType: type,
             source: article.id,
             status: "approved",
             target: authorData.id,
             type: _type,
             updatedAt: moment().unix(),
+            createdUser: currentUserId,
             updatedUser: currentUserId,
-            value: 2,
           };
           new_links.push(link);
         }
@@ -465,8 +452,8 @@ class ScienceGraphModal extends Component {
     if (!res.filter((obj) => obj !== undefined).length) {
       return;
     }
-    const { graphId } = this.props;
-    await Api.dataPast(graphId, undefined, [0, 0], "merge", {
+    const { singleGraphId } = this.props;
+    const savedNodes = await Api.dataPast(singleGraphId, undefined, [0, 0], "merge", {
       labels: [],
       nodes: res[0].nodes,
       links: res[0].links,
@@ -475,45 +462,45 @@ class ScienceGraphModal extends Component {
       toast.error(res.message);
       return;
     }
-    return { nodes: res[0].nodes, links: res[0].links };
+    
+    if (savedNodes?.data?.create?.nodes?.length > 0) { // check this out
+      return savedNodes.data.create.nodes[0];
+    }
   };
 
   handleCheckedButton = (param) => {
-    const oldCheckedList = this.state.checkedList;
-    if (oldCheckedList.includes(param)) {
+    const { checkedList } = this.state
+    if (checkedList.includes(param)) {
       this.setState({
-        checkedList: oldCheckedList.filter(
+        checkedList: checkedList.filter(
           (checkedItems) => checkedItems !== param
         ),
       });
     } else {
-      this.state.checkedList.push(param);
+      checkedList.push(param);
     }
     this.setState({
       getChecked: param,
     });
   };
 
-  render() {
+  getListOfArticles = (apiSearchReturnValues, checkedList) => {
     const apiSearchResults = [];
-    const resultAmount = Number.isInteger(this.state.searchResults)
-      ? `Got ${this.state.searchResults} results`
-      : "";
-    for (const key3 in this.state.apiSearchReturnValues) {
+    for (const index in apiSearchReturnValues) { // move to separate function 
       apiSearchResults.push(
-        <div className="scienceResultsList" key={key3}>
+        <div className="scienceResultsList" key={index}>
           <div className="scienceCheckBox">
             <input
-              onChange={() => this.handleCheckedButton(key3)}
-              checked={this.state.checkedList.includes(key3)}
+              onChange={() => this.handleCheckedButton(index)}
+              checked={checkedList.includes(index)}
               className="scienceArticleCheckbox"
               type="checkbox"
               name="layout"
-              id={key3}
+              id={index}
               value="option1"
             />
 
-            <label className="pull-left" htmlFor={key3} />
+            <label className="pull-left" htmlFor={index} />
           </div>
 
           <div className="scienceArticleData">
@@ -521,20 +508,19 @@ class ScienceGraphModal extends Component {
               <a
                 target="_blank"
                 rel="noreferrer"
-                href={this.state.apiSearchReturnValues[key3].url}
+                href={apiSearchReturnValues[index].url}
               >
-                {this.state.apiSearchReturnValues[key3].title}
+                {apiSearchReturnValues[index].title}
               </a>
             </h3>
             <p className="scienceAuthor">
-              {" "}
-              <b>Authors:</b> {this.state.apiSearchReturnValues[key3].authors}
+              
+              <b>Authors: </b> {apiSearchReturnValues[index].authors}
             </p>
-            {!!this.state.apiSearchReturnValues[key3].topics ? (
+            {!!apiSearchReturnValues[index].topics ? (
               <p className="scienceAuthor">
-                {" "}
-                <b>Topic:</b>{" "}
-                {this.state.apiSearchReturnValues[key3].topics.join(", ")}
+                <b>Topic: </b>
+                {apiSearchReturnValues[index].topics.join(", ")}
               </p>
             ) : (
               ""
@@ -544,14 +530,14 @@ class ScienceGraphModal extends Component {
               dangerouslySetInnerHTML={{
                 __html:
                   "Abstract:" +
-                    this.state.apiSearchReturnValues[key3].abstract !==
+                    apiSearchReturnValues[index].abstract !==
                   undefined
-                    ? this.state.apiSearchReturnValues[key3].abstract + "..."
+                    ? apiSearchReturnValues[index].abstract
                     : "",
               }}
             />
             <div>
-              {this.state.apiSearchReturnValues[key3].origin.includes(
+              {apiSearchReturnValues[index].origin.includes(
                 "arxiv"
               ) ? (
                 <img
@@ -562,7 +548,7 @@ class ScienceGraphModal extends Component {
               ) : (
                 ""
               )}
-              {this.state.apiSearchReturnValues[key3].origin.includes(
+              {apiSearchReturnValues[index].origin.includes(
                 "core"
               ) ? (
                 <img
@@ -578,13 +564,30 @@ class ScienceGraphModal extends Component {
         </div>
       );
     }
+    return apiSearchResults
+  }
+
+  render() {
+    const { onClose } = this.props
+    const { 
+      checkedList, 
+      apiSearchReturnValues, 
+      apiAuthorSearchTerms, 
+      apiTitleSearchTerms,
+      searchResults
+    } = this.state
+    const resultAmount = searchResults !== null
+      ? `Got ${searchResults} results`
+      : "";
+    const apiSearchResults = this.getListOfArticles(apiSearchReturnValues, checkedList)
+
     return (
       <>
         <Modal
           isOpen
           className="ghModal ghMapsModal scienceModal"
           overlayClassName="ghModalOverlay ghMapsModalOverlay"
-          onRequestClose={this.props.onClose}
+          onRequestClose={onClose}
         >
           <div className="scienceModalsubBox">
             <img src={ApiImg} alt="api" className="scienceLogo" />
@@ -594,14 +597,14 @@ class ScienceGraphModal extends Component {
                   <input
                     className="scienceAuthorInput scienceInput"
                     type="text"
-                    value={this.state.apiAuthorSearchTerms || ""}
+                    value={apiAuthorSearchTerms || ""}
                     onChange={this.changeApiTitleSearchTerms}
                     placeholder="Search Authors"
                   />
                   <input
                     className="scienceTitleInput scienceInput"
                     type="text"
-                    value={this.state.apiTitleSearchTerms || ""}
+                    value={apiTitleSearchTerms || ""}
                     onChange={this.changeApiAuthorSearchTerms}
                     placeholder="Search  Articles"
                     autoFocus
@@ -613,7 +616,7 @@ class ScienceGraphModal extends Component {
                   >
                     Search
                   </button>
-                </form>
+                  </form>
               </div>
             </div>
             <div className="scienceResultBox">
@@ -624,7 +627,7 @@ class ScienceGraphModal extends Component {
             {apiSearchResults}
           </div>
           <div className="createGraphButton">
-            {this.state.checkedList.length ? (
+            {checkedList.length ? (
               <>
                 <button
                   onClick={(ev) => this.createSelectedNodes(ev)}
@@ -633,7 +636,7 @@ class ScienceGraphModal extends Component {
                   Create Graph
                 </button>
                 <p className="selectedArticlesAmount">
-                  Selected Articles {this.state.checkedList.length}
+                  Selected Articles {checkedList.length}
                 </p>
               </>
             ) : (
@@ -661,4 +664,4 @@ const Container = connect(
   mapDispatchToProps
 )(ScienceGraphModal);
 
-export default ScienceGraphModal;
+export default Container;

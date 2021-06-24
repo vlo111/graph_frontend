@@ -11,7 +11,7 @@ class ScienceButton extends Component {
     }
 
   render() {
-    const { activeButton, graphId, currentUserId } = this.props;
+    const { activeButton } = this.props;
     return (
       <>
         <button
@@ -24,8 +24,6 @@ class ScienceButton extends Component {
         {activeButton === 'api' ? (
           <ScienceGraphModal 
             onClose={this.toggleModal} 
-            graphId={graphId} 
-            currentUserId={currentUserId}
           />
         ) : null}
       </>
