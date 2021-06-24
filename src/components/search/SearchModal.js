@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
-import PropTypes, { node } from "prop-types";
+import PropTypes from "prop-types";
 import memoizeOne from "memoize-one";
 import _ from "lodash";
 import { setActiveButton } from "../../store/actions/app";
@@ -74,11 +74,12 @@ class SearchModal extends Component {
    */
   sendSearchInBackEnd = async (search) => {
     const { graphId } = this.props
+    const { checkBoxValues } = this.state
     const argument = {
       s: search,
       graphId,
       findNode: false,
-      searchParameters: this.state.checkBoxValues,
+      searchParameters: checkBoxValues,
     };
     const searchResults = await this.props.getGraphNodesRequest(1, argument);
     return searchResults.payload.data;
@@ -109,7 +110,7 @@ class SearchModal extends Component {
       }
       return false;
     };
-    debugger
+
     if (foundNodes.tags && foundNodes.tags.length > 0) {
       docs = foundNodes.tags;
       docs = docs.filter((nd) => ifNodeExists(nd));
@@ -158,7 +159,7 @@ class SearchModal extends Component {
         tabArray = groupBy(tabs, "nodeId");
       }
     } catch (e) {}
-    this.setState({ nodes: [], search, tabs: [], docs: [] }); // remove this
+    
     this.setState({ nodes, search, tabs: tabArray, docs, keywords });
   };
 
@@ -288,11 +289,11 @@ class SearchModal extends Component {
    * @param {object} e
    */
   handleCheckBoxChange = (e) => {
+    const { checkBoxValues, search } = this.state;
     const target = e.target;
     const name = target.innerText.toLowerCase();
     if (name == "all") {
       let value = true
-      const checkBoxValues = this.state.checkBoxValues;
       const checkBoxFields = Object.values(checkBoxValues).filter(el => el === value)
       if (checkBoxFields.length === 4) {
         value = false
@@ -300,7 +301,7 @@ class SearchModal extends Component {
         value = true
       }
       const allCheckElements = Array.from(document.getElementsByClassName("checkBox"))
-
+      
       allCheckElements.map(element => {
         element.style.color = value ? "#7166F8" : "#BEBEBE";
       })
@@ -309,10 +310,9 @@ class SearchModal extends Component {
         _.set(checkBoxValues, key, value);
         this.setState({ checkBoxValues });
       }
-
+      
     } else {
-      const value = !this.state.checkBoxValues[name]
-      const checkBoxValues = this.state.checkBoxValues;
+      const value = !checkBoxValues[name]
       _.set(checkBoxValues, name, value);
       this.setState({ checkBoxValues });
       target.style.color = value ? "#7166F8" : "#BEBEBE";
@@ -322,11 +322,11 @@ class SearchModal extends Component {
         Array.from(document.getElementsByClassName("checkBoxall")).map(element => element.style.color = value ? "#7166F8" : "#BEBEBE")
       }
     }
-    this.handleChange(this.state.search);
+    this.handleChange(search);
   };
 
   render() {
-    const { nodes, tabs, search, docs, keywords } = this.state;
+    const { nodes, tabs, search, docs, keywords, checkBoxValues } = this.state;
     this.initTabs();
 
     return (
@@ -355,7 +355,7 @@ class SearchModal extends Component {
                 >
                   All
                 </div>
-                {Object.keys(this.state.checkBoxValues).map( field => (
+                {Object.keys(checkBoxValues).map( field => (
                   <div 
                     onClick={this.handleCheckBoxChange}
                     className={"checkBox checkBox"+field}
