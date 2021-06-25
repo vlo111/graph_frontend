@@ -98,7 +98,7 @@ class SearchModal extends Component {
     let nodes = [];
     
     const foundNodes = await this.sendSearchInBackEnd(search);
-    const ifNodeExists = (node) => {
+    const ifNodeExists = (node) => { // move to back end
       const frontNodes = Chart.getNodes();
       if (frontNodes.filter((nd) => nd.id === node.id).length) {
         return true;
@@ -117,7 +117,7 @@ class SearchModal extends Component {
     }
     nodes = foundNodes.nodes;
     keywords = foundNodes.keywords;
-
+    
     try {
       if (foundNodes.tabs.length > 0) {
         const tabsList = foundNodes.tabs;
@@ -375,7 +375,7 @@ class SearchModal extends Component {
           </div>
         </div>
         </div>
-        <ul className="list">
+        <ul className="list"> 
           {nodes.map((d) => (
             <li className="item" key={d.index}>
               <div

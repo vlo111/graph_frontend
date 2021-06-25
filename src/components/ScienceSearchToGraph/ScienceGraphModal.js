@@ -267,7 +267,6 @@ class ScienceGraphModal extends Component {
           ChartUtils.findNodeInDom(nodeInDom)
         }
       }
-      debugger
       Chart.loading(false);
       onClose(ev);
     });
