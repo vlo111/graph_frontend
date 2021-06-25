@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import AnalysisUtils from '../../helpers/AnalysisUtils';
-import Button from "../form/Button";
-import {ReactComponent as CloseSvg} from "../../assets/images/icons/close.svg";
 
 class AnalyticalPage extends Component {
   render() {

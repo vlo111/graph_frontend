@@ -271,7 +271,7 @@ export function socketInit() {
       if (+data.sourceId === graphId) {
         return;
       }
-      if (!Chart.getLabels().some((l) => l.id === data.label.id)) {
+      if (!Chart.getLabels().some((l) => l.id === data.label?.id)) {
         return;
       }
       let changed = false;

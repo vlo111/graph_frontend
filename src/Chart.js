@@ -497,6 +497,7 @@ class Chart {
           return d;
         }
         d.manually_size = d.manually_size || 1;
+        // d.labels = ChartUtils.getNodeLabels(d);
 
         const labelData = data.embedLabels.find((l) => d.labels?.includes(l.labelId));
         if (!labelData) {
@@ -1582,7 +1583,6 @@ class Chart {
           links: Chart.getLinks(true, ChartUtils.objectAndProto(data.links)),
           labels: Chart.getLabels(ChartUtils.objectAndProto(data.labels)),
         }));
-        console.log(Chart.getLinks(true, data.links));
       }
 
       if (!params.dontRemember && _.isEmpty(params.filters)) {

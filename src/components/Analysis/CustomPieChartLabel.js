@@ -54,7 +54,7 @@ const renderCustomizedLabel = (props) => {
         dy={18}
         textAnchor={textAnchor}
         fill={fill}
-        fontSize="17px"
+        fontSize="14px"
         xlinkTitle={type}
       >
         {`${type.length > 5 ? `${type.substr(0, 6)}..` : type}, ${value}, ${parseFloat(percent * 100).toFixed(2)}%`}

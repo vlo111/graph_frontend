@@ -95,8 +95,8 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    this.saveGraph();
-    // this.timeout = setTimeout(this.saveGraph, 0);
+    // this.saveGraph();
+    this.timeout = setTimeout(this.saveGraph, 0);
   }
 
   formatNode = (node) => ({
@@ -180,21 +180,21 @@ class AutoSave extends Component {
     }
     document.body.classList.add('autoSave');
     const links = Chart.getLinks().filter((d) => !d.fake && !d.sourceId);
-    const labels = Chart.getLabels().filter((d) => !d.sourceId);
+    const labels = Chart.getLabels();
     const nodes = Chart.getNodes(true).filter((d) => !d.fake && !d.sourceId);
 
     const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake && !d.sourceId);
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake && !d.sourceId);
-    const oldLabels = Chart.oldData.labels.filter((d) => !d.fake && !d.sourceId);
-    const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
-    const createLabels = _.differenceBy(labels, oldLabels, 'id');
-    const updateLabels = [];
+    const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
+    let deleteLabels = _.differenceBy(oldLabels, labels, 'id');
+    let createLabels = _.differenceBy(labels, oldLabels, 'id');
+    let updateLabels = [];
     const updateLabelPositions = [];
     let newLabel = false;
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
-        if (!_.isEqual(label.d, oldLabel.d) || !_.isEqual(label.size, oldLabel.size)) {
+        if (!_.isEqual(label.d, oldLabel.d)) {
           updateLabelPositions.push({
             id: label.id,
             d: label.d,
@@ -208,9 +208,21 @@ class AutoSave extends Component {
         } else if (oldLabel.new || oldLabel.import) {
           newLabel = true;
           createLabels.push(label);
+        } else if (!_.isEqual(label.size, oldLabel.size)) {
+          updateLabelPositions.push({
+            id: label.id,
+            d: label.d,
+            type: label.type,
+            open: label.open,
+          });
         }
       }
     });
+
+    createLabels = createLabels.filter((d) => !d.sourceId);
+    updateLabels = updateLabels.filter((d) => !d.sourceId);
+    deleteLabels = deleteLabels.filter((d) => !d.sourceId);
+
     if (newLabel) {
       Chart.oldData.labels = Chart.oldData.labels.map((d) => {
         delete d.new;
@@ -277,7 +289,11 @@ class AutoSave extends Component {
       // return;
     }
     if (createNodes.length) {
-      await this.props.createNodesRequest(graphId, createNodes);
+      const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
+      if (!_.isEmpty(data.errors)) {
+        console.log(data.errors);
+        toast.error('Something went vrong');
+      }
     }
     const promise = [];
     if (updateNodes.length) {

@@ -8688,7 +8688,7 @@ img.preview-scaled {
 .createGraphButton {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   margin: 0px;
 }
@@ -8698,12 +8698,7 @@ img.preview-scaled {
 }
 .scienceInput:focus {
   outline: none;
-}
-//-----------------------------------
-
-.scienceInput:focus {
-  outline: none;
-}
+} 
 //-----------------------------------
 
 .button-group {

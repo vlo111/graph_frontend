@@ -23,6 +23,7 @@
     "rc-tooltip": "5.0.2",
     "react": "17.0.2",
     "react-app-polyfill": "^2.0.0",
+    "react-back-to-top-button": "0.0.14",
     "react-bootstrap": "^1.3.0",
     "react-bootstrap-typeahead": "^5.1.2",
     "react-color": "^2.19.3",
