@@ -45,7 +45,7 @@ class NodeTabs extends Component {
       for (let i = 0; i < nodeCustomFields.length; i++) {
           const tab = nodeCustomFields[i];
 
-          if (tab.value.includes('blob')) {
+          if (tab.value?.includes('blob')) {
 
               const { documentElement } = Utils.tabHtmlFile(tab.value);
 
@@ -66,12 +66,10 @@ class NodeTabs extends Component {
           }
       }
 
-      if (changedPath) {
-          this.props.updateNodesCustomFieldsRequest(graphId, [{
-              id: nodeId,
-              customFields: nodeCustomFields,
-          }]);
-      }
+      this.props.updateNodesCustomFieldsRequest(graphId, [{
+          id: nodeId,
+          customFields: nodeCustomFields,
+      }]);
       if (data) {
           this.setState({formModalOpen: null, activeTab: data.name});
       }

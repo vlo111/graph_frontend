@@ -106,11 +106,11 @@ class MediaModal extends Component {
         this.setState({ search });
     }
 
-    openTab = (graphId, node, tabIndex) => {
+    openTab = (graphId, node, tabName) => {
         ChartUtils.findNodeInDom(node);
         this.closeModal();
-        if (tabIndex) {
-            this.props.setActiveTab(node.customFields[tabIndex].name);
+        if (tabName) {
+            this.props.setActiveTab(tabName);
             this.props.history.replace(`${graphId}?info=${node.id}`);
         }
     }
@@ -140,7 +140,6 @@ class MediaModal extends Component {
             } else {
                 nodes.map((node) => {
                     if (node.icon) {
-                        console.log(document);
                         if (!document.filter((p) => p.added === node.id).length) {
                             document.push({
                                 id: node.id,
@@ -293,7 +292,7 @@ class MediaModal extends Component {
                                       <span
                                           className="nodeLink"
                                           onClick={
-                                              () => this.openTab(document.graphId, document.node, document.tabIndex)
+                                              () => this.openTab(document.graphId, document.node, document.tabName)
                                           }
                                       >
                                         <div className="left">
