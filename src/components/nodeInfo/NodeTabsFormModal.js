@@ -202,7 +202,6 @@ class NodeTabsFormModal extends Component {
     } = this.props;
     const isUpdate = !!fieldName;
     const { tabData, errors } = this.state;
-
     if (!isUpdate || (tabData.originalName !== tabData.name)) {
       [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node);
     }

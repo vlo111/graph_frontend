@@ -5,7 +5,6 @@ import {Link, withRouter} from 'react-router-dom';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import {getDocumentsByTagRequest} from '../../store/actions/document';
-import Loading from '../../components/Loading';
 import SearchMediaPart from "./SearchMediaPart";
 import Utils from "../../helpers/Utils";
 
@@ -30,25 +29,15 @@ class SearchDocuments extends Component {
         this.props.getDocumentsByTagRequest(searchParam);
     })
 
-    componentDidMount() {
-        if (this.state.loading) {
-            const {documentSearch} = this.props;
-            if (documentSearch && documentSearch.length) {
-                this.setState({loading: false});
-            }
-        }
-    }
-
     render() {
         let {setLimit, documentSearch} = this.props
 
-        const {loading} = this.state;
 
         const {s: searchParam} = queryString.parse(window.location.search);
 
         this.searchDocuments(searchParam);
 
-        if (documentSearch?.length) {
+        if (documentSearch.length) {
             documentSearch = documentSearch.filter(p => {
                 return !Utils.isImg(p.data.substring(p.data.lastIndexOf('.') + 1, p.data.length))
             });
@@ -56,17 +45,13 @@ class SearchDocuments extends Component {
 
         return (
             <div className="searchData">
-                {documentSearch && documentSearch.length ? (
-                    <div className="searchData__wrapper">
-                        <h3>Documents</h3>
-                        <SearchMediaPart media={'document'} data={documentSearch} history={this.props.history} />
-                        {setLimit && documentSearch.length > 5
-                        && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link>
-                        </div>}
-                    </div>
-                ) : ((!setLimit && (!loading
-                    ? <Loading/>
-                    : <h3 className="mediaNotFound">No Documents Found</h3>)) || null)}
+                <div className="searchData__wrapper">
+                    {documentSearch?.length ? <h3>Documents</h3> : null}
+                    <SearchMediaPart setLimit={setLimit} mediaMode={'document'} data={documentSearch} history={this.props.history} />
+                    {setLimit && documentSearch.length > 5
+                    && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link>
+                    </div>}
+                </div>
             </div>
         );
     }

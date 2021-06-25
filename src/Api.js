@@ -206,22 +206,22 @@ class Api {
     return api.post('/document/copy-documents', requestData);
   }
 
-    static createDocument(graphId, nodeId, tabIndex, fileData, file) {
+    static createDocument(graphId, nodeId, tabName, fileData, file) {
         return api.post(`/document/create-documents/${graphId}`,
             this.toFormData({
                 nodeId,
-                tabIndex,
+                tabName,
                 file,
                 fileData: JSON.stringify(fileData),
             })
         );
     }
 
-    static updateDocument(graphId, nodeId, tabIndex, updateFile, file) {
+    static updateDocument(graphId, nodeId, tabName, updateFile, file) {
         return api.post(`/document/update-documents/${graphId}`,
             this.toFormData({
                 nodeId,
-                tabIndex,
+                tabName,
                 file,
                 updateFile: JSON.stringify(updateFile),
             })
