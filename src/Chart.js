@@ -714,6 +714,13 @@ class Chart {
     if (this.activeButton === 'create-label' || ev.sourceEvent?.shiftKey) {
       return;
     }
+    if (ev?.transform?.k >= 2.5 && ev?.sourceEvent?.deltaY < 0) {
+      try {
+        ev.transform.k = 2.5
+        ev.sourceEvent.preventDefault()
+        return
+      } catch (e) {}
+    }
     const { transform } = ev;
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)

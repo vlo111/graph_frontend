@@ -23,12 +23,6 @@ class Zoom extends Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
-    window.addEventListener('wheel', this.handleKeyDown);
-    window.addEventListener('mousewheel', this.handleKeyDown);
-    window.addEventListener('gesturestart', this.handleKeyDown)
-    window.addEventListener('gesturechange', this.handleKeyDown)
-    window.addEventListener('gestureend', this.handleKeyDown)
-    window.addEventListener('onwheel', this.handleKeyDown)
     Chart.event.on('render', this.autoScale);
     Chart.event.on('zoom', this.handleChartZoom);
   }
@@ -88,6 +82,7 @@ class Zoom extends Component {
   zoomIn = () => {
     let scale = +Chart.wrapper.attr('data-scale') || 1;
     if (scale >= 2.5) {
+      scale = 2.5
       return
     }
     let x = +Chart.wrapper.attr('data-x') || 0;
