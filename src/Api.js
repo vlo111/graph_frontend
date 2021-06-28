@@ -190,10 +190,6 @@ class Api {
     return api.get('/users/get-by-text', { params: { text } });
   }
 
-  static getPicturesByTag(tag) {
-    return api.get('/document/get-pictures-by-tag', { params: { tag } });
-  }
-
   static getDocumentsByTag(tag) {
     return api.get('/document/get-documents-by-tag', { params: { tag } });
   }
@@ -206,9 +202,35 @@ class Api {
     return api.post('/document/copy-documents', requestData);
   }
 
-  static createShareGraph(requestData) {
-    return api.post('/share-graphs/create', requestData);
-  }
+    static createDocument(graphId, nodeId, tabName, fileData, file) {
+        return api.post(`/document/create-documents/${graphId}`,
+            this.toFormData({
+                nodeId,
+                tabName,
+                file,
+                fileData: JSON.stringify(fileData),
+            })
+        );
+    }
+
+    static updateDocument(graphId, nodeId, tabName, updateFile, file) {
+        return api.post(`/document/update-documents/${graphId}`,
+            this.toFormData({
+                nodeId,
+                tabName,
+                file,
+                updateFile: JSON.stringify(updateFile),
+            })
+        );
+    }
+
+    static documentPath(graphId, fileId) {
+        return api.get(`/document/get-documentPath/${graphId}/${fileId}`);
+    }
+
+    static createShareGraph(requestData) {
+        return api.post('/share-graphs/create', requestData);
+    }
 
   static graphUsers(requestData) {
     return api.post('/share-graphs/graph-users', requestData);
@@ -389,19 +411,11 @@ class Api {
     }));
   }
 
-  static uploadNodeFile(graphId, node, file, data) {
-    return api.post(`/nodes/upload/file/${graphId}`, this.toFormData({
-      node,
-      file,
-      ...data,
-    }));
-  }
-
-  static deleteNodes(graphId, nodes) {
-    return api.delete(`/nodes/delete/${graphId}`, {
-      data: { nodes },
-    });
-  }
+    static deleteNodes(graphId, nodes) {
+        return api.delete(`/nodes/delete/${graphId}`, {
+            data: {nodes},
+        });
+    }
 
   static createLinks(graphId, links) {
     return api.post(`/links/create/${graphId}`, { links });

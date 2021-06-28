@@ -95,8 +95,8 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    this.saveGraph();
-    // this.timeout = setTimeout(this.saveGraph, 0);
+    // this.saveGraph();
+    this.timeout = setTimeout(this.saveGraph, 0);
   }
 
   formatNode = (node) => ({
@@ -290,7 +290,10 @@ class AutoSave extends Component {
       // return;
     }
     if (createNodes.length) {
-      await this.props.createNodesRequest(graphId, createNodes);
+      const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
+      if (!_.isEmpty(data.errors)) {
+        toast.error('Something went vrong');
+      }
     }
     const promise = [];
     if (updateNodes.length) {
