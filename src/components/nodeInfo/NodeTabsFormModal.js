@@ -222,7 +222,7 @@ class NodeTabsFormModal extends Component {
                 const {fileData, files} = this.getFileFromTab(customFields[customFields.length - 1]);
 
                 if (fileData.length) {
-                    await Api.createDocument(Utils.getGraphIdFormUrl(), node.id, customFields.length - 1, fileData, files).catch((d) => d);
+                    await Api.createDocument(Utils.getGraphIdFormUrl(), node.id, data.name, fileData, files).catch((d) => d);
                 }
             } else {
                 const i = customFields.findIndex((f) => f.name === tabData.originalName);
@@ -232,7 +232,7 @@ class NodeTabsFormModal extends Component {
                     const {insertFiles, updatedFiles} = this.getUpdatedFiles(customFields[i]);
 
                     await Api.updateDocument(Utils.getGraphIdFormUrl(),
-                        node.id, i,
+                        node.id, data.name,
                         {fileData: insertFiles?.fileData, updatedFiles},
                         insertFiles?.files)
                         .catch((d) => d);
