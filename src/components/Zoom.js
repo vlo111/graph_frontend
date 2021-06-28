@@ -81,14 +81,11 @@ class Zoom extends Component {
 
   zoomIn = () => {
     let scale = +Chart.wrapper.attr('data-scale') || 1;
-    if (scale >= 2.5) {
-      scale = 2.5
-      return
-    }
     let x = +Chart.wrapper.attr('data-x') || 0;
     let y = +Chart.wrapper.attr('data-y') || 0;
-
-    if (scale > 0.9) {
+    if (scale >= 2.4) {
+      scale = 2.5
+    } else if (scale > 0.9) {
       scale += 0.1;
       x -= 100 * scale;
       y -= 100 * scale;
