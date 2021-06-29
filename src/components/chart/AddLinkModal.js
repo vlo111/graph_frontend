@@ -127,7 +127,7 @@ class AddLinkModal extends Component {
         checkLinkCurve = '';
       }
 
-      Chart.render({ links }, checkLinkCurve);
+      Chart.render({ links });
     }
     this.setState({ errors });
   }

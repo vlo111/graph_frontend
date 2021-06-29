@@ -201,6 +201,13 @@ class AutoSave extends Component {
             type: label.type,
             open: label.open,
           });
+        } else if (!_.isEqual(label.size, oldLabel.size)) {
+          updateLabelPositions.push({
+            id: label.id,
+            size: label.size,
+            type: label.type,
+            open: label.open,
+          });
         } else if (!oldLabel.name && label.name) {
           createLabels.push(label);
         } else if (!_.isEqual(this.formatLabel(label), this.formatLabel(oldLabel))) {
@@ -291,7 +298,6 @@ class AutoSave extends Component {
     if (createNodes.length) {
       const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
       if (!_.isEmpty(data.errors)) {
-        console.log(data.errors);
         toast.error('Something went vrong');
       }
     }
