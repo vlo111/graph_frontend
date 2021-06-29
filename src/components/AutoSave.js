@@ -191,6 +191,7 @@ class AutoSave extends Component {
     let updateLabels = [];
     const updateLabelPositions = [];
     let newLabel = false;
+
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
@@ -198,13 +199,6 @@ class AutoSave extends Component {
           updateLabelPositions.push({
             id: label.id,
             d: label.d,
-            type: label.type,
-            open: label.open,
-          });
-        } else if (!_.isEqual(label.size, oldLabel.size)) {
-          updateLabelPositions.push({
-            id: label.id,
-            size: label.size,
             type: label.type,
             open: label.open,
           });
@@ -219,6 +213,7 @@ class AutoSave extends Component {
           updateLabelPositions.push({
             id: label.id,
             d: label.d,
+            size: label.size,
             type: label.type,
             open: label.open,
           });
@@ -311,7 +306,6 @@ class AutoSave extends Component {
     // if (updateNodePositions.length) {
     //   promise.push(this.props.updateNodesPositionRequest(graphId, updateNodePositions));
     // }
-
     if (updateNodePositions.length || updateLabelPositions.length) {
       promise.push(this.props.updateGraphPositionsRequest(graphId, updateNodePositions, updateLabelPositions));
     }
