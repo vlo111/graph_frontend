@@ -186,6 +186,7 @@ class AutoSave extends Component {
     const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake && !d.sourceId);
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake && !d.sourceId);
     const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
+
     let deleteLabels = _.differenceBy(oldLabels, labels, 'id');
     let createLabels = _.differenceBy(labels, oldLabels, 'id');
     let updateLabels = [];
@@ -298,7 +299,6 @@ class AutoSave extends Component {
     if (createNodes.length) {
       const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
       if (!_.isEmpty(data.errors)) {
-        console.log(data.errors);
         toast.error('Something went vrong');
       }
     }
