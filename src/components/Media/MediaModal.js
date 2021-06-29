@@ -68,8 +68,7 @@ class MediaModal extends Component {
         }
     }
 
-    filterHandleChange = (path, value) => {
-        debugger
+    filterHandleChange = (path, value) => { 
         switch (path) {
             case 'docs': {
                 this.setState({
