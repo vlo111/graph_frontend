@@ -16,6 +16,7 @@ import { ReactComponent as SquareSvg } from '../assets/images/icons/square.svg';
 import { ReactComponent as EllipseSvg } from '../assets/images/icons/ellipse.svg';
 import { ReactComponent as FreeFormSvg } from '../assets/images/icons/freeForm.svg';
 import { ReactComponent as AnalyticsSvg } from '../assets/images/icons/analytics.svg';
+import { ReactComponent as CursorSvg } from '../assets/images/icons/move_pointe.svg';
 import AnalyseModal from './Analysis/AnalyseModal';
 
 class ToolBar extends Component {
@@ -77,10 +78,10 @@ class ToolBar extends Component {
           <div className="actionButtons">
             <Button
               className={activeButton === 'create' ? 'active' : undefined}
-              icon={<AddSvg />}
+              icon={<CursorSvg />}
               onClick={() => this.handleClick('create')}
             >
-              Add Node
+              Dashboard
             </Button>
             <Button
               className={activeButton === 'findNode' ? 'active' : undefined}
