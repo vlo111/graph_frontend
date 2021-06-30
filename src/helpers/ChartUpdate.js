@@ -85,7 +85,7 @@ class ChartUpdate {
     nodesUpdate.forEach((d) => {
       const i = nodes.findIndex((n) => n.id === d.id);
       if (i > -1) {
-        nodes[i] = { ...d, ...nodes[i] };
+        nodes[i] = { ...nodes[i], ...d};
       } else {
         nodes.push(d);
       }
