@@ -276,7 +276,7 @@ class AutoSave extends Component {
     links.forEach((link) => {
       const oldLink = oldLinks.find((l) => l.id === link.id);
       if (oldLink) {
-        if (_.isUndefined(link.index)) {
+        if (_.isUndefined(oldLink.index) || _.isUndefined(link.index)) {
           createLinks.push(link);
         } else if (!_.isEqual(this.formatLink(oldLink), this.formatLink(link)) && !link.create) {
           updateLinks.push(link);
