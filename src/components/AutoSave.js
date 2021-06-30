@@ -55,6 +55,7 @@ class AutoSave extends Component {
     Chart.event.on('label.dragend', this.handleChartRender);
     Chart.event.on('setNodeData', this.handleChartRender);
     Chart.event.on('square.dragend', this.handleChartRender);
+    Chart.event.on('link.save', this.handleChartRender);
     Chart.event.on('selected.dragend', this.handleChartRender);
     Chart.event.on('folder.open', this.handleFolderToggle);
     Chart.event.on('folder.close', this.handleFolderToggle);
@@ -191,7 +192,6 @@ class AutoSave extends Component {
     let updateLabels = [];
     const updateLabelPositions = [];
     let newLabel = false;
-
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {

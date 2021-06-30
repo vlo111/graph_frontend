@@ -73,7 +73,7 @@ class AddLinkModal extends Component {
   handleLineEdit = (ev, d) => {
     const linkData = Chart.getLinks().find((l) => l.index === d.index);
     this.setState({
-      linkData, show: true, index: linkData.index, errors: {},
+      linkData: { ...linkData }, show: true, index: linkData.index, errors: {},
     });
   }
 
@@ -86,7 +86,7 @@ class AddLinkModal extends Component {
     const { currentUserId, graphId } = this.props;
     const { linkData, index } = this.state;
     const isUpdate = !_.isNull(index);
-    let links = [...Chart.getLinks()];
+    let links = Chart.getLinks();
     const errors = {};
     [errors.type, linkData.type] = Validate.linkType(linkData.type, linkData);
     [, linkData.value] = Validate.linkValue(linkData.value);
@@ -103,7 +103,7 @@ class AddLinkModal extends Component {
           }
           return d;
         });
-         //this.props.updateLinksRequest(graphId, [linkData]);
+        //this.props.updateLinksRequest(graphId, [linkData]);
       } else {
         linkData.create = true;
 
@@ -112,10 +112,11 @@ class AddLinkModal extends Component {
         linkData.id = linkData.id || ChartUtils.uniqueId(links);
         links.push(linkData);
 
-         //this.props.createLinksRequest(graphId, [linkData]);
+        //this.props.createLinksRequest(graphId, [linkData]);
       }
+      this._dataLinks = null;
 
-      this.setState({ show: false });
+      await this.setState({ show: false });
 
       let checkLinkCurve;
 
@@ -127,7 +128,8 @@ class AddLinkModal extends Component {
         checkLinkCurve = '';
       }
 
-      Chart.render({ links }, checkLinkCurve);
+      Chart.render({ links: _.cloneDeep(links) }, checkLinkCurve);
+      Chart.event.emit('link.save', linkData);
     }
     this.setState({ errors });
   }
