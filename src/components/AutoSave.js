@@ -180,7 +180,7 @@ class AutoSave extends Component {
       return;
     }
     document.body.classList.add('autoSave');
-    const links = Chart.getLinks().filter((d) => !d.fake && !d.sourceId);
+    const links = Chart.getLinks(true).filter((d) => !d.fake && !d.sourceId);
     const labels = Chart.getLabels();
     const nodes = Chart.getNodes(true).filter((d) => !d.fake && !d.sourceId);
 
@@ -268,8 +268,7 @@ class AutoSave extends Component {
     });
     const deleteLinks = _.differenceBy(oldLinks, links, 'id');
     let createLinks = _.differenceBy(links, oldLinks, 'id');
-    const updateLinks = [];
-
+    let updateLinks = [];
     createLinks.push(...oldLinks.filter((l) => l.create));
     oldLinks.forEach((l) => {
       delete l.create;
@@ -285,6 +284,7 @@ class AutoSave extends Component {
       }
     });
     createLinks = ChartUtils.uniqueLinks(createLinks);
+    updateLinks = updateLinks.filter((l) => !updateLabels.some((link) => link.id === l.id));
 
     if (deleteNodes.length && deleteNodes.length === nodes.length) {
       // document.body.classList.remove('autoSave');

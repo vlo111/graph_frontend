@@ -99,7 +99,7 @@ class AddLinkModal extends Component {
         links = links.map((d) => {
           if (d.index === linkData.index) {
             d.sx = undefined;
-            return linkData;
+            return { ...linkData };
           }
           return d;
         });
@@ -110,7 +110,7 @@ class AddLinkModal extends Component {
         linkData.createdAt = moment().unix();
         linkData.createdUser = currentUserId;
         linkData.id = linkData.id || ChartUtils.uniqueId(links);
-        links.push(linkData);
+        links.push({ ...linkData });
 
         //this.props.createLinksRequest(graphId, [linkData]);
       }
@@ -128,7 +128,7 @@ class AddLinkModal extends Component {
         checkLinkCurve = '';
       }
 
-      Chart.render({ links: _.cloneDeep(links) }, checkLinkCurve);
+      Chart.render({ links: [...links] }, checkLinkCurve);
       Chart.event.emit('link.save', linkData);
     }
     this.setState({ errors });

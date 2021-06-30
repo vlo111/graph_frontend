@@ -381,6 +381,11 @@ class Chart {
       }
 
       if (Math.abs(moveX) >= 1 || Math.abs(moveY) >= 1) {
+        this.oldData = JSON.parse(JSON.stringify({
+          nodes: Chart.getNodes(true, ChartUtils.objectAndProto(this.data.nodes)),
+          links: Chart.getLinks(true, ChartUtils.objectAndProto(this.data.links)),
+          labels: Chart.getLabels(ChartUtils.objectAndProto(this.data.labels)),
+        }));
         this.event.emit('node.dragend', ev, d);
       }
     };
