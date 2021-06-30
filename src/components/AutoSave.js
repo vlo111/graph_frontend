@@ -284,8 +284,7 @@ class AutoSave extends Component {
       }
     });
     createLinks = ChartUtils.uniqueLinks(createLinks);
-    updateLinks = updateLinks.filter((l) => !updateLabels.some((link) => link.id === l.id));
-
+    updateLinks = updateLinks.filter((l) => !createLinks.some((link) => link.id === l.id));
     if (deleteNodes.length && deleteNodes.length === nodes.length) {
       // document.body.classList.remove('autoSave');
       // return;

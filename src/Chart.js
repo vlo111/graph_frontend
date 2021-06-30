@@ -381,7 +381,7 @@ class Chart {
       }
 
       if (Math.abs(moveX) >= 1 || Math.abs(moveY) >= 1) {
-        this.oldData.links = Chart.getLinks()
+        this.oldData.links = Chart.getLinks();
         this.event.emit('node.dragend', ev, d);
       }
     };
