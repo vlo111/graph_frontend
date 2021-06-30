@@ -22,6 +22,60 @@ class Utils {
     }
   }
 
+  /**
+   * Check Image url exist
+   * @param url
+   * @param callback
+   * @param timeout
+   */
+  static checkImageUrl = (url, callback, timeout) => {
+    timeout = timeout || 5000;
+    let timedOut = false; let
+      timer;
+    const img = new Image();
+    img.onerror = img.onabort = function () {
+      if (!timedOut) {
+        clearTimeout(timer);
+        callback(url, 'error');
+      }
+    };
+    img.onload = function () {
+      if (!timedOut) {
+        clearTimeout(timer);
+        callback(url, 'success');
+      }
+    };
+    img.src = url;
+    timer = setTimeout(() => {
+      timedOut = true;
+      callback(url, 'timeout');
+    }, timeout);
+  }
+
+  /**
+   * Get FileReader form url string
+   * @param dataurl
+   * @param filename
+   * @returns {File}
+   */
+  static dataURLtoFile = (dataurl, filename) => {
+    const arr = dataurl.split(',');
+
+    const mime = arr[0].match(/:(.*?);/)[1];
+
+    const bstr = atob(arr[1]);
+
+    let n = bstr.length;
+
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  }
+
   static fileToString = (file) => new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = (ev) => {
@@ -291,25 +345,24 @@ class Utils {
       if (startIndex >= 0 && startIndex < arr.length) {
         const endIndex = t < 0 ? arr.length + t : t;
 
-                const [item] = arr.splice(f, 1);
-                arr.splice(endIndex, 0, item);
-            }
-        };
-        array = [...array];
-        arrayMoveMutate(array, from, to);
-        return array;
-    }
+        const [item] = arr.splice(f, 1);
+        arr.splice(endIndex, 0, item);
+      }
+    };
+    array = [...array];
+    arrayMoveMutate(array, from, to);
+    return array;
+  }
 
     /**
      * Generate id uuidv4 version 4
      * @returns {string} // uniq id
      */
-    static generateUUID = () => {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
+    static generateUUID = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = Math.random() * 16 | 0; const
+        v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    })
 
     /**
      * Tab editor element
@@ -317,13 +370,13 @@ class Utils {
      * @returns {{documentElement: NodeListOf<Element>}}
      */
     static tabHtmlFile = (customField) => {
-        let tempDiv = document.createElement('div');
+      const tempDiv = document.createElement('div');
 
-        tempDiv.innerHTML = customField.trim();
+      tempDiv.innerHTML = customField.trim();
 
-        const documentElement = tempDiv.querySelectorAll('.document');
+      const documentElement = tempDiv.querySelectorAll('.document');
 
-        return {documentElement};
+      return { documentElement };
     }
 
   /**
@@ -331,10 +384,8 @@ class Utils {
    * @param link
    * @returns {boolean}
    */
-  static isImg = (link) => {
-      return !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg', 'jfif']
-          .filter((v) => link.includes(v)));
-    }
+  static isImg = (link) => !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg', 'jfif']
+    .filter((v) => link.includes(v)))
 }
 
 export default Utils;
