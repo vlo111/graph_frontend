@@ -137,7 +137,6 @@ class SearchModal extends Component {
                 }
                 const cleanedText = html.innerText
                   if (cleanedText.toLowerCase().includes(search.toLowerCase())) {
-                  debugger
                   const tabName = tab.name;
                   const tabContentHtml = document.createElement("div");
                   tabContentHtml.innerHTML = tabContent;
@@ -178,9 +177,7 @@ class SearchModal extends Component {
    * @returns
    */
   formatHtml = (text, type=undefined) => {
-    debugger
     if (type === 'keywords') {
-      debugger
     }
     const { search } = this.state;
     return text.replace(new RegExp(Utils.escRegExp(search), "ig"), "<b>$&</b>");
