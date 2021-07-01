@@ -274,10 +274,12 @@ class Chart {
   }
 
   static drag(simulation) {
-    let startX;
-    let startY;
+    let moveX;
+    let moveY;
     const dragNode = {};
     const dragstart = (ev, d) => {
+      moveX = 0;
+      moveY = 0;
       if (d !== undefined) {
         if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
           ChartInfography.dragstart(ev, d);
@@ -327,6 +329,9 @@ class Chart {
 
         d.x = ev.x;
         d.y = ev.y;
+
+        moveX += ev.dx;
+        moveY += ev.dy;
       }
 
       this.graphMovement();
@@ -374,7 +379,11 @@ class Chart {
           delete d.fy;
         }
       }
-      this.event.emit('node.dragend', ev, d);
+
+      if (Math.abs(moveX) >= 1 || Math.abs(moveY) >= 1) {
+        this.oldData.links = Chart.getLinks();
+        this.event.emit('node.dragend', ev, d);
+      }
     };
 
     return d3.drag()
