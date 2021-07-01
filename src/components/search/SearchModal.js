@@ -123,7 +123,7 @@ class SearchModal extends Component {
         const tabsList = foundNodes.tabs;
         if (tabsList.length > 0) {
           tabsList.map((node) => {
-            if (node.customFields.length) {
+            if (node.customFields?.length) {
               node.customFields.map((tab) => {
                 if (tab.value === undefined) {
                   return;
@@ -132,7 +132,7 @@ class SearchModal extends Component {
                 const html = document.createElement('div');
                 html.innerHTML = tabContent;
                 const tagsElement = html.getElementsByClassName('tags')
-                if (tags.length > 0) {
+                if (tagsElement.length) {
                   tagsElement.remove()
                 }
                 const cleanedText = html.innerText
@@ -153,7 +153,6 @@ class SearchModal extends Component {
             }
           });
         }
-
         const groupBy = (array, key) =>
           array.reduce((result, obj) => {
             (result[obj[key]] = result[obj[key]] || []).push(obj);
