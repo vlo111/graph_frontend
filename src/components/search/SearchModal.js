@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
@@ -13,21 +12,6 @@ import { setActiveTab, getAllTabsRequest } from "../../store/actions/graphs";
 import Chart from "../../Chart";
 import queryString from "query-string";
 import { getGraphNodesRequest } from "../../store/actions/graphs";
-=======
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import Modal from 'react-modal';
-import PropTypes from 'prop-types';
-import memoizeOne from 'memoize-one';
-import _ from 'lodash';
-import {setActiveButton} from '../../store/actions/app';
-import Input from '../form/Input';
-import NodeIcon from '../NodeIcon';
-import ChartUtils from '../../helpers/ChartUtils';
-import Utils from '../../helpers/Utils';
-import {setActiveTab, getAllTabsRequest} from '../../store/actions/graphs';
-import Chart from '../../Chart';
->>>>>>> 467c046974c435ba5ff7717939976ce2d1540cef
 
 class SearchModal extends Component {
   static propTypes = {
@@ -41,10 +25,10 @@ class SearchModal extends Component {
 
   constructor(props) {
     super(props);
+    const { s } = queryString.parse(window.location.search);
     this.state = {
       nodes: [],
       tabs: [],
-<<<<<<< HEAD
       search: s || "",
       docs: [],
       keywords: [],
@@ -55,8 +39,6 @@ class SearchModal extends Component {
         keyword: true,
       },
       checkBoxAll: true
-=======
->>>>>>> 467c046974c435ba5ff7717939976ce2d1540cef
     };
   }
 
@@ -66,7 +48,6 @@ class SearchModal extends Component {
   });
 
   closeModal = () => {
-<<<<<<< HEAD
     this.props.setActiveButton("create");
   };
 
@@ -117,7 +98,8 @@ class SearchModal extends Component {
     let nodes = [];
     
     const foundNodes = await this.sendSearchInBackEnd(search);
-    const ifNodeExists = (node) => { // move to back end
+    debugger
+    const ifNodeExists = (node) => { // test and remove it
       const frontNodes = Chart.getNodes();
       if (frontNodes.filter((nd) => nd.id === node.id).length) {
         return true;
@@ -131,14 +113,14 @@ class SearchModal extends Component {
     };
 
     if (foundNodes.tags && foundNodes.tags.length > 0) {
-      docs = foundNodes.tags;
-      docs = docs.filter((nd) => ifNodeExists(nd));
+      docs = !!foundNodes.tags ? foundNodes.tags : [];
+      docs = docs.filter((nd) => ifNodeExists(nd)); // remove this
     }
-    nodes = foundNodes.nodes;
-    keywords = foundNodes.keywords;
+    nodes = !!foundNodes.nodes ? foundNodes.nodes : [];
+    keywords = !!foundNodes.keywords ? foundNodes.keywords : [];
     
     try {
-      if (foundNodes.tabs.length > 0) {
+      if (foundNodes?.tabs?.length > 0) {
         const tabsList = foundNodes.tabs;
         if (tabsList.length > 0) {
           tabsList.map((node) => {
@@ -148,7 +130,15 @@ class SearchModal extends Component {
                   return;
                 }
                 const tabContent = tab.value;
-                if (tabContent.toLowerCase().includes(search.toLowerCase())) {
+                const html = document.createElement('div');
+                html.innerHTML = tabContent;
+                const tagsElement = html.getElementsByClassName('tags')
+                if (tags.length > 0) {
+                  tagsElement.remove()
+                }
+                const cleanedText = html.innerText
+                  if (cleanedText.toLowerCase().includes(search.toLowerCase())) {
+                  debugger
                   const tabName = tab.name;
                   const tabContentHtml = document.createElement("div");
                   tabContentHtml.innerHTML = tabContent;
@@ -165,67 +155,6 @@ class SearchModal extends Component {
             }
           });
         }
-=======
-    this.props.setActiveButton('create');
-  }
-
-  handleChange = async (search = '') => {
-    const s = search.trim().toLowerCase()
-    if (!s) {
-      this.setState({ nodes: [], search });
-      return;
-    }
-    const nodes = Chart.getNodes().filter(n => _.lowerCase(n.name).includes(s) || _.lowerCase(n.type).includes(s));
-
-    const tabs = [];
-
-    if (search.length > 2) {
-      const { graphTabs } = this.props;
-
-      if (graphTabs && graphTabs.length && !_.isEmpty(nodes)) {
-        graphTabs.forEach((p) => {
-          const node = nodes.filter((g) => g.id === p.nodeId)[0];
-
-          const tabData = p.tab;
-
-          tabData.forEach((tab) => {
-            const tabContent = tab.value;
-
-            const tabContentHtml = document.createElement('div');
-
-            tabContentHtml.innerHTML = tabContent;
-
-            const tabSearchValue = tabContentHtml.textContent;
-
-            if (tab.name.toLowerCase().includes(search.toLowerCase())
-              || tabSearchValue.toLowerCase().includes(search.toLowerCase())) {
-               
-              if (node !== undefined && node.id && (node.id !== 'undefined')) {
-                tabs.push({
-                  nodeId: node.id,
-                  node,
-                  tabName: tab.name,
-                  tabContent,
-                  tabSearchValue,
-                });
-              }
-            }
-          });
-        });
-      }
-    }
-
-    const groupBy = (array, key) => array.reduce((result, obj) => {
-      (result[obj[key]] = result[obj[key]] || []).push(obj);
-      result[obj[key]].node = obj.node;
-      return result;
-    }, {});
-
-    const tabArray = groupBy(tabs, 'nodeId');
-
-    this.setState({ nodes, search, tabs: tabArray });
-  }
->>>>>>> 467c046974c435ba5ff7717939976ce2d1540cef
 
         const groupBy = (array, key) =>
           array.reduce((result, obj) => {
@@ -236,7 +165,7 @@ class SearchModal extends Component {
             result[obj[key]].node = obj.node;
             return result;
           }, {});
-        tabArray = groupBy(tabs, "nodeId");
+        tabArray = groupBy(tabs, "nodeId") ?? [];
       }
     } catch (e) {}
     
@@ -249,9 +178,12 @@ class SearchModal extends Component {
    * @param {string} text
    * @returns
    */
-  formatHtml = (text) => {
+  formatHtml = (text, type=undefined) => {
+    debugger
+    if (type === 'keywords') {
+      debugger
+    }
     const { search } = this.state;
-<<<<<<< HEAD
     return text.replace(new RegExp(Utils.escRegExp(search), "ig"), "<b>$&</b>");
   };
 
@@ -408,26 +340,6 @@ class SearchModal extends Component {
 
   render() {
     const { nodes, tabs, search, docs, keywords, checkBoxValues } = this.state;
-=======
-    return text.replace(new RegExp(Utils.escRegExp(search), 'ig'), '<b>$&</b>');
-  }
-
-  findNode = (node) => {
-    ChartUtils.findNodeInDom(node);
-    this.closeModal();
-  }
-
-  openTab = (node, tabName) => {
-    this.props.setActiveTab(tabName);
-    ChartUtils.findNodeInDom(node);
-    this.props.history.replace(`${window.location.pathname}?info=${node.id}`);
-    this.closeModal();
-  }
-
-  render() {
-    const { nodes, tabs, search } = this.state;
-
->>>>>>> 467c046974c435ba5ff7717939976ce2d1540cef
     this.initTabs();
 
     return (
@@ -437,7 +349,6 @@ class SearchModal extends Component {
         overlayClassName="ghModalOverlay"
         onRequestClose={this.closeModal}
       >
-<<<<<<< HEAD
         <div className="searchField">
         <div className="searchText">Search</div>
         <div className="searchBox">
@@ -463,25 +374,6 @@ class SearchModal extends Component {
                     className={"checkBox checkBox"+field}
                   >
                   {field}
-=======
-        <Input
-          label="Search"
-          autoComplete="off"
-          value={search}
-          containerClassName="graphSearch"
-          onChangeText={this.handleChange}
-          autoFocus
-        />
-        <ul className="list">
-          {Object.keys(tabs) && Object.keys(tabs).map((item) => (
-            <li className="item" key={tabs[item].node.id}>
-              <div tabIndex="0" role="button" className="ghButton tabButton">
-                <div className="header">
-                  <NodeIcon node={tabs[item].node}/>
-                  <div className="headerArea">
-                    <span className="name">{tabs[item].node.name}</span>
-                    <span className="type">{tabs[item].node.type}</span>
->>>>>>> 467c046974c435ba5ff7717939976ce2d1540cef
                   </div>
                 ))}
               </div>
@@ -509,7 +401,6 @@ class SearchModal extends Component {
                   <NodeIcon node={d} />
                 </div>
                 <div className="right">
-<<<<<<< HEAD
                   <span className="row">
                     <span
                       className="name"
@@ -589,29 +480,8 @@ class SearchModal extends Component {
                                 </div>
                               </div>
                             </span>
-                            {!tabs[item][tab].tabName
-                              .toLowerCase()
-                              .includes(search) &&
-                            !tabs[item][tab].tabSearchValue
-                              .toLowerCase()
-                              .includes(search) ? (
-=======
-                  {
-                    Object.keys(tabs[item]).map((tab) => (
-                      tabs[item][tab].nodeId && (
-                        <div className="contentTabs">
-                        <span className="row nodeTabs">
-                          <div
-                            className="contentWrapper"
-                            onClick={() => this.openTab(tabs[item].node, tabs[item][tab].tabName)}
-                          >
-                            <span
-                              title={tabs[item][tab].tabName}
-                              className="name"
-                              dangerouslySetInnerHTML={{ __html: this.formatHtml(tabs[item][tab].tabName) }}
-                            />
-                            <div className="content">
->>>>>>> 467c046974c435ba5ff7717939976ce2d1540cef
+                            {!tabs[item][tab].tabName.toLowerCase().includes(search) &&
+                            !tabs[item][tab].tabSearchValue.toLowerCase().includes(search) ? (
                               <span
                                 className="keywords"
                                 dangerouslySetInnerHTML={{
@@ -631,16 +501,12 @@ class SearchModal extends Component {
 
           {keywords.map((d) => (
             <li className="item" key={d.index}>
-<<<<<<< HEAD
               <div
                 tabIndex="0"
                 role="button"
                 className="ghButton"
                 onClick={(e) => this.openNode(e, d)}
               >
-=======
-              <div tabIndex="0" role="button" className="ghButton" onClick={() => this.findNode(d)}>
->>>>>>> 467c046974c435ba5ff7717939976ce2d1540cef
                 <div className="left">
                   <NodeIcon node={d} />
                 </div>
@@ -650,7 +516,7 @@ class SearchModal extends Component {
                       className="name"
                       title={d.name}
                       dangerouslySetInnerHTML={{
-                        __html: this.formatHtml(d.name),
+                        __html: this.formatHtml(d.name, 'name'),
                       }}
                     />
                     <span
@@ -661,22 +527,18 @@ class SearchModal extends Component {
                     />
                   </span>
 
-                  {!d.name.toLowerCase().includes(search) &&
-                  !d.type.toLowerCase().includes(search) ? (
+                  {(
                     <span
                       className="keywords"
                       dangerouslySetInnerHTML={{
-                        __html: d.keywords
-                          .map((k) => this.formatHtml(k))
-                          .join(", "),
+                        __html: this.formatHtml(d.keywords.join(", "), 'keywords')
                       }}
                     />
-                  ) : null}
+                  )}
                 </div>
               </div>
             </li>
           ))}
-<<<<<<< HEAD
 
           {docs.map((d, index) => (
             <li className="item" key={index}>
@@ -705,8 +567,6 @@ class SearchModal extends Component {
               </div>
             </li>
           ))}
-=======
->>>>>>> 467c046974c435ba5ff7717939976ce2d1540cef
         </ul>
       </Modal>
     );
@@ -722,10 +582,7 @@ const mapDispatchToProps = {
   setActiveTab,
   setActiveButton,
   getAllTabsRequest,
-<<<<<<< HEAD
   getGraphNodesRequest,
-=======
->>>>>>> 467c046974c435ba5ff7717939976ce2d1540cef
 };
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(SearchModal);
