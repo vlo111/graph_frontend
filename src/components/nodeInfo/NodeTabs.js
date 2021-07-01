@@ -81,17 +81,11 @@ class NodeTabs extends Component {
 
   setFirstTab = memoizeOne((location, customField) => {
     if (location) {
-      this.setState({ activeTab: "_location" });
-      this.setActiveTab("_location");
-    } else if (this.state.activeTab) {
-      this.setActiveTab("");
-      return;
+      this.setState({ activeTab: '_location' });
     } else {
-      this.setState({ activeTab: _.get(customField, "name", "") });
+      this.setState({ activeTab: _.get(customField, 'name', '') });
     }
-    if (this.props.activeTab) {
-      this.setActiveTab(this.props.activeTab);
-    }
+    this.props.setActiveTab('');
   }, _.isEqual);
 
   getCustomFields = memoizeOne(async (graphId, nodeId) => {
@@ -128,14 +122,12 @@ class NodeTabs extends Component {
   deleteCustomField = (ev, params = {}) => {
     const { fieldName } = params;
     const { nodeId, graphId } = this.props;
-    if (fieldName && window.confirm("Are you sure?")) {
+    if (fieldName && window.confirm('Are you sure?')) {
       const { nodeCustomFields } = this.props;
-      this.props.updateNodesCustomFieldsRequest(graphId, [
-        {
-          id: nodeId,
-          customFields: nodeCustomFields.filter((f) => f.name !== fieldName),
-        },
-      ]);
+      this.props.updateNodesCustomFieldsRequest(graphId, [{
+        id: nodeId,
+        customFields: nodeCustomFields.filter(f => f.name !== fieldName),
+      }]);
     }
   };
 
@@ -145,15 +137,13 @@ class NodeTabs extends Component {
 
   handleOrderChange = (customFields) => {
     const { nodeId, graphId } = this.props;
-    this.props.updateNodesCustomFieldsRequest(graphId, [
-      {
-        id: nodeId,
-        customFields,
-      },
-    ]);
+    this.props.updateNodesCustomFieldsRequest(graphId, [{
+      id: nodeId,
+      customFields,
+    }]);
     // Chart.setNodeData(nodeId, { customFields });
     this.forceUpdate();
-  };
+  }
 
     render() {
         const {activeTab, formModalOpen, loading } = this.state;
@@ -181,7 +171,7 @@ class NodeTabs extends Component {
             keyExtractor={(v) => v.name}
             renderItem={(p) => (
               <Button
-                className={activeTab === p.value.name ? "active" : undefined}
+                className={activeTab === p.value.name ? 'active' : undefined}
                 key={p.value.name}
                 onMouseDown={() => this.setActiveTab(p.value.name)}
               >
@@ -200,9 +190,7 @@ class NodeTabs extends Component {
             </Button>
           ) : null}
 
-          {editable &&
-          !node.sourceId &&
-          node.customFields?.length < CustomFields.LIMIT ? (
+          {editable && !node.sourceId && node.customFields?.length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
               <Button
                 className="addTab"
@@ -220,27 +208,23 @@ class NodeTabs extends Component {
             onClose={this.closeFormModal}
           />
         ) : null}
-        {activeTab === "_location" ? (
-          this.state.showLocation ? (
-            <MapsInfo node={node} />
-          ) : (
-            <div className="contentWrapper">
-              <Button
-                icon="fa-globe"
-                className=" ghButton2  mapTabButton"
-                href="#"
-                onClick={() => this.showLocation()}
-              >
-                Show on Map
-              </Button>
-            </div>
-          )
+        {activeTab === '_location' ? (
+          this.state.showLocation
+            ? <MapsInfo node={node} />
+            : (
+              <div className="contentWrapper">
+                <Button
+                  icon="fa-globe"
+                  className=" ghButton2  mapTabButton"
+                  href="#"
+                  onClick={() => this.showLocation()}
+                >
+                  Show on Map
+                </Button>
+              </div>
+            )
         ) : (
-          <NodeTabsContent
-            name={activeTab}
-            node={node}
-            customFields={nodeCustomFields}
-          />
+          <NodeTabsContent name={activeTab} node={node} customFields={nodeCustomFields} />
         )}
       </div>
     );

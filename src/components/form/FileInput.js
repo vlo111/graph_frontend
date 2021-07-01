@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Input from './Input';
 import Icon from './Icon';
 import Utils from '../../helpers/Utils';
-import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import {ReactComponent as CloseSvg} from '../../assets/images/icons/close.svg';
 
 class FileInput extends Component {
   static propTypes = {
@@ -32,7 +32,7 @@ class FileInput extends Component {
 
   handleFileSelect = (ev) => {
     const file = ev.target.files[0] || {};
-    this.setState({ file });
+    this.setState({file});
     const uri = Utils.fileToBlob(file);
     this.constructor.blobs[uri] = file.name;
     file.uri = uri;
@@ -41,32 +41,44 @@ class FileInput extends Component {
     ev.target.value = '';
   }
 
-  handleTextChange = (name) => {
+  handleTextChange = async (name) => {
     this.props.onChangeFile(name, {
       name,
     });
+
+    Utils.checkImageUrl(name, this.record)
+  }
+
+  record = (url, result) => {
+    if (result === 'success') {
+      this.props.onChangeImgPreview(url)
+    }
+    else {
+      this.props.onChangeImgPreview('error')
+    }
   }
 
   clearFile = () => {
-    this.setState({ file: {} });
+    this.setState({file: {}});
     this.props.onChangeFile('', {
       name: '',
     });
   }
 
   handleInputFocus = () => {
-    this.setState({ focused: true });
+    this.setState({focused: true});
   }
 
   handleInputBlur = () => {
-    this.setState({ focused: false });
+    this.setState({focused: false});
   }
 
   render() {
-    const { file, focused } = this.state;
+    const {file, focused} = this.state;
     const {
       accept, selectLabel, onChangeFile, ...props
     } = this.props;
+
     let value = props.value || file.name || '';
     let localFile = file instanceof File;
     if (_.isObject(value) && 'name' in value) {
@@ -78,25 +90,25 @@ class FileInput extends Component {
       value = '';
     }
     return (
-      <div className={`ghFileInput ${focused ? 'focused' : ''}`}>
-        <Input
-          {...props}
-          onFocus={this.handleInputFocus}
-          onBlur={this.handleInputBlur}
-          value={value}
-          disabled={localFile}
-          onChangeText={this.handleTextChange}
-        />
-        <div className="buttons">
-          {localFile ? (
-            <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
-          ) : null}
-          <label className="fileLabel">
-            {selectLabel}
-            <input type="file" accept={accept} onChange={this.handleFileSelect} />
-          </label>
+        <div className={`ghFileInput ${focused ? 'focused' : ''}`}>
+          <Input
+              {...props}
+              onFocus={this.handleInputFocus}
+              onBlur={this.handleInputBlur}
+              value={value}
+              disabled={localFile}
+              onChangeText={this.handleTextChange}
+          />
+          <div className="buttons">
+            {localFile ? (
+                <Icon value={<CloseSvg/>} className="clear" onClick={this.clearFile}/>
+            ) : null}
+            <label className="fileLabel">
+              {selectLabel}
+              <input type="file" accept={accept} onChange={this.handleFileSelect}/>
+            </label>
+          </div>
         </div>
-      </div>
     );
   }
 }

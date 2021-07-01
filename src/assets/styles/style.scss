@@ -3906,7 +3906,7 @@ body .gh__menu {
 
 .ghModalSearch {
   width: 50%;
-  min-height: 35%;
+  min-height: 15%;
   max-width: 90% !important;
   display: flex;
   flex-direction: column;
@@ -8046,7 +8046,7 @@ img.preview-scaled {
   }
 
   .ghFormField, .ghFileInput {
-    height: 85px;
+    height: 90px;
     float: left;
     width: 50%;
     padding-right: 22px;

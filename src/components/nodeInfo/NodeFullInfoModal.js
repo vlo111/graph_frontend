@@ -4,13 +4,13 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import Modal from 'react-modal';
+import { Link, withRouter } from 'react-router-dom';
 import Button from '../form/Button';
-import { withRouter } from 'react-router-dom';
 import NodeTabs from './NodeTabs';
 import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
 import ConnectionDetails from './ConnectionDetails';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import NodeImage from "./NodeImage";
+import NodeImage from './NodeImage';
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -39,7 +39,7 @@ class NodeFullInfo extends Component {
         onRequestClose={this.closeNodeInfoModal}
       >
         <div className="ghModalContent">
-          <Button className="close" color="transparent" icon={<CloseSvg />}  onClick={this.closeNodeInfoModal} />
+          <Button className="close" color="transparent" icon={<CloseSvg />} onClick={this.closeNodeInfoModal} />
           <div className="left">
             <div className="graphUser">
               <img
@@ -50,11 +50,17 @@ class NodeFullInfo extends Component {
               <span className="userName">{[singleGraph.user?.firstName, singleGraph.user?.lastName].join(' ')}</span>
             </div>
             <div className="nodeFullContent">
-              <div className="headerBanner">
-                <NodeImage node={node} />
+              <div className="headerBanner ">
+                <div className="frame">
+                  <NodeImage node={node} />
+                </div>
                 <div className="textWrapper">
-                  <h2 className="name">{node.name}</h2>
-                  <h3 className="type">{node.type}</h3>
+                  <h2 className="name">
+                    {node.name}
+                  </h2>
+                  <h3 className="type">
+                    {node.type}
+                  </h3>
                 </div>
               </div>
               <div className="nodeDescription" dangerouslySetInnerHTML={{ __html: node.description }} />

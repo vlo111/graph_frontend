@@ -49,7 +49,6 @@ class ToolBarHeader extends Component {
   componentWillUnmount () {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
-
   handleClick = (button) => {
     this.props.setActiveButton(button);
   }
@@ -155,10 +154,7 @@ class ToolBarHeader extends Component {
           ) : null}
 
           {updateLocation ? (
-            <ScienceButton  
-              graphId={graphId} 
-              currentUserId={currentUserId}
-            />
+            <ScienceButton />
           ) : null}
                     {updateLocation ? (
           <div className="button-group social-button-group">

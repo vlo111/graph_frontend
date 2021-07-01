@@ -109,7 +109,7 @@ class ColorPicker extends Component {
           containerClassName={classNames(containerClassName, 'ghColorPicker')}
           onClick={this.toggleColorPicker}
         />
-        {expand ? this.renderPicker(0, -20, 200) : (target ? this.renderPicker() : null)}
+        {expand ? this.renderPicker(0, -30, 200) : (target ? this.renderPicker() : null)}
       </>
     );
   }

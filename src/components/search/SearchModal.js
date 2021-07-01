@@ -507,7 +507,7 @@ class SearchModal extends Component {
                 onClick={(e) => this.openNode(e, d)}
               >
                 <div className="left">
-                  <NodeIcon node={d} />
+                  <NodeIcon node={d}/>
                 </div>
                 <div className="right">
                   <span className="row">
