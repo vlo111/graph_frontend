@@ -18,6 +18,7 @@ import MapsButton from './maps/MapsButton';
 import Utils from '../helpers/Utils';
 import WikiButton from './wiki/WikiButton';
 import ScienceButton from './ScienceSearchToGraph/ScienceGraphButton';
+import ChartUtils from '../helpers/ChartUtils';
 
 import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 import SearchModal from './search/SearchModal';
@@ -41,6 +42,14 @@ class ToolBarHeader extends Component {
       mouseTracker: false,
     };
   }
+
+  componentDidMount () {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+  componentWillUnmount () {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
   handleClick = (button) => {
     this.props.setActiveButton(button);
   }
@@ -49,6 +58,22 @@ class ToolBarHeader extends Component {
     this.setState({mouseTracker: !tracker})
     Chart.cursorTrackerListRemove();      
      this.props.socketMousePositionTracker(graphId, !tracker, currentUserId);     
+  }
+
+  handleKeyDown = (ev) => {
+    ChartUtils.keyEvent(ev);
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 70) {
+      ev.preventDefault();
+      this.handleClick('search')
+    }
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 71) {
+      ev.preventDefault();
+      this.handleClick('api')
+    }
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 77) {
+      ev.preventDefault();
+      this.handleClick('media')
+    }
   }
 
   resetGraph = () => {

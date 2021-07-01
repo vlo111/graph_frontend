@@ -17,6 +17,7 @@ import { ReactComponent as EllipseSvg } from '../assets/images/icons/ellipse.svg
 import { ReactComponent as FreeFormSvg } from '../assets/images/icons/freeForm.svg';
 import { ReactComponent as AnalyticsSvg } from '../assets/images/icons/analytics.svg';
 import AnalyseModal from './Analysis/AnalyseModal';
+import ChartUtils from '../helpers/ChartUtils';
 
 class ToolBar extends Component {
   static propTypes = {
@@ -31,6 +32,29 @@ class ToolBar extends Component {
   constructor() {
     super();
     this.state = { showLabelForm: false };
+  }
+
+  componentDidMount () {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+  componentWillUnmount () {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = (ev) => {
+    ChartUtils.keyEvent(ev);
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 65) {
+      ev.preventDefault();
+      this.handleClick('analytic')
+    }
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 73) {
+      ev.preventDefault();
+      this.handleClick('import')
+    }
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 68) {
+      ev.preventDefault();
+      this.handleClick('data')
+    }
   }
 
   handleClick = (button) => {
