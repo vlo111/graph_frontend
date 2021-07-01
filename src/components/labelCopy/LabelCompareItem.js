@@ -22,7 +22,7 @@ class LabelCompareItem extends Component {
     const customFields = CustomFields.getCustomField(node, Chart.getNodes());
 
     const uniqueCheckboxId = Math.random().toString(36).substring(7);
-
+    console.log(node)
     return (
       <>
         <div className="compareCheckBox">
