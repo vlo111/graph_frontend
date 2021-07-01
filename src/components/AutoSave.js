@@ -292,11 +292,7 @@ class AutoSave extends Component {
     if (createNodes.length) {
       const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
       if (!_.isEmpty(data.errors)) {
-<<<<<<< HEAD
         toast.error('Something went wrong');
-=======
-        toast.error('Something went vrong');
->>>>>>> 1f930d162c31c1c696e35e410716d44690c4a0d5
       }
     }
     const promise = [];
