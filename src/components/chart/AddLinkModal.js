@@ -86,7 +86,7 @@ class AddLinkModal extends Component {
     const { currentUserId, graphId } = this.props;
     const { linkData, index } = this.state;
     const isUpdate = !_.isNull(index);
-    let links = [...Chart.getLinks()];
+    let links = Chart.getLinks();
     const errors = {};
     [errors.type, linkData.type] = Validate.linkType(linkData.type, linkData);
     [, linkData.value] = Validate.linkValue(linkData.value);

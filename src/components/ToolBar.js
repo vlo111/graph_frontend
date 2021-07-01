@@ -16,6 +16,7 @@ import { ReactComponent as SquareSvg } from '../assets/images/icons/square.svg';
 import { ReactComponent as EllipseSvg } from '../assets/images/icons/ellipse.svg';
 import { ReactComponent as FreeFormSvg } from '../assets/images/icons/freeForm.svg';
 import { ReactComponent as AnalyticsSvg } from '../assets/images/icons/analytics.svg';
+import { ReactComponent as CursorSvg } from '../assets/images/icons/move_pointe.svg';
 import AnalyseModal from './Analysis/AnalyseModal';
 import ChartUtils from '../helpers/ChartUtils';
 import { ReactComponent as CursorSvg } from '../assets/images/icons/move_pointe.svg';
