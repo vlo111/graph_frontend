@@ -179,7 +179,6 @@ class AddNodeModal extends Component {
 
   handleChange = (path, value, editIndex) => {
     const { nodeData, errors, editLocation } = this.state;
-
     switch (path) {
       case 'location': {
         if (nodeData.location) {
@@ -190,7 +189,6 @@ class AddNodeModal extends Component {
           }
         }
         value = !nodeData.location ? [value] : nodeData.location;
-        break;
       }
       case 'type': {
         _.set(nodeData, path, value);
@@ -199,7 +197,6 @@ class AddNodeModal extends Component {
         // edit color with type
         path = 'color';
         value = ChartUtils.nodeColorObj[value] || '';
-        break;
       }
       default: {
         _.set(nodeData, path, value);
@@ -208,7 +205,7 @@ class AddNodeModal extends Component {
     }
 
     this.setState({
-      errors, editLocation: null,
+      nodeData, errors, editLocation: null,
     });
   }
 
