@@ -98,7 +98,6 @@ class SearchModal extends Component {
     let nodes = [];
     
     const foundNodes = await this.sendSearchInBackEnd(search);
-    debugger
     const ifNodeExists = (node) => { // test and remove it
       const frontNodes = Chart.getNodes();
       if (frontNodes.filter((nd) => nd.id === node.id).length) {
