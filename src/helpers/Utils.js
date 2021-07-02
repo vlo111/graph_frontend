@@ -1,8 +1,13 @@
 import axios from 'axios';
+import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'; 
 import _ from 'lodash';
 import Bowser from 'bowser';
 import memoizeOne from 'memoize-one';
 import Api from '../Api';
+import { useHistory } from "react-router-dom";
+import { deleteGraphRequest } from '../store/actions/graphs';
+import { getGraphsListRequest } from '../store/actions/graphs';
 
 const browser = Bowser.getParser(window.navigator.userAgent);
 

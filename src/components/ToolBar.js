@@ -72,7 +72,7 @@ class ToolBar extends Component {
       <div id="toolBar">
         <div className="top">
 
-          <SaveGraph />
+          {/* <SaveGraph /> */}
           <Undo />
           <div className="actionButtons">
             <Button

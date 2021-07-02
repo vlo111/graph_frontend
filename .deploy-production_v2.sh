@@ -7,6 +7,8 @@ array=(${string//,/ })
 
 echo "Deploy start ..."
 
+
+
 # Iterate servers for deploy and pull last commit
 for i in "${!array[@]}"; do
     echo "Deploy project on server ${array[i]}"

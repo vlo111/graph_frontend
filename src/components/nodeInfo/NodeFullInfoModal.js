@@ -47,7 +47,7 @@ class NodeFullInfo extends Component {
                 src={singleGraph.user?.avatar}
                 alt={singleGraph.user?.firstName || ''}
               />
-              <span className="userName">{[singleGraph.user?.firstName, singleGraph.user?.lastName].join(' ')}</span>
+              <span className="userName">{[singleGraph.user?.firstName,singleGraph.user?.lastName].join(' ')}</span>
             </div>
             <div className="nodeFullContent">
               <div className="headerBanner">

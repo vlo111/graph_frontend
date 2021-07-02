@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Get Servers list
+
 set -f
 string=$PROD_DEPLOY_SERVER
 array=(${string//,/ })

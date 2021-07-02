@@ -7,6 +7,7 @@ import SaveGraphModal from './SaveGraphModal';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 
+
 class SaveGraph extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
@@ -34,6 +35,11 @@ class SaveGraph extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
+  /**
+   * 
+   * 
+   * @param {object} ev 
+   */
   handleKeyDown = (ev) => {
     ChartUtils.keyEvent(ev);
     if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 83) {
@@ -80,7 +86,7 @@ class SaveGraph extends Component {
 
     return (
       <div>
-        <div className="saveGraphWrapper">
+        <div className="saveGraphWrapper" id="saveGraphWrapper1">
           <Button className="saveGraph" onClick={() => this.toggleModal(true)}>
             Save Graph
           </Button>

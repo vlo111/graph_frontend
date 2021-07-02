@@ -18,10 +18,14 @@ import MapsButton from './maps/MapsButton';
 import Utils from '../helpers/Utils';
 import WikiButton from './wiki/WikiButton';
 import ScienceButton from './ScienceSearchToGraph/ScienceGraphButton';
-
+import GraphName from './GraphName';
 import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 import SearchModal from './search/SearchModal';
 import Chart from '../Chart';
+import SearchGraphs from './search/SearchGraphs';
+import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg';
+import Input from './form/Input';
+import CommentModal from './CommentModal';
  
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -35,6 +39,7 @@ class ToolBarHeader extends Component {
     currentUserId: PropTypes.number.isRequired,
 
   } 
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -50,7 +55,7 @@ class ToolBarHeader extends Component {
     Chart.cursorTrackerListRemove();      
      this.props.socketMousePositionTracker(graphId, !tracker, currentUserId);     
   }
-
+  
   resetGraph = () => {
     const { match: { params: { graphId } } } = this.props;
     if (window.confirm('Are you sure?')) {
@@ -59,6 +64,7 @@ class ToolBarHeader extends Component {
   }
 
   render() {
+    
     const { activeButton, currentUserId,  location: { pathname }, match: { params: { graphId, token = '' } } } = this.props;      
     const { mouseTracker } = this.state;  
     this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId)    
@@ -67,12 +73,22 @@ class ToolBarHeader extends Component {
     return (
       <div>
         <header className="headerPanel" id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
+          <>
           <Link to="/" className="logoWrapper">
-            <LogoSvg className="logo orange" />
+            <LogoSvg className="logoNew orange" />
             <span className="autoSaveText">Saving...</span>
           </Link>
+          </>
+          <>
           <Legend />
-          {!updateLocation && (
+          </>
+          <>
+          <GraphName />
+         </>
+         <>
+         </>
+         
+          {/* {!updateLocation && (
           <div className="searchInputWrapper">
             <Button
               icon={<SearchSvg />}
@@ -82,8 +98,9 @@ class ToolBarHeader extends Component {
               Search
             </Button>
           </div>
-          )}
-          <div className="graphs">
+          )} */}
+           <div className="graphs">
+           
             {updateLocation ? (
               <Button
                 icon={<SearchSvg />}
@@ -92,8 +109,21 @@ class ToolBarHeader extends Component {
               >
                 Search
               </Button>
-            ) : null}
-            <ShareGraph graphId={+graphId} setButton />
+            ) : null} 
+
+           <>
+              <Button
+                icon={<CommentSvg />}
+                className="transparent footer-icon"
+              
+                />
+            </>
+            
+               {/* <div className="bottom "> */}
+
+                  {/* {graphId && <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>} */}
+               {/* </div> */}
+            {/* <ShareGraph graphId={+graphId} setButton />
             {updateLocation ? (
               <Button
                 icon={<ViewSvg />}
@@ -101,8 +131,8 @@ class ToolBarHeader extends Component {
               >
                 View
               </Button>
-            ) : null}
-            <Button
+            ) : null} */}
+            {/* <Button
               icon={<FilterSvg />}
               onClick={() => {
                 isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
@@ -110,8 +140,8 @@ class ToolBarHeader extends Component {
               }}
             >
               Filter
-            </Button>
-            {updateLocation ? (
+            </Button> */}
+            {/* {updateLocation ? (
               <Button
                 icon={<MediaSvg />}
                 className={activeButton === 'media' ? 'active' : undefined}
@@ -119,10 +149,10 @@ class ToolBarHeader extends Component {
               >
                 Media
               </Button>
-            ) : null}
+            ) : null} */}
           </div>
 
-          {updateLocation ? (
+          {/* {updateLocation ? (
             <MapsButton />
           ) : null}
           {updateLocation ? (
@@ -131,8 +161,8 @@ class ToolBarHeader extends Component {
 
           {updateLocation ? (
             <ScienceButton />
-          ) : null}
-                    {updateLocation ? (
+          ) : null} */}
+                    {/* {updateLocation ? (
           <div className="button-group social-button-group">
             
             <Button
@@ -141,13 +171,13 @@ class ToolBarHeader extends Component {
               onClick={() => this.handleCursor(mouseTracker)}
             /> 
           </div>
-           ) : null}
-          <div className="signOut">
+           ) : null} */}
+          {/* <div className="signOut">
             <AccountDropDown />
-          </div>
-
+          </div> */}
+          
         </header>
-        {activeButton === 'search' && <SearchModal history={this.props.history} />}
+        {/* {activeButton === 'search' && <SearchModal history={this.props.history} />} */}
       </div>
     );
   }

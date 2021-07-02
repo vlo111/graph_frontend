@@ -13,6 +13,7 @@ class SearchGraphs extends Component {
     setLimit: PropTypes.bool,
     getGraphsListRequest: PropTypes.func.isRequired,
     graphsList: PropTypes.array.isRequired,
+   
   };
 
   static defaultProps = {
@@ -21,8 +22,9 @@ class SearchGraphs extends Component {
 
   getGraphs = memoizeOne((page, searchParam) => {
     this.props.getGraphsListRequest(page, { s: searchParam });
+    
   })
-
+ 
   render() {
     const { setLimit, graphsList } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);

@@ -3,7 +3,6 @@ import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Input from '../form/Input';
-
 class SearchGraphs extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
@@ -37,7 +36,7 @@ class SearchGraphs extends Component {
 
   render() {
     return (
-      <div className="searchInputWrapper">
+      <div className="searchInputWrapper" id="searchInputWrapper">
         <form onSubmit={this.handleSubmit}>
           <Input
             placeholder="Search ..."
