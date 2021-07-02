@@ -103,7 +103,7 @@ class AddNodeModal extends Component {
   saveNode = async (ev) => {
     ev.preventDefault();
     this.setState({loading: true});
-    const {currentUserId, graphId} = this.props;
+    const {currentUserId, graphId, graphNodes} = this.props;
     const {
       nodeData, index, nodeId, imgUrl
     } = this.state;
