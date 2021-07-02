@@ -43,18 +43,52 @@ class ToolBar extends Component {
   }
 
   handleKeyDown = (ev) => {
-    ChartUtils.keyEvent(ev);
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.analytic_code) {
-      ev.preventDefault();
-      this.handleClick('analytic')
+    if (ev.chartEvent && ev.ctrlPress) {
+      if (ev.keyCode === KEY_CODES.analytic_code) {
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('analytic')
+      }
+      if (ev.keyCode === KEY_CODES.import_code) {
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('import')
+      }
+      if (ev.keyCode === KEY_CODES.data_code) {
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('data')
+      }
+      if (ev.keyCode === KEY_CODES.label_code) { 
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('create-label')
+      }
+      if (ev.keyCode === KEY_CODES.label_ellipse_code) { 
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('create-label-ellipse')
+      }
     }
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.import_code) {
-      ev.preventDefault();
-      this.handleClick('import')
+    if (ev.chartEvent && ev.shiftKey) {
+      if (ev.shiftKey && ev.keyCode === KEY_CODES.label_code) { 
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('create-label-square')
+      }
+      if (ev.shiftKey && ev.keyCode === KEY_CODES.data_code) { 
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('create')
+      }
+      if (ev.shiftKey && ev.keyCode === KEY_CODES.search_code) { 
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('findNode')
+      }
     }
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.data_code) {
-      ev.preventDefault();
-      this.handleClick('data')
+    if (ev.keyCode === 27) {
+      this.props.setActiveButton('create')
     }
   }
 

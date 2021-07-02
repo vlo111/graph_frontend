@@ -23,6 +23,7 @@ import { KEY_CODES } from '../data/keyCodes';
 import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 import SearchModal from './search/SearchModal';
 import Chart from '../Chart';
+import { setLegendButton } from '../store/actions/app';
  
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -34,7 +35,7 @@ class ToolBarHeader extends Component {
     location: PropTypes.object.isRequired,
     setActiveMouseTracker: PropTypes.func.isRequired,
     currentUserId: PropTypes.number.isRequired,
-
+    setLegendButton: PropTypes.func.isRequired,
   } 
   constructor(props) {
     super(props);
@@ -60,18 +61,25 @@ class ToolBarHeader extends Component {
   }
 
   handleKeyDown = (ev) => {
-    ChartUtils.keyEvent(ev);
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.search_code) {
-      ev.preventDefault();
-      this.handleClick('search')
-    }
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.graphScience_code) {
-      ev.preventDefault();
-      this.handleClick('api')
-    }
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.media_code) {
-      ev.preventDefault();
-      this.handleClick('media')
+    if (ev.chartEvent && ev.ctrlPress) {
+
+      if (ev.keyCode === KEY_CODES.search_code) {
+        ChartUtils.keyEvent(ev);
+        ev.preventDefault();
+        this.handleClick('search')
+      }
+
+      if (ev.keyCode === KEY_CODES.graphScience_code) {
+        ChartUtils.keyEvent(ev);
+        ev.preventDefault();
+        this.handleClick('graph')
+      }
+
+      if (ev.keyCode === KEY_CODES.media_code) {
+        ChartUtils.keyEvent(ev);
+        ev.preventDefault();
+        this.handleClick('media')
+      }
     }
   }
 
@@ -190,6 +198,7 @@ const mapDispatchToProps = {
   getSingleGraphRequest,
   setActiveMouseTracker,
   socketMousePositionTracker,
+  setLegendButton
 };
 const Container = connect(
   mapStateToProps,
