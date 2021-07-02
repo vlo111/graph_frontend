@@ -19,8 +19,7 @@ import { ReactComponent as AnalyticsSvg } from '../assets/images/icons/analytics
 import { ReactComponent as CursorSvg } from '../assets/images/icons/move_pointe.svg';
 import AnalyseModal from './Analysis/AnalyseModal';
 import ChartUtils from '../helpers/ChartUtils';
-import { ReactComponent as CursorSvg } from '../assets/images/icons/move_pointe.svg';
-
+import { KEY_CODES } from '../data/keyCodes';
 class ToolBar extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -45,15 +44,15 @@ class ToolBar extends Component {
 
   handleKeyDown = (ev) => {
     ChartUtils.keyEvent(ev);
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 65) {
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.analytic_code) {
       ev.preventDefault();
       this.handleClick('analytic')
     }
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 73) {
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.import_code) {
       ev.preventDefault();
       this.handleClick('import')
     }
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 68) {
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.data_code) {
       ev.preventDefault();
       this.handleClick('data')
     }
@@ -107,13 +106,6 @@ class ToolBar extends Component {
               onClick={() => this.handleClick('create')}
             >
               Dashboard
-            </Button>
-            <Button
-              className={activeButton === 'findNode' ? 'active' : undefined}
-              icon={<LoopSvg />}
-              onClick={() => this.handleClick('findNode')}
-            >
-              Find Node
             </Button>
             <Button
               className={activeButton === 'findNode' ? 'active' : undefined}

@@ -19,7 +19,7 @@ import Utils from '../helpers/Utils';
 import WikiButton from './wiki/WikiButton';
 import ScienceButton from './ScienceSearchToGraph/ScienceGraphButton';
 import ChartUtils from '../helpers/ChartUtils';
-
+import { KEY_CODES } from '../data/keyCodes';
 import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 import SearchModal from './search/SearchModal';
 import Chart from '../Chart';
@@ -61,15 +61,15 @@ class ToolBarHeader extends Component {
 
   handleKeyDown = (ev) => {
     ChartUtils.keyEvent(ev);
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 70) {
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.search_code) {
       ev.preventDefault();
       this.handleClick('search')
     }
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 71) {
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.graphScience_code) {
       ev.preventDefault();
       this.handleClick('api')
     }
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 77) {
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.media_code) {
       ev.preventDefault();
       this.handleClick('media')
     }
