@@ -9368,90 +9368,87 @@ color: #2962ff;
 // Search modal inside graph
 .searchNodes {
   min-height: 45%;
-}
-.searchBox {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: center
-}
-.searchBoxInside {
-  border: 1px solid #7166F8;
-  border-radius: 5px;
-  display: flex;
-  width: 87%
-}
 
-.searchFieldCheckBox  {
-  justify-content: center;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  .searchField {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .searchText {
+      display: flex;
+      justify-content: center;
+      font-size: 2em;
+    }
+
+    .searchBox {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: center;
+
+      .searchBoxInside {
+        border: 1px solid #7166F8;
+        border-radius: 5px;
+        display: flex;
+        width: 87%;
+
+        .searchFieldCheckBox  {
+          justify-content: center;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+
+          .chooseSearchFields {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #7166F8;
+
+            .dropDownSvg {
+              margin-left: 7px;
+              width: 10px;
+            }
+          }
+
+          .searchFieldCheckBoxList {
+            flex-direction: column;
+            position: absolute;
+            top: 6em;
+            background-color: white;
+            z-index: 103;
+            border-radius: 3px;
+            box-shadow: 0px 4px 16px rgb(0 0 0 / 25%);
+            display: none;
+
+            .checkBox {
+              color: #7166F8;
+              cursor: pointer;
+              text-transform: capitalize;
+            }
+          }
+
+          .searchFieldCheckBoxList div {
+            padding: .1em .5em;
+          }
+        }
+        
+        .searchFieldCheckBox:hover .searchFieldCheckBoxList {
+          display: flex;
+        }
+
+        .nodeSearch {
+          height: 36px;
+          flex: 6;
+          border: none;
+          border-left: 1px solid #7166F8;
+          border-radius: 0px;
+          outline: none;
+          margin-right: .2em;
+          padding-left: 1em;
+        }
+      }
+    }
+  }
 }
-.searchFieldCheckBoxList {
-  display: none;
-}
-.searchFieldCheckBox:hover .searchFieldCheckBoxList {
-  display: flex;
-}
-.searchFieldCheckBoxList {
-  flex-direction: column;
-  position: absolute;
-  top: 6em;
-  background-color: white;
-  z-index: 103;
-  border-radius: 3px;
-  box-shadow: 0px 4px 16px rgb(0 0 0 / 25%);
-}
-.searchFieldCheckBoxList div {
-  padding: .1em .5em;
-}
-.searchInputBox {
-  flex: 4.5;
-  margin-right: 6em;
-  width: 100%;
-  display: flex; 
-  justify-content: center
-}
-.searchInputBoxChild {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-.chooseSearchFields {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #7166F8;
-}
-.nodeSearch {
-  height: 36px;
-  flex: 6;
-  border: none;
-  border-left: 1px solid #7166F8;
-  border-radius: 0px;
-  outline: none;
-  margin-right: .2em;
-  padding-left: 1em;
-}
-.checkBox {
-  color: #7166F8;
-  cursor: pointer;
-  text-transform: capitalize;
-}
-.searchField {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-.searchText {
-  display: flex;
-  justify-content: center;
-  font-size: 2em;
- }
- .dropDownSvg {
-  margin-left: 7px;
-  width: 10px;
- }
 
 // End search modal inside graph
