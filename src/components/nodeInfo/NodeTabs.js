@@ -13,10 +13,9 @@ import { getNodeCustomFieldsRequest, removeNodeCustomFieldKey, setActiveTab } fr
 import MapsInfo from '../maps/MapsInfo';
 import Sortable from './Sortable';
 import ChartUtils from '../../helpers/ChartUtils';
-import { updateNodesCustomFieldsRequest } from "../../store/actions/nodes";
-import Loading from "../Loading";
-import Utils from "../../helpers/Utils";
-import Api from "../../Api";
+import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
+import Utils from '../../helpers/Utils';
+import Api from '../../Api';
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -28,56 +27,56 @@ class NodeTabs extends Component {
   };
 
   constructor(props) {
-        super(props);
-        this.state = {
-            activeTab: '',
-            formModalOpen: null,
-            loading: false,
-            showLocation: false,
-            updateCustomField: null,
-        };
-    }
+    super(props);
+    this.state = {
+      activeTab: '',
+      formModalOpen: null,
+      showLocation: false,
+      updateCustomField: null,
+    };
+  }
 
   updateTabFilePath = async (data) => {
-      const {graphId, nodeId, nodeCustomFields} = this.props;
-      let changedPath = false;
+    const { graphId, nodeId, nodeCustomFields } = this.props;
 
-      for (let i = 0; i < nodeCustomFields.length; i++) {
-          const tab = nodeCustomFields[i];
+    let changedPath = false;
 
-          if (tab.value?.includes('blob')) {
+    for (let i = 0; i < nodeCustomFields.length; i++) {
+      const tab = nodeCustomFields[i];
 
-              const { documentElement } = Utils.tabHtmlFile(tab.value);
+      if (tab.value?.includes('blob')) {
 
-              for (let j = 0; j < documentElement.length; j++) {
-                  const media = documentElement[j];
+        const { documentElement } = Utils.tabHtmlFile(tab.value);
 
-                  let documentPath = media.querySelector('img')?.src ?? media.querySelector('a')?.href;
+        for (let j = 0; j < documentElement.length; j++) {
+          const media = documentElement[j];
 
-                  if (documentPath) {
-                      const id = media.querySelector('#docId').innerText;
-                      const path = await Api.documentPath(graphId, id).catch((d) => d);
+          const documentPath = media.querySelector('img')?.src ?? media.querySelector('a')?.href;
 
-                      nodeCustomFields[i].value = nodeCustomFields[i].value.replace(documentPath, path.data?.path);
+          if (documentPath) {
+            const id = media.querySelector('#docId').innerText;
+            const path = await Api.documentPath(graphId, id).catch((d) => d);
 
-                      changedPath = true;
-                  }
-              }
+            nodeCustomFields[i].value = nodeCustomFields[i].value.replace(documentPath, path.data?.path);
+
+            changedPath = true;
           }
+        }
       }
+    }
 
-      this.props.updateNodesCustomFieldsRequest(graphId, [{
-          id: nodeId,
-          customFields: nodeCustomFields,
-      }]);
-      if (data) {
-          this.setState({formModalOpen: null, activeTab: data.name});
-      }
+    this.props.updateNodesCustomFieldsRequest(graphId, [{
+      id: nodeId,
+      customFields: nodeCustomFields,
+    }]);
+    if (data) {
+      this.setState({ formModalOpen: null, activeTab: data.name });
+    }
   }
 
   setDocumentsPath = memoizeOne(async () => {
-        await this.updateTabFilePath();
-    }, _.isEqual);
+    await this.updateTabFilePath();
+  }, _.isEqual);
 
   setFirstTab = memoizeOne((location, customField) => {
     if (location) {
@@ -86,12 +85,6 @@ class NodeTabs extends Component {
       this.setState({ activeTab: _.get(customField, 'name', '') });
     }
     this.props.setActiveTab('');
-  }, _.isEqual);
-
-  getCustomFields = memoizeOne(async (graphId, nodeId) => {
-    this.setState({ loading: true });
-    await this.props.getNodeCustomFieldsRequest(graphId, nodeId);
-    this.setState({ loading: false });
   }, _.isEqual);
 
   componentDidMount() {
@@ -116,7 +109,7 @@ class NodeTabs extends Component {
   };
 
   closeFormModal = async (data) => {
-        await this.updateTabFilePath(data);
+    await this.updateTabFilePath(data);
   }
 
   deleteCustomField = (ev, params = {}) => {
@@ -126,7 +119,7 @@ class NodeTabs extends Component {
       const { nodeCustomFields } = this.props;
       this.props.updateNodesCustomFieldsRequest(graphId, [{
         id: nodeId,
-        customFields: nodeCustomFields.filter(f => f.name !== fieldName),
+        customFields: nodeCustomFields.filter((f) => f.name !== fieldName),
       }]);
     }
   };
@@ -145,25 +138,20 @@ class NodeTabs extends Component {
     this.forceUpdate();
   }
 
-    render() {
-        const {activeTab, formModalOpen, loading } = this.state;
-        const {graphId, nodeId, editable, nodeCustomFields} = this.props;
-        const node = ChartUtils.getNodeById(nodeId);
-        // const customFields = CustomFields.getCustomField(node, Chart.getNodes());
-        this.getCustomFields(graphId, nodeId);
+  render() {
+    const { activeTab, formModalOpen } = this.state;
+    const {
+      nodeId, editable, nodeCustomFields,
+    } = this.props;
+    const node = ChartUtils.getNodeById(nodeId);
 
-        this.setFirstTab(node.location, nodeCustomFields[0]);
+    this.setFirstTab(node.location, nodeCustomFields[0]);
 
-        this.setDocumentsPath();
+    this.setDocumentsPath();
 
-        return (
-            <div className="nodeTabs">
-                {loading ? (
-                    <div className="loadingWrapper">
-                        <Loading/>
-                    </div>
-                ) : null}
-                <div className="container-tabs">
+    return (
+      <div className="nodeTabs">
+        <div className="container-tabs">
 
           <Sortable
             onChange={this.handleOrderChange}

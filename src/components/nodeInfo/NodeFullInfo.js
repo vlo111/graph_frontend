@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import memoizeOne from 'memoize-one';
-import _ from 'lodash';
 import Chart from '../../Chart';
 import Outside from '../Outside';
 import NodeTabs from './NodeTabs';
@@ -15,6 +14,7 @@ import NodeFullInfoModal from './NodeFullInfoModal';
 import ChartUtils from '../../helpers/ChartUtils';
 import NodeImage from './NodeImage';
 import { getNodeCustomFieldsRequest } from '../../store/actions/graphs';
+import Loading from "../Loading";
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -23,12 +23,22 @@ class NodeFullInfo extends Component {
     getNodeCustomFieldsRequest: PropTypes.func.isRequired,
   }
 
+  constructor() {
+    super();
+    this.state = {
+      loading: false,
+    };
+
+  }
+
   static defaultProps = {
     editable: true,
   }
 
-  getCustomFields = memoizeOne((graphId, nodeId) => {
-    this.props.getNodeCustomFieldsRequest(graphId, nodeId);
+  getCustomFields = memoizeOne(async (graphId, nodeId) => {
+    this.setState({ loading: true });
+    await this.props.getNodeCustomFieldsRequest(graphId, nodeId);
+    this.setState({ loading: false });
   });
 
   closeNodeInfo = () => {
@@ -39,9 +49,15 @@ class NodeFullInfo extends Component {
   }
 
   render() {
-    const { editable } = this.props;
+    const { editable, singleGraph: { id } } = this.props;
+
+    const { loading } = this.state;
+
     const queryObj = queryString.parse(window.location.search);
     const { info: nodeId, expand } = queryObj;
+
+    this.getCustomFields(id, nodeId);
+
     if (!nodeId) {
       return null;
     }
@@ -79,6 +95,11 @@ class NodeFullInfo extends Component {
                 Expand
               </Link>
             </div>
+            {loading ? (
+                <div className="loadingWrapper">
+                  <Loading />
+                </div>
+            ) : null}
             <NodeTabs nodeId={node.id} editable={editable} />
           </div>
           <ConnectionDetails nodeId={node.id} />
