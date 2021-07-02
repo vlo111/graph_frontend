@@ -72,7 +72,7 @@ class ToolBarHeader extends Component {
       if (ev.keyCode === KEY_CODES.graphScience_code) {
         ChartUtils.keyEvent(ev);
         ev.preventDefault();
-        this.handleClick('graph')
+        this.handleClick('scienceGraph')
       }
 
       if (ev.keyCode === KEY_CODES.media_code) {
