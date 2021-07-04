@@ -39,15 +39,21 @@ class AnalyticalPage extends Component {
 
     footerPieCircle.style.display = 'inline-block';
     footerPieCircle.style.backgroundColor = color;
+
+    const piePart = document.getElementsByClassName(`partPie_${index}`)[0];
+
+    if (piePart) piePart.style.transition = 'all 0.4s ease-in-out 0s';
   }
 
   onClosePartPie = () => {
     this.setState({
       effectPie: null,
     });
+
     Chart.showAllNodes();
 
     document.getElementsByClassName('selectedText')[0].innerHTML = '';
+
     document.getElementsByClassName('dot')[0].style.display = 'none';
   }
 
@@ -105,37 +111,37 @@ class AnalyticalPage extends Component {
         <div className="headerPie">
           <h4>Node types</h4>
         </div>
-        <ResponsiveContainer>
-          <PieChart
-            margin={{
-              top: 0,
-            }}
-          >
-            <Pie
-              data={types}
-              activeIndex={this.state?.effectPie}
-              dataKey="count"
-              cx="50%"
-              cy="50%"
-              // label
-              // labelLine={false}
-              label={<CustomPieChartLabel centerText={500} />}
-              outerRadius={100}
-              // fill="#8884d8"
-              activeShape={this.renderActiveShape}
-              onMouseOver={this.onShowPartPie}
-              onMouseLeave={this.onClosePartPie}
+        <div className="piePanel" onMouseLeave={this.onClosePartPie}>
+          <ResponsiveContainer>
+            <PieChart
+              margin={{
+                top: 0,
+              }}
             >
-              {types.map((entry, index) => (
-                <Cell
-                  className={`partPie_${index}`}
-                  key={`cell-${index}`}
-                  fill={entry.color}
-                />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+              <Pie
+                data={types}
+                className="pie_part"
+                activeIndex={this.state?.effectPie}
+                dataKey="count"
+                cx="50%"
+                cy="50%"
+                labelLine
+                label={<CustomPieChartLabel centerText={500} />}
+                outerRadius={100}
+                activeShape={this.renderActiveShape}
+                onClick={this.onShowPartPie}
+              >
+                {types.map((entry, index) => (
+                  <Cell
+                    className={`partPie_${index}`}
+                    key={`cell-${index}`}
+                    fill={entry.color}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
         <div className="footerPie">
           <span className="dot" />
           <span className="selectedText" />
