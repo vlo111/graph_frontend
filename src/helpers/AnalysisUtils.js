@@ -146,6 +146,7 @@ class AnalysisUtils {
     }
 
     /**
+     * Shortest path between two nodes with weight connections
      * @param start
      * @param end
      * @param nodes
@@ -249,13 +250,22 @@ class AnalysisUtils {
       });
 
       const listLinks = [];
+
       const listNodes = [];
+
       let tmpDist = distances.filter((p) => p.currentNode === end)[0];
+
+      if (!tmpDist) {
+        return { listLinks: 0, listNodes: 0 };
+      }
+
       listLinks.push({
         source: tmpDist.currentNode,
         target: tmpDist.prevNode,
       });
+
       listNodes.push(tmpDist.currentNode);
+
       while (tmpDist) {
         tmpDist = distances.filter((p) => tmpDist.prevNode === p.currentNode)[0];
 
@@ -369,6 +379,13 @@ class AnalysisUtils {
       return result / 2;
     }
 
+    /**
+   * General Degree, B - side Degree, In Degree, Out Degree,
+   * @param nodes
+   * @param links
+   * @param nodeId
+   * @returns {{sideDegree: *, inDegree: *, generalDegree: *, outDegree: *}}
+   */
     static getLocalDegree = (nodes, links, nodeId) => {
       const generalDegree = links.filter((x) => x.source === nodeId || x.target === nodeId);
 
@@ -383,7 +400,53 @@ class AnalysisUtils {
       };
     }
 
-  static getCluster = (triangles, linkCount) => triangles / ((linkCount * (linkCount - 1)) / 2)
+    /**
+   * Local Clustering Coefficient
+   * In disconnected graphs
+   * @param triangles
+   * @param linkCount
+   * @returns {number}
+   */
+    static getCluster = (triangles, linkCount) => triangles / ((linkCount * (linkCount - 1)) / 2)
+
+  /**
+   * Get Closeness Centrality
+   * In disconnected graphs
+   * @param nodes
+   * @param links
+   * @returns {[]}
+   */
+    static getClosenessCentrality = (nodes, links) => {
+      const count = nodes.length - 1;
+
+      links.map((l) => {
+        l.value = 1;
+      });
+
+      const resultShortest = [];
+
+      nodes.forEach((startNode) => {
+        const everyShortest = [];
+        nodes.forEach((endNode) => {
+          if (endNode.id !== startNode.id) {
+            everyShortest.push(this.getShortestPath(startNode.id, endNode.id, nodes, links).listNodes.length - 1);
+          }
+        });
+
+        resultShortest.push({
+          id: startNode.id,
+          closeness: everyShortest,
+        });
+      });
+
+      resultShortest.forEach((s) => {
+        const sum = s.closeness.reduce((a, b) => a + b, 0);
+
+        s.closeness = count / sum;
+      });
+
+      return resultShortest;
+    }
 }
 
 export default AnalysisUtils;
