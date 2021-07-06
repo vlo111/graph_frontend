@@ -4195,8 +4195,6 @@ body .gh__menu {
       opacity: 0;
     }
   }
-
-
 }
 
 
@@ -8698,7 +8696,7 @@ img.preview-scaled {
 }
 .scienceInput:focus {
   outline: none;
-} 
+}
 //-----------------------------------
 
 .button-group {
@@ -8817,6 +8815,7 @@ color: #2962ff;
   text-decoration: none;
   padding: 4px 8px 4px 8px;
 }
+
 .editrect>a:hover{
   background-color: #fff;
   border-radius: 4px;
@@ -8827,10 +8826,10 @@ color: #2962ff;
 
 .analyticBottomPage {
   width: 100%;
-  height: 35%;
+  height: 350px;
   position: fixed;
   z-index: 1;
-  bottom: 25px;
+  bottom: 0px;
 
   .close {
     position: fixed;
@@ -8851,7 +8850,7 @@ color: #2962ff;
 
   .bottomTool {
     position: fixed;
-    bottom: 40%;
+    bottom: 386px;
     right: 1%;
     display: flex;
 
@@ -8863,7 +8862,7 @@ color: #2962ff;
       position: initial;
       right: 0;
     }
-    
+
     .graphControlPanel {
       padding-right: 5px;
       right: 0;
@@ -8873,8 +8872,8 @@ color: #2962ff;
 
   .container {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
-    grid-gap: 10px;
+    grid-template-columns: 30% 40% 30%;
+    grid-gap: 1px;
     max-width: 100%;
     height: 100%;
 
@@ -8884,6 +8883,15 @@ color: #2962ff;
       line-height: 30px;
       display: grid !important;
       grid-template-columns: 33% 33% 33%;
+
+      .componentContainer {
+        height: 230px;
+
+        .componentsData {
+          overflow: auto;
+          height: 200px;
+        }
+      }
 
       h3 {
         font-weight: 600;
@@ -8905,16 +8913,16 @@ color: #2962ff;
     .pieChart {
       padding-top: 20px;
       display: grid !important;
-      grid-template-rows: 10% 80% 10%;
-
-      .recharts-responsive-container {
-        height: 120% !important;
-      }
+      grid-template-rows: 2% 90% 8%;
 
       .headerPie {
         text-align: center;
         font-size: 15px;
         color: #717ea0;
+      }
+
+      .piePanel {
+        margin-top: 10px;
       }
 
       .footerPie {
@@ -8950,17 +8958,17 @@ color: #2962ff;
         }
       }
 
-      .recharts-surface {
-        height: 250px;
+      .recharts-pie-sector {
+        cursor: pointer;
       }
     }
 
     .containerBarChart, .diag2, .localAnalyse, .pieChart {
       overflow: hidden;
       background: #fff;
-      box-shadow: 0 6px 20px rgb(13 9 5 / 15%);
+      box-shadow: 0 6px 20px rgb(192 0 255 / 8%);
       display: block;
-      border-radius: 10px;
+      border-radius: 3px;
     }
 
     .containerBarChart {
@@ -9000,10 +9008,10 @@ color: #2962ff;
       }
 
       .leftTextDegreeBlock {
-        width: 65px;
+        width: 60px;
 
         h4 {
-          transform: translate(20px, 155px) rotate(
+          transform: translate(5px, 170px) rotate(
                           270deg
           );
         }
@@ -9051,14 +9059,11 @@ color: #2962ff;
       }
     }
   }
+
   .recharts-surface {
     .recharts-tooltip-cursor {
       fill: #96969629;
     }
-  }
-
-  .recharts-sector {
-    transition: all 0.6s ease-in-out 0s;
   }
 }
 
@@ -9083,11 +9088,6 @@ color: #2962ff;
   }
 }
 
-.analitycLeft {
-  transition: all 0.6s ease-in-out 0s;
-  transform-origin: left top;
-}
-
 .ghModalAnalyse {
   max-width: 100% !important;
   width: 40%;
@@ -9100,7 +9100,6 @@ color: #2962ff;
     margin: 0 auto;
   }
 }
-
 
 @media only screen and (max-width: 530px) {
   .scienceResultsList {
@@ -9131,7 +9130,6 @@ color: #2962ff;
     max-height: 11em;
   }
 }
-
 
 @media only screen and (max-width: 900px) {
   .scienceForm form {
@@ -9227,13 +9225,13 @@ color: #2962ff;
 @media screen and (max-width: 1600px) {
   .barContainer {
     .recharts-surface {
-      width: 500px !important;
+      width: 500px;
     }
   }
 
   .pieChart {
     .recharts-surface {
-      height: 220px !important;
+      height: 250px !important;
     }
   }
 }
