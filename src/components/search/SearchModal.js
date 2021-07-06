@@ -72,7 +72,7 @@ class SearchModal extends Component {
    *
    * @returns
    */
-  sendSearchInBackEnd = async (search) => {
+  searchResults = async (search) => {
     const { graphId } = this.props
     const { checkBoxValues } = this.state
     const argument = {
@@ -97,8 +97,8 @@ class SearchModal extends Component {
     let docs = [];
     let nodes = [];
     
-    const foundNodes = await this.sendSearchInBackEnd(search);
-    const ifNodeExists = (node) => { // test and remove it
+    const foundNodes = await this.searchResults(search);
+    const ifNodeExists = (node) => {
       const frontNodes = Chart.getNodes();
       if (frontNodes.filter((nd) => nd.id === node.id).length) {
         return true;
@@ -113,7 +113,7 @@ class SearchModal extends Component {
 
     if (foundNodes.tags && foundNodes.tags.length > 0) {
       docs = !!foundNodes.tags ? foundNodes.tags : [];
-      docs = docs.filter((nd) => ifNodeExists(nd)); // remove this
+      docs = docs.filter((nd) => ifNodeExists(nd));
     }
     nodes = !!foundNodes.nodes ? foundNodes.nodes : [];
     keywords = !!foundNodes.keywords ? foundNodes.keywords : [];
