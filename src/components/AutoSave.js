@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import Chart from '../Chart';
 import { updateGraphPositionsRequest, updateGraphThumbnailRequest } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
@@ -179,6 +178,7 @@ class AutoSave extends Component {
     if (!graphId || Chart.isAutoPosition) {
       return;
     }
+
     document.body.classList.add('autoSave');
     const links = Chart.getLinks(true).filter((d) => !d.fake && !d.sourceId);
     const labels = Chart.getLabels();
@@ -291,10 +291,7 @@ class AutoSave extends Component {
       // return;
     }
     if (createNodes.length) {
-      const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
-      if (!_.isEmpty(data.errors)) {
-        toast.error('Something went vrong');
-      }
+      await this.props.createNodesRequest(graphId, createNodes);
     }
     const promise = [];
     if (updateNodes.length) {
