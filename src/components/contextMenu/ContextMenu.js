@@ -50,22 +50,18 @@ class ContextMenu extends Component {
 
   /**
    * Handle copy and past events
-   * 
-   * @param {object} ev 
+   * @param {object} ev
    */
   handleKeyDown = async (ev) => {
-    if (ev.chartEvent 
-      && ev.ctrlPress 
-      && ev.keyCode === KEY_CODES.copy_code
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.copy_code
     ) {
-      await this.handleCopy(ev)
+      await this.handleCopy(ev);
     }
   }
-  
+
   /**
    * Send copy to backend and save it in cache
-   * 
-   * @param {object} ev 
+   * @param {object} ev
    */
   handleCopy = async (ev) => {
     const { singleGraphId } = this.props;
@@ -79,7 +75,7 @@ class ContextMenu extends Component {
     localStorage.setItem('label.copy', JSON.stringify(data.data));
 
     const selectSquare = document.getElementsByClassName('selectSquare')
-    while(selectSquare.length > 0){
+    while (selectSquare.length > 0) {
       selectSquare[0].parentNode.removeChild(selectSquare[0]);
     }
     selectSquare.remove();
