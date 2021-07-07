@@ -123,8 +123,8 @@ class GraphView extends Component {
           ? (
             <AnalyticalPage
               graphId={graphId}
-              nodes={singleGraph.nodes}
-              links={singleGraph.links}
+              nodes={singleGraph.nodesPartial}
+              links={singleGraph.linksPartial}
             />
           )
           : (search.includes('nodeStart=')

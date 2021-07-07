@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import memoizeOne from 'memoize-one';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
 import SaveGraph from './chart/SaveGraph';
@@ -94,9 +95,12 @@ class ToolBar extends Component {
 
   handleClick = (button) => {
     if (button === 'analytic') {
+
       const {
         match: { params: { graphId } },
       } = this.props;
+
+      await this.initialGraph(graphId);
 
       const { nodes, links } = this.props.singleGraph;
 
@@ -117,6 +121,10 @@ class ToolBar extends Component {
       this.props.getSingleGraphRequest(graphId);
     }
   }
+
+  initialGraph = memoizeOne(async (graphId) => {
+    await this.props.getSingleGraphRequest(graphId, { full: true });
+  });
 
   render() {
     const {
@@ -174,14 +182,16 @@ class ToolBar extends Component {
               </div>
             </div>
 
-            {false ? <Button
-              icon={<LoopSvg />}
-              className={activeButton === 'reset' ? 'active' : undefined}
-              onClick={this.resetGraph}
-            >
-              Reset project
-            </Button> : null}
-            
+            {false ? (
+              <Button
+                icon={<LoopSvg />}
+                className={activeButton === 'reset' ? 'active' : undefined}
+                onClick={this.resetGraph}
+              >
+                Reset project
+              </Button>
+            ) : null}
+
             <Button
               className={activeButton === 'data' ? 'active' : undefined}
               icon={<LoopSvg />}
@@ -207,7 +217,7 @@ class ToolBar extends Component {
 
         <div className="bottom ">
 
-        {graphId && <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>}
+          {graphId && <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner="true" />}
         </div>
         <div className="bottom helpWrapper">
           <Button icon={<InfoSvg />}>
