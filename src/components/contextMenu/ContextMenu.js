@@ -74,11 +74,7 @@ class ContextMenu extends Component {
     });
     localStorage.setItem('label.copy', JSON.stringify(data.data));
 
-    const selectSquare = document.getElementsByClassName('selectSquare')
-    while (selectSquare.length > 0) {
-      selectSquare[0].parentNode.removeChild(selectSquare[0]);
-    }
-    selectSquare.remove();
+    Chart.event.emit('window.mousedown', ev)
     Chart.loading(false);
   }
 
