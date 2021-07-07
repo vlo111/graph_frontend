@@ -93,7 +93,7 @@ class ToolBar extends Component {
     }
   }
 
-  handleClick = (button) => {
+  handleClick = async (button) => {
     if (button === 'analytic') {
 
       const {
