@@ -8,4 +8,6 @@ export const KEY_CODES = {
     label_code: 76, // key code for l
     label_ellipse_code: 69, // key code for l
     escape: 27, // key code for l
+    copy_code: 67, // key code for l
+    undo_code: 90  // key code for z
 }
