@@ -22,8 +22,7 @@ import Api from '../../Api';
 import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
 import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
 import markerImg from '../../assets/images/icons/marker.svg';
-import delImg from '../../assets/images/icons/del.gif';
-import showMore from '../../assets/images/icons/showMore.gif';
+import delImg from '../../assets/images/icons/del.gif'; 
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 import NoImg from '../../assets/images/image-not-available.png';
@@ -421,16 +420,7 @@ class AddNodeModal extends Component {
                         </span>
                       </div>
                     </div>
-                  )).slice(!expand ? -2 : nodeData.location)}
-                  {((nodeData.location && nodeData.location.length) > 2) && (
-                  <div className="showMore" onClick={this.toggleExpand}>
-                    <img
-                      src={showMore}
-                      className="locMarker"
-                      alt="marker"
-                    />
-                  </div>
-                  )}
+                  )).slice(!expand ? -2 : nodeData.location)}  
                 </div>
               </>
             ) : null}
