@@ -2036,6 +2036,15 @@ class Chart {
 
       this.labels.each((l) => {
         if (this.squareData.labels.includes(l.id) && !l.readOnly) {
+          const lock = this.svg.select(`use[data-label-id="${l.id}"]`);
+
+          if (!lock.empty()) {
+            let [, x, y] = lock.attr('transform').match(/(-?[\d.]+),\s*(-?[\d.]+)/) || [0, 0, 0];
+            x = +x + ev.dx;
+            y = +y + ev.dy;
+            lock.attr('transform', `translate(${x}, ${y})`);
+          }
+
           if (l.size && (l.type === 'square' || l.type === 'ellipse')) {
             l.size.x = +(l.size.x + ev.dx).toFixed(2);
             l.size.y = +(l.size.y + ev.dy).toFixed(2);
