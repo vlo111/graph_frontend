@@ -89,16 +89,16 @@ export function setLegendButton(mode) {
   };
 }
 // ++++
-export const SET_GRAPHNAME_BUTTON = 'SET_GRAPHNAME_BUTTON';
+// export const SET_GRAPHNAME_BUTTON = 'SET_GRAPHNAME_BUTTON';
 
-export function setGraphNameButton(mode) {
-  return {
-    type: SET_GRAPHNAME_BUTTON,
-    payload: {
-      mode,
-    },
-  };
-}
+// export function setGraphNameButton(mode) {
+//   return {
+//     type: SET_GRAPHNAME_BUTTON,
+//     payload: {
+//       mode,
+//     },
+//   };
+// }
 // ++++++
 
 export const ONLINE_USERS = 'ONLINE_USERS';

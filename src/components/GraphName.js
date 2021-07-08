@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { setGraphNameButton } from '../store/actions/app';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
 import moment from 'moment';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
-// import GraphEditModal from './chart/GraphEditModal';
-// import Button from './form/Button';
 import SaveGraphModal from './chart/SaveGraphModal';
 import CreateGraphModal from './CreateGraphModal';
 import Button from './form/Button';
@@ -18,8 +16,6 @@ const LIMIT = 3
 
 class GraphName extends Component {
     static propTypes = {
-      showGraphNameButton: PropTypes.string.isRequired,
-      setGraphNamedButton: PropTypes.func.isRequired,
       singleGraph: PropTypes.object.isRequired,
     }
     constructor(props) {
@@ -32,6 +28,11 @@ class GraphName extends Component {
         openEdit: false
       };
     }
+
+    toggleDropDown = () => {
+      const { showDropDown } = this.state;
+      this.setState({ showDropDown: !showDropDown });
+    }
     
     graphSearch = async (e) => {
       const search = e.target.value
@@ -39,7 +40,8 @@ class GraphName extends Component {
       const result = await Api.getGraphsList(1, {
         onlyTitle: true,
         s: search,
-        limit: search === '' ? LIMIT : undefined
+        limit: search === '' ? LIMIT : undefined,
+        graphName: 'true'
       })
       const graphList = result?.data?.graphs
       if (graphList.length > 0) {
@@ -53,40 +55,22 @@ class GraphName extends Component {
       // this.props.history.push('/');
     }
 
-    // 
-      
     startGraph = () => {
       window.location.href = '/graphs/create';
-      console.log(window.location.href);
     }
-
-    // 
 
     toggleModal = (showModal) => {
       this.setState({ showModal });
     }
 
-    handleClick = () => {
-      const { showGraphNameButton } = this.props;
-      if (showGraphNameButton !== 'show') {
-        this.props.setGraphNameButton('show');
-      } else this.props.setGraphNameButton('close');
-    }
-
-    orderData = (data) => data.sort((a, b) => {
-      if (a.type.toUpperCase() < b.type.toUpperCase()) return -1;
-      if (a.type.toUpperCase() > b.type.toUpperCase()) return 1;
-      return 0;
-    })
 
     render() {
-      const { showGraphNameButton } = this.props;
+      const { showDropDown } = this.state;
       const { singleGraph } = this.props;
       const { showModal, preventReload, search, graphList } = this.state;
-      console.log('graphList', graphList);
       return (
-        <div className={showGraphNameButton === 'close' ? 'GraphNames' : 'GraphNames open'} onClick={this.toggleDropDown}>
-          <button className="dropdown-btn" onClick={() => this.handleClick()}>
+        <div className="GraphNames">
+          <button className="dropdown-btn" onClick={this.toggleDropDown}>
             <div className="graphNname1">
              
               <span className="graphNames">
@@ -98,7 +82,8 @@ class GraphName extends Component {
               </span>
             </div> 
           </button>
-       
+          {showDropDown ? (
+        <Outside onClick={this.toggleDropDown} exclude=".GraphNames">
           <div className="dropdown">
             <div className='graphname'>       
                 <span className="graphNames">
@@ -121,11 +106,19 @@ class GraphName extends Component {
                 value={search}
               />
             </div>
+
               <div className='graphNameList'>
               {graphList.reverse().map(graph => {
-                return <p>{graph.title}</p>
+              
+                return <div>
+                   <Link to={`/graphs/view/${graph.id}`}>
+                     {graph.title}
+                   </Link>
+                  </div>
+               
               })}
               </div>
+            
             
             <Button className="btn-classic" onClick={this.startGraph} >
                   New Graph
@@ -138,7 +131,11 @@ class GraphName extends Component {
                   Save as Template
               </Button>
           </div>
-        </div>
+            </Outside>
+            ) : null}
+
+          </div>
+       
      
       );
     }
@@ -147,13 +144,11 @@ class GraphName extends Component {
 
 const mapStateToProps = (state) => (
   {
-    showGraphNameButton: state.app.GraphNameButton,
     singleGraph: state.graphs.singleGraph,
   });
 
-const mapDispatchToProps = {
-  setGraphNameButton,
-};
+
+const mapDispatchToProps = {};
 
 const Container = connect(
   mapStateToProps,

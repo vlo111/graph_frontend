@@ -23,11 +23,13 @@ import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 import SearchModal from './search/SearchModal';
 import Chart from '../Chart';
 import SearchGraphs from './search/SearchGraphs';
-import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg';
+import { ReactComponent as CommentSvg } from '../assets/images/icons/comm.svg';
 import Input from './form/Input';
 import CommentModal from './CommentModal';
+import Notification from './Notification';
+
  
-class ToolBarHeader extends Component {
+class ToolBarHeader extends Component { 
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
@@ -37,6 +39,7 @@ class ToolBarHeader extends Component {
     location: PropTypes.object.isRequired,
     setActiveMouseTracker: PropTypes.func.isRequired,
     currentUserId: PropTypes.number.isRequired,
+    graph: PropTypes.object.isRequired,
 
   } 
   
@@ -44,17 +47,25 @@ class ToolBarHeader extends Component {
     super(props);
     this.state = {
       mouseTracker: false,
+      commentModal:false,
     };
   }
+ 
+
   handleClick = (button) => {
     this.props.setActiveButton(button);
   }
+  openCommentModal = (open) => {
+    this.setState({commentModal:open});
+  }
+
   handleCursor = (tracker) => {
     const {currentUserId, match: { params: { graphId } } } = this.props;
     this.setState({mouseTracker: !tracker})
     Chart.cursorTrackerListRemove();      
      this.props.socketMousePositionTracker(graphId, !tracker, currentUserId);     
   }
+  
   
   resetGraph = () => {
     const { match: { params: { graphId } } } = this.props;
@@ -64,31 +75,38 @@ class ToolBarHeader extends Component {
   }
 
   render() {
-    
     const { activeButton, currentUserId,  location: { pathname }, match: { params: { graphId, token = '' } } } = this.props;      
-    const { mouseTracker } = this.state;  
+    const { mouseTracker, commentModal } = this.state;  
     this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId)    
     const isInEmbed = Utils.isInEmbed();
     const updateLocation = pathname.startsWith('/graphs/update/');
+    
     return (
+      
       <div>
-        <header className="headerPanel" id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
-          <>
+        <header className="headerPanel" id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}> 
           <Link to="/" className="logoWrapper">
             <LogoSvg className="logoNew orange" />
             <span className="autoSaveText">Saving...</span>
           </Link>
-          </>
-          <>
-          <Legend />
-          </>
-          <>
+
+          <Legend /> 
           <GraphName />
-         </>
-         <>
-         </>
          
-          {/* {!updateLocation && (
+        
+           <div className='commentHeader'>
+              <Button
+                icon={<CommentSvg />}
+                className="transparent footer-icon"
+                onClick={() => this.openCommentModal(true)}
+                />
+            </div>
+
+           
+            <div className="notificationHeader">
+               <Notification />
+           </div>
+          {!updateLocation && (
           <div className="searchInputWrapper">
             <Button
               icon={<SearchSvg />}
@@ -98,7 +116,7 @@ class ToolBarHeader extends Component {
               Search
             </Button>
           </div>
-          )} */}
+          )}
            <div className="graphs">
            
             {updateLocation ? (
@@ -110,14 +128,6 @@ class ToolBarHeader extends Component {
                 Search
               </Button>
             ) : null} 
-
-           <>
-              <Button
-                icon={<CommentSvg />}
-                className="transparent footer-icon"
-              
-                />
-            </>
             
                {/* <div className="bottom "> */}
 
@@ -172,16 +182,23 @@ class ToolBarHeader extends Component {
             /> 
           </div>
            ) : null} */}
-          {/* <div className="signOut">
+          <div className="signOut">
             <AccountDropDown />
-          </div> */}
-          
+          </div>
         </header>
         {/* {activeButton === 'search' && <SearchModal history={this.props.history} />} */}
+        {commentModal && (
+                <CommentModal
+                  closeModal={() => this.openCommentModal(false)}
+                  graph={graph}
+                />
+                   )}
+           
       </div>
     );
   }
 }
+
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
