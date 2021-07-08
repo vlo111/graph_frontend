@@ -22,8 +22,7 @@ import Api from '../../Api';
 import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
 import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
 import markerImg from '../../assets/images/icons/marker.svg';
-import delImg from '../../assets/images/icons/del.gif';
-import showMore from '../../assets/images/icons/showMore.gif';
+import delImg from '../../assets/images/icons/del.gif'; 
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 import NoImg from '../../assets/images/image-not-available.png';
@@ -34,6 +33,7 @@ class AddNodeModal extends Component {
     currentUserId: PropTypes.number.isRequired,
     addNodeParams: PropTypes.object.isRequired,
     currentUserRole: PropTypes.string.isRequired,
+    graphNodes: PropTypes.array.isRequired,
   }
 
   initNodeData = memoizeOne((addNodeParams) => {
@@ -101,8 +101,8 @@ class AddNodeModal extends Component {
 
   saveNode = async (ev) => {
     ev.preventDefault();
-    this.setState({ loading: true });
-    const { currentUserId, graphId } = this.props;
+    this.setState({loading: true});
+    const {currentUserId, graphId, graphNodes} = this.props;
     const {
       nodeData, index, nodeId, imgUrl,
     } = this.state;
@@ -111,8 +111,7 @@ class AddNodeModal extends Component {
     const nodes = [...Chart.getNodes()];
 
     const update = !_.isNull(index);
-
-    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update);
+    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update, graphNodes);
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
     // [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
     [errors.color, nodeData.color] = Validate.nodeColor(nodeData.color, nodeData.type);
@@ -421,16 +420,7 @@ class AddNodeModal extends Component {
                         </span>
                       </div>
                     </div>
-                  )).slice(!expand ? -2 : nodeData.location)}
-                  {((nodeData.location && nodeData.location.length) > 2) && (
-                  <div className="showMore" onClick={this.toggleExpand}>
-                    <img
-                      src={showMore}
-                      className="locMarker"
-                      alt="marker"
-                    />
-                  </div>
-                  )}
+                  )).slice(!expand ? -2 : nodeData.location)}  
                 </div>
               </>
             ) : null}
@@ -461,6 +451,7 @@ const mapStateToProps = (state) => ({
   currentUserId: state.account.myAccount.id,
   graphId: state.graphs.singleGraph.id,
   currentUserRole: state.graphs.singleGraph.currentUserRole || '',
+  graphNodes: state.graphs.singleGraph.nodesPartial,
 });
 
 const mapDispatchToProps = {

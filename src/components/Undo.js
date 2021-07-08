@@ -5,6 +5,7 @@ import { ReactComponent as UndoBackSvg } from '../assets/images/icons/undo-back.
 import Chart from '../Chart';
 import ContextMenu from './contextMenu/ContextMenu';
 import ChartUtils from '../helpers/ChartUtils';
+import { KEY_CODES } from '../data/keyCodes'
 
 class Undo extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class Undo extends Component {
 
   handleKeyDown = (ev) => {
     ChartUtils.keyEvent(ev);
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === 90) {
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.undo_code) {
       if (ev.shiftKey) {
         Chart.undoManager.redo();
       } else {

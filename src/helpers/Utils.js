@@ -112,7 +112,8 @@ class Utils {
     if (/^https?:\/\//.test(src) || src.toString().includes('base64,') || src.toString().startsWith('blob:')) {
       return src;
     }
-
+    if(!src) return; 
+    
     return `${Api.url}${src}`;
   }
 

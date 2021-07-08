@@ -179,7 +179,6 @@ class AutoSave extends Component {
     if (!graphId || Chart.isAutoPosition) {
       return;
     }
-
     document.body.classList.add('autoSave');
     const links = Chart.getLinks(true).filter((d) => !d.fake && !d.sourceId);
     const labels = Chart.getLabels();

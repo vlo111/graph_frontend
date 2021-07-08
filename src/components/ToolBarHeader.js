@@ -18,10 +18,12 @@ import MapsButton from './maps/MapsButton';
 import Utils from '../helpers/Utils';
 import WikiButton from './wiki/WikiButton';
 import ScienceButton from './ScienceSearchToGraph/ScienceGraphButton';
-
+import ChartUtils from '../helpers/ChartUtils';
+import { KEY_CODES } from '../data/keyCodes';
 import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 import SearchModal from './search/SearchModal';
 import Chart from '../Chart';
+import { setLegendButton } from '../store/actions/app';
  
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -33,13 +35,20 @@ class ToolBarHeader extends Component {
     location: PropTypes.object.isRequired,
     setActiveMouseTracker: PropTypes.func.isRequired,
     currentUserId: PropTypes.number.isRequired,
-
+    setLegendButton: PropTypes.func.isRequired,
   } 
   constructor(props) {
     super(props);
     this.state = {
       mouseTracker: false,
     };
+  }
+
+  componentDidMount () {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+  componentWillUnmount () {
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
   handleClick = (button) => {
     this.props.setActiveButton(button);
@@ -49,6 +58,29 @@ class ToolBarHeader extends Component {
     this.setState({mouseTracker: !tracker})
     Chart.cursorTrackerListRemove();      
      this.props.socketMousePositionTracker(graphId, !tracker, currentUserId);     
+  }
+
+  handleKeyDown = (ev) => {
+    if (ev.chartEvent && ev.ctrlPress) {
+
+      if (ev.keyCode === KEY_CODES.search_code) {
+        ChartUtils.keyEvent(ev);
+        ev.preventDefault();
+        this.handleClick('search')
+      }
+
+      if (ev.keyCode === KEY_CODES.graphScience_code) {
+        ChartUtils.keyEvent(ev);
+        ev.preventDefault();
+        this.handleClick('scienceGraph')
+      }
+
+      if (ev.keyCode === KEY_CODES.media_code) {
+        ChartUtils.keyEvent(ev);
+        ev.preventDefault();
+        this.handleClick('media')
+      }
+    }
   }
 
   resetGraph = () => {
@@ -147,7 +179,10 @@ class ToolBarHeader extends Component {
           </div>
 
         </header>
-        {activeButton === 'search' && <SearchModal history={this.props.history} />}
+        {activeButton === 'search' && 
+          <SearchModal 
+            history={this.props.history} 
+          />}
       </div>
     );
   }
@@ -163,6 +198,7 @@ const mapDispatchToProps = {
   getSingleGraphRequest,
   setActiveMouseTracker,
   socketMousePositionTracker,
+  setLegendButton
 };
 const Container = connect(
   mapStateToProps,
