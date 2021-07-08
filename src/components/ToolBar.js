@@ -72,17 +72,17 @@ class ToolBar extends Component {
       }
     }
     if (ev.chartEvent && ev.shiftKey) {
-      if (ev.shiftKey && ev.keyCode === KEY_CODES.label_code) { 
+      if (ev.keyCode === KEY_CODES.label_code) { 
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
         this.handleClick('create-label-square')
       }
-      if (ev.shiftKey && ev.keyCode === KEY_CODES.data_code) { 
+      if (ev.keyCode === KEY_CODES.data_code) { 
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
         this.handleClick('create')
       }
-      if (ev.shiftKey && ev.keyCode === KEY_CODES.search_code) { 
+      if ( ev.keyCode === KEY_CODES.search_code) { 
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
         this.handleClick('findNode')
