@@ -19,7 +19,8 @@ import { ReactComponent as FreeFormSvg } from '../assets/images/icons/freeForm.s
 import { ReactComponent as AnalyticsSvg } from '../assets/images/icons/analytics.svg';
 import { ReactComponent as CursorSvg } from '../assets/images/icons/move_pointe.svg';
 import AnalyseModal from './Analysis/AnalyseModal';
-
+import ChartUtils from '../helpers/ChartUtils';
+import { KEY_CODES } from '../data/keyCodes';
 class ToolBar extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -33,6 +34,63 @@ class ToolBar extends Component {
   constructor() {
     super();
     this.state = { showLabelForm: false };
+  }
+
+  componentDidMount () {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+  componentWillUnmount () {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = (ev) => {
+    if (ev.chartEvent && ev.ctrlPress) {
+      if (ev.keyCode === KEY_CODES.analytic_code) {
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('analytic')
+      }
+      if (ev.keyCode === KEY_CODES.import_code) {
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('import')
+      }
+      if (ev.keyCode === KEY_CODES.data_code) {
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('data')
+      }
+      if (ev.keyCode === KEY_CODES.label_code) { 
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('create-label')
+      }
+      if (ev.keyCode === KEY_CODES.label_ellipse_code) { 
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('create-label-ellipse')
+      }
+    }
+    if (ev.chartEvent && ev.shiftKey) {
+      if (ev.shiftKey && ev.keyCode === KEY_CODES.label_code) { 
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('create-label-square')
+      }
+      if (ev.shiftKey && ev.keyCode === KEY_CODES.data_code) { 
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('create')
+      }
+      if (ev.shiftKey && ev.keyCode === KEY_CODES.search_code) { 
+        ev.preventDefault();
+        ChartUtils.keyEvent(ev);
+        this.handleClick('findNode')
+      }
+    }
+    if (ev.keyCode === 27) {
+      this.props.setActiveButton('create')
+    }
   }
 
   handleClick = async (button) => {
