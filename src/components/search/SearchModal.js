@@ -53,7 +53,6 @@ class SearchModal extends Component {
 
   /**
    * If search query have more then one symbol search it in back end
-   *
    * @param {string} search
    * @returns
    */
@@ -69,7 +68,6 @@ class SearchModal extends Component {
 
   /**
    * Send search string to back end
-   *
    * @returns
    */
   searchResults = async (search) => {
@@ -87,7 +85,6 @@ class SearchModal extends Component {
 
   /**
    * Search query in nodes, media tags, and node tabs and display result as a list
-   *
    * @param {string} search
    */
   displaySearchResultList = async (search) => {
@@ -133,7 +130,7 @@ class SearchModal extends Component {
                 html.innerHTML = tabContent;
                 const tagsElement = html.getElementsByClassName('tags')
                 if (tagsElement.length) {
-                  tagsElement.remove()
+                  tagsElement[0].remove()
                 }
                 const cleanedText = html.innerText
                   if (cleanedText.toLowerCase().includes(search.toLowerCase())) {
@@ -165,13 +162,11 @@ class SearchModal extends Component {
         tabArray = groupBy(tabs, "nodeId") ?? [];
       }
     } catch (e) {}
-    
     this.setState({ nodes, search, tabs: tabArray, docs, keywords });
   };
 
   /**
-   * find search string in text and make it bold
-   *
+   * Find search string in text and make it bold
    * @param {string} text
    * @returns
    */
@@ -184,7 +179,6 @@ class SearchModal extends Component {
 
   /**
    * Toggle folder and bring nodes inside it
-   *
    * @param {object} e
    * @param {object} label
    * @param {object} node
@@ -217,7 +211,6 @@ class SearchModal extends Component {
 
   /**
    * Open node which contains searched tags if it's inside folder call openFolder
-   *
    * @param {object} e
    * @param {object} tagNode
    */
@@ -239,7 +232,6 @@ class SearchModal extends Component {
 
   /**
    * Open chosen node if it's inside folder call openFolder
-   *
    * @param {object} e
    * @param {object} node
    */
@@ -293,7 +285,6 @@ class SearchModal extends Component {
 
   /**
    * Filter user search by name, tab, tag, keywords
-   *
    * @param {object} e
    */
   handleCheckBoxChange = (e) => {
