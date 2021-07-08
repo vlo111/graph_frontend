@@ -7,7 +7,7 @@ export const KEY_CODES = {
     media_code: 77, // key code for m
     label_code: 76, // key code for l
     label_ellipse_code: 69, // key code for l
-    escape: 27, // key code for l
-    copy_code: 67, // key code for l
+    escape: 27, // key code for escape
+    copy_code: 67, // key code for c
     undo_code: 90  // key code for z
 }
