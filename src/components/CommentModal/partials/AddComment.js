@@ -58,7 +58,7 @@ const AddComment = ({ graph, closeModal, isReply }) => {
           }}
           className="ghButton2 comment-modal__add-comment-button"
         >
-          Comment
+          Add
         </Button>
       </div>
     </div>

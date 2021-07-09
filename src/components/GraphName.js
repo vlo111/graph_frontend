@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
 import moment from 'moment';
+import Outside from './Outside';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import SaveGraphModal from './chart/SaveGraphModal';
 import CreateGraphModal from './CreateGraphModal';
@@ -25,17 +26,22 @@ class GraphName extends Component {
         preventReload: false,
         search: '',
         graphList: [],
-        openEdit: false
+        openEdit: false,
+        showDropDown: false,
+
       };
     }
 
     toggleDropDown = () => {
       const { showDropDown } = this.state;
       this.setState({ showDropDown: !showDropDown });
+      if(!showDropDown) {
+        this.graphSearch()
+      }   
     }
     
-    graphSearch = async (e) => {
-      const search = e.target.value
+    graphSearch = async (e=null) => {
+      const search = e === null ? '' : e.target.value
       this.setState({search})
       const result = await Api.getGraphsList(1, {
         onlyTitle: true,
@@ -43,11 +49,55 @@ class GraphName extends Component {
         limit: search === '' ? LIMIT : undefined,
         graphName: 'true'
       })
+      debugger
       const graphList = result?.data?.graphs
-      if (graphList.length > 0) {
+      if (typeof(graphList) === "object") {
         this.setState({graphList})
       }
     }
+
+    // 
+    saveGraph = async (status, forceCreate) => {
+      const { requestData } = this.state;
+      const { match: { params: { graphId } } } = this.props;
+  
+      this.props.setLoading(true);
+      const labels = Chart.getLabels();
+      const svg = ChartUtils.getChartSvg();
+      // const svg = Chart.printMode(400, 223);
+      let resGraphId;
+      if (forceCreate || !graphId) {
+        const { payload: { data } } = await this.props.createGraphRequest({
+          ...requestData,
+          status,
+          svg,
+        });
+        resGraphId = data.graphId;
+      } else {
+        const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
+          ...requestData,
+          labels,
+          status,
+          svg,
+        });
+        resGraphId = data.graphId;
+      }
+  
+      if (resGraphId) {
+        toast.info('Successfully saved');
+        // const svgBig = Chart.printMode(800, 446);
+        // this.props.updateGraphThumbnailRequest(resGraphId, svg);
+        this.props.onSave(resGraphId);
+        this.props.history.push('/');
+      } else {
+        toast.error('Something went wrong. Please try again');
+      }
+      this.props.setLoading(false);
+      this.props.toggleModal(false);
+      this.props.setActiveButton('create');
+    }
+  
+    // 
 
     
     handleDataSave = async () => {
@@ -74,7 +124,6 @@ class GraphName extends Component {
             <div className="graphNname1">
              
               <span className="graphNames">
-                 {'   '}  
                {singleGraph.title}
               </span>
               <span className="carret2">
@@ -82,19 +131,14 @@ class GraphName extends Component {
               </span>
             </div> 
           </button>
-          {showDropDown ? (
-        <Outside onClick={this.toggleDropDown} exclude=".GraphNames">
+         {showDropDown ? (
+         <Outside onClick={this.toggleDropDown} exclude=".GraphNames">
           <div className="dropdown">
             <div className='graphname'>       
                 <span className="graphNames">
-                  {'   '}  
                   {singleGraph.title}
                 </span>
-                <Button icon={<EditSvg />} className="EditGraph" onClick={() => this.toggleModal(true)} />
-               
-               {showModal ? (
-                  <SaveGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
-               ) : null}
+                <Button icon={<EditSvg />} className="EditGraph" onClick={() => this.toggleModal(true)} />  
             </div>
 
             <div>
@@ -104,17 +148,19 @@ class GraphName extends Component {
                 icon="fa-search"
                 onChange={(e) => this.graphSearch(e)}
                 value={search}
+                autoComplete="off"
               />
             </div>
 
               <div className='graphNameList'>
-              {graphList.reverse().map(graph => {
+              {graphList.map(graph => {
               
-                return <div>
-                   <Link to={`/graphs/view/${graph.id}`}>
-                     {graph.title}
+                return <Link to={`/graphs/view/${graph.id}`}>
+                  <div>
+                      {graph.title}
+                  </div> 
                    </Link>
-                  </div>
+                  
                
               })}
               </div>
@@ -130,9 +176,13 @@ class GraphName extends Component {
              <Button className="btn-delete" onClick={() => this.saveGraph('template', true)}>
                   Save as Template
               </Button>
-          </div>
+           </div>
             </Outside>
             ) : null}
+
+             {showModal ? (
+                  <SaveGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
+               ) : null}
 
           </div>
        

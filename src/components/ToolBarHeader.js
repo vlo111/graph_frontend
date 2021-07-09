@@ -25,7 +25,7 @@ import Chart from '../Chart';
 import SearchGraphs from './search/SearchGraphs';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/comm.svg';
 import Input from './form/Input';
-import CommentModal from './CommentModal';
+import CommentModal from './CommentModal/indexMini.js';
 import Notification from './Notification';
 
  
@@ -75,7 +75,7 @@ class ToolBarHeader extends Component {
   }
 
   render() {
-    const { activeButton, currentUserId,  location: { pathname }, match: { params: { graphId, token = '' } } } = this.props;      
+    const { activeButton, singleGraph, currentUserId,  location: { pathname }, match: { params: { graphId, token = '' } } } = this.props;      
     const { mouseTracker, commentModal } = this.state;  
     this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId)    
     const isInEmbed = Utils.isInEmbed();
@@ -90,8 +90,11 @@ class ToolBarHeader extends Component {
             <span className="autoSaveText">Saving...</span>
           </Link>
 
-          <Legend /> 
-          <GraphName />
+             <Legend /> 
+          {updateLocation ? (
+             <GraphName />
+          ) : null} 
+          
          
         
            <div className='commentHeader'>
@@ -117,6 +120,11 @@ class ToolBarHeader extends Component {
             </Button>
           </div>
           )}
+          {!updateLocation && (
+             <span className="graphNames">
+                  {singleGraph.title}
+             </span>
+          )}
            <div className="graphs">
            
             {updateLocation ? (
@@ -129,12 +137,13 @@ class ToolBarHeader extends Component {
               </Button>
             ) : null} 
             
+            
                {/* <div className="bottom "> */}
 
                   {/* {graphId && <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>} */}
                {/* </div> */}
-            {/* <ShareGraph graphId={+graphId} setButton />
-            {updateLocation ? (
+            {/* <ShareGraph graphId={+graphId} setButton /> */}
+            {/* {updateLocation ? (
               <Button
                 icon={<ViewSvg />}
                 onClick={() => this.props.history.replace(`/graphs/view/${graphId}`)}
@@ -190,7 +199,7 @@ class ToolBarHeader extends Component {
         {commentModal && (
                 <CommentModal
                   closeModal={() => this.openCommentModal(false)}
-                  graph={graph}
+                  graph={singleGraph}
                 />
                    )}
            
@@ -204,6 +213,7 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   mouseTracker: state.graphs.mouseTracker,
   currentUserId: state.account.myAccount.id,
+  singleGraph: state.graphs.singleGraph,
 });
 const mapDispatchToProps = {
   setActiveButton,

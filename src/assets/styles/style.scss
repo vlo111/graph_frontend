@@ -2297,7 +2297,7 @@ p {
       border:none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
-      color: #424242;
+      color: $Color-text;
       font-style: normal;
       font-weight: bold;
       font-size: 23px;
@@ -3853,19 +3853,23 @@ p {
 #accountDropDown {
   top: 0;
   right: 0;
+  // border-radius: 0 0 0 35px;
   flex-direction: column;
   z-index: 9;
 
   .accountInfo {
     display: flex;
     align-items: center;
+    // border: 1px solid $color-light-gray;
     border-radius: 15px;
+    // background-color: #F8FAFC;
     padding-right: 45px;
     cursor: pointer;
     user-select: none;
     margin-top: 20px;
     justify-content: flex-end;
     .avatar {
+      // box-shadow: 0 4px 9px rgba(2, 47, 119, 0.1);
       display: flex;
       margin: -1px;
       width: 40px;
@@ -3889,9 +3893,10 @@ p {
     padding: 12px 60px 0 0;
 
     ul {
+      border-radius: 3px;
       background-color: $color-white;
       padding: 10px 10px 22px;
-      box-shadow: 0px 4px 33px rgba(0, 0, 0, 0.25);
+      box-shadow: 0px 4px 20px rgb(0 0 0 / 25%);
       width: 180px;
       .item {
         padding: 8px 14px;
@@ -3915,7 +3920,6 @@ p {
     right: 15px;
     width: 17px;
     height: 17px;
-    // background-color: #F2F5F7;
     border-radius: 1px;
     display: flex;
     align-items: center;
@@ -5503,9 +5507,11 @@ body .gh__menu {
   .dropdown {
     display: none;
     width: 100%;
-    padding: 60px 16px 20px 16px;
+    top:60px;
+    padding: 26px 16px 20px 16px;
     background-color: #FFFFFF;
-    border-radius: 12px;
+    border-radius: 3px;
+    box-shadow: 0px 11px 20px rgb(0 0 0 / 25%);
 
     h4 {
       margin-bottom: 10px;
@@ -9384,12 +9390,11 @@ color: #2962ff;
 
     .dropdown {
       position: absolute;
-      right: 15px;
-      top: 59px;
+      right: -25px;
+      top: 70px;
       width: 200px;
       left: auto;
       padding: 0;
-      border: 1px solid #E2E7EB;
       border-radius: 15px;
     }
   }
@@ -9599,58 +9604,8 @@ color: #2962ff;
     box-sizing: border-box;
     
   }
-  .btn-classic {
-    width: 190px;
-    height: 32px;
-    display: flex;
-    margin-top:20px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 2px;
-    line-height: normal;
-    font-weight: 400;
-    font-style: normal;
-    transition: all 0.25s;
-    text-align: center;
-    font-size: 16px;
-    color: $color-btnText;
-    cursor: pointer;
-    touch-action: manipulation;
-    outline: none;
-    border: solid 1px;
-    border-color: $color-main;
-    user-select: none;
-    background-color: $color-main;
-    opacity:1;
-    &:hover {
-      background-color: $color-btnText;
-      color: $color-main;
-      border-color: $color-main;
-    }
-  }
-  .btn-delete {
-    width: 190px;
-    height: 32px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size:16px;
-    font-weight: 400;
-    border-radius: 2px;
-    border: solid 1px $color-main;
-    border-color: $color-main;
-    color: $color-main;
-    line-height: normal;
-    background-color: $color-btnText;
-    margin-top: 11px;
   
-    &:hover {
-      background-color: $color-border;
-      color: #ffffff;
-      cursor: pointer;
-      transition: all 0.25s;
-    }
-  }
+  
   
   ul {
     list-style: none;
@@ -9663,56 +9618,6 @@ color: #2962ff;
           transform: rotate(180deg);
         }
       }
-    }
-
-    .dropdown {
-      // display: block;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-
-      .ghFormField {
-          width:auto;
-
-         
-      .icon {
-        position: absolute;
-        bottom: 5px;
-        left: 80px;
-        font-size: 13px;
-        color: $color-gray;
-      }
-    }
-
-     .graphSearchName{
-          width: 100%;
-          display: flex;
-          margin-top: 10px;
-          border-radius: 5px;
-          height: 35px;
-          border: 1px solid $color-gray;
-          color: $color-gray;
-          padding: 0 10px;
-     }
-     .graphNameList{
-      margin:20px 0 0;
-      width: 300px;
-      overflow: scroll;
-      height: 110px;
-      div{
-        padding: 4px 35px;
-        font-size: 16px;
-        font-weight: 500;
-        color: #717EA0;
-        margin: auto;
-      }
-    }
-    .graphNameList div:nth-child(odd){
-      background-color: $color-darkgreen;
-    }
-    // .graphNameList:nth-child(1n){
-    //   background-color: green;
-    // }
     }
   }
 
@@ -9755,24 +9660,35 @@ color: #2962ff;
     }
     
   }
-
   }
 
   .dropdown {
-    display: none;
-    width: 100%;
+    width:100%;
     padding: 5px 16px 20px 16px;
     background-color: #FFFFFF;
     border-radius: 3px;
     top:60px;
-    box-shadow: 0px 0px 0px 1px #ABD6F780;
+    box-shadow: 0px 11px 20px rgb(0 0 0 / 25%);
+
+    .ghFormField {
+      width:auto;
+
+     
+      .icon {
+        position: absolute;
+        bottom: 5px;
+        left: 80px;
+        font-size: 13px;
+        color: $color-gray;
+      }
+    }
 
     .graphname{
       display: flex;
       width: 100%;
       justify-content: space-between;
       padding: 0px 20px;
-      color: #424242;
+      color: $Color-text;
     }
     
     
@@ -9783,6 +9699,9 @@ color: #2962ff;
     }
     .EditGraph{
       background-color: $color-white;
+      svg{
+        fill:$Color-text;
+      }
       &:hover{
         background-color:$color-white;
         box-shadow: none;
@@ -9793,7 +9712,90 @@ color: #2962ff;
          }
       }  
     }
+
+    .graphSearchName{
+          width: 100%;
+          display: flex;
+          margin-top: 10px;
+          border-radius: 5px;
+          height: 35px;
+          border: 1px solid $color-gray;
+          color: $Color-text;
+          padding: 0 10px;
+          font-size: 16px;
+      }
+    .graphNameList{
+      margin:20px 0 0;
+      width: 100%;
+      overflow: scroll;
+      height: 110px;
+          div{
+            padding: 4px 35px;
+            font-size: 16px;
+            font-weight: 500;
+            margin: auto;
+            color: #717EA0;  
+          }
+          a{
+            text-decoration:none;
+          }
+      }
+    .graphNameList div:hover{
+      background-color: $color-darkgreen;
+      cursor:pointer;
+      text-decoration:none;
+    }
+    .btn-classic {
+      width: 100%;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 2px;
+      line-height: normal;
+      font-weight: 400;
+      font-style: normal;
+      transition: all 0.25s;
+      text-align: center;
+      font-size: 16px;
+      color: $color-btnText;
+      cursor: pointer;
+      touch-action: manipulation;
+      outline: none;
+      border: solid 1px;
+      border-color: $color-main;
+      user-select: none;
+      background-color: $color-main;
+      opacity:1;
+      &:hover {
+        background-color: $color-btnText;
+        color: $color-main;
+        border-color: $color-main;
+      }
+    }
+    .btn-delete {
+      width: 100%;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size:16px;
+      font-weight: 400;
+      border-radius: 2px;
+      border: solid 1px $color-main;
+      border-color: $color-main;
+      color: $color-main;
+      line-height: normal;
+      background-color: $color-btnText;
+      margin-top: 11px;
     
+      &:hover {
+        background-color: $color-main;
+        color: #ffffff;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+    }
   }
   
 }
