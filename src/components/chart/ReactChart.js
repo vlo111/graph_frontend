@@ -64,6 +64,7 @@ class ReactChart extends Component {
 
     Chart.event.on('folder.open', this.handleFolderOpen);
     Chart.event.on('folder.close', this.handleFolderClose);
+    Chart.loading(false);
   }
 
   componentWillUnmount() {
