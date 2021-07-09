@@ -221,12 +221,19 @@ class SearchModal extends Component {
     if (isNodeAvailable) {
       this.closeModal();
       ChartUtils.findNodeInDom(isNodeAvailable);
+      if (tagNode.tabName) {
+        this.props.setActiveTab(tagNode.tabName);
+      }
       this.props.history.replace(
         `${window.location.pathname}?info=${isNodeAvailable.id}`
       );
     } else {
       const label = labels.find((label) => label.nodes.includes(tagNode.id));
-      this.openFolder(e, label, tagNode);
+      if (tagNode.tabName) {
+        this.openFolder(e, label, tagNode, tagNode.tabName);
+      } else {
+        this.openFolder(e, label, tagNode);
+      }
     }
   };
 
