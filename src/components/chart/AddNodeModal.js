@@ -255,27 +255,6 @@ class AddNodeModal extends Component {
     });
   }
 
-  openMap = () => {
-    this.setState({ openMap: true });
-  }
-
-  toggleMap = () => {
-    const { openMap } = this.state;
-    this.setState({
-      openMap: !openMap,
-      editLocation: null,
-    });
-  }
-
-  closeExpand = () => {
-    this.setState({ expand: false });
-  }
-
-  toggleExpand = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
-  }
-
   render() {
     const {
       nodeData, errors, index, openMap, editLocation, expand, imgUrl,

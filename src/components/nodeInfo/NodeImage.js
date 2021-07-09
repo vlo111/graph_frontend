@@ -76,9 +76,8 @@ class NodeImage extends Component {
     const {
       x, y, clipPath, fill, transform, width, height,
     } = this.state;
-    const s = Chart.nodesWrapper.select(`[data-i="${node.index}"] rect`);
 
-    if (node.nodeType !== 'infography' || !node.d || s.empty()) {
+    if (node.nodeType !== 'infography' || !node.d) {
       return (
         <img
           src={node.icon ? ChartUtils.normalizeIcon(node.icon, true) : bgImage}
@@ -91,7 +90,6 @@ class NodeImage extends Component {
     if (this.wrapper) {
       this.setSvgParams(node);
     }
-
     return (
       <svg
         style={{ width: '100%', backgroundColor: '#F2F4FF' }}

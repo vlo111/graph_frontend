@@ -9,8 +9,8 @@ class SearchResult extends Component {
   render() {
     return (
       <>
-      <SearchGraphs setLimit />   {/* use this two */}
-        <SearchSharedGraphs setLimit />  {/* use this two */}
+      <SearchGraphs setLimit />
+        <SearchSharedGraphs setLimit />
         <SearchUsers setLimit />
         <SearchPictures setLimit />
         <SearchDocuments setLimit />
