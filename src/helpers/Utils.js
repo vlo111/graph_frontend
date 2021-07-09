@@ -77,6 +77,30 @@ class Utils {
     return new File([u8arr], filename, { type: mime });
   }
 
+  /**
+   * Convert an image
+   * to a base64 url
+   * @param url
+   * @returns {Promise<unknown>}
+   */
+  static toDataUrl = (url) => {
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+
+    return new Promise((resolve) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = () => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          resolve(reader.result);
+        };
+        reader.readAsDataURL(xhr.response);
+      };
+      xhr.open('GET', proxyUrl + url);
+      xhr.responseType = 'blob';
+      xhr.send();
+    });
+  }
+
   static fileToString = (file) => new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = (ev) => {
