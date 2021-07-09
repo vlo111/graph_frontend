@@ -44,7 +44,7 @@ class ToolBar extends Component {
   }
 
   handleKeyDown = (ev) => {
-    if (ev.chartEvent && ev.ctrlPress) {
+    if (ev.chartEvent && ev.ctrlPress && !ev.shiftKey) {
       if (ev.keyCode === KEY_CODES.analytic_code) {
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
@@ -71,18 +71,18 @@ class ToolBar extends Component {
         this.handleClick('create-label-ellipse')
       }
     }
-    if (ev.chartEvent && ev.shiftKey) {
-      if (ev.shiftKey && ev.keyCode === KEY_CODES.label_code) { 
+    if (ev.chartEvent && ev.shiftKey && !ev.ctrlPress) {
+      if (ev.keyCode === KEY_CODES.label_code) { 
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
         this.handleClick('create-label-square')
       }
-      if (ev.shiftKey && ev.keyCode === KEY_CODES.data_code) { 
+      if (ev.keyCode === KEY_CODES.data_code) { 
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
         this.handleClick('create')
       }
-      if (ev.shiftKey && ev.keyCode === KEY_CODES.search_code) { 
+      if ( ev.keyCode === KEY_CODES.search_code) { 
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
         this.handleClick('findNode')
