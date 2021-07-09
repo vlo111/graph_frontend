@@ -36,6 +36,8 @@ class NodeFullInfo extends Component {
   }
 
   getCustomFields = memoizeOne(async (graphId, nodeId) => {
+    this.setState({ loading: false });
+    if(!graphId || !nodeId) return;
     this.setState({ loading: true });
     await this.props.getNodeCustomFieldsRequest(graphId, nodeId);
     this.setState({ loading: false });
