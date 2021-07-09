@@ -4100,7 +4100,7 @@ body .gh__menu {
 
         .name {
           font-size: 15px;
-          max-width: 50%;
+          max-width: 80%;
           white-space: nowrap;
           text-overflow: ellipsis;
         }
@@ -9446,6 +9446,9 @@ color: #2962ff;
         }
       }
     }
+  }
+  .searchItem {
+    cursor: pointer;
   }
 }
 

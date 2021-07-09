@@ -24,7 +24,7 @@ class NodeTabs extends Component {
     removeNodeCustomFieldKey: PropTypes.func.isRequired,
     activeTab: PropTypes.string.isRequired,
     setActiveTab: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -79,6 +79,14 @@ class NodeTabs extends Component {
   }, _.isEqual);
 
   setFirstTab = memoizeOne((location, customField) => {
+    if (this.state.activeTab) {
+      this.props.setActiveTab('');
+      return
+    }
+    if (this.props.activeTab) {
+      this.setState({ activeTab: this.props.activeTab });
+      return
+    }
     if (location) {
       this.setState({ activeTab: '_location' });
     } else {
@@ -88,22 +96,25 @@ class NodeTabs extends Component {
   }, _.isEqual);
 
   componentDidMount() {
-    ContextMenu.event.on('node.fields-edit', this.openFormModal);
-    ContextMenu.event.on('node.fields-delete', this.deleteCustomField);
+    ContextMenu.event.on("node.fields-edit", this.openFormModal);
+    ContextMenu.event.on("node.fields-delete", this.deleteCustomField);
   }
 
   componentWillUnmount() {
-    ContextMenu.event.removeListener('node.fields-edit', this.openFormModal);
-    ContextMenu.event.removeListener('node.fields-delete', this.deleteCustomField);
+    ContextMenu.event.removeListener("node.fields-edit", this.openFormModal);
+    ContextMenu.event.removeListener(
+      "node.fields-delete",
+      this.deleteCustomField
+    );
   }
 
   setActiveTab = (activeTab) => {
     this.setState({ activeTab });
-  }
+  };
 
   openFormModal = (ev, params) => {
-    this.setState({ formModalOpen: params?.fieldName || '' });
-  }
+    this.setState({ formModalOpen: params?.fieldName || "" });
+  };
 
   closeFormModal = async (data) => {
     await this.updateTabFilePath(data);
@@ -119,7 +130,7 @@ class NodeTabs extends Component {
         customFields: nodeCustomFields.filter((f) => f.name !== fieldName),
       }]);
     }
-  }
+  };
 
   showLocation() {
     this.setState({ showLocation: true });
@@ -166,8 +177,10 @@ class NodeTabs extends Component {
           />
           {node.location ? (
             <Button
-              className={activeTab === '_location' ? 'active activeNoShadow' : undefined}
-              onClick={() => this.setActiveTab('_location')}
+              className={
+                activeTab === "_location" ? "active activeNoShadow" : undefined
+              }
+              onClick={() => this.setActiveTab("_location")}
             >
               <p>Location</p>
             </Button>
@@ -175,7 +188,11 @@ class NodeTabs extends Component {
 
           {editable && !node.sourceId && node.customFields?.length < CustomFields.LIMIT ? (
             <Tooltip overlay="Add New Tab" placement="top">
-              <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
+              <Button
+                className="addTab"
+                icon="fa-plus"
+                onClick={() => this.openFormModal()}
+              />
             </Tooltip>
           ) : null}
         </div>
@@ -223,9 +240,6 @@ const mapDispatchToProps = {
   updateNodesCustomFieldsRequest,
 };
 
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NodeTabs);
+const Container = connect(mapStateToProps, mapDispatchToProps)(NodeTabs);
 
 export default Container;

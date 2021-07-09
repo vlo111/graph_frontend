@@ -7,7 +7,7 @@ import ApiImg from '../../assets/images/icons/science.png';
 class ScienceButton extends Component {
     toggleModal = () => {
       const { activeButton } = this.props;
-      this.props.setActiveButton(activeButton === 'scienceGraph' ? 'create' : 'scienceGraph');
+      this.props.setActiveButton(activeButton === 'sciGraph' ? 'create' : 'sciGraph');
     }
 
   render() {
@@ -21,7 +21,7 @@ class ScienceButton extends Component {
           <img src={ApiImg} alt="science" />
         </button>
 
-        {activeButton === 'scienceGraph' ? (
+        {activeButton === 'sciGraph' ? (
           <ScienceGraphModal 
             onClose={this.toggleModal} 
           />
