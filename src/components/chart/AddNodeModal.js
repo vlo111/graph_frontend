@@ -144,6 +144,8 @@ class AddNodeModal extends Component {
         const { data = {} } = await Api.uploadNodeIcon(graphId, nodeData.id, fileData).catch((d) => d);
 
         nodeData.icon = data.icon;
+
+        this.setState({ imgUrl: '' });
       } else if (_.isObject(nodeData.icon) && !_.isEmpty(nodeData.icon)) {
         const { data = {} } = await Api.uploadNodeIcon(graphId, nodeData.id, nodeData.icon).catch((d) => d);
         nodeData.icon = data.icon;

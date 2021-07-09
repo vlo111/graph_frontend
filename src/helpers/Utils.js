@@ -2,6 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import Bowser from 'bowser';
 import memoizeOne from 'memoize-one';
+import { uuid } from 'uuidv4';
 import Api from '../Api';
 
 const browser = Bowser.getParser(window.navigator.userAgent);
@@ -359,11 +360,7 @@ class Utils {
      * Generate id uuidv4 version 4
      * @returns {string} // uniq id
      */
-    static generateUUID = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      const r = Math.random() * 16 | 0; const
-        v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    })
+    static generateUUID = () => uuid()
 
     /**
      * Tab editor element
