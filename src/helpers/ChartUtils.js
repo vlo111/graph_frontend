@@ -324,14 +324,14 @@ class ChartUtils {
         return d.color;
       }
       this.nodeColorObj[d.type] = this.nodeColorsArr.shift() || randomColor();
-    }  
+    }
     return this.nodeColorObj[d.type];
   }
 
   static cursorColor = (cursor) => {
-    if (!this.cursorColorObj[cursor]) { 
+    if (!this.cursorColorObj[cursor]) {
       this.cursorColorObj[cursor] = this.cursorColorsArr.shift() || randomColor();
-    }  
+    }
     return this.cursorColorObj[cursor];
   }
 
@@ -553,7 +553,6 @@ class ChartUtils {
     const firstFolder = node.labels?.find((l) => l.startsWith('f_'));
     const firstLabel = node.labels?.find((l) => !l.startsWith('f_'));
     const labels = Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
-
     if (firstLabel) {
       return labels.filter((l) => !l.startsWith('f_'));
     }

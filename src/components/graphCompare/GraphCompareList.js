@@ -6,6 +6,10 @@ import LabelCompareItem from '../labelCopy/LabelCompareItem';
 import Icon from '../form/Icon';
 
 class GraphCompareList extends Component {
+  static defaultProps = {
+    width: Math.min(window.innerWidth - 220, 1024)
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -41,7 +45,7 @@ class GraphCompareList extends Component {
   render() {
     const { show } = this.state;
     const {
-      singleGraph1, singleGraph2, dropdown, title, selected, scrollContainer,
+      singleGraph1, singleGraph2, dropdown, title, selected, width,
     } = this.props;
     if (_.isEmpty(singleGraph1?.nodes) && _.isEmpty(singleGraph2?.nodes)) {
       return null;
@@ -64,8 +68,8 @@ class GraphCompareList extends Component {
           <>
             {singleGraph1?.nodes?.length ? (
               <List
-                width={Math.min(window.innerWidth - 220, 1024)}
-                height={singleGraph1?.nodes?.length < 2 ? 200 :window.innerHeight - 450}
+                width={width}
+                height={singleGraph1?.nodes?.length < 2 ? 200 : window.innerHeight - 450}
                 rowCount={singleGraph1?.nodes?.length || 0}
                 rowHeight={200}
                 rowRenderer={({ key, style, index }) => {
@@ -105,7 +109,7 @@ class GraphCompareList extends Component {
             {!singleGraph1 ? (
               <List
                 width={Math.min(window.innerWidth - 220, 1024)}
-                height={singleGraph2?.nodes?.length < 2 ? 200 :window.innerHeight - 450}
+                height={singleGraph2?.nodes?.length < 2 ? 200 : window.innerHeight - 450}
                 rowCount={singleGraph2?.nodes?.length || 0}
                 rowHeight={200}
                 rowRenderer={({ key, style, index }) => {

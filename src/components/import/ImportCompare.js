@@ -62,6 +62,7 @@ class ImportCompare extends Component {
             singleGraph2={singleGraph2}
             onChange={this.handleChange}
             selected={selected}
+            width={640}
             scrollContainer=".ghImportModal"
           />
         </div>
