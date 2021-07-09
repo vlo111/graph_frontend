@@ -80,8 +80,8 @@ class NodeTabs extends Component {
 
   setFirstTab = memoizeOne((location, customField) => {
     if (this.state.activeTab) {
-      return
       this.props.setActiveTab('');
+      return
     }
     if (this.props.activeTab) {
       this.setState({ activeTab: this.props.activeTab });
