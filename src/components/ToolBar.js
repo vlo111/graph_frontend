@@ -44,7 +44,7 @@ class ToolBar extends Component {
   }
 
   handleKeyDown = (ev) => {
-    if (ev.chartEvent && ev.ctrlPress) {
+    if (ev.chartEvent && ev.ctrlPress && !ev.shiftKey) {
       if (ev.keyCode === KEY_CODES.analytic_code) {
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
@@ -71,7 +71,7 @@ class ToolBar extends Component {
         this.handleClick('create-label-ellipse')
       }
     }
-    if (ev.chartEvent && ev.shiftKey) {
+    if (ev.chartEvent && ev.shiftKey && !ev.ctrlPress) {
       if (ev.keyCode === KEY_CODES.label_code) { 
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
