@@ -383,11 +383,11 @@ class SearchModal extends Component {
         </div>
         <ul className="list"> 
           {nodes.map((d) => (
-            <li className="item" key={d.index}>
+            <li className="item " key={d.index}>
               <div
                 tabIndex="0"
                 role="button"
-                className="ghButton"
+                className="ghButton searchItem"
                 onClick={(e) => this.openNode(e, d)}
               >
                 <div className="left">
@@ -493,11 +493,11 @@ class SearchModal extends Component {
             ))}
 
           {keywords.map((d) => (
-            <li className="item" key={d.index}>
+            <li className="item " key={d.index}>
               <div
                 tabIndex="0"
                 role="button"
-                className="ghButton"
+                className="ghButton searchItem"
                 onClick={(e) => this.openNode(e, d)}
               >
                 <div className="left">
@@ -534,11 +534,11 @@ class SearchModal extends Component {
           ))}
 
           {docs.map((d, index) => (
-            <li className="item" key={index}>
+            <li className="item " key={index}>
               <div
                 tabIndex="0"
                 role="button"
-                className="ghButton"
+                className="ghButton searchItem"
                 onClick={(e) => this.openNodeByTag(e, d)}
               >
                 <div className="right">
