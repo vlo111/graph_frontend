@@ -11,6 +11,7 @@ import withGoogleMap from '../../helpers/withGoogleMap';
 import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import MapsStyle from './MapsStyle';
+import { toast } from 'react-toastify';
 
 class MapsLocationPicker extends Component {
   static propTypes = {
@@ -33,8 +34,10 @@ class MapsLocationPicker extends Component {
       if (location?.lat !== lat || location?.lat !== lng) {
         this.setState({ selected: { location: { lat, lng } } });
       }
+      
     }
   })
+  
 
   constructor(props) {
     super(props);
@@ -58,7 +61,6 @@ class MapsLocationPicker extends Component {
     try {
       const { coords } = await Utils.getCurrentPosition();
       const initialCenter = { lat: coords.latitude, lng: coords.longitude };
-
       this.setState({ initialCenter });
     } catch (e) {
       this.setState({ initialCenter: undefined });
@@ -77,7 +79,6 @@ class MapsLocationPicker extends Component {
       toast.error('Don`t selected location ');
       return;
     }
-
     if (!selected.name) {
       selected = await this.getPlaceInformation(selected.location);
     }

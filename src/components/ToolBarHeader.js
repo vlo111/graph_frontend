@@ -6,27 +6,37 @@ import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
 import { ReactComponent as Logo, ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
-import { ReactComponent as ViewSvg } from '../assets/images/icons/view.svg';
-import { ReactComponent as FilterSvg } from '../assets/images/icons/filter.svg';
-import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
+// import { ReactComponent as ViewSvg } from '../assets/images/icons/view.svg';
+// import { ReactComponent as FilterSvg } from '../assets/images/icons/filter.svg';
+// import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
 import { getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/graphs';
 import {  socketMousePositionTracker } from '../store/actions/socket';
-import ShareGraph from './ShareGraph';
+// import ShareGraph from './ShareGraph';
 import AccountDropDown from './account/AccountDropDown';
 import Legend from './Legend';
-import MapsButton from './maps/MapsButton';
+// import MapsButton from './maps/MapsButton';
 import Utils from '../helpers/Utils';
-import WikiButton from './wiki/WikiButton';
-import ScienceButton from './ScienceSearchToGraph/ScienceGraphButton';
+// import WikiButton from './wiki/WikiButton';
+// import ScienceButton from './ScienceSearchToGraph/ScienceGraphButton';
 import ChartUtils from '../helpers/ChartUtils';
 import { KEY_CODES } from '../data/keyCodes';
-import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
-import SearchModal from './search/SearchModal';
+// import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
+// import SearchModal from './search/SearchModal';
 import Chart from '../Chart';
 import { setLegendButton } from '../store/actions/app';
- import ContributorsModal from "./Contributors";
+//  import ContributorsModal from "./Contributors";
+import GraphName from './GraphName';
+// import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
+// import SearchModal from './search/SearchModal';
+import Chart from '../Chart';
+// import SearchGraphs from './search/SearchGraphs';
+import { ReactComponent as CommentSvg } from '../assets/images/icons/comm.svg';
+// import Input from './form/Input';
+import CommentModal from './CommentModal/indexMini.js';
+import Notification from './Notification';
+
  
-class ToolBarHeader extends Component {
+class ToolBarHeader extends Component { 
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
@@ -36,12 +46,15 @@ class ToolBarHeader extends Component {
     location: PropTypes.object.isRequired,
     setActiveMouseTracker: PropTypes.func.isRequired,
     currentUserId: PropTypes.number.isRequired,
-    setLegendButton: PropTypes.func.isRequired,
+    graph: PropTypes.object.isRequired,
+
   } 
+  
   constructor(props) {
     super(props);
     this.state = {
       mouseTracker: false,
+      commentModal:false,
     };
   }
 
@@ -54,6 +67,10 @@ class ToolBarHeader extends Component {
   handleClick = (button) => {
     this.props.setActiveButton(button);
   }
+  openCommentModal = (open) => {
+    this.setState({commentModal:open});
+  }
+
   handleCursor = (tracker) => {
     const {currentUserId, match: { params: { graphId } } } = this.props;
     this.setState({mouseTracker: !tracker})
@@ -92,28 +109,40 @@ class ToolBarHeader extends Component {
   }
 
   render() {
-    const {
-      activeButton,
-      currentUserId,
-      location: { pathname },
-      match: {
-        params: { graphId, token = "" },
-      },
-      singleGraphUser
-    } = this.props;
-     
-    const { mouseTracker } = this.state; 
-    this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId);
+    const { activeButton, singleGraph, currentUserId,  location: { pathname }, match: { params: { graphId, token = '' } } } = this.props;      
+    const { mouseTracker, commentModal } = this.state;  
+    this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId)    
     const isInEmbed = Utils.isInEmbed();
     const updateLocation = pathname.startsWith('/graphs/update/');
+    
     return (
+      
       <div>
-        <header className="headerPanel" id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
+        <header className="headerPanel" id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}> 
           <Link to="/" className="logoWrapper">
-            <LogoSvg className="logo orange" />
+            <LogoSvg className="logoNew orange" />
             <span className="autoSaveText">Saving...</span>
           </Link>
-          <Legend />
+
+             <Legend /> 
+          {updateLocation ? (
+             <GraphName />
+          ) : null} 
+          
+         
+        
+           <div className='commentHeader'>
+              <Button
+                icon={<CommentSvg />}
+                className="transparent footer-icon"
+                onClick={() => this.openCommentModal(true)}
+                />
+            </div>
+
+           
+            <div className="notificationHeader">
+               <Notification />
+           </div>
           {!updateLocation && (
           <div className="searchInputWrapper">
             <Button
@@ -125,7 +154,13 @@ class ToolBarHeader extends Component {
             </Button>
           </div>
           )}
-          <div className="graphs">
+          {!updateLocation && (
+             <span className="graphNames">
+                  {singleGraph.title}
+             </span>
+          )}
+           <div className="graphs">
+           
             {updateLocation ? (
               <Button
                 icon={<SearchSvg />}
@@ -134,17 +169,23 @@ class ToolBarHeader extends Component {
               >
                 Search
               </Button>
-            ) : null}
-            <ShareGraph graphId={+graphId} setButton />
-            {updateLocation ? (
+            ) : null} 
+            
+            
+               {/* <div className="bottom "> */}
+
+                  {/* {graphId && <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>} */}
+               {/* </div> */}
+            {/* <ShareGraph graphId={+graphId} setButton /> */}
+            {/* {updateLocation ? (
               <Button
                 icon={<ViewSvg />}
                 onClick={() => this.props.history.replace(`/graphs/view/${graphId}`)}
               >
                 View
               </Button>
-            ) : null}
-            <Button
+            ) : null} */}
+            {/* <Button
               icon={<FilterSvg />}
               onClick={() => {
                 isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
@@ -152,8 +193,8 @@ class ToolBarHeader extends Component {
               }}
             >
               Filter
-            </Button>
-            {updateLocation ? (
+            </Button> */}
+            {/* {updateLocation ? (
               <Button
                 icon={<MediaSvg />}
                 className={activeButton === 'media' ? 'active' : undefined}
@@ -161,10 +202,10 @@ class ToolBarHeader extends Component {
               >
                 Media
               </Button>
-            ) : null}
+            ) : null} */}
           </div>
 
-          {updateLocation ? (
+          {/* {updateLocation ? (
             <MapsButton />
           ) : null}
           {updateLocation ? (
@@ -173,8 +214,8 @@ class ToolBarHeader extends Component {
 
           {updateLocation ? (
             <ScienceButton />
-          ) : null}
-                    {updateLocation ? (
+          ) : null} */}
+                    {/* {updateLocation ? (
           <div className="button-group social-button-group">
             
             <Button
@@ -184,26 +225,30 @@ class ToolBarHeader extends Component {
             /> 
             {graphId && <ContributorsModal graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>}
           </div>
-           ) : null}
+           ) : null} */}
           <div className="signOut">
             <AccountDropDown />
           </div>
-
         </header>
-        {activeButton === 'search' && 
-          <SearchModal 
-            history={this.props.history} 
-          />}
+        {/* {activeButton === 'search' && <SearchModal history={this.props.history} />} */}
+        {commentModal && (
+                <CommentModal
+                  closeModal={() => this.openCommentModal(false)}
+                  graph={singleGraph}
+                />
+                   )}
+           
       </div>
     );
   }
 }
 
+
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   mouseTracker: state.graphs.mouseTracker,
   currentUserId: state.account.myAccount.id,
-  singleGraphUser: state.graphs.singleGraph.user,
+  singleGraph: state.graphs.singleGraph,
 });
 const mapDispatchToProps = {
   setActiveButton,

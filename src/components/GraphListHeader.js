@@ -65,7 +65,7 @@ const GraphListHeader = ({ graph, headerTools }) => {
             {headerTools ? (
               <Button 
                 onClick={() => handleDeleteShareGraph(graph?.share.id)}
-                className="child dashboard-delete" >
+                className="child " >
                 Delete
               </Button>
              ) : (
@@ -82,7 +82,7 @@ const GraphListHeader = ({ graph, headerTools }) => {
                   </Button>             
                 <Button 
                   onClick={deleteGraph}
-                  className="child dashboard-delete" >  
+                  className="child " >  
                   Delete
                   </Button>
               </>

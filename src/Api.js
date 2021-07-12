@@ -122,7 +122,7 @@ class Api {
     });
   }
 
-  static getGraphsList(page, requestData = {}) {
+  static getGraphsList(page, requestData = {}) { // hesa
     const params = { page, ...requestData };
     return api.get('/graphs', {
       params,
