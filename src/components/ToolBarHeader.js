@@ -150,17 +150,6 @@ class ToolBarHeader extends Component {
           <Legend />
           {updateLocation ? <GraphName /> : null}
 
-          <div className="commentHeader">
-            <Button
-              icon={<CommentSvg />}
-              className="transparent footer-icon"
-              onClick={() => this.openCommentModal(true)}
-            />
-          </div>
-
-          <div className="notificationHeader">
-            <Notification />
-          </div>
           {!updateLocation && (
             <div className="searchInputWrapper">
               <Button
@@ -172,6 +161,18 @@ class ToolBarHeader extends Component {
               </Button>
             </div>
           )}
+
+          <div className="commentHeader">
+            <Button
+              icon={<CommentSvg />}
+              className="transparent footer-icon"
+              onClick={() => this.openCommentModal(true)}
+            />
+          </div>
+
+          <div className="notificationHeader">
+            <Notification />
+          </div>
           {!updateLocation && (
             <span className="graphNames">{singleGraph.title}</span>
           )}
@@ -195,9 +196,9 @@ class ToolBarHeader extends Component {
           />
           {graphId && (
             <ContributorsModal
-              graphId={graphId}
-              graphOwner={singleGraphUser}
-              isOwner="true"
+            graphId={graphId}
+            graphOwner={singleGraphUser}
+            isOwner="true"
             />
           )}
 
