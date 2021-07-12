@@ -88,7 +88,7 @@ class ToolBar extends Component {
         this.handleClick('findNode')
       }
     }
-    if (ev.keyCode === 27) {
+    if (ev.keyCode === KEY_CODES.escape) {
       this.props.setActiveButton('create')
     }
   }
