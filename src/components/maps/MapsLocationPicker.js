@@ -4,6 +4,7 @@ import { Marker, Map } from 'google-maps-react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
+import { toast } from 'react-toastify';
 import MapsSearch from './MapsSearch';
 import markerImg from '../../assets/images/icons/marker.svg';
 import withGoogleMap from '../../helpers/withGoogleMap';
@@ -71,6 +72,11 @@ class MapsLocationPicker extends Component {
   handleSelect = async () => {
     let { selected } = this.state;
     const { edit } = this.props;
+
+    if (!selected.location) {
+      toast.error('Don`t selected location ');
+      return;
+    }
 
     if (!selected.name) {
       selected = await this.getPlaceInformation(selected.location);

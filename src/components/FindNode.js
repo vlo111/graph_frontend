@@ -140,7 +140,6 @@ class FindNode extends Component {
             node.create = true;
 
             singleGraph.nodes = singleGraph.nodes.concat(node);
-              debugger;
             Chart.render({ nodes: singleGraph.nodes });
           }
         } else {
