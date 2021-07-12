@@ -49,7 +49,6 @@ class GraphName extends Component {
         limit: search === '' ? LIMIT : undefined,
         graphName: 'true'
       })
-      debugger
       const graphList = result?.data?.graphs
       if (typeof(graphList) === "object") {
         this.setState({graphList})

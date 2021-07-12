@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import NotifyMe from 'react-notification-timeline';
+import NotifyMe from 'react-notification-timeline';
 import { listNotificationsRequest, NotificationsUpdateRequest } from '../store/actions/notifications';
 import { notificationsList } from '../store/selectors/notifications';
 
@@ -32,19 +32,18 @@ export default () => {
   });
 
   return (
-    <h1>hello</h1>
-    // <NotifyMe
-    //   data={list}
-    //   notific_key="createdAt"
-    //   link="link"
-    //   notifyLink={NotifyLink}
-    //   notific_value="text"
-    //   heading="Notification Alerts"
-    //   sortedByKey={false}
-    //   // showDate
-    //   size={30}
-    //   color="#7166F8"
-    //   onMarkAsRead={() => { dispatch(NotificationsUpdateRequest()); }}
-    // />
+    <NotifyMe
+      data={list}
+      notific_key="createdAt"
+      link="link"
+      notifyLink={NotifyLink}
+      notific_value="text"
+      heading="Notification Alerts"
+      sortedByKey={false}
+      // showDate
+      size={30}
+      color="#7166F8"
+      onMarkAsRead={() => { dispatch(NotificationsUpdateRequest()); }}
+    />
   );
 };

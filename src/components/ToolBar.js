@@ -5,14 +5,11 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
-import SaveGraph from './chart/SaveGraph';
 import Undo from './Undo';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
-import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
 import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg';
 import { getSingleGraphRequest } from '../store/actions/graphs';
-import ShareTooltip from './Contributors/ShareTooltip';
 import { ReactComponent as SquareSvg } from '../assets/images/icons/square.svg';
 import { ReactComponent as EllipseSvg } from '../assets/images/icons/ellipse.svg';
 import { ReactComponent as FreeFormSvg } from '../assets/images/icons/freeForm.svg';
@@ -139,7 +136,6 @@ class ToolBar extends Component {
       <div id="toolBar">
         <div className="top">
 
-          {/* <SaveGraph /> */}
           <Undo />
           <div className="actionButtons">
             <Button
@@ -216,9 +212,8 @@ class ToolBar extends Component {
         </div>
 
         <div className="bottom ">
-
-          {graphId && <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner="true" />}
         </div>
+
         <div className="bottom helpWrapper">
           <Button icon={<InfoSvg />}>
             Help

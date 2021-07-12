@@ -11,7 +11,6 @@ import withGoogleMap from '../../helpers/withGoogleMap';
 import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import MapsStyle from './MapsStyle';
-import { toast } from 'react-toastify';
 
 class MapsLocationPicker extends Component {
   static propTypes = {
