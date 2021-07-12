@@ -24,6 +24,7 @@ import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
 import SearchModal from './search/SearchModal';
 import Chart from '../Chart';
 import { setLegendButton } from '../store/actions/app';
+ import ContributorsModal from "./Contributors";
  
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -91,9 +92,18 @@ class ToolBarHeader extends Component {
   }
 
   render() {
-    const { activeButton, currentUserId,  location: { pathname }, match: { params: { graphId, token = '' } } } = this.props;      
-    const { mouseTracker } = this.state;  
-    this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId)    
+    const {
+      activeButton,
+      currentUserId,
+      location: { pathname },
+      match: {
+        params: { graphId, token = "" },
+      },
+      singleGraphUser
+    } = this.props;
+     
+    const { mouseTracker } = this.state; 
+    this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId);
     const isInEmbed = Utils.isInEmbed();
     const updateLocation = pathname.startsWith('/graphs/update/');
     return (
@@ -169,9 +179,10 @@ class ToolBarHeader extends Component {
             
             <Button
               icon={<CursorSvg />} 
-              className={`transparent alt ${mouseTracker ? 'active' : ''}`}
+              className={`transparent alt ${mouseTracker ? "activeMouseTracker" : "mouseTracker"}`}
               onClick={() => this.handleCursor(mouseTracker)}
             /> 
+            {graphId && <ContributorsModal graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>}
           </div>
            ) : null}
           <div className="signOut">
@@ -192,6 +203,7 @@ const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   mouseTracker: state.graphs.mouseTracker,
   currentUserId: state.account.myAccount.id,
+  singleGraphUser: state.graphs.singleGraph.user,
 });
 const mapDispatchToProps = {
   setActiveButton,

@@ -7,6 +7,12 @@ export function getSharedWithUsersRequest(graphId, type = 'graph', objectId) {
   return GET_SHARED_WITH_USERS.request(() => Api.getSharedWithUsers(graphId, type, objectId));
 }
 
+export const SEARCH_SHARED_USERS = define('SEARCH_SHARED_USERS');
+
+export function searchSharedUsers(graphId, type = 'graph', objectId) {
+  return SEARCH_SHARED_USERS.request(() => Api.searchSharedUsers(graphId, type, objectId));
+}
+
 export const SHARE_GRAPH_WITH_USERS = define('SHARE_GRAPH');
 
 export function shareGraphWithUsersRequest(params) {
