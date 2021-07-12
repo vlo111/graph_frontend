@@ -7147,14 +7147,22 @@ img.preview-scaled {
   }
 }
 
-.contributors-container {
-  padding-bottom: 24px;
-  padding-left: 24px;
-  color: #717EA0;
-  flex-direction: column;
-  /* transform: translateY(6%); */
-  padding-bottom: 1px;
-  display: inline-block;
+.contributors-container { 
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 200;
+  top: 52px;
+  right: 0;
+  width: 250px;
+  padding: 5px 0px;
+  background-color: rgba(255, 255, 255, 1);
+  background-color: $color-white;
+  border-radius: 4px;
+  border-radius: $radiusM;
+  font-size: 14px;
+  box-shadow: 0px 4px 16px rgb(5 0 56 / 12%);
+  box-shadow: $shadowLevel1;
+  transform-origin: top center;
 
   .avatar-user {
     border-radius: 50% !important;
@@ -7191,10 +7199,6 @@ img.preview-scaled {
 
   .tooltip {
     padding: 15px 15px 15px 15px;
-  }
-
-  .d-flex {
-    display: flex !important;
   }
 
   .b {
@@ -7283,26 +7287,30 @@ img.preview-scaled {
     padding-bottom: 5px;
     flex-wrap: wrap;
     margin-top: 5px;
-    flex-direction: column;
+    // flex-direction: column;
     width: 100%;
     padding: 9px 12px 0;
 
     .group {
       // border-top: 1px solid #E2E7EB;
-      display: flex;
-      background: white;
+      display: flex; 
+      align-items: center;
       margin: 2px;
       min-height: 50px;
       padding: 5px;
       border-bottom: 1px solid #E2E7EB;
+      width: 100%;
     }
-
+    #view {
+      border-bottom: none;
+    }
     .group-header {
+      display: flex;
       letter-spacing: 2px;
       //text-transform: uppercase;
-      position: absolute;
+      // position: absolute;
       transform-origin: 0 0;
-      transform: rotate(90deg);
+      // transform: rotate(90deg);
       color: #7166f8;
       //font-weight: bold;
     }
@@ -9453,3 +9461,86 @@ color: #2962ff;
 }
 
 // End search modal inside graph
+
+//start contributors-container-list
+
+.contributors-container-list {
+  display: flex;
+  ul {
+    align-items: center;
+    display: flex;
+    li {
+      max-width: 24px;
+      min-width: 0; 
+
+      .avatar-user {
+        box-shadow: none;
+        display: block;
+        border-radius: 50%!important; 
+        flex-shrink: 0;
+        line-height: 1;
+        overflow: hidden;
+        vertical-align: middle;
+      }
+      img {
+        height: 32px;
+        aspect-ratio: auto 32 / 32;
+        width: 32px;
+      }
+    }
+  }
+  .status-online {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid white;
+    bottom: 1px; 
+    position: absolute;
+    background-color: #31a24c;
+  }
+
+  .status-in-graph {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid white;
+    bottom: 3px;
+    right: 3px;
+    position: absolute;
+    background-color: white;
+
+  }
+
+}
+
+.transparent {
+  background-color: transparent;
+}
+
+//end contributors-container-list
+
+//start mouse cursor
+.mouseCursorPosition {
+  z-index: 6;
+}
+.mouseCursor {
+  
+  transform-origin: top left; 
+} 
+.mouseTracker {
+  svg{
+    path {
+      fill: #949ecc;
+    }
+    stroke: #949ecc;
+  }
+}
+.activeMouseTracker {
+  svg{
+    path {
+      fill: $color-main;
+    }    
+    stroke: $color-button;
+  }
+}
+//end mouse cursor

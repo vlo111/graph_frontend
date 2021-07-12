@@ -12,7 +12,7 @@ import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
 import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
 import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg';
 import { getSingleGraphRequest } from '../store/actions/graphs';
-import ShareTooltip from './ShareTooltip/ShareTooltip';
+import ShareTooltip from './Contributors/ShareTooltip';
 import { ReactComponent as SquareSvg } from '../assets/images/icons/square.svg';
 import { ReactComponent as EllipseSvg } from '../assets/images/icons/ellipse.svg';
 import { ReactComponent as FreeFormSvg } from '../assets/images/icons/freeForm.svg';

@@ -7,9 +7,11 @@ import { Link } from 'react-router-dom';
 import { getGraphUsers } from '../../store/selectors/shareGraphs';
 import { graphUsersRequest, updateGraphRequest, updateShareGraphStatusRequest } from '../../store/actions/shareGraphs';
 import { getOnlineUsersRequest } from '../../store/actions/app';
+import { socketSetActiveGraph } from '../../store/actions/socket';
 import { getOnlineUsers } from '../../store/selectors/app';
 import { getId } from '../../store/selectors/account';
 import ShareTooltipContent from './ShareTooltipContent';
+import {ONLINE} from '../../data/graph';
 
 const TootlipContent = ({
   user, role, type, isOwner, objectId,
@@ -21,7 +23,7 @@ const TootlipContent = ({
 TootlipContent.propTypes = {
   user: PropTypes.object.isRequired,
 };
-const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
+const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner, closeModal }) => {
   const userId = useSelector(getId);
   const graphUsers = useSelector(getGraphUsers)[graphId];
   const onlineUser = useSelector(getOnlineUsers);
@@ -29,8 +31,13 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
   const [owner, setOwner] = useState(false);
   const [dragRole, setDragRole] = useState();
   const [dropId, setDropId] = useState();
-  const [showMore, setShowMore] = useState(false);
+  const [showMoreEdit, setShowMoreEdit] = useState(false);
+  const [showMoreView, setShowMoreView] = useState(false);
   const [limit, setLimit] = useState(3);
+
+  useEffect(() => {
+    dispatch(socketSetActiveGraph(+graphId || null));
+  }, [dispatch, graphId]);
 
   useEffect(() => {
     if (graphId) {
@@ -41,12 +48,21 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
 
   if (graphOwner === undefined) {
     return false;
-  }
+  } 
 
   const count = graphUsers && Object.keys(graphUsers) && Object.keys(graphUsers).length;
   const countOwner = isOwner ? 1 : 0;
   const isLabelShare = graphUsers && graphUsers.some((n) => n.type === 'label' && n.userId === userId);
-  const graphUsersList = isLabelShare ? graphUsers.filter((n) => n.type === 'label' && n.userId === userId) : graphUsers;
+  // const graphUsersList = isLabelShare ? graphUsers.filter((n) => n.type === 'label' && n.userId === userId) : graphUsers;
+  const graphUsersList =  graphUsers && graphUsers.map(function(item, index) {
+    if(onlineUser && onlineUser.some((n) => (n.userId === item.userId && n.activeGraphId === +graphId ))){ 
+       return {...item, online: ONLINE.online_in_graph}
+    }
+    if(onlineUser && onlineUser.some((n) => (n.userId === item.userId))){
+       return {...item, online: ONLINE.online}
+    }
+    return {...item, online: ONLINE.not_online}
+  }).sort((a, b) => b.online - a.online); ;
 
   /**
      *
@@ -84,8 +100,14 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
   /**
      * show more data
      */
-  const handlerShowMore = () => {
-    setShowMore(!showMore);
+  const handlerShowMoreEdit = () => {
+    setShowMoreEdit(!showMoreEdit);
+  };
+  /**
+     * show more data
+     */
+  const handlerShowMoreView = () => {
+    setShowMoreView(!showMoreView);
   };
   /**
      *
@@ -118,7 +140,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
               <img className="avatar-user d-block" src={item.user.avatar} alt={item.user.id} />
               { onlineUser && onlineUser.some((n) => n.userId === item.user.id) ? (
                 <div className="status-online ">
-                  { onlineUser && onlineUser.some((n) => n.userId === item.user.id && n.activeGraphId === parseInt(graphId, 10)) ? (
+                  { onlineUser && onlineUser.some((n) => n.userId === item.user.id && n.activeGraphId === +graphId) ? (
                     <div className="status-in-graph " />
                   ) : ''}
                 </div>
@@ -129,75 +151,57 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner }) => {
       </Link>,
     );
   });
-  const allItemsLimit = roles.view.length > roles.edit.length ? (roles.view.length) : (roles.edit.length);
-  const numberOfItems = showMore ? allItemsLimit : limit;
-  const subLimitCount = allItemsLimit - numberOfItems;
+  
+  const numberOfEditItems = showMoreEdit ? roles.edit.length : limit;
+  const numberOfViewItems = showMoreView ? roles.view.length : limit; 
+  const subEditLimitCount = roles.edit.length - numberOfEditItems;
+  const subViewLimitCount = roles.view.length - numberOfViewItems;  
 
   return (
 
-    <div className="contributors-container">
-      <p className="h4 mb-3 title">
-        {' '}
-        {isOwner ? 'Contributors:' : 'Shared with : '}
-        {count && !isLabelShare ? (
-          <span className="counter">
-            {' '}
-            { count + countOwner}
-            {' '}
-          </span>
-        ) : null}
-      </p>
-      <ul className="list-style-none d-flex flex-wrap mb-n2">
-
-        {isOwner && (
-        <Link to={`/profile/${graphOwner.id}`} target="_blank">
-
-          <li className="mb-2 mr-2 " key="0">
-            <Tooltip overlay={<TootlipContent user={graphOwner} role="Owner" type="graph" objectId={null} />} trigger={['hover']}>
-              <div className="icon-container">
-                <img className="avatar-user d-block" src={graphOwner.avatar} alt="" />
-                { onlineUser && onlineUser.some((n) => n.userId === graphOwner.id) ? (
-                  <div className="status-online ">
-                         { onlineUser && onlineUser.some((n) => (n.userId === graphOwner.id && n.activeGraphId === parseInt(graphId, 10))) ? (
-                          <div className="status-in-graph " />
-                        ) : ''}
-                       </div>
-                ) : ''}
-              </div>
-            </Tooltip>
-          </li>
-        </Link>
-        )}
-      </ul>
-      <ul className={`list-style-none d-flex flex-wrap mb-n2 groups ${showMore ? ' scrollY' : ' '}`}>
+    <div className="contributors-container" >
+      <ul className={`list-style-none d-flex flex-wrap mb-n2 groups ${showMoreEdit ? ' scrollY' : ' '}`}>
+        <span className="group-header">Can Edit {`( ${roles?.edit?.length} ) `}</span>
         <div
           id="edit"
-          className="group"
+          className="group scrollY"
           onDragOver={(e) => handleDragOver(e)}
           onDrop={(e) => { handleDrop(e, 'view'); }}
         >
-          <span className="group-header">Edit</span>
-          {roles.edit.slice(0, numberOfItems)}
+          {roles.edit.slice(0, numberOfEditItems)}
+          {!isLabelShare && subEditLimitCount >= 0 ? (
+            <a className="more" onClick={handlerShowMoreEdit}>
+              {' '}
+              {showMoreEdit ? '- Less' : (subEditLimitCount > 0 ? `+ ${subEditLimitCount}` : '')}
+            </a>
+          ) : null}
         </div>
+        <span className="group-header">Can View {`( ${roles?.view?.length} ) `}</span>
         <div
           id="view"
-          className="group"
+          className="group scrollY"
           onDragOver={(e) => handleDragOver(e)}
           onDrop={(e) => { handleDrop(e, 'edit'); }}
         >
-          <span className="group-header">View</span>
-          {roles.view.slice(0, numberOfItems)}
+          
+          {roles.view.slice(0, numberOfViewItems)}
+          {!isLabelShare && subViewLimitCount >= 0 ? (
+            <a className="more" onClick={handlerShowMoreView}>
+              {' '}
+              {showMoreView ? '- Less' : (subViewLimitCount > 0 ? `+ ${subViewLimitCount}` : '')}
+            </a>
+      ) : null}
         </div>
       </ul>
-      {!isLabelShare && subLimitCount >= 0 ? (
-        <a className="more" onClick={handlerShowMore}>
-          {' '}
-          {showMore ? '- Less' : (subLimitCount > 0 ? `+ ${subLimitCount}` : '')}
-        </a>
-      ) : null}
+
     </div>
 
   );
 });
+ShareTooltip.propTypes = { 
+  graphId: PropTypes.object.isRequired,
+  graphOwner: PropTypes.object.isRequired, 
+  closeModal: PropTypes.func.isRequired, 
+};
 
 export default ShareTooltip;
