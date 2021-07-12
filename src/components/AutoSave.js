@@ -290,12 +290,7 @@ class AutoSave extends Component {
       // document.body.classList.remove('autoSave');
       // return;
     }
-    if (createNodes.length) {
-      const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
-      if (!_.isEmpty(data.errors)) {
-        toast.error('Something went wrong');
-      }
-    }
+
     const promise = [];
     if (updateNodes.length) {
       promise.push(this.props.updateNodesRequest(graphId, updateNodes));
@@ -309,6 +304,11 @@ class AutoSave extends Component {
 
     if (updateNodePositions.length || updateLabelPositions.length) {
       promise.push(this.props.updateGraphPositionsRequest(graphId, updateNodePositions, updateLabelPositions));
+    } else if (createNodes.length) {
+      const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
+      if (!_.isEmpty(data.errors)) {
+        toast.error('Something went wrong');
+      }
     }
 
     if (updateNodeCustomFields.length) {
