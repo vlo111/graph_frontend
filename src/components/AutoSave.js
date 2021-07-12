@@ -115,6 +115,7 @@ class AutoSave extends Component {
     sourceId: node.sourceId || '',
     status: node.status || 'approved',
     type: node.type || '',
+    manually_size: node.manually_size || 1,
   })
 
   formatLink = (d) => ({
