@@ -34,6 +34,17 @@ $color-hover-sheet: #e6e5f1;
 $font-family: 'Open Sans', sans-serif;
 $font-user-panel: normal normal normal 15px/21px Segoe UI;
 
+//radius
+$radiusS: 2px;
+$radiusM: 4px;
+$radiusL: 8px;
+$radiusXl: 16px;
+$radiusXxl: 32px;
+$radiusCircle: 125px;
+//shadow Level
+$shadowLevel1: 0px 4px 16px rgba(5, 0, 56, 0.12);
+$shadowLevel2: 0px 8px 32px rgba(5, 0, 56, 0.08);;
+
 * {
   margin: 0;
   padding: 0;
