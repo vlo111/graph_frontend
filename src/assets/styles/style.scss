@@ -7433,6 +7433,10 @@ img.preview-scaled {
     padding: 15px 15px 15px 15px;
   }
 
+  .d-flex {
+    display: flex !important;
+  }
+
   .b {
     font-weight: bold;
   }
@@ -7554,11 +7558,7 @@ img.preview-scaled {
 
   }
 
-  .more {
-    position: relative;
-
-    left: 148px;
-    bottom: 65px;
+  .more { 
     background-color: $color-white;
     color: $color-button;
   }
