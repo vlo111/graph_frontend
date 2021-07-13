@@ -101,6 +101,7 @@ button {
   cursor: pointer;
   outline: none;
   font-family: $font-family;
+  border: none;
 }
 
 main {
@@ -2060,8 +2061,7 @@ p {
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba($color-dark, 0.1);
-  z-index: 99;
+  box-shadow: 0 4px 38px rgb(0 0 0 / 25%);
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -9453,3 +9453,338 @@ color: #2962ff;
 }
 
 // End search modal inside graph
+
+.menu {
+  position: fixed;
+  width: 200px;
+  box-shadow: 4px 0 31px rgba(119, 113, 183, 0.22);
+  background: #ffffff;
+  height: 100%;
+  top: 70px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+
+  .container {
+    width: 200px;
+
+    .collapse {
+      display: flex;
+      margin: 16px 8px;
+      padding: 11px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #727272;
+      align-items: center;
+      box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
+      border-radius: 3px;
+
+      .fa-caret-right {
+        position: absolute;
+        right: 26px;
+        top: 89px;
+        font-size: 20px;
+      }
+
+      *{
+        margin-right: 10px;
+      }
+
+      &:hover {
+        background-color: #ffffff;
+        color: #7166F8;
+        box-shadow: 0 0 6px 2px rgb(136 130 209 / 37%);
+        border: none;
+      }
+    }
+
+    .collapse_over {
+      color: #7166F8;
+    }
+  }
+
+  .dropdown-addNew, .dropdown-node, .create_label {
+    position: absolute;
+    left: 208px;
+    width: 140px;
+    height: 150px;
+    background: #FFFFFF;
+    box-shadow: 0 4px 33px rgb(0 0 0 / 25%);
+    border-radius: 3px;
+    top: 90px;
+    font-size: 17px;
+
+    li {
+      position: relative;
+      top: 9px;
+      color: #727272;
+      padding: 10px 30px;
+      cursor: pointer;
+      font-weight: 700;
+      display: flex;
+
+      &:hover {
+        background: rgba(113, 102, 248, 0.1);
+        color: #7E75EF;
+      }
+    }
+
+    .selected {
+      background: rgba(113, 102, 248, 0.1);
+      color: #7E75EF;
+    }
+
+    i {
+      margin-top: 3px;
+      margin-left: 20px;
+    }
+  }
+
+  .dropdown-node, .create_label {
+    left: 355px;
+    width: 190px;
+    height: 195px;
+    top: 120px;
+
+    li {
+      top: 5px;
+      padding: 7px 20px;
+    }
+  }
+
+  .create_label {
+    width: 160px;
+    height: 125px;
+    top: 165px;
+
+    li {
+      padding: 7px 5px;
+
+      i {
+        margin-left: 20px;
+      }
+    }
+
+    span {
+      padding-left: 8px;
+    }
+  }
+}
+
+.closed_menu {
+  width: 4%;
+
+  .container {
+    width: 90%;
+
+    .collapse {
+      padding: 20% 25%;
+
+      .fa-caret-right {
+        position: sticky;
+        margin-left: 8px;
+      }
+
+      .sidebar_text {
+        display: none;
+      }
+    }
+
+    .collapse_over {
+      width: 190px;
+      background-color: #ffffff;
+      color: #7166F8;
+      box-shadow: 0 0 6px 2px rgb(136 130 209 / 37%);
+      border: none;
+      padding: 11px 24px;
+
+      .sidebar_text {
+        display: contents;
+      }
+    }
+  }
+}
+
+.create-node, .create-folder, .create-label-ellipse  .labels, .create-label-square .labels {
+  cursor: url('../images/icons/cursor_plus.png') 16 16, auto !important;
+}
+
+.exit_mode {
+  position: fixed;
+  background: rgba(136, 130, 209, 0.22);
+  width: 526px;
+  height: 76px;
+  top: 112px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+
+  .container {
+    color: #727272;
+    font-family: Roboto, sans-serif;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 26px;
+    display: flex;
+    padding-left: 60px;
+
+    .escPress {
+      border: 1px solid #585858;
+      box-sizing: border-box;
+      border-radius: 3px;
+      font-size: 15px;
+      padding: 4px;
+      font-weight: 600;
+      position: absolute;
+      margin-left: 70px;
+      margin-top: -4px;
+    }
+
+    * {
+      margin-right: 60px;
+    }
+  }
+
+  .ghButton {
+    right: -10px;
+    position: absolute;
+    top: 0;
+
+    svg {
+      height: 10px;
+    }
+  }
+}
+
+.import-popup{
+  width: 443px;
+  height: 261px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  .close {
+    right: 30px;
+    cursor: pointer;
+  }
+
+  .icon {
+    margin-right: 125px;
+    top: 15px;
+
+    svg {
+      width: 9px;
+      height: 9px;
+    }
+  }
+
+  .import-title{
+    position: relative;
+    top: -30px;
+    font-weight: 700;
+    font-size: 25;
+    padding-bottom: 23px;
+    p{
+      color: #424242;
+      margin: unset;
+      font-size: 25px;
+      font-weight: 700;
+    }
+  }
+
+  .import-input{
+    display: flex;
+    position: relative;
+    top: -30px;
+
+    label {
+      padding: 10px;
+    }
+
+    label{
+      background-color: #7166F8;
+      width: 43px;
+      height: 43px;
+      border-radius: 10px;
+      border: none;
+      color: #ffffff;
+      position: absolute;
+      top: 10px;
+      right: -22px;
+      cursor: pointer;
+
+      span{
+        display: none;
+        position: absolute;
+      }
+
+      i{
+        color: #ffffff;
+      }
+      &:hover{
+        width: 101px;
+        position: absolute;
+        span{
+          display: initial;
+          font-size: 17px;
+          color: #ffffff;
+          position: relative;
+          left: 6px;
+        }
+        .icon{
+          position: absolute;
+          left: -20px;
+          top: 0px;
+        }
+      }
+    }
+
+    .InputLink{
+      width: 272px;
+      height: 43px;
+      border: 2px solid #7166F8;
+      border-radius: 10px;
+      outline: none;
+      padding: 1px 22px;
+    }
+
+    .placeholder{
+      margin-left: 20px;
+    }
+
+    .uploadImg {
+      position: relative;
+      left: 0;
+      top: 1px;
+    }
+  }
+
+  .import-btn{
+    margin-top: -20px;
+
+    button, label{
+      position: relative;
+      top: 20px;
+      width: 131.19px;
+      height: 42.48px;
+      border: none;
+      border-radius: 5px;
+      background-color: $color-main;
+      color: $color-white;
+      font-size: 20px;
+
+      &:hover{
+        border: 2px solid $color-main;
+        background-color: $color-white;
+        color: $color-main;
+        cursor: pointer;
+      }
+    }
+  }
+}

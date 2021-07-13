@@ -53,8 +53,9 @@ class ReactChart extends Component {
     ContextMenu.event.on('node.edit', this.editNode);
 
     ContextMenu.event.on('active-button', this.setActiveButton);
-    // Chart.event.on('click', this.handleChartClick);
-    ContextMenu.event.on('node.create', this.addNewNode);
+    Chart.event.on('click', this.handleChartClick);
+
+    // ContextMenu.event.on('node.create', this.addNewNode);
 
     Chart.event.on('link.click', this.deleteLink);
     ContextMenu.event.on('link.delete', this.deleteLink);
@@ -188,16 +189,24 @@ class ReactChart extends Component {
 
   handleChartClick = (ev) => {
     const { target } = ev;
+
+    const activeMode = Chart.activeButton;
     if (!target.classList.contains('nodeCreate')
-      || Chart.activeButton !== 'create'
-      || Chart.newLink.attr('data-source')) {
+          || !(activeMode === 'create-node' || activeMode === 'create-folder')
+          || Chart.newLink.attr('data-source')) {
       return;
     }
     const { singleGraph } = this.props;
-    if (singleGraph.currentUserRole === 'edit_inside' && singleGraph.share.objectId !== target.getAttribute('data-id')) {
+    if (singleGraph.currentUserRole === 'edit_inside'
+        && singleGraph.share.objectId !== target.getAttribute('data-id')) {
       return;
     }
-    this.addNewNode(ev);
+
+    if (activeMode === 'create-node') {
+      this.addNewNode(ev);
+    } else if (activeMode === 'create-folder') {
+      ContextMenu.event.emit('folder.new', ev, {});
+    }
   }
 
   addNewNode = (ev) => {
@@ -310,7 +319,6 @@ class ReactChart extends Component {
               <FolderCloseIcon />
               <FolderResizeIcon />
               <MouseCursor />
-
             </defs>
           </g>
           <g className="mouseCursorPosition" transform-origin="top left" />
