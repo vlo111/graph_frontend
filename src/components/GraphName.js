@@ -84,8 +84,6 @@ class GraphName extends Component {
   
       if (resGraphId) {
         toast.info('Successfully saved');
-        // const svgBig = Chart.printMode(800, 446);
-        // this.props.updateGraphThumbnailRequest(resGraphId, svg);
         this.props.onSave(resGraphId);
         this.props.history.push('/');
       } else {

@@ -150,17 +150,6 @@ class ToolBarHeader extends Component {
           <Legend />
           {updateLocation ? <GraphName /> : null}
 
-          {!updateLocation && (
-            <div className="searchInputWrapper">
-              <Button
-                icon={<SearchSvg />}
-                className={activeButton === "search" ? "active" : undefined}
-                onClick={() => this.handleClick("search")}
-              >
-                Search
-              </Button>
-            </div>
-          )}
 
           <div className="commentHeader">
             <Button
@@ -173,9 +162,7 @@ class ToolBarHeader extends Component {
           <div className="notificationHeader">
             <Notification />
           </div>
-          {!updateLocation && (
-            <span className="graphNames">{singleGraph.title}</span>
-          )}
+          
           <div className="graphs">
             {updateLocation ? (
               <Button
@@ -187,20 +174,19 @@ class ToolBarHeader extends Component {
               </Button>
             ) : null}
           </div>
-          <Button
-            icon={<CursorSvg />}
-            className={`transparent alt ${
-              mouseTracker ? "activeMouseTracker" : "mouseTracker"
-            }`}
-            onClick={() => this.handleCursor(mouseTracker)}
-          />
-          {graphId && (
-            <ContributorsModal
-            graphId={graphId}
-            graphOwner={singleGraphUser}
-            isOwner="true"
-            />
+          {!updateLocation && (
+            <span className="graphNames">{singleGraph.title}</span>
           )}
+          <div className="button-group social-button-group">
+            
+            <Button
+              icon={<CursorSvg />} 
+              className={`transparent alt ${mouseTracker ? "activeMouseTracker" : "mouseTracker"}`}
+              onClick={() => this.handleCursor(mouseTracker)}
+            /> 
+            {graphId && <ContributorsModal graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>}
+          </div>
+           
 
           <div className="signOut">
             <AccountDropDown />

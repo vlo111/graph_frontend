@@ -18,7 +18,6 @@ class AvatarUploader extends Component {
   }
 
   setImage = memoizeOne((image) => {
-    console.log(image);
     if (typeof image === 'object') {
       const reader = new FileReader();
 
@@ -50,7 +49,7 @@ class AvatarUploader extends Component {
     return (
       <div id="avatarUploader">
         <img
-          src={image || `${Api.url}/public/gravatar/${encodeURIComponent(email)}.png`}
+          src={image}
           className="avatar"
           alt="avatar"
         />

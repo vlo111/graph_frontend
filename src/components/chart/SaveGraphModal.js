@@ -25,6 +25,7 @@ import {ReactComponent as CloseSvg} from "../../assets/images/icons/close.svg";
 import moment from 'moment';
 import Switch from 'rc-switch';
 import 'rc-switch/assets/index.css';
+import AvatarUploader from '../AvatarUploader'
 
 class SaveGraphModal extends Component {
   static propTypes = {
@@ -42,7 +43,7 @@ class SaveGraphModal extends Component {
 
   initValues = memoizeOne((singleGraph) => {
     const {
-      title, description, status, publicState,
+      title, description, status, publicState
     } = singleGraph;
 
     this.setState({
@@ -58,13 +59,14 @@ class SaveGraphModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        requestData: {
+      requestData: {
         title: '',
         description: '',
         status: 'active',
         publicState: false,
         disabled: false
       },
+      image: ''
     };
   }
 
@@ -109,14 +111,16 @@ class SaveGraphModal extends Component {
   
 
   saveGraph = async (status, forceCreate) => {
-    const { requestData } = this.state;
+    const { requestData, image } = this.state;
     const { match: { params: { graphId } } } = this.props;
 
     this.props.setLoading(true);
     const labels = Chart.getLabels();
     const svg = ChartUtils.getChartSvg();
-    // const svg = Chart.printMode(400, 223);
     let resGraphId;
+    if (image) {
+      await this.props.updateGraphThumbnailRequest(graphId, image, 'medium', true)
+    }
     if (forceCreate || !graphId) {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
@@ -136,8 +140,6 @@ class SaveGraphModal extends Component {
 
     if (resGraphId) {
       toast.info('Successfully saved');
-      // const svgBig = Chart.printMode(800, 446);
-      // this.props.updateGraphThumbnailRequest(resGraphId, svg);
       this.props.onSave(resGraphId);
       this.props.history.push('/');
     } else {
@@ -148,19 +150,26 @@ class SaveGraphModal extends Component {
     this.props.setActiveButton('create');
   }
 
-  
-
-  handleChange = (path, value) => {
-    console.log('singleGraph: ', this.props);
+  handleChange = async (path, value) => {
+    const { match: { params: { graphId } } } = this.props;
     const { requestData } = this.state;
-    _.set(requestData, path, value);
-    this.setState({ requestData });
+    if (path == 'image') {
+      if (value == '') {
+        const svg = ChartUtils.getChartSvg();
+        await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+      }
+      this.setState({ [path]: value})
+      _.set(requestData, 'defaultImage', true);
+
+    } else {
+      _.set(requestData, path, value);
+      this.setState({ requestData });
+    }
   }
 
   render() {
-    const { requestData, disabled } = this.state;
-    const { singleGraph } = this.props;
-    const { match: { params: { graphId } } } = this.props;
+    const { match: { params: { graphId } }, singleGraph } = this.props;
+    const { requestData, disabled, image} = this.state;
     const nodes = Chart.getNodes();
     this.initValues(singleGraph);
     const publicState = singleGraph.publicState
@@ -176,20 +185,14 @@ class SaveGraphModal extends Component {
       >
         <Button color="$color-accent" className="close" icon={<CloseSvg />} onClick={() => this.props.toggleModal(false)} />
         <div className="form">
-          {/* <h2>
-            {isTemplate ? 'Save this template' : 'Save this graph'}
-          </h2> */}
           <div>
-          <img
-              className="thumbnailSave"
-              src={`${singleGraph.thumbnail}?t=${moment(singleGraph.updatedAt).unix()}`}
-              alt={singleGraph.title}
-             />
-           
+            <AvatarUploader
+              value={image || `${singleGraph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
+              onChange={(val) => this.handleChange('image', val)}
+            />
           </div>
           <div className='impData'>
           <Input
-            // label="Title"
             className="graphinputName"
             value={requestData.title}
             onChangeText={(v) => this.handleChange('title', v)}
@@ -197,13 +200,11 @@ class SaveGraphModal extends Component {
           <label className='switchLabel'>
            <span className="switchPublic">Publish graph</span>
              <div>
-         
                 <Switch
-                    onChange={this.onChange}
-                    onClick={this.onChange}
-                    disabled={disabled}
-                    defaultChecked={publicState}
-                    // className={`${className} ${colorClassName}`}
+                  onChange={this.onChange}
+                  onClick={this.onChange}
+                  disabled={disabled}
+                  defaultChecked={publicState}
                 />
             </div>
          </label>
