@@ -127,17 +127,7 @@ class AddNodeModal extends Component {
       nodeData.id = nodeId || ChartUtils.uniqueId(nodes);
 
       if (imgUrl && (imgUrl !== 'error')) {
-        const url = imgUrl;
-        const toDataURL = (url) => fetch(url)
-          .then((response) => response.blob())
-          .then((blob) => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-          }));
-
-        const dataUrl = await toDataURL(url);
+        const dataUrl = await Utils.toDataUrl(imgUrl);
 
         const fileData = Utils.dataURLtoFile(dataUrl, 'image');
 

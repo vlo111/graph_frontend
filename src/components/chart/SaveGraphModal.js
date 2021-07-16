@@ -126,6 +126,7 @@ class SaveGraphModal extends Component {
         ...requestData,
         status,
         svg,
+        graphId,
       });
       resGraphId = data.graphId;
     } else {
