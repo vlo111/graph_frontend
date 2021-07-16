@@ -8,7 +8,7 @@ import memoizeOne from 'memoize-one';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
 import Outside from './Outside';
-import { ReactComponent as EditSvg } from '../assets/images/icons/EditGraph.svg';
+import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import EditGraphModal from './chart/EditGraphModal';
 import SaveAsTempletModal from './chart/SaveasTampletModal';
 import CreateGraphModal from './CreateGraphModal';
@@ -21,7 +21,7 @@ import { GRAPH_STATUS } from '../data/graph';
 
 const LIMIT = 3;
 
-class GraphName extends Component {
+class GraphSettings extends Component {
     static propTypes = {
       singleGraph: PropTypes.object.isRequired,
       setLoading: PropTypes.func.isRequired,
@@ -221,11 +221,9 @@ class GraphName extends Component {
               </div>
             </Outside>
           ) : null}
-
           {showModal ? (
             <EditGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
           ) : null}
-
           {showModalTemplet ? (
             <SaveAsTempletModal toggleModal={this.toggleModalTemplet} onSave={this.handleDataSave} />
           ) : null}
@@ -248,6 +246,6 @@ const mapDispatchToProps = {
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(GraphName);
+)(GraphSettings);
 
 export default withRouter(Container);
