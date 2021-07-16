@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { setLegendButton } from '../store/actions/app';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
-import { ReactComponent as CarretSvg } from '../assets/images/Carret.svg';
+import { ReactComponent as DownSvg } from '../assets/images/icons/down.svg';
 
 class Legend extends Component {
     static propTypes = {
@@ -52,7 +52,7 @@ class Legend extends Component {
           <button className="dropdown-btn legendButton" onClick={() => this.handleClick()}>
             Legends
             <div className="carretNew">
-              <CarretSvg />
+              <DownSvg />
             </div>
           </button>
           <div className="dropdown">
