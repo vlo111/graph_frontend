@@ -111,7 +111,7 @@ class Zoom extends Component {
     let scale = +Chart.wrapper.attr('data-scale') || 1;
     let x = +Chart.wrapper.attr('data-x') || 0;
     let y = +Chart.wrapper.attr('data-y') || 0;
-    if (scale < 0.02) {
+    if (scale < 0.04) {
       return;
     }
     if (scale < 0.2) {
