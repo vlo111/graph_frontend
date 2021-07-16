@@ -28,7 +28,7 @@ const CommentModal = React.memo(({ closeModal, graph }) => {
         className="ghModal commentModal"
         overlayClassName="ghModalOverlay"
       >
-         <AddComment
+        <AddComment
           graph={graph}
           closeModal={closeModal}
         />
