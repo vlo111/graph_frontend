@@ -49,9 +49,11 @@ class AnalyticalPage extends Component {
     this.setState({
       effectPie: null,
     });
+
     Chart.showAllNodes();
 
     document.getElementsByClassName('selectedText')[0].innerHTML = '';
+
     document.getElementsByClassName('dot')[0].style.display = 'none';
   }
 
