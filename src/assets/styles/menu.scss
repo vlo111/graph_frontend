@@ -52,21 +52,22 @@
     position: absolute;
     left: 208px;
     width: 140px;
-    height: 150px;
     background: #FFFFFF;
     box-shadow: 0 4px 33px rgb(0 0 0 / 25%);
     border-radius: 3px;
     top: 90px;
     font-size: 17px;
+    height: 130px;
 
     li {
       position: relative;
-      top: 9px;
+      top: 5px;
       color: #727272;
       padding: 10px 30px;
       cursor: pointer;
       font-weight: 700;
       display: flex;
+      height: 40px;
 
       &:hover {
         background: rgba(113, 102, 248, 0.1);
@@ -88,12 +89,13 @@
   .dropdown-node, .create_label {
     left: 355px;
     width: 190px;
-    height: 195px;
+    height: 210px;
     top: 120px;
 
     li {
       top: 5px;
       padding: 7px 20px;
+      height: 40px;
     }
   }
 
