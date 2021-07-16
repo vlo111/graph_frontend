@@ -220,13 +220,13 @@ class ContextMenu extends Component {
                 </div>
               ) : null}
 
-              {/* {['selectSquare'].includes(show) ? ( */}
-              {/*  <> */}
-              {/*    <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}> */}
-              {/*      Create a folder */}
-              {/*    </Button> */}
-              {/*  </> */}
-              {/* ) : null} */}
+               {['selectSquare'].includes(show) ? (
+                <>
+                  <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
+                    Create a folder
+                  </Button>
+                </>
+               ) : null}
               {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
                 <>
                   {show === 'node' ? (!params.readOnly ? (
