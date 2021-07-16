@@ -273,7 +273,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'media' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fa fa-images"> </i>
+            <i className="fa fa-picture-o"> </i>
             <div className="sidebar_text"> Media </div>
           </li>
           <li
@@ -327,7 +327,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'analytic' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fa fa-chart-bar" />
+            <i className="fa fa-bar-chart" />
             <div className="sidebar_text"> Analysis </div>
           </li>
           <li
