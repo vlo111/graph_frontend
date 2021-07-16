@@ -116,6 +116,7 @@ class AutoSave extends Component {
     status: node.status || 'approved',
     type: node.type || '',
     manually_size: node.manually_size || 1,
+    color: node.color || '',
   })
 
   formatLink = (d) => ({

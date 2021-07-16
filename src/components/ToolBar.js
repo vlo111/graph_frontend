@@ -252,7 +252,7 @@ class ToolBar extends Component {
       <div className={`${!showMenu ? 'closed_menu' : ''} menu`}>
         <ul className="containerMenu">
           <li onClick={this.toggleShowModal} className="collapse">
-            <i className="fas fa-align-justify"> </i>
+            <i className="fa fa-align-justify"> </i>
             <div className="sidebar_text"> Menu </div>
           </li>
           <li
@@ -261,10 +261,10 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${((overMenu === 'create') || createNewPopup) ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fas fa-plus"> </i>
+            <i className="fa fa-plus"> </i>
             <div className="sidebar_text">
               Create New
-              <i className="fas fa-caret-right" />
+              <i className="fa fa-caret-right" />
             </div>
           </li>
           <li
@@ -273,7 +273,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'media' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fas fa-images"> </i>
+            <i className="fa fa-images"> </i>
             <div className="sidebar_text"> Media </div>
           </li>
           <li
@@ -282,7 +282,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'share' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fas fa-share-alt"> </i>
+            <i className="fa fa-share-alt"> </i>
             <div className="sidebar_text"> Share </div>
           </li>
           <li
@@ -291,7 +291,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'data_sheet' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fas fa-th-list"> </i>
+            <i className="fa fa-th-list"> </i>
             <div className="sidebar_text"> Data Sheet </div>
           </li>
           <li
@@ -300,7 +300,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'import' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fas fa-arrow-down"> </i>
+            <i className="fa fa-arrow-down"> </i>
             <div className="sidebar_text"> Import Data </div>
           </li>
           <li
@@ -309,7 +309,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'view' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fas fa-eye"> </i>
+            <i className="fa fa-eye"> </i>
             <div className="sidebar_text"> View </div>
           </li>
           <li
@@ -318,7 +318,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'filter' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fas fa-filter"> </i>
+            <i className="fa fa-filter"> </i>
             <div className="sidebar_text"> Filter </div>
           </li>
           <li
@@ -327,7 +327,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'analytic' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fas fa-chart-bar" />
+            <i className="fa fa-chart-bar" />
             <div className="sidebar_text"> Analysis </div>
           </li>
           <li
@@ -336,7 +336,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'findNode' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fas fa-search-plus" />
+            <i className="fa fa-search-plus" />
             <div className="sidebar_text"> Find Node </div>
           </li>
         </ul>
@@ -345,11 +345,11 @@ class ToolBar extends Component {
             <ul className="dropdown-addNew">
               <li className={`${selected.includes('node') ? 'selected' : ''}`} onClick={this.showAddNode}>
                 Node
-                <i className="fas fa-caret-right" />
+                <i className="fa fa-caret-right" />
               </li>
               <li className={`${selected.includes('label') ? 'selected' : ''}`} onClick={this.showAddLabel}>
                 Label
-                <i className="fas fa-caret-right" />
+                <i className="fa fa-caret-right" />
               </li>
               <li
                 className={`${selected.includes('folder') ? 'selected' : ''}`}
@@ -400,14 +400,14 @@ class ToolBar extends Component {
                 onClick={() => this.handleClick('create-label')}
                 className={`${selected.includes('freeForm') ? 'selected' : ''}`}
               >
-                <i className="fas fa-pen-nib" />
+                <i className="fa fa-pen-nib" />
                 <span> Free form </span>
               </li>
               <li
                 onClick={() => this.handleClick('create-label-square')}
                 className={`${selected.includes('create-label-square') ? 'selected' : ''}`}
               >
-                <i className="fas fa-vector-square" />
+                <i className="fa fa-vector-square" />
                 <span> Square </span>
               </li>
               <li

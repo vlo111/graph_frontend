@@ -723,13 +723,6 @@ class Chart {
     if (this.activeButton === 'create-label' || ev.sourceEvent?.shiftKey) {
       return;
     }
-    if (ev?.transform?.k >= 2.5 && ev?.sourceEvent?.deltaY < 0) {
-      try {
-        ev.transform.k = 2.5
-        ev.sourceEvent.preventDefault()
-        return
-      } catch (e) {}
-    }
     const { transform } = ev;
     this.wrapper.attr('transform', transform)
       .attr('data-scale', transform.k)
@@ -1629,7 +1622,9 @@ class Chart {
       this.autoPosition();
 
       this.svg = d3.select('#graph svg');
-      this.zoom = d3.zoom().on('zoom', this.handleZoom);
+      this.zoom = d3.zoom()
+        .on('zoom', this.handleZoom)
+        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250% 
       this.svg = this.svg
         .call(this.zoom)
         .on('dblclick.zoom', null)
