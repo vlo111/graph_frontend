@@ -15,8 +15,8 @@ import LabelUtils from '../../helpers/LabelUtils';
 import SelectSquare from './SelectSquare';
 import DeleteModalContext from './DeleteModalContext';
 import { setActiveButton } from '../../store/actions/app';
-import Api from '../../Api'
-import { KEY_CODES } from '../../data/keyCodes'
+import Api from '../../Api';
+import { KEY_CODES } from '../../data/keyCodes';
 
 class ContextMenu extends Component {
   static propTypes = {
@@ -74,7 +74,7 @@ class ContextMenu extends Component {
     });
     localStorage.setItem('label.copy', JSON.stringify(data.data));
 
-    Chart.event.emit('window.mousedown', ev)
+    Chart.event.emit('window.mousedown', ev);
     Chart.loading(false);
   }
 
@@ -195,13 +195,13 @@ class ContextMenu extends Component {
               {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
-              {['label', 'chart'].includes(show) ? (
-                <>
-                  <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
-                    Create node
-                  </Button>
-                </>
-              ) : null}
+              {/* {['label', 'chart'].includes(show) ? ( */}
+              {/* <> */}
+              {/*   <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}> */}
+              {/*     Create node */}
+              {/*   </Button> */}
+              {/* </> */}
+              {/* ) : null} */}
               {showPast ? (
                 <div className="ghButton notClose">
                   <Icon value="fa-clipboard" />
@@ -220,20 +220,20 @@ class ContextMenu extends Component {
                 </div>
               ) : null}
 
-              {['selectSquare'].includes(show) ? (
-                <>
-                  <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
-                    Create a folder
-                  </Button>
-                </>
-              ) : null}
+              {/* {['selectSquare'].includes(show) ? ( */}
+              {/*  <> */}
+              {/*    <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}> */}
+              {/*      Create a folder */}
+              {/*    </Button> */}
+              {/*  </> */}
+              {/* ) : null} */}
               {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
                 <>
                   {show === 'node' ? (!params.readOnly ? (
-                      <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
-                        Delete
-                      </Button>
-                    ) : null)
+                    <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
+                      Delete
+                    </Button>
+                  ) : null)
                     : (
                       <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
                         Delete
@@ -243,20 +243,20 @@ class ContextMenu extends Component {
               ) : null}
               {['chart'].includes(show) ? (
                 <>
-                  <div className="ghButton notClose">
-                    <Icon value="fa-plus-square" />
-                    Create
-                    <Icon className="arrow" value="fa-angle-right" />
-                    <div className="contextmenu">
+                  {/* <div className="ghButton notClose"> */}
+                  {/*  <Icon value="fa-plus-square" /> */}
+                  {/*  Create */}
+                  {/*  <Icon className="arrow" value="fa-angle-right" /> */}
+                  {/*  <div className="contextmenu"> */}
 
-                      <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.new')}>
-                        Folder
-                      </Button>
-                      <Button icon="fa-tags" onClick={() => this.props.setActiveButton('create-label')}>
-                        Label
-                      </Button>
-                    </div>
-                  </div>
+                  {/*    <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.new')}> */}
+                  {/*      Folder */}
+                  {/*    </Button> */}
+                  {/*    <Button icon="fa-tags" onClick={() => this.props.setActiveButton('create-label')}> */}
+                  {/*      Label */}
+                  {/*    </Button> */}
+                  {/*  </div> */}
+                  {/* </div> */}
                   {showInMap ? (
                     <Button
                       icon="fa-globe"
@@ -297,7 +297,7 @@ class ContextMenu extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   currentUserRole: state.graphs.singleGraph.currentUserRole || '',
-  singleGraphId: state.graphs.singleGraph.id
+  singleGraphId: state.graphs.singleGraph.id,
 });
 const mapDispatchToProps = {
   setActiveButton,

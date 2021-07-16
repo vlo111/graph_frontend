@@ -133,7 +133,7 @@ class SearchModal extends Component {
                 html.innerHTML = tabContent;
                 const tagsElement = html.getElementsByClassName('tags')
                 if (tagsElement.length) {
-                  tagsElement.remove()
+                  tagsElement[0].remove()
                 }
                 const cleanedText = html.innerText
                   if (cleanedText.toLowerCase().includes(search.toLowerCase())) {
@@ -228,12 +228,19 @@ class SearchModal extends Component {
     if (isNodeAvailable) {
       this.closeModal();
       ChartUtils.findNodeInDom(isNodeAvailable);
+      if (tagNode.tabName) {
+        this.props.setActiveTab(tagNode.tabName);
+      }
       this.props.history.replace(
         `${window.location.pathname}?info=${isNodeAvailable.id}`
       );
     } else {
       const label = labels.find((label) => label.nodes.includes(tagNode.id));
-      this.openFolder(e, label, tagNode);
+      if (tagNode.tabName) {
+        this.openFolder(e, label, tagNode, tagNode.tabName);
+      } else {
+        this.openFolder(e, label, tagNode);
+      }
     }
   };
 
@@ -385,11 +392,11 @@ class SearchModal extends Component {
         </div>
         <ul className="list"> 
           {nodes.map((d) => (
-            <li className="item" key={d.index}>
+            <li className="item " key={d.index}>
               <div
                 tabIndex="0"
                 role="button"
-                className="ghButton"
+                className="ghButton searchItem"
                 onClick={(e) => this.openNode(e, d)}
               >
                 <div className="left">
@@ -495,11 +502,11 @@ class SearchModal extends Component {
             ))}
 
           {keywords.map((d) => (
-            <li className="item" key={d.index}>
+            <li className="item " key={d.index}>
               <div
                 tabIndex="0"
                 role="button"
-                className="ghButton"
+                className="ghButton searchItem"
                 onClick={(e) => this.openNode(e, d)}
               >
                 <div className="left">
@@ -536,11 +543,11 @@ class SearchModal extends Component {
           ))}
 
           {docs.map((d, index) => (
-            <li className="item" key={index}>
+            <li className="item " key={index}>
               <div
                 tabIndex="0"
                 role="button"
-                className="ghButton"
+                className="ghButton searchItem"
                 onClick={(e) => this.openNodeByTag(e, d)}
               >
                 <div className="right">

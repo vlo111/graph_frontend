@@ -32,7 +32,7 @@ class AnalyseModal extends Component {
           </div>
         </Modal>
       )
-        : <div />);
+        : <> </>);
     }
 }
 

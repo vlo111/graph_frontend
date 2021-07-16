@@ -29,9 +29,12 @@ import LabelShare from '../components/share/LabelShare';
 import MediaModal from '../components/Media/MediaModal';
 import LabelCopy from '../components/labelCopy/LabelCopy';
 import FindPath from '../components/FindPath';
-import ReactChartMap from "../components/chart/ReactChartMap";
 import FindNode from '../components/FindNode';
-import MousePosition from '../components/chart/MousePosition'
+import MousePosition from '../components/chart/MousePosition';
+import ExitMode from '../components/ExitMode';
+import AddLinkedInModal from '../components/chart/AddLinkedInModal';
+import MapsModal from '../components/maps/MapsModal';
+import ScienceGraphModal from "../components/ScienceSearchToGraph/ScienceGraphModal";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -40,7 +43,7 @@ class GraphForm extends Component {
     clearSingleGraph: PropTypes.func.isRequired,
     socketSetActiveGraph: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
-    match: PropTypes.object.isRequired, 
+    match: PropTypes.object.isRequired,
     currentUserId: PropTypes.number.isRequired,
   }
 
@@ -53,16 +56,17 @@ class GraphForm extends Component {
     }
     this.props.socketSetActiveGraph(+graphId || null);
   })
+
   getMouseMoveTracker = () => {
-    const { mouseMoveTracker,  currentUserId } = this.props;       
+    const { mouseMoveTracker, currentUserId } = this.props;
     return mouseMoveTracker && mouseMoveTracker.some(
-      (m) => m.userId !== currentUserId && m.tracker === true
-      );
+      (m) => m.userId !== currentUserId && m.tracker === true,
+    );
   }
 
   render() {
-    const { activeButton, mouseMoveTracker,  match: { params: { graphId } } } = this.props;  
-    const isTracker = this.getMouseMoveTracker(); 
+    const { activeButton, mouseMoveTracker, match: { params: { graphId } } } = this.props;
+    const isTracker = this.getMouseMoveTracker();
     this.getSingleGraph(graphId);
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
@@ -84,8 +88,11 @@ class GraphForm extends Component {
         {activeButton === 'search' && <SearchModal history={this.props.history} />}
         {activeButton === 'media' && <MediaModal history={this.props.history} /> }
         {activeButton === 'maps-view' && <MapsGraph />}
+        {activeButton === 'maps' && <MapsModal />}
+        {activeButton === 'sciGraph' && <ScienceGraphModal />}
         <AddLinkModal />
         <AddLabelModal />
+        <AddLinkedInModal />
         <ContextMenu />
         <DataImport />
         <FindNode />
@@ -98,16 +105,16 @@ class GraphForm extends Component {
         <LabelShare />
         <LabelCopy />
         <AutoSave />
-        {isTracker && <MousePosition graphId={graphId}/> }   
+        <ExitMode />
+        {isTracker && <MousePosition graphId={graphId} /> }
       </Wrapper>
-     
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
-  singleGraphLabels: state.graphs.singleGraph.labels || [], 
+  singleGraphLabels: state.graphs.singleGraph.labels || [],
   mouseMoveTracker: state.graphs.mouseMoveTracker,
   currentUserId: state.account.myAccount.id,
 });
