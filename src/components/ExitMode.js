@@ -46,11 +46,11 @@ class ExitMode extends Component {
         <div className="exit_mode">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.close} />
           <div className="container">
-            <span>
+            <span className="text">
               Press
             </span>
             <span className="escPress">Esc</span>
-            <span>
+            <span className="text">
               to exit the mode
             </span>
           </div>

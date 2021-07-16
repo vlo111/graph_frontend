@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { withRouter, Prompt } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '../form/Button';
-import SaveGraphModal from './SaveGraphModal';
+import SaveasTampletModal from './SaveasTampletModal';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 
@@ -16,7 +15,6 @@ class SaveGraph extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // showModal: !!queryString.parse(window.location.search).new,
       showModal: false,
       preventReload: false,
     };
@@ -91,7 +89,7 @@ class SaveGraph extends Component {
           {/* /> */}
 
           {showModal ? (
-            <SaveGraphModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
+            <SaveasTampletModal toggleModal={this.toggleModal} onSave={this.handleDataSave} />
           ) : null}
         </div>
         <span className="graphsName">
@@ -106,12 +104,9 @@ class SaveGraph extends Component {
 }
 const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
-
 });
 const mapDispatchToProps = {};
-const Container = connect(
+connect(
   mapStateToProps,
   mapDispatchToProps,
 )(SaveGraph);
-
-export default withRouter(Container);

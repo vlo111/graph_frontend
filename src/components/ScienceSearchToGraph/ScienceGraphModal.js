@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import Modal from "react-modal";
-import { connect } from "react-redux";
-import _ from "lodash";
-import PropTypes from "prop-types";
-import { toggleNodeModal } from "../../store/actions/app";
-import { parseStringPromise } from "xml2js";
-import moment from "moment";
-import Chart from "../../Chart";
-import ChartUtils from "../../helpers/ChartUtils";
-import ApiImg from "../../assets/images/icons/science.png";
-import arxivImg from "../../assets/images/icons/arxiv.jpg";
-import coreImg from "../../assets/images/icons/core.png";
-import Api from "../../Api";
-import { ScienceCategories } from "../../data/scienceCategory";
+import React, { Component } from 'react';
+import Modal from 'react-modal';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
+import { parseStringPromise } from 'xml2js';
+import moment from 'moment';
+import {setActiveButton, toggleNodeModal} from '../../store/actions/app';
+import Chart from '../../Chart';
+import ChartUtils from '../../helpers/ChartUtils';
+import ApiImg from '../../assets/images/icons/science.png';
+import arxivImg from '../../assets/images/icons/arxiv.jpg';
+import coreImg from '../../assets/images/icons/core.png';
+import Api from '../../Api';
+import { ScienceCategories } from '../../data/scienceCategory';
 
 const {
   REACT_APP_ARXIV_URL,
@@ -25,15 +25,14 @@ class ScienceGraphModal extends Component {
   static propTypes = {
     currentUserId: PropTypes.number.isRequired,
     singleGraphId: PropTypes.number.isRequired,
-    onClose: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       apiSearchReturnValues: [],
-      apiTitleSearchTerms: "",
-      apiAuthorSearchTerms: "",
+      apiTitleSearchTerms: '',
+      apiAuthorSearchTerms: '',
       getChecked: false,
       searchResults: null,
       checkedList: [],
@@ -47,15 +46,15 @@ class ScienceGraphModal extends Component {
    * @returns
    */
   handleSearch = async (e) => {
-    const { apiTitleSearchTerms, apiAuthorSearchTerms } = this.state
+    const { apiTitleSearchTerms, apiAuthorSearchTerms } = this.state;
     this.setState({
       searchResults: null,
       checkedList: [],
     });
     e.preventDefault();
 
-    if ( apiTitleSearchTerms?.length > 0 &&
-        apiAuthorSearchTerms?.length > 0) {
+    if (apiTitleSearchTerms?.length > 0
+        && apiAuthorSearchTerms?.length > 0) {
       return;
     }
     this.setState({
@@ -66,27 +65,23 @@ class ScienceGraphModal extends Component {
     const apiSearchReturnValues = [];
 
     // combined author and topic fields and putted it in arxivUrl and coreUrl
-    const arxivUrl =
-      REACT_APP_ARXIV_URL +
-      `search_query=all:${apiTitleSearchTerms} ${apiAuthorSearchTerms}&sortBy=relevance&max_results=30`;
-    const author = !!apiAuthorSearchTerms
-      ? apiAuthorSearchTerms
-      : "";
-    const title = !!apiTitleSearchTerms
-      ? "title:" + apiTitleSearchTerms
-      : "";
-    const coreUrl =
-      REACT_APP_CORE_URL +
-      `"${title} ${author}"?page=1&pageSize=10&fulltext=false&citations=true&metadata=true&apiKey=uRj8cMByiodHF0Z61XQxzVUfqpkYJW2D`;
+    const arxivUrl = `${REACT_APP_ARXIV_URL
+    }search_query=all:${apiTitleSearchTerms} ${apiAuthorSearchTerms}&sortBy=relevance&max_results=30`;
+    const author = apiAuthorSearchTerms || '';
+    const title = apiTitleSearchTerms
+      ? `title:${apiTitleSearchTerms}`
+      : '';
+    const coreUrl = `${REACT_APP_CORE_URL
+    }"${title} ${author}"?page=1&pageSize=10&fulltext=false&citations=true&metadata=true&apiKey=uRj8cMByiodHF0Z61XQxzVUfqpkYJW2D`;
 
     const urls = [
       {
         url: arxivUrl,
-        name: "arxiv",
+        name: 'arxiv',
       },
       {
         url: coreUrl,
-        name: "core",
+        name: 'core',
       },
     ];
 
@@ -99,18 +94,18 @@ class ScienceGraphModal extends Component {
       return;
     }
 
-    let arxivJsonData = "";
-    let coreJsonData = "";
-    if (fetchedSources.find((source) => source.name === "arxiv") != undefined) {
+    let arxivJsonData = '';
+    let coreJsonData = '';
+    if (fetchedSources.find((source) => source.name === 'arxiv') != undefined) {
       const arxivResponse = fetchedSources.find(
-        (source) => source.name === "arxiv"
+        (source) => source.name === 'arxiv',
       ).articles;
       const arxivXml = await arxivResponse.text();
       arxivJsonData = await parseStringPromise(arxivXml);
     }
-    if (fetchedSources.find((source) => source.name === "core") != undefined) {
+    if (fetchedSources.find((source) => source.name === 'core') != undefined) {
       const coreResponse = fetchedSources.find(
-        (source) => source.name === "core"
+        (source) => source.name === 'core',
       ).articles;
       const coreString = await coreResponse.text();
       coreJsonData = JSON.parse(coreString);
@@ -127,46 +122,44 @@ class ScienceGraphModal extends Component {
       await arxivJsonData.feed.entry.map((article) => {
         const categoryAcronim = article.category[0].$.term.trim();
         const category = ScienceCategories.find(
-          (category) => category.acronym.trim() == categoryAcronim
+          (category) => category.acronym.trim() == categoryAcronim,
         );
-        const topics = !!category ? [category.fullName] : undefined;
-        const url = article?.id[0]?.replace("abs", "pdf") + ".pdf"
-        let authors = "";
-        article.author.map((auth) => (authors += auth.name + ", "));
+        const topics = category ? [category.fullName] : undefined;
+        const url = `${article?.id[0]?.replace('abs', 'pdf')}.pdf`;
+        let authors = '';
+        article.author.map((auth) => (authors += `${auth.name}, `));
         apiSearchReturnValues.push({
-          authorsList: authors.split(",").slice(0, -1),
-          authors: authors,
-          url: url,
-          queryResultPageID: article.id[0].split("/").slice(-1)[0],
+          authorsList: authors.split(',').slice(0, -1),
+          authors,
+          url,
+          queryResultPageID: article.id[0].split('/').slice(-1)[0],
           title: article.title[0],
           abstract: article.summary[0],
-          topics: topics,
-          published: article.published[0].split("T")[0],
-          origin: ["arxiv"],
+          topics,
+          published: article.published[0].split('T')[0],
+          origin: ['arxiv'],
         });
       });
     }
 
     if (coreJsonData && coreJsonData.data) {
       await coreJsonData.data.map((article) => {
-        const articleAlreadyExists =
-          apiSearchReturnValues.find(
-            (arxivArticle, index) => {
-              if (arxivArticle.title === article.title) {
-                if (
-                  !apiSearchReturnValues[
-                    index
-                  ].origin.includes("core")
-                ) {
-                  apiSearchReturnValues[index].origin.push(
-                    "core"
-                  );
-                }
-                return arxivArticle;
+        const articleAlreadyExists = apiSearchReturnValues.find(
+          (arxivArticle, index) => {
+            if (arxivArticle.title === article.title) {
+              if (
+                !apiSearchReturnValues[
+                  index
+                ].origin.includes('core')
+              ) {
+                apiSearchReturnValues[index].origin.push(
+                  'core',
+                );
               }
-              return;
+              return arxivArticle;
             }
-          );
+          },
+        );
 
         if (articleAlreadyExists) {
           return;
@@ -175,40 +168,40 @@ class ScienceGraphModal extends Component {
         if ((url?.length > 0) && article.urls) {
           url = article.urls[0];
         }
-        if ((url === undefined || url === "") && article.relations) {
+        if ((url === undefined || url === '') && article.relations) {
           url = article.relations[0];
         }
         if (
-          !url ||
-          (url.split("/")[0] !== "http:" && url.split("/")[0] !== "https:") ||
-          !article.description
+          !url
+          || (url.split('/')[0] !== 'http:' && url.split('/')[0] !== 'https:')
+          || !article.description
         ) {
           return;
         }
 
-        let authors = "";
-        article.authors.map((auth) => (authors += auth + ", "));
+        let authors = '';
+        article.authors.map((auth) => (authors += `${auth}, `));
         const topics = Array.isArray(article.topics)
           ? article.topics
-          : article.topics.split(";");
+          : article.topics.split(';');
 
         apiSearchReturnValues.push({
-          authors: authors,
+          authors,
           authorsList: article.authors,
-          url: url,
+          url,
           queryResultPageID: article.id,
           title: article.title,
           abstract: article.description,
-          topics: topics,
+          topics,
           published:
-            article.year < new Date().getFullYear() ? article.year : "", // some articles in core have year 10000
-          origin: ["core"],
+            article.year < new Date().getFullYear() ? article.year : '', // some articles in core have year 10000
+          origin: ['core'],
         });
       });
     }
     this.setState({
       searchResults: apiSearchReturnValues.length,
-      apiSearchReturnValues
+      apiSearchReturnValues,
     });
     Chart.loading(false);
   };
@@ -227,7 +220,7 @@ class ScienceGraphModal extends Component {
           name: url.name,
         };
         return result;
-      })
+      }),
     );
     return result;
   };
@@ -237,6 +230,7 @@ class ScienceGraphModal extends Component {
       apiAuthorSearchTerms: e.target.value,
     });
   };
+
   changeApiAuthorSearchTerms = (e) => {
     this.setState({
       apiTitleSearchTerms: e.target.value,
@@ -245,32 +239,28 @@ class ScienceGraphModal extends Component {
 
   /**
    * Create nodes for selected Articles
-   * 
+   *
    * @param {object} ev
    */
   createSelectedNodes = async (ev) => {
     const { checkedList, apiSearchReturnValues } = this.state;
-    const { onClose } = this.props
     Chart.loading(true);
     if (!checkedList.length) {
       return;
     }
-    const chosenArticles = checkedList.map((articleIndex) => {
-      return apiSearchReturnValues[parseInt(articleIndex)];
-    });
+    const chosenArticles = checkedList.map((articleIndex) => apiSearchReturnValues[parseInt(articleIndex)]);
     await this.getArticlesData(chosenArticles).then(async (res) => {
       if (res?.length) {
-        const firstNode = res[0]
-        const nodes = Chart.getNodes()
-        const nodeInDom = nodes.find(node => node.id === firstNode.id)
+        const firstNode = res[0];
+        const nodes = Chart.getNodes();
+        const nodeInDom = nodes.find((node) => node.id === firstNode.id);
         if (nodeInDom) {
-          ChartUtils.findNodeInDom(nodeInDom)
+          ChartUtils.findNodeInDom(nodeInDom);
         }
       }
       Chart.loading(false);
-      onClose(ev);
+      this.close();
     });
-    return;
   };
 
   /**
@@ -296,8 +286,8 @@ class ScienceGraphModal extends Component {
         nodes,
         title.trim(),
         url,
-        "article",
-        articleJson
+        'article',
+        articleJson,
       );
       new_nodes.push(article);
 
@@ -310,10 +300,10 @@ class ScienceGraphModal extends Component {
           nodes,
           article,
           new_links,
-          new_nodes
+          new_nodes,
         );
       };
-      let AuthorsData = await getAuthorsData().then(this.sendResultsToBackEnd);
+      const AuthorsData = await getAuthorsData().then(this.sendResultsToBackEnd);
       ArticleList.push(AuthorsData);
     }
     return ArticleList;
@@ -335,15 +325,14 @@ class ScienceGraphModal extends Component {
     const icon = contentData.author
       ? REACT_APP_ARTICLE_URL
       : REACT_APP_AUTHOR_URL;
-    const keywords = !!contentData.topics ? contentData.topics : [];
-    const arxivHref =
-      url != undefined
-        ? `
+    const keywords = contentData.topics ? contentData.topics : [];
+    const arxivHref = url != undefined
+      ? `
         <a href="${url}" target="_blank">
           Go to article
         </a>
       `
-        : "";
+      : '';
     const about = contentData.author
       ? `<div>
         <br>Topics: ${contentData.topics}<br>
@@ -355,29 +344,29 @@ class ScienceGraphModal extends Component {
 
     const customFields = about
       ? [
-          {
-            name: "About",
-            subtitle: "",
-            value: about,
-          },
-        ]
-      : "";
-    const _type = type || _.last(nodes)?.type || "";
+        {
+          name: 'About',
+          subtitle: '',
+          value: about,
+        },
+      ]
+      : '';
+    const _type = type || _.last(nodes)?.type || '';
     const node = {
       create: true,
-      color: ChartUtils.nodeColorObj[_type] || "",
+      color: ChartUtils.nodeColorObj[_type] || '',
       fx: -189.21749877929688 + Math.random() * 150,
       fy: -61.72186279296875 + Math.random() * 150,
-      icon: icon,
+      icon,
       id: ChartUtils.uniqueId(nodes),
-      keywords: keywords,
+      keywords,
       labels: [],
       link: url,
-      name: name,
+      name,
       type: _type,
       createdAt: updatedAt,
-      updatedAt: updatedAt,
-      customFields: customFields,
+      updatedAt,
+      customFields,
       createdUser: currentUserId,
       updatedUser: currentUserId,
     };
@@ -396,7 +385,7 @@ class ScienceGraphModal extends Component {
    */
   getAuthors = (authorsList, nodes, article, new_links, new_nodes) => {
     const { currentUserId } = this.props;
-    const type = "Author";
+    const type = 'Author';
     return Promise.all(
       authorsList.map(async (author) => {
         const authorData = await this.createNode(
@@ -404,26 +393,26 @@ class ScienceGraphModal extends Component {
           author.trim(),
           author.url,
           type,
-          { topics: article.keywords }
+          { topics: article.keywords },
         );
         const target = authorData.id;
         const source = article.id;
         const links = [...(await Chart.getLinks())];
 
         const existingLink = links.find(
-          (link) => link.target === target && link.source === source
+          (link) => link.target === target && link.source === source,
         );
 
         if (!existingLink) {
-          const _type = type || _.last(links)?.type || "";
+          const _type = type || _.last(links)?.type || '';
           const link = {
             create: true,
             createdAt: moment().unix(),
-            direction: "",
+            direction: '',
             id: ChartUtils.uniqueId(links),
             linkType: type,
             source: article.id,
-            status: "approved",
+            status: 'approved',
             target: authorData.id,
             type: _type,
             updatedAt: moment().unix(),
@@ -434,7 +423,7 @@ class ScienceGraphModal extends Component {
         }
         new_nodes.push(authorData);
         return { nodes: new_nodes, links: new_links };
-      })
+      }),
     );
   };
 
@@ -452,27 +441,27 @@ class ScienceGraphModal extends Component {
       return;
     }
     const { singleGraphId } = this.props;
-    const savedNodes = await Api.dataPast(singleGraphId, undefined, [0, 0], "merge", {
+    const savedNodes = await Api.dataPast(singleGraphId, undefined, [0, 0], 'merge', {
       labels: [],
       nodes: res[0].nodes,
       links: res[0].links,
     }).catch((e) => e.response);
-    if (res.status === "error") {
+    if (res.status === 'error') {
       toast.error(res.message);
       return;
     }
-    
+
     if (savedNodes?.data?.create?.nodes?.length > 0) { // check this out
       return savedNodes.data.create.nodes[0];
     }
   };
 
   handleCheckedButton = (param) => {
-    const { checkedList } = this.state
+    const { checkedList } = this.state;
     if (checkedList.includes(param)) {
       this.setState({
         checkedList: checkedList.filter(
-          (checkedItems) => checkedItems !== param
+          (checkedItems) => checkedItems !== param,
         ),
       });
     } else {
@@ -485,7 +474,7 @@ class ScienceGraphModal extends Component {
 
   getListOfArticles = (apiSearchReturnValues, checkedList) => {
     const apiSearchResults = [];
-    for (const index in apiSearchReturnValues) { // move to separate function 
+    for (const index in apiSearchReturnValues) { // move to separate function
       apiSearchResults.push(
         <div className="scienceResultsList" key={index}>
           <div className="scienceCheckBox">
@@ -513,72 +502,77 @@ class ScienceGraphModal extends Component {
               </a>
             </h3>
             <p className="scienceAuthor">
-              
-              <b>Authors: </b> {apiSearchReturnValues[index].authors}
+
+              <b>Authors: </b>
+              {' '}
+              {apiSearchReturnValues[index].authors}
             </p>
-            {!!apiSearchReturnValues[index].topics ? (
+            {apiSearchReturnValues[index].topics ? (
               <p className="scienceAuthor">
                 <b>Topic: </b>
-                {apiSearchReturnValues[index].topics.join(", ")}
+                {apiSearchReturnValues[index].topics.join(', ')}
               </p>
             ) : (
-              ""
+              ''
             )}
             <p
               className=" scienceArticleDescription"
               dangerouslySetInnerHTML={{
                 __html:
-                  "Abstract:" +
-                    apiSearchReturnValues[index].abstract !==
-                  undefined
+                  `Abstract:${
+                    apiSearchReturnValues[index].abstract}`
+                  !== undefined
                     ? apiSearchReturnValues[index].abstract
-                    : "",
+                    : '',
               }}
             />
             <div>
               {apiSearchReturnValues[index].origin.includes(
-                "arxiv"
+                'arxiv',
               ) ? (
                 <img
                   src={arxivImg}
                   alt="arxiv"
                   className="arxivLogo sourceLogo"
                 />
-              ) : (
-                ""
-              )}
+                ) : (
+                  ''
+                )}
               {apiSearchReturnValues[index].origin.includes(
-                "core"
+                'core',
               ) ? (
                 <img
                   src={coreImg}
                   alt="arxiv"
                   className="coreLogo sourceLogo"
                 />
-              ) : (
-                ""
-              )}
+                ) : (
+                  ''
+                )}
             </div>
           </div>
-        </div>
+        </div>,
       );
     }
-    return apiSearchResults
+    return apiSearchResults;
+  }
+
+  close = () => {
+    this.props.setActiveButton('create');
   }
 
   render() {
-    const { onClose } = this.props
-    const { 
-      checkedList, 
-      apiSearchReturnValues, 
-      apiAuthorSearchTerms, 
+    const {
+      checkedList,
+      apiSearchReturnValues,
+      apiAuthorSearchTerms,
       apiTitleSearchTerms,
-      searchResults
-    } = this.state
+      searchResults,
+    } = this.state;
     const resultAmount = searchResults !== null
       ? `Got ${searchResults} results`
-      : "";
-    const apiSearchResults = this.getListOfArticles(apiSearchReturnValues, checkedList)
+      : '';
+    const apiSearchResults = this.getListOfArticles(apiSearchReturnValues, checkedList);
 
     return (
       <>
@@ -586,7 +580,7 @@ class ScienceGraphModal extends Component {
           isOpen
           className="ghModal ghMapsModal scienceModal"
           overlayClassName="ghModalOverlay ghMapsModalOverlay"
-          onRequestClose={onClose}
+          onRequestClose={this.close}
         >
           <div className="scienceModalsubBox">
             <img src={ApiImg} alt="api" className="scienceLogo" />
@@ -596,14 +590,14 @@ class ScienceGraphModal extends Component {
                   <input
                     className="scienceAuthorInput scienceInput"
                     type="text"
-                    value={apiAuthorSearchTerms || ""}
+                    value={apiAuthorSearchTerms || ''}
                     onChange={this.changeApiTitleSearchTerms}
                     placeholder="Search Authors"
                   />
                   <input
                     className="scienceTitleInput scienceInput"
                     type="text"
-                    value={apiTitleSearchTerms || ""}
+                    value={apiTitleSearchTerms || ''}
                     onChange={this.changeApiAuthorSearchTerms}
                     placeholder="Search  Articles"
                     autoFocus
@@ -615,7 +609,7 @@ class ScienceGraphModal extends Component {
                   >
                     Search
                   </button>
-                  </form>
+                </form>
               </div>
             </div>
             <div className="scienceResultBox">
@@ -635,11 +629,13 @@ class ScienceGraphModal extends Component {
                   Create Graph
                 </button>
                 <p className="selectedArticlesAmount">
-                  Selected Articles {checkedList.length}
+                  Selected Articles
+                  {' '}
+                  {checkedList.length}
                 </p>
               </>
             ) : (
-              ""
+              ''
             )}
           </div>
         </Modal>
@@ -656,11 +652,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   toggleNodeModal,
+  setActiveButton,
 };
 
 const Container = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ScienceGraphModal);
 
 export default Container;

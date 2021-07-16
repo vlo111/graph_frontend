@@ -33,6 +33,8 @@ import FindNode from '../components/FindNode';
 import MousePosition from '../components/chart/MousePosition';
 import ExitMode from '../components/ExitMode';
 import AddLinkedInModal from '../components/chart/AddLinkedInModal';
+import MapsModal from '../components/maps/MapsModal';
+import ScienceGraphModal from "../components/ScienceSearchToGraph/ScienceGraphModal";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -86,6 +88,8 @@ class GraphForm extends Component {
         {activeButton === 'search' && <SearchModal history={this.props.history} />}
         {activeButton === 'media' && <MediaModal history={this.props.history} /> }
         {activeButton === 'maps-view' && <MapsGraph />}
+        {activeButton === 'maps' && <MapsModal />}
+        {activeButton === 'sciGraph' && <ScienceGraphModal />}
         <AddLinkModal />
         <AddLabelModal />
         <AddLinkedInModal />

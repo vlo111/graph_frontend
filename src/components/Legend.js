@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setLegendButton } from '../store/actions/app';
 import Chart from '../Chart';
-import { ReactComponent as Arrow } from '../assets/images/arrow.svg';
 import ChartUtils from '../helpers/ChartUtils';
+import { ReactComponent as CarretSvg } from '../assets/images/Carret.svg';
 
 class Legend extends Component {
     static propTypes = {
@@ -49,11 +49,11 @@ class Legend extends Component {
 
       return (
         <div className={showLegendButton === 'close' ? 'legends' : 'legends open'}>
-          <button className="dropdown-btn" onClick={() => this.handleClick()}>
+          <button className="dropdown-btn legendButton" onClick={() => this.handleClick()}>
             Legends
-            <span className="carret">
-              <Arrow />
-            </span>
+            <div className="carretNew">
+              <CarretSvg />
+            </div>
           </button>
           <div className="dropdown">
             <div className="nodes">

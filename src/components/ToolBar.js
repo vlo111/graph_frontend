@@ -164,8 +164,7 @@ class ToolBar extends Component {
         showAddNode: false,
         showAddLabel: false,
       });
-    }
-    else {
+    } else {
       this.setState({
         createNewPopup: !createNewPopup,
       });
@@ -251,7 +250,7 @@ class ToolBar extends Component {
 
     return (
       <div className={`${!showMenu ? 'closed_menu' : ''} menu`}>
-        <ul className="container">
+        <ul className="containerMenu">
           <li onClick={this.toggleShowModal} className="collapse">
             <i className="fas fa-align-justify"> </i>
             <div className="sidebar_text"> Menu </div>
