@@ -12,12 +12,15 @@ import CreateGraphModal from './CreateGraphModal';
 import Button from './form/Button';
 import Api from '../Api';
 import Input from './form/Input';
+import { toast } from 'react-toastify';
+
 
 const LIMIT = 3
-
+const PAGE = 1
 class GraphName extends Component {
     static propTypes = {
       singleGraph: PropTypes.object.isRequired,
+      userId: PropTypes.object.isRequired,
     }
     constructor(props) {
       super(props);
@@ -43,7 +46,7 @@ class GraphName extends Component {
     graphSearch = async (e=null) => {
       const search = e === null ? '' : e.target.value
       this.setState({search})
-      const result = await Api.getGraphsList(1, {
+      const result = await Api.getGraphsList(PAGE, {
         onlyTitle: true,
         s: search,
         limit: search === '' ? LIMIT : undefined,
@@ -63,7 +66,6 @@ class GraphName extends Component {
       this.props.setLoading(true);
       const labels = Chart.getLabels();
       const svg = ChartUtils.getChartSvg();
-      // const svg = Chart.printMode(400, 223);
       let resGraphId;
       if (forceCreate || !graphId) {
         const { payload: { data } } = await this.props.createGraphRequest({
@@ -107,6 +109,11 @@ class GraphName extends Component {
     }
 
     toggleModal = (showModal) => {
+      const { singleGraph, userId } = this.props;
+      if (userId !== singleGraph.id) {
+        toast.error('You are not allowed to change the name of graph');
+        return
+      }
       this.setState({ showModal });
     }
 
@@ -192,6 +199,7 @@ class GraphName extends Component {
 const mapStateToProps = (state) => (
   {
     singleGraph: state.graphs.singleGraph,
+    userId: state.account.myAccount.id
   });
 
 
