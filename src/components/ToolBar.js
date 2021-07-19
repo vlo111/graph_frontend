@@ -336,7 +336,7 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'findNode' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fa fa-search-plus" />
+            <i className="fa fa-search" />
             <div className="sidebar_text"> Find Node </div>
           </li>
         </ul>
