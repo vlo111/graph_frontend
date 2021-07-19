@@ -14,7 +14,7 @@ export const GRAPH_SHARE_TYPES = [
   { value: 'view', label: 'View' },
   { value: 'edit', label: 'Edit' },
    { value: 'admin', label: 'Admin' },
-]; 
+];
 
 export const ONLINE = {
   online_in_graph: 2,  // Online and in graphs

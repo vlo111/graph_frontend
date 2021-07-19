@@ -11,7 +11,7 @@ import { socketSetActiveGraph } from '../../store/actions/socket';
 import { getOnlineUsers } from '../../store/selectors/app';
 import { getId } from '../../store/selectors/account';
 import ShareTooltipContent from './ShareTooltipContent';
-import {ONLINE} from '../../data/graph';
+import { ONLINE } from '../../data/graph';
 
 const TootlipContent = ({
   user, role, type, isOwner, objectId,
@@ -23,7 +23,9 @@ const TootlipContent = ({
 TootlipContent.propTypes = {
   user: PropTypes.object.isRequired,
 };
-const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner, closeModal }) => {
+const ShareTooltip = React.memo(({
+  graphId, graphOwner, isOwner, closeModal,
+}) => {
   const userId = useSelector(getId);
   const graphUsers = useSelector(getGraphUsers)[graphId];
   const onlineUser = useSelector(getOnlineUsers);
@@ -33,7 +35,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner, closeModal }) =
   const [dropId, setDropId] = useState();
   const [showMoreEdit, setShowMoreEdit] = useState(false);
   const [showMoreView, setShowMoreView] = useState(false);
-  const [limit, setLimit] = useState(3);
+  const [limit, setLimit] = useState(4);
 
   useEffect(() => {
     dispatch(socketSetActiveGraph(+graphId || null));
@@ -48,21 +50,21 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner, closeModal }) =
 
   if (graphOwner === undefined) {
     return false;
-  } 
+  }
 
   const count = graphUsers && Object.keys(graphUsers) && Object.keys(graphUsers).length;
   const countOwner = isOwner ? 1 : 0;
   const isLabelShare = graphUsers && graphUsers.some((n) => n.type === 'label' && n.userId === userId);
   // const graphUsersList = isLabelShare ? graphUsers.filter((n) => n.type === 'label' && n.userId === userId) : graphUsers;
-  const graphUsersList =  graphUsers && graphUsers.map(function(item, index) {
-    if(onlineUser && onlineUser.some((n) => (n.userId === item.userId && n.activeGraphId === +graphId ))){ 
-       return {...item, online: ONLINE.online_in_graph}
+  const graphUsersList = graphUsers && graphUsers.map((item, index) => {
+    if (onlineUser && onlineUser.some((n) => (n.userId === item.userId && n.activeGraphId === +graphId))) {
+      return { ...item, online: ONLINE.online_in_graph };
     }
-    if(onlineUser && onlineUser.some((n) => (n.userId === item.userId))){
-       return {...item, online: ONLINE.online}
+    if (onlineUser && onlineUser.some((n) => (n.userId === item.userId))) {
+      return { ...item, online: ONLINE.online };
     }
-    return {...item, online: ONLINE.not_online}
-  }).sort((a, b) => b.online - a.online); ;
+    return { ...item, online: ONLINE.not_online };
+  }).sort((a, b) => b.online - a.online);
 
   /**
      *
@@ -116,7 +118,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner, closeModal }) =
      */
   const roleTypeForShareTools = (role) => (['edit', 'edit_inside', 'admin'].includes(role)
     ? 'edit' : 'view');
-  /**
+    /**
      * Add new array role data
      */
   const roles = {
@@ -135,7 +137,7 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner, closeModal }) =
         onDragStart={(e) => handleDragStart(e, item.id, shareRole)}
       >
         <li className="mb-2 mr-2 " key={index.toString()}>
-          <Tooltip overlay={<TootlipContent user={item.user} role={item.role} type={item.type} objectId={item.objectId} />} trigger={['click']}>
+          <Tooltip overlay={<TootlipContent user={item.user} role={item.role} type={item.type} objectId={item.objectId} />} trigger={['click']} placement={['bottom']}>
             <div className="icon-container">
               <img className="avatar-user d-block" src={item.user.avatar} alt={item.user.id} />
               { onlineUser && onlineUser.some((n) => n.userId === item.user.id) ? (
@@ -151,17 +153,20 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner, closeModal }) =
       </Link>,
     );
   });
-  
+
   const numberOfEditItems = showMoreEdit ? roles.edit.length : limit;
-  const numberOfViewItems = showMoreView ? roles.view.length : limit; 
+  const numberOfViewItems = showMoreView ? roles.view.length : limit;
   const subEditLimitCount = roles.edit.length - numberOfEditItems;
-  const subViewLimitCount = roles.view.length - numberOfViewItems;  
+  const subViewLimitCount = roles.view.length - numberOfViewItems;
 
   return (
 
-    <div className="contributors-container" >
+    <div className="contributors-container">
       <ul className={`list-style-none d-flex flex-wrap mb-n2 groups ${showMoreEdit ? ' scrollY' : ' '}`}>
-        <span className="group-header">Can Edit {`( ${roles?.edit?.length} ) `}</span>
+        <span className="group-header">
+          Can Edit
+          {`(${roles?.edit?.length}) `}
+        </span>
         <div
           id="edit"
           className="group scrollY"
@@ -176,32 +181,31 @@ const ShareTooltip = React.memo(({ graphId, graphOwner, isOwner, closeModal }) =
             </a>
           ) : null}
         </div>
-        <span className="group-header">Can View {`( ${roles?.view?.length} ) `}</span>
+        <span className="group-header">
+          Can View
+          {`(${roles?.view?.length}) `}
+        </span>
         <div
           id="view"
           className="group scrollY"
           onDragOver={(e) => handleDragOver(e)}
           onDrop={(e) => { handleDrop(e, 'edit'); }}
         >
-          
           {roles.view.slice(0, numberOfViewItems)}
           {!isLabelShare && subViewLimitCount >= 0 ? (
             <a className="more" onClick={handlerShowMoreView}>
-              {' '}
               {showMoreView ? '- Less' : (subViewLimitCount > 0 ? `+ ${subViewLimitCount}` : '')}
             </a>
-      ) : null}
+          ) : null}
         </div>
       </ul>
-
     </div>
-
   );
 });
-ShareTooltip.propTypes = { 
+ShareTooltip.propTypes = {
   graphId: PropTypes.object.isRequired,
-  graphOwner: PropTypes.object.isRequired, 
-  closeModal: PropTypes.func.isRequired, 
+  graphOwner: PropTypes.object.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default ShareTooltip;
