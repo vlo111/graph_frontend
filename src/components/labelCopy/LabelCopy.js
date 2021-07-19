@@ -65,6 +65,10 @@ class LabelCopy extends Component {
   }
 
   handleLabelAppend = async (ev, params) => {
+
+    if(Chart.isAutoPosition)
+       Chart.isAutoPosition = false;
+
     const { x, y } = params;
     const { singleGraph } = this.props;
     const data = LabelUtils.getData();
