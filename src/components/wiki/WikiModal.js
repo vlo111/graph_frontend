@@ -187,7 +187,7 @@ https://en.wikipedia.org/wiki/${name}
             isOpen
             className="ghModal ghMapsModal wikiModal"
             overlayClassName="ghModalOverlay ghMapsModalOverlay"
-            onRequestClose={this.close()}
+            onRequestClose={this.close}
           >
             <img src={WikiImg} alt="wikipedia" className="wikipediaLogo" />
             <div className="Wiki">
