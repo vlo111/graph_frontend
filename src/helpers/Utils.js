@@ -53,54 +53,6 @@ class Utils {
     }, timeout);
   }
 
-  /**
-   * Get FileReader form url string
-   * @param dataurl
-   * @param filename
-   * @returns {File}
-   */
-  static dataURLtoFile = (dataurl, filename) => {
-    const arr = dataurl.split(',');
-
-    const mime = arr[0].match(/:(.*?);/)[1];
-
-    const bstr = atob(arr[1]);
-
-    let n = bstr.length;
-
-    const u8arr = new Uint8Array(n);
-
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-
-    return new File([u8arr], filename, { type: mime });
-  }
-
-  /**
-   * Convert an image
-   * to a base64 url
-   * @param url
-   * @returns {Promise<unknown>}
-   */
-  static toDataUrl = (url) => {
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-    return new Promise((resolve) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = () => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          resolve(reader.result);
-        };
-        reader.readAsDataURL(xhr.response);
-      };
-      xhr.open('GET', proxyUrl + url);
-      xhr.responseType = 'blob';
-      xhr.send();
-    });
-  }
-
   static fileToString = (file) => new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = (ev) => {
