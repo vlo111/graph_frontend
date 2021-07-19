@@ -195,13 +195,13 @@ class ContextMenu extends Component {
               {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
-              {/* {['label', 'chart'].includes(show) ? ( */}
-              {/* <> */}
-              {/*   <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}> */}
-              {/*     Create node */}
-              {/*   </Button> */}
-              {/* </> */}
-              {/* ) : null} */}
+               {['label', 'chart'].includes(show) ? (
+               <>
+                 <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
+                   Create node
+                 </Button>
+               </>
+               ) : null}
               {showPast ? (
                 <div className="ghButton notClose">
                   <Icon value="fa-clipboard" />
