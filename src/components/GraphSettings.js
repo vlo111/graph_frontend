@@ -25,6 +25,7 @@ const PAGE = 1;
 class GraphSettings extends Component {
     static propTypes = {
       singleGraph: PropTypes.object.isRequired,
+      userId: PropTypes.number.isRequired,
       setLoading: PropTypes.func.isRequired,
       history: PropTypes.object.isRequired,
 
@@ -129,6 +130,12 @@ class GraphSettings extends Component {
     }
 
     toggleModal = (showModal) => {
+      debugger
+      const { singleGraph, userId } = this.props;
+      if (userId !== singleGraph.userId) {
+        toast.error('You are not allowed to change the name of graph');
+        return
+      }
       this.setState({ showModal });
     }
 
@@ -232,6 +239,7 @@ class GraphSettings extends Component {
 
 const mapStateToProps = (state) => (
   {
+    userId: state.account.myAccount.id,
     singleGraph: state.graphs.singleGraph,
   });
 
