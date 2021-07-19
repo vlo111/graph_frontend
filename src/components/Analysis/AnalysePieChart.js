@@ -119,6 +119,7 @@ class AnalyticalPage extends Component {
               }}
             >
               <Pie
+                isAnimationActive={false}
                 data={types}
                 className="pie_part"
                 activeIndex={this.state?.effectPie}
