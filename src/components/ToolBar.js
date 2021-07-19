@@ -414,7 +414,7 @@ class ToolBar extends Component {
                 onClick={() => this.handleClick('create-label-ellipse')}
                 className={`${selected.includes('create-label-ellipse') ? 'selected' : ''}`}
               >
-                <i className="far fa-circle" />
+                <i />
                 <span> Ellipse </span>
               </li>
             </ul>
