@@ -12,6 +12,7 @@ import Button from '../components/form/Button';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import Filters from '../components/filters/Filters';
+import Zoom from '../components/Zoom';
 import NodeDescription from '../components/NodeDescription';
 import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
@@ -175,6 +176,7 @@ class GraphView extends Component {
                 <NodeFullInfo editable={false} />
                 <LabelTooltip />
                 <Filters />
+              <Zoom />
               </div>
             ))}
       </Wrapper>
