@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import { toggleNodeModal } from '../../store/actions/app';
+import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import Utils from '../../helpers/Utils';
 import WikiImg from '../../assets/images/wikipedia_black.png';
@@ -14,7 +12,6 @@ class WikiModal extends Component {
     this.state = {
       wikiSearchReturnValues: [],
       wikiSearchTerms: '',
-      onClose: PropTypes.func.isRequired,
       getChecked: false,
     };
   }
@@ -22,7 +19,7 @@ class WikiModal extends Component {
   useWikiSearchEngine = (e) => {
     e.preventDefault();
     if (this.state.WikiSearchTerms === undefined) {
-      return 0
+      return 0;
     }
     this.setState({
       wikiSearchReturnValues: [],
@@ -30,19 +27,19 @@ class WikiModal extends Component {
 
       const pointerToThis = this;
 
-      let url = 'https://en.wikipedia.org/w/api.php';
+    let url = 'https://en.wikipedia.org/w/api.php';
 
-      const params = {
-        action: 'query',
-        list: 'search',
-        srsearch: this.state.WikiSearchTerms,
-        format: 'json',
-      };
+    const params = {
+      action: 'query',
+      list: 'search',
+      srsearch: this.state.WikiSearchTerms,
+      format: 'json',
+    };
 
-      url = `${url}?origin=*`;
-      Object.keys(params).forEach((key) => {
-        url += `&${key}=${params[key]}`;
-      });
+    url = `${url}?origin=*`;
+    Object.keys(params).forEach((key) => {
+      url += `&${key}=${params[key]}`;
+    });
 
       fetch(url)
         .then(
@@ -120,7 +117,6 @@ https://en.wikipedia.org/wiki/${name}
 
       const x = 100;
       const y = 100;
-      this.props.onClose(ev);
       this.props.toggleNodeModal({
         x,
         y,
@@ -134,7 +130,12 @@ https://en.wikipedia.org/wiki/${name}
           value: abount,
         }],
       });
+      this.close();
     }
+
+  close = () => {
+    this.props.setActiveButton('create');
+  }
 
     checkedWiki = (param) => {
       this.setState({
@@ -187,7 +188,7 @@ https://en.wikipedia.org/wiki/${name}
             isOpen
             className="ghModal ghMapsModal wikiModal"
             overlayClassName="ghModalOverlay ghMapsModalOverlay"
-            onRequestClose={this.props.onClose}
+            onRequestClose={this.close()}
           >
             <img src={WikiImg} alt="wikipedia" className="wikipediaLogo" />
             <div className="Wiki">
@@ -212,6 +213,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   toggleNodeModal,
+  setActiveButton,
 };
 
 const Container = connect(
