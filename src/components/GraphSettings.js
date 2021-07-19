@@ -20,6 +20,7 @@ import { createGraphRequest } from '../store/actions/graphs';
 import { GRAPH_STATUS } from '../data/graph';
 
 const LIMIT = 3;
+const PAGE = 1;
 
 class GraphSettings extends Component {
     static propTypes = {
@@ -73,7 +74,7 @@ class GraphSettings extends Component {
     graphSearch = async (e = null) => {
       const search = e === null ? '' : e.target.value;
       this.setState({ search });
-      const result = await Api.getGraphsList(1, {
+      const result = await Api.getGraphsList(PAGE, {
         onlyTitle: true,
         s: search,
         limit: search === '' ? LIMIT : undefined,
@@ -136,12 +137,8 @@ class GraphSettings extends Component {
     }
 
     render() {
-      const { requestData } = this.state;
-      const { showDropDown } = this.state;
       const { singleGraph } = this.props;
-      const {
-        showModal, showModalTemplet, search, graphList,
-      } = this.state;
+      const {showModal, showModalTemplet, search, graphList, requestData, showDropDown} = this.state;
       const nodes = Chart.getNodes();
       const isTemplate = singleGraph.status === 'template';
       const canSave = nodes.length && requestData.title;
