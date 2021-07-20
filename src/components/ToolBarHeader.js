@@ -18,6 +18,7 @@ import { KEY_CODES } from '../data/keyCodes';
 import ContributorsModal from './Contributors';
 import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
 import Chart from '../Chart';
+import ChartUtils from '../helpers/ChartUtils';
 
 class ToolBarHeader extends Component {
   static propTypes = {
