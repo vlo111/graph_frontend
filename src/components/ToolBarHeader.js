@@ -134,7 +134,7 @@ class ToolBarHeader extends Component {
               ) : null}
               {!updateLocation && (
               <span className="graphNames">
-                {singleGraph.title?.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
+                {singleGraph.title?.length > 16 ? `${singleGraph.title.substring(0, 16)}...` : singleGraph.title}
               </span>
               )}
             </li>
