@@ -43,10 +43,15 @@ class AddLabelModal extends Component {
   }
 
   handleLabelCrate = (ev, d) => {
+    if(Chart.isAutoPosition)
+       Chart.isAutoPosition = false;
     this.setState({ show: true, labelData: { ...d } });
   }
 
   handleFolderCrate = (ev, d) => {
+    if(Chart.isAutoPosition)
+      Chart.isAutoPosition = false;
+
     const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
     const labels = Chart.getLabels();
     const id = `f_${ChartUtils.uniqueId(labels)}`;
