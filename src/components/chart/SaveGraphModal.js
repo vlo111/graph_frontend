@@ -25,7 +25,7 @@ import {ReactComponent as CloseSvg} from "../../assets/images/icons/close.svg";
 import moment from 'moment';
 import Switch from 'rc-switch';
 import 'rc-switch/assets/index.css';
-import AvatarUploader from '../AvatarUploader'
+import ImageUploader from '../ImageUploader'
 
 class SaveGraphModal extends Component {
   static propTypes = {
@@ -187,7 +187,7 @@ class SaveGraphModal extends Component {
         <Button color="$color-accent" className="close" icon={<CloseSvg />} onClick={() => this.props.toggleModal(false)} />
         <div className="form">
           <div>
-            <AvatarUploader
+            <ImageUploader
               value={image || `${singleGraph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
               onChange={(val) => this.handleChange('image', val)}
             />

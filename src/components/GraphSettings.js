@@ -130,12 +130,6 @@ class GraphSettings extends Component {
     }
 
     toggleModal = (showModal) => {
-      debugger
-      const { singleGraph, userId } = this.props;
-      if (userId !== singleGraph.userId) {
-        toast.error('You are not allowed to change the name of graph');
-        return
-      }
       this.setState({ showModal });
     }
 
@@ -144,7 +138,7 @@ class GraphSettings extends Component {
     }
 
     render() { 
-      const { singleGraph } = this.props;
+      const { singleGraph, userId } = this.props;
       const {showModal, showModalTemplet, search, graphList, requestData, showDropDown} = this.state;
       const nodes = Chart.getNodes();
       const isTemplate = singleGraph.status === 'template';
@@ -172,7 +166,7 @@ class GraphSettings extends Component {
                   <span title={singleGraph.title} className="graphNames">
                     {singleGraph.title.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
                   </span>
-                  <Button icon={<EditSvg />} className="EditGraph" onClick={() => this.toggleModal(true)} />
+                  {userId == singleGraph.userId ? <Button icon={<EditSvg />} className="EditGraph" onClick={() => this.toggleModal(true)} /> : ''}
                 </div>
 
                 <div>

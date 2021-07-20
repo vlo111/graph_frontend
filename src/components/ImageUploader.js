@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip';
 import { ReactComponent as RefreshSvg } from '../assets/images/icons/refresh.svg';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
-import Api from '../Api';
 
-class AvatarUploader extends Component {
+class ImageUploader extends Component {
   static propTypes = {
     value: PropTypes.any.isRequired,
     email: PropTypes.string,
@@ -47,11 +46,11 @@ class AvatarUploader extends Component {
     const { image } = this.state;
     this.setImage(value);
     return (
-      <div id="avatarUploader">
+      <div id="imageUploader">
         <img
           src={image}
-          className="avatar"
-          alt="avatar"
+          className={!!email ? "avatar" : "thumbnailSave"}
+          alt="image"
         />
         {image && !image.includes('gravatar') ? (
           <Tooltip overlay="Delete Image" placement="top">
@@ -76,4 +75,4 @@ class AvatarUploader extends Component {
   }
 }
 
-export default AvatarUploader;
+export default ImageUploader;

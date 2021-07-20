@@ -23,6 +23,7 @@ import { setActiveButton, setLoading } from '../../store/actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import 'rc-switch/assets/index.css';
+import ImageUploader from '../ImageUploader'
 
 class EditGraphModal extends Component {
   static propTypes = {
@@ -50,6 +51,7 @@ class EditGraphModal extends Component {
         publicState,
         status: status === 'template' ? 'active' : status,
       },
+      image: ''
     });
   })
 
@@ -83,13 +85,17 @@ class EditGraphModal extends Component {
   }
 
   saveGraph = async (status, forceCreate) => {
-    const { requestData } = this.state;
+    const { requestData, image } = this.state;
     const { match: { params: { graphId } } } = this.props;
 
     this.props.setLoading(true);
     const labels = Chart.getLabels();
     const svg = ChartUtils.getChartSvg();
     let resGraphId;
+    if (image) {
+      const userEdited = true
+      await this.props.updateGraphThumbnailRequest(graphId, image, 'medium', userEdited)
+    }
     if (forceCreate || !graphId) {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
@@ -118,15 +124,26 @@ class EditGraphModal extends Component {
     this.props.setActiveButton('create');
   }
 
-  handleChange = (path, value) => {
-    console.log('singleGraph: ', this.props);
+  handleChange = async (path, value) => {
+    const { match: { params: { graphId } } } = this.props;
     const { requestData } = this.state;
-    _.set(requestData, path, value);
-    this.setState({ requestData });
+
+    if (path == 'image') {
+      if (value == '') {
+        const svg = ChartUtils.getChartSvg();
+        await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+      }
+      this.setState({ [path]: value})
+      _.set(requestData, 'defaultImage', true);
+
+    } else {
+      _.set(requestData, path, value);
+      this.setState({ requestData });
+    }
   }
 
   render() {
-    const { requestData, disabled } = this.state;
+    const { requestData, disabled, image } = this.state;
     const { singleGraph } = this.props;
     const { match: { params: { graphId } } } = this.props;
     this.initValues(singleGraph);
@@ -147,10 +164,10 @@ class EditGraphModal extends Component {
         />
         <div className="form">
           <div>
-            <img
+            <ImageUploader
               className="thumbnailSave"
-              src={`${singleGraph.thumbnail}?t=${moment(singleGraph.updatedAt).unix()}`}
-              alt={singleGraph.title}
+              value={image || `${singleGraph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
+              onChange={(val) => this.handleChange('image', val)}
             />
 
           </div>
