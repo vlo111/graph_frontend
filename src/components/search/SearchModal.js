@@ -34,8 +34,8 @@ class SearchModal extends Component {
       keywords: [],
       checkBoxValues: {
         name: true,
-        tag: true,
         tab: true,
+        tag: true,
         keyword: true,
       },
       checkBoxAll: true
