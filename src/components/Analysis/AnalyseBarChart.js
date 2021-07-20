@@ -9,10 +9,6 @@ class AnalyticalPage extends Component {
       Chart.showAllNodes();
     }
 
-    handleBarLeave = () => {
-      document.getElementsByClassName('recharts-surface')[0].style.cursor = 'auto';
-    }
-
     render() {
       const { degreeDistribution } = this.props;
 
@@ -28,20 +24,21 @@ class AnalyticalPage extends Component {
       }
 
       const CustomTooltip = ({ active, label }) => {
-        const textDegree = [];
-
-        Object.keys(degreeDistribution).forEach((p) => {
-          if (p === label) {
-            Chart.showSpecifiedNodes(degreeDistribution[p]);
-            degreeDistribution[p].map((l) => textDegree.push({
-              name: l.name,
-              color: l.color,
-            }));
-          }
-        });
         if (!degreeDistribution) return <div />;
-        const nodes = degreeDistribution[label]?.length;
         if (active) {
+          const textDegree = [];
+
+          const nodes = degreeDistribution[label]?.length;
+
+          Object.keys(degreeDistribution).forEach((p) => {
+            if (p === label) {
+              Chart.showSpecifiedNodes(degreeDistribution[p]);
+              degreeDistribution[p].map((l) => textDegree.push({
+                name: l.name,
+                color: l.color,
+              }));
+            }
+          });
           return (
             <div className="custom-tooltip">
               <div>
@@ -100,7 +97,12 @@ class AnalyticalPage extends Component {
                 <XAxis dataKey="degree" />
                 <YAxis dataKey="count" />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="count" barSize={20} fill="#8884d8">
+                <Bar
+                  isAnimationActive={false}
+                  dataKey="count"
+                  barSize={20}
+                  fill="#8884d8"
+                >
                   <LabelList dataKey="count" content={renderCustomizedLabel} />
                 </Bar>
               </BarChart>

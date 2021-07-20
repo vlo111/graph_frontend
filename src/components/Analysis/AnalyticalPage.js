@@ -45,12 +45,6 @@ class AnalyticalPage extends Component {
   componentDidMount() {
     Chart.event.on('node.click', this.handleNodeClick);
 
-    // reload once for pie char correct render
-    if (!window.location.hash) {
-      window.location += '#loaded';
-      window.location.reload();
-    }
-
     const graphElement = document.getElementById('graph');
 
     if (graphElement) {

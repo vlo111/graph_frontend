@@ -161,6 +161,25 @@ p {
   }
 }
 
+.logoWrapper {
+  position: relative;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin: 7px 21px;
+  width: 118px;
+
+  .autoSaveText {
+    font-size: 12px;
+    color: $color-main2;
+    font-weight: 600;
+    position: absolute;
+    top: 32px;
+    left: 146px;
+    display: none;
+  }
+}
+
 .autoSave {
   .logo {
     circle {
@@ -182,7 +201,7 @@ p {
   }
 
   .autoSaveText {
-    display: block;
+    display: block !important;
   }
 }
 
@@ -5070,8 +5089,7 @@ body .gh__menu {
 
 }
 
-.account {
-  padding-top: 80px;
+.account { 
   background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) 0% 0% no-repeat padding-box;
 }
 
