@@ -151,7 +151,7 @@ class GraphSettings extends Component {
             <div className="graphNname1">
 
               <span title={singleGraph.title} className="graphNames">
-                {singleGraph.title?.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
+                {singleGraph.title?.length > 16 ? `${singleGraph.title.substring(0, 16)}...` : singleGraph.title}
               </span>
               <span className="carret2">
                 <i className="fa fa-sort-down" />
@@ -183,7 +183,7 @@ class GraphSettings extends Component {
                   {graphList.map((graph) => (
                     <Link to={`/graphs/view/${graph.id}`}>
                       <div title={graph.title}>
-                        {graph.title.length > 16 ? `${graph.title.substring(0, 16)}...` : graph.title}
+                        {graph.title.length > 11 ? `${graph.title.substring(0, 11)}...` : graph.title}
                       </div>
                     </Link>
                   ))}
