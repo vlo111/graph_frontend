@@ -51,6 +51,8 @@ class AddLinkModal extends Component {
   }
 
   handleAddNewLine = (ev, d) => {
+    if(Chart.isAutoPosition)
+       Chart.isAutoPosition = false;
     const { source, target } = d;
     // const { linkData: { type } } = this.state;
     const links = Chart.getLinks();
@@ -71,6 +73,8 @@ class AddLinkModal extends Component {
   }
 
   handleLineEdit = (ev, d) => {
+    if(Chart.isAutoPosition)
+       Chart.isAutoPosition = false;
     const linkData = Chart.getLinks().find((l) => l.index === d.index);
     this.setState({
       linkData: { ...linkData }, show: true, index: linkData.index, errors: {},
