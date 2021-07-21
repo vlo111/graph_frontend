@@ -205,7 +205,7 @@ class FindNode extends Component {
             <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
 
             <Input
-              label="Search"
+              label="Find Node"
               autoComplete="off"
               value={search}
               containerClassName="graphSearch"
