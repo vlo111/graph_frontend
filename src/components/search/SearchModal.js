@@ -331,6 +331,12 @@ class SearchModal extends Component {
     this.handleChange(search);
   };
 
+  findNodeInDom = (node) => {
+    this.closeModal();
+    const nodeInDom = Chart.getNodes().find(nd => nd.id === node.id)
+    ChartUtils.findNodeInDom(nodeInDom)
+  }
+
   render() {
     const { nodes, tabs, search, docs, keywords, checkBoxValues } = this.state;
     this.initTabs();
@@ -430,7 +436,7 @@ class SearchModal extends Component {
             Object.keys(tabs).map((item) => (
               <li className="item" key={tabs[item]?.node?.id}>
                 <div tabIndex="0" role="button" className="ghButton tabButton">
-                  <div className="header">
+                  <div className="header" onClick={ () => this.findNodeInDom(tabs[item].node)}>
                     <NodeIcon node={tabs[item].node} />
                     <div className="headerArea">
                       <span className="name">{tabs[item].node.name}</span>
