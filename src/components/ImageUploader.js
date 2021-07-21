@@ -46,30 +46,25 @@ class ImageUploader extends Component {
     const { image } = this.state;
     this.setImage(value);
     return (
-      <div id="imageUploader">
+      <div className={!!email ? "avatarUploader imageUploader" : "imageUploader"}>
         <img
           src={image}
           className={!!email ? "avatar" : "thumbnailSave"}
           alt="image"
         />
+        <label className={!!value ? "selectImage" : "selectImage addImage"}>
+          <div className="icon">
+          <RefreshSvg />
+          </div>
+          <input type="file" accept="image/*" onChange={this.handleChange} />
+          <span className="addOrReplaceImage">{!!value ? "Replace" : "Add"} Image</span>
+
         {image && !image.includes('gravatar') ? (
           <Tooltip overlay="Delete Image" placement="top">
             <CloseSvg className="delete" onClick={() => this.props.onChange('')} />
           </Tooltip>
         ) : null}
-        {value ? (
-          <label className="selectImage">
-            <RefreshSvg className="icon" />
-            <input type="file" accept="image/*" onChange={this.handleChange} />
-            <span>Replace Image</span>
-          </label>
-        ) : (
-          <label className="selectImage addImage">
-            <RefreshSvg className="icon" />
-            <input type="file" accept="image/*" onChange={this.handleChange} />
-            <span>Add Image</span>
-          </label>
-        )}
+        </label>
       </div>
     );
   }
