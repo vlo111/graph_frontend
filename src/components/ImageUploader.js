@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip';
 import { ReactComponent as RefreshSvg } from '../assets/images/icons/refresh.svg';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
-import Api from '../Api';
 
-class AvatarUploader extends Component {
+class ImageUploader extends Component {
   static propTypes = {
     value: PropTypes.any.isRequired,
     email: PropTypes.string,
@@ -18,7 +17,6 @@ class AvatarUploader extends Component {
   }
 
   setImage = memoizeOne((image) => {
-    console.log(image);
     if (typeof image === 'object') {
       const reader = new FileReader();
 
@@ -48,33 +46,28 @@ class AvatarUploader extends Component {
     const { image } = this.state;
     this.setImage(value);
     return (
-      <div id="avatarUploader">
+      <div className={!!email ? "avatarUploader imageUploader" : "imageUploader"}>
         <img
-          src={image || `${Api.url}/public/gravatar/${encodeURIComponent(email)}.png`}
-          className="avatar"
-          alt="avatar"
+          src={image}
+          className={!!email ? "avatar" : "thumbnailSave"}
+          alt="image"
         />
+        <label className={!!value ? "selectImage" : "selectImage addImage"}>
+          <div className="icon">
+          <RefreshSvg />
+          </div>
+          <input type="file" accept="image/*" onChange={this.handleChange} />
+          <span className="addOrReplaceImage">{!!value ? "Replace" : "Add"} Image</span>
+
         {image && !image.includes('gravatar') ? (
           <Tooltip overlay="Delete Image" placement="top">
             <CloseSvg className="delete" onClick={() => this.props.onChange('')} />
           </Tooltip>
         ) : null}
-        {value ? (
-          <label className="selectImage">
-            <RefreshSvg className="icon" />
-            <input type="file" accept="image/*" onChange={this.handleChange} />
-            <span>Replace Image</span>
-          </label>
-        ) : (
-          <label className="selectImage addImage">
-            <RefreshSvg className="icon" />
-            <input type="file" accept="image/*" onChange={this.handleChange} />
-            <span>Add Image</span>
-          </label>
-        )}
+        </label>
       </div>
     );
   }
 }
 
-export default AvatarUploader;
+export default ImageUploader;

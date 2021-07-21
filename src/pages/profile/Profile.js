@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Button from '../../components/form/Button';
 import { updateMyAccountRequest } from '../../store/actions/account';
 import Input from '../../components/form/Input';
-import AvatarUploader from '../../components/AvatarUploader';
+import ImageUploader from '../../components/ImageUploader';
 import UpdatePasswordModal from '../../components/account/UpdatePasswordModal';
 
 class Profile extends Component {
@@ -71,7 +71,7 @@ class Profile extends Component {
       <div className="profileSettings">
         <form onSubmit={this.saveAccount}>
           <div className="left">
-            <AvatarUploader
+            <ImageUploader
               value={myAccount.avatar}
               email={myAccount.email}
               onChange={(val) => this.handleChange(val || '', 'avatar')}
@@ -80,7 +80,6 @@ class Profile extends Component {
           <div className="right">
             <div className="row">
               <strong className="email">Email : </strong>
-              {' '}
               {requestData.email}
             </div>
             <div className="row">
@@ -124,16 +123,12 @@ class Profile extends Component {
               />
             </div>
             <div className="socialright">
-              {' '}
               <i className="fa fa-globe" />
-              {' '}
               <span> SOCIAL</span>
-              {' '}
             </div>
             <div className="rigt-input">
               <div className="row">
                 <div className="social_icon">
-                  {' '}
                   <i className="fa fa-facebook-square" />
                 </div>
                 <Input
@@ -148,7 +143,6 @@ class Profile extends Component {
               </div>
               <div className="row">
                 <div className="social_icon">
-                  {' '}
                   <i className="fa fa-twitter" />
                 </div>
                 <Input
@@ -164,7 +158,6 @@ class Profile extends Component {
               </div>
               <div className="row">
                 <div className="social_icon">
-                  {' '}
                   <i className="fa fa-linkedin"> </i>
                 </div>
                 <Input
@@ -179,7 +172,6 @@ class Profile extends Component {
               </div>
               <div className="row">
                 <div className="social_icon">
-                  {' '}
                   <i className="fa fa-skype" />
                 </div>
                 <Input

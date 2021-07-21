@@ -1011,9 +1011,6 @@ p {
     cursor: default;
   }
 
-  &.delete {
-
-  }
 
   .linkText {
     text {
@@ -5347,9 +5344,8 @@ body .gh__menu {
 
 }
 
-#avatarUploader {
+.imageUploader {
   position: relative;
-  border-radius: 50%;
   overflow: hidden;
   display: flex;
 
@@ -5370,36 +5366,24 @@ body .gh__menu {
   &:hover {
     .selectImage {
       opacity: 1;
-    }
-
-    .delete {
-      opacity: 1;
+      
+      .delete {
+        opacity: 1;
+      }
     }
   }
 
 
-  .delete {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    bottom: 10px;
-    left: calc(50% - 7.5px);
-    fill: $color-main2;
-    z-index: 2;
-    cursor: pointer;
-    opacity: 0;
-    transition: all 500ms;
-  }
 
   .selectImage {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 80%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     flex-direction: column;
     background-color: rgba(#0D0905, .5);
     color: $color-white;
@@ -5408,13 +5392,41 @@ body .gh__menu {
     opacity: 0;
     transition: all 500ms;
     user-select: none;
+    margin-top: 45px;
 
     .icon {
       width: 55px;
       height: 55px;
       fill: $color-white;
       opacity: 0.54;
+      flex:3;
+      display: flex;
+      align-items: flex-end;
     }
+    .addOrReplaceImage {
+      flex: 2;
+      display: flex;
+      align-items: flex-start;
+    }
+    .delete {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      bottom: 10px;
+      left: calc(50% - 7.5px);
+      fill: $color-main2;
+      z-index: 2;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 500ms;
+    }
+  }
+}
+.avatarUploader {
+  border-radius: 50%;
+  .selectImage{
+    margin-top: 0px;
+    height: 100%;
   }
 }
 

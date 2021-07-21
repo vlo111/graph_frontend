@@ -116,8 +116,8 @@ class Api {
     return api.delete(`/graphs/delete/${id}`);
   }
 
-  static updateGraphThumbnail(id, svg, size) {
-    return api.patch(`/graphs/thumbnail/${id}`, { svg, size }, {
+  static updateGraphThumbnail(id, image, size, byUser) {
+    return api.patch(`/graphs/thumbnail/${id}`, this.toFormData({ image, size, byUser }), {
       cancelToken: this.#cancel('updateGraphThumbnail'),
     });
   }

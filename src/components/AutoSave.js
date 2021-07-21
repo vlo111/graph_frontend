@@ -26,6 +26,7 @@ class AutoSave extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    defaultImage: PropTypes.bool.isRequired,
 
     createNodesRequest: PropTypes.func.isRequired,
     deleteNodesRequest: PropTypes.func.isRequired,
@@ -365,10 +366,13 @@ class AutoSave extends Component {
   }
 
   updateThumbnail = async () => {
+    const { defaultImage } = this.props
     document.body.classList.add('autoSave');
     const svg = ChartUtils.getChartSvg();
     const { match: { params: { graphId } } } = this.props;
-    await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+    if (!defaultImage) {
+      await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+    }
     document.body.classList.remove('autoSave');
   }
 
@@ -377,7 +381,9 @@ class AutoSave extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  defaultImage: state.graphs.singleGraph.defaultImage
+});
 
 const mapDispatchToProps = {
   updateGraphThumbnailRequest,
