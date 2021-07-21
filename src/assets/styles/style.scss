@@ -3821,6 +3821,7 @@ body .gh__menu {
     }
 
     .header {
+      cursor: pointer;
       border: 1px solid #007bff99;
       border-style: dashed;
       border-width: medium;
@@ -5420,6 +5421,13 @@ body .gh__menu {
       opacity: 0;
       transition: all 500ms;
     }
+  }
+}
+.avatarUploader {
+  border-radius: 50%;
+  .selectImage{
+    margin-top: 0px;
+    height: 100%;
   }
 }
 .avatarUploader {
@@ -8629,7 +8637,7 @@ color: #2962ff;
           .searchFieldCheckBoxList {
             flex-direction: column;
             position: absolute;
-            top: 6em;
+            top: 6.3em;
             background-color: white;
             z-index: 103;
             border-radius: 3px;
