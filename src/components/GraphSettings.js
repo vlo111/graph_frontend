@@ -25,6 +25,7 @@ const PAGE = 1;
 class GraphSettings extends Component {
     static propTypes = {
       singleGraph: PropTypes.object.isRequired,
+      userId: PropTypes.number.isRequired,
       setLoading: PropTypes.func.isRequired,
       history: PropTypes.object.isRequired,
 
@@ -137,7 +138,7 @@ class GraphSettings extends Component {
     }
 
     render() { 
-      const { singleGraph } = this.props;
+      const { singleGraph, userId } = this.props;
       const {showModal, showModalTemplet, search, graphList, requestData, showDropDown} = this.state;
       const nodes = Chart.getNodes();
       const isTemplate = singleGraph.status === 'template';
@@ -165,7 +166,7 @@ class GraphSettings extends Component {
                   <span title={singleGraph.title} className="graphNames">
                     {singleGraph.title.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
                   </span>
-                  <Button icon={<EditSvg />} className="EditGraph" onClick={() => this.toggleModal(true)} />
+                  {userId == singleGraph.userId ? <Button icon={<EditSvg />} className="EditGraph" onClick={() => this.toggleModal(true)} /> : ''}
                 </div>
 
                 <div>
@@ -232,6 +233,7 @@ class GraphSettings extends Component {
 
 const mapStateToProps = (state) => (
   {
+    userId: state.account.myAccount.id,
     singleGraph: state.graphs.singleGraph,
   });
 
