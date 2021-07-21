@@ -69,7 +69,7 @@ class ToolBar extends Component {
       }
     }
     if (ev.chartEvent && ev.shiftKey && !ev.ctrlPress) {
-      if (ev.keyCode === KEY_CODES.create_node) {
+      if (ev.keyCode === KEY_CODES.create_code) {
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
         this.handleClick('create-node');
@@ -84,7 +84,7 @@ class ToolBar extends Component {
         ChartUtils.keyEvent(ev);
         this.handleClick('create');
       }
-      if (ev.keyCode === KEY_CODES.search_code) {
+      if (ev.keyCode === KEY_CODES.find_node) {
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
         this.handleClick('findNode');

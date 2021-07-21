@@ -70,7 +70,7 @@ class ToolBarHeader extends Component {
   };
 
   handleKeyDown = (ev) => {
-    if (ev.chartEvent && ev.ctrlPress && !ev.shiftKey) {
+    if (ev.chartEvent && ev.ctrlPress && ev.shiftKey) {
       if (ev.keyCode === KEY_CODES.search_code) {
         ChartUtils.keyEvent(ev);
         ev.preventDefault();
