@@ -5428,6 +5428,13 @@ body .gh__menu {
     height: 100%;
   }
 }
+.avatarUploader {
+  border-radius: 50%;
+  .selectImage{
+    margin-top: 0px;
+    height: 100%;
+  }
+}
 
 .searchResult {
   background: white;
