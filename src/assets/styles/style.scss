@@ -5083,7 +5083,7 @@ body .gh__menu {
   align-items: flex-start;
   position: relative;
   min-width: 900px;
-  margin-top: 35px;
+  margin-top: 105px;
 
   .tabsList {
     display: flex;
@@ -9245,6 +9245,9 @@ color: #2962ff;
   grid-gap: 1%;
   height: 75px;
   background-color: #fff;
+  position: fixed;
+  width: 100%;
+  z-index: 2;
 
   .start-graphs {
     .buttonsWrapper {
