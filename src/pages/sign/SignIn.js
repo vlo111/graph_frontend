@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
-import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
+import { ReactComponent as LogoSvg } from '../../assets/images/araks_logo.svg';
 import { forgotPasswordRequest, signInRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
@@ -53,7 +53,7 @@ class Login extends Component {
       if (this.state.failedLoginAttempts === 3) {
         await this.props.forgotPasswordRequest(requestData.email, `${origin}/sign/reset-password`);
       }
-      if (this.state.failedLoginAttempts < 3){
+      if (this.state.failedLoginAttempts < 3) {
         toast.dismiss(this.toast);
         this.toast = toast.error('Invalid email or password');
       }
@@ -64,65 +64,59 @@ class Login extends Component {
     const { requestData, failedLoginAttempts } = this.state;
     return (
       <WrapperSign>
-        <div className="left signIn">
-          <Link to="/">
-            <LogoSvg className="logo white" />
-          </Link>
-        </div>
-        <div className="right">
-          <div>
-            <form onSubmit={this.signIn} id="login" className="authForm">
-              <h1>Sign in to</h1>
-              <div className="logo">
-                <LogoSvg className="logo orange" />
-              </div>
-              <div className="logoInfoText">
-                <h4>Your ultimate graphing tool</h4>
-              </div>
-              <div className="socialLogin">
-                <h4>Sign in using</h4>
+          <div className="SigninLeft signIn" />
+          <div className="Signinright">
+            <div className="SaytLogo">
+              <Link to="/">
+                <LogoSvg className="logo white" />
+              </Link>
+            </div>
+            <div>
+              <form onSubmit={this.signIn} id="login" className="SigninAuthForm">
+                <h1>Your ultimate graphing tool </h1>
+                <div className="socialLogin">
+                  <h4>Sign in </h4>
+                </div>
+                <Input
+                  name="email"
+                  type="email"
+                  placeholder="Email address"
+                  value={requestData.email}
+                  onChangeText={this.handleTextChange}
+                />
+                <PasswordInput
+                  name="password"
+                  placeholder="Password"
+                  value={requestData.password}
+                  onChangeText={this.handleTextChange}
+                />
+                <Link to="/sign/forgot-password" className="forgotPassword">Forgot password?</Link>
+
+                {failedLoginAttempts >= 3
+              && (
+              <p className="errorRecovery">
+                Please check your email to recover your account
+              </p>
+              )}
+                <Button type="submit" className="submit" color="orange">
+                  Sign In
+                </Button>
+                <div>
+                  <p>Sign in using</p>
+                </div>
                 <div className="socialButtons">
                   <OAuthButtonFacebook />
                   <OAuthButtonGoogle />
                   <OAuthButtonLinkedin />
                   <OAuthButtonTwitter />
                 </div>
-              </div>
-
-              <div className="hr">or</div>
-              <Input
-                name="email"
-                type="email"
-                label="Email address"
-                value={requestData.email}
-                onChangeText={this.handleTextChange}
-              />
-              <PasswordInput
-                name="password"
-                label="Password"
-                value={requestData.password}
-                onChangeText={this.handleTextChange}
-              />
-              <Link to="/sign/forgot-password" className="forgotPassword">Forgot password?</Link>
-
-              {failedLoginAttempts >= 3
-              && (
-              <p className="errorRecovery">
-                Please check your email to recover your account
+              </form>
+              <p className="switchSignInMode">
+                <span> Don't have an admin yet? </span>
+                <Link to="/sign/sign-up" className="getstart"><i>Get started</i></Link>
               </p>
-              )}
-
-              <Button type="submit" className="submit" color="orange">
-                Sign In
-              </Button>
-            </form>
-            <p className="switchSignMode">
-              {"Don't have an admin yet? "}
-              <Link to="/sign/sign-up">Get started</Link>
-            </p>
+            </div>
           </div>
-        </div>
-
       </WrapperSign>
     );
   }

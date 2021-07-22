@@ -1,0 +1,1040 @@
+.signPage {
+  flex-direction: inherit;
+
+  .social_icon {
+    padding: 5px 11px;
+    height: 35px;
+    width: 35px;
+    position: relative;
+    top: 32px;
+    border: 1px solid #e2e7eb;
+    background-color: #f3f7f9;
+    color: #6c757d;
+    left: -1%;
+    border-radius: 8px;
+  }
+
+  .rigt-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    grid-gap: 10%;
+  }
+
+  .socialright {
+    width: 100%;
+    background-color: #f3f7f9;
+    height: 35px;
+    padding: 7px;
+  }
+
+  .social-list {
+    margin: auto;
+    width: 60px;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 36%;
+    position: relative;
+  }
+
+  .social-list > div {
+    width: 32px;
+    line-height: center;
+    line-height: calc(2rem - 2px);
+    padding: 0px 7px;
+  }
+
+  .social-list > .social-list-facebook {
+    border: 2px solid #6658dd;
+    border-radius: 50%;
+  }
+
+  .fa-facebook-square {
+    color: #6658dd;
+  }
+
+  .social-list > .social-list-twitter {
+    border: 2px solid #4fc6e1;
+    border-radius: 50%;
+  }
+
+  .fa-twitter {
+    color: #4fc6e1;
+  }
+
+  .social-list > .social-list-linkedin {
+    border: 2px solid #0a66c2;
+    border-radius: 50%;
+  }
+
+  .fa-linkedin {
+    color: #0a66c2;
+  }
+
+  .social-list > .social-list-skype {
+    border: 2px solid #2962ff;
+    border-radius: 50%;
+    margin-left: 0 auto;
+  }
+
+  .fa-skype {
+    color: #2962ff;
+  }
+
+  .accountedit {
+    color: #0d0905;
+    font-size: 16px;
+  }
+
+  .fa-pencil {
+    color: #0d0905;
+    padding: 3px;
+  }
+
+  .editrect > a {
+    position: relative;
+    left: 93%;
+    top: 30px;
+    text-decoration: none;
+    padding: 4px 8px 4px 8px;
+  }
+
+  .editrect > a:hover {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 9px rgb(2 47 119 / 20%);
+    color: black;
+  }
+
+  .SigninLeft {
+    width: 56.54%;
+    height: 100vh;
+    max-width: 1081px;
+    &.signIn {
+      background-image: url("../images/signIn.svg");
+      background-size: cover;
+      position: relative;
+      background-position-x: right;
+      z-index: 1;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .Signinright {
+    width: 43%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .submit {
+      margin-top: 130px;
+    }
+  }
+
+  .switchSignInMode {
+    font-size: 20px;
+    position: relative;
+    top: 170px;
+    left: -8%;
+  }
+
+  main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .SigninAuthForm {
+    padding: 10px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    max-width: 350px;
+    min-width: 320px;
+    width: 100%;
+    border-radius: 10px;
+
+    a {
+      position: relative;
+      top: 80px;
+      color: #a1a1a1;
+      left: -30%;
+      z-index: 100;
+    }
+
+    .ghFormField {
+      width: 100%;
+    }
+
+    .hr {
+      margin-bottom: 32px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+    }
+    .socialButtons {
+      position: relative;
+      top: 60px;
+    }
+  }
+
+  .socialButtons {
+    position: relative;
+    top: 45px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .button {
+      color: #ffffff;
+      border-radius: 8px;
+      margin: 5px 7.5px;
+      padding: 6px 7px 5px;
+      align-items: center;
+      outline: none;
+      border: none;
+      font-size: 14px;
+      padding: 0px;
+      z-index: 1000;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+
+      img {
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        margin-right: 10px;
+        border-radius: 5px;
+
+        &.whiteBg {
+          background-color: white;
+          border-radius: 4px;
+        }
+      }
+    }
+
+    .facebook {
+      background-color: white;
+    }
+
+    .twitter {
+      background-color: white;
+    }
+
+    .google {
+      background-color: white;
+    }
+
+    .linkedin {
+      background-color: white;
+    }
+  }
+
+  .paragraph,
+  p {
+    position: relative;
+    top: 20px;
+    color: #505050;
+    font-family: Roboto;
+    font-size: 25px;
+
+    &.big {
+      font-size: 16px;
+    }
+  }
+
+  .SigninAuthForm > h1 {
+    max-width: 1920px;
+    color: #424242;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+  }
+
+  .socialLogin h4 {
+    position: relative;
+    top: 40px;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 54px;
+    letter-spacing: 0em;
+    text-align: left;
+    width: 143px;
+    color: #505050;
+  }
+
+  .SigninAuthForm {
+    position: relative;
+    top: 76px;
+    width: 100%;
+    color: #a1a1a1;
+    font-size: 14px;
+    left: -10%;
+  }
+
+  .switchSignInMode {
+    font-size: 20px;
+  }
+
+  .switchSignInMode > span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 23px;
+    color: #f07760;
+  }
+
+  .getstart {
+    color: #f07760;
+    font-size: 25px;
+    font-weight: 700;
+  }
+
+  svg {
+    path {
+      fill: linear-gradient(180deg, #fe794f -8.92%, #7166f8 92.87%);
+    }
+  }
+
+  // ForgotPassword
+
+  .forgotPasswordAuthform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    max-width: 350px;
+    min-width: 320px;
+    width: 100%;
+    border-radius: 10px;
+    position: relative;
+    top: 84px;
+    left: -30%;
+    h4 {
+      position: relative;
+      top: 40px;
+      font-size: 30px;
+      font-weight: 700;
+      color: #505050;
+    }
+
+    a {
+      position: relative;
+      top: 80px;
+      color: #a1a1a1;
+      left: -30%;
+    }
+
+    .ghFormField {
+      width: 100%;
+    }
+
+    h1 {
+      max-width: 1920px;
+      color: #424242;
+      font-size: 25px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 26px;
+      letter-spacing: 0em;
+      text-align: left;
+    }
+
+    .hr {
+      margin-bottom: 32px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .forgotPasswordLeft {
+    width: 64.54%;
+    height: 100vh;
+    max-width: 1081px;
+
+    &.forgotPassword {
+      background-image: url("../images/forgot-password.svg");
+      background-size: cover;
+      position: relative;
+      z-index: 1;
+      background-position: right;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .forgotPasswordRight {
+    width: 37%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .submit {
+      margin-top: 130px;
+    }
+  }
+
+  .switchForgotMode {
+    position: relative;
+    top: 150px;
+    color: #f07760;
+    font-size: 20px;
+    font-weight: 500;
+    left: -30%;
+  }
+
+  .ghButton {
+    border: none;
+    color: #0D0905;
+    background-color: #0062FF;
+    padding: 7px 14px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      box-shadow: 0 2px 9px rgba(2, 47, 119, 0.1);
+    }
+
+    &:active {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+    }
+
+    &.alt {
+      width: 181px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      $color-white: #ffffff;
+      line-height: 16.1px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 5px;
+      position: relative;
+      z-index: 100;
+      background: linear-gradient(151.09deg, #f07760 -74.94%, #7166f8 146.83%);
+    }
+
+    &.alt:active:after {
+      content: "";
+      background: #0578ff1a;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 9px;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      box-shadow: none !important;
+      cursor: default;
+    }
+
+    &.main {
+      &:hover {
+        box-shadow: 0 3px 6px rgba($color-main, 0.4);
+      }
+    }
+
+    &.blue {
+      color: $color-white;
+    }
+
+    &.orange {
+      color: $color-white;
+      background: linear-gradient(151.09deg, #f07760 -74.94%, #7166f8 146.83%);
+    }
+
+    &.accent {
+      background-color: $color-accent;
+
+      &:hover {
+        box-shadow: 0 3px 6px rgba($color-accent, 0.4);
+      }
+    }
+
+    &.light {
+      background-color: $color-light-blue;
+      color: $color-dark;
+
+      &:hover {
+        box-shadow: 0 3px 6px rgba($color-light-blue, 0.4);
+      }
+    }
+
+    &.transparent {
+      background-color: transparent !important;
+      box-shadow: none !important;
+      color: $color-main;
+    }
+
+    .icon {
+      width: 14px;
+
+      margin-right: 8px;
+      vertical-align: middle;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      .icon {
+        margin-right: 0;
+      }
+
+      &.loading {
+        position: absolute;
+        right: 10px;
+        margin-right: 0;
+      }
+
+      img {
+        height: 14px;
+        width: auto;
+      }
+    }
+
+    &.onlyIcon {
+      .icon {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .ghButton:hover {
+    color: #ffffff;
+  }
+  .ghButton.orange:hover {
+    cursor: pointer;
+    background: linear-gradient(151.09deg, $color-main -74.94%, #f07760 146.83%);
+  }
+
+  .SignUpLeft {
+    width: 64.54%;
+    height: 100vh;
+    max-width: 1081px;
+    &.signUp {
+      background-image: url("../images/signUp.svg");
+      background-size: cover;
+      position: relative;
+      z-index: 1;
+      background-position: center;
+      background-position-x: right;
+      animation: mymove 1s;
+
+      @keyframes mymove {
+        0% {
+          left: -800px;
+          top: -600px;
+        }
+        50% {
+          transform: rotate(10deg);
+        }
+        100% {
+          left: 0;
+          top: 0;
+        }
+      }
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .SignUpRight {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .submit {
+      margin-top: 100px;
+    }
+  }
+
+  .SignUpAuthform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    max-width: 350px;
+    min-width: 320px;
+    width: 100%;
+    border-radius: 10px;
+    position: relative;
+    top: 80px;
+    left: -10%;
+
+    h1 {
+      font-weight: 400;
+      font-size: 25px;
+      color: #424242;
+    }
+    h4 {
+      position: relative;
+      top: 40px;
+      font-size: 30px;
+      font-weight: 700;
+      color: #505050;
+    }
+    a {
+      position: relative;
+      top: 80px;
+      color: #a1a1a1;
+      left: -30%;
+    }
+
+    .ghFormField {
+      width: 100%;
+    }
+
+    .hr {
+      margin-bottom: 32px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .signIn {
+      background-image: none !important;
+    }
+    .Signinright {
+      position: absolute;
+      left: 29%;
+      top: 20px;
+      z-index: 100;
+      .SigninAuthForm {
+        padding: 0;
+        margin: -30px 0;
+        left: 0;
+      }
+      .switchSignInMode > span {
+        font-size: 20px;
+        font-weight: 400;
+      }
+
+      .getstart {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      h1 {
+        position: relative;
+        top: 30px;
+        font-size: 22px;
+        font-weight: 400;
+      }
+      h4 {
+        position: relative;
+        left: 11%;
+        font-size: 28px;
+        font-weight: 700;
+      }
+      p {
+        font-size: 20px;
+        font-weight: 400;
+      }
+      .logo {
+        position: inherit;
+      }
+      .switchSignInMode {
+        left: 0;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .Signinright {
+        padding: 20px 40px;
+        position: absolute;
+        left: 29%;
+        .switchSignInMode > span {
+          font-size: 18px;
+          font-weight: 400;
+        }
+        .getstart {
+          font-size: 22px;
+          font-weight: 700;
+        }
+        h1 {
+          font-size: 22px;
+          font-weight: 400;
+        }
+        h4 {
+          position: relative;
+          left: 11%;
+          font-size: 30px;
+          font-weight: 700;
+        }
+        p {
+          font-size: 23px;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .forgotPassword {
+      background-image: none !important;
+    }
+    .forgotPasswordRight {
+      position: absolute;
+      left: 29%;
+      top: 20px;
+      z-index: 100;
+      .switchForgotMode > span {
+        font-size: 20px;
+        font-weight: 400;
+      }
+      .forgotPasswordAuthform {
+        margin: -45px 0;
+        left: 0;
+      }
+      .getstart {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      h1 {
+        font-size: 22px;
+        font-weight: 400;
+      }
+      h4 {
+        font-size: 28px;
+        font-weight: 700;
+      }
+      p {
+        font-size: 20px;
+        font-weight: 400;
+        z-index: 100;
+        margin-top: 50px;
+        left: 0;
+      }
+      .logo {
+        z-index: 100;
+        position: inherit;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .forgotPasswordRight {
+        padding: 20px 40px;
+        position: absolute;
+        left: 29%;
+        z-index: 100;
+        .switchForgotMode > span {
+          font-size: 18px;
+          font-weight: 400;
+        }
+        .getstart {
+          font-size: 22px;
+          font-weight: 700;
+        }
+        h1 {
+          font-size: 22px;
+          font-weight: 400;
+        }
+        h4 {
+          font-size: 27px;
+          font-weight: 700;
+        }
+        p {
+          margin-top: 50px;
+          font-size: 23px;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .signUp {
+      background-image: none !important;
+    }
+    .SignUpRight {
+      position: absolute;
+      left: 25%;
+      margin: 20px 0px;
+      z-index: 100;
+
+      .SignUpAuthform {
+        position: relative;
+        top: 20px;
+        margin: -39px 0;
+        left: 0;
+      }
+
+      .getstart {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      h1 {
+        position: relative;
+        font-size: 22px;
+        font-weight: 400;
+        top: 30px;
+      }
+      h4 {
+        font-size: 28px;
+        font-weight: 700;
+      }
+      p {
+        font-size: 20px;
+        font-weight: 400;
+      }
+      .logo {
+        position: inherit;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .SignUpRight {
+        padding: 20px 40px;
+        position: relative;
+        left: -25%;
+
+        .getstart {
+          font-size: 22px;
+          font-weight: 700;
+        }
+        h1 {
+          font-size: 22px;
+          font-weight: 400;
+          position: relative;
+          top: 30px;
+        }
+        h4 {
+          font-size: 27px;
+          font-weight: 700;
+        }
+        p {
+          position: relative;
+          font-size: 23px;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 468px) {
+    overflow: scroll;
+    .left {
+      width: 0%;
+
+      &.forgotPassword,
+      &.signIn {
+        background-image: none;
+
+      }
+    }
+    .right {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow: scroll;
+
+      .authForm {
+        margin: 30px 70px 30px;
+
+        .submit {
+          align-self: center;
+        }
+
+        .logo svg {
+
+          height: 74px;
+
+        }
+
+        .logo {
+          height: 120px;
+          width: 226px;
+        }
+      }
+    }
+
+    .switchSignMode {
+      font-size: 20px;
+      margin-top: 80px;
+      margin: 30px 70px;
+    }
+  }
+
+  @media screen and (max-width: 368px) {
+    overflow: scroll;
+    .left {
+      width: 0%;
+
+      &.forgotPassword,
+      &.signIn {
+        background-image: none;
+
+      }
+    }
+
+    .right {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow: scroll;
+
+      .authForm {
+        margin: 30px 70px;
+
+        .ghFormField {
+          width: 91%;
+        }
+
+        .submit {
+          align-self: center;
+        }
+
+        .logo {
+          height: 120px;
+          width: 226px;
+        }
+      }
+    }
+    .switchSignMode {
+      font-size: 20px;
+      margin-top: 80px;
+      margin: 30px 70px;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .left {
+      width: 56.54%;
+      height: 100vh;
+      max-width: 1081px;
+
+      &.forgotPassword,
+      &.signIn {
+        //background-image: url("../images/sign.png");
+        background-size: cover;
+        position: relative;
+        z-index: 1;
+
+        &:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: transparent linear-gradient(135deg, #5E5FBD 0%, #FE794F 100%) 0% 0% no-repeat padding-box;
+          opacity: 0.5;
+          z-index: -1;
+        }
+
+        .logo {
+          margin: 0px 23px;
+          height: 116px;
+          width: 223px;
+          position: absolute;
+          left: 0px;
+        }
+      }
+
+      &.forgotPassword {
+        //background-image: url("../images/forgot-password.png");
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .right {
+      width: 43.46%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      .submit {
+        align-self: flex-end;
+        margin-top: 32px;
+      }
+
+      .logo {
+        height: 120px;
+        width: 226px;
+      }
+    }
+    .switchSignMode {
+      font-size: 20px;
+      margin-top: 100px;
+    }
+  }
+
+  @media screen and (max-height: 800px) {
+
+    .socialButtons {
+      display: flex;
+    }
+
+  }
+
+  // Eyes Icon and Error
+
+  .ghFormFieldPassword {
+    .icon + input {
+      padding-right: 30px;
+      padding-left: 8px;
+    }
+    .icon {
+      left: 93%;
+      right: 3px;
+      bottom: 10px;
+      cursor: pointer;
+    }
+  }
+
+  .error {
+    color: #fe5c4f;
+    font-size: 14px;
+    padding: 0 8px;
+  }
+
+  .logo {
+    position: absolute;
+    left: 91.55%;
+    top: 3.78%;
+    z-index: 100;
+  }
+}
