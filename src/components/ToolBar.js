@@ -133,7 +133,7 @@ class ToolBar extends Component {
       case 'create-node':
       case 'maps':
       case 'linkedIn':
-      case 'wiki':
+      case 'wikipedia':
       case 'sciGraph':
       case 'create-label-square':
       case 'create-label-ellipse':
@@ -381,8 +381,8 @@ class ToolBar extends Component {
                 Use LinkedIn
               </li>
               <li
-                className={`${selected.includes('wiki') ? 'selected' : ''}`}
-                onClick={() => this.handleClick('wiki')}
+                className={`${selected.includes('wikipedia') ? 'selected' : ''}`}
+                onClick={() => this.handleClick('wikipedia')}
               >
                 Use Wikipedia
               </li>

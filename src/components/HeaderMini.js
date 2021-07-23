@@ -10,7 +10,7 @@ import Utils from '../helpers/Utils';
 import Chart from '../Chart';
 import { setLoading } from '../store/actions/app';
 import ExportNodeTabs from './ExportNode/ExportNodeTabs';
-import GraphUsersInfo from "./graphHistory/GraphUsersInfo";
+import GraphUsersInfo from "./graphData/GraphUsersInfo";
 import Button from "./form/Button";
 import CommentModal from './CommentNode';
 import ContextMenu from './contextMenu/ContextMenu';

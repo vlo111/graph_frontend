@@ -8,9 +8,9 @@ import _ from 'lodash'
 import { Link, withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import Pagination from '../../components/Pagination';
-import GraphListFooter from '../../components/GraphListFooter';
-import GraphListHeader from '../../components/GraphListHeader';
-import GraphDashboardSubMnus from '../../components/GraphListHeader';
+import GraphListFooter from '../../components/graphData/GraphListFooter';
+import GraphListHeader from '../../components/graphData/GraphListHeader';
+import GraphDashboardSubMnus from '../../components/graphData/GraphListHeader';
 
 import NoGraph from "../../components/NoGraph";
 

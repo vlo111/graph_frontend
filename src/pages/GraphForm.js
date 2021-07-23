@@ -35,7 +35,7 @@ import ExitMode from '../components/ExitMode';
 import AddLinkedInModal from '../components/chart/AddLinkedInModal';
 import MapsModal from '../components/maps/MapsModal';
 import ScienceGraphModal from "../components/ScienceSearchToGraph/ScienceGraphModal";
-import WikiModal from "../components/wiki/WikiModal";
+import WikiModal from "../components/wikipedia/WikiModal";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -91,7 +91,7 @@ class GraphForm extends Component {
         {activeButton === 'maps-view' && <MapsGraph />}
         {activeButton === 'maps' && <MapsModal />}
         {activeButton === 'sciGraph' && <ScienceGraphModal />}
-        {activeButton === 'wiki' && <WikiModal />}
+        {activeButton === 'wikipedia' && <WikiModal />}
         <AddLinkModal />
         <AddLabelModal />
         <AddLinkedInModal />
