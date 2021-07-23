@@ -1929,7 +1929,7 @@ p {
       border-radius: 10px;
       margin-top: 45px;
     }
-    .graphinputName{
+    .graphInputName{
       border:none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
@@ -5348,6 +5348,7 @@ body .gh__menu {
   position: relative;
   overflow: hidden;
   display: flex;
+  justify-content: center;
 
   input {
     display: none;
@@ -5367,10 +5368,10 @@ body .gh__menu {
     .selectImage {
       opacity: 1;
       
+    }
       .delete {
         opacity: 1;
       }
-    }
   }
 
 
@@ -5408,8 +5409,10 @@ body .gh__menu {
       display: flex;
       align-items: flex-start;
     }
+  }
     .delete {
       position: absolute;
+      bottom: 3px;
       width: 15px;
       height: 15px;
       bottom: 10px;
@@ -5419,8 +5422,8 @@ body .gh__menu {
       cursor: pointer;
       opacity: 0;
       transition: all 500ms;
+      cursor: pointer;
     }
-  }
 }
 .avatarUploader {
   border-radius: 50%;

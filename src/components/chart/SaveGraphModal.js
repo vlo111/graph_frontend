@@ -194,7 +194,7 @@ class SaveGraphModal extends Component {
           </div>
           <div className='impData'>
           <Input
-            className="graphinputName"
+            className="graphInputName"
             value={requestData.title}
             onChangeText={(v) => this.handleChange('title', v)}
           />

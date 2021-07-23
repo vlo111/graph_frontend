@@ -41,7 +41,7 @@ class EditGraphModal extends Component {
 
   initValues = memoizeOne((singleGraph) => {
     const {
-      title, description, status, publicState,
+      title, description, status, publicState, defaultImage
     } = singleGraph;
 
     this.setState({
@@ -50,8 +50,9 @@ class EditGraphModal extends Component {
         description,
         publicState,
         status: status === 'template' ? 'active' : status,
+        userImage: defaultImage
       },
-      image: ''
+      image: '',
     });
   })
 
@@ -64,6 +65,7 @@ class EditGraphModal extends Component {
         status: 'active',
         publicState: false,
         disabled: false,
+        userImage: false
       },
     };
   }
@@ -127,15 +129,16 @@ class EditGraphModal extends Component {
   handleChange = async (path, value) => {
     const { match: { params: { graphId } } } = this.props;
     const { requestData } = this.state;
-
     if (path == 'image') {
       if (value == '') {
         const svg = ChartUtils.getChartSvg();
+        this.setState({[path]: value})
+        _.set(requestData, 'userImage', false);
         await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+      } else {
+        this.setState({ [path]: value})
+        _.set(requestData, 'userImage', true);
       }
-      this.setState({ [path]: value})
-      _.set(requestData, 'defaultImage', true);
-
     } else {
       _.set(requestData, path, value);
       this.setState({ requestData });
@@ -167,13 +170,14 @@ class EditGraphModal extends Component {
             <ImageUploader
               className="thumbnailSave"
               value={image || `${singleGraph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
+              userImage={ requestData.userImage }
               onChange={(val) => this.handleChange('image', val)}
             />
 
           </div>
           <div className="impData">
             <Input
-              className="graphinputName"
+              className="graphInputName"
               value={requestData.title}
               onChangeText={(v) => this.handleChange('title', v)}
             />
