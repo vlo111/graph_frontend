@@ -24,10 +24,14 @@ api.interceptors.request.use((config) => {
 
 class Api {
   static url = REACT_APP_API_URL;
+
   static REACT_APP_ARXIV_URL = REACT_APP_ARXIV_URL;
+
   static REACT_APP_CORE_URL = REACT_APP_CORE_URL;
-  static REACT_APP_ARTICLE_URL = REACT_APP_API_URL + "/public/article.svg"
-  static REACT_APP_AUTHOR_URL = REACT_APP_API_URL + "/public/person.svg"
+
+  static REACT_APP_ARTICLE_URL = `${REACT_APP_API_URL}/public/article.svg`
+
+  static REACT_APP_AUTHOR_URL = `${REACT_APP_API_URL}/public/person.svg`
 
   static #cancelSource = [];
 
@@ -202,35 +206,33 @@ class Api {
     return api.post('/document/copy-documents', requestData);
   }
 
-    static createDocument(graphId, nodeId, tabName, fileData, file) {
-        return api.post(`/document/create-documents/${graphId}`,
-            this.toFormData({
-                nodeId,
-                tabName,
-                file,
-                fileData: JSON.stringify(fileData),
-            })
-        );
-    }
+  static createDocument(graphId, nodeId, tabName, fileData, file) {
+    return api.post(`/document/create-documents/${graphId}`,
+      this.toFormData({
+        nodeId,
+        tabName,
+        file,
+        fileData: JSON.stringify(fileData),
+      }));
+  }
 
-    static updateDocument(graphId, nodeId, tabName, updateFile, file) {
-        return api.post(`/document/update-documents/${graphId}`,
-            this.toFormData({
-                nodeId,
-                tabName,
-                file,
-                updateFile: JSON.stringify(updateFile),
-            })
-        );
-    }
+  static updateDocument(graphId, nodeId, tabName, updateFile, file) {
+    return api.post(`/document/update-documents/${graphId}`,
+      this.toFormData({
+        nodeId,
+        tabName,
+        file,
+        updateFile: JSON.stringify(updateFile),
+      }));
+  }
 
-    static documentPath(graphId, fileId) {
-        return api.get(`/document/get-documentPath/${graphId}/${fileId}`);
-    }
+  static documentPath(graphId, fileId) {
+    return api.get(`/document/get-documentPath/${graphId}/${fileId}`);
+  }
 
-    static createShareGraph(requestData) {
-        return api.post('/share-graphs/create', requestData);
-    }
+  static createShareGraph(requestData) {
+    return api.post('/share-graphs/create', requestData);
+  }
 
   static graphUsers(requestData) {
     return api.post('/share-graphs/graph-users', requestData);
@@ -411,11 +413,11 @@ class Api {
     }));
   }
 
-    static deleteNodes(graphId, nodes) {
-        return api.delete(`/nodes/delete/${graphId}`, {
-            data: {nodes},
-        });
-    }
+  static deleteNodes(graphId, nodes) {
+    return api.delete(`/nodes/delete/${graphId}`, {
+      data: { nodes },
+    });
+  }
 
   static createLinks(graphId, links) {
     return api.post(`/links/create/${graphId}`, { links });
@@ -502,6 +504,10 @@ class Api {
 
   static getGraphHistory(graphId) {
     return api.get(`/graph-history/graph-history/${graphId}`);
+  }
+
+  static confirmEmail(token) {
+    return api.get(`/users/confirmation/${token}`);
   }
 }
 

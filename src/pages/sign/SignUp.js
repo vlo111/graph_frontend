@@ -50,6 +50,7 @@ class SignUp extends Component {
     const { data = {} } = payload;
     if (data.status === 'ok') {
       this.props.history.push('/sign/sign-in');
+      toast.info('Please check your email');
       return;
     }
     if (_.isEmpty(data.errors)) {

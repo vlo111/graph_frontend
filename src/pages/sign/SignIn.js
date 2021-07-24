@@ -46,16 +46,18 @@ class Login extends Component {
     this.setState({ loading: false });
     const { data = {} } = payload;
     if (data.status !== 'ok') {
-      this.setState({
-        failedLoginAttempts: this.state.failedLoginAttempts + 1,
-      });
+      if (!data.message.includes('confirmed')) {
+        this.setState({
+          failedLoginAttempts: this.state.failedLoginAttempts + 1,
+        });
+      }
 
       if (this.state.failedLoginAttempts === 3) {
         await this.props.forgotPasswordRequest(requestData.email, `${origin}/sign/reset-password`);
       }
       if (this.state.failedLoginAttempts < 3) {
         toast.dismiss(this.toast);
-        this.toast = toast.error('Invalid email or password');
+        this.toast = toast.error(data.message || 'Invalid email or password');
       }
     }
   }
@@ -64,59 +66,59 @@ class Login extends Component {
     const { requestData, failedLoginAttempts } = this.state;
     return (
       <WrapperSign>
-          <div className="SigninLeft signIn" />
-          <div className="Signinright">
-            <div className="SaytLogo">
-              <Link to="/">
-                <LogoSvg className="logo white" />
-              </Link>
-            </div>
-            <div>
-              <form onSubmit={this.signIn} id="login" className="SigninAuthForm">
-                <h1>Your ultimate graphing tool </h1>
-                <div className="socialLogin">
-                  <h4>Sign in </h4>
-                </div>
-                <Input
-                  name="email"
-                  type="email"
-                  placeholder="Email address"
-                  value={requestData.email}
-                  onChangeText={this.handleTextChange}
-                />
-                <PasswordInput
-                  name="password"
-                  placeholder="Password"
-                  value={requestData.password}
-                  onChangeText={this.handleTextChange}
-                />
-                <Link to="/sign/forgot-password" className="forgotPassword">Forgot password?</Link>
+        <div className="SigninLeft signIn" />
+        <div className="Signinright">
+          <div className="SaytLogo">
+            <Link to="/">
+              <LogoSvg className="logo white" />
+            </Link>
+          </div>
+          <div>
+            <form onSubmit={this.signIn} id="login" className="SigninAuthForm">
+              <h1>Your ultimate graphing tool </h1>
+              <div className="socialLogin">
+                <h4>Sign in </h4>
+              </div>
+              <Input
+                name="email"
+                type="email"
+                placeholder="Email address"
+                value={requestData.email}
+                onChangeText={this.handleTextChange}
+              />
+              <PasswordInput
+                name="password"
+                placeholder="Password"
+                value={requestData.password}
+                onChangeText={this.handleTextChange}
+              />
+              <Link to="/sign/forgot-password" className="forgotPassword">Forgot password?</Link>
 
-                {failedLoginAttempts >= 3
+              {failedLoginAttempts >= 3
               && (
               <p className="errorRecovery">
                 Please check your email to recover your account
               </p>
               )}
-                <Button type="submit" className="submit" color="orange">
-                  Sign In
-                </Button>
-                <div>
-                  <p>Sign in using</p>
-                </div>
-                <div className="socialButtons">
-                  <OAuthButtonFacebook />
-                  <OAuthButtonGoogle />
-                  <OAuthButtonLinkedin />
-                  <OAuthButtonTwitter />
-                </div>
-              </form>
-              <p className="switchSignInMode">
-                <span> Don't have an admin yet? </span>
-                <Link to="/sign/sign-up" className="getstart"><i>Get started</i></Link>
-              </p>
-            </div>
+              <Button type="submit" className="submit" color="orange">
+                Sign In
+              </Button>
+              <div>
+                <p>Sign in using</p>
+              </div>
+              <div className="socialButtons">
+                <OAuthButtonFacebook />
+                <OAuthButtonGoogle />
+                <OAuthButtonLinkedin />
+                <OAuthButtonTwitter />
+              </div>
+            </form>
+            <p className="switchSignInMode">
+              <span> Don't have an admin yet? </span>
+              <Link to="/sign/sign-up" className="getstart"><i>Get started</i></Link>
+            </p>
           </div>
+        </div>
       </WrapperSign>
     );
   }
