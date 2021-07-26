@@ -12,6 +12,7 @@ import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 import Api from '../../Api';
 import Utils from '../../helpers/Utils';
 import Editor from '../form/Editor';
+import TabSaveModal from './TabSaveModal';
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -42,6 +43,7 @@ class NodeTabsFormModal extends Component {
         value: '',
         subtitle: '',
       },
+      showSaveModal: false,
     };
   }
 
@@ -240,54 +242,64 @@ class NodeTabsFormModal extends Component {
         }
 
         this.props.onClose(data);
+      } else {
+        this.setState({
+          showSaveModal: false,
+        });
       }
       this.setState({ errors, tabData });
     }
 
-    close = async () => {
-      if (window.confirm('Do you want your changes to be saved?')) {
-        await this.save();
-      }
-    }
+  showSaveModal = async () => {
+    const { showSaveModal } = this.state;
 
-    render() {
-      const { tabData, errors } = this.state;
-      const { node, fieldName, customFields } = this.props;
-      this.initValues(node, fieldName, customFields);
-      const isUpdate = !!fieldName;
-      return (
-        <Modal
-          isOpen
-          className="ghModal nodeTabsFormModal"
-          overlayClassName="ghModalOverlay nodeTabsFormModalOverlay"
-        >
-          <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.close} />
-          <h3>{isUpdate ? 'Update Tab' : 'Add New Tab'}</h3>
-          <div className="row">
-            <Input
-              value={tabData.name}
-              error={errors.name}
-              label="Name"
-              onChangeText={(v) => this.handleChange('name', v)}
-            />
-          </div>
-          <Editor
-            value={tabData.value}
-            error={errors.value}
-            label="ContentTabs"
-            node={node}
-            insertFile={this.insertFile}
-            onChange={(value, prev) => this.handleChange('value', value, prev)}
+    this.setState({ showSaveModal: !showSaveModal });
+  }
+
+  closeFormModal = async () => {
+    this.setState({ showSaveModal: false });
+    await this.props.onClose();
+  }
+
+  render() {
+    const { tabData, errors, showSaveModal } = this.state;
+    const { node, fieldName, customFields } = this.props;
+    this.initValues(node, fieldName, customFields);
+    const isUpdate = !!fieldName;
+    return (
+      <Modal
+        isOpen
+        className="ghModal nodeTabsFormModal"
+        overlayClassName="ghModalOverlay nodeTabsFormModalOverlay"
+      >
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.showSaveModal} />
+        <h3>{isUpdate ? 'Update Tab' : 'Add New Tab'}</h3>
+        <div className="row">
+          <Input
+            value={tabData.name}
+            error={errors.name}
+            label="Name"
+            onChangeText={(v) => this.handleChange('name', v)}
           />
-          <div className="buttonsWrapper">
-            <Button color="transparent" className="cancel" onClick={this.close}>Cancel</Button>
-            <Button color="accent" onClick={this.save}>
-              {isUpdate ? 'Save' : 'Add'}
-            </Button>
-          </div>
-        </Modal>
-      );
-    }
+        </div>
+        <Editor
+          value={tabData.value}
+          error={errors.value}
+          label="ContentTabs"
+          node={node}
+          insertFile={this.insertFile}
+          onChange={(value, prev) => this.handleChange('value', value, prev)}
+        />
+        <div className="buttonsWrapper">
+          <Button color="transparent" className="cancel" onClick={this.showSaveModal}>Cancel</Button>
+          <Button color="accent" onClick={this.save}>
+            {isUpdate ? 'Save' : 'Add'}
+          </Button>
+        </div>
+        {showSaveModal && <TabSaveModal hide={this.showSaveModal} onClose={this.props.onClose} save={this.save} />}
+      </Modal>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
