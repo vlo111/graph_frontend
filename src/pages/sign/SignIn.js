@@ -75,7 +75,6 @@ class Login extends Component {
           </div>
           <div>
             <form onSubmit={this.signIn} id="login" className="SigninAuthForm">
-              <h1>Your ultimate graphing tool </h1>
               <div className="socialLogin">
                 <h4>Sign in </h4>
               </div>
@@ -85,6 +84,7 @@ class Login extends Component {
                 placeholder="Email address"
                 value={requestData.email}
                 onChangeText={this.handleTextChange}
+                autoComplete="off"
               />
               <PasswordInput
                 name="password"

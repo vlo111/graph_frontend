@@ -45,6 +45,11 @@ class SignUp extends Component {
   signUp = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
+    if (requestData.passwordConfirm !== requestData.password) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
     this.setState({ loading: true });
     const { payload } = await this.props.signUpRequest(requestData);
     const { data = {} } = payload;
@@ -77,7 +82,6 @@ class SignUp extends Component {
               id="registration"
               className="SignUpAuthform"
             >
-              <h1>Your ultimate graphing tool</h1>
               <div className="forgotPasswordText">
                 <h4>Get started now </h4>
               </div>
@@ -87,6 +91,7 @@ class SignUp extends Component {
                 value={requestData.firstName}
                 error={errors.firstName}
                 onChangeText={this.handleChange}
+                autoComplete="off"
               />
               <Input
                 name="lastName"
@@ -94,6 +99,7 @@ class SignUp extends Component {
                 value={requestData.lastName}
                 error={errors.lastName}
                 onChangeText={this.handleChange}
+                autoComplete="off"
               />
               <Input
                 name="email"
@@ -102,18 +108,21 @@ class SignUp extends Component {
                 value={requestData.email}
                 error={errors.email}
                 onChangeText={this.handleChange}
+                autoComplete="off"
               />
               <PasswordInput
                 name="password"
                 placeholder="Password"
                 value={requestData.password}
                 onChangeText={this.handleChange}
+                autoComplete="off"
               />
               <PasswordInput
                 name="passwordConfirm"
                 placeholder="Password Confirm"
                 value={requestData.passwordConfirm}
                 onChangeText={this.handleChange}
+                autoComplete="off"
               />
               <Button
                 color="orange"

@@ -432,34 +432,6 @@ p {
   }
 }
 
-.ghFormFieldPassword {
-  .icon + input {
-    padding-right: 30px;
-    padding-left: 8px;
-  }
-
-  input[type="password"] {
-    letter-spacing: 2.5px;
-  }
-
-  .icon {
-    left: auto;
-    right: 3px;
-    bottom: 3px;
-    cursor: pointer;
-
-    svg {
-      width: 30px;
-      height: 30px;
-      padding: 7px;
-
-      path {
-        fill: $color-gray;
-      }
-    }
-  }
-}
-
 .ghFile {
   display: flex;
   align-items: flex-start;
@@ -3917,60 +3889,6 @@ body .gh__menu {
       height: 40px;
       font-size: 17px;
     }
-  }
-}
-
-.socialButtons {
-  //display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-
-  .button {
-    color: $color-white;
-    display: flex;
-    border-radius: 8px;
-    margin: 5px 7.5px;
-    padding: 6px 7px 5px;
-    align-items: center;
-    outline: none;
-    border: none;
-    font-size: 14px;
-    width: 120px;
-
-    &:hover {
-      text-decoration: underline;
-    }
-
-    img {
-      width: 30px;
-      height: 30px;
-      object-fit: cover;
-      margin-right: 10px;
-      //background-color: $color-white;
-      border-radius: 5px;
-
-      &.whiteBg {
-        background-color: $color-white;
-        padding: 4px;
-        border-radius: 4px;
-      }
-    }
-  }
-
-  .facebook {
-    background-color: #3B579D;
-  }
-
-  .twitter {
-    background-color: #1DA1F2;
-  }
-
-  .google {
-    background-color: #4285F4;
-  }
-
-  .linkedin {
-    background-color: #007BB6;
   }
 }
 
@@ -8838,7 +8756,6 @@ color: #2962ff;
 }
 
 .logoWrapper {
-  margin: 7px 0;
   width: 118px;
 
   .autoSaveText {
@@ -8853,6 +8770,8 @@ color: #2962ff;
 
   svg {
     width: 100px;
+    position: absolute;
+    top: 20px;
   }
 }
 
@@ -9057,6 +8976,8 @@ color: #2962ff;
     display: grid;
     grid-template-columns: 10% 10% 10% 35% 5% 10% 5% 5% 10%;
     max-width: 100%;
+    width: 100%;
+    padding-left: 15px;
 
     .logo {
       display: flex;

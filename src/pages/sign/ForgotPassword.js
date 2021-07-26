@@ -60,26 +60,30 @@ class ForgotPassword extends Component {
     }
     return (
       <WrapperSign >
-          <div className="forgotPasswordLeft forgotPassword" />
-          <div className="forgotPasswordRight">
-            <div>
-              <Link to="/">
-                <LogoSvg className="logo white" />
-              </Link>
-            </div>
-            <div>
-              <form onSubmit={this.signIn} id="login" className="forgotPasswordAuthform">
-                <h1>Your ultimate graphing tool</h1>
-                <div className="forgotPasswordText">
-                  <h4>Forgot your password?</h4>
-                </div>
-                <Input
-                    name="email"
-                    type="email"
-                    placeholder="E-mail"
-                    value={requestData.email}
-                    onChangeText={this.handleTextChange}
-                />
+        <div className="forgotPasswordLeft forgotPassword" />
+        <div className="forgotPasswordRight">
+          <div>
+            <Link to="/">
+            <LogoSvg className="logo white" />
+            </Link>
+          </div>
+          <div>
+            <form
+              onSubmit={this.signIn}
+              id="login"
+              className="forgotPasswordAuthform"
+            >
+              <div className="forgotPasswordText">
+                <h4>Forgot your password?</h4>
+              </div>
+              <Input
+                name="email"
+                type="email"
+                placeholder="E-mail"
+                value={requestData.email}
+                onChangeText={this.handleTextChange}
+                autoComplete="off"
+              />
 
                 <div className="row">
                   <Button type="submit" className="submit" color="blue">
