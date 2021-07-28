@@ -13,6 +13,7 @@ import arxivImg from '../../assets/images/icons/arxiv.jpg';
 import coreImg from '../../assets/images/icons/core.png';
 import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
+import { toast } from 'react-toastify';
 
 const {
   REACT_APP_ARXIV_URL,
@@ -250,13 +251,15 @@ class ScienceGraphModal extends Component {
     }
     const chosenArticles = checkedList.map((articleIndex) => apiSearchReturnValues[parseInt(articleIndex)]);
     await this.getArticlesData(chosenArticles).then(async (res) => {
-      if (res?.length) {
+      if (res?.length && res[0]) {
         const firstNode = res[0];
         const nodes = Chart.getNodes();
         const nodeInDom = nodes.find((node) => node.id === firstNode.id);
         if (nodeInDom) {
           ChartUtils.findNodeInDom(nodeInDom);
         }
+      } else {
+        toast.warning('you already have this nodes!');
       }
       Chart.loading(false);
       this.close();
@@ -415,6 +418,7 @@ class ScienceGraphModal extends Component {
             status: 'approved',
             target: authorData.id,
             type: _type,
+            value: 2,
             updatedAt: moment().unix(),
             createdUser: currentUserId,
             updatedUser: currentUserId,
