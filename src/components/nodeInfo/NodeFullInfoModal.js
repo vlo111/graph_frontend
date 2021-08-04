@@ -7,7 +7,6 @@ import Modal from 'react-modal';
 import { Link, withRouter } from 'react-router-dom';
 import Button from '../form/Button';
 import NodeTabs from './NodeTabs';
-import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
 import ConnectionDetails from './ConnectionDetails';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import NodeImage from './NodeImage';

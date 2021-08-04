@@ -3,19 +3,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
-import Tooltip from 'rc-tooltip';
+import Tooltip from 'rc-tooltip/es';
 import Button from '../form/Button';
 import NodeTabsContent from './NodeTabsContent';
-import CustomFields from '../../helpers/CustomFields';
-import NodeTabsFormModal from './NodeTabsFormModal';
 import ContextMenu from '../contextMenu/ContextMenu';
 import { getNodeCustomFieldsRequest, removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/graphs';
-import MapsInfo from '../maps/MapsInfo';
 import Sortable from './Sortable';
 import ChartUtils from '../../helpers/ChartUtils';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 import Utils from '../../helpers/Utils';
 import Api from '../../Api';
+import NodeTabsFormModal from './NodeTabsFormModal';
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -30,9 +28,8 @@ class NodeTabs extends Component {
     super(props);
     this.state = {
       activeTab: '',
-      formModalOpen: null,
-      showLocation: false,
       updateCustomField: null,
+      formModalOpen: null,
     };
   }
 
@@ -45,7 +42,6 @@ class NodeTabs extends Component {
       const tab = nodeCustomFields[i];
 
       if (tab.value?.includes('blob')) {
-
         const { documentElement } = Utils.tabHtmlFile(tab.value);
 
         for (let j = 0; j < documentElement.length; j++) {
@@ -69,8 +65,9 @@ class NodeTabs extends Component {
       id: nodeId,
       customFields: nodeCustomFields,
     }]);
+
     if (data) {
-      this.setState({ formModalOpen: null, activeTab: data.name });
+      this.setState({ formModalOpen: null });
     }
   }
 
@@ -78,33 +75,21 @@ class NodeTabs extends Component {
     await this.updateTabFilePath();
   }, _.isEqual);
 
-  setFirstTab = memoizeOne((location, customField) => {
-    if (this.state.activeTab) {
-      this.props.setActiveTab('');
-      return
-    }
-    if (this.props.activeTab) {
-      this.setState({ activeTab: this.props.activeTab });
-      return
-    }
-    if (location) {
-      this.setState({ activeTab: '_location' });
-    } else {
-      this.setState({ activeTab: _.get(customField, 'name', '') });
-    }
-    this.props.setActiveTab('');
+  setFirstTab = memoizeOne(() => {
+    this.setState({ activeTab: '_description' });
+    this.props.setActiveTab('_description');
   }, _.isEqual);
 
   componentDidMount() {
-    ContextMenu.event.on("node.fields-edit", this.openFormModal);
-    ContextMenu.event.on("node.fields-delete", this.deleteCustomField);
+    ContextMenu.event.on('node.fields-edit', this.openFormModal);
+    ContextMenu.event.on('node.fields-delete', this.deleteCustomField);
   }
 
   componentWillUnmount() {
-    ContextMenu.event.removeListener("node.fields-edit", this.openFormModal);
+    ContextMenu.event.removeListener('node.fields-edit', this.openFormModal);
     ContextMenu.event.removeListener(
-      "node.fields-delete",
-      this.deleteCustomField
+      'node.fields-delete',
+      this.deleteCustomField,
     );
   }
 
@@ -113,15 +98,14 @@ class NodeTabs extends Component {
   };
 
   openFormModal = (ev, params) => {
-    this.setState({ formModalOpen: params?.fieldName || "" });
+    this.setState({ formModalOpen: params || '' });
   };
 
   closeFormModal = async (data) => {
     await this.updateTabFilePath(data);
   }
 
-  deleteCustomField = (ev, params = {}) => {
-    const { fieldName } = params;
+  deleteCustomField = (ev, fieldName = {}) => {
     const { nodeId, graphId } = this.props;
     if (fieldName && window.confirm('Are you sure?')) {
       const { nodeCustomFields } = this.props;
@@ -130,11 +114,8 @@ class NodeTabs extends Component {
         customFields: nodeCustomFields.filter((f) => f.name !== fieldName),
       }]);
     }
+    this.setActiveTab('_description');
   };
-
-  showLocation() {
-    this.setState({ showLocation: true });
-  }
 
   handleOrderChange = (customFields) => {
     const { nodeId, graphId } = this.props;
@@ -146,6 +127,19 @@ class NodeTabs extends Component {
     this.forceUpdate();
   }
 
+  /**
+   * Show/Hide tab data scroll arrow
+   */
+  componentDidUpdate(nextProps, nextState) {
+    const tabData = document.getElementsByClassName('tab-data')[0];
+
+    if (tabData && tabData.childElementCount && tabData.scrollWidth > 650) {
+      document.querySelectorAll('.left-arrow, .right-arrow').forEach((box) => { box.style.display = 'flex'; });
+    } else {
+      document.querySelectorAll('.left-arrow, .right-arrow').forEach((box) => { box.style.display = 'none'; });
+    }
+  }
+
   render() {
     const { activeTab, formModalOpen } = this.state;
     const {
@@ -153,48 +147,36 @@ class NodeTabs extends Component {
     } = this.props;
     const node = ChartUtils.getNodeById(nodeId);
 
-    this.setFirstTab(node.location, nodeCustomFields[0]);
+    this.setFirstTab();
 
     this.setDocumentsPath();
 
     return (
       <div className="nodeTabs">
         <div className="container-tabs">
-
-          <Sortable
-            onChange={this.handleOrderChange}
-            items={nodeCustomFields}
-            keyExtractor={(v) => v.name}
-            renderItem={(p) => (
-              <Button
-                className={activeTab === p.value.name ? 'active' : undefined}
-                key={p.value.name}
-                onMouseDown={() => this.setActiveTab(p.value.name)}
-              >
-                <p>{p.value.name}</p>
-              </Button>
-            )}
-          />
-          {node.location ? (
-            <Button
-              className={
-                activeTab === "_location" ? "active activeNoShadow" : undefined
-              }
-              onClick={() => this.setActiveTab("_location")}
-            >
-              <p>Location</p>
-            </Button>
-          ) : null}
-
-          {editable && !node.sourceId && node.customFields?.length < CustomFields.LIMIT ? (
-            <Tooltip overlay="Add New Tab" placement="top">
-              <Button
-                className="addTab"
-                icon="fa-plus"
-                onClick={() => this.openFormModal()}
-              />
-            </Tooltip>
-          ) : null}
+          <div className="tab-names">
+            <Sortable
+              onChange={this.handleOrderChange}
+              items={nodeCustomFields.filter((p) => p.name !== '_description')}
+              keyExtractor={(v) => v.name}
+              editable={editable}
+              node={node}
+              activeTab={activeTab}
+              setActiveTab={this.setActiveTab}
+              openAddTabModal={this.openFormModal}
+              renderItem={(p) => (
+                <Tooltip overlay={<div className="tab-data-hover">{p.value.name}</div>} placement="top">
+                  <Button
+                    className={`${activeTab === p.value.name ? 'active' : ''} tab-button`}
+                    key={p.value.name}
+                    onMouseDown={() => this.setActiveTab(p.value.name)}
+                  >
+                    <p>{p.value.name}</p>
+                  </Button>
+                </Tooltip>
+              )}
+            />
+          </div>
         </div>
         {!_.isNull(formModalOpen) ? (
           <NodeTabsFormModal
@@ -202,25 +184,19 @@ class NodeTabs extends Component {
             customFields={nodeCustomFields}
             fieldName={formModalOpen}
             onClose={this.closeFormModal}
+            setActiveTab={this.setActiveTab}
           />
         ) : null}
-        {activeTab === '_location' ? (
-          this.state.showLocation
-            ? <MapsInfo node={node} />
-            : (
-              <div className="contentWrapper">
-                <Button
-                  icon="fa-globe"
-                  className=" ghButton2  mapTabButton"
-                  href="#"
-                  onClick={() => this.showLocation()}
-                >
-                  Show on Map
-                </Button>
-              </div>
-            )
-        ) : (
-          <NodeTabsContent name={activeTab} node={node} customFields={nodeCustomFields} />
+        {(activeTab !== '_location')
+        && (
+        <NodeTabsContent
+          name={activeTab}
+          node={node}
+          customFields={nodeCustomFields}
+          activeTab={activeTab}
+          openAddTabModal={this.openFormModal}
+          deleteCustomField={this.deleteCustomField}
+        />
         )}
       </div>
     );

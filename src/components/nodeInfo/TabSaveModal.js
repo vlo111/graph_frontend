@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import Button from '../form/Button';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
-class AddLabelModal extends Component {
+class TabSaveModal extends Component {
   render() {
     return (
       <Modal
@@ -34,4 +34,4 @@ class AddLabelModal extends Component {
   }
 }
 
-export default AddLabelModal;
+export default TabSaveModal;

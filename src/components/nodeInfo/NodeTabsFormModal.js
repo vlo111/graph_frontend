@@ -200,10 +200,12 @@ class NodeTabsFormModal extends Component {
 
     save = async () => {
       const {
-        node, fieldName, graphId, customFields,
+        node, fieldName, customFields,
       } = this.props;
+
       const isUpdate = !!fieldName;
       const { tabData, errors } = this.state;
+
       if (!isUpdate || (tabData.originalName !== tabData.name)) {
         [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node);
       }
@@ -241,6 +243,7 @@ class NodeTabsFormModal extends Component {
           }
         }
 
+        this.props.setActiveTab(tabData.name === 'description' ? '_description' : tabData.name);
         this.props.onClose(data);
       } else {
         this.setState({
@@ -275,12 +278,14 @@ class NodeTabsFormModal extends Component {
         <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.showSaveModal} />
         <h3>{isUpdate ? 'Update Tab' : 'Add New Tab'}</h3>
         <div className="row">
-          <Input
-            value={tabData.name}
-            error={errors.name}
-            label="Name"
-            onChangeText={(v) => this.handleChange('name', v)}
-          />
+          {fieldName !== '_description' ? (
+            <Input
+              value={tabData.name}
+              error={errors.name}
+              label="Name"
+              onChangeText={(v) => this.handleChange('name', v)}
+            />
+          ) : <label className="description">Description</label>}
         </div>
         <Editor
           value={tabData.value}

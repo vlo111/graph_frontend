@@ -1,55 +1,54 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import { renderToString } from 'react-dom/server';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-
+import memoizeOne from 'memoize-one';
 import Utils from '../helpers/Utils';
 import Chart from '../Chart';
-import { setLoading } from '../store/actions/app';
+import { setLoading, toggleNodeModal } from '../store/actions/app';
 import ExportNodeTabs from './ExportNode/ExportNodeTabs';
-import GraphUsersInfo from "./graphData/GraphUsersInfo";
-import Button from "./form/Button";
+import GraphUsersInfo from './graphData/GraphUsersInfo';
+import Button from './form/Button';
 import CommentModal from './CommentNode';
 import ContextMenu from './contextMenu/ContextMenu';
 import CustomFields from '../helpers/CustomFields';
-import { toggleNodeModal } from '../store/actions/app';
-
 import { getActionsCountRequest } from '../store/actions/commentNodes';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg';
+import { ReactComponent as ExpandSvg } from '../assets/images/icons/expand.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
-import { ReactComponent as HistorySvg } from '../assets/images/icons/history.svg';
+import NodeImage from './nodeInfo/NodeImage';
+import NodeFullInfoModal from './nodeInfo/NodeFullInfoModal';
+import { getNodeHistoryRequest } from '../store/actions/graphsHistory';
 
 class HeaderMini extends Component {
   static propTypes = {
     getActionsCount: PropTypes.func.isRequired,
     commentCount: PropTypes.func.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
-
+    getNodeHistoryRequest: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
-    ContextMenu.event.on('node.edit', this.editNode); 
+    ContextMenu.event.on('node.edit', this.editNode);
   }
 
   componentWillUnmount() {
-    ContextMenu.event.removeListener('node.edit', this.editNode); 
+    ContextMenu.event.removeListener('node.edit', this.editNode);
   }
 
   editNode = (ev) => {
     const { node, tabs } = this.props;
     if (node.readOnly) {
       return;
-    } 
+    }
     const customField = CustomFields.get(tabs, 'node.edit', node.id);
     this.props.toggleNodeModal({ ...node, customField });
   }
-   
-  
+
   commentCountData() {
     const { match: { params: { graphId } } } = this.props;
 
@@ -62,17 +61,14 @@ class HeaderMini extends Component {
       return null;
     }
     this.props.getActionsCountRequest(graphId, nodeId);
-
   }
 
   async componentWillMount() {
-    this.commentCountData()
-
+    this.commentCountData();
 
     let {
       headerImg, node,
     } = this.props;
-
 
     const nodeData = [];
 
@@ -111,56 +107,131 @@ class HeaderMini extends Component {
   toggleGraphUsersInfo = (showGraphUsersInfo) => {
     this.setState({ showGraphUsersInfo });
   }
+
   toggleNodeComment = (showNodeComment) => {
     this.commentCountData();
     this.setState({ showNodeComment });
   }
+
   closeNodeInfoModal = () => {
     const queryObj = queryString.parse(window.location.search);
     delete queryObj.info;
     const query = queryString.stringify(queryObj);
     this.props.history.replace(`?${query}`);
   }
+
+  initHistory = memoizeOne(() => {
+    const { match: { params: { graphId } }, node } = this.props;
+    this.props.getNodeHistoryRequest(graphId, node.id);
+  });
+
   render() {
     const { showGraphUsersInfo, showNodeComment } = this.state;
-    const { editable, singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props; 
+    const {
+      editable, singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } }, expand, queryObj,
+    } = this.props;
+
+    this.initHistory();
+
+    // const nodeHistory = getSingleNodeHistory;
+    // const nodePositionCount = getSingleNodePositionCount;
+    // const nodeTabsViewCount = getSingleNodeTabsViewCount;
+
+    const { firstName, lastName } = singleGraph.users.find((u) => +u.id === +(node.createdUser));
     return (
       <header id="headerMini">
-        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() => this.closeNodeInfoModal()} />
-        <div className="navbar">
-          <Button
-            icon={<InfoSvg />}
-            title="Info"
-            className="b-navbar"
-            onClick={() => this.toggleGraphUsersInfo(true)}>
-            Info
+        <div className="header">
+          <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() => this.closeNodeInfoModal()} />
+          <div className="nav-bar-header">
+            <Button
+              icon={<ExpandSvg />}
+              title="expand"
+              onClick={() => { this.props.history.replace(`?${queryString.stringify({ ...queryObj, expand: '1' })}`); }}
+            >
+              Expand
             </Button>
-          <Button className="commentsInfo"
-            icon={<CommentSvg />}
-            title="Comment"
-            className="b-navbar"
-            onClick={() => this.toggleNodeComment(true)}>
-            Comment
-              {<span>({commentsCount?.commentsCount})</span>}
-          </Button>
-          <ExportNodeTabs
-            node={node}
-            tabs={tabs}
-            nodeData={this.state.nodeData}
-            image={this.state.image}
-          />
-          {editable ? (<Button className="commentsInfo"
-            icon={<EditSvg />}
-            title="Comment"
-            className="b-navbar"
-            onClick={(ev) => this.editNode(ev)}>
-            Edit              
-          </Button>
-          ) : null} 
+            <ExportNodeTabs
+              node={node}
+              tabs={tabs}
+              nodeData={this.state.nodeData}
+              image={this.state.image}
+            />
+            {editable ? (
+              <Button
+                icon={<EditSvg />}
+                title="edit"
+                onClick={(ev) => this.editNode(ev)}
+              >
+                Edit
+              </Button>
+            ) : null}
+          </div>
+        </div>
+        <div className="headerBanner ">
+          <div className="frame">
+            <NodeImage node={node} />
+            <div className="bottom-icons">
+              <Button
+                icon={<InfoSvg />}
+                title="Info"
+                onClick={() => this.toggleGraphUsersInfo(true)}
+              >
+                Info
+              </Button>
+              <Button
+                icon={<CommentSvg />}
+                title="Comment"
+                onClick={() => this.toggleNodeComment(true)}
+              >
+                Comment
+              </Button>
+            </div>
+          </div>
+          <div className="textWrapper">
+            <h2 title={node.name} className="name">
+              {node.name && node.name.length > 10
+                ? `${node.name.substr(0, 10)}`
+                : node.name}
+            </h2>
+            <h3 title={node.type} className="type">
+              {node.type && node.type.length > 10
+                ? `${node.type.substr(0, 10)}`
+                : node.type}
+            </h3>
+          </div>
+          {/*<div className="info-data">*/}
+          {/*  <div className="text-block">*/}
+          {/*    <p>Total change acctions:</p>*/}
+          {/*    <p>Change position count:</p>*/}
+          {/*    <p>Tabs view count:</p>*/}
+          {/*    <p>Created by:</p>*/}
+          {/*  </div>*/}
+          {/*  <div className="data-block">*/}
+          {/*    /!*<p>{nodeHistory.length}</p>*!/*/}
+          {/*    <p>0</p>*/}
+          {/*    /!* <p>{ nodePositionCount }</p> *!/*/}
+          {/*    /!* <p>{ nodeTabsViewCount }</p> *!/*/}
+          {/*    <p>0</p>*/}
+          {/*    <p>0</p>*/}
+          {/*    <p>*/}
+          {/*      {firstName}*/}
+          {/*      {' '}*/}
+          {/*      {lastName}*/}
+          {/*    </p>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
+        </div>
+
+        <div className="footer-link">
+          <a title={node.link} target="_blank" href={node.link} rel="noreferrer">
+            {node.link && node.link.length > 45
+              ? `${node.link.substr(0, 45)}...`
+              : node.link}
+          </a>
         </div>
 
         {showGraphUsersInfo ? (
-          <GraphUsersInfo   
+          <GraphUsersInfo
             closeModal={() => this.toggleGraphUsersInfo(false)}
             graph={singleGraph}
           />
@@ -173,6 +244,10 @@ class HeaderMini extends Component {
           />
         ) : null}
 
+        {expand === '1' ? (
+          <NodeFullInfoModal node={node} />
+        ) : null}
+
       </header>
     );
   }
@@ -180,13 +255,14 @@ class HeaderMini extends Component {
 
 const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
-  commentsCount: state.commentNodes.commentCount
+  commentsCount: state.commentNodes.commentCount,
 });
 
 const mapDispatchToProps = {
   setLoading,
   getActionsCountRequest,
-  toggleNodeModal
+  toggleNodeModal,
+  getNodeHistoryRequest,
 };
 
 const Container = connect(

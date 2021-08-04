@@ -92,6 +92,7 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
+
     if (ev.target.closest('.nodes')) {
       if (ev.target.classList.contains('selectMultyNodes')) {
         params = {
@@ -107,16 +108,18 @@ class ContextMenu extends Component {
       const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
-    } else if (ev.target.tagName === 'svg' || ev.target.classList.contains('labelsBoard')) {
+    } else if (ev.target.classList.contains('nodeCreate') || ev.target.classList.contains('labelsBoard')) {
       element = 'chart';
-    } else if (ev.target.closest('.contentWrapper')) {
-      const el = ev.target.closest('.contentWrapper');
-      const fieldName = el.getAttribute('data-field-name');
-      if (fieldName) {
-        element = 'nodeFullInfo';
-        params = { fieldName };
-      }
-    } else if (ev.target.classList.contains('label')) {
+    }
+    // else if (ev.target.closest('.contentWrapper')) {
+    //   const el = ev.target.closest('.contentWrapper');
+    //   const fieldName = el.getAttribute('data-field-name');
+    //   if (fieldName) {
+    //     element = 'nodeFullInfo';
+    //     params = { fieldName };
+    //   }
+    // }
+    else if (ev.target.classList.contains('label')) {
       const id = ev.target.getAttribute('data-id');
       const label = Chart.getLabels().find((l) => l.id === id);
       params = { ...label };
@@ -192,16 +195,16 @@ class ContextMenu extends Component {
               {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
-              {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
+              {/* {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null} */}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
-               {['label', 'chart'].includes(show) ? (
-               <>
-                 <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
-                   Create node
-                 </Button>
-               </>
-               ) : null}
+              {['label', 'chart'].includes(show) ? (
+                <>
+                  <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
+                    Create node
+                  </Button>
+                </>
+              ) : null}
               {showPast ? (
                 <div className="ghButton notClose">
                   <Icon value="fa-clipboard" />
@@ -220,13 +223,13 @@ class ContextMenu extends Component {
                 </div>
               ) : null}
 
-               {['selectSquare'].includes(show) ? (
+              {['selectSquare'].includes(show) ? (
                 <>
                   <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
                     Create a folder
                   </Button>
                 </>
-               ) : null}
+              ) : null}
               {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
                 <>
                   {show === 'node' ? (!params.readOnly ? (

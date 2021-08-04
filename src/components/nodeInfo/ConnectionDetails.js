@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import Chart from '../../Chart';
 import NodeIcon from '../NodeIcon';
+import ChartUtils from '../../helpers/ChartUtils';
 
 class ConnectionDetails extends Component {
   getGroupedConnections = memoizeOne((nodeId) => {
-    const nodeLinks = Chart.getNodeLinks(nodeId, 'all');
-    const nodes = Chart.getNodes();
+    const { links, nodes } = this.props;
+
+    const nodeLinks = links.filter((d) => (d.source === nodeId || d.target === nodeId));
+
     const connectedNodes = nodeLinks.map((l) => {
       let connected;
       if (l.source === nodeId) {
@@ -26,6 +29,31 @@ class ConnectionDetails extends Component {
     const connectedNodesGroup = Object.values(_.groupBy(connectedNodes, 'linkType'));
     return _.orderBy(connectedNodesGroup, (d) => d.length, 'desc');
   })
+
+  openFolder = (e, d) => {
+    const label = this.props.labels.filter((p) => p.id === d.connected.labels[0])[0];
+
+    if (label) {
+      Chart.event.emit('folder.open', e, label);
+
+      const lbs = Chart.getLabels().map((lb) => {
+        if (lb.id === label.id) {
+          lb.open = true;
+        }
+        return lb;
+      });
+
+      Chart.render({ labels: lbs });
+
+      setTimeout(() => {
+        const nodes = Chart.getNodes();
+        const theNode = nodes.find((n) => n.id === d.connected.id);
+        if (theNode) {
+          ChartUtils.findNodeInDom(theNode);
+        }
+      }, 200);
+    }
+  }
 
   render() {
     const { nodeId, exportNode, nodeData } = this.props;
@@ -45,13 +73,22 @@ class ConnectionDetails extends Component {
       <div className="connectionDetails">
         {connectedNodes.map((nodeGroup) => (
           <div className="row" key={nodeGroup[0].linkType}>
-            <h3>{`${nodeGroup[0].linkType} (${nodeGroup.length})`}</h3>
+            <h3>
+              {' '}
+              Connections (
+              {nodeGroup.length}
+              )
+            </h3>
             <ul className="list">
               {nodeGroup.map((d) => (
                 <li className="item" key={d.connected.id}>
-                  {exportNode == undefined || exportNode === false
+                  {exportNode === undefined || exportNode === false
                     ? (
-                      <Link replace to={`?${queryString.stringify({ ...queryObj, info: d.connected.id })}`}>
+                      <Link
+                        onClick={(ev) => this.openFolder(ev, d)}
+                        replace
+                        to={`?${queryString.stringify({ ...queryObj, info: d.connected.id })}`}
+                      >
                         <div className="left">
                           <NodeIcon node={d.connected} />
                         </div>

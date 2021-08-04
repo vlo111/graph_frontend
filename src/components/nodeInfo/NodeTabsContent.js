@@ -3,6 +3,12 @@ import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import stripHtml from 'string-strip-html';
 import Api from '../../Api';
+import { ReactComponent as NoTabSvg } from '../../assets/images/icons/sad.svg';
+import { ReactComponent as AddTabSvg } from '../../assets/images/icons/plus-add-tab.svg';
+import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
+import { ReactComponent as DeleteSvg } from '../../assets/images/icons/delete.svg';
+import { ReactComponent as ExpandTabSvg } from '../../assets/images/icons/expandtab-data.svg';
+import Button from '../form/Button';
 
 class NodeTabsContent extends Component {
   static propTypes = {
@@ -30,8 +36,9 @@ class NodeTabsContent extends Component {
   })
 
   render() {
-    // const { contentType } = this.state;
-    const { name, node, customFields } = this.props;
+    const {
+      name, node, customFields, activeTab,
+    } = this.props;
     const html = customFields.find((f) => f.name === name)?.value || '';
     // this.getContentType(html);
     // const { result: text } = stripHtml(html);
@@ -48,9 +55,53 @@ class NodeTabsContent extends Component {
     //       </div>
     //   );
     // }
+
     return (
-      <div data-field-name={!node.sourceId ? name : undefined} className="contentWrapper">
-        <div className="content" dangerouslySetInnerHTML={{ __html: html || 'no content' }} />
+      <div data-field-name={!node.sourceId ? name : ''} className="contentWrapper">
+        <div className="tab-data-settings">
+          {html && (
+          <Button
+            icon={<EditSvg />}
+            title="Edit"
+            onClick={(ev) => this.props.openAddTabModal(ev, activeTab)}
+          >
+            Edit
+          </Button>
+          )}
+
+          {activeTab !== '_description'
+          && (
+          <Button
+            icon={<DeleteSvg />}
+            title="Delete"
+            onClick={(ev) => this.props.deleteCustomField(ev, activeTab)}
+          >
+            Delete
+          </Button>
+          )}
+          {html && (
+          <div className="expand">
+            <ExpandTabSvg />
+          </div>
+          )}
+        </div>
+        {html ? <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
+          : (
+            <div className="no-tabs">
+              <div className="no-tab-content">
+                <div className="header">
+                  {(activeTab === '_description') && <p className="description">Description</p>}
+                  <NoTabSvg />
+                  {activeTab !== '_description' ? <p className="no-data">You have no data yet</p>
+                    : <p className="no-data">You have no description yet</p> }
+                </div>
+                <div onClick={(ev) => this.props.openAddTabModal(ev, activeTab)} className="footer">
+                  <AddTabSvg />
+                  <p className="create-tab">Create</p>
+                </div>
+              </div>
+            </div>
+          )}
       </div>
     );
   }

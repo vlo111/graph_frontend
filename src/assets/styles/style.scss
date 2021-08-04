@@ -5,6 +5,7 @@
 @import 'menu';
 @import 'contributors';
 @import 'authorization';
+@import 'tabs';
 
 //radius
 $radiusS: 2px;
@@ -197,7 +198,7 @@ p {
   }
 
   .jodit-container {
-    border-radius: 8px;
+    border-radius: 3px;
 
     .jodit-toolbar__box {
       border-radius: 8px 8px 0 0;
@@ -219,10 +220,9 @@ p {
       overflow: visible;
 
       &[aria-pressed="true"] {
-        background-color: #ECEFF7;
 
         svg {
-          fill: #6291F7;
+          fill: $color-main;
         }
       }
 
@@ -464,7 +464,7 @@ p {
     padding: 0 8px;
     font-size: 15px;
     color: #333333;
-    border-radius: 8px;
+    border-radius: 3px;
 
     &:focus {
       outline: none;
@@ -686,7 +686,6 @@ p {
   position: absolute;
   opacity: 0;
   top: 0;
-  right: -20px;
   transition: 0.5s;
 }
 
@@ -1201,77 +1200,6 @@ p {
   }
 }
 
-#headerMini {
-  //display: flex;
-  padding: 4% 0%;
-  align-items: center;
-  height: 94px;
-
-  .navLinks {
-    display: flex;
-    margin: 0 113px;
-
-    li {
-      margin: 0 10%;
-
-      a {
-        color: $color-dark;
-        font-size: 16px;
-        font-family: chaparral-pro, serif;
-      }
-
-      .ghButton {
-        color: $color-dark;
-        background-color: transparent;
-        padding: 0;
-        margin: 0;
-        box-shadow: none;
-        font-size: 16px;
-        font-family: chaparral-pro, serif;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-
-  .searchInputWrapper {
-    max-width: 33%;
-
-  }
-
-  .close {
-    background-color: $color-white;
-    padding: 0;
-    position: absolute;
-    left: 15px;
-    z-index: 2;
-    top: 4px;
-
-    .icon {
-      color: $color-error;
-    }
-  }
-
-  .navbar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    flex: 1 0 100%;
-  }
-
-  button {
-    background-color: $color-white;
-    color: $color-dark;
-  }
-
-  .b-navbar {
-    margin: -9px 9px;
-  }
-}
-
 .searchInputWrapper {
   width: 90%;
   justify-self: left;
@@ -1556,7 +1484,7 @@ p {
     max-height: 80%;
     overflow-y: auto;
     overflow-x: hidden;
-    border-radius: 15px;
+    border-radius: 3px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -3909,100 +3837,6 @@ body .gh__menu {
   }
 }
 
-#nodeFullInfo {
-  position: fixed;
-  overflow: hidden;
-  background: $color-white;
-  width: 45%;
-  height: 94vh;
-  z-index: 5;
-  box-shadow: 0px 6px 20px #0D090526;
-  right: 0;
-  top: 69px;
-  overflow-x: auto;
-  overflow-y: auto;
-
-
-  .collaborate {
-    margin-top: 27px;
-  }
-}
-
-.nodeFullContent {
-  .loadingWrapper {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.5);
-    width: 100%;
-    height: 100%;
-    top: 0;
-    z-index: 50;
-    display: flex;
-    padding-top: 75px;
-  }
-
-  .headerBanner {
-    position: relative;
-    height: 250px;
-    min-height: 150px;
-    display: grid;
-    grid-template-columns: 35% 53%;
-    background: #f2f6fb;
-    grid-gap: 16px;
-
-    > * {
-      z-index: 2;
-    }
-
-    img {
-      height: 250px;
-      width: 100%;
-      object-fit: contain;
-      border-radius: 30px;
-    }
-     .frame {
-       margin-left: 13px;
-     }
-    .textWrapper {
-      margin-top: 15%;
-
-      .name {
-        font-size: 25px;
-        text-align: left;
-      }
-
-      .type {
-        font-weight: 600;
-        font-size: 23px;
-        color: #717EA0;
-      }
-    }
-
-    .expand {
-      color: $color-white;
-      background-color: $color-main2;
-      padding: 12px 28px;
-      border-radius: 12px;
-      text-transform: uppercase;
-      position: absolute;
-      bottom: -18px;
-      right: 10%;
-      font-size: 16px;
-      font-weight: 600;
-      text-decoration: none;
-    }
-  }
-
-
-  .description {
-    margin-top: 19px;
-    font-size: 15px;
-
-    p {
-      font-size: 15px;
-    }
-  }
-}
-
 .textEllipsis {
   p {
     font-size: inherit;
@@ -4013,80 +3847,6 @@ body .gh__menu {
     margin-left: auto;
     margin-top: 27px;
     color: $color-dark-blue;
-  }
-}
-
-.nodeTabs {
-  //padding: 19.5px 4.5%;
-
-  .previewWrapper {
-    position: relative;
-    overflow: hidden;
-    border: none;
-
-    &.mapWrapper {
-      height: 400px;
-      padding: 0;
-
-      .content {
-        padding: 0;
-      }
-    }
-
-    iframe {
-      width: 300%;
-      height: 1010px;
-      transform: scale(0.3);
-      transform-origin: 0 0;
-    }
-
-    img {
-      width: 100%;
-      height: auto;
-      max-height: 450px;
-      object-position: center center;
-      object-fit: contain;
-    }
-
-    a {
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      position: absolute;
-      font-size: 0 !important;
-    }
-  }
-
-  .contentWrapper {
-    box-shadow: 0 5px 12px #E2E7EB29;
-    border: 1px solid $color-light-gray;
-    border-radius: 13px 24px 24px 24px;
-    padding: 39px 4% 31px;
-    max-height: 380px;
-    position: relative;
-    z-index: 1;
-    background-color: $color-white;
-    display: flex;
-    margin: 0 10px;
-
-    .content {
-      overflow-x: hidden;
-      overflow-y: auto;
-      max-height: 100%;
-      padding: 0 10px;
-      width: 100%;
-
-      &::-webkit-scrollbar {
-        width: 4px;
-        height: 4px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: $color-light-gray;
-        border-radius: 3.5px;
-      }
-    }
   }
 }
 
@@ -4234,80 +3994,6 @@ body .gh__menu {
   }
 }
 
-.ghModalOverlay .nodeTabsFormModal {
-  width: 65%;
-  max-width: unset !important;
-  padding: 1.6% 2.1%;
-  min-width: 920px;
-
-  .row {
-    display: flex;
-    width: 100%;
-    margin: 0;
-
-    > * {
-      margin-right: 5%;
-      width: 47.5%;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
-
-  .buttonsWrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 7px;
-
-    .cancel {
-      font-size: 14px;
-      font-weight: 600;
-      color: $color-accent;
-      margin-right: 5px;
-      text-transform: none;
-    }
-  }
-
-  h3 {
-    font-size: 26px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .contentEditor {
-    width: 101%;
-
-    .label {
-      font-size: 12px;
-      font-weight: 600;
-    }
-  }
-
-  .ghFormField {
-    label {
-      font-size: 12px;
-      font-weight: 600;
-    }
-  }
-
-  .close {
-    padding: 0;
-    position: absolute;
-    top: 15px;
-    right: 16px;
-
-    svg {
-      width: 11px;
-      height: 10px;
-
-      path {
-        fill: $color-gray;
-      }
-    }
-  }
-}
-
 .connectionDetails {
   padding: 0 10%;
 
@@ -4353,70 +4039,6 @@ body .gh__menu {
           }
         }
       }
-    }
-  }
-}
-
-.ghModalNodeFullInfoOverlay {
-  z-index: 101 !important;
-
-  .ghModal {
-    top: 5%;
-    width: 77%;
-    height: 90%;
-    max-height: 90%;
-    max-width: 1476px;
-    padding: 0;
-  }
-
-  .ghModalContent {
-    display: flex;
-    padding: 3% 0;
-
-    > .left {
-      width: 69%;
-      padding: 0 3%;
-      border-right: 1px solid $color-light-gray;
-      overflow: auto;
-    }
-
-    > .right {
-      padding: 0 3%;
-      width: 30%;
-      overflow: auto;
-    }
-
-    .graphUser {
-      display: flex;
-      align-items: center;
-      font-weight: 600;
-      font-size: 20px;
-      margin: 0 10px 10px;
-
-      .avatar {
-        margin-right: 25px;
-      }
-
-    }
-
-    .connectionDetails {
-      padding: 0;
-
-      h3 {
-        margin-top: 0;
-      }
-    }
-
-    .headerBanner {
-      height: 250px;
-    }
-
-    .nodeDescription {
-      padding: 10px 15px;
-    }
-
-    .nodeTabs {
-      padding: 20px 0;
     }
   }
 }
@@ -6676,159 +6298,6 @@ img.preview-scaled {
       }
     }
   }
-}
-
-.nodeTabs {
-  overflow: hidden;
-  position: relative;
-
-  &:after {
-    content: "";
-    width: 30px;
-    display: flex;
-    height: 46px;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-    position: absolute;
-    right: 12px;
-    top: 30px;
-    z-index: 9999;
-  }
-}
-
-.container-tabs {
-  display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
-  margin: 30px 10px 0 10px;
-  max-width: calc(100% - 35px);
-
-
-  .sortable {
-    display: flex;
-
-    .ghButton {
-      z-index: 9999;
-    }
-  }
-
-  .grid-wrapper {
-    margin: 0 15px;
-    display: flex;
-    //flex-wrap: wrap;
-    .grid-item {
-
-      display: flex;
-      text-align: center;
-      padding-top: 10px;
-      // overflow: hidden;
-      text-overflow: ellipsis;
-      overflow-wrap: break-word;
-    }
-  }
-
-}
-
-.sortableListItem {
-  z-index: 999999 !important;
-  background-color: $color-light-gray !important;
-  color: $color-button !important;
-  opacity: 0.9;
-  min-width: 70px;
-
-  &:before,
-  &:after {
-    content: none !important;
-    opacity: 0;
-  }
-}
-
-.container-tabs button,
-.sortableListItem {
-  margin: 0 5px;
-  min-height: 46px;
-  color: $color-dark-blue;
-  scroll-snap-align: start;
-  white-space: nowrap;
-  border: 1px solid $color-light-gray;
-  box-shadow: 0px 5px 12px #0D090526;
-  background-color: $color-white;
-  border-bottom: 0;
-  font-weight: 600;
-  border-radius: 24px 24px 0 0;
-  width: 150px;
-  position: relative;
-  padding: 0;
-
-  p {
-    padding: 12px 32px;
-    width: 100%;
-    height: 100%;
-    margin-bottom: 0;
-    //pointer-events: none;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &.active {
-    color: $color-darkgreen;
-
-    background-color: $color-button;
-    z-index: 2;
-
-    &.activeNoShadow {
-      z-index: 1;
-
-      &:after,
-      &:before {
-        content: none;
-      }
-    }
-
-    &:after {
-      content: '';
-      position: absolute;
-      display: inline-block;
-      width: 100%;
-      height: 10px;
-      background-color: $color-white;
-      left: 0;
-      bottom: -4px;
-    }
-
-    &:before {
-      content: '';
-      position: absolute;
-      display: inline-block;
-      width: 114%;
-      height: 20px;
-      background-color: $color-white;
-      left: -7%;
-      bottom: -21px;
-    }
-  }
-
-  &.addTab {
-    background-color: $color-white;
-    position: relative;
-    z-index: 3;
-    color: $color-dark-blue;
-    //padding: 12px 25px;
-
-    .icon {
-      color: $color-dark-blue;
-    }
-  }
-
-  sub {
-    color: $color-dark-blue;
-    padding-left: 5px;
-  }
-}
-
-.resetButton {
-  background-color: $color-accent;
-  color: white;
-  margin-left: 0;
 }
 
 .mediaContent {
@@ -9156,5 +8625,11 @@ color: #2962ff;
 
   .ghFileInput {
     top: 25px;
+  }
+}
+
+.jodit-toolbar-button__icon {
+  svg {
+  fill: #9F9F9F;
   }
 }
