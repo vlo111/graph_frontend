@@ -27,6 +27,9 @@ class NodeFullInfo extends Component {
 
   render() {
     const { node, singleGraph } = this.props;
+
+    const { nodesPartial, linksPartial, labels } = singleGraph;
+
     if (_.isEmpty(singleGraph)) {
       return null;
     }
@@ -67,7 +70,7 @@ class NodeFullInfo extends Component {
             </div>
           </div>
           <div className="right">
-            <ConnectionDetails nodeId={node.id} />
+            <ConnectionDetails labels={labels} nodes={nodesPartial} links={linksPartial} nodeId={node.id} />
           </div>
         </div>
       </Modal>
