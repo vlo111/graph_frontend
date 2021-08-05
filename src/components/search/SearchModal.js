@@ -29,7 +29,7 @@ class SearchModal extends Component {
     this.state = {
       nodes: [],
       tabs: [],
-      search: s || "",
+      search: "",
       docs: [],
       keywords: [],
       checkBoxValues: {
