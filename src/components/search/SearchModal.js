@@ -11,6 +11,7 @@ import Utils from "../../helpers/Utils";
 import { setActiveTab, getAllTabsRequest } from "../../store/actions/graphs";
 import Chart from "../../Chart";
 import queryString from "query-string";
+import { toggleGraphMap } from '../../store/actions/app';
 import { getGraphNodesRequest } from "../../store/actions/graphs";
 
 class SearchModal extends Component {
@@ -331,8 +332,16 @@ class SearchModal extends Component {
     this.handleChange(search);
   };
 
-  findNodeInDom = (node) => {
-    this.closeModal();
+  findNodeInDom = (node, closeModal=true) => {
+    if (closeModal === 'closeMap') {
+      this.props.toggleGraphMap(false)
+    } else if (closeModal) {
+      this.closeModal();
+      
+    } else {
+      debugger
+      this.props.toggleGraphMap(true)
+    }
     const nodeInDom = Chart.getNodes().find(nd => nd.id === node.id)
     ChartUtils.findNodeInDom(nodeInDom)
   }
@@ -389,8 +398,13 @@ class SearchModal extends Component {
         </div>
         <ul className="list"> 
           {nodes.map((d) => (
-            <li className="item " key={d.index}>
+            <li 
+              className="item" 
+              key={d.index} 
+              >
               <div
+                onMouseOver={() => {this.findNodeInDom(d, false)}}
+                onMouseLeave={() => {this.findNodeInDom(d, 'closeMap')}}
                 tabIndex="0"
                 role="button"
                 className="ghButton searchItem"
@@ -434,7 +448,12 @@ class SearchModal extends Component {
 
           {Object.keys(tabs) &&
             Object.keys(tabs).map((item) => (
-              <li className="item" key={tabs[item]?.node?.id}>
+              <li 
+                className="item" 
+                key={tabs[item]?.node?.id} 
+                onMouseOver={() => {this.findNodeInDom(tabs[item].node, false)}}
+                onMouseLeave={() => {this.findNodeInDom(tabs[item].node, 'closeMap')}}
+              >
                 <div tabIndex="0" role="button" className="ghButton tabButton">
                   <div className="header" onClick={ () => this.findNodeInDom(tabs[item].node)}>
                     <NodeIcon node={tabs[item].node} />
@@ -499,7 +518,12 @@ class SearchModal extends Component {
             ))}
 
           {keywords.map((d) => (
-            <li className="item " key={d.index}>
+            <li 
+              className="item" 
+              key={d.index}
+              onMouseOver={() => {this.findNodeInDom(d, false)}}
+              onMouseLeave={() => {this.findNodeInDom(d, 'closeMap')}}
+            >
               <div
                 tabIndex="0"
                 role="button"
@@ -540,7 +564,12 @@ class SearchModal extends Component {
           ))}
 
           {docs.map((d, index) => (
-            <li className="item " key={index}>
+            <li 
+              className="item" 
+              key={index}
+              onMouseOver={() => {this.findNodeInDom(d, false)}}
+              onMouseLeave={() => {this.findNodeInDom(d, 'closeMap')}}
+            >
               <div
                 tabIndex="0"
                 role="button"
@@ -582,6 +611,7 @@ const mapDispatchToProps = {
   setActiveButton,
   getAllTabsRequest,
   getGraphNodesRequest,
+  toggleGraphMap,
 };
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(SearchModal);

@@ -6,7 +6,7 @@ import Icon from './form/Icon';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
 import { toggleGraphMap } from '../store/actions/app';
-import ReactChartMapSvg from './chart/ReactChartMapSvg';
+import ReactChartMap from './chart/ReactChartMap';
 import { ReactComponent as FullScreenSvg } from '../assets/images/icons/full-screen.svg';
 import { ReactComponent as FullScreenCloseSvg } from '../assets/images/icons/full-screen-close.svg';
 import { ReactComponent as ScaleSvg } from '../assets/images/icons/scale-to-full.svg';
@@ -130,6 +130,7 @@ class Zoom extends Component {
   toggleGraphMap = () => {
     const { showMap } = this.state;
     this.setState({ showMap: !showMap });
+    this.props.toggleGraphMap(showMap)
   }
 
   toggleFullScreen = async () => {
@@ -167,12 +168,13 @@ class Zoom extends Component {
 
   render() {
     const { showMap, zoom, fullScreen } = this.state;
+    const { showGraphMap } = this.props
     return (
       <>
-        <div className={`graphControlPanel ${showMap ? 'shoMap' : ''} ${fullScreen ? 'fullScreen' : ''}`}>
-          {showMap ? (
+        <div className={`graphControlPanel ${showGraphMap ? 'shoMap' : ''} ${fullScreen ? 'fullScreen' : ''}`}>
+          {showGraphMap ? (
             <div className="reactChartMapWrapper">
-              <ReactChartMapSvg />
+              <ReactChartMap />
             </div>
           ) : null}
           <div className="buttons">
