@@ -828,6 +828,7 @@ class Chart {
         datum.d[1][0] = +(datum.d[1][0] + (ev.dx * 2)).toFixed(2);
         datum.d[1][1] = +(datum.d[1][1] + (ev.dy * 2)).toFixed(2);
         const [width, height] = datum.d[1];
+
         dragFolder.folder.select('rect')
           .datum(datum)
           .attr('x', width / -2)
@@ -842,6 +843,14 @@ class Chart {
         dragFolder.folder.select('.closeIcon')
           .attr('x', width / 2 - 40)
           .attr('y', height / -2 + 10);
+
+        dragFolder.folder.select('.folder-name')
+          .attr('x', width / -2 + 50)
+          .attr('y', height / -2 - 30);
+
+        dragFolder.folder.select('.folderIconSmall')
+          .attr('x', width / -2 + 10)
+          .attr('y', height / -2 - 50);
 
         this.undoManager.push(this.getData());
         return;
@@ -926,6 +935,8 @@ class Chart {
       folderWrapper.selectAll(`[data-id="${d.id}"] rect`).remove();
       folderWrapper.selectAll(`[data-id="${d.id}"] .closeIcon`).remove();
       folderWrapper.selectAll(`[data-id="${d.id}"] .folderResizeIcon`).remove();
+      folderWrapper.selectAll(`[data-id="${d.id}"] .folderIconSmall`).remove();
+      folderWrapper.selectAll(`[data-id="${d.id}"] .folder-name`).remove();
       this.wrapper.select(`[href="#${d.id}"]`).attr('class', 'show');
       folderWrapper.select(`[data-id="${d.id}"]`).attr('class', 'folder folderClose');
 
@@ -962,8 +973,8 @@ class Chart {
       .attr('fill', ChartUtils.labelColors)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
-      .on('dblclick', (ev, d) => { 
-        if(this.activeButton === 'view'){
+      .on('dblclick', (ev, d) => {
+        if (this.activeButton === 'view') {
           toast.info('You are in preview mode');
           return;
         }
@@ -1095,8 +1106,8 @@ class Chart {
           .append('use')
           .attr('href', '#folderCloseIcon')
           .attr('class', 'closeIcon')
-          .attr('width', '30')
-          .attr('height', '30')
+          .attr('width', '20')
+          .attr('height', '40')
           .attr('fill', '#58595b')
           .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / 2 - 40)
           .attr('y', (f) => _.get(f, 'd[1][1]', squareSize) / -2 + 10)
@@ -1107,8 +1118,8 @@ class Chart {
           .append('use')
           .attr('href', '#folderResizeIcon')
           .attr('opacity', 0)
-          .attr('width', '40')
-          .attr('height', '40')
+          .attr('width', '150')
+          .attr('height', '150')
           .attr('class', 'folderResizeIcon')
           .attr('x', (f) => _.get(f, 'd[1][0]', squareSize) / 2 - 25)
           .attr('y', (f) => _.get(f, 'd[1][1]', squareSize) / 2 - 25);
@@ -1146,19 +1157,38 @@ class Chart {
       .append('use')
       .attr('href', '#folderCloseIcon')
       .attr('class', 'closeIcon')
-      .attr('width', '30')
-      .attr('height', '30')
+      .attr('width', '20')
+      .attr('height', '40')
       .attr('fill', '#58595b')
       .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / 2 - 40)
       .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 + 10)
       .on('click', aaaa);
 
     folderWrapper.selectAll('.folderOpen')
+      .append('use')
+      .attr('href', '#folderIcon')
+      .attr('class', 'folderIconSmall')
+      .attr('width', '30')
+      .attr('height', '30')
+      .attr('fill', '#58595b')
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 10)
+      .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 - 50);
+
+    folderWrapper.selectAll('.folderOpen')
+      .append('text').text((d) => d.name)
+      .attr('width', '20')
+      .attr('class', 'folder-name')
+      .attr('height', '40')
+      .attr('fill', '#58595b')
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 50)
+      .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 - 30);
+
+    folderWrapper.selectAll('.folderOpen')
       .filter((f) => !f.sourceId)
       .append('use')
       .attr('href', '#folderResizeIcon')
-      .attr('width', '40')
-      .attr('height', '40')
+      .attr('width', '150')
+      .attr('height', '150')
       .attr('opacity', 0)
       .attr('class', 'folderResizeIcon')
       .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / 2 - 25)
@@ -1628,7 +1658,7 @@ class Chart {
       this.svg = d3.select('#graph svg');
       this.zoom = d3.zoom()
         .on('zoom', this.handleZoom)
-        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250% 
+        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250%
       this.svg = this.svg
         .call(this.zoom)
         .on('dblclick.zoom', null)
