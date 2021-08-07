@@ -11,7 +11,7 @@ import AddComment from './AddComment';
 
 const CommentItem = ({ comment, isReply }) => {
   const userId = useSelector(getId);
-  
+
   return (
     <div className={`comment-modal__comment-item${isReply ? '--reply' : ''}`} key={`comment-${comment.id}`}>
       <Owner
@@ -21,7 +21,7 @@ const CommentItem = ({ comment, isReply }) => {
         edit={!isReply}
         remove={+userId === +comment.user.id}
       />
-    <div dangerouslySetInnerHTML={{__html: comment.text}}></div>
+    <div className="comment-content" dangerouslySetInnerHTML={{__html: comment.text}}/>
     </div>
   );
 };
@@ -30,12 +30,12 @@ const CommentItems = ({ graph, node, closeModal }) => {
   const dispatch = useDispatch();
   const graphComments = useSelector(getNodeComments);
   const parent = useSelector(getNodeCommentParent);
- 
+
   useEffect(() => {
     dispatch(getNodeCommentsRequest({ graphId: graph.id, nodeId: node.id }));
   }, []);
 
-  useEffect(() => { 
+  useEffect(() => {
     dispatch(getActionsCountRequest( { graphId: graph.id, nodeId: node.id }));
   }, []);
 

@@ -10,6 +10,8 @@
   top: 69px;
   overflow-x: auto;
   overflow-y: auto;
+  transition: all 0.6s ease-in-out 0s;
+  transform-origin: left top;
 
   .collaborate {
     margin-top: 27px;
@@ -38,6 +40,7 @@
       height: 250px;
       display: grid;
       grid-template-columns: 300px 30%;
+      margin-top: 20px;
 
       .info-data {
         display: flex;
@@ -601,36 +604,10 @@
   .buttonsWrapper {
     display: flex;
     justify-content: center;
-    margin-top: 7px;
+    margin-top: 35px;
 
     button {
       margin-right: 40px !important;
-    }
-
-    .cancel {
-      margin-right: 5px;
-      text-transform: none;
-      border: 1px solid black;
-      border-radius: 3px;
-      font-family: Roboto, sans-serif;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 20px;
-      color: #585858;
-    }
-
-    .accent {
-      width: 125px;
-      height: 46px;
-      background: #7166F8;
-      box-shadow: 0 4px 10px rgb(136 130 209 / 22%);
-      border-radius: 2px;
-      font-family: Roboto, sans-serif;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 20px;
-      line-height: 23px;
-      color: #FFFFFF;
     }
   }
 

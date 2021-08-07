@@ -4096,6 +4096,14 @@ body .gh__menu {
   width: 640px;
   max-width: 640px !important;
   padding: 30px 34px !important;
+  height: auto;
+  max-height: 93% !important;
+  top: 70px !important;
+  margin-left: 280px;
+  box-shadow: none !important;
+  border-radius: 0px !important;
+  background-color: #f4f4fa !important;
+  border-right: 1px solid #dbd9fd;
 
   .ghFormField {
     width: 410px;
@@ -4163,8 +4171,13 @@ body .gh__menu {
     &__title {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       margin-bottom: 20px;
+      width: 100%;
+
+      .node-name {
+        font-size: 24px;
+      }
 
       .close {
         margin-top: 0;
@@ -4253,13 +4266,32 @@ body .gh__menu {
       margin-top: 40px;
 
       &--reply {
-        margin-left: 61px;
+        margin-left: 0;
       }
     }
 
     &__add-comment-section--reply {
-      width: 88%;
-      padding: 10px 10px 10px 10px;
+      width: 100%;
+      padding: 10px 10px 10px 0;
+    }
+  }
+}
+
+.tabComment {
+  transition: all 0.6s ease-in-out 0s;
+  transform-origin: left top;
+  transform: scaleY(0);
+
+  .close {
+    left: 35px;
+
+    svg {
+      width: 40px !important;
+      height: 40px !important;
+
+      path {
+        fill: #707070 !important;
+      }
     }
   }
 }

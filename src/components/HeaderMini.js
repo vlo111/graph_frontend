@@ -108,9 +108,30 @@ class HeaderMini extends Component {
     this.setState({ showGraphUsersInfo });
   }
 
-  toggleNodeComment = (showNodeComment) => {
+  closeComment = (showNodeComment) => {
     this.commentCountData();
     this.setState({ showNodeComment });
+  }
+
+  toggleNodeComment = (showNodeComment) => {
+    const tableElement = document.getElementById('nodeFullInfo');
+    const closeTabElement = document.getElementsByClassName('close')[0];
+    const commentModalElement = document.getElementsByClassName('tabComment')[0];
+
+    if (showNodeComment) {
+      tableElement.style.width = '500px';
+      closeTabElement.style.display = 'none';
+
+      this.closeComment(showNodeComment);
+    } else {
+      tableElement.style.width = '45%';
+      closeTabElement.style.display = 'flex';
+      commentModalElement.style.transform = 'scaleY(0)';
+
+      setTimeout(() => {
+        this.closeComment(showNodeComment);
+      }, 500)
+    }
   }
 
   closeNodeInfoModal = () => {
@@ -137,7 +158,7 @@ class HeaderMini extends Component {
     // const nodePositionCount = getSingleNodePositionCount;
     // const nodeTabsViewCount = getSingleNodeTabsViewCount;
 
-    const { firstName, lastName } = singleGraph.users.find((u) => +u.id === +(node.createdUser));
+    // const { firstName, lastName } = singleGraph.users.find((u) => +u.id === +(node.createdUser));
     return (
       <header id="headerMini">
         <div className="header">
@@ -176,7 +197,7 @@ class HeaderMini extends Component {
                 title="Info"
                 onClick={() => this.toggleGraphUsersInfo(true)}
               >
-                Info
+                History
               </Button>
               <Button
                 icon={<CommentSvg />}
@@ -199,27 +220,27 @@ class HeaderMini extends Component {
                 : node.type}
             </h3>
           </div>
-          {/*<div className="info-data">*/}
-          {/*  <div className="text-block">*/}
-          {/*    <p>Total change acctions:</p>*/}
-          {/*    <p>Change position count:</p>*/}
-          {/*    <p>Tabs view count:</p>*/}
-          {/*    <p>Created by:</p>*/}
-          {/*  </div>*/}
-          {/*  <div className="data-block">*/}
-          {/*    /!*<p>{nodeHistory.length}</p>*!/*/}
-          {/*    <p>0</p>*/}
-          {/*    /!* <p>{ nodePositionCount }</p> *!/*/}
-          {/*    /!* <p>{ nodeTabsViewCount }</p> *!/*/}
-          {/*    <p>0</p>*/}
-          {/*    <p>0</p>*/}
-          {/*    <p>*/}
-          {/*      {firstName}*/}
-          {/*      {' '}*/}
-          {/*      {lastName}*/}
-          {/*    </p>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+          {/* <div className="info-data"> */}
+          {/*  <div className="text-block"> */}
+          {/*    <p>Total change acctions:</p> */}
+          {/*    <p>Change position count:</p> */}
+          {/*    <p>Tabs view count:</p> */}
+          {/*    <p>Created by:</p> */}
+          {/*  </div> */}
+          {/*  <div className="data-block"> */}
+          {/*    /!*<p>{nodeHistory.length}</p>*!/ */}
+          {/*    <p>0</p> */}
+          {/*    /!* <p>{ nodePositionCount }</p> *!/ */}
+          {/*    /!* <p>{ nodeTabsViewCount }</p> *!/ */}
+          {/*    <p>0</p> */}
+          {/*    <p>0</p> */}
+          {/*    <p> */}
+          {/*      {firstName} */}
+          {/*      {' '} */}
+          {/*      {lastName} */}
+          {/*    </p> */}
+          {/*  </div> */}
+          {/* </div> */}
         </div>
 
         <div className="footer-link">
@@ -240,7 +261,6 @@ class HeaderMini extends Component {
           <CommentModal
             closeModal={() => this.toggleNodeComment(false)}
             graph={singleGraph}
-
           />
         ) : null}
 

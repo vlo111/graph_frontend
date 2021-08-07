@@ -296,10 +296,10 @@ class NodeTabsFormModal extends Component {
           onChange={(value, prev) => this.handleChange('value', value, prev)}
         />
         <div className="buttonsWrapper">
-          <Button color="transparent" className="cancel" onClick={this.showSaveModal}>Cancel</Button>
-          <Button color="accent" onClick={this.save}>
+          <button className="btn-delete" onClick={this.showSaveModal}>Cancel</button>
+          <button className="btn-classic" onClick={this.save}>
             {isUpdate ? 'Save' : 'Add'}
-          </Button>
+          </button>
         </div>
         {showSaveModal && <TabSaveModal hide={this.showSaveModal} onClose={this.props.onClose} save={this.save} />}
       </Modal>
