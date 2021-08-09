@@ -23,7 +23,7 @@ const AddComment = ({
   useEffect(() => {
     const commentModalElement = document.getElementsByClassName('tabComment')[0];
 
-    commentModalElement.style.transform = 'scaleY(1)';
+    commentModalElement.style.transform = 'scaleX(1)';
   });
   return (
     <div className={isReply ? 'comment-modal__add-comment-section--reply comment--reply' : 'comment'}>

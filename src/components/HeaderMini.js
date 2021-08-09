@@ -124,13 +124,18 @@ class HeaderMini extends Component {
 
       this.closeComment(showNodeComment);
     } else {
-      tableElement.style.width = '45%';
       closeTabElement.style.display = 'flex';
-      commentModalElement.style.transform = 'scaleY(0)';
+      commentModalElement.style.transition = 'all 0.5s ease-in-out 0s';
+      commentModalElement.style.transformOrigin = 'right top';
+      commentModalElement.style.transform = 'scaleX(0)';
+
+      setTimeout(() => {
+        tableElement.style.width = '45%';
+      }, 400);
 
       setTimeout(() => {
         this.closeComment(showNodeComment);
-      }, 500)
+      }, 700);
     }
   }
 

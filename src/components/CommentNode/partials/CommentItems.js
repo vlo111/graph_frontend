@@ -4,8 +4,8 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { getNodeCommentParent, getNodeComments } from '../../../store/selectors/commentNodes';
 import { getId } from '../../../store/selectors/account';
-import { getNodeCommentsRequest } from '../../../store/actions/commentNodes';
-import { getActionsCountRequest } from '../../../store/actions/commentNodes';
+import { getNodeCommentsRequest, getActionsCountRequest } from '../../../store/actions/commentNodes';
+
 import Owner from './Owner';
 import AddComment from './AddComment';
 
@@ -21,7 +21,7 @@ const CommentItem = ({ comment, isReply }) => {
         edit={!isReply}
         remove={+userId === +comment.user.id}
       />
-    <div className="comment-content" dangerouslySetInnerHTML={{__html: comment.text}}/>
+      <div className="comment-content" dangerouslySetInnerHTML={{ __html: comment.text }} />
     </div>
   );
 };
@@ -36,7 +36,7 @@ const CommentItems = ({ graph, node, closeModal }) => {
   }, []);
 
   useEffect(() => {
-    dispatch(getActionsCountRequest( { graphId: graph.id, nodeId: node.id }));
+    dispatch(getActionsCountRequest({ graphId: graph.id, nodeId: node.id }));
   }, []);
 
   return (
