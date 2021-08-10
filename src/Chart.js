@@ -2546,7 +2546,7 @@ class Chart {
       return;
     }
     let dragActive = false;
-    this.event.on('node.dragstart', () => {
+    this.event.on('node.drag', () => {
       if (this.nodesPath) return;
       dragActive = true;
     });
