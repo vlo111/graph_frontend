@@ -3925,6 +3925,7 @@ body .gh__menu {
 
 .connectionDetails {
   padding: 0 10%;
+  margin-top: -40px;
 
   .row {
     flex-direction: column;
@@ -3940,6 +3941,9 @@ body .gh__menu {
     }
 
     .list {
+      overflow-x: hidden;
+      overflow-y: auto;
+      height: 220px;
       .item {
         margin-bottom: 30px;
 

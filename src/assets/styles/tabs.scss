@@ -8,8 +8,6 @@
   box-shadow: 0px 6px 20px #0D090526;
   right: 0;
   top: 69px;
-  overflow-x: auto;
-  overflow-y: auto;
   transition: all 0.5s ease-in-out 0s;
   transform-origin: left top;
 
@@ -204,7 +202,7 @@
 
       .contentWrapper {
         box-shadow: 0px -25px 25px -28px rgb(0 0 0 / 10%);
-        padding: 50px 4% 31px;
+        padding: 50px 4% 0;
         height: 340px;
         margin-top: -10px;
         background: white;
@@ -232,7 +230,7 @@
         .no-tabs {
           display: flex;
           justify-content: center;
-          height: 400px;
+          height: 330px;
 
           .no-tab-content {
             display: block;
@@ -244,12 +242,12 @@
                 color: $color-passive;
               }
               * {
-                margin-bottom: 35px;
+                margin-bottom: 20px;
               }
             }
 
             .footer {
-              margin-top: 70px;
+              margin-top: 30px;
               cursor: pointer;
 
               svg {
