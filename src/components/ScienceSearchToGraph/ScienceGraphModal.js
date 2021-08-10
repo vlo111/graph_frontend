@@ -289,7 +289,7 @@ class ScienceGraphModal extends Component {
         nodes,
         title.trim(),
         url,
-        'article',
+        'Article',
         articleJson,
       );
       new_nodes.push(article);
