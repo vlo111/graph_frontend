@@ -4291,6 +4291,8 @@ body .gh__menu {
   transform-origin: right top;
   transform: scaleX(0);
   z-index: 0;
+  position: absolute !important;
+  right: 500px;
 
   .close {
     left: 35px;
