@@ -350,18 +350,19 @@ class SearchModal extends Component {
     ChartUtils.findNodeInDom(nodeInDom)
   }
 
-  handleTabDrag = (ev, id) => {
+  handleTabToggle = (ev, id, tabName) => {
     const { tabsContentVisibility } = this.state
-    const idName = `content_${id.replace('.','_')}`
-    const isVisible = tabsContentVisibility[idName]
     ev.stopPropagation()
+    const idName = `content_${id.replace('.','_')}_${tabName.replaceAll(' ','_')}`
     const contentWrapper = document.getElementById(idName)
+    const isVisible = tabsContentVisibility[idName]
+
     contentWrapper.style.display = isVisible ? 'block' : 'none'
     _.set(tabsContentVisibility, idName, !isVisible)
   }
 
   render() {
-    const { nodes, tabs, search, docs, keywords, checkBoxValues, tabsContentVisibility } = this.state;
+    const { nodes, tabs, search, docs, keywords, checkBoxValues } = this.state;
     this.initTabs();
 
     return (
@@ -435,12 +436,12 @@ class SearchModal extends Component {
                         __html: this.formatHtml(d.name),
                       }}
                     />
-                    {/* <span
+                    <span
                       className="type"
                       dangerouslySetInnerHTML={{
                         __html: this.formatHtml(d.type),
                       }}
-                    /> */}
+                    />
                   </span>
 
                   {!d.name.toLowerCase().includes(search) &&
@@ -468,15 +469,8 @@ class SearchModal extends Component {
               >
                 <div tabIndex="0" role="button" className="ghButton tabButton">
                   <div className="header" onClick={ () => this.findNodeInDom(tabs[item].node)}>
-                    <div className="right">
                       <NodeIcon node={tabs[item].node} searchIcon={true}/>
-                    </div>
-                    <div className="headerArea">
                       <span className="name">{tabs[item].node.name}</span>
-                    </div>
-                    <div className="left" onClick={(ev) => {this.handleTabDrag(ev, tabs[item]?.node?.id)}}>
-                      <DownSvg/>
-                    </div>
                   </div>
                   <div className="right tabRight">
                     {Object.keys(tabs[item]).map(
@@ -486,7 +480,6 @@ class SearchModal extends Component {
                             <span className="row nodeTabs">
                               <div
                                 className="contentWrapper"
-                                id={`content_${tabs[item]?.node?.id.replace('.','_')}`}
                                 onClick={(e) =>
                                   this.openTab(
                                     e,
@@ -495,7 +488,12 @@ class SearchModal extends Component {
                                     )
                                   }
                               >
-                                <span className="nodeType"> <span className='typeText'>Type:</span> {tabs[item].node.type}</span>
+                                <div className="tabNameLine" >
+                                  <span className="nodeType"> <span className='typeText'>Type:</span> {tabs[item].node.type}</span>
+                                  <div className="toggleTabBox">
+                                    <DownSvg onClick={(ev) => {this.handleTabToggle(ev, tabs[item]?.node?.id, tabs[item][tab].tabName)}}/>
+                                  </div>
+                                </div>
                                 <span
                                   className="name"
                                   dangerouslySetInnerHTML={{
@@ -504,7 +502,10 @@ class SearchModal extends Component {
                                       ),
                                     }}
                                 />
-                                <div className="content">
+                                <div 
+                                  className="content"
+                                  id={`content_${tabs[item]?.node?.id.replace('.','_')}_${tabs[item][tab].tabName.replaceAll(' ','_')}`}
+                                >
                                   <span
                                     className="type"
                                     dangerouslySetInnerHTML={{
@@ -559,12 +560,12 @@ class SearchModal extends Component {
                         __html: this.formatHtml(d.name, 'name'),
                       }}
                     />
-                    {/* <span
+                    <span
                       className="type"
                       dangerouslySetInnerHTML={{
                         __html: this.formatHtml(d.type),
                       }}
-                    /> */}
+                    />
                   </span>
 
                   {(
@@ -600,12 +601,12 @@ class SearchModal extends Component {
                         __html: this.formatHtml(d.name),
                       }}
                     />
-                    {/* <span
+                    <span
                       className="type"
                       dangerouslySetInnerHTML={{
                         __html: this.formatHtml(d.type),
                       }}
-                    /> */}
+                    />
                   </span>
                 </div>
               </div>
