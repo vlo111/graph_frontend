@@ -53,7 +53,8 @@ class ReactChart extends Component {
     ContextMenu.event.on('node.edit', this.editNode);
 
     ContextMenu.event.on('active-button', this.setActiveButton);
-    // Chart.event.on('click', this.handleChartClick);
+    Chart.event.on('click', this.handleChartClick);
+
     ContextMenu.event.on('node.create', this.addNewNode);
 
     Chart.event.on('link.click', this.deleteLink);
@@ -64,6 +65,11 @@ class ReactChart extends Component {
 
     Chart.event.on('folder.open', this.handleFolderOpen);
     Chart.event.on('folder.close', this.handleFolderClose);
+    Chart.loading(false);
+
+    // if zoom level is auto of range given in Chart zoom scaleExtent this function will prevent default zoom
+    document.getElementsByClassName('graphWrapper')[0].addEventListener('wheel', this.handleWheel);
+    document.getElementsByClassName('graphWrapper')[0].addEventListener('mousewheel', this.handleWheel);
   }
 
   componentWillUnmount() {
@@ -74,6 +80,13 @@ class ReactChart extends Component {
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
     ContextMenu.event.removeListener('label.delete', this.handleLabelDelete);
     ContextMenu.event.removeListener('node.create', this.addNewNode);
+
+    document.getElementsByClassName('graphWrapper')[0].removeEventListener('wheel', this.handleWheel);
+    document.getElementsByClassName('graphWrapper')[0].removeEventListener('mousewheel', this.handleWheel);
+  }
+
+  handleWheel = (ev) => {
+    ev.preventDefault();
   }
 
   handleFolderOpen = async (ev, d) => {
@@ -187,16 +200,24 @@ class ReactChart extends Component {
 
   handleChartClick = (ev) => {
     const { target } = ev;
+
+    const activeMode = Chart.activeButton;
     if (!target.classList.contains('nodeCreate')
-      || Chart.activeButton !== 'create'
-      || Chart.newLink.attr('data-source')) {
+          || !(activeMode === 'create-node' || activeMode === 'create-folder')
+          || Chart.newLink.attr('data-source')) {
       return;
     }
     const { singleGraph } = this.props;
-    if (singleGraph.currentUserRole === 'edit_inside' && singleGraph.share.objectId !== target.getAttribute('data-id')) {
+    if (singleGraph.currentUserRole === 'edit_inside'
+        && singleGraph.share.objectId !== target.getAttribute('data-id')) {
       return;
     }
-    this.addNewNode(ev);
+
+    if (activeMode === 'create-node') {
+      this.addNewNode(ev);
+    } else if (activeMode === 'create-folder') {
+      ContextMenu.event.emit('folder.new', ev, {});
+    }
   }
 
   addNewNode = (ev) => {
@@ -309,7 +330,6 @@ class ReactChart extends Component {
               <FolderCloseIcon />
               <FolderResizeIcon />
               <MouseCursor />
-
             </defs>
           </g>
           <g className="mouseCursorPosition" transform-origin="top left" />

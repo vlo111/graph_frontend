@@ -20,14 +20,16 @@ const Owner = ({
             src={user && user.avatar}
             alt={`${user.firstName} ${user.lastName}`}
           />
-          <span>
-            {`${user.firstName} ${user.lastName}`}
-            <br />
+          <span className="user-info">
+            <h3 className="user-name">
+              {`${user.firstName} ${user.lastName}`}
+            </h3>
             <span className="comment-modal__comment-date">{date}</span>
           </span>
-          {edit && (
+          <div className="settings">
+            {edit && (
             <Button
-               icon={<ReplySvg style={{ height: 17 }} />}
+              icon={<ReplySvg style={{ height: 17 }} />}
               onClick={() => {
                 dispatch(setNodeCommentParent(comment));
                 setTimeout(() => {
@@ -38,10 +40,9 @@ const Owner = ({
               }}
               className="transparent reply"
               title="reply"
-            > 
-            </Button>
-          )}
-          {remove && (
+            />
+            )}
+            {remove && (
             <Button
               icon={<RemoveSvg style={{ height: 17 }} />}
               onClick={() => {
@@ -49,9 +50,9 @@ const Owner = ({
               }}
               className="transparent remove"
               title="Remove"
-            > 
-            </Button>
-          )}
+            />
+            )}
+          </div>
         </>
       )}
     </div>

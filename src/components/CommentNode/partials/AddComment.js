@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Owner from './Owner';
@@ -10,28 +10,34 @@ import { getAccount } from '../../../store/selectors/account';
 import { getNodeCommentParent } from '../../../store/selectors/commentNodes';
 import { createNodeCommentRequest, setNodeCommentParent } from '../../../store/actions/commentNodes';
 
-const AddComment = ({ graph, node, closeModal, isReply }) => {
+const AddComment = ({
+  graph, node, closeModal, isReply,
+}) => {
   const dispatch = useDispatch();
   const myAccount = useSelector(getAccount);
   const parent = useSelector(getNodeCommentParent);
   const [text, setText] = useState('');
   const handleChange = (path, value) => {
     setText(value);
-  }
+  };
+  useEffect(() => {
+    const commentModalElement = document.getElementsByClassName('tabComment')[0];
+
+    commentModalElement.style.transform = 'scaleX(1)';
+  });
   return (
     <div className={isReply ? 'comment-modal__add-comment-section--reply comment--reply' : 'comment'}>
-      <hr />
       <Editor
         id={isReply ? 'reply-comment' : 'add-comment'}
-        class='comment-modal__add-comment-input'
-        //error={errors.content}
+        class="comment-modal__add-comment-input"
+        // error={errors.content}
         limit={250}
         value={text}
         onChange={(v) => handleChange('text', v)}
       />
       <div className="comment-modal__add-comment-buttons">
         <Button
-          className=" ghButton2 comment-modal__add-comment-cancel"
+          className=" ghButton2 btn-delete"
           onClick={() => {
             if (parent.id) {
               dispatch(setNodeCommentParent({}));
@@ -44,10 +50,9 @@ const AddComment = ({ graph, node, closeModal, isReply }) => {
         </Button>
         <Button
           onClick={() => {
-            text.trim() === '' ?
-              alert('Text cannot be blank.')
-              :
-              dispatch(createNodeCommentRequest(
+            text.trim() === ''
+              ? alert('Text cannot be blank.')
+              : dispatch(createNodeCommentRequest(
                 {
                   graphId: graph.id,
                   nodeId: node.id,
@@ -57,11 +62,10 @@ const AddComment = ({ graph, node, closeModal, isReply }) => {
               ));
             setText('');
             dispatch(setNodeCommentParent({}));
-
           }}
-          className=" ghButton2 comment-modal__add-comment-button"
+          className=" ghButton2 btn-classic"
         >
-          Comment
+          Add
         </Button>
       </div>
     </div>

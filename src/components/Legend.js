@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setLegendButton } from '../store/actions/app';
-import Chart from '../Chart';
-import { ReactComponent as Arrow } from '../assets/images/arrow.svg';
 import ChartUtils from '../helpers/ChartUtils';
+import { ReactComponent as DownSvg } from '../assets/images/icons/down.svg';
+import { getSingleGraphRequest } from '../store/actions/graphs';
+import Utils from '../helpers/Utils';
 
 class Legend extends Component {
     static propTypes = {
       showLegendButton: PropTypes.string.isRequired,
       setLegendButton: PropTypes.func.isRequired,
+      getSingleGraphRequest: PropTypes.func.isRequired,
     }
 
     handleClick = () => {
@@ -17,6 +19,8 @@ class Legend extends Component {
 
       if (showLegendButton !== 'show') {
         this.props.setLegendButton('show');
+
+        this.props.getSingleGraphRequest(Utils.getGraphIdFormUrl());
       } else this.props.setLegendButton('close');
     }
 
@@ -27,11 +31,11 @@ class Legend extends Component {
     })
 
     render() {
-      const { showLegendButton } = this.props;
+      const { showLegendButton, singleGraph: { nodesPartial, linksPartial} } = this.props;
 
-      const nodes = this.orderData([...new Map(Chart.getNodes().map((node) => [node.type, node])).values()]);
+      const nodes = this.orderData([...new Map(nodesPartial?.map((node) => [node.type, node])).values()]);
 
-      const links = this.orderData([...new Map(Chart.getLinks().map((link) => [link.type, link])).values()]);
+      const links = this.orderData([...new Map(linksPartial?.map((link) => [link.type, link])).values()]);
 
       const listNodeItems = nodes.map((node) => (
         <li className="node-item">
@@ -49,11 +53,11 @@ class Legend extends Component {
 
       return (
         <div className={showLegendButton === 'close' ? 'legends' : 'legends open'}>
-          <button className="dropdown-btn" onClick={() => this.handleClick()}>
+          <button className="dropdown-btn legendButton" onClick={() => this.handleClick()}>
             Legends
-            <span className="carret">
-              <Arrow />
-            </span>
+            <div className="carretNew">
+              <DownSvg />
+            </div>
           </button>
           <div className="dropdown">
             <div className="nodes">
@@ -82,13 +86,14 @@ class Legend extends Component {
     }
 }
 
-const mapStateToProps = (state) => (
-  {
-    showLegendButton: state.app.legendButton,
-  });
+const mapStateToProps = (state) => ({
+  showLegendButton: state.app.legendButton,
+  singleGraph: state.graphs.singleGraph,
+});
 
 const mapDispatchToProps = {
   setLegendButton,
+  getSingleGraphRequest,
 };
 
 const Container = connect(

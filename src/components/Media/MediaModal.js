@@ -15,6 +15,7 @@ import { getSingleGraphRequest, getAllTabsRequest, setActiveTab } from '../../st
 import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
 import Input from '../form/Input';
+import Utils from '../../helpers/Utils';
 
 class MediaModal extends Component {
     static propTypes = {
@@ -23,25 +24,33 @@ class MediaModal extends Component {
       setActiveButton: PropTypes.func.isRequired,
       getDocumentsRequest: PropTypes.func.isRequired,
       documentSearch: PropTypes.object.isRequired,
+      singleGraph: PropTypes.object.isRequired,
       setActiveTab: PropTypes.func.isRequired,
     }
 
-  initTabs = memoizeOne(() => {
-    this.props.getAllTabsRequest(window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1));
-  })
+    initTabs = memoizeOne(() => {
+      this.props.getAllTabsRequest(window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1));
+    })
 
-  constructor() {
-    super();
-    this.state = {
-      loading: true,
-      getCheckedNodes: true,
-      getCheckedDocs: true,
-      getCheckedImages: true,
-      getCheckedVideos: true,
-      search: '',
-    };
-    this.iframes = [];
-  }
+    initDocument = memoizeOne((document) => {
+      document.map((p) => {
+        if (p.graphs?.nodes && p.graphs?.nodes.length) {
+          p.node = p.graphs.nodes.filter((n) => n.id === p.nodeId)[0];
+        }
+      });
+    })
+
+    constructor() {
+      super();
+      this.state = {
+        loading: true,
+        getCheckedNodes: true,
+        getCheckedDocs: true,
+        getCheckedImages: true,
+        getCheckedVideos: true,
+        search: '',
+      };
+    }
 
     closeModal = () => {
       this.props.setActiveButton('create');
@@ -58,13 +67,11 @@ class MediaModal extends Component {
           this.setState({ loading: false });
         }
       }
-      // this.resetGraph();
     }
 
-    resetGraph = () => {
-      const { id } = this.props.singleGraph;
-      this.props.getSingleGraphRequest(id);
-    }
+    initialGraph = memoizeOne(() => {
+      this.props.getSingleGraphRequest(this.props.singleGraph.id);
+    });
 
     filterHandleChange = (path, value) => {
       switch (path) {
@@ -74,7 +81,7 @@ class MediaModal extends Component {
           });
           break;
         }
-        case 'images': {
+        case 'image': {
           this.setState({
             getCheckedImages: value,
           });
@@ -86,7 +93,7 @@ class MediaModal extends Component {
           });
           break;
         }
-        case 'nodes': {
+        case 'icon': {
           this.setState({
             getCheckedNodes: value,
           });
@@ -106,63 +113,44 @@ class MediaModal extends Component {
     openTab = (graphId, node, tabName) => {
       ChartUtils.findNodeInDom(node);
       this.closeModal();
-
       if (tabName) {
         this.props.setActiveTab(tabName);
         this.props.history.replace(`${graphId}?info=${node.id}`);
       }
     }
 
-    render() {
-      let { documentSearch, singleGraph, graphTabs } = this.props;
+    insertDocument = (document) => {
+      const { getCheckedDocs, getCheckedImages } = this.state;
 
-      this.initTabs();
-
-      const { nodes } = singleGraph;
-
-      const {
-        getCheckedNodes, getCheckedDocs, getCheckedImages, getCheckedVideos, search,
-      } = this.state;
-
-      const graphIdParam = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
-      this.searchDocuments(graphIdParam);
-
-    // Node documents and images of tabs
-    if (documentSearch && documentSearch.length) {
-      documentSearch.map((p) => {
-        if (p.graphs?.nodes && p.graphs?.nodes.length) {
-          p.node = p.graphs.nodes.filter((n) => n.id === p.nodeId)[0];
-        }
-      });
-      documentSearch = documentSearch.filter((p) => {
-        if (p.type.includes('image') && getCheckedImages) {
-          return true;
-        } if (!p.type.includes('image') && !p.type.includes('video') && getCheckedDocs) {
+      return document.filter((p) => {
+        const type = typeof p.data === 'string' ? (Utils.isImg(p.data) ? 'image' : 'document') : 'video';
+        if (type === 'image' && getCheckedImages) {
           return true;
         }
-        return false;
+        return type !== 'image' && type !== 'video' && getCheckedDocs;
       });
     }
 
-      // Insert node icon
-      if (nodes && nodes.length) {
+    insertIcon = (document) => {
+      const { singleGraph: { nodesPartial, user } } = this.props;
+
+      if (nodesPartial && nodesPartial.length) {
+        const { getCheckedNodes } = this.state;
+
         if (!getCheckedNodes) {
-          documentSearch = documentSearch.filter((p) => !p.added);
+          document = document.filter((p) => !p.added);
         } else {
-          nodes.map((node) => {
+          nodesPartial.map((node) => {
             if (node.icon) {
-              if (!documentSearch.filter((p) => p.added === node.id).length) {
-                documentSearch.push({
+              if (!document.filter((p) => p.added === node.id).length) {
+                document.push({
                   id: node.id,
-                  user: singleGraph.user,
+                  user,
                   node,
                   data: node.icon,
-                  nodeId: node.id,
-                  nodeName: node.name,
-                  nodeType: node.type,
                   added: node.id,
                   type: 'image',
-                  graphId: graphIdParam,
+                  graphId: Utils.getGraphIdFormUrl(),
                 });
               }
             }
@@ -170,10 +158,17 @@ class MediaModal extends Component {
         }
       }
 
-      // Insert tab video
-      if (graphTabs && graphTabs.length && !_.isEmpty(singleGraph?.nodes)) {
+      return document;
+    }
+
+    insertVideo = (_document) => {
+      const { singleGraph: { nodesPartial, user }, graphTabs } = this.props;
+
+      const { getCheckedVideos } = this.state;
+
+      if (graphTabs && graphTabs.length && !_.isEmpty(nodesPartial)) {
         graphTabs.forEach((p) => {
-          const node = singleGraph.nodes.filter((g) => g.id === p.nodeId)[0];
+          const node = nodesPartial.filter((g) => g.id === p.nodeId)[0];
 
           const tabData = p.tab;
 
@@ -182,27 +177,54 @@ class MediaModal extends Component {
             mediaVideoHtml.innerHTML = tab.value;
             Array.from(mediaVideoHtml.getElementsByTagName('iframe')).forEach((el) => {
               if (getCheckedVideos) {
-                documentSearch.push({
+                _document.push({
                   id: node.id,
-                  user: singleGraph.user,
+                  user,
                   node,
                   data: el,
-                  nodeId: node.id,
-                  nodeName: node.name,
-                  nodeType: node.type,
-                  tabName: tab.name,
                   added: node.id,
                   type: 'video',
-                  graphId: graphIdParam,
+                  graphId: Utils.getGraphIdFormUrl(),
                 });
               }
             });
           });
         });
+
+        return _document;
+      }
+    }
+
+    render() {
+      let { documentSearch } = this.props;
+
+      this.initTabs();
+
+      this.initialGraph();
+
+      const {
+        getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
+      } = this.state;
+
+      const graphIdParam = Utils.getGraphIdFormUrl();
+
+      this.searchDocuments(graphIdParam);
+
+      if (documentSearch && documentSearch.length) {
+        this.initDocument(documentSearch);
+
+        // Node documents and images of tabs
+        documentSearch = this.insertDocument(documentSearch);
       }
 
+      // Insert node icon
+      documentSearch = this.insertIcon(documentSearch);
+
+      // Insert tab video
+      documentSearch = this.insertVideo(documentSearch);
+
       // Search media
-      documentSearch = documentSearch.filter((p) => p.nodeName.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+      documentSearch = documentSearch?.filter((p) => p.node.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
 
       return (
         <div className="mediaModal">
@@ -228,7 +250,7 @@ class MediaModal extends Component {
                 <Checkbox
                   label="node icon"
                   checked={getCheckedNodes}
-                  onChange={() => this.filterHandleChange('nodes', !getCheckedNodes)}
+                  onChange={() => this.filterHandleChange('icon', !getCheckedNodes)}
                   className="graphsCheckbox"
                 />
                 <Checkbox
@@ -240,7 +262,7 @@ class MediaModal extends Component {
                 <Checkbox
                   label="show images of tabs"
                   checked={getCheckedImages}
-                  onChange={() => this.filterHandleChange('images', !getCheckedImages)}
+                  onChange={() => this.filterHandleChange('image', !getCheckedImages)}
                   className="graphsCheckbox"
                 />
                 <Checkbox
@@ -271,8 +293,8 @@ class MediaModal extends Component {
                                       <span
                                         className="nodeLink"
                                         onClick={
-                                          () => this.openTab(document.graphId, document.node, document.tabName)
-                                        }
+                                              () => this.openTab(document.graphId, document.node, document.tabName)
+                                          }
                                       >
                                         <div className="left">
                                           <NodeIcon node={document.node} />
@@ -280,8 +302,8 @@ class MediaModal extends Component {
                                         <div className="right">
                                           <span title={document.node.name} className="headerName">
                                             { document.node.name && document.node.name.length > 8
-                                              ? `${document.nodeName.substr(0, 8)}... `
-                                              : document.nodeName}
+                                              ? `${document.node.name.substr(0, 8)}... `
+                                              : document.node.name}
                                           </span>
                                           <p>{moment(document.updatedAt).calendar()}</p>
                                         </div>
@@ -295,72 +317,73 @@ class MediaModal extends Component {
                                       </p>
                                     </div>
 
-                                  <div className="gallery-box-container">
-                                    <div className="gallery-box">
-                                      { document.type.includes('video')
-                                        ? (
-                                          <span
-                                            ref={(nodeElement) => {
-                                              nodeElement && nodeElement.appendChild(document.data);
-                                            }}
-                                          />
-                                        )
-                                        : (
-                                          <div>
-                                            <span className="gallery-box__img-container">
-                                              <figure className="img-container">
-                                                {document.type.includes('image') ? (
-                                                  <a target="_blank" href={document.data}>
-                                                    <img
-                                                      className="gallery-box__img"
-                                                      src={document.data}
-                                                    />
-                                                  </a>
-                                                ) : (
-                                                  <a
-                                                    className="linkDocumentDownload"
-                                                    download={document.nodeName}
-                                                    href={document.data}
-                                                    target="_blank"
-                                                  >
-                                                    <div className="docContainer">
-                                                      <div className="docFrame">
-                                                        {document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}
+                                    <div className="gallery-box-container">
+                                      <div className="gallery-box">
+                                        { typeof document.data !== 'string'
+                                          ? (
+                                            <span
+                                              ref={(nodeElement) => {
+                                                nodeElement && nodeElement.appendChild(document.data);
+                                              }}
+                                            />
+                                          )
+                                          : (
+                                            <div>
+                                              <span className="gallery-box__img-container">
+                                                <figure className="img-container">
+                                                  {Utils.isImg(document.data) ? (
+                                                    <a target="_blank" href={document.data} rel="noreferrer">
+                                                      <img
+                                                        className="gallery-box__img"
+                                                        src={document.data}
+                                                      />
+                                                    </a>
+                                                  ) : (
+                                                    <a
+                                                      className="linkDocumentDownload"
+                                                      download={document.node.name}
+                                                      href={document.data}
+                                                      target="_blank"
+                                                      rel="noreferrer"
+                                                    >
+                                                      <div className="docContainer">
+                                                        <div className="docFrame">
+                                                          {document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}
+                                                        </div>
                                                       </div>
-                                                    </div>
-                                                  </a>
-                                                )}
-                                              </figure>
-                                            </span>
-                                            <span className="gallery-box__text-wrapper">
-                                              <span title={document.description} className="gallery-box__text">
-                                                { document.added
-                                                  ? (document.nodeType)
-                                                  : (document.description && document.description.length > 38
-                                                    ? `${document.description.substr(0, 38)}... `
-                                                    : document.description)}
+                                                    </a>
+                                                  )}
+                                                </figure>
                                               </span>
-                                            </span>
-                                          </div>
-                                        )}
+                                              <span className="gallery-box__text-wrapper">
+                                                <span title={document.description} className="gallery-box__text">
+                                                  { document.added
+                                                    ? (document.node.type)
+                                                    : (document.description && document.description.length > 38
+                                                      ? `${document.description.substr(0, 38)}... `
+                                                      : document.description)}
+                                                </span>
+                                              </span>
+                                            </div>
+                                          )}
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              )
-                            ))}
-                          </div>
-                        </article>
+                                )
+                              ))}
+                            </div>
+                          </article>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ) : <h3 className="mediaNotFound">No Media Found</h3>}
-        </Modal>
-      </div>
-    );
-  }
+              ) : <h3 className="mediaNotFound">No Media Found</h3>}
+          </Modal>
+        </div>
+      );
+    }
 }
 
 const mapStateToProps = (state) => ({

@@ -15,10 +15,13 @@ import LabelUtils from '../../helpers/LabelUtils';
 import SelectSquare from './SelectSquare';
 import DeleteModalContext from './DeleteModalContext';
 import { setActiveButton } from '../../store/actions/app';
+import Api from '../../Api';
+import { KEY_CODES } from '../../data/keyCodes';
 
 class ContextMenu extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
+    singleGraphId: PropTypes.number.isRequired,
   }
 
   static event = new EventEmitter();
@@ -36,11 +39,43 @@ class ContextMenu extends Component {
 
   componentDidMount() {
     document.addEventListener('contextmenu', this.onHandleContextMenu);
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
     this.constructor.event.removeAllListeners();
     document.removeEventListener('contextmenu', this.onHandleClick);
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  /**
+   * Handle copy and past events
+   * @param {object} ev
+   */
+  handleKeyDown = async (ev) => {
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.copy_code
+    ) {
+      await this.handleCopy(ev);
+    }
+  }
+
+  /**
+   * Send copy to backend and save it in cache
+   * @param {object} ev
+   */
+  handleCopy = async (ev) => {
+    const { singleGraphId } = this.props;
+    Chart.loading(true);
+    const {
+      width, height, x, y,
+    } = Chart.squareData;
+    const { data } = await Api.dataCopy(singleGraphId, {
+      width, height, x, y,
+    });
+    localStorage.setItem('label.copy', JSON.stringify(data.data));
+
+    Chart.event.emit('window.mousedown', ev);
+    Chart.loading(false);
   }
 
   onHandleContextMenu = async (ev) => {
@@ -57,6 +92,7 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
+
     if (ev.target.closest('.nodes')) {
       if (ev.target.classList.contains('selectMultyNodes')) {
         params = {
@@ -72,16 +108,18 @@ class ContextMenu extends Component {
       const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
-    } else if (ev.target.tagName === 'svg' || ev.target.classList.contains('labelsBoard')) {
+    } else if (ev.target.classList.contains('nodeCreate') || ev.target.classList.contains('labelsBoard')) {
       element = 'chart';
-    } else if (ev.target.closest('.contentWrapper')) {
-      const el = ev.target.closest('.contentWrapper');
-      const fieldName = el.getAttribute('data-field-name');
-      if (fieldName) {
-        element = 'nodeFullInfo';
-        params = { fieldName };
-      }
-    } else if (ev.target.classList.contains('label')) {
+    }
+    // else if (ev.target.closest('.contentWrapper')) {
+    //   const el = ev.target.closest('.contentWrapper');
+    //   const fieldName = el.getAttribute('data-field-name');
+    //   if (fieldName) {
+    //     element = 'nodeFullInfo';
+    //     params = { fieldName };
+    //   }
+    // }
+    else if (ev.target.classList.contains('label')) {
       const id = ev.target.getAttribute('data-id');
       const label = Chart.getLabels().find((l) => l.id === id);
       params = { ...label };
@@ -157,7 +195,7 @@ class ContextMenu extends Component {
               {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
-              {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
+              {/* {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null} */}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
               {['label', 'chart'].includes(show) ? (
@@ -195,10 +233,10 @@ class ContextMenu extends Component {
               {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
                 <>
                   {show === 'node' ? (!params.readOnly ? (
-                      <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
-                        Delete
-                      </Button>
-                    ) : null)
+                    <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
+                      Delete
+                    </Button>
+                  ) : null)
                     : (
                       <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
                         Delete
@@ -208,20 +246,20 @@ class ContextMenu extends Component {
               ) : null}
               {['chart'].includes(show) ? (
                 <>
-                  <div className="ghButton notClose">
-                    <Icon value="fa-plus-square" />
-                    Create
-                    <Icon className="arrow" value="fa-angle-right" />
-                    <div className="contextmenu">
+                  {/* <div className="ghButton notClose"> */}
+                  {/*  <Icon value="fa-plus-square" /> */}
+                  {/*  Create */}
+                  {/*  <Icon className="arrow" value="fa-angle-right" /> */}
+                  {/*  <div className="contextmenu"> */}
 
-                      <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.new')}>
-                        Folder
-                      </Button>
-                      <Button icon="fa-tags" onClick={() => this.props.setActiveButton('create-label')}>
-                        Label
-                      </Button>
-                    </div>
-                  </div>
+                  {/*    <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.new')}> */}
+                  {/*      Folder */}
+                  {/*    </Button> */}
+                  {/*    <Button icon="fa-tags" onClick={() => this.props.setActiveButton('create-label')}> */}
+                  {/*      Label */}
+                  {/*    </Button> */}
+                  {/*  </div> */}
+                  {/* </div> */}
                   {showInMap ? (
                     <Button
                       icon="fa-globe"
@@ -262,6 +300,7 @@ class ContextMenu extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   currentUserRole: state.graphs.singleGraph.currentUserRole || '',
+  singleGraphId: state.graphs.singleGraph.id,
 });
 const mapDispatchToProps = {
   setActiveButton,

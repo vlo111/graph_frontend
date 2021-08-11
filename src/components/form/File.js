@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Input from './Input';
 import Icon from './Icon';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import SelectImg from '../../assets/images/icons/upload.png';
 
 class File extends Component {
   static propTypes = {
@@ -69,7 +70,7 @@ class File extends Component {
 
   render() {
     const {
-      id, containerId, containerClassName, onChangeFile, ...props
+      id, containerId, containerClassName, onChangeFile, linkedIn, ...props
     } = this.props;
 
     const { file, focused } = this.state;
@@ -80,23 +81,54 @@ class File extends Component {
 
     return (
       <div className={`ghFileInput ${focused ? 'focused' : ''}`}>
-        {localFile ? (
-          <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
-        ) : null}
-        <Input
-          onFocus={this.handleInputFocus}
-          onBlur={this.handleInputBlur}
-          value={fileName}
-          title={fileName}
-          disabled={localFile}
-          onChangeText={this.handleTextChange}
-        />
-        <div className="buttons">
-          <label className="fileLabel">
-            select file
-            <input {...props} id={inputId} type="file" onChange={(ev) => this.handleChange(ev)} />
-          </label>
-        </div>
+        {linkedIn ? (
+          <div>
+            {localFile ? (
+              <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
+            ) : null}
+            <Input
+              onFocus={this.handleInputFocus}
+              onBlur={this.handleInputBlur}
+              value={fileName}
+              title={fileName}
+              disabled={localFile}
+              onChangeText={this.handleTextChange}
+            />
+            <div className="buttons">
+              <label className="fileLabel">
+                select file
+                <input {...props} id={inputId} type="file" onChange={(ev) => this.handleChange(ev)} />
+              </label>
+            </div>
+
+          </div>
+        ) : (
+          <div className="import-input">
+            <Input
+              className="InputLink"
+              type="text"
+              placeholder="Select  your file"
+              onFocus={this.handleInputFocus}
+              onBlur={this.handleInputBlur}
+              value={fileName.length > 10
+                ? `${fileName.substr(0, 13)}... `
+                : fileName}
+              title={fileName}
+              disabled={localFile}
+              onChangeText={this.handleTextChange}
+            />
+            <div>
+              {localFile ? (
+                  <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
+              ) : null}
+              <label>
+                <img className="uploadImg" src={SelectImg} />
+                <span>Select</span>
+                <input {...props} id={inputId} type="file" onChange={(ev) => this.handleChange(ev)} />
+              </label>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

@@ -23,10 +23,10 @@ class NodeIcon extends Component {
   render() {
     const { error } = this.state;
     const { node } = this.props;
-    const showIcon = node.icon && !error;
+    const showIcon = node?.icon && !error;
     return (
       <span
-        className={`nodeIcon ${node.nodeType} ${showIcon ? 'hasImage' : ''}`}
+        className={`nodeIcon ${node?.nodeType} ${showIcon ? 'hasImage' : ''}`}
         style={{ background: !showIcon ? ChartUtils.nodeColor(node) : undefined }}
       >
         {showIcon ? (

@@ -24,10 +24,14 @@ api.interceptors.request.use((config) => {
 
 class Api {
   static url = REACT_APP_API_URL;
+
   static REACT_APP_ARXIV_URL = REACT_APP_ARXIV_URL;
+
   static REACT_APP_CORE_URL = REACT_APP_CORE_URL;
-  static REACT_APP_ARTICLE_URL = REACT_APP_API_URL + "/public/article.svg"
-  static REACT_APP_AUTHOR_URL = REACT_APP_API_URL + "/public/person.svg"
+
+  static REACT_APP_ARTICLE_URL = `${REACT_APP_API_URL}/public/article.svg`
+
+  static REACT_APP_AUTHOR_URL = `${REACT_APP_API_URL}/public/person.svg`
 
   static #cancelSource = [];
 
@@ -190,10 +194,6 @@ class Api {
     return api.get('/users/get-by-text', { params: { text } });
   }
 
-  static getPicturesByTag(tag) {
-    return api.get('/document/get-pictures-by-tag', { params: { tag } });
-  }
-
   static getDocumentsByTag(tag) {
     return api.get('/document/get-documents-by-tag', { params: { tag } });
   }
@@ -204,6 +204,30 @@ class Api {
 
   static copyDocumentForGraph(requestData) {
     return api.post('/document/copy-documents', requestData);
+  }
+
+  static createDocument(graphId, nodeId, tabName, fileData, file) {
+    return api.post(`/document/create-documents/${graphId}`,
+      this.toFormData({
+        nodeId,
+        tabName,
+        file,
+        fileData: JSON.stringify(fileData),
+      }));
+  }
+
+  static updateDocument(graphId, nodeId, tabName, updateFile, file) {
+    return api.post(`/document/update-documents/${graphId}`,
+      this.toFormData({
+        nodeId,
+        tabName,
+        file,
+        updateFile: JSON.stringify(updateFile),
+      }));
+  }
+
+  static documentPath(graphId, fileId) {
+    return api.get(`/document/get-documentPath/${graphId}/${fileId}`);
   }
 
   static createShareGraph(requestData) {
@@ -389,14 +413,6 @@ class Api {
     }));
   }
 
-  static uploadNodeFile(graphId, node, file, data) {
-    return api.post(`/nodes/upload/file/${graphId}`, this.toFormData({
-      node,
-      file,
-      ...data,
-    }));
-  }
-
   static deleteNodes(graphId, nodes) {
     return api.delete(`/nodes/delete/${graphId}`, {
       data: { nodes },
@@ -488,6 +504,10 @@ class Api {
 
   static getGraphHistory(graphId) {
     return api.get(`/graph-history/graph-history/${graphId}`);
+  }
+
+  static confirmEmail(token) {
+    return api.get(`/users/confirmation/${token}`);
   }
 }
 

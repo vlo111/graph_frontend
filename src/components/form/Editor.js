@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import { Jodit } from 'jodit';
 import 'jodit/build/jodit.min.css';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import ReactDOMServer from 'react-dom/server';
 import InsertMediaTabsModal from '../nodeInfo/InsertMediaTabsModal';
-import Utils from '../../helpers/Utils';
-import Api from '../../Api';
 import EditorMedia from './EditorMedia';
-import ImportLinkedinCustomField from '../import/ImportLinkedinCustomField';
 
 class Editor extends Component {
   static propTypes = {
@@ -43,6 +39,7 @@ class Editor extends Component {
       'copyformat', '|',
       'symbol',
       'fullsize',
+      'link',
     ],
   }
 
@@ -71,6 +68,9 @@ class Editor extends Component {
     options.buttonsXS = options.buttonsXS || buttons;
 
     options.controls = options.controls || {};
+
+    options.minHeight = 400;
+
     options.controls.file = {
       popup: (jodit, anchor) => {
         const popUpData = {};
@@ -97,6 +97,7 @@ class Editor extends Component {
     }
 
     this.editor.events.on('change', onChange);
+
     this.editor.value = value;
   }
 
@@ -121,12 +122,6 @@ class Editor extends Component {
     if (!file) {
       return;
     }
-    const { node } = this.props;
-
-    fileData.createDocument = true;
-    const { data = {} } = await Api.uploadNodeFile(Utils.getGraphIdFormUrl(), node, file, fileData).catch((d) => d);
-    file.preview = data.file;
-
     const mediaHtml = ReactDOMServer.renderToString(<EditorMedia file={file} fileData={fileData} />);
 
     let html;

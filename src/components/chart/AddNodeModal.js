@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
+import { Link } from 'react-router-dom';
 import { toggleNodeModal } from '../../store/actions/app';
 import Select from '../form/Select';
 import ColorPicker from '../form/ColorPicker';
@@ -22,10 +23,9 @@ import { ReactComponent as CompressScreen } from '../../assets/images/icons/comp
 import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
 import markerImg from '../../assets/images/icons/marker.svg';
 import delImg from '../../assets/images/icons/del.gif';
-import showMore from '../../assets/images/icons/showMore.gif';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
-import { Link } from 'react-router-dom';
+import NoImg from '../../assets/images/image-not-available.png';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -33,6 +33,7 @@ class AddNodeModal extends Component {
     currentUserId: PropTypes.number.isRequired,
     addNodeParams: PropTypes.object.isRequired,
     currentUserRole: PropTypes.string.isRequired,
+    graphNodes: PropTypes.array.isRequired,
   }
 
   initNodeData = memoizeOne((addNodeParams) => {
@@ -83,6 +84,7 @@ class AddNodeModal extends Component {
       nodeData: {
         keywords: [],
       },
+      imgUrl: '',
       customField: null,
       errors: {},
       index: null,
@@ -100,17 +102,16 @@ class AddNodeModal extends Component {
   saveNode = async (ev) => {
     ev.preventDefault();
     this.setState({ loading: true });
-    const { currentUserId, graphId } = this.props;
+    const { currentUserId, graphId, graphNodes } = this.props;
     const {
-      nodeData, index, nodeId, customField,
+      nodeData, index, nodeId, imgUrl,
     } = this.state;
 
     const errors = {};
     const nodes = [...Chart.getNodes()];
 
     const update = !_.isNull(index);
-
-    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update);
+    [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update, graphNodes);
     [errors.type, nodeData.type] = Validate.nodeType(nodeData.type);
     // [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
     [errors.color, nodeData.color] = Validate.nodeColor(nodeData.color, nodeData.type);
@@ -124,10 +125,15 @@ class AddNodeModal extends Component {
       }
 
       nodeData.id = nodeId || ChartUtils.uniqueId(nodes);
-      if (_.isObject(nodeData.icon) && !_.isEmpty(nodeData.icon)) {
+
+      if (imgUrl && (imgUrl !== 'error')) {
+        nodeData.icon = imgUrl;
+        this.setState({ imgUrl: '' });
+      } else if (_.isObject(nodeData.icon) && !_.isEmpty(nodeData.icon)) {
         const { data = {} } = await Api.uploadNodeIcon(graphId, nodeData.id, nodeData.icon).catch((d) => d);
         nodeData.icon = data.icon;
       }
+
       if (update) {
         const d = { ...nodes[index], ...nodeData };
         nodes[index] = d;
@@ -138,12 +144,22 @@ class AddNodeModal extends Component {
         nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
 
+        const description = {
+          name: '_description',
+          subtitle: '',
+          value: '',
+        };
+
         if (!_.isEmpty(nodeData.customFields)) {
-          this.props.updateNodesCustomFieldsRequest(graphId, [{
-            id: nodeData.id,
-            customFields: nodeData.customFields,
-          }]);
+          nodeData.customFields.push(description);
+        } else {
+          nodeData.customFields = [description];
         }
+
+        this.props.updateNodesCustomFieldsRequest(graphId, [{
+          id: nodeData.id,
+          customFields: nodeData.customFields,
+        }]);
       }
 
       Chart.render({ nodes });
@@ -157,24 +173,34 @@ class AddNodeModal extends Component {
 
   handleChange = (path, value, editIndex) => {
     const { nodeData, errors, editLocation } = this.state;
-    if (path === 'location') {
-      if (nodeData.location) {
-        if (Number.isInteger(editIndex)) {
-          nodeData.location[editLocation] = value;
-        } else {
-          nodeData.location.push(value);
+    switch (path) {
+      case 'location': {
+        if (nodeData.location) {
+          if (Number.isInteger(editIndex)) {
+            nodeData.location[editLocation] = value;
+          } else {
+            nodeData.location.push(value);
+          }
         }
+        value = !nodeData.location ? [value] : nodeData.location;
       }
-      _.set(nodeData, path, !nodeData.location ? [value] : nodeData.location);
-    } else {
-      _.set(nodeData, path, value);
+      case 'type': {
+        _.set(nodeData, path, value);
+        _.unset(errors, path);
+
+        // edit color with type
+        path = 'color';
+        value = ChartUtils.nodeColorObj[value] || '';
+      }
+      default: {
+        _.set(nodeData, path, value);
+        _.unset(errors, path);
+      }
     }
-    _.remove(errors, path);
-    if (path === 'type') {
-      _.set(nodeData, 'color', ChartUtils.nodeColorObj[value] || '');
-      _.remove(errors, 'color');
-    }
-    this.setState({ nodeData, errors, editLocation: null });
+
+    this.setState({
+      nodeData, errors, editLocation: null,
+    });
   }
 
   deleteLocation = (lIndex) => {
@@ -216,9 +242,15 @@ class AddNodeModal extends Component {
     this.setState({ expand: !expand });
   }
 
+  handleImgPreviewChange = (url) => {
+    this.setState({
+      imgUrl: url,
+    });
+  }
+
   render() {
     const {
-      nodeData, errors, index, loading, openMap, editLocation, expand,
+      nodeData, errors, index, openMap, editLocation, expand, imgUrl,
     } = this.state;
     const { addNodeParams, currentUserRole, currentUserId } = this.props;
     const { editPartial } = addNodeParams;
@@ -266,132 +298,132 @@ class AddNodeModal extends Component {
               onChangeText={(v) => this.handleChange('name', v)}
               autoComplete="off"
             />
-        {expand ? (
-             <>
-            <Select
-              label="Status"
-              portal
-              options={NODE_STATUS}
-              isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
-              value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
-              error={errors.status}
-              onChange={(v) => this.handleChange('status', v?.value || '')}
-            />
-            <Input
-              label="Set size manually"
-              value={nodeData.manually_size}
-              error={errors.manually_size}
-              min="1"
-              max="50"
-              type="number"
-              autoComplete="off"
-              onBlur={() => {
-                if (nodeData.value < 1) {
-                  nodeData.value = 1;
-                } else if (nodeData.value > 50) {
-                  nodeData.value = 50;
-                }
-                this.handleChange('value', nodeData.value);
-              }}
-              onChangeText={(v) => this.handleChange('manually_size', v)}
-            />
-            {!editPartial ? (
+            {expand ? (
               <>
                 <Select
-                  label="Icon Chape"
+                  label="Status"
                   portal
-                  options={NODE_TYPES}
-                  value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
-                  error={errors.nodeType}
-                  onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+                  options={NODE_STATUS}
+                  isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
+                  value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
+                  error={errors.status}
+                  onChange={(v) => this.handleChange('status', v?.value || '')}
                 />
-                <ColorPicker
-                  label="Color"
-                  value={nodeData.color}
-                  error={errors.color}
-                  readOnly
-                  style={{ color: nodeData.color }}
-                  onChangeText={(v) => this.handleChange('color', v)}
+                <Input
+                  label="Set size manually"
+                  value={nodeData.manually_size}
+                  error={errors.manually_size}
+                  min="1"
+                  max="50"
+                  type="number"
                   autoComplete="off"
-                  expand={expand}
+                  onBlur={() => {
+                    if (nodeData.value < 1) {
+                      nodeData.value = 1;
+                    } else if (nodeData.value > 50) {
+                      nodeData.value = 50;
+                    }
+                    this.handleChange('value', nodeData.value);
+                  }}
+                  onChangeText={(v) => this.handleChange('manually_size', v)}
                 />
+                {!editPartial ? (
+                  <>
+                    <Select
+                      label="Icon Shape"
+                      portal
+                      options={NODE_TYPES}
+                      value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
+                      error={errors.nodeType}
+                      onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+                    />
+                    <ColorPicker
+                      label="Color"
+                      value={nodeData.color}
+                      error={errors.color}
+                      readOnly
+                      style={{ color: nodeData.color }}
+                      onChangeText={(v) => this.handleChange('color', v)}
+                      autoComplete="off"
+                      expand={expand}
+                    />
 
-                <FileInput
-                  label={nodeData.nodeType === 'infography' ? 'Image' : 'Icon'}
-                  accept=".png,.jpg,.gif,.svg"
-                  value={nodeData.icon}
-                  onChangeFile={(v, file) => this.handleChange('icon', file)}
-                />
+                    <FileInput
+                      label={nodeData.nodeType === 'infography' ? 'Image' : 'Icon'}
+                      accept=".png,.jpg,.gif,.svg"
+                      value={nodeData.icon}
+                      onChangeImgPreview={(v) => this.handleImgPreviewChange(v)}
+                      onChangeFile={(v, file) => this.handleChange('icon', file)}
+                    />
 
-               <img className="img-thumbnail" src={Utils.fileSrc(nodeData.icon)} alt="" />
-                <Select
-                  label="Keywords"
-                  isCreatable
-                  isMulti
-                  value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
-                  menuIsOpen={false}
-                  placeholder="Add..."
-                  onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
+                    {imgUrl === 'error'
+                      ? <img className="img-thumbnail" src={NoImg} alt="noImage" />
+                      : (
+                        <img
+                          className="img-thumbnail"
+                          src={imgUrl || Utils.fileSrc(nodeData.icon)}
+                          alt=""
+                        />
+                      )}
+                    <Select
+                      label="Keywords"
+                      isCreatable
+                      isMulti
+                      value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
+                      menuIsOpen={false}
+                      placeholder="Add..."
+                      onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
+                    />
+                  </>
+                ) : null}
+                <div className="addLocation" onClick={this.openMap}>+ Add Location</div>
+                {openMap && (
+                <MapsLocationPicker
+                  onClose={this.toggleMap}
+                  value={editLocation != null
+                    ? nodeData.location.filter((p, index) => index === editLocation) : nodeData.location}
+                  onChange={(v, edit) => this.handleChange('location', v, edit)}
+                  edit={Number.isInteger(editLocation) ? editLocation : null}
                 />
+                )}
+                <div className="ghFormField locationExpandForm">
+                  {_.isObject(nodeData?.location) && nodeData.location.map((p, index) => (
+                    <div className="locForm">
+                      <div className="locName">
+                        <p title={p.address}>
+                          {p.address && p.address.length > (!expand ? 20 : 37)
+                            ? `${p.address.substr(0, !expand ? 20 : 37)} ...`
+                            : p.address}
+                        </p>
+                      </div>
+                      <div className="locEdit">
+                        <span title="edit" onClick={() => this.editLocation(index)}>
+                          <img
+                            src={markerImg}
+                            className="locMarker"
+                            alt="marker"
+                          />
+                        </span>
+                      </div>
+                      <div className="locDelete">
+                        <span title="delete" onClick={() => this.deleteLocation(index)}>
+                          <img
+                            src={delImg}
+                            className="locMarker"
+                            alt="marker"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  )).slice(!expand ? -2 : nodeData.location)}
+                </div>
               </>
             ) : null}
-            <div className="addLocation" onClick={this.openMap}>+ Add Location</div>
-            {openMap && (
-              <MapsLocationPicker
-                onClose={this.toggleMap}
-                value={editLocation != null
-                  ? nodeData.location.filter((p, index) => index === editLocation) : nodeData.location}
-                onChange={(v, edit) => this.handleChange('location', v, edit)}
-                edit={Number.isInteger(editLocation) ? editLocation : null}
-              />
-            )}
-            <div className="ghFormField locationExpandForm">
-              {_.isObject(nodeData?.location) && nodeData.location.map((p, index) => (
-                <div className="locForm">
-                  <div className="locName">
-                    <p title={p.address}>
-                      {p.address && p.address.length > (!expand ? 20 : 37)
-                        ? `${p.address.substr(0, !expand ? 20 : 37)} ...`
-                        : p.address}
-                    </p>
-                  </div>
-                  <div className="locEdit">
-                    <span title="edit" onClick={() => this.editLocation(index)}>
-                      <img
-                        src={markerImg}
-                        className="locMarker"
-                        alt="marker"
-                      />
-                    </span>
-                  </div>
-                  <div className="locDelete">
-                    <span title="delete" onClick={() => this.deleteLocation(index)}>
-                      <img
-                        src={delImg}
-                        className="locMarker"
-                        alt="marker"
-                      />
-                    </span>
-                  </div>
-                </div>
-              )).slice(!expand ? -2 : nodeData.location)}
-              {((nodeData.location && nodeData.location.length) > 2) && (
-                <div className="showMore" onClick={this.toggleExpand}>
-                  <img
-                    src={showMore}
-                    className="locMarker"
-                    alt="marker"
-                  />
-                </div>
-              )}
-            </div>
-           </>
-          ) : null }
-          <div className="row advanced right">
-              <Link className="" onClick={this.toggleExpand} >
-              { !expand ? `Advanced` : `Primitive` }
+            <div className="row advanced right">
+              <Link className="" onClick={this.toggleExpand}>
+                {!expand ? 'Advanced' : 'Primitive'}
               </Link>
-          </div>
+            </div>
             <div className="footerButtons">
               <div className="buttons">
                 <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
@@ -414,6 +446,7 @@ const mapStateToProps = (state) => ({
   currentUserId: state.account.myAccount.id,
   graphId: state.graphs.singleGraph.id,
   currentUserRole: state.graphs.singleGraph.currentUserRole || '',
+  graphNodes: state.graphs.singleGraph.nodesPartial,
 });
 
 const mapDispatchToProps = {

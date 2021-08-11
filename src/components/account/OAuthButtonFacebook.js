@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fbImg from '../../assets/images/icons/fb.svg';
+import fbImg from '../../assets/images/icons/fb.png';
 import { oAuthRequest } from '../../store/actions/account';
 
 const { REACT_APP_FACEBOOK_APP_ID } = process.env;

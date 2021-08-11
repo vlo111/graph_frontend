@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter, Link, Route } from 'react-router-dom';
 import Outside from '../Outside';
 import Icon from '../form/Icon';
+import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 
 class AccountDropDown extends Component {
   static propTypes = {
@@ -35,17 +36,21 @@ class AccountDropDown extends Component {
     return (
       <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
-          <img src={avatar} className="avatar" alt={name} />
-          {mini ? (
-            <Icon value="fa-chevron-down" className="down" />
-          ) : (
-            <span className="name">{name}</span>
-          )}
+          <img src={avatar} className="avatar" alt={name} />  
+          <DownSvg />
         </div>
+        
         {showDropDown ? (
           <Outside onClick={this.toggleDropDown} exclude="#accountDropDown">
             <div className="dropdown">
               <ul>
+                <li className="nameSign">
+                    {mini ? (
+                <Icon value="fa-chevron-down" className="down" />
+                 ) : (
+                <span className="name">{name}</span>
+                )}
+                </li>
                 <li className="item">
                    <Link to={`/profile/${id}`}>Account</Link>
                 </li>

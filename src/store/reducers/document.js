@@ -1,5 +1,5 @@
 import {
-  GET_PICTURES_BY_TAG, GET_DOCUMENTS_BY_TAG, GET_DOCUMENTS,
+  GET_DOCUMENTS_BY_TAG, GET_DOCUMENTS,
 } from '../actions/document';
 
 const initialState = {
@@ -9,20 +9,6 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case GET_PICTURES_BY_TAG.REQUEST:
-    case GET_PICTURES_BY_TAG.FAIL: {
-      return {
-        ...state,
-        pictureSearch: [],
-      };
-    }
-    case GET_PICTURES_BY_TAG.SUCCESS: {
-      const { pictures } = action.payload.data;
-      return {
-        ...state,
-        pictureSearch: pictures,
-      };
-    }
     case GET_DOCUMENTS_BY_TAG.REQUEST:
     case GET_DOCUMENTS_BY_TAG.FAIL: {
       return {

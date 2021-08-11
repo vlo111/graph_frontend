@@ -6,7 +6,7 @@ import memoizeOne from 'memoize-one';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import NoGraph from '../components/NoGraph';
-import GraphListItem from '../components/GraphListItem';
+import GraphListItem from '../components/graphData/GraphListItem';
 import { getShareGraphListRequest } from '../store/actions/share';
 import Pagination from "../components/Pagination";
 

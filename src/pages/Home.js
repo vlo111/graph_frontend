@@ -8,10 +8,10 @@ import moment from 'moment';
 import { withRouter, Link } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
 import Pagination from '../components/Pagination';
-import GraphListFooter from '../components/GraphListFooter';
-import GraphListHeader from '../components/GraphListHeader';
+import GraphListFooter from '../components/graphData/GraphListFooter';
+import GraphListHeader from '../components/graphData/GraphListHeader';
 import NoGraph from '../components/NoGraph';
-import GraphListItem from "../components/GraphListItem";
+import GraphListItem from "../components/graphData/GraphListItem";
 
 class Home extends Component {
   static propTypes = {

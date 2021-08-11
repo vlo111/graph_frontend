@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Icon from './form/Icon';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
@@ -19,6 +20,10 @@ class Zoom extends Component {
       zoom: 100,
       fullScreen: false,
     };
+  }
+
+  static propTypes = {
+    activeButton: PropTypes.string.isRequired,
   }
 
   componentDidMount() {
@@ -44,17 +49,22 @@ class Zoom extends Component {
     if (width && Chart.svg) {
       Chart.event.removeListener('render', this.autoScale);
 
-      const LEFT_PADDING = 201;
-      const RIGHT_PADDING = 75;
+      const mode = this.props.activeButton;
+
+      const LEFT_PADDING = mode === 'view' ? 0 : 201;
+      const TOP_PADDING = mode === 'view' ? 5 : 75;
+
+      const graphHeight = document.querySelector('#graph svg')
+        .getBoundingClientRect().height;
 
       const scaleW = (window.innerWidth - LEFT_PADDING) / width;
-      const scaleH = (window.innerHeight - RIGHT_PADDING) / height;
+      const scaleH = (graphHeight - TOP_PADDING) / height;
       const scale = Math.min(scaleW, scaleH, 1);
       let left = min[0] * scale * -1 + LEFT_PADDING;
-      let top = min[1] * scale * -1 + RIGHT_PADDING;
+      let top = min[1] * scale * -1 + TOP_PADDING;
 
       left += ((window.innerWidth - LEFT_PADDING) - (scale * width)) / 2;
-      top += ((window.innerHeight - RIGHT_PADDING) - (scale * height)) / 2;
+      top += ((graphHeight - TOP_PADDING) - (scale * height)) / 2;
       Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(scale));
     }
   }
@@ -83,8 +93,9 @@ class Zoom extends Component {
     let scale = +Chart.wrapper.attr('data-scale') || 1;
     let x = +Chart.wrapper.attr('data-x') || 0;
     let y = +Chart.wrapper.attr('data-y') || 0;
-
-    if (scale > 0.9) {
+    if (scale >= 2.4) {
+      scale = 2.5
+    } else if (scale > 0.9) {
       scale += 0.1;
       x -= 100 * scale;
       y -= 100 * scale;
@@ -100,7 +111,7 @@ class Zoom extends Component {
     let scale = +Chart.wrapper.attr('data-scale') || 1;
     let x = +Chart.wrapper.attr('data-x') || 0;
     let y = +Chart.wrapper.attr('data-y') || 0;
-    if (scale < 0.02) {
+    if (scale < 0.04) {
       return;
     }
     if (scale < 0.2) {
@@ -187,6 +198,7 @@ class Zoom extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  activeButton: state.app.activeButton,
   showGraphMap: state.app.showGraphMap,
   singleGraph: state.graphs.singleGraph,
 });

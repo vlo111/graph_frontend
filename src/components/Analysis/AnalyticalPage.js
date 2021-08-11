@@ -44,6 +44,14 @@ class AnalyticalPage extends Component {
 
   componentDidMount() {
     Chart.event.on('node.click', this.handleNodeClick);
+
+    const graphElement = document.getElementById('graph');
+
+    if (graphElement) {
+      graphElement.style.height = '620px';
+
+      graphElement.querySelector('svg').style.height = '620px';
+    }
   }
 
   closeLocalHandle = () => {
@@ -73,7 +81,7 @@ class AnalyticalPage extends Component {
 
     const clusterCoefficient = AnalysisUtils.getGlobalCluster(nodes, links);
 
-   // const closenessCentrality = AnalysisUtils.getClosenessCentrality(nodes, links);
+    // const closenessCentrality = AnalysisUtils.getClosenessCentrality(nodes, links);
 
     return (
       <Outside exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
@@ -111,9 +119,9 @@ class AnalyticalPage extends Component {
                 </strong>
                 <div className="componentsData" style={{ marginLeft: '25px', marginTop: '10px' }}>
                   {components.map((component, index) => (
-                      <h3>
-                        {`${index + 1}: Nodes(${component.length})`}
-                      </h3>
+                    <h3>
+                      {`${index + 1}: Nodes(${component.length})`}
+                    </h3>
                   ))}
                 </div>
               </div>

@@ -2,6 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import Bowser from 'bowser';
 import memoizeOne from 'memoize-one';
+import { uuid } from 'uuidv4';
 import Api from '../Api';
 
 const browser = Bowser.getParser(window.navigator.userAgent);
@@ -20,6 +21,36 @@ class Utils {
     } catch (e) {
       return null;
     }
+  }
+
+  /**
+   * Check Image url exist
+   * @param url
+   * @param callback
+   * @param timeout
+   */
+  static checkImageUrl = (url, callback, timeout) => {
+    timeout = timeout || 5000;
+    let timedOut = false; let
+      timer;
+    const img = new Image();
+    img.onerror = img.onabort = function () {
+      if (!timedOut) {
+        clearTimeout(timer);
+        callback(url, 'error');
+      }
+    };
+    img.onload = function () {
+      if (!timedOut) {
+        clearTimeout(timer);
+        callback(url, 'success');
+      }
+    };
+    img.src = url;
+    timer = setTimeout(() => {
+      timedOut = true;
+      callback(url, 'timeout');
+    }, timeout);
   }
 
   static fileToString = (file) => new Promise((resolve) => {
@@ -58,6 +89,7 @@ class Utils {
     if (/^https?:\/\//.test(src) || src.toString().includes('base64,') || src.toString().startsWith('blob:')) {
       return src;
     }
+    if (!src) return;
 
     return `${Api.url}${src}`;
   }
@@ -299,6 +331,35 @@ class Utils {
     arrayMoveMutate(array, from, to);
     return array;
   }
+
+    /**
+     * Generate id uuidv4 version 4
+     * @returns {string} // uniq id
+     */
+    static generateUUID = () => uuid()
+
+    /**
+     * Tab editor element
+     * @param customField
+     * @returns {{documentElement: NodeListOf<Element>}}
+     */
+    static tabHtmlFile = (customField) => {
+      const tempDiv = document.createElement('div');
+
+      tempDiv.innerHTML = customField.trim();
+
+      const documentElement = tempDiv.querySelectorAll('.document');
+
+      return { documentElement };
+    }
+
+  /**
+   * check img on path
+   * @param link
+   * @returns {boolean}
+   */
+  static isImg = (link) => !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg', 'jfif']
+    .filter((v) => link.includes(v)))
 }
 
 export default Utils;

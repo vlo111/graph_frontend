@@ -8,11 +8,10 @@ import ReactDOMServer from 'react-dom/server';
 import MapsSearch from './MapsSearch';
 import markerImg from '../../assets/images/icons/marker.svg';
 import ChartUtils from '../../helpers/ChartUtils';
-import { toggleNodeModal } from '../../store/actions/app';
+import {setActiveButton, toggleNodeModal} from '../../store/actions/app';
 import Utils from '../../helpers/Utils';
 import Loading from '../Loading';
 import withGoogleMap from '../../helpers/withGoogleMap';
-import CustomFields from '../../helpers/CustomFields';
 import MapsContactCustomField from './MapsContactCustomField';
 import MapsStyle from './MapsStyle';
 
@@ -20,7 +19,6 @@ class MapsModal extends Component {
   static propTypes = {
     google: PropTypes.object.isRequired,
     customFields: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
   }
 
@@ -101,7 +99,7 @@ class MapsModal extends Component {
     const { x, y } = ChartUtils.calcScaledPosition(clientX, clientY);
 
     this.setState({ markerDrag: false });
-    this.props.onClose();
+    this.close();
 
     if (!selected.name) {
       selected = await this.getPlaceInformation(selected.location);
@@ -157,6 +155,10 @@ class MapsModal extends Component {
     this.setState({ selected });
   }
 
+  close = () => {
+    this.props.setActiveButton('create');
+  }
+
   render() {
     const {
       selected, markerDrag, virtualMarkerPos, initialCenter,
@@ -168,7 +170,7 @@ class MapsModal extends Component {
           isOpen
           className="ghModal ghMapsModal"
           overlayClassName={`ghModalOverlay ghMapsModalOverlay ${markerDrag ? 'hidden' : ''}`}
-          onRequestClose={this.props.onClose}
+          onRequestClose={this.close}
         >
           {!_.isNull(initialCenter) ? (
             <Map
@@ -219,6 +221,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   toggleNodeModal,
+  setActiveButton,
 };
 
 const Container = connect(
