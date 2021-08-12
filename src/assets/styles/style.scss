@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=K2D:500&subset=latin-ext');
 @import 'colors';
+@import '_variables';
 @import 'media';
 @import 'menu';
 @import 'contributors';
@@ -1810,7 +1811,6 @@ p {
       font: normal normal 600 14px/17px Open Sans;
     }
   }
-
   .ghModalSave {
     overflow-x: hidden;
     overflow-y: auto;
@@ -1930,7 +1930,7 @@ p {
       border-radius: 10px;
       margin-top: 45px;
     }
-    .graphinputName{
+    .graphInputName{
       border:none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
@@ -3665,6 +3665,11 @@ body .gh__menu {
   }
 }
 
+.searchIcon {
+  height: 35px;
+  width: 35px;
+  min-width: 35px;
+}
 .ghModalFind {
   width: 55% !important;
 
@@ -3721,7 +3726,7 @@ body .gh__menu {
 }
 
 .ghModalSearch {
-  width: 50%;
+  width: 60%;
   min-height: 15%;
   max-width: 90% !important;
   display: flex;
@@ -3746,32 +3751,54 @@ body .gh__menu {
       cursor: unset;
 
       .right {
-        margin: 20px 10px;
         flex-direction: unset !important;
         display: grid !important;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
         width: 97% !important;
 
         .contentTabs {
           width: 100%;
-          padding: 10px 20px;
 
           .contentWrapper {
             display: block;
-            width: 100%;
             max-height: 300px;
+            padding-top: 1em;
+            margin-bottom: 1em;
+            overflow: scroll;
+            box-shadow: 0px 4px 11px rgb(0 0 0 / 25%);
+            border-radius: 3px;
+            background: #FFFFFF;
+            margin: 11px 9px 11px;
+
+
+            .tabNameLine {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-between;
+              padding-right: 5px;
+
+              .nodeType {
+                margin: 0 21px;
+                
+                .typeText {
+                  color: $color-border;
+                  font-weight: 800;
+                }
+              }
+              .toggleTabBox {
+                padding: 0 5px;
+              }
+            }
 
             .content {
               max-height: 80%;
             }
 
             .name {
-              text-align: center;
-              margin: 0 auto;
               display: block;
-              font-size: 20px;
               font-weight: 600;
-              margin-bottom: 15px;
+              margin: 1em 0 .5em 0;
+              padding-left: 21px
             }
 
             .type, .name {
@@ -3794,7 +3821,9 @@ body .gh__menu {
               b {
                 font-weight: bold;
                 color: white;
-                background-color: $color-accent;
+                background-color: $color-marked;
+                padding: 0 5px;
+                border-radius: 2px;
               }
 
               .scaled {
@@ -3807,7 +3836,6 @@ body .gh__menu {
             }
 
             &:hover {
-              box-shadow: 0px 0px 15px 18px #0043da1c;
               cursor: pointer;
             }
           }
@@ -3822,44 +3850,65 @@ body .gh__menu {
 
     .header {
       cursor: pointer;
-      border: 1px solid #007bff99;
-      border-style: dashed;
-      border-width: medium;
-      margin: 20px 30px 10px;
       align-items: center;
       display: flex !important;
       flex-direction: unset !important;
 
       .nodeIcon {
-        border-radius: 5px;
-        width: 100px;
-        height: 100px;
-
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
         img {
-          width: 100px;
-          height: 100px;
+          width: 35px;
+          height: 35px;
         }
       }
 
+
       .headerArea {
         margin-left: 18px;
+        display: flex;
       }
 
       .name {
         font: normal normal 600 16px/22px Open Sans;
         letter-spacing: 0;
-        font-size: 1.5625rem !important;
         font-weight: 400;
       }
 
       .type {
         display: block;
+        margin-left: 1em;
       }
     }
   }
 
 }
-
+@media screen and (max-width: 1200px) {
+  .ghModalSearch {
+    width: 50%;
+  }
+  .searchNodes {
+    right: -11% !important;
+}
+}
+@media screen and (max-width: 900px) {
+  .ghModalSearch {
+    width: 40%;
+  }
+  .searchNodes {
+    right: -11% !important;
+    .searchField .searchBox .searchBoxInside .nodeSearch {
+      padding-left: 0;
+      min-width: 1px;
+    }
+  }
+}
+@media screen and (max-width: 600px) {
+  .ghModalSearch {
+    width: 70%;
+  }
+}
 .searchInputWrapper,
 .ghModalSearch {
   .list {
@@ -3867,16 +3916,23 @@ body .gh__menu {
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    .nodeItem {
+      height: 44px;
+    }
     .item {
       display: flex;
-      padding: 10px;
-      width: 100%;
+      margin: .8em 0;
+      width: 91%;
+      align-items: center;
 
       .ghButton {
         width: 100%;
         margin: 0;
-        padding: 10px 5px;
+        padding: 5px 5px;
         display: flex;
         align-items: center;
         background-color: transparent;
@@ -3886,7 +3942,7 @@ body .gh__menu {
         .right {
           display: flex;
           flex-direction: column;
-          margin-left: 10px;
+          margin-left: .5em;
           width: calc(100% - 60px);
 
           .row {
@@ -3914,12 +3970,16 @@ body .gh__menu {
           }
         }
 
+        .tabRight {
+          margin-left: 0;
+        }
 
         .name {
           font-size: 15px;
           max-width: 80%;
           white-space: nowrap;
           text-overflow: ellipsis;
+          margin-left: 1em;
         }
 
         .type {
@@ -4325,22 +4385,17 @@ body .gh__menu {
   }
 
   .contentWrapper {
-    box-shadow: 0 5px 12px #E2E7EB29;
-    border: 1px solid $color-light-gray;
-    border-radius: 13px 24px 24px 24px;
-    padding: 39px 4% 31px;
     max-height: 380px;
     position: relative;
     z-index: 1;
     background-color: $color-white;
     display: flex;
-    margin: 0 10px;
 
     .content {
       overflow-x: hidden;
       overflow-y: auto;
       max-height: 100%;
-      padding: 0 10px;
+      padding-left: 21px;
       width: 100%;
 
       &::-webkit-scrollbar {
@@ -5349,6 +5404,7 @@ body .gh__menu {
   position: relative;
   overflow: hidden;
   display: flex;
+  justify-content: center;
 
   input {
     display: none;
@@ -5368,10 +5424,10 @@ body .gh__menu {
     .selectImage {
       opacity: 1;
       
+    }
       .delete {
         opacity: 1;
       }
-    }
   }
 
 
@@ -5409,8 +5465,10 @@ body .gh__menu {
       display: flex;
       align-items: flex-start;
     }
+  }
     .delete {
       position: absolute;
+      bottom: 3px;
       width: 15px;
       height: 15px;
       bottom: 10px;
@@ -5420,8 +5478,8 @@ body .gh__menu {
       cursor: pointer;
       opacity: 0;
       transition: all 500ms;
+      cursor: pointer;
     }
-  }
 }
 .avatarUploader {
   border-radius: 50%;
@@ -6590,7 +6648,7 @@ img.preview-scaled {
 
         .nodeIcon {
           margin: auto 10px auto;
-          margin-left: 0;
+          margin-left: 23px;
           min-width: 60px;
           height: 60px;
         }
@@ -6968,18 +7026,8 @@ img.preview-scaled {
 .nodeTabs {
   overflow: hidden;
   position: relative;
+  display: block !important;
 
-  &:after {
-    content: "";
-    width: 30px;
-    display: flex;
-    height: 46px;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-    position: absolute;
-    right: 12px;
-    top: 30px;
-    z-index: 9999;
-  }
 }
 
 .container-tabs {
@@ -7909,7 +7957,7 @@ img.preview-scaled {
 
 .graphControlPanel {
   position: fixed;
-  z-index: 4;
+  z-index: 103;
   bottom: 15px;
   right: 15px;
   background: #ffffff;
@@ -8592,6 +8640,8 @@ color: #2962ff;
 // Search modal inside graph
 .searchNodes {
   min-height: 45%;
+  min-width: 62%;
+  right: 3%;
 
   .searchField {
     display: flex;
@@ -8614,7 +8664,7 @@ color: #2962ff;
         border: 1px solid #7166F8;
         border-radius: 5px;
         display: flex;
-        width: 87%;
+        width: 90%;
 
         .searchFieldCheckBox  {
           justify-content: center;

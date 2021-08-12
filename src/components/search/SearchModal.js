@@ -11,7 +11,9 @@ import Utils from "../../helpers/Utils";
 import { setActiveTab, getAllTabsRequest } from "../../store/actions/graphs";
 import Chart from "../../Chart";
 import queryString from "query-string";
+import { toggleGraphMap } from '../../store/actions/app';
 import { getGraphNodesRequest } from "../../store/actions/graphs";
+import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 
 class SearchModal extends Component {
   static propTypes = {
@@ -29,7 +31,7 @@ class SearchModal extends Component {
     this.state = {
       nodes: [],
       tabs: [],
-      search: s || "",
+      search: "",
       docs: [],
       keywords: [],
       checkBoxValues: {
@@ -38,6 +40,7 @@ class SearchModal extends Component {
         tag: true,
         keyword: true,
       },
+      tabsContentVisibility: {},
       checkBoxAll: true
     };
   }
@@ -48,12 +51,12 @@ class SearchModal extends Component {
   });
 
   closeModal = () => {
+    this.props.toggleGraphMap(false)
     this.props.setActiveButton("create");
   };
 
   /**
    * If search query have more then one symbol search it in back end
-   *
    * @param {string} search
    * @returns
    */
@@ -69,7 +72,6 @@ class SearchModal extends Component {
 
   /**
    * Send search string to back end
-   *
    * @returns
    */
   searchResults = async (search) => {
@@ -87,7 +89,6 @@ class SearchModal extends Component {
 
   /**
    * Search query in nodes, media tags, and node tabs and display result as a list
-   *
    * @param {string} search
    */
   displaySearchResultList = async (search) => {
@@ -122,7 +123,10 @@ class SearchModal extends Component {
       if (foundNodes?.tabs?.length > 0) {
         const tabsList = foundNodes.tabs;
         if (tabsList.length > 0) {
+          const tabsContentVisibility = {}
           tabsList.map((node) => {
+            // set all tabs content visibility false
+            tabsContentVisibility[`content_${node.id.replace('.','_')}`] = false
             if (node.customFields?.length) {
               node.customFields.map((tab) => {
                 if (tab.value === undefined) {
@@ -165,13 +169,12 @@ class SearchModal extends Component {
         tabArray = groupBy(tabs, "nodeId") ?? [];
       }
     } catch (e) {}
-    
-    this.setState({ nodes, search, tabs: tabArray, docs, keywords });
+    this.setState({ nodes, tabs: tabArray, docs, keywords });
+    this.props.toggleGraphMap(true)
   };
 
   /**
-   * find search string in text and make it bold
-   *
+   * Find search string in text and make it bold
    * @param {string} text
    * @returns
    */
@@ -184,7 +187,6 @@ class SearchModal extends Component {
 
   /**
    * Toggle folder and bring nodes inside it
-   *
    * @param {object} e
    * @param {object} label
    * @param {object} node
@@ -217,7 +219,6 @@ class SearchModal extends Component {
 
   /**
    * Open node which contains searched tags if it's inside folder call openFolder
-   *
    * @param {object} e
    * @param {object} tagNode
    */
@@ -246,7 +247,6 @@ class SearchModal extends Component {
 
   /**
    * Open chosen node if it's inside folder call openFolder
-   *
    * @param {object} e
    * @param {object} node
    */
@@ -300,7 +300,6 @@ class SearchModal extends Component {
 
   /**
    * Filter user search by name, tab, tag, keywords
-   *
    * @param {object} e
    */
   handleCheckBoxChange = (e) => {
@@ -340,10 +339,26 @@ class SearchModal extends Component {
     this.handleChange(search);
   };
 
-  findNodeInDom = (node) => {
-    this.closeModal();
+  findNodeInDom = (node, closeModal=true) => {
+    if (closeModal === 'closeMap') {
+    } else if (closeModal) {
+      this.closeModal();
+    } else {
+      this.props.toggleGraphMap(true)
+    }
     const nodeInDom = Chart.getNodes().find(nd => nd.id === node.id)
     ChartUtils.findNodeInDom(nodeInDom)
+  }
+
+  handleTabToggle = (ev, id, tabName) => {
+    const { tabsContentVisibility } = this.state
+    ev.stopPropagation()
+    const idName = `content_${id.replace('.','_')}_${tabName.replaceAll(' ','_')}`
+    const contentWrapper = document.getElementById(idName)
+    const isVisible = tabsContentVisibility[idName]
+
+    contentWrapper.style.display = isVisible ? 'block' : 'none'
+    _.set(tabsContentVisibility, idName, !isVisible)
   }
 
   render() {
@@ -398,15 +413,19 @@ class SearchModal extends Component {
         </div>
         <ul className="list"> 
           {nodes.map((d) => (
-            <li className="item " key={d.index}>
+            <li 
+              className="item nodeItem" 
+              key={d.index} 
+              >
               <div
+                onMouseOver={() => {this.findNodeInDom(d, false)}}
                 tabIndex="0"
                 role="button"
                 className="ghButton searchItem"
                 onClick={(e) => this.openNode(e, d)}
               >
                 <div className="left">
-                  <NodeIcon node={d} />
+                  <NodeIcon node={d} searchIcon={true}/>
                 </div>
                 <div className="right">
                   <span className="row">
@@ -443,20 +462,21 @@ class SearchModal extends Component {
 
           {Object.keys(tabs) &&
             Object.keys(tabs).map((item) => (
-              <li className="item" key={tabs[item]?.node?.id}>
+              <li
+                className="item" 
+                key={tabs[item]?.node?.id} 
+                onMouseOver={() => {this.findNodeInDom(tabs[item].node, false)}}
+              >
                 <div tabIndex="0" role="button" className="ghButton tabButton">
                   <div className="header" onClick={ () => this.findNodeInDom(tabs[item].node)}>
-                    <NodeIcon node={tabs[item].node} />
-                    <div className="headerArea">
+                      <NodeIcon node={tabs[item].node} searchIcon={true}/>
                       <span className="name">{tabs[item].node.name}</span>
-                      <span className="type">{tabs[item].node.type}</span>
-                    </div>
                   </div>
-                  <div className="right">
+                  <div className="right tabRight">
                     {Object.keys(tabs[item]).map(
                       (tab) =>
-                        tabs[item][tab].nodeId && (
-                          <div className="contentTabs">
+                      tabs[item][tab].nodeId && (
+                        <div className="contentTabs">
                             <span className="row nodeTabs">
                               <div
                                 className="contentWrapper"
@@ -465,18 +485,27 @@ class SearchModal extends Component {
                                     e,
                                     tabs[item].node,
                                     tabs[item][tab].tabName
-                                  )
-                                }
+                                    )
+                                  }
                               >
+                                <div className="tabNameLine" >
+                                  <span className="nodeType"> <span className='typeText'>Type:</span> {tabs[item].node.type}</span>
+                                  <div className="toggleTabBox">
+                                    <DownSvg onClick={(ev) => {this.handleTabToggle(ev, tabs[item]?.node?.id, tabs[item][tab].tabName)}}/>
+                                  </div>
+                                </div>
                                 <span
                                   className="name"
                                   dangerouslySetInnerHTML={{
                                     __html: this.formatHtml(
                                       tabs[item][tab].tabName
-                                    ),
-                                  }}
+                                      ),
+                                    }}
                                 />
-                                <div className="content">
+                                <div 
+                                  className="content"
+                                  id={`content_${tabs[item]?.node?.id.replace('.','_')}_${tabs[item][tab].tabName.replaceAll(' ','_')}`}
+                                >
                                   <span
                                     className="type"
                                     dangerouslySetInnerHTML={{
@@ -508,7 +537,11 @@ class SearchModal extends Component {
             ))}
 
           {keywords.map((d) => (
-            <li className="item " key={d.index}>
+            <li 
+              className="item" 
+              key={d.index}
+              onMouseOver={() => {this.findNodeInDom(d, false)}}
+            >
               <div
                 tabIndex="0"
                 role="button"
@@ -516,7 +549,7 @@ class SearchModal extends Component {
                 onClick={(e) => this.openNode(e, d)}
               >
                 <div className="left">
-                  <NodeIcon node={d}/>
+                  <NodeIcon node={d} searchIcon={true}/>
                 </div>
                 <div className="right">
                   <span className="row">
@@ -549,7 +582,11 @@ class SearchModal extends Component {
           ))}
 
           {docs.map((d, index) => (
-            <li className="item " key={index}>
+            <li 
+              className="item" 
+              key={index}
+              onMouseOver={() => {this.findNodeInDom(d, false)}}
+            >
               <div
                 tabIndex="0"
                 role="button"
@@ -591,6 +628,7 @@ const mapDispatchToProps = {
   setActiveButton,
   getAllTabsRequest,
   getGraphNodesRequest,
+  toggleGraphMap,
 };
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(SearchModal);
