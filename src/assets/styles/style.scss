@@ -2,7 +2,6 @@
 @import url('https://fonts.googleapis.com/css?family=K2D:500&subset=latin-ext');
 @import 'colors';
 @import '_variables';
-@import 'media';
 @import 'menu';
 @import 'contributors';
 
@@ -3884,31 +3883,7 @@ body .gh__menu {
   }
 
 }
-@media screen and (max-width: 1200px) {
-  .ghModalSearch {
-    width: 50%;
-  }
-  .searchNodes {
-    right: -11% !important;
-}
-}
-@media screen and (max-width: 900px) {
-  .ghModalSearch {
-    width: 40%;
-  }
-  .searchNodes {
-    right: -11% !important;
-    .searchField .searchBox .searchBoxInside .nodeSearch {
-      padding-left: 0;
-      min-width: 1px;
-    }
-  }
-}
-@media screen and (max-width: 600px) {
-  .ghModalSearch {
-    width: 70%;
-  }
-}
+
 .searchInputWrapper,
 .ghModalSearch {
   .list {
@@ -9479,3 +9454,5 @@ color: #2962ff;
     }
   }
 }
+
+@import 'media';
