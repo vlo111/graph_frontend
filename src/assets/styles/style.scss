@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=K2D:500&subset=latin-ext');
 @import 'colors';
-@import '_variables';
 @import 'media';
 @import 'menu';
 @import 'contributors';
@@ -1934,7 +1933,7 @@ p {
       border:none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
-      color: $color-graph-name;
+      color: $color-text;
       font-style: normal;
       font-weight: bold;
       font-size: 23px;
@@ -1988,7 +1987,7 @@ p {
         font-size: 20px;
         border: solid 1px;
         border-color: $color-border;
-        color: $color-graph-name;
+        color: $color-text;
         line-height: normal;
         background-color: $color-white;
 
@@ -9015,7 +9014,7 @@ color: #2962ff;
       width: 100%;
       justify-content: space-between;
       padding: 0px 16px;
-      color: $color-graph-name;
+      color: $color-text;
     }
 
 
@@ -9027,7 +9026,7 @@ color: #2962ff;
     .EditGraph{
       background-color: $color-white;
       svg{
-        fill:$color-graph-name;
+        fill:$color-text;
       }
       &:hover{
         background-color:$color-white;
@@ -9047,7 +9046,7 @@ color: #2962ff;
           border-radius: 5px;
           height: 35px;
           border: 1px solid #cacaca;
-          color: $color-graph-name;
+          color: $color-text;
           padding: 0 15px;
           font-size: 16px;
 
