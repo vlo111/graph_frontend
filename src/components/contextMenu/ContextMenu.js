@@ -185,13 +185,22 @@ class ContextMenu extends Component {
     if (params.fieldName === '_location') {
       return null;
     }
+    const contexHeight = show === 'selectSquare' ? 195 : 117;
+
+    const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y;
+
+    const left = window.innerWidth - x < 170 ? window.innerWidth - 170 : x;
+
     // remove curve points
     Chart.wrapper.selectAll('#fcurve, #lcurve').remove();
     return (
       activeButton === 'deleteModal' ? <DeleteModalContext data={deleteDataModal} params={params} />
         : (
           <div className={`contextmenuOverlay ${x + 360 > window.innerWidth ? 'toLeft' : ''}`} onClick={this.closeMenu}>
-            <div className="contextmenu" style={{ left: x, top: y }}>
+            <div
+              className="contextmenu"
+              style={{ left: left, top: top }}
+            >
               {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
