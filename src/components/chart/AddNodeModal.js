@@ -419,7 +419,7 @@ class AddNodeModal extends Component {
                 <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
                   Cancel
                 </Button>
-                <Button className="ghButton accent alt main main" type="submit">
+                <Button className="alt main" type="submit">
                   {_.isNull(index) ? 'Add' : 'Save'}
                 </Button>
               </div>
