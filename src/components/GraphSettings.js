@@ -90,7 +90,7 @@ class GraphSettings extends Component {
 
     saveGraph = async (status, forceCreate) => {
       const { requestData } = this.state;
-
+      const { match: { params: { graphId } } } = this.props;
       this.props.setLoading(true);
       const labels = Chart.getLabels();
       const svg = ChartUtils.getChartSvg();
@@ -100,6 +100,7 @@ class GraphSettings extends Component {
           ...requestData,
           status,
           svg,
+          graphId,
         });
         resGraphId = data.graphId;
       } else {
