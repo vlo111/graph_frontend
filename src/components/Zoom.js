@@ -171,7 +171,7 @@ class Zoom extends Component {
     const { showGraphMap } = this.props
     return (
       <>
-        <div className={`graphControlPanel ${showGraphMap ? 'shoMap' : ''} ${fullScreen ? 'fullScreen' : ''}`}>
+        <div className={`graphControlPanel ${showGraphMap ? 'showMap' : ''} ${fullScreen ? 'fullScreen' : ''}`}>
           {showGraphMap ? (
             <div className="reactChartMapWrapper">
               <ReactChartMap />
