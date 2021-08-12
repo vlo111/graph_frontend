@@ -1,134 +1,39 @@
-@media only screen and (max-width: 530px) {
-  .scienceResultsList {
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin: .6em 0;
-    justify-content: center;
-  }
-  .scienceCheckBox {
-    order: 1;
-    margin-left: .6em
-  }
-  .scienceCreateNodeButton {
-    order: 3;
-    display: flex;
-    justify-content: space-around;
-  }
-  .scienceArticleData {
-    min-width: 80%;
-    order: 2;
-    margin-left: .5em;
-  }
-  .scienceCreateNodeButton button {
-    max-width: 50%;
-  }
-  .scienceArticleDescription {
-    height: 11em;
-    max-height: 11em;
-  }
-}
-
-@media only screen and (max-width: 900px) {
-  .scienceForm form {
-    flex-direction: column;
-    height: 10em;
-    max-height: 10em;
-  }
-  .scienceForm input, .scienceForm button{
-    line-height: 1em;
-    border-radius: 2em;
-    border: none;
-    padding: 0 2em;
-    width: 100%;
-  }
-  .scienceAuthorInput {
-    flex:1;
-  }
-  .scienceTitleInput {
-    flex:1;
-  }
-  .scienceForm button {
-    flex: 1;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  #accountDropDown {
-    .accountInfo {
-      padding: 0;
-
-      .name {
-        display: none;
-      }
-
-    }
-
-    .dropdown {
-      position: absolute;
-      right: -25px;
-      top: 70px;
-      width: 200px;
-      left: auto;
-      padding: 0;
-      border-radius: 15px;
-    }
-  }
-}
-
-@media screen and (max-width: 1400px) {
+@media screen and (min-width: 1700px) {
   #header {
+    grid-template-columns: 349px auto auto auto 20%;
+
     .signOut {
-      right: 1%;
+      right: 6%;
     }
 
     .right-elements {
-      right: -48px;
-    }
-
-    .ghButton {
-      padding: 12px 14px;
-    }
-
-  }
-
-  .barContainer {
-    .recharts-surface {
-      width: 400px !important;
+      right: 5%;
     }
   }
 
-  .pieChart {
-    .recharts-surface {
-      height: 180px !important;
-    }
-  }
-}
+  //#header-on-graph {
+  //  .graphs {
+  //    position: fixed;
+  //    border: none;
+  //    display: flex;
+  //    z-index: 2;
+  //    left: 24%;
+  //    top: 10px;
+  //    color: #0d0905;
+  //
+  //    button {
+  //      padding: 7px 24px 6px;
+  //    }
+  //  }
+  //
+  //  .legends {
+  //    left: 15%;
+  //  }
+  //}
 
-@media screen and (max-width: 1500px) {
-  .barContainer {
-    .recharts-surface {
-      width: 450px !important;
-    }
-  }
+  #header-on-view-graph {
+    grid-template-columns: 22% auto auto auto 25%;
 
-  .pieChart {
-    .recharts-surface {
-      height: 200px !important;
-    }
-  }
-}
-
-@media screen and (max-width: 1600px) {
-  .barContainer {
-    .recharts-surface {
-      width: 500px;
-    }
-  }
-
-  .pieChart {
-    .recharts-surface {
-      height: 250px !important;
-    }
   }
 }
 
@@ -218,41 +123,210 @@
   }
 }
 
-@media screen and (min-width: 1700px) {
-  #header {
-    grid-template-columns: 349px auto auto auto 20%;
-
-    .signOut {
-      right: 6%;
-    }
-
-    .right-elements {
-      right: 5%;
+@media screen and (max-width: 1600px) {
+  .barContainer {
+    .recharts-surface {
+      width: 500px;
     }
   }
 
-  //#header-on-graph {
-  //  .graphs {
-  //    position: fixed;
-  //    border: none;
-  //    display: flex;
-  //    z-index: 2;
-  //    left: 24%;
-  //    top: 10px;
-  //    color: #0d0905;
-  //
-  //    button {
-  //      padding: 7px 24px 6px;
-  //    }
-  //  }
-  //
-  //  .legends {
-  //    left: 15%;
-  //  }
-  //}
+  .pieChart {
+    .recharts-surface {
+      height: 250px !important;
+    }
+  }
+}
 
-  #header-on-view-graph {
-    grid-template-columns: 22% auto auto auto 25%;
+@media screen and (max-width: 1500px) {
+  .barContainer {
+    .recharts-surface {
+      width: 450px !important;
+    }
+  }
 
+  .pieChart {
+    .recharts-surface {
+      height: 200px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  #header {
+    .signOut {
+      right: 1%;
+    }
+
+    .right-elements {
+      right: -48px;
+    }
+
+    .ghButton {
+      padding: 12px 14px;
+    }
+
+  }
+
+  .barContainer {
+    .recharts-surface {
+      width: 400px !important;
+    }
+  }
+
+  .pieChart {
+    .recharts-surface {
+      height: 180px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #accountDropDown {
+    .accountInfo {
+      padding: 0;
+
+      .name {
+        display: none;
+      }
+
+    }
+
+    .dropdown {
+      position: absolute;
+      right: -25px;
+      top: 70px;
+      width: 200px;
+      left: auto;
+      padding: 0;
+      border-radius: 15px;
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .scienceForm form {
+    flex-direction: column;
+    height: 10em;
+    max-height: 10em;
+  }
+  .scienceForm input, .scienceForm button{
+    line-height: 1em;
+    border-radius: 2em;
+    border: none;
+    padding: 0 2em;
+    width: 100%;
+  }
+  .scienceAuthorInput {
+    flex:1;
+  }
+  .scienceTitleInput {
+    flex:1;
+  }
+  .scienceForm button {
+    flex: 1;
+  }
+}
+
+@media only screen and (max-width: 530px) {
+  .scienceResultsList {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: .6em 0;
+    justify-content: center;
+  }
+  .scienceCheckBox {
+    order: 1;
+    margin-left: .6em
+  }
+  .scienceCreateNodeButton {
+    order: 3;
+    display: flex;
+    justify-content: space-around;
+  }
+  .scienceArticleData {
+    min-width: 80%;
+    order: 2;
+    margin-left: .5em;
+  }
+  .scienceCreateNodeButton button {
+    max-width: 50%;
+  }
+  .scienceArticleDescription {
+    height: 11em;
+    max-height: 11em;
+  }
+}
+
+
+@media only screen and (max-height: 900px) {
+
+  #nodeFullInfo {
+
+    #headerMini {
+      height: 265px;
+
+      .headerBanner {
+        height: 200px;
+        margin-top: 15px;
+
+        img {
+          max-width: 170px;
+          max-height: 170px;
+        }
+
+        .bottom-icons {
+          margin-left: -20px !important;
+        }
+      }
+
+      button {
+        margin-left: 15px;
+      }
+    }
+
+    .nodeFullContent .nodeTabs .contentWrapper {
+      height: 250px;
+
+      .no-tabs .no-tab-content {
+        .header {
+          .description {
+            font-size: 20px;
+          }
+
+          * {
+            margin-bottom: 0;
+            font-size: 20px;
+          }
+        }
+
+        .footer {
+          margin-top: 10px;
+
+          svg {
+            margin-bottom: 0;
+            width: 25px;
+          }
+
+          .create-tab {
+            font-size: 20px;
+            line-height: 25px;
+          }
+        }
+      }
+    }
+
+    .connectionDetails {
+      margin-top: -20px;
+
+      .row {
+        h3 {
+          margin: 10px 0;
+        }
+
+        .list .item {
+          margin-bottom: 15px;
+        }
+      }
+    }
   }
 }
