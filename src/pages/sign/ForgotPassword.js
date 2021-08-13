@@ -4,17 +4,21 @@ import _ from 'lodash';
 import { Link, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
-import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
+import { ReactComponent as LogoSvg } from '../../assets/images/araks_logo.svg';
 import { forgotPasswordRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
+import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
+import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
+import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
+import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
 
 class ForgotPassword extends Component {
   static propTypes = {
     forgotPasswordRequest: PropTypes.func.isRequired,
     token: PropTypes.string.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -30,7 +34,7 @@ class ForgotPassword extends Component {
     const { requestData } = this.state;
     _.set(requestData, path, value);
     this.setState({ requestData });
-  }
+  };
 
   signIn = async (ev) => {
     ev.preventDefault();
@@ -55,43 +59,55 @@ class ForgotPassword extends Component {
       return (<Redirect to="/" />);
     }
     return (
-      <WrapperSign>
-        <div className="left forgotPassword">
-          <Link to="/">
-            <LogoSvg className="logo white" />
-          </Link>
-        </div>
-        <div className="right">
+      <WrapperSign >
+        <div className="forgotPasswordLeft forgotPassword" />
+        <div className="forgotPasswordRight">
           <div>
-            <form onSubmit={this.signIn} id="login" className="authForm">
-              <h1>Sign in to</h1>
-              <LogoSvg className="logo orange" />
+            <Link to="/">
+            <LogoSvg className="logo white" />
+            </Link>
+          </div>
+          <div>
+            <form
+              onSubmit={this.signIn}
+              id="login"
+              className="forgotPasswordAuthform"
+            >
               <div className="forgotPasswordText">
                 <h4>Forgot your password?</h4>
-                <p>We’ll help you reset it and get back on track.?</p>
               </div>
               <Input
                 name="email"
                 type="email"
-                label="Email address"
+                placeholder="E-mail"
                 value={requestData.email}
                 onChangeText={this.handleTextChange}
+                autoComplete="off"
               />
 
-              <div className="row">
-                <Link to="/sign/sign-in" className="forgotPasswordBack">Back</Link>
-                <Button type="submit" className="submit" color="blue">
-                  Reset Password
-                </Button>
-              </div>
-            </form>
-            <p className="switchSignMode">
-              {"Don't have an admin yet? "}
-              <Link to="/sign/sign-up">Get started</Link>
-            </p>
+                <div className="row">
+                  <Button type="submit" className="submit" color="blue">
+                    Reset
+                  </Button>
+                </div>
+                <div>
+                  <p>Sign in using</p>
+                </div>
+                <div className="socialButtons">
+                  <OAuthButtonFacebook />
+                  <OAuthButtonGoogle />
+                  <OAuthButtonLinkedin />
+                  <OAuthButtonTwitter />
+                </div>
+              </form>
+              <p className="switchForgotMode">
+                <span> Don`t have an admin yet? </span>
+                <Link to="/sign/sign-up" className="getstart">
+                  <i>Get started</i>
+                </Link>
+              </p>
+            </div>
           </div>
-        </div>
-
       </WrapperSign>
     );
   }
@@ -105,9 +121,6 @@ const mapDispatchToProps = {
   forgotPasswordRequest,
 };
 
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ForgotPassword);
+const Container = connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
 
 export default Container;
