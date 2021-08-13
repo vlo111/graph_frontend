@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Chart from '../Chart';
-import { updateGraphPositionsRequest, updateGraphThumbnailRequest } from '../store/actions/graphs';
+import { getSingleGraphRequest, updateGraphPositionsRequest, updateGraphThumbnailRequest } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
 import {
   createNodesRequest,
@@ -45,6 +45,8 @@ class AutoSave extends Component {
     toggleFolderRequest: PropTypes.func.isRequired,
 
     updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
+    
+    getSingleGraphRequest: PropTypes.func.isRequired,
 
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
   }
@@ -306,10 +308,7 @@ class AutoSave extends Component {
     if (updateNodePositions.length || updateLabelPositions.length) {
       promise.push(this.props.updateGraphPositionsRequest(graphId, updateNodePositions, updateLabelPositions));
     } else if (createNodes.length) {
-      const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
-      if (!_.isEmpty(data.errors)) {
-        toast.error('Something went wrong');
-      }
+      promise.push(this.props.createNodesRequest(graphId, createNodes));
     }
 
     if (updateNodeCustomFields.length) {
@@ -333,20 +332,23 @@ class AutoSave extends Component {
       promise.push(this.props.updateLabelsRequest(graphId, updateLabels));
     }
 
-    // if (updateLabelPositions.length) {
-    //   promise.push(this.props.updateLabelPositionsRequest(graphId, updateLabelPositions));
-    // }
     if (deleteLabels.length) {
       promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
     Chart.event.emit('auto-save');
 
     const res = await Promise.all(promise);
-    // res.forEach((d) => {
-    //   if (d.payload.data.status !== 'ok') {
-    //     toast.error('Graph save error');
-    //   }
-    // });
+    res.forEach( async (d) => {
+      if (d?.payload?.data?.status !== 'ok') {
+        toast.error('Graph save error');
+        return 
+      } else if (!_.isEmpty(d.payload.data.error)) {
+        toast.error('Something went wrong');
+        return
+      } else {
+        await this.props.getSingleGraphRequest(graphId)
+      }
+    });
     document.body.classList.remove('autoSave');
   }
 
@@ -403,6 +405,7 @@ const mapDispatchToProps = {
   updateLabelsRequest,
   deleteLabelsRequest,
   toggleFolderRequest,
+  getSingleGraphRequest,
 };
 
 const Container = connect(
