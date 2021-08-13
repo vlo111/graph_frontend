@@ -35,7 +35,7 @@ import ExitMode from '../components/ExitMode';
 import AddLinkedInModal from '../components/chart/AddLinkedInModal';
 import MapsModal from '../components/maps/MapsModal';
 import ScienceGraphModal from "../components/ScienceSearchToGraph/ScienceGraphModal";
-import WikiModal from "../components/wiki/WikiModal";
+import WikiModal from "../components/wikipedia/WikiModal";
 
 class GraphForm extends Component {
   static propTypes = {
@@ -44,7 +44,7 @@ class GraphForm extends Component {
     clearSingleGraph: PropTypes.func.isRequired,
     socketSetActiveGraph: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
-    match: PropTypes.object.isRequired, 
+    match: PropTypes.object.isRequired,
     currentUserId: PropTypes.number.isRequired,
   }
 
@@ -91,7 +91,7 @@ class GraphForm extends Component {
         {activeButton === 'maps-view' && <MapsGraph />}
         {activeButton === 'maps' && <MapsModal />}
         {activeButton === 'sciGraph' && <ScienceGraphModal />}
-        {activeButton === 'wiki' && <WikiModal />}
+        {activeButton === 'wikipedia' && <WikiModal />}
         <AddLinkModal />
         <AddLabelModal />
         <AddLinkedInModal />
@@ -116,7 +116,7 @@ class GraphForm extends Component {
 
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
-  singleGraphLabels: state.graphs.singleGraph.labels || [], 
+  singleGraphLabels: state.graphs.singleGraph.labels || [],
   mouseMoveTracker: state.graphs.mouseMoveTracker,
   currentUserId: state.account.myAccount.id,
 });

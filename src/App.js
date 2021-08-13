@@ -20,6 +20,7 @@ import Search from './pages/search/Search';
 import Profile from './pages/account';
 import GraphThumbnail from './pages/GraphThumbnail';
 import GraphCompare from './pages/GraphCompare';
+import UserConfirmation from "./pages/sign/UserConfirmation";
 
 const GraphEmbed = React.lazy(() => import('./pages/GraphEmbed'));
 
@@ -72,6 +73,7 @@ class App extends Component {
             <Route path="/sign/forgot-password" component={ForgotPassword} />
             <Route path="/sign/reset-password" component={ResetPassword} />
             <Route path="/sign/oauth/:type" component={OAuth} />
+            <Route path="/sign/confirmation/:token" component={UserConfirmation} />
 
             <Route path="/404" component={Page404} />
 

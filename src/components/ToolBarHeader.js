@@ -10,7 +10,7 @@ import { getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/g
 import { socketMousePositionTracker } from '../store/actions/socket';
 import AccountDropDown from './account/AccountDropDown';
 import Legend from './Legend';
-import GraphSettings from './GraphSettings';
+import GraphSettings from './graphData/GraphSettings';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/comment1.svg';
 import CommentModal from './CommentModal/CommentModal.js';
 import Notification from './Notification';

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Wrapper from '../../components/Wrapper';
-import Header from '../../components/Header';
 import { getUserFriendsList } from '../../store/selectors/userFriends';
 import { getFriendsRequest, myFriendsRequest } from '../../store/actions/userFriends';
 import { getId } from '../../store/selectors/account';
@@ -23,7 +22,6 @@ const Friends = React.memo(() => {
 
   return (
     <Wrapper>
-      <Header />
       <div className="friends-list">
         <h3>{ `Found ${friends.length} ${friends.length > 1 ? 'People' : 'Person'}`}</h3>
         {friends && friends.length ? (

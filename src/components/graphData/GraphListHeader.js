@@ -5,17 +5,17 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
- import Popover from './form/Popover';
-import Button from './form/Button';
+ import Popover from '../form/Popover';
+import Button from '../form/Button';
 import { toast } from 'react-toastify'; 
-import UpdateGraphModal from './chart/UpdateGraphModal';
-import { deleteGraphRequest } from '../store/actions/graphs';
-import {deleteGraphRequest as DeleteShareGraphRequest} from '../store/actions/shareGraphs';
-import { ReactComponent as TrashSvg } from '../assets/images/icons/trash.svg';
-import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg'; 
-import { ReactComponent as EllipsisVSvg } from '../assets/images/icons/ellipsis.svg'; 
-import { getGraphsListRequest } from '../store/actions/graphs';
-import ShareModal from './ShareModal';
+import UpdateGraphModal from '../chart/UpdateGraphModal';
+import { deleteGraphRequest } from '../../store/actions/graphs';
+import {deleteGraphRequest as DeleteShareGraphRequest} from '../../store/actions/shareGraphs';
+import { ReactComponent as TrashSvg } from '../../assets/images/icons/trash.svg';
+import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
+import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellipsis.svg';
+import { getGraphsListRequest } from '../../store/actions/graphs';
+import ShareModal from '../ShareModal';
 
 const GraphListHeader = ({ graph, headerTools }) => {
   const dispatch = useDispatch();

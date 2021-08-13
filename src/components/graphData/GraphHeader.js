@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Filters from './filters/Filters';
+import Filters from '../filters/Filters';
 
 class GraphHeader extends Component {
   render() {

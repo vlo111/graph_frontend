@@ -13,7 +13,7 @@ class WikiButton extends Component {
 
     toggleModal = () => {
       const { activeButton } = this.props;
-      this.props.setActiveButton(activeButton === 'wiki' ? 'create' : 'wiki');
+      this.props.setActiveButton(activeButton === 'wikipedia' ? 'create' : 'wikipedia');
     }
 
   render() {
@@ -24,7 +24,7 @@ class WikiButton extends Component {
           <img src={WikipediaSvg} alt="wikipedia" />
         </button>
 
-        {activeButton === 'wiki' ? (
+        {activeButton === 'wikipedia' ? (
           <WikiModal onClose={this.toggleModal} />
         ) : null}
       </>

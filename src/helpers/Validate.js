@@ -116,13 +116,13 @@ class Validate {
     return _.some(errors, (e) => e);
   }
 
-  static customFieldType(val, node) {
+  static customFieldType(val, node, customField) {
     const customFields = CustomFields.getCustomField(node, Chart.getNodes());
     const value = (val || '').trim();
     let error;
     if (!value) {
       error = 'Field is required';
-    } else if (customFields.some((f) => f.name === val)) {
+    } else if (customField.some((f) => f.name === val)) {
       error = 'Field already exists';
     } else if (false) { // todo
       error = 'You can\'t add more tabs';

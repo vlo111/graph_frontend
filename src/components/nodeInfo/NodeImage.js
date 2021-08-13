@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import Chart from '../../Chart';
-import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
-import Utils from "../../helpers/Utils";
+import bgImage from '../../assets/images/no-img.png';
 import ChartUtils from "../../helpers/ChartUtils";
 
 class NodeImage extends Component {

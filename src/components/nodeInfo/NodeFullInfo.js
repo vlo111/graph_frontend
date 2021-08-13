@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import memoizeOne from 'memoize-one';
 import Chart from '../../Chart';
 import Outside from '../Outside';
 import NodeTabs from './NodeTabs';
-import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
+import bgImage from '../../assets/images/no-img.png';
 import HeaderMini from '../HeaderMini';
 import ConnectionDetails from './ConnectionDetails';
-import NodeFullInfoModal from './NodeFullInfoModal';
 import ChartUtils from '../../helpers/ChartUtils';
-import NodeImage from './NodeImage';
 import { getNodeCustomFieldsRequest } from '../../store/actions/graphs';
-import Loading from "../Loading";
+import Loading from '../Loading';
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -51,7 +49,7 @@ class NodeFullInfo extends Component {
   }
 
   render() {
-    const { editable, singleGraph: { id } } = this.props;
+    const { editable, singleGraph: { id, nodesPartial, linksPartial, labels } } = this.props;
 
     const { loading } = this.state;
 
@@ -79,35 +77,19 @@ class NodeFullInfo extends Component {
             headerImg={node.icon ? node.icon : bgImage}
             node={node}
             editable={editable}
+            expand={expand}
+            queryObj={queryObj}
           />
           <div className="nodeFullContent">
-            <div className="headerBanner ">
-              <div className="frame">
-                <NodeImage node={node} />
-              </div>
-              <div className="textWrapper">
-                <h2 className="name">
-                  {node.name}
-                </h2>
-                <h3 className="type">
-                  {node.type}
-                </h3>
-              </div>
-              <Link replace className="expand" to={`?${queryString.stringify({ ...queryObj, expand: '1' })}`}>
-                Expand
-              </Link>
-            </div>
-            {loading ? (
-                <div className="loadingWrapper">
-                  <Loading />
-                </div>
-            ) : null}
             <NodeTabs nodeId={node.id} editable={editable} />
           </div>
-          <ConnectionDetails nodeId={node.id} />
+          <ConnectionDetails labels={labels} nodes={nodesPartial} links={linksPartial} nodeId={node.id} />
         </div>
-        {expand === '1' ? (
-          <NodeFullInfoModal node={node} />
+
+        {loading ? (
+          <div className="loadingWrapper">
+            <Loading />
+          </div>
         ) : null}
       </Outside>
     );
