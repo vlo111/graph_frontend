@@ -51,6 +51,8 @@ class AddLinkModal extends Component {
   }
 
   handleAddNewLine = (ev, d) => {
+    if(Chart.isAutoPosition)
+       Chart.isAutoPosition = false;
     const { source, target } = d;
     // const { linkData: { type } } = this.state;
     const links = Chart.getLinks();
@@ -71,6 +73,8 @@ class AddLinkModal extends Component {
   }
 
   handleLineEdit = (ev, d) => {
+    if(Chart.isAutoPosition)
+       Chart.isAutoPosition = false;
     const linkData = Chart.getLinks().find((l) => l.index === d.index);
     this.setState({
       linkData: { ...linkData }, show: true, index: linkData.index, errors: {},
@@ -242,10 +246,10 @@ class AddLinkModal extends Component {
               onChange={() => this.handleChange('direction', !linkData.direction)}
             />
             <div className="buttons">
-              <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
+              <Button className="cancel transparent alt" onClick={this.closeModal}>
                 Cancel
               </Button>
-              <Button className="ghButton accent alt main main" type="submit">
+              <Button className="alt main" type="submit">
                 {isUpdate ? 'Save' : 'Add'}
               </Button>
             </div>

@@ -9,6 +9,7 @@ import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
 import { ReactComponent as DeleteSvg } from '../../assets/images/icons/delete.svg';
 import { ReactComponent as ExpandTabSvg } from '../../assets/images/icons/expandtab-data.svg';
 import Button from '../form/Button';
+import NodeExpand from './NodeExpand';
 
 class NodeTabsContent extends Component {
   static propTypes = {
@@ -23,6 +24,7 @@ class NodeTabsContent extends Component {
     super(props);
     this.state = {
       contentType: '',
+      expandNode: false,
     };
   }
 
@@ -35,10 +37,19 @@ class NodeTabsContent extends Component {
     }
   })
 
+  expand = () => {
+    this.setState({
+      expandNode: true,
+    });
+  }
+
   render() {
     const {
       name, node, customFields, activeTab,
     } = this.props;
+
+    const { expandNode } = this.state;
+
     const html = customFields.find((f) => f.name === name)?.value || '';
     // this.getContentType(html);
     // const { result: text } = stripHtml(html);
@@ -80,7 +91,7 @@ class NodeTabsContent extends Component {
           </Button>
           )}
           {html && (
-          <div className="expand">
+          <div onClick={this.expand} className="expand">
             <ExpandTabSvg />
           </div>
           )}
@@ -102,6 +113,7 @@ class NodeTabsContent extends Component {
               </div>
             </div>
           )}
+        {expandNode && <NodeExpand />}
       </div>
     );
   }

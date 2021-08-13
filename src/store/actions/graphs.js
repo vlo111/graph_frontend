@@ -40,8 +40,8 @@ export function deleteGraphRequest(id) {
 
 export const UPDATE_GRAPH_THUMBNAIL = define('UPDATE_GRAPH_THUMBNAIL');
 
-export function updateGraphThumbnailRequest(id, svg, size) {
-  return UPDATE_GRAPH_THUMBNAIL.request(() => Api.updateGraphThumbnail(id, svg, size));
+export function updateGraphThumbnailRequest(id, svg, size, byUser=false) {
+  return UPDATE_GRAPH_THUMBNAIL.request(() => Api.updateGraphThumbnail(id, svg, size, byUser));
 }
 
 export const GET_GRAPHS_LIST = define('GET_GRAPHS_LIST');
