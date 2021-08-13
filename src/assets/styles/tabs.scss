@@ -283,10 +283,12 @@
 
           *{
             cursor: pointer;
+            display: flex;
+            align-items: center;
           }
 
           .expand {
-            margin-top: 13px;
+            margin-top: 3px;
             margin-left: 5px;
           }
         }
@@ -294,12 +296,18 @@
     }
   }
 
-  #headerMini button, .tab-data-settings button {
-    background: none;
-    box-shadow: none;
+  #headerMini, .tab-data-settings {
+    button, .expand {
+      background: none;
+      box-shadow: none;
 
-    &:hover{
-      color: $color-main;
+      &:hover {
+        color: $color-main;
+
+        path {
+          fill: $color-main;
+        }
+      }
     }
   }
 }
