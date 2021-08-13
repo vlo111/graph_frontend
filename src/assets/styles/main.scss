@@ -154,25 +154,6 @@ p {
   }
 }
 
-.logoWrapper {
-  position: relative;
-  font-size: 32px;
-  font-weight: bold;
-  text-align: center;
-  margin: 7px 21px;
-  width: 118px;
-
-  .autoSaveText {
-    font-size: 12px;
-    color: $color-main2;
-    font-weight: 600;
-    position: absolute;
-    top: 32px;
-    left: 146px;
-    display: none;
-  }
-}
-
 .autoSave {
   .logo {
     circle {
