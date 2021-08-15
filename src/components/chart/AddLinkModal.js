@@ -246,10 +246,10 @@ class AddLinkModal extends Component {
               onChange={() => this.handleChange('direction', !linkData.direction)}
             />
             <div className="buttons">
-              <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
+              <Button className="cancel transparent alt" onClick={this.closeModal}>
                 Cancel
               </Button>
-              <Button className="ghButton accent alt main main" type="submit">
+              <Button className="alt main" type="submit">
                 {isUpdate ? 'Save' : 'Add'}
               </Button>
             </div>

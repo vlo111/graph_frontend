@@ -39,7 +39,7 @@ class Editor extends Component {
       'copyformat', '|',
       'symbol',
       'fullsize',
-      'link'
+      'link',
     ],
   }
 
@@ -68,6 +68,8 @@ class Editor extends Component {
     options.buttonsXS = options.buttonsXS || buttons;
 
     options.controls = options.controls || {};
+
+    options.minHeight = 400;
 
     options.controls.file = {
       popup: (jodit, anchor) => {

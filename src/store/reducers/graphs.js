@@ -50,7 +50,7 @@ const initialState = {
   },
   actionsCount: {},
   nodeCustomFields: [],
-  activeTab: '',
+  activeTab: '_description',
   graphTabs: [],
   graphTabsStatus: '',
   mouseTracker: false,

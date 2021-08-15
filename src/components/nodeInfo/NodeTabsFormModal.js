@@ -7,11 +7,12 @@ import memoizeOne from 'memoize-one';
 import Input from '../form/Input';
 import Button from '../form/Button';
 import Validate from '../../helpers/Validate';
-import {ReactComponent as CloseSvg} from '../../assets/images/icons/close.svg';
-import {updateNodesCustomFieldsRequest} from '../../store/actions/nodes';
-import Api from "../../Api";
-import Utils from "../../helpers/Utils";
-import Editor from "../form/Editor";
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
+import Api from '../../Api';
+import Utils from '../../helpers/Utils';
+import Editor from '../form/Editor';
+import TabSaveModal from './TabSaveModal';
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -32,257 +33,278 @@ class NodeTabsFormModal extends Component {
     }
   }, _.isEqual)
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            errors: {},
-            files: [],
-            tabData: {
-                name: '',
-                value: '',
-                subtitle: '',
-            },
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      errors: {},
+      files: [],
+      tabData: {
+        name: '',
+        value: '',
+        subtitle: '',
+      },
+      showSaveModal: false,
+    };
+  }
 
     getLink = (value) => {
-        const currentValue = document.createElement('div');
+      const currentValue = document.createElement('div');
 
-        currentValue.innerHTML = value.trim();
+      currentValue.innerHTML = value.trim();
 
-        return currentValue.getElementsByClassName('documentContainer');
+      return currentValue.getElementsByClassName('documentContainer');
     }
 
     checkDeleteDocument = (value, prev) => {
-
       const currentVal = this.getLink(value);
 
       const prevVal = this.getLink(prev);
 
       let deletedLink = '';
 
-      if(currentVal) {
-          [].forEach.call(currentVal, (el) => {
-              [].forEach.call(prevVal, (prev_el) => {
-                  const valueLink = el.querySelector('a');
-                  const prevValueLink = prev_el.querySelector('a');
+      if (currentVal) {
+        [].forEach.call(currentVal, (el) => {
+          [].forEach.call(prevVal, (prev_el) => {
+            const valueLink = el.querySelector('a');
+            const prevValueLink = prev_el.querySelector('a');
 
-                  if (valueLink && prevValueLink) {
-                      if (valueLink.href === prevValueLink.href) {
-                          if (valueLink.innerText !== prevValueLink.innerText) {
-                              deletedLink = el.innerHTML;
-                          }
-                      }
-                  }
-              });
+            if (valueLink && prevValueLink) {
+              if (valueLink.href === prevValueLink.href) {
+                if (valueLink.innerText !== prevValueLink.innerText) {
+                  deletedLink = el.innerHTML;
+                }
+              }
+            }
           });
+        });
       }
       return deletedLink;
-   }
+    }
 
     handleChange = (path, value, prev) => {
-        const {tabData, errors} = this.state;
+      const { tabData, errors } = this.state;
 
-        if (value && path === 'value') {
-            const isDelete = this.checkDeleteDocument(value, prev);
-            if (isDelete) {
-                value = value.replace(isDelete, '')
-            }
+      if (value && path === 'value') {
+        const isDelete = this.checkDeleteDocument(value, prev);
+        if (isDelete) {
+          value = value.replace(isDelete, '');
         }
+      }
 
-        _.set(tabData, path, value);
-        _.remove(errors, path);
-        this.setState({tabData, errors});
+      _.set(tabData, path, value);
+      _.remove(errors, path);
+      this.setState({ tabData, errors });
     }
 
     insertFile = (file) => {
-        const {files} = this.state;
+      const { files } = this.state;
 
-        files.push(file)
+      files.push(file);
 
-        this.setState({
-            files
-        })
+      this.setState({
+        files,
+      });
     }
 
     fileDataFromEditor = (document) => {
-        const id = document.querySelector('#docId')?.innerText;
+      const id = document.querySelector('#docId')?.innerText;
 
-        const description = document.querySelector('.description')?.innerText;
+      const description = document.querySelector('.description')?.innerText;
 
-        const tags = document.querySelector('.tags')?.innerText;
+      const tags = document.querySelector('.tags')?.innerText;
 
-        let fileField = document.querySelector('img');
+      let fileField = document.querySelector('img');
 
-        if (!fileField) {
-            fileField = document.querySelector('a')
-        }
+      if (!fileField) {
+        fileField = document.querySelector('a');
+      }
 
-        return {id, description, tags, fileField};
+      return {
+        id, description, tags, fileField,
+      };
     }
 
     getDocuments = (documents) => {
+      const { files } = this.state;
 
-        const {files} = this.state
+      const originalFiles = [];
 
-        const originalFiles = [];
+      const fileData = [];
 
-        const fileData = [];
+      documents.forEach((document) => {
+        const {
+          id, description, tags, fileField,
+        } = this.fileDataFromEditor(document);
 
-        documents.forEach(document => {
+        const file = files.filter((p) => p.id == id);
 
-            let {id, description, tags, fileField} = this.fileDataFromEditor(document);
+        if (file.length && fileField) {
+          fileData.push({
+            id,
+            description,
+            tags,
+          });
+          originalFiles.push(file);
+        }
+      });
 
-            const file = files.filter(p => p.id == id)
-
-            if (file.length && fileField) {
-                fileData.push({
-                    id,
-                    description,
-                    tags,
-                })
-                originalFiles.push(file);
-            }
-        })
-
-        return {fileData, files: originalFiles}
+      return { fileData, files: originalFiles };
     }
 
     getUpdatedFiles = (customFields) => {
+      const { documentElement } = Utils.tabHtmlFile(customFields.value);
 
-        const {documentElement} = Utils.tabHtmlFile(customFields.value);
+      const { files } = this.state;
 
-        const {files} = this.state
+      let insertFiles = null;
 
-        let insertFiles = null;
+      if (files.length) {
+        insertFiles = this.getDocuments(documentElement);
+      }
 
-        if (files.length) {
-            insertFiles = this.getDocuments(documentElement)
-        }
+      const newFiles = [];
 
-        const newFiles = [];
+      documentElement.forEach((document) => {
+        const {
+          id, description, tags, fileField,
+        } = this.fileDataFromEditor(document);
 
-        documentElement.forEach(document => {
+        if (fileField) {
+          const path = fileField.src ?? fileField.href;
 
-            let { id, description, tags, fileField} = this.fileDataFromEditor(document);
+          const isInserted = !insertFiles ? true : !insertFiles.fileData.filter((p) => p.id === id).length;
 
+          if (isInserted) {
             if (fileField) {
-                let path = fileField.src ?? fileField.href;
-
-                const isInserted = !insertFiles ? true : !insertFiles.fileData.filter(p => p.id === id).length;
-
-                if (isInserted) {
-                    if (fileField) {
-                        newFiles.push({
-                            id,
-                            description,
-                            tags,
-                            path: `${path.substring(0, 7)}${path.substr(7).replaceAll('/', "\\")}`,
-                        })
-                    }
-                }
+              newFiles.push({
+                id,
+                description,
+                tags,
+                path: `${path.substring(0, 7)}${path.substr(7).replaceAll('/', '\\')}`,
+              });
             }
-        })
+          }
+        }
+      });
 
-        return {insertFiles, updatedFiles: newFiles};
+      return { insertFiles, updatedFiles: newFiles };
     }
 
     getFileFromTab = (customFields) => {
+      const { documentElement } = Utils.tabHtmlFile(customFields.value);
 
-        const {documentElement} = Utils.tabHtmlFile(customFields.value);
+      const { fileData, files } = this.getDocuments(documentElement);
 
-        let {fileData, files} = this.getDocuments(documentElement);
-
-        return {fileData, files};
+      return { fileData, files };
     }
 
     save = async () => {
-    const {
-      node, fieldName, graphId, customFields,
-    } = this.props;
-    const isUpdate = !!fieldName;
-    const { tabData, errors } = this.state;
-    if (!isUpdate || (tabData.originalName !== tabData.name)) {
-      [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node);
-    }
-    // return;
-    [errors.value, tabData.value] = Validate.customFieldContent(tabData.value);
-    [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
+      const {
+        node, fieldName, customFields,
+      } = this.props;
 
-        if (!Validate.hasError(errors)) {
-            const data = {
-                name: tabData.name,
-                value: tabData.value,
-                subtitle: tabData.subtitle,
-            };
+      const isUpdate = !!fieldName;
+      const { tabData, errors } = this.state;
 
-            if (!isUpdate) {
-                customFields.push(data);
+      if (!isUpdate || (tabData.originalName !== tabData.name)) {
+        [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node, customFields);
+      }
+      // return;
+      [errors.value, tabData.value] = Validate.customFieldContent(tabData.value);
+      [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
 
-                const {fileData, files} = this.getFileFromTab(customFields[customFields.length - 1]);
+      if (!Validate.hasError(errors)) {
+        const data = {
+          name: tabData.name,
+          value: tabData.value,
+          subtitle: tabData.subtitle,
+        };
 
-                if (fileData.length) {
-                    await Api.createDocument(Utils.getGraphIdFormUrl(), node.id, data.name, fileData, files).catch((d) => d);
-                }
-            } else {
-                const i = customFields.findIndex((f) => f.name === tabData.originalName);
-                if (i > -1) {
-                    customFields[i] = data;
+        if (!isUpdate) {
+          customFields.push(data);
 
-                    const {insertFiles, updatedFiles} = this.getUpdatedFiles(customFields[i]);
+          const { fileData, files } = this.getFileFromTab(customFields[customFields.length - 1]);
 
-                    await Api.updateDocument(Utils.getGraphIdFormUrl(),
-                        node.id, data.name,
-                        {fileData: insertFiles?.fileData, updatedFiles},
-                        insertFiles?.files)
-                        .catch((d) => d);
-                }
-            }
+          if (fileData.length) {
+            await Api.createDocument(Utils.getGraphIdFormUrl(), node.id, data.name, fileData, files).catch((d) => d);
+          }
+        } else {
+          const i = customFields.findIndex((f) => f.name === tabData.originalName);
+          if (i > -1) {
+            customFields[i] = data;
 
-            this.props.onClose(data);
+            const { insertFiles, updatedFiles } = this.getUpdatedFiles(customFields[i]);
+
+            await Api.updateDocument(Utils.getGraphIdFormUrl(),
+              node.id, data.name,
+              { fileData: insertFiles?.fileData, updatedFiles },
+              insertFiles?.files)
+              .catch((d) => d);
+          }
         }
-        this.setState({errors, tabData});
+
+        this.props.setActiveTab(tabData.name === 'description' ? '_description' : tabData.name);
+        this.props.onClose(data);
+      } else {
+        this.setState({
+          showSaveModal: false,
+        });
+      }
+      this.setState({ errors, tabData });
     }
 
-    render() {
-        const {tabData, errors} = this.state;
-        const {node, fieldName, customFields} = this.props;
-        this.initValues(node, fieldName, customFields);
-        const isUpdate = !!fieldName;
-        return (
-            <Modal
-                isOpen
-                className="ghModal nodeTabsFormModal"
-                overlayClassName="ghModalOverlay nodeTabsFormModalOverlay"
-                onRequestClose={this.props.onClose}
-            >
-                <Button color="transparent" className="close" icon={<CloseSvg/>} onClick={this.props.onClose}/>
-                <h3>{isUpdate ? 'Update Tab' : 'Add New Tab'}</h3>
-                <div className="row">
-                    <Input
-                        value={tabData.name}
-                        error={errors.name}
-                        label="Name"
-                        onChangeText={(v) => this.handleChange('name', v)}
-                    />
-                </div>
-                <Editor
-                    value={tabData.value}
-                    error={errors.value}
-                    label="ContentTabs"
-                    node={node}
-                    insertFile={this.insertFile}
-                    onChange={(value, prev) => this.handleChange('value', value, prev)}
-                />
-                <div className="buttonsWrapper">
-                    <Button color="transparent" className="cancel" onClick={this.props.onClose}>Cancel</Button>
-                    <Button color="accent" onClick={this.save}>
-                        {isUpdate ? 'Save' : 'Add'}
-                    </Button>
-                </div>
-            </Modal>
-        );
-    }
+  showSaveModal = async () => {
+    const { showSaveModal } = this.state;
+
+    this.setState({ showSaveModal: !showSaveModal });
+  }
+
+  closeFormModal = async () => {
+    this.setState({ showSaveModal: false });
+    await this.props.onClose();
+  }
+
+  render() {
+    const { tabData, errors, showSaveModal } = this.state;
+    const { node, fieldName, customFields } = this.props;
+    this.initValues(node, fieldName, customFields);
+    const isUpdate = !!fieldName;
+    return (
+      <Modal
+        isOpen
+        className="ghModal nodeTabsFormModal"
+        overlayClassName="ghModalOverlay nodeTabsFormModalOverlay"
+      >
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.showSaveModal} />
+        <h3>{isUpdate ? 'Update Tab' : 'Add New Tab'}</h3>
+        <div className="row">
+          {fieldName !== '_description' ? (
+            <Input
+              value={tabData.name}
+              error={errors.name}
+              label="Name"
+              onChangeText={(v) => this.handleChange('name', v)}
+            />
+          ) : <label className="description">Description</label>}
+        </div>
+        <Editor
+          value={tabData.value}
+          error={errors.value}
+          label="ContentTabs"
+          node={node}
+          insertFile={this.insertFile}
+          onChange={(value, prev) => this.handleChange('value', value, prev)}
+        />
+        <div className="buttonsWrapper">
+          <button className="btn-delete" onClick={this.showSaveModal}>Cancel</button>
+          <button className="btn-classic" onClick={this.save}>
+            {isUpdate ? 'Save' : 'Add'}
+          </button>
+        </div>
+        {showSaveModal && <TabSaveModal hide={this.showSaveModal} onClose={this.props.onClose} save={this.save} />}
+      </Modal>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({

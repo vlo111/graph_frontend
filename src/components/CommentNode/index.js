@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
@@ -13,15 +13,15 @@ import Chart from '../../Chart';
 
 import { getActionsCountRequest } from '../../store/actions/commentNodes';
 
-const CommentModal = React.memo(({ closeModal, graph}) => {
+const CommentModal = React.memo(({ closeModal, graph }) => {
   const { info: nodeId } = queryString.parse(window.location.search);
-   if (!nodeId) {
-      return null;
-    }
-    const node = Chart.getNodes().find((n) => n.id === nodeId);
-    if (!node) {
-      return null;
-    }
+  if (!nodeId) {
+    return null;
+  }
+  const node = Chart.getNodes().find((n) => n.id === nodeId);
+  if (!node) {
+    return null;
+  }
   const afterOpenModal = () => {};
   const dispatch = useDispatch();
 
@@ -29,24 +29,22 @@ const CommentModal = React.memo(({ closeModal, graph}) => {
     closeModal();
     dispatch(getActionsCountRequest(graph.id, node.id));
   };
+
   return (isEmpty(graph) ? null
     : (
       <Modal
         isOpen
         onAfterOpen={afterOpenModal}
-        onRequestClose={onClose}
         contentLabel="Comment"
         id="comment-modal"
-        className="ghModal commentModal"
+        className="ghModal commentModal tabComment"
         overlayClassName="ghModalOverlay"
       >
         <div className="comment-modal__title">
-          <h3>{node.name}</h3>
-          <Button color="transparent" className="close" icon={<CloseSvg />}
-            onClick={onClose}
-          />
+          <h3 className="node-name">Comments</h3>
         </div>
-        <CommentItems graph={graph} node={node} closeModal={closeModal}  />
+        <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() => closeModal()} />
+        <CommentItems graph={graph} node={node} closeModal={closeModal} />
         <AddComment
           graph={graph}
           node={node}

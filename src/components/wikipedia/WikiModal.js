@@ -17,7 +17,6 @@ class WikiModal extends Component {
   }
 
   useWikiSearchEngine = (e) => {
-    const { WikiSearchTerms } = this.state
     e.preventDefault();
     if (this.state.WikiSearchTerms === undefined) {
       return 0;
@@ -26,7 +25,7 @@ class WikiModal extends Component {
       wikiSearchReturnValues: [],
     });
 
-      const pointerToThis = [];
+    const pointerToThis = this;
 
     let url = 'https://en.wikipedia.org/w/api.php';
 
@@ -42,44 +41,47 @@ class WikiModal extends Component {
       url += `&${key}=${params[key]}`;
     });
 
-      fetch(url)
-        .then(
-          (response) => response.json(),
-        )
-        .then(
-          (response) => {
-            for (const key in response.query.search) {
-              pointerToThis.push({
-                queryResultPageFullURL: 'no link',
-                queryResultPageID: response.query.search[key].pageid,
-                queryResultPageTitle: response.query.search[key].title,
-                queryResultPageSnippet: response.query.search[key].snippet,
-              });
-            }
-          },
-        )
-        .then(
-          (response) => {
-            for (const key2 in pointerToThis) {
-              const page = pointerToThis[key2];
-              const pageID = page.queryResultPageID;
-              const urlForRetrievingPageURLByPageID = `https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=info&pageids=${pageID}&inprop=url&format=json`;
+    fetch(url)
+      .then(
+        (response) => response.json(),
+      )
+      .then(
+        (response) => {
+          // console.log(response);
 
-              fetch(urlForRetrievingPageURLByPageID)
-                .then(
-                  (response) => response.json(),
-                )
-                .then(
-                  (response) => {
-                    page.queryResultPageFullURL = response.query.pages[pageID].fullurl;
+          for (const key in response.query.search) {
+            pointerToThis.state.wikiSearchReturnValues.push({
+              queryResultPageFullURL: 'no link',
+              queryResultPageID: response.query.search[key].pageid,
+              queryResultPageTitle: response.query.search[key].title,
+              queryResultPageSnippet: response.query.search[key].snippet,
+            });
+          }
+        },
+      )
+      .then(
+        (response) => {
+          for (const key2 in pointerToThis.state.wikiSearchReturnValues) {
+            // console.log(pointerToThis.state.wikiSearchReturnValues);
+            const page = pointerToThis.state.wikiSearchReturnValues[key2];
+            const pageID = page.queryResultPageID;
+            const urlForRetrievingPageURLByPageID = `https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=info&pageids=${pageID}&inprop=url&format=json`;
 
-                    this.setState({wikiSearchReturnValues:pointerToThis})
-                  },
-                );
-            }
-          },
-        );
-    }
+            fetch(urlForRetrievingPageURLByPageID)
+              .then(
+                (response) => response.json(),
+              )
+              .then(
+                (response) => {
+                  page.queryResultPageFullURL = response.query.pages[pageID].fullurl;
+
+                  pointerToThis.forceUpdate();
+                },
+              );
+          }
+        },
+      );
+  }
 
     changeWikiSearchTerms = (e) => {
       this.setState({
@@ -88,13 +90,13 @@ class WikiModal extends Component {
     }
 
     openAddNewNode = async (ev) => {
-      const { getChecked, wikiSearchReturnValues } = this.state;
+      const { getChecked } = this.state;
       if (getChecked === false) {
         return;
       }
-      const name = wikiSearchReturnValues[getChecked].queryResultPageTitle;
+      const name = this.state.wikiSearchReturnValues[this.state.getChecked].queryResultPageTitle;
 
-      const desc = wikiSearchReturnValues[0].queryResultPageSnippet;
+      const desc = this.state.wikiSearchReturnValues[0].queryResultPageSnippet;
 
       const contentUrl = Utils.wikiContentUrlByName(name);
 
@@ -103,7 +105,6 @@ class WikiModal extends Component {
       const wikiContentData = await Utils.getWikiContent(contentUrl);
 
       const wikiImageData = await Utils.getWikiImage(firstImageUrl);
-
 
       const abount = `<div>
 <strong class="tabHeader">About</strong><br>
@@ -142,10 +143,10 @@ https://en.wikipedia.org/wiki/${name}
     }
 
     render() {
-      const { getChecked, wikiSearchReturnValues, WikiSearchTerms } = this.state;
+      const { getChecked } = this.state;
       const wikiSearchResults = [];
 
-      for (const key3 in wikiSearchReturnValues) {
+      for (const key3 in this.state.wikiSearchReturnValues) {
         wikiSearchResults.push(
           <div className="wikiSearch" key={key3}>
             {key3 === getChecked
@@ -163,18 +164,18 @@ https://en.wikipedia.org/wiki/${name}
               <label className="pull-left" htmlFor={key3} />
             </div>
             <h3>
-              <a target="_blank" rel="noreferrer" href={wikiSearchReturnValues[key3].queryResultPageFullURL}>
-                {wikiSearchReturnValues[key3].queryResultPageTitle}
+              <a target="_blank" rel="noreferrer" href={this.state.wikiSearchReturnValues[key3].queryResultPageFullURL}>
+                {this.state.wikiSearchReturnValues[key3].queryResultPageTitle}
               </a>
             </h3>
             <span className="link">
-              <a target="_blank" rel="noreferrer" href={wikiSearchReturnValues[key3].queryResultPageFullURL}>
-                {wikiSearchReturnValues[key3].queryResultPageFullURL}
+              <a target="_blank" rel="noreferrer" href={this.state.wikiSearchReturnValues[key3].queryResultPageFullURL}>
+                {this.state.wikiSearchReturnValues[key3].queryResultPageFullURL}
               </a>
             </span>
             <p
               className="description"
-              dangerouslySetInnerHTML={{ __html: wikiSearchReturnValues[key3].queryResultPageSnippet }}
+              dangerouslySetInnerHTML={{ __html: this.state.wikiSearchReturnValues[key3].queryResultPageSnippet }}
             />
           </div>,
         );
@@ -191,7 +192,7 @@ https://en.wikipedia.org/wiki/${name}
             <img src={WikiImg} alt="wikipedia" className="wikipediaLogo" />
             <div className="Wiki">
               <form action="">
-                <input type="text" value={WikiSearchTerms || ''} onChange={this.changeWikiSearchTerms} placeholder="Search Wikipedia Articles" />
+                <input type="text" value={this.state.WikiSearchTerms || ''} onChange={this.changeWikiSearchTerms} placeholder="Search Wikipedia Articles" />
                 <button type="submit" onClick={this.useWikiSearchEngine}>Search</button>
               </form>
             </div>

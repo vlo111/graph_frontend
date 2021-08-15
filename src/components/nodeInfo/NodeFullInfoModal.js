@@ -7,7 +7,6 @@ import Modal from 'react-modal';
 import { Link, withRouter } from 'react-router-dom';
 import Button from '../form/Button';
 import NodeTabs from './NodeTabs';
-import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
 import ConnectionDetails from './ConnectionDetails';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import NodeImage from './NodeImage';
@@ -28,6 +27,9 @@ class NodeFullInfo extends Component {
 
   render() {
     const { node, singleGraph } = this.props;
+
+    const { nodesPartial, linksPartial, labels } = singleGraph;
+
     if (_.isEmpty(singleGraph)) {
       return null;
     }
@@ -68,7 +70,7 @@ class NodeFullInfo extends Component {
             </div>
           </div>
           <div className="right">
-            <ConnectionDetails nodeId={node.id} />
+            <ConnectionDetails labels={labels} nodes={nodesPartial} links={linksPartial} nodeId={node.id} />
           </div>
         </div>
       </Modal>

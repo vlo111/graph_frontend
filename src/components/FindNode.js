@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import memoizeOne from 'memoize-one';
 import Button from './form/Button';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import DragNDropSvg from '../assets/images/icons/drag-n-drop.gif';
@@ -10,7 +11,7 @@ import { setActiveButton, toggleNodeModal } from '../store/actions/app';
 import Input from './form/Input';
 import ChartUtils from '../helpers/ChartUtils';
 import Utils from '../helpers/Utils';
-import { getGraphNodesRequest, setGraphCustomFields } from '../store/actions/graphs';
+import { getGraphNodesRequest, getSingleGraphRequest, setGraphCustomFields } from '../store/actions/graphs';
 import Api from '../Api';
 import Chart from '../Chart';
 import circleImg from '../assets/images/icons/circle.svg';
@@ -21,13 +22,14 @@ import NodeIcon from './NodeIcon';
 class FindNode extends Component {
     static propTypes = {
       setActiveButton: PropTypes.func.isRequired,
+      getSingleGraphRequest: PropTypes.func.isRequired,
       getGraphNodesRequest: PropTypes.func.isRequired,
       activeButton: PropTypes.string.isRequired,
       graphNodes: PropTypes.array.isRequired,
       singleGraph: PropTypes.object.isRequired,
     }
 
-    componentDidMount() {
+    async componentDidMount() {
       document.addEventListener('mouseup', this.handleMouseUp);
       document.addEventListener('mousemove', this.handleMouseMove);
     }
@@ -187,12 +189,22 @@ class FindNode extends Component {
       });
     }
 
+    initialGraph = memoizeOne(async (graphId) => {
+      await this.props.getSingleGraphRequest(graphId, { full: true });
+    });
+
     render() {
       const { activeButton, graphNodes } = this.props;
 
       const {
         virtualPos, drag, showCompare, position, duplicateNode, overDrag, search,
       } = this.state;
+
+      if (activeButton === 'findNode') {
+        const { singleGraph } = this.props;
+
+        this.initialGraph(singleGraph.id);
+      }
 
       return (
         <>
@@ -205,7 +217,7 @@ class FindNode extends Component {
             <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
 
             <Input
-              label="Find Node"
+              label="Search"
               autoComplete="off"
               value={search}
               containerClassName="graphSearch"
@@ -266,6 +278,7 @@ class FindNode extends Component {
                         target="_blank"
                         href={`${window.location.href.substring(window.location.href.lastIndexOf('/'), 0)}/${graph.id}`}
                         className="findNodesTitle"
+                        rel="noreferrer"
                       >
                         {graph.title && graph.title.length > 12
                           ? `${graph.title.substr(0, 12)}... `
@@ -277,6 +290,7 @@ class FindNode extends Component {
                           target="_blank"
                           href={`${window.location.origin}/profile/${graph.userId}`}
                           title={node.userName}
+                          rel="noreferrer"
                         >
                           {node.userName && node.userName.length > 12
                             ? `${node.userName.substr(0, 12)}... `
@@ -317,6 +331,7 @@ const mapDispatchToProps = {
   setGraphCustomFields,
   toggleNodeModal,
   getGraphNodesRequest,
+  getSingleGraphRequest,
 };
 const Container = connect(
   mapStateToProps,

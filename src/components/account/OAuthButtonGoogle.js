@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { oAuthRequest } from '../../store/actions/account';
-import googleImg from '../../assets/images/icons/google.svg';
+import googleImg from '../../assets/images/icons/google.png';
 import { toast } from "react-toastify";
 
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;

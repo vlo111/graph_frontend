@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
 import { oAuthRequest } from '../../store/actions/account';
-import twitterImg from '../../assets/images/icons/twitter.svg';
+import twitterImg from '../../assets/images/icons/twitter.png';
 import Api from '../../Api';
 import Utils from '../../helpers/Utils';
 

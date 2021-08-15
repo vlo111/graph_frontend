@@ -5,19 +5,19 @@ import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
-import Chart from '../Chart';
-import ChartUtils from '../helpers/ChartUtils';
-import Outside from './Outside';
-import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
-import EditGraphModal from './chart/EditGraphModal';
-import SaveAsTempletModal from './chart/SaveasTampletModal';
-import CreateGraphModal from './CreateGraphModal';
-import Button from './form/Button';
-import Api from '../Api';
-import Input from './form/Input';
-import { setLoading } from '../store/actions/app';
-import { createGraphRequest } from '../store/actions/graphs';
-import { GRAPH_STATUS } from '../data/graph';
+import Chart from '../../Chart';
+import ChartUtils from '../../helpers/ChartUtils';
+import Outside from '../Outside';
+import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
+import EditGraphModal from '../chart/EditGraphModal';
+import SaveAsTempletModal from '../chart/SaveasTampletModal';
+import CreateGraphModal from '../CreateGraphModal';
+import Button from '../form/Button';
+import Api from '../../Api';
+import Input from '../form/Input';
+import { setLoading } from '../../store/actions/app';
+import { createGraphRequest } from '../../store/actions/graphs';
+import { GRAPH_STATUS } from '../../data/graph';
 
 const LIMIT = 3;
 const PAGE = 1;
@@ -25,7 +25,6 @@ const PAGE = 1;
 class GraphSettings extends Component {
     static propTypes = {
       singleGraph: PropTypes.object.isRequired,
-      userId: PropTypes.number.isRequired,
       setLoading: PropTypes.func.isRequired,
       history: PropTypes.object.isRequired,
 
@@ -140,7 +139,7 @@ class GraphSettings extends Component {
     }
 
     render() { 
-      const { singleGraph, userId } = this.props;
+      const { singleGraph } = this.props;
       const {showModal, showModalTemplet, search, graphList, requestData, showDropDown} = this.state;
       const nodes = Chart.getNodes();
       const isTemplate = singleGraph.status === 'template';
@@ -154,7 +153,7 @@ class GraphSettings extends Component {
             <div className="graphNname1">
 
               <span title={singleGraph.title} className="graphNames">
-                {singleGraph.title?.length > 16 ? `${singleGraph.title.substring(0, 16)}...` : singleGraph.title}
+                {singleGraph.title?.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
               </span>
               <span className="carret2">
                 <i className="fa fa-sort-down" />
@@ -168,7 +167,7 @@ class GraphSettings extends Component {
                   <span title={singleGraph.title} className="graphNames">
                     {singleGraph.title.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
                   </span>
-                  {userId == singleGraph.userId ? <Button icon={<EditSvg />} className="EditGraph" onClick={() => this.toggleModal(true)} /> : ''}
+                  <Button icon={<EditSvg />} className="EditGraph" onClick={() => this.toggleModal(true)} />
                 </div>
 
                 <div>
@@ -235,7 +234,6 @@ class GraphSettings extends Component {
 
 const mapStateToProps = (state) => (
   {
-    userId: state.account.myAccount.id,
     singleGraph: state.graphs.singleGraph,
   });
 

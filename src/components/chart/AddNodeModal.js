@@ -144,12 +144,22 @@ class AddNodeModal extends Component {
         nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
 
+        const description = {
+          name: '_description',
+          subtitle: '',
+          value: '',
+        };
+
         if (!_.isEmpty(nodeData.customFields)) {
-          this.props.updateNodesCustomFieldsRequest(graphId, [{
-            id: nodeData.id,
-            customFields: nodeData.customFields,
-          }]);
+          nodeData.customFields.push(description);
+        } else {
+          nodeData.customFields = [description];
         }
+
+        this.props.updateNodesCustomFieldsRequest(graphId, [{
+          id: nodeData.id,
+          customFields: nodeData.customFields,
+        }]);
       }
 
       Chart.render({ nodes });
@@ -419,7 +429,7 @@ class AddNodeModal extends Component {
                 <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
                   Cancel
                 </Button>
-                <Button className="ghButton accent alt main main" type="submit">
+                <Button className="alt main" type="submit">
                   {_.isNull(index) ? 'Add' : 'Save'}
                 </Button>
               </div>

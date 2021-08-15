@@ -23,7 +23,7 @@ class NodeIcon extends Component {
   render() {
     const { error } = this.state;
     const { node, searchIcon } = this.props;
-    const showIcon = node.icon && !error;
+    const showIcon = node?.icon && !error;
     return (
       <span
         className={`nodeIcon ${node.nodeType} ${showIcon ? 'hasImage' : ''} ${searchIcon ? 'searchIcon' : ''}`}
