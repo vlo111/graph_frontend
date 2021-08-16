@@ -5,7 +5,7 @@ import { setLegendButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs'; 
 import ChartUtils from '../helpers/ChartUtils';
 import { ReactComponent as DownSvg } from '../assets/images/icons/down.svg';
-
+import { ReactComponent as Arrow } from '../assets/images/arrow.svg';
 class Legend extends Component {
     static propTypes = {
       showLegendButton: PropTypes.string.isRequired,
@@ -14,9 +14,7 @@ class Legend extends Component {
     }
 
     handleClick = () => {
-      const { showLegendButton } = this.props;
-      const { singleGraph } = this.state;
-
+      const { showLegendButton, singleGraph } = this.props; 
       if (showLegendButton !== 'show') {
         this.props.setLegendButton('show');
 
@@ -56,7 +54,7 @@ class Legend extends Component {
           <button className="dropdown-btn legendButton" onClick={() => this.handleClick()}>
             Legends
             <div className="carretNew">
-              <DownSvg />
+              <Arrow />
             </div>
           </button>
           <div className="dropdown">
