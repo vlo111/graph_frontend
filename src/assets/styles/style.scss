@@ -5253,6 +5253,9 @@ body .gh__menu {
 
     .dropdown {
       display: block;
+	  position: fixed;
+      width: 200px;
+      top: 75px;
     }
   }
 
