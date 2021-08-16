@@ -352,8 +352,7 @@ class SearchModal extends Component {
     }
     const nodeInDom = Chart.getNodes().find(nd => nd.id === node.id)
     ChartUtils.findNodeInDom(nodeInDom)
-  }
-  }
+  } 
 
   render() {
     const { nodes, tabs, search, docs, keywords, checkBoxValues } = this.state;
