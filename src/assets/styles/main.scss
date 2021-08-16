@@ -8290,6 +8290,8 @@ img.preview-scaled {
 
   ul {
     list-style: none;
+    height: 300px;
+    overflow: auto;
   }
 
   &.open {
@@ -8720,7 +8722,6 @@ img.preview-scaled {
   line-height: 14px;
   color: #9F9F9F;
   margin-right: 30px;
-  border-top:0 !important;
   background-color: white;
 
   &__item-right {
