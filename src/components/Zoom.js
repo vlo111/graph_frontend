@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Icon from './form/Icon';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
 import { toggleGraphMap } from '../store/actions/app';
-import ReactChartMapSvg from './chart/ReactChartMapSvg';
+import ReactChartMap from './chart/ReactChartMap';
 import { ReactComponent as FullScreenSvg } from '../assets/images/icons/full-screen.svg';
 import { ReactComponent as FullScreenCloseSvg } from '../assets/images/icons/full-screen-close.svg';
 import { ReactComponent as ScaleSvg } from '../assets/images/icons/scale-to-full.svg';
@@ -19,6 +20,10 @@ class Zoom extends Component {
       zoom: 100,
       fullScreen: false,
     };
+  }
+
+  static propTypes = {
+    activeButton: PropTypes.string.isRequired,
   }
 
   componentDidMount() {
@@ -44,17 +49,22 @@ class Zoom extends Component {
     if (width && Chart.svg) {
       Chart.event.removeListener('render', this.autoScale);
 
-      const LEFT_PADDING = 201;
-      const RIGHT_PADDING = 75;
+      const mode = this.props.activeButton;
+
+      const LEFT_PADDING = mode === 'view' ? 0 : 201;
+      const TOP_PADDING = mode === 'view' ? 5 : 75;
+
+      const graphHeight = document.querySelector('#graph svg')
+        .getBoundingClientRect().height;
 
       const scaleW = (window.innerWidth - LEFT_PADDING) / width;
-      const scaleH = (window.innerHeight - RIGHT_PADDING) / height;
+      const scaleH = (graphHeight - TOP_PADDING) / height;
       const scale = Math.min(scaleW, scaleH, 1);
       let left = min[0] * scale * -1 + LEFT_PADDING;
-      let top = min[1] * scale * -1 + RIGHT_PADDING;
+      let top = min[1] * scale * -1 + TOP_PADDING;
 
       left += ((window.innerWidth - LEFT_PADDING) - (scale * width)) / 2;
-      top += ((window.innerHeight - RIGHT_PADDING) - (scale * height)) / 2;
+      top += ((graphHeight - TOP_PADDING) - (scale * height)) / 2;
       Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(scale));
     }
   }
@@ -120,6 +130,7 @@ class Zoom extends Component {
   toggleGraphMap = () => {
     const { showMap } = this.state;
     this.setState({ showMap: !showMap });
+    this.props.toggleGraphMap(showMap)
   }
 
   toggleFullScreen = async () => {
@@ -157,12 +168,13 @@ class Zoom extends Component {
 
   render() {
     const { showMap, zoom, fullScreen } = this.state;
+    const { showGraphMap } = this.props
     return (
       <>
-        <div className={`graphControlPanel ${showMap ? 'shoMap' : ''} ${fullScreen ? 'fullScreen' : ''}`}>
-          {showMap ? (
+        <div className={`graphControlPanel ${showGraphMap ? 'showMap' : ''} ${fullScreen ? 'fullScreen' : ''}`}>
+          {showGraphMap ? (
             <div className="reactChartMapWrapper">
-              <ReactChartMapSvg />
+              <ReactChartMap />
             </div>
           ) : null}
           <div className="buttons">
@@ -188,6 +200,7 @@ class Zoom extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  activeButton: state.app.activeButton,
   showGraphMap: state.app.showGraphMap,
   singleGraph: state.graphs.singleGraph,
 });
