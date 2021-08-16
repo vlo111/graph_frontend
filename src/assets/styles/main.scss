@@ -3914,26 +3914,34 @@ body .gh__menu {
 }
 
 .connectionDetails {
-  padding: 0 10%;
-  margin-top: -40px;
+  padding: 0 46px;
 
   .row {
     flex-direction: column;
     margin-left: 0;
     margin-right: 0;
 
-    h3 {
-      font-weight: 600;
-      font-size: 16px;
+    details {
       padding-bottom: 16px;
-      border-bottom: 1px solid $color-light-gray;
       margin: 20px 0;
+
+      summary {
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        width: 170px;
+
+        &::marker {
+          color: $color-main;
+        }
+      }
     }
 
     .list {
       overflow-x: hidden;
       overflow-y: auto;
       height: 150px;
+      margin-top: 20px;
 
       .item {
         margin-bottom: 30px;
@@ -3961,6 +3969,10 @@ body .gh__menu {
           .type {
             font-size: 14px;
           }
+        }
+
+        &:last-child {
+          margin-bottom: 10px;
         }
       }
     }
@@ -6392,7 +6404,7 @@ img.preview-scaled {
 
 #nodeResizeIcons {
   .square {
-    fill: #FFFFFF;
+    fill: red;
     stroke: #0D0905;
     cursor: pointer;
 

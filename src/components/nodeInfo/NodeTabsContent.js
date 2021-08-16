@@ -38,8 +38,10 @@ class NodeTabsContent extends Component {
   })
 
   expand = () => {
+    const { expandNode } = this.state;
+
     this.setState({
-      expandNode: true,
+      expandNode: !expandNode,
     });
   }
 
@@ -113,7 +115,7 @@ class NodeTabsContent extends Component {
               </div>
             </div>
           )}
-        {expandNode && <NodeExpand />}
+        {expandNode && <NodeExpand html={html} name={name} onClose={this.expand} />}
       </div>
     );
   }

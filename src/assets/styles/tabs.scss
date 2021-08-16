@@ -203,10 +203,10 @@
       .contentWrapper {
         box-shadow: 0px -25px 25px -28px rgb(0 0 0 / 10%);
         padding: 50px 4% 0;
-        height: 340px;
         margin-top: -10px;
         background: white;
         z-index: 11111;
+        height: 290px;
 
         .content {
           overflow-x: hidden;
@@ -230,7 +230,7 @@
         .no-tabs {
           display: flex;
           justify-content: center;
-          height: 330px;
+          height: 280px;
 
           .no-tab-content {
             display: block;
@@ -316,12 +316,11 @@
   z-index: 101 !important;
 
   .ghModal {
-    top: 5% !important;
-    width: 77%;
-    height: 90%;
-    max-height: 90% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
+    width: 95%;
+    max-width: 95%;
+    top: 5%;
+    height: 100%;
+    max-height: 90%;
   }
 
   .ghModalContent {
@@ -357,7 +356,7 @@
     .connectionDetails {
       padding: 0;
 
-      h3 {
+      details {
         margin-top: 0;
       }
     }
@@ -659,4 +658,76 @@
 .tab-data-hover {
   max-width: 130px;
   padding: 2px;
+}
+
+.expandTabNode {
+  top: 5% !important;
+  width: 87.6%;
+  height: 90%;
+  max-height: 90% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+
+  .tab-expand-node {
+    display: block;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+
+    .header {
+      width: 100%;
+      height: 112px;
+    }
+
+    .name {
+      position: absolute;
+      color: $color-white;
+      font-style: normal;
+      font-size: 36px;
+      line-height: 49px;
+      margin: 30px 60px;
+    }
+
+    .info {
+      position: absolute;
+      color: $color-white;
+      display: block;
+      right: 65px;
+      top: 50px;
+
+      * {
+        text-align: right;
+        margin-bottom: 6px;
+        margin-top: 5px;
+        font-size: 15px;
+      }
+    }
+
+    .container {
+      border-radius: 5px;
+      background-color: $color-white;
+
+      .content {
+        padding: 10px 60px;
+        height: 700px;
+        overflow: auto;
+      }
+    }
+  }
+
+  .close {
+    margin-right: 50px;
+    margin-top: 10px;
+
+    svg {
+      width: 30px !important;
+      height: 20px !important;
+
+      path {
+        fill: $color-white !important;
+      }
+    }
+  }
 }
