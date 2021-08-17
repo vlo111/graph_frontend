@@ -1617,7 +1617,7 @@ p {
       margin-top: 45px;
     }
 
-    .graphinputName{
+    .graphInputName{
       border:none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
@@ -4719,6 +4719,9 @@ body .gh__menu {
 
     .delete {
       opacity: 1;
+      path {
+        fill: rgb(184, 3, 3)
+      }
     }
   }
 

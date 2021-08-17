@@ -24,6 +24,7 @@ import ChartUtils from '../../helpers/ChartUtils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import 'rc-switch/assets/index.css';
 import ImageUploader from '../ImageUploader'
+import Api from '../../Api';
 
 class EditGraphModal extends Component {
   static propTypes = {
@@ -41,7 +42,7 @@ class EditGraphModal extends Component {
 
   initValues = memoizeOne((singleGraph) => {
     const {
-      title, description, status, publicState,
+      title, description, status, publicState, defaultImage
     } = singleGraph;
 
     this.setState({
@@ -50,8 +51,9 @@ class EditGraphModal extends Component {
         description,
         publicState,
         status: status === 'template' ? 'active' : status,
+        userImage: defaultImage
       },
-      image: ''
+      image: '',
     });
   })
 
@@ -64,6 +66,7 @@ class EditGraphModal extends Component {
         status: 'active',
         publicState: false,
         disabled: false,
+        userImage: false
       },
     };
   }
@@ -78,22 +81,27 @@ class EditGraphModal extends Component {
     } catch (e) {}
   }
 
-  onChange = (value, event) => {
+  onChange = (value) => {
     const { requestData } = this.state;
     _.set(requestData, 'publicState', value);
     this.setState({ requestData });
   }
 
   saveGraph = async (status, forceCreate) => {
-    const { requestData, image } = this.state;
+    let { requestData, image } = this.state;
     const { match: { params: { graphId } } } = this.props;
 
     this.props.setLoading(true);
     const labels = Chart.getLabels();
     const svg = ChartUtils.getChartSvg();
     let resGraphId;
+    
     if (image) {
-      const userEdited = true
+      let userEdited = true
+      if (typeof(image) === 'string') {
+        image = svg
+        userEdited = false
+      }
       await this.props.updateGraphThumbnailRequest(graphId, image, 'medium', userEdited)
     }
     if (forceCreate || !graphId) {
@@ -131,11 +139,14 @@ class EditGraphModal extends Component {
     if (path == 'image') {
       if (value == '') {
         const svg = ChartUtils.getChartSvg();
-        await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+        _.set(requestData, 'userImage', false);
+        let savedImageRequest = await Api.updateGraphThumbnail(graphId, svg, "small", "tmp")
+        const image = savedImageRequest?.data?.thumbUrl + `?t=${moment(graph.updatedAt).unix()}`
+        this.setState({[path]: image})
+      } else {
+        this.setState({ [path]: value})
+        _.set(requestData, 'userImage', true);
       }
-      this.setState({ [path]: value})
-      _.set(requestData, 'defaultImage', true);
-
     } else {
       _.set(requestData, path, value);
       this.setState({ requestData });
@@ -167,13 +178,14 @@ class EditGraphModal extends Component {
             <ImageUploader
               className="thumbnailSave"
               value={image || `${singleGraph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
+              userImage={ requestData.userImage }
               onChange={(val) => this.handleChange('image', val)}
             />
 
           </div>
           <div className="impData">
             <Input
-              className="graphinputName"
+              className="graphInputName"
               value={requestData.title}
               onChangeText={(v) => this.handleChange('title', v)}
             />
