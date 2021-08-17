@@ -34,7 +34,7 @@ class Home extends Component {
         <div className={`graphsList ${!graphsList.length ? 'empty' : ''}`}>
           {s ? (
             <h2 className="searchResult">
-              {'Search Result for: '}
+              {'Search Result forss: '}
               <span>{s}</span>
             </h2>
           ) : null}
