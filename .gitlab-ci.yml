@@ -3,7 +3,7 @@
 production_job:
     stage: deploy
     only:
-      - graph-save
+      - master
 
     before_script:
         # Generate SSH Key
@@ -13,8 +13,8 @@ production_job:
         - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
     script:
-      - bash .deploy-production_v2.sh
+      - bash .production.sh
 
     environment:
-      name: production_v2
+      name: production
       url: https://araks.analysed.ai/
