@@ -341,13 +341,12 @@ class AutoSave extends Component {
     res.forEach( async (d) => {
       if (d?.payload?.data?.status !== 'ok') {
         toast.error('Graph save error');
-        return 
-      } else if (!_.isEmpty(d.payload.data.error)) {
+      } 
+      if (!_.isEmpty(d?.payload?.data?.error)) {
         toast.error('Something went wrong');
-        return
-      } else {
-        await this.props.getSingleGraphRequest(graphId)
-      }
+      }  
+      await this.props.getSingleGraphRequest(graphId)
+       
     });
     document.body.classList.remove('autoSave');
   }
