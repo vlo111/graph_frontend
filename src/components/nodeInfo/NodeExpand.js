@@ -4,7 +4,7 @@ import { ReactComponent as TabExpandSvg } from '../../assets/images/icons/tab_ex
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
 
-const NodeExpand = ({html, name, onClose}) => (
+const NodeExpand = ({ html, name, onClose }) => (
   <Modal
     className="ghModal expandTabNode"
     overlayClassName="ghModalOverlay"
@@ -20,9 +20,9 @@ const NodeExpand = ({html, name, onClose}) => (
       <div className="header">
         <TabExpandSvg />
       </div>
-        <div className="container">
-            <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
-        </div>
+      <div className="container">
+        <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
+      </div>
     </div>
   </Modal>
 );

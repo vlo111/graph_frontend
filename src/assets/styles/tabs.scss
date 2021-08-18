@@ -208,6 +208,19 @@
         z-index: 11111;
         height: 290px;
 
+        .container {
+          height: 100%;
+          box-shadow: 0 5px 12px rgb(226 231 235 / 16%);
+          border: 1px solid #e2e7eb;
+          border-radius: 3px;
+          padding: 39px 4% 31px;
+          max-height: 380px;
+          position: relative;
+          z-index: 1;
+          display: flex;
+          margin: 0 10px;
+        }
+
         .content {
           overflow-x: hidden;
           overflow-y: auto;
@@ -582,6 +595,8 @@
   max-width: unset !important;
   padding: 1.6% 2.1% !important;
   min-width: 920px;
+  height: 80%;
+  top: 10%;
 
   .row {
     display: flex;
@@ -601,7 +616,7 @@
   .buttonsWrapper {
     display: flex;
     justify-content: center;
-    margin-top: 35px;
+    margin-top: 100px;
 
     button {
       margin-right: 40px !important;

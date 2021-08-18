@@ -98,7 +98,12 @@ class NodeTabsContent extends Component {
           </div>
           )}
         </div>
-        {html ? <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
+
+        {html ? (
+          <div className="container">
+            <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
+          </div>
+        )
           : (
             <div className="no-tabs">
               <div className="no-tab-content">
