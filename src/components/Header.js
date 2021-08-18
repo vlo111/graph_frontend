@@ -31,7 +31,7 @@ class Header extends Component {
             </Button>
 
             <Button color="accent" onClick={this.compareGraph}>
-              Compare graphs
+              Compare graphs  eee
             </Button>
 
           </div>
