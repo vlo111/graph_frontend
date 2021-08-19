@@ -191,6 +191,7 @@ export default function reducer(state = initialState, action) {
     }
 
     case GET_SINGLE_GRAPH.FAIL: {
+      Chart.loading(false)
       return {
         ...state,
         singleGraphStatus: 'fail',

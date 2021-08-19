@@ -64,11 +64,10 @@ class ReactChart extends Component {
 
     Chart.event.on('folder.open', this.handleFolderOpen);
     Chart.event.on('folder.close', this.handleFolderClose);
-    Chart.loading(false);
-    
+
     // if zoom level is auto of range given in Chart zoom scaleExtent this function will prevent default zoom
-    document.getElementsByClassName('graphWrapper')[0].addEventListener('wheel', this.handleWheel)
-    document.getElementsByClassName('graphWrapper')[0].addEventListener('mousewheel', this.handleWheel)
+    document.getElementsByClassName('graphWrapper')[0].addEventListener('wheel', this.handleWheel);
+    document.getElementsByClassName('graphWrapper')[0].addEventListener('mousewheel', this.handleWheel);
   }
 
   componentWillUnmount() {
@@ -79,9 +78,9 @@ class ReactChart extends Component {
     ContextMenu.event.removeListener('link.delete', this.deleteLink);
     ContextMenu.event.removeListener('label.delete', this.handleLabelDelete);
     ContextMenu.event.removeListener('node.create', this.addNewNode);
-    
-    document.getElementsByClassName('graphWrapper')[0].removeEventListener('wheel', this.handleWheel)
-    document.getElementsByClassName('graphWrapper')[0].removeEventListener('mousewheel', this.handleWheel)
+
+    document.getElementsByClassName('graphWrapper')[0].removeEventListener('wheel', this.handleWheel);
+    document.getElementsByClassName('graphWrapper')[0].removeEventListener('mousewheel', this.handleWheel);
   }
 
   handleWheel = (ev) => {
