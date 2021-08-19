@@ -117,10 +117,20 @@ class HeaderMini extends Component {
     const tableElement = document.getElementById('nodeFullInfo');
     const closeTabElement = document.getElementsByClassName('close')[0];
     const commentModalElement = document.getElementsByClassName('tabComment')[0];
+    const historyElement = document.getElementsByClassName('history')[0];
+    const buttonsElement = document.getElementsByClassName('bottom-icons')[0];
+    const footerLinkElement = document.getElementsByClassName('footer-link')[0];
+    const headerElement = document.getElementById('headerMini');
 
     if (showNodeComment) {
       tableElement.style.width = '500px';
       closeTabElement.style.display = 'none';
+      footerLinkElement.style.display = 'none';
+      historyElement.style.right = '19px';
+      historyElement.style.top = '200px';
+      buttonsElement.style.bottom = '45px';
+      buttonsElement.style.bottom = '45px';
+      headerElement.style.height = '380px';
 
       this.closeComment(showNodeComment);
     } else {
@@ -128,12 +138,18 @@ class HeaderMini extends Component {
       commentModalElement.style.transition = 'all 0.5s ease-in-out 0s';
       commentModalElement.style.transformOrigin = 'right top';
       commentModalElement.style.transform = 'scaleX(0)';
+      headerElement.style.height = '330px';
 
       setTimeout(() => {
         tableElement.style.width = '45%';
       }, 400);
 
       setTimeout(() => {
+        buttonsElement.style.bottom = '30px';
+        historyElement.style.right = '60px';
+        historyElement.style.top = '40px';
+        footerLinkElement.style.display = 'flex';
+
         this.closeComment(showNodeComment);
       }, 700);
     }

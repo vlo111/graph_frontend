@@ -4213,7 +4213,6 @@ body .gh__menu {
 
       &--reply {
         background-color: #f7f7fb;
-        margin: 0 13px 9px 0;
         padding-left: 61px;
         border-radius: 3px;
         font-family: chaparral-pro, serif;
@@ -4312,6 +4311,10 @@ body .gh__menu {
         fill: #707070 !important;
       }
     }
+  }
+
+  .jodit-workplace {
+    min-height: 50px !important;
   }
 }
 
