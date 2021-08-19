@@ -13,6 +13,7 @@ import Api from '../../Api';
 import Utils from '../../helpers/Utils';
 import Editor from '../form/Editor';
 import TabSaveModal from './TabSaveModal';
+import Chart from '../../Chart';
 
 class NodeTabsFormModal extends Component {
   static propTypes = {
@@ -220,7 +221,16 @@ class NodeTabsFormModal extends Component {
           subtitle: tabData.subtitle,
         };
 
-        if (!isUpdate) {
+        if (tabData.name === '_description') {
+          const nodes = Chart.getNodes();
+
+          nodes.map((p) => {
+            if (p.id === node.id) {
+              p.description = data.value;
+            }
+          });
+          Chart.render({ nodes });
+        } else if (!isUpdate) {
           customFields.push(data);
 
           const { fileData, files } = this.getFileFromTab(customFields[customFields.length - 1]);
@@ -243,7 +253,7 @@ class NodeTabsFormModal extends Component {
           }
         }
 
-        this.props.setActiveTab(tabData.name === 'description' ? '_description' : tabData.name);
+        this.props.setActiveTab(tabData.name);
         this.props.onClose(data);
       } else {
         this.setState({

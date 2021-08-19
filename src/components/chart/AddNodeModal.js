@@ -143,23 +143,6 @@ class AddNodeModal extends Component {
         nodeData.createdAt = moment().unix();
         nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
-
-        const description = {
-          name: '_description',
-          subtitle: '',
-          value: '',
-        };
-
-        if (!_.isEmpty(nodeData.customFields)) {
-          nodeData.customFields.push(description);
-        } else {
-          nodeData.customFields = [description];
-        }
-
-        this.props.updateNodesCustomFieldsRequest(graphId, [{
-          id: nodeData.id,
-          customFields: nodeData.customFields,
-        }]);
       }
 
       Chart.render({ nodes });

@@ -142,6 +142,7 @@ class NodeTabs extends Component {
 
   render() {
     const { activeTab, formModalOpen } = this.state;
+
     const {
       nodeId, editable, nodeCustomFields,
     } = this.props;
@@ -150,6 +151,13 @@ class NodeTabs extends Component {
     this.setFirstTab();
 
     this.setDocumentsPath();
+
+    if (!_.isNull(formModalOpen)) {
+      nodeCustomFields[0] = {
+        value: node.description,
+        name: '_description',
+      };
+    }
 
     return (
       <div className="nodeTabs">
