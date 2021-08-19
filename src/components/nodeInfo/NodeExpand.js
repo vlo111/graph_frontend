@@ -12,7 +12,7 @@ const NodeExpand = ({ html, name, onClose }) => (
   >
     <Button color="transparent" className="close" icon={<CloseSvg />} onClick={onClose} />
     <div className="tab-expand-node">
-      <strong className="name">{name}</strong>
+      <strong className="name">{name === '_description' ? 'Description' : name }</strong>
       <div className="info">
         <p className="create-by">Created by: Grig Melkonyan</p>
         <p className="create-data">12/03/2021</p>

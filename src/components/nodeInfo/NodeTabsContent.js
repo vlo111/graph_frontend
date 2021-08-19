@@ -72,7 +72,7 @@ class NodeTabsContent extends Component {
     return (
       <div data-field-name={!node.sourceId ? name : ''} className="contentWrapper">
         <div className="tab-data-settings">
-          {html && (
+          {(html || node.description) && (
           <Button
             icon={<EditSvg />}
             title="Edit"
@@ -92,34 +92,44 @@ class NodeTabsContent extends Component {
             Delete
           </Button>
           )}
-          {html && (
+          {(html || node.description) && (
           <div onClick={this.expand} className="expand">
             <ExpandTabSvg />
           </div>
           )}
         </div>
 
-        {html ? (
-          <div className="container">
-            <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
-          </div>
-        )
-          : (
-            <div className="no-tabs">
-              <div className="no-tab-content">
-                <div className="header">
-                  {(activeTab === '_description') && <p className="description">Description</p>}
-                  <NoTabSvg />
-                  {activeTab !== '_description' ? <p className="no-data">You have no data yet</p>
-                    : <p className="no-data">You have no description yet</p> }
-                </div>
-                <div onClick={(ev) => this.props.openAddTabModal(ev, activeTab)} className="footer">
-                  <AddTabSvg />
-                  <p className="create-tab">Create</p>
+        {(activeTab === '_description' && node.description) ? <div />
+          : <div />}
+
+        {((activeTab === '_description') && node.description)
+          ? (
+            <div>
+              <div className="content" dangerouslySetInnerHTML={{ __html: node.description }} />
+            </div>
+          )
+          : html ? (
+            <div className="container">
+              <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
+            </div>
+          )
+            : (
+              <div className="no-tabs">
+                <div className="no-tab-content">
+                  <div className="header">
+                    {(activeTab === '_description') && <p className="description">Description</p>}
+                    <NoTabSvg />
+                    {activeTab !== '_description' ? <p className="no-data">You have no data yet</p>
+                      : <p className="no-data">You have no description yet</p>}
+                  </div>
+                  <div onClick={(ev) => this.props.openAddTabModal(ev, activeTab)} className="footer">
+                    <AddTabSvg />
+                    <p className="create-tab">Create</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+
         {expandNode && <NodeExpand html={html} name={name} onClose={this.expand} />}
       </div>
     );
