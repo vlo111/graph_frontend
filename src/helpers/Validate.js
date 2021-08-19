@@ -4,7 +4,7 @@ import CustomFields from './CustomFields';
 import ChartUtils from './ChartUtils';
 
 class Validate {
-  static nodeName(val, update, nodes) {
+  static nodeName(val, update, nodes = []) {
     const value = (val || '').trim();
     let error = null;
     if (!value) {
