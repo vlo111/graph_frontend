@@ -30,7 +30,7 @@ class SearchModal extends Component {
     this.state = {
       nodes: [],
       tabs: [],
-      search: s || "",
+      search: "",
       docs: [],
       keywords: [],
       checkBoxValues: {
@@ -167,8 +167,7 @@ class SearchModal extends Component {
         tabArray = groupBy(tabs, "nodeId") ?? [];
       }
     } catch (e) {}
-    
-    this.setState({ nodes, search, tabs: tabArray, docs, keywords });
+    this.setState({ nodes, tabs: tabArray, docs, keywords });
     this.props.toggleGraphMap(true)
   };
 
