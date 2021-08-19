@@ -7,8 +7,8 @@ import {
 const initialState = { 
   singleNodeHistory: [], 
   singleGraphHistory: [], 
-  nodePositionCount: null,
-  nodeTabsViewCount: null,
+  nodePositionCount: 0,
+  nodeTabsViewCount: 0,
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -17,8 +17,8 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         singleNodeHistory: [],
-        nodePositionCount: '',
-        nodeTabsViewCount: '',
+        nodePositionCount: 0,
+        nodeTabsViewCount: 0,
       };
     }
     case NODE_HISTORY.SUCCESS: {
