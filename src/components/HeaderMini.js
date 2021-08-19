@@ -225,27 +225,27 @@ class HeaderMini extends Component {
                 : node.type}
             </h3>
           </div>
-          {/* <div className="info-data"> */}
-          {/*  <div className="text-block"> */}
-          {/*    <p>Total change acctions:</p> */}
-          {/*    <p>Change position count:</p> */}
-          {/*    <p>Tabs view count:</p> */}
-          {/*    <p>Created by:</p> */}
-          {/*  </div> */}
-          {/*  <div className="data-block"> */}
-          {/*    /!*<p>{nodeHistory.length}</p>*!/ */}
-          {/*    <p>0</p> */}
-          {/*    /!* <p>{ nodePositionCount }</p> *!/ */}
-          {/*    /!* <p>{ nodeTabsViewCount }</p> *!/ */}
-          {/*    <p>0</p> */}
-          {/*    <p>0</p> */}
-          {/*    <p> */}
-          {/*      {firstName} */}
-          {/*      {' '} */}
-          {/*      {lastName} */}
-          {/*    </p> */}
-          {/*  </div> */}
-          {/* </div> */}
+           <div className="history">
+            <div className="text-block">
+              <p>Total change acctions:</p>
+              <p>Change position count:</p>
+              <p>Tabs view count:</p>
+              <p>Created by:</p>
+            </div>
+            <div className="data-block">
+              {/*<p>{nodeHistory.length}</p>*/}
+              <p>0</p>
+              {/* <p>{ nodePositionCount }</p> */}
+              {/* <p>{ nodeTabsViewCount }</p> */}
+              <p>0</p>
+              <p>0</p>
+              <p>
+                Armen
+                {' '}
+                Surname
+              </p>
+            </div>
+           </div>
         </div>
 
         <div className="footer-link">

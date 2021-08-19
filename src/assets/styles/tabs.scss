@@ -40,11 +40,14 @@
       grid-template-columns: 300px 30%;
       margin-top: 20px;
 
-      .info-data {
+      .history {
         display: flex;
         justify-content: space-around;
         align-items: flex-end;
         margin-bottom: 50px;
+        position: absolute;
+        right: 40px;
+        top: 60px;
       }
 
       .text-block, .data-block {
@@ -57,6 +60,10 @@
           letter-spacing: 0.055em;
           color: $color-passive
         }
+      }
+
+      .text-block {
+        margin-right: 25px;
       }
 
       .data-block > p {
@@ -129,7 +136,7 @@
         font-weight: normal;
         font-size: 14px;
         line-height: 14px;
-        color: #545454;
+        color: $color-passive;
       }
     }
 
