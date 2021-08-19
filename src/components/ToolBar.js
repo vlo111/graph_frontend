@@ -151,10 +151,7 @@ class ToolBar extends Component {
 
         {graphId && <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>}
         </div>
-        <div className="bottom helpWrapper">
-          <Button icon={<InfoSvg />}>
-            Help
-          </Button>
+        <div className="bottom helpWrapper"> 
         </div>
         <AnalyseModal />
       </div>
