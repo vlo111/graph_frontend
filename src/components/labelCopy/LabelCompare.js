@@ -145,7 +145,7 @@ class LabelCompare extends Component {
               );
             })}
           </ul>
-          <Button onClick={this.handleSubmit} className="ghButton accent alt main main" type="submit">
+          <Button onClick={this.handleSubmit} className="alt main" type="submit">
             Save
           </Button>
         </div>

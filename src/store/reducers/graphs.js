@@ -22,7 +22,8 @@ import {
   SET_ACTIVE_TAB,
   GET_NODE_CUSTOM_FIELDS,
   GET_GRAPH_INFO,
-  ACTIVE_MOUSE_TRACKER
+  ACTIVE_MOUSE_TRACKER,
+  UPDATE_GRAPH_THUMBNAIL
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -72,6 +73,13 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         customFields,
+      };
+    }
+    case UPDATE_GRAPH_THUMBNAIL.SUCCESS: {
+      const { thumbUrl } = action.payload.data;
+      state.singleGraph.thumbnail = thumbUrl;
+      return {
+        ...state,
       };
     }
     case CONVERT_GRAPH.REQUEST: {
@@ -191,6 +199,7 @@ export default function reducer(state = initialState, action) {
     }
 
     case GET_SINGLE_GRAPH.FAIL: {
+      Chart.loading(false)
       return {
         ...state,
         singleGraphStatus: 'fail',

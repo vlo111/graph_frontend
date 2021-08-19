@@ -22,7 +22,7 @@ import Api from '../../Api';
 import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
 import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
 import markerImg from '../../assets/images/icons/marker.svg';
-import delImg from '../../assets/images/icons/del.gif';
+import delImg from '../../assets/images/icons/del.gif'; 
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 import NoImg from '../../assets/images/image-not-available.png';
@@ -101,8 +101,8 @@ class AddNodeModal extends Component {
 
   saveNode = async (ev) => {
     ev.preventDefault();
-    this.setState({ loading: true });
-    const { currentUserId, graphId, graphNodes } = this.props;
+    this.setState({loading: true});
+    const {currentUserId, graphId, graphNodes} = this.props;
     const {
       nodeData, index, nodeId, imgUrl,
     } = this.state;
@@ -429,7 +429,7 @@ class AddNodeModal extends Component {
                 <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
                   Cancel
                 </Button>
-                <Button className="ghButton accent alt main main" type="submit">
+                <Button className="alt main" type="submit">
                   {_.isNull(index) ? 'Add' : 'Save'}
                 </Button>
               </div>

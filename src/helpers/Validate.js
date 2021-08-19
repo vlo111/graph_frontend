@@ -46,7 +46,7 @@ class Validate {
     const value = (val || '').trim();
     let error = null;
     if (ChartUtils.nodeColorObj[type] !== val && Object.entries(ChartUtils.nodeColorObj).find(([t, c]) => value === c)) {
-      error = 'Already exists';
+      error = 'Already exists'; // type with this color already exists
     }
     return [error, value];
   }

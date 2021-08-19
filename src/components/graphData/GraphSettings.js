@@ -72,6 +72,7 @@ class GraphSettings extends Component {
     }
 
     graphSearch = async (e = null) => {
+      const { match: { params: { graphId } } } = this.props;
       const search = e === null ? '' : e.target.value;
       this.setState({ search });
       const result = await Api.getGraphsList(PAGE, {
@@ -79,6 +80,7 @@ class GraphSettings extends Component {
         s: search,
         limit: search === '' ? LIMIT : undefined,
         graphName: 'true',
+        graphId
       });
 
       const graphList = result?.data?.graphs;

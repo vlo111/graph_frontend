@@ -116,7 +116,7 @@ class ImportStep2 extends Component {
           <Button className="ghButton cancel transparent alt" onClick={this.back}>
             Prev
           </Button>
-          <Button className="ghButton accent alt main" onClick={this.import}>Import</Button>
+          <Button className="alt main" onClick={this.import}>Import</Button>
         </div>
       </>
     );

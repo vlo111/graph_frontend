@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Modal from 'react-modal';
+// import SVG, { Props as SVGProps } from 'react-inlinesvg';
+
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -23,6 +25,8 @@ import { setActiveButton, setLoading } from '../../store/actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import 'rc-switch/assets/index.css';
+import ImageUploader from '../ImageUploader'
+import Api from '../../Api';
 
 class EditGraphModal extends Component {
   static propTypes = {
@@ -40,7 +44,7 @@ class EditGraphModal extends Component {
 
   initValues = memoizeOne((singleGraph) => {
     const {
-      title, description, status, publicState,
+      title, description, status, publicState, defaultImage
     } = singleGraph;
 
     this.setState({
@@ -49,7 +53,9 @@ class EditGraphModal extends Component {
         description,
         publicState,
         status: status === 'template' ? 'active' : status,
+        userImage: defaultImage
       },
+      image: '',
     });
   })
 
@@ -62,6 +68,7 @@ class EditGraphModal extends Component {
         status: 'active',
         publicState: false,
         disabled: false,
+        userImage: false
       },
     };
   }
@@ -76,20 +83,29 @@ class EditGraphModal extends Component {
     } catch (e) {}
   }
 
-  onChange = (value, event) => {
+  onChange = (value) => {
     const { requestData } = this.state;
     _.set(requestData, 'publicState', value);
     this.setState({ requestData });
   }
 
   saveGraph = async (status, forceCreate) => {
-    const { requestData } = this.state;
+    let { requestData, image } = this.state;
     const { match: { params: { graphId } } } = this.props;
 
     this.props.setLoading(true);
     const labels = Chart.getLabels();
     const svg = ChartUtils.getChartSvg();
     let resGraphId;
+    
+    if (image) {
+      let userEdited = true
+      if (typeof(image) === 'string') {
+        image = svg
+        userEdited = false
+      }
+      await this.props.updateGraphThumbnailRequest(graphId, image, 'medium', userEdited)
+    }
     if (forceCreate || !graphId) {
       const { payload: { data } } = await this.props.createGraphRequest({
         ...requestData,
@@ -118,15 +134,28 @@ class EditGraphModal extends Component {
     this.props.setActiveButton('create');
   }
 
-  handleChange = (path, value) => {
-    console.log('singleGraph: ', this.props);
+  handleChange = async (path, value) => {
+    const { match: { params: { graphId } } } = this.props;
     const { requestData } = this.state;
-    _.set(requestData, path, value);
-    this.setState({ requestData });
+    if (path == 'image') {
+      if (value == '') {
+        const svg = ChartUtils.getChartSvg();
+        _.set(requestData, 'userImage', false);
+        let savedImageRequest = await Api.updateGraphThumbnail(graphId, svg, "small", "tmp")
+        const image = savedImageRequest?.data?.thumbUrl + `?t=${moment(graph.updatedAt).unix()}`
+        this.setState({[path]: image})
+      } else {
+        this.setState({ [path]: value})
+        _.set(requestData, 'userImage', true);
+      }
+    } else {
+      _.set(requestData, path, value);
+      this.setState({ requestData });
+    }
   }
 
   render() {
-    const { requestData, disabled } = this.state;
+    const { requestData, disabled, image } = this.state;
     const { singleGraph } = this.props;
     const { match: { params: { graphId } } } = this.props;
     this.initValues(singleGraph);
@@ -147,16 +176,17 @@ class EditGraphModal extends Component {
         />
         <div className="form">
           <div>
-            <img
+            <ImageUploader
               className="thumbnailSave"
-              src={`${singleGraph.thumbnail}?t=${moment(singleGraph.updatedAt).unix()}`}
-              alt={singleGraph.title}
+              value={image || `${singleGraph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
+              userImage={ requestData.userImage }
+              onChange={(val) => this.handleChange('image', val)}
             />
 
           </div>
           <div className="impData">
             <Input
-              className="graphinputName"
+              className="graphInputName"
               value={requestData.title}
               onChangeText={(v) => this.handleChange('title', v)}
             />

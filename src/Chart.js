@@ -35,6 +35,11 @@ class Chart {
     }
   }
 
+  static isLoading = () => {
+    const loading = document.querySelector('#graph .loading');
+    return loading.classList.contains('show') ? true : false
+  }
+
   // gets the passed d3 element center coordinates
   static getElementCenter() {
     const uCords = SvgService.getImageUpdatedCoordinates();
@@ -973,8 +978,8 @@ class Chart {
       .attr('fill', ChartUtils.labelColors)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
-      .on('dblclick', (ev, d) => {
-        if (this.activeButton === 'view') {
+      .on('dblclick', (ev, d) => { 
+        if(this.activeButton === 'view'){
           toast.info('You are in preview mode');
           return;
         }

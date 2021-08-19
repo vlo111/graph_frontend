@@ -74,7 +74,7 @@ class ConnectionDetails extends Component {
         {connectedNodes.map((nodeGroup) => (
           <div className="row" key={nodeGroup[0].linkType}>
             <h3>
-              {' '}
+             
               Connections (
               {nodeGroup.length}
               )

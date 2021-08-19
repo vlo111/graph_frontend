@@ -36,8 +36,9 @@ class Index extends Component {
         easing="easeInOutQuint"
       >
         <span><ScrollUpSvg className="icon" style={{ height: 40 }} /></span>
-      </BackToTop> */}
-      </>
+      </BackToTop>
+    */}
+      </> 
     );
   }
 }

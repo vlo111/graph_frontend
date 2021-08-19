@@ -18,6 +18,7 @@ import { KEY_CODES } from '../data/keyCodes';
 import ContributorsModal from './Contributors';
 import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
 import Chart from '../Chart';
+import ChartUtils from '../helpers/ChartUtils';
 
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -69,7 +70,7 @@ class ToolBarHeader extends Component {
   };
 
   handleKeyDown = (ev) => {
-    if (ev.chartEvent && ev.ctrlPress && !ev.shiftKey) {
+    if (ev.chartEvent && !ev.ctrlPress && ev.shiftKey) {
       if (ev.keyCode === KEY_CODES.search_code) {
         ChartUtils.keyEvent(ev);
         ev.preventDefault();
@@ -88,7 +89,7 @@ class ToolBarHeader extends Component {
         this.handleClick('media');
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -134,7 +135,7 @@ class ToolBarHeader extends Component {
               ) : null}
               {!updateLocation && (
               <span className="graphNames">
-                {singleGraph.title?.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
+                {singleGraph.title?.length > 16 ? `${singleGraph.title.substring(0, 16)}...` : singleGraph.title}
               </span>
               )}
             </li>
@@ -201,9 +202,6 @@ const mapDispatchToProps = {
   setActiveMouseTracker,
   socketMousePositionTracker,
 };
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ToolBarHeader);
+const Container = connect(mapStateToProps, mapDispatchToProps)(ToolBarHeader);
 
 export default withRouter(Container);
