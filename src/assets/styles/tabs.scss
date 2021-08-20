@@ -40,11 +40,14 @@
       grid-template-columns: 300px 30%;
       margin-top: 20px;
 
-      .info-data {
+      .history {
         display: flex;
         justify-content: space-around;
         align-items: flex-end;
         margin-bottom: 50px;
+        position: absolute;
+        right: 40px;
+        top: 60px;
       }
 
       .text-block, .data-block {
@@ -59,6 +62,10 @@
         }
       }
 
+      .text-block {
+        margin-right: 25px;
+      }
+
       .data-block > p {
         color: #7E75EF;
       }
@@ -68,8 +75,8 @@
       }
 
       img {
-        max-width: 200px;
-        max-height: 200px;
+        max-width: 220px;
+        max-height: 220px;
         object-fit: contain;
         border-radius: 3px;
         box-shadow: 0px 4px 75px rgba(13, 13, 128, 0.2);
@@ -82,12 +89,12 @@
       }
 
       .frame {
-        margin-left: 70px;
+        margin-left: 60px;
 
         .bottom-icons {
           position: absolute;
-          bottom: 0;
-          margin-left: -50px;
+          bottom: 30px;
+          margin-left: -30px;
         }
       }
 
@@ -129,7 +136,7 @@
         font-weight: normal;
         font-size: 14px;
         line-height: 14px;
-        color: #545454;
+        color: $color-passive;
       }
     }
 
@@ -203,10 +210,23 @@
       .contentWrapper {
         box-shadow: 0px -25px 25px -28px rgb(0 0 0 / 10%);
         padding: 50px 4% 0;
-        height: 340px;
         margin-top: -10px;
         background: white;
         z-index: 11111;
+        height: 290px;
+
+        .container {
+          height: 100%;
+          box-shadow: 0 5px 12px rgb(226 231 235 / 16%);
+          border: 1px solid #e2e7eb;
+          border-radius: 3px;
+          padding: 39px 4% 31px;
+          max-height: 380px;
+          position: relative;
+          z-index: 1;
+          display: flex;
+          margin: 0 10px;
+        }
 
         .content {
           overflow-x: hidden;
@@ -230,7 +250,7 @@
         .no-tabs {
           display: flex;
           justify-content: center;
-          height: 330px;
+          height: 280px;
 
           .no-tab-content {
             display: block;
@@ -283,10 +303,12 @@
 
           *{
             cursor: pointer;
+            display: flex;
+            align-items: center;
           }
 
           .expand {
-            margin-top: 13px;
+            margin-top: 3px;
             margin-left: 5px;
           }
         }
@@ -294,12 +316,18 @@
     }
   }
 
-  #headerMini button, .tab-data-settings button {
-    background: none;
-    box-shadow: none;
+  #headerMini, .tab-data-settings {
+    button, .expand {
+      background: none;
+      box-shadow: none;
 
-    &:hover{
-      color: $color-main;
+      &:hover {
+        color: $color-main;
+
+        path {
+          fill: $color-main;
+        }
+      }
     }
   }
 }
@@ -308,12 +336,11 @@
   z-index: 101 !important;
 
   .ghModal {
-    top: 5% !important;
-    width: 77%;
-    height: 90%;
-    max-height: 90% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
+    width: 95%;
+    max-width: 95%;
+    top: 5%;
+    height: 100%;
+    max-height: 90%;
   }
 
   .ghModalContent {
@@ -349,7 +376,7 @@
     .connectionDetails {
       padding: 0;
 
-      h3 {
+      details {
         margin-top: 0;
       }
     }
@@ -575,6 +602,8 @@
   max-width: unset !important;
   padding: 1.6% 2.1% !important;
   min-width: 920px;
+  height: 80%;
+  top: 10%;
 
   .row {
     display: flex;
@@ -594,7 +623,7 @@
   .buttonsWrapper {
     display: flex;
     justify-content: center;
-    margin-top: 35px;
+    margin-top: 100px;
 
     button {
       margin-right: 40px !important;
@@ -651,4 +680,76 @@
 .tab-data-hover {
   max-width: 130px;
   padding: 2px;
+}
+
+.expandTabNode {
+  top: 5% !important;
+  width: 87.6%;
+  height: 90%;
+  max-height: 90% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+
+  .tab-expand-node {
+    display: block;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+
+    .header {
+      width: 100%;
+      height: 112px;
+    }
+
+    .name {
+      position: absolute;
+      color: $color-white;
+      font-style: normal;
+      font-size: 36px;
+      line-height: 49px;
+      margin: 30px 60px;
+    }
+
+    .info {
+      position: absolute;
+      color: $color-white;
+      display: block;
+      right: 65px;
+      top: 50px;
+
+      * {
+        text-align: right;
+        margin-bottom: 6px;
+        margin-top: 5px;
+        font-size: 15px;
+      }
+    }
+
+    .container {
+      border-radius: 5px;
+      background-color: $color-white;
+
+      .content {
+        padding: 10px 60px;
+        height: 700px;
+        overflow: auto;
+      }
+    }
+  }
+
+  .close {
+    margin-right: 50px;
+    margin-top: 10px;
+
+    svg {
+      width: 30px !important;
+      height: 20px !important;
+
+      path {
+        fill: $color-white !important;
+      }
+    }
+  }
 }
