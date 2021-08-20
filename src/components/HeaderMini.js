@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import queryString from 'query-string'; 
+import queryString from 'query-string';
 import Utils from '../helpers/Utils';
 import Chart from '../Chart';
 import ExportNodeTabs from './ExportNode/ExportNodeTabs';
@@ -12,10 +12,10 @@ import Button from './form/Button';
 import CommentModal from './CommentNode';
 import ContextMenu from './contextMenu/ContextMenu';
 import CustomFields from '../helpers/CustomFields';
-import NodeImage from './nodeInfo/NodeImage'; 
+import NodeImage from './nodeInfo/NodeImage';
 import NodeFullInfoModal from './nodeInfo/NodeFullInfoModal';
 import { getActionsCountRequest } from '../store/actions/commentNodes';
-import { setLoading, toggleNodeModal } from '../store/actions/app'; 
+import { setLoading, toggleNodeModal } from '../store/actions/app';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg';
@@ -26,7 +26,7 @@ class HeaderMini extends Component {
   static propTypes = {
     getActionsCount: PropTypes.func.isRequired,
     commentCount: PropTypes.func.isRequired,
-    toggleNodeModal: PropTypes.func.isRequired, 
+    toggleNodeModal: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
@@ -118,12 +118,6 @@ class HeaderMini extends Component {
     if (showNodeComment) {
       tableElement.style.width = '500px';
       closeTabElement.style.display = 'none';
-      footerLinkElement.style.display = 'none';
-      historyElement.style.right = '19px';
-      historyElement.style.top = '200px';
-      buttonsElement.style.bottom = '45px';
-      buttonsElement.style.bottom = '45px';
-      headerElement.style.height = '380px';
 
       this.closeComment(showNodeComment);
     } else {
@@ -131,18 +125,12 @@ class HeaderMini extends Component {
       commentModalElement.style.transition = 'all 0.5s ease-in-out 0s';
       commentModalElement.style.transformOrigin = 'right top';
       commentModalElement.style.transform = 'scaleX(0)';
-      headerElement.style.height = '330px';
 
       setTimeout(() => {
         tableElement.style.width = '45%';
       }, 400);
 
       setTimeout(() => {
-        buttonsElement.style.bottom = '30px';
-        historyElement.style.right = '60px';
-        historyElement.style.top = '40px';
-        footerLinkElement.style.display = 'flex';
-
         this.closeComment(showNodeComment);
       }, 700);
     }
@@ -153,13 +141,13 @@ class HeaderMini extends Component {
     delete queryObj.info;
     const query = queryString.stringify(queryObj);
     this.props.history.replace(`?${query}`);
-  } 
+  }
 
   render() {
     const { showGraphUsersInfo, showNodeComment } = this.state;
     const {
       editable, singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } }, expand, queryObj,
-    } = this.props; 
+    } = this.props;
     return (
       <header id="headerMini">
         <div className="header">
@@ -220,7 +208,7 @@ class HeaderMini extends Component {
                 ? `${node.type.substr(0, 10)}`
                 : node.type}
             </h3>
-          </div> 
+          </div>
 
         </div>
 
@@ -262,7 +250,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setLoading,
   getActionsCountRequest,
-  toggleNodeModal, 
+  toggleNodeModal,
 };
 
 const Container = connect(
