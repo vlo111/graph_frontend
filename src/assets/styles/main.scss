@@ -3910,52 +3910,68 @@ body .gh__menu {
 }
 
 .connectionDetails {
-  padding: 0 10%;
-  margin-top: -40px;
+  padding: 0 46px;
 
-  .row {
-    flex-direction: column;
-    margin-left: 0;
-    margin-right: 0;
+  details {
+    padding-bottom: 16px;
+    margin: 20px 0;
 
-    h3 {
+    summary {
       font-weight: 600;
       font-size: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid $color-light-gray;
-      margin: 20px 0;
+      cursor: pointer;
+      width: 170px;
+
+      &::marker {
+        color: $color-main;
+      }
     }
 
-    .list {
+    .container {
       overflow-x: hidden;
       overflow-y: auto;
       height: 150px;
+      margin-top: 20px;
 
-      .item {
-        margin-bottom: 30px;
+      .row {
+        flex-direction: column;
+        margin-left: 0;
+        margin-right: 0;
 
-        a {
-          display: flex;
-          color: $color-dark;
-          text-decoration: none;
-        }
+        .item {
+          margin-bottom: 30px;
 
-        .left {
-          margin-right: 20px;
-        }
-
-        .right {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-
-          .name {
-            font-weight: 600;
-            font-size: 16px;
+          a {
+            display: flex;
+            color: $color-dark;
+            text-decoration: none;
           }
 
-          .type {
-            font-size: 14px;
+          .left {
+            margin-right: 20px;
+          }
+
+          .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .name {
+              font-weight: 600;
+              font-size: 16px;
+            }
+
+            .type {
+              font-size: 14px;
+            }
+          }
+        }
+
+        &:last-child {
+          .item{
+            &:last-child {
+              margin-bottom: 10px;
+            }
           }
         }
       }
@@ -4718,9 +4734,6 @@ body .gh__menu {
 
     .delete {
       opacity: 1;
-      path {
-        fill: rgb(184, 3, 3)
-      }
     }
   }
 
@@ -8276,6 +8289,8 @@ img.preview-scaled {
 
   ul {
     list-style: none;
+    height: 300px;
+    overflow: auto;
   }
 
   &.open {
