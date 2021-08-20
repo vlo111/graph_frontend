@@ -3752,19 +3752,6 @@ body .gh__menu {
   }
 }
 
-.textEllipsis {
-  p {
-    font-size: inherit;
-  }
-
-  .ghButton {
-    padding: 0;
-    margin-left: auto;
-    margin-top: 27px;
-    color: $color-dark-blue;
-  }
-}
-
 .ghModalOverlay .ghModalCustomFieldName {
   top: 5%;
 }
@@ -5318,20 +5305,6 @@ body .gh__menu {
   margin-bottom: 50px;
 }
 
-
-.wikiButton {
-  background: transparent;
-  border: none;
-  z-index: 2;
-  margin-bottom: 6px;
-  position: absolute;
-  right: 23%;
-
-  img {
-    width: 40px;
-    height: 40px;
-  }
-}
 .scienceGraph{
   right: 31% ;
 }
@@ -8715,12 +8688,13 @@ img.preview-scaled {
 }
 
 .jodit-status-bar:not(:empty) {
-  border: 1px solid #e1e1e1;
-  border-top: none;
+  border: 1px solid #dadada;
+  border-top: none !important;
   margin-top: 1px;
   width: calc(100% + 2px);
   margin-left: -1px;
   color: #9F9F9F;
+  background-color: $color-white;
 }
 
 .jodit-status-bar {

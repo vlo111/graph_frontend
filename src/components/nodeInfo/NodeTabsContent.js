@@ -7,7 +7,7 @@ import { ReactComponent as NoTabSvg } from '../../assets/images/icons/sad.svg';
 import { ReactComponent as AddTabSvg } from '../../assets/images/icons/plus-add-tab.svg';
 import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
 import { ReactComponent as DeleteSvg } from '../../assets/images/icons/delete.svg';
-import { ReactComponent as ExpandTabSvg } from '../../assets/images/icons/expandtab-data.svg';
+import { ReactComponent as ExpandTabSvg } from '../../assets/images/icons/expand-tab-content.svg';
 import Button from '../form/Button';
 import NodeExpand from './NodeExpand';
 
