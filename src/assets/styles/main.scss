@@ -175,7 +175,7 @@ p {
   }
 
   .autoSaveText {
-    display: block;
+    display: block !important;
   }
 }
 
@@ -979,10 +979,6 @@ p {
         display: block;
       }
     }
-
-    .nodeCreate {
-      fill: rgba(136, 130, 209, 0.22);
-    }
   }
 
   .node {
@@ -1617,7 +1613,7 @@ p {
       margin-top: 45px;
     }
 
-    .graphinputName{
+    .graphInputName{
       border:none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
@@ -3753,19 +3749,6 @@ body .gh__menu {
     &.selected {
       filter: none;
     }
-  }
-}
-
-.textEllipsis {
-  p {
-    font-size: inherit;
-  }
-
-  .ghButton {
-    padding: 0;
-    margin-left: auto;
-    margin-top: 27px;
-    color: $color-dark-blue;
   }
 }
 
@@ -6407,7 +6390,7 @@ img.preview-scaled {
 
 #nodeResizeIcons {
   .square {
-    fill: red;
+    fill: #FFFFFF;
     stroke: #0D0905;
     cursor: pointer;
 
@@ -7137,7 +7120,7 @@ img.preview-scaled {
     width: 280px;
   }
 
-  &.shoMap{
+  &.showMap{
     width: auto !important;
   }
 
@@ -8262,8 +8245,8 @@ img.preview-scaled {
     color: $color-main2;
     font-weight: 600;
     position: absolute;
-    top: 32px;
-    left: 146px;
+    top: 43px;
+    left: 129px;
     display: none;
   }
 

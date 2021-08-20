@@ -172,6 +172,7 @@ export default function reducer(state = initialState, action) {
       const {
         nodes, links, labels, lastUid,
       } = singleGraph;
+      
       Chart.render({
         nodes,
         links: ChartUtils.cleanLinks(links, nodes),
@@ -199,6 +200,7 @@ export default function reducer(state = initialState, action) {
     }
 
     case GET_SINGLE_GRAPH.FAIL: {
+      Chart.loading(false)
       return {
         ...state,
         singleGraphStatus: 'fail',
@@ -407,44 +409,44 @@ export default function reducer(state = initialState, action) {
         graphTabsStatus: 'fail',
       };
     }
-    case ONLINE_USERS: {
-      const singleGraph = { ...state.singleGraph };
-      const { onlineUsers } = action.payload;
+    case ONLINE_USERS: {  
+      const singleGraph = { ...state.singleGraph }; 
+      const { onlineUsers } = action.payload; 
       const online = onlineUsers && onlineUsers.filter((d) => {
-          return +d.activeGraphId === +singleGraph?.id
+          return +d.activeGraphId === +singleGraph?.id 
          },
-        );
+        ); 
       return {
-        ...state,
+        ...state, 
         onlineUsers: online,
       };
     }
-
-    case ACTIVE_MOUSE_TRACKER: {
+    
+    case ACTIVE_MOUSE_TRACKER: {  
       const { onlineUsers, singleGraph: { id } } = state;
-      const { userId, tracker: mouseTracker } = action.payload;
+      const { userId, tracker: mouseTracker } = action.payload;  
       const trackers = onlineUsers.filter((d) => {
           return +d.activeGraphId === +id && +d.userId !== +userId;
          },
-        );
+        );  
       return {
-        ...state,
+        ...state,  
         trackers: trackers,
         mouseTracker: mouseTracker,
       };
     }
-    case SOCKET_ACTIVE_MOUSE_TRACKER: {
-      const { mouseMoveTracker } = action.payload;
-      const { singleGraph: { id }  } = state;
+    case SOCKET_ACTIVE_MOUSE_TRACKER: {    
+      const { mouseMoveTracker } = action.payload; 
+      const { singleGraph: { id }  } = state;      
       const trackers = mouseMoveTracker && mouseMoveTracker.filter((d) => {
         return +d.graphId === +id ;
        },
-      );
+      ); 
       return {
-        ...state,
-        mouseMoveTracker: trackers,
+        ...state, 
+        mouseMoveTracker: trackers, 
       };
-    }
+    } 
     default: {
       return state;
     }

@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+﻿import * as d3 from 'd3';
 import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
@@ -33,6 +33,11 @@ class Chart {
     } else {
       loading.classList.remove('show');
     }
+  }
+
+  static isLoading = () => {
+    const loading = document.querySelector('#graph .loading');
+    return loading.classList.contains('show') ? true : false
   }
 
   // gets the passed d3 element center coordinates
@@ -711,10 +716,10 @@ class Chart {
       }
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
-        .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -4000 : -5000)).distanceMin(50).distanceMax(500));
-      // .force('y', d3.forceY(0.01))
-      // .force('x', d3.forceX(0.01));
+        .force('center', d3.forceCenter(width / 2, height / 2)) 
+         .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -4000 : -5000)).distanceMin(50).distanceMax(500))
+        .force('y', d3.forceY(0.05))
+        .force('x', d3.forceX(0.05));
     }
     return null;
   }
@@ -828,7 +833,6 @@ class Chart {
         datum.d[1][0] = +(datum.d[1][0] + (ev.dx * 2)).toFixed(2);
         datum.d[1][1] = +(datum.d[1][1] + (ev.dy * 2)).toFixed(2);
         const [width, height] = datum.d[1];
-
         dragFolder.folder.select('rect')
           .datum(datum)
           .attr('x', width / -2)
@@ -973,8 +977,8 @@ class Chart {
       .attr('fill', ChartUtils.labelColors)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
-      .on('dblclick', (ev, d) => {
-        if (this.activeButton === 'view') {
+      .on('dblclick', (ev, d) => { 
+        if(this.activeButton === 'view'){
           toast.info('You are in preview mode');
           return;
         }
@@ -1658,7 +1662,7 @@ class Chart {
       this.svg = d3.select('#graph svg');
       this.zoom = d3.zoom()
         .on('zoom', this.handleZoom)
-        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250%
+        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250% 
       this.svg = this.svg
         .call(this.zoom)
         .on('dblclick.zoom', null)
@@ -2087,7 +2091,6 @@ class Chart {
         }
         return l;
       });
-
       this.folders.each((l) => {
         if (this.squareData.labels.includes(l.id) && !l.readOnly) {
           l.d[0][0] = +(l.d[0][0] + ev.dx).toFixed(2);

@@ -65,7 +65,6 @@ class ReactChart extends Component {
 
     Chart.event.on('folder.open', this.handleFolderOpen);
     Chart.event.on('folder.close', this.handleFolderClose);
-    Chart.loading(false);
 
     // if zoom level is auto of range given in Chart zoom scaleExtent this function will prevent default zoom
     document.getElementsByClassName('graphWrapper')[0].addEventListener('wheel', this.handleWheel);
@@ -330,6 +329,7 @@ class ReactChart extends Component {
               <FolderCloseIcon />
               <FolderResizeIcon />
               <MouseCursor />
+
             </defs>
           </g>
           <g className="mouseCursorPosition" transform-origin="top left" />

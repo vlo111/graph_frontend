@@ -142,7 +142,6 @@ class NodeTabs extends Component {
 
   render() {
     const { activeTab, formModalOpen } = this.state;
-
     const {
       nodeId, editable, nodeCustomFields,
     } = this.props;

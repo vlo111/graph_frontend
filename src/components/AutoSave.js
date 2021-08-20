@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Chart from '../Chart';
-import { updateGraphPositionsRequest, updateGraphThumbnailRequest } from '../store/actions/graphs';
+import { getSingleGraphRequest, updateGraphPositionsRequest, updateGraphThumbnailRequest } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
 import {
   createNodesRequest,
@@ -45,6 +45,8 @@ class AutoSave extends Component {
     toggleFolderRequest: PropTypes.func.isRequired,
 
     updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
+    
+    getSingleGraphRequest: PropTypes.func.isRequired,
 
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
   }
@@ -97,7 +99,9 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    // this.saveGraph();
+    if (Chart.isLoading === true) {
+      return
+    }
     this.timeout = setTimeout(this.saveGraph, 0);
   }
 
@@ -190,7 +194,6 @@ class AutoSave extends Component {
     const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake && !d.sourceId);
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake && !d.sourceId);
     const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
-
     let deleteLabels = _.differenceBy(oldLabels, labels, 'id');
     let createLabels = _.differenceBy(labels, oldLabels, 'id');
     let updateLabels = [];
@@ -272,11 +275,6 @@ class AutoSave extends Component {
     });
     const deleteLinks = _.differenceBy(oldLinks, links, 'id');
     let createLinks = _.differenceBy(links, oldLinks, 'id');
-
-    if (!createLinks.length && oldLinks.filter(p => p.id === links[0]?.id).length) {
-      oldLinks[0].color = links[0].color;
-    }
-
     let updateLinks = [];
     createLinks.push(...oldLinks.filter((l) => l.create));
     oldLinks.forEach((l) => {
@@ -309,14 +307,10 @@ class AutoSave extends Component {
     // if (updateNodePositions.length) {
     //   promise.push(this.props.updateNodesPositionRequest(graphId, updateNodePositions));
     // }
-
     if (updateNodePositions.length || updateLabelPositions.length) {
       promise.push(this.props.updateGraphPositionsRequest(graphId, updateNodePositions, updateLabelPositions));
     } else if (createNodes.length) {
-      const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
-      if (!_.isEmpty(data.errors)) {
-        toast.error('Something went wrong');
-      }
+      promise.push(this.props.createNodesRequest(graphId, createNodes));
     }
 
     if (updateNodeCustomFields.length) {
@@ -349,11 +343,16 @@ class AutoSave extends Component {
     Chart.event.emit('auto-save');
 
     const res = await Promise.all(promise);
-    // res.forEach((d) => {
-    //   if (d.payload.data.status !== 'ok') {
-    //     toast.error('Graph save error');
-    //   }
-    // });
+    res.forEach( async (d) => {
+      if (d?.payload?.data?.status !== 'ok') {
+        toast.error('Graph save error');
+      } 
+      if (!_.isEmpty(d?.payload?.data?.error)) {
+        toast.error('Something went wrong');
+      }  
+      await this.props.getSingleGraphRequest(graphId)
+       
+    });
     document.body.classList.remove('autoSave');
   }
 
@@ -410,6 +409,7 @@ const mapDispatchToProps = {
   updateLabelsRequest,
   deleteLabelsRequest,
   toggleFolderRequest,
+  getSingleGraphRequest,
 };
 
 const Container = connect(

@@ -22,6 +22,7 @@ import { ReactComponent as SkipNodesSvg } from '../../assets/images/icons/Skip_t
 import { createNodesRequest, deleteNodesRequest, updateNodesRequest } from '../../store/actions/nodes';
 import { createLinksRequest } from '../../store/actions/links';
 import { createLabelsRequest } from '../../store/actions/labels';
+import { getSingleGraphRequest } from '../../store/actions/graphs';
 import Api from '../../Api';
 import Utils from '../../helpers/Utils';
 
@@ -214,13 +215,7 @@ class LabelCopy extends Component {
       Chart.loading(false);
       return;
     }
-    if (sourceId) {
-      const { data: a } = await Api.getSingleGraph(id);
-      Chart.render({
-        embedLabels: a.embedLabels,
-      });
-    }
-
+    await this.props.getSingleGraphRequest(id)
     Chart.loading(false);
   }
 
@@ -331,6 +326,7 @@ const mapDispatchToProps = {
   deleteNodesRequest,
   createLinksRequest,
   createLabelsRequest,
+  getSingleGraphRequest
 };
 const Container = connect(
   mapStateToProps,
