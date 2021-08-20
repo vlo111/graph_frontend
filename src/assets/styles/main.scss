@@ -8719,12 +8719,13 @@ img.preview-scaled {
 }
 
 .jodit-status-bar:not(:empty) {
-  border: 1px solid #e1e1e1;
-  border-top: none;
+  border: 1px solid #dadada;
+  border-top: none !important;
   margin-top: 1px;
   width: calc(100% + 2px);
   margin-left: -1px;
   color: #9F9F9F;
+  background-color: $color-white;
 }
 
 .jodit-status-bar {
