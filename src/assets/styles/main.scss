@@ -4193,7 +4193,6 @@ body .gh__menu {
 
       &--reply {
         background-color: #f7f7fb;
-        margin: 0 13px 9px 0;
         padding-left: 61px;
         border-radius: 3px;
         font-family: chaparral-pro, serif;
@@ -4292,6 +4291,10 @@ body .gh__menu {
         fill: #707070 !important;
       }
     }
+  }
+
+  .jodit-workplace {
+    min-height: 50px !important;
   }
 }
 
@@ -5717,10 +5720,6 @@ body .gh__menu {
   flex-grow: 1;
   padding: 0;
   width: 330px;
-}
-
-.jodit-popup__content {
-  max-width: 3500px;
 }
 
 .insertMediaModal {
@@ -8700,16 +8699,16 @@ img.preview-scaled {
   }
 }
 
-.jodit-status-bar {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 14px;
+.jodit-status-bar:not(:empty) {
+  border: 1px solid #e1e1e1;
+  border-top: none;
+  margin-top: 1px;
+  width: calc(100% + 2px);
+  margin-left: -1px;
   color: #9F9F9F;
-  margin-right: 30px;
-  border-top:0 !important;
-  background-color: white;
+}
 
+.jodit-status-bar {
   &__item-right {
     margin-top: -10px !important;
   }
@@ -8717,4 +8716,8 @@ img.preview-scaled {
 
 .jodit-toolbar-editor-collection_mode_horizontal {
   background-color: white;
+}
+
+.jodit-workplace {
+  min-height: 206px !important;
 }
