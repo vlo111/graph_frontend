@@ -11,9 +11,8 @@ import { socketMousePositionTracker } from '../store/actions/socket';
 import AccountDropDown from './account/AccountDropDown';
 import Legend from './Legend';
 import GraphSettings from './graphData/GraphSettings';
-import { ReactComponent as CommentSvg } from '../assets/images/icons/comment1.svg';
+import { ReactComponent as CommentSvg } from '../assets/images/icons/commentGraph.svg';
 import CommentModal from './CommentModal/CommentModal.js';
-import Notification from './Notification';
 import { KEY_CODES } from '../data/keyCodes';
 import ContributorsModal from './Contributors';
 import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
@@ -169,7 +168,6 @@ class ToolBarHeader extends Component {
             </li>
             <li className="notify_container">
               <div className="notificationHeader">
-                <Notification />
               </div>
             </li>
             <li className="user">

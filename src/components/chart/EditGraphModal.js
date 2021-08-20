@@ -58,7 +58,7 @@ class EditGraphModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      requestData: {
+requestData: {
         title: '',
         description: '',
         status: 'active',
@@ -69,13 +69,19 @@ class EditGraphModal extends Component {
   }
 
   async deleteGraph(graphId) {
-    try {
-      if (window.confirm('Are you sure?')) {
-        await this.props.deleteGraphRequest(graphId);
+    if (window.confirm('Are you sure?')) {
+      await this.props.deleteGraphRequest(graphId);
+
+      toast.info('Successfully deleted');
+
+      
+      if(this.props.deleteGraph) {
+        this.props.deleteGraph(graphId);
+        this.props.toggleModal(false)  
+      } else {
         this.props.history.push('/');
-        toast.info('Successfully deleted');
       }
-    } catch (e) {}
+    }
   }
 
   onChange = (value, event) => {
@@ -84,9 +90,16 @@ class EditGraphModal extends Component {
     this.setState({ requestData });
   }
 
-  saveGraph = async (status, forceCreate) => {
+  saveGraph = async (status) => {
     const { requestData, image } = this.state;
-    const { match: { params: { graphId } } } = this.props;
+
+    let { singleGraph, graph } = this.props;
+    
+    if(graph) {
+      singleGraph = graph
+    }
+
+    const { id: graphId } = singleGraph;
 
     this.props.setLoading(true);
     const labels = Chart.getLabels();
@@ -96,22 +109,15 @@ class EditGraphModal extends Component {
       const userEdited = true
       await this.props.updateGraphThumbnailRequest(graphId, image, 'medium', userEdited)
     }
-    if (forceCreate || !graphId) {
-      const { payload: { data } } = await this.props.createGraphRequest({
-        ...requestData,
-        status,
-        svg,
-      });
-      resGraphId = data.graphId;
-    } else {
-      const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
-        ...requestData,
-        labels,
-        status,
-        svg,
-      });
-      resGraphId = data.graphId;
-    }
+
+    const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
+      ...requestData,
+      labels,
+      status,
+      svg,
+    });
+
+    resGraphId = data.graphId;
 
     if (resGraphId) {
       toast.info('Successfully saved');
@@ -119,13 +125,20 @@ class EditGraphModal extends Component {
     } else {
       toast.error('Something went wrong. Please try again');
     }
+
+    if(graph) {
+      const { payload : { data: { graph: newGraph } } } = (await this.props.getSingleGraphRequest(resGraphId))
+      
+      this.props.updateGraph(newGraph);  
+    }
+
     this.props.setLoading(false);
     this.props.toggleModal(false);
-    this.props.setActiveButton('create');
   }
 
   handleChange = async (path, value) => {
-    const { match: { params: { graphId } } } = this.props;
+    const { id: graphId } = this.props.singleGraph;
+
     const { requestData } = this.state;
 
     if (path == 'image') {
@@ -144,11 +157,16 @@ class EditGraphModal extends Component {
 
   render() {
     const { requestData, disabled, image } = this.state;
-    const { singleGraph } = this.props;
-    const { match: { params: { graphId } } } = this.props;
+    let { singleGraph, graph } = this.props;
+    
+    if(graph) {
+      singleGraph = graph
+    }
+
+    const { id: graphId } = singleGraph;
+
     this.initValues(singleGraph);
     const { publicState } = singleGraph;
-    const isUpdate = !!singleGraph.id;
     return (
       <Modal
         className="ghModal ghModalEdit"
@@ -166,7 +184,7 @@ class EditGraphModal extends Component {
           <div>
             <ImageUploader
               className="thumbnailSave"
-              value={image || `${singleGraph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
+              value={image || `${singleGraph.thumbnail}?t=${moment(singleGraph.updatedAt).unix()}`}
               onChange={(val) => this.handleChange('image', val)}
             />
 
@@ -180,7 +198,6 @@ class EditGraphModal extends Component {
             <label className="switchLabel">
               <span className="switchPublic">Publish graph</span>
               <div>
-
                 <Switch
                   onChange={this.onChange}
                   onClick={this.onChange}
@@ -222,10 +239,8 @@ class EditGraphModal extends Component {
               </Button>
               <Button
                 className="btn-classic"
-                onClick={() => this.saveGraph(requestData.status, false)}
-              >
-                {isUpdate ? 'Save' : 'Create'}
-              </Button>
+                onClick={() => this.saveGraph(requestData.status)}
+              > Save </Button>
             </>
           </div>
         </div>
@@ -238,6 +253,7 @@ const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
   customFields: state.graphs.singleGraph.customFields || {},
 });
+
 const mapDispatchToProps = {
   createGraphRequest,
   updateGraphRequest,
@@ -247,6 +263,7 @@ const mapDispatchToProps = {
   setLoading,
   deleteGraphRequest,
 };
+
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,

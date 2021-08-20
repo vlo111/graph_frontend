@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Notification from './Notification';
 import AccountDropDown from './account/AccountDropDown';
 import SearchGraphs from './search/SearchGraphs';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
@@ -26,11 +25,11 @@ class Header extends Component {
         <SearchGraphs />
         <div className="start-graphs">
           <div className="buttonsWrapper">
-            <Button color="accent" onClick={this.startGraph}>
+            <Button className="btn-startgraph" color="accent" onClick={this.startGraph}>
               Start a graph
             </Button>
 
-            <Button color="accent" onClick={this.compareGraph}>
+            <Button className="btn-comparegraph" color="accent" onClick={this.compareGraph}>
               Compare graphs
             </Button>
 
@@ -38,7 +37,6 @@ class Header extends Component {
         </div>
         <div className="notify_container">
             <div className="notificationHeader">
-                <Notification />
             </div>
         </div>
         <div className="signOut">

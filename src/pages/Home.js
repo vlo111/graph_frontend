@@ -4,14 +4,12 @@ import { connect } from 'react-redux';
 import queryString from 'query-string';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
-import moment from 'moment';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
 import Pagination from '../components/Pagination';
-import GraphListFooter from '../components/graphData/GraphListFooter';
-import GraphListHeader from '../components/graphData/GraphListHeader';
 import NoGraph from '../components/NoGraph';
 import GraphListItem from "../components/graphData/GraphListItem";
+import GraphCardItem from "../components/graphData/GraphCardItem";
 
 class Home extends Component {
   static propTypes = {
@@ -25,13 +23,22 @@ class Home extends Component {
     this.props.getGraphsListRequest(page, { s });
   })
 
+  componentDidMount() {
+    const order = JSON.parse(localStorage.getItem('/'));
+
+    const { page = 1, s } = queryString.parse(window.location.search);
+
+    this.props.getGraphsListRequest(page, { s, filter: order });
+  }
+
   render() {
-    const { graphsList, graphsListStatus, graphsListInfo: { totalPages } } = this.props;
+    const { graphsList, graphsListStatus, graphsListInfo: { totalPages }, mode } = this.props;
     const { page = 1, s } = queryString.parse(window.location.search);
     this.getGraphsList(page, s);
+
     return (
       <>
-        <div className={`graphsList ${!graphsList.length ? 'empty' : ''}`}>
+        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`} >
           {s ? (
             <h2 className="searchResult">
               {'Search Result for: '}
@@ -40,10 +47,7 @@ class Home extends Component {
           ) : null}
           {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
             <NoGraph />
-          ) : null}
-          {graphsList.map((graph) => (
-            <GraphListItem key={graph.id} graph={graph} />
-          ))}
+          ) : mode === 'list' ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} />}
         </div>
         <Pagination totalPages={totalPages} />
       </>

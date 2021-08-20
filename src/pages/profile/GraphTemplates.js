@@ -9,7 +9,6 @@ import { Link, withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import Pagination from '../../components/Pagination';
 import GraphListFooter from '../../components/graphData/GraphListFooter';
-import GraphListHeader from '../../components/graphData/GraphListHeader';
 import GraphDashboardSubMnus from '../../components/graphData/GraphListHeader';
 
 import NoGraph from "../../components/NoGraph";
@@ -18,6 +17,7 @@ class Home extends Component {
   static propTypes = {
     getGraphsListRequest: PropTypes.func.isRequired,
     graphsList: PropTypes.array.isRequired,
+    graphsCard: PropTypes.array.isRequired,
     graphsListInfo: PropTypes.object.isRequired,
     graphsListStatus: PropTypes.string.isRequired, 
   }
@@ -26,21 +26,36 @@ class Home extends Component {
     super(props);
     this.state = {dataGrid: false}
   }
-  getGraphsList = memoizeOne((page, s) => {
-    this.props.getGraphsListRequest(page, { s, status: 'template' });
+  getGraphsList = memoizeOne((page = 1, s) => {
+
+    const status = 'template';
+    
+    const order = JSON.parse(localStorage.getItem(`/${status}`));
+
+    this.props.getGraphsListRequest(page, { s, filter: order, status });
   })
+
+  
+  componentDidMount() {
+    const order = JSON.parse(localStorage.getItem('/templates'));
+
+    const { page = 1 } = queryString.parse(window.location.search);
+    
+    this.props.getGraphsListRequest(page, { filter: order, status: 'template' });
+  }
 
   handleClick = (list) => {  
     this.setState({ dataGrid: list });
   }
+
   render() {
     const { dataGrid } = this.state;
-    const { graphsList, graphsListStatus, graphsListInfo: { totalPages }, headerTools } = this.props;
+    const { graphsList, graphsListStatus, graphsListInfo: { totalPages }, headerTools,mode } = this.props;
     const { page = 1, s } = queryString.parse(window.location.search);
     this.getGraphsList(page, s); 
     return (
       <>
-        <div className={`graphsList ${!graphsList.length ? 'empty' : ''}`}>
+        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`}>
         {s ? (
             <h2 className="searchResult">
               {'Search Result for: '}
@@ -52,6 +67,9 @@ class Home extends Component {
           ) : null}            
               {graphsList.map((graph) => (
                 <article key={graph.id} className="graphsItem"> 
+                <div>
+                   <h3> {graph.title.length > 18 ? `${graph.title.substring(0, 18)}...` : graph.title}</h3>
+                </div> 
                   <div className="top">
                     <img
                       className="avatar"
@@ -64,42 +82,23 @@ class Home extends Component {
                       </Link>
                       <div className="info">
                         <span>{moment(graph.updatedAt).calendar()}</span>
-                        <span>{` ${graph.nodesCount} nodes`}</span>
+                        <span className="nodesCount">{` ${graph.nodesCount} nodes`}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="dashboard" >
-                  <div className="dashboard-onhover">
-                    <div className="dashboard-onhover-content">
-                    <div className="dashboard-buttons flex-column d-flex" >
-                          <h3 className="dashboard-title">
-                          {graph.title}
-                          {s && graph.status !== 'active' ? (
-                            <span>{` (${graph.status})`}</span>
-                          ) : null}
-                        </h3>      
-                        <p className="dashboard-description">
-                          {graph.description.length > 600 ? `${graph.description.substr(0, 600)}... ` : graph.description}
-                        </p> 
-                        <Link className="ghButton view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>
-                        <Link className="ghButton view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
-                    </div>
-                    <div className="sub-menus" >
-                      <GraphDashboardSubMnus graph={graph} headerTools={headerTools} />
-                    </div>
-                    </div>
-                  </div> 
-                  <h3 className="title">{graph.title}</h3>  
-                  <p className="description">
-                    {graph.description.length > 600 ? `${graph.description.substr(0, 600)}... ` : graph.description}
-                  </p>       
-                  <img
-                    className="thumbnail"
-                    src={`${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
-                    alt={graph.title}
-                  />
-                </div>
+
                   <GraphListFooter graph={graph} />
+                  <div className="buttonHidden">
+                       <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>   
+                       <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
+                   </div>
+                    <div className="unlucky">
+          
+                    </div>
+
+                   <div className="sub-menus" >
+                         <GraphDashboardSubMnus graph={graph} headerTools={headerTools} />
+                   </div>
                 </article>
               ))} 
        </div> 
