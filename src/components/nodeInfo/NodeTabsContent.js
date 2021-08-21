@@ -131,7 +131,16 @@ class NodeTabsContent extends Component {
               </div>
             )}
 
-        {expandNode && <NodeExpand html={html} name={name} created={moment(node.createdAt * 1000).calendar()} onClose={this.expand} />}
+        {expandNode
+        && (
+        <NodeExpand
+          html={html}
+          name={name}
+          created={moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}
+          createdBy={node.userId}
+          onClose={this.expand}
+        />
+        )}
       </div>
     );
   }
