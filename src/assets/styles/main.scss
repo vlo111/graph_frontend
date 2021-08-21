@@ -3962,6 +3962,19 @@ body .gh__menu {
           }
         }
       }
+
+      fieldset {
+        padding: 28px 35px 0px;
+        margin-bottom: 5px;
+        background-color: #f5f5fa;
+        border-color: #f5f5fa80;
+
+        .linkTypes {
+          padding: 0 20px;
+          color: $color-passive;
+          font-weight: 600;
+        }
+      }
     }
   }
 }

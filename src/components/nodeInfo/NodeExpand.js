@@ -20,7 +20,7 @@ const NodeExpand = ({ html, name, onClose }) => (
       <div className="header">
         <TabExpandSvg />
       </div>
-      <div className="container">
+      <div className="tab-expand-container">
         <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
       </div>
     </div>
