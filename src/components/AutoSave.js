@@ -182,6 +182,7 @@ class AutoSave extends Component {
   }
 
   saveGraph = async () => {
+    clearTimeout(this.timeout);
     const { match: { params: { graphId } } } = this.props;
     if (!graphId || Chart.isAutoPosition) {
       return;
@@ -351,22 +352,26 @@ class AutoSave extends Component {
       if (!_.isEmpty(d?.payload?.data?.error)) {
         toast.error('Something went wrong');
       }  
-      await this.props.getSingleGraphRequest(graphId)
-       
     });
+    if (res && res.length > 0) {
+      this.timeout = setTimeout(async () => {
+        this.updateThumbnail();
+        await this.props.getSingleGraphRequest(graphId)
+      }, 0)
+    }
     document.body.classList.remove('autoSave');
   }
 
-  handleUnload = (ev) => {
+  handleUnload = async (ev) => {
     ev.preventDefault();
-    this.updateThumbnail();
+    await this.updateThumbnail();
     ev.returnValue = 'Changes you made may not be saved.';
   }
 
-  handleRouteChange = (newLocation) => {
+  handleRouteChange = async (newLocation) => {
     const { location } = this.props;
     if (location.pathname !== newLocation.pathname) {
-      this.updateThumbnail();
+      await this.updateThumbnail();
     }
   }
 
