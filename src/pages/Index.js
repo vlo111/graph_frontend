@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Wrapper from '../components/Wrapper';
 import Header from '../components/Header';
-import BackToTop from "react-back-to-top-button";
 
 import GraphTemplates from './profile/GraphTemplates';
 import Shared from './Shared';
@@ -29,14 +28,6 @@ class Index extends Component {
           ]}
         />
       </Wrapper>
-      <BackToTop
-        //showOnScrollUp
-        showAt={100}
-        speed={1500}
-        easing="easeInOutQuint"
-      >
-        <span><ScrollUpSvg className="icon" style={{ height: 40 }} /></span>
-      </BackToTop>
       </>
     );
   }
