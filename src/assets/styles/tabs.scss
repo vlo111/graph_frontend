@@ -5,10 +5,10 @@
   width: 45%;
   height: 94vh;
   z-index: 5;
-  box-shadow: 0px 6px 20px #0D090526;
+  box-shadow: 0 6px 20px #0D090526;
   right: 0;
   top: 69px;
-  transition: all 0.5s ease-in-out 0s;
+  transition: all 0.6s ease-in-out 0s;
   transform-origin: left top;
 
   .collaborate {
@@ -83,18 +83,18 @@
       }
 
       .frame, .textWrapper {
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
+        display: block;
       }
 
       .frame {
         margin-left: 60px;
 
         .bottom-icons {
-          position: absolute;
-          bottom: 30px;
           margin-left: -30px;
+
+          button {
+            margin-top: 10px;
+          }
         }
       }
 

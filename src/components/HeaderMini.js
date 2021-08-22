@@ -101,8 +101,42 @@ class HeaderMini extends Component {
     this.setState({ image: headerImg });
   }
 
+  getSettingsElements = (name) => ({
+    tableElement: document.getElementById('nodeFullInfo'),
+    closeTabElement: document.getElementsByClassName('close')[0],
+    item: document.getElementsByClassName(name)[0],
+  })
+
+  updateTab = (show, name) => {
+    const { tableElement, closeTabElement, item } = this.getSettingsElements(name);
+
+    if (show) {
+      tableElement.style.width = '500px';
+      closeTabElement.style.display = 'none';
+    } else {
+      closeTabElement.style.display = 'flex';
+      item.style.transition = 'all 0.5s ease-in-out 0s';
+      item.style.transformOrigin = 'right top';
+      item.style.transform = 'scaleX(0)';
+
+      setTimeout(() => {
+        tableElement.style.width = '45%';
+      }, 400);
+    }
+  }
+
   toggleGraphUsersInfo = (showGraphUsersInfo) => {
-    this.setState({ showGraphUsersInfo });
+    this.updateTab(showGraphUsersInfo, 'graphUsersInfo');
+
+    if (showGraphUsersInfo) {
+      setTimeout(() => {
+        this.setState({ showGraphUsersInfo });
+      }, 600);
+    } else {
+      setTimeout(() => {
+        this.setState({ showGraphUsersInfo });
+      }, 700);
+    }
   }
 
   closeComment = (showNodeComment) => {
@@ -111,25 +145,13 @@ class HeaderMini extends Component {
   }
 
   toggleNodeComment = (showNodeComment) => {
-    const tableElement = document.getElementById('nodeFullInfo');
-    const closeTabElement = document.getElementsByClassName('close')[0];
-    const commentModalElement = document.getElementsByClassName('tabComment')[0];
+    this.updateTab(showNodeComment, 'tabComment');
 
     if (showNodeComment) {
-      tableElement.style.width = '500px';
-      closeTabElement.style.display = 'none';
-
-      this.closeComment(showNodeComment);
-    } else {
-      closeTabElement.style.display = 'flex';
-      commentModalElement.style.transition = 'all 0.5s ease-in-out 0s';
-      commentModalElement.style.transformOrigin = 'right top';
-      commentModalElement.style.transform = 'scaleX(0)';
-
       setTimeout(() => {
-        tableElement.style.width = '45%';
-      }, 400);
-
+        this.closeComment(showNodeComment);
+      }, 600);
+    } else {
       setTimeout(() => {
         this.closeComment(showNodeComment);
       }, 700);
@@ -209,7 +231,6 @@ class HeaderMini extends Component {
                 : node.type}
             </h3>
           </div>
-
         </div>
 
         <div className="footer-link">
