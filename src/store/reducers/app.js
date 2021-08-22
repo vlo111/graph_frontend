@@ -125,7 +125,7 @@ export default function reducer(state = initialState, action) {
     case TOGGLE_GRAPH_MAP: {
       return {
         ...state,
-        showGraphMap: !state.showGraphMap
+        showGraphMap: action.payload.open
       }
     }
     default: {

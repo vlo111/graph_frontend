@@ -35,6 +35,11 @@ class Chart {
     }
   }
 
+  static isLoading = () => {
+    const loading = document.querySelector('#graph .loading');
+    return loading.classList.contains('show') ? true : false
+  }
+
   // gets the passed d3 element center coordinates
   static getElementCenter() {
     const uCords = SvgService.getImageUpdatedCoordinates();
@@ -274,10 +279,12 @@ class Chart {
   }
 
   static drag(simulation) {
-    let startX;
-    let startY;
+    let moveX;
+    let moveY;
     const dragNode = {};
     const dragstart = (ev, d) => {
+      moveX = 0;
+      moveY = 0;
       if (d !== undefined) {
         if (d.nodeType === 'infography' && ev.sourceEvent.shiftKey) {
           ChartInfography.dragstart(ev, d);
@@ -327,6 +334,9 @@ class Chart {
 
         d.x = ev.x;
         d.y = ev.y;
+
+        moveX += ev.dx;
+        moveY += ev.dy;
       }
 
       this.graphMovement();
@@ -374,7 +384,11 @@ class Chart {
           delete d.fy;
         }
       }
-      this.event.emit('node.dragend', ev, d);
+
+      if (Math.abs(moveX) >= 1 || Math.abs(moveY) >= 1) {
+        this.oldData.links = Chart.getLinks();
+        this.event.emit('node.dragend', ev, d);
+      }
     };
 
     return d3.drag()
@@ -497,6 +511,7 @@ class Chart {
           return d;
         }
         d.manually_size = d.manually_size || 1;
+        // d.labels = ChartUtils.getNodeLabels(d);
 
         const labelData = data.embedLabels.find((l) => d.labels?.includes(l.labelId));
         if (!labelData) {
@@ -701,10 +716,10 @@ class Chart {
       }
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
-        .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -4000 : -5000)).distanceMin(50).distanceMax(500));
-      // .force('y', d3.forceY(0.01))
-      // .force('x', d3.forceX(0.01));
+        .force('center', d3.forceCenter(width / 2, height / 2)) 
+         .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -4000 : -5000)).distanceMin(50).distanceMax(500))
+        .force('y', d3.forceY(0.05))
+        .force('x', d3.forceX(0.05));
     }
     return null;
   }
@@ -952,7 +967,11 @@ class Chart {
       .attr('fill', ChartUtils.labelColors)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
-      .on('dblclick', (ev, d) => {
+      .on('dblclick', (ev, d) => { 
+        if(this.activeButton === 'view'){
+          toast.info('You are in preview mode');
+          return;
+        }
         if (this.nodesPath) return;
         if (d.open || document.body.classList.contains('autoSave')) {
           return;
@@ -1582,7 +1601,6 @@ class Chart {
           links: Chart.getLinks(true, ChartUtils.objectAndProto(data.links)),
           labels: Chart.getLabels(ChartUtils.objectAndProto(data.labels)),
         }));
-        console.log(Chart.getLinks(true, data.links));
       }
 
       if (!params.dontRemember && _.isEmpty(params.filters)) {
@@ -1613,7 +1631,9 @@ class Chart {
       this.autoPosition();
 
       this.svg = d3.select('#graph svg');
-      this.zoom = d3.zoom().on('zoom', this.handleZoom);
+      this.zoom = d3.zoom()
+        .on('zoom', this.handleZoom)
+        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250% 
       this.svg = this.svg
         .call(this.zoom)
         .on('dblclick.zoom', null)
@@ -2027,6 +2047,8 @@ class Chart {
 
       this.labels.each((l) => {
         if (this.squareData.labels.includes(l.id) && !l.readOnly) {
+          moveLock(l.id, ev.dx, ev.dy);
+
           if (l.size && (l.type === 'square' || l.type === 'ellipse')) {
             l.size.x = +(l.size.x + ev.dx).toFixed(2);
             l.size.y = +(l.size.y + ev.dy).toFixed(2);
@@ -2044,6 +2066,8 @@ class Chart {
         if (this.squareData.labels.includes(l.id) && !l.readOnly) {
           l.d[0][0] = +(l.d[0][0] + ev.dx).toFixed(2);
           l.d[0][1] = +(l.d[0][1] + ev.dy).toFixed(2);
+
+          moveLock(l.id, ev.dx, ev.dy);
         }
         return l;
       }).attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`);
@@ -2086,6 +2110,17 @@ class Chart {
     this.event.on('node.dragstart', handleSquareDragStart);
     this.event.on('node.drag', handleSquareDrag);
     this.event.on('node.dragend', handleSquareDragEnd);
+
+    const moveLock = (id, dx, dy) => {
+      const lock = this.svg.select(`use[data-label-id="${id}"]`);
+
+      if (!lock.empty()) {
+        let [, x, y] = lock.attr('transform').match(/(-?[\d.]+),\s*(-?[\d.]+)/) || [0, 0, 0];
+        x = +x + dx;
+        y = +y + dy;
+        lock.attr('transform', `translate(${x}, ${y})`);
+      }
+    };
 
     const handleDrag = (ev) => {
       if (this.nodesPath) return;
@@ -2485,7 +2520,7 @@ class Chart {
       return;
     }
     let dragActive = false;
-    this.event.on('node.dragstart', () => {
+    this.event.on('node.drag', () => {
       if (this.nodesPath) return;
       dragActive = true;
     });

@@ -65,6 +65,10 @@ class LabelCopy extends Component {
   }
 
   handleLabelAppend = async (ev, params) => {
+
+    if(Chart.isAutoPosition)
+       Chart.isAutoPosition = false;
+
     const { x, y } = params;
     const { singleGraph } = this.props;
     const data = LabelUtils.getData();
@@ -220,8 +224,11 @@ class LabelCopy extends Component {
     Chart.loading(false);
   }
 
-  handleLabelEmbed = () => {
+  handleLabelEmbed = async (params) => {
+    const { x, y } = params;
     const { sourceId } = LabelUtils.getData();
+    const position = [x, y];
+    await this.setState({ position })
     this.copyDocument('embed', sourceId);
   }
 

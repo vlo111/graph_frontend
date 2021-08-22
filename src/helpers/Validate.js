@@ -4,10 +4,9 @@ import CustomFields from './CustomFields';
 import ChartUtils from './ChartUtils';
 
 class Validate {
-  static nodeName(val, update) {
+  static nodeName(val, update, nodes = []) {
     const value = (val || '').trim();
     let error = null;
-    const nodes = Chart.getNodes();
     if (!value) {
       error = 'Name is required';
     } else if (!update && nodes.some((d) => d.name === value)) {

@@ -43,6 +43,7 @@ class Editor extends Component {
       'copyformat', '|',
       'symbol',
       'fullsize',
+      'link'
     ],
   }
 

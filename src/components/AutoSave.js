@@ -55,6 +55,7 @@ class AutoSave extends Component {
     Chart.event.on('label.dragend', this.handleChartRender);
     Chart.event.on('setNodeData', this.handleChartRender);
     Chart.event.on('square.dragend', this.handleChartRender);
+    Chart.event.on('link.save', this.handleChartRender);
     Chart.event.on('selected.dragend', this.handleChartRender);
     Chart.event.on('folder.open', this.handleFolderToggle);
     Chart.event.on('folder.close', this.handleFolderToggle);
@@ -95,8 +96,10 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    this.saveGraph();
-    // this.timeout = setTimeout(this.saveGraph, 0);
+    if (Chart.isLoading === true) {
+      return
+    }
+    this.timeout = setTimeout(this.saveGraph, 0);
   }
 
   formatNode = (node) => ({
@@ -114,6 +117,7 @@ class AutoSave extends Component {
     sourceId: node.sourceId || '',
     status: node.status || 'approved',
     type: node.type || '',
+    manually_size: node.manually_size || 1,
   })
 
   formatLink = (d) => ({
@@ -179,22 +183,22 @@ class AutoSave extends Component {
       return;
     }
     document.body.classList.add('autoSave');
-    const links = Chart.getLinks().filter((d) => !d.fake && !d.sourceId);
-    const labels = Chart.getLabels().filter((d) => !d.sourceId);
+    const links = Chart.getLinks(true).filter((d) => !d.fake && !d.sourceId);
+    const labels = Chart.getLabels();
     const nodes = Chart.getNodes(true).filter((d) => !d.fake && !d.sourceId);
 
     const oldNodes = Chart.oldData.nodes.filter((d) => !d.fake && !d.sourceId);
     const oldLinks = Chart.oldData.links.filter((d) => !d.fake && !d.sourceId);
-    const oldLabels = Chart.oldData.labels.filter((d) => !d.fake && !d.sourceId);
-    const deleteLabels = _.differenceBy(oldLabels, labels, 'id');
-    const createLabels = _.differenceBy(labels, oldLabels, 'id');
-    const updateLabels = [];
+    const oldLabels = Chart.oldData.labels.filter((d) => !d.fake);
+    let deleteLabels = _.differenceBy(oldLabels, labels, 'id');
+    let createLabels = _.differenceBy(labels, oldLabels, 'id');
+    let updateLabels = [];
     const updateLabelPositions = [];
     let newLabel = false;
     labels.forEach((label) => {
       const oldLabel = oldLabels.find((l) => l.id === label.id);
       if (oldLabel) {
-        if (!_.isEqual(label.d, oldLabel.d) || !_.isEqual(label.size, oldLabel.size)) {
+        if (!_.isEqual(label.d, oldLabel.d)) {
           updateLabelPositions.push({
             id: label.id,
             d: label.d,
@@ -208,9 +212,22 @@ class AutoSave extends Component {
         } else if (oldLabel.new || oldLabel.import) {
           newLabel = true;
           createLabels.push(label);
+        } else if (!_.isEqual(label.size, oldLabel.size)) {
+          updateLabelPositions.push({
+            id: label.id,
+            d: label.d,
+            size: label.size,
+            type: label.type,
+            open: label.open,
+          });
         }
       }
     });
+
+    createLabels = createLabels.filter((d) => !d.sourceId);
+    updateLabels = updateLabels.filter((d) => !d.sourceId);
+    deleteLabels = deleteLabels.filter((d) => !d.sourceId);
+
     if (newLabel) {
       Chart.oldData.labels = Chart.oldData.labels.map((d) => {
         delete d.new;
@@ -254,8 +271,7 @@ class AutoSave extends Component {
     });
     const deleteLinks = _.differenceBy(oldLinks, links, 'id');
     let createLinks = _.differenceBy(links, oldLinks, 'id');
-    const updateLinks = [];
-
+    let updateLinks = [];
     createLinks.push(...oldLinks.filter((l) => l.create));
     oldLinks.forEach((l) => {
       delete l.create;
@@ -263,7 +279,7 @@ class AutoSave extends Component {
     links.forEach((link) => {
       const oldLink = oldLinks.find((l) => l.id === link.id);
       if (oldLink) {
-        if (_.isUndefined(link.index)) {
+        if (_.isUndefined(oldLink.index) || _.isUndefined(link.index)) {
           createLinks.push(link);
         } else if (!_.isEqual(this.formatLink(oldLink), this.formatLink(link)) && !link.create) {
           updateLinks.push(link);
@@ -271,13 +287,10 @@ class AutoSave extends Component {
       }
     });
     createLinks = ChartUtils.uniqueLinks(createLinks);
-
+    updateLinks = updateLinks.filter((l) => !createLinks.some((link) => link.id === l.id));
     if (deleteNodes.length && deleteNodes.length === nodes.length) {
       // document.body.classList.remove('autoSave');
       // return;
-    }
-    if (createNodes.length) {
-      await this.props.createNodesRequest(graphId, createNodes);
     }
     const promise = [];
     if (updateNodes.length) {
@@ -289,9 +302,13 @@ class AutoSave extends Component {
     // if (updateNodePositions.length) {
     //   promise.push(this.props.updateNodesPositionRequest(graphId, updateNodePositions));
     // }
-
     if (updateNodePositions.length || updateLabelPositions.length) {
       promise.push(this.props.updateGraphPositionsRequest(graphId, updateNodePositions, updateLabelPositions));
+    } else if (createNodes.length) {
+      const { payload: { data = {} } } = await this.props.createNodesRequest(graphId, createNodes);
+      if (!_.isEmpty(data.errors)) {
+        toast.error('Something went wrong');
+      }
     }
 
     if (updateNodeCustomFields.length) {

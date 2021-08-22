@@ -149,7 +149,6 @@ class ContextMenu extends Component {
     }
     // remove curve points
     Chart.wrapper.selectAll('#fcurve, #lcurve').remove();
-
     return (
       activeButton === 'deleteModal' ? <DeleteModalContext data={deleteDataModal} params={params} />
         : (
