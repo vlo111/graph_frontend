@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import Chart from '../../Chart';
-import bgImage from '../../assets/images/no-img.png';
+import bgImage from '../../assets/images/tabDefault.jpg';
 import ChartUtils from "../../helpers/ChartUtils";
 
 class NodeImage extends Component {

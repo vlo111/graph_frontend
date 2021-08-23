@@ -7,8 +7,9 @@ import { ReactComponent as NoTabSvg } from '../../assets/images/icons/sad.svg';
 import { ReactComponent as AddTabSvg } from '../../assets/images/icons/plus-add-tab.svg';
 import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
 import { ReactComponent as DeleteSvg } from '../../assets/images/icons/delete.svg';
-import { ReactComponent as ExpandTabSvg } from '../../assets/images/icons/expandtab-data.svg';
+import { ReactComponent as ExpandTabSvg } from '../../assets/images/icons/expand-tab-content.svg';
 import Button from '../form/Button';
+import NodeExpand from './NodeExpand';
 
 class NodeTabsContent extends Component {
   static propTypes = {
@@ -23,6 +24,7 @@ class NodeTabsContent extends Component {
     super(props);
     this.state = {
       contentType: '',
+      expandNode: false,
     };
   }
 
@@ -35,10 +37,21 @@ class NodeTabsContent extends Component {
     }
   })
 
+  expand = () => {
+    const { expandNode } = this.state;
+
+    this.setState({
+      expandNode: !expandNode,
+    });
+  }
+
   render() {
     const {
       name, node, customFields, activeTab,
     } = this.props;
+
+    const { expandNode } = this.state;
+
     const html = customFields.find((f) => f.name === name)?.value || '';
     // this.getContentType(html);
     // const { result: text } = stripHtml(html);
@@ -59,7 +72,7 @@ class NodeTabsContent extends Component {
     return (
       <div data-field-name={!node.sourceId ? name : ''} className="contentWrapper">
         <div className="tab-data-settings">
-          {html && (
+          {(html || node.description) && (
           <Button
             icon={<EditSvg />}
             title="Edit"
@@ -79,29 +92,45 @@ class NodeTabsContent extends Component {
             Delete
           </Button>
           )}
-          {html && (
-          <div className="expand">
+          {(html || node.description) && (
+          <div onClick={this.expand} className="expand">
             <ExpandTabSvg />
           </div>
           )}
         </div>
-        {html ? <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
-          : (
-            <div className="no-tabs">
-              <div className="no-tab-content">
-                <div className="header">
-                  {(activeTab === '_description') && <p className="description">Description</p>}
-                  <NoTabSvg />
-                  {activeTab !== '_description' ? <p className="no-data">You have no data yet</p>
-                    : <p className="no-data">You have no description yet</p> }
-                </div>
-                <div onClick={(ev) => this.props.openAddTabModal(ev, activeTab)} className="footer">
-                  <AddTabSvg />
-                  <p className="create-tab">Create</p>
+
+        {(activeTab === '_description' && node.description) ? <div />
+          : <div />}
+
+        {((activeTab === '_description') && node.description)
+          ? (
+            <div>
+              <div className="content" dangerouslySetInnerHTML={{ __html: node.description }} />
+            </div>
+          )
+          : html ? (
+            <div className="container">
+              <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
+            </div>
+          )
+            : (
+              <div className="no-tabs">
+                <div className="no-tab-content">
+                  <div className="header">
+                    {(activeTab === '_description') && <p className="description">Description</p>}
+                    <NoTabSvg />
+                    {activeTab !== '_description' ? <p className="no-data">You have no data yet</p>
+                      : <p className="no-data">You have no description yet</p>}
+                  </div>
+                  <div onClick={(ev) => this.props.openAddTabModal(ev, activeTab)} className="footer">
+                    <AddTabSvg />
+                    <p className="create-tab">Create</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+
+        {expandNode && <NodeExpand html={html} name={name} onClose={this.expand} />}
       </div>
     );
   }
