@@ -31,6 +31,7 @@ import Api from '../../Api';
 class EditGraphModal extends Component {
   static propTypes = {
     createGraphRequest: PropTypes.func.isRequired,
+    getSingleGraphRequest: PropTypes.func.isRequired,
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     updateGraphRequest: PropTypes.func.isRequired,
@@ -71,6 +72,15 @@ class EditGraphModal extends Component {
         userImage: false
       },
     };
+  }
+
+  async componentDidMount () {
+    const { match: { params: { graphId } }, singleGraph: {defaultImage} } = this.props;
+    const svg = ChartUtils.getChartSvg();
+    if (!defaultImage) {
+      await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+      this.props.getSingleGraphRequest()
+    }
   }
 
   async deleteGraph(graphId) {

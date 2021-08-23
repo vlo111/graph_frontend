@@ -111,21 +111,6 @@ export default function reducer(state = initialState, action) {
         graphsListInfo,
       };
     }
-    // case GENERATE_THUMBNAIL_WORKER: {
-    //   const { graph } = action.payload.data;
-    //
-    //   const graphsList = [...state.graphsList].map((g) => {
-    //     if (g.id === graph.id) {
-    //       g.updatedAt = graph.updatedAt;
-    //     }
-    //     return g;
-    //   });
-    //
-    //   return {
-    //     ...state,
-    //     graphsList,
-    //   };
-    // }
     case GET_GRAPHS_LIST.FAIL: {
       return {
         ...state,
