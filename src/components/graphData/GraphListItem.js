@@ -16,7 +16,7 @@ class GraphListItem extends Component {
   render() {
     const { graphs, headerTools, mode } = this.props;
     const { s } = queryString.parse(window.location.search);
-    if(!graphs && !graphs.length) return null;
+    if(!graphs && !graphs?.length) return null;
 
     return (
       graphs ?

@@ -78,7 +78,7 @@ class GraphCardItem extends Component {
                  <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
                </Link>
                <div className="info"> 
-                 <span>{moment(graph.updatedAt).startOf('Day').fromNow()}</span>     
+                 <span>{moment(graph.updatedAt).startOf('minute').fromNow()}</span>     
                  <span className="nodesCount">{` ${graph.nodesCount} nodes `}</span>
                </div>
              </div>

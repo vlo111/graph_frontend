@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import _ from 'lodash';
+import _, { divide } from 'lodash';
 import memoizeOne from 'memoize-one';
 import { withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
@@ -10,6 +10,7 @@ import Pagination from '../components/Pagination';
 import NoGraph from '../components/NoGraph';
 import GraphListItem from "../components/graphData/GraphListItem";
 import GraphCardItem from "../components/graphData/GraphCardItem";
+import { ReactComponent as PlusSvg } from '../assets/images/icons/plusGraph.svg';
 
 class Home extends Component {
   static propTypes = {
@@ -30,6 +31,9 @@ class Home extends Component {
 
     this.props.getGraphsListRequest(page, { s, filter: order });
   }
+  startGraph = () => {
+    window.location.href = '/graphs/create';
+  }
 
   render() {
     const { graphsList, graphsListStatus, graphsListInfo: { totalPages }, mode } = this.props;
@@ -46,7 +50,13 @@ class Home extends Component {
             </h2>
           ) : null}
           {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
+            <div className='no-graphs'>
             <NoGraph />
+            <div className='startGraph' onClick={this.startGraph}>
+              <PlusSvg />
+              <h3>Start Graph</h3>
+            </div>
+            </div>
           ) : mode === 'list' ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} />}
         </div>
         <Pagination totalPages={totalPages} />
