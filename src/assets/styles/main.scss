@@ -979,10 +979,6 @@ p {
         display: block;
       }
     }
-
-    .nodeCreate {
-      fill: rgba(136, 130, 209, 0.22);
-    }
   }
 
   .node {
@@ -1618,7 +1614,7 @@ p {
       object-fit: cover;
     }
 
-    .graphinputName{
+    .graphInputName{
       border:none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
@@ -3759,19 +3755,6 @@ body .gh__menu {
   }
 }
 
-.textEllipsis {
-  p {
-    font-size: inherit;
-  }
-
-  .ghButton {
-    padding: 0;
-    margin-left: auto;
-    margin-top: 27px;
-    color: $color-dark-blue;
-  }
-}
-
 .ghModalOverlay .ghModalCustomFieldName {
   top: 5%;
 }
@@ -3917,52 +3900,68 @@ body .gh__menu {
 }
 
 .connectionDetails {
-  padding: 0 10%;
-  margin-top: -40px;
+  padding: 0 46px;
 
-  .row {
-    flex-direction: column;
-    margin-left: 0;
-    margin-right: 0;
+  details {
+    padding-bottom: 16px;
+    margin: 20px 0;
 
-    h3 {
+    summary {
       font-weight: 600;
       font-size: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid $color-light-gray;
-      margin: 20px 0;
+      cursor: pointer;
+      width: 170px;
+
+      &::marker {
+        color: $color-main;
+      }
     }
 
-    .list {
+    .container {
       overflow-x: hidden;
       overflow-y: auto;
       height: 150px;
+      margin-top: 20px;
 
-      .item {
-        margin-bottom: 30px;
+      .row {
+        flex-direction: column;
+        margin-left: 0;
+        margin-right: 0;
 
-        a {
-          display: flex;
-          color: $color-dark;
-          text-decoration: none;
-        }
+        .item {
+          margin-bottom: 30px;
 
-        .left {
-          margin-right: 20px;
-        }
-
-        .right {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-
-          .name {
-            font-weight: 600;
-            font-size: 16px;
+          a {
+            display: flex;
+            color: $color-dark;
+            text-decoration: none;
           }
 
-          .type {
-            font-size: 14px;
+          .left {
+            margin-right: 20px;
+          }
+
+          .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .name {
+              font-weight: 600;
+              font-size: 16px;
+            }
+
+            .type {
+              font-size: 14px;
+            }
+          }
+        }
+
+        &:last-child {
+          .item{
+            &:last-child {
+              margin-bottom: 10px;
+            }
           }
         }
       }
@@ -4200,7 +4199,6 @@ body .gh__menu {
 
       &--reply {
         background-color: #f7f7fb;
-        margin: 0 13px 9px 0;
         padding-left: 61px;
         border-radius: 3px;
         font-family: chaparral-pro, serif;
@@ -4299,6 +4297,10 @@ body .gh__menu {
         fill: #707070 !important;
       }
     }
+  }
+
+  .jodit-workplace {
+    min-height: 50px !important;
   }
 }
 
@@ -5325,20 +5327,6 @@ body .gh__menu {
   margin-bottom: 50px;
 }
 
-
-.wikiButton {
-  background: transparent;
-  border: none;
-  z-index: 2;
-  margin-bottom: 6px;
-  position: absolute;
-  right: 23%;
-
-  img {
-    width: 40px;
-    height: 40px;
-  }
-}
 .scienceGraph{
   right: 31% ;
 }
@@ -5740,10 +5728,6 @@ body .gh__menu {
   flex-grow: 1;
   padding: 0;
   width: 330px;
-}
-
-.jodit-popup__content {
-  max-width: 3500px;
 }
 
 .insertMediaModal {
@@ -8298,6 +8282,8 @@ img.preview-scaled {
 
   ul {
     list-style: none;
+    height: 300px;
+    overflow: auto;
   }
 
   &.open {
@@ -8777,16 +8763,17 @@ img.preview-scaled {
   }
 }
 
-.jodit-status-bar {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 14px;
+.jodit-status-bar:not(:empty) {
+  border: 1px solid #dadada;
+  border-top: none !important;
+  margin-top: 1px;
+  width: calc(100% + 2px);
+  margin-left: -1px;
   color: #9F9F9F;
-  margin-right: 30px;
-  border-top:0 !important;
-  background-color: white;
+  background-color: $color-white;
+}
 
+.jodit-status-bar {
   &__item-right {
     margin-top: -10px !important;
   }
@@ -8794,4 +8781,8 @@ img.preview-scaled {
 
 .jodit-toolbar-editor-collection_mode_horizontal {
   background-color: white;
+}
+
+.jodit-workplace {
+  min-height: 206px !important;
 }

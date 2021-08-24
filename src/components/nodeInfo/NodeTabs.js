@@ -151,6 +151,13 @@ class NodeTabs extends Component {
 
     this.setDocumentsPath();
 
+    if (!_.isNull(formModalOpen)) {
+      nodeCustomFields[0] = {
+        value: node.description,
+        name: '_description',
+      };
+    }
+
     return (
       <div className="nodeTabs">
         <div className="container-tabs">

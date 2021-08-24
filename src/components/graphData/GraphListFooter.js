@@ -10,7 +10,7 @@ import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/viewGra
 import { getActionsCount } from '../../store/selectors/graphs';
 import { getActionsCountRequest } from '../../store/actions/graphs';
 import Button from '../form/Button';
-import ShareTooltip from '../ShareTooltip/ShareTooltip';
+import ShareTooltip from '../Contributors/ShareTooltip';
 import CommentModal from '../CommentModal';
 import EmbedButton from '../embed/EmbedButton';
 
