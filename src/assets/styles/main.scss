@@ -2486,7 +2486,9 @@ p {
   background: $color-white;
   border-radius: 24px;
   padding: 10px;
-  border: 1px solid $color-light-gray;
+  // border: 1px solid $color-light-gray;
+  position: relative;
+  top: 40px;
 
   li {
     a {
@@ -4935,15 +4937,14 @@ body .gh__menu {
 }
 
 .friends-list {
-  min-height: 90vh;
   padding: 2% 3.4%;
-  border: 1px solid $color-light-gray;
   border-radius: 24px;
   background-color: $color-white;
 
   h3 {
     text-align: center;
     font: normal normal 600 36px/49px Open Sans;
+    color: $color-main;
   }
 }
 
@@ -6215,7 +6216,6 @@ img.preview-scaled {
 .rc-tooltip-inner {
   background: $color-white;
   color: #000000;
-
   .tooltiptext {
     display: flex;
     flex-direction: row;

@@ -75,11 +75,11 @@
              line-height: 19px !important;
               .info{
                 margin: 0 !important;
-                font-size:16px !important;
+                font-size: 15px !important;
                 color: #707070 !important;
                 font-weight: 400 !important;
-                width: 290px !important;
-                display: flex !important;
+                width: 235px !important;
+                display: flex;
                 justify-content: space-between !important;
                 .nodesCount{
                   color: $color-main !important;
@@ -112,7 +112,7 @@
               cursor: pointer;
             }
            .ar-popover-content.-arrow {
-             margin-top: -8px;
+             margin-top: -3px;
              left: -93px;
              z-index: 9;
              padding: 5px 0 5px 0;
@@ -382,7 +382,10 @@
          color: $color-main ;
          font-weight: 700;
          margin-top: 19px;
-      }
+         .grpahTitle{
+          display: none !important;
+        }
+      } 
       .descriptionGraph{
        margin-top: 20px;
        min-height: 28px;

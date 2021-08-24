@@ -23,7 +23,7 @@ class GraphListItem extends Component {
       graphs.map((graph) => (
         <article className="graphsItem" >
         <div>
-          <Tooltip overlay={graph.title} placement="bottom">
+          <Tooltip overlay={graph.title} placement="bottom" className='tooltipList'>
             <h3> {graph.title.length > 18 ? `${graph.title.substring(0, 18)}...` : graph.title}</h3>
           </Tooltip>
           {(mode === 'card') ? (<p> {graph.description}</p>) : ''}

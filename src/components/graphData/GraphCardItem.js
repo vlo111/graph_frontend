@@ -56,14 +56,16 @@ class GraphCardItem extends Component {
     }
 
     const { s } = queryString.parse(window.location.search);
-    if(!graphs && !graphs.length) return null;
+    if(!graphs && !graphs?.length) return null;
 
     return (
       <>
+      { headerTools === 'home' &&
       <div className='startGraph' onClick={this.startGraph}>
           <PlusSvg />
           <h3>Start Graph</h3>
       </div>
+        }
       { graphs.map((graph) => (
         <article className="graphs">
         <div className="top">

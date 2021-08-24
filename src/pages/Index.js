@@ -39,8 +39,8 @@ setMode = (value) => {
             { to: '/', name: 'Home', component: <Home mode={mode} /> },
             { to: '/search', name: 'Search', hidden: true, component: <Home /> },
             { to: '/templates', name: 'Templates', component: <GraphTemplates mode={mode} /> },
-            { to: '/shared', name: 'Shared Graphs', component: <Shared  mode={mode} />  },
-            { to: '/friends', name: 'Friends', component: <Friends /> },
+            { to: '/shared', name: 'Shared Graphs', component: <Shared   mode={mode} />  },
+            { to: '/friends', name: 'Friends', component: <Friends  /> },
           ]}
           onChange={(value) => this.setMode(value)}
         />

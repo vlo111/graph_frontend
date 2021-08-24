@@ -31,17 +31,18 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
       if(graphId) {
         await dispatch(deleteGraphRequest(graph.id));
         // use selector
+        
         await dispatch(getGraphsListRequest(page, { s: searchParam }));
       } else {
       if (window.confirm('Are you sure?')) {
         await dispatch(deleteGraphRequest(graph.id));
         // use selector
+        toast.info('Successfully deleted');
         await dispatch(getGraphsListRequest(page, { s: searchParam }));
 
         history.push("/");
-      }
-
-      toast.info('Successfully deleted');
+      } 
+     
     }
     } catch (e) {
     }
@@ -67,12 +68,14 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
             trigger='click'
           >
             <div className="ar-popover-list">
-            {headerTools ? (
-              <Button 
+            {headerTools === 'shared' ? (
+              <div 
                 onClick={() => handleDeleteShareGraph(graph?.share.id)}
                 className="child dashboard-delete" >
-                Delete
-              </Button>
+                  <span className='dashboard-delete'>
+                   Delete
+                  </span>
+              </div>
              ) : (
              <>
                 {/* <div

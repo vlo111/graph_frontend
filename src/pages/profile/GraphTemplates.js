@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import memoizeOne from 'memoize-one';
-import moment from 'moment';
 import _ from 'lodash'
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import Pagination from '../../components/Pagination';
-import GraphListFooter from '../../components/graphData/GraphListFooter';
-import GraphDashboardSubMnus from '../../components/graphData/GraphListHeader';
+import GraphCardItem from "../../components/graphData/GraphCardItem";
+import GraphListItem from "../../components/graphData/GraphListItem";
 
 import NoGraph from "../../components/NoGraph";
 
@@ -55,8 +54,8 @@ class Home extends Component {
     this.getGraphsList(page, s); 
     return (
       <>
-        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`}>
-        {s ? (
+        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`} >
+          {s ? (
             <h2 className="searchResult">
               {'Search Result for: '}
               <span>{s}</span>
@@ -64,44 +63,8 @@ class Home extends Component {
           ) : null}
           {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
             <NoGraph />
-          ) : null}            
-              {graphsList.map((graph) => (
-                <article key={graph.id} className="graphsItem"> 
-                <div>
-                   <h3> {graph.title.length > 18 ? `${graph.title.substring(0, 18)}...` : graph.title}</h3>
-                </div> 
-                  <div className="top">
-                    <img
-                      className="avatar"
-                      src={graph.user.avatar}
-                      alt={graph.user.name}
-                    />
-                    <div className="infoWrapper">
-                      <Link to={`/profile/${graph.user.id}`}>
-                        <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
-                      </Link>
-                      <div className="info">
-                        <span>{moment(graph.updatedAt).calendar()}</span>
-                        <span className="nodesCount">{` ${graph.nodesCount} nodes`}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <GraphListFooter graph={graph} />
-                  <div className="buttonHidden">
-                       <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>   
-                       <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
-                   </div>
-                    <div className="unlucky">
-          
-                    </div>
-
-                   <div className="sub-menus" >
-                         <GraphDashboardSubMnus graph={graph} headerTools={headerTools} />
-                   </div>
-                </article>
-              ))} 
-       </div> 
+          ) : mode === 'list' ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} />}
+        </div>
         <Pagination totalPages={totalPages} />
       </>
     );
