@@ -4946,7 +4946,9 @@ body .gh__menu {
   h3 {
     text-align: center;
     font: normal normal 600 36px/49px Open Sans;
-    color: $color-main;
+    background: -webkit-linear-gradient(#F07760, #7166F8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 
