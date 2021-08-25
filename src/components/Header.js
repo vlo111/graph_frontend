@@ -26,11 +26,11 @@ class Header extends Component {
         <SearchGraphs />
         <div className="start-graphs">
           <div className="buttonsWrapper">
-            <Button color="accent" onClick={this.startGraph}>
+            <Button className="btn-startgraph" color="accent" onClick={this.startGraph}>
               Start a graph
             </Button>
 
-            <Button color="accent" onClick={this.compareGraph}>
+            <Button className="btn-comparegraph" color="accent" onClick={this.compareGraph}>
               Compare graphs
             </Button>
 

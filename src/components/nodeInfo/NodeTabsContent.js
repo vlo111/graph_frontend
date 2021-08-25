@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import stripHtml from 'string-strip-html';
+import moment from 'moment';
 import Api from '../../Api';
 import { ReactComponent as NoTabSvg } from '../../assets/images/icons/sad.svg';
 import { ReactComponent as AddTabSvg } from '../../assets/images/icons/plus-add-tab.svg';
@@ -130,7 +131,16 @@ class NodeTabsContent extends Component {
               </div>
             )}
 
-        {expandNode && <NodeExpand html={html} name={name} onClose={this.expand} />}
+        {expandNode
+        && (
+        <NodeExpand
+          html={html}
+          name={name}
+          created={moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}
+          createdBy={node.userId}
+          onClose={this.expand}
+        />
+        )}
       </div>
     );
   }

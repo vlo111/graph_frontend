@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from './Icon';
+import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
 
 class Input extends Component {
   static propTypes = {
@@ -52,11 +53,51 @@ class Input extends Component {
     if (onChangeText) onChangeText(ev.target.value, ev.target.name);
   }
 
+  handleKeyDown = (ev) => {
+    const { onChangeText } = this.props;
+
+    const value = parseInt(ev.target.value);
+
+    if (onChangeText) {
+      if (ev.key === 'ArrowDown') {
+        onChangeText(value <= 1 ? 1 : value - 1);
+      } else if (ev.key === 'ArrowUp') {
+        onChangeText(value >= 50 ? 50 : value + 1);
+      }
+    }
+  }
+
+  numberArrowClick = (item) => {
+    const { onChangeText } = this.props;
+
+    const value = parseInt(document.getElementById('nodeSize').value);
+
+    if (onChangeText) {
+      if (item === 'ArrowDown') {
+        onChangeText(value <= 1 ? 1 : value - 1);
+      } else if (item === 'ArrowUp') {
+        onChangeText(value >= 50 ? 50 : value + 1);
+      }
+    }
+  }
+
+  showHideNumberArrow = (type) => {
+    const arrowElements = document.querySelectorAll('.arrow-down, .arrow-top');
+
+    for (let i = 0; i < arrowElements.length; i++) {
+      if (type === 'blur' || type === 'leave') {
+        arrowElements[i].style.display = 'none';
+      } else if (type === 'focus' || type === 'hover') {
+        arrowElements[i].style.display = 'block';
+      }
+    }
+  }
+
   render() {
     const {
       id, label, containerClassName, containerId, children,
       textArea, limit, onRef,
-      error, onChangeText, icon, ...props
+      error, onChangeText, icon, isNumber, ...props
     } = this.props;
     const inputId = id || `input_${this.id}`;
     return (
@@ -71,7 +112,24 @@ class Input extends Component {
         {textArea ? (
           <textarea ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
         ) : (
-          <input ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
+          isNumber
+            ? (
+              <div className="number-input-container" onMouseLeave={() => this.showHideNumberArrow('leave')}>
+                <span className="arrow-top" onClick={() => this.numberArrowClick('ArrowUp')}><ArrowSvg /></span>
+                <span className="arrow-down" onClick={() => this.numberArrowClick('ArrowDown')}><ArrowSvg /></span>
+                <input
+                  ref={(ref) => onRef && onRef(ref)}
+                  {...props}
+                  id={inputId}
+                  onChange={this.handleChange}
+                  onKeyDown={this.handleKeyDown}
+                  onBlur={() => this.showHideNumberArrow('blur')}
+                  onFocus={() => this.showHideNumberArrow('focus')}
+                  onMouseOver={() => this.showHideNumberArrow('hover')}
+                />
+              </div>
+            )
+            : <input ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
         )}
         {!error && limit ? (
           <div className="limit">{`${limit - (props.value || '').length} / ${limit} characters`}</div>

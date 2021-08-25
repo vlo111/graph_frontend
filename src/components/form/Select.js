@@ -1,12 +1,36 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import ReactSelect from 'react-select';
+import ReactSelect, { components } from 'react-select';
+
 import _ from 'lodash';
 import ReactSelectCreatable from 'react-select/creatable';
 import ReactSelectAsync from 'react-select/async';
 import Icon from './Icon';
 import Outside from '../Outside';
+import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
+
+const { Option } = components;
+
+const IconOption = (props) => {
+  if (props.options.filter((p) => p.value === 'image').length) {
+    return (
+      <Option {...props}>
+        <div className="node-icons" style={{ display: 'flex', justifyContent: 'flex-start' }}>
+          <div>
+            {props.data.icon}
+          </div>
+          <div className="nodestyletext">
+            <p>
+              {props.data.label}
+            </p>
+          </div>
+        </div>
+      </Option>
+    );
+  }
+  return <Option {...props} />;
+};
 
 class Select extends Component {
   static propTypes = {
@@ -139,6 +163,7 @@ class Select extends Component {
             id={inputId}
             classNamePrefix="gh"
             className={classNames('ghSelectContent', props.className)}
+            components={{ DropdownIndicator, Option: IconOption }}
           />
         ) : null}
         {isAsync ? (
@@ -165,6 +190,7 @@ class Select extends Component {
               onInputChange={this.handleInputChange}
               // onBlur={this.handleInputBlur}
               className={classNames('ghSelectContent', props.className)}
+              components={{ DropdownIndicator }}
             />
           </Outside>
         ) : null}
@@ -179,5 +205,11 @@ class Select extends Component {
     );
   }
 }
+
+const DropdownIndicator = (props) => (
+  <components.DropdownIndicator {...props}>
+    <span><ArrowSvg /></span>
+  </components.DropdownIndicator>
+);
 
 export default Select;

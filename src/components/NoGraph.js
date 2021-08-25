@@ -1,13 +1,28 @@
-import React from 'react';
-import noGraphSvg from '../assets/images/no_result.svg';
+import React, {Component} from 'react';
+import noGraphSvg from '../assets/images/icons/sad.svg';
 
-export default function  NoGraph() {
+class NoGraph extends Component {
+  static propTypes = {
+
+  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      graphs: [],
+    };
+  }
+
+
+ render(){
 
   return (
     <div className="no-graphs">
-    <h1 className="title">No Graphs ...</h1>
-    <img src={noGraphSvg} className="no-graph-img" alt="No Graphs" />
-  </div>
+      <img src={noGraphSvg} className="no-graph-img" alt="No Graphs" />
+      <h1 className="title">You have no graph yet</h1> 
+    </div>
+    
   );
 };
+} 
 
+export default   NoGraph

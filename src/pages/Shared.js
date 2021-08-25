@@ -9,6 +9,8 @@ import NoGraph from '../components/NoGraph';
 import GraphListItem from '../components/graphData/GraphListItem';
 import { getShareGraphListRequest } from '../store/actions/share';
 import Pagination from "../components/Pagination";
+import GraphCardItem from "../components/graphData/GraphCardItem";
+
 
 class Shared extends Component {
   static propTypes = {
@@ -21,20 +23,19 @@ class Shared extends Component {
   getShareGraphsList = memoizeOne((page) => {
     this.props.getShareGraphListRequest(page);
   })
+ 
 
   render() {
-    const { shareGraphsListStatus, shareGraphsList, shareGraphsListInfo: { totalPages } } = this.props;
+    const { graphsList,shareGraphsListStatus, shareGraphsList, shareGraphsListInfo: { totalPages } , mode} = this.props;
     const { page = 1 } = queryString.parse(window.location.search);
     this.getShareGraphsList(page);
+    
     return (
       <>
-        <div className={`graphsList ${!shareGraphsList.length ? 'empty' : ''}`}>
-          {_.isEmpty(shareGraphsList) && shareGraphsListStatus !== 'request' ? (
+        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!shareGraphsList.length ? 'empty' : ''}`}>
+         {shareGraphsListStatus !== 'request' && _.isEmpty(shareGraphsList) ? (
             <NoGraph />
-          ) : null}
-          {shareGraphsList.map((graph) => (  
-            <GraphListItem key={graph.id} graph={graph} headerTools = {'shared'} />
-          ))}
+          ) : mode === 'list' ? <GraphListItem graphs={shareGraphsList}  headerTools = {'shared'}/>  : <GraphCardItem graphs={shareGraphsList} headerTools = {'shared'} />}
         </div>
         <Pagination totalPages={totalPages} />
       </>
