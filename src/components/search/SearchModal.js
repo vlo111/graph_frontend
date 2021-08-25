@@ -23,7 +23,7 @@ class SearchModal extends Component {
     toggleSearch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     setActiveTab: PropTypes.func.isRequired,
-    graphTabs: PropTypes.object.isRequired,
+    graphTabs: PropTypes.array.isRequired,
     graphId: PropTypes.number.isRequired,
   };
 
@@ -541,7 +541,8 @@ class SearchModal extends Component {
             <li 
               className="item nodeItem" 
               key={'node_'+d.id} 
-              >
+            >
+              {console.log('node_'+d.id)}
               <input
                 className="searchResultCheckbox"
                 name={`name_${d.id}`}
@@ -596,7 +597,8 @@ class SearchModal extends Component {
               <li
                 className="item tabItem" 
                 key={'tab_'+tabs[item]?.node?.id} 
-              >
+                >
+                {console.log('tab_'+tabs[item]?.node?.id)}
                 <input
                 className="searchResultCheckbox"
                 name={`tab_${tabs[item]?.node?.id}`}
@@ -678,6 +680,7 @@ class SearchModal extends Component {
               className="item" 
               key={'keywords_'+d.id}
             >
+              {console.log('keywords_'+d.id)}
               <input
                 className="searchResultCheckbox"
                 name={`keyword_${d.id}`}
@@ -727,8 +730,9 @@ class SearchModal extends Component {
           {docs.map((d, index) => (
             <li 
               className="item" 
-              key={'docs'+d.id}
+              key={'docs_'+d.id}
             >
+              {console.log('docs_'+d.id)}
               <input
                 className="searchResultCheckbox"
                 name={`docs_${d.id}`}
@@ -767,13 +771,13 @@ class SearchModal extends Component {
               <>
                 <Button
                   onClick={(ev) => this.showSelectedNodes()}
-                  className="ghButton accent alt "
+                  className="ghButton btn-classic"
                 >
                   Show
                 </Button>
                 <Button
                   onClick={(ev) => this.showSelectedNodes(true)}
-                  className="ghButton accent alt "
+                  className="ghButton btn-classic"
                 >
                   Keep old and Show
                 </Button>

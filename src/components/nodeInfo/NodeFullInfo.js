@@ -57,7 +57,7 @@ class NodeFullInfo extends Component {
     const { info: nodeId, expand } = queryObj;
 
     // GetCustomFields causes Warning : Cannot update during an existing state transition (such as within `render`). Render methods should be a pure function of props and state.
-    this.getCustomFields(id, nodeId);
+    // this.getCustomFields(id, nodeId);
 
     if (!nodeId) {
       return null;

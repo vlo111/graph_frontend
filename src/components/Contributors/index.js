@@ -69,7 +69,7 @@ const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
     <div className="contributors-container-list">
       <ul className="list-style-none d-flex flex-wrap mb-n2">
         <li className="item">
-          <Link clas to={`/profile/${graphOwner.id}`} target="_blank">
+          <Link to={`/profile/${graphOwner.id}`} target="_blank">
             <Tooltip overlay={<TootlipContent user={graphOwner} role="Owner" type="graph" objectId={null} />} trigger={['hover']} placement={['bottom']}>
               <div className="icon-container">
                 <img className="avatar-user d-block" src={graphOwner.avatar} alt="" />

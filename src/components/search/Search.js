@@ -37,7 +37,7 @@ class Search extends Component {
     if (!graphId || !showSearch) {
       return null;
     }
-    return <SearchModal />;
+    return <SearchModal history={this.props.history} />;
   }
 }
 

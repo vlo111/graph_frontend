@@ -42,7 +42,7 @@ body {
 .link,
 a {
   text-decoration: none;
-  color: $color-accent;
+  color: $color-main;
   cursor: pointer;
 
   &:hover {
@@ -651,6 +651,7 @@ p {
       margin-right: 0;
     }
   }
+    // width: auto;
 }
 
 .ghButton:hover {
@@ -7407,7 +7408,7 @@ img.preview-scaled {
 .acceptCheckedItems {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   margin: 0px;
 }
@@ -8770,7 +8771,7 @@ img.preview-scaled {
 }
 
 .btn-classic {
-  width: 125px;
+  min-width: 125px;
   height: 42px;
   display: flex;
   justify-content: center;
