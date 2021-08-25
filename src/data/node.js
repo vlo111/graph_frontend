@@ -1,9 +1,16 @@
+import React from 'react';
+import { ReactComponent as RectangleSvg } from '../assets/images/icons/rectangle.svg';
+import { ReactComponent as ImageSvg } from '../assets/images/icons/image.svg';
+import { ReactComponent as TriangleSvg } from '../assets/images/icons/triangle.svg';
+import { ReactComponent as HexagonSvg } from '../assets/images/icons/hexagon.svg';
+import { ReactComponent as EllipseSvg } from '../assets/images/icons/node-ellipse.svg';
+
 export const NODE_TYPES = [
-  { value: 'circle', label: 'Circle' },
-  { value: 'infography', label: 'Image' },
-  { value: 'square', label: 'Square' },
-  { value: 'triangle', label: 'Triangle' },
-  { value: 'hexagon', label: 'Hexagon' },
+  { value: 'square', label: 'Square', icon: <RectangleSvg /> },
+  { value: 'circle', label: 'Circle', icon: <EllipseSvg /> },
+  { value: 'triangle', label: 'Triangle', icon: <TriangleSvg /> },
+  { value: 'hexagon', label: 'Hexagon', icon: <HexagonSvg /> },
+  { value: 'image', label: ' Image', icon: <ImageSvg /> },
 ];
 
 export const NODE_STATUS = [
@@ -15,7 +22,6 @@ export const LABEL_STATUS = [
   { value: 'lock', label: 'Locked labels' },
   { value: 'unlock', label: 'Open labels' },
 ];
-
 
 export const NODE_COLOR = [
   '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',

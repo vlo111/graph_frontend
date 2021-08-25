@@ -5,10 +5,10 @@
   width: 45%;
   height: 94vh;
   z-index: 5;
-  box-shadow: 0px 6px 20px #0D090526;
+  box-shadow: 0 6px 20px #0D090526;
   right: 0;
   top: 69px;
-  transition: all 0.5s ease-in-out 0s;
+  transition: all 0.6s ease-in-out 0s;
   transform-origin: left top;
 
   .collaborate {
@@ -83,18 +83,18 @@
       }
 
       .frame, .textWrapper {
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
+        display: block;
       }
 
       .frame {
         margin-left: 60px;
 
         .bottom-icons {
-          position: absolute;
-          bottom: 30px;
           margin-left: -30px;
+
+          button {
+            margin-top: 10px;
+          }
         }
       }
 
@@ -146,193 +146,9 @@
       padding: 0;
     }
   }
-
-  .nodeFullContent {
-    .loadingWrapper {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.5);
-      width: 100%;
-      height: 100%;
-      top: 0;
-      z-index: 50;
-      display: flex;
-      padding-top: 75px;
-    }
-
-    .description {
-      font-size: 15px;
-
-      p {
-        font-size: 15px;
-      }
-    }
-
-    .nodeTabs {
-      .previewWrapper {
-        position: relative;
-        overflow: hidden;
-        border: none;
-
-        &.mapWrapper {
-          height: 400px;
-          padding: 0;
-
-          .content {
-            padding: 0;
-          }
-        }
-
-        iframe {
-          width: 300%;
-          height: 1010px;
-          transform: scale(0.3);
-          transform-origin: 0 0;
-        }
-
-        img {
-          width: 100%;
-          height: auto;
-          max-height: 450px;
-          object-position: center center;
-          object-fit: contain;
-        }
-
-        a {
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          position: absolute;
-          font-size: 0 !important;
-        }
-      }
-
-      .contentWrapper {
-        box-shadow: 0px -25px 25px -28px rgb(0 0 0 / 10%);
-        padding: 50px 4% 0;
-        margin-top: -10px;
-        background: white;
-        z-index: 11111;
-        height: 290px;
-
-        .container {
-          height: 100%;
-          box-shadow: 0 5px 12px rgb(226 231 235 / 16%);
-          border: 1px solid #e2e7eb;
-          border-radius: 3px;
-          padding: 39px 4% 31px;
-          max-height: 380px;
-          position: relative;
-          z-index: 1;
-          display: flex;
-          margin: 0 10px;
-        }
-
-        .content {
-          overflow-x: hidden;
-          overflow-y: auto;
-          max-height: 250px;
-          padding: 0 10px;
-          width: 100%;
-          overflow-wrap: anywhere;
-
-          &::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-          }
-
-          &::-webkit-scrollbar-thumb {
-            background-color: $color-light-gray;
-            border-radius: 3.5px;
-          }
-        }
-
-        .no-tabs {
-          display: flex;
-          justify-content: center;
-          height: 280px;
-
-          .no-tab-content {
-            display: block;
-            text-align: center;
-
-            .header {
-              .description {
-                font-size: 25px;
-                color: $color-passive;
-              }
-              * {
-                margin-bottom: 20px;
-              }
-            }
-
-            .footer {
-              margin-top: 30px;
-              cursor: pointer;
-
-              svg {
-                margin-bottom: 10px;
-              }
-            }
-
-            .no-data {
-              background: -webkit-linear-gradient(#F07760, #7166F8);
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
-              font-style: normal;
-              font-weight: normal;
-              font-size: 27px;
-              line-height: 32px;
-            }
-
-            .create-tab {
-              font-style: normal;
-              font-weight: normal;
-              font-size: 25px;
-              line-height: 29px;
-              color: #7166F8;
-            }
-          }
-        }
-
-        .tab-data-settings {
-          display: flex;
-          justify-content: flex-end;
-          margin-top: -40px;
-          margin-bottom: 15px;
-
-          *{
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-          }
-
-          .expand {
-            margin-top: 3px;
-            margin-left: 5px;
-          }
-        }
-      }
-    }
-  }
-
-  #headerMini, .tab-data-settings {
-    button, .expand {
-      background: none;
-      box-shadow: none;
-
-      &:hover {
-        color: $color-main;
-
-        path {
-          fill: $color-main;
-        }
-      }
-    }
-  }
 }
 
-.ghModalNodeFullInfoOverlay {
+.modalNodeFullInfoOverlay {
   z-index: 101 !important;
 
   .ghModal {
@@ -341,56 +157,120 @@
     top: 5%;
     height: 100%;
     max-height: 90%;
-  }
 
-  .ghModalContent {
-    display: flex;
-    padding: 3% 0;
-
-    > .left {
-      width: 69%;
-      padding: 0 3%;
-      border-right: 1px solid $color-light-gray;
-      overflow: auto;
-    }
-
-    > .right {
-      padding: 0 3%;
-      width: 30%;
-      overflow: auto;
-    }
-
-    .graphUser {
+    .ghModalContent {
       display: flex;
-      align-items: center;
-      font-weight: 600;
-      font-size: 20px;
-      margin: 0 10px 10px;
+      padding: 3% 0;
 
-      .avatar {
-        margin-right: 25px;
+      > .left {
+        width: 69%;
+        padding: 0 3%;
+        border-right: 1px solid $color-light-gray;
+        overflow: auto;
+
+        .nodeTabs {
+          margin-top: -20px;
+
+          .contentWrapper {
+            height: 400px;
+            padding: 50px 0 0;
+          }
+        }
       }
 
-    }
+      > .right {
+        padding: 0 3%;
+        width: 30%;
 
-    .connectionDetails {
-      padding: 0;
+        .connectionDetails {
+          padding: 0;
 
-      details {
-        margin-top: 0;
+          details {
+            margin-top: 0;
+
+            .container {
+              height: 700px;
+            }
+          }
+        }
       }
-    }
 
-    .headerBanner {
-      height: 250px;
-    }
+      .graphUser {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        font-size: 20px;
+        margin: 0 10px 10px;
 
-    .nodeDescription {
-      padding: 10px 15px;
-    }
+        .avatar {
+          margin-right: 25px;
+        }
 
-    .nodeTabs {
-      padding: 20px 0;
+      }
+
+      .headerBanner {
+        height: 250px;
+        display: grid;
+        grid-template-columns: 300px 30%;
+        background-color: $color-tab-bg;
+
+        .frame, .textWrapper {
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+        }
+
+        .frame {
+          padding-left: 20px;
+          display: flex;
+          align-items: center;
+
+          .bottom-icons {
+            position: absolute;
+            bottom: 30px;
+            margin-left: -30px;
+          }
+        }
+
+        .textWrapper {
+          flex-wrap: wrap;
+          align-content: center;
+
+          .name {
+            font-size: 20px;
+            text-align: left;
+            color: #424242;
+            font-weight: bold;
+            margin-bottom: 10px;
+          }
+
+          .type {
+            font-size: 19px;
+            color: $color-passive;
+            font-weight: bold;
+          }
+
+          .type, .name {
+            width: 100%;
+          }
+        }
+
+        img {
+          max-width: 220px;
+          max-height: 220px;
+          object-fit: contain;
+          border-radius: 3px;
+          box-shadow: 0 4px 75px rgb(13 13 128 / 20%);
+        }
+      }
+
+      .nodeDescription {
+        padding: 10px 15px;
+      }
+
+      .nodeTabs {
+        padding: 20px 0;
+      }
     }
   }
 }
@@ -471,7 +351,7 @@
 .container-tabs {
   display: flex;
   overflow: hidden;
-  background: #f5f5fa;
+  background: $color-tab-bg;
 
   .tab-names {
     width: 100%;
@@ -684,13 +564,12 @@
 
 .expandTabNode {
   top: 5% !important;
-  width: 87.6%;
-  height: 90%;
-  max-height: 90% !important;
+  width: 87.5%;
+  max-height: 84% !important;
   max-width: 100% !important;
   padding: 0 !important;
   background: none !important;
-  box-shadow: none !important;
+
 
   .tab-expand-node {
     display: block;
@@ -727,7 +606,7 @@
       }
     }
 
-    .container {
+    .tab-expand-container {
       border-radius: 5px;
       background-color: $color-white;
 
@@ -749,6 +628,190 @@
 
       path {
         fill: $color-white !important;
+      }
+    }
+  }
+}
+
+.nodeFullContent {
+  .loadingWrapper {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    padding-top: 75px;
+  }
+
+  .description {
+    font-size: 15px;
+
+    p {
+      font-size: 15px;
+    }
+  }
+
+  .nodeTabs {
+    .previewWrapper {
+      position: relative;
+      overflow: hidden;
+      border: none;
+
+      &.mapWrapper {
+        height: 400px;
+        padding: 0;
+
+        .content {
+          padding: 0;
+        }
+      }
+
+      iframe {
+        width: 300%;
+        height: 1010px;
+        transform: scale(0.3);
+        transform-origin: 0 0;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+        max-height: 450px;
+        object-position: center center;
+        object-fit: contain;
+      }
+
+      a {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        font-size: 0 !important;
+      }
+    }
+
+    .contentWrapper {
+      box-shadow: 0px -25px 25px -28px rgb(0 0 0 / 10%);
+      padding: 50px 4% 0;
+      margin-top: -10px;
+      background: white;
+      z-index: 11111;
+      height: 290px;
+
+      .container {
+        height: 100%;
+        box-shadow: 0 5px 12px rgb(226 231 235 / 16%);
+        border: 1px solid #e2e7eb;
+        border-radius: 3px;
+        padding: 39px 4% 31px;
+        max-height: 380px;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        margin: 0 10px;
+      }
+
+      .content {
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 250px;
+        padding: 0 10px;
+        width: 100%;
+        overflow-wrap: anywhere;
+
+        &::-webkit-scrollbar {
+          width: 4px;
+          height: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: $color-light-gray;
+          border-radius: 3.5px;
+        }
+      }
+
+      .no-tabs {
+        display: flex;
+        justify-content: center;
+        height: 280px;
+
+        .no-tab-content {
+          display: block;
+          text-align: center;
+
+          .header {
+            .description {
+              font-size: 25px;
+              color: $color-passive;
+            }
+            * {
+              margin-bottom: 20px;
+            }
+          }
+
+          .footer {
+            margin-top: 30px;
+            cursor: pointer;
+
+            svg {
+              margin-bottom: 10px;
+            }
+          }
+
+          .no-data {
+            background: -webkit-linear-gradient(#F07760, #7166F8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 27px;
+            line-height: 32px;
+          }
+
+          .create-tab {
+            font-style: normal;
+            font-weight: normal;
+            font-size: 25px;
+            line-height: 29px;
+            color: #7166F8;
+          }
+        }
+      }
+
+      .tab-data-settings {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: -40px;
+        margin-bottom: 15px;
+
+        *{
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+        }
+
+        .expand {
+          margin-top: 3px;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}
+
+#headerMini, .tab-data-settings {
+  button, .expand {
+    background: none;
+    box-shadow: none !important;
+
+    &:hover {
+      color: $color-main;
+
+      path {
+        fill: $color-main;
       }
     }
   }

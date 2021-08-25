@@ -82,39 +82,44 @@ class ConnectionDetails extends Component {
             <div className="container">
               {connectedNodes.map((nodeGroup) => (
                 <div className="row" key={nodeGroup[0].linkType}>
-                  <ul className="list">
-                    {nodeGroup.map((d) => (
-                      <li className="item" key={d.connected.id}>
-                          {exportNode === undefined || exportNode === false
-                        ? (
-                          <Link
-                            onClick={(ev) => this.openFolder(ev, d)}
-                            replace
-                            to={`?${queryString.stringify({ ...queryObj, info: d.connected.id })}`}
-                          >
-                            <div className="left">
-                              <NodeIcon node={d.connected} />
-                            </div>
-                            <div className="right">
-                              <span className="name">{d.connected.name}</span>
-                              <span className="type">{d.connected.type}</span>
-                            </div>
-                          </Link>
-                        )
-                        : (
-                          <a href="#">
-                            <div className="left">
-                              <NodeIcon node={d.connected} />
-                            </div>
-                            <div className="right">
-                              <span className="name">{d.connected.name}</span>
-                              <span className="type">{d.connected.type}</span>
-                            </div>
-                          </a>
-                        )}
-                        </li>
-                    ))}
-                  </ul>
+
+                  <fieldset>
+                    <legend className="linkTypes">{nodeGroup[0].linkType}</legend>
+                    <ul className="list">
+                      {nodeGroup.map((d) => (
+                          <li className="item" key={d.connected.id}>
+                            {exportNode === undefined || exportNode === false
+                                ? (
+                                    <Link
+                                        onClick={(ev) => this.openFolder(ev, d)}
+                                        replace
+                                        to={`?${queryString.stringify({ ...queryObj, info: d.connected.id })}`}
+                                    >
+                                      <div className="left">
+                                        <NodeIcon node={d.connected} />
+                                      </div>
+                                      <div className="right">
+                                        <span className="name">{d.connected.name}</span>
+                                        <span className="type">{d.connected.type}</span>
+                                      </div>
+                                    </Link>
+                                )
+                                : (
+                                    <a href="#">
+                                      <div className="left">
+                                        <NodeIcon node={d.connected} />
+                                      </div>
+                                      <div className="right">
+                                        <span className="name">{d.connected.name}</span>
+                                        <span className="type">{d.connected.type}</span>
+                                      </div>
+                                    </a>
+                                )}
+                          </li>
+                      ))}
+                    </ul>
+                  </fieldset>
+
                 </div>
               ))}
             </div>

@@ -16,12 +16,12 @@ class PopoverContent extends Component {
   
     componentDidMount() {
       this.node && this.node.focus();
-      window.document.addEventListener('click', this.handleClickOutSide.bind(this), false);
+      window.document.addEventListener('click', this.handleClickOutSide.bind(this), true);
     }
   
     componentWillUnmount() {
       this.node && this.node.blur();
-      window.document.removeEventListener('click', this.handleClickOutSide.bind(this), false);
+      window.document.removeEventListener('click', this.handleClickOutSide.bind(this), true);
     }
   
     onKeyDown(e) {

@@ -151,11 +151,11 @@ class NodeTabs extends Component {
 
     this.setDocumentsPath();
 
-    if (!_.isNull(formModalOpen)) {
-      nodeCustomFields[0] = {
+    if (!_.isNull(formModalOpen) && nodeCustomFields[0]?.name !== '_description') {
+      nodeCustomFields.unshift({
         value: node.description,
         name: '_description',
-      };
+      });
     }
 
     return (

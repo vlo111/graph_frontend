@@ -10,9 +10,26 @@ import VerticalTabs from '../components/PageTabs';
 import Friends from './friends';
 import { ReactComponent as ScrollUpSvg } from '../assets/images/icons/scroll-up.svg';
 
-
 class Index extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      mode: 'tab_card',
+    }
+  }
+
+setMode = (value) => {
+  if(value && !value.type) {
+    this.setState({
+      mode: value,
+    })
+  }
+}
+
   render() {
+    const { mode } = this.state;
+
     return (
       <>
       <Wrapper className="homePage">
@@ -21,12 +38,13 @@ class Index extends Component {
           className="homePageTabs"
           //direction="horizontal"
           tabs={[
-            { to: '/', name: 'Home', component: <Home /> },
+            { to: '/', name: 'Home', component: <Home mode={mode} /> },
             { to: '/search', name: 'Search', hidden: true, component: <Home /> },
-            { to: '/templates', name: 'Templates', component: <GraphTemplates /> },
-            { to: '/shared', name: 'Shared Graphs', component: <Shared /> },
+            { to: '/templates', name: 'Templates', component: <GraphTemplates mode={mode} /> },
+            { to: '/shared', name: 'Shared Graphs', component: <Shared  mode={mode} />  },
             { to: '/friends', name: 'Friends', component: <Friends /> },
           ]}
+          onChange={(value) => this.setMode(value)}
         />
       </Wrapper>
       {/* <BackToTop

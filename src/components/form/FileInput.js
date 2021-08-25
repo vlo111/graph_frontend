@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Input from './Input';
 import Icon from './Icon';
 import Utils from '../../helpers/Utils';
-import {ReactComponent as CloseSvg} from '../../assets/images/icons/close.svg';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { ReactComponent as SelectImg } from '../../assets/images/icons/upload.svg';
 
 class FileInput extends Component {
   static propTypes = {
@@ -32,49 +33,52 @@ class FileInput extends Component {
 
   handleFileSelect = (ev) => {
     const file = ev.target.files[0] || {};
-    this.setState({file});
+    this.setState({ file });
     const uri = Utils.fileToBlob(file);
     this.constructor.blobs[uri] = file.name;
     file.uri = uri;
-    this.props.onChangeFile(uri, file);
+    this.props.onChangeFile(uri, file.uri);
+    this.props.onChangeImgPreview('');
 
     ev.target.value = '';
   }
 
   handleTextChange = async (name) => {
+    const isImage = Utils.checkImageUrl(name, this.record);
+
+    if (!isImage) {
+      this.props.onChangeImgPreview('error');
+    }
+
     this.props.onChangeFile(name, {
       name,
     });
-
-    Utils.checkImageUrl(name, this.record)
   }
 
   record = (url, result) => {
     if (result === 'success') {
-      this.props.onChangeImgPreview(url)
-    }
-    else {
-      this.props.onChangeImgPreview('error')
+      this.props.onChangeImgPreview(url);
+    } else {
+      this.props.onChangeImgPreview('error');
     }
   }
 
   clearFile = () => {
-    this.setState({file: {}});
-    this.props.onChangeFile('', {
-      name: '',
-    });
+    this.setState({ file: {} });
+    this.props.onChangeFile('icon', '');
+    this.props.onChangeImgPreview();
   }
 
   handleInputFocus = () => {
-    this.setState({focused: true});
+    this.setState({ focused: true });
   }
 
   handleInputBlur = () => {
-    this.setState({focused: false});
+    this.setState({ focused: false });
   }
 
   render() {
-    const {file, focused} = this.state;
+    const { file, focused } = this.state;
     const {
       accept, selectLabel, onChangeFile, ...props
     } = this.props;
@@ -90,25 +94,41 @@ class FileInput extends Component {
       value = '';
     }
     return (
-        <div className={`ghFileInput ${focused ? 'focused' : ''}`}>
-          <Input
-              {...props}
-              onFocus={this.handleInputFocus}
-              onBlur={this.handleInputBlur}
-              value={value}
-              disabled={localFile}
-              onChangeText={this.handleTextChange}
-          />
-          <div className="buttons">
+      <div className={`ghFileInput  ${focused ? 'focused' : ''}`}>
+        <Input
+              // className="inputFile"
+          {...props}
+          onFocus={this.handleInputFocus}
+          onBlur={this.handleInputBlur}
+          value={value}
+          disabled={localFile}
+          onChangeText={this.handleTextChange}
+        />
+        {/* <div className="buttons">
             {localFile ? (
                 <Icon value={<CloseSvg/>} className="clear" onClick={this.clearFile}/>
             ) : null}
             <label className="fileLabel">
+            <img className="uploadImg" src={SelectImg} />
               {selectLabel}
               <input type="file" accept={accept} onChange={this.handleFileSelect}/>
             </label>
+          </div> */}
+        <div className="import-input InputFile">
+          <div>
+            {localFile ? (
+              <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
+            ) : null}
+            <label>
+              <SelectImg />
+              {/* <img className="uploadImg" src={SelectImg} /> */}
+
+              <span>Select</span>
+              <input type="file" accept={accept} onChange={this.handleFileSelect} />
+            </label>
           </div>
         </div>
+      </div>
     );
   }
 }

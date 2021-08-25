@@ -3,45 +3,51 @@ import React, {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 import queryString from 'query-string';
- import Popover from '../form/Popover';
+import Popover from '../form/Popover';
 import Button from '../form/Button';
 import { toast } from 'react-toastify'; 
-import UpdateGraphModal from '../chart/UpdateGraphModal';
+// import UpdateGraphModal from './chart/UpdateGraphModal';
 import { deleteGraphRequest } from '../../store/actions/graphs';
 import {deleteGraphRequest as DeleteShareGraphRequest} from '../../store/actions/shareGraphs';
-import { ReactComponent as TrashSvg } from '../../assets/images/icons/trash.svg';
-import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
-import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellipsis.svg';
+import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellipsis.svg'; 
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import ShareModal from '../ShareModal';
+import EditGraphModal from '../chart/EditGraphModal';
 
-const GraphListHeader = ({ graph, headerTools }) => {
+const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
   const dispatch = useDispatch();
-  const [openEditModal, setOpenEditModal] = useState(false); 
+  // const [openEditModal, setOpenEditModal] = useState(false); 
+  const [openEditGraphModal, setOpenEditGraphModal] = useState(false); 
   const [openShareModal, setOpenShareModal] = useState(false); 
-  const history = useHistory()
+  const history = useHistory();
   const { page = 1, s: searchParam } = queryString.parse(window.location.search); 
   const notification = false;
+   
   
-  async function deleteGraph(event) {
-    event.preventDefault();
+  async function deleteGraph(graphId) {
     try {
-
+      if(graphId) {
+        await dispatch(deleteGraphRequest(graph.id));
+        // use selector
+        
+        await dispatch(getGraphsListRequest(page, { s: searchParam }));
+      } else {
       if (window.confirm('Are you sure?')) {
         await dispatch(deleteGraphRequest(graph.id));
         // use selector
+        toast.info('Successfully deleted');
         await dispatch(getGraphsListRequest(page, { s: searchParam }));
 
         history.push("/");
-        toast.info('Successfully deleted');
-      }
+      } 
+     
+    }
     } catch (e) {
-
-
     }
   }
+
 
   const handleDeleteShareGraph = useCallback((shareGraphId) => {
 
@@ -52,55 +58,78 @@ const GraphListHeader = ({ graph, headerTools }) => {
       toast.info('Successfully deleted');
     }
   }, [dispatch]);  
+
   return (
-   
     <div className="graphListHeader">      
-       <div>         
+       <div>  
           <Popover
             showArrow
-            triggerNode={<Button className="ar-popover-trigger" ><EllipsisVSvg style={{ height: 23 }} /></Button>}
+            triggerNode={<div className="ar-popover-trigger" ><EllipsisVSvg /></div>}
             trigger='click'
           >
             <div className="ar-popover-list">
-            {headerTools ? (
-              <Button 
+            {headerTools === 'shared' ? (
+              <div 
                 onClick={() => handleDeleteShareGraph(graph?.share.id)}
-                className="child " >
-                Delete
-              </Button>
+                className="child dashboard-delete" >
+                  <span className='dashboard-delete'>
+                   Delete
+                  </span>
+              </div>
              ) : (
              <>
-                <Button 
+                {/* <div
                   className="child "
                   onClick={() => setOpenEditModal(true)} > 
-                  Rename
-                  </Button>             
-                <Button 
+                  <span>
+                    Rename
+                  </span>
+                </div>   */}
+                <div
+                  className="child "
+                  onClick={() => setOpenEditGraphModal(true)} > 
+                  <span>
+                   Edit
+                  </span>
+                </div>              
+                <div 
                   className="child "
                   onClick={() => setOpenShareModal(true)} > 
-                  Share
-                  </Button>             
-                <Button 
-                  onClick={deleteGraph}
-                  className="child " >  
-                  Delete
-                  </Button>
+                  <span>
+                   Share
+                  </span>
+                  </div>             
+                <div 
+                  onClick={() => deleteGraph(false)}
+                  className="child dashboard-delete" >  
+                  <span className='dashboard-delete'>
+                     Delete
+                  </span>
+                </div>
               </>
              )}
               </div>
             </Popover>
          </div> 
-      {openEditModal && (
+      {/* {openEditModal && (
         <UpdateGraphModal
           closeModal={() => setOpenEditModal(false)}
           graph={graph}
         />
-      )}
+      )} */}
       {openShareModal && (
         <ShareModal 
           closeModal={() => setOpenShareModal(false)} 
           graph={graph} 
           setButton
+        />
+     )}
+      {openEditGraphModal && (
+        <EditGraphModal 
+         toggleModal={(value) => setOpenEditGraphModal(value)}  
+         graph={graph}
+         deleteGraph={(graphId) => deleteGraph(graphId)}
+         updateGraph={updateGraph}
         />
      )}
     </div>

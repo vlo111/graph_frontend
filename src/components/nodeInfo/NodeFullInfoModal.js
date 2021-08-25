@@ -36,30 +36,34 @@ class NodeFullInfo extends Component {
     return (
       <Modal
         className="ghModal"
-        overlayClassName="ghModalOverlay ghModalNodeFullInfoOverlay"
+        overlayClassName="ghModalOverlay modalNodeFullInfoOverlay"
         isOpen
         onRequestClose={this.closeNodeInfoModal}
       >
-        <div className="ghModalContent">
-          <Button className="close" color="transparent" icon={<CloseSvg />}  onClick={this.closeNodeInfoModal} />
+        <div className="ghModalContent ">
+          <Button className="close" color="transparent" icon={<CloseSvg />} onClick={this.closeNodeInfoModal} />
           <div className="left">
-            <div className="graphUser">
-              <img
-                className="avatar circle"
-                src={singleGraph.user?.avatar}
-                alt={singleGraph.user?.firstName || ''}
-              />
-              <span className="userName">{[singleGraph.user?.firstName,singleGraph.user?.lastName].join(' ')}</span>
-            </div>
+            {/* <div className="graphUser"> */}
+            {/*  <img */}
+            {/*    className="avatar circle" */}
+            {/*    src={singleGraph.user?.avatar} */}
+            {/*    alt={singleGraph.user?.firstName || ''} */}
+            {/*  /> */}
+            {/*  <span className="userName">{[singleGraph.user?.firstName, singleGraph.user?.lastName].join(' ')}</span> */}
+            {/* </div> */}
             <div className="nodeFullContent">
               <div className="headerBanner">
                 <NodeImage node={node} />
                 <div className="textWrapper">
-                  <h2 className="name">{node.name}</h2>
-                  <h3 className="type">{node.type}</h3>
+                  <h2 className="name glow">
+                    {node.name}
+                  </h2>
+                  <h3 className="type">
+                    {node.type}
+                  </h3>
                 </div>
               </div>
-              <div className="nodeDescription" dangerouslySetInnerHTML={{ __html: node.description }} />
+              {/* <div className="nodeDescription" dangerouslySetInnerHTML={{ __html: node.description }} /> */}
               <NodeTabs nodeId={node.id} />
             </div>
           </div>

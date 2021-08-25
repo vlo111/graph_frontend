@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
 import Button from './form/Button';
-import UserData from "../pages/profile/UserData";
+import { ReactComponent as CardDesign } from '../assets/images/icons/cardDesign.svg';
+import { ReactComponent as ListDesign } from '../assets/images/icons/listDesign.svg';
+import { ReactComponent as Filter } from '../assets/images/icons/filterGraph.svg';
+import { getGraphsListRequest } from '../store/actions/graphs';
+import { connect } from 'react-redux';
+import queryString from 'query-string';
+import GraphOrder from './graphData/GraphOrder'
 
 class PageTabs extends Component {
   static propTypes = {
@@ -14,6 +20,15 @@ class PageTabs extends Component {
     match: PropTypes.object.isRequired,
     onChange: PropTypes.func,
     direction: PropTypes.oneOf(['vertical', 'horizontal']),
+    getGraphsListRequest: PropTypes.func.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: 'tab_card',
+      showFilterModal: false,
+    }
   }
 
   static defaultProps = {
@@ -22,10 +37,38 @@ class PageTabs extends Component {
   }
 
   setActiveTab = (tab) => {
-    if (this.props.onChange) {
-      this.props.onChange(tab);
-    } else {
-      this.props.history.push(tab.to);
+    this.props.history.push(tab.to);
+  }
+
+  onChange = (mode) => {
+    this.setState({
+      selected: mode
+    })
+    
+    this.props.onChange(mode);
+  }
+
+  openFilter = (value) => {
+    this.setState({
+      showFilterModal: value
+    })
+  }
+
+  filter = (value) => {
+    const { page = 1, s } = queryString.parse(window.location.search);
+
+    const { path: currentTab } = this.props.match;
+
+    const status = currentTab.includes('template') ? 'template' : 'active';
+
+    this.props.getGraphsListRequest(page, { s, filter: value, status });
+  }
+  
+  toggleDropDown = () => {
+    const { showFilterModal } = this.state;
+    this.setState({ showFilterModal: !showFilterModal });
+    if (!showFilterModal) {
+      this.graphSearch();
     }
   }
 
@@ -36,10 +79,23 @@ class PageTabs extends Component {
     const tab = tabs.find((t) => t.to === location.pathname);
     const list = direction === 'vertical' ? _.reverse([...tabs]) : tabs;
     const isHome = direction === 'vertical' && className === 'homePageTabs';
+    const { selected, showFilterModal } = this.state;
+
+    const { path: currentTab } = this.props.match;
     return (
         <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser'}`} {...props}>
-          { isHome && <UserData />}
-          <ul className="tabsList">
+          <ul className={`tabsList ${selected}`}>
+            <li className="lastItem">
+                <div  className="cart-item" onClick={() => this.onChange('tab_card')} >
+                  <CardDesign />
+                 </div>
+                <div  className="list-item" onClick={() => this.onChange('list')}>
+                  <ListDesign />
+                </div>
+                <div onClick={() => this.openFilter(!showFilterModal)} className='filter'>
+                  <Filter />
+                </div>
+            </li>
             {list.filter((t) => !t.hidden).map((t) => (
                 <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`}>
                   <Button onClick={() => this.setActiveTab(t)}>
@@ -48,6 +104,13 @@ class PageTabs extends Component {
                 </li>
             ))}
           </ul>
+
+          <GraphOrder
+           filter={this.filter}
+            toggleDropDown={this.toggleDropDown}
+            currentTab={currentTab} 
+            showFilterModal={showFilterModal} />
+
           <div className="content">
             {tab?.component}
           </div>
@@ -56,4 +119,15 @@ class PageTabs extends Component {
   }
 }
 
-export default withRouter(PageTabs);
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = {
+  getGraphsListRequest,
+};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PageTabs);
+
+export default withRouter(Container);

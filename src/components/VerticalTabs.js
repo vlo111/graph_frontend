@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Button from './form/Button';
+
 
 class VerticalTabs extends Component {
   static propTypes = {
@@ -42,30 +42,8 @@ class VerticalTabs extends Component {
     if (tab.name) {
       return (
         <div className={checkHomeTabs ? 'homePageTabs' : 'verticalTabs'} {...props}>
-          {checkHomeTabs ? (
-            <div className="userPanel">
-              <img src={myAccount.avatar} alt="" />
-              <h4>
-                {myAccount.firstName}
-                {' '}
-                {myAccount.lastName}
-              </h4>
-              <a href={myAccount.website} target="_blank">{myAccount.website}</a>
-              <p>
-                {myAccount.firstName}
-                {' '}
-                {myAccount.bio}
-              </p>
-            </div>
-          ) : <div />}
           <ul className="tabsList">
-            {_.reverse([...tabs.filter((t) => !t.hidden)]).map((t) => (
-              <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`}>
-                <Button onClick={() => this.setActiveTab(t)}>
-             {t.name}
-           </Button>
-              </li>
-            ))}
+            
           </ul>
           <div className="content">
             {tab?.component}
