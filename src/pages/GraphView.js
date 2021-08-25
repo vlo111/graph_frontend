@@ -7,11 +7,12 @@ import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import { setActiveButton } from '../store/actions/app';
+import { setActiveButton, toggleSearch } from '../store/actions/app';
 import Button from '../components/form/Button';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import Filters from '../components/filters/Filters';
+import Search from '../components/search/Search';
 import Zoom from '../components/Zoom';
 import NodeDescription from '../components/NodeDescription';
 import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
@@ -30,11 +31,13 @@ class GraphView extends Component {
     deleteGraphRequest: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
     userGraphRequest: PropTypes.func.isRequired,
+    toggleSearch: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     graphInfo: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
+    showSearch: PropTypes.bool.isRequired
   }
 
   preventReload = true;
@@ -71,13 +74,12 @@ class GraphView extends Component {
 
   render() {
     const {
-      singleGraph, singleGraphStatus, graphInfo,
+      singleGraph, singleGraphStatus, graphInfo, showSearch,
       location: { pathname, search }, match: { params: { graphId = '' } },
     } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
 
     let shortestNodes = [];
-    // let shortestLinks = [];
 
     // view the shortest path to the analysis field
     if (search.includes('nodeStart=')) {
@@ -100,14 +102,12 @@ class GraphView extends Component {
           return listChack;
         });
 
-        // shortestLinks = originalListPath;
         listNodes.map((p) => shortestNodes.push(nodes.filter((n) => n.id === p)[0]));
 
         shortestNodes = shortestNodes.reverse();
 
         Chart.showPath(originalListPath, listNodes);
 
-        // ChartUtils.findNodeInDom(shortestNodes[0]);
       }
     }
     this.getSingleRequest(pathname);
@@ -172,10 +172,11 @@ class GraphView extends Component {
                     </Link>
                   </>
                 )}
-                <ToolBarHeader />
+                <ToolBarHeader graph={singleGraph}/>
                 <NodeFullInfo editable={false} />
                 <LabelTooltip />
                 <Filters />
+                <Search />
               <Zoom />
               </div>
             ))}
@@ -190,6 +191,7 @@ const mapStateToProps = (state) => ({
   userGraphs: state.shareGraphs.userGraphs,
   graphInfo: state.graphs.graphInfo,
   singleGraphStatus: state.graphs.singleGraphStatus,
+  showSearch: state.app.showSearch,
 });
 const mapDispatchToProps = {
   setActiveButton,
@@ -197,6 +199,7 @@ const mapDispatchToProps = {
   deleteGraphRequest,
   userGraphRequest,
   getGraphInfoRequest,
+  toggleSearch
 };
 const Container = connect(
   mapStateToProps,

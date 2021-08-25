@@ -3427,6 +3427,7 @@ body .gh__menu {
               max-height: 80%;
               padding: 11px;
               padding-top: 0px;
+              display: none
             }
 
             .name {
@@ -3545,6 +3546,9 @@ body .gh__menu {
       width: 91%;
       align-items: center;
 
+      .searchResultCheckbox {
+        margin-right: .5em;
+      }
 
       .ghButton {
         width: 100%;
@@ -3605,6 +3609,10 @@ body .gh__menu {
           white-space: nowrap;
         }
       }
+    }
+
+    .tabItem {
+      align-items: baseline;
     }
   }
 }
@@ -7423,14 +7431,14 @@ img.preview-scaled {
   width:90%
 }
 
-.createGraphButton {
+.acceptCheckedItems {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0px;
 }
-.selectedArticlesAmount {
+.selectedItemsAmount {
   margin-left: 1em;
   margin-bottom: 0px;
 }

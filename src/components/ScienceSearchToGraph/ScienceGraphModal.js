@@ -623,7 +623,7 @@ class ScienceGraphModal extends Component {
             </div>
             {apiSearchResults}
           </div>
-          <div className="createGraphButton">
+          <div className="acceptCheckedItems">
             {checkedList.length ? (
               <>
                 <button
@@ -632,7 +632,7 @@ class ScienceGraphModal extends Component {
                 >
                   Create Graph
                 </button>
-                <p className="selectedArticlesAmount">
+                <p className="selectedItemsAmount">
                   Selected Articles
                   {' '}
                   {checkedList.length}

@@ -3132,7 +3132,45 @@ class Chart {
   }
 
   /**
-   * create mouse cusror
+   * check if given nodes are connected with the given link
+   * @param {*} fNodeId 
+   * @param {*} sNodeId 
+   * @param {*} link 
+   * @returns bool
+   */
+  static ifNodesConnected(fNodeId, sNodeId, link) {
+    if (link.source === fNodeId && link.target === sNodeId) {
+      return true
+    }
+    if (link.source === sNodeId && link.target === fNodeId) {
+      return true
+    }
+    return false
+  }
+
+  /**
+   * find all links between given nodes
+   * @param {*} node 
+   * @param {*} links 
+   * @returns array
+   */
+  static getLinksBetweenNodes(nodes, links) {
+    const nodeCouples = []
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        for (let linkIndex = 0; linkIndex < links?.length; linkIndex++) {
+          if (this.ifNodesConnected(nodes[i].id, nodes[j].id, links[linkIndex])) {
+            nodeCouples.push(links[linkIndex])
+          }
+        }
+      }
+    }
+
+    return nodeCouples
+  }
+
+  /**
+   * create mouse cursor
    * @param {*} fullName
    * @param {*} position
    */

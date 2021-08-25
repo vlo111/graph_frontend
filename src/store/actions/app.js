@@ -88,18 +88,7 @@ export function setLegendButton(mode) {
     },
   };
 }
-// ++++
-// export const SET_GRAPHNAME_BUTTON = 'SET_GRAPHNAME_BUTTON';
 
-// export function setGraphNameButton(mode) {
-//   return {
-//     type: SET_GRAPHNAME_BUTTON,
-//     payload: {
-//       mode,
-//     },
-//   };
-// }
-// ++++++
 
 export const ONLINE_USERS = 'ONLINE_USERS';
 
@@ -117,6 +106,16 @@ export const TOGGLE_GRAPH_MAP = 'TOGGLE_GRAPH_MAP';
 export function toggleGraphMap(open) {
   return {
     type: TOGGLE_GRAPH_MAP,
+    payload: {
+      open,
+    },
+  };
+}
+
+export const TOGGLE_SEARCH = 'TOGGLE_SEARCH';
+export function toggleSearch(open) {
+  return {
+    type: TOGGLE_SEARCH,
     payload: {
       open,
     },
