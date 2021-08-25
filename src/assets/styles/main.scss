@@ -275,7 +275,7 @@ p {
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 10px 0;
+  margin: 25px 0;
   position: relative;
 
   label,
@@ -302,15 +302,6 @@ p {
       .gh__clear-indicator,
       .gh__dropdown-indicator {
         padding-right: 15px;
-
-        svg {
-          background: $color-light-gray;
-          border-radius: 4px;
-
-          path {
-            fill: $color-gray;
-          }
-        }
       }
 
       &.gh__control--is-focused {
@@ -439,20 +430,18 @@ p {
 }
 
 .ghInput {
-
   textarea,
   input {
     width: 100%;
-    height: 35px;
-    border: 1px solid $color-light-gray;
-    padding: 0 8px;
+    height: 40px;
     font-size: 15px;
-    color: #333333;
-    border-radius: 3px;
+    color: $color-border;
+    border: 1px solid $color-border;
+    border-radius: 5px;
+    padding: 0 0 0 15px;
 
     &:focus {
       outline: none;
-      border-color: $color-main;
     }
   }
 
@@ -467,7 +456,7 @@ p {
 
 .ghFileInput {
   position: relative;
-  width: 250px;
+  width: 260px;
 
   [type="file"] {
     display: none;
@@ -482,22 +471,22 @@ p {
     cursor: pointer;
     width: 13px;
     height: 13px;
-    margin-top: 11px;
+    margin-top: 8px;
     align-items: center;
     display: flex;
     justify-content: center;
     border-radius: 3px;
-    right: 0;
+    right: 79px;
     margin-right: 105px;
     position: absolute;
-    z-index: 1;
+    z-index: 3;
 
     svg {
-      width: 6.8px;
-      height: 6.8px;
+      width: 15px;
+      height: 8px;
 
       path {
-        fill: $color-gray;
+        fill: $color-error;
       }
     }
   }
@@ -1458,18 +1447,12 @@ p {
     }
 
     .addLocation {
-      font: normal normal 600 14px/17px Open Sans;
+      margin: 0 auto;
+      font-size: 16px;
+      line-height: 22px;
+      color: #757575;
       cursor: pointer;
-      background-color: #a5a6a9a8;
-      border-radius: 5px;
-      height: 40px;
-      line-height: 40px;
-      text-align: center;
-      border: 2px dashed #ffffff;
-      color: white;
       font-weight: bold;
-      font-size: 14px;
-      margin: 25px 50px;
     }
 
     .ghModalContent {
@@ -1483,8 +1466,6 @@ p {
 
     h2 {
       text-align: center;
-      font: normal normal bold 26px/36px Open Sans;
-      margin-bottom: 20px;
     }
 
     label {
@@ -3244,10 +3225,10 @@ p {
 
 body .gh__menu {
   margin-top: 0;
-  border-radius: 0 0 8px 7px;
-  border: 1px solid $color-light-gray;
-  border-top: 0;
-  box-shadow: none;
+  background: #FFFFFF;
+  border: 1px solid #757575;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
 
   .gh__option--is-selected {
     background-color: #668DF81A;
@@ -3255,16 +3236,28 @@ body .gh__menu {
   }
 
   .gh__option {
+    background-color: white;
+    padding: 15px 0 15px 30px;
+    cursor: pointer;
+
+    .node-icons {
+      .nodestyletext {
+        font-size: 20px;
+        color: #777777;
+        margin-left: 20px;
+      }
+    }
+
     svg {
       width: 100%;
     }
 
     &--is-selected {
-      svg {
-        line, path {
-          stroke: $color-dark;
-        }
-      }
+      background: #F1F0FE;
+    }
+
+    &:hover {
+      background: #F1F0FE;
     }
   }
 }
@@ -3896,15 +3889,6 @@ body .gh__menu {
     position: absolute;
     top: 15px;
     right: 16px;
-
-    svg {
-      width: 11px;
-      height: 10px;
-
-      path {
-        fill: $color-gray;
-      }
-    }
   }
 }
 
@@ -5560,11 +5544,12 @@ body .gh__menu {
   width: 340px;
 
   .form {
-    margin: 20px 40px;
+    margin: 0 40px 20px;
   }
 
-  .buttons {
-    width: 250px;
+  .footerButtons {
+    display: flex;
+    justify-content: center;
   }
 }
 
@@ -6238,7 +6223,6 @@ img.preview-scaled {
       .gh__dropdown-indicator {
         svg {
           opacity: 0;
-
         }
       }
     }
@@ -6691,85 +6675,11 @@ img.preview-scaled {
   width: 50% !important;
 }
 
-.expandAddNode {
-  width: 900px;
-  max-width: 900px !important;
-
-  .ghColorPickerPopUp {
-    position: relative;
-    left: 0;
-    top: 0;
-  }
-
-  .addLocation {
-    margin: 25px 100px !important;
-  }
-
-  .containerModal {
-    width: 100%;
-  }
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    list-style: none;
-    min-height: 30em;
-    height: 66em;
-
-    .locationExpandForm {
-      overflow: auto;
-      max-height: 250px;
-      height: auto;
-      bottom: 25px;
-    }
-
-    > .footerButtons {
-      position: relative;
-      flex: 1;
-
-      .buttons {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-      }
-    }
-
-    .ghFileInput {
-      .ghInput {
-        width: 100%;
-        padding-right: 0;
-      }
-
-      .buttons {
-        top: 13.5px;
-        right: 25px;
-      }
-    }
-  }
-
-  .ghFileInput {
-    margin-bottom: 18px;
-  }
-
-  .ghFormField, .ghFileInput {
-    height: 90px;
-    float: left;
-    width: 50%;
-    padding-right: 22px;
-
-    .limit {
-      position: absolute;
-      right: 25px;
-    }
-  }
-}
-
 .addNodeContainer {
 
   .locMarker {
     width: 30px;
+    cursor: pointer;
   }
 
   .showMore {
@@ -6777,37 +6687,37 @@ img.preview-scaled {
     cursor: pointer;
   }
 
-  .locationExpandForm {
-    .locForm {
-      display: flex;
-      width: 100%;
-      height: 50px;
-      line-height: 50px;
-      margin-bottom: 10px;
-
-      .locName {
-        border-right: none;
-        border-top-left-radius: 3px;
-        border-bottom-left-radius: 3px;
-        flex: 80%;
-      }
-
-      .locEdit {
-        border-right: none;
-        flex: 10%;
-        text-align: center;
-        cursor: pointer;
-      }
-
-      .locDelete {
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
-        flex: 10%;
-        text-align: center;
-        cursor: pointer;
-      }
-    }
-  }
+  //.locationExpandForm {
+  //  .locForm {
+  //    display: flex;
+  //    width: 100%;
+  //    height: 50px;
+  //    line-height: 50px;
+  //    margin-bottom: 10px;
+  //
+  //    .locName {
+  //      border-right: none;
+  //      border-top-left-radius: 3px;
+  //      border-bottom-left-radius: 3px;
+  //      flex: 80%;
+  //    }
+  //
+  //    .locEdit {
+  //      border-right: none;
+  //      flex: 10%;
+  //      text-align: center;
+  //      cursor: pointer;
+  //    }
+  //
+  //    .locDelete {
+  //      border-top-right-radius: 3px;
+  //      border-bottom-right-radius: 3px;
+  //      flex: 10%;
+  //      text-align: center;
+  //      cursor: pointer;
+  //    }
+  //  }
+  //}
 
   .expandButton {
     background-color: white;
@@ -7234,16 +7144,6 @@ img.preview-scaled {
       justify-content: center;
     }
   }
-}
-
-.img-thumbnail {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1em 1em;
-  border-radius: 1.7em;
-  max-width: 370px;
-  max-height: 370px;
 }
 
 .labelForm {
@@ -8793,4 +8693,247 @@ img.preview-scaled {
 
 .jodit-workplace {
   min-height: 206px !important;
+}
+
+.addNode {
+  .add-node-text {
+    font-size: 25px;
+    color: #424242;
+    margin: 30px 0 40px;
+  }
+
+  form {
+    .ghFormField .ghSelectContent {
+      .gh__single-value {
+        font-size: 16px;
+        color: $color-border;
+        padding-left: 5px;
+      }
+
+      .gh__control {
+        border: 1px solid $color-border;
+        border-radius: 5px;
+      }
+    }
+
+    .node-type {
+      .css-b8ldur-Input {
+        color: $color-border;
+        padding-left: 5px;
+      }
+    }
+
+    .advanced {
+      text-align: center;
+      margin-top: 30px;
+
+      a {
+        font-size: 16px;
+        color: #7E75EF;
+      }
+    }
+  }
+
+  .expandAddNode {
+    .add-node-text {
+      margin-bottom: 20px;
+    }
+
+    .number-wrapper {
+      .number-input-container {
+        margin: 0 auto;
+      }
+
+      input {
+        width: 70px;
+        margin: 0 auto;
+      }
+
+      .arrow-down, .arrow-top {
+        display: none;
+        right: 115px;
+        cursor: pointer;
+        position: absolute;
+
+        svg {
+          width: 12px;
+        }
+      }
+
+      .arrow-top {
+        svg {
+          transform: rotate(180deg);
+        }
+      }
+
+      .arrow-down {
+        top: 15px;
+      }
+    }
+
+    .nodeSize {
+      font-size: 16px;
+      color: #757575;
+      margin: 20px auto 0;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      list-style: none;
+      min-height: 30em;
+
+      .locationExpandForm {
+        flex-wrap: wrap;
+        flex-direction: row;
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 70px;
+        height: auto;
+
+        .locForm {
+          display: flex;
+
+          height: auto;
+
+          .locName {
+            border-right: none;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            flex: 80%;
+            display: none;
+            &:hover {
+              display: block;
+            }
+          }
+
+          .locEdit {
+            position: relative;
+            border-right: none;
+            flex: 10% 1;
+            text-align: center;
+            left: 5px;
+          }
+
+          .locDelete {
+            width: 9px;
+            position: relative;
+            left: -29px;
+            top: -7px;
+
+            span {
+              cursor: pointer;
+            }
+
+            svg {
+              width: 10px;
+              height: 10px;
+            }
+          }
+        }
+      }
+
+      > .footerButtons {
+        position: relative;
+        flex: 1;
+
+        .buttons {
+          bottom: 0;
+          right: 0;
+        }
+      }
+
+      .ghFileInput {
+        .ghInput {
+          width: 100%;
+          padding-right: 0;
+        }
+
+        .buttons {
+          top: 13.5px;
+          right: 25px;
+        }
+      }
+    }
+
+    .ghFormField {
+      width: 100%;
+      margin: 15px 0;
+
+      .limit {
+        position: absolute;
+        right: 25px;
+      }
+    }
+
+    .ghFileInput .ghInput input {
+      padding-right: 80px;
+      text-overflow: ellipsis;
+    }
+
+    .color-preview {
+      height: 25px;
+      width: 25px;
+      border-radius: 50%;
+      margin-top: -46px;
+      margin-bottom: 20px;
+      z-index: 2;
+      margin-left: 224px;
+    }
+
+    .import-input {
+      top: -65px;
+      left: -23px;
+
+      label {
+        height: 40px;
+        border-radius: 5px;
+      }
+    }
+
+    .update-upload {
+      .ghFileInput {
+        margin-left: 50px;
+        width: 210px;
+
+        input {
+          border-radius: 0 5px 5px 0;
+        }
+      }
+    }
+
+    .ghIsMulti {
+      .gh__placeholder, .css-b8ldur-Input {
+        padding-left: 5px;
+      }
+    }
+
+    .css-1rhbuit-multiValue {
+      background-color: hsl(245deg 73% 74% / 16%);
+    }
+
+    .css-xb97g8:hover {
+      background-color: #cfcbff;
+      color: #7166f8;
+      cursor: pointer;
+    }
+  }
+}
+
+.img-thumbnail {
+  border-radius: 5px 0 0 5px;
+  height: 40px;
+  object-fit: cover;
+  width: 51px;
+  margin-top: -55px;
+  margin-bottom: 15px;
+
+  //cursor: pointer;
+
+  //&:hover {
+  //  opacity: 0.7;
+  //}
 }

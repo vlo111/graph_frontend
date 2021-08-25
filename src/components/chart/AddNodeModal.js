@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import { Link } from 'react-router-dom';
+import Tooltip from 'rc-tooltip';
 import { toggleNodeModal } from '../../store/actions/app';
 import Select from '../form/Select';
 import ColorPicker from '../form/ColorPicker';
@@ -19,13 +20,11 @@ import Utils from '../../helpers/Utils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import ChartUtils from '../../helpers/ChartUtils';
 import Api from '../../Api';
-import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
-import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
-import markerImg from '../../assets/images/icons/marker.svg';
-import delImg from '../../assets/images/icons/del.gif'; 
+import markerImg from '../../assets/images/icons/marker-black.svg';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
-import NoImg from '../../assets/images/image-not-available.png';
+import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
+import {components} from "react-select";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -39,7 +38,7 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale,
+      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale, link,
       d, infographyId, manually_size, customFields,
     } = _.cloneDeep(addNodeParams);
     const _type = type || _.last(nodes)?.type || '';
@@ -48,6 +47,7 @@ class AddNodeModal extends Component {
         fx,
         fy,
         name: name || '',
+        link: link || '',
         icon: icon || '',
         status: status || 'approved',
         nodeType: nodeType || 'circle',
@@ -101,8 +101,8 @@ class AddNodeModal extends Component {
 
   saveNode = async (ev) => {
     ev.preventDefault();
-    this.setState({loading: true});
-    const {currentUserId, graphId, graphNodes} = this.props;
+    this.setState({ loading: true });
+    const { currentUserId, graphId, graphNodes } = this.props;
     const {
       nodeData, index, nodeId, imgUrl,
     } = this.state;
@@ -144,7 +144,6 @@ class AddNodeModal extends Component {
         nodeData.createdUser = currentUserId;
         nodes.push(nodeData);
 
- 
         if (!_.isEmpty(nodeData.customFields)) {
           this.props.updateNodesCustomFieldsRequest(graphId, [{
             id: nodeData.id,
@@ -162,32 +161,39 @@ class AddNodeModal extends Component {
     this.setState({ errors, nodeData, loading: false });
   }
 
-  handleChange = (path, value, editIndex) => {
-    const { nodeData, errors, editLocation } = this.state;
-    switch (path) {
-      case 'location': {
-        if (nodeData.location) {
-          if (Number.isInteger(editIndex)) {
-            nodeData.location[editLocation] = value;
-          } else {
-            nodeData.location.push(value);
-          }
-        }
-        value = !nodeData.location ? [value] : nodeData.location;
-      }
-      case 'type': {
-        _.set(nodeData, path, value);
-        _.unset(errors, path);
+  handleChange = (path, item, editIndex) => {
+    let value = item;
 
-        // edit color with type
-        path = 'color';
-        value = ChartUtils.nodeColorObj[value] || '';
-      }
-      default: {
-        _.set(nodeData, path, value);
-        _.unset(errors, path);
+    if (path === 'manually_size') {
+      if (value && (!(/^\d+$/.test(value))) || value > 50) {
+        return;
       }
     }
+
+    const { nodeData, errors, editLocation } = this.state;
+
+    if (path === 'location') {
+      if (nodeData.location) {
+        if (Number.isInteger(editIndex)) {
+          nodeData.location[editLocation] = value;
+        } else {
+          nodeData.location.push(value);
+        }
+      }
+      value = !nodeData.location ? [value] : nodeData.location;
+    } else if (path === 'type') {
+      _.set(nodeData, path, value);
+      _.unset(errors, path);
+
+      // edit color with type
+      path = 'color';
+      value = ChartUtils.nodeColorObj[value] || '';
+    } else if (path === 'icon' && editIndex === 'cancel') {
+      _.unset(nodeData, path, '');
+    }
+
+    _.set(nodeData, path, value);
+    _.unset(errors, path);
 
     this.setState({
       nodeData, errors, editLocation: null,
@@ -225,7 +231,7 @@ class AddNodeModal extends Component {
   }
 
   closeExpand = () => {
-    this.setState({ expand: false });
+    this.setState({ expand: false, imgUrl: '' });
   }
 
   toggleExpand = () => {
@@ -250,49 +256,56 @@ class AddNodeModal extends Component {
     const groups = this.getTypes(nodes);
 
     Utils.orderGroup(groups, nodeData.type);
+
+    if (nodeData.icon && typeof nodeData.icon === 'object') nodeData.icon = nodeData.icon.name;
+
     return (
       <Modal
         className={expand ? 'ghModal expandAddNode' : 'ghModal'}
-        overlayClassName="ghModalOverlay"
+        overlayClassName="ghModalOverlay addNode"
         isOpen={!_.isEmpty(addNodeParams)}
         onRequestClose={this.closeModal}
       >
         <div className="addNodeContainer containerModal">
-          <Button
-            className="expandButton"
-            icon={expand ? <CompressScreen /> : <FullScreen />}
-            onClick={this.toggleExpand}
-          />
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
-          <h2>{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
-          <form className="form" onSubmit={this.saveNode}>
-            <Select
-              isCreatable
-              label="Node Type"
-              value={[
-                groups.find((t) => t.value === nodeData.type) || {
-                  value: nodeData.type,
-                  label: nodeData.type,
-                },
-              ]}
-              limit={250}
-              options={groups}
-              error={errors.type}
-              onChange={(v) => this.handleChange('type', v?.value || '')}
-            />
+          <h2 className="add-node-text">{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
+          <form
+            className={`form ${imgUrl === 'error' ? '' : (nodeData.icon ? 'update-upload' : '')}`}
+            onSubmit={this.saveNode}
+          >
+            <div className="node-type">
+              <Select
+                isCreatable
+                value={[
+                  groups.find((t) => t.value === nodeData.type) || {
+                    value: nodeData.type,
+                    label: nodeData.type ? nodeData.type : 'Node Type',
+                  },
+                ]}
+                options={groups}
+                error={errors.type}
+                onChange={(v) => this.handleChange('type', v?.value || '')}
+              />
+            </div>
             <Input
-              label="Node Name"
+              placeholder="Node Name"
               value={nodeData.name}
               error={errors.name}
-              limit={250}
               autoFocus
               onChangeText={(v) => this.handleChange('name', v)}
               autoComplete="off"
             />
             {expand ? (
               <>
+                <Input
+                  placeholder="Node Link"
+                  value={nodeData.link}
+                  error={errors.link}
+                  autoFocus
+                  onChangeText={(v) => this.handleChange('link', v)}
+                  autoComplete="off"
+                />
                 <Select
-                  label="Status"
                   portal
                   options={NODE_STATUS}
                   isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
@@ -300,28 +313,9 @@ class AddNodeModal extends Component {
                   error={errors.status}
                   onChange={(v) => this.handleChange('status', v?.value || '')}
                 />
-                <Input
-                  label="Set size manually"
-                  value={nodeData.manually_size}
-                  error={errors.manually_size}
-                  min="1"
-                  max="50"
-                  type="number"
-                  autoComplete="off"
-                  onBlur={() => {
-                    if (nodeData.value < 1) {
-                      nodeData.value = 1;
-                    } else if (nodeData.value > 50) {
-                      nodeData.value = 50;
-                    }
-                    this.handleChange('value', nodeData.value);
-                  }}
-                  onChangeText={(v) => this.handleChange('manually_size', v)}
-                />
                 {!editPartial ? (
                   <>
                     <Select
-                      label="Icon Shape"
                       portal
                       options={NODE_TYPES}
                       value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
@@ -329,44 +323,57 @@ class AddNodeModal extends Component {
                       onChange={(v) => this.handleChange('nodeType', v?.value || '')}
                     />
                     <ColorPicker
-                      label="Color"
+                      placeholder="Select Color"
                       value={nodeData.color}
                       error={errors.color}
                       readOnly
                       style={{ color: nodeData.color }}
                       onChangeText={(v) => this.handleChange('color', v)}
                       autoComplete="off"
-                      expand={expand}
+                      expand={!expand}
                     />
+                    <div style={{ backgroundColor: nodeData.color }} className="color-preview" />
 
                     <FileInput
-                      label={nodeData.nodeType === 'infography' ? 'Image' : 'Icon'}
+                      placeHolder="Past icon link or select"
                       accept=".png,.jpg,.gif,.svg"
                       value={nodeData.icon}
                       onChangeImgPreview={(v) => this.handleImgPreviewChange(v)}
                       onChangeFile={(v, file) => this.handleChange('icon', file)}
                     />
 
-                    {imgUrl === 'error'
-                      ? <img className="img-thumbnail" src={NoImg} alt="noImage" />
-                      : (
-                        <img
-                          className="img-thumbnail"
-                          src={imgUrl || Utils.fileSrc(nodeData.icon)}
-                          alt=""
-                        />
-                      )}
+                    {imgUrl && imgUrl !== 'error'
+                    && (
+                    <img
+                      className="img-thumbnail"
+                      src={Utils.fileSrc(nodeData.icon) || imgUrl}
+                      alt=""
+                    />
+                    )}
                     <Select
-                      label="Keywords"
                       isCreatable
                       isMulti
                       value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
                       menuIsOpen={false}
-                      placeholder="Add..."
+                      placeholder="Keywords"
                       onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
                     />
                   </>
                 ) : null}
+
+                <label className="nodeSize" htmlFor="nodeSize">Set size manually</label>
+
+                <div className="number-wrapper">
+                  <Input
+                    id="nodeSize"
+                    value={nodeData.manually_size}
+                    error={errors.manually_size}
+                    type="text"
+                    autoComplete="off"
+                    isNumber
+                    onChangeText={(v) => this.handleChange('manually_size', v)}
+                  />
+                </div>
                 <div className="addLocation" onClick={this.openMap}>+ Add Location</div>
                 {openMap && (
                 <MapsLocationPicker
@@ -378,52 +385,65 @@ class AddNodeModal extends Component {
                 />
                 )}
                 <div className="ghFormField locationExpandForm">
-                  {_.isObject(nodeData?.location) && nodeData.location.map((p, index) => (
-                    <div className="locForm">
-                      <div className="locName">
-                        <p title={p.address}>
-                          {p.address && p.address.length > (!expand ? 20 : 37)
-                            ? `${p.address.substr(0, !expand ? 20 : 37)} ...`
-                            : p.address}
-                        </p>
+                  {_.isObject(nodeData?.location)
+                  && nodeData.location
+                    .map((p, index) => (
+                      <div className="locForm">
+                        <div className="locName">
+                          <p title={p.address}>
+                            {p.address
+                                && p.address.length > (!expand ? 20 : 37)
+                              ? `${p.address.substr(
+                                0,
+                                !expand ? 20 : 37,
+                              )} ...`
+                              : p.address}
+                          </p>
+                        </div>
+
+                        <Tooltip overlay={p.address} placement="top">
+                          <div className="locEdit">
+                            <span
+                              title="edit"
+                              onClick={() => this.editLocation(index)}
+                            >
+                              <img
+                                src={markerImg}
+                                className="locMarker"
+                                alt="marker"
+                              />
+                            </span>
+                          </div>
+                        </Tooltip>
+
+                        <div className="locDelete">
+                          <span
+                            title="delete"
+                            onClick={() => this.deleteLocation(index)}
+                          >
+                            <CloseSvg
+                              className="deletelocation"
+                              alt="marker"
+                            />
+                          </span>
+                        </div>
                       </div>
-                      <div className="locEdit">
-                        <span title="edit" onClick={() => this.editLocation(index)}>
-                          <img
-                            src={markerImg}
-                            className="locMarker"
-                            alt="marker"
-                          />
-                        </span>
-                      </div>
-                      <div className="locDelete">
-                        <span title="delete" onClick={() => this.deleteLocation(index)}>
-                          <img
-                            src={delImg}
-                            className="locMarker"
-                            alt="marker"
-                          />
-                        </span>
-                      </div>
-                    </div>
-                  )).slice(!expand ? -2 : nodeData.location)}  
+                    ))
+                    .slice(!expand ? -2 : nodeData.location)}
                 </div>
               </>
             ) : null}
-            <div className="row advanced right">
-              <Link className="" onClick={this.toggleExpand}>
-                {!expand ? 'Advanced' : 'Primitive'}
-              </Link>
-            </div>
             <div className="footerButtons">
               <div className="buttons">
-                <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
-                  Cancel
-                </Button>
-                <Button className="alt main" type="submit">
+                <button className="btn-classic" type="submit">
                   {_.isNull(index) ? 'Add' : 'Save'}
-                </Button>
+                </button>
               </div>
+            </div>
+            <div className="row advanced right">
+              <Link className="" onClick={this.toggleExpand}>
+                {!expand ? 'Show More' : 'Show Less'}
+              </Link>
             </div>
           </form>
         </div>
