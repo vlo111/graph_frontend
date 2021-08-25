@@ -4,15 +4,16 @@ import React, {
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip/es';
-import { ReactComponent as ShareSvg } from '../../assets/images/icons/share.svg';
-import { ReactComponent as CommentSvg } from '../../assets/images/icons/comment.svg';
-import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/view.svg';
+import { ReactComponent as ShareSvg } from '../../assets/images/icons/shareGraph.svg';
+import { ReactComponent as CommentSvg } from '../../assets/images/icons/commentGraph.svg';
+import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/viewGraph.svg';
 import { getActionsCount } from '../../store/selectors/graphs';
 import { getActionsCountRequest } from '../../store/actions/graphs';
 import Button from '../form/Button';
 import ShareTooltip from '../Contributors/ShareTooltip';
 import CommentModal from '../CommentModal';
 import EmbedButton from '../embed/EmbedButton';
+
 
 const TootlipContent = ({ graphId, graphOwner }) => (
   <Suspense fallback={<div>Loading...</div>}>
@@ -51,7 +52,7 @@ const GraphListFooter = ({ graph }) => {
       </Button>
       {actionsCount?.shares
         ? (
-          <Tooltip overlay={<TootlipContent graphId={graph.id}  graphOwner={graph.user} />} trigger={['hover']}>
+          <Tooltip overlay={<TootlipContent graphId={graph.id}  graphOwner={graph.user} />} trigger={['click']} >
             <Button icon={<ShareSvg />} className="transparent footer-icon">
               <span className="graphListFooter__count">{actionsCount?.shares}</span>
             </Button>

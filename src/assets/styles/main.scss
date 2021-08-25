@@ -81,7 +81,7 @@ button {
 }
 
 main {
-  min-height: 100vh;
+  // min-height: 100vh;
   display: flex;
   flex-direction: column;
 
@@ -1601,10 +1601,11 @@ p {
       border: 1px solid #dedede;
       border-radius: 10px;
       margin-top: 45px;
+      object-fit: cover;
     }
 
-    .graphInputName {
-      border: none;
+    .graphInputName{
+      border:none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
       color: $color-graph-name;
@@ -2170,6 +2171,7 @@ p {
       min-width: 1px;
       height: 1px;
       scroll-snap-align: start;
+
     }
 
     button {
@@ -2362,7 +2364,6 @@ p {
     min-height: 90vh;
     background-color: $color-white;
     border-radius: 24px;
-    border: 1px solid $color-light-gray;
     margin-bottom: 23px;
   }
 
@@ -2471,7 +2472,9 @@ p {
   background: $color-white;
   border-radius: 24px;
   padding: 10px;
-  border: 1px solid $color-light-gray;
+  // border: 1px solid $color-light-gray;
+  position: relative;
+  top: 40px;
 
   li {
     a {
@@ -3105,7 +3108,7 @@ p {
     box-shadow: 0 4px 20px rgb(0 0 0 / 25%);
     width: 200px;
     position: fixed;
-    left: 87%;
+    left: 88%;
     top: 75px;
 
     ul {
@@ -4310,6 +4313,10 @@ body .gh__menu {
       }
     }
   }
+
+  .jodit-workplace {
+    min-height: 50px !important;
+  }
 }
 
 #search-user {
@@ -4457,9 +4464,8 @@ body .gh__menu {
   width: 64%;
   margin: 0 auto 50px;
   align-items: flex-start;
-  position: relative;
-  min-width: 900px;
-  margin-top: 105px;
+  position: relative; 
+  top: 130px;
 
   .tabsList {
     display: flex;
@@ -4475,7 +4481,7 @@ body .gh__menu {
       margin-left: -10px;
 
       .ghButton {
-        background-color: $color-white;
+        background-color:$color-white;
         color: $color-gray;
         border-radius: 24px 24px 0 0;
         padding: 12px 30px 60px;
@@ -4538,7 +4544,9 @@ body .gh__menu {
       position: static;
       margin-left: 10px;
       margin-bottom: -20px;
-
+      .lastItem{
+        display: none;
+      }
       .item {
         margin-left: -10px;
 
@@ -4821,24 +4829,64 @@ body .gh__menu {
   }
 }
 
-.graphEmbed {
 
-  h2 {
-    font-size: 22px;
+.embedModal{
+  border-radius: 0 !important;
+  max-width: 638px !important;
+  padding: 18px 53px 29px 53px !important;
+  .graphEmbed {
+    h2 {
+      font-weight: bold;
+      font-size: 29px;
+      line-height: 34px;
+      color: $color-main;
+      margin-bottom: 10px;
+    }
+  
+    .row {
+      display: flex;
+      align-items: center;
+      margin: 0;
+    }
+  
+    input {
+      width: 438px;
+      height: 35px;
+      border: 1px solid #9F9F9F;
+      box-sizing: border-box;
+      border-radius: 3px;
+    }
+    .copyEmbed{
+        width: 80px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 2px;
+        line-height: normal;
+        font-weight: 400;
+        transition: all 0.25s;
+        text-align: center;
+        font-size: 16px;
+        color: $color-white;
+        cursor: pointer;
+        touch-action: manipulation;
+        outline: none;
+        border: solid 1px;
+        border-color: $color-main;
+        user-select: none;
+        background-color: $color-main;
+        opacity:1;
+        padding: 0;
+        margin-left: 12px;
+        &:hover {
+          background-color: $color-white;
+          color: $color-main;
+          border-color: $color-main;
+        }
+    }
   }
-
-  .row {
-    display: flex;
-    align-items: center;
-    margin: 0;
   }
-
-  input {
-    font-size: 13px;
-    width: 320px;
-    padding: 5px;
-  }
-}
 
 .searchData {
   margin-right: auto;
@@ -4911,15 +4959,16 @@ body .gh__menu {
 }
 
 .friends-list {
-  min-height: 90vh;
   padding: 2% 3.4%;
-  border: 1px solid $color-light-gray;
   border-radius: 24px;
   background-color: $color-white;
 
   h3 {
     text-align: center;
     font: normal normal 600 36px/49px Open Sans;
+    background: -webkit-linear-gradient(#F07760, #7166F8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 
@@ -5092,31 +5141,6 @@ body .gh__menu {
   }
 }
 
-.no-graphs {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding-top: 50px;
-
-  .title {
-    font-size: 4rem;
-    font-weight: 300;
-    font: normal normal 600 36px/49px Open Sans;
-
-    + .text {
-      margin: 0 0 1rem;
-    }
-  }
-
-  .no-graphs-img {
-    font-weight: 300;
-    text-align: center;
-  }
-
-}
-
 .graphsName {
   font-size: 15px;
   color: #FE794F;
@@ -5135,6 +5159,10 @@ body .gh__menu {
 
 .importSelectLbl label {
   padding: 0 0 10px;
+}
+
+.undefined .tabsList .lastItem{
+  display: none;
 }
 
 .importSelectFileLbl, importSelectFileLbl label {
@@ -6177,7 +6205,6 @@ img.preview-scaled {
 .rc-tooltip-inner {
   background: $color-white;
   color: #000000;
-
   .tooltiptext {
     display: flex;
     flex-direction: row;
@@ -6877,21 +6904,21 @@ img.preview-scaled {
 }
 
 .ar-popover-content {
-  width: 177px;
+  width: 110px;
   background-color: #fff;
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding-box;
   background-clip: padding-box;
   position: absolute;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, .3);
-  // border: 1px solid rgba(0,0,0,.15);
+  box-shadow: 0px 4px 33px rgba(0, 0, 0, 0.25);
   border-radius: 3px;
   outline: 0;
 }
 
 .ar-popover-content.-arrow {
-  margin-top: 3px;
-  left: -122px;
+  margin-top: 8px;
+  left: -85px;
+  z-index: 1;
 }
 
 .ar-popover-list {
@@ -6899,31 +6926,29 @@ img.preview-scaled {
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
-  margin-left: 1em;
+  .child{
+    width: 100%;
+    margin: 7px 0 7px 0;
+    &:hover{
+      background: rgba(113, 102, 248, 0.1);
+      cursor: pointer;
+      .dashboard-delete{ 
+        color: $color-avatar-border;
+        font-weight: 700;
+      }
+      span{
+        color: $color-main;
+        font-weight: 700;
+      }
+    }
+    span{
+      margin-left: 20px;
+      color: #9F9F9F;
+      font-weight: 700;
+    }
+  }
 }
 
-.ar-popover-content.-arrow::before, .ar-popover-content::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 104px;
-}
-
-.ar-popover-content.-arrow::before {
-  top: -10px;
-  // border-left: 22px solid transparent;
-  // border-right: 22px solid transparent;
-  // border-bottom: 20px solid rgba(0, 0, 0, .15);
-}
-
-.ar-popover-content.-arrow::after {
-  top: -9px;
-  margin-left: 29px;
-  border-left: 21px solid transparent;
-  border-right: 21px solid transparent;
-  border-bottom: 21px solid #fff;
-}
 
 .dashboard-onhover {
   position: absolute;
@@ -8372,35 +8397,91 @@ img.preview-scaled {
 
 #header {
   display: grid;
-  grid-template-columns: 10% 20% 36% 20% 10%;
+  grid-template-columns: 8% 41% 25% 15% 7%;
   grid-gap: 1%;
   height: 75px;
   background-color: #fff;
   position: fixed;
-  width: 100%;
-  z-index: 2;
-
-  .start-graphs {
-    .buttonsWrapper {
+  width: 100%; 
+  z-index: 1;
+.start-graphs {
+  .buttonsWrapper  {
+    display: flex;
+    .btn-startgraph {
+      width: 216px;
+      height: 42px;
       display: flex;
-
-      .ghButton {
-        margin-right: 30px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      line-height: normal;
+      font-weight: 400;
+      font-style: normal;
+      text-align: center;
+      font-size: 16px;
+      background-color: $color-main;
+      color: $color-white;
+      cursor: pointer;
+      border:none;
+      &:hover {
+        background-color: white;
+        border: 1px solid $color-main;
+        color: $color-main;
       }
+    }  
+    
+    .btn-comparegraph {
+      width: 216px;
+      height: 42px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      line-height: normal;
+      font-weight: 400;
+      font-style: normal;
+      text-align: center;
+      font-size: 16px;
+      background-color: #ffffff;
+      color: $color-main;
+      cursor: pointer;
+      border:solid 1px $color-main;
+      &:hover {
+        background-color: $color-main;
+        color: #ffffff;
+      }
+    }  
+
+    .ghButton {
+      margin-right: 30px;
     }
   }
+}
 
-  .logo-graphs, .searchInputWrapper, .start-graphs, .notify_container, .signOut {
-    display: flex;
-    justify-content: center !important;
-    align-items: center;
+.graphSearch{
+   .icon{
+    bottom: 4px !important;
+    color: #CFCFCF;
   }
+  input{
+    height: 33px;
+    width: 500px !important;
+    color: $color-graph-name !important;
+    border-radius: 5px;
+    border: 1px solid #B3ADF5;
+} 
+}
 
-  .start-graphs button {
-    background-color: #fff;
-    color: #0062ff;
-    margin: 7px;
-  }
+.logo-graphs, .searchInputWrapper, .start-graphs, .notify_container, .signOut {
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+}
+.logo-graphs{
+    .logo{
+      min-width: 100px;
+    }
+}
 }
 
 #header-on-graph, #header-on-view-graph {

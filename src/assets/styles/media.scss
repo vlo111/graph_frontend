@@ -1,6 +1,15 @@
+@media screen and  (max-width: 1800px){
+  .homeWithUser{
+    .content{
+      .graphsList .graphsItem{
+        grid-template-columns: 15% 42% 20% 19% 4% !important;
+      }
+    }
+  }
+  
+}
 @media screen and (min-width: 1700px) {
   #header {
-    grid-template-columns: 349px auto auto auto 20%;
 
     .signOut {
       right: 6%;
@@ -11,25 +20,6 @@
     }
   }
 
-  //#header-on-graph {
-  //  .graphs {
-  //    position: fixed;
-  //    border: none;
-  //    display: flex;
-  //    z-index: 2;
-  //    left: 24%;
-  //    top: 10px;
-  //    color: #0d0905;
-  //
-  //    button {
-  //      padding: 7px 24px 6px;
-  //    }
-  //  }
-  //
-  //  .legends {
-  //    left: 15%;
-  //  }
-  //}
 
   #header-on-view-graph {
     grid-template-columns: 22% auto auto auto 25%;
@@ -39,14 +29,17 @@
 
 @media screen and (max-width: 1699px) {
   #header {
-    grid-template-columns: 17% 20% auto 5% 20%;
-
     .signOut {
       right: 2%;
     }
 
     .right-elements {
       right: 30px;
+    }
+    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
+      width: 200px !important;
+      font-size: 14px !important;
+      margin-right: 20px !important; 
     }
   }
 
@@ -90,6 +83,16 @@
 }
 
 @media screen and (max-width: 1600px) {
+  #header{
+    grid-template-columns: 10% 42% 36% 5% 7% !important;
+    grid-gap:0 !important;
+    .graphSearch>input{
+      width: 400px !important; 
+    }
+    #accountDropDown .dropdown {
+      left: 86%;
+  }
+  }
   .barContainer {
     .recharts-surface {
       width: 500px;
@@ -101,9 +104,30 @@
       height: 250px !important;
     }
   }
+  .homeWithUser{
+    .content{
+      .graphsList .graphsItem{
+        grid-template-columns: 19% 36% 22% 19% 4% !important;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 1500px) {
+  #header{
+    .graphSearch>input{
+      width: 350px !important; 
+    }
+    #accountDropDown .dropdown {
+      left: 85%;
+   }
+   .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
+     width: 190px !important;
+     font-size: 14px !important;
+     margin-right: 15px !important; 
+   }
+  }
+
   .barContainer {
     .recharts-surface {
       width: 450px !important;
@@ -119,6 +143,9 @@
 
 @media screen and (max-width: 1400px) {
   #header {
+    .graphSearch>input{
+      width: 300px !important; 
+    }
     .signOut {
       right: 1%;
     }
@@ -130,7 +157,9 @@
     .ghButton {
       padding: 12px 14px;
     }
-
+    #accountDropDown .dropdown {
+      left: 84%;
+    }
   }
 
   .barContainer {
@@ -144,17 +173,49 @@
       height: 180px !important;
     }
   }
+  .homeWithUser .content .graphsList .graphsItem {
+    grid-template-columns: 19% 34% 21% 19% 7% !important;
 }
-
+}
+@media screen and (max-width: 1200px){
+  #header{
+    grid-template-columns: 16% 34% 36% 7% 7% !important;
+    #accountDropDown {
+    .accountInfo{
+      svg{
+        display: none;
+      }
+    }
+      left: 82%;
+  }
+  .graphSearch>input{
+    width: 280px !important; 
+  }
+  .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
+    width:160px !important;
+    font-size: 14px !important;
+    margin-right: 10px !important; 
+  }
+  }
+  .homeWithUser{
+    .content{
+      .graphsList .graphsItem{
+        grid-template-columns: 25% 41% 14% 15% 5% !important;
+        &:hover .buttonHidden .btn-edit {
+          margin-right: 7px;
+          margin-left: 7px;
+      }    
+      } 
+  }
+}
+}
 @media screen and (max-width: 900px) {
   #accountDropDown {
     .accountInfo {
       padding: 0;
-
       .name {
         display: none;
       }
-
     }
 
     .dropdown {
@@ -165,6 +226,16 @@
       left: auto;
       padding: 0;
       border-radius: 15px;
+    }
+  }
+  #header{
+    .graphSearch>input{
+      width: 200px !important; 
+    }
+    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
+      width: 130px !important;
+      font-size: 13px !important;
+      margin-right: 7px !important; 
     }
   }
 }
