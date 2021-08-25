@@ -7845,9 +7845,10 @@ img.preview-scaled {
 
     .searchBox {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       width: 100%;
       justify-content: center;
+      align-items: center;
 
       .searchBoxInside {
         border: 1px solid #7166F8;
@@ -7910,10 +7911,22 @@ img.preview-scaled {
           padding-left: 1em;
         }
       }
+
+      .selectedNodesCheckBox {
+        display: flex;
+        align-items: center;
+        width: 90%;
+        justify-content: space-between;
+        margin-top: .5em;
+        height: 24px;
+      }
     }
   }
   .searchItem {
     cursor: pointer;
+  }
+  ul {
+    margin-bottom: 0px;
   }
 }
 

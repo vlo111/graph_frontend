@@ -14,6 +14,7 @@ import queryString from "query-string";
 import { toggleGraphMap } from '../../store/actions/app';
 import { getGraphNodesRequest } from "../../store/actions/graphs";
 import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
+import Button from "../form/Button";
 
 class SearchModal extends Component {
   static propTypes = {
@@ -449,6 +450,15 @@ class SearchModal extends Component {
 
   }
 
+  ifAnyResults = () => {
+    const {nodes, keywords, docs, tabs} = this.state
+    debugger
+    if (nodes?.length || keywords?.length || docs?.length || Object.keys(tabs)?.length) {
+      return true
+    }
+    return false
+  }
+
   render() {
     const { 
       nodes, 
@@ -461,7 +471,6 @@ class SearchModal extends Component {
       allNodesSelected 
     } = this.state;
     this.initTabs();
-    debugger
     return (
       <Modal
         isOpen
@@ -506,7 +515,26 @@ class SearchModal extends Component {
               autoFocus
             />
           </div>
+          {this.ifAnyResults() ? (
+          <div className="selectedNodesCheckBox">
+            <div>
+              <input
+                className=""
+                name={`selectAll`}
+                type="checkbox"
+                checked={this.state.isChecked}
+                onChange={this.selectAllNodes} 
+              />
+              { allNodesSelected ? ' Unselect all' :  ' Select all'}
+            </div>
+            <p className="selectedItemsAmount">
+              Selected Nodes
+              {' ' + chosenNodes.length}
+            </p>
+          </div>
+          ) : ""}
         </div>
+
         </div>
         <ul className="list"> 
           {nodes.map((d) => (
@@ -737,26 +765,18 @@ class SearchModal extends Component {
         <div className="acceptCheckedItems">
             {chosenNodes.length ? (
               <>
-                <button
-                  onClick={(ev) => this.selectAllNodes(ev)}
-                  className="ghButton accent alt "
-                >{allNodesSelected ? 'Unselect All' : 'Select All'}</button>
-                <button
+                <Button
                   onClick={(ev) => this.showSelectedNodes()}
                   className="ghButton accent alt "
                 >
                   Show
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={(ev) => this.showSelectedNodes(true)}
                   className="ghButton accent alt "
                 >
                   Keep old and Show
-                </button>
-                <p className="selectedItemsAmount">
-                  Selected Nodes
-                  {' ' + chosenNodes.length}
-                </p>
+                </Button>
               </>
             ) : (
               ''
