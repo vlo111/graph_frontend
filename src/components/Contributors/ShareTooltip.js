@@ -13,14 +13,14 @@ import { getId } from '../../store/selectors/account';
 import ShareTooltipContent from './ShareTooltipContent';
 import { ONLINE } from '../../data/graph';
 
-const TootlipContent = ({
+const TooltipContent = ({
   user, role, type, isOwner, objectId,
 }) => (
   <Suspense fallback={<div>Loading...</div>}>
     <ShareTooltipContent user={user} role={role} type={type} isOwner={isOwner} objectId={objectId} />
   </Suspense>
 );
-TootlipContent.propTypes = {
+TooltipContent.propTypes = {
   user: PropTypes.object.isRequired,
 };
 const ShareTooltip = React.memo(({
@@ -137,7 +137,7 @@ const ShareTooltip = React.memo(({
         onDragStart={(e) => handleDragStart(e, item.id, shareRole)}
       >
         <li className="mb-2 mr-2 " key={index.toString()}>
-          <Tooltip overlay={<TootlipContent user={item.user} role={item.role} type={item.type} objectId={item.objectId} />} trigger={['click']} placement={['bottom']}>
+          <Tooltip overlay={<TooltipContent user={item.user} role={item.role} type={item.type} objectId={item.objectId} />} trigger={['click']} placement={['bottom']}>
             <div className="icon-container">
               <img className="avatar-user d-block" src={item.user.avatar} alt={item.user.id} />
               { onlineUser && onlineUser.some((n) => n.userId === item.user.id) ? (

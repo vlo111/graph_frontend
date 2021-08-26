@@ -15,7 +15,7 @@ import { setActiveButton } from '../store/actions/app';
 import { clearSingleGraph, getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
-import SearchModal from '../components/search/SearchModal';
+import Search from '../components/search/Search';
 import AutoPlay from '../components/AutoPlay';
 import MapsGraph from '../components/maps/MapsGraph';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
@@ -86,7 +86,7 @@ class GraphForm extends Component {
           start={activeButton.substring(activeButton.length, activeButton.indexOf('.') + 1)}
         />
         )}
-        {activeButton === 'search' && <SearchModal history={this.props.history} />}
+        <Search history={this.props.history} />
         {activeButton === 'media' && <MediaModal history={this.props.history} /> }
         {activeButton === 'maps-view' && <MapsGraph />}
         {activeButton === 'maps' && <MapsModal />}

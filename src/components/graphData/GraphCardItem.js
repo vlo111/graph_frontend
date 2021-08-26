@@ -10,7 +10,7 @@ import { ReactComponent as PlusSvg } from '../../assets/images/icons/plusGraph.s
 
 class GraphCardItem extends Component {
   static propTypes = {
-    graph: PropTypes.object.isRequired,
+    graphs: PropTypes.object.isRequired,
   }
 
   constructor(props) {
