@@ -14,7 +14,7 @@ import Button from '../form/Button';
 import { ONLINE } from '../../data/graph';
 import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 
-const TootlipContent = ({
+const TooltipContent = ({
   user, role, type, isOwner, objectId,
 }) => (
   <Suspense fallback={<div>Loading...</div>}>
@@ -28,7 +28,7 @@ const TootlipContent = ({
   </Suspense>
 );
 
-TootlipContent.propTypes = {
+TooltipContent.propTypes = {
   user: PropTypes.object.isRequired,
 };
 
@@ -70,7 +70,7 @@ const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
       <ul className="list-style-none d-flex flex-wrap mb-n2">
         <li className="item">
           <Link to={`/profile/${graphOwner.id}`} target="_blank">
-            <Tooltip overlay={<TootlipContent user={graphOwner} role="Owner" type="graph" objectId={null} />} trigger={['hover']} placement={['bottom']}>
+            <Tooltip overlay={<TooltipContent user={graphOwner} role="Owner" type="graph" objectId={null} />} trigger={['hover']} placement={['bottom']}>
               <div className="icon-container">
                 <img className="avatar-user d-block" src={graphOwner.avatar} alt="" />
                 { onlineUser && onlineUser.some((n) => n.userId === graphOwner.id) ? (
@@ -88,7 +88,7 @@ const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
           .map((item, index) => (
             <li className="item">
               <Link to={`/profile/${item.user.id}`} target="_blank">
-                <Tooltip overlay={<TootlipContent user={item.user} role={item.role} type={item.type} objectId={item.objectId} />} trigger={['hover']} placement={['bottom']}>
+                <Tooltip overlay={<TooltipContent user={item.user} role={item.role} type={item.type} objectId={item.objectId} />} trigger={['hover']} placement={['bottom']}>
                   <div className="icon-container">
                     <img className="avatar-user d-block" src={item.user.avatar} alt={item.user.id} />
                     { onlineUser && onlineUser.some((n) => n.userId === item.user.id) ? (
