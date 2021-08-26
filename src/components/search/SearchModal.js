@@ -66,12 +66,13 @@ class SearchModal extends Component {
   handleChange = async (search = "") => {
     this.setState({ 
       nodes: [], 
-      search, 
       tabs: [], 
       docs: [], 
-      search,  
+      search,
+      keywords: [],  
       allNodesSelected: false, 
-      chosenNodes: []
+      chosenNodes: [],
+      allNodesSelected: false
     });
     if (!search) {
       return;
@@ -452,7 +453,6 @@ class SearchModal extends Component {
 
   ifAnyResults = () => {
     const {nodes, keywords, docs, tabs} = this.state
-    debugger
     if (nodes?.length || keywords?.length || docs?.length || Object.keys(tabs)?.length) {
       return true
     }
@@ -518,6 +518,7 @@ class SearchModal extends Component {
           {this.ifAnyResults() ? (
           <div className="selectedNodesCheckBox">
             <div>
+              { allNodesSelected ? 'Unselect all  ' :  'Select all  '}
               <input
                 className=""
                 name={`selectAll`}
@@ -525,7 +526,6 @@ class SearchModal extends Component {
                 checked={this.state.isChecked}
                 onChange={this.selectAllNodes} 
               />
-              { allNodesSelected ? ' Unselect all' :  ' Select all'}
             </div>
             <p className="selectedItemsAmount">
               Selected Nodes
@@ -542,7 +542,6 @@ class SearchModal extends Component {
               className="item nodeItem" 
               key={'node_'+d.id} 
             >
-              {console.log('node_'+d.id)}
               <input
                 className="searchResultCheckbox"
                 name={`name_${d.id}`}
@@ -598,7 +597,6 @@ class SearchModal extends Component {
                 className="item tabItem" 
                 key={'tab_'+tabs[item]?.node?.id} 
                 >
-                {console.log('tab_'+tabs[item]?.node?.id)}
                 <input
                 className="searchResultCheckbox"
                 name={`tab_${tabs[item]?.node?.id}`}
@@ -680,7 +678,6 @@ class SearchModal extends Component {
               className="item" 
               key={'keywords_'+d.id}
             >
-              {console.log('keywords_'+d.id)}
               <input
                 className="searchResultCheckbox"
                 name={`keyword_${d.id}`}
@@ -732,7 +729,6 @@ class SearchModal extends Component {
               className="item" 
               key={'docs_'+d.id}
             >
-              {console.log('docs_'+d.id)}
               <input
                 className="searchResultCheckbox"
                 name={`docs_${d.id}`}
