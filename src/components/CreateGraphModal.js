@@ -35,8 +35,8 @@ class CreateGraphModal extends Component {
     };
   }
 
-  componentDidMount () {
-    Chart.loading(false)
+  componentDidMount() {
+    Chart.loading(false);
   }
 
   handleChange = (path, value) => {
@@ -80,33 +80,31 @@ class CreateGraphModal extends Component {
     }
     return (
       <Modal
-        className="ghModal ghModalSave"
+        className="ghModal ghModalSave createGraph"
         overlayClassName="ghModalOverlay"
         isOpen
       >
         <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
         <div className="form">
-          <h2>
-            Create Graph
-          </h2>
+
           <Input
-            label="Title"
             value={requestData.title}
             onChangeText={(v) => this.handleChange('title', v)}
             autoComplete="off"
+            placeholder="New Graph Name"
           />
           <Input
-            label="Description"
+            placeholder="Description"
             value={requestData.description}
             textArea
             onChangeText={(v) => this.handleChange('description', v)}
           />
           <div className="buttons">
-            <Button className="cancel transparent alt" onClick={this.closeModal}>
+            <Button className="btn-delete" onClick={this.closeModal}>
               Cancel
             </Button>
             <Button
-              className="accent alt saveNode"
+              className="btn-classic"
               disabled={!requestData.title}
               onClick={this.addGraph}
             >
