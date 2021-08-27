@@ -1744,7 +1744,7 @@ p {
   background-color: white;
   border-radius: 2px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  width: 170px;
+  min-width: 172px;
   display: flex;
   flex-direction: column;
 
@@ -8460,27 +8460,6 @@ img.preview-scaled {
       }
     }
 
-    .connections {
-      .connection-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 16px;
-
-        .indicator {
-          height: 2px;
-          width: 22px;
-          margin-right: 16px;
-        }
-
-        &:last-of-type {
-          margin-bottom: 0;
-        }
-
-        a {
-          cursor: auto;
-        }
-      }
-    }
   }
 }
 
@@ -9301,3 +9280,40 @@ img.preview-scaled {
     top: 19px;
   }
 }
+ 
+  .connection-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .indicator {
+      height: 2px;
+      width: 22px;
+      margin-right: 16px;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    a {
+      cursor: auto;
+    }
+  } 
+  #graphs-data-info{
+    display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      left: 213px;
+      bottom: 2%;
+      div {
+        display: flex; 
+        padding: 15px 15px; 
+        color: #727272;
+        align-items: center;
+        box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
+        border-radius: 3px;
+        height: 40px;
+      }
+  }

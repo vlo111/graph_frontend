@@ -5,25 +5,29 @@ import { Link, Prompt } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
+import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
+import { userGraphRequest } from '../store/actions/shareGraphs';
+import Chart from '../Chart';
+import AnalysisUtils from '../helpers/AnalysisUtils';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
 import { setActiveButton, toggleSearch } from '../store/actions/app';
 import Button from '../components/form/Button';
-import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
-import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import Filters from '../components/filters/Filters';
 import Search from '../components/search/Search';
+import ContextMenu from '../components/contextMenu/ContextMenu';
 import Zoom from '../components/Zoom';
 import NodeDescription from '../components/NodeDescription';
-import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
-import { userGraphRequest } from '../store/actions/shareGraphs';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
-import AnalysisUtils from '../helpers/AnalysisUtils';
-import Chart from '../Chart';
+import ToolBarFooter from '../components/ToolBarFooter';
 import AnalyticalTab from '../components/Analysis/AnalyticalTab';
 import AnalyticalPage from '../components/Analysis/AnalyticalPage';
+import FindPath from '../components/FindPath';
+import AutoPlay from '../components/AutoPlay';
+import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
+import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 
 class GraphView extends Component {
   static propTypes = {
@@ -74,12 +78,11 @@ class GraphView extends Component {
 
   render() {
     const {
-      singleGraph, singleGraphStatus, graphInfo, showSearch,
+      singleGraph, singleGraphStatus, graphInfo, showSearch, activeButton, 
       location: { pathname, search }, match: { params: { graphId = '' } },
     } = this.props;
-    const preview = pathname.startsWith('/graphs/preview/');
-
-    let shortestNodes = [];
+    const preview = pathname.startsWith('/graphs/preview/'); 
+    let shortestNodes = []; 
     // let shortestLinks = [];
 
     // view the shortest path to the analysis field
@@ -176,11 +179,21 @@ class GraphView extends Component {
                   </>
                 )}
                 <ToolBarHeader graph={singleGraph}/>
+                  <Search />
                 <NodeFullInfo editable={false} />
                 <LabelTooltip />
                 <Filters />
-                <Search />
+                <AutoPlay />
+                <ContextMenu expand={true}/>
+                {activeButton.includes('findPath')
+                && (
+                <FindPath
+                  history={this.props.history}
+                  start={activeButton.substring(activeButton.length, activeButton.indexOf('.') + 1)}
+                />
+                )}
               <Zoom />
+              <ToolBarFooter />
               </div>
             ))}
       </Wrapper>

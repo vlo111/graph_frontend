@@ -419,8 +419,12 @@ class SearchModal extends Component {
         links: availableLinks, 
         labels: []
       }, {
-        ignoreAutoSave: true
+        ignoreAutoSave: true,
+        isAutoPosition: true
       })
+      ChartUtils.autoScaleTimeOut(); 
+      ChartUtils.autoScaleTimeOut(100); 
+      ChartUtils.autoScaleTimeOut(200); 
     this.closeModal();
   }
 
@@ -451,8 +455,7 @@ class SearchModal extends Component {
   }
 
   ifAnyResults = () => {
-    const {nodes, keywords, docs, tabs} = this.state
-    debugger
+    const {nodes, keywords, docs, tabs} = this.state;
     if (nodes?.length || keywords?.length || docs?.length || Object.keys(tabs)?.length) {
       return true
     }
