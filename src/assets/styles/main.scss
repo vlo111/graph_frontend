@@ -1631,6 +1631,50 @@ p {
     }
   }
 
+  .createGraph{
+    width: 370px;
+    height:390px;
+    .form{
+      margin: auto;
+      width: 84%;
+      height: 84%;
+      .ghInput input{
+        padding: 0;
+        width: 210px;
+        border:none;
+        border-bottom:1px solid $color-user-text;
+        border-radius:0;
+        font-size:23px;
+        color:$color-dark;
+        margin: -20px auto auto;
+
+        &::-webkit-input-placeholder {
+          color: $color-graph-name;
+          font-weight: 700;
+          text-align:center;
+        }
+      }
+
+      .ghInput textarea{
+        margin-top: 20px;
+        border-radius: 5px;
+        border: 1px solid #AAAAAA;
+        min-height: 130px;
+        color: $color-dark;
+        padding: 15px 15px 0px 15px;
+
+        &::-webkit-input-placeholder {
+          color: $color-passive;
+          font-size: 16px;
+        }
+      }
+      .buttons{
+        justify-content: space-between;
+      }
+    }
+  }
+
+
   &.changePasswordModalOverlay {
     .ghModal {
       top: 25%;
