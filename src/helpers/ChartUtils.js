@@ -160,6 +160,9 @@ class ChartUtils {
     } else if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {
       return icon;
     }
+    if (icon.includes('person.svg') || icon.includes('article.svg')) {
+      return url
+    }
     if (large) {
       url += '.large';
     }

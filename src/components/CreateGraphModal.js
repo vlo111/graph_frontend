@@ -9,6 +9,7 @@ import Input from './form/Input';
 import Button from './form/Button';
 import { createGraphRequest } from '../store/actions/graphs';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
+import Chart from '../Chart';
 
 class CreateGraphModal extends Component {
   static propTypes = {
@@ -32,6 +33,10 @@ class CreateGraphModal extends Component {
         ...props.data,
       },
     };
+  }
+
+  componentDidMount () {
+    Chart.loading(false)
   }
 
   handleChange = (path, value) => {

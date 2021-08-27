@@ -14,14 +14,13 @@ import ShareTooltip from '../Contributors/ShareTooltip';
 import CommentModal from '../CommentModal';
 import EmbedButton from '../embed/EmbedButton';
 
-
-const TootlipContent = ({ graphId, graphOwner }) => (
+const TooltipContent = ({ graphId, graphOwner }) => (
   <Suspense fallback={<div>Loading...</div>}>
     <ShareTooltip graphId={graphId} graphOwner={graphOwner}/>
   </Suspense>
 );
-TootlipContent.propTypes = {
-  graphId: PropTypes.object.isRequired,
+TooltipContent.propTypes = {
+  graphId: PropTypes.number.isRequired,
 };
 
 const GraphListFooter = ({ graph }) => {
@@ -52,7 +51,7 @@ const GraphListFooter = ({ graph }) => {
       </Button>
       {actionsCount?.shares
         ? (
-          <Tooltip overlay={<TootlipContent graphId={graph.id}  graphOwner={graph.user} />} trigger={['click']} >
+          <Tooltip overlay={<TooltipContent graphId={graph.id}  graphOwner={graph.user} />} trigger={['click']} >
             <Button icon={<ShareSvg />} className="transparent footer-icon">
               <span className="graphListFooter__count">{actionsCount?.shares}</span>
             </Button>

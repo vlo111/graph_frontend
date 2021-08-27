@@ -14,6 +14,7 @@ import coreImg from '../../assets/images/icons/core.png';
 import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
 import { toast } from 'react-toastify';
+import Button from '../form/Button'
 
 const {
   REACT_APP_ARXIV_URL,
@@ -623,16 +624,16 @@ class ScienceGraphModal extends Component {
             </div>
             {apiSearchResults}
           </div>
-          <div className="createGraphButton">
+          <div className="acceptCheckedItems">
             {checkedList.length ? (
               <>
-                <button
+                <Button
                   onClick={(ev) => this.createSelectedNodes(ev)}
-                  className="ghButton accent alt "
+                  className="ghButton btn-classic"
                 >
                   Create Graph
-                </button>
-                <p className="selectedArticlesAmount">
+                </Button>
+                <p className="selectedItemsAmount">
                   Selected Articles
                   {' '}
                   {checkedList.length}

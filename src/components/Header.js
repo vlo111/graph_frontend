@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Notification from './Notification';
 import AccountDropDown from './account/AccountDropDown';
 import SearchGraphs from './search/SearchGraphs';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
@@ -37,6 +38,7 @@ class Header extends Component {
         </div>
         <div className="notify_container">
             <div className="notificationHeader">
+                <Notification />
             </div>
         </div>
         <div className="signOut">

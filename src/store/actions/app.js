@@ -110,3 +110,13 @@ export function toggleGraphMap(open) {
     },
   };
 }
+
+export const TOGGLE_SEARCH = 'TOGGLE_SEARCH';
+export function toggleSearch(open) {
+  return {
+    type: TOGGLE_SEARCH,
+    payload: {
+      open,
+    },
+  };
+}

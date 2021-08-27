@@ -24,7 +24,6 @@ import { createLinksRequest } from '../../store/actions/links';
 import { createLabelsRequest } from '../../store/actions/labels';
 import { getSingleGraphRequest } from '../../store/actions/graphs';
 import Api from '../../Api';
-import Utils from '../../helpers/Utils';
 
 class LabelCopy extends Component {
   static propTypes = {

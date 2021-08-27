@@ -29,6 +29,7 @@ import Api from '../../Api';
 class EditGraphModal extends Component {
   static propTypes = {
     createGraphRequest: PropTypes.func.isRequired,
+    getSingleGraphRequest: PropTypes.func.isRequired,
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     updateGraphRequest: PropTypes.func.isRequired,
@@ -71,16 +72,25 @@ requestData: {
     };
   }
 
+  async componentDidMount () {
+    const { match: { params: { graphId } }, singleGraph: {defaultImage} } = this.props;
+    const svg = ChartUtils.getChartSvg();
+    if (!defaultImage) {
+      await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+      this.props.getSingleGraphRequest()
+    }
+  }
+
   async deleteGraph(graphId) {
     if (window.confirm('Are you sure?')) {
       await this.props.deleteGraphRequest(graphId);
 
       toast.info('Successfully deleted');
 
-      
+
       if(this.props.deleteGraph) {
         this.props.deleteGraph(graphId);
-        this.props.toggleModal(false)  
+        this.props.toggleModal(false)
       } else {
         this.props.history.push('/');
       }
@@ -97,7 +107,7 @@ requestData: {
     const { requestData, image } = this.state;
 
     let { singleGraph, graph } = this.props;
-    
+
     if(graph) {
       singleGraph = graph
     }
@@ -108,7 +118,7 @@ requestData: {
     const labels = Chart.getLabels();
     const svg = ChartUtils.getChartSvg();
     let resGraphId;
-    
+
     if (image) {
       let userEdited = true
       if (typeof(image) === 'string') {
@@ -136,8 +146,8 @@ requestData: {
 
     if(graph) {
       const { payload : { data: { graph: newGraph } } } = (await this.props.getSingleGraphRequest(resGraphId))
-      
-      this.props.updateGraph(newGraph);  
+
+      this.props.updateGraph(newGraph);
     }
 
     this.props.setLoading(false);
@@ -169,7 +179,7 @@ requestData: {
   render() {
     const { requestData, disabled, image } = this.state;
     let { singleGraph, graph } = this.props;
-    
+
     if(graph) {
       singleGraph = graph
     }

@@ -716,7 +716,7 @@ class Chart {
       }
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
-        .force('center', d3.forceCenter(width / 2, height / 2)) 
+        .force('center', d3.forceCenter(width / 2, height / 2))
          .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -4000 : -5000)).distanceMin(50).distanceMax(500))
         .force('y', d3.forceY(0.05))
         .force('x', d3.forceX(0.05));
@@ -977,7 +977,7 @@ class Chart {
       .attr('fill', ChartUtils.labelColors)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
-      .on('dblclick', (ev, d) => { 
+      .on('dblclick', (ev, d) => {
         if(this.activeButton === 'view'){
           toast.info('You are in preview mode');
           return;
@@ -1662,7 +1662,7 @@ class Chart {
       this.svg = d3.select('#graph svg');
       this.zoom = d3.zoom()
         .on('zoom', this.handleZoom)
-        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250% 
+        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250%
       this.svg = this.svg
         .call(this.zoom)
         .on('dblclick.zoom', null)
@@ -3130,7 +3130,45 @@ class Chart {
   }
 
   /**
-   * create mouse cusror
+   * check if given nodes are connected with the given link
+   * @param {*} fNodeId
+   * @param {*} sNodeId
+   * @param {*} link
+   * @returns bool
+   */
+  static ifNodesConnected(fNodeId, sNodeId, link) {
+    if (link.source === fNodeId && link.target === sNodeId) {
+      return true
+    }
+    if (link.source === sNodeId && link.target === fNodeId) {
+      return true
+    }
+    return false
+  }
+
+  /**
+   * find all links between given nodes
+   * @param {*} node
+   * @param {*} links
+   * @returns array
+   */
+  static getLinksBetweenNodes(nodes, links) {
+    const nodeCouples = []
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        for (let linkIndex = 0; linkIndex < links?.length; linkIndex++) {
+          if (this.ifNodesConnected(nodes[i].id, nodes[j].id, links[linkIndex])) {
+            nodeCouples.push(links[linkIndex])
+          }
+        }
+      }
+    }
+
+    return nodeCouples
+  }
+
+  /**
+   * create mouse cursor
    * @param {*} fullName
    * @param {*} position
    */

@@ -231,6 +231,7 @@ class HeaderMini extends Component {
                 : node.type}
             </h3>
           </div>
+
         </div>
 
         <div className="footer-link">

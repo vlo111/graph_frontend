@@ -3,7 +3,7 @@ import {
   LOADING,
   NEW_NODE_MODAL, PREVIOUS_ACTIVE_BUTTON, RESET_FILTER,
   SET_ACTIVE_BUTTON, SET_FILTER, SET_GRID_INDEXES,
-  TOGGLE_GRID, SET_LEGEND_BUTTON, ONLINE_USERS, TOGGLE_GRAPH_MAP
+  TOGGLE_GRID, SET_LEGEND_BUTTON,ONLINE_USERS, TOGGLE_GRAPH_MAP, TOGGLE_SEARCH
 } from '../actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
 import {DEFAULT_FILTERS} from '../../data/filter';
@@ -22,7 +22,9 @@ const initialState = {
     links: [],
   },
   legendButton: 'close',
+  GraphNameButton: 'close',
   showGraphMap: false,
+  showSearch: false,
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -126,6 +128,12 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         showGraphMap: action.payload.open
+      }
+    }
+    case TOGGLE_SEARCH: {
+      return {
+        ...state,
+        showSearch: action.payload.open
       }
     }
     default: {

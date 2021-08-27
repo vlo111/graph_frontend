@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import BackToTop from "react-back-to-top-button";
 import VerticalTabs from '../../components/PageTabs';
 import SearchPeople from './SearchUsers';
 import SearchGraphs from './SearchGraphs';
@@ -35,7 +35,14 @@ class Search extends Component {
           ]}
         />
       </Wrapper>
-     
+      <BackToTop
+        //showOnScrollUp
+        showAt={100}
+        speed={1500}
+        easing="easeInOutQuint"
+      >
+        <span><ScrollUpSvg className="icon" style={{ height: 40 }} /></span>
+      </BackToTop>
       </>
     );
   }
