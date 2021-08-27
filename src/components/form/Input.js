@@ -44,19 +44,31 @@ class Input extends Component {
   }
 
   handleChange = (ev) => {
-    const { onChangeText, onChange, limit } = this.props;
-    if (limit && ev.target.value.length > limit) {
-      ev.target.value = ev.target.value.substr(0, limit);
+    const {
+      onChangeText, onChange, limit, isNumber, value: prevValue
+    } = this.props;
+
+    let { value, valueNumber = +value, name } = ev.target;
+
+    if (isNumber) {
+      if (Number.isNaN(valueNumber) || valueNumber > 50) {
+        return;
+      }
+      valueNumber = valueNumber === 0 ? prevValue : valueNumber;
+    }
+
+    if (limit && value.length > limit) {
+      value = value.substr(0, limit);
     }
     if (onChange) onChange(ev);
 
-    if (onChangeText) onChangeText(ev.target.value, ev.target.name);
+    if (onChangeText) onChangeText(isNumber ? valueNumber : value, name);
   }
 
   handleKeyDown = (ev) => {
     const { onChangeText } = this.props;
 
-    const value = parseInt(ev.target.value);
+    const value = parseInt(ev.target.value) || 0;
 
     if (onChangeText) {
       if (ev.key === 'ArrowDown') {
@@ -68,9 +80,7 @@ class Input extends Component {
   }
 
   numberArrowClick = (item) => {
-    const { onChangeText } = this.props;
-
-    const value = parseInt(document.getElementById('nodeSize').value);
+    const { onChangeText, value } = this.props;
 
     if (onChangeText) {
       if (item === 'ArrowDown') {
@@ -85,12 +95,20 @@ class Input extends Component {
     const arrowElements = document.querySelectorAll('.arrow-down, .arrow-top');
 
     for (let i = 0; i < arrowElements.length; i++) {
-      if (type === 'blur' || type === 'leave') {
+      if (type === 'leave') {
         arrowElements[i].style.display = 'none';
-      } else if (type === 'focus' || type === 'hover') {
-        arrowElements[i].style.display = 'block';
+      } else if (type === 'hover') {
+        arrowElements[i].style.display = 'flex';
       }
     }
+  }
+
+  numberArrowOnMouseDown = (item) => {
+    document.querySelector(`.${item} svg path`).style.fill = 'white';
+  }
+
+  numberArrowOnMouseUp = (item) => {
+    document.querySelector(`.${item} svg path`).style.fill = '#7166f8';
   }
 
   render() {
@@ -115,16 +133,29 @@ class Input extends Component {
           isNumber
             ? (
               <div className="number-input-container" onMouseLeave={() => this.showHideNumberArrow('leave')}>
-                <span className="arrow-top" onClick={() => this.numberArrowClick('ArrowUp')}><ArrowSvg /></span>
-                <span className="arrow-down" onClick={() => this.numberArrowClick('ArrowDown')}><ArrowSvg /></span>
+                <span
+                  className="arrow-top"
+                  onClick={() => this.numberArrowClick('ArrowUp')}
+                  onMouseDown={() => this.numberArrowOnMouseDown('arrow-top')}
+                  onMouseUp={() => this.numberArrowOnMouseUp('arrow-top')}
+                >
+                  <ArrowSvg />
+                </span>
+                <span
+                  className="arrow-down"
+                  onClick={() => this.numberArrowClick('ArrowDown')}
+                  onMouseDown={() => this.numberArrowOnMouseDown('arrow-down')}
+                  onMouseUp={() => this.numberArrowOnMouseUp('arrow-down')}
+                  onWheel={() => this.numberArrowClick('ArrowDown')}
+                >
+                  <ArrowSvg />
+                </span>
                 <input
                   ref={(ref) => onRef && onRef(ref)}
                   {...props}
                   id={inputId}
                   onChange={this.handleChange}
                   onKeyDown={this.handleKeyDown}
-                  onBlur={() => this.showHideNumberArrow('blur')}
-                  onFocus={() => this.showHideNumberArrow('focus')}
                   onMouseOver={() => this.showHideNumberArrow('hover')}
                 />
               </div>

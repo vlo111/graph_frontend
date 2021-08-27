@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import React from 'react';
 import Chart from '../Chart';
 import CustomFields from './CustomFields';
 import ChartUtils from './ChartUtils';
@@ -49,6 +50,19 @@ class Validate {
       error = 'Already exists';
     }
     return [error, value];
+  }
+
+  static nodeLink(link) {
+    let error = null;
+
+    const expression = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\\.-]+)+[\w\-\\._~:/?#[\]@!\\$&'\\(\\)\\*\\+,;=.]+$/gm;
+    const regex = new RegExp(expression);
+
+    if (!link.match(regex)) {
+      error = 'Invalid Link Address';
+    }
+
+    return [error, link];
   }
 
   static linkType(val, linkData) {

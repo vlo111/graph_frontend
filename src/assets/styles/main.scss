@@ -290,7 +290,7 @@ p {
 
     .gh__control {
       border: 1px solid $color-light-gray;
-      border-radius: 8px;
+      border-radius: 5px;
 
       &:hover {
       }
@@ -433,7 +433,7 @@ p {
   textarea,
   input {
     width: 100%;
-    height: 40px;
+    height: 38px;
     font-size: 15px;
     color: $color-border;
     border: 1px solid $color-border;
@@ -1469,7 +1469,10 @@ p {
     }
 
     label {
-      font: normal normal 600 14px/17px Open Sans;
+      font: normal normal 400 14px/17px Open Sans;
+      font-size: 16px;
+      margin-bottom: 5px;
+      color: #757575;
     }
   }
 
@@ -2827,7 +2830,7 @@ p {
 .lineTypeSelect {
   .gh__single-value {
     svg {
-      width: 100%;
+      width: 100% !important;
     }
   }
 
@@ -3967,10 +3970,10 @@ body .gh__menu {
       }
     }
 
-    .container {
+    .connection-container {
       overflow-x: hidden;
       overflow-y: auto;
-      height: 150px;
+      height: 700px;
       margin-top: 20px;
 
       .row {
@@ -4020,12 +4023,13 @@ body .gh__menu {
         padding: 28px 35px 0px;
         margin-bottom: 5px;
         background-color: #f5f5fa;
-        border-color: #f5f5fa80;
+        border: 1px solid #d3d5df80;
 
         .linkTypes {
           padding: 0 20px;
           color: $color-passive;
           font-weight: 600;
+          font-size: 15px;
         }
       }
     }
@@ -4251,7 +4255,6 @@ body .gh__menu {
 
     &__comment-item {
       background: #F7F7FB;
-      margin: 20px 0 0 0;
       border-radius: 3px;
       min-height: 146px;
 
@@ -4260,6 +4263,7 @@ body .gh__menu {
         padding-left: 61px;
         border-radius: 3px;
         font-family: chaparral-pro, serif;
+        margin-top: -30px;
 
         .user-info {
           grid-gap: 0 !important;
@@ -4288,7 +4292,7 @@ body .gh__menu {
       }
 
       .comment-content {
-        padding: 0 50px 20px 75px;
+        padding: 0 50px 5px 75px;
         line-height: 30px !important;
       }
     }
@@ -4331,7 +4335,7 @@ body .gh__menu {
 
     &__add-comment-section--reply {
       width: 100%;
-      padding: 10px 10px 10px 0;
+      padding: 10px 10px 10px 61px;
     }
   }
 }
@@ -8327,7 +8331,7 @@ img.preview-scaled {
 
   ul {
     list-style: none;
-    height: 300px;
+    max-height: 300px;
     overflow: auto;
   }
 
@@ -8751,12 +8755,20 @@ img.preview-scaled {
     width: 250px;
   }
 
+  .import-input label {
+    top: 25px;
+  }
+
   label {
     right: 0;
   }
 
   .ghFileInput {
     top: 25px;
+
+    .clear {
+      margin-top: 30px;
+    }
   }
 }
 
@@ -8886,38 +8898,6 @@ img.preview-scaled {
       margin-bottom: 20px;
     }
 
-    .number-wrapper {
-      .number-input-container {
-        margin: 0 auto;
-      }
-
-      input {
-        width: 70px;
-        margin: 0 auto;
-      }
-
-      .arrow-down, .arrow-top {
-        display: none;
-        right: 115px;
-        cursor: pointer;
-        position: absolute;
-
-        svg {
-          width: 12px;
-        }
-      }
-
-      .arrow-top {
-        svg {
-          transform: rotate(180deg);
-        }
-      }
-
-      .arrow-down {
-        top: 15px;
-      }
-    }
-
     .nodeSize {
       font-size: 16px;
       color: #757575;
@@ -9036,7 +9016,9 @@ img.preview-scaled {
       left: -23px;
 
       label {
-        height: 40px;
+        height: 38px;
+        margin-top: 2px;
+        margin-right: -1px;
         border-radius: 5px;
       }
     }
@@ -9070,12 +9052,161 @@ img.preview-scaled {
   }
 }
 
+.addLink {
+
+  .ghIsSearchable, .lineTypeSelect {
+    .ghSelectContent {
+      width: 260px;
+    }
+  }
+
+  .ghModal {
+    height: 525px;
+  }
+
+  .number-wrapper {
+    display: flex;
+
+    >div {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .status {
+      width: 380px;
+    }
+
+    .arrow-down {
+      top: 42px;
+    }
+
+    .arrow-top {
+      top: 30px;
+    }
+
+    .arrow-down, .arrow-top {
+      right: 45px;
+    }
+
+    .number-input-container {
+      margin: 0;
+    }
+  }
+
+  .gh__option {
+    padding: 4px 15px !important;
+  }
+
+  .form {
+    h2 {
+      font-size: 23px;
+      color: #424242;
+      margin-top: 5px;
+    }
+
+    .buttons {
+      justify-content: space-between;
+      margin-top: 50px;
+    }
+
+    .ghCheckbox {
+      justify-content: center;
+
+      label {
+        margin-top: 5px;
+      }
+
+      /* Base for label styling */
+      [type="checkbox"]:not(:checked),
+      [type="checkbox"]:checked {
+        position: absolute;
+        left: 0;
+        opacity: 0.01;
+      }
+      [type="checkbox"]:not(:checked) + label,
+      [type="checkbox"]:checked + label {
+        position: relative;
+        padding-left: 2.3em;
+        font-size: 1.05em;
+        line-height: 1.7;
+        cursor: pointer;
+      }
+
+      /* checkbox aspect */
+      [type="checkbox"]:not(:checked) + label:before,
+      [type="checkbox"]:checked + label:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1.4em;
+        height: 1.4em;
+        border: 1px solid #aaa;
+        background: #FFF;
+        border-radius: .2em;
+        box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 rgba(203, 34, 237, .2);
+        -webkit-transition: all .275s;
+        transition: all .275s;
+      }
+
+      /* checked mark aspect */
+      [type="checkbox"]:not(:checked) + label:after,
+      [type="checkbox"]:checked + label:after {
+        content: '✕';
+        position: absolute;
+        top: .525em;
+        left: .18em;
+        font-size: 1.375em;
+        color: #CB22ED;
+        line-height: 0;
+        -webkit-transition: all .2s;
+        transition: all .2s;
+      }
+
+      /* checked mark aspect changes */
+      [type="checkbox"]:not(:checked) + label:after {
+        opacity: 0;
+        -webkit-transform: scale(0) rotate(45deg);
+        transform: scale(0) rotate(45deg);
+      }
+
+      [type="checkbox"]:checked + label:after {
+        opacity: 1;
+        -webkit-transform: scale(1) rotate(0);
+        transform: scale(1) rotate(0);
+      }
+
+      /* Disabled checkbox */
+      [type="checkbox"]:disabled:not(:checked) + label:before,
+      [type="checkbox"]:disabled:checked + label:before {
+        box-shadow: none;
+        border-color: #bbb;
+        background-color: #e9e9e9;
+      }
+
+      [type="checkbox"]:disabled:checked + label:after {
+        color: #777;
+      }
+
+      [type="checkbox"]:disabled + label {
+        color: #aaa;
+      }
+
+      /* Accessibility */
+      [type="checkbox"]:checked:focus + label:before,
+      [type="checkbox"]:not(:checked):focus + label:before {
+        box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 6px rgba(203, 34, 237, .2);
+      }
+    }
+  }
+}
+
 .img-thumbnail {
   border-radius: 5px 0 0 5px;
-  height: 40px;
+  height: 38px;
   object-fit: cover;
   width: 51px;
-  margin-top: -55px;
+  margin-top: -53px;
   margin-bottom: 15px;
 
   //cursor: pointer;
@@ -9083,4 +9214,47 @@ img.preview-scaled {
   //&:hover {
   //  opacity: 0.7;
   //}
+}
+
+.number-wrapper {
+  .number-input-container {
+    margin: 0 auto;
+  }
+
+  input {
+    width: 70px;
+    margin: 0 auto;
+    border: 1px solid #e2e7eb;
+  }
+
+  .arrow-down, .arrow-top {
+    display: none;
+    right: 104px;
+    cursor: pointer;
+    position: absolute;
+    height: 10px;
+    width: 19px;
+    justify-content: center;
+    background-color: #a9a3f33b;
+
+    &:hover {
+      background-color: #2516e240 !important;
+    }
+
+    svg {
+      width: 12px;
+    }
+  }
+
+  .arrow-top {
+    top: 8px;
+
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  .arrow-down {
+    top: 19px;
+  }
 }

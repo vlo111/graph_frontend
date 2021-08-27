@@ -51,8 +51,7 @@ class AddLinkModal extends Component {
   }
 
   handleAddNewLine = (ev, d) => {
-    if(Chart.isAutoPosition)
-       Chart.isAutoPosition = false;
+    if (Chart.isAutoPosition) { Chart.isAutoPosition = false; }
     const { source, target } = d;
     // const { linkData: { type } } = this.state;
     const links = Chart.getLinks();
@@ -73,8 +72,7 @@ class AddLinkModal extends Component {
   }
 
   handleLineEdit = (ev, d) => {
-    if(Chart.isAutoPosition)
-       Chart.isAutoPosition = false;
+    if (Chart.isAutoPosition) { Chart.isAutoPosition = false; }
     const linkData = Chart.getLinks().find((l) => l.index === d.index);
     this.setState({
       linkData: { ...linkData }, show: true, index: linkData.index, errors: {},
@@ -175,7 +173,7 @@ class AddLinkModal extends Component {
     return (
       <Modal
         className="ghModal"
-        overlayClassName="ghModalOverlay"
+        overlayClassName="ghModalOverlay addLink"
         isOpen
         onRequestClose={this.closeModal}
       >
@@ -185,25 +183,6 @@ class AddLinkModal extends Component {
             <h2>
               {isUpdate ? 'Edit Link' : 'Add new Link'}
             </h2>
-            <Select
-              label="Status"
-              portal
-              options={TYPE_STATUS}
-              value={TYPE_STATUS.filter((t) => t.value === linkData.status)}
-              error={errors.status}
-              onChange={(v) => this.handleChange('status', v?.value || '')}
-            />
-            <Select
-              label="Link Type"
-              value={[linkData.linkType]}
-              error={errors.linkType}
-              onChange={(v) => this.handleChange('linkType', v)}
-              options={dashTypes}
-              portal
-              containerClassName="lineTypeSelect"
-              getOptionValue={(v) => v}
-              getOptionLabel={(v) => <SvgLine type={v} />}
-            />
 
             <Select
               label="Relation Type"
@@ -222,23 +201,39 @@ class AddLinkModal extends Component {
               isCreatable
             />
 
-            <Input
-              label="Value"
-              value={linkData.value}
-              error={errors.value}
-              type="number"
-              min="1"
-              max="15"
-              onBlur={() => {
-                if (linkData.value < 1) {
-                  linkData.value = 1;
-                } else if (linkData.value > 15) {
-                  linkData.value = 15;
-                }
-                this.handleChange('value', linkData.value);
-              }}
-              onChangeText={(v) => this.handleChange('value', v)}
+            <Select
+              label="Link Type"
+              value={[linkData.linkType]}
+              error={errors.linkType}
+              onChange={(v) => this.handleChange('linkType', v)}
+              options={dashTypes}
+              portal
+              containerClassName="lineTypeSelect"
+              getOptionValue={(v) => v}
+              getOptionLabel={(v) => <SvgLine type={v} />}
             />
+
+            <div className="number-wrapper">
+              <Input
+                label="Value"
+                id="value"
+                value={linkData.value}
+                error={errors.value}
+                type="text"
+                autoComplete="off"
+                isNumber
+                onChangeText={(v) => this.handleChange('value', v)}
+              />
+              <Select
+                label="Status"
+                portal
+                containerClassName="status"
+                options={TYPE_STATUS}
+                value={TYPE_STATUS.filter((t) => t.value === linkData.status)}
+                error={errors.status}
+                onChange={(v) => this.handleChange('status', v?.value || '')}
+              />
+            </div>
 
             <Checkbox
               label="Show Direction"
@@ -246,12 +241,12 @@ class AddLinkModal extends Component {
               onChange={() => this.handleChange('direction', !linkData.direction)}
             />
             <div className="buttons">
-              <Button className="cancel transparent alt" onClick={this.closeModal}>
+              <button className="btn-delete" onClick={this.closeModal}>
                 Cancel
-              </Button>
-              <Button className="alt main" type="submit">
+              </button>
+              <button className="btn-classic" type="submit">
                 {isUpdate ? 'Save' : 'Add'}
-              </Button>
+              </button>
             </div>
           </form>
         </div>

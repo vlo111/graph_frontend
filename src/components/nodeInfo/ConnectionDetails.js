@@ -79,7 +79,7 @@ class ConnectionDetails extends Component {
               {length}
               )
             </summary>
-            <div className="container">
+            <div className="connection-container">
               {connectedNodes.map((nodeGroup) => (
                 <div className="row" key={nodeGroup[0].linkType}>
 

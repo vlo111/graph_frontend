@@ -7,7 +7,14 @@ class SvgLine extends Component {
     return (
       type !== 'a1'
         ? (
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 18" height="18" width="310">
+          <svg
+            style={{ width: '83%' }}
+            className="link-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 310 18"
+            height="18"
+            width="310"
+          >
             <line
               strokeLinecap={ChartUtils.dashLinecap(type)}
               strokeDasharray={ChartUtils.dashType(type, 2)}
@@ -21,7 +28,14 @@ class SvgLine extends Component {
           </svg>
         )
         : (
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 50" height="50" width="310">
+          <svg
+            style={{ width: '83%' }}
+            className="link-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 310 50"
+            height="50"
+            width="310"
+          >
             <path d="M0,30 C155,60 155,0 310,30" stroke="#7166F8" fill="transparent" strokeWidth="2" />
           </svg>
         )
