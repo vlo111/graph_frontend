@@ -28,10 +28,7 @@ class NodeContextMenu extends Component {
               Open Link
             </a>
           </Button>
-        ) : null}
-        <Button icon="fa-link" title="find path" onClick={(ev) => this.props.onClick(ev, 'findPath')}>
-          Find Path
-        </Button>
+        ) : null} 
       </>
     );
   }
