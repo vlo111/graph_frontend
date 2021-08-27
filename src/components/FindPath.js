@@ -26,7 +26,7 @@ class FindPath extends Component {
   
 
     closeModal = () => {
-      this.props.setActiveButton('create');
+      this.props.setActiveButton('view');
     }
 
     handleChange = (search = '') => {
@@ -63,6 +63,7 @@ class FindPath extends Component {
       const { start } = this.props;       
       const {nodes, links} = this.shortPath(start, node.id); 
       Chart.render({nodes, links}, { ignoreAutoSave: true, isAutoPosition: true }); 
+      this.closeModal();
       ChartUtils.autoScaleTimeOut(); 
       ChartUtils.autoScaleTimeOut(100); 
       ChartUtils.autoScaleTimeOut(200);
