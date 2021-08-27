@@ -1,0 +1,306 @@
+.help_menu {
+  position: relative;
+  top: 220px;
+  color: #7166f8 !important;
+  box-shadow: none !important;
+
+  &:hover {
+    background-color: transparent !important;
+  }
+}
+
+.HelpsModal {
+  // font-family: sans-serif;
+  background: #1c1d1f;
+  color: white;
+  // height: 100vh;
+  box-sizing: border-box;
+}
+
+.react-tabs {
+  display: flex;
+  margin-left: 15px;
+
+  width: 760px;
+  height: 817px;
+  color: white;
+  background: white;
+  margin-top: 28px;
+  box-shadow: 4px 0px 31px rgb(119 113 183 / 22%);
+  border-radius: 3px;
+  position: absolute;
+}
+
+.react-tabs__tab-list {
+  display: flex;
+  flex-direction: column;
+  width: 173px;
+  margin: 0;
+  background: white;
+  h1 {
+    margin-top: 16px;
+    font-weight: 700;
+    font-size: 42px;
+    color: #7166f8;
+  }
+}
+
+.react-tabs__tab {
+  border: none;
+  color: #757575;
+  height: auto;
+  width: 160px;
+  position: relative;
+  top: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: -webkit-left;
+}
+
+.react-tabs__tab:hover{
+  background: rgba(113, 102, 248, 0.1);
+  color: #7166F8;
+}
+
+.react-tabs p {
+  line-height: 20px !important;
+  position: relative;
+  top: 51px;
+  left: 5px;
+  font-size: 16px;
+  color: #7166f8;
+  font-weight: bold;
+  text-align: justify;
+  /* text-align: start; */
+  line-height: 17px;
+
+  &:hover {
+    color: $color-main;
+    cursor: pointer;
+  }
+}
+
+.react-tabs__tab-panel {
+
+  padding: 0px 15px;
+
+  display: none;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.react-tabs__tab-panel--selected {
+  display: block;
+  h2 {
+    font-weight: 700;
+    color: rebeccapurple;
+    font-size: 36px;
+  }
+}
+
+.panel-content {
+  text-align: center;
+}
+
+.color-border {
+  border-left: 4px solid #edecff;
+  height: 777px;
+  margin-left: 15px;
+  margin-top: 20px;
+}
+
+.help-rightPart {
+  margin: 0px 2px;
+  padding: 15px;
+}
+
+.HelpCommand {
+  color: #424242;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.btn-close {
+  position: absolute !important;
+  z-index: 9;
+  left: 92% !important;
+}
+
+.triangle-right {
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-left: 17px solid white;
+  border-bottom: 15px solid transparent;
+  position: fixed;
+  /* background-color: red; */
+  top: 95%;
+  left: 199px;
+}
+
+.help_img {
+  position: relative;
+  top: 40px;
+  left: -4px;
+}
+
+.helpinfo {
+  position: relative;
+  top: 31px;
+  display: flex;
+  justify-content: flex-end;
+  color: #7166f8;
+  font-size: 12px;
+  font-weight: 700;
+
+  left: -5px;
+}
+
+.helplink {
+  top: 36px;
+    position: relative;
+    right: -190px;
+  color: #545454;
+}
+
+.linkicon {
+  position: relative;
+  left: -10px;
+}
+
+.help_text {
+  outline: none;
+  position: relative;
+  top: 60px;
+  color: #545454;
+  font-size: 14px;
+  padding-bottom: 2px;
+  // -webkit-user-modify: read-write-plaintext-only;
+
+  ol {
+    padding: 25px;
+    li {
+      text-align: -webkit-left;
+      font-size: 14px;
+      font-weight: 400;
+      text-align-last: start;
+      line-height: 23px !important;
+      a {
+        position: absolute;
+    color: #7166f8 !important;
+    left: 428px;
+
+      }
+    }
+  }
+  a{
+    display: flex;
+    position: relative;
+    top: 50px;
+    left: 70px;
+    color: #545454;
+    margin-bottom: 10px;
+  }
+  p {
+    position: relative;
+    top: 20px;
+    left: 10px;
+  }
+  .help_node_text {
+    top: 0px;
+    font-style: italic !important;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .help_graph_text {
+    color: #545454;
+    font-size: 14px;
+    font-weight: 400;
+    top: 15px;
+    left: -20px;
+  }
+  .marg_graph_text{
+    font-style: italic;
+    top: 4px;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .export_graph_text{
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    top: 90px;
+  }
+  .link_text {
+  a{
+    position: relative !important;
+    top: 130px !important;
+    margin-bottom: 10px;
+
+  }
+}
+.export_help_text{
+  a> img{
+    position: relative;
+    left: -5px;
+  }
+  position: relative;
+  top: 50px;
+}
+}
+
+.help_label-text {
+  position: relative;
+  top: 60px;
+  color: #545454;
+  font-size: 14px;
+  padding-bottom: 2px;
+  -webkit-user-modify: read-write-plaintext-only;
+  padding: 10px;
+  li {
+    text-align: -webkit-left;
+    font-size: 14px;
+    font-weight: 400;
+    text-align-last: start;
+    position: relative;
+    top: 30px;
+    line-height: 20px !important;
+  }
+
+  p {
+    padding: 15px;
+    position: relative;
+    top: 35px;
+    left: -15px;
+  }
+}
+
+.helpMindText {
+  span {
+    color: #454545;
+    font-size: 14px;
+    top: 55px;
+    left: -73px;
+    font-weight: 700;
+    position: relative;
+  }
+  a {
+    top: 70px;
+    left: 20px;
+    display: flex;
+    position: relative;
+    color: #545454;
+    line-height: 40px;
+    left: 190px;
+    img {
+      position: relative;
+      left: -15px;
+    }
+  }
+}
+
+.ghModal> .findinput > label {
+  font-size: 50px !important;
+}

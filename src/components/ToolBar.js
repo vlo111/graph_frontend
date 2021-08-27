@@ -11,7 +11,7 @@ import ChartUtils from '../helpers/ChartUtils';
 import { KEY_CODES } from '../data/keyCodes';
 import AnalyseModal from './Analysis/AnalyseModal';
 import Outside from './Outside';
-
+import HelpsModal from './Helps'
 class ToolBar extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -29,6 +29,11 @@ class ToolBar extends Component {
       createNewPopup: false,
       showAddNode: false,
       showAddLabel: false,
+      helpOpenNewModal: false,
+      showHelp: false,
+      setShowHelp: false,
+      openHelpsModal: false,
+
     };
   }
 
@@ -175,10 +180,25 @@ class ToolBar extends Component {
       });
     }
   }
+//Help click open
+
+
+openHelpsModal = () => {
+  const { openHelpsModal } = this.state;
+  this.setState({
+    openHelpsModal: !openHelpsModal,
+  });
+}
 
   closeModal = () => {
     this.props.setActiveButton('create');
   };
+
+  closeHelpModal = () => {
+    this.setState({
+      openHelpsModal: false,
+    })
+  }
 
   toggleShowModal = () => {
     const { showMenu } = this.state;
@@ -250,7 +270,7 @@ class ToolBar extends Component {
     } = this.props;
 
     const {
-      showMenu, overMenu, createNewPopup, showAddNode, showAddLabel, selected,
+      showMenu, overMenu, createNewPopup, showAddNode, showAddLabel, selected, openHelpsModal
     } = this.state;
 
     return (
@@ -268,7 +288,7 @@ class ToolBar extends Component {
           >
             <i className="fa fa-plus"> </i>
             <div className="sidebar_text">
-              Create New
+              Create Node
               <i className="fa fa-caret-right" />
             </div>
           </li>
@@ -341,14 +361,36 @@ class ToolBar extends Component {
             onMouseLeave={this.handleLeave}
             className={`${overMenu === 'findNode' ? 'collapse_over' : ''} collapse`}
           >
-            <i className="fa fa-search" />
+            <i className="fa fa-search-plus" />
             <div className="sidebar_text"> Find Node </div>
           </li>
+
+          <li
+
+           onMouseOver={() => this.handleOver('history')}
+           onMouseLeave={this.handleLeave}
+           className={`${overMenu === 'history' ? 'collapse_over' : ''} collapse help_menu`}
+         >
+           <i class="fa fa-history"></i>
+           <div className="sidebar_text"> History </div>
+         </li>
+         <li
+            onClick={() => this.openHelpsModal()}
+            onMouseOver={() => this.handleOver('help')}
+            onMouseLeave={this.handleLeave}
+           className={`${overMenu === 'help' ? 'collapse_over' : ''} collapse help_menu `}
+         >
+           <i class="fa fa-question-circle"></i>
+           <div className="sidebar_text"> Help </div>
+         </li>
+
         </ul>
         {createNewPopup ? (
           <Outside onClick={() => this.toggleOutside()}>
             <ul className="dropdown-addNew">
-              <li className={`${selected.includes('node') ? 'selected' : ''}`} onClick={this.showAddNode}>
+              <li className={`${selected.includes('node') ? 'selected' : ''}`}
+               onClick={this.showAddNode}
+               >
                 Node
                 <i className="fa fa-caret-right" />
               </li>
@@ -419,7 +461,7 @@ class ToolBar extends Component {
                 onClick={() => this.handleClick('create-label-ellipse')}
                 className={`${selected.includes('create-label-ellipse') ? 'selected' : ''}`}
               >
-                <i />
+                <i className="far fa-circle" />
                 <span> Ellipse </span>
               </li>
             </ul>
@@ -428,6 +470,9 @@ class ToolBar extends Component {
         ) : <></>}
         {activeButton === 'Share' && (
         <ShareModal closeModal={this.closeModal} graph={singleGraph} />
+        )}
+        {openHelpsModal && (
+        <HelpsModal closeModal={this.closeHelpModal}/>
         )}
         <AnalyseModal />
       </div>
