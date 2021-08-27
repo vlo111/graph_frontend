@@ -4066,14 +4066,13 @@ body .gh__menu {
       fieldset {
         padding: 28px 35px 0px;
         margin-bottom: 5px;
-        background-color: #f5f5fa;
-        border: 1px solid #d3d5df80;
+        border: none;
+
 
         .linkTypes {
-          padding: 0 20px;
           color: $color-passive;
           font-weight: 600;
-          font-size: 15px;
+          font-size: 20px;
         }
       }
     }
