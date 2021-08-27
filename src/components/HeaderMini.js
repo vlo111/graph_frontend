@@ -104,15 +104,19 @@ class HeaderMini extends Component {
   getSettingsElements = (name) => ({
     tableElement: document.getElementById('nodeFullInfo'),
     closeTabElement: document.getElementsByClassName('close')[0],
+    name: document.getElementsByClassName('name')[0],
     item: document.getElementsByClassName(name)[0],
   })
 
-  updateTab = (show, name) => {
-    const { tableElement, closeTabElement, item } = this.getSettingsElements(name);
+  updateTab = (show, className) => {
+    const { tableElement, closeTabElement, item, name } = this.getSettingsElements(className);
 
     if (show) {
       tableElement.style.width = '500px';
       closeTabElement.style.display = 'none';
+      setTimeout(() => {
+        name.classList.add("name-overflow");
+      }, 400);
     } else {
       closeTabElement.style.display = 'flex';
       item.style.transition = 'all 0.5s ease-in-out 0s';
@@ -121,6 +125,7 @@ class HeaderMini extends Component {
 
       setTimeout(() => {
         tableElement.style.width = '45%';
+        name.classList.remove("name-overflow");
       }, 400);
     }
   }
@@ -220,16 +225,17 @@ class HeaderMini extends Component {
             </div>
           </div>
           <div className="textWrapper">
-            <h2 title={node.name} className="name">
-              {node.name && node.name.length > 10
-                ? `${node.name.substr(0, 10)}`
-                : node.name}
+            <h2 className="name">
+              {node.name}
             </h2>
-            <h3 title={node.type} className="type">
-              {node.type && node.type.length > 10
-                ? `${node.type.substr(0, 10)}`
-                : node.type}
+            <h3 className="type">
+              {node.type}
             </h3>
+            <div className="node-keywords">
+              {node.keywords.map((p) => (
+                  <span>{`${p}  `}</span>
+              ))}
+            </div>
           </div>
 
         </div>
