@@ -4025,7 +4025,7 @@ body .gh__menu {
       overflow-x: hidden;
       overflow-y: auto;
       height: 700px;
-      margin-top: 20px;
+      margin-top: 10px;
 
       .row {
         flex-direction: column;
@@ -4075,6 +4075,9 @@ body .gh__menu {
         margin-bottom: 5px;
         border: none;
 
+        .list {
+          margin-top: -15px;
+        }
 
         .linkTypes {
           color: $color-passive;
