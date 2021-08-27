@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import { Link } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
+import { components } from 'react-select';
 import { toggleNodeModal } from '../../store/actions/app';
 import Select from '../form/Select';
 import ColorPicker from '../form/ColorPicker';
@@ -24,7 +25,6 @@ import markerImg from '../../assets/images/icons/marker-black.svg';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
-import {components} from "react-select";
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -116,6 +116,10 @@ class AddNodeModal extends Component {
     // [errors.location, nodeData.location] = Validate.nodeLocation(nodeData.location);
     [errors.color, nodeData.color] = Validate.nodeColor(nodeData.color, nodeData.type);
 
+    if (nodeData.link) {
+      [errors.link, nodeData.link] = Validate.nodeLink(nodeData.link);
+    }
+
     nodeData.updatedAt = moment().unix();
     nodeData.updatedUser = currentUserId;
 
@@ -163,12 +167,6 @@ class AddNodeModal extends Component {
 
   handleChange = (path, item, editIndex) => {
     let value = item;
-
-    if (path === 'manually_size') {
-      if (value && (!(/^\d+$/.test(value))) || value > 50) {
-        return;
-      }
-    }
 
     const { nodeData, errors, editLocation } = this.state;
 
@@ -275,6 +273,7 @@ class AddNodeModal extends Component {
           >
             <div className="node-type">
               <Select
+                label="Node Type"
                 isCreatable
                 value={[
                   groups.find((t) => t.value === nodeData.type) || {
@@ -288,7 +287,7 @@ class AddNodeModal extends Component {
               />
             </div>
             <Input
-              placeholder="Node Name"
+              label="Node Name"
               value={nodeData.name}
               error={errors.name}
               autoFocus
@@ -298,7 +297,7 @@ class AddNodeModal extends Component {
             {expand ? (
               <>
                 <Input
-                  placeholder="Node Link"
+                  label="Node Link"
                   value={nodeData.link}
                   error={errors.link}
                   autoFocus
@@ -306,6 +305,7 @@ class AddNodeModal extends Component {
                   autoComplete="off"
                 />
                 <Select
+                  label="Node Status"
                   portal
                   options={NODE_STATUS}
                   isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
@@ -316,6 +316,7 @@ class AddNodeModal extends Component {
                 {!editPartial ? (
                   <>
                     <Select
+                      label="Node Type"
                       portal
                       options={NODE_TYPES}
                       value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
@@ -323,7 +324,7 @@ class AddNodeModal extends Component {
                       onChange={(v) => this.handleChange('nodeType', v?.value || '')}
                     />
                     <ColorPicker
-                      placeholder="Select Color"
+                      label="Select Color"
                       value={nodeData.color}
                       error={errors.color}
                       readOnly
@@ -335,7 +336,7 @@ class AddNodeModal extends Component {
                     <div style={{ backgroundColor: nodeData.color }} className="color-preview" />
 
                     <FileInput
-                      placeHolder="Past icon link or select"
+                      label="Past icon link or select"
                       accept=".png,.jpg,.gif,.svg"
                       value={nodeData.icon}
                       onChangeImgPreview={(v) => this.handleImgPreviewChange(v)}
@@ -355,7 +356,7 @@ class AddNodeModal extends Component {
                       isMulti
                       value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
                       menuIsOpen={false}
-                      placeholder="Keywords"
+                      label="Keywords"
                       onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
                     />
                   </>
@@ -440,7 +441,7 @@ class AddNodeModal extends Component {
                 </button>
               </div>
             </div>
-            <div className="row advanced right">
+            <div className="advanced right">
               <Link className="" onClick={this.toggleExpand}>
                 {!expand ? 'Show More' : 'Show Less'}
               </Link>

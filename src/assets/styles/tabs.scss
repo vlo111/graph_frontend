@@ -36,9 +36,26 @@
     .headerBanner {
       position: relative;
       height: 250px;
-      display: grid;
-      grid-template-columns: 300px 30%;
+      display: flex;
       margin-top: 20px;
+
+      .node-keywords {
+        max-height: 100px;
+        overflow: auto;
+
+        span {
+          display: inline-block;
+          padding: 0 20px;
+          height: 20px;
+          font-size: 11px;
+          line-height: 20px;
+          border-radius: 25px;
+          background-color: $color-tab-keywords;
+          color: $color-passive;
+          margin-right: 10px;
+          margin-bottom: 10px;
+        }
+      }
 
       .history {
         display: flex;
@@ -103,6 +120,7 @@
         flex-wrap: wrap;
         align-content: start;
         padding-top: 26px;
+        margin-left: 80px;
 
         .name {
           font-size: 20px;
@@ -118,6 +136,12 @@
           font-weight: bold;
         }
 
+        .name-overflow {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+
         .type, .name {
           width: 100%;
         }
@@ -130,6 +154,7 @@
       justify-content: flex-end;
       align-items: flex-start;
       margin-right: 40px;
+      margin-top: 10px;
 
       a {
         font-style: normal;
@@ -210,8 +235,7 @@
 
       .headerBanner {
         height: 250px;
-        display: grid;
-        grid-template-columns: 300px 30%;
+        display: flex;
         background-color: $color-tab-bg;
 
         .frame, .textWrapper {
@@ -224,6 +248,7 @@
           padding-left: 20px;
           display: flex;
           align-items: center;
+          width: 230px;
 
           .bottom-icons {
             position: absolute;
