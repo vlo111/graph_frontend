@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import queryString from 'query-string';
 import Button from './form/Button';
 import { ReactComponent as CardDesign } from '../assets/images/icons/cardDesign.svg';
 import { ReactComponent as ListDesign } from '../assets/images/icons/listDesign.svg';
 import { ReactComponent as Filter } from '../assets/images/icons/filterGraph.svg';
 import { getGraphsListRequest } from '../store/actions/graphs';
-import { connect } from 'react-redux';
-import queryString from 'query-string';
-import GraphOrder from './graphData/GraphOrder'
+import { getShareGraphListRequest } from '../store/actions/share';
+import GraphOrder from './graphData/GraphOrder';
 
 class PageTabs extends Component {
   static propTypes = {
@@ -21,6 +22,7 @@ class PageTabs extends Component {
     onChange: PropTypes.func,
     direction: PropTypes.oneOf(['vertical', 'horizontal']),
     getGraphsListRequest: PropTypes.func.isRequired,
+    getShareGraphListRequest: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -28,7 +30,7 @@ class PageTabs extends Component {
     this.state = {
       selected: 'tab_card',
       showFilterModal: false,
-    }
+    };
   }
 
   static defaultProps = {
@@ -42,16 +44,16 @@ class PageTabs extends Component {
 
   onChange = (mode) => {
     this.setState({
-      selected: mode
-    })
-    
+      selected: mode,
+    });
+
     this.props.onChange(mode);
   }
 
   openFilter = (value) => {
     this.setState({
-      showFilterModal: value
-    })
+      showFilterModal: value,
+    });
   }
 
   filter = (value) => {
@@ -59,11 +61,14 @@ class PageTabs extends Component {
 
     const { path: currentTab } = this.props.match;
 
-    const status = currentTab.includes('template') ? 'template' : 'active';
-
-    this.props.getGraphsListRequest(page, { s, filter: value, status });
+    if (currentTab === '/' || currentTab === '/template') {
+      const status = currentTab.includes('template') ? 'template' : 'active';
+      this.props.getGraphsListRequest(page, { s, filter: value, status });
+    } else if (currentTab === '/shared') {
+      this.props.getShareGraphListRequest(page, { s, filter: value });
+    }
   }
-  
+
   toggleDropDown = () => {
     const { showFilterModal } = this.state;
     this.setState({ showFilterModal: !showFilterModal });
@@ -83,38 +88,39 @@ class PageTabs extends Component {
 
     const { path: currentTab } = this.props.match;
     return (
-        <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser'}`} {...props}>
-          <ul className={`tabsList ${selected}`}>
-            <li className="lastItem">
-                <div  className="cart-item" onClick={() => this.onChange('tab_card')} >
-                  <CardDesign />
-                 </div>
-                <div  className="list-item" onClick={() => this.onChange('list')}>
-                  <ListDesign />
-                </div>
-                <div onClick={() => this.openFilter(!showFilterModal)} className='filter'>
-                  <Filter />
-                </div>
+      <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser'}`} {...props}>
+        <ul className={`tabsList ${selected}`}>
+          <li className="lastItem">
+            <div className="cart-item" onClick={() => this.onChange('tab_card')}>
+              <CardDesign />
+            </div>
+            <div className="list-item" onClick={() => this.onChange('list')}>
+              <ListDesign />
+            </div>
+            <div onClick={() => this.openFilter(!showFilterModal)} className="filter">
+              <Filter />
+            </div>
+          </li>
+          {list.filter((t) => !t.hidden).map((t) => (
+            <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`}>
+              <Button onClick={() => this.setActiveTab(t)}>
+                {t.name}
+              </Button>
             </li>
-            {list.filter((t) => !t.hidden).map((t) => (
-                <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`}>
-                  <Button onClick={() => this.setActiveTab(t)}>
-                    {t.name}
-                  </Button>
-                </li>
-            ))}
-          </ul>
+          ))}
+        </ul>
 
-          <GraphOrder
-           filter={this.filter}
-            toggleDropDown={this.toggleDropDown}
-            currentTab={currentTab} 
-            showFilterModal={showFilterModal} />
+        <GraphOrder
+          filter={this.filter}
+          toggleDropDown={this.toggleDropDown}
+          currentTab={currentTab}
+          showFilterModal={showFilterModal}
+        />
 
-          <div className="content">
-            {tab?.component}
-          </div>
+        <div className="content">
+          {tab?.component}
         </div>
+      </div>
     );
   }
 }
@@ -123,6 +129,7 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   getGraphsListRequest,
+  getShareGraphListRequest,
 };
 
 const Container = connect(
