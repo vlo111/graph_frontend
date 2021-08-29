@@ -39,7 +39,7 @@ class Shared extends Component {
             <NoGraph />
           ) : mode === 'list' ? <GraphListItem graphs={shareGraphsList} headerTools="shared" /> : <GraphCardItem graphs={shareGraphsList} headerTools="shared" />}
         </div>
-        <Pagination totalPages={totalPages} />
+        {shareGraphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>
     );
   }
