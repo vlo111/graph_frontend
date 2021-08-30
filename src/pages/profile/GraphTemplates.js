@@ -33,15 +33,7 @@ class Home extends Component {
 
     this.props.getGraphsListRequest(page, { s, filter: order, status });
   })
-
-  componentDidMount() {
-    const order = JSON.parse(localStorage.getItem('/templates'));
-
-    const { page = 1 } = queryString.parse(window.location.search);
-
-    this.props.getGraphsListRequest(page, { filter: order, status: 'template' });
-  }
-
+  
   handleClick = (list) => {
     this.setState({ dataGrid: list });
   }

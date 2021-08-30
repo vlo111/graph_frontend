@@ -21,7 +21,7 @@ class Shared extends Component {
   }
 
   componentDidMount() {
-    const order = JSON.parse(localStorage.getItem('/shared'));
+    const order = JSON.parse(localStorage.getItem('/shared')) || 'newest';
 
     const { page = 1, s } = queryString.parse(window.location.search);
 
