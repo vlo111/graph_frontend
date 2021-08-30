@@ -9393,3 +9393,22 @@ img.preview-scaled {
     top: 23px;
   }
 }
+  .scrollToTop {
+    font-size: 45px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 30px;
+    border-radius: 50%;
+    border: none; 
+    -webkit-transition: 0.4s opacity ease;
+    transition: 0.4s opacity ease;
+    cursor: pointer;
+    outline: none;
+    background: transparent;
+
+    svg {
+      height: 40px;
+      fill: $color-main;
+    }
+  }
