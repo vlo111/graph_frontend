@@ -103,15 +103,22 @@ class SignUp extends Component {
     const { requestData } = this.state;
     switch (name) {
       case "firstName":
-        if (!value || value.trim() === "") {
+        if (!value) {
           return "First name is Required ";
+        } else if (
+          !value.match(/^[a-zA-Z ]{2,30}$/)
+        ) {
+          return " ";
         } else {
           return "";
         }
-
       case "lastName":
-        if (!value || value.trim() === "") {
+        if (!value) {
           return "Last name is Required";
+        } else if (
+          !value.match(/^[a-zA-Z ]{2,30}$/)
+        ) {
+          return " ";
         } else {
           return "";
         }
@@ -215,7 +222,7 @@ class SignUp extends Component {
                 className={`InputIvalid ${
                   errors.password ? "border-error" : null
                 }`}
-                placeholder="password"
+                placeholder="Password"
                 value={requestData.password}
                 error={errors.password}
                 onChange={this.handleChange}
@@ -227,7 +234,7 @@ class SignUp extends Component {
                 className={`InputIvalid ${
                   errors.passwordConfirm ? "border-error" : null
                 }`}
-                placeholder="passwordConfirm"
+                placeholder="Password Confirm"
                 value={requestData.passwordConfirm}
                 error={errors.passwordConfirm}
                 onChange={this.handleChange}
