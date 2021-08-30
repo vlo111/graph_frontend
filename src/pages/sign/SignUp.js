@@ -1,19 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import _ from 'lodash';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import Input from '../../components/form/Input';
-import Button from '../../components/form/Button';
-import { ReactComponent as LogoSvg } from '../../assets/images/araks_logo.svg';
-import { signUpRequest } from '../../store/actions/account';
-import WrapperSign from '../../components/WrapperSign';
-import PasswordInput from '../../components/form/PasswordInput';
-import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
-import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
-import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
-import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import Input from "../../components/form/Input";
+import Button from "../../components/form/Button";
+import { signUpRequest } from "../../store/actions/account";
+import WrapperSign from "../../components/WrapperSign";
+import PasswordInput from "../../components/form/PasswordInput";
+import { ReactComponent as LogoSvg } from "../../assets/images/araks_logo.svg";
+import OAuthButtonFacebook from "../../components/account/OAuthButtonFacebook";
+import OAuthButtonGoogle from "../../components/account/OAuthButtonGoogle";
+import OAuthButtonLinkedin from "../../components/account/OAuthButtonLinkedin";
+import OAuthButtonTwitter from "../../components/account/OAuthButtonTwitter";
 
 class SignUp extends Component {
   static propTypes = {
@@ -25,44 +23,135 @@ class SignUp extends Component {
     super(props);
     this.state = {
       requestData: {
-        lastName: '',
-        firstName: '',
-        email: '',
-        password: '',
-        passwordConfirm: '',
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        passwordConfirm: "",
       },
-      errors: {},
+      errors: {
+        firstName: "",
+        email: "",
+        password: "",
+        lastName: "",
+        passwordConfirm: "",
+      },
     };
   }
 
-  handleChange = (value, path) => {
-    const { requestData, errors } = this.state;
-    _.set(requestData, path, value);
-    _.unset(errors, path, value);
-    this.setState({ requestData, errors });
+  handleChange = (e) => {
+    this.setState({
+      errors: {
+        ...this.state.errors,
+        [e.target.name]: this.validate(e.target.name, e.target.value),
+      },
+      requestData: {
+        ...this.state.requestData,
+        [e.target.name]: e.target.value,
+      },
+    });
   };
 
   signUp = async (ev) => {
     ev.preventDefault();
-    const { requestData } = this.state;
-    if (requestData.passwordConfirm !== requestData.password) {
-      toast.error("Passwords do not match");
-      return;
-    }
+    const { requestData, errors } = this.state;
 
     this.setState({ loading: true });
-    const { payload } = await this.props.signUpRequest(requestData);
-    const { data = {} } = payload;
-    if (data.status === 'ok') {
-      this.props.history.push('/sign/sign-in');
-      toast.info('Please check your email');
-      return;
-    }
-    if (_.isEmpty(data.errors)) {
-      toast.error(data.message);
-    }
+    const error =
+      this.validate("firstName", requestData.firstName) ||
+      this.validate("lastName", requestData.lastName) ||
+      this.validate("email", requestData.email) ||
+      this.validate("password", requestData.password);
 
-    this.setState({ errors: data.errors || {}, loading: false });
+    if (error) {
+      const errorName = error.substring(0, error.indexOf(" "));
+
+      switch (errorName) {
+        case "First": {
+          errors.firstName = this.validate("firstName", requestData.firstName);
+        }
+        case "Last": {
+          errors.lastName = this.validate("lastName", requestData.lastName);
+        }
+        case "email": {
+          errors.email = this.validate("email", requestData.email);
+        }
+        case "password": {
+          errors.password = this.validate("password", requestData.password);
+        }
+      }
+      this.setState({
+        errors,
+        loading: false,
+      });
+    } else {
+      const { payload } = await this.props.signUpRequest(requestData);
+      const { data = {} } = payload;
+      if (data.status === "ok") {
+        this.props.history.push("/sign/sign-in");
+        return;
+      }
+
+      this.setState({
+        errors: data.errors || { email: data.message },
+        loading: false,
+      });
+    }
+  };
+
+  validate = (name, value) => {
+    const { requestData } = this.state;
+    switch (name) {
+      case "firstName":
+        if (!value || value.trim() === "") {
+          return "First name is Required ";
+        } else {
+          return "";
+        }
+
+      case "lastName":
+        if (!value || value.trim() === "") {
+          return "Last name is Required";
+        } else {
+          return "";
+        }
+      case "email":
+        if (!value) {
+          return "Email is Required";
+        } else if (
+          !value.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
+        ) {
+          return "Enter a valid email address";
+        } else {
+          return "";
+        }
+      case "password":
+        if (!value) {
+          return "Password is Required";
+        } else if (value.length < 8 || value.length > 15) {
+          return "Please fill at least 8 character";
+        } else if (!value.match(/[a-z]/g)) {
+          return "Please enter at least lower character.";
+        } else if (!value.match(/[A-Z]/g)) {
+          return "Please enter at least upper character.";
+        } else if (!value.match(/[0-9]/g)) {
+          return "Please enter at least one digit.";
+        } else {
+          return "";
+        }
+      case "passwordConfirm":
+        if (!value) {
+          return "Confirm Password Required";
+        } else if (value !== requestData.password) {
+          return "New Password and Confirm Password Must be Same";
+        } else {
+          return "";
+        }
+
+      default: {
+        return "";
+      }
+    }
   };
 
   render() {
@@ -80,48 +169,68 @@ class SignUp extends Component {
             <form
               onSubmit={this.signUp}
               id="registration"
-              className="SignUpAuthform"
+              className="SignUpAuthform "
             >
               <div className="forgotPasswordText">
                 <h4>Get started now </h4>
               </div>
               <Input
                 name="firstName"
+                className={`InputIvalid ${
+                  errors.firstName ? "border-error" : null
+                }`}
                 placeholder="First Name"
                 value={requestData.firstName}
                 error={errors.firstName}
-                onChangeText={this.handleChange}
+                onChange={this.handleChange}
                 autoComplete="off"
               />
               <Input
                 name="lastName"
+                className={`InputIvalid ${
+                  errors.lastName ? "border-error" : null
+                }`}
                 placeholder="Last Name"
                 value={requestData.lastName}
                 error={errors.lastName}
-                onChangeText={this.handleChange}
+                onChange={this.handleChange}
                 autoComplete="off"
               />
+
               <Input
                 name="email"
+                className={`InputIvalid ${
+                  errors.email ? "border-error" : null
+                }`}
                 type="email"
                 placeholder="E-mail"
                 value={requestData.email}
                 error={errors.email}
-                onChangeText={this.handleChange}
+                onChange={this.handleChange}
                 autoComplete="off"
               />
+
               <PasswordInput
                 name="password"
-                placeholder="Password"
+                className={`InputIvalid ${
+                  errors.password ? "border-error" : null
+                }`}
+                placeholder="password"
                 value={requestData.password}
-                onChangeText={this.handleChange}
+                error={errors.password}
+                onChange={this.handleChange}
                 autoComplete="off"
               />
+
               <PasswordInput
                 name="passwordConfirm"
-                placeholder="Password Confirm"
+                className={`InputIvalid ${
+                  errors.passwordConfirm ? "border-error" : null
+                }`}
+                placeholder="passwordConfirm"
                 value={requestData.passwordConfirm}
-                onChangeText={this.handleChange}
+                error={errors.passwordConfirm}
+                onChange={this.handleChange}
                 autoComplete="off"
               />
               <Button
@@ -132,6 +241,7 @@ class SignUp extends Component {
               >
                 Start
               </Button>
+
               <div>
                 <p>Sign in using</p>
               </div>
