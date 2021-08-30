@@ -8,7 +8,7 @@ import { getGraphInfoRequest } from '../store/actions/graphs';
 class ToolBarFooter extends Component {
   static propTypes = {
     getGraphInfoRequest: PropTypes.func.isRequired,
-    graphId: PropTypes.string.isRequired,
+    graphId: PropTypes.number.isRequired,
     graphInfo: PropTypes.object.isRequired,
   };   
 

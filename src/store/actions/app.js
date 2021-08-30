@@ -121,3 +121,13 @@ export function toggleSearch(open) {
     },
   };
 }
+
+export const TOGGLE_EXPLORE = 'TOGGLE_EXPLORE';
+export function toggleExplore(open) {
+  return {
+    type: TOGGLE_EXPLORE,
+    payload: {
+      open,
+    },
+  };
+}
