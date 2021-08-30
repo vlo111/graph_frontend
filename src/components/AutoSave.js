@@ -73,7 +73,9 @@ class AutoSave extends Component {
 
   componentWillUnmount() {
     clearTimeout(this.thumbnailTimeout);
-    this.thumbnailListener();
+    if (typeof(this.thumbnailListener) === "function") {
+      this.thumbnailListener();
+    }
     window.removeEventListener('beforeunload', this.handleUnload);
   }
 
@@ -302,6 +304,7 @@ class AutoSave extends Component {
       promise.push(this.props.updateNodesRequest(graphId, updateNodes));
     }
     if (deleteNodes.length) {
+      return
       promise.push(this.props.deleteNodesRequest(graphId, deleteNodes));
     }
     // if (updateNodePositions.length) {
@@ -324,6 +327,7 @@ class AutoSave extends Component {
       promise.push(this.props.updateLinksRequest(graphId, updateLinks));
     }
     if (deleteLinks.length) {
+      return
       promise.push(this.props.deleteLinksRequest(graphId, deleteLinks));
     }
 
@@ -363,10 +367,14 @@ class AutoSave extends Component {
   }
 
   handleRouteChange = (newLocation) => {
+    if (Chart.isLoading()) {
+      return
+    }
     const { location } = this.props;
     if (location.pathname !== newLocation.pathname) {
       this.updateThumbnail();
     }
+    Chart.loading(true)
   }
 
   updateThumbnail = async () => {
