@@ -4018,7 +4018,7 @@ body .gh__menu {
       overflow-x: hidden;
       overflow-y: auto;
       height: 700px;
-      margin-top: 20px;
+      margin-top: 10px;
 
       .row {
         flex-direction: column;
@@ -4068,6 +4068,9 @@ body .gh__menu {
         margin-bottom: 5px;
         border: none;
 
+        .list {
+          margin-top: -15px;
+        }
 
         .linkTypes {
           color: $color-passive;
@@ -5357,11 +5360,33 @@ body .gh__menu {
 }
 
 .wikiSearch {
-  width: 800px;
+  height: 130px;
+  width: 650px;
   margin: 0 auto;
   text-align: left;
-  margin-bottom: 48px !important;
-  margin-left: 50px;
+  margin-bottom: 10px !important;
+  margin-left: 10px;
+  border: 1px solid #dedede;
+  div {
+    margin-left: 40px;
+    padding: 4px;
+  }
+}
+
+////wiki modal
+.wikiresult {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.wikiSearch:focus {
+  background: linear-gradient(0deg, rgba(136, 130, 209, 0.22), rgba(136, 130, 209, 0.22));
+}
+
+label.pull-left::before {
+  display: none !important;
+}
+label.pull-left::after {
+  display: none;
 }
 
 .wikiSearch h3 {
@@ -5369,10 +5394,12 @@ body .gh__menu {
 }
 
 .wikiSearch h3 a {
-  color: #1a0dab;
+  font-size: 16px;
+  color: #7166f8;
   display: inline-block;
-  line-height: 16px;
+  line-height: 22px;
   text-decoration: none;
+  font-weight: 700;
 }
 
 .wikiSearch h3 a:hover {
@@ -5393,7 +5420,8 @@ body .gh__menu {
 
 .wikiSearch .link a {
   text-decoration: none;
-  color: #287e44;
+  color: #7166f8;
+  font-weight: 400;
 }
 
 .wikiSearch .link a:hover {
@@ -5413,8 +5441,12 @@ body .gh__menu {
 }
 
 .wikiSearch .description {
-  color: #414141;
-  position: absolute;
+  display: flow-root;
+  /* position: relative; */
+  line-height: 19px;
+  font-size: 14px;
+  color: #898989 !important;
+  font-weight: 400;
   margin-right: 15%;
 }
 
@@ -5423,7 +5455,9 @@ body .gh__menu {
 }
 
 .scienceAuthor {
-  margin-bottom: .3em
+  margin-bottom: 0.3em;
+  color: #7166f8;
+  font-weight: 400;
 }
 
 .Wiki {
@@ -5437,9 +5471,8 @@ body .gh__menu {
 }
 
 .Wiki form {
-  border-radius: 20px;
-  box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
-  margin-bottom: 30px;
+  border-radius: 5px;
+  border: 1px solid #7166f8;
 }
 
 .Wiki input {
@@ -5458,7 +5491,7 @@ body .gh__menu {
   color: #1a0dab;
   font-size: 1.5em;
   text-align: center;
-  margin: 0em 0 1em 1em
+  margin: 0em 0 1em 1em;
 }
 
 .Wiki input:focus {
@@ -5466,11 +5499,12 @@ body .gh__menu {
 }
 
 .Wiki button {
+  color: white;
   line-height: 40px;
   border: none;
-  background-color: #f6f6f6;
+  background-color: #7166f8;
   padding: 0 20px;
-  border-radius: 0 20px 20px 0;
+  border-radius: 0 5px 5px 0;
   cursor: pointer;
   margin-left: 50px !important;
 }
@@ -5484,11 +5518,14 @@ body .gh__menu {
 .Wiki button:focus {
   outline: none;
 }
-
+// wikki modal <<menu>>
 .wikiModal {
   img {
+    position: relative;
+    top: 36px;
     margin: 0 auto;
-    width: 100px;
+    width: 50px;
+    margin-bottom: 80px;
   }
 
   h2 {
@@ -5663,9 +5700,16 @@ body .gh__menu {
 
 .WikiCreateNode {
   position: absolute !important;
-  right: 40px;
+  margin-top: 430px !important;
   font-size: 13px !important;
-  width: 10%;
+  color: white !important;
+  box-shadow: none !important;
+  line-height: 40px;
+  border: none;
+  background-color: #7166f8 !important;
+  width: 20%;
+  top: 325px;
+  left: 258px;
 }
 
 
@@ -7455,6 +7499,27 @@ img.preview-scaled {
   align-items: center;
   margin: 0px;
 }
+
+.createGraphButton {
+  // width: 100%;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // margin: 0px;
+  position: absolute !important;
+  margin-top: 430px !important;
+  font-size: 13px !important;
+  color: white !important;
+  box-shadow: none !important;
+  line-height: 25px;
+  border: none;
+  /* background-color: #7166f8 !important; */
+  /* width: 20%; */
+  top: 258px;
+  left: 258px;
+
+}
+
 .selectedItemsAmount {
   margin-left: 1em;
   margin-bottom: 0px;
@@ -9317,3 +9382,14 @@ img.preview-scaled {
         height: 40px;
       }
   }
+  .linkedinModal {
+  .import-input label {
+    margin-top: 15px;
+    margin-right: 10px;
+  }
+
+  .import-popup .icon {
+    margin-right: 25px;
+    top: 23px;
+  }
+}

@@ -388,8 +388,9 @@ class Api {
     });
   }
 
-  static getShareGraphsList() {
-    return api.get('/share');
+  static getShareGraphsList(page, requestData) {
+    const params = { page, ...requestData };
+    return api.get('/share', { params });
   }
 
   static createNodes(graphId, nodes) {
