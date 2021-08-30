@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import NoGraph from '../components/NoGraph';
 import GraphListItem from '../components/graphData/GraphListItem';
 import { getShareGraphListRequest } from '../store/actions/share';
-import Pagination from "../components/Pagination";
-import GraphCardItem from "../components/graphData/GraphCardItem";
+import Pagination from '../components/Pagination';
+import GraphCardItem from '../components/graphData/GraphCardItem';
 
 
 class Shared extends Component {
@@ -20,24 +20,27 @@ class Shared extends Component {
     shareGraphsListInfo: PropTypes.object.isRequired,
   }
 
-  getShareGraphsList = memoizeOne((page) => {
-    this.props.getShareGraphListRequest(page);
-  })
- 
+  componentDidMount() {
+    const order = JSON.parse(localStorage.getItem('/shared')) || 'newest';
+
+    const { page = 1, s } = queryString.parse(window.location.search);
+
+    this.props.getShareGraphListRequest(page, { s, filter: order });
+  }
 
   render() {
-    const { graphsList,shareGraphsListStatus, shareGraphsList, shareGraphsListInfo: { totalPages } , mode} = this.props;
-    const { page = 1 } = queryString.parse(window.location.search);
-    this.getShareGraphsList(page);
-    
+    const {
+      shareGraphsListStatus, shareGraphsList, shareGraphsListInfo: { totalPages }, mode,
+    } = this.props;
+
     return (
       <>
         <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!shareGraphsList.length ? 'empty' : ''}`}>
-         {shareGraphsListStatus !== 'request' && _.isEmpty(shareGraphsList) ? (
+          {shareGraphsListStatus !== 'request' && _.isEmpty(shareGraphsList) ? (
             <NoGraph />
-          ) : mode === 'list' ? <GraphListItem graphs={shareGraphsList}  headerTools = {'shared'}/>  : <GraphCardItem graphs={shareGraphsList} headerTools = {'shared'} />}
+          ) : mode === 'list' ? <GraphListItem graphs={shareGraphsList} headerTools="shared" /> : <GraphCardItem graphs={shareGraphsList} headerTools="shared" />}
         </div>
-        <Pagination totalPages={totalPages} />
+        {shareGraphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>
     );
   }

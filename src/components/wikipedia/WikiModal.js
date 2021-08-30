@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import Modal from 'react-modal';
-import { connect } from 'react-redux';
-import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
-import withGoogleMap from '../../helpers/withGoogleMap';
-import Utils from '../../helpers/Utils';
-import WikiImg from '../../assets/images/wikipedia_black.png';
+import React, { Component } from "react";
+import Modal from "react-modal";
+import { connect } from "react-redux";
+import { setActiveButton, toggleNodeModal } from "../../store/actions/app";
+import withGoogleMap from "../../helpers/withGoogleMap";
+import Utils from "../../helpers/Utils";
+import WikiImg from "../../assets/images/wikipedia_black.png";
 
 class WikiModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       wikiSearchReturnValues: [],
-      wikiSearchTerms: '',
+      wikiSearchTerms: "",
       getChecked: false,
     };
   }
@@ -27,13 +27,13 @@ class WikiModal extends Component {
 
     const pointerToThis = this;
 
-    let url = 'https://en.wikipedia.org/w/api.php';
+    let url = "https://en.wikipedia.org/w/api.php";
 
     const params = {
-      action: 'query',
-      list: 'search',
+      action: "query",
+      list: "search",
       srsearch: this.state.WikiSearchTerms,
-      format: 'json',
+      format: "json",
     };
 
     url = `${url}?origin=*`;
@@ -42,25 +42,20 @@ class WikiModal extends Component {
     });
 
     fetch(url)
-      .then(
-        (response) => response.json(),
-      )
-      .then(
-        (response) => {
+      .then((response) => response.json())
+      .then((response) => {
           // console.log(response);
 
           for (const key in response.query.search) {
             pointerToThis.state.wikiSearchReturnValues.push({
-              queryResultPageFullURL: 'no link',
+            queryResultPageFullURL: "no link",
               queryResultPageID: response.query.search[key].pageid,
               queryResultPageTitle: response.query.search[key].title,
               queryResultPageSnippet: response.query.search[key].snippet,
             });
           }
-        },
-      )
-      .then(
-        (response) => {
+      })
+      .then((response) => {
           for (const key2 in pointerToThis.state.wikiSearchReturnValues) {
             // console.log(pointerToThis.state.wikiSearchReturnValues);
             const page = pointerToThis.state.wikiSearchReturnValues[key2];
@@ -68,33 +63,31 @@ class WikiModal extends Component {
             const urlForRetrievingPageURLByPageID = `https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=info&pageids=${pageID}&inprop=url&format=json`;
 
             fetch(urlForRetrievingPageURLByPageID)
-              .then(
-                (response) => response.json(),
-              )
-              .then(
-                (response) => {
-                  page.queryResultPageFullURL = response.query.pages[pageID].fullurl;
+            .then((response) => response.json())
+            .then((response) => {
+              page.queryResultPageFullURL =
+                response.query.pages[pageID].fullurl;
 
                   pointerToThis.forceUpdate();
-                },
-              );
+            });
           }
-        },
-      );
-  }
+      });
+  };
 
     changeWikiSearchTerms = (e) => {
       this.setState({
         WikiSearchTerms: e.target.value,
       });
-    }
+  };
 
     openAddNewNode = async (ev) => {
       const { getChecked } = this.state;
       if (getChecked === false) {
         return;
       }
-      const name = this.state.wikiSearchReturnValues[this.state.getChecked].queryResultPageTitle;
+    const name =
+      this.state.wikiSearchReturnValues[this.state.getChecked]
+        .queryResultPageTitle;
 
       const desc = this.state.wikiSearchReturnValues[0].queryResultPageSnippet;
 
@@ -120,27 +113,29 @@ https://en.wikipedia.org/wiki/${name}
         x,
         y,
         name,
-        type: 'wikipedia',
+      type: "wikipedia",
         description: desc,
         icon: wikiImageData,
-        customFields: [{
-          name: 'About',
-          subtitle: '',
+      customFields: [
+        {
+          name: "About",
+          subtitle: "",
           value: abount,
-        }],
+        },
+      ],
       });
       this.close();
-    }
+  };
 
   close = () => {
-    this.props.setActiveButton('create');
-  }
+    this.props.setActiveButton("create");
+  };
 
     checkedWiki = (param) => {
       this.setState({
         getChecked: param,
       });
-    }
+  };
 
     render() {
       const { getChecked } = this.state;
@@ -148,36 +143,64 @@ https://en.wikipedia.org/wiki/${name}
 
       for (const key3 in this.state.wikiSearchReturnValues) {
         wikiSearchResults.push(
-          <div className="wikiSearch" key={key3}>
-            {key3 === getChecked
-            && <button onClick={(ev) => this.openAddNewNode(ev)} className="ghButton accent alt WikiCreateNode">Create Node</button>}
+        <div className="wikiSearch" tabindex="0" htmlFor={key3}>
+          <label htmlFor={key3}>
             <div>
               <input
                 onChange={() => this.checkedWiki(key3)}
-                checked={!getChecked ? getChecked : (key3 === getChecked)}
+                checked={!getChecked ? getChecked : key3 === getChecked}
                 className="graphsCheckbox"
                 type="checkbox"
                 name="layout"
                 id={key3}
                 value="option1"
               />
-              <label className="pull-left" htmlFor={key3} />
             </div>
+            <div>
             <h3>
-              <a target="_blank" rel="noreferrer" href={this.state.wikiSearchReturnValues[key3].queryResultPageFullURL}>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={
+                    this.state.wikiSearchReturnValues[key3]
+                      .queryResultPageFullURL
+                  }
+                >
                 {this.state.wikiSearchReturnValues[key3].queryResultPageTitle}
               </a>
             </h3>
             <span className="link">
-              <a target="_blank" rel="noreferrer" href={this.state.wikiSearchReturnValues[key3].queryResultPageFullURL}>
-                {this.state.wikiSearchReturnValues[key3].queryResultPageFullURL}
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={
+                    this.state.wikiSearchReturnValues[key3]
+                      .queryResultPageFullURL
+                  }
+                >
+                  {
+                    this.state.wikiSearchReturnValues[key3]
+                      .queryResultPageFullURL
+                  }
               </a>
             </span>
             <p
               className="description"
-              dangerouslySetInnerHTML={{ __html: this.state.wikiSearchReturnValues[key3].queryResultPageSnippet }}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    this.state.wikiSearchReturnValues[key3]
+                      .queryResultPageSnippet,
+                }}
             />
-          </div>,
+              <button
+                onClick={(ev) => this.openAddNewNode(ev)}
+                className="ghButton accent alt WikiCreateNode"
+              >
+                Create Node
+              </button>
+            </div>
+          </label>
+        </div>
         );
       }
 
@@ -192,15 +215,19 @@ https://en.wikipedia.org/wiki/${name}
             <img src={WikiImg} alt="wikipedia" className="wikipediaLogo" />
             <div className="Wiki">
               <form action="">
-                <input type="text" value={this.state.WikiSearchTerms || ''} onChange={this.changeWikiSearchTerms} placeholder="Search Wikipedia Articles" />
-                <button type="submit" onClick={this.useWikiSearchEngine}>Search</button>
+              <input
+                type="text"
+                value={this.state.WikiSearchTerms || ""}
+                onChange={this.changeWikiSearchTerms}
+                placeholder="Search Wikipedia Articles"
+              />
+              <button type="submit" onClick={this.useWikiSearchEngine}>
+                Search
+              </button>
               </form>
             </div>
-            <div className="Wiki">
-              {wikiSearchResults}
-            </div>
+          <div className="Wiki  wikiresult">{wikiSearchResults}</div>
           </Modal>
-
         </>
       );
     }
@@ -215,9 +242,6 @@ const mapDispatchToProps = {
   setActiveButton,
 };
 
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(WikiModal);
+const Container = connect(mapStateToProps, mapDispatchToProps)(WikiModal);
 
 export default withGoogleMap(Container);

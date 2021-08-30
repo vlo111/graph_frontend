@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import memoizeOne from 'memoize-one';
-import _ from 'lodash'
+import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../../store/actions/graphs';
 import Pagination from '../../components/Pagination';
-import GraphCardItem from "../../components/graphData/GraphCardItem";
-import GraphListItem from "../../components/graphData/GraphListItem";
+import GraphCardItem from '../../components/graphData/GraphCardItem';
+import GraphListItem from '../../components/graphData/GraphListItem';
 
-import NoGraph from "../../components/NoGraph";
+import NoGraph from '../../components/NoGraph';
 
 class Home extends Component {
   static propTypes = {
@@ -18,43 +18,36 @@ class Home extends Component {
     graphsList: PropTypes.array.isRequired,
     graphsCard: PropTypes.array.isRequired,
     graphsListInfo: PropTypes.object.isRequired,
-    graphsListStatus: PropTypes.string.isRequired, 
+    graphsListStatus: PropTypes.string.isRequired,
   }
 
   constructor(props) {
     super(props);
-    this.state = {dataGrid: false}
+    this.state = { dataGrid: false };
   }
-  getGraphsList = memoizeOne((page = 1, s) => {
 
+  getGraphsList = memoizeOne((page = 1, s) => {
     const status = 'template';
-    
+
     const order = JSON.parse(localStorage.getItem(`/${status}`));
 
     this.props.getGraphsListRequest(page, { s, filter: order, status });
   })
-
   
-  componentDidMount() {
-    const order = JSON.parse(localStorage.getItem('/templates'));
-
-    const { page = 1 } = queryString.parse(window.location.search);
-    
-    this.props.getGraphsListRequest(page, { filter: order, status: 'template' });
-  }
-
-  handleClick = (list) => {  
+  handleClick = (list) => {
     this.setState({ dataGrid: list });
   }
 
   render() {
     const { dataGrid } = this.state;
-    const { graphsList, graphsListStatus, graphsListInfo: { totalPages }, headerTools,mode } = this.props;
+    const {
+      graphsList, graphsListStatus, graphsListInfo: { totalPages }, headerTools, mode,
+    } = this.props;
     const { page = 1, s } = queryString.parse(window.location.search);
-    this.getGraphsList(page, s); 
+    this.getGraphsList(page, s);
     return (
       <>
-        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`} >
+        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`}>
           {s ? (
             <h2 className="searchResult">
               {'Search Result for: '}
@@ -65,7 +58,7 @@ class Home extends Component {
             <NoGraph />
           ) : mode === 'list' ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} />}
         </div>
-        <Pagination totalPages={totalPages} />
+        {graphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>
     );
   }
