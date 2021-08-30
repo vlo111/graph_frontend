@@ -29,12 +29,12 @@ class Login extends Component {
       loading: false,
       requestData: {
         email: "",
-        password: "",
+        // password: "",
       },
       failedLoginAttempts: 0,
       errors: {
         email: "",
-        password: "",
+        // password: "",
       },
     };
   }
@@ -94,24 +94,24 @@ class Login extends Component {
         } else {
           return "";
         }
-      case "password":
-        if (!value) {
-          return "Invalid email or password";
-        } else if (value.length < 8 || value.length > 15) {
-          return " ";
-        } else if (!value.match(/[a-z]/g)) {
-          return " ";
-        } else if (!value.match(/[A-Z]/g)) {
-          return " ";
-        } else if (!value.match(/[0-9]/g)) {
-          return " ";
-        } else {
-          return "";
-        }
-      default: {
-        return "";
-      }
-    }
+    //   case "password":
+    //     if (!value) {
+    //       return "Invalid email or password";
+    //     } else if (value.length < 8 || value.length > 15) {
+    //       return " ";
+    //     } else if (!value.match(/[a-z]/g)) {
+    //       return " ";
+    //     } else if (!value.match(/[A-Z]/g)) {
+    //       return " ";
+    //     } else if (!value.match(/[0-9]/g)) {
+    //       return " ";
+    //     } else {
+    //       return "";
+    //     }
+    //   default: {
+    //     return "";
+    //   }
+     }
   };
   handleChange = (e) => {
     this.setState({
@@ -173,12 +173,12 @@ class Login extends Component {
               <PasswordInput
                 name="password"
                 className="InputIvalid"
-                className={`InputIvalid ${
-                  errors.password ? "border-error" : null
-                }`}
+                // className={`InputIvalid ${
+                //   errors.password ? "border-error" : null
+                // }`}
                 placeholder="Password"
                 value={requestData.password}
-                error={errors.password}
+                // error={errors.password}
                 onChange={this.handleChange}
               />
 
