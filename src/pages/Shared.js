@@ -11,6 +11,7 @@ import { getShareGraphListRequest } from '../store/actions/share';
 import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
 
+
 class Shared extends Component {
   static propTypes = {
     shareGraphsList: PropTypes.array.isRequired,
