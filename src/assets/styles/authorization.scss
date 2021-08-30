@@ -161,9 +161,11 @@
     }
 
     .error {
-      color: $color-error;
+      position: absolute;
+      color: #FE5C4F;
       font-size: 14px;
       padding: 0 8px;
+      top: 40px;
     }
   }
 
@@ -347,10 +349,12 @@
 
     a {
       position: relative;
-      color: #a1a1a1;
-      left: -30%;
-      z-index: 100;
-      font-style: italic;
+    color: #a1a1a1;
+    left: -30%;
+    z-index: 100;
+    font-style: italic;
+    top: 10px;
+
     }
 
     .ghFormField {
@@ -376,7 +380,7 @@
       color: $color-error;
       font-size: 12px;
       position: relative;
-      top: 15px;
+      top: 25px;
 
     }
   }
@@ -1164,6 +1168,12 @@
     top: 3.78%;
     z-index: 100;
   }
+  .border-error {
+    border-color: red !important;
+}
+EyeSvg-invalid  {
+  color: red;
+}
 }
 
 .socialButtons span {
