@@ -26,6 +26,7 @@ class SearchModal extends Component {
     setActiveTab: PropTypes.func.isRequired,
     graphTabs: PropTypes.array.isRequired,
     graphId: PropTypes.number.isRequired,
+    singleGraph: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -51,7 +52,13 @@ class SearchModal extends Component {
   }
 
   componentWillUnmount() {
-    this.props.toggleExplore(true)
+    const { nodes, links } = this.props.singleGraph
+    const chartNodes = Chart.getNodes()
+    if (!chartNodes.length && nodes?.length) {
+      Chart.render({nodes, links}, {ignoreAutoSave: true,})
+    } else {
+      this.props.toggleExplore(true)
+    }
   }
 
   initTabs = memoizeOne(() => {
@@ -412,7 +419,7 @@ class SearchModal extends Component {
    */
   showSelectedNodes = ( keep = false ) => {
     let { chosenNodes } = this.state
-    const { links } = this.props
+    const { links } = this.props.singleGraph
     
     if (keep) {
       const oldNodes = Chart.getNodes()
@@ -804,7 +811,8 @@ class SearchModal extends Component {
 const mapStateToProps = (state) => ({
   graphTabs: state.graphs.graphTabs,
   graphId: state.graphs.singleGraph.id,
-  links: state.graphs.singleGraph.links
+  singleGraph: state.graphs.singleGraph,
+
 });
 
 const mapDispatchToProps = {

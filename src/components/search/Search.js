@@ -15,16 +15,6 @@ class Search extends Component {
     exploreMode: PropTypes.bool.isRequired,
   };
 
-  // componentDidMount() {
-  //   Chart.loading(false)
-  // }
-
-  renderChart = memoizeOne((filters, customFields) => {
-    if (customFields) {
-      Chart.render(undefined, { filters, customFields });
-    }
-  })
-
   render() {
     const {
       showSearch,
@@ -37,7 +27,7 @@ class Search extends Component {
       return null;
     }
     if (showSearch === true && exploreMode === false) {
-      Chart.render({nodes:[], links:[], labels: []})
+      Chart.render({nodes:[], links:[], labels: []}, {ignoreAutoSave: true,})
     }
     return <SearchModal history={this.props.history} />;
   }
