@@ -15,9 +15,9 @@ class Search extends Component {
     exploreMode: PropTypes.bool.isRequired,
   };
 
-  componentDidMount() {
-    Chart.loading(false)
-  }
+  // componentDidMount() {
+  //   Chart.loading(false)
+  // }
 
   renderChart = memoizeOne((filters, customFields) => {
     if (customFields) {
@@ -37,6 +37,7 @@ class Search extends Component {
       return null;
     }
     if (showSearch === true && exploreMode === false) {
+      debugger
       Chart.render({nodes:[], links:[], labels: []})
     }
     return <SearchModal history={this.props.history} />;
