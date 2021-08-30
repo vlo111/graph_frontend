@@ -6,7 +6,7 @@ import Button from './form/Button';
 import { setActiveButton, toggleSearch } from '../store/actions/app';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
-import { getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/graphs';
+import { setActiveMouseTracker } from '../store/actions/graphs';
 import { socketMousePositionTracker } from '../store/actions/socket';
 import AccountDropDown from './account/AccountDropDown';
 import Legend from './Legend';
@@ -23,7 +23,6 @@ import ChartUtils from '../helpers/ChartUtils';
 class ToolBarHeader extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
-    getSingleGraphRequest: PropTypes.func.isRequired,
     toggleSearch: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
@@ -203,7 +202,6 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   setActiveButton,
-  getSingleGraphRequest,
   setActiveMouseTracker,
   socketMousePositionTracker,
   toggleSearch
