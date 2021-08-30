@@ -16,6 +16,8 @@ import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
 import Input from '../form/Input';
 import Utils from '../../helpers/Utils';
+import Outside from '../Outside';
+import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
 
 class MediaModal extends Component {
     static propTypes = {
@@ -49,6 +51,7 @@ class MediaModal extends Component {
         getCheckedImages: true,
         getCheckedVideos: true,
         search: '',
+        showDropDown:false,
       };
     }
 
@@ -195,6 +198,13 @@ class MediaModal extends Component {
       }
     }
 
+    toggleDropDown = () => {
+      const { showDropDown } = this.state;
+      this.setState({ showDropDown: !showDropDown });
+    }
+ 
+    
+
     render() {
       let { documentSearch } = this.props;
 
@@ -203,7 +213,7 @@ class MediaModal extends Component {
       this.initialGraph();
 
       const {
-        getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
+        showDropDown,getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
       } = this.state;
 
       const graphIdParam = Utils.getGraphIdFormUrl();
@@ -234,45 +244,56 @@ class MediaModal extends Component {
             overlayClassName="ghModalOverlay"
             onRequestClose={this.closeModal}
           >
+             <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} /> 
+             <h2>Media gallery</h2>
             <div className="mediaHeader">
-              <h2>Media gallery</h2>
-              <hr className="line mediaLine" />
-              <Input
+             
+              {/* <hr className="line mediaLine" /> */}       
+             
+              <div className='showTTT' onClick={this.toggleDropDown}>
+                <div  className='tttt'>Show</div>
+                <ArrowSvg />
+              </div>
+               {showDropDown ? (
+               <Outside onClick={this.toggleDropDown} exclude=".showTTT">
+                   <div className="filterMedia">
+                    <Checkbox
+                      label="Node icon"
+                      checked={getCheckedNodes}
+                      onChange={() => this.filterHandleChange('icon',  !getCheckedNodes)}
+                      className="graphsCheckbox"
+                    />
+                    <Checkbox
+                      label="Documents of tabs"
+                      checked={getCheckedDocs}
+                      onChange={() => this.filterHandleChange('docs', !getCheckedDocs)}
+                      className="graphsCheckbox"
+                    />
+                    <Checkbox
+                      label="Images of tabs"
+                      checked={getCheckedImages}
+                      onChange={() => this.filterHandleChange('image', !getCheckedImages)}
+                      className="graphsCheckbox"
+                    />
+                    <Checkbox
+                      label="Videos"
+                      checked={getCheckedVideos}
+                      onChange={() => this.filterHandleChange('videos', !getCheckedVideos)}
+                      className="graphsCheckbox"
+                    />
+                  </div>
+               </Outside>
+                ) : null}
+               <Input
                 placeholder="Search ..."
                 autoComplete="off"
                 value={search}
-                icon="fa-search"
-                containerClassName="mediaSearch"
+                // icon="fa-search"
                 onFocus={() => this.searchHandleChange(search)}
                 onChangeText={this.searchHandleChange}
+                className='mediaSearch '
+                containerClassName="mediaSearch"
               />
-              <div className="filterMedia">
-                <Checkbox
-                  label="node icon"
-                  checked={getCheckedNodes}
-                  onChange={() => this.filterHandleChange('icon', !getCheckedNodes)}
-                  className="graphsCheckbox"
-                />
-                <Checkbox
-                  label="show documents of tabs"
-                  checked={getCheckedDocs}
-                  onChange={() => this.filterHandleChange('docs', !getCheckedDocs)}
-                  className="graphsCheckbox"
-                />
-                <Checkbox
-                  label="show images of tabs"
-                  checked={getCheckedImages}
-                  onChange={() => this.filterHandleChange('image', !getCheckedImages)}
-                  className="graphsCheckbox"
-                />
-                <Checkbox
-                  label="videos"
-                  checked={getCheckedVideos}
-                  onChange={() => this.filterHandleChange('videos', !getCheckedVideos)}
-                  className="graphsCheckbox"
-                />
-              </div>
-              <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
             </div>
             {(documentSearch && documentSearch.length)
               ? (
