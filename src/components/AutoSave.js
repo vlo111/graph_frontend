@@ -50,6 +50,7 @@ class AutoSave extends Component {
     getGraphsListRequest: PropTypes.func.isRequired,
 
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
+     getGraphsListRequest: PropTypes.func.isRequired,
   }
 
   async componentDidMount() {
@@ -102,7 +103,7 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    if (Chart.isLoading === true) {
+    if (Chart.isLoading() === true) {
       return
     }
     this.timeout = setTimeout(this.saveGraph, 0);

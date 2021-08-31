@@ -28,13 +28,13 @@ class Zoom extends Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
-    Chart.event.on('render', this.autoScale);
-    Chart.event.on('zoom', this.handleChartZoom);
+   // Chart.event.on('render', this.autoScale);
+    Chart.event.on('zoom', this.handleChartZoom); 
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
-    Chart.event.removeListener('render', this.autoScale);
+   // Chart.event.removeListener('render', this.autoScale);
     Chart.event.removeListener('zoom', this.handleChartZoom);
   }
 
