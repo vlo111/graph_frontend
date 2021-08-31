@@ -131,3 +131,13 @@ export function toggleExplore(open) {
     },
   };
 }
+
+export const TOGGLE_DELETE_STATE = 'TOGGLE_DELETE_STATE';
+export function toggleDeleteState(open) {
+  return {
+    type: TOGGLE_DELETE_STATE,
+    payload: {
+      open,
+    },
+  };
+}
