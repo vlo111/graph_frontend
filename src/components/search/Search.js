@@ -14,10 +14,6 @@ class Search extends Component {
     showSearch: PropTypes.bool.isRequired,
   };
 
-  componentDidMount() {
-    Chart.loading(false)
-  }
-
   renderChart = memoizeOne((filters, customFields) => {
     if (customFields) {
       Chart.render(undefined, { filters, customFields });
