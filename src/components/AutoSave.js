@@ -100,7 +100,7 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    if (Chart.isLoading === true) {
+    if (Chart.isLoading() === true) {
       return
     }
     this.timeout = setTimeout(this.saveGraph, 0);
