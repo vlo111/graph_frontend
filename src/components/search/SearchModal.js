@@ -452,7 +452,6 @@ class SearchModal extends Component {
 
   ifAnyResults = () => {
     const {nodes, keywords, docs, tabs} = this.state
-    debugger
     if (nodes?.length || keywords?.length || docs?.length || Object.keys(tabs)?.length) {
       return true
     }

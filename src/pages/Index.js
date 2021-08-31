@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Wrapper from '../components/Wrapper';
 import Header from '../components/Header';
-import BackToTop from "react-back-to-top-button";
+// import BackToTop from "react-back-to-top-button";
 import GraphTemplates from './profile/GraphTemplates';
 import Shared from './Shared';
 import Home from './Home';
@@ -46,14 +46,15 @@ setMode = (value) => {
           onChange={(value) => this.setMode(value)}
         />
       </Wrapper>
-      <BackToTop
+      ""
+      {/* <BackToTop
         //showOnScrollUp
         showAt={100}
         speed={1500}
         easing="easeInOutQuint"
       >
         <span><ScrollUpSvg className="icon" style={{ height: 40 }} /></span>
-      </BackToTop>
+      </BackToTop> */}
       </>
     );
   }

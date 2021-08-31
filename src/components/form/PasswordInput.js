@@ -39,6 +39,7 @@ class PasswordInput extends Component {
           <EyeSvg
             width={14}
             onClick={() => this.toggleShowPassword(false)}
+            
           />
         ) : (
           <ViewSvg

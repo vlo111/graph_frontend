@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactCrop from 'react-image-crop';
+// import ReactCrop from 'react-image-crop';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ContextMenu from '../contextMenu/ContextMenu';
