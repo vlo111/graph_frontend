@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import Checkbox from "../form/Checkbox";
-import { setFilter } from "../../store/actions/app";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import Checkbox from '../form/Checkbox';
+import { setFilter } from '../../store/actions/app';
 
 class IsolatedFilter extends Component {
   static propTypes = {
@@ -16,16 +16,20 @@ class IsolatedFilter extends Component {
       <div className="row hideIsolated graphFilter">
         <div className="filterCheckBox">
           <Checkbox
-            label="Hide isolated nodes"
-            checked={filters.hideIsolated}
-            // labelReverse
-            onChange={() =>
-              this.props.setFilter("hideIsolated", !filters.hideIsolated)
-            }
-            className="graphsCheckbox"
-          >
-             <span className="badge"></span>
-            </Checkbox>
+              label="Hide isolated nodes"
+              checked={filters.hideIsolated}
+              onChange={() => this.props.setFilter('hideIsolated', !filters.hideIsolated)}
+
+          />
+          {/*<Checkbox*/}
+          {/*  label="Hide isolated nodes"*/}
+          {/*  checked={filters.hideIsolated}*/}
+          {/*  // labelReverse*/}
+          {/*  onChange={() => this.props.setFilter('hideIsolated', !filters.hideIsolated)}*/}
+          {/*  className="graphsCheckbox"*/}
+          {/*>*/}
+          {/*  <span className="badge" />*/}
+          {/*</Checkbox>*/}
         </div>
       </div>
     );

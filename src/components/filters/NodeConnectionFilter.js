@@ -5,6 +5,8 @@ import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import InputRange from 'react-input-range';
 import { setFilter } from '../../store/actions/app';
+import Checkbox from '../form/Checkbox';
+import Button from '../form/Button';
 
 class NodeConnectionFilter extends Component {
   static propTypes = {
@@ -75,10 +77,11 @@ class NodeConnectionFilter extends Component {
     this.props.setFilter('linkConnection', values);
   }
 
-
   render() {
     const { padding } = this.state;
-    const { links, nodes, linkConnection, graphFilterInfo: { nodeConnections = [] } } = this.props;
+    const {
+      links, nodes, linkConnection, graphFilterInfo: { nodeConnections = [] },
+    } = this.props;
 
     const max = _.maxBy(nodeConnections, (v) => v.count)?.count || 0;
     const maxLength = _.maxBy(nodeConnections, (v) => v.length)?.length || 0;
@@ -95,34 +98,37 @@ class NodeConnectionFilter extends Component {
     }
     return (
       <div className="nodeConnectionFilter graphFilter graphFilterChart">
-        <h4 className="title">Node Connections</h4>
-        <div className="rangeDataChart">
-          {_.range(min, max + 1).map((num, i) => {
-            const connection = connections.find((v) => v.count === num);
-            return (
-              <div
-                key={num}
-                ref={i === 0 ? (ref) => this.item = ref : undefined}
-                style={{ height: connection ? `${connection.percentage}%` : 0 }}
-                className="item"
-                title={connection?.value}
-              />
-            );
-          })}
-        </div>
-        <div className="ghRangeSelect" style={{ padding }}>
-          <InputRange
-            minValue={min}
-            maxValue={max}
-            allowSameValues
-            value={{
-              min: linkConnection.min < 0 ? min : linkConnection.min,
-              max: linkConnection.max < 0 ? max : linkConnection.max,
-            }}
-            onChange={this.handleChange}
-          />
-        </div>
-
+        <details open>
+          <summary>
+            Node Connections
+          </summary>
+          <div className="rangeDataChart">
+            {_.range(min, max + 1).map((num, i) => {
+              const connection = connections.find((v) => v.count === num);
+              return (
+                <div
+                  key={num}
+                  ref={i === 0 ? (ref) => this.item = ref : undefined}
+                  style={{ height: connection ? `${connection.percentage}%` : 0 }}
+                  className="item"
+                  title={connection?.value}
+                />
+              );
+            })}
+          </div>
+          <div className="ghRangeSelect" style={{ padding }}>
+            <InputRange
+              minValue={min}
+              maxValue={max}
+              allowSameValues
+              value={{
+                min: linkConnection.min < 0 ? min : linkConnection.min,
+                max: linkConnection.max < 0 ? max : linkConnection.max,
+              }}
+              onChange={this.handleChange}
+            />
+          </div>
+        </details>
       </div>
     );
   }
