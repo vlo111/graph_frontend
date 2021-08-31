@@ -61,7 +61,7 @@ class PageTabs extends Component {
 
     const { path: currentTab } = this.props.match;
 
-    if (currentTab === '/' || currentTab === '/template') {
+    if (currentTab === '/' || currentTab === '/templates') {
       const status = currentTab.includes('template') ? 'template' : 'active';
       this.props.getGraphsListRequest(page, { s, filter: value, status });
     } else if (currentTab === '/shared') {

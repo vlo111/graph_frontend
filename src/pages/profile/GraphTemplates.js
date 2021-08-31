@@ -29,11 +29,11 @@ class Home extends Component {
   getGraphsList = memoizeOne((page = 1, s) => {
     const status = 'template';
 
-    const order = JSON.parse(localStorage.getItem(`/${status}`));
+    const order = JSON.parse(localStorage.getItem(`/${status}s`));
 
     this.props.getGraphsListRequest(page, { s, filter: order, status });
   })
-  
+
   handleClick = (list) => {
     this.setState({ dataGrid: list });
   }
