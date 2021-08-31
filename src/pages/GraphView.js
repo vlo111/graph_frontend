@@ -193,7 +193,7 @@ class GraphView extends Component {
                 />
                 )}
               <Zoom />
-              <ToolBarFooter />
+              <ToolBarFooter partOf = {true}/>
               </div>
             ))}
       </Wrapper>
