@@ -6,8 +6,8 @@ import GraphTemplates from './profile/GraphTemplates';
 import Shared from './Shared';
 import Home from './Home';
 import VerticalTabs from '../components/PageTabs';
-import Friends from './friends';
-import { ReactComponent as ScrollUpSvg } from '../assets/images/icons/scroll-up.svg';
+import ScrollButton from '../components/ScrollButton';
+import Friends from './friends'; 
 
 class Index extends Component {
 

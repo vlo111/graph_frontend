@@ -358,7 +358,7 @@ export default function reducer(state = initialState, action) {
       singleGraph.customFields = CustomFields.removeNode(singleGraph.customFields, nodeId);
       return {
         ...state,
-        singleGraph,
+        customFields: singleGraph.customFields,
       };
     }
     case UPDATE_SINGLE_GRAPH: {

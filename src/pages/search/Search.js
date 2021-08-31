@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 // import BackToTop from "react-back-to-top-button";
 import VerticalTabs from '../../components/PageTabs';
-import SearchPeople from './SearchUsers';
-import SearchGraphs from './SearchGraphs';
 import Wrapper from '../../components/Wrapper';
 import Header from '../../components/Header';
+import ScrollButton from '../../components/ScrollButton';
 import SearchResult from './SearchResult';
 import SearchSharedGraphs from './SearchSharedGraphs';
+import SearchPeople from './SearchUsers';
+import SearchGraphs from './SearchGraphs';
 import SearchPictures from './SearchPictures';
 import SearchDocuments from './SearchDocuments';
-import { ReactComponent as ScrollUpSvg } from '../../assets/images/icons/scroll-up.svg';
 
 class Search extends Component {
   handleRouteChange = (tab) => {

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Chart from '../Chart';
-import { getSingleGraphRequest, updateGraphPositionsRequest, updateGraphThumbnailRequest } from '../store/actions/graphs';
+import { getSingleGraphRequest, updateGraphPositionsRequest, updateGraphThumbnailRequest, getGraphsListRequest } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
 import {
   createNodesRequest,
@@ -49,6 +49,7 @@ class AutoSave extends Component {
     getSingleGraphRequest: PropTypes.func.isRequired,
 
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
+     getGraphsListRequest: PropTypes.func.isRequired,
   }
 
   async componentDidMount() {
@@ -99,7 +100,7 @@ class AutoSave extends Component {
     if (!Chart.autoSave) {
       return;
     }
-    if (Chart.isLoading === true) {
+    if (Chart.isLoading() === true) {
       return
     }
     this.timeout = setTimeout(this.saveGraph, 0);
@@ -371,11 +372,14 @@ class AutoSave extends Component {
 
   updateThumbnail = async () => {
     const { defaultImage } = this.props
+    const page = 1
+    const order = 'newest'
     document.body.classList.add('autoSave');
     const svg = ChartUtils.getChartSvg();
     const { match: { params: { graphId } } } = this.props;
     if (!defaultImage) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+      this.props.getGraphsListRequest(page, {filter: order})
     }
     document.body.classList.remove('autoSave');
   }
@@ -410,6 +414,7 @@ const mapDispatchToProps = {
   deleteLabelsRequest,
   toggleFolderRequest,
   getSingleGraphRequest,
+  getGraphsListRequest
 };
 
 const Container = connect(
