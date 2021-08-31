@@ -73,24 +73,18 @@ class Login extends Component {
         );
       }
       if (this.state.failedLoginAttempts < 3) {
-        // toast.dismiss(this.toast);
-        this.toast = toast.error( 'Invalid email or password');
+        this.setState({ errors: {'password': 'Invalid email or password'} });
+        document.getElementsByName('password')[0].classList.remove('border-error')
       }
-      this.setState({ loading: true });
+      this.setState({ loading: true});
     }
   };
   validate = (name, value ) => {
     const { requestData } = this.state;
-    // this.toast = toast.error
     switch (name) {
       case "email":
         if (!value) {
-          return " ";
-        } else if (
-          !value.match( /^([\w\.\+]{1,})([^\W])(@)([\w]{1,})(\.[\w]{2,4})+$/)
-          // /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
-        ) {
-          return " ";
+          return "Email is Required";
         } else {
           return "";
         }
