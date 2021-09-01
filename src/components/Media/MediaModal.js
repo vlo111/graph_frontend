@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { setActiveButton } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
+import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
 import Button from '../form/Button';
 import { getDocumentsRequest } from '../../store/actions/document';
 import NodeIcon from '../NodeIcon';
@@ -28,6 +30,8 @@ class MediaModal extends Component {
       documentSearch: PropTypes.object.isRequired,
       singleGraph: PropTypes.object.isRequired,
       setActiveTab: PropTypes.func.isRequired,
+      user: PropTypes.func.isRequired,
+      graph: PropTypes.object.isRequired,
     }
 
     initTabs = memoizeOne(() => {
@@ -52,6 +56,8 @@ class MediaModal extends Component {
         getCheckedVideos: true,
         search: '',
         showDropDown:false,
+        fullWidth: false,
+       
       };
     }
 
@@ -201,6 +207,12 @@ class MediaModal extends Component {
     toggleDropDown = () => {
       const { showDropDown } = this.state;
       this.setState({ showDropDown: !showDropDown });
+      
+    }
+
+    toggleFullWidth = () => {
+      const { fullWidth } = this.state;
+      this.setState({ fullWidth: !fullWidth });
     }
  
     
@@ -213,7 +225,7 @@ class MediaModal extends Component {
       this.initialGraph();
 
       const {
-        showDropDown,getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
+        fullWidth,showDropDown,getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,singleGraph,
       } = this.state;
 
       const graphIdParam = Utils.getGraphIdFormUrl();
@@ -237,25 +249,30 @@ class MediaModal extends Component {
       documentSearch = documentSearch?.filter((p) => p.node.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
 
       return (
+        
         <div className="mediaModal">
           <Modal
             isOpen
             className="ghModal ghModalMedia"
+            id={fullWidth ? 'fullWidth' : undefined}
             overlayClassName="ghModalOverlay"
             onRequestClose={this.closeModal}
-          >
+          >  
+           <div className="">
+             <Button  className="reSize" color="transparent" icon={fullWidth ? <CompressScreen /> : <FullScreen />} onClick={this.toggleFullWidth} />
              <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} /> 
+           </div> 
              <h2>Media gallery</h2>
             <div className="mediaHeader">
-             
-              {/* <hr className="line mediaLine" /> */}       
-             
-              <div className='showTTT' onClick={this.toggleDropDown}>
-                <div  className='tttt'>Show</div>
-                <ArrowSvg />
+
+              <div className='showCheck' onClick={this.toggleDropDown}>
+                <div>Show</div>
+                <div className='carretMedia'>
+                 <ArrowSvg />
+                </div>
               </div>
                {showDropDown ? (
-               <Outside onClick={this.toggleDropDown} exclude=".showTTT">
+               <Outside onClick={this.toggleDropDown} exclude=".showCheck">
                    <div className="filterMedia">
                     <Checkbox
                       label="Node icon"
@@ -299,17 +316,17 @@ class MediaModal extends Component {
               ? (
                 <div className="mediaContainer">
                   <div className="mediaRightContent">
-                    <div className="searchData">
-                      <div className="searchData__wrapper mediaContent">
-                        <div className="searchMediaContent">
-                          <article className="searchData__graph mediaForm">
+                    <div className="searchDataTTT">
+                      <div className="searchDataTTT__wrapper mediaContent">
+                        <div className="searchMediaContentTTT">
+                          {/* <article className="searchDataTTT__graph mediaForm">
                             <div className="searchDocumentContent mediaGallery">
                               {documentSearch.map((document) => (
                                 document.id && (
                                 <div
                                   className="nodeTabs tabDoc"
                                 >
-                                  <div className="imageFrame">
+                                  <div className="imageFrameTTT">
                                     <div className="imageFrameHeader">
                                       <span
                                         className="nodeLink"
@@ -393,6 +410,92 @@ class MediaModal extends Component {
                                 </div>
                                 )
                               ))}
+                            </div>
+                          </article> */}
+                          <article className="searchDataTTT__graph mediaForm">
+                            <div className="searchDocumentContent mediaGallery">
+                            {documentSearch.map((document,graph) => (
+                              document.id && (
+                                <div className="imageFrameTTT">
+                                  <div className="imageFrameHeader">
+                                    <div className="gallery-box-container">
+                                      <div className="gallery-box">
+                                        { typeof document.data !== 'string'
+                                          ? (
+                                            <span
+                                              ref={(nodeElement) => {
+                                                nodeElement && nodeElement.appendChild(document.data);
+                                              }}
+                                            />
+                                          )
+                                          : (
+                                            <div>
+                                              <span className="gallery-box__img-container">
+                                                <figure className="img-container">
+                                                  {Utils.isImg(document.data) ? (
+                                                    <div>
+                                                    <a target="_blank" href={document.data} rel="noreferrer">
+                                                      <img
+                                                        className="gallery-box__img"
+                                                        src={document.data}
+                                                      />
+                                                    </a>
+                                                     <span
+                                                         className="nodeLink"
+                                                         onClick={
+                                                               () => this.openTab(document.graphId, document.node, document.tabName)
+                                                           }
+                                                       >
+
+                                                      <div className="right container">
+                                                         <img
+                                                           className="userImg"
+                                                           
+                                                          />
+                                                          <div className="ooo">
+                                                         <span title={document.node.name} className="headerName">
+                                                          { document.node.name && document.node.name.length > 8
+                                                            ? `${document.node.name.substr(0, 8)}... `
+                                                            : document.node.name}
+                                                         </span>
+                                                         <span title={document.description} className="gallery-box__text">
+                                                           { document.added
+                                                             ? (document.node.type)
+                                                             : (document.description && document.description.length > 38
+                                                               ? `${document.description.substr(0, 38)}... `
+                                                               : document.description)}
+                                                         </span>
+                                                         </div>
+                                                      </div>
+                                                      </span>
+                                                    </div>
+                                                  ) : (
+                                                    <a
+                                                      className="linkDocumentDownload"
+                                                      download={document.node.name}
+                                                      href={document.data}
+                                                      target="_blank"
+                                                      rel="noreferrer"
+                                                    >
+                                                        <span title={document.node.name} className="headerName">
+                                                          { document.node.name && document.node.name.length > 8
+                                                            ? `${document.node.name.substr(0, 8)}... `
+                                                            : document.node.name}
+                                                         </span>
+                                                        
+                                                    </a>
+                                                  )}
+                                                </figure>
+                                              </span>
+                                            </div>
+                                          )}
+                                      </div>
+                                    </div>
+                                     
+                                    </div>
+                                </div>  
+                                )
+                                ))}
                             </div>
                           </article>
                         </div>
