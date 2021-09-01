@@ -207,6 +207,7 @@ requestData: {
               className="thumbnailSave"
               value={image || `${singleGraph.thumbnail}?t=${moment(singleGraph.updatedAt).unix()}`}
               onChange={(val) => this.handleChange('image', val)}
+              userImage={ requestData.userImage }
             />
 
           </div>
