@@ -37,7 +37,7 @@ class Chart {
 
   static isLoading = () => {
     const loading = document.querySelector('#graph .loading');
-    return loading.classList.contains('show') ? true : false
+    return loading?.classList?.contains('show') ? true : false
   }
 
   // gets the passed d3 element center coordinates
@@ -1804,6 +1804,7 @@ class Chart {
       ChartInfography.render(this);
 
       this.event.emit('render', this);
+      this.event.emit('expandData', this);
       return this;
     } catch (e) {
       console.error(e);

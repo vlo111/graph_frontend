@@ -1745,7 +1745,7 @@ p {
   background-color: white;
   border-radius: 2px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  width: 170px;
+  min-width: 172px;
   display: flex;
   flex-direction: column;
 
@@ -2926,6 +2926,7 @@ p {
       width: 100% !important;
     }
   }
+
 }
 
 .lineDirectionSelect {
@@ -3520,7 +3521,7 @@ body .gh__menu {
 
               .nodeType {
                 margin: 0 21px;
-
+                
                 .typeText {
                   color: $color-border;
                   font-weight: 800;
@@ -3642,7 +3643,7 @@ body .gh__menu {
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    
     .nodeItem {
       height: 44px;
     }
@@ -3783,19 +3784,11 @@ body .gh__menu {
   transition: opacity 800ms;
 
   .ghMapsModal {
-    top: 100px;
-    position: relative;
     padding: 0;
-    /* height: 800px; */
-    width: 750;
-    /* height: 139%; */
-    max-width: 750px;
-    max-height: 800px;
-    // padding: 0;
-    // width: 100%;
-    // height: 100%;
-    // max-width: 60%;
-    // max-height: 60%;
+    width: 100%;
+    height: 100%;
+    max-width: 60%;
+    max-height: 60%;
   }
 
   .ghLoading {
@@ -4616,7 +4609,7 @@ body .gh__menu {
   width: 64%;
   margin: 0 auto 50px;
   align-items: flex-start;
-  position: relative;
+  position: relative; 
   top: 130px;
 
   .tabsList {
@@ -4994,13 +4987,13 @@ body .gh__menu {
       color: $color-main;
       margin-bottom: 10px;
     }
-
+  
     .row {
       display: flex;
       align-items: center;
       margin: 0;
     }
-
+  
     input {
       width: 438px;
       height: 35px;
@@ -7125,7 +7118,7 @@ img.preview-scaled {
     &:hover{
       background: rgba(113, 102, 248, 0.1);
       cursor: pointer;
-      .dashboard-delete{
+      .dashboard-delete{ 
         color: $color-avatar-border;
         font-weight: 700;
       }
@@ -7997,10 +7990,12 @@ img.preview-scaled {
         width: 90%;
 
         .searchFieldCheckBox {
-          justify-content: center;
-          flex: 1;
+          justify-content: center; 
           display: flex;
           flex-direction: column;
+	  cursor: pointer;
+          width: 7em;
+
 
           .chooseSearchFields {
             display: flex;
@@ -8023,6 +8018,7 @@ img.preview-scaled {
             border-radius: 3px;
             box-shadow: 0px 4px 16px rgb(0 0 0 / 25%);
             display: none;
+            width: 7em;
 
             .checkBox {
               color: #7166F8;
@@ -8034,10 +8030,6 @@ img.preview-scaled {
           .searchFieldCheckBoxList div {
             padding: .1em .5em;
           }
-        }
-
-        .searchFieldCheckBox:hover .searchFieldCheckBoxList {
-          display: flex;
         }
 
         .nodeSearch {
@@ -8573,27 +8565,6 @@ img.preview-scaled {
       }
     }
 
-    .connections {
-      .connection-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 16px;
-
-        .indicator {
-          height: 2px;
-          width: 22px;
-          margin-right: 16px;
-        }
-
-        &:last-of-type {
-          margin-bottom: 0;
-        }
-
-        a {
-          cursor: auto;
-        }
-      }
-    }
   }
 }
 
@@ -8628,7 +8599,7 @@ img.preview-scaled {
   height: 75px;
   background-color: #fff;
   position: fixed;
-  width: 100%;
+  width: 100%; 
   z-index: 1;
 .start-graphs {
   .buttonsWrapper  {
@@ -8654,8 +8625,8 @@ img.preview-scaled {
         border: 1px solid $color-main;
         color: $color-main;
       }
-    }
-
+    }  
+    
     .btn-comparegraph {
       width: 216px;
       height: 42px;
@@ -8676,7 +8647,7 @@ img.preview-scaled {
         background-color: $color-main;
         color: #ffffff;
       }
-    }
+    }  
 
     .ghButton {
       margin-right: 30px;
@@ -8695,7 +8666,7 @@ img.preview-scaled {
     color: $color-graph-name !important;
     border-radius: 5px;
     border: 1px solid #B3ADF5;
-}
+} 
 }
 
 .logo-graphs, .searchInputWrapper, .start-graphs, .notify_container, .signOut {
@@ -9264,6 +9235,96 @@ img.preview-scaled {
       justify-content: space-between;
       margin-top: 50px;
     }
+
+    .ghCheckbox {
+      justify-content: center;
+
+      label {
+        margin-top: 5px;
+      }
+
+      /* Base for label styling */
+      [type="checkbox"]:not(:checked),
+      [type="checkbox"]:checked {
+        position: absolute;
+        left: 0;
+        opacity: 0.01;
+      }
+      [type="checkbox"]:not(:checked) + label,
+      [type="checkbox"]:checked + label {
+        position: relative;
+        padding-left: 2.3em;
+        font-size: 1.05em;
+        line-height: 1.7;
+        cursor: pointer;
+      }
+
+      /* checkbox aspect */
+      [type="checkbox"]:not(:checked) + label:before,
+      [type="checkbox"]:checked + label:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1.4em;
+        height: 1.4em;
+        border: 1px solid #aaa;
+        background: #FFF;
+        border-radius: .2em;
+        box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 rgba(203, 34, 237, .2);
+        -webkit-transition: all .275s;
+        transition: all .275s;
+      }
+
+      /* checked mark aspect */
+      [type="checkbox"]:not(:checked) + label:after,
+      [type="checkbox"]:checked + label:after {
+        content: '✕';
+        position: absolute;
+        top: .525em;
+        left: .18em;
+        font-size: 1.375em;
+        color: #CB22ED;
+        line-height: 0;
+        -webkit-transition: all .2s;
+        transition: all .2s;
+      }
+
+      /* checked mark aspect changes */
+      [type="checkbox"]:not(:checked) + label:after {
+        opacity: 0;
+        -webkit-transform: scale(0) rotate(45deg);
+        transform: scale(0) rotate(45deg);
+      }
+
+      [type="checkbox"]:checked + label:after {
+        opacity: 1;
+        -webkit-transform: scale(1) rotate(0);
+        transform: scale(1) rotate(0);
+      }
+
+      /* Disabled checkbox */
+      [type="checkbox"]:disabled:not(:checked) + label:before,
+      [type="checkbox"]:disabled:checked + label:before {
+        box-shadow: none;
+        border-color: #bbb;
+        background-color: #e9e9e9;
+      }
+
+      [type="checkbox"]:disabled:checked + label:after {
+        color: #777;
+      }
+
+      [type="checkbox"]:disabled + label {
+        color: #aaa;
+      }
+
+      /* Accessibility */
+      [type="checkbox"]:checked:focus + label:before,
+      [type="checkbox"]:not(:checked):focus + label:before {
+        box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 6px rgba(203, 34, 237, .2);
+      }
+    }
   }
 }
 
@@ -9285,7 +9346,6 @@ img.preview-scaled {
 .number-wrapper {
   .number-input-container {
     margin: 0 auto;
-    user-select: none;
   }
 
   input {
@@ -9325,112 +9385,6 @@ img.preview-scaled {
     top: 19px;
   }
 }
-
-.linkedinModal {
-  .import-input label {
-    margin-top: 15px;
-    margin-right: 10px;
-  }
-
-  .import-popup .icon {
-    margin-right: 25px;
-    top: 23px;
-  }
-}
-
-.addLink,.ghModalFilters {
-  .ghCheckbox {
-    justify-content: center;
-
-    label {
-      margin-top: 5px;
-    }
-
-    /* Base for label styling */
-    [type="checkbox"]:not(:checked),
-    [type="checkbox"]:checked {
-      position: absolute;
-      left: 0;
-      opacity: 0.01;
-    }
-    [type="checkbox"]:not(:checked) + label,
-    [type="checkbox"]:checked + label {
-      position: relative;
-      padding-left: 2.3em;
-      font-size: 1.05em;
-      line-height: 1.7;
-      cursor: pointer;
-    }
-
-    /* checkbox aspect */
-    [type="checkbox"]:not(:checked) + label:before,
-    [type="checkbox"]:checked + label:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 1.4em;
-      height: 1.4em;
-      border: 1px solid #aaa;
-      background: #FFF;
-      border-radius: .2em;
-      box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 rgba(203, 34, 237, .2);
-      -webkit-transition: all .275s;
-      transition: all .275s;
-    }
-
-    /* checked mark aspect */
-    [type="checkbox"]:not(:checked) + label:after,
-    [type="checkbox"]:checked + label:after {
-      content: '✕';
-      position: absolute;
-      top: .525em;
-      left: .18em;
-      font-size: 1.375em;
-      color: #CB22ED;
-      line-height: 0;
-      -webkit-transition: all .2s;
-      transition: all .2s;
-    }
-
-    /* checked mark aspect changes */
-    [type="checkbox"]:not(:checked) + label:after {
-      opacity: 0;
-      -webkit-transform: scale(0) rotate(45deg);
-      transform: scale(0) rotate(45deg);
-    }
-
-    [type="checkbox"]:checked + label:after {
-      opacity: 1;
-      -webkit-transform: scale(1) rotate(0);
-      transform: scale(1) rotate(0);
-    }
-
-    /* Disabled checkbox */
-    [type="checkbox"]:disabled:not(:checked) + label:before,
-    [type="checkbox"]:disabled:checked + label:before {
-      box-shadow: none;
-      border-color: #bbb;
-      background-color: #e9e9e9;
-    }
-
-    [type="checkbox"]:disabled:checked + label:after {
-      color: #777;
-    }
-
-    [type="checkbox"]:disabled + label {
-      color: #aaa;
-    }
-
-    /* Accessibility */
-    [type="checkbox"]:checked:focus + label:before,
-    [type="checkbox"]:not(:checked):focus + label:before {
-      box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 6px rgba(203, 34, 237, .2);
-    }
-  }
-}
-
-
 .connectionDetails, .ghModalFilters {
   details {
     padding-bottom: 16px;
@@ -9448,3 +9402,71 @@ img.preview-scaled {
     }
   }
 }
+
+ 
+  .connection-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .indicator {
+      height: 2px;
+      width: 22px;
+      margin-right: 16px;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    a {
+      cursor: auto;
+    }
+  } 
+  #graphs-data-info{
+    display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      left: 213px;
+      bottom: 2%;
+      div {
+        display: flex; 
+        padding: 15px 15px; 
+        color: #727272;
+        align-items: center;
+        box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
+        border-radius: 3px;
+        height: 40px;
+      }
+  }
+  .linkedinModal {
+  .import-input label {
+    margin-top: 15px;
+    margin-right: 10px;
+  }
+
+  .import-popup .icon {
+    margin-right: 25px;
+    top: 23px;
+  }
+}
+  .scrollToTop {
+    font-size: 45px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 30px;
+    border-radius: 50%;
+    border: none; 
+    -webkit-transition: 0.4s opacity ease;
+    transition: 0.4s opacity ease;
+    cursor: pointer;
+    outline: none;
+    background: transparent;
+
+    svg {
+      height: 40px;
+      fill: $color-main;
+    }
+  }

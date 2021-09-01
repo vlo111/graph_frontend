@@ -68,6 +68,7 @@ class NodeContextMenu extends Component {
    ChartUtils.autoScaleTimeOut(); 
    ChartUtils.autoScaleTimeOut(100); 
    ChartUtils.autoScaleTimeOut(200); 
+   Chart.event.emit('expandData', type); 
     
    
   }

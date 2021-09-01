@@ -3,14 +3,22 @@ import Modal from 'react-modal';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import Button from '../form/Button';
+import PropTypes from 'prop-types';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import { setActiveButton } from '../../store/actions/app';
+import { setActiveButton, toggleDeleteState } from '../../store/actions/app';
 import ContextMenu from './ContextMenu';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 import Api from '../../Api';
 
 class AddLabelModal extends Component {
+  static propTypes = {
+    toggleDeleteState: PropTypes.func.isRequired,
+    setActiveButton: PropTypes.func.isRequired,
+    activeButton: PropTypes.string.isRequired,
+    graphId: PropTypes.number.isRequired,
+  }
+
   closeDelete = () => {
     this.props.setActiveButton('create');
   }
@@ -86,6 +94,7 @@ class AddLabelModal extends Component {
       ContextMenu.event.emit(data.type, data.ev, { ...params });
     }
 
+    this.props.toggleDeleteState(true)
     this.props.setActiveButton('create');
   }
 
@@ -167,6 +176,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   setActiveButton,
+  toggleDeleteState
 };
 
 const Container = connect(

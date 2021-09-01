@@ -89,6 +89,7 @@ export function setLegendButton(mode) {
   };
 }
 
+
 export const ONLINE_USERS = 'ONLINE_USERS';
 
 export function getOnlineUsersRequest(data) {
@@ -115,6 +116,26 @@ export const TOGGLE_SEARCH = 'TOGGLE_SEARCH';
 export function toggleSearch(open) {
   return {
     type: TOGGLE_SEARCH,
+    payload: {
+      open,
+    },
+  };
+}
+
+export const TOGGLE_EXPLORE = 'TOGGLE_EXPLORE';
+export function toggleExplore(open) {
+  return {
+    type: TOGGLE_EXPLORE,
+    payload: {
+      open,
+    },
+  };
+}
+
+export const TOGGLE_DELETE_STATE = 'TOGGLE_DELETE_STATE';
+export function toggleDeleteState(open) {
+  return {
+    type: TOGGLE_DELETE_STATE,
     payload: {
       open,
     },

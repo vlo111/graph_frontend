@@ -75,11 +75,11 @@ class NodeImage extends Component {
     const {
       x, y, clipPath, fill, transform, width, height,
     } = this.state;
-
+   const iconSize = props.width === 50 ? false : true
     if (node.nodeType !== 'infography' || !node.d) {
       return (
         <img
-          src={node.icon ? ChartUtils.normalizeIcon(node.icon, true) : bgImage}
+          src={node.icon ? ChartUtils.normalizeIcon(node.icon, iconSize) : bgImage}
           onError={this.handleImageError}
           alt="node"
           {...props}

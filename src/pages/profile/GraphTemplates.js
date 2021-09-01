@@ -33,7 +33,7 @@ class Home extends Component {
 
     this.props.getGraphsListRequest(page, { s, filter: order, status });
   })
-
+  
   handleClick = (list) => {
     this.setState({ dataGrid: list });
   }

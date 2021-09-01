@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import Wrapper from '../components/Wrapper';
-import Header from '../components/Header';
-import BackToTop from "react-back-to-top-button";
+import Header from '../components/Header'; 
 import GraphTemplates from './profile/GraphTemplates';
 import Shared from './Shared';
 import Home from './Home';
 import VerticalTabs from '../components/PageTabs';
-import Friends from './friends';
-import { ReactComponent as ScrollUpSvg } from '../assets/images/icons/scroll-up.svg';
+import ScrollButton from '../components/ScrollButton';
+import Friends from './friends'; 
 
 class Index extends Component {
 
@@ -45,15 +44,8 @@ setMode = (value) => {
           ]}
           onChange={(value) => this.setMode(value)}
         />
-      </Wrapper>
-      <BackToTop
-        //showOnScrollUp
-        showAt={100}
-        speed={1500}
-        easing="easeInOutQuint"
-      >
-        <span><ScrollUpSvg className="icon" style={{ height: 40 }} /></span>
-      </BackToTop>
+         <ScrollButton />
+      </Wrapper> 
       </>
     );
   }
