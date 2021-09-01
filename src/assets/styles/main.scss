@@ -7950,9 +7950,10 @@ img.preview-scaled {
 
         .searchFieldCheckBox {
           justify-content: center;
-          flex: 1;
           display: flex;
           flex-direction: column;
+          cursor: pointer;
+          width: 7em;
 
           .chooseSearchFields {
             display: flex;
@@ -7975,6 +7976,7 @@ img.preview-scaled {
             border-radius: 3px;
             box-shadow: 0px 4px 16px rgb(0 0 0 / 25%);
             display: none;
+            width: 7em;
 
             .checkBox {
               color: #7166F8;
@@ -7986,10 +7988,6 @@ img.preview-scaled {
           .searchFieldCheckBoxList div {
             padding: .1em .5em;
           }
-        }
-
-        .searchFieldCheckBox:hover .searchFieldCheckBoxList {
-          display: flex;
         }
 
         .nodeSearch {
