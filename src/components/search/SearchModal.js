@@ -384,18 +384,23 @@ class SearchModal extends Component {
     const { name } = ev.target
     const { chosenNodes } = this.state
     const ifExists = chosenNodes.find(nd => nd.code === name);
+
+    const listClass = document.getElementsByClassName('list')[0]
+    const allCheckboxes = Array.from(listClass.children)
+    const allNodesSelected = !allCheckboxes.find(el => el.firstChild.checked === false)
+
     if (ifExists) {
       const index = chosenNodes.indexOf(ifExists)
       chosenNodes.splice(index, 1)
+      if (!chosenNodes.length) {
+        this.setState({allNodesSelected})
+      }
     } else {
       node.code = name
       chosenNodes.push(node)
 
-      const listClass = document.getElementsByClassName('list')[0]
-      const allCheckboxes = Array.from(listClass.children)
-      const allNodesSelected = !allCheckboxes.find(el => el.firstChild.checked === false)
       if (allNodesSelected) {
-        this.setState({allNodesSelected: allNodesSelected})
+        this.setState({allNodesSelected})
       }
     }
     this.setState({chosenNodes})
@@ -534,14 +539,14 @@ class SearchModal extends Component {
           {this.ifAnyResults() ? (
           <div className="selectedNodesCheckBox">
             <div>
+              { allNodesSelected ? 'Unselect all  ' :  'Select all  '}
               <input
                 className=""
                 name={`selectAll`}
                 type="checkbox"
-                checked={this.state.isChecked}
+                checked={allNodesSelected}
                 onChange={this.selectAllNodes} 
               />
-              { allNodesSelected ? ' Unselect all' :  ' Select all'}
             </div>
             <p className="selectedItemsAmount">
               Selected Nodes
