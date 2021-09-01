@@ -5,7 +5,7 @@
     flex-direction: column !important;
     width: 100% !important;
     align-items: inherit !important;
-  
+
     .filter {
       display: flex;
       justify-content: flex-end;
@@ -14,7 +14,7 @@
       position: relative;
       margin: auto;
       top: -4px;
-  
+
       .filter-container {
         padding: 9px 0 0 16px;
         background-color: white;
@@ -35,15 +35,15 @@
           font-size: 12px;
           color: #C2C2C2;
           line-height: 12px;
-      
+
         }
-  
+
         .ascending, .descending, .newest, .oldest {
           color: $color-main !important;
         }
       }
     }
-  
+
      .content {
        margin-left: 0 !important;
        border-radius: 0 !important;
@@ -76,7 +76,7 @@
               .info{
                 margin: 0 !important;
                 font-size: 15px !important;
-                color: #707070 !important;
+                color: $color-gray1 !important;
                 font-weight: 400 !important;
                 width: 235px !important;
                 display: flex;
@@ -86,7 +86,7 @@
                 }
               }
               .author{
-               color: #707070 !important;
+               color: $color-gray1 !important;
                font-weight: 700 !important;
               }
           }
@@ -97,7 +97,7 @@
             font-weight: 600;
             color:$color-main;
             }
-         .graphListFooter {    
+         .graphListFooter {
               .ghButton{
                 padding: 0 !important;
                 padding-right: 17px !important;
@@ -139,11 +139,11 @@
               border-radius: 5px;
           .ar-popover-trigger{
            cursor: pointer;
-          }  
-           
+          }
+
          .buttonHidden{
           display: flex;
-          
+
           .btn-edit  {
              border: none;
              background-color: $color-main;
@@ -162,7 +162,7 @@
               transition: 0.2s;
               cursor: pointer;
             }
-          
+
            }
            .btn-preview  {
                border: 1px solid $color-white;
@@ -175,7 +175,7 @@
                display: flex;
                justify-content: center;
                align-items: center;
-          
+
             &:hover {
               color: #7166f8;
               background-color: $color-white;
@@ -210,8 +210,8 @@
         margin-left:10px !important;
         width: 120px !important;
         height: 44px !important;
-        
-      } 
+
+      }
       .lastItem{
         margin-left: auto !important;
         display: flex;
@@ -249,7 +249,7 @@
         border-radius: 5px !important;
         width: 120px;
         height: 44px;
-        
+
       }
      .item.active .ghButton {
       background: -webkit-linear-gradient(#F07760, #7166F8);
@@ -263,7 +263,7 @@
     }
 
     }
-  
+
     .tab_card .cart-item, .list .list-item {
      svg > path {
         fill: $color-main !important;
@@ -310,9 +310,9 @@
    border-radius: 5px;
    padding: 20px;
     .graphListHeader {
-      display: flex; 
-      justify-content: flex-start; 
-      align-items: center; 
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
       position: unset !important;
     }
     .top{
@@ -350,7 +350,7 @@
          .info{
           margin: 0 !important;
           font-size: 16px !important;
-          color: #707070 !important;
+          color: $color-gray1 !important;
           font-weight: 400 !important;
           width: 200px !important;
           display: flex;
@@ -360,7 +360,7 @@
             }
          }
          .author{
-           color: #707070 !important;
+           color: $color-gray1 !important;
            font-weight: 700 !important;
            font-size: 16px !important;
          }
@@ -373,7 +373,7 @@
       .infoContent{
        display: flex;
       }
-     
+
     }
     div{
        h3{
@@ -385,15 +385,14 @@
          .grpahTitle{
           display: none !important;
         }
-      } 
+      }
       .descriptionGraph{
        margin-top: 20px;
        min-height: 28px;
        margin-bottom: 20px;
        font-size: 14px;
-       color: #707070;
+       color: $color-gray1;
        max-width: 185px;
-       line-height: none;
        line-height: 14px;
       }
     }
@@ -414,7 +413,7 @@
                );
            cursor: pointer;
         }
-        
+
       }
     .thumbnail{
          border: 1px solid #d9d9d9;
@@ -427,7 +426,7 @@
          align-items: center;
          opacity: .9;
          object-fit: cover;
-     } 
+     }
     }
     .buttonView{
          display: none;
@@ -476,18 +475,18 @@
          display: flex;
          justify-content: center;
          align-items: center;
-    
+
       &:hover {
         color: #7166f8;
         background-color: $color-white;
         transition: 0.2s;
         cursor: pointer;
       }
-     }      
+     }
     }
     .graphListFooter{
       justify-content: flex-start;
-     
+
       .ghButton {
        padding: 18px 17px 2px 0px !important;
    }

@@ -714,12 +714,12 @@ p {
   padding-bottom: 20px;
 
   .input-range__slider {
-    background: #C4C4C4;
-    border: 1px solid #C4C4C4;
+    background: $color-light-gray3;
+    border: 1px solid $color-light-gray3;
   }
 
   .input-range__track--active {
-    background-color: #707070;
+    background-color: $color-gray1;
   }
 
   .input-range__label--value {
@@ -2774,7 +2774,6 @@ p {
       width: 100%;
 
       h3 {
-        text-align: center;
         color: #7166F8;
         margin-bottom: 20px;
         margin-top: 20px;
@@ -2870,9 +2869,6 @@ p {
       height: 30px;
       font-size: 11px;
       min-width: 80px;
-      background: #FFFFFF;
-      box-shadow: 0px 4px 36px rgb(0 0 0 / 16%);
-      color: #7166F8;
     }
   }
 
@@ -3029,8 +3025,8 @@ p {
 
         .badge {
           position: absolute;
-          left: 70px;
-          top: -2px;
+          margin-left: 37px;
+          margin-top: 4px;
           transform: translate(-50%);
           color: #7B7B7B;
           pointer-events: none;
@@ -3521,7 +3517,7 @@ body .gh__menu {
 
               .nodeType {
                 margin: 0 21px;
-                
+
                 .typeText {
                   color: $color-border;
                   font-weight: 800;
@@ -3643,7 +3639,7 @@ body .gh__menu {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     .nodeItem {
       height: 44px;
     }
@@ -4454,7 +4450,7 @@ body .gh__menu {
       height: 40px !important;
 
       path {
-        fill: #707070 !important;
+        fill: $color-gray1 !important;
       }
     }
   }
@@ -4609,7 +4605,7 @@ body .gh__menu {
   width: 64%;
   margin: 0 auto 50px;
   align-items: flex-start;
-  position: relative; 
+  position: relative;
   top: 130px;
 
   .tabsList {
@@ -4987,13 +4983,13 @@ body .gh__menu {
       color: $color-main;
       margin-bottom: 10px;
     }
-  
+
     .row {
       display: flex;
       align-items: center;
       margin: 0;
     }
-  
+
     input {
       width: 438px;
       height: 35px;
@@ -7118,7 +7114,7 @@ img.preview-scaled {
     &:hover{
       background: rgba(113, 102, 248, 0.1);
       cursor: pointer;
-      .dashboard-delete{ 
+      .dashboard-delete{
         color: $color-avatar-border;
         font-weight: 700;
       }
@@ -7990,7 +7986,7 @@ img.preview-scaled {
         width: 90%;
 
         .searchFieldCheckBox {
-          justify-content: center; 
+          justify-content: center;
           display: flex;
           flex-direction: column;
 	  cursor: pointer;
@@ -8599,7 +8595,7 @@ img.preview-scaled {
   height: 75px;
   background-color: #fff;
   position: fixed;
-  width: 100%; 
+  width: 100%;
   z-index: 1;
 .start-graphs {
   .buttonsWrapper  {
@@ -8625,8 +8621,8 @@ img.preview-scaled {
         border: 1px solid $color-main;
         color: $color-main;
       }
-    }  
-    
+    }
+
     .btn-comparegraph {
       width: 216px;
       height: 42px;
@@ -8647,7 +8643,7 @@ img.preview-scaled {
         background-color: $color-main;
         color: #ffffff;
       }
-    }  
+    }
 
     .ghButton {
       margin-right: 30px;
@@ -8666,7 +8662,7 @@ img.preview-scaled {
     color: $color-graph-name !important;
     border-radius: 5px;
     border: 1px solid #B3ADF5;
-} 
+}
 }
 
 .logo-graphs, .searchInputWrapper, .start-graphs, .notify_container, .signOut {
@@ -8908,30 +8904,27 @@ img.preview-scaled {
 .btn-classic {
   min-width: 125px;
   height: 42px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 3px;
-  line-height: normal;
-  font-weight: 400;
-  font-style: normal;
-  transition: all 0.25s;
-  text-align: center;
   font-size: 20px;
-  color: $color-white;
+  color: #ffffff;
   cursor: pointer;
-  touch-action: manipulation;
-  outline: none;
   border: solid 1px;
-  border-color: $color-main;
-  user-select: none;
-  background-color: $color-main;
-  opacity: 1;
+  border-color: #7166F8;
+  background-color: #7166F8;
 
   &:hover {
     background-color: $color-white;
     color: $color-main;
     border-color: $color-main;
+  }
+
+  &.alt {
+    background: #FFFFFF;
+    color: #7166F8;
+
+    &:hover {
+      background-color: $color-main;
+      color: $color-white;
+    }
   }
 }
 
@@ -9346,6 +9339,7 @@ img.preview-scaled {
 .number-wrapper {
   .number-input-container {
     margin: 0 auto;
+    user-select: none;
   }
 
   input {
@@ -9403,7 +9397,7 @@ img.preview-scaled {
   }
 }
 
- 
+
   .connection-item {
     display: flex;
     align-items: center;
@@ -9422,7 +9416,7 @@ img.preview-scaled {
     a {
       cursor: auto;
     }
-  } 
+  }
   #graphs-data-info{
     display: flex;
       justify-content: center;
@@ -9431,8 +9425,8 @@ img.preview-scaled {
       left: 213px;
       bottom: 2%;
       div {
-        display: flex; 
-        padding: 15px 15px; 
+        display: flex;
+        padding: 15px 15px;
         color: #727272;
         align-items: center;
         box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
@@ -9458,7 +9452,7 @@ img.preview-scaled {
     bottom: 0;
     margin: 30px;
     border-radius: 50%;
-    border: none; 
+    border: none;
     -webkit-transition: 0.4s opacity ease;
     transition: 0.4s opacity ease;
     cursor: pointer;
