@@ -25,6 +25,9 @@ class SearchModal extends Component {
     setActiveTab: PropTypes.func.isRequired,
     graphTabs: PropTypes.array.isRequired,
     graphId: PropTypes.number.isRequired,
+    singleGraph: PropTypes.object.isRequired,
+    userId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.number.isRequired,
   };
 
   constructor(props) {
@@ -86,13 +89,14 @@ class SearchModal extends Component {
    * @returns
    */
   searchResults = async (search) => {
-    const { graphId } = this.props
+    const { graphId, currentUserId, userId } = this.props
     const { checkBoxValues } = this.state
     const argument = {
       s: search,
       graphId,
       findNode: false,
       searchParameters: checkBoxValues,
+      isOwner: currentUserId === userId ? true : false
     };
     const searchResults = await this.props.getGraphNodesRequest(1, argument);
     return searchResults.payload.data;
@@ -795,7 +799,10 @@ class SearchModal extends Component {
 const mapStateToProps = (state) => ({
   graphTabs: state.graphs.graphTabs,
   graphId: state.graphs.singleGraph.id,
-  links: state.graphs.singleGraph.links
+  singleGraph: state.graphs.singleGraph,
+  userId: state.graphs.singleGraph.userId,
+  currentUserId: state.account.myAccount.id,
+
 });
 
 const mapDispatchToProps = {
