@@ -714,17 +714,17 @@ p {
   padding-bottom: 20px;
 
   .input-range__slider {
-    background: $color-main2;
-    border: 1px solid $color-main2;
+    background: $color-light-gray3;
+    border: 1px solid $color-light-gray3;
   }
 
   .input-range__track--active {
-    background-color: $color-main2;
+    background-color: $color-gray1;
   }
 
   .input-range__label--value {
     .input-range__label-container {
-      color: $color-main;
+      color: $color-graph-name;
     }
   }
 
@@ -1448,6 +1448,7 @@ p {
       color: #757575;
       cursor: pointer;
       font-weight: bold;
+      user-select: none;
     }
 
     .ghModalContent {
@@ -2623,13 +2624,15 @@ p {
     left: 15px;
     top: 145px;
     margin-right: 0;
-    padding-right: 0;
+    background-color: white !important;
+    width: 50px;
 
     .icon {
-      margin: 0;
+      margin: -5px 0 0;
 
       svg {
         min-width: 30px;
+        height: 15px !important;
       }
     }
   }
@@ -2669,9 +2672,10 @@ p {
   .back {
     position: absolute;
     left: 15px;
-    top: 222px;
+    top: 190px;
     margin-right: 0;
-    padding-right: 0;
+    background-color: white !important;
+    width: 50px;
     z-index: 2;
 
     .icon {
@@ -2679,6 +2683,7 @@ p {
 
       svg {
         min-width: 30px;
+        height: 15px !important;
       }
     }
   }
@@ -2729,11 +2734,16 @@ p {
 }
 
 .ghModalFiltersOverlay {
-  width: 35%;
+  width: 300px;
   right: 0;
   left: auto;
   z-index: 10;
   background-color: transparent;
+  box-shadow: none;
+
+  summary {
+    color: $color-graph-name;
+  }
 
   .close {
     background-color: transparent;
@@ -2754,6 +2764,49 @@ p {
     padding-left: 10%;
     padding-top: 7%;
     padding-bottom: 15%;
+    box-shadow: 0 4px 36px rgba(0, 0, 0, 0.16);
+
+    .filter-container {
+      width: 100%;
+
+      h3 {
+        color: #7166F8;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+
+      .filterCheckBox {
+        margin-left: 18px;
+      }
+
+      .hideIsolated {
+        margin-left: 0;
+
+        .filterCheckBox {
+          width: 100%;
+          margin-left: 0;
+
+          .ghCheckbox {
+            justify-content: start;
+            margin: 5px 0;
+          }
+        }
+      }
+
+      [type="checkbox"]:not(:checked) + label:after,
+      [type="checkbox"]:checked + label:after {
+        top: 0.85em;
+        left: 0.145em;
+        font-size: 1.01em;
+      }
+
+      [type="checkbox"]:not(:checked) + label:before,
+      [type="checkbox"]:checked + label:before {
+        width: 1em;
+        height: 1em;
+        top: 4px;
+      }
+    }
 
     .dropdownArrow {
       padding: 0;
@@ -2769,13 +2822,8 @@ p {
     .row {
       span, label {
         font: normal normal normal 16px/22px Open Sans;
-        color: #8794A3;
+        color: $color-passive;
       }
-    }
-
-    .filterCheckBox {
-      width: 50%;
-      margin-left: 5%;
     }
 
     .nestedCheckBox {
@@ -2812,11 +2860,20 @@ p {
         }
       }
     }
+
+    .resetButton {
+      height: 30px;
+      font-size: 11px;
+      min-width: 80px;
+    }
   }
 
   .resetAll {
     display: block;
-    margin-left: -1%;
+
+    div {
+      margin: 10px 0;
+    }
   }
 
   .row {
@@ -2824,11 +2881,6 @@ p {
       font: normal normal normal 16px/22px Open Sans;
       color: #8794A3;
     }
-  }
-
-  .filterCheckBox {
-    width: 50%;
-    margin-left: 5%;
   }
 
   .nestedCheckBox {
@@ -2856,13 +2908,6 @@ p {
 
     .labelCheckAllBlock {
       display: block;
-    }
-
-    .list {
-      .item {
-        display: flex;
-        margin-top: 2%;
-      }
     }
   }
 }
@@ -2925,6 +2970,8 @@ p {
       .badge {
         margin-left: auto;
         align-self: flex-start;
+        margin-top: 12px;
+        color: $color-graph-name;
       }
     }
   }
@@ -2935,6 +2982,7 @@ p {
 
   .ghCheckbox {
     width: 100%;
+    margin: 5px 0;
 
     label {
       order: 1;
@@ -2973,10 +3021,10 @@ p {
 
         .badge {
           position: absolute;
-          left: 100%;
-          top: 7px;
+          margin-left: 37px;
+          margin-top: 4px;
           transform: translate(-50%);
-          color: $color-white;
+          color: #7B7B7B;
           pointer-events: none;
         }
 
@@ -3031,10 +3079,12 @@ p {
   align-items: flex-end;
   height: 80px;
   margin-bottom: -10px;
+  padding-right: 40px;
+  padding-top: 10px;
 
   .item {
     flex: 1;
-    background-color: $color-gray;
+    background-color: $color-main;
     margin: 0 0.5px;
   }
 }
@@ -3996,19 +4046,6 @@ body .gh__menu {
   padding: 0 46px;
 
   details {
-    padding-bottom: 16px;
-    margin: 20px 0;
-
-    summary {
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      width: 170px;
-
-      &::marker {
-        color: $color-main;
-      }
-    }
 
     .connection-container {
       overflow-x: hidden;
@@ -4409,7 +4446,7 @@ body .gh__menu {
       height: 40px !important;
 
       path {
-        fill: #707070 !important;
+        fill: $color-gray1 !important;
       }
     }
   }
@@ -8862,30 +8899,27 @@ img.preview-scaled {
 .btn-classic {
   min-width: 125px;
   height: 42px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 3px;
-  line-height: normal;
-  font-weight: 400;
-  font-style: normal;
-  transition: all 0.25s;
-  text-align: center;
   font-size: 20px;
-  color: $color-white;
+  color: #ffffff;
   cursor: pointer;
-  touch-action: manipulation;
-  outline: none;
   border: solid 1px;
-  border-color: $color-main;
-  user-select: none;
-  background-color: $color-main;
-  opacity: 1;
+  border-color: #7166F8;
+  background-color: #7166F8;
 
   &:hover {
     background-color: $color-white;
     color: $color-main;
     border-color: $color-main;
+  }
+
+  &.alt {
+    background: #FFFFFF;
+    color: #7166F8;
+
+    &:hover {
+      background-color: $color-main;
+      color: $color-white;
+    }
   }
 }
 
@@ -9300,6 +9334,7 @@ img.preview-scaled {
 .number-wrapper {
   .number-input-container {
     margin: 0 auto;
+    user-select: none;
   }
 
   input {
@@ -9339,6 +9374,24 @@ img.preview-scaled {
     top: 19px;
   }
 }
+.connectionDetails, .ghModalFilters {
+  details {
+    padding-bottom: 16px;
+    margin: 10px 0;
+
+    summary {
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      width: 170px;
+
+      &::marker {
+        color: $color-main;
+      }
+    }
+  }
+}
+
  
   .connection-item {
     display: flex;

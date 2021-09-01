@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
+import InputRange from 'react-input-range';
 import { setFilter } from '../../store/actions/app';
 import Checkbox from '../form/Checkbox';
 import Button from '../form/Button';
@@ -63,44 +64,44 @@ class KeywordsFilter extends Component {
     const allChecked = keywords.length === filters.nodeKeywords.length;
     return (
       <div className="tagsFilter graphFilter">
-        <h4 className="title">Node Keywords</h4>
-        <ul className="list">
-          <li className="item">
-            <div className="filterCheckBox">
-              <Checkbox
-                label={allChecked ? 'Uncheck All' : 'Check All'}
-                checked={allChecked}
-                onChange={() => this.toggleAll(keywords, allChecked)}
-                className="graphsCheckbox"
-              >
-              </Checkbox>
-            </div>
-            <span className="badge">
-                {_.sumBy(keywords, 'length')}
-              </span>
-          </li>
-          {types.map((item) => (
-            <li key={item.keyword} className="item">
+        <details open>
+          <summary>
+            Node Keywords
+          </summary>
+          <ul className="list">
+            <li className="item">
               <div className="filterCheckBox">
                 <Checkbox
-                  label={item.keyword}
-                  checked={filters.nodeKeywords.includes(item.keyword)}
-                  onChange={() => this.handleChange(item.keyword)}
-                  className="graphsCheckbox"
-                >
-                </Checkbox>
+                  label="All"
+                  checked={allChecked}
+                  onChange={() => this.toggleAll(keywords, allChecked)}
+                />
               </div>
               <span className="badge">
+                {_.sumBy(keywords, 'length')}
+              </span>
+            </li>
+            {types.map((item) => (
+              <li key={item.keyword} className="item">
+                <div className="filterCheckBox">
+                  <Checkbox
+                    label={item.keyword}
+                    checked={filters.nodeKeywords.includes(item.keyword)}
+                    onChange={() => this.handleChange(item.keyword)}
+                  />
+                </div>
+                <span className="badge">
                   {item.length}
                 </span>
-            </li>
-          ))}
-        </ul>
-        {keywords.length > types.length || showMore ? (
-          <Button onClick={this.toggleMore}>
-            {showMore ? '- Less' : '+ More'}
-          </Button>
-        ) : null}
+              </li>
+            ))}
+          </ul>
+          {keywords.length > types.length || showMore ? (
+            <Button onClick={this.toggleMore}>
+              {showMore ? '- Less' : '+ More'}
+            </Button>
+          ) : null}
+        </details>
       </div>
     );
   }

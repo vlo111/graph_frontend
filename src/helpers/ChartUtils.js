@@ -293,6 +293,20 @@ class ChartUtils {
     return link?.color
   }
   /**
+   * 
+   * @param {*} nodes 
+   * @param {*} linksPartial 
+   * @returns 
+   */
+  static getLinksBetweenNodes(nodes, linksPartial){ 
+    const links = linksPartial.filter((l) => 
+       nodes && nodes.some((n) => (l.target === n.id)) 
+         && nodes.some((n) => (l.source === n.id))    
+    );
+    return links
+
+  }
+  /**
    * Fit data
    */
   static autoScale() { 

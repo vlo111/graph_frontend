@@ -18,7 +18,7 @@ import LabelsFilter from './LabelsFilter';
 import LabelStatusFilter from './LabelStatusFilter';
 
 import Utils from '../../helpers/Utils';
-import { getGraphInfoRequest } from "../../store/actions/graphs";
+import { getGraphInfoRequest } from '../../store/actions/graphs';
 
 class FiltersModal extends Component {
   static propTypes = {
@@ -70,11 +70,10 @@ class FiltersModal extends Component {
 
   closeFilter = async () => {
     const { match: { params: { graphId = '', token = '' } } } = this.props;
-    await this.props.resetFilter();
     setTimeout(() => {
       Utils.isInEmbed()
-        ? this.props.history.replace(`/graphs/view/${graphId}/${token}`)
-        : this.props.history.replace(`/graphs/view/${graphId}`);
+        ? this.props.history.replace(`/graphs/update/${graphId}/${token}`)
+        : this.props.history.replace(`/graphs/update/${graphId}`);
     }, 200);
   }
 
@@ -91,43 +90,47 @@ class FiltersModal extends Component {
         isOpen
       >
         {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
-          <>
-            <Link
-              to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/view/${graphId}`}
-              replace
-            >
-              <Button className="close" icon={<CloseIcon />} onClick={this.props.resetFilter} />
-            </Link>
-          </>
-        )}
-        <div className="row resetAll">
-          <span
-            className="nodeCount"
+        <>
+          <Link
+            to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/view/${graphId}`}
+            replace
           >
-            {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${totalNodes}`}
-          </span>
-          <div>
-            <Button className="ghButton2 resetButton" onClick={this.props.resetFilter}>RESET ALL</Button>
+            <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
+          </Link>
+        </>
+        )}
+        <div className="filter-container">
+          <h3 className="title">Filter</h3>
+          <div className="row resetAll">
+            <div>
+              <button className="btn-classic alt resetButton" onClick={this.props.resetFilter}>RESET ALL</button>
+            </div>
+            <span
+              className="nodeCount"
+            >
+              {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${totalNodes}`}
+            </span>
           </div>
+
+          <IsolatedFilter />
+
+          <NodesFilter nodes={nodes} />
+
+          <NodesStatusFilter nodes={nodes} />
+
+          <LinkTypesFilter links={links} />
+
+          <LabelsFilter labels={labels} nodes={nodes} />
+
+          <LabelStatusFilter labels={labels} nodes={nodes} />
+
+          <LinkValueFilter links={links} />
+
+          <KeywordsFilter nodes={nodes} />
+
+          <NodeConnectionFilter links={links} nodes={nodes} />
+
         </div>
-
-        <IsolatedFilter />
-
-        <NodesFilter nodes={nodes} />
-
-        <NodesStatusFilter nodes={nodes} />
-
-        <LinkTypesFilter links={links} />
-
-        <LabelsFilter labels={labels} nodes={nodes} />
-
-        <LabelStatusFilter labels={labels} nodes={nodes} />
-
-        <LinkValueFilter links={links} />
-
-        <NodeConnectionFilter links={links} nodes={nodes} />
-
-        <KeywordsFilter nodes={nodes} />
       </Modal>
     );
   }
@@ -135,12 +138,11 @@ class FiltersModal extends Component {
 
 const mapStateToProps = (state) => ({
   userGraphs: state.shareGraphs.userGraphs,
-
 });
 
 const mapDispatchToProps = {
   resetFilter,
-  getGraphInfoRequest
+  getGraphInfoRequest,
 };
 
 const Container = connect(

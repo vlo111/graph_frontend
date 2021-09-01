@@ -434,21 +434,17 @@ class SearchModal extends Component {
    */
   showSelectedNodes = ( keep = false ) => {
     let { chosenNodes } = this.state
-    const { links } = this.props.singleGraph
+    const { linksPartial } = this.props
     
     if (keep) {
       const oldNodes = Chart.getNodes()
       chosenNodes = chosenNodes.concat(oldNodes)
     }
-    chosenNodes = chosenNodes.filter( (node, position) => {
-      return chosenNodes.findIndex(n => n.id === node.id) === position
-    })
-
-    const availableLinks = Chart.getLinksBetweenNodes(chosenNodes, links)
+    const links = ChartUtils.getLinksBetweenNodes(chosenNodes, linksPartial);
     Chart.render(
       {
         nodes: chosenNodes, 
-        links: availableLinks, 
+        links: links, 
         labels: []
       }, {
         ignoreAutoSave: true,
@@ -836,7 +832,7 @@ const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
   userId: state.graphs.singleGraph.userId,
   currentUserId: state.account.myAccount.id,
-
+  linksPartial: state.graphs.singleGraph?.linksPartial || [],
 });
 
 const mapDispatchToProps = {

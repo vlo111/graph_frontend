@@ -90,79 +90,83 @@ class NodeTypesFilter extends Component {
   render() {
     const { showMore, openList } = this.state;
     const {
-      nodes, filters, customFields, graphFilterInfo: { nodeTypes = [] },
+      nodes, filters, customFields, graphFilterInfo: { nodeTypes = [] }, singleGraph
     } = this.props;
     this.checkAllNodes(nodeTypes);
     const types = showMore ? nodeTypes : _.chunk(nodeTypes, 5)[0] || [];
     if (nodeTypes.length < 2) {
       return null;
     }
+    if (singleGraph) {
+    }
+    console.log(singleGraph[0]?.nodes[0]?.customFields)
     const allChecked = nodeTypes.length === filters.nodeTypes.length;
     return (
       <div className="nodesTypesFilter graphFilter">
-        <h4 className="title">Node Types</h4>
-        <ul className="list">
-          <li className="item">
-            <div className="filterCheckBox">
-              <Checkbox
-                label={allChecked ? 'Uncheck All' : 'Check All'}
-                checked={allChecked}
-                onChange={() => this.toggleAll(nodeTypes, allChecked)}
-                className="graphsCheckbox"
-              />
-            </div>
-            <span className="badge">
-              {_.sumBy(nodeTypes, 'length')}
-            </span>
-          </li>
-          {types.map((item) => (
-            <li key={item.type} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
+        <details open>
+          <summary>
+            Node Types
+          </summary>
+          <ul className="list">
+            <li className="item">
               <div className="filterCheckBox">
-                <input
-                  onChange={() => this.handleChange(item.type)}
-                  checked={filters.nodeTypes.includes(item.type)}
-                  className="graphsCheckbox"
-                  type="checkbox"
-                  name="layout"
-                  id={item.type}
+                <Checkbox
+                  label="All"
+                  checked={allChecked}
+                  onChange={() => this.toggleAll(nodeTypes, allChecked)}
                 />
-                <label className="pull-left" htmlFor={item.type}>{item.type}</label>
-                <div>
-                  {!_.isEmpty(customFields[item.type]) ? (
-                    <Button
-                      className="dropdownArrow"
-                      icon="fa-chevron-down"
-                      onClick={() => this.toggleDropdown(item.type)}
-                    />
-                  ) : null}
-                  {openList.includes(item.type) && customFields[item.type] ? (
-                    <ul className="list subList">
-                      {_.map(customFields[item.type], (val, key) => (
-                        <li key={key} className="item">
-                          <div className="filterCheckBox nestedCheckBox">
-                            <input
-                              onChange={() => this.handleFilterChange(key)}
-                              checked={filters.nodeCustomFields.includes(key)}
-                              className="graphsCheckbox"
-                              type="checkbox"
-                              name="layout"
-                              id={key}
-                            />
-                            <label className="pull-left" htmlFor={key}>{key}</label>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </div>
               </div>
-              <div className="dashed-border" />
               <span className="badge">
-                {item.length}
+                {_.sumBy(nodeTypes, 'length')}
               </span>
             </li>
-          ))}
-        </ul>
+            {types.map((item) => (
+              <li key={item.type} className="item">
+                <div className="filterCheckBox">
+                  <Checkbox
+                    onChange={() => this.handleChange(item.type)}
+                    checked={filters.nodeTypes.includes(item.type)}
+                    label={item.type}
+                    name="layout"
+                    id={item.type}
+                  />
+                  {/* <label className="pull-left" htmlFor={item.type}>{item.type}</label> */}
+                  <div>
+                    {!_.isEmpty(customFields[item.type]) ? (
+                      <Button
+                        className="dropdownArrow"
+                        icon="fa-chevron-down"
+                        onClick={() => this.toggleDropdown(item.type)}
+                      />
+                    ) : null}
+                    {openList.includes(item.type) && customFields[item.type] ? (
+                      <ul className="list subList">
+                        {_.map(customFields[item.type], (val, key) => (
+                          <li key={key} className="item">
+                            <div className="filterCheckBox nestedCheckBox">
+                              <Checkbox
+                                onChange={() => this.handleFilterChange(key)}
+                                checked={filters.nodeCustomFields.includes(key)}
+                                label={key}
+                                name="layout"
+                                id={key}
+                              />
+                              <label className="pull-left" htmlFor={key}>{key}</label>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                </div>
+                <div className="dashed-border" />
+                <span className="badge">
+                  {item.length}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </details>
         {nodeTypes.length > types.length || showMore ? (
           <Button onClick={this.toggleMore}>
             {showMore ? '- Less' : '+ More'}
@@ -176,6 +180,7 @@ class NodeTypesFilter extends Component {
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
   customFields: state.graphs.singleGraph.customFields || {},
+  singleGraph: state.graphs.singleGraph || {},
   graphFilterInfo: state.graphs.graphFilterInfo,
 });
 
