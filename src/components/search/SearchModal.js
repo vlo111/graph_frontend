@@ -406,18 +406,23 @@ class SearchModal extends Component {
     }
     const { chosenNodes } = this.state
     const ifExists = chosenNodes.find(nd => nd.code === name);
+
+    const listClass = document.getElementsByClassName('list')[0]
+    const allCheckboxes = Array.from(listClass.children)
+    const allNodesSelected = !allCheckboxes.find(el => el.firstChild.checked === false)
+
     if (ifExists) {
       const index = chosenNodes.indexOf(ifExists)
       chosenNodes.splice(index, 1)
+      if (!chosenNodes.length) {
+        this.setState({allNodesSelected})
+      }
     } else {
       node.code = name
       chosenNodes.push(node)
 
-      const listClass = document.getElementsByClassName('list')[0]
-      const allCheckboxes = Array.from(listClass.children)
-      const allNodesSelected = !allCheckboxes.find(el => el.firstChild.checked === false)
       if (allNodesSelected) {
-        this.setState({allNodesSelected: allNodesSelected})
+        this.setState({allNodesSelected})
       }
     }
     this.setState({chosenNodes})
@@ -561,7 +566,7 @@ class SearchModal extends Component {
                 className=""
                 name={`selectAll`}
                 type="checkbox"
-                checked={this.state.isChecked}
+                checked={allNodesSelected}
                 onChange={this.selectAllNodes} 
               />
             </div>
