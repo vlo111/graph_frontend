@@ -4054,19 +4054,6 @@ body .gh__menu {
   padding: 0 46px;
 
   details {
-    padding-bottom: 16px;
-    margin: 20px 0;
-
-    summary {
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      width: 170px;
-
-      &::marker {
-        color: $color-main;
-      }
-    }
 
     .connection-container {
       overflow-x: hidden;
