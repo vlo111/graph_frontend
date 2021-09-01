@@ -27,6 +27,8 @@ class SearchModal extends Component {
     graphTabs: PropTypes.array.isRequired,
     graphId: PropTypes.number.isRequired,
     singleGraph: PropTypes.object.isRequired,
+    userId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.number.isRequired,
   };
 
   constructor(props) {
@@ -98,15 +100,22 @@ class SearchModal extends Component {
    * @returns
    */
   searchResults = async (search) => {
-    const { graphId } = this.props
+    const { graphId, currentUserId, userId } = this.props
     const { checkBoxValues } = this.state
     const argument = {
       s: search,
       graphId,
       findNode: false,
       searchParameters: checkBoxValues,
+      isOwner: currentUserId === userId ? true : false
     };
+    var time = new Date()
+    console.log('start: ', time.getSeconds(), ':', time.getMilliseconds())
+    
     const searchResults = await this.props.getGraphNodesRequest(1, argument);
+    
+    time = new Date()
+    console.log('end: ', time.getSeconds(), ':', time.getMilliseconds(), '\n')
     return searchResults.payload.data;
   };
 
@@ -812,6 +821,8 @@ const mapStateToProps = (state) => ({
   graphTabs: state.graphs.graphTabs,
   graphId: state.graphs.singleGraph.id,
   singleGraph: state.graphs.singleGraph,
+  userId: state.graphs.singleGraph.userId,
+  currentUserId: state.account.myAccount.id,
 
 });
 
