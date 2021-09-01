@@ -1804,6 +1804,7 @@ class Chart {
       ChartInfography.render(this);
 
       this.event.emit('render', this);
+      this.event.emit('expandData', this);
       return this;
     } catch (e) {
       console.error(e);

@@ -36,7 +36,10 @@ class CreateGraphModal extends Component {
   }
 
   componentDidMount() {
-    Chart.loading(false);
+    const {show} = this.props
+    if (show) {
+      Chart.loading(false);
+    }
   }
 
   handleChange = (path, value) => {

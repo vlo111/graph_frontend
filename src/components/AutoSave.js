@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Chart from '../Chart';
-import { getSingleGraphRequest, updateGraphPositionsRequest, updateGraphThumbnailRequest, getGraphsListRequest } from '../store/actions/graphs';
+import { getSingleGraphRequest, 
+  updateGraphPositionsRequest, 
+  updateGraphThumbnailRequest, 
+  getGraphsListRequest,
+} from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
 import {
   createNodesRequest,
@@ -14,6 +18,7 @@ import {
   updateNodesRequest,
 } from '../store/actions/nodes';
 import { createLinksRequest, deleteLinksRequest, updateLinksRequest } from '../store/actions/links';
+import { toggleDeleteState } from '../store/actions/app';
 import {
   createLabelsRequest,
   deleteLabelsRequest, toggleFolderRequest,
@@ -27,6 +32,7 @@ class AutoSave extends Component {
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     defaultImage: PropTypes.bool.isRequired,
+    deleteState: PropTypes.bool.isRequired,
 
     createNodesRequest: PropTypes.func.isRequired,
     deleteNodesRequest: PropTypes.func.isRequired,
@@ -47,9 +53,10 @@ class AutoSave extends Component {
     updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
     
     getSingleGraphRequest: PropTypes.func.isRequired,
+    getGraphsListRequest: PropTypes.func.isRequired,
 
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
-     getGraphsListRequest: PropTypes.func.isRequired,
+    getGraphsListRequest: PropTypes.func.isRequired,
   }
 
   async componentDidMount() {
@@ -74,7 +81,9 @@ class AutoSave extends Component {
 
   componentWillUnmount() {
     clearTimeout(this.thumbnailTimeout);
-    this.thumbnailListener();
+    if (typeof(this.thumbnailListener) === "function") {
+      this.thumbnailListener();
+    }
     window.removeEventListener('beforeunload', this.handleUnload);
   }
 
@@ -183,6 +192,7 @@ class AutoSave extends Component {
   }
 
   saveGraph = async () => {
+    const deleteState = this.props.deleteState
     const { match: { params: { graphId } } } = this.props;
     if (!graphId || Chart.isAutoPosition) {
       return;
@@ -302,7 +312,7 @@ class AutoSave extends Component {
     if (updateNodes.length) {
       promise.push(this.props.updateNodesRequest(graphId, updateNodes));
     }
-    if (deleteNodes.length) {
+    if (deleteNodes.length && deleteState) {
       promise.push(this.props.deleteNodesRequest(graphId, deleteNodes));
     }
     // if (updateNodePositions.length) {
@@ -324,7 +334,7 @@ class AutoSave extends Component {
     if (updateLinks.length) {
       promise.push(this.props.updateLinksRequest(graphId, updateLinks));
     }
-    if (deleteLinks.length) {
+    if (deleteLinks.length && deleteState) {
       promise.push(this.props.deleteLinksRequest(graphId, deleteLinks));
     }
 
@@ -338,7 +348,7 @@ class AutoSave extends Component {
     // if (updateLabelPositions.length) {
     //   promise.push(this.props.updateLabelPositionsRequest(graphId, updateLabelPositions));
     // }
-    if (deleteLabels.length) {
+    if (deleteLabels.length && deleteState) {
       promise.push(this.props.deleteLabelsRequest(graphId, deleteLabels));
     }
     Chart.event.emit('auto-save');
@@ -355,6 +365,7 @@ class AutoSave extends Component {
        
     });
     document.body.classList.remove('autoSave');
+    this.props.toggleDeleteState(false)
   }
 
   handleUnload = (ev) => {
@@ -364,8 +375,12 @@ class AutoSave extends Component {
   }
 
   handleRouteChange = (newLocation) => {
+    if (Chart.isLoading()) {
+      return
+    }
     const { location } = this.props;
     if (location.pathname !== newLocation.pathname) {
+      Chart.loading(true)
       this.updateThumbnail();
     }
   }
@@ -390,7 +405,8 @@ class AutoSave extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  defaultImage: state.graphs.singleGraph.defaultImage
+  defaultImage: state.graphs.singleGraph.defaultImage,
+  deleteState: state.app.deleteState,
 });
 
 const mapDispatchToProps = {
@@ -414,7 +430,8 @@ const mapDispatchToProps = {
   deleteLabelsRequest,
   toggleFolderRequest,
   getSingleGraphRequest,
-  getGraphsListRequest
+  getGraphsListRequest,
+  toggleDeleteState
 };
 
 const Container = connect(

@@ -62,7 +62,6 @@
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr) );
 
     .graphs {
-      right: 166px;
       position: relative;
     }
 
@@ -287,7 +286,12 @@
   .ghModalSearch {
     width: 70%;
   }
-
+  .searchNodes .searchField .searchBox .searchBoxInside .searchFieldCheckBox {
+    width: 5em;
+     .searchFieldCheckBox {
+      width: 5em;
+    }
+  }
   .scienceResultsList {
     flex-direction: row;
     flex-wrap: wrap;
