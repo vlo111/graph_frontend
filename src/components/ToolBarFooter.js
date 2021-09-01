@@ -1,36 +1,60 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import React, { Component  } from 'react'; 
+import { connect } from 'react-redux'; 
 import PropTypes from 'prop-types'; 
-import { getGraphInfoRequest } from '../store/actions/graphs';
-
+import { getGraphInfoRequest } from '../store/actions/graphs'; 
+import Chart from '../Chart';  
 
 class ToolBarFooter extends Component {
   static propTypes = {
     getGraphInfoRequest: PropTypes.func.isRequired,
     graphId: PropTypes.number.isRequired,
     graphInfo: PropTypes.object.isRequired,
-  };   
+  };  
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      totalNodes: 0,
+      totalLinks: 0,
+      totalLabels: 0,
+    };
+  } 
+  componentDidMount() { 
+    Chart.event.on('expandData', this.expandData); 
+  }
+
+  componentWillUnmount() { 
+    Chart.event.on('expandData', this.expandData); 
+  }
+  expandData = (ev) => {  
+   let nodes = Chart.getNodes(true);
+   let links = Chart.getLinks(true);
+   let labels = Chart.getLabels(); 
+    this.setState({
+        totalNodes: nodes?.length, 
+        totalLinks: links?.length, 
+        totalLabels: labels?.length
+      }); 
+  }
   render() {
-    const { graphInfo } = this.props;; 
+    const {totalNodes, totalLinks, totalLabels } = this.state; 
+    const { graphInfo, partOf } = this.props; 
     return (
       <>
-        <footer id="graphs-data-info">
-          
+        <footer id="graphs-data-info">          
             <div className="nodesMode">
               <span>
-                {`Nodes (${graphInfo.totalNodes || 0})`}
+                {partOf ? `Nodes (${totalNodes} of ${graphInfo.totalNodes}) ` :  `Nodes (${graphInfo.totalNodes || 0 })`} 
               </span>
             </div>
             <div className="linksMode">
               <span>
-                {`Links (${graphInfo.totalLinks || 0})`}
+                {partOf ? `Links (${totalLinks} of ${graphInfo.totalLinks}) ` :  `Links (${graphInfo.totalLinks || 0 })`} 
               </span>
             </div>
             <div className="labelsMode">
               <span>
-                {`Labels (${graphInfo.totalLabels || 0})`}
+              {partOf ? `Labels (${totalLabels} of ${graphInfo.totalLabels}) ` :  `Labels (${graphInfo.totalLabels || 0 })`}  
               </span>
             </div> 
         </footer> 
@@ -40,12 +64,17 @@ class ToolBarFooter extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  graphInfo: state.graphs.graphInfo, 
-  graphId: state.graphs.singleGraph.id,
+  graphInfo: state.graphs.graphInfo,  
 });
-const mapDispatchToProps = {
-  getGraphInfoRequest
-};
-const Container = connect(mapStateToProps, mapDispatchToProps)(ToolBarFooter);
 
-export default withRouter(Container);
+const mapDispatchToProps = {
+  getGraphInfoRequest, 
+};
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ToolBarFooter);
+
+export default Container;
+ 
