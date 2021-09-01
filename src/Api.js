@@ -138,6 +138,7 @@ class Api {
     const params = { page, ...requestData };
     return api.get('/graphs/nodes', {
       params,
+      cancelToken: this.#cancel('getContentType'),
     });
   }
 
