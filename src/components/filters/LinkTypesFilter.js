@@ -67,37 +67,39 @@ class LinkTypesFilter extends Component {
     const allChecked = linkTypes.length === filters.linkTypes.length;
     return (
       <div className="linkTypesFilter graphFilter">
-        <h4 className="title">Link Types</h4>
-        <ul className="list">
-          <li className="item">
-            <div className="filterCheckBox">
-              <Checkbox
-                label={allChecked ? 'Uncheck All' : 'Check All'}
-                checked={allChecked}
-                onChange={() => this.toggleAll(linkTypes, allChecked)}
-                className="graphsCheckbox"
-              />
-            </div>
-            <span className="badge">{_.sumBy(linkTypes, 'length')}</span>
-          </li>
-          {types.map((item) => (
-            <li
-              key={item.type}
-              className="item"
-              style={{ color: ChartUtils.linkColor(item) }}
-            >
+        <details open>
+          <summary>
+            Link Types
+          </summary>
+          <ul className="list">
+            <li className="item">
               <div className="filterCheckBox">
                 <Checkbox
-                  label={item.type}
-                  checked={filters.linkTypes.includes(item.type)}
-                  onChange={() => this.handleChange(item.type)}
-                  className="graphsCheckbox"
+                    label={allChecked ? 'Uncheck All' : 'Check All'}
+                    checked={allChecked}
+                    onChange={() => this.toggleAll(linkTypes, allChecked)}
                 />
               </div>
-              <span className="badge">{item.length}</span>
+              <span className="badge">{_.sumBy(linkTypes, 'length')}</span>
             </li>
-          ))}
-        </ul>
+            {types.map((item) => (
+                <li
+                    key={item.type}
+                    className="item"
+                    style={{ color: ChartUtils.linkColor(item) }}
+                >
+                  <div className="filterCheckBox">
+                    <Checkbox
+                        label={item.type}
+                        checked={filters.linkTypes.includes(item.type)}
+                        onChange={() => this.handleChange(item.type)}
+                    />
+                  </div>
+                  <span className="badge">{item.length}</span>
+                </li>
+            ))}
+          </ul>
+        </details>
         {linkTypes.length > types.length || showMore ? (
           <Button onClick={this.toggleMore}>
             {showMore ? '- Less' : '+ More'}
