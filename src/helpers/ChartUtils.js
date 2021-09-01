@@ -300,8 +300,7 @@ class ChartUtils {
    */
   static getLinksBetweenNodes(nodes, linksPartial){ 
     const links = linksPartial.filter((l) => 
-       nodes && nodes.some((n) => (l.target === n.id)) 
-         && nodes.some((n) => (l.source === n.id))    
+       nodes && nodes.some((n) => (l.target === n.id && l.source === n.id )) 
     );
     return links
 

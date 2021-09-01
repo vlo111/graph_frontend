@@ -11,7 +11,7 @@ import Utils from "../../helpers/Utils";
 import { setActiveTab, getAllTabsRequest } from "../../store/actions/graphs";
 import Chart from "../../Chart";
 import queryString from "query-string";
-import { toggleGraphMap } from '../../store/actions/app';
+import { toggleGraphMap, toggleExplore } from '../../store/actions/app';
 import { getGraphNodesRequest } from "../../store/actions/graphs";
 import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 import Button from "../form/Button";
@@ -21,6 +21,7 @@ class SearchModal extends Component {
     getAllTabsRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     toggleSearch: PropTypes.func.isRequired,
+    toggleExplore: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     setActiveTab: PropTypes.func.isRequired,
     graphTabs: PropTypes.array.isRequired,
@@ -53,6 +54,16 @@ class SearchModal extends Component {
     };
   }
 
+  componentWillUnmount() {
+    const { nodes, links } = this.props.singleGraph
+    const chartNodes = Chart.getNodes()
+    if (!chartNodes.length && nodes?.length) {
+      Chart.render({nodes, links}, {ignoreAutoSave: true,})
+    } else {
+      this.props.toggleExplore(true)
+    }
+  }
+
   initTabs = memoizeOne(() => {
     const { graphId } = this.props
     this.props.getAllTabsRequest(graphId);
@@ -70,12 +81,12 @@ class SearchModal extends Component {
   handleChange = async (search = "") => {
     this.setState({ 
       nodes: [], 
-      search, 
       tabs: [], 
       docs: [], 
-      search,  
-      allNodesSelected: false, 
-      chosenNodes: []
+      search,
+      keywords: [],  
+      chosenNodes: [],
+      allNodesSelected: false
     });
     if (!search) {
       return;
@@ -380,8 +391,13 @@ class SearchModal extends Component {
    * @param {obj} ev 
    * @param {obj} node 
    */
-  handleNodesCheckBoxChange = (ev, node) => {
-    const { name } = ev.target
+  handleNodesCheckBoxChange = (ev, node, name) => {
+    if (name) {
+      const chosenCheckBox = document.getElementsByName(name)[0]
+      chosenCheckBox.checked = !chosenCheckBox.checked
+    } else {
+      name = ev.target.name
+    }
     const { chosenNodes } = this.state
     const ifExists = chosenNodes.find(nd => nd.code === name);
 
@@ -461,7 +477,7 @@ class SearchModal extends Component {
   }
 
   ifAnyResults = () => {
-    const {nodes, keywords, docs, tabs} = this.state;
+    const {nodes, keywords, docs, tabs} = this.state
     if (nodes?.length || keywords?.length || docs?.length || Object.keys(tabs)?.length) {
       return true
     }
@@ -487,7 +503,7 @@ class SearchModal extends Component {
       allNodesSelected 
     } = this.state;
     this.initTabs();
-
+    const chartNodes = Chart.getNodes()
     return (
       <Modal
         isOpen
@@ -570,7 +586,7 @@ class SearchModal extends Component {
                 tabIndex="0"
                 role="button"
                 className="ghButton searchItem"
-                onClick={(e) => this.openNode(e, d)}
+                onClick={(e) => this.handleNodesCheckBoxChange(e, d, `name_${d.id}`)}
               >
                 <div className="left">
                   <NodeIcon node={d} searchIcon={true}/>
@@ -614,7 +630,6 @@ class SearchModal extends Component {
                 className="item tabItem" 
                 key={'tab_'+tabs[item]?.node?.id} 
                 >
-                {console.log('tab_'+tabs[item]?.node?.id)}
                 <input
                 className="searchResultCheckbox"
                 name={`tab_${tabs[item]?.node?.id}`}
@@ -623,7 +638,7 @@ class SearchModal extends Component {
                 onChange={e => this.handleNodesCheckBoxChange(e, tabs[item].node)}
               />
                 <div tabIndex="0" role="button" className="ghButton tabButton">
-                  <div className="header" onClick={ () => this.findNodeInDom(tabs[item].node)}>
+                  <div className="header" onClick={ (e) => this.handleNodesCheckBoxChange(e, tabs[item].node, `tab_${tabs[item]?.node?.id}`)}>
                       <NodeIcon node={tabs[item].node} searchIcon={true}/>
                       <span className="name">{tabs[item].node.name}</span>
                   </div>
@@ -636,10 +651,10 @@ class SearchModal extends Component {
                               <div
                                 className="contentWrapper"
                                 onClick={(e) =>
-                                  this.openTab(
+                                  this.handleNodesCheckBoxChange(
                                     e,
                                     tabs[item].node,
-                                    tabs[item][tab].tabName
+                                    `tab_${tabs[item]?.node?.id}`
                                     )
                                   }
                               >
@@ -707,7 +722,7 @@ class SearchModal extends Component {
                 tabIndex="0"
                 role="button"
                 className="ghButton searchItem"
-                onClick={(e) => this.openNode(e, d)}
+                onClick={(e) => this.handleNodesCheckBoxChange(e, d, `keyword_${d.id}`)}
               >
                 <div className="left">
                   <NodeIcon node={d} searchIcon={true}/>
@@ -742,11 +757,11 @@ class SearchModal extends Component {
             </li>
           ))}
 
-          {docs.map((d, index) => (
+          {docs.map((d) => (
             <li 
               className="item" 
               key={'docs_'+d.id}
-            > 
+            >
               <input
                 className="searchResultCheckbox"
                 name={`docs_${d.id}`}
@@ -758,7 +773,7 @@ class SearchModal extends Component {
                 tabIndex="0"
                 role="button"
                 className="ghButton searchItem"
-                onClick={(e) => this.openNodeByTag(e, d)}
+                onClick={(e) => this.handleNodesCheckBoxChange(e, d, `docs_${d.id}`)}
               >
                 <div className="right">
                   <span className="row">
@@ -789,12 +804,12 @@ class SearchModal extends Component {
                 >
                   Show
                 </Button>
-                <Button
+                {chartNodes.length ? <Button
                   onClick={(ev) => this.showSelectedNodes(true)}
                   className="ghButton btn-classic"
                 >
                   Add to existing
-                </Button>
+                </Button> : ''}
               </>
             ) : (
               ''
@@ -820,7 +835,8 @@ const mapDispatchToProps = {
   getAllTabsRequest,
   getGraphNodesRequest,
   toggleGraphMap,
-  toggleSearch
+  toggleSearch,
+  toggleExplore
 };
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(SearchModal);
