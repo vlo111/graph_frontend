@@ -792,7 +792,7 @@ class SearchModal extends Component {
                   onClick={(ev) => this.showSelectedNodes(true)}
                   className="ghButton btn-classic"
                 >
-                  Keep old and Show
+                  Add to existing
                 </Button>
               </>
             ) : (
