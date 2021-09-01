@@ -714,17 +714,17 @@ p {
   padding-bottom: 20px;
 
   .input-range__slider {
-    background: $color-main2;
-    border: 1px solid $color-main2;
+    background: #C4C4C4;
+    border: 1px solid #C4C4C4;
   }
 
   .input-range__track--active {
-    background-color: $color-main2;
+    background-color: #707070;
   }
 
   .input-range__label--value {
     .input-range__label-container {
-      color: $color-main;
+      color: $color-graph-name;
     }
   }
 
