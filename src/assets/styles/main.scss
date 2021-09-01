@@ -5362,27 +5362,15 @@ body .gh__menu {
   }
 }
 
-.wikiSearch {
-  height: 130px;
-  width: 650px;
-  margin: 0 auto;
-  text-align: left;
-  margin-bottom: 10px !important;
-  margin-left: 10px;
-  border: 1px solid #dedede;
-  div {
-    margin-left: 40px;
-    padding: 4px;
-  }
-}
 
-////wiki modal
+
+// wikki modal <<menu>>
 .wikiresult {
   overflow-y: auto;
   overflow-x: hidden;
 }
 .wikiSearch:focus {
-  background: linear-gradient(0deg, rgba(136, 130, 209, 0.22), rgba(136, 130, 209, 0.22));
+  background: linear-gradient(0deg, rgba(136, 130, 209, 0.22), rgba(136, 130, 209, 0.22)) !important;
 }
 
 label.pull-left::before {
@@ -5456,6 +5444,24 @@ label.pull-left::after {
 .wikiSearch .link a {
   line-height: 1.5em;
 }
+.wikiSearch {
+  height: 130px;
+  width: 650px;
+  margin: 0 auto;
+  padding: 10px 60px;
+  text-align: left;
+  margin-bottom: 10px !important;
+  margin-left: 10px;
+  border: 1px solid #dedede;
+  div {
+    // margin-left: 40px;
+    // padding: 4px;
+  }
+
+  &:last-child {
+    margin-bottom: 0px !important;
+  }
+}
 
 .scienceAuthor {
   margin-bottom: 0.3em;
@@ -5521,7 +5527,6 @@ label.pull-left::after {
 .Wiki button:focus {
   outline: none;
 }
-// wikki modal <<menu>>
 .wikiModal {
   top: 100px !important;
   height: auto !important;
@@ -5543,6 +5548,15 @@ label.pull-left::after {
     position: absolute;
   }
 }
+.wikiCreateNode {
+  border-radius: 5px !important;
+  position: fixed;
+  margin-top: 433px;
+  border: 1px solid $color-main !important;
+}
+
+
+//wiki end
 
 .graphsCheckbox {
   position: absolute;
@@ -5700,19 +5714,7 @@ label.pull-left::after {
   border: #c9e2f9;
   background: #c9e2f9;
 }
-.WikiCreateNode {
-  position: absolute !important;
-  margin-top: 430px !important;
-  font-size: 13px !important;
-  color: white !important;
-  box-shadow: none !important;
-  line-height: 40px;
-  border: none;
-  background-color: #7166f8 !important;
-  width: 20%;
-  top: 325px;
-  left: 258px;
-}
+
 
 
 .containerModal {
@@ -9379,4 +9381,8 @@ img.preview-scaled {
     margin-right: 25px;
     top: 23px;
   }
+}
+.vbn{
+  display: flex;
+  justify-content: center;
 }

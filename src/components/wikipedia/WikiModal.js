@@ -13,6 +13,7 @@ class WikiModal extends Component {
       wikiSearchReturnValues: [],
       wikiSearchTerms: "",
       getChecked: false,
+      disabled: false
     };
   }
 
@@ -138,12 +139,12 @@ https://en.wikipedia.org/wiki/${name}
   };
 
     render() {
-      const { getChecked } = this.state;
+      const { getChecked} = this.state;
       const wikiSearchResults = [];
 
       for (const key3 in this.state.wikiSearchReturnValues) {
         wikiSearchResults.push(
-        <div className="wikiSearch" tabindex="0" htmlFor={key3}>
+        <div className="wikiSearch"  tabindex="0"  htmlFor={key3}>
           <label htmlFor={key3}>
             <div>
               <input
@@ -192,15 +193,21 @@ https://en.wikipedia.org/wiki/${name}
                       .queryResultPageSnippet,
                 }}
             />
+            <div className="vbn">
               <button
+                //  disabled
                 onClick={(ev) => this.openAddNewNode(ev)}
-                className="ghButton accent alt WikiCreateNode"
+                className="wikiCreateNode btn-classic "
+
               >
                 Create Node
               </button>
+              </div>
             </div>
           </label>
+          
         </div>
+        
         );
       }
 
@@ -221,7 +228,7 @@ https://en.wikipedia.org/wiki/${name}
                 onChange={this.changeWikiSearchTerms}
                 placeholder="Search Wikipedia Articles"
               />
-              <button type="submit" onClick={this.useWikiSearchEngine}>
+              <button type="submit"  onClick={this.useWikiSearchEngine}>
                 Search
               </button>
               </form>
