@@ -361,9 +361,10 @@ class AutoSave extends Component {
       if (!_.isEmpty(d?.payload?.data?.error)) {
         toast.error('Something went wrong');
       }  
-      await this.props.getSingleGraphRequest(graphId)
-       
     });
+    if (res.length) {
+      await this.props.getSingleGraphRequest(graphId)
+    }
     document.body.classList.remove('autoSave');
     this.props.toggleDeleteState(false)
   }
