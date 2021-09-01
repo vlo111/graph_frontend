@@ -103,7 +103,7 @@ class FiltersModal extends Component {
           <h3 className="title">Filter</h3>
           <div className="row resetAll">
             <div>
-              <button className="btn-classic resetButton" onClick={this.props.resetFilter}>RESET ALL</button>
+              <button className="btn-classic alt resetButton" onClick={this.props.resetFilter}>RESET ALL</button>
             </div>
             <span
               className="nodeCount"
