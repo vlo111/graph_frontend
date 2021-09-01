@@ -48,7 +48,8 @@ class SearchModal extends Component {
       tabsContentVisibility: {},
       checkBoxAll: true,
       allNodesSelected: false,
-      chosenNodes: []
+      chosenNodes: [],
+      toggleFilterBox: false
     };
   }
 
@@ -466,6 +467,13 @@ class SearchModal extends Component {
     return false
   }
 
+  toggleFilter = () => {
+    const { toggleFilterBox } = this.state
+    const searchFieldCheckBox = document.getElementsByClassName('searchFieldCheckBoxList')[0]
+    searchFieldCheckBox.style.display = !toggleFilterBox ? 'flex' : 'none'
+    this.setState({toggleFilterBox: !toggleFilterBox})
+  }
+
   render() {
     const { 
       nodes, 
@@ -491,7 +499,7 @@ class SearchModal extends Component {
         <div className="searchBox">
           <div className="searchBoxInside">
             <div className="searchFieldCheckBox">
-              <div className="chooseSearchFields">
+              <div className="chooseSearchFields"  onClick={this.toggleFilter}>
                 Filters
                 <svg className="dropDownSvg" width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M15.313 0H0.692176C0.25364 0 0.00877185 0.463023 0.280353 0.779125L7.59077 9.25601C7.80002 9.49865 8.20294 9.49865 8.41442 9.25601L15.7248 0.779125C15.9964 0.463023 15.7516 0 15.313 0Z" fill="#7166F8"/>

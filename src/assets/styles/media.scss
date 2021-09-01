@@ -287,7 +287,12 @@
   .ghModalSearch {
     width: 70%;
   }
-
+  .searchNodes .searchField .searchBox .searchBoxInside .searchFieldCheckBox {
+    width: 5em;
+     .searchFieldCheckBox {
+      width: 5em;
+    }
+  }
   .scienceResultsList {
     flex-direction: row;
     flex-wrap: wrap;
