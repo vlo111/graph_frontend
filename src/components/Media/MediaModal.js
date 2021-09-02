@@ -450,7 +450,7 @@ class MediaModal extends Component {
                                                       <div className="right container">
                                                          <img
                                                            className="userImg"
-                                                           
+                                                           src={document.user.avatar}
                                                           />
                                                           <div className="ooo">
                                                          <span title={document.node.name} className="headerName">
