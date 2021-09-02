@@ -12,26 +12,22 @@ class Search extends Component {
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     showSearch: PropTypes.bool.isRequired,
+    exploreMode: PropTypes.bool.isRequired,
   };
-
-  renderChart = memoizeOne((filters, customFields) => {
-    if (customFields) {
-      Chart.render(undefined, { filters, customFields });
-    }
-  })
 
   render() {
     const {
-      filters,
-      customFields,
       showSearch,
+      exploreMode,
       match: {
         params: { graphId },
       },
     } = this.props;
-    this.renderChart(filters, customFields);
     if (!graphId || !showSearch) {
       return null;
+    }
+    if (showSearch === true && exploreMode === false) {
+      Chart.render({nodes:[], links:[], labels: []}, {ignoreAutoSave: true,})
     }
     return <SearchModal history={this.props.history} />;
   }
@@ -40,7 +36,8 @@ class Search extends Component {
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
   customFields: state.graphs.singleGraph.customFields,
-  showSearch: state.app.showSearch
+  showSearch: state.app.showSearch,
+  exploreMode: state.app.exploreMode,
 });
 
 const mapDispatchToProps = {

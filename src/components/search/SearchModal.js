@@ -434,7 +434,11 @@ class SearchModal extends Component {
       const oldNodes = Chart.getNodes()
       chosenNodes = chosenNodes.concat(oldNodes)
     }
-    const links = ChartUtils.getLinksBetweenNodes(chosenNodes, linksPartial);
+    chosenNodes = chosenNodes.filter( (node, position) => {
+      return chosenNodes.findIndex(n => n.id === node.id) === position
+    })
+
+    const links = Chart.getLinksBetweenNodes(chosenNodes, linksPartial);
     Chart.render(
       {
         nodes: chosenNodes, 
