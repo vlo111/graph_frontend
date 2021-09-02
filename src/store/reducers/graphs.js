@@ -100,17 +100,17 @@ export default function reducer(state = initialState, action) {
         ...state,
         graphsListStatus: 'request',
         graphsList: [],
-        singleGraph: {
-          ...state.singleGraph,
-          nodes: [],
-          links: [],
-          labels: [],          
-          nodesPartial: [],
-          linksPartial: [], 
-          customFields: [],
-          nodeCustomFields: [],
-          graphFilterInfo: {}
-        },
+        // singleGraph: {
+        //   ...state.singleGraph,
+        //   nodes: [],
+        //   links: [],
+        //   labels: [],          
+        //   nodesPartial: [],
+        //   linksPartial: [], 
+        //   customFields: [],
+        //   nodeCustomFields: [],
+        //   graphFilterInfo: {}
+        // },
       };
     }
     case GET_GRAPHS_LIST.SUCCESS: {
@@ -120,17 +120,17 @@ export default function reducer(state = initialState, action) {
         graphsListStatus: 'success',
         graphsList,
         graphsListInfo,
-        singleGraph: {
-          ...state.singleGraph,
-          nodes: [],
-          links: [],
-          labels: [],          
-          nodesPartial: [],
-          linksPartial: [], 
-          customFields: [],
-          nodeCustomFields: [],
-          graphFilterInfo: {}
-        },
+        // singleGraph: {
+        //   ...state.singleGraph,
+        //   nodes: [],
+        //   links: [],
+        //   labels: [],          
+        //   nodesPartial: [],
+        //   linksPartial: [], 
+        //   customFields: [],
+        //   nodeCustomFields: [],
+        //   graphFilterInfo: {}
+        // },
       };
     }
     // case GENERATE_THUMBNAIL_WORKER: {

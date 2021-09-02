@@ -28,7 +28,7 @@ class SearchModal extends Component {
     graphId: PropTypes.number.isRequired,
     singleGraph: PropTypes.object.isRequired,
     userId: PropTypes.number.isRequired,
-    currentUserId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.number.isRequired, 
   };
 
   constructor(props) {
@@ -812,7 +812,7 @@ class SearchModal extends Component {
                   onClick={(ev) => this.showSelectedNodes(true)}
                   className="ghButton btn-classic"
                 >
-                  Keep old and Show
+                  Add to existing
                 </Button> : ''}
               </>
             ) : (
@@ -840,7 +840,7 @@ const mapDispatchToProps = {
   getGraphNodesRequest,
   toggleGraphMap,
   toggleSearch,
-  toggleExplore
+  toggleExplore, 
 };
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(SearchModal);

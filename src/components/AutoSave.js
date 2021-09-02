@@ -197,6 +197,7 @@ class AutoSave extends Component {
     if (!graphId || Chart.isAutoPosition) {
       return;
     }
+    let position = true;
     document.body.classList.add('autoSave');
     const links = Chart.getLinks(true).filter((d) => !d.fake && !d.sourceId);
     const labels = Chart.getLabels();
@@ -319,6 +320,7 @@ class AutoSave extends Component {
     //   promise.push(this.props.updateNodesPositionRequest(graphId, updateNodePositions));
     // }
     if (updateNodePositions.length || updateLabelPositions.length) {
+      position = false
       promise.push(this.props.updateGraphPositionsRequest(graphId, updateNodePositions, updateLabelPositions));
     } else if (createNodes.length) {
       promise.push(this.props.createNodesRequest(graphId, createNodes));
@@ -366,7 +368,8 @@ class AutoSave extends Component {
       await this.props.getSingleGraphRequest(graphId)
     }
     document.body.classList.remove('autoSave');
-    this.props.toggleDeleteState(false)
+    this.props.toggleDeleteState(false); 
+    position = true;
   }
 
   handleUnload = (ev) => {
