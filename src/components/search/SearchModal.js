@@ -8,7 +8,7 @@ import { setActiveButton, toggleSearch } from "../../store/actions/app";
 import NodeIcon from "../NodeIcon";
 import ChartUtils from "../../helpers/ChartUtils";
 import Utils from "../../helpers/Utils";
-import { setActiveTab, getAllTabsRequest } from "../../store/actions/graphs";
+import { setActiveTab, getAllTabsRequest, getSingleGraphRequest } from "../../store/actions/graphs";
 import Chart from "../../Chart";
 import queryString from "query-string";
 import { toggleGraphMap, toggleExplore } from '../../store/actions/app';
@@ -29,6 +29,7 @@ class SearchModal extends Component {
     singleGraph: PropTypes.object.isRequired,
     userId: PropTypes.number.isRequired,
     currentUserId: PropTypes.number.isRequired,
+    getSingleGraphRequest: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -67,6 +68,7 @@ class SearchModal extends Component {
   initTabs = memoizeOne(() => {
     const { graphId } = this.props
     this.props.getAllTabsRequest(graphId);
+    this.props.getSingleGraphRequest(graphId, { full: true });
   });
 
   closeModal = () => {
@@ -840,7 +842,8 @@ const mapDispatchToProps = {
   getGraphNodesRequest,
   toggleGraphMap,
   toggleSearch,
-  toggleExplore
+  toggleExplore,
+  getSingleGraphRequest
 };
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(SearchModal);

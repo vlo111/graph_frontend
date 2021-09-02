@@ -109,7 +109,7 @@ class ToolBarHeader extends Component {
     this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId);
 
     const updateLocation = pathname.startsWith('/graphs/update/');
-
+    const filter = pathname.startsWith('/graphs/filter/'); 
     return (
       <>
         <header id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
@@ -124,15 +124,17 @@ class ToolBarHeader extends Component {
               <Legend />
             </li>
             <li>
-              <div className="graphs">
-                  <Button
-                    icon={<SearchSvg />}
-                    className={activeButton === 'search' ? 'active' : undefined}
-                    onClick={(ev) => this.handleClick('search')}
-                  >
-                    Search
-                  </Button>
-              </div>
+              { !filter && 
+                <div className="graphs">
+                    <Button
+                      icon={<SearchSvg />}
+                      className={activeButton === 'search' ? 'active' : undefined}
+                      onClick={(ev) => this.handleClick('search')}
+                    >
+                      Search
+                    </Button>
+                </div>
+             }
             </li>
             <li>
               {updateLocation ? (
