@@ -110,13 +110,7 @@ class SearchModal extends Component {
       searchParameters: checkBoxValues,
       isOwner: currentUserId === userId ? true : false
     };
-    var time = new Date()
-    console.log('start: ', time.getSeconds(), ':', time.getMilliseconds())
-    
     const searchResults = await this.props.getGraphNodesRequest(1, argument);
-    
-    time = new Date()
-    console.log('end: ', time.getSeconds(), ':', time.getMilliseconds(), '\n')
     return searchResults.payload.data;
   };
 
@@ -440,7 +434,11 @@ class SearchModal extends Component {
       const oldNodes = Chart.getNodes()
       chosenNodes = chosenNodes.concat(oldNodes)
     }
-    const links = ChartUtils.getLinksBetweenNodes(chosenNodes, linksPartial);
+    chosenNodes = chosenNodes.filter( (node, position) => {
+      return chosenNodes.findIndex(n => n.id === node.id) === position
+    })
+
+    const links = Chart.getLinksBetweenNodes(chosenNodes, linksPartial);
     Chart.render(
       {
         nodes: chosenNodes, 
