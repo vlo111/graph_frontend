@@ -22,492 +22,400 @@ import Outside from '../Outside';
 import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
 
 class MediaModal extends Component {
-    static propTypes = {
-      getSingleGraphRequest: PropTypes.func.isRequired,
-      getAllTabsRequest: PropTypes.func.isRequired,
-      setActiveButton: PropTypes.func.isRequired,
-      getDocumentsRequest: PropTypes.func.isRequired,
-      documentSearch: PropTypes.object.isRequired,
-      singleGraph: PropTypes.object.isRequired,
-      setActiveTab: PropTypes.func.isRequired,
-      user: PropTypes.func.isRequired,
-      graph: PropTypes.object.isRequired,
-    }
+  static propTypes = {
+    getSingleGraphRequest: PropTypes.func.isRequired,
+    getAllTabsRequest: PropTypes.func.isRequired,
+    setActiveButton: PropTypes.func.isRequired,
+    getDocumentsRequest: PropTypes.func.isRequired,
+    documentSearch: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
+    setActiveTab: PropTypes.func.isRequired,
+    user: PropTypes.func.isRequired,
+    graph: PropTypes.object.isRequired,
+  }
 
-    initTabs = memoizeOne(() => {
-      this.props.getAllTabsRequest(window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1));
-    })
+  initTabs = memoizeOne(() => {
+    this.props.getAllTabsRequest(window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1));
+  })
 
-    initDocument = memoizeOne((document) => {
-      document.map((p) => {
-        if (p.graphs?.nodes && p.graphs?.nodes.length) {
-          p.node = p.graphs.nodes.filter((n) => n.id === p.nodeId)[0];
-        }
-      });
-    })
-
-    constructor() {
-      super();
-      this.state = {
-        loading: true,
-        getCheckedNodes: true,
-        getCheckedDocs: true,
-        getCheckedImages: true,
-        getCheckedVideos: true,
-        search: '',
-        showDropDown:false,
-        fullWidth: false,
-       
-      };
-    }
-
-    closeModal = () => {
-      this.props.setActiveButton('create');
-    }
-
-    searchDocuments = memoizeOne((searchParam) => {
-      this.props.getDocumentsRequest(searchParam);
-    })
-
-    componentDidMount() {
-      if (this.state.loading) {
-        const { documentSearch } = this.props;
-        if (documentSearch && documentSearch.length) {
-          this.setState({ loading: false });
-        }
+  initDocument = memoizeOne((document) => {
+    document.map((p) => {
+      if (p.graphs?.nodes && p.graphs?.nodes.length) {
+        p.node = p.graphs.nodes.filter((n) => n.id === p.nodeId)[0];
       }
-    }
-
-    initialGraph = memoizeOne(() => {
-      this.props.getSingleGraphRequest(this.props.singleGraph.id);
     });
+  })
 
-    filterHandleChange = (path, value) => {
-      switch (path) {
-        case 'docs': {
-          this.setState({
-            getCheckedDocs: value,
-          });
-          break;
-        }
-        case 'image': {
-          this.setState({
-            getCheckedImages: value,
-          });
-          break;
-        }
-        case 'videos': {
-          this.setState({
-            getCheckedVideos: value,
-          });
-          break;
-        }
-        case 'icon': {
-          this.setState({
-            getCheckedNodes: value,
-          });
-          break;
-        }
-        default:
-          break;
-      }
-      const { getChecked } = this.state;
-      _.set(getChecked, path, value);
-    }
 
-    searchHandleChange = (search = '') => {
-      this.setState({ search });
-    }
+  constructor() {
+    super();
+    this.state = {
+      loading: true,
+      getCheckedNodes: true,
+      getCheckedDocs: true,
+      getCheckedImages: true,
+      getCheckedVideos: true,
+      search: '',
+      showDropDown: false,
+      fullWidth: false,
 
-    openTab = (graphId, node, tabName) => {
-      ChartUtils.findNodeInDom(node);
-      this.closeModal();
-      if (tabName) {
-        this.props.setActiveTab(tabName);
-        this.props.history.replace(`${graphId}?info=${node.id}`);
+    };
+  }
+
+  closeModal = () => {
+    this.props.setActiveButton('create');
+  }
+
+  searchDocuments = memoizeOne((searchParam) => {
+    this.props.getDocumentsRequest(searchParam);
+  })
+
+  componentDidMount() {
+    if (this.state.loading) {
+      const { documentSearch } = this.props;
+      if (documentSearch && documentSearch.length) {
+        this.setState({ loading: false });
       }
     }
+  }
 
-    insertDocument = (document) => {
-      const { getCheckedDocs, getCheckedImages } = this.state;
+  initialGraph = memoizeOne(() => {
+    this.props.getSingleGraphRequest(this.props.singleGraph.id);
+  });
 
-      return document.filter((p) => {
-        const type = typeof p.data === 'string' ? (Utils.isImg(p.data) ? 'image' : 'document') : 'video';
-        if (type === 'image' && getCheckedImages) {
-          return true;
-        }
-        return type !== 'image' && type !== 'video' && getCheckedDocs;
-      });
+  filterHandleChange = (path, value) => {
+    switch (path) {
+      case 'docs': {
+        this.setState({
+          getCheckedDocs: value,
+        });
+        break;
+      }
+      case 'image': {
+        this.setState({
+          getCheckedImages: value,
+        });
+        break;
+      }
+      case 'videos': {
+        this.setState({
+          getCheckedVideos: value,
+        });
+        break;
+      }
+      case 'icon': {
+        this.setState({
+          getCheckedNodes: value,
+        });
+        break;
+      }
+      default:
+        break;
+    }
+    const { getChecked } = this.state;
+    _.set(getChecked, path, value);
+  }
+
+  searchHandleChange = (search = '') => {
+    this.setState({ search });
+  }
+
+  openTab = (graphId, node, tabName) => {
+    ChartUtils.findNodeInDom(node);
+    this.closeModal();
+    if (tabName) {
+      this.props.setActiveTab(tabName);
+      this.props.history.replace(`${graphId}?info=${node.id}`);
+    }
+  }
+
+  insertDocument = (document) => {
+    const { getCheckedDocs, getCheckedImages } = this.state;
+
+    return document.filter((p) => {
+      const type = typeof p.data === 'string' ? (Utils.isImg(p.data) ? 'image' : 'document') : 'video';
+      if (type === 'image' && getCheckedImages) {
+        return true;
+      }
+      return type !== 'image' && type !== 'video' && getCheckedDocs;
+    });
+  }
+
+  insertIcon = (document) => {
+    const { singleGraph: { nodesPartial, user } } = this.props;
+
+    if (nodesPartial && nodesPartial.length) {
+      const { getCheckedNodes } = this.state;
+
+      if (!getCheckedNodes) {
+        document = document.filter((p) => !p.added);
+      } else {
+        nodesPartial.map((node) => {
+          if (node.icon) {
+            if (!document.filter((p) => p.added === node.id).length) {
+              document.push({
+                id: node.id,
+                user,
+                node,
+                data: node.icon,
+                added: node.id,
+                type: 'image',
+                graphId: Utils.getGraphIdFormUrl(),
+              });
+            }
+          }
+        });
+      }
     }
 
-    insertIcon = (document) => {
-      const { singleGraph: { nodesPartial, user } } = this.props;
+    return document;
+  }
 
-      if (nodesPartial && nodesPartial.length) {
-        const { getCheckedNodes } = this.state;
+  insertVideo = (_document) => {
+    debugger
+    const { singleGraph: { nodesPartial, user }, graphTabs } = this.props;
 
-        if (!getCheckedNodes) {
-          document = document.filter((p) => !p.added);
-        } else {
-          nodesPartial.map((node) => {
-            if (node.icon) {
-              if (!document.filter((p) => p.added === node.id).length) {
-                document.push({
-                  id: node.id,
-                  user,
-                  node,
-                  data: node.icon,
-                  added: node.id,
-                  type: 'image',
-                  graphId: Utils.getGraphIdFormUrl(),
-                });
-              }
+    const { getCheckedVideos } = this.state;
+
+    if (graphTabs && graphTabs.length && !_.isEmpty(nodesPartial)) {
+      graphTabs.forEach((p) => {
+        const node = nodesPartial.filter((g) => g.id === p.nodeId)[0];
+
+        const tabData = p.tab;
+
+        tabData.forEach((tab) => {
+          const mediaVideoHtml = document.createElement('div');
+          mediaVideoHtml.innerHTML = tab.value;
+          Array.from(mediaVideoHtml.getElementsByTagName('iframe')).forEach((el) => {
+            if (getCheckedVideos) {
+              _document.push({
+                id: node.id,
+                user,
+                node,
+                data: el,
+                added: node.id,
+                type: 'video',
+                graphId: Utils.getGraphIdFormUrl(),
+              });
             }
           });
-        }
-      }
-
-      return document;
-    }
-
-    insertVideo = (_document) => {
-      const { singleGraph: { nodesPartial, user }, graphTabs } = this.props;
-
-      const { getCheckedVideos } = this.state;
-
-      if (graphTabs && graphTabs.length && !_.isEmpty(nodesPartial)) {
-        graphTabs.forEach((p) => {
-          const node = nodesPartial.filter((g) => g.id === p.nodeId)[0];
-
-          const tabData = p.tab;
-
-          tabData.forEach((tab) => {
-            const mediaVideoHtml = document.createElement('div');
-            mediaVideoHtml.innerHTML = tab.value;
-            Array.from(mediaVideoHtml.getElementsByTagName('iframe')).forEach((el) => {
-              if (getCheckedVideos) {
-                _document.push({
-                  id: node.id,
-                  user,
-                  node,
-                  data: el,
-                  added: node.id,
-                  type: 'video',
-                  graphId: Utils.getGraphIdFormUrl(),
-                });
-              }
-            });
-          });
         });
+      });
 
-        return _document;
-      }
+      return _document;
     }
+  }
 
-    toggleDropDown = () => {
-      const { showDropDown } = this.state;
-      this.setState({ showDropDown: !showDropDown });
-      
-    }
+  toggleDropDown = () => {
+    const { showDropDown } = this.state;
+    this.setState({ showDropDown: !showDropDown });
 
-    toggleFullWidth = () => {
-      const { fullWidth } = this.state;
-      this.setState({ fullWidth: !fullWidth });
-    }
- 
+  }
+
+  toggleFullWidth = () => {
+    const { fullWidth } = this.state;
+    this.setState({ fullWidth: !fullWidth });
+  }
+  showMediaOver = (id) => {
+    document.getElementsByClassName(`xxxx1_${id}`)[0].style.display = 'flex'
+  }
+
+  hideMediaOver = (id) => {
+    document.getElementsByClassName(`xxxx1_${id}`)[0].style.display = 'none'
+  }
+
+
+
+  render() {
+    let { documentSearch } = this.props;
     
+    this.initTabs();
 
-    render() {
-      let { documentSearch } = this.props;
+    this.initialGraph();
 
-      this.initTabs();
+    const {
+      fullWidth, showDropDown, getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
+    } = this.state;
 
-      this.initialGraph();
+    const graphIdParam = Utils.getGraphIdFormUrl();
 
-      const {
-        fullWidth,showDropDown,getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,singleGraph,
-      } = this.state;
+    this.searchDocuments(graphIdParam);
 
-      const graphIdParam = Utils.getGraphIdFormUrl();
+    if (documentSearch && documentSearch.length) {
+      this.initDocument(documentSearch);
 
-      this.searchDocuments(graphIdParam);
+      // Node documents and images of tabs
+      documentSearch = this.insertDocument(documentSearch);
+    }
 
-      if (documentSearch && documentSearch.length) {
-        this.initDocument(documentSearch);
+    // Insert node icon
+    documentSearch = this.insertIcon(documentSearch);
 
-        // Node documents and images of tabs
-        documentSearch = this.insertDocument(documentSearch);
-      }
+    // Insert tab video
+    documentSearch = this.insertVideo(documentSearch);
 
-      // Insert node icon
-      documentSearch = this.insertIcon(documentSearch);
+    // Search media
+    documentSearch = documentSearch?.filter((p) => p.node.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+    return (
 
-      // Insert tab video
-      documentSearch = this.insertVideo(documentSearch);
+      <div className="mediaModal">
+        <Modal
+          isOpen
+          className="ghModal ghModalMedia"
+          id={fullWidth ? 'fullWidth' : undefined}
+          overlayClassName="ghModalOverlay"
+          onRequestClose={this.closeModal}
+        >
+          <div className="">
+            <Button className="reSize" color="transparent" icon={fullWidth ? <CompressScreen /> : <FullScreen />} onClick={this.toggleFullWidth} />
+            <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
+          </div>
+          <h2>Media gallery</h2>
+          <div className="mediaHeader">
 
-      // Search media
-      documentSearch = documentSearch?.filter((p) => p.node.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
-
-      return (
-        
-        <div className="mediaModal">
-          <Modal
-            isOpen
-            className="ghModal ghModalMedia"
-            id={fullWidth ? 'fullWidth' : undefined}
-            overlayClassName="ghModalOverlay"
-            onRequestClose={this.closeModal}
-          >  
-           <div className="">
-             <Button  className="reSize" color="transparent" icon={fullWidth ? <CompressScreen /> : <FullScreen />} onClick={this.toggleFullWidth} />
-             <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} /> 
-           </div> 
-             <h2>Media gallery</h2>
-            <div className="mediaHeader">
-
-              <div className='showCheck' onClick={this.toggleDropDown}>
-                <div>Show</div>
-                <div className='carretMedia'>
-                 <ArrowSvg />
-                </div>
+            <div className='showCheck' onClick={this.toggleDropDown}>
+              <div>Show</div>
+              <div className='carretMedia'>
+                <ArrowSvg />
               </div>
-               {showDropDown ? (
-               <Outside onClick={this.toggleDropDown} exclude=".showCheck">
-                   <div className="filterMedia">
-                    <Checkbox
-                      label="Node icon"
-                      checked={getCheckedNodes}
-                      onChange={() => this.filterHandleChange('icon',  !getCheckedNodes)}
-                      className="graphsCheckbox"
-                    />
-                    <Checkbox
-                      label="Documents of tabs"
-                      checked={getCheckedDocs}
-                      onChange={() => this.filterHandleChange('docs', !getCheckedDocs)}
-                      className="graphsCheckbox"
-                    />
-                    <Checkbox
-                      label="Images of tabs"
-                      checked={getCheckedImages}
-                      onChange={() => this.filterHandleChange('image', !getCheckedImages)}
-                      className="graphsCheckbox"
-                    />
-                    <Checkbox
-                      label="Videos"
-                      checked={getCheckedVideos}
-                      onChange={() => this.filterHandleChange('videos', !getCheckedVideos)}
-                      className="graphsCheckbox"
-                    />
-                  </div>
-               </Outside>
-                ) : null}
-               <Input
-                placeholder="Search ..."
-                autoComplete="off"
-                value={search}
-                // icon="fa-search"
-                onFocus={() => this.searchHandleChange(search)}
-                onChangeText={this.searchHandleChange}
-                className='mediaSearch '
-                containerClassName="mediaSearch"
-              />
             </div>
-            {(documentSearch && documentSearch.length)
-              ? (
-                <div className="mediaContainer">
-                  <div className="mediaRightContent">
-                    <div className="searchDataTTT">
-                      <div className="searchDataTTT__wrapper mediaContent">
-                        <div className="searchMediaContentTTT">
-                          {/* <article className="searchDataTTT__graph mediaForm">
-                            <div className="searchDocumentContent mediaGallery">
-                              {documentSearch.map((document) => (
-                                document.id && (
-                                <div
-                                  className="nodeTabs tabDoc"
-                                >
-                                  <div className="imageFrameTTT">
-                                    <div className="imageFrameHeader">
-                                      <span
-                                        className="nodeLink"
-                                        onClick={
-                                              () => this.openTab(document.graphId, document.node, document.tabName)
-                                          }
-                                      >
-                                        <div className="left">
-                                          <NodeIcon node={document.node} />
-                                        </div>
-                                        <div className="right">
-                                          <span title={document.node.name} className="headerName">
-                                            { document.node.name && document.node.name.length > 8
-                                              ? `${document.node.name.substr(0, 8)}... `
-                                              : document.node.name}
-                                          </span>
-                                          <p>{moment(document.updatedAt).calendar()}</p>
-                                        </div>
-                                      </span>
+            {showDropDown ? (
+              <Outside onClick={this.toggleDropDown} exclude=".showCheck">
+                <div className="filterMedia">
+                  <Checkbox
+                    label="Node icon"
+                    checked={getCheckedNodes}
+                    onChange={() => this.filterHandleChange('icon', !getCheckedNodes)}
+                    className="graphsCheckbox"
+                  />
+                  <Checkbox
+                    label="Documents of tabs"
+                    checked={getCheckedDocs}
+                    onChange={() => this.filterHandleChange('docs', !getCheckedDocs)}
+                    className="graphsCheckbox"
+                  />
+                  <Checkbox
+                    label="Images of tabs"
+                    checked={getCheckedImages}
+                    onChange={() => this.filterHandleChange('image', !getCheckedImages)}
+                    className="graphsCheckbox"
+                  />
+                  <Checkbox
+                    label="Videos"
+                    checked={getCheckedVideos}
+                    onChange={() => this.filterHandleChange('videos', !getCheckedVideos)}
+                    className="graphsCheckbox"
+                  />
+                </div>
+              </Outside>
+            ) : null}
+            <Input
+              placeholder="Search ..."
+              autoComplete="off"
+              value={search}
+              // icon="fa-search"
+              onFocus={() => this.searchHandleChange(search)}
+              onChangeText={this.searchHandleChange}
+              className='mediaSearch '
+              containerClassName="mediaSearch"
+            />
+          </div>
+          {(documentSearch && documentSearch.length)
+            ? (
+              <div className="mediaContainer mediaGallery">
+                {documentSearch.map((document) => {
+                  console.log('a:', document)
+                  // console.log('vvvv: ', documentSearch);
+                  return document.id && (
+                    <div className="imageFrameTTT">
+                      {typeof document.data !== 'string'
+                        ? (
+                          <span
+                            ref={(nodeElement) => {
+                              nodeElement && nodeElement.appendChild(document.data);
+                            }}
+                          />
+                        )
+                        : (
 
-                                      <p className="createdBy">
-                                        <span>uploaded by </span>
+                          <figure className="img-container">
+                            
+                              <div>
+                                <div onMouseOver={() => this.showMediaOver(document.id)} onMouseOut={() => this.hideMediaOver(document.id)}>
+                                  <div className={`xxxx xxxx1_${document.id}`}>
+                                    <div className='mediaInfo'>
+                                      <span className='mediaLeter'>Uploaded:</span>
+                                      <span>{moment(document.updatedAt).calendar()}</span>
+                                    </div>
+                                    <div className='mediaInfo'>
+                                      <span className='mediaLeter'>User Name:</span>
+                                      <span className='mediUser'>
                                         <Link to={`/profile/${document.user.id}`}>
                                           {`${document.user.firstName} ${document.user.lastName}`}
                                         </Link>
-                                      </p>
+                                      </span>
                                     </div>
-
-                                    <div className="gallery-box-container">
-                                      <div className="gallery-box">
-                                        { typeof document.data !== 'string'
-                                          ? (
-                                            <span
-                                              ref={(nodeElement) => {
-                                                nodeElement && nodeElement.appendChild(document.data);
-                                              }}
-                                            />
-                                          )
-                                          : (
-                                            <div>
-                                              <span className="gallery-box__img-container">
-                                                <figure className="img-container">
-                                                  {Utils.isImg(document.data) ? (
-                                                    <a target="_blank" href={document.data} rel="noreferrer">
-                                                      <img
-                                                        className="gallery-box__img"
-                                                        src={document.data}
-                                                      />
-                                                    </a>
-                                                  ) : (
-                                                    <a
-                                                      className="linkDocumentDownload"
-                                                      download={document.node.name}
-                                                      href={document.data}
-                                                      target="_blank"
-                                                      rel="noreferrer"
-                                                    >
-                                                      <div className="docContainer">
-                                                        <div className="docFrame">
-                                                          {document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}
-                                                        </div>
-                                                      </div>
-                                                    </a>
-                                                  )}
-                                                </figure>
-                                              </span>
-                                              <span className="gallery-box__text-wrapper">
-                                                <span title={document.description} className="gallery-box__text">
-                                                  { document.added
-                                                    ? (document.node.type)
-                                                    : (document.description && document.description.length > 38
-                                                      ? `${document.description.substr(0, 38)}... `
-                                                      : document.description)}
-                                                </span>
-                                              </span>
-                                            </div>
-                                          )}
-                                      </div>
+                                    <div className='mediaInfo docType'>
+                                      <span className='mediaLeter'>type:</span>
+                                      <span>{document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}</span>
+                                    </div>
+                                    <div className='mediaInfo'>
+                                      <span className='mediaLeter'>Description</span>
+                                      <span  >
+                                        {(document.description && document.description.length > 18
+                                            ? `${document.description.substr(0, 18)}... `
+                                            : document.description)}
+                                      </span>
+                                    </div>
+                                    <div className='mediaInfo'>
+                                      <span className='mediaLeter'>Tags:</span>
+                                      <span>{`${document.tags} `} </span>
                                     </div>
                                   </div>
+                                  {/* <a target="_blank" href={document.data} rel="noreferrer"> */}
+                                  <div>
+                                    <img
+                                      className="gallery-box__img"
+                                      src={document.data}
+                                    />
+                                  </div>
+                                  {/* </a> */}
                                 </div>
-                                )
-                              ))}
-                            </div>
-                          </article> */}
-                          <article className="searchDataTTT__graph mediaForm">
-                            <div className="searchDocumentContent mediaGallery">
-                            {documentSearch.map((document,graph) => (
-                              document.id && (
-                                <div className="imageFrameTTT">
-                                  <div className="imageFrameHeader">
-                                    <div className="gallery-box-container">
-                                      <div className="gallery-box">
-                                        { typeof document.data !== 'string'
-                                          ? (
-                                            <span
-                                              ref={(nodeElement) => {
-                                                nodeElement && nodeElement.appendChild(document.data);
-                                              }}
-                                            />
-                                          )
-                                          : (
-                                            <div>
-                                              <span className="gallery-box__img-container">
-                                                <figure className="img-container">
-                                                  {Utils.isImg(document.data) ? (
-                                                    <div>
-                                                    <a target="_blank" href={document.data} rel="noreferrer">
-                                                      <img
-                                                        className="gallery-box__img"
-                                                        src={document.data}
-                                                      />
-                                                    </a>
-                                                     <span
-                                                         className="nodeLink"
-                                                         onClick={
-                                                               () => this.openTab(document.graphId, document.node, document.tabName)
-                                                           }
-                                                       >
-
-                                                      <div className="right container">
-                                                         <img
-                                                           className="userImg"
-                                                           src={document.user.avatar}
-                                                          />
-                                                          <div className="ooo">
-                                                         <span title={document.node.name} className="headerName">
-                                                          { document.node.name && document.node.name.length > 8
-                                                            ? `${document.node.name.substr(0, 8)}... `
-                                                            : document.node.name}
-                                                         </span>
-                                                         <span title={document.description} className="gallery-box__text">
-                                                           { document.added
-                                                             ? (document.node.type)
-                                                             : (document.description && document.description.length > 38
-                                                               ? `${document.description.substr(0, 38)}... `
-                                                               : document.description)}
-                                                         </span>
-                                                         </div>
-                                                      </div>
-                                                      </span>
-                                                    </div>
-                                                  ) : (
-                                                    <a
-                                                      className="linkDocumentDownload"
-                                                      download={document.node.name}
-                                                      href={document.data}
-                                                      target="_blank"
-                                                      rel="noreferrer"
-                                                    >
-                                                        <span title={document.node.name} className="headerName">
-                                                          { document.node.name && document.node.name.length > 8
-                                                            ? `${document.node.name.substr(0, 8)}... `
-                                                            : document.node.name}
-                                                         </span>
-                                                        
-                                                    </a>
-                                                  )}
-                                                </figure>
-                                              </span>
-                                            </div>
-                                          )}
-                                      </div>
+                                <span
+                                  className="nodeLink"
+                                  onClick={
+                                    () => this.openTab(document.graphId, document.node, document.tabName)
+                                  }
+                                >
+                                  <div className="right container">
+                                    <img
+                                      className="userImg"
+                                      src={document.user.avatar}
+                                    />
+                                    <div className="ooo">
+                                      <span title={document.node.name} className="headerName">
+                                        {document.node.name && document.node.name.length > 8
+                                          ? `${document.node.name.substr(0, 8)}... `
+                                          : document.node.name}
+                                      </span>
+                                      <span> type:{document.type}  </span>
                                     </div>
-                                     
-                                    </div>
-                                </div>  
-                                )
-                                ))}
-                            </div>
-                          </article>
-                        </div>
-                      </div>
+                                  </div>
+                                </span>
+                              </div>
+                           
+                          </figure>
+                        )}
                     </div>
-                  </div>
-                </div>
-              ) : <h3 className="mediaNotFound">No Media Found</h3>}
-          </Modal>
-        </div>
-      );
-    }
+                  )
+                })}
+              </div>
+            ) : <h3 className="mediaNotFound">No Media Found</h3>}
+        </Modal>
+
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({

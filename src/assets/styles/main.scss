@@ -6430,71 +6430,71 @@ img.preview-scaled {
   }
 }
 
-.mediaContent {
-  margin-top: 0;
+// .mediaContent {
+//   margin-top: 0;
 
-  .mediaForm {
-    padding: 0;
-    border: none;
-    box-shadow: none;
+//   .mediaForm {
+//     padding: 0;
+//     border: none;
+//     box-shadow: none;
 
-    .mediaGallery {
-      //grid-template-columns: 25% 25% 25% 25%;
-      //grid-template-columns: repeat(auto-fit, minmax(230px, 0.25fr));
-      padding: 0;
-    }
-  }
+//     .mediaGallery {
+//       //grid-template-columns: 25% 25% 25% 25%;
+//       //grid-template-columns: repeat(auto-fit, minmax(230px, 0.25fr));
+//       padding: 0;
+//     }
+//   }
 
-  .imageFrame {
-    background: #FFFFFF 0% 0% no-repeat padding-box;
-    box-shadow: 6px 6px 12px 2px #0000000d;
-    border: 1px solid #DBDBDB;
-    border-radius: 19px;
-    //padding: 15px 10px;
-    .imageFrameHeader {
-      padding: 20px 20px 10px 10px;
+//   .imageFrame {
+//     background: #FFFFFF 0% 0% no-repeat padding-box;
+//     box-shadow: 6px 6px 12px 2px #0000000d;
+//     border: 1px solid #DBDBDB;
+//     border-radius: 19px;
+//     //padding: 15px 10px;
+//     .imageFrameHeader {
+//       padding: 20px 20px 10px 10px;
 
-      .nodeIcon {
-        border-radius: 10px;
-      }
+//       .nodeIcon {
+//         border-radius: 10px;
+//       }
 
-      .headerName {
-        font-size: 18px;
-      }
+//       .headerName {
+//         font-size: 18px;
+//       }
 
-      p {
-        font-size: 12px;
-        margin-bottom: 0;
-      }
+//       p {
+//         font-size: 12px;
+//         margin-bottom: 0;
+//       }
 
-      .createdBy {
-        margin-bottom: 0;
-        text-align: left;
-      }
-    }
-  }
+//       .createdBy {
+//         margin-bottom: 0;
+//         text-align: left;
+//       }
+//     }
+//   }
 
-  table {
-    font-style: normal;
-  }
+//   table {
+//     font-style: normal;
+//   }
 
-  .docContainer {
-    box-shadow: 6px 6px 12px 2px #0000000d;
-    border-bottom: 1px solid #DBDBDB;
-    text-align: center;
-    height: 100%;
+//   .docContainer {
+//     box-shadow: 6px 6px 12px 2px #0000000d;
+//     border-bottom: 1px solid #DBDBDB;
+//     text-align: center;
+//     height: 100%;
 
-    .docFrame {
-      font-size: 20px;
-      color: #c8c0bd;
-      margin-top: 60%;
-    }
-  }
+//     .docFrame {
+//       font-size: 20px;
+//       color: #c8c0bd;
+//       margin-top: 60%;
+//     }
+//   }
 
-  .linkDocumentDownload {
-    text-decoration: none;
-  }
-}
+//   .linkDocumentDownload {
+//     text-decoration: none;
+//   }
+// }
 
 .errorRecovery {
   color: $color-error;
