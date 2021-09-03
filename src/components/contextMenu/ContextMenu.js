@@ -108,7 +108,7 @@ class ContextMenu extends Component {
       const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
-    } else if (ev.target.classList.contains('nodeCreate') || ev.target.classList.contains('labelsBoard')) {
+    } else if (ev.target.classList.contains('svg') || ev.target.classList.contains('labelsBoard')) {
       element = 'chart';
     }
     // else if (ev.target.closest('.contentWrapper')) {

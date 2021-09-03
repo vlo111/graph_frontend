@@ -290,7 +290,7 @@ class ChartUtils {
    */
   static getLinkColorByType(links, type) {
     const link = links && links.find((l) => ( l.type ===  type ));  
-    return link?.color
+    return link?.color ? link?.color : this.linkColorObj[type]
   }
   /**
    * 
