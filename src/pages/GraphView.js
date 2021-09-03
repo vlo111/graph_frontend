@@ -6,6 +6,7 @@ import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
 import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
+import { toggleExplore } from '../store/actions/app';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import Chart from '../Chart';
 import AnalysisUtils from '../helpers/AnalysisUtils';
@@ -35,6 +36,7 @@ class GraphView extends Component {
     deleteGraphRequest: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
     userGraphRequest: PropTypes.func.isRequired,
+    toggleExplore: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     graphInfo: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
@@ -54,6 +56,10 @@ class GraphView extends Component {
       this.props.getGraphInfoRequest(graphId);
     }
   })
+
+  componentWillUnmount() {
+    this.props.toggleExplore(false)
+  }
 
   deleteGraph = async () => {
     const { match: { params: { graphId = '' } } } = this.props;
@@ -214,6 +220,7 @@ const mapDispatchToProps = {
   deleteGraphRequest,
   userGraphRequest,
   getGraphInfoRequest,
+  toggleExplore
 };
 const Container = connect(
   mapStateToProps,
