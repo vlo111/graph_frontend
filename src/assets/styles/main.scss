@@ -5404,169 +5404,216 @@ body .gh__menu {
   }
 }
 
-////wiki modal
-.wikiresult {
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-.wikiSearch:focus {
-  background: linear-gradient(0deg, rgba(136, 130, 209, 0.22), rgba(136, 130, 209, 0.22));
-}
+// // wikki modal <<menu>>
+// .wikiresult {
+//   overflow-y: auto;
+//   overflow-x: hidden;
+// }
+// .wikiSearch:focus {
+//   background: linear-gradient(0deg, rgba(136, 130, 209, 0.22), rgba(136, 130, 209, 0.22)) !important;
+// }
 
-label.pull-left::before {
-  display: none !important;
-}
-label.pull-left::after {
-  display: none;
-}
+// label.pull-left::before {
+//   display: none !important;
+// }
+// label.pull-left::after {
+//   display: none;
+// }
 
-.wikiSearch h3 {
-  color: #1a0dab;
-}
+// .wikiSearch h3 {
+//   color: #1a0dab;
+// }
 
-.wikiSearch h3 a {
-  font-size: 16px;
-  color: #7166f8;
-  display: inline-block;
-  line-height: 22px;
-  text-decoration: none;
-  font-weight: 700;
-}
+// .wikiSearch h3 a {
+//   font-size: 16px;
+//   color: #7166f8;
+//   display: inline-block;
+//   line-height: 22px;
+//   text-decoration: none;
+//   font-weight: 700;
+// }
 
-.wikiSearch h3 a:hover {
-  border-bottom: 3px solid;
-}
+// .wikiSearch h3 a:hover {
+//   border-bottom: 3px solid;
+// }
 
-.wikiSearch a:visited {
-  color: #1a0dab;
-}
+// .wikiSearch a:visited {
+//   color: #1a0dab;
+// }
 
-.wikiSearch h3 a:hover {
-  border-bottom: 3px solid;
-}
+// .wikiSearch h3 a:hover {
+//   border-bottom: 3px solid;
+// }
 
-.wikiSearch a:visited {
-  color: #1a0dab;
-}
+// .wikiSearch a:visited {
+//   color: #1a0dab;
+// }
 
-.wikiSearch .link a {
-  text-decoration: none;
-  color: #7166f8;
-  font-weight: 400;
-}
+// .wikiSearch .link a {
+//   text-decoration: none;
+//   color: #7166f8;
+//   font-weight: 400;
+// }
 
-.wikiSearch .link a:hover {
-  text-decoration: none;
-}
+// .wikiSearch .link a:hover {
+//   text-decoration: none;
+// }
 
-.wikiSearch .searchmatch {
-  font-weight: bold;
-}
+// .wikiSearch .searchmatch {
+//   font-weight: bold;
+// }
 
-.wikiSearch .link a:hover {
-  text-decoration: none;
-}
+// .wikiSearch .link a:hover {
+//   text-decoration: none;
+// }
 
-.wikiSearch .searchmatch {
-  font-weight: bold;
-}
+// .wikiSearch .searchmatch {
+//   font-weight: bold;
+// }
 
-.wikiSearch .description {
-  display: flow-root;
-  /* position: relative; */
-  line-height: 19px;
-  font-size: 14px;
-  color: #898989 !important;
-  font-weight: 400;
-  margin-right: 15%;
-}
+// .wikiSearch .description {
+//   display: flow-root;
+//   /* position: relative; */
+//   line-height: 19px;
+//   font-size: 14px;
+//   color: #898989 !important;
+//   font-weight: 400;
+//   margin-right: 15%;
+// }
 
-.wikiSearch .link a {
-  line-height: 1.5em;
-}
+// .wikiSearch .link a {
+//   line-height: 1.5em;
+// }
+// .wikiSearch {
+//   height: 130px;
+//   width: 650px;
+//   margin: 0 auto;
+//   padding: 10px 60px;
+//   text-align: left;
+//   margin-bottom: 10px !important;
+//   margin-left: 10px;
+//   border: 1px solid #dedede;
+//   border-radius: 5px;
 
-.scienceAuthor {
-  margin-bottom: 0.3em;
-  color: #7166f8;
-  font-weight: 400;
-}
+//   div {
+//     // margin-left: 40px;
+//     // padding: 4px;
+//   }
 
-.Wiki {
-  margin: 0 auto;
-  text-align: center;
-  margin-bottom: 50px;
-}
+//   &:last-child {
+//     margin-bottom: 10px !important;
+//   }
+// }
 
-.scienceGraph {
-  right: 31%;
-}
+// .wikipediaDisabled {
+//   background-color: #bfbfbf !important;
+//   cursor: auto !important;
 
-.Wiki form {
-  border-radius: 5px;
-  border: 1px solid #7166f8;
-}
+//   &:hover {
+//     color: white !important;
+//   }
+// }
 
-.Wiki input {
-  line-height: 40px;
-  border-radius: 20px 0 0 20px;
-  border: none;
-  width: 400px;
-  padding: 0 20px;
-}
+// .scienceAuthor {
+//   margin-bottom: 0.3em;
+//   color: #7166f8;
+//   font-weight: 400;
+// }
 
-.Wiki input:focus {
-  outline: none;
-}
+// .Wiki {
+//   margin: 0 auto;
+//   text-align: center;
+//   margin-bottom: 50px;
+// }
 
-.resultAmount {
-  color: #1a0dab;
-  font-size: 1.5em;
-  text-align: center;
-  margin: 0em 0 1em 1em;
-}
+// .scienceGraph {
+//   right: 31%;
+// }
 
-.Wiki input:focus {
-  outline: none;
-}
+// .Wiki form {
+//   border-radius: 5px;
+//   border: 1px solid #7166f8;
+// }
 
-.Wiki button {
-  color: white;
-  line-height: 40px;
-  border: none;
-  background-color: #7166f8;
-  padding: 0 20px;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  margin-left: 50px !important;
-}
+// .Wiki input {
+//   line-height: 40px;
+//   border-radius: 20px 0 0 20px;
+//   border: none;
+//   width: 520px;
+//   padding: 0 20px;
+// }
 
-.sourceLogo {
-  margin-left: 1em !important;
-  max-width: 3em;
-  margin-top: .5em;
-}
+// .Wiki input:focus {
+//   outline: none;
+// }
 
-.Wiki button:focus {
-  outline: none;
-}
-// wikki modal <<menu>>
-.wikiModal {
-  img {
-    position: relative;
-    top: 36px;
-    margin: 0 auto;
-    width: 50px;
-    margin-bottom: 80px;
-  }
+// .resultAmount {
+//   color: #1a0dab;
+//   font-size: 1.5em;
+//   text-align: center;
+//   margin: 0em 0 1em 1em;
+// }
 
-  h2 {
-    top: 15%;
-    left: 42%;
-    font-family: times !important;
-    font-size: 40px !important;
-    position: absolute;
-  }
-}
+// .Wiki input:focus {
+//   outline: none;
+// }
+
+// .Wiki button {
+//   color: white;
+//   line-height: 40px;
+//   border: none;
+//   background-color: #7166f8;
+//   padding: 0 20px;
+//   border-radius: 0 5px 5px 0;
+//   cursor: pointer;
+//   margin-left: 50px !important;
+// }
+
+// .sourceLogo {
+//   margin-left: 1em !important;
+//   max-width: 3em;
+//   margin-top: .5em;
+// }
+
+// .Wiki button:focus {
+//   outline: none;
+// }
+// .wikiModal {
+//   top: 100px !important;
+//   height: auto !important;
+//   max-height: 800px !important;
+
+//   img {
+//     position: relative;
+//     top: 36px;
+//     margin: 0 auto;
+//     margin-bottom: 80px;
+//   }
+
+//   h2 {
+//     top: 15%;
+//     left: 42%;
+//     font-family: times !important;
+//     font-size: 40px !important;
+//     position: absolute;
+//   }
+// }
+// .wikiCreateNode {
+//   position: absolute !important;
+//   margin-top: 430px !important;
+//   font-size: 13px !important;
+//   /* color: white !important; */
+//   box-shadow: none !important;
+//   line-height: 40px;
+//   /* border: none; */
+//   /* background-color: #7166f8 !important; */
+//   width: 20%;
+//   top: 320px;
+//   border-radius: 5px !important;
+//   border: 1px solid #dedede !important;
+// }
+
+// //wiki end
 
 .graphsCheckbox {
   position: absolute;
@@ -9469,3 +9516,183 @@ img.preview-scaled {
 .bg-transparent {
   background-color: transparent !important;
 }
+// wikki modal <<menu>>
+.wikiModal {
+  top: 100px !important;
+  height: auto !important;
+  max-height: 800px !important;
+  .Wiki {
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .Wiki form {
+    border-radius: 5px;
+    border: 1px solid #7166f8;
+  }
+
+  img {
+    position: relative;
+    top: 36px;
+    margin: 0 auto;
+    margin-bottom: 80px;
+  }
+  .Wiki button {
+    color: white;
+    line-height: 40px;
+    border: none;
+    background-color: #7166f8;
+    padding: 0 20px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    margin-left: 50px !important;
+  }
+  .wikibutton {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 250px;
+  }
+  .Wiki input {
+    line-height: 40px;
+    border-radius: 20px 0 0 20px;
+    border: none;
+    width: 520px;
+    padding: 0 20px;
+  }
+  .Wiki input:focus {
+    outline: none;
+  }
+  .Wiki button:focus {
+    outline: none;
+  }
+  input[type="checkbox"] {
+    display: none;
+  }
+  label.pull-left::before {
+    display: none !important;
+  }
+  label.pull-left::after {
+    display: none;
+  }
+  .wikiSearch {
+    height: 130px;
+    width: 650px;
+    margin: 0 5px;
+    padding: 10px 60px;
+    text-align: left;
+    margin-bottom: 10px !important;
+    margin-left: 10px;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+
+    &:last-child {
+      margin-bottom: 0px !important;
+    }
+    h3 {
+      color: #1a0dab;
+    }
+
+    h3 a {
+      font-size: 16px;
+      color: #7166f8;
+      display: inline-block;
+      line-height: 22px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    h3 a:hover {
+      border-bottom: 3px solid;
+    }
+
+    a:visited {
+      color: #1a0dab;
+    }
+
+    h3 a:hover {
+      border-bottom: 3px solid;
+    }
+
+    a:visited {
+      color: #1a0dab;
+    }
+    .searchmatch {
+      font-weight: bold;
+    }
+
+    .link  a:hover {
+      text-decoration: none;
+    }
+
+    .searchmatch {
+      font-weight: bold;
+    }
+
+    .description {
+      display: flow-root;
+      line-height: 19px;
+      font-size: 14px;
+      color: #898989 !important;
+      font-weight: 400;
+      margin-right: 15%;
+    }
+
+    .link a {
+      line-height: 1.5em;
+    }
+  }
+  h2 {
+    top: 15%;
+    left: 42%;
+    font-family: times !important;
+    font-size: 40px !important;
+    position: absolute;
+  }
+  .wikiCreateNode {
+    font-size: 13px !important;
+    width: 20%;
+    border-radius: 5px !important;
+    border: 1px solid #dedede !important;
+  }
+  .wikiresult {
+    overflow-y: auto;
+    overflow-x: hidden;
+    .wikiSearch{
+ margin-bottom: 10px !important;
+    }
+  }
+
+  .wikipediaDisabled {
+    background-color: #bfbfbf !important;
+    cursor: auto !important;
+
+    &:hover {
+      color: white !important;
+    }
+  }
+
+  .scienceAuthor {
+    margin-bottom: 0.3em;
+    color: #7166f8;
+    font-weight: 400;
+  }
+
+  .scienceGraph {
+    right: 31%;
+  }
+
+  .resultAmount {
+    color: #1a0dab;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 0em 0 1em 1em;
+  }
+  .sourceLogo {
+    margin-left: 1em !important;
+    max-width: 3em;
+    margin-top: 0.5em;
+  }
+}
+
+//wiki end
