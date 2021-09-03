@@ -26,6 +26,7 @@ import AnalyticalTab from '../components/Analysis/AnalyticalTab';
 import AnalyticalPage from '../components/Analysis/AnalyticalPage';
 import FindPath from '../components/FindPath';
 import AutoPlay from '../components/AutoPlay';
+import MapsGraph from '../components/maps/MapsGraph';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 
@@ -185,6 +186,7 @@ class GraphView extends Component {
                 <Filters />
                 <AutoPlay />
                 <ContextMenu expand={true}/>
+                {activeButton === 'maps-view' && <MapsGraph />}
                 {activeButton.includes('findPath')
                 && (
                 <FindPath

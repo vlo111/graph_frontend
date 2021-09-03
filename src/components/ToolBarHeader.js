@@ -121,7 +121,7 @@ class ToolBarHeader extends Component {
               </Link>
             </li>
             <li className="legend">
-              <Legend />
+              {updateLocation &&  <Legend /> }
             </li>
             <li>
               { !filter && 

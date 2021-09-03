@@ -2,12 +2,15 @@ import React, { Component  } from 'react';
 import { connect } from 'react-redux'; 
 import PropTypes from 'prop-types'; 
 import { getGraphInfoRequest } from '../store/actions/graphs'; 
+import { setActiveButton } from '../store/actions/app'; 
 import Chart from '../Chart';  
+import Button from './form/Button';  
 
 class ToolBarFooter extends Component {
   static propTypes = {
     getGraphInfoRequest: PropTypes.func.isRequired, 
     graphInfo: PropTypes.object.isRequired,
+    setActiveButton: PropTypes.func.isRequired,
   };  
 
   constructor(props) {
@@ -35,12 +38,27 @@ class ToolBarFooter extends Component {
         totalLabels: labels?.length
       }); 
   }
+  handleClick = (activeButton) => {
+    this.props.setActiveButton(activeButton); 
+  }
   render() {
     const {totalNodes, totalLinks, totalLabels } = this.state; 
     const { graphInfo, partOf } = this.props; 
+    const showInMap = Chart.getNodes().some((d) => d.location); 
     return (
       <>
-        <footer id="graphs-data-info">          
+        <footer id="graphs-data-info"> 
+        {showInMap ? (         
+            <div className="mapMode">          
+              <Button
+                icon="fa-globe"
+                onClick={(ev) => this.handleClick('maps-view')}
+                className='bg-transparent'
+              >
+                Show on map
+              </Button>              
+            </div>
+            ) : null}
             <div className="nodesMode">
               <span>
                 {partOf ? `Nodes (${totalNodes} of ${graphInfo.totalNodes}) ` :  `Nodes (${graphInfo.totalNodes || 0 })`} 
@@ -68,6 +86,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getGraphInfoRequest, 
+  setActiveButton,
 };
 
 const Container = connect(

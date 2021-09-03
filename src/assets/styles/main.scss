@@ -3819,9 +3819,7 @@ body .gh__menu {
 #mapsGraph {
   position: absolute;
   top: 0;
-  left: 202px;
   z-index: 3;
-  width: calc(100% - 202px);
   height: 100%;
 
   .gmnoprint {
@@ -9425,7 +9423,7 @@ img.preview-scaled {
         padding: 15px 15px; 
         color: #727272;
         align-items: center;
-        box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
+        // box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
         border-radius: 3px;
         height: 40px;
       }
@@ -9460,3 +9458,9 @@ img.preview-scaled {
       fill: $color-main;
     }
   }
+.border-bottom  {
+  border-bottom : 1px solid rgba($color-main, .2)
+}
+.bg-transparent {
+  background-color: transparent !important;
+}
