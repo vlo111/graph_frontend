@@ -11,7 +11,7 @@ import Chart from '../Chart';
 import AnalysisUtils from '../helpers/AnalysisUtils';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import { setActiveButton, toggleSearch } from '../store/actions/app';
+import { setActiveButton, toggleExplore } from '../store/actions/app';
 import Button from '../components/form/Button';
 import Filters from '../components/filters/Filters';
 import Search from '../components/search/Search';
@@ -26,6 +26,7 @@ import AnalyticalTab from '../components/Analysis/AnalyticalTab';
 import AnalyticalPage from '../components/Analysis/AnalyticalPage';
 import FindPath from '../components/FindPath';
 import AutoPlay from '../components/AutoPlay';
+import MapsGraph from '../components/maps/MapsGraph';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 
@@ -35,7 +36,7 @@ class GraphView extends Component {
     deleteGraphRequest: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
     userGraphRequest: PropTypes.func.isRequired,
-    toggleSearch: PropTypes.func.isRequired,
+    toggleExplore: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     graphInfo: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
@@ -55,6 +56,10 @@ class GraphView extends Component {
       this.props.getGraphInfoRequest(graphId);
     }
   })
+
+  componentWillUnmount() {
+    this.props.toggleExplore(false)
+  }
 
   deleteGraph = async () => {
     const { match: { params: { graphId = '' } } } = this.props;
@@ -185,6 +190,7 @@ class GraphView extends Component {
                 <Filters />
                 <AutoPlay />
                 <ContextMenu expand={true}/>
+                {activeButton === 'maps-view' && <MapsGraph />}
                 {activeButton.includes('findPath')
                 && (
                 <FindPath
@@ -215,6 +221,7 @@ const mapDispatchToProps = {
   deleteGraphRequest,
   userGraphRequest,
   getGraphInfoRequest,
+  toggleExplore
 };
 const Container = connect(
   mapStateToProps,

@@ -1172,8 +1172,8 @@ class Chart {
       .append('use')
       .attr('href', '#folderIcon')
       .attr('class', 'folderIconSmall')
-      .attr('width', '30')
-      .attr('height', '30')
+      .attr('width', '40')
+      .attr('height', '40')
       .attr('fill', '#58595b')
       .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 10)
       .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 - 50);
@@ -1184,7 +1184,8 @@ class Chart {
       .attr('class', 'folder-name')
       .attr('height', '40')
       .attr('fill', '#58595b')
-      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 50)
+      .attr('font-size', (d) => 40)
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 55)
       .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 - 30);
 
     folderWrapper.selectAll('.folderOpen')

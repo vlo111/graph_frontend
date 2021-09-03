@@ -290,7 +290,20 @@ class ChartUtils {
    */
   static getLinkColorByType(links, type) {
     const link = links && links.find((l) => ( l.type ===  type ));  
-    return link?.color
+    return link?.color ? link?.color : this.linkColorObj[type]
+  }
+  /**
+   * 
+   * @param {*} nodes 
+   * @param {*} linksPartial 
+   * @returns 
+   */
+  static getLinksBetweenNodes(nodes, linksPartial){ 
+    const links = linksPartial.filter((l) => 
+       nodes && nodes.some((n) => (l.target === n.id && l.source === n.id )) 
+    );
+    return links
+
   }
   /**
    * Fit data
