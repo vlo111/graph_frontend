@@ -9423,13 +9423,15 @@ img.preview-scaled {
         padding: 15px 15px; 
         color: $color-main !important;
         align-items: center;
-        // box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
+         box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
         border-radius: 3px;
         height: 40px;
+        background-color: rgba($color-main, .2);
         .ghButton {
           color: $color-main !important;
         }
       }
+       
   }
   .linkedinModal {
   .import-input label {
