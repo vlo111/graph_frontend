@@ -6,7 +6,7 @@
       }
     }
   }
-
+  
 }
 @media screen and (min-width: 1700px) {
   #header {
@@ -36,10 +36,10 @@
     .right-elements {
       right: 30px;
     }
-    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
+    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
       width: 200px !important;
       font-size: 14px !important;
-      margin-right: 20px !important;
+      margin-right: 20px !important; 
     }
   }
 
@@ -86,7 +86,7 @@
     grid-template-columns: 10% 42% 36% 5% 7% !important;
     grid-gap:0 !important;
     .graphSearch>input{
-      width: 400px !important;
+      width: 400px !important; 
     }
     #accountDropDown .dropdown {
       left: 86%;
@@ -115,15 +115,15 @@
 @media screen and (max-width: 1500px) {
   #header{
     .graphSearch>input{
-      width: 350px !important;
+      width: 350px !important; 
     }
     #accountDropDown .dropdown {
       left: 85%;
    }
-   .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
+   .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
      width: 190px !important;
      font-size: 14px !important;
-     margin-right: 15px !important;
+     margin-right: 15px !important; 
    }
   }
 
@@ -143,7 +143,7 @@
 @media screen and (max-width: 1400px) {
   #header {
     .graphSearch>input{
-      width: 300px !important;
+      width: 300px !important; 
     }
     .signOut {
       right: 1%;
@@ -188,12 +188,12 @@
       left: 82%;
   }
   .graphSearch>input{
-    width: 280px !important;
+    width: 280px !important; 
   }
-  .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
+  .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
     width:160px !important;
     font-size: 14px !important;
-    margin-right: 10px !important;
+    margin-right: 10px !important; 
   }
   }
   .homeWithUser{
@@ -203,8 +203,8 @@
         &:hover .buttonHidden .btn-edit {
           margin-right: 7px;
           margin-left: 7px;
-      }
-      }
+      }    
+      } 
   }
 }
   .ghModalSearch {
@@ -212,8 +212,8 @@
   }
   .searchNodes {
     right: -11%;
-}
-}
+  }
+} 
 
 
 @media screen and (max-width: 900px) {
@@ -248,12 +248,12 @@
   }
   #header{
     .graphSearch>input{
-      width: 200px !important;
+      width: 200px !important; 
     }
-    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
+    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
       width: 130px !important;
       font-size: 13px !important;
-      margin-right: 7px !important;
+      margin-right: 7px !important; 
     }
   }
 }

@@ -3133,9 +3133,9 @@ class Chart {
 
   /**
    * check if given nodes are connected with the given link
-   * @param {*} fNodeId
-   * @param {*} sNodeId
-   * @param {*} link
+   * @param {*} fNodeId 
+   * @param {*} sNodeId 
+   * @param {*} link 
    * @returns bool
    */
   static ifNodesConnected(fNodeId, sNodeId, link) {
