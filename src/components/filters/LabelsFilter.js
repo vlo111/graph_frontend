@@ -65,7 +65,6 @@ class LabelsFilter extends Component {
                   onChange={() => this.toggleAll(labelsInfo, allChecked)}
                   checked={allChecked}
                   label="All"
-                  name="layout"
                   id="labelCheckAll"
                 />
               </div>
@@ -78,21 +77,25 @@ class LabelsFilter extends Component {
           <ul className="list ">
             {labelsInfo.map((item) => (
               <Tooltip key={item.id} overlay={item.name}>
-                <li className="item">
+                <li className="item labels-item">
                   <div className="filterCheckBox">
-                    <Checkbox
-                      label={(
+                    <div className="label-checkBox">
+                      <input
+                        className="labelsCheckInput"
+                        checked={filters.labels.includes(item.id)}
+                        onChange={() => this.handleChange(item.id)}
+                        id={item.id}
+                        type="checkbox"
+                      />
+                      <label className="labelsCheckbox" htmlFor={item.id}>
                         <div className="colorBox" style={{ borderColor: item.color }}>
                           <div style={{ backgroundColor: item.color }} />
                         </div>
-                          )}
-                      checked={filters.labels.includes(item.id)}
-                      onChange={() => this.handleChange(item.id)}
-                    >
+                      </label>
                       <span className="badge">
                         {item.length}
                       </span>
-                    </Checkbox>
+                    </div>
                   </div>
 
                 </li>

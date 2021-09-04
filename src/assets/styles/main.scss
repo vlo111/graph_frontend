@@ -687,29 +687,6 @@ p {
   right: 0;
 }
 
-.ghCheckbox {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  user-select: none;
-
-  label {
-    padding-left: 10px;
-  }
-
-  input[type="checkbox"] {
-    cursor: pointer;
-  }
-
-  &.labelReverse {
-    label {
-      padding-right: 10px;
-      padding-left: 0;
-      order: -1;
-    }
-  }
-}
-
 .ghRangeSelect {
   padding-bottom: 20px;
 
@@ -738,6 +715,7 @@ p {
   max-height: 100vh;
   position: relative;
   background-color: #eeeeee;
+
   &.maps-view {
     display: none !important;
   }
@@ -1465,7 +1443,6 @@ p {
     }
 
     label {
-      font: normal normal 400 14px/17px Open Sans;
       font-size: 16px;
       margin-bottom: 5px;
       color: #757575;
@@ -1603,8 +1580,8 @@ p {
       object-fit: cover;
     }
 
-    .graphInputName{
-      border:none;
+    .graphInputName {
+      border: none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
       color: $color-graph-name;
@@ -1627,32 +1604,33 @@ p {
     }
   }
 
-  .createGraph{
+  .createGraph {
     width: 370px;
     padding-bottom: 30px;
 
-    .form{
+    .form {
       margin: auto;
       width: 84%;
       height: 84%;
-      .ghInput input{
+
+      .ghInput input {
         padding: 0;
         width: 210px;
-        border:none;
-        border-bottom:1px solid $color-user-text;
-        border-radius:0;
-        font-size:23px;
-        color:$color-dark;
+        border: none;
+        border-bottom: 1px solid $color-user-text;
+        border-radius: 0;
+        font-size: 23px;
+        color: $color-dark;
         margin: -20px auto auto;
 
         &::-webkit-input-placeholder {
           color: $color-graph-name;
           font-weight: 700;
-          text-align:center;
+          text-align: center;
         }
       }
 
-      .ghInput textarea{
+      .ghInput textarea {
         margin-top: 20px;
         border-radius: 5px;
         border: 1px solid #AAAAAA;
@@ -1665,7 +1643,8 @@ p {
           font-size: 16px;
         }
       }
-      .buttons{
+
+      .buttons {
         justify-content: space-between;
       }
     }
@@ -1996,15 +1975,13 @@ p {
 
     thead {
       .allTableCellChekked {
-        margin-left: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       th {
         height: 60px;
-
-        span, label {
-          padding-left: 25px !important;
-        }
       }
 
       .cell {
@@ -2022,10 +1999,6 @@ p {
         &.index,
         &.name {
           z-index: 3;
-
-          > * {
-            height: 32px !important;
-          }
         }
 
         span {
@@ -2035,7 +2008,6 @@ p {
         > * {
           padding: 5px;
           width: 100%;
-          display: block;
           height: 32px;
           background-color: $color-white;
         }
@@ -2085,6 +2057,13 @@ p {
             font-weight: 600;
           }
         }
+
+        .items {
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
       }
     }
 
@@ -2095,14 +2074,16 @@ p {
       min-height: 32px;
 
       .value-viewer {
-        height: 32px;
+        height: 60px;
         white-space: nowrap;
-        padding: 5px 25px;
+        padding: 5px 25px !important;
         overflow: hidden;
         text-overflow: ellipsis;
         vertical-align: middle;
         font-weight: 600;
-        //margin-top: -1px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
 
         a {
           pointer-events: none;
@@ -2115,19 +2096,6 @@ p {
 
       &.index {
         border-left-style: hidden;
-
-        label {
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          padding: 10px 20px;
-          margin: 0;
-
-          input {
-            margin-right: 2px;
-          }
-        }
       }
 
       &.name,
@@ -2141,7 +2109,6 @@ p {
         > * {
           z-index: 0;
           width: 100%;
-          display: block;
           height: 60px;
         }
       }
@@ -2164,14 +2131,6 @@ p {
         }
 
       }
-
-      //&.value,
-      //&.type {
-      //  text-align: right;
-      //  .data-editor {
-      //    text-align: right;
-      //  }
-      //}
     }
 
     .data-editor {
@@ -2769,6 +2728,10 @@ p {
     .filter-container {
       width: 100%;
 
+      .hideIsolated .filterCheckBox {
+        margin-left: 0;
+      }
+
       h3 {
         color: #7166F8;
         margin-bottom: 20px;
@@ -2779,32 +2742,20 @@ p {
         margin-left: 18px;
       }
 
-      .hideIsolated {
-        margin-left: 0;
-
-        .filterCheckBox {
-          width: 100%;
-          margin-left: 0;
-
-          .ghCheckbox {
-            justify-content: start;
-            margin: 5px 0;
-          }
-        }
+      .check-label {
+        padding-left: 10px;
+        margin-top: 3px;
       }
 
-      [type="checkbox"]:not(:checked) + label:after,
-      [type="checkbox"]:checked + label:after {
-        top: 0.85em;
-        left: 0.145em;
-        font-size: 1.01em;
-      }
-
-      [type="checkbox"]:not(:checked) + label:before,
-      [type="checkbox"]:checked + label:before {
-        width: 1em;
-        height: 1em;
-        top: 4px;
+      .more {
+        font-style: italic;
+        font-weight: normal;
+        font-size: 17px;
+        line-height: 16px;
+        color: #7166F8;
+        border: none;
+        background: none;
+        margin-left: 18px;
       }
     }
 
@@ -2821,7 +2772,6 @@ p {
 
     .row {
       span, label {
-        font: normal normal normal 16px/22px Open Sans;
         color: $color-passive;
       }
     }
@@ -2829,11 +2779,6 @@ p {
     .nestedCheckBox {
       margin-top: 5%;
       margin-bottom: 10%;
-    }
-
-    .hideIsolated {
-      margin-left: 5%;
-      margin-top: 4%;
     }
 
     label {
@@ -2856,7 +2801,11 @@ p {
       .list {
         .item {
           display: flex;
-          margin-top: 2%;
+          margin: 20px 0;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
         }
       }
     }
@@ -2878,7 +2827,6 @@ p {
 
   .row {
     span, label {
-      font: normal normal normal 16px/22px Open Sans;
       color: #8794A3;
     }
   }
@@ -2886,11 +2834,6 @@ p {
   .nestedCheckBox {
     margin-top: 5%;
     margin-bottom: 10%;
-  }
-
-  .hideIsolated {
-    margin-left: 5%;
-    margin-top: 4%;
   }
 
   label {
@@ -2970,7 +2913,6 @@ p {
       .badge {
         margin-left: auto;
         align-self: flex-start;
-        margin-top: 12px;
         color: $color-graph-name;
       }
     }
@@ -2978,19 +2920,6 @@ p {
 
   .subList {
     padding-left: 25px;
-  }
-
-  .ghCheckbox {
-    width: 100%;
-    margin: 5px 0;
-
-    label {
-      order: 1;
-    }
-
-    .badge {
-      order: 2;
-    }
   }
 
   &.linkTypesFilter {
@@ -3006,72 +2935,75 @@ p {
       flex-wrap: wrap;
       display: flex;
 
-      .item {
-        margin-right: 10px;
-      }
-
-      .ghCheckbox {
-        label {
-          cursor: pointer;
-        }
-
-        input {
-          display: none;
-        }
-
-        .badge {
-          position: absolute;
-          margin-left: 37px;
-          margin-top: 4px;
-          transform: translate(-50%);
-          color: #7B7B7B;
-          pointer-events: none;
-        }
-
-        input:not(:checked) ~ label {
-          .colorBox {
-            border-color: transparent !important;
-            filter: brightness(0.9);
-          }
-        }
-
-        label {
-          padding-left: 0;
-
-          .colorBox {
-            height: 30px;
-            width: 75px;
-            background-color: #f4f4ff;
-            border-radius: 7px;
-            overflow: hidden;
-            border: 3px solid;
-            pointer-events: none;
-
-            div {
-              width: 100%;
-              height: 100%;
-              opacity: 0.7;
-            }
-          }
-
-        }
-
+      .labels-item {
+        margin: 0 20px 0 0 !important;
       }
     }
 
-    .checkAll {
+    .labelCheckAllBlock .item {
+      margin-bottom: 10px !important;
+    }
+
+    .label-checkBox {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
       width: 100%;
+      margin: 5px 0;
+      user-select: none;
 
-      .ghCheckbox {
-        width: 100%;
+      .labelsCheckInput {
+        display: none;
+      }
 
-        .badge {
-          margin-left: auto;
+      .item {
+        display: flex;
+        margin-top: 2%;
+      }
+
+      .colorBox {
+        height: 30px;
+        width: 75px;
+        background-color: #f4f4ff;
+        border-radius: 7px;
+        overflow: hidden;
+        border: 3px solid;
+        pointer-events: none;
+
+        div {
+          width: 100%;
+          height: 100%;
+          opacity: .7;
         }
+      }
+
+      .badge {
+        position: absolute;
+        margin-left: 37px !important;
+        margin-top: 4px;
+        transform: translate(-50%);
+        color: $color-graph-name !important;
+        pointer-events: none;
+        font-weight: 700;
+      }
+
+      .labelsCheckbox {
+        cursor: pointer;
+      }
+
+      input:not(:checked) ~ label .colorBox {
+        border-color: transparent !important;
+        -webkit-filter: brightness(.9);
+        filter: brightness(.9);
       }
     }
 
   }
+
+  .checkAll {
+    width: 100%;
+  }
+
 }
 
 .rangeDataChart {
@@ -3513,12 +3445,13 @@ body .gh__menu {
 
               .nodeType {
                 margin: 0 21px;
-                
+
                 .typeText {
                   color: $color-border;
                   font-weight: 800;
                 }
               }
+
               .toggleTabBox {
                 padding: 0 5px;
               }
@@ -3635,7 +3568,7 @@ body .gh__menu {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     .nodeItem {
       height: 44px;
     }
@@ -3677,6 +3610,7 @@ body .gh__menu {
               white-space: inherit;
             }
           }
+
           .tabRight {
             margin-left: 0;
           }
@@ -4599,7 +4533,7 @@ body .gh__menu {
   width: 64%;
   margin: 0 auto 50px;
   align-items: flex-start;
-  position: relative; 
+  position: relative;
   top: 130px;
 
   .tabsList {
@@ -4616,7 +4550,7 @@ body .gh__menu {
       margin-left: -10px;
 
       .ghButton {
-        background-color:$color-white;
+        background-color: $color-white;
         color: $color-gray;
         border-radius: 24px 24px 0 0;
         padding: 12px 30px 60px;
@@ -4679,9 +4613,11 @@ body .gh__menu {
       position: static;
       margin-left: 10px;
       margin-bottom: -20px;
-      .lastItem{
+
+      .lastItem {
         display: none;
       }
+
       .item {
         margin-left: -10px;
 
@@ -4965,10 +4901,11 @@ body .gh__menu {
 }
 
 
-.embedModal{
+.embedModal {
   border-radius: 0 !important;
   max-width: 638px !important;
   padding: 18px 53px 29px 53px !important;
+
   .graphEmbed {
     h2 {
       font-weight: bold;
@@ -4977,13 +4914,13 @@ body .gh__menu {
       color: $color-main;
       margin-bottom: 10px;
     }
-  
+
     .row {
       display: flex;
       align-items: center;
       margin: 0;
     }
-  
+
     input {
       width: 438px;
       height: 35px;
@@ -4991,37 +4928,39 @@ body .gh__menu {
       box-sizing: border-box;
       border-radius: 3px;
     }
-    .copyEmbed{
-        width: 80px;
-        height: 35px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 2px;
-        line-height: normal;
-        font-weight: 400;
-        transition: all 0.25s;
-        text-align: center;
-        font-size: 16px;
-        color: $color-white;
-        cursor: pointer;
-        touch-action: manipulation;
-        outline: none;
-        border: solid 1px;
+
+    .copyEmbed {
+      width: 80px;
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 2px;
+      line-height: normal;
+      font-weight: 400;
+      transition: all 0.25s;
+      text-align: center;
+      font-size: 16px;
+      color: $color-white;
+      cursor: pointer;
+      touch-action: manipulation;
+      outline: none;
+      border: solid 1px;
+      border-color: $color-main;
+      user-select: none;
+      background-color: $color-main;
+      opacity: 1;
+      padding: 0;
+      margin-left: 12px;
+
+      &:hover {
+        background-color: $color-white;
+        color: $color-main;
         border-color: $color-main;
-        user-select: none;
-        background-color: $color-main;
-        opacity:1;
-        padding: 0;
-        margin-left: 12px;
-        &:hover {
-          background-color: $color-white;
-          color: $color-main;
-          border-color: $color-main;
-        }
+      }
     }
   }
-  }
+}
 
 .searchData {
   margin-right: auto;
@@ -5296,7 +5235,7 @@ body .gh__menu {
   padding: 0 0 10px;
 }
 
-.undefined .tabsList .lastItem{
+.undefined .tabsList .lastItem {
   display: none;
 }
 
@@ -5398,378 +5337,178 @@ body .gh__menu {
   margin-bottom: 10px !important;
   margin-left: 10px;
   border: 1px solid #dedede;
+
   div {
     margin-left: 40px;
     padding: 4px;
   }
 }
 
-// // wikki modal <<menu>>
-// .wikiresult {
-//   overflow-y: auto;
-//   overflow-x: hidden;
-// }
-// .wikiSearch:focus {
-//   background: linear-gradient(0deg, rgba(136, 130, 209, 0.22), rgba(136, 130, 209, 0.22)) !important;
-// }
+////wiki modal
+.wikiresult {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
-// label.pull-left::before {
-//   display: none !important;
-// }
-// label.pull-left::after {
-//   display: none;
-// }
+.wikiSearch:focus {
+  background: linear-gradient(0deg, rgba(136, 130, 209, 0.22), rgba(136, 130, 209, 0.22));
+}
 
-// .wikiSearch h3 {
-//   color: #1a0dab;
-// }
+label.pull-left::before {
+  display: none !important;
+}
 
-// .wikiSearch h3 a {
-//   font-size: 16px;
-//   color: #7166f8;
-//   display: inline-block;
-//   line-height: 22px;
-//   text-decoration: none;
-//   font-weight: 700;
-// }
-
-// .wikiSearch h3 a:hover {
-//   border-bottom: 3px solid;
-// }
-
-// .wikiSearch a:visited {
-//   color: #1a0dab;
-// }
-
-// .wikiSearch h3 a:hover {
-//   border-bottom: 3px solid;
-// }
-
-// .wikiSearch a:visited {
-//   color: #1a0dab;
-// }
-
-// .wikiSearch .link a {
-//   text-decoration: none;
-//   color: #7166f8;
-//   font-weight: 400;
-// }
-
-// .wikiSearch .link a:hover {
-//   text-decoration: none;
-// }
-
-// .wikiSearch .searchmatch {
-//   font-weight: bold;
-// }
-
-// .wikiSearch .link a:hover {
-//   text-decoration: none;
-// }
-
-// .wikiSearch .searchmatch {
-//   font-weight: bold;
-// }
-
-// .wikiSearch .description {
-//   display: flow-root;
-//   /* position: relative; */
-//   line-height: 19px;
-//   font-size: 14px;
-//   color: #898989 !important;
-//   font-weight: 400;
-//   margin-right: 15%;
-// }
-
-// .wikiSearch .link a {
-//   line-height: 1.5em;
-// }
-// .wikiSearch {
-//   height: 130px;
-//   width: 650px;
-//   margin: 0 auto;
-//   padding: 10px 60px;
-//   text-align: left;
-//   margin-bottom: 10px !important;
-//   margin-left: 10px;
-//   border: 1px solid #dedede;
-//   border-radius: 5px;
-
-//   div {
-//     // margin-left: 40px;
-//     // padding: 4px;
-//   }
-
-//   &:last-child {
-//     margin-bottom: 10px !important;
-//   }
-// }
-
-// .wikipediaDisabled {
-//   background-color: #bfbfbf !important;
-//   cursor: auto !important;
-
-//   &:hover {
-//     color: white !important;
-//   }
-// }
-
-// .scienceAuthor {
-//   margin-bottom: 0.3em;
-//   color: #7166f8;
-//   font-weight: 400;
-// }
-
-// .Wiki {
-//   margin: 0 auto;
-//   text-align: center;
-//   margin-bottom: 50px;
-// }
-
-// .scienceGraph {
-//   right: 31%;
-// }
-
-// .Wiki form {
-//   border-radius: 5px;
-//   border: 1px solid #7166f8;
-// }
-
-// .Wiki input {
-//   line-height: 40px;
-//   border-radius: 20px 0 0 20px;
-//   border: none;
-//   width: 520px;
-//   padding: 0 20px;
-// }
-
-// .Wiki input:focus {
-//   outline: none;
-// }
-
-// .resultAmount {
-//   color: #1a0dab;
-//   font-size: 1.5em;
-//   text-align: center;
-//   margin: 0em 0 1em 1em;
-// }
-
-// .Wiki input:focus {
-//   outline: none;
-// }
-
-// .Wiki button {
-//   color: white;
-//   line-height: 40px;
-//   border: none;
-//   background-color: #7166f8;
-//   padding: 0 20px;
-//   border-radius: 0 5px 5px 0;
-//   cursor: pointer;
-//   margin-left: 50px !important;
-// }
-
-// .sourceLogo {
-//   margin-left: 1em !important;
-//   max-width: 3em;
-//   margin-top: .5em;
-// }
-
-// .Wiki button:focus {
-//   outline: none;
-// }
-// .wikiModal {
-//   top: 100px !important;
-//   height: auto !important;
-//   max-height: 800px !important;
-
-//   img {
-//     position: relative;
-//     top: 36px;
-//     margin: 0 auto;
-//     margin-bottom: 80px;
-//   }
-
-//   h2 {
-//     top: 15%;
-//     left: 42%;
-//     font-family: times !important;
-//     font-size: 40px !important;
-//     position: absolute;
-//   }
-// }
-// .wikiCreateNode {
-//   position: absolute !important;
-//   margin-top: 430px !important;
-//   font-size: 13px !important;
-//   /* color: white !important; */
-//   box-shadow: none !important;
-//   line-height: 40px;
-//   /* border: none; */
-//   /* background-color: #7166f8 !important; */
-//   width: 20%;
-//   top: 320px;
-//   border-radius: 5px !important;
-//   border: 1px solid #dedede !important;
-// }
-
-// //wiki end
-
-.graphsCheckbox {
-  position: absolute;
+label.pull-left::after {
   display: none;
 }
 
-.graphsCheckbox[disabled] {
-  cursor: not-allowed;
+.wikiSearch h3 {
+  color: #1a0dab;
 }
 
-.graphsCheckbox[disabled] {
-  cursor: not-allowed;
-}
-
-.graphsCheckbox + label {
-  margin-left: -35px;
-  margin-top: 5px;
-  position: relative;
-  display: block;
-  padding-left: 30px;
-  cursor: pointer;
-  vertical-align: middle;
-}
-
-.graphsCheckbox + label:hover:before {
-  animation-duration: 0.4s;
-  animation-fill-mode: both;
-  animation-name: hover-color;
-}
-
-.graphsCheckbox + label:hover:before {
-  animation-duration: 0.4s;
-  animation-fill-mode: both;
-  animation-name: hover-color;
-}
-
-.graphsCheckbox + label:before {
-  position: absolute;
-  top: 0;
-  left: 0;
+.wikiSearch h3 a {
+  font-size: 16px;
+  color: #7166f8;
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  content: '';
-  border: 1px solid #c0c0c0;
+  line-height: 22px;
+  text-decoration: none;
+  font-weight: 700;
 }
 
-.graphsCheckbox + label:after {
-  position: absolute;
-  display: none;
-  content: '';
+.wikiSearch h3 a:hover {
+  border-bottom: 3px solid;
 }
 
-.graphsCheckbox[disabled] + label {
-  cursor: not-allowed;
-  color: #e4e4e4;
+.wikiSearch a:visited {
+  color: #1a0dab;
 }
 
-.graphsCheckbox[disabled] + label:hover,
-.graphsCheckbox[disabled] + label:before,
-.graphsCheckbox[disabled] + label:after {
-  cursor: not-allowed;
+.wikiSearch h3 a:hover {
+  border-bottom: 3px solid;
 }
 
-.graphsCheckbox[disabled] + label:hover:before {
-  border: 1px solid #e4e4e4;
-  animation-name: none;
+.wikiSearch a:visited {
+  color: #1a0dab;
 }
 
-.graphsCheckbox[disabled] + label:before {
-  border-color: #e4e4e4;
+.wikiSearch .link a {
+  text-decoration: none;
+  color: #7166f8;
+  font-weight: 400;
 }
 
-.graphsCheckbox:checked + label:before {
-  animation-name: none;
+.wikiSearch .link a:hover {
+  text-decoration: none;
 }
 
-.graphsCheckbox:checked + label:after {
-  display: block;
+.wikiSearch .searchmatch {
+  font-weight: bold;
 }
 
-.graphsCheckbox + label:before {
-  border-radius: 3px;
+.wikiSearch .link a:hover {
+  text-decoration: none;
 }
 
-.graphsCheckbox + label:after {
-  position: absolute;
-  display: none;
-  content: '';
+.wikiSearch .searchmatch {
+  font-weight: bold;
 }
 
-.graphsCheckbox[disabled] + label {
-  cursor: not-allowed;
-  color: #e4e4e4;
+.wikiSearch .description {
+  display: flow-root;
+  /* position: relative; */
+  line-height: 19px;
+  font-size: 14px;
+  color: #898989 !important;
+  font-weight: 400;
+  margin-right: 15%;
 }
 
-.graphsCheckbox[disabled] + label:hover,
-.graphsCheckbox[disabled] + label:before,
-.graphsCheckbox[disabled] + label:after {
-  cursor: not-allowed;
+.wikiSearch .link a {
+  line-height: 1.5em;
 }
 
-.graphsCheckbox[disabled] + label:hover:before {
-  border: 1px solid #e4e4e4;
-  animation-name: none;
+.scienceAuthor {
+  margin-bottom: 0.3em;
+  color: #7166f8;
+  font-weight: 400;
 }
 
-.graphsCheckbox[disabled] + label:before {
-  border-color: #e4e4e4;
+.Wiki {
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
-.graphsCheckbox:checked + label:before {
-  animation-name: none;
+.scienceGraph {
+  right: 31%;
 }
 
-.graphsCheckbox:checked + label:after {
-  display: block;
+.Wiki form {
+  border-radius: 5px;
+  border: 1px solid #7166f8;
 }
 
-.graphsCheckbox + label:before {
-  border-radius: 3px;
+.Wiki input {
+  line-height: 40px;
+  border-radius: 20px 0 0 20px;
+  border: none;
+  width: 400px;
+  padding: 0 20px;
 }
 
-.graphsCheckbox + label:after {
-  top: 2px;
-  left: 7px;
-  box-sizing: border-box;
-  width: 6px;
-  height: 12px;
-  transform: rotate(45deg);
-  border-width: 2px;
-  border-style: solid;
-  border-color: #fff;
-  border-top: 0;
-  border-left: 0;
+.Wiki input:focus {
+  outline: none;
 }
 
-.graphsCheckbox:checked + label:before {
-  border: #3e97eb;
-  background: #3e97eb;
+.resultAmount {
+  color: #1a0dab;
+  font-size: 1.5em;
+  text-align: center;
+  margin: 0em 0 1em 1em;
 }
 
-.graphsCheckbox:checked[disabled] + label:before {
-  border: #c9e2f9;
-  background: #c9e2f9;
+.Wiki input:focus {
+  outline: none;
 }
 
-
-.graphsCheckbox:checked + label:before {
-  border: #3e97eb;
-  background: #3e97eb;
+.Wiki button {
+  color: white;
+  line-height: 40px;
+  border: none;
+  background-color: #7166f8;
+  padding: 0 20px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  margin-left: 50px !important;
 }
 
-.graphsCheckbox:checked[disabled] + label:before {
-  border: #c9e2f9;
-  background: #c9e2f9;
+.sourceLogo {
+  margin-left: 1em !important;
+  max-width: 3em;
+  margin-top: .5em;
+}
+
+.Wiki button:focus {
+  outline: none;
+}
+
+// wikki modal <<menu>>
+.wikiModal {
+  img {
+    position: relative;
+    top: 36px;
+    margin: 0 auto;
+    width: 50px;
+    margin-bottom: 80px;
+  }
+
+  h2 {
+    top: 15%;
+    left: 42%;
+    font-family: times !important;
+    font-size: 40px !important;
+    position: absolute;
+  }
 }
 
 .wikiModal {
@@ -5789,7 +5528,6 @@ body .gh__menu {
   top: 325px;
   left: 258px;
 }
-
 
 .containerModal {
   width: 340px;
@@ -6165,15 +5903,13 @@ img.preview-scaled {
         }
 
         .compareCheckBox {
-          margin: auto 0;
-          margin-top: -10px;
+          margin: -10px 0 auto;
           height: 100%;
           display: flex;
         }
 
         .nodeIcon {
-          margin: auto 10px auto;
-          margin-left: 23px;
+          margin: auto 10px auto 23px;
           min-width: 60px;
           height: 60px;
         }
@@ -6345,8 +6081,7 @@ img.preview-scaled {
   min-width: 920px;
 
   .mediaSearch {
-    margin: 0 auto;
-    margin-top: 40px;
+    margin: 40px auto 0;
     width: 30%;
   }
 
@@ -6387,7 +6122,7 @@ img.preview-scaled {
 
   .mediaHeader {
     position: sticky;
-    top: 0px;
+    top: 0;
     padding-top: 3%;
     width: 100%;
     background-color: white;
@@ -6428,6 +6163,7 @@ img.preview-scaled {
 .rc-tooltip-inner {
   background: $color-white;
   color: #000000;
+
   .tooltiptext {
     display: flex;
     flex-direction: row;
@@ -6492,10 +6228,6 @@ img.preview-scaled {
     .icon {
       margin-left: auto;
       cursor: pointer;
-    }
-
-    [type="checkbox"] {
-      margin-left: 10px;
     }
   }
 }
@@ -6653,7 +6385,6 @@ img.preview-scaled {
   box-shadow: 0 4px 8px 0 #283a4c1f !important;
   padding: 8px !important;
   font-size: 14px !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
   z-index: 102;
 
   h1 {
@@ -6662,11 +6393,6 @@ img.preview-scaled {
     margin: 0 0 8px !important;;
     padding: 0 !important;;
     line-height: normal !important;;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;;
-  }
-
-  p {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;;
   }
 
   img.avatar {
@@ -6864,7 +6590,6 @@ img.preview-scaled {
       .collection-group {
         position: static;
         width: auto;
-        border-top-width: 0;
         border-color: #ccc;
         border-left-width: 0;
         border-right-width: 0;
@@ -7133,7 +6858,7 @@ img.preview-scaled {
   -moz-background-clip: padding-box;
   background-clip: padding-box;
   position: absolute;
-  box-shadow: 0px 4px 33px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 33px rgba(0, 0, 0, 0.25);
   border-radius: 3px;
   outline: 0;
 }
@@ -7149,22 +6874,27 @@ img.preview-scaled {
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
-  .child{
+
+  .child {
     width: 100%;
     margin: 7px 0 7px 0;
-    &:hover{
+
+    &:hover {
       background: rgba(113, 102, 248, 0.1);
       cursor: pointer;
-      .dashboard-delete{ 
+
+      .dashboard-delete {
         color: $color-avatar-border;
         font-weight: 700;
       }
-      span{
+
+      span {
         color: $color-main;
         font-weight: 700;
       }
     }
-    span{
+
+    span {
       margin-left: 20px;
       color: #9F9F9F;
       font-weight: 700;
@@ -7200,7 +6930,6 @@ img.preview-scaled {
 
     a {
       width: 200px;
-      padding: 12px 48px;
       text-align: center;
       color: white;
       border: solid 2px white;
@@ -7438,8 +7167,6 @@ img.preview-scaled {
   }
 }
 
-// science article search page
-//----------------------------
 .scienceModalsubBox {
   display: flex;
   flex-direction: column;
@@ -7579,11 +7306,6 @@ img.preview-scaled {
 }
 
 .createGraphButton {
-  // width: 100%;
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
-  // margin: 0px;
   position: absolute !important;
   margin-top: 430px !important;
   font-size: 13px !important;
@@ -7591,11 +7313,8 @@ img.preview-scaled {
   box-shadow: none !important;
   line-height: 25px;
   border: none;
-  /* background-color: #7166f8 !important; */
-  /* width: 20%; */
   top: 258px;
   left: 258px;
-
 }
 
 .selectedItemsAmount {
@@ -7606,8 +7325,6 @@ img.preview-scaled {
 .scienceInput:focus {
   outline: none;
 }
-
-//-----------------------------------
 
 .social_icon {
   padding: 5px 11px;
@@ -7649,7 +7366,6 @@ img.preview-scaled {
 
 .social-list > div {
   width: 32px;
-  line-height: center;
   line-height: calc(2rem - 2px);
   padding: 0px 7px;
 }
@@ -7944,7 +7660,6 @@ img.preview-scaled {
       p {
         margin: 0;
         line-height: 35px;
-        font-family: Julius Sans One;
       }
 
       .circle {
@@ -8027,10 +7742,10 @@ img.preview-scaled {
         width: 90%;
 
         .searchFieldCheckBox {
-          justify-content: center; 
+          justify-content: center;
           display: flex;
           flex-direction: column;
-	  cursor: pointer;
+          cursor: pointer;
           width: 7em;
 
 
@@ -8095,12 +7810,11 @@ img.preview-scaled {
   .searchItem {
     cursor: pointer;
   }
+
   ul {
     margin-bottom: 0px;
   }
 }
-
-// End search modal inside graph
 
 .create-node, .create-folder, .create-label-ellipse .labels, .create-label-square .labels {
   cursor: url('../images/icons/cursor_plus.png') 16 16, auto !important;
@@ -8224,8 +7938,6 @@ img.preview-scaled {
   }
 }
 
-//new style for legend.js
-
 .legendButton {
   display: flex;
 }
@@ -8264,10 +7976,6 @@ img.preview-scaled {
     border-radius: 12px;
     color: $color-main;
 
-    font
-      // &:focus, &:active {
-      //   box-shadow: 0px 0px 0px 1px #ABD6F780;
-      // }
     .carret {
       padding: 0 3px;
       margin-left: 3px;
@@ -8392,31 +8100,6 @@ img.preview-scaled {
     .btn-classic {
       width: 100%;
       height: 32px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 2px;
-      line-height: normal;
-      font-weight: 400;
-      font-style: normal;
-      transition: all 0.25s;
-      text-align: center;
-      font-size: 16px;
-      color: $color-white;
-      cursor: pointer;
-      touch-action: manipulation;
-      outline: none;
-      border: solid 1px;
-      border-color: $color-main;
-      user-select: none;
-      background-color: $color-main;
-      opacity: 1;
-
-      &:hover {
-        background-color: $color-white;
-        color: $color-main;
-        border-color: $color-main;
-      }
     }
 
     .btn-delete {
@@ -8636,86 +8319,92 @@ img.preview-scaled {
   height: 75px;
   background-color: #fff;
   position: fixed;
-  width: 100%; 
+  width: 100%;
   z-index: 1;
-.start-graphs {
-  .buttonsWrapper  {
-    display: flex;
-    .btn-startgraph {
-      width: 216px;
-      height: 42px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 5px;
-      line-height: normal;
-      font-weight: 400;
-      font-style: normal;
-      text-align: center;
-      font-size: 16px;
-      background-color: $color-main;
-      color: $color-white;
-      cursor: pointer;
-      border:none;
-      &:hover {
-        background-color: white;
-        border: 1px solid $color-main;
-        color: $color-main;
-      }
-    }  
-    
-    .btn-comparegraph {
-      width: 216px;
-      height: 42px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 5px;
-      line-height: normal;
-      font-weight: 400;
-      font-style: normal;
-      text-align: center;
-      font-size: 16px;
-      background-color: #ffffff;
-      color: $color-main;
-      cursor: pointer;
-      border:solid 1px $color-main;
-      &:hover {
-        background-color: $color-main;
-        color: #ffffff;
-      }
-    }  
 
-    .ghButton {
-      margin-right: 30px;
+  .start-graphs {
+    .buttonsWrapper {
+      display: flex;
+
+      .btn-startgraph {
+        width: 216px;
+        height: 42px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        line-height: normal;
+        font-weight: 400;
+        font-style: normal;
+        text-align: center;
+        font-size: 16px;
+        background-color: $color-main;
+        color: $color-white;
+        cursor: pointer;
+        border: none;
+
+        &:hover {
+          background-color: white;
+          border: 1px solid $color-main;
+          color: $color-main;
+        }
+      }
+
+      .btn-comparegraph {
+        width: 216px;
+        height: 42px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        line-height: normal;
+        font-weight: 400;
+        font-style: normal;
+        text-align: center;
+        font-size: 16px;
+        background-color: #ffffff;
+        color: $color-main;
+        cursor: pointer;
+        border: solid 1px $color-main;
+
+        &:hover {
+          background-color: $color-main;
+          color: #ffffff;
+        }
+      }
+
+      .ghButton {
+        margin-right: 30px;
+      }
     }
   }
-}
 
-.graphSearch{
-   .icon{
-    bottom: 4px !important;
-    color: #CFCFCF;
+  .graphSearch {
+    .icon {
+      bottom: 4px !important;
+      color: #CFCFCF;
+    }
+
+    input {
+      height: 33px;
+      width: 500px !important;
+      color: $color-graph-name !important;
+      border-radius: 5px;
+      border: 1px solid #B3ADF5;
+    }
   }
-  input{
-    height: 33px;
-    width: 500px !important;
-    color: $color-graph-name !important;
-    border-radius: 5px;
-    border: 1px solid #B3ADF5;
-} 
-}
 
-.logo-graphs, .searchInputWrapper, .start-graphs, .notify_container, .signOut {
-  display: flex;
-  justify-content: center !important;
-  align-items: center;
-}
-.logo-graphs{
-    .logo{
+  .logo-graphs, .searchInputWrapper, .start-graphs, .notify_container, .signOut {
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+  }
+
+  .logo-graphs {
+    .logo {
       min-width: 100px;
     }
-}
+  }
 }
 
 #header-on-graph, #header-on-view-graph {
@@ -8946,11 +8635,10 @@ img.preview-scaled {
   min-width: 125px;
   height: 42px;
   font-size: 20px;
-  color: #ffffff;
+  color: $color-white;
   cursor: pointer;
-  border: solid 1px;
-  border-color: #7166F8;
-  background-color: #7166F8;
+  border: 1px solid $color-main;
+  background-color: $color-main;
 
   &:hover {
     background-color: $color-white;
@@ -8958,13 +8646,23 @@ img.preview-scaled {
     border-color: $color-main;
   }
 
+  &:active {
+    background-color: $color-main;
+    color: $color-white;
+  }
+
   &.alt {
-    background: #FFFFFF;
-    color: #7166F8;
+    background: $color-white;
+    color: $color-main;
 
     &:hover {
       background-color: $color-main;
       color: $color-white;
+    }
+
+    &:active {
+      color: $color-main !important;
+      background-color: $color-white !important;
     }
   }
 }
@@ -9093,6 +8791,7 @@ img.preview-scaled {
             border-bottom-left-radius: 3px;
             flex: 80%;
             display: none;
+
             &:hover {
               display: block;
             }
@@ -9221,6 +8920,17 @@ img.preview-scaled {
     }
   }
 
+  .show-direction {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+
+    .check-label {
+      margin-left: 13px;
+      margin-top: 1px;
+    }
+  }
+
   .ghModal {
     height: 525px;
   }
@@ -9228,7 +8938,7 @@ img.preview-scaled {
   .number-wrapper {
     display: flex;
 
-    >div {
+    > div {
       margin-top: 0;
       margin-bottom: 0;
     }
@@ -9269,96 +8979,6 @@ img.preview-scaled {
       justify-content: space-between;
       margin-top: 50px;
     }
-
-    .ghCheckbox {
-      justify-content: center;
-
-      label {
-        margin-top: 5px;
-      }
-
-      /* Base for label styling */
-      [type="checkbox"]:not(:checked),
-      [type="checkbox"]:checked {
-        position: absolute;
-        left: 0;
-        opacity: 0.01;
-      }
-      [type="checkbox"]:not(:checked) + label,
-      [type="checkbox"]:checked + label {
-        position: relative;
-        padding-left: 2.3em;
-        font-size: 1.05em;
-        line-height: 1.7;
-        cursor: pointer;
-      }
-
-      /* checkbox aspect */
-      [type="checkbox"]:not(:checked) + label:before,
-      [type="checkbox"]:checked + label:before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 1.4em;
-        height: 1.4em;
-        border: 1px solid #aaa;
-        background: #FFF;
-        border-radius: .2em;
-        box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 rgba(203, 34, 237, .2);
-        -webkit-transition: all .275s;
-        transition: all .275s;
-      }
-
-      /* checked mark aspect */
-      [type="checkbox"]:not(:checked) + label:after,
-      [type="checkbox"]:checked + label:after {
-        content: '✕';
-        position: absolute;
-        top: .525em;
-        left: .18em;
-        font-size: 1.375em;
-        color: #CB22ED;
-        line-height: 0;
-        -webkit-transition: all .2s;
-        transition: all .2s;
-      }
-
-      /* checked mark aspect changes */
-      [type="checkbox"]:not(:checked) + label:after {
-        opacity: 0;
-        -webkit-transform: scale(0) rotate(45deg);
-        transform: scale(0) rotate(45deg);
-      }
-
-      [type="checkbox"]:checked + label:after {
-        opacity: 1;
-        -webkit-transform: scale(1) rotate(0);
-        transform: scale(1) rotate(0);
-      }
-
-      /* Disabled checkbox */
-      [type="checkbox"]:disabled:not(:checked) + label:before,
-      [type="checkbox"]:disabled:checked + label:before {
-        box-shadow: none;
-        border-color: #bbb;
-        background-color: #e9e9e9;
-      }
-
-      [type="checkbox"]:disabled:checked + label:after {
-        color: #777;
-      }
-
-      [type="checkbox"]:disabled + label {
-        color: #aaa;
-      }
-
-      /* Accessibility */
-      [type="checkbox"]:checked:focus + label:before,
-      [type="checkbox"]:not(:checked):focus + label:before {
-        box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 6px rgba(203, 34, 237, .2);
-      }
-    }
   }
 }
 
@@ -9380,7 +9000,6 @@ img.preview-scaled {
 .number-wrapper {
   .number-input-container {
     margin: 0 auto;
-    user-select: none;
   }
 
   input {
@@ -9420,6 +9039,7 @@ img.preview-scaled {
     top: 19px;
   }
 }
+
 .connectionDetails, .ghModalFilters {
   details {
     padding-bottom: 16px;
@@ -9438,49 +9058,52 @@ img.preview-scaled {
   }
 }
 
- 
-  .connection-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16px;
+.connection-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
 
-    .indicator {
-      height: 2px;
-      width: 22px;
-      margin-right: 16px;
-    }
-
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-
-    a {
-      cursor: auto;
-    }
-  } 
-  #graphs-data-info{
-    display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      left: 213px;
-      bottom: 2%;
-      div {
-        display: flex; 
-        padding: 15px 15px; 
-        color: $color-main !important;
-        align-items: center;
-         box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
-        border-radius: 3px;
-        height: 40px;
-        background-color: rgba($color-main, .2);
-        .ghButton {
-          color: $color-main !important;
-        }
-      }
-       
+  .indicator {
+    height: 2px;
+    width: 22px;
+    margin-right: 16px;
   }
-  .linkedinModal {
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  a {
+    cursor: auto;
+  }
+}
+
+#graphs-data-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 213px;
+  bottom: 2%;
+
+  div {
+    display: flex;
+    padding: 15px 15px;
+    color: $color-main !important;
+    align-items: center;
+    box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
+    border-radius: 3px;
+    height: 40px;
+    background-color: rgba($color-main, .2);
+
+    .ghButton {
+      color: $color-main !important;
+    }
+  }
+
+}
+
+.linkedinModal {
   .import-input label {
     margin-top: 15px;
     margin-right: 10px;
@@ -9491,208 +9114,67 @@ img.preview-scaled {
     top: 23px;
   }
 }
-  .scrollToTop {
-    font-size: 45px;
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    margin: 30px;
-    border-radius: 50%;
-    border: none; 
-    -webkit-transition: 0.4s opacity ease;
-    transition: 0.4s opacity ease;
-    cursor: pointer;
-    outline: none;
-    background: transparent;
 
-    svg {
-      height: 40px;
-      fill: $color-main;
-    }
+.scrollToTop {
+  font-size: 45px;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: 30px;
+  border-radius: 50%;
+  border: none;
+  -webkit-transition: 0.4s opacity ease;
+  transition: 0.4s opacity ease;
+  cursor: pointer;
+  outline: none;
+  background: transparent;
+
+  svg {
+    height: 40px;
+    fill: $color-main;
   }
-.border-bottom  {
-  border-bottom : 1px solid rgba($color-main, .2)
 }
+
+.border-bottom {
+  border-bottom: 1px solid rgba($color-main, .2)
+}
+
 .bg-transparent {
   background-color: transparent !important;
 }
-// wikki modal <<menu>>
-.wikiModal {
-  top: 100px !important;
-  height: auto !important;
-  max-height: 800px !important;
-  .Wiki {
-    margin: 0 auto;
-    text-align: center;
-    margin-bottom: 50px;
-  }
-  .Wiki form {
-    border-radius: 5px;
-    border: 1px solid #7166f8;
-  }
 
-  img {
+.check-box {
+  width: 24px;
+  height: 24px;
+
+  label {
+    background-color: $color-white;
+    border: 2px solid #949494;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
     position: relative;
-    top: 36px;
-    margin: 0 auto;
-    margin-bottom: 80px;
-  }
-  .Wiki button {
-    color: white;
-    line-height: 40px;
-    border: none;
-    background-color: #7166f8;
-    padding: 0 20px;
-    border-radius: 0 5px 5px 0;
     cursor: pointer;
-    margin-left: 50px !important;
   }
-  .wikibutton {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 250px;
-  }
-  .Wiki input {
-    line-height: 40px;
-    border-radius: 20px 0 0 20px;
-    border: none;
-    width: 520px;
-    padding: 0 20px;
-  }
-  .Wiki input:focus {
-    outline: none;
-  }
-  .Wiki button:focus {
-    outline: none;
-  }
-  input[type="checkbox"] {
-    display: none;
-  }
-  label.pull-left::before {
-    display: none !important;
-  }
-  label.pull-left::after {
-    display: none;
-  }
-  .wikiSearch {
-    height: 130px;
-    width: 650px;
-    margin: 0 5px;
-    padding: 10px 60px;
-    text-align: left;
-    margin-bottom: 10px !important;
-    margin-left: 10px;
-    border: 1px solid #dedede;
-    border-radius: 5px;
 
-    &:last-child {
-      margin-bottom: 0px !important;
+  .input-check:checked + label {
+    &:after {
+      content: "✔";
+      position: absolute;
+      top: 0;
+      color: $color-main;
+      font-size: 15px;
+      left: 22%;
     }
-    h3 {
-      color: #1a0dab;
-    }
-
-    h3 a {
-      font-size: 16px;
-      color: #7166f8;
-      display: inline-block;
-      line-height: 22px;
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    h3 a:hover {
-      border-bottom: 3px solid;
-    }
-
-    a:visited {
-      color: #1a0dab;
-    }
-
-    h3 a:hover {
-      border-bottom: 3px solid;
-    }
-
-    a:visited {
-      color: #1a0dab;
-    }
-    .searchmatch {
-      font-weight: bold;
-    }
-
-    .link  a:hover {
-      text-decoration: none;
-    }
-
-    .searchmatch {
-      font-weight: bold;
-    }
-
-    .description {
-      display: flow-root;
-      line-height: 19px;
-      font-size: 14px;
-      color: #898989 !important;
-      font-weight: 400;
-      margin-right: 15%;
-    }
-
-    .link a {
-      line-height: 1.5em;
-    }
-  }
-  h2 {
-    top: 15%;
-    left: 42%;
-    font-family: times !important;
-    font-size: 40px !important;
-    position: absolute;
-  }
-  .wikiCreateNode {
-    font-size: 13px !important;
-    width: 20%;
-    border-radius: 5px !important;
-    border: 1px solid #dedede !important;
-  }
-  .wikiresult {
-    overflow-y: auto;
-    overflow-x: hidden;
-    .wikiSearch{
- margin-bottom: 10px !important;
-    }
-  }
-
-  .wikipediaDisabled {
-    background-color: #bfbfbf !important;
-    cursor: auto !important;
-
-    &:hover {
-      color: white !important;
-    }
-  }
-
-  .scienceAuthor {
-    margin-bottom: 0.3em;
-    color: #7166f8;
-    font-weight: 400;
-  }
-
-  .scienceGraph {
-    right: 31%;
-  }
-
-  .resultAmount {
-    color: #1a0dab;
-    font-size: 1.5em;
-    text-align: center;
-    margin: 0em 0 1em 1em;
-  }
-  .sourceLogo {
-    margin-left: 1em !important;
-    max-width: 3em;
-    margin-top: 0.5em;
   }
 }
 
-//wiki end
+.checkWithLabel {
+  display: flex;
+
+  .check-label {
+    font-size: 14px;
+    color: $color-graph-name;
+    cursor: pointer;
+  }
+}

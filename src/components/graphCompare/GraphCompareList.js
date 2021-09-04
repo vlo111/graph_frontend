@@ -4,10 +4,11 @@ import memoizeOne from 'memoize-one';
 import { List } from 'react-virtualized';
 import LabelCompareItem from '../labelCopy/LabelCompareItem';
 import Icon from '../form/Icon';
+import Checkbox from '../form/Checkbox';
 
 class GraphCompareList extends Component {
   static defaultProps = {
-    width: Math.min(window.innerWidth - 220, 1024)
+    width: Math.min(window.innerWidth - 220, 1024),
   }
 
   constructor(props) {
@@ -55,9 +56,9 @@ class GraphCompareList extends Component {
     return (
       <div className="compareList">
         <div className="title">
-          {title}
-          <input
-            type="checkbox"
+
+          <Checkbox
+            label={title}
             checked={totalSelected === total}
             onChange={() => this.toggleAll(totalSelected !== total)}
           />

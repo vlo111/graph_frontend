@@ -5,8 +5,6 @@ import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import InputRange from 'react-input-range';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
-import Button from '../form/Button';
 
 class NodeConnectionFilter extends Component {
   static propTypes = {

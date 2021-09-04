@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
 import Button from '../form/Button';
+import Checkbox from '../form/Checkbox';
 
 class NodeTypesFilter extends Component {
   static propTypes = {
@@ -90,7 +90,7 @@ class NodeTypesFilter extends Component {
   render() {
     const { showMore, openList } = this.state;
     const {
-      nodes, filters, customFields, graphFilterInfo: { nodeTypes = [] }, singleGraph
+      nodes, filters, customFields, graphFilterInfo: { nodeTypes = [] }, singleGraph,
     } = this.props;
     this.checkAllNodes(nodeTypes);
     const types = showMore ? nodeTypes : _.chunk(nodeTypes, 5)[0] || [];
@@ -99,7 +99,7 @@ class NodeTypesFilter extends Component {
     }
     if (singleGraph) {
     }
-    console.log(singleGraph[0]?.nodes[0]?.customFields)
+    console.log(singleGraph[0]?.nodes[0]?.customFields);
     const allChecked = nodeTypes.length === filters.nodeTypes.length;
     return (
       <div className="nodesTypesFilter graphFilter">
@@ -112,6 +112,7 @@ class NodeTypesFilter extends Component {
               <div className="filterCheckBox">
                 <Checkbox
                   label="All"
+                  id="allNodes"
                   checked={allChecked}
                   onChange={() => this.toggleAll(nodeTypes, allChecked)}
                 />
@@ -123,14 +124,14 @@ class NodeTypesFilter extends Component {
             {types.map((item) => (
               <li key={item.type} className="item">
                 <div className="filterCheckBox">
-                  <Checkbox
-                    onChange={() => this.handleChange(item.type)}
-                    checked={filters.nodeTypes.includes(item.type)}
-                    label={item.type}
-                    name="layout"
-                    id={item.type}
-                  />
-                  {/* <label className="pull-left" htmlFor={item.type}>{item.type}</label> */}
+                  <div className="checkWithLabel">
+                    <Checkbox
+                      id={item.type}
+                      checked={filters.nodeTypes.includes(item.type)}
+                      onChange={() => this.handleChange(item.type)}
+                    />
+                    <label className="check-label pull-left" htmlFor={item.type}>{item.type}</label>
+                  </div>
                   <div>
                     {!_.isEmpty(customFields[item.type]) ? (
                       <Button
@@ -144,14 +145,14 @@ class NodeTypesFilter extends Component {
                         {_.map(customFields[item.type], (val, key) => (
                           <li key={key} className="item">
                             <div className="filterCheckBox nestedCheckBox">
-                              <Checkbox
-                                onChange={() => this.handleFilterChange(key)}
-                                checked={filters.nodeCustomFields.includes(key)}
-                                label={key}
-                                name="layout"
-                                id={key}
-                              />
-                              <label className="pull-left" htmlFor={key}>{key}</label>
+                              <div className="checkWithLabel">
+                                <Checkbox
+                                  id={`nodes_${key}`}
+                                  onChange={() => this.handleFilterChange(key)}
+                                  checked={filters.nodeCustomFields.includes(key)}
+                                />
+                                <label className="check-label pull-left" htmlFor={key}>{key}</label>
+                              </div>
                             </div>
                           </li>
                         ))}
@@ -165,13 +166,16 @@ class NodeTypesFilter extends Component {
                 </span>
               </li>
             ))}
+            {nodeTypes.length > types.length || showMore ? (
+              <li className="item">
+
+                <button className="more" onClick={this.toggleMore}>
+                  {showMore ? 'Less' : 'More'}
+                </button>
+              </li>
+            ) : null}
           </ul>
         </details>
-        {nodeTypes.length > types.length || showMore ? (
-          <Button onClick={this.toggleMore}>
-            {showMore ? '- Less' : '+ More'}
-          </Button>
-        ) : null}
       </div>
     );
   }
