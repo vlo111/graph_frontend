@@ -80,7 +80,7 @@ class GraphForm extends Component {
           <ToolBar />
           <Crop />
           <AddNodeModal />
-          {activeButton === 'data' && <DataView />}
+          {activeButton === 'data' && <DataView />} 
         <Search history={this.props.history} />
         {activeButton === 'media' && <MediaModal history={this.props.history} /> }
         {activeButton === 'maps-view' && <MapsGraph />}
@@ -105,7 +105,7 @@ class GraphForm extends Component {
         <ExitMode />
           <ToolBarFooter />
         {isTracker && <MousePosition graphId={graphId} /> }
-        </>
+        </> 
       </Wrapper>
     );
   }

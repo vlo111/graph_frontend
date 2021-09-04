@@ -53,7 +53,7 @@ class ToolBarHeader extends Component {
   handleClick = (button) => {
     const { match: { params: { graphId }}, location: { pathname} } = this.props;
     this.props.setActiveButton(button);
-
+    
     if (button === 'search') {
       this.props.toggleSearch(true)
       if (!pathname.startsWith('/graphs/view')) {

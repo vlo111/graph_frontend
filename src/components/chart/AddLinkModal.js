@@ -105,7 +105,7 @@ class AddLinkModal extends Component {
           }
           return d;
         });
-        // this.props.updateLinksRequest(graphId, [linkData]);
+        //this.props.updateLinksRequest(graphId, [linkData]);
       } else {
         linkData.create = true;
 
@@ -114,7 +114,7 @@ class AddLinkModal extends Component {
         linkData.id = linkData.id || ChartUtils.uniqueId(links);
         links.push({ ...linkData });
 
-        // this.props.createLinksRequest(graphId, [linkData]);
+        //this.props.createLinksRequest(graphId, [linkData]);
       }
       this._dataLinks = null;
 

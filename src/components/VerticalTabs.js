@@ -34,7 +34,7 @@ class VerticalTabs extends Component {
     const tab = tabs.find((t) => t.to === location.pathname);
 
     const checkHomeTabs = !!((
-         tab.name === 'Home'
+      tab.name === 'Home'
         || tab.name === 'Friends'
         || tab.name === 'Shared Graphs'
         || tab.name === 'Templates'));
