@@ -6,13 +6,12 @@ import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
 import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
-import { toggleExplore } from '../store/actions/app';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import Chart from '../Chart';
 import AnalysisUtils from '../helpers/AnalysisUtils';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import { setActiveButton } from '../store/actions/app';
+import { setActiveButton, toggleExplore } from '../store/actions/app';
 import Button from '../components/form/Button';
 import Filters from '../components/filters/Filters';
 import Search from '../components/search/Search';
@@ -102,14 +101,14 @@ class GraphView extends Component {
         const { listNodes, listLinks } = AnalysisUtils.getShortestPath(start, end, nodes, links);
 
         const originalListPath = links.filter((p) => {
-          let listChack = false;
+          let listCheck = false;
           listLinks.forEach((l) => {
             if ((l.source === p.source || l.target === p.source)
                 && (l.source === p.target || l.target === p.target)) {
-              listChack = true;
+              listCheck = true;
             }
           });
-          return listChack;
+          return listCheck;
         });
 
         // shortestLinks = originalListPath;
