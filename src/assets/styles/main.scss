@@ -5339,7 +5339,6 @@ body .gh__menu {
   border: 1px solid #dedede;
 
   div {
-    margin-left: 40px;
     padding: 4px;
   }
 }
@@ -5554,7 +5553,7 @@ label.pull-left::after {
     display: none;
   }
   .wikiSearch {
-    height: 150px;
+    max-height: 150px;
     width: 650px;
     margin: 0 5px;
     padding: 0 20px;
@@ -5563,10 +5562,6 @@ label.pull-left::after {
     margin-left: 10px;
     border: 1px solid #dedede;
     border-radius: 5px;
-    div {
-      margin-left: 40px;
-      padding: 4px;
-    }
 
 
     &:last-child {
