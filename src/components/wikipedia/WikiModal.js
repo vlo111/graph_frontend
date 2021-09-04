@@ -1,19 +1,18 @@
-import React, { Component } from "react";
-import Modal from "react-modal";
-import { connect } from "react-redux";
-import { setActiveButton, toggleNodeModal } from "../../store/actions/app";
-import withGoogleMap from "../../helpers/withGoogleMap";
-import Utils from "../../helpers/Utils";
-import WikiImg from "../../assets/images/wikipedia_black.png";
-import { classNames } from "classnames";
-import { isNumber } from "lodash";
+import React, { Component } from 'react';
+import Modal from 'react-modal';
+import { connect } from 'react-redux';
+import { isNumber } from 'lodash';
+import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
+import withGoogleMap from '../../helpers/withGoogleMap';
+import Utils from '../../helpers/Utils';
+import { ReactComponent as WikiSvg } from '../../assets/images/wikipedia.svg';
 
 class WikiModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       wikiSearchReturnValues: [],
-      wikiSearchTerms: "",
+      wikiSearchTerms: '',
       getChecked: false,
       disabled: false,
     };
@@ -30,13 +29,13 @@ class WikiModal extends Component {
 
     const pointerToThis = this;
 
-    let url = "https://en.wikipedia.org/w/api.php";
+    let url = 'https://en.wikipedia.org/w/api.php';
 
     const params = {
-      action: "query",
-      list: "search",
+      action: 'query',
+      list: 'search',
       srsearch: this.state.WikiSearchTerms,
-      format: "json",
+      format: 'json',
     };
 
     url = `${url}?origin=*`;
@@ -49,7 +48,7 @@ class WikiModal extends Component {
       .then((response) => {
         for (const key in response.query.search) {
           pointerToThis.state.wikiSearchReturnValues.push({
-            queryResultPageFullURL: "no link",
+            queryResultPageFullURL: 'no link',
             queryResultPageID: response.query.search[key].pageid,
             queryResultPageTitle: response.query.search[key].title,
             queryResultPageSnippet: response.query.search[key].snippet,
@@ -65,8 +64,7 @@ class WikiModal extends Component {
           fetch(urlForRetrievingPageURLByPageID)
             .then((response) => response.json())
             .then((response) => {
-              page.queryResultPageFullURL =
-                response.query.pages[pageID].fullurl;
+              page.queryResultPageFullURL = response.query.pages[pageID].fullurl;
 
               pointerToThis.forceUpdate();
             });
@@ -85,9 +83,8 @@ class WikiModal extends Component {
     if (getChecked === true) {
       return;
     }
-    const name =
-      this.state.wikiSearchReturnValues[this.state.getChecked]
-        .queryResultPageTitle;
+    const name = this.state.wikiSearchReturnValues[this.state.getChecked]
+      .queryResultPageTitle;
 
     const desc = this.state.wikiSearchReturnValues[0].queryResultPageSnippet;
 
@@ -113,13 +110,13 @@ https://en.wikipedia.org/wiki/${name}
       x,
       y,
       name,
-      type: "wikipedia",
+      type: 'wikipedia',
       description: desc,
       icon: wikiImageData,
       customFields: [
         {
-          name: "About",
-          subtitle: "",
+          name: 'About',
+          subtitle: '',
           value: abount,
         },
       ],
@@ -128,7 +125,7 @@ https://en.wikipedia.org/wiki/${name}
   };
 
   close = () => {
-    this.props.setActiveButton("create");
+    this.props.setActiveButton('create');
   };
 
   checkedWiki = (param) => {
@@ -146,20 +143,21 @@ https://en.wikipedia.org/wiki/${name}
         <label key={i}>
           <div
             className="anna1 wikiSearch"
-            tabindex="0"
+            tabIndex="0"
             onFocus={() => {
-              const items = document.getElementsByClassName("anna1");
+              const items = document.getElementsByClassName('anna1');
 
               Array.from(items).forEach((el) => {
-                el.style.backgroundColor = "white";
+                el.style.backgroundColor = 'white';
               });
 
-              items[i].style.backgroundColor = "#e5e3f5";
+              items[i].style.backgroundColor = '#e5e3f5';
             }}
             key={i}
           >
             <div>
               <input
+                style={{ display: 'none' }}
                 onChange={() => this.checkedWiki(i)}
                 checked={isNaN(getChecked) ? getChecked : i === getChecked}
                 type="checkbox"
@@ -174,8 +172,8 @@ https://en.wikipedia.org/wiki/${name}
                   target="_blank"
                   rel="noreferrer"
                   href={
-                    this.state.wikiSearchReturnValues[i].queryResultPageFullURL
-                  }
+                        this.state.wikiSearchReturnValues[i].queryResultPageFullURL
+                      }
                 >
                   {this.state.wikiSearchReturnValues[i].queryResultPageTitle}
                 </a>
@@ -185,26 +183,24 @@ https://en.wikipedia.org/wiki/${name}
                   target="_blank"
                   rel="noreferrer"
                   href={
-                    this.state.wikiSearchReturnValues[i].queryResultPageFullURL
-                  }
+                      this.state.wikiSearchReturnValues[i].queryResultPageFullURL
+                    }
                 >
-                  {this.state.wikiSearchReturnValues[i].queryResultPageFullURL.length > 50 
-                  ? `${this.state.wikiSearchReturnValues[i].queryResultPageFullURL.substring(0, 50)}...`
-                  : this.state.wikiSearchReturnValues[i].queryResultPageFullURL
-                    
-                  }
+                  {this.state.wikiSearchReturnValues[i].queryResultPageFullURL.length > 50
+                    ? `${this.state.wikiSearchReturnValues[i].queryResultPageFullURL.substring(0, 50)}...`
+                    : this.state.wikiSearchReturnValues[i].queryResultPageFullURL}
                 </a>
               </span>
               <p
                 className="description"
                 dangerouslySetInnerHTML={{
                   __html:
-                    this.state.wikiSearchReturnValues[i].queryResultPageSnippet,
+                      this.state.wikiSearchReturnValues[i].queryResultPageSnippet,
                 }}
               />
             </div>
           </div>
-        </label>
+        </label>,
       );
     }
 
@@ -216,12 +212,14 @@ https://en.wikipedia.org/wiki/${name}
           overlayClassName="ghModalOverlay ghMapsModalOverlay"
           onRequestClose={this.close}
         >
-          <img src={WikiImg} alt="wikipedia" className="wikipediaLogo" />
+          <div className="wikipediaLogo">
+            <WikiSvg />
+          </div>
           <div className="Wiki">
             <form action="">
               <input
                 type="text"
-                value={this.state.WikiSearchTerms || ""}
+                value={this.state.WikiSearchTerms || ''}
                 onChange={this.changeWikiSearchTerms}
                 placeholder="Search Wikipedia Articles"
               />

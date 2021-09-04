@@ -1,58 +1,38 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
 class Checkbox extends Component {
-  static propTypes = {
-    id: PropTypes.string,
-    containerClassName: PropTypes.string,
-    containerId: PropTypes.string,
-    label: PropTypes.any,
-    error: PropTypes.string,
-    children: PropTypes.node,
-    labelReverse: PropTypes.bool,
-  }
+    static id = 0;
 
-  static defaultProps = {
-    id: undefined,
-    containerClassName: '',
-    containerId: undefined,
-    label: undefined,
-    children: undefined,
-    error: undefined,
-    labelReverse: undefined,
-  }
+    constructor(props) {
+      super(props);
+      this.constructor.id += 1;
+      this.id = this.constructor.id;
+    }
 
-  static id = 0;
+    render() {
+      const { id, label, ...props } = this.props;
 
-  constructor(props) {
-    super(props);
-    this.constructor.id += 1;
-    this.id = this.constructor.id;
-  }
+      const inputId = id || `checkbox_${this.id}`;
 
-  render() {
-    const {
-      id, label, containerClassName, containerId, children,
-      error, labelReverse, ...props
-    } = this.props;
-    const inputId = id || `checkbox_${this.id}`;
-    return (
-      <div
-        id={containerId}
-        className={classNames(containerClassName, 'ghFormField', 'ghCheckbox', { labelReverse })}
-      >
-        <input {...props} id={inputId} type="checkbox" />
-        {label ? (
-          <label htmlFor={inputId}>{label}</label>
-        ) : null}
-        {children}
-        {error ? (
-          <div className="error">{error}</div>
-        ) : null}
-      </div>
-    );
-  }
+      if (label) {
+        return (
+          <div className="checkWithLabel">
+            <div className="check-box">
+              <input id={inputId} className="input-check" style={{ display: 'none' }} type="checkbox" {...props} />
+              <label htmlFor={inputId} />
+            </div>
+            <label className="check-label" htmlFor={inputId}>{label}</label>
+          </div>
+        );
+      }
+
+      return (
+        <div className="check-box">
+          <input id={inputId} className="input-check" style={{ display: 'none' }} type="checkbox" {...props} />
+          <label htmlFor={inputId} />
+        </div>
+      );
+    }
 }
 
 export default Checkbox;

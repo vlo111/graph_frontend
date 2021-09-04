@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
 import Button from '../form/Button';
+import Checkbox from '../form/Checkbox';
 
 class NodesStatusFilter extends Component {
   static propTypes = {
@@ -59,6 +59,7 @@ class NodesStatusFilter extends Component {
               <div className="filterCheckBox">
                 <Checkbox
                   label="All"
+                  id="allnodeStatus"
                   checked={allChecked}
                   onChange={() => this.toggleAll(nodeStatus, allChecked)}
                 />
@@ -72,11 +73,15 @@ class NodesStatusFilter extends Component {
                 style={{ color: ChartUtils.nodeColor(item) }}
               >
                 <div className="filterCheckBox">
-                  <Checkbox
-                    label={item.status}
-                    checked={filters.nodeStatus.includes(item.status)}
-                    onChange={() => this.handleChange(item.status)}
-                  />
+
+                  <div className="checkWithLabel">
+                    <Checkbox
+                      id={item.status}
+                      checked={filters.nodeStatus.includes(item.status)}
+                      onChange={() => this.handleChange(item.status)}
+                    />
+                    <label className="check-label pull-left" htmlFor={item.status}>{item.status}</label>
+                  </div>
                 </div>
                 <span className="badge">{item.length}</span>
               </li>

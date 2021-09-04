@@ -6,8 +6,8 @@ import _ from 'lodash';
 import ChartUtils from '../../helpers/ChartUtils';
 import LabelUtils from '../../helpers/LabelUtils';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
 import Button from '../form/Button';
+import Checkbox from "../form/Checkbox";
 
 class LabelStatusFilter extends Component {
   static propTypes = {
@@ -63,6 +63,7 @@ class LabelStatusFilter extends Component {
             <li className="item">
               <div className="filterCheckBox">
                 <Checkbox
+                  id="allLabelStatus"
                   label="All"
                   checked={allChecked}
                   onChange={() => this.toggleAll(labelsStatus, allChecked)}
@@ -76,6 +77,7 @@ class LabelStatusFilter extends Component {
               <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
                 <div className="filterCheckBox">
                   <Checkbox
+                    id={this.statusName(item.status)}
                     label={this.statusName(item.status)}
                     checked={filters.labelStatus.includes(item.status)}
                     onChange={() => this.handleChange(item.status)}

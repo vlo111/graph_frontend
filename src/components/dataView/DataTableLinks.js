@@ -14,6 +14,7 @@ import { DASH_TYPES } from '../../data/link';
 import SvgLine from '../SvgLine';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
+import Checkbox from '../form/Checkbox';
 
 let CHECKED = false;
 class DataTableLinks extends Component {
@@ -106,14 +107,10 @@ class DataTableLinks extends Component {
             <th className={`${position} cell index`} width="60">
 
               <div className="allTableCellChecked">
-                <input
+                <Checkbox
                   onChange={() => this.props.setGridIndexes('links', isAllChecked ? [] : grid.map((g) => g[0].value))}
                   checked={isAllChecked}
-                  className="graphsCheckbox"
-                  type="checkbox"
-                  name="layout"
                   id="all"
-                  value="All"
                 />
                 <label className="pull-left" htmlFor="all" />
               </div>
@@ -147,17 +144,14 @@ class DataTableLinks extends Component {
 
       return (
         <td className={`${position} cell index ${CHECKED && 'checked'}`}>
-          <label>
-            <input
+          <div className="items">
+            <Checkbox
               onChange={() => this.props.toggleGrid('links', cell.value)}
               checked={selectedLinks.includes(cell.value)}
-              className="graphsCheckbox"
-              type="checkbox"
-              name="layout"
               id={cell.value}
             />
             <label className="pull-left" htmlFor={cell.value} />
-          </label>
+          </div>
         </td>
       );
     }

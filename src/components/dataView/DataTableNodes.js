@@ -17,6 +17,7 @@ import { NODE_STATUS, NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
+import Checkbox from '../form/Checkbox'
 
 let CHECKED = false;
 
@@ -113,14 +114,10 @@ class DataTableNodes extends Component {
           <tr>
             <th className={`${position} cell index`} width="60">
               <div className='allTableCellChecked'>
-                <input
+                <Checkbox
                   onChange={() => this.handleCheckBoxChange(isAllChecked)}
                   checked={isAllChecked}
-                  className='graphsCheckbox'
-                  type="checkbox"
-                  name="layout"
                   id="all"
-                  value="All"
                 />
                 <label className="pull-left" htmlFor="all" />
               </div>
@@ -163,22 +160,18 @@ class DataTableNodes extends Component {
       } else {
         CHECKED = false;
       }
+
       return (
         <td className={`${position} cell index ${CHECKED && 'checked'}`}>
-          <label>
-            <div>
-              <input
+            <div className="items">
+              <Checkbox
                 onChange={() => this.toggleGrid(cell.value)}
                 checked={CHECKED}
-                className="graphsCheckbox"
-                type="checkbox"
-                name="layout"
                 id={cell.value}
               />
               <label className="pull-left" htmlFor={cell.value} />
             </div>
             {/* {props.row + 1} */}
-          </label>
         </td>
       );
     }
