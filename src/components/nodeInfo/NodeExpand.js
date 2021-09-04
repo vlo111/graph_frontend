@@ -1,7 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { useSelector } from 'react-redux';
-import { ReactComponent as TabExpandSvg } from '../../assets/images/icons/tab_expand_header.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
 import { getSingleGraph } from '../../store/selectors/graphs';
@@ -28,7 +27,6 @@ const NodeExpand = ({
           <p className="create-data">{created}</p>
         </div>
         <div className="header">
-          <TabExpandSvg />
         </div>
         <div className="tab-expand-container">
           <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
