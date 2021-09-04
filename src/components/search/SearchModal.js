@@ -416,11 +416,15 @@ class SearchModal extends Component {
     } else {
       node.code = name;
       chosenNodes.push(node);
-
-      if (allNodesSelected) {
-        this.setState({ allNodesSelected });
-      }
     }
+
+    if (allNodesSelected) {
+      this.setState({ allNodesSelected: true });
+    }
+    else {
+      this.setState({ allNodesSelected: false });
+    }
+
     this.setState({ chosenNodes });
   }
 
