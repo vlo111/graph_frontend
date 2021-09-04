@@ -7,6 +7,7 @@ import LabelCompareItem from './LabelCompareItem';
 import Button from '../form/Button';
 import { removeNodeCustomFieldKey, renameNodeCustomFieldKey } from '../../store/actions/graphs';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Checkbox from '../form/Checkbox';
 
 class LabelCompare extends Component {
   constructor(props) {
@@ -91,30 +92,22 @@ class LabelCompare extends Component {
               <div className="bottom">
                 <div className="node node_left">
                   <div className="allCheckedContent">
-                    <input
+                    <Checkbox
+                      id="all_left"
+                      label="Select all"
                       onChange={() => this.toggleAllDuplicate()}
                       checked={duplications.length === duplicatedNodes.length}
-                      className="graphsCheckbox"
-                      type="checkbox"
-                      name="layout"
-                      id="all_left"
-                      value="All"
                     />
-                    <label className="pull-left" htmlFor="all_left"> Select all </label>
                   </div>
                 </div>
                 <div className="node node_right">
                   <div className="allCheckedContent">
-                    <input
+                    <Checkbox
+                      id="all_right"
+                      label="Select all"
                       onChange={() => this.toggleAllSource()}
                       checked={sources.length === sourceNodes.length}
-                      className="graphsCheckbox"
-                      type="checkbox"
-                      name="layout"
-                      id="all_right"
-                      value="All"
                     />
-                    <label className="pull-left" htmlFor="all_right"> Select all </label>
                   </div>
                 </div>
               </div>

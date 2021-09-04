@@ -9,7 +9,6 @@ import Select from '../form/Select';
 import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
-import Checkbox from '../form/Checkbox';
 import { DASH_TYPES, TYPE_STATUS } from '../../data/link';
 import Validate from '../../helpers/Validate';
 import SvgLine from '../SvgLine';
@@ -18,6 +17,7 @@ import Utils from '../../helpers/Utils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import { createLinksRequest, updateLinksRequest } from '../../store/actions/links';
 import ChartUtils from '../../helpers/ChartUtils';
+import Checkbox from '../form/Checkbox';
 
 class AddLinkModal extends Component {
   static propTypes = {
@@ -234,12 +234,13 @@ class AddLinkModal extends Component {
                 onChange={(v) => this.handleChange('status', v?.value || '')}
               />
             </div>
-
-            <Checkbox
-              label="Show Direction"
-              checked={linkData.direction}
-              onChange={() => this.handleChange('direction', !linkData.direction)}
-            />
+            <div className="show-direction">
+              <Checkbox
+                  label="Show Direction"
+                  checked={linkData.direction}
+                  onChange={() => this.handleChange('direction', !linkData.direction)}
+              />
+            </div>
             <div className="buttons">
               <button className="btn-delete" onClick={this.closeModal}>
                 Cancel

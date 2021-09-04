@@ -15,6 +15,7 @@ import { toggleGraphMap, toggleExplore } from '../../store/actions/app';
 import { getGraphNodesRequest } from "../../store/actions/graphs";
 import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 import Button from "../form/Button";
+import Checkbox from '../form/Checkbox';
 
 class SearchModal extends Component {
   static propTypes = {
@@ -551,7 +552,7 @@ class SearchModal extends Component {
                 {Object.keys(checkBoxValues).map( field => (
                   <div 
                     onClick={this.handleFilterCheckBoxChange}
-                    className={"checkBox checkBox"+field}
+                      className={`checkBox checkBox${field}`}
                   >
                   {field}
                   </div>
@@ -569,36 +570,31 @@ class SearchModal extends Component {
           {this.ifAnyResults() ? (
           <div className="selectedNodesCheckBox">
             <div>
-              { allNodesSelected ? 'Unselect all  ' :  'Select all  '}
-              <input
-                className=""
-                name={`selectAll`}
-                type="checkbox"
-                checked={allNodesSelected}
-                onChange={this.selectAllNodes} 
-              />
-            </div>
-            <p className="selectedItemsAmount">
-              Selected Nodes
-              {' ' + chosenNodes.length}
-            </p>
-          </div>
-          ) : ""}
+                  <Checkbox
+                    label="Select all"
+                    checked={allNodesSelected}
+                    onChange={this.selectAllNodes}
+                  />
+                </div>
+                <p className="selectedItemsAmount">
+                  Selected Nodes
+                  {` ${chosenNodes.length}`}
+                </p>
+              </div>
+            ) : ''}
         </div>
 
         </div>
         <ul className="list"> 
           {nodes.map((d) => (
-            <li 
-              className="item nodeItem" 
-              key={'node_'+d.id} 
-            > 
-              <input
-                className="searchResultCheckbox"
+            <li
+              className="item nodeItem"
+              key={`node_${d.id}`}
+            >
+              <Checkbox
                 name={`name_${d.id}`}
-                type="checkbox"
                 checked={this.state.isChecked}
-                onChange={e => this.handleNodesCheckBoxChange(e, d)} 
+                onChange={(e) => this.handleNodesCheckBoxChange(e, d)}
               />
               <div
                 tabIndex="0"
@@ -648,13 +644,11 @@ class SearchModal extends Component {
                 className="item tabItem" 
                 key={'tab_'+tabs[item]?.node?.id} 
                 >
-                <input
-                className="searchResultCheckbox"
-                name={`tab_${tabs[item]?.node?.id}`}
-                type="checkbox"
-                checked={this.state.isChecked}
-                onChange={e => this.handleNodesCheckBoxChange(e, tabs[item].node)}
-              />
+                <Checkbox
+                  name={`tab_${tabs[item]?.node?.id}`}
+                  checked={this.state.isChecked}
+                  onChange={(e) => this.handleNodesCheckBoxChange(e, tabs[item].node)}
+                />
                 <div tabIndex="0" role="button" className="ghButton tabButton">
                   <div className="header" onClick={ (e) => this.handleNodesCheckBoxChange(e, tabs[item].node, `tab_${tabs[item]?.node?.id}`)}>
                       <NodeIcon node={tabs[item].node} searchIcon={true}/>
@@ -729,12 +723,10 @@ class SearchModal extends Component {
               className="item" 
               key={'keywords_'+d.id}
             >  
-              <input
-                className="searchResultCheckbox"
+              <Checkbox
                 name={`keyword_${d.id}`}
-                type="checkbox"
                 checked={this.state.isChecked}
-                onChange={e => this.handleNodesCheckBoxChange(e, d)} 
+                onChange={(e) => this.handleNodesCheckBoxChange(e, d)}
               />
               <div
                 tabIndex="0"
@@ -780,12 +772,10 @@ class SearchModal extends Component {
               className="item" 
               key={'docs_'+d.id}
             >
-              <input
-                className="searchResultCheckbox"
+              <Checkbox
                 name={`docs_${d.id}`}
-                type="checkbox"
                 checked={this.state.isChecked}
-                onChange={e => this.handleNodesCheckBoxChange(e, d)}
+                onChange={(e) => this.handleNodesCheckBoxChange(e, d)}
               />
               <div
                 tabIndex="0"

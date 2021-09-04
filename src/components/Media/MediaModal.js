@@ -12,10 +12,10 @@ import Button from '../form/Button';
 import { getDocumentsRequest } from '../../store/actions/document';
 import NodeIcon from '../NodeIcon';
 import { getSingleGraphRequest, getAllTabsRequest, setActiveTab } from '../../store/actions/graphs';
-import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
 import Input from '../form/Input';
 import Utils from '../../helpers/Utils';
+import Checkbox from '../form/Checkbox';
 
 class MediaModal extends Component {
     static propTypes = {
@@ -251,25 +251,21 @@ class MediaModal extends Component {
                   label="node icon"
                   checked={getCheckedNodes}
                   onChange={() => this.filterHandleChange('icon', !getCheckedNodes)}
-                  className="graphsCheckbox"
                 />
                 <Checkbox
                   label="show documents of tabs"
                   checked={getCheckedDocs}
                   onChange={() => this.filterHandleChange('docs', !getCheckedDocs)}
-                  className="graphsCheckbox"
                 />
                 <Checkbox
                   label="show images of tabs"
                   checked={getCheckedImages}
                   onChange={() => this.filterHandleChange('image', !getCheckedImages)}
-                  className="graphsCheckbox"
                 />
                 <Checkbox
                   label="videos"
                   checked={getCheckedVideos}
                   onChange={() => this.filterHandleChange('videos', !getCheckedVideos)}
-                  className="graphsCheckbox"
                 />
               </div>
               <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
