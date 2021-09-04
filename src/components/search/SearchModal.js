@@ -399,28 +399,28 @@ class SearchModal extends Component {
     } else {
       name = ev.target.name
     }
-    const { chosenNodes } = this.state
-    const ifExists = chosenNodes.find(nd => nd.code === name);
+    const { chosenNodes } = this.state;
+    const ifExists = chosenNodes.find((nd) => nd.code === name);
 
-    const listClass = document.getElementsByClassName('list')[0]
-    const allCheckboxes = Array.from(listClass.children)
-    const allNodesSelected = !allCheckboxes.find(el => el.firstChild.checked === false)
+    const listClass = document.getElementsByClassName('list')[0];
+    const allCheckboxes = Array.from(listClass.children);
+    const allNodesSelected = !allCheckboxes.find((el) => el.firstChild.firstChild.checked === false);
 
     if (ifExists) {
-      const index = chosenNodes.indexOf(ifExists)
-      chosenNodes.splice(index, 1)
+      const index = chosenNodes.indexOf(ifExists);
+      chosenNodes.splice(index, 1);
       if (!chosenNodes.length) {
-        this.setState({allNodesSelected})
+        this.setState({ allNodesSelected });
       }
     } else {
-      node.code = name
-      chosenNodes.push(node)
+      node.code = name;
+      chosenNodes.push(node);
 
       if (allNodesSelected) {
-        this.setState({allNodesSelected})
+        this.setState({ allNodesSelected });
       }
     }
-    this.setState({chosenNodes})
+    this.setState({ chosenNodes });
   }
 
   /**
@@ -428,8 +428,8 @@ class SearchModal extends Component {
    * @param {obj} ev 
    */
   showSelectedNodes = ( keep = false ) => {
-    let { chosenNodes } = this.state
-    const { linksPartial } = this.props
+    let { chosenNodes } = this.state;
+    const { linksPartial } = this.props;
     
     let oldNodes = Chart.getNodes()
     let oldLinks = Chart.getLinks()
@@ -477,18 +477,18 @@ class SearchModal extends Component {
     let { chosenNodes, nodes, keywords, docs, tabs} = this.state
     let nodeList = []
 
-    const listClass = document.getElementsByClassName('list')[0]
-    const allCheckboxes = Array.from(listClass.children)
-    const allNodesSelected = !allCheckboxes.find(el => el.firstChild.checked === false)
+    const listClass = document.getElementsByClassName('list')[0];
+    const allCheckboxes = Array.from(listClass.children);
+    const allNodesSelected = !allCheckboxes.find((el) => el.firstChild.firstChild.checked === false);
 
     if (allNodesSelected) {
-      allCheckboxes.map(el => el.firstChild.checked = false)
+      allCheckboxes.map((el) => el.firstChild.firstChild.checked = false);
     } else {
-      allCheckboxes.map(el => el.firstChild.checked = true)
-      
-      nodeList = nodes.concat(keywords)?.concat(docs)
-      for (let tab in tabs) {
-        nodeList.push(tabs[tab].node)
+      allCheckboxes.map((el) => el.firstChild.firstChild.checked = true);
+
+      nodeList = nodes.concat(keywords)?.concat(docs);
+      for (const tab in tabs) {
+        nodeList.push(tabs[tab].node);
       }
     }
     this.setState({chosenNodes: nodeList, allNodesSelected: !allNodesSelected})
