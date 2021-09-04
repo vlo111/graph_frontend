@@ -9235,10 +9235,9 @@ img.preview-scaled {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  left: 213px;
+  position: absolute; 
   bottom: 2%;
-
+  font-size: smaller;
   div {
     display: flex;
     padding: 15px 15px;

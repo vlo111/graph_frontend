@@ -108,7 +108,7 @@ class ContextMenu extends Component {
       const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
-    } else if (ev.target.classList.contains('svg') || ev.target.classList.contains('labelsBoard')) {
+    } else if (ev.target.tagName === 'svg' || ev.target.classList.contains('labelsBoard')) {
       element = 'chart';
     }
     // else if (ev.target.closest('.contentWrapper')) {
@@ -238,14 +238,14 @@ class ContextMenu extends Component {
                 </div>
               ) : null}
 
-              {['selectSquare'].includes(show) ? (
+              {['selectSquare'].includes(show) && !viewLocation ? (
                 <>
                   <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
                     Create a folder
                   </Button>
                 </>
               ) : null}
-              {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
+              {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) && !viewLocation ? (
                 <>
                   {show === 'node' ? (!params.readOnly ? (
                     <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
