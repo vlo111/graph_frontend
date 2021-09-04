@@ -67,26 +67,55 @@ class FindPath extends Component {
       ChartUtils.autoScaleTimeOut(); 
       ChartUtils.autoScaleTimeOut(100); 
       ChartUtils.autoScaleTimeOut(200);
+      ChartUtils.startAutoPosition()
     } 
 
     shortPath = (start , end ) => {
       let chartNodes = Chart.getNodes();
       let chartLinks = Chart.getLinks(); 
-       const {singleGraph } = this.props; 
-       const {nodesPartial,  linksPartial } = singleGraph; 
-        if (start) { 
-              if (nodesPartial?.length && linksPartial?.length) {   
-                const { listNodes, listLinks } = AnalysisUtils.getShortestPath(start, end, nodesPartial, linksPartial);
-                if(listNodes.length > 0 ) {  
+      const {singleGraph } = this.props;
+      const {nodesPartial,  linksPartial } = singleGraph;
+      if (start) { 
+        if (nodesPartial?.length && linksPartial?.length) {
+          const { listNodes, listLinks } = AnalysisUtils.getShortestPath(start, end, nodesPartial, linksPartial);
+          if(listNodes.length > 0 ) {
 
-                  let nodes = nodesPartial.filter((d) => listNodes.includes(d.id)  || ( chartNodes && chartNodes.some((n) => n.id === d.id))); 
-                  let links = linksPartial.filter((l) => listLinks.some((link) => (link.source === l.source || link.target === l.source)
-                     && (link.source === l.target || link.target === l.target)) || ( chartLinks && chartLinks.some((n) => n.id === l.id)));  
-                  return { nodes, links}
-                                     
-                }               
+            let newNodes = nodesPartial.filter((d) => {
+              if(listNodes.includes(d.id)) {
+                d.new = true
+                return true
+              } else {
+                d.new = false
+                return false
               }
-                   }
+            })
+            
+            let newLinks = linksPartial.filter((l) => {
+              if (listLinks.some((link) => (link.source === l.source || link.target === l.source)
+                && (link.source === l.target || link.target === l.target))) {
+                l.new = true
+                return true
+              } else {
+                l.new =false
+                return false
+              }
+            })
+
+            let nodes = nodesPartial.filter((d) => ( chartNodes && chartNodes.some((n) => n.id === d.id))); 
+            let links = linksPartial.filter((l) => ( chartLinks && chartLinks.some((n) => n.id === l.id))); 
+            nodes = nodes.concat(newNodes)
+            links = links.concat(newLinks) 
+
+            nodes = nodes.filter( (node, position) => {
+              return nodes.findIndex(n => n.id === node.id) === position
+            })
+            links = links.filter( (link, position) => {
+              return links.findIndex(n => n.id === link.id) === position
+            })
+            return { nodes, links}
+          }
+        }
+      }
     }
 
     render() {

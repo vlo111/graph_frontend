@@ -59,18 +59,29 @@ class NodeContextMenu extends Component {
           && (n.target === id || n.source === id)) ||
           chartNodes && chartNodes.some((n) => n.id === d.id) 
     ); 
-   let links = linksPartial.filter((l) =>     
+    let newNodes = nodes.filter(newNode => !chartNodes.find(oldNode => oldNode.id === newNode.id))
+    newNodes = newNodes.map(node => {
+      node.new = true
+      return node
+    })
+    nodes = newNodes.concat(chartNodes)
+    let links = linksPartial.filter((l) =>
       ( (type ? l.type  === type : true ) && (l.target === id || l.source === id))  ||
       chartLinks && chartLinks.some((n) => n.id === l.id) 
-   );     
-   const labels = [];
-   Chart.render({nodes, links, labels}, { ignoreAutoSave: true, isAutoPosition: true});  
-   ChartUtils.autoScaleTimeOut(); 
-   ChartUtils.autoScaleTimeOut(100); 
-   ChartUtils.autoScaleTimeOut(200); 
-   Chart.event.emit('expandData', type); 
-    
-   
+   );    
+    let newLinks = links.filter(newLink => !chartLinks.find(oldLink => oldLink.id === newLink.id)) 
+    newLinks = newLinks.map(newLink => {
+      newLink.new = true
+      return newLink
+    })
+    links = newLinks.concat(chartLinks)
+    const labels = [];
+    Chart.render({nodes, links, labels}, { ignoreAutoSave: true, isAutoPosition: true});  
+    ChartUtils.autoScaleTimeOut();
+    ChartUtils.autoScaleTimeOut(100);
+    ChartUtils.autoScaleTimeOut(200);
+    Chart.event.emit('expandData', type);
+    ChartUtils.startAutoPosition()
   }
   render() { 
     const { params:{ id }, linksPartial } = this.props;

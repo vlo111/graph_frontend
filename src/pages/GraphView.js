@@ -101,14 +101,14 @@ class GraphView extends Component {
         const { listNodes, listLinks } = AnalysisUtils.getShortestPath(start, end, nodes, links);
 
         const originalListPath = links.filter((p) => {
-          let listChack = false;
+          let listCheck = false;
           listLinks.forEach((l) => {
             if ((l.source === p.source || l.target === p.source)
                 && (l.source === p.target || l.target === p.target)) {
-              listChack = true;
+              listCheck = true;
             }
           });
-          return listChack;
+          return listCheck;
         });
 
         // shortestLinks = originalListPath;

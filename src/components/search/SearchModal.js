@@ -430,8 +430,15 @@ class SearchModal extends Component {
     let { chosenNodes } = this.state
     const { linksPartial } = this.props
     
+    let oldNodes = Chart.getNodes()
+    let oldLinks = Chart.getLinks()
+    
+    chosenNodes = chosenNodes.map(node => {
+      node.new = true
+      return node
+    })
+
     if (keep) {
-      const oldNodes = Chart.getNodes()
       chosenNodes = chosenNodes.concat(oldNodes)
     }
     chosenNodes = chosenNodes.filter( (node, position) => {
@@ -439,10 +446,16 @@ class SearchModal extends Component {
     })
 
     const links = Chart.getLinksBetweenNodes(chosenNodes, linksPartial);
+    let newLinks = links.filter(link => !oldLinks.find(oldLink => oldLink.id === link.id)) 
+    newLinks = newLinks.map(lks => {
+      lks.new = true
+      return lks
+    })
+    newLinks = newLinks.concat(oldLinks)
     Chart.render(
       {
         nodes: chosenNodes, 
-        links: links, 
+        links: newLinks, 
         labels: []
       }, {
         ignoreAutoSave: true,
@@ -452,6 +465,7 @@ class SearchModal extends Component {
       ChartUtils.autoScaleTimeOut(100); 
       ChartUtils.autoScaleTimeOut(200); 
     this.closeModal();
+    ChartUtils.startAutoPosition()
   }
 
   /**
