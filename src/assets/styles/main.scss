@@ -898,6 +898,9 @@ p {
         opacity: 0.1 !important;
         pointer-events: none;
       }
+      &.emphasisConnection {
+          stroke: yellow !important;
+        }
     }
   }
 
@@ -999,6 +1002,13 @@ p {
       }
     }
 
+    &.emphasisIcon {
+      :not(text) {
+        stroke-width: 4 !important;
+        stroke: yellow !important;
+        stroke-dasharray: 12 !important;
+      }
+    }
     text {
       font-family: $font-family;
       dominant-baseline: central;

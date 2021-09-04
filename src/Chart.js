@@ -1682,6 +1682,9 @@ class Chart {
         .data(listLink)
         .join('path')
         .attr('id', (d) => `l${d.index}`)
+        .attr('class', (d) => {
+          return d.new ? 'emphasisConnection' : ''
+        })
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
         .attr('stroke', ChartUtils.linkColor)
@@ -1700,7 +1703,7 @@ class Chart {
         .join('g')
         .attr('class', (d) => {
           const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(d);
-          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
+          return `node ${d.nodeType || 'circle'} ${!!d.new ? 'emphasisIcon' : ''} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
         })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
