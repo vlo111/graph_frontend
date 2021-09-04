@@ -2005,7 +2005,7 @@ p {
     min-width: 640px;
 
     thead {
-      .allTableCellChekked {
+      .allTableCellChecked {
         margin-left: 15px;
       }
 
@@ -9477,12 +9477,12 @@ img.preview-scaled {
       div {
         display: flex; 
         padding: 15px 15px; 
-        color: $color-main !important;
+        color: white !important;
         align-items: center;
          box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
         border-radius: 3px;
         height: 40px;
-        background-color: rgba($color-main, .2);
+        background-color: rgba($color-main, .5);
         .ghButton {
           color: $color-main !important;
         }

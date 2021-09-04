@@ -17,8 +17,6 @@ import { NODE_STATUS, NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
-import Utils from '../../helpers/Utils';
-import Button from '../form/Button';
 
 let CHECKED = false;
 
@@ -81,10 +79,23 @@ class DataTableNodes extends Component {
     return values;
   }
 
+  handleCheckBoxChange = (isAllChecked) => {
+    let { nodes, selectedNodes } = this.props
+    if (!isAllChecked) {
+      nodes.map(node => {
+        if (!selectedNodes.includes(node.index)) {
+          selectedNodes.push(node.index)
+        }
+      })
+    } else {
+      selectedNodes = selectedNodes.filter(index => !nodes.some(node => node.index === index))
+    }
+    this.props.setGridIndexes('nodes', selectedNodes)
+  }
+
   renderSheet = (props, className) => {
     const { selectedNodes } = this.props;
     const { grid } = this.state;
-    const allChecked = grid.length === selectedNodes.length;
     const position = className || '';
     const gridValues = this.getValues(grid);
     let isAllChecked = true;
@@ -101,11 +112,11 @@ class DataTableNodes extends Component {
         <thead>
           <tr>
             <th className={`${position} cell index`} width="60">
-              <div className="allTableCellChekked">
+              <div className='allTableCellChecked'>
                 <input
-                  onChange={() => this.props.setGridIndexes('nodes', isAllChecked ? [] : grid.map((g) => g[0].value))}
+                  onChange={() => this.handleCheckBoxChange(isAllChecked)}
                   checked={isAllChecked}
-                  className="graphsCheckbox"
+                  className='graphsCheckbox'
                   type="checkbox"
                   name="layout"
                   id="all"
