@@ -15,6 +15,7 @@ import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
 import { toast } from 'react-toastify';
 import Button from '../form/Button'
+import Checkbox from '../form/Checkbox';
 
 const {
   REACT_APP_ARXIV_URL,
@@ -483,10 +484,9 @@ class ScienceGraphModal extends Component {
       apiSearchResults.push(
         <div className="scienceResultsList" key={index}>
           <div className="scienceCheckBox">
-            <input
+            <Checkbox
               onChange={() => this.handleCheckedButton(index)}
               checked={checkedList.includes(index)}
-              className="scienceArticleCheckbox"
               type="checkbox"
               name="layout"
               id={index}
@@ -608,7 +608,7 @@ class ScienceGraphModal extends Component {
                     autoFocus
                   />
                   <button
-                    className="scienceSearchSubmit button"
+                    className="scienceSearchSubmit button btn-classic"
                     type="submit"
                     onClick={this.handleSearch}
                   >
@@ -622,18 +622,18 @@ class ScienceGraphModal extends Component {
                 <p className="scienceResultAmount">{resultAmount}</p>
               </div>
             </div>
-            {apiSearchResults}
+            <div className="scinceGraphResukt"> {apiSearchResults} </div>
           </div>
           <div className="acceptCheckedItems">
             {checkedList.length ? (
               <>
                 <Button
                   onClick={(ev) => this.createSelectedNodes(ev)}
-                  className="ghButton btn-classic"
+                  className="ghButton btn-classic creatGraphScience"
                 >
                   Create Graph
                 </Button>
-                <p className="selectedItemsAmount">
+                <p className="selectedItemsAmount scinceItems">
                   Selected Articles
                   {' '}
                   {checkedList.length}
