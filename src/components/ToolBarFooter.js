@@ -12,6 +12,7 @@ class ToolBarFooter extends Component {
     graphId: PropTypes.number.isRequired,
     graphInfo: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
+    location: PropTypes.object.isRequired,
   };  
 
   constructor(props) {
@@ -44,11 +45,13 @@ class ToolBarFooter extends Component {
   }
   render() {
     const {totalNodes, totalLinks, totalLabels } = this.state; 
-    const { graphInfo, partOf } = this.props; 
+    const { graphInfo, partOf} = this.props; 
     const showInMap = Chart.getNodes().some((d) => d.location); 
+    const updateLocation = window.location.pathname.startsWith('/graphs/update');
+
     return (
       <>
-        <footer id="graphs-data-info"> 
+        <footer id="graphs-data-info" style={updateLocation ? { left: "213px"}:  { left: "15px"}} > 
         {showInMap ? (         
             <div className="mapMode">          
               <Button

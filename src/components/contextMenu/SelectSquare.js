@@ -33,20 +33,24 @@ class SelectSquare extends Component {
   }
 
   createNewGraph = async () => {
-    const { singleGraph, params: { squareData } } = this.props;
+    const { singleGraph, params: { squareData }, location:{ pathname } } = this.props;
+    const viewLocation = pathname.startsWith('/graphs/view/'); 
     const {
       width, height, x, y,
-    } = squareData;
-    const { data: copyData } = await Api.dataCopy(singleGraph.id, {
-      width, height, x, y,
-    });
-    const { nodes, links, labels } = copyData.data || {};
-
-    const { payload: { data } } = await this.props.createGraphRequest({
-      nodes,
-      links,
-      labels,
-    });
+    } = squareData; 
+     
+      const { data: copyData } = await Api.dataCopy(singleGraph.id, {
+        width, height, x, y,
+      });
+      let  { nodes, links, labels } = copyData.data || {};
+      nodes = !viewLocation ?  nodes :  Chart.getNodes(true)
+      links = !viewLocation ?  links :  Chart.getLinks(true)
+      labels = !viewLocation ?  labels :  Chart.getLabels(true)
+      const { payload: { data } } = await this.props.createGraphRequest({
+        nodes,
+        links,
+        labels,
+      }); 
     if (data.graphId) {
       window.location.href = `/graphs/update/${data.graphId}?new=1`;
     } else {
