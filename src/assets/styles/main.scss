@@ -979,6 +979,13 @@ p {
       }
     }
 
+    &.emphasisIcon {
+      :not(text) {
+        stroke-width: 4 !important;
+        stroke: yellow !important;
+        stroke-dasharray: 12 !important;
+      }
+    }
     text {
       font-family: $font-family;
       dominant-baseline: central;
@@ -9249,7 +9256,7 @@ img.preview-scaled {
         background-color: rgba($color-main, .5);
 
     .ghButton {
-      color: $color-main !important;
+      color: white !important;
     }
   }
 
