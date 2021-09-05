@@ -30,6 +30,8 @@ class SearchModal extends Component {
     singleGraph: PropTypes.object.isRequired,
     userId: PropTypes.number.isRequired,
     currentUserId: PropTypes.number.isRequired, 
+    nodesPartial: PropTypes.array.isRequired, 
+    linksPartial: PropTypes.array.isRequired, 
   };
 
   constructor(props) {
@@ -126,28 +128,28 @@ class SearchModal extends Component {
     let docs = [];
     let nodes = [];
     
-    const foundNodes = await this.searchResults(search);
-    const ifNodeExists = (node) => {
-      const frontNodes = Chart.getNodes();
-      if (frontNodes.filter((nd) => nd.id === node.id).length) {
-        return true;
-      }
-
-      const labels = Chart.getLabels();
-      if (labels.filter((label) => label.nodes.includes(node.id)).length) {
-        return true;
-      }
-      return false;
-    };
-
-    if (foundNodes.tags && foundNodes.tags.length > 0) {
-      docs = !!foundNodes.tags ? foundNodes.tags : [];
-      docs = docs.filter((nd) => ifNodeExists(nd));
-    }
-    nodes = !!foundNodes.nodes ? foundNodes.nodes : [];
-    keywords = !!foundNodes.keywords ? foundNodes.keywords : [];
-    
     try {
+      const foundNodes = await this.searchResults(search); // handle the promise
+      const ifNodeExists = (node) => {
+        const frontNodes = Chart.getNodes();
+        if (frontNodes.filter((nd) => nd.id === node.id).length) {
+          return true;
+        }
+
+        const labels = Chart.getLabels();
+        if (labels.filter((label) => label.nodes.includes(node.id)).length) {
+          return true;
+        }
+        return false;
+      };
+
+      if (foundNodes.tags && foundNodes.tags.length > 0) {
+        docs = !!foundNodes.tags ? foundNodes.tags : [];
+        docs = docs.filter((nd) => ifNodeExists(nd));
+      }
+      nodes = !!foundNodes.nodes ? foundNodes.nodes : [];
+      keywords = !!foundNodes.keywords ? foundNodes.keywords : [];
+    
       if (foundNodes?.tabs?.length > 0) {
         const tabsList = foundNodes.tabs;
         if (tabsList.length > 0) {
@@ -433,42 +435,55 @@ class SearchModal extends Component {
    */
   showSelectedNodes = ( keep = false ) => {
     let { chosenNodes } = this.state;
-    const { linksPartial } = this.props;
+    const { linksPartial, nodesPartial } = this.props;
     
     let oldNodes = Chart.getNodes()
     let oldLinks = Chart.getLinks()
-    
+    let nodes = chosenNodes
     chosenNodes = chosenNodes.map(node => {
       node.new = true
       return node
     })
 
     if (keep) {
-      chosenNodes = chosenNodes.concat(oldNodes)
+      nodes = chosenNodes.concat(oldNodes)
     }
-    chosenNodes = chosenNodes.filter( (node, position) => {
-      return chosenNodes.findIndex(n => n.id === node.id) === position
+
+    nodes = nodesPartial.filter(node => {
+      if (keep && oldNodes?.some(nd => nd.id === node.id)) {
+        node.new = false
+        return true
+      } else if (nodes?.some(nd => nd.id === node.id)) {
+        node.new = true
+        return true
+      }
+      return false
     })
 
-    const links = Chart.getLinksBetweenNodes(chosenNodes, linksPartial);
-    let newLinks = links.filter(link => !oldLinks.find(oldLink => oldLink.id === link.id)) 
-    newLinks = newLinks.map(lks => {
-      lks.new = true
-      return lks
+    let links = Chart.getLinksBetweenNodes(nodes, chosenNodes, linksPartial);
+    oldLinks = linksPartial.filter(link => oldLinks.some(oldLink => oldLink.id === link.id))
+    links = links.concat(oldLinks)
+    links = links.filter(link => {
+      if (keep && oldLinks.some(lk => lk.id === link.id)) {
+        link.new = false
+        return true
+      } else if (!oldLinks.some(lk => lk.id === link.id)) {
+        link.new = true
+        return true
+      }
     })
-    newLinks = newLinks.concat(oldLinks)
     Chart.render(
       {
-        nodes: chosenNodes, 
-        links: newLinks, 
+        nodes, 
+        links: links, 
         labels: []
       }, {
         ignoreAutoSave: true,
         isAutoPosition: true
-      })
-      ChartUtils.autoScaleTimeOut(); 
-      ChartUtils.autoScaleTimeOut(100); 
-      ChartUtils.autoScaleTimeOut(200); 
+    })
+    ChartUtils.autoScaleTimeOut();
+    ChartUtils.autoScaleTimeOut(100);
+    ChartUtils.autoScaleTimeOut(200);
     this.closeModal();
     ChartUtils.startAutoPosition()
   }
@@ -839,6 +854,7 @@ const mapStateToProps = (state) => ({
   userId: state.graphs.singleGraph.userId,
   currentUserId: state.account.myAccount.id,
   linksPartial: state.graphs.singleGraph?.linksPartial || [],
+  nodesPartial: state.graphs.singleGraph?.nodesPartial || [],
 });
 
 const mapDispatchToProps = {
