@@ -5,6 +5,7 @@ import Tooltip from 'rc-tooltip';
 import NodeIcon from '../NodeIcon';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
+import Checkbox from '../form/Checkbox';
 
 class LabelCompareItem extends Component {
   constructor(props) {
@@ -26,15 +27,11 @@ class LabelCompareItem extends Component {
     return (
       <>
         <div className="compareCheckBox">
-          <input
+          <Checkbox
+            id={uniqueCheckboxId}
             onChange={this.handleChange}
             checked={checked}
-            className="graphsCheckbox"
-            type="checkbox"
-            name="layout"
-            id={uniqueCheckboxId}
           />
-          <label className="pull-left" htmlFor={uniqueCheckboxId} />
         </div>
         <div title={node.type}>
           <NodeIcon node={node} />

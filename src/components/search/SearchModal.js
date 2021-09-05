@@ -11,23 +11,25 @@ import Utils from "../../helpers/Utils";
 import { setActiveTab, getAllTabsRequest } from "../../store/actions/graphs";
 import Chart from "../../Chart";
 import queryString from "query-string";
-import { toggleGraphMap } from '../../store/actions/app';
+import { toggleGraphMap, toggleExplore } from '../../store/actions/app';
 import { getGraphNodesRequest } from "../../store/actions/graphs";
 import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 import Button from "../form/Button";
+import Checkbox from '../form/Checkbox';
 
 class SearchModal extends Component {
   static propTypes = {
     getAllTabsRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     toggleSearch: PropTypes.func.isRequired,
+    toggleExplore: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     setActiveTab: PropTypes.func.isRequired,
     graphTabs: PropTypes.array.isRequired,
     graphId: PropTypes.number.isRequired,
     singleGraph: PropTypes.object.isRequired,
     userId: PropTypes.number.isRequired,
-    currentUserId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.number.isRequired, 
   };
 
   constructor(props) {
@@ -53,6 +55,16 @@ class SearchModal extends Component {
     };
   }
 
+  componentWillUnmount() {
+    const { nodes, links } = this.props.singleGraph
+    const chartNodes = Chart.getNodes()
+    if (!chartNodes.length && nodes?.length) {
+      Chart.render({nodes, links}, {ignoreAutoSave: true,})
+    } else {
+      this.props.toggleExplore(true)
+    }
+  }
+
   initTabs = memoizeOne(() => {
     const { graphId } = this.props
     this.props.getAllTabsRequest(graphId);
@@ -70,12 +82,12 @@ class SearchModal extends Component {
   handleChange = async (search = "") => {
     this.setState({ 
       nodes: [], 
-      search, 
       tabs: [], 
       docs: [], 
-      search,  
-      allNodesSelected: false, 
-      chosenNodes: []
+      search,
+      keywords: [],  
+      chosenNodes: [],
+      allNodesSelected: false
     });
     if (!search) {
       return;
@@ -380,30 +392,39 @@ class SearchModal extends Component {
    * @param {obj} ev 
    * @param {obj} node 
    */
-  handleNodesCheckBoxChange = (ev, node) => {
-    const { name } = ev.target
-    const { chosenNodes } = this.state
-    const ifExists = chosenNodes.find(nd => nd.code === name);
+  handleNodesCheckBoxChange = (ev, node, name) => {
+    if (name) {
+      const chosenCheckBox = document.getElementsByName(name)[0]
+      chosenCheckBox.checked = !chosenCheckBox.checked
+    } else {
+      name = ev.target.name
+    }
+    const { chosenNodes } = this.state;
+    const ifExists = chosenNodes.find((nd) => nd.code === name);
 
-    const listClass = document.getElementsByClassName('list')[0]
-    const allCheckboxes = Array.from(listClass.children)
-    const allNodesSelected = !allCheckboxes.find(el => el.firstChild.checked === false)
+    const listClass = document.getElementsByClassName('list')[0];
+    const allCheckboxes = Array.from(listClass.children);
+    const allNodesSelected = !allCheckboxes.find((el) => el.firstChild.firstChild.checked === false);
 
     if (ifExists) {
-      const index = chosenNodes.indexOf(ifExists)
-      chosenNodes.splice(index, 1)
+      const index = chosenNodes.indexOf(ifExists);
+      chosenNodes.splice(index, 1);
       if (!chosenNodes.length) {
-        this.setState({allNodesSelected})
+        this.setState({ allNodesSelected });
       }
     } else {
-      node.code = name
-      chosenNodes.push(node)
-
-      if (allNodesSelected) {
-        this.setState({allNodesSelected})
-      }
+      node.code = name;
+      chosenNodes.push(node);
     }
-    this.setState({chosenNodes})
+
+    if (allNodesSelected) {
+      this.setState({ allNodesSelected: true });
+    }
+    else {
+      this.setState({ allNodesSelected: false });
+    }
+
+    this.setState({ chosenNodes });
   }
 
   /**
@@ -411,18 +432,35 @@ class SearchModal extends Component {
    * @param {obj} ev 
    */
   showSelectedNodes = ( keep = false ) => {
-    let { chosenNodes } = this.state
-    const { linksPartial } = this.props
+    let { chosenNodes } = this.state;
+    const { linksPartial } = this.props;
     
+    let oldNodes = Chart.getNodes()
+    let oldLinks = Chart.getLinks()
+    
+    chosenNodes = chosenNodes.map(node => {
+      node.new = true
+      return node
+    })
+
     if (keep) {
-      const oldNodes = Chart.getNodes()
       chosenNodes = chosenNodes.concat(oldNodes)
     }
-    const links = ChartUtils.getLinksBetweenNodes(chosenNodes, linksPartial);
+    chosenNodes = chosenNodes.filter( (node, position) => {
+      return chosenNodes.findIndex(n => n.id === node.id) === position
+    })
+
+    const links = Chart.getLinksBetweenNodes(chosenNodes, linksPartial);
+    let newLinks = links.filter(link => !oldLinks.find(oldLink => oldLink.id === link.id)) 
+    newLinks = newLinks.map(lks => {
+      lks.new = true
+      return lks
+    })
+    newLinks = newLinks.concat(oldLinks)
     Chart.render(
       {
         nodes: chosenNodes, 
-        links: links, 
+        links: newLinks, 
         labels: []
       }, {
         ignoreAutoSave: true,
@@ -432,6 +470,7 @@ class SearchModal extends Component {
       ChartUtils.autoScaleTimeOut(100); 
       ChartUtils.autoScaleTimeOut(200); 
     this.closeModal();
+    ChartUtils.startAutoPosition()
   }
 
   /**
@@ -442,18 +481,18 @@ class SearchModal extends Component {
     let { chosenNodes, nodes, keywords, docs, tabs} = this.state
     let nodeList = []
 
-    const listClass = document.getElementsByClassName('list')[0]
-    const allCheckboxes = Array.from(listClass.children)
-    const allNodesSelected = !allCheckboxes.find(el => el.firstChild.checked === false)
+    const listClass = document.getElementsByClassName('list')[0];
+    const allCheckboxes = Array.from(listClass.children);
+    const allNodesSelected = !allCheckboxes.find((el) => el.firstChild.firstChild.checked === false);
 
     if (allNodesSelected) {
-      allCheckboxes.map(el => el.firstChild.checked = false)
+      allCheckboxes.map((el) => el.firstChild.firstChild.checked = false);
     } else {
-      allCheckboxes.map(el => el.firstChild.checked = true)
-      
-      nodeList = nodes.concat(keywords)?.concat(docs)
-      for (let tab in tabs) {
-        nodeList.push(tabs[tab].node)
+      allCheckboxes.map((el) => el.firstChild.firstChild.checked = true);
+
+      nodeList = nodes.concat(keywords)?.concat(docs);
+      for (const tab in tabs) {
+        nodeList.push(tabs[tab].node);
       }
     }
     this.setState({chosenNodes: nodeList, allNodesSelected: !allNodesSelected})
@@ -461,7 +500,7 @@ class SearchModal extends Component {
   }
 
   ifAnyResults = () => {
-    const {nodes, keywords, docs, tabs} = this.state;
+    const {nodes, keywords, docs, tabs} = this.state
     if (nodes?.length || keywords?.length || docs?.length || Object.keys(tabs)?.length) {
       return true
     }
@@ -487,7 +526,7 @@ class SearchModal extends Component {
       allNodesSelected 
     } = this.state;
     this.initTabs();
-
+    const chartNodes = Chart.getNodes()
     return (
       <Modal
         isOpen
@@ -517,7 +556,7 @@ class SearchModal extends Component {
                 {Object.keys(checkBoxValues).map( field => (
                   <div 
                     onClick={this.handleFilterCheckBoxChange}
-                    className={"checkBox checkBox"+field}
+                      className={`checkBox checkBox${field}`}
                   >
                   {field}
                   </div>
@@ -535,42 +574,37 @@ class SearchModal extends Component {
           {this.ifAnyResults() ? (
           <div className="selectedNodesCheckBox">
             <div>
-              { allNodesSelected ? 'Unselect all  ' :  'Select all  '}
-              <input
-                className=""
-                name={`selectAll`}
-                type="checkbox"
-                checked={allNodesSelected}
-                onChange={this.selectAllNodes} 
-              />
-            </div>
-            <p className="selectedItemsAmount">
-              Selected Nodes
-              {' ' + chosenNodes.length}
-            </p>
-          </div>
-          ) : ""}
+                  <Checkbox
+                    label="Select all"
+                    checked={allNodesSelected}
+                    onChange={this.selectAllNodes}
+                  />
+                </div>
+                <p className="selectedItemsAmount">
+                  Selected Nodes
+                  {` ${chosenNodes.length}`}
+                </p>
+              </div>
+            ) : ''}
         </div>
 
         </div>
         <ul className="list"> 
           {nodes.map((d) => (
-            <li 
-              className="item nodeItem" 
-              key={'node_'+d.id} 
-            > 
-              <input
-                className="searchResultCheckbox"
+            <li
+              className="item nodeItem"
+              key={`node_${d.id}`}
+            >
+              <Checkbox
                 name={`name_${d.id}`}
-                type="checkbox"
                 checked={this.state.isChecked}
-                onChange={e => this.handleNodesCheckBoxChange(e, d)} 
+                onChange={(e) => this.handleNodesCheckBoxChange(e, d)}
               />
               <div
                 tabIndex="0"
                 role="button"
                 className="ghButton searchItem"
-                onClick={(e) => this.openNode(e, d)}
+                onClick={(e) => this.handleNodesCheckBoxChange(e, d, `name_${d.id}`)}
               >
                 <div className="left">
                   <NodeIcon node={d} searchIcon={true}/>
@@ -614,16 +648,13 @@ class SearchModal extends Component {
                 className="item tabItem" 
                 key={'tab_'+tabs[item]?.node?.id} 
                 >
-                {console.log('tab_'+tabs[item]?.node?.id)}
-                <input
-                className="searchResultCheckbox"
-                name={`tab_${tabs[item]?.node?.id}`}
-                type="checkbox"
-                checked={this.state.isChecked}
-                onChange={e => this.handleNodesCheckBoxChange(e, tabs[item].node)}
-              />
+                <Checkbox
+                  name={`tab_${tabs[item]?.node?.id}`}
+                  checked={this.state.isChecked}
+                  onChange={(e) => this.handleNodesCheckBoxChange(e, tabs[item].node)}
+                />
                 <div tabIndex="0" role="button" className="ghButton tabButton">
-                  <div className="header" onClick={ () => this.findNodeInDom(tabs[item].node)}>
+                  <div className="header" onClick={ (e) => this.handleNodesCheckBoxChange(e, tabs[item].node, `tab_${tabs[item]?.node?.id}`)}>
                       <NodeIcon node={tabs[item].node} searchIcon={true}/>
                       <span className="name">{tabs[item].node.name}</span>
                   </div>
@@ -636,10 +667,10 @@ class SearchModal extends Component {
                               <div
                                 className="contentWrapper"
                                 onClick={(e) =>
-                                  this.openTab(
+                                  this.handleNodesCheckBoxChange(
                                     e,
                                     tabs[item].node,
-                                    tabs[item][tab].tabName
+                                    `tab_${tabs[item]?.node?.id}`
                                     )
                                   }
                               >
@@ -696,18 +727,16 @@ class SearchModal extends Component {
               className="item" 
               key={'keywords_'+d.id}
             >  
-              <input
-                className="searchResultCheckbox"
+              <Checkbox
                 name={`keyword_${d.id}`}
-                type="checkbox"
                 checked={this.state.isChecked}
-                onChange={e => this.handleNodesCheckBoxChange(e, d)} 
+                onChange={(e) => this.handleNodesCheckBoxChange(e, d)}
               />
               <div
                 tabIndex="0"
                 role="button"
                 className="ghButton searchItem"
-                onClick={(e) => this.openNode(e, d)}
+                onClick={(e) => this.handleNodesCheckBoxChange(e, d, `keyword_${d.id}`)}
               >
                 <div className="left">
                   <NodeIcon node={d} searchIcon={true}/>
@@ -742,23 +771,21 @@ class SearchModal extends Component {
             </li>
           ))}
 
-          {docs.map((d, index) => (
+          {docs.map((d) => (
             <li 
               className="item" 
               key={'docs_'+d.id}
-            > 
-              <input
-                className="searchResultCheckbox"
+            >
+              <Checkbox
                 name={`docs_${d.id}`}
-                type="checkbox"
                 checked={this.state.isChecked}
-                onChange={e => this.handleNodesCheckBoxChange(e, d)}
+                onChange={(e) => this.handleNodesCheckBoxChange(e, d)}
               />
               <div
                 tabIndex="0"
                 role="button"
                 className="ghButton searchItem"
-                onClick={(e) => this.openNodeByTag(e, d)}
+                onClick={(e) => this.handleNodesCheckBoxChange(e, d, `docs_${d.id}`)}
               >
                 <div className="right">
                   <span className="row">
@@ -789,12 +816,12 @@ class SearchModal extends Component {
                 >
                   Show
                 </Button>
-                <Button
+                {chartNodes.length ? <Button
                   onClick={(ev) => this.showSelectedNodes(true)}
                   className="ghButton btn-classic"
                 >
                   Add to existing
-                </Button>
+                </Button> : ''}
               </>
             ) : (
               ''
@@ -820,7 +847,8 @@ const mapDispatchToProps = {
   getAllTabsRequest,
   getGraphNodesRequest,
   toggleGraphMap,
-  toggleSearch
+  toggleSearch,
+  toggleExplore, 
 };
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(SearchModal);

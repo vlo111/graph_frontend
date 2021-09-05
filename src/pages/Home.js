@@ -21,7 +21,7 @@ class Home extends Component {
   }
 
   getGraphsList = memoizeOne((page, s) => {
-    const order = JSON.parse(localStorage.getItem('/'));
+    const order = JSON.parse(localStorage.getItem('/')) || 'newest';
 
     this.props.getGraphsListRequest(page, { s, filter: order });
   })

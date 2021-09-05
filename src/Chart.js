@@ -716,7 +716,7 @@ class Chart {
       }
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
-        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('center', d3.forceCenter(width / 2, height / 2)) 
          .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -4000 : -5000)).distanceMin(50).distanceMax(500))
         .force('y', d3.forceY(0.05))
         .force('x', d3.forceX(0.05));
@@ -977,7 +977,7 @@ class Chart {
       .attr('fill', ChartUtils.labelColors)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
-      .on('dblclick', (ev, d) => {
+      .on('dblclick', (ev, d) => { 
         if(this.activeButton === 'view'){
           toast.info('You are in preview mode');
           return;
@@ -1172,8 +1172,8 @@ class Chart {
       .append('use')
       .attr('href', '#folderIcon')
       .attr('class', 'folderIconSmall')
-      .attr('width', '30')
-      .attr('height', '30')
+      .attr('width', '40')
+      .attr('height', '40')
       .attr('fill', '#58595b')
       .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 10)
       .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 - 50);
@@ -1184,7 +1184,8 @@ class Chart {
       .attr('class', 'folder-name')
       .attr('height', '40')
       .attr('fill', '#58595b')
-      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 50)
+      .attr('font-size', (d) => 40)
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 55)
       .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 - 30);
 
     folderWrapper.selectAll('.folderOpen')
@@ -1662,7 +1663,7 @@ class Chart {
       this.svg = d3.select('#graph svg');
       this.zoom = d3.zoom()
         .on('zoom', this.handleZoom)
-        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250%
+        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250% 
       this.svg = this.svg
         .call(this.zoom)
         .on('dblclick.zoom', null)
@@ -1681,6 +1682,9 @@ class Chart {
         .data(listLink)
         .join('path')
         .attr('id', (d) => `l${d.index}`)
+        .attr('class', (d) => {
+          return d.new ? 'emphasisConnection' : ''
+        })
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
         .attr('stroke', ChartUtils.linkColor)
@@ -1699,7 +1703,7 @@ class Chart {
         .join('g')
         .attr('class', (d) => {
           const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(d);
-          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
+          return `node ${d.nodeType || 'circle'} ${!!d.new ? 'emphasisIcon' : ''} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
         })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
@@ -3132,9 +3136,9 @@ class Chart {
 
   /**
    * check if given nodes are connected with the given link
-   * @param {*} fNodeId
-   * @param {*} sNodeId
-   * @param {*} link
+   * @param {*} fNodeId 
+   * @param {*} sNodeId 
+   * @param {*} link 
    * @returns bool
    */
   static ifNodesConnected(fNodeId, sNodeId, link) {
@@ -3149,8 +3153,8 @@ class Chart {
 
   /**
    * find all links between given nodes
-   * @param {*} node
-   * @param {*} links
+   * @param {*} node 
+   * @param {*} links 
    * @returns array
    */
   static getLinksBetweenNodes(nodes, links) {

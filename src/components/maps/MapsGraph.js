@@ -51,7 +51,7 @@ class MapsGraph extends Component {
 
   render() {
     const { activeNode } = this.state;
-    const { google } = this.props;
+    const { google, location: { pathname }, } = this.props;
     let nodes = Chart.getNodes().filter((d) => d.location).map((d) => {
       d.locationObj = _.isObject(d?.location) && d?.location?.map((p) => ({ lat: p.location.lat, lng: p.location.lng }));
       return d;
@@ -72,8 +72,11 @@ class MapsGraph extends Component {
     if (_.isEmpty(nodes)) {
       return null;
     }
-    return (
-      <div id="mapsGraph">
+    const updateLocation = pathname.startsWith('/graphs/update/');
+    return ( 
+      <div id="mapsGraph" style={updateLocation ? { left: "202px", 
+      width: "calc(100% - 202px)"}:  { left: "2px", 
+      width: "calc(100% - 2px)"}}>
         <Map
           styles={MapsStyle.mapStyle}
           google={google}

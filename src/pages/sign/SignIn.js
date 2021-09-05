@@ -38,20 +38,20 @@ class Login extends Component {
       },
     };
   }
+
+  handleChange = (value, path) => {
+    const { requestData, errors } = this.state;
+    _.set(requestData, path, value);
+    _.unset(errors, path, value);
+    this.setState({
+      requestData,
+      errors,
+    });
+  };
+
   signIn = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
-    let validationErrors = {};
-    Object.keys(requestData).forEach((name) => {
-      const error = this.validate(name, requestData[name]);
-      if (error && error.length > 0) {
-        validationErrors[name] = error;
-      }
-    });
-    if (Object.keys(validationErrors).length > 0) {
-      this.setState({ errors: validationErrors });
-      return;
-    }
     this.setState({ loading: true });
     const { payload } = await this.props.signInRequest(
       requestData.email,
@@ -72,25 +72,40 @@ class Login extends Component {
           `${origin}/sign/reset-password`
         );
       }
-      if (this.state.failedLoginAttempts < 3) {
-        this.setState({ errors: {'password': 'Invalid email or password'} });
-        document.getElementsByName('password')[0].classList.remove('border-error')
-      }
-      this.setState({ loading: true});
+      // if (this.state.failedLoginAttempts < 3) {
+      //   toast.dismiss(this.toast);
+      //   this.toast = toast.error(data.message || 'Invalid email or password');
+      // }
+
+      this.setState({ loading: false });
     }
   };
-  validate = (name, value ) => {
+  validate = (name, value) => {
     const { requestData } = this.state;
     switch (name) {
       case "email":
         if (!value) {
-          return "Email is Required";
+          return " ";
+        } else if (
+          !value.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
+        ) {
+          return " ";
         } else {
           return "";
         }
       case "password":
-       if (!value ){
-          return " Password is Required";
+        if (!value) {
+          return "Invalid email or password";
+        } else if (value.length < 8 || value.length > 15) {
+          return " ";
+        } else if (!value.match(/[a-z]/g)) {
+          return " ";
+        } else if (!value.match(/[A-Z]/g)) {
+          return " ";
+        } else if (!value.match(/[0-9]/g)) {
+          return " ";
+        } else {
+          return "";
         }
       default: {
         return "";
@@ -109,8 +124,24 @@ class Login extends Component {
       },
     });
   };
+
+  handleSubmit = (e) => {
+    const { requestData } = this.state;
+    // e.preventDefault();
+    let validationErrors = {};
+    Object.keys(requestData).forEach((name) => {
+      const error = this.validate(name, requestData[name]);
+      if (error && error.length > 0) {
+        validationErrors[name] = error;
+      }
+    });
+    if (Object.keys(validationErrors).length > 0) {
+      this.setState({ errors: validationErrors });
+      return;
+    }
+  };
   render() {
-    const { requestData, errors, failedLoginAttempts} = this.state;
+    const { requestData, errors, failedLoginAttempts } = this.state;
     return (
       <WrapperSign>
         <div className="SigninLeft signIn" />
@@ -164,7 +195,7 @@ class Login extends Component {
                 type="submit"
                 className="submit"
                 color="orange"
-                // onClick={this.handleSubmit}
+                onClick={this.handleSubmit}
               >
                 Sign In
               </Button>

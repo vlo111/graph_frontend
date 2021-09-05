@@ -89,6 +89,7 @@ export function setLegendButton(mode) {
   };
 }
 
+
 export const ONLINE_USERS = 'ONLINE_USERS';
 
 export function getOnlineUsersRequest(data) {
@@ -120,20 +121,21 @@ export function toggleSearch(open) {
     },
   };
 }
-export const TOGGLE_DELETE_STATE = 'TOGGLE_DELETE_STATE';
-export function toggleDeleteState(open) {
+
+export const TOGGLE_EXPLORE = 'TOGGLE_EXPLORE';
+export function toggleExplore(open) {
   return {
-    type: TOGGLE_DELETE_STATE,
+    type: TOGGLE_EXPLORE,
     payload: {
       open,
     },
   };
 }
 
-export const TOGGLE_EXPLORE = 'TOGGLE_EXPLORE';
-export function toggleExplore(open) {
+export const TOGGLE_DELETE_STATE = 'TOGGLE_DELETE_STATE';
+export function toggleDeleteState(open) {
   return {
-    type: TOGGLE_EXPLORE,
+    type: TOGGLE_DELETE_STATE,
     payload: {
       open,
     },

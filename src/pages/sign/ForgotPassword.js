@@ -12,9 +12,7 @@ import Button from "../../components/form/Button";
 import OAuthButtonFacebook from "../../components/account/OAuthButtonFacebook";
 import OAuthButtonGoogle from "../../components/account/OAuthButtonGoogle";
 import OAuthButtonLinkedin from "../../components/account/OAuthButtonLinkedin";
-import OAuthButtonTwitter from "../../components/account/OAuthButtonTwitter";
-
-toast.configure();
+import OAuthButtonTwitter from "../../components/account/OAuthButtonTwitter"; 
 class ForgotPassword extends Component {
   static propTypes = {
     forgotPasswordRequest: PropTypes.func.isRequired,
@@ -72,7 +70,7 @@ class ForgotPassword extends Component {
     // if (data.status !== 'ok') {
     //   // toast.dismiss(this.toast);
     //   // this.toast = toast.error('Invalid email');
-    //   toast.error('🦄 Wow so easy!', { });
+    //   toast.error('?? Wow so easy!', { });
     //   return;
     // }
     this.setState({ loading: true });
@@ -122,7 +120,7 @@ class ForgotPassword extends Component {
     if (token) {
       return <Redirect to="/" />;
     }
-    // toast('🦄 Wow so easy!', {
+    // toast('?? Wow so easy!', {
 
     //   });
 

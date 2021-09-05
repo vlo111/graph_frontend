@@ -11,6 +11,7 @@ import { getShareGraphListRequest } from '../store/actions/share';
 import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
 
+
 class Shared extends Component {
   static propTypes = {
     shareGraphsList: PropTypes.array.isRequired,
@@ -20,7 +21,7 @@ class Shared extends Component {
   }
 
   componentDidMount() {
-    const order = JSON.parse(localStorage.getItem('/shared'));
+    const order = JSON.parse(localStorage.getItem('/shared')) || 'newest';
 
     const { page = 1, s } = queryString.parse(window.location.search);
 

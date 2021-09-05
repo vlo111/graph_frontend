@@ -5,8 +5,8 @@ import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import InputRange from 'react-input-range';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
 import Button from '../form/Button';
+import Checkbox from '../form/Checkbox';
 
 class KeywordsFilter extends Component {
   static propTypes = {
@@ -72,6 +72,7 @@ class KeywordsFilter extends Component {
             <li className="item">
               <div className="filterCheckBox">
                 <Checkbox
+                  id="allKeyword"
                   label="All"
                   checked={allChecked}
                   onChange={() => this.toggleAll(keywords, allChecked)}
@@ -85,6 +86,7 @@ class KeywordsFilter extends Component {
               <li key={item.keyword} className="item">
                 <div className="filterCheckBox">
                   <Checkbox
+                    id={item.keyword}
                     label={item.keyword}
                     checked={filters.nodeKeywords.includes(item.keyword)}
                     onChange={() => this.handleChange(item.keyword)}
@@ -95,12 +97,15 @@ class KeywordsFilter extends Component {
                 </span>
               </li>
             ))}
+            {keywords.length > types.length || showMore ? (
+              <li className="item">
+                <button className="more" onClick={this.toggleMore}>
+                  {showMore ? 'Less' : 'More'}
+                </button>
+              </li>
+            ) : null}
+
           </ul>
-          {keywords.length > types.length || showMore ? (
-            <Button onClick={this.toggleMore}>
-              {showMore ? '- Less' : '+ More'}
-            </Button>
-          ) : null}
         </details>
       </div>
     );

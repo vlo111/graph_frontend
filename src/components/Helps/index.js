@@ -48,10 +48,10 @@ export default (props) => {
         </TabList>
         <div className="color-border" />
         <TabPanel>
-        <div>
-        <iframe width="1280" height="720" src="https://www.youtube.com/embed/epWcnCtE6kQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-</div>
+          <div>
+            {' '}
+            <img src={HelpSvg} className="help_img" />
+          </div>
           <div>
             <p>Create new nodes</p>
             <span className="helpinfo">For more information</span>
