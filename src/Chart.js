@@ -3159,10 +3159,10 @@ class Chart {
    */
   static getLinksBetweenNodes(nodes, chosenNodes, links) {
     const nodeCouples = []
-    for (let i = 0; i < chosenNodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
+    for (let j = 0; j < chosenNodes.length; j++) {
+      for (let i = 0; i < nodes.length; i++) {
           for (let linkIndex = 0; linkIndex < links?.length; linkIndex++) {
-            if (this.ifNodesConnected(chosenNodes[i].id, nodes[j].id, links[linkIndex])) {
+            if (this.ifNodesConnected(chosenNodes[j].id, nodes[i].id, links[linkIndex])) {
               nodeCouples.push(links[linkIndex])
             }
           }
