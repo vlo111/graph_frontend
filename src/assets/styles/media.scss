@@ -394,3 +394,16 @@
     }
   }
 }
+@media (max-height: 768px) {
+  .menu {
+  overflow-x: scroll;
+  // max-height: 100vh;
+  height: 88%;
+  // width: 220px;
+  // padding: 0 10px;
+}
+.menu .containerMenu .collapse:hover{
+  top: 20pc;
+  }
+
+}

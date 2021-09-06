@@ -1,6 +1,7 @@
 import React, { Component  } from 'react'; 
 import { connect } from 'react-redux'; 
 import PropTypes from 'prop-types'; 
+import isEmpty from 'lodash/isEmpty';
 import { getGraphInfoRequest } from '../store/actions/graphs'; 
 import { setActiveButton } from '../store/actions/app'; 
 import Chart from '../Chart';  
@@ -10,8 +11,7 @@ class ToolBarFooter extends Component {
   static propTypes = {
     getGraphInfoRequest: PropTypes.func.isRequired, 
     graphInfo: PropTypes.object.isRequired,
-    setActiveButton: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
+    setActiveButton: PropTypes.func.isRequired, 
   };  
 
   constructor(props) {
@@ -44,47 +44,50 @@ class ToolBarFooter extends Component {
   }
   render() {
     const {totalNodes, totalLinks, totalLabels } = this.state; 
-    const { graphInfo, partOf} = this.props; 
+    const { graphInfo, graphId, partOf} = this.props; 
     const showInMap = Chart.getNodes().some((d) => d.location); 
-    const updateLocation = window.location.pathname.startsWith('/graphs/update');
-
-    return (
-      <>
-        <footer id="graphs-data-info" style={updateLocation ? { left: "213px"}:  { left: "15px"}} > 
-        {showInMap ? (         
-            <div className="mapMode">          
-              <Button
-                icon="fa-globe"
-                onClick={(ev) => this.handleClick('maps-view')}
-                className='bg-transparent'
-              >
-                Show on map
-              </Button>              
-            </div>
-            ) : null}
-            <div className="nodesMode">
-              <span>
-                {partOf ? `Nodes (${totalNodes} of ${graphInfo.totalNodes}) ` :  `Nodes (${graphInfo.totalNodes || 0 })`} 
-              </span>
-            </div>
-            <div className="linksMode">
-              <span>
-                {partOf ? `Links (${totalLinks} of ${graphInfo.totalLinks}) ` :  `Links (${graphInfo.totalLinks || 0 })`} 
-              </span>
-            </div>
-            <div className="labelsMode">
-              <span>
-              {partOf ? `Labels (${totalLabels} of ${graphInfo.totalLabels}) ` :  `Labels (${graphInfo.totalLabels || 0 })`}  
-              </span>
-            </div> 
-        </footer> 
-      </>
+    const updateLocation = window.location.pathname.startsWith('/graphs/update'); 
+    
+    return (!graphId ? null 
+        :(
+          <>
+            <footer id="graphs-data-info" style={updateLocation ? { left: "213px"}:  { left: "15px"}} > 
+            {showInMap ? (         
+                <div className="mapMode">          
+                  <Button
+                    icon="fa-globe"
+                    onClick={(ev) => this.handleClick('maps-view')}
+                    className='bg-transparent'
+                  >
+                    Show on map
+                  </Button>              
+                </div>
+                ) : null}
+                <div className="nodesMode">
+                  <span>
+                    {partOf ? `Nodes (${totalNodes} of ${graphInfo.totalNodes}) ` :  `Nodes (${graphInfo.totalNodes || 0 })`} 
+                  </span>
+                </div>
+                <div className="linksMode">
+                  <span>
+                    {partOf ? `Links (${totalLinks} of ${graphInfo.totalLinks}) ` :  `Links (${graphInfo.totalLinks || 0 })`} 
+                  </span>
+                </div>
+                <div className="labelsMode">
+                  <span>
+                  {partOf ? `Labels (${totalLabels} of ${graphInfo.totalLabels}) ` :  `Labels (${graphInfo.totalLabels || 0 })`}  
+                  </span>
+                </div> 
+            </footer> 
+          </>
+        )
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   graphInfo: state.graphs.graphInfo,  
+  graphId: state.graphs.singleGraph?.id,
 });
 
 const mapDispatchToProps = {
