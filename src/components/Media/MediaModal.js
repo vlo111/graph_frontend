@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { setActiveButton } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { ReactComponent as MediaDocument } from '../../assets/images/icons/mediaDocument.svg';
 import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
 import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
 import Button from '../form/Button';
@@ -91,7 +92,7 @@ class MediaModal extends Component {
         });
         break;
       }
-      case 'image': {
+      case 'Image': {
         this.setState({
           getCheckedImages: value,
         });
@@ -133,11 +134,12 @@ class MediaModal extends Component {
     const { getCheckedDocs, getCheckedImages } = this.state;
 
     return document.filter((p) => {
-      const type = typeof p.data === 'string' ? (Utils.isImg(p.data) ? 'image' : 'document') : 'video';
-      if (type === 'image' && getCheckedImages) {
+      const type = typeof p.data === 'string' ? (Utils.isImg(p.data) ? 'Image' : 'document') : 'video';
+
+      if (type === 'Image' && getCheckedImages) {
         return true;
       }
-      return type !== 'image' && type !== 'video' && getCheckedDocs;
+      return type !== 'Image' && type !== 'video' && getCheckedDocs;
     });
   }
 
@@ -159,7 +161,7 @@ class MediaModal extends Component {
                 node,
                 data: node.icon,
                 added: node.id,
-                type: 'image',
+                type: 'Image',
                 graphId: Utils.getGraphIdFormUrl(),
               });
             }
@@ -172,7 +174,7 @@ class MediaModal extends Component {
   }
 
   insertVideo = (_document) => {
-    debugger
+
     const { singleGraph: { nodesPartial, user }, graphTabs } = this.props;
 
     const { getCheckedVideos } = this.state;
@@ -180,7 +182,6 @@ class MediaModal extends Component {
     if (graphTabs && graphTabs.length && !_.isEmpty(nodesPartial)) {
       graphTabs.forEach((p) => {
         const node = nodesPartial.filter((g) => g.id === p.nodeId)[0];
-
         const tabData = p.tab;
 
         tabData.forEach((tab) => {
@@ -194,7 +195,7 @@ class MediaModal extends Component {
                 node,
                 data: el,
                 added: node.id,
-                type: 'video',
+                type: 'Video',
                 graphId: Utils.getGraphIdFormUrl(),
               });
             }
@@ -228,7 +229,7 @@ class MediaModal extends Component {
 
   render() {
     let { documentSearch } = this.props;
-    
+
     this.initTabs();
 
     this.initialGraph();
@@ -256,8 +257,8 @@ class MediaModal extends Component {
 
     // Search media
     documentSearch = documentSearch?.filter((p) => p.node.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
-    return (
 
+    return (
       <div className="mediaModal">
         <Modal
           isOpen
@@ -297,7 +298,7 @@ class MediaModal extends Component {
                   <Checkbox
                     label="Images of tabs"
                     checked={getCheckedImages}
-                    onChange={() => this.filterHandleChange('image', !getCheckedImages)}
+                    onChange={() => this.filterHandleChange('Image', !getCheckedImages)}
                     className="graphsCheckbox"
                   />
                   <Checkbox
@@ -324,88 +325,83 @@ class MediaModal extends Component {
             ? (
               <div className="mediaContainer mediaGallery">
                 {documentSearch.map((document) => {
-                  console.log('a:', document)
-                  // console.log('vvvv: ', documentSearch);
+                  console.log('document --- ', document.node);
                   return document.id && (
                     <div className="imageFrameTTT">
-                      {typeof document.data !== 'string'
-                        ? (
-                          <span
-                            ref={(nodeElement) => {
-                              nodeElement && nodeElement.appendChild(document.data);
-                            }}
-                          />
-                        )
-                        : (
-
-                          <figure className="img-container">
-                            
-                              <div>
-                                <div onMouseOver={() => this.showMediaOver(document.id)} onMouseOut={() => this.hideMediaOver(document.id)}>
-                                  <div className={`xxxx xxxx1_${document.id}`}>
-                                    <div className='mediaInfo'>
-                                      <span className='mediaLeter'>Uploaded:</span>
-                                      <span>{moment(document.updatedAt).calendar()}</span>
-                                    </div>
-                                    <div className='mediaInfo'>
-                                      <span className='mediaLeter'>User Name:</span>
-                                      <span className='mediUser'>
-                                        <Link to={`/profile/${document.user.id}`}>
-                                          {`${document.user.firstName} ${document.user.lastName}`}
-                                        </Link>
-                                      </span>
-                                    </div>
-                                    <div className='mediaInfo docType'>
-                                      <span className='mediaLeter'>type:</span>
-                                      <span>{document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}</span>
-                                    </div>
-                                    <div className='mediaInfo'>
-                                      <span className='mediaLeter'>Description</span>
-                                      <span  >
-                                        {(document.description && document.description.length > 18
-                                            ? `${document.description.substr(0, 18)}... `
-                                            : document.description)}
-                                      </span>
-                                    </div>
-                                    <div className='mediaInfo'>
-                                      <span className='mediaLeter'>Tags:</span>
-                                      <span>{`${document.tags} `} </span>
-                                    </div>
-                                  </div>
-                                  {/* <a target="_blank" href={document.data} rel="noreferrer"> */}
-                                  <div>
-                                    <img
-                                      className="gallery-box__img"
-                                      src={document.data}
-                                    />
-                                  </div>
-                                  {/* </a> */}
-                                </div>
-                                <span
-                                  className="nodeLink"
-                                  onClick={
-                                    () => this.openTab(document.graphId, document.node, document.tabName)
-                                  }
-                                >
-                                  <div className="right container">
-                                    <img
-                                      className="userImg"
-                                      src={document.user.avatar}
-                                    />
-                                    <div className="ooo">
-                                      <span title={document.node.name} className="headerName">
-                                        {document.node.name && document.node.name.length > 8
-                                          ? `${document.node.name.substr(0, 8)}... `
-                                          : document.node.name}
-                                      </span>
-                                      <span> type:{document.type}  </span>
-                                    </div>
-                                  </div>
+                      <figure className="img-container">
+                        <div>
+                          <div onMouseOver={() => this.showMediaOver(document.id)} onMouseOut={() => this.hideMediaOver(document.id)}>
+                            <div className={`xxxx xxxx1_${document.id}`}>
+                              <div className='mediaInfo'>
+                                <span className='mediaLeter'>Uploaded:</span>
+                                <span>{moment(document.updatedAt).calendar()}</span>
+                              </div>
+                              <div className='mediaInfo'>
+                                <span className='mediaLeter'>User Name:</span>
+                                <span className='mediUser'>
+                                  <Link to={`/profile/${document.user.id}`}>
+                                    {`${document.user.firstName} ${document.user.lastName}`}
+                                  </Link>
                                 </span>
                               </div>
-                           
-                          </figure>
-                        )}
+                              <div className='mediaInfo docType'>
+                                <span className='mediaLeter'>type:</span>
+                                {/* <span>{document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}</span> */}
+                              </div>
+                              <div className='mediaInfo'>
+                                <span className='mediaLeter'>Description:</span>
+                                <span  >
+                                  {(document.description && document.description.length > 18
+                                    ? `${document.description.substr(0, 18)}... `
+                                    : document.description)}
+                                </span>
+                              </div>
+                              <div className='mediaInfo'>
+                                <span className='mediaLeter'>Tags:</span>
+                                <span>{`${document.tags} `} </span>
+                              </div>
+                            </div>
+                            {/* <a target="_blank" href={document.data} rel="noreferrer"> */}
+                            <div>
+                              {typeof document.data !== 'string'
+                                ? (
+                                  <div>
+                                    <iframe src={document.data.src} />
+                                  </div>
+                                )
+                                : (
+                                  <img
+                                    className="gallery-box__img"
+                                    src={document.data}
+                                  />
+                                )}
+                            </div>
+                            {/* </a> */}
+                          </div>
+                          <span
+                            className="nodeLink"
+                            onClick={
+                              () => this.openTab(document.graphId, document.node, document.tabName)
+                            }
+                          >
+                            <div className="right container">
+                              <img
+                                className="userImg"
+                                src={document.user.avatar}
+                              />
+                              <div className="ooo">
+                                <span title={document.node.name} className="headerName">
+                                  {document.node.name && document.node.name.length > 8
+                                    ? `${document.node.name.substr(0, 8)}... `
+                                    : document.node.name}
+                                </span>
+                                <span className='typeDocument'> {document.type}  </span>
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+
+                      </figure>
                     </div>
                   )
                 })}
