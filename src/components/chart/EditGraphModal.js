@@ -104,7 +104,7 @@ requestData: {
   }
 
   saveGraph = async (status) => {
-    const { requestData, image } = this.state;
+    let { requestData, image } = this.state;
 
     let { singleGraph, graph } = this.props;
     
