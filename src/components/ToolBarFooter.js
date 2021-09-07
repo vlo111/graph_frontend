@@ -10,7 +10,6 @@ import Button from './form/Button';
 class ToolBarFooter extends Component {
   static propTypes = {
     getGraphInfoRequest: PropTypes.func.isRequired,
-    graphId: PropTypes.number.isRequired,
     graphInfo: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired, 
   };  
