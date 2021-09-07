@@ -31,7 +31,6 @@ class AutoSave extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    defaultImage: PropTypes.bool.isRequired,
     deleteState: PropTypes.bool.isRequired,
 
     createNodesRequest: PropTypes.func.isRequired,
@@ -76,7 +75,6 @@ class AutoSave extends Component {
 
     this.thumbnailListener = this.props.history.listen(this.handleRouteChange);
     window.addEventListener('beforeunload', this.handleUnload);
-    this.thumbnailTimeout = setTimeout(this.updateThumbnail, 1000 * 60);
   }
 
   componentWillUnmount() {
@@ -396,7 +394,7 @@ class AutoSave extends Component {
     document.body.classList.add('autoSave');
     const svg = ChartUtils.getChartSvg();
     const { match: { params: { graphId } } } = this.props;
-    if (!defaultImage) {
+    if (!defaultImage && graphId) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
       this.props.getGraphsListRequest(page, {filter: order})
     }
