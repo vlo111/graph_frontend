@@ -445,6 +445,10 @@ class SearchModal extends Component {
       nodes = chosenNodes.concat(oldNodes)
     }
     nodes = nodesPartial.filter(node => {
+      if (node.hasOwnProperty('x')) {
+        node.fx = node.x;
+        node.fy = node.y;
+      }
       if (keep && oldNodes?.some(nd => nd.id === node.id)) {
         node.new = false
         return true
@@ -466,6 +470,7 @@ class SearchModal extends Component {
         return true
       }
     })
+    Chart.render({nodes:[], links:[], labels:[]}, {ignoreAutoSave: true})
     Chart.render(
       {
         nodes, 
@@ -475,9 +480,11 @@ class SearchModal extends Component {
         ignoreAutoSave: true,
         isAutoPosition: true
     })
+    const newChartNodes = Chart.getNodes()
+    debugger
     ChartUtils.autoScaleTimeOut();
-    ChartUtils.autoScaleTimeOut(100);
-    ChartUtils.autoScaleTimeOut(200);
+    // ChartUtils.autoScaleTimeOut(100);
+    // ChartUtils.autoScaleTimeOut(400);
     this.closeModal();
     ChartUtils.startAutoPosition()
   }
