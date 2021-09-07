@@ -77,7 +77,7 @@ requestData: {
     const svg = ChartUtils.getChartSvg();
     if (!defaultImage) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
-      this.props.getSingleGraphRequest()
+      this.props.getSingleGraphRequest(graphId)
     }
   }
 
