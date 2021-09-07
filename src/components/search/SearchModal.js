@@ -440,10 +440,6 @@ class SearchModal extends Component {
     let oldNodes = Chart.getNodes()
     let oldLinks = Chart.getLinks()
     let nodes = chosenNodes
-    chosenNodes = chosenNodes.map(node => {
-      node.new = true
-      return node
-    })
 
     if (keep) {
       nodes = chosenNodes.concat(oldNodes)
@@ -459,10 +455,9 @@ class SearchModal extends Component {
       }
       return false
     })
-
     let links = Chart.getLinksBetweenNodes(nodes, chosenNodes, linksPartial);
-    oldLinks = linksPartial.filter(link => oldLinks.some(oldLink => oldLink.id === link.id))
     links = links.concat(oldLinks)
+    links = linksPartial.filter(link => links.some(oldLink => oldLink.id === link.id))
     links = links.filter(link => {
       if (keep && oldLinks.some(lk => lk.id === link.id)) {
         link.new = false
@@ -589,18 +584,18 @@ class SearchModal extends Component {
           {this.ifAnyResults() ? (
           <div className="selectedNodesCheckBox">
             <div>
-                  <Checkbox
-                    label="Select all"
-                    checked={allNodesSelected}
-                    onChange={this.selectAllNodes}
-                  />
-                </div>
-                <p className="selectedItemsAmount">
-                  Selected Nodes
-                  {` ${chosenNodes.length}`}
-                </p>
-              </div>
-            ) : ''}
+              <Checkbox
+                label={allNodesSelected ? "Unselect all" : "Select all"}
+                checked={allNodesSelected}
+                onChange={this.selectAllNodes}
+              />
+            </div>
+            <p className="selectedItemsAmount">
+              Selected Nodes
+              {` ${chosenNodes.length}`}
+            </p>
+          </div>
+          ) : ''}
         </div>
 
         </div>
