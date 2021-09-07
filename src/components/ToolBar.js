@@ -458,7 +458,6 @@ openHelpsModal = () => {
                 className={`${selected.includes('create-label-square') ? 'selected' : ''}`}
               >
                   <Square className="lablMenu" />
-                <i className="fa fa-vector-square" />
                 <span> Square </span>
               </li>
               <li
