@@ -524,7 +524,7 @@ class SearchModal extends Component {
   listenToClick = (ev) => {
     let searchNodes = document.getElementsByClassName('searchNodes')
     searchNodes = searchNodes.length ? searchNodes[0] : undefined
-    if (ev && typeof(ev?.target?.className) === 'string' && ev.target.className.includes('checkBox')) {
+    if (ev && typeof(ev?.target?.className) === 'string' && (ev.target.className.includes('checkBox') || ev.target.className.includes('chooseSearchFields'))) {
       return
     } 
     searchNodes.removeEventListener('click', this.listenToClick)
