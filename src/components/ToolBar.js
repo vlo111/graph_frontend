@@ -12,6 +12,9 @@ import { KEY_CODES } from '../data/keyCodes';
 import AnalyseModal from './Analysis/AnalyseModal';
 import Outside from './Outside';
 import HelpsModal from './Helps'
+import { ReactComponent as Ellipse } from "../assets/images/Ellipse.svg";
+import { ReactComponent as FreeForm } from "../assets/images/freeform.svg";
+import { ReactComponent as Square } from "../assets/images/Square.svg";
 class ToolBar extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -365,7 +368,7 @@ openHelpsModal = () => {
             <div className="sidebar_text"> Find Node </div>
           </li>
 
-          <li
+          {/* <li
 
            onMouseOver={() => this.handleOver('history')}
            onMouseLeave={this.handleLeave}
@@ -373,14 +376,14 @@ openHelpsModal = () => {
          >
            <i class="fa fa-history"></i>
            <div className="sidebar_text"> History </div>
-         </li>
+         </li> */}
          <li
             onClick={() => this.openHelpsModal()}
             onMouseOver={() => this.handleOver('help')}
             onMouseLeave={this.handleLeave}
            className={`${overMenu === 'help' ? 'collapse_over' : ''} collapse help_menu `}
          >
-           <i class="fa fa-question-circle"></i>
+           <i className="fa fa-question-circle"></i>
            <div className="sidebar_text"> Help </div>
          </li>
 
@@ -447,13 +450,14 @@ openHelpsModal = () => {
                 onClick={() => this.handleClick('create-label')}
                 className={`${selected.includes('freeForm') ? 'selected' : ''}`}
               >
-                <i className="fa fa-pen-nib" />
+                  <FreeForm className="lablMenu" />
                 <span> Free form </span>
               </li>
               <li
                 onClick={() => this.handleClick('create-label-square')}
                 className={`${selected.includes('create-label-square') ? 'selected' : ''}`}
               >
+                  <Square className="lablMenu" />
                 <i className="fa fa-vector-square" />
                 <span> Square </span>
               </li>
@@ -461,7 +465,7 @@ openHelpsModal = () => {
                 onClick={() => this.handleClick('create-label-ellipse')}
                 className={`${selected.includes('create-label-ellipse') ? 'selected' : ''}`}
               >
-                <i className="far fa-circle" />
+                  <Ellipse className="lablMenu" />
                 <span> Ellipse </span>
               </li>
             </ul>
