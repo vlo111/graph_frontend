@@ -480,11 +480,9 @@ class SearchModal extends Component {
         ignoreAutoSave: true,
         isAutoPosition: true
     })
-    const newChartNodes = Chart.getNodes()
-    debugger
     ChartUtils.autoScaleTimeOut();
-    // ChartUtils.autoScaleTimeOut(100);
-    // ChartUtils.autoScaleTimeOut(400);
+    ChartUtils.autoScaleTimeOut(200);
+    ChartUtils.autoScaleTimeOut(400);
     this.closeModal();
     ChartUtils.startAutoPosition()
   }
