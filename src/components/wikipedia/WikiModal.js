@@ -6,6 +6,7 @@ import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import Utils from '../../helpers/Utils';
 import { ReactComponent as WikiSvg } from '../../assets/images/wikipedia.svg';
+import Checkbox from '../form/Checkbox';
 
 class WikiModal extends Component {
   constructor(props) {
@@ -156,7 +157,7 @@ https://en.wikipedia.org/wiki/${name}
             key={i}
           >
             <div>
-              <input
+              <Checkbox
                 style={{ display: 'none' }}
                 onChange={() => this.checkedWiki(i)}
                 checked={isNaN(getChecked) ? getChecked : i === getChecked}
@@ -166,7 +167,7 @@ https://en.wikipedia.org/wiki/${name}
                 value="option1"
               />
             </div>
-            <div>
+            <div className="wikiresaltselcted">
               <h3>
                 <a
                   target="_blank"

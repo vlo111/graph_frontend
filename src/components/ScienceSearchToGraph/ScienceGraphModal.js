@@ -520,7 +520,29 @@ class ScienceGraphModal extends Component {
             ) : (
               ''
             )}
+            <div>
+            {apiSearchReturnValues[index].origin.includes(
+                'arxiv',
+              ) ? (
+                <b>Source:
+                  <a>https://arxiv.org/</a>
+                   </b>
+                
+                ) : (
+                  ''
+                )} 
+             {apiSearchReturnValues[index].origin.includes(
+                'core',
+              ) ? (
+                <b>Source: 
+                  <a>https://core.ac.uk/</a>
+                </b>
+                ) : (
+                  ''
+                )} 
+            </div>
             <p
+            
               className=" scienceArticleDescription"
               dangerouslySetInnerHTML={{
                 __html:
@@ -531,30 +553,6 @@ class ScienceGraphModal extends Component {
                     : '',
               }}
             />
-            <div>
-              {apiSearchReturnValues[index].origin.includes(
-                'arxiv',
-              ) ? (
-                <img
-                  src={arxivImg}
-                  alt="arxiv"
-                  className="arxivLogo sourceLogo"
-                />
-                ) : (
-                  ''
-                )}
-              {apiSearchReturnValues[index].origin.includes(
-                'core',
-              ) ? (
-                <img
-                  src={coreImg}
-                  alt="arxiv"
-                  className="coreLogo sourceLogo"
-                />
-                ) : (
-                  ''
-                )}
-            </div>
           </div>
         </div>,
       );

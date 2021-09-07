@@ -5303,9 +5303,6 @@ importSelectFileLbl label {
   margin-left: 10px;
   border: 1px solid #dedede;
 
-  div {
-    padding: 4px;
-  }
 }
 
 label.pull-left::before {
@@ -5459,6 +5456,12 @@ label.pull-left::before {
     .wikiSearch {
       margin-bottom: 10px !important;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .wikiresaltselcted{
+      padding: 0 10px;
     }
   }
 
@@ -5482,6 +5485,7 @@ label.pull-left::before {
     max-width: 3em;
     margin-top: 0.5em;
   }
+ 
 }
 
 //wiki end
@@ -9094,12 +9098,13 @@ img.preview-scaled {
 
 .scienceResultsList {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  border: 1px solid #dedede;
-  margin: 0 37px;
-  padding: 0 20px;
-  margin-bottom: 10px;
+    flex-direction: row;
+    justify-content: space-around;
+    border: 1px solid #dedede;
+    margin: 0px 36px;
+    padding: 27px 21px;
+    margin-bottom: 10px;
+    
 }
 
 .scienceCheckBox {
@@ -9117,7 +9122,11 @@ img.preview-scaled {
 }
 
 .scienceArticleData {
+  
   flex: 10;
+  b a{
+    margin-left: 5px;
+  }
 }
 .scinceItems {
   margin-bottom: 10px;
