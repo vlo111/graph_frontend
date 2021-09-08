@@ -69,7 +69,7 @@ class SearchModal extends Component {
 
   initTabs = memoizeOne(() => {
     const { graphId } = this.props
-    this.props.getAllTabsRequest(graphId);
+    // this.props.getAllTabsRequest(graphId);
   });
 
   closeModal = () => {
@@ -460,10 +460,15 @@ class SearchModal extends Component {
       return false
     })
     let links = Chart.getLinksBetweenNodes(nodes, chosenNodes, linksPartial);
-    links = links.concat(oldLinks)
+    if (keep) {
+      links = links.concat(oldLinks)
+    }
     links = linksPartial.filter(link => links.some(oldLink => oldLink.id === link.id))
     links = links.filter(link => {
-      if (keep && oldLinks.some(lk => lk.id === link.id)) {
+      if (!keep) {
+        link.new = true
+        return true
+      } else if (keep && oldLinks.some(lk => lk.id === link.id)) {
         link.new = false
         return true
       } else if (!oldLinks.some(lk => lk.id === link.id)) {
@@ -471,7 +476,6 @@ class SearchModal extends Component {
         return true
       }
     })
-    Chart.render({nodes:[], links:[], labels:[]}, {ignoreAutoSave: true})
     Chart.render(
       {
         nodes, 
