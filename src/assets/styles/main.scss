@@ -7336,9 +7336,9 @@ img.preview-scaled {
   font-size: 1em;
 }
 
-.scienceFormInside {
-  width: 90%
-}
+// .scienceFormInside {
+//   width: 90%
+// }
 
 .acceptCheckedItems {
   width: 100%;
@@ -9582,9 +9582,8 @@ img.preview-scaled {
   flex-direction: row;
   justify-content: space-around;
   border: 1px solid #dedede;
-  margin: 0px 36px;
-  padding: 27px 21px;
-  margin-bottom: 10px;
+  padding: 10px 21px;
+  margin: 0 35px 0px;
 }
 
 .scienceCheckBox {
@@ -9651,6 +9650,10 @@ img.preview-scaled {
 }
 
 .scienceFormInside {
+  .btn-classic{
+    font-size: 
+    14px !important;
+  }
   width: 90%;
 }
 
