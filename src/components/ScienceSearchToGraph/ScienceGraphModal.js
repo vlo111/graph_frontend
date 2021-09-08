@@ -82,10 +82,10 @@ class ScienceGraphModal extends Component {
         url: arxivUrl,
         name: 'arxiv',
       },
-      {
-        url: coreUrl,
-        name: 'core',
-      },
+      // {
+      //   url: coreUrl,
+      //   name: 'core',
+      // },
     ];
 
     const fetchedSources = await this.fetchUrls(urls);
@@ -480,9 +480,16 @@ class ScienceGraphModal extends Component {
 
   getListOfArticles = (apiSearchReturnValues, checkedList) => {
     const apiSearchResults = [];
-    for (const index in apiSearchReturnValues) { // move to separate function
+    for (const index in apiSearchReturnValues) { 
       apiSearchResults.push(
-        <div className="scienceResultsList" key={index}>
+        <label className="pull-left" htmlFor={index} >
+        <div className="scine scienceResultsList"
+        tabIndex="0"
+        onFocus={() => {
+          const items = document.getElementsByClassName('scine');
+          items[index].style.backgroundColor = '#e5e3f5';
+        }}
+         key={index}>
           <div className="scienceCheckBox">
             <Checkbox
               onChange={() => this.handleCheckedButton(index)}
@@ -493,7 +500,6 @@ class ScienceGraphModal extends Component {
               value="option1"
             />
 
-            <label className="pull-left" htmlFor={index} />
           </div>
 
           <div className="scienceArticleData">
@@ -555,6 +561,7 @@ class ScienceGraphModal extends Component {
             />
           </div>
         </div>,
+        </label>
       );
     }
     return apiSearchResults;

@@ -495,7 +495,6 @@ class ToolBar extends Component {
                   }`}
                 >
                   <Square className="aaa" />
-                  {/* <i className="fa fa-vector-square"></i> */}
                   <span> Square </span>
                 </li>
                 <li
