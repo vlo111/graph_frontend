@@ -82,10 +82,23 @@ class DataTableNodes extends Component {
     return values;
   }
 
+  handleCheckBoxChange = (isAllChecked) => {
+    let { nodes, selectedNodes } = this.props
+    if (!isAllChecked) {
+      nodes.map(node => {
+        if (!selectedNodes.includes(node.index)) {
+          selectedNodes.push(node.index)
+        }
+      })
+    } else {
+      selectedNodes = selectedNodes.filter(index => !nodes.some(node => node.index === index))
+    }
+    this.props.setGridIndexes('nodes', selectedNodes)
+  }
+
   renderSheet = (props, className) => {
     const { selectedNodes } = this.props;
     const { grid } = this.state;
-    const allChecked = grid.length === selectedNodes.length;
     const position = className || '';
     const gridValues = this.getValues(grid);
     let isAllChecked = true;
@@ -104,7 +117,7 @@ class DataTableNodes extends Component {
             <th className={`${position} cell index`} width="60">
               <div className="allTableCellChekked">
                 <Checkbox
-                  onChange={() => this.props.setGridIndexes('nodes', isAllChecked ? [] : grid.map((g) => g[0].value))}
+                  onChange={() => this.handleCheckBoxChange(isAllChecked)}
                   checked={isAllChecked}
                   id="all"
                 />

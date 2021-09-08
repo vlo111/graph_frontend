@@ -501,7 +501,7 @@ class ChartUtils {
         d.priority = 6;
       } else if (d.keywords.some((k) => k.toLowerCase().includes(s))) {
         d.priority = 7;
-      } else if (stripHtml(d.description).result.toLowerCase().includes(s)) {
+      } else if (d.description && stripHtml(d.description).result.toLowerCase().includes(s)) {
         d.priority = 8;
       }
       return d;
@@ -1104,6 +1104,19 @@ class ChartUtils {
     return {
       x, y, width, height,
     };
+  }
+
+  static startAutoPosition = () => {
+    setTimeout(() => {
+      document.addEventListener('click', this.stopAutoPosition)
+      document.addEventListener('contextmenu', this.stopAutoPosition)
+    }, 200)
+  }
+
+  static stopAutoPosition = () => {
+    Chart.render({},{ignoreAutoSave: true, isAutoPosition: false})
+    document.removeEventListener('click', this.stopAutoPosition)
+    document.removeEventListener('contextmenu', this.stopAutoPosition)
   }
 }
 

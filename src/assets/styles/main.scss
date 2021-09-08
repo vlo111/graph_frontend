@@ -715,7 +715,6 @@ p {
   max-height: 100vh;
   position: relative;
   background-color: #eeeeee;
-
   &.maps-view {
     display: none !important;
   }
@@ -876,6 +875,9 @@ p {
         opacity: 0.1 !important;
         pointer-events: none;
       }
+      &.emphasisConnection {
+          stroke: yellow !important;
+        }
     }
   }
 
@@ -977,6 +979,13 @@ p {
       }
     }
 
+    &.emphasisIcon {
+      :not(text) {
+        stroke-width: 4 !important;
+        stroke: yellow !important;
+        stroke-dasharray: 12 !important;
+      }
+    }
     text {
       font-family: $font-family;
       dominant-baseline: central;
@@ -1580,8 +1589,8 @@ p {
       object-fit: cover;
     }
 
-    .graphInputName {
-      border: none;
+    .graphInputName{
+      border:none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
       color: $color-graph-name;
@@ -1604,33 +1613,32 @@ p {
     }
   }
 
-  .createGraph {
+  .createGraph{
     width: 370px;
     padding-bottom: 30px;
 
-    .form {
+    .form{
       margin: auto;
       width: 84%;
       height: 84%;
-
-      .ghInput input {
+      .ghInput input{
         padding: 0;
         width: 210px;
-        border: none;
-        border-bottom: 1px solid $color-user-text;
-        border-radius: 0;
-        font-size: 23px;
-        color: $color-dark;
+        border:none;
+        border-bottom:1px solid $color-user-text;
+        border-radius:0;
+        font-size:23px;
+        color:$color-dark;
         margin: -20px auto auto;
 
         &::-webkit-input-placeholder {
           color: $color-graph-name;
           font-weight: 700;
-          text-align: center;
+          text-align:center;
         }
       }
 
-      .ghInput textarea {
+      .ghInput textarea{
         margin-top: 20px;
         border-radius: 5px;
         border: 1px solid #AAAAAA;
@@ -1643,8 +1651,7 @@ p {
           font-size: 16px;
         }
       }
-
-      .buttons {
+      .buttons{
         justify-content: space-between;
       }
     }
@@ -1974,7 +1981,7 @@ p {
     min-width: 640px;
 
     thead {
-      .allTableCellChekked {
+      .allTableCellChecked {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -2961,21 +2968,21 @@ p {
         margin-top: 2%;
       }
 
-      .colorBox {
-        height: 30px;
-        width: 75px;
-        background-color: #f4f4ff;
-        border-radius: 7px;
-        overflow: hidden;
-        border: 3px solid;
-        pointer-events: none;
+          .colorBox {
+            height: 30px;
+            width: 75px;
+            background-color: #f4f4ff;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 3px solid;
+            pointer-events: none;
 
-        div {
-          width: 100%;
-          height: 100%;
+            div {
+              width: 100%;
+              height: 100%;
           opacity: .7;
-        }
-      }
+            }
+          }
 
       .badge {
         position: absolute;
@@ -3451,7 +3458,6 @@ body .gh__menu {
                   font-weight: 800;
                 }
               }
-
               .toggleTabBox {
                 padding: 0 5px;
               }
@@ -3610,7 +3616,6 @@ body .gh__menu {
               white-space: inherit;
             }
           }
-
           .tabRight {
             margin-left: 0;
           }
@@ -4550,7 +4555,7 @@ body .gh__menu {
       margin-left: -10px;
 
       .ghButton {
-        background-color: $color-white;
+        background-color:$color-white;
         color: $color-gray;
         border-radius: 24px 24px 0 0;
         padding: 12px 30px 60px;
@@ -4613,11 +4618,9 @@ body .gh__menu {
       position: static;
       margin-left: 10px;
       margin-bottom: -20px;
-
-      .lastItem {
+      .lastItem{
         display: none;
       }
-
       .item {
         margin-left: -10px;
 
@@ -4901,11 +4904,10 @@ body .gh__menu {
 }
 
 
-.embedModal {
+.embedModal{
   border-radius: 0 !important;
   max-width: 638px !important;
   padding: 18px 53px 29px 53px !important;
-
   .graphEmbed {
     h2 {
       font-weight: bold;
@@ -4928,39 +4930,37 @@ body .gh__menu {
       box-sizing: border-box;
       border-radius: 3px;
     }
-
-    .copyEmbed {
-      width: 80px;
-      height: 35px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 2px;
-      line-height: normal;
-      font-weight: 400;
-      transition: all 0.25s;
-      text-align: center;
-      font-size: 16px;
-      color: $color-white;
-      cursor: pointer;
-      touch-action: manipulation;
-      outline: none;
-      border: solid 1px;
-      border-color: $color-main;
-      user-select: none;
-      background-color: $color-main;
-      opacity: 1;
-      padding: 0;
-      margin-left: 12px;
-
-      &:hover {
-        background-color: $color-white;
-        color: $color-main;
+    .copyEmbed{
+        width: 80px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 2px;
+        line-height: normal;
+        font-weight: 400;
+        transition: all 0.25s;
+        text-align: center;
+        font-size: 16px;
+        color: $color-white;
+        cursor: pointer;
+        touch-action: manipulation;
+        outline: none;
+        border: solid 1px;
         border-color: $color-main;
-      }
+        user-select: none;
+        background-color: $color-main;
+        opacity:1;
+        padding: 0;
+        margin-left: 12px;
+        &:hover {
+          background-color: $color-white;
+          color: $color-main;
+          border-color: $color-main;
+        }
     }
   }
-}
+  }
 
 .searchData {
   margin-right: auto;
@@ -5235,7 +5235,7 @@ body .gh__menu {
   padding: 0 0 10px;
 }
 
-.undefined .tabsList .lastItem {
+.undefined .tabsList .lastItem{
   display: none;
 }
 
@@ -5343,151 +5343,8 @@ body .gh__menu {
   }
 }
 
-////wiki modal
-.wikiresult {
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.wikiSearch:focus {
-  background: linear-gradient(0deg, rgba(136, 130, 209, 0.22), rgba(136, 130, 209, 0.22));
-}
-
 label.pull-left::before {
   display: none !important;
-}
-
-label.pull-left::after {
-  display: none;
-}
-
-.wikiSearch h3 {
-  color: #1a0dab;
-}
-
-.wikiSearch h3 a {
-  font-size: 16px;
-  color: #7166f8;
-  display: inline-block;
-  line-height: 22px;
-  text-decoration: none;
-  font-weight: 700;
-}
-
-.wikiSearch h3 a:hover {
-  border-bottom: 3px solid;
-}
-
-.wikiSearch a:visited {
-  color: #1a0dab;
-}
-
-.wikiSearch h3 a:hover {
-  border-bottom: 3px solid;
-}
-
-.wikiSearch a:visited {
-  color: #1a0dab;
-}
-
-.wikiSearch .link a {
-  text-decoration: none;
-  color: #7166f8;
-  font-weight: 400;
-}
-
-.wikiSearch .link a:hover {
-  text-decoration: none;
-}
-
-.wikiSearch .searchmatch {
-  font-weight: bold;
-}
-
-.wikiSearch .link a:hover {
-  text-decoration: none;
-}
-
-.wikiSearch .searchmatch {
-  font-weight: bold;
-}
-
-.wikiSearch .description {
-  display: flow-root;
-  /* position: relative; */
-  line-height: 19px;
-  font-size: 14px;
-  color: #898989 !important;
-  font-weight: 400;
-}
-
-.wikiSearch .link a {
-  line-height: 1.5em;
-}
-
-.scienceAuthor {
-  margin-bottom: 0.3em;
-  color: #7166f8;
-  font-weight: 400;
-}
-
-.Wiki {
-  margin: 0 auto;
-  text-align: center;
-  margin-bottom: 50px;
-}
-
-.scienceGraph {
-  right: 31%;
-}
-
-.Wiki form {
-  border-radius: 5px;
-  border: 1px solid #7166f8;
-}
-
-.Wiki input {
-  line-height: 40px;
-  border-radius: 20px 0 0 20px;
-  border: none;
-  width: 400px;
-  padding: 0 20px;
-}
-
-.Wiki input:focus {
-  outline: none;
-}
-
-.resultAmount {
-  color: #1a0dab;
-  font-size: 1.5em;
-  text-align: center;
-  margin: 0em 0 1em 1em;
-}
-
-.Wiki input:focus {
-  outline: none;
-}
-
-.Wiki button {
-  color: white;
-  line-height: 40px;
-  border: none;
-  background-color: #7166f8;
-  padding: 0 20px;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  margin-left: 50px !important;
-}
-
-.sourceLogo {
-  margin-left: 1em !important;
-  max-width: 3em;
-  margin-top: .5em;
-}
-
-.Wiki button:focus {
-  outline: none;
 }
 
 // wikki modal <<menu>>
@@ -7327,135 +7184,11 @@ img.preview-scaled {
   }
 }
 
-.scienceModalsubBox {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  overflow-x: scroll;
-}
-
 .showLabelForm {
   width: 90px;
 }
 
-.scienceModalLoading {
-  right: 50% !important;
-}
-
-.scienceLogo {
-  margin: 0.7em auto;
-  width: 100px;
-}
-
 // style for search form
-.scienceForm {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
-}
-
-.scienceForm form {
-  border-radius: 20px;
-  box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
-  margin-bottom: 30px;
-  max-height: 40px;
-  display: flex;
-}
-
-.scienceForm input, .scienceForm button {
-  line-height: 3em;
-  border-radius: 2em 0 0 2em;
-  border: none;
-  padding: 0 20px;
-}
-
-.scienceForm input {
-  width: 43%
-}
-
-.scienceAuthorInput {
-  flex: 4;
-  order: 1;
-}
-
-.scienceTitleInput {
-  flex: 4;
-  order: 2;
-}
-
-.scienceForm button {
-  flex: 1;
-  order: 3;
-  border-radius: 2em;
-}
-
-.scienceSearchSubmit {
-  outline: none;
-}
-
-.scienceResultAmount {
-  margin-left: 3em;
-}
-
-// style for search results
-.scienceResultsList {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.scienceCheckBox {
-  flex: .7;
-  display: flex;
-  justify-content: center;
-  margin: 0 5px;
-}
-
-.scienceCheckBox input {
-  margin-top: .7em;
-  height: 1.5em;
-  width: 1.5em;
-}
-
-.scienceArticleData {
-  flex: 10
-}
-
-.scienceArticleData .scienceArticleDescription {
-  max-height: 4em;
-  overflow: hidden;
-}
-
-.scienceArticleData h3 {
-  font-weight: 700;
-  font-size: 1.2em;
-  line-height: 1em;
-  margin: .5em 0;
-}
-
-.scienceCreateNodeButton {
-  flex: 1
-}
-
-.scienceCreateNodeButton button {
-  font-size: 0.7em !important;
-  padding: 1em 1.5em !important;
-  margin-right: 3px;
-}
-
-.scienceResultAmountBox {
-  display: flex;
-  justify-content: center;
-}
-
-.scienceResultAmountBox p {
-  font-size: 1em;
-}
-
-.scienceFormInside {
-  width: 90%
-}
 
 .acceptCheckedItems {
   width: 100%;
@@ -7940,7 +7673,7 @@ img.preview-scaled {
           }
 
           .searchFieldCheckBoxList div {
-            padding: .1em .5em;
+            padding: 0.1em 0.5em;
           }
         }
 
@@ -7948,10 +7681,10 @@ img.preview-scaled {
           height: 36px;
           flex: 6;
           border: none;
-          border-left: 1px solid #7166F8;
+          border-left: 1px solid #7166f8;
           border-radius: 0px;
           outline: none;
-          margin-right: .2em;
+          margin-right: 0.2em;
           padding-left: 1em;
         }
       }
@@ -7961,7 +7694,7 @@ img.preview-scaled {
         align-items: center;
         width: 90%;
         justify-content: space-between;
-        margin-top: .5em;
+        margin-top: 0.5em;
         height: 24px;
       }
     }
@@ -9243,21 +8976,20 @@ img.preview-scaled {
   justify-content: center;
   align-items: center;
   position: absolute;
-  left: 213px;
   bottom: 2%;
-
+  font-size: smaller;
   div {
     display: flex;
     padding: 15px 15px;
-    color: $color-main !important;
+        color: white !important;
     align-items: center;
     box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
     border-radius: 3px;
     height: 40px;
-    background-color: rgba($color-main, .2);
+        background-color: rgba($color-main, .5);
 
     .ghButton {
-      color: $color-main !important;
+      color: white !important;
     }
   }
 
@@ -9336,5 +9068,161 @@ img.preview-scaled {
     font-size: 14px;
     color: $color-graph-name;
     cursor: pointer;
+    margin-left: 5px;
   }
 }
+
+////main science
+
+.scienceModalsubBox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.scienceModalLoading {
+  right: 50% !important;
+}
+
+.scienceLogo {
+  margin: 0.7em auto;
+  width: 100px;
+}
+
+.scienceForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.scienceForm form {
+  border-radius: 20px;
+  box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
+  margin-bottom: 30px;
+  max-height: 40px;
+  display: flex;
+}
+
+.scienceForm input,
+.scienceForm button {
+  // line-height: 3em;
+  border-radius: 5px;
+  border: none;
+  padding: 0 20px;
+}
+
+.scienceForm input {
+  width: 43%;
+}
+
+.scienceAuthorInput {
+  flex: 4;
+  order: 1;
+}
+
+.scienceTitleInput {
+  flex: 4;
+  order: 2;
+}
+
+.scienceForm button {
+  flex: 1;
+  order: 3;
+  border-radius: 5px;
+  height: 40px;
+  border: 1 px solid #7166f8;
+}
+
+.scienceSearchSubmit {
+  outline: none;
+}
+
+.scienceResultAmount {
+  margin-left: 3em;
+}
+
+.scienceResultsList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border: 1px solid #dedede;
+  margin: 0 37px;
+  padding: 0 20px;
+  margin-bottom: 10px;
+}
+
+.scienceCheckBox {
+  flex: 0.7;
+  display: flex;
+  justify-content: center;
+  margin: 0 5px;
+  align-items: center;
+}
+
+.scienceCheckBox input {
+  height: 1.5em;
+  width: 1.5em;
+  color: #727272;
+}
+
+.scienceArticleData {
+  flex: 10;
+}
+.scinceItems {
+  margin-bottom: 10px;
+
+  color: #7166f8;
+  font-size: 16px;
+  margin-left: 9px;
+}
+
+.scienceArticleData .scienceArticleDescription {
+  max-height: 4em;
+  overflow: hidden;
+}
+
+.scienceArticleData h3 {
+  font-weight: 700;
+  font-size: 1.2em;
+  line-height: 1em;
+  margin: 0.5em 0;
+}
+
+.scienceCreateNodeButton {
+  flex: 1;
+}
+.creatGraphScience {
+  margin-bottom: 15px;
+}
+
+.scienceCreateNodeButton button {
+  font-size: 0.7em !important;
+  padding: 1em 1.5em !important;
+  margin-right: 3px;
+}
+
+.scienceResultAmountBox {
+  display: flex;
+  justify-content: center;
+}
+
+.scienceResultAmountBox p {
+  font-size: 1em;
+  color: #787878;
+}
+
+.scienceFormInside {
+  width: 90%;
+}
+
+.scienceInput:focus {
+  outline: none;
+}
+.scinceGraphResukt {
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+////main science end

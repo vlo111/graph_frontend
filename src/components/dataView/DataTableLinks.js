@@ -106,7 +106,7 @@ class DataTableLinks extends Component {
           <tr>
             <th className={`${position} cell index`} width="60">
 
-              <div className="allTableCellChekked">
+              <div className="allTableCellChecked">
                 <Checkbox
                   onChange={() => this.props.setGridIndexes('links', isAllChecked ? [] : grid.map((g) => g[0].value))}
                   checked={isAllChecked}
