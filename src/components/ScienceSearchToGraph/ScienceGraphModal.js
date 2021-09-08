@@ -5,7 +5,8 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { parseStringPromise } from 'xml2js';
 import moment from 'moment';
-import {setActiveButton, toggleNodeModal} from '../../store/actions/app';
+import { toast } from 'react-toastify';
+import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 import ApiImg from '../../assets/images/icons/science.png';
@@ -13,8 +14,7 @@ import arxivImg from '../../assets/images/icons/arxiv.jpg';
 import coreImg from '../../assets/images/icons/core.png';
 import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
-import { toast } from 'react-toastify';
-import Button from '../form/Button'
+import Button from '../form/Button';
 
 const {
   REACT_APP_ARXIV_URL,
@@ -359,9 +359,10 @@ class ScienceGraphModal extends Component {
       ]
       : '';
     const _type = type || _.last(nodes)?.type || '';
+
     const node = {
       create: true,
-      color: ChartUtils.nodeColorObj[_type] || '',
+      color: '',
       fx: -189.21749877929688 + Math.random() * 150,
       fy: -61.72186279296875 + Math.random() * 150,
       icon,
@@ -377,6 +378,11 @@ class ScienceGraphModal extends Component {
       createdUser: currentUserId,
       updatedUser: currentUserId,
     };
+
+    ChartUtils.nodeColor(node);
+
+    node.color = ChartUtils.nodeColorObj[_type];
+
     return node;
   };
 

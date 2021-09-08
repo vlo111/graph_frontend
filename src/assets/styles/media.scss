@@ -337,10 +337,6 @@
           max-width: 170px;
           max-height: 170px;
         }
-
-        .bottom-icons {
-          margin-left: -20px !important;
-        }
       }
 
       button {
@@ -380,7 +376,7 @@
     }
 
     .connectionDetails {
-      margin-top: -20px;
+      margin-top: 0;
 
       .row {
         details {
@@ -391,6 +387,17 @@
           margin-bottom: 15px;
         }
       }
+    }
+  }
+
+  .compareContent {
+
+    .right-block {
+      max-height: 620px;
+    }
+
+    .compare-footer {
+      top: 604px !important;
     }
   }
 }

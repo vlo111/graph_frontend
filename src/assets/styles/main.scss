@@ -5974,8 +5974,6 @@ img.preview-scaled {
   .item {
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid #A6AFBC66;
-    padding: 3% 0 0;
     overflow: hidden;
 
     .row {
@@ -6003,22 +6001,6 @@ img.preview-scaled {
 
       .node {
         width: 50%;
-      }
-
-      .tabs {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 10px 0 0 0;
-
-        span {
-          padding: 5px 15px;
-          margin: 0 4px 4px 0;
-          display: flex;
-          border-radius: 15px;
-          background: #FFFFFF 0% 0% no-repeat padding-box;
-          border: 1px solid #DBDBDB;
-          font-size: 13px;
-        }
       }
     }
   }
@@ -6217,10 +6199,6 @@ img.preview-scaled {
     border-bottom: none;
   }
 
-  .item {
-    padding: 15px 15px;
-  }
-
   .ghSelect {
     .gh__indicators {
       .gh__dropdown-indicator {
@@ -6228,10 +6206,6 @@ img.preview-scaled {
           opacity: 0;
         }
       }
-    }
-
-    .gh__menu-notice--no-options {
-      display: none;
     }
   }
 
@@ -7184,11 +7158,135 @@ img.preview-scaled {
   }
 }
 
+.scienceModalsubBox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: scroll;
+}
+
 .showLabelForm {
   width: 90px;
 }
 
+.scienceModalLoading {
+  right: 50% !important;
+}
+
+.scienceLogo {
+  margin: 0.7em auto;
+  width: 100px;
+}
+
 // style for search form
+.scienceForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.scienceForm form {
+  border-radius: 20px;
+  box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
+  margin-bottom: 30px;
+  max-height: 40px;
+  display: flex;
+}
+
+.scienceForm input, .scienceForm button {
+  line-height: 3em;
+  border-radius: 2em 0 0 2em;
+  border: none;
+  padding: 0 20px;
+}
+
+.scienceForm input {
+  width: 43%
+}
+
+.scienceAuthorInput {
+  flex: 4;
+  order: 1;
+}
+
+.scienceTitleInput {
+  flex: 4;
+  order: 2;
+}
+
+.scienceForm button {
+  flex: 1;
+  order: 3;
+  border-radius: 2em;
+}
+
+.scienceSearchSubmit {
+  outline: none;
+}
+
+.scienceResultAmount {
+  margin-left: 3em;
+}
+
+// style for search results
+.scienceResultsList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.scienceCheckBox {
+  flex: .7;
+  display: flex;
+  justify-content: center;
+  margin: 0 5px;
+}
+
+.scienceCheckBox input {
+  margin-top: .7em;
+  height: 1.5em;
+  width: 1.5em;
+}
+
+.scienceArticleData {
+  flex: 10
+}
+
+.scienceArticleData .scienceArticleDescription {
+  max-height: 4em;
+  overflow: hidden;
+}
+
+.scienceArticleData h3 {
+  font-weight: 700;
+  font-size: 1.2em;
+  line-height: 1em;
+  margin: .5em 0;
+}
+
+.scienceCreateNodeButton {
+  flex: 1
+}
+
+.scienceCreateNodeButton button {
+  font-size: 0.7em !important;
+  padding: 1em 1.5em !important;
+  margin-right: 3px;
+}
+
+.scienceResultAmountBox {
+  display: flex;
+  justify-content: center;
+}
+
+.scienceResultAmountBox p {
+  font-size: 1em;
+}
+
+.scienceFormInside {
+  width: 90%
+}
 
 .acceptCheckedItems {
   width: 100%;
@@ -7672,7 +7770,7 @@ img.preview-scaled {
           }
 
           .searchFieldCheckBoxList div {
-            padding: 0.1em 0.5em;
+            padding: .1em .5em;
           }
         }
 
@@ -7680,10 +7778,10 @@ img.preview-scaled {
           height: 36px;
           flex: 6;
           border: none;
-          border-left: 1px solid #7166f8;
+          border-left: 1px solid #7166F8;
           border-radius: 0px;
           outline: none;
-          margin-right: 0.2em;
+          margin-right: .2em;
           padding-left: 1em;
         }
       }
@@ -7693,7 +7791,7 @@ img.preview-scaled {
         align-items: center;
         width: 90%;
         justify-content: space-between;
-        margin-top: 0.5em;
+        margin-top: .5em;
         height: 24px;
       }
     }
@@ -9064,10 +9162,294 @@ img.preview-scaled {
   display: flex;
 
   .check-label {
-    font-size: 14px;
-    color: $color-graph-name;
+    font-size: 18px;
+    color: $color-main;
     cursor: pointer;
-    margin-left: 5px;
+    margin-left: 25px;
+    font-weight: 900;
+  }
+}
+
+.graph-compare {
+  .headerPanel {
+    position: relative !important;
+  }
+
+  .compareHeaderText {
+    font-size: 25px;
+    color: #7166F8;
+    margin-left: 40px;
+    margin-top: 15px;
+  }
+
+  .compareContent {
+    margin: 0 0 auto;
+    width: 26%;
+    height: 100%;
+    position: fixed;
+    z-index: 2;
+
+    details>summary {
+      list-style: none;
+    }
+    summary::-webkit-details-marker {
+      display: none
+    }
+
+    summary::after {
+      content: url("../images/icons/arrow-right.svg");
+    }
+    details[open] summary:after {
+      content: url("../images/icons/arrow-down.svg");
+    }
+
+    details[open] {
+      background: linear-gradient(0deg, rgba(136, 130, 209, 0.12), rgba(136, 130, 209, 0.12));
+    }
+
+    .title {
+      width: auto;
+      height: 80px;
+      background: none;
+      box-sizing: border-box;
+      user-select: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      line-height: 1px;
+      border: 1px solid #DEDEDE;
+      padding: 0 35px;
+      margin-bottom: 20px;
+      border-radius: 3px;
+
+      &:hover {
+        background: linear-gradient(0deg, rgba(136, 130, 209, 0.12), rgba(136, 130, 209, 0.12));
+      }
+
+      .graph-name-title {
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 34px;
+        color: #7166F8;
+
+        strong {
+          text-decoration: underline !important;
+        }
+      }
+
+    }
+  }
+
+  .ghSelect {
+    width: 300px;
+
+    label {
+      font-size: 25px;
+      line-height: 34px;
+      color: #7166F8;
+      font-weight: 600;
+    }
+
+    .gh__placeholder {
+      color: $color-compare-placeholder;
+      font-size: 16px;
+    }
+
+    .gh__menu {
+      margin-top: 0;
+      background: #FFFFFF;
+      border: 1px solid #B3ADF5;
+      box-shadow: 0 10px 8px 0 #7166f894;
+      border-radius: 0 0 5px 5px;
+      border-top: none;
+    }
+  }
+
+  .bottom {
+    .node {
+      display: flex;
+      justify-content: center;
+
+      .gh__control {
+        height: 30px;
+        border: 1px solid #B3ADF5;
+        margin-top: 15px;
+        border-radius: 3px;
+      }
+    }
+  }
+
+  .createNewGraphBtn {
+    width: 216px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .compare-footer {
+    display: flex;
+    justify-content: center;
+    top: 730px;
+    position: absolute;
+  }
+
+  .compareList {
+    margin-bottom: 0;
+    margin-left: 40px;
+
+    .right-block {
+      position: fixed;
+      top: 150px;
+      left: 30%;
+      -webkit-user-select: none;
+      user-select: none;
+      padding-bottom: 30px;
+      border: 1px solid #8D8D8D;
+      border-radius: 5px;
+      width: 65%;
+      overflow: hidden;
+
+      .tableContent .items {
+        justify-content: flex-start;
+      }
+
+      .caption-left {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100px;
+        margin-left: 50px;
+      }
+
+      .caption-right {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        width: calc( 100% - 50px );
+
+
+        p {
+          margin-left: calc(100% - 68px);
+        }
+      }
+
+      .similar-nodes {
+        top: 18px;
+        position: absolute;
+        left: 39%;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-evenly;
+        margin: 15px 0;
+
+        * {
+          font-weight: bold;
+          color: $color-main;
+          font-size: 25px;
+        }
+      }
+
+      .graph-compare-list {
+
+      }
+
+      tbody {
+        display: block;
+        height: 650px;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+          background: rgba(119, 113, 183, 0.22);
+          z-index: 0;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          border-radius: 3.5px;
+          z-index: 0;
+        }
+      }
+
+      thead, tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        height: 80px;
+      }
+
+      thead {
+        height: 60px;
+        width: calc( 100% - 1em ); /* scrollbar is average 1em/16px width, remove it from thead width */
+
+        th {
+          font-size: 22px;
+          color: $color-main;
+        }
+      }
+
+      .items {
+        display: flex;
+        align-items: center;
+        margin-left: 50px;
+        height: 140px;
+
+        .node-icon {
+          margin: 0 25px;
+        }
+
+        .description {
+          display: flex;
+          flex-wrap: wrap;
+          margin: 12px 0;
+
+          .headerName {
+            width: 100%;
+          }
+        }
+      }
+
+      .checkWithLabel {
+        margin-left: 50px;
+      }
+
+      .tab {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        max-width: 450px;
+        max-height: 70px;
+        overflow: auto;
+
+        span {
+          padding: 5px 15px;
+          margin: 0 4px 4px 0;
+          display: flex;
+          border-radius: 3px;
+          background: #FFFFFF 0% 0% no-repeat padding-box;
+          border: 1px solid #DBDBDB;
+          font-size: 13px;
+        }
+      }
+    }
+
+    .node {
+      width: 40%;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+
+      .node-icon {
+        margin: 0 -30px;
+      }
+    }
+
+    .node {
+      margin-right: 100px;
+    }
   }
 }
 
