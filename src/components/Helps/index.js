@@ -24,7 +24,7 @@ export default (props) => {
           onClick={handleClose}
         />
         <div className="triangle-right" />
-        <div>
+        <div className="helpName">
         <TabList>
           <Tab>New node</Tab>
           <Tab>Create node via Google map</Tab>

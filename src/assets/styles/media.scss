@@ -397,14 +397,19 @@
 @media (max-height: 768px) {
   .menu {
   overflow-x: scroll;
-  // max-height: 100vh;
   height: 88%;
-  // width: 220px;
-  // padding: 0 10px;
+  
 }
 .menu .containerMenu .collapse:hover{
   overflow: hidden;
-    position: fixed;
+  }
+  .helpName{
+    overflow-x: scroll;
+    width: 31%;
+  }
+  .react-tabs{
+    top: 13%;
+    height: 80%;
   }
 
 }
