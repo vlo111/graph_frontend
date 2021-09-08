@@ -107,15 +107,6 @@ class GraphCompare extends Component {
     this.setState({ createGraphData: false });
   }
 
-  renderSelectOption = (props) => {
-    const {
-      innerProps, children, getStyles, cx, ...params
-    } = props;
-    return (
-      <div {...innerProps} className={cx(getStyles('option', params))}>{children}</div>
-    );
-  }
-
   render() {
     const {
       match: { params: { graphId, graph2Id } }, singleGraph,
@@ -132,82 +123,87 @@ class GraphCompare extends Component {
 
     const selected = [...selectedNodes1, ...selectedNodes2];
     return (
-      <Wrapper className="graphCompare" showFooter={false}>
+      <Wrapper className="graph-compare" showFooter={false}>
         <Header />
-        <div className="compareListWrapper">
-          <ul className="compareList">
-            <li className="item itemSearch">
-              <div className="bottom">
-                <div className="node node_left">
-                  <Select
-                    label="Graph 1"
-                    isAsync
-                    value={graphId && singleGraph.id ? [{
-                      value: singleGraph.id,
-                      label: `${singleGraph.title} (${singleGraph.nodes?.length})`,
-                    }] : undefined}
-                    onChange={(val) => this.handleGraphSelect(val, 1)}
-                    loadOptions={this.loadGraphs}
-                  />
+        <h3 className="compareHeaderText">Compare Graph</h3>
+        <div className="graph-compare-container">
+          <div className="compareListWrapper compareContent">
+            <ul className="compareList">
+              <li className="item itemSearch">
+                <div className="bottom">
+                  <div style={{ marginRight: '20%', width: '40%' }}>
+                    <Select
+                      label="Graph 1"
+                      isAsync
+                      placeholder="Select"
+                      value={graphId && singleGraph.id ? [{
+                        value: singleGraph.id,
+                        label: `${singleGraph.title} (${singleGraph.nodes?.length})`,
+                      }] : undefined}
+                      onChange={(val) => this.handleGraphSelect(val, 1)}
+                      loadOptions={this.loadGraphs}
+                    />
+                  </div>
+                  <div style={{ width: '40%' }}>
+                    <Select
+                      label="Graph 2"
+                      isAsync
+                      value={graph2Id && singleGraph2.id ? [{
+                        value: singleGraph2.id,
+                        label: `${singleGraph2.title} (${singleGraph2.nodes?.length})`,
+                      }] : undefined}
+                      onChange={(val) => this.handleGraphSelect(val, 2)}
+                      loadOptions={this.loadGraphs}
+                    />
+                  </div>
                 </div>
-                <div className="node node_right">
-                  <Select
-                    label="Graph 2"
-                    isAsync
-                    value={graph2Id && singleGraph2.id ? [{
-                      value: singleGraph2.id,
-                      label: `${singleGraph2.title} (${singleGraph2.nodes?.length})`,
-                    }] : undefined}
-                    onChange={(val) => this.handleGraphSelect(val, 2)}
-                    loadOptions={this.loadGraphs}
-                  />
-                </div>
-              </div>
+              </li>
+            </ul>
+            <GraphCompareList
+              title={(
+                <span className="graph-name-title">Similar Nodes</span>
+              )}
+              count={graph1CompareNodes.length}
+              singleGraph1={{ ...singleGraph, nodes: graph1CompareNodes }}
+              singleGraph2={singleGraph2}
+              onChange={this.handleChange}
+              selected={selected}
+            />
+            <GraphCompareList
+              title={(
+                <span className="graph-name-title">
+                  {'Nodes in '}
+                  <strong>{singleGraph.title}</strong>
+                </span>
+                )}
+              count={graph1Nodes.length}
+              singleGraph1={{ ...singleGraph, nodes: graph1Nodes }}
+              onChange={this.handleChange}
+              selected={selected}
+            />
+            <GraphCompareList
+              title={(
+                <span className="graph-name-title">
+                  {'Nodes in '}
+                  <strong>{singleGraph2.title}</strong>
+                </span>
+                )}
+              count={graph2Nodes.length}
+              singleGraph2={{ ...singleGraph2, nodes: graph2Nodes }}
+              onChange={this.handleChange}
+              selected={selected}
+            />
+            <div className="compareList compare-footer">
+              <button onClick={this.createGraph} className="btn-classic createNewGraphBtn" color="main" icon="fa-plus">
+                Create New Graph
+              </button>
 
-            </li>
-          </ul>
-          <GraphCompareList
-            title={`Similar Nodes (${graph1CompareNodes.length}) `}
-            singleGraph1={{ ...singleGraph, nodes: graph1CompareNodes }}
-            singleGraph2={singleGraph2}
-            onChange={this.handleChange}
-            selected={selected}
-          />
-          <GraphCompareList
-            title={(
-              <span>
-                {'Nodes in '}
-                <strong>{singleGraph.title}</strong>
-                {` (${graph1Nodes.length})`}
-              </span>
-            )}
-            dropdown
-            singleGraph1={{ ...singleGraph, nodes: graph1Nodes }}
-            onChange={this.handleChange}
-            selected={selected}
-          />
-          <GraphCompareList
-            title={(
-              <span>
-                {'Nodes in '}
-                <strong>{singleGraph2.title}</strong>
-                {` (${graph2Nodes.length})`}
-              </span>
-            )}
-            dropdown
-            singleGraph2={{ ...singleGraph2, nodes: graph2Nodes }}
-            onChange={this.handleChange}
-            selected={selected}
-          />
+            </div>
+          </div>
+          {!_.isEmpty(createGraphData) ? (
+            <CreateGraphModal show data={createGraphData} onChange={this.closeCreateModal} />
+          ) : null}
         </div>
-
-        <Button onClick={this.createGraph} className="compareAndCreateNewGraph" color="main" icon="fa-plus">
-          Create New Graph
-        </Button>
-
-        {!_.isEmpty(createGraphData) ? (
-          <CreateGraphModal show data={createGraphData} onChange={this.closeCreateModal} />
-        ) : null}
       </Wrapper>
     );
   }
