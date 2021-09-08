@@ -15,6 +15,7 @@ import coreImg from '../../assets/images/icons/core.png';
 import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
 import Button from '../form/Button';
+import Checkbox from './../form/Checkbox';
 
 const {
   REACT_APP_ARXIV_URL,
