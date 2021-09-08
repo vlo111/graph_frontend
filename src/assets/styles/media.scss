@@ -8,6 +8,7 @@
   }
 
 }
+
 @media screen and (min-width: 1700px) {
   #header {
 
@@ -176,6 +177,7 @@
     grid-template-columns: 19% 34% 21% 19% 7% !important;
 }
 }
+
 @media screen and (max-width: 1200px){
   #header{
     grid-template-columns: 16% 34% 36% 7% 7% !important;
@@ -214,7 +216,6 @@
     right: -11%;
   }
 }
-
 
 @media screen and (max-width: 900px) {
   .ghModalSearch {
@@ -321,7 +322,6 @@
   }
 }
 
-
 @media only screen and (max-height: 900px) {
 
   #nodeFullInfo {
@@ -387,6 +387,17 @@
           margin-bottom: 15px;
         }
       }
+    }
+  }
+
+  .compareContent {
+
+    .right-block {
+      max-height: 620px;
+    }
+
+    .compare-footer {
+      top: 604px !important;
     }
   }
 }

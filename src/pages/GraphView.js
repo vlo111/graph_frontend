@@ -85,11 +85,11 @@ class GraphView extends Component {
 
   render() {
     const {
-      singleGraph, singleGraphStatus, graphInfo, showSearch, activeButton, 
+      singleGraph, singleGraphStatus, graphInfo, showSearch, activeButton,
       location: { pathname, search }, match: { params: { graphId = '' } },
     } = this.props; 
-    const preview = pathname.startsWith('/graphs/preview/'); 
-    let shortestNodes = []; 
+    const preview = pathname.startsWith('/graphs/preview/');
+    let shortestNodes = [];
     // let shortestLinks = [];
 
     // view the shortest path to the analysis field
@@ -124,6 +124,8 @@ class GraphView extends Component {
       }
     }
     this.getSingleRequest(pathname);
+
+    console.log(singleGraph.nodesPartial)
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
