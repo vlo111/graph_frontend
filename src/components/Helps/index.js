@@ -24,6 +24,7 @@ export default (props) => {
           onClick={handleClose}
         />
         <div className="triangle-right" />
+        <div className="helpName">
         <TabList>
           <Tab>New node</Tab>
           <Tab>Create node via Google map</Tab>
@@ -46,6 +47,7 @@ export default (props) => {
           <Tab>Media</Tab>
           <Tab>Analysis</Tab>
         </TabList>
+        </div>
         <div className="color-border" />
         <TabPanel>
           <div>
