@@ -38,18 +38,27 @@ class SelectSquare extends Component {
     const {
       width, height, x, y,
     } = squareData; 
-     
+
+    let squareLinks = Chart.getLinks();
+    let squareLabels = Chart.getLabels();
+    // eslint-disable-next-line prefer-const
+    let { nodes: squareNodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
+
+    squareNodes = squareNodes.filter((d) => squareData.nodes.includes(d.id));
+    squareLabels = squareLabels.filter((l) => squareData.labels.includes(l.id));
+    squareLinks = squareLinks.filter((l) => squareData.nodes.includes(l.source) && squareData.nodes.includes(l.target));
+
+    
       const { data: copyData } = await Api.dataCopy(singleGraph.id, {
         width, height, x, y,
       });
       let  { nodes, links, labels } = copyData.data || {};
-      nodes = !viewLocation ?  nodes :  Chart.getNodes(true)
-      links = !viewLocation ?  links :  Chart.getLinks(true)
-      labels = !viewLocation ?  labels :  Chart.getLabels(true)
+
+
       const { payload: { data } } = await this.props.createGraphRequest({
-        nodes,
-        links,
-        labels,
+        nodes: !viewLocation ?  nodes : squareNodes,
+        links: !viewLocation ?  links : squareLinks,
+        labels: !viewLocation ?  labels : squareLabels,
       }); 
     if (data.graphId) {
       window.location.href = `/graphs/update/${data.graphId}?new=1`;
@@ -59,7 +68,7 @@ class SelectSquare extends Component {
   }
 
   handleCopyClick = async () => {
-    const { singleGraph, params: { squareData } } = this.props;
+    const { singleGraph, params: { squareData }, location:{ pathname } } = this.props;
     const {
       width, height, x, y,
     } = squareData;
@@ -67,7 +76,24 @@ class SelectSquare extends Component {
     const { data } = await Api.dataCopy(singleGraph.id, {
       width, height, x, y,
     });
-    localStorage.setItem('label.copy', JSON.stringify(data.data));
+    const viewLocation = pathname.startsWith('/graphs/view/');  
+    let { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
+    let links = Chart.getLinks();
+    let labels = Chart.getLabels();
+    nodes = nodes.filter((d) => squareData.nodes.includes(d.id));
+    labels = labels.filter((l) => squareData.labels.includes(l.id));
+    links = links.filter((l) => squareData.nodes.includes(l.source) && squareData.nodes.includes(l.target));
+
+    const copyData = {
+      sourceId: data.data?.sourceId,
+      type: data.data?.type, 
+      nodes: !viewLocation ?  data.data?.nodes :  nodes,
+      links: !viewLocation ?  data.data?.links :  links,
+      labels: !viewLocation ? data.data?.labels : labels,
+      title: data.data?.title, 
+    };
+
+    localStorage.setItem('label.copy', JSON.stringify(copyData));
     Chart.loading(false);
   }
 
