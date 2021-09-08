@@ -86,8 +86,8 @@ class ScienceGraphModal extends Component {
         name: 'core',
       },
     ];
-
-    const fetchedSources = await this.fetchUrls(urls);
+    let fetchedSources = await this.fetchUrls(urls);
+    fetchedSources = fetchedSources.filter(source => source?.articles)
     if (!fetchedSources.filter((source) => source != undefined)) {
       this.setState({
         searchResults: 0,
@@ -217,11 +217,14 @@ class ScienceGraphModal extends Component {
   fetchUrls = async (urls) => {
     const result = await Promise.all(
       urls.map(async (url) => {
-        const result = {
-          articles: await fetch(url.url),
-          name: url.name,
-        };
-        return result;
+        try {
+          const result = {
+            articles: await fetch(url.url),
+            name: url.name,
+          };
+          return result;
+        } catch (e) {
+        }
       }),
     );
     return result;
