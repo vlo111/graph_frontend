@@ -569,7 +569,7 @@ class ScienceGraphModal extends Component {
               }}
             />
           </div>
-        </div>,
+        </div>
         </label>
       );
     }
