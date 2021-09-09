@@ -74,8 +74,8 @@ class MapsGraph extends Component {
     }
     const updateLocation = pathname.startsWith('/graphs/update/');
     return ( 
-      <div id="mapsGraph" style={updateLocation ? { left: "202px", 
-      width: "calc(100% - 202px)"}:  { left: "2px", 
+      <div id="mapsGraph" style={updateLocation ? { left: "0px", 
+      width: "calc(100% - 0px)"}:  { left: "2px", 
       width: "calc(100% - 2px)"}}>
         <Map
           styles={MapsStyle.mapStyle}

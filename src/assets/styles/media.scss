@@ -8,7 +8,6 @@
   }
 
 }
-
 @media screen and (min-width: 1700px) {
   #header {
 
@@ -177,7 +176,6 @@
     grid-template-columns: 19% 34% 21% 19% 7% !important;
 }
 }
-
 @media screen and (max-width: 1200px){
   #header{
     grid-template-columns: 16% 34% 36% 7% 7% !important;
@@ -216,6 +214,7 @@
     right: -11%;
   }
 }
+
 
 @media screen and (max-width: 900px) {
   .ghModalSearch {
@@ -322,6 +321,7 @@
   }
 }
 
+
 @media only screen and (max-height: 900px) {
 
   #nodeFullInfo {
@@ -400,4 +400,23 @@
       top: 604px !important;
     }
   }
+}
+@media (max-height: 768px) {
+  .menu {
+  overflow-x: scroll;
+  height: 88%;
+
+}
+.menu .containerMenu .collapse:hover{
+  overflow: hidden;
+  }
+  .helpName{
+    overflow-x: scroll;
+    width: 31%;
+  }
+  .react-tabs{
+    top: 13%;
+    height: 80%;
+  }
+
 }

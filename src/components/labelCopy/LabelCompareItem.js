@@ -37,7 +37,7 @@ class LabelCompareItem extends Component {
           <div className="node-icon" title={node.type}>
             <NodeIcon node={node} />
           </div>
-          <div>
+          <div className="row">
             <div className="description">
               <span title={node.name} className="headerName">
                 {node.name && node.name.length > 13
