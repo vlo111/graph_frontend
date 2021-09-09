@@ -17,38 +17,90 @@ export default (props) => {
   return (
     <div className="help">
       <Tabs>
+        <div>
         <Button
           color="transparent"
           className="btn-close "
           icon={<CloseSvg />}
           onClick={handleClose}
         />
+        </div>
         <div className="triangle-right" />
         <div className="helpName">
         <TabList>
-          <Tab>New node</Tab>
+          <h1>Help</h1>
+           <Tab><h4 className="helpTitlePages">Create  graph</h4></Tab>
+           <h3 className="helpTitle">Create Node</h3>
+          <Tab><li>New node</li></Tab>
           <Tab>Create node via Google map</Tab>
           <Tab>Create node via Wikipedia</Tab>
           <Tab>Create node by Linkedin </Tab>
           <Tab>Create node by Science Mind </Tab>
           <Tab>Find Node</Tab>
-          <Tab>Link the nodes</Tab>
-          <Tab>More options of nodes</Tab>
-          <Tab>Label</Tab>
-          <Tab>Folder</Tab>
-          <Tab>Compare nodes of a Label/Folder</Tab>
-          <Tab>Create a graph</Tab>
+        <Tab> <h4 className="helpTitlePages">link the nodes</h4></Tab>
+        <h3 className="helpTitle">lables and Folders</h3>
+          <Tab> Create Label</Tab>
+          <Tab> Craete Folder</Tab>
+       <h3 className="helpTitle">Import/Export</h3>
           <Tab>Import a graph</Tab>
+          <Tab>Export a graph</Tab>
+      <h3 className="helpTitle">Compare</h3>
+          <Tab>Compare graphs </Tab>
+         <Tab>Compare nodes of a Label/Folder</Tab> 
+      <h3 className="helpTitle">Share</h3>
           <Tab>Share a graph </Tab>
-          <Tab>Compare and merge graphs </Tab>
-          <Tab>Export a graph,data sheet </Tab>
+          <Tab>Share label and folder </Tab>
+      <h3 className="helpTitle">Search</h3>
+            <Tab>More options of nodes</Tab> 
           <Tab>Search</Tab>
-          <Tab>Filter</Tab>
-          <Tab>Media</Tab>
-          <Tab>Analysis</Tab>
+          <Tab><h4 className="helpTitlePages">Filter</h4></Tab>
+           <Tab><h4 className="helpTitlePages">Media</h4></Tab> 
+          <Tab><h4 className="helpTitlePages">Analysis</h4></Tab> 
+          <Tab><h4 className="helpTitlePages">Shotcuts</h4></Tab> 
         </TabList>
         </div>
         <div className="color-border" />
+        <TabPanel>
+          <div>
+            {' '}
+            {/* <img src={HelpSvg} className="help_img" /> */}
+            <iframe className="help_img" src="https://www.youtube.com/embed/8aJt88yJ8eY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div>
+            <p>Create a graph</p>
+          </div>
+          <div className="help_text">
+            <ol>
+              <li>Start a graph</li>
+              <li>Write the title of the graph</li>
+              <li>Write a short description of what you are going to create</li>
+              <li>Create</li>
+              <li>Open graph options from the top</li>
+              <li>See the last 3 graphs you have working on, for quick access click on one of the graphs</li>
+              <li>Search a graph by the name</li>
+              <li>Create a new graph</li>
+              <li>Save existing graph as a template</li>
+              <li>Click on edit pen</li>
+              <li>Upload a cover photo for your graph</li>
+              <li>View the owner’s name, creation date and the last modification date of the graph</li>
+              <li>Edit or add a description</li>
+              <li>Press save to fix the the modifications done in this window</li>
+              <li>Press delete to remove the whole graph</li>
+              <p className="help_graph_text">(close the graph)</p>
+              <p className="help_graph_text">(click on ...)</p>
+            </ol>
+          </div>
+          <div className="help_text">
+            <ol>
+              <li>change the name of the graph</li>
+              <li>
+                share the graph with other users (view details in the video « <b>Share a graph</b> »)
+              </li>
+              <li>delete the whole graph</li>
+            </ol>
+          </div>
+
+        </TabPanel>
         <TabPanel>
           <div>
             {' '}
@@ -56,13 +108,7 @@ export default (props) => {
           </div>
           <div>
             <p>Create new nodes</p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+          
           </div>
           <div className="help_text">
             <ol>
@@ -89,13 +135,7 @@ export default (props) => {
           </div>
           <div>
             <p>Create node via Google map</p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+           
           </div>
           <div className="help_text">
             <ol>
@@ -130,13 +170,7 @@ export default (props) => {
           </div>
           <div>
             <p>Create node via Wikipedia</p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+           
           </div>
           <div className="help_text">
             <ol>
@@ -169,13 +203,7 @@ export default (props) => {
           </div>
           <div>
             <p>Create node via Linkedin</p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+          
           </div>
           <div className="help_text">
             <ol>
@@ -210,13 +238,7 @@ export default (props) => {
           </div>
           <div>
             <p>Create node by Science Mind </p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+           
           </div>
           <div className="helpMindText">
             <p>What is Mind Science? </p>
@@ -269,13 +291,7 @@ export default (props) => {
           </div>
           <div>
             <p>Find node</p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+          
           </div>
           <div className="help_text">
             <ol>
@@ -296,13 +312,7 @@ export default (props) => {
           </div>
           <div>
             <p>Link the nodes</p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+           
           </div>
           <div className="help_text">
             <ol>
@@ -324,38 +334,7 @@ export default (props) => {
             </ol>
           </div>
         </TabPanel>
-        <TabPanel>
-          <div>
-            {' '}
-            <img src={HelpSvg} className="help_img" />
-          </div>
-          <div>
-            <p>More options of nodes</p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
-          </div>
-          <div className="help_text">
-            <ol>
-              <li>Edit or complete any option of the node</li>
-              <li>
-                Find path: Using Dijkstra's algorithm the program finds the
-                shortest way to another node.
-                {' '}
-              </li>
-              <li>Delete the node</li>
-              <li>
-                Show on Google map if in the options of the node you have
-                mentioned a location.
-              </li>
-            </ol>
-          </div>
-        </TabPanel>
-        {/* // LABEL FOLDER  */}
+       
         <TabPanel>
           <div>
             {' '}
@@ -364,13 +343,7 @@ export default (props) => {
           <div>
             <div>
               <p>Label</p>
-              <span className="helpinfo">For more information</span>
-              <a className="helplink" href="www.facebook.com">
-                {' '}
-                <img className="linkicon" src={liinkSvg} />
-                {' '}
-                www.facebook.com
-              </a>
+             
             </div>
             <div className="help_text">
               <p>A</p>
@@ -445,13 +418,7 @@ export default (props) => {
           </div>
           <div>
             <p>Folder</p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+          
           </div>
           <div className="help_text">
             <ol>
@@ -500,123 +467,20 @@ export default (props) => {
             <li>Delete the Folder</li>
           </div>
         </TabPanel>
-        <TabPanel>
-          <div>
-            {' '}
-            <img src={HelpSvg} className="help_img" />
-          </div>
-          <div>
-            <p>
-              Compare nodes of a Label/Folder
-              {' '}
-              <br />
-              {' '}
-              with the nodes of another
-              graph
-            </p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
-          </div>
-          <div className="help_text">
-            <ol>
-              <li>Right-click on the Label/Folder of 1st graph</li>
-              <li>Copy</li>
-              <li>Open the 2nd graph</li>
-              <li>Right-click anywhere on the canvas</li>
-              <li>Past append</li>
-              <li>Compare nodes,</li>
-              <li>Merge nodes,</li>
-              <li>Skip these nodes,</li>
-              <li>Replace the nodes in the destination,</li>
-              <li>Keep both.</li>
-            </ol>
-            <p className="help_node_text">
-              If you want to view the Label/Folder of the 1st graph as a PHOTO
-              {' '}
-              <br />
-              in the 2nd graph but NOT compare their nodes:
-              {' '}
-            </p>
-          </div>
-          <div className="help_text">
-            <ol>
-              <li>Right-click on the Label/Folder of the 1st graph</li>
-              <li>Copy</li>
-              <li>Open the 2nd graph</li>
-              <li>Right-click anywhere on the canvas</li>
-              <li>Past embedded</li>
-            </ol>
-          </div>
-        </TabPanel>
-        <TabPanel>
-          <div>
-            {' '}
-            <img src={HelpSvg} className="help_img" />
-          </div>
-          <div>
-            <p>Create a graph</p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
-          </div>
-          <div className="help_text">
-            <ol>
-              <li>Start a graph</li>
-              <li>Write the title of the graph</li>
-              <li>Write a short description of what you are going to create</li>
-              <li>Create</li>
-              <li>Open graph options from the top</li>
-              <li>See the last 3 graphs you have working on, for quick access click on one of the graphs</li>
-              <li>Search a graph by the name</li>
-              <li>Create a new graph</li>
-              <li>Save existing graph as a template</li>
-              <li>Click on edit pen</li>
-              <li>Upload a cover photo for your graph</li>
-              <li>View the owner’s name, creation date and the last modification date of the graph</li>
-              <li>Edit or add a description</li>
-              <li>Press save to fix the the modifications done in this window</li>
-              <li>Press delete to remove the whole graph</li>
-              <p className="help_graph_text">(close the graph)</p>
-              <p className="help_graph_text">(click on ...)</p>
-            </ol>
-          </div>
-          <div className="help_text">
-            <ol>
-              <li>change the name of the graph</li>
-              <li>
-                share the graph with other users (view details in the video «
-                <a>Share a graph</a>
-                {' '}
-                »)
-              </li>
-              <li>delete the whole graph</li>
-            </ol>
-          </div>
 
-        </TabPanel>
+
+
+
+        
         <TabPanel>
+
           <div>
             {' '}
             <img src={HelpSvg} className="help_img" />
           </div>
           <div>
             <p>Import a graph</p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+           
           </div>
           <div className="help_text">
             <ol>
@@ -643,114 +507,10 @@ export default (props) => {
             <img src={HelpSvg} className="help_img" />
           </div>
           <div>
-            <p>Share a graph </p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
-          </div>
-          <div className="help_text">
-            <ol>
-              <li>Press on 3 points ➜ Share OR Open the graph</li>
-              <li>Press on Share</li>
-              <li>Search a user</li>
-              <li>Give access to the graph `</li>
-            </ol>
-          </div>
-          <div className="help_label-text">
-            <p>Collaborators with «View» access can</p>
-            <li>View the graph,</li>
-            <li>Write comments.</li>
-
-            <p>Collaborators with «Edit» access can</p>
-            <li>create nodes, links, labels, etc.,</li>
-            <li>comment on the graphs and nodes,</li>
-            <li>delete the shared graph only from their account, but not the main graph.</li>
-
-            <p>Collaborators with «Admin» access can</p>
-            <li>Create nodes, links, labels, etc.,</li>
-            <li>Comment on the graphs and nodes,</li>
-            <li>Delete the graph</li>
-            <li>Share the graph.</li>
-            <li>Press Save.</li>
-          </div>
-          <div className="help_text">
-            <ol>
-              <li>View the collaborators you are sharing the graph with.</li>
-              <li>
-                Press on the blue cursor to see the cursors of collaborators, who is working on which part of the
-                graph.
-              </li>
-
-            </ol>
-          </div>
-
-        </TabPanel>
-        <TabPanel>
-          <div>
-            {' '}
-            <img src={HelpSvg} className="help_img" />
-          </div>
-          <div>
             <p>
-              Compare and merge graphs
+              Export a graph
             </p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
-          </div>
-          <div className="help_text">
-            <p className="marg_graph_text">You can compare two graphs and find similar nodes:</p>
-            <ol>
-              <li>Click on Compare graphs</li>
-              <li>Select the 1st graph</li>
-              <li>Select the 2nd graph</li>
-              <li>
-                The system will automatically compare the graphs and show all similar and different nodes with their
-                quantities.
-              </li>
-            </ol>
-            <p className="help_node_text">
-              If you want marge these 2 graphs and make a new graph
-              <br />
-              {' '}
-              with similar and different nodes
-
-            </p>
-          </div>
-          <div className="help_text">
-            <ol>
-              <li>Click on Create New Graph</li>
-              <li>Type the title of your new graph</li>
-              <li>Type a short description of what you are going to create</li>
-              <li>Create</li>
-
-            </ol>
-          </div>
-        </TabPanel>
-        <TabPanel>
-          <div>
-            {' '}
-            <img src={HelpSvg} className="help_img" />
-          </div>
-          <div>
-            <p>
-              Export a graph, data sheet
-            </p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+          
           </div>
           <div className="help_text">
             <p className="marg_graph_text">
@@ -808,6 +568,207 @@ export default (props) => {
             </div>
           </div>
         </TabPanel>
+   
+        <TabPanel>
+          <div>
+            {' '}
+            <img src={HelpSvg} className="help_img" />
+          </div>
+          <div>
+            <p>
+              Compare and merge graphs
+            </p>
+           
+          </div>
+          <div className="help_text">
+            <p className="marg_graph_text">You can compare two graphs and find similar nodes:</p>
+            <ol>
+              <li>Click on Compare graphs</li>
+              <li>Select the 1st graph</li>
+              <li>Select the 2nd graph</li>
+              <li>
+                The system will automatically compare the graphs and show all similar and different nodes with their
+                quantities.
+              </li>
+            </ol>
+            <p className="help_node_text">
+              If you want marge these 2 graphs and make a new graph
+              <br />
+              {' '}
+              with similar and different nodes
+
+            </p>
+          </div>
+          <div className="help_text">
+            <ol>
+              <li>Click on Create New Graph</li>
+              <li>Type the title of your new graph</li>
+              <li>Type a short description of what you are going to create</li>
+              <li>Create</li>
+
+            </ol>
+          </div>
+        </TabPanel>
+<TabPanel> Compare nodes of a Label/Folder
+          <div>
+            {' '}
+            <img src={HelpSvg} className="help_img" />
+          </div>
+          <div>
+            <p>
+              Compare nodes of a Label/Folder
+              {' '}
+              <br />
+              {' '}
+              with the nodes of another
+              graph
+            </p>
+          
+          </div>
+          <div className="help_text">
+            <ol>
+              <li>Right-click on the Label/Folder of 1st graph</li>
+              <li>Copy</li>
+              <li>Open the 2nd graph</li>
+              <li>Right-click anywhere on the canvas</li>
+              <li>Past append</li>
+              <li>Compare nodes,</li>
+              <li>Merge nodes,</li>
+              <li>Skip these nodes,</li>
+              <li>Replace the nodes in the destination,</li>
+              <li>Keep both.</li>
+            </ol>
+            <p className="help_node_text">
+              If you want to view the Label/Folder of the 1st graph as a PHOTO
+              {' '}
+              <br />
+              in the 2nd graph but NOT compare their nodes:
+              {' '}
+            </p>
+          </div>
+          <div className="help_text">
+            <ol>
+              <li>Right-click on the Label/Folder of the 1st graph</li>
+              <li>Copy</li>
+              <li>Open the 2nd graph</li>
+              <li>Right-click anywhere on the canvas</li>
+              <li>Past embedded</li>
+            </ol>
+          </div>
+        </TabPanel>
+
+
+        <TabPanel>
+          <div>
+            {' '}
+            <img src={HelpSvg} className="help_img" />
+          </div>
+          <div>
+            <p>Share a graph </p>
+          
+          </div>
+          <div className="help_text">
+            <ol>
+              <li>Press on 3 points ➜ Share OR Open the graph</li>
+              <li>Press on Share</li>
+              <li>Search a user</li>
+              <li>Give access to the graph `</li>
+            </ol>
+          </div>
+          <div className="help_label-text">
+            <p>Collaborators with «View» access can</p>
+            <li>View the graph,</li>
+            <li>Write comments.</li>
+
+            <p>Collaborators with «Edit» access can</p>
+            <li>create nodes, links, labels, etc.,</li>
+            <li>comment on the graphs and nodes,</li>
+            <li>delete the shared graph only from their account, but not the main graph.</li>
+
+            <p>Collaborators with «Admin» access can</p>
+            <li>Create nodes, links, labels, etc.,</li>
+            <li>Comment on the graphs and nodes,</li>
+            <li>Delete the graph</li>
+            <li>Share the graph.</li>
+            <li>Press Save.</li>
+          </div>
+          <div className="help_text">
+            <ol>
+              <li>View the collaborators you are sharing the graph with.</li>
+              <li>
+                Press on the blue cursor to see the cursors of collaborators, who is working on which part of the
+                graph.
+              </li>
+
+            </ol>
+          </div>
+
+        </TabPanel>
+        <TabPanel>
+        <div>
+            {' '}
+            <img src={HelpSvg} className="help_img" />
+          </div>
+          <div>
+            <p>Share a Label and Folder </p>
+          
+          </div>
+          <div className="help_text">
+            <ol>
+              <li>Right-click on the Label/ Folder ➜ Share</li>
+              <li>Search a user  </li>
+              <li>Give access to the graph</li>
+            </ol>
+          </div>
+          <div className="help_label-text">
+            <p>Collaborators with «View» access can</p>
+            <li>View only shared Label</li>
+            <li>Write comments.</li>
+
+            <p>Collaborators with «Edit» access can</p>
+            <li>View only shared Label</li>
+            <li>Create/edit nodes, links only in shared Label</li>
+            <li>Move nodes outside the label</li>
+
+            <p>Collaborators with «Edit inside» access can</p>
+            <li>View shared Label</li>
+            <li>Create/edit nodes, links only in shared Label</li>
+
+            <p>Collaborators with «Audit» access can</p>
+            <li>View the shared Label, change the status of nodes and write comments</li>
+            <li>Create node especially in this Label</li>
+            <li>Paste append: paste all information you have copied. Paste embedded: Paste a label as a photo.</li>
+            <li>Delete the Label</li>
+            <li>Show on the Google Map if in the Label you have nodes mentioned on Google Map</li>
+            <li>Undo the last action done in the Label.</li>
+          </div>
+          
+        </TabPanel>
+         <TabPanel>  
+          <div>
+            {' '}
+            <img src={HelpSvg} className="help_img" />
+          </div>
+          <div>
+            <p>More options of nodes</p>
+          
+          </div>
+          <div className="help_text">
+            <ol>
+              <li>Edit or complete any option of the node</li>
+              <li>
+                Find path: Using Dijkstra's algorithm the program finds the
+                shortest way to another node.
+                {' '}
+              </li>
+              <li>Delete the node</li>
+              <li>
+                Show on Google map if in the options of the node you have
+                mentioned a location.
+              </li>
+            </ol>
+          </div>
+        </TabPanel>
         <TabPanel>
           <div>
             {' '}
@@ -817,13 +778,7 @@ export default (props) => {
             <p>
               Search
             </p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+           
           </div>
 
           <div className="help_text">
@@ -840,13 +795,7 @@ export default (props) => {
           </div>
           <div>
             <p>Filter </p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+            
           </div>
           <div className="help_text">
             <ol>
@@ -889,7 +838,7 @@ export default (props) => {
 
           </div>
         </TabPanel>
-        <TabPanel>
+    <TabPanel>
           <div>
             {' '}
             <img src={HelpSvg} className="help_img" />
@@ -898,13 +847,7 @@ export default (props) => {
             <p>
               Media
             </p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+           
           </div>
           <div className="help_text">
             <p className="marg_graph_text">
@@ -943,7 +886,7 @@ export default (props) => {
 
           </div>
 
-        </TabPanel>
+        </TabPanel> 
         <TabPanel>
           <div>
             {' '}
@@ -953,13 +896,7 @@ export default (props) => {
             <p>
               Analysis
             </p>
-            <span className="helpinfo">For more information</span>
-            <a className="helplink" href="www.facebook.com">
-              {' '}
-              <img className="linkicon" src={liinkSvg} />
-              {' '}
-              www.facebook.com
-            </a>
+          
           </div>
           <div className="help_text">
             <p className="marg_graph_text">In the analysis section, we calculate the parameters listed below:</p>
@@ -1009,6 +946,131 @@ export default (props) => {
 
             </ol>
           </div>
+        </TabPanel> 
+        <TabPanel>
+          
+        <div>
+            {' '}
+            <img src={HelpSvg} className="help_img" />
+          </div>
+         
+        <div className="help-text">
+              <ul>
+                <li>
+                   <span className="HelpCommand">Analysis</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>A</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Import</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>I</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Data</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>D</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Search</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>F</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Media</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>M</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Science Graph</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>G</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Pencil</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>P</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Pencile Label</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>L</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Pencile ellipse label</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>E</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Pencilesquare label</span>
+                   <div>
+                        <span>Shift </span>
+                        <span>E</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Edit Node</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>E</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">To open selected node</span>
+                   <div>
+                        <span>Enter</span>
+                       
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">To escape selected item</span>
+                   <div>
+                        <span>Esc</span>
+                      
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Select Dashboard</span>
+                   <div>
+                        <span>Shift</span>
+                        <span>D</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Copy</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>C</span>
+                   </div>
+                </li>
+                <li>
+                   <span className="HelpCommand">Past</span>
+                   <div>
+                        <span>Ctrl</span>
+                        <span>V</span>
+                   </div>
+                </li>
+              </ul>
+            </div>
+       
         </TabPanel>
 
       </Tabs>
