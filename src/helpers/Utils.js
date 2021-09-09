@@ -362,7 +362,6 @@ class Utils {
     .filter((v) => link.includes(v)))
 
   static calculateCollapse = () => {
-    debugger;
     const closedMenu = document.getElementsByClassName('closed_menu')[0];
     const menu = document.getElementsByClassName('menu')[0];
     const tab = document.getElementsByClassName('react-tabs')[0];
