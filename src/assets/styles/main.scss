@@ -5359,6 +5359,7 @@ label.pull-left::before {
     text-align: center;
     margin-bottom: 50px;
   }
+
   .Wiki form {
     border-radius: 5px;
     border: 1px solid #7166f8;
@@ -5369,6 +5370,7 @@ label.pull-left::before {
     top: 36px;
     margin: 0 auto 80px;
   }
+
   .Wiki button {
     color: white;
     line-height: 40px;
@@ -5394,21 +5396,27 @@ label.pull-left::before {
     width: 520px;
     padding: 0 20px;
   }
+
   .Wiki input:focus {
     outline: none;
   }
+
   .Wiki button:focus {
     outline: none;
   }
+
   input[type="checkbox"] {
     display: none;
   }
+
   label.pull-left::before {
     display: none !important;
   }
+
   label.pull-left::after {
     display: none;
   }
+
   .wikiSearch {
     max-height: 150px;
     width: 650px;
@@ -5424,6 +5432,7 @@ label.pull-left::before {
     &:last-child {
       margin-bottom: 0px !important;
     }
+
     h3 {
       color: #1a0dab;
     }
@@ -5452,11 +5461,12 @@ label.pull-left::before {
     a:visited {
       color: #1a0dab;
     }
+
     .searchmatch {
       font-weight: bold;
     }
 
-    .link  a:hover {
+    .link a:hover {
       text-decoration: none;
     }
 
@@ -5476,6 +5486,7 @@ label.pull-left::before {
       line-height: 1.5em;
     }
   }
+
   h2 {
     top: 15%;
     left: 42%;
@@ -5483,16 +5494,19 @@ label.pull-left::before {
     font-size: 40px !important;
     position: absolute;
   }
+
   .wikiCreateNode {
     font-size: 13px !important;
     width: 20%;
     border-radius: 5px !important;
     border: 1px solid #dedede !important;
   }
+
   .wikiresult {
     overflow-y: auto;
     overflow-x: hidden;
-    .wikiSearch{
+
+    .wikiSearch {
       margin-bottom: 10px !important;
       cursor: pointer;
     }
@@ -5523,6 +5537,7 @@ label.pull-left::before {
     text-align: center;
     margin: 0em 0 1em 1em;
   }
+
   .sourceLogo {
     margin-left: 1em !important;
     max-width: 3em;
@@ -7103,7 +7118,7 @@ img.preview-scaled {
 
     .zoomLevel {
       font-size: 12px;
-      color: $color-button;
+      color: $color-main;
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -9076,22 +9091,61 @@ img.preview-scaled {
   position: absolute;
   left: 213px;
   bottom: 2%;
+  user-select: none;
 
-  div {
+  .info-content {
+    display: none;
+    padding: 0 !important;
+  }
+
+  .info {
     display: flex;
-    padding: 15px 15px;
-    color: $color-main !important;
+    padding: 0;
+    color: $color-very-light-green;
     align-items: center;
-    box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
-    border-radius: 3px;
-    height: 40px;
-    background-color: rgba($color-main, .2);
+    border-radius: 5px;
+    height: 42px;
+    margin-right: 10px;
+    background: $color-white;
+    box-shadow: 0 4px 13px rgb(0 0 0 / 10%);
+    width: 50px;
+    transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
 
-    .ghButton {
-      color: $color-main !important;
+    div {
+      padding: 15px 15px;
+    }
+
+    .info-icon {
+      cursor: pointer;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        display: flex;
+
+        path {
+          fill: $color-main;
+        }
+      }
     }
   }
 
+  .mapMode {
+    background-color: $color-white;
+    height: 42px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 180px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-shadow: 0 4px 13px rgba(0, 0, 0, 0.1);
+
+    span {
+      margin: 0 10px;
+      color: $color-graph-name;
+    }
+  }
 }
 
 .linkedinModal {
@@ -9191,9 +9245,10 @@ img.preview-scaled {
     position: fixed;
     z-index: 2;
 
-    details>summary {
+    details > summary {
       list-style: none;
     }
+
     summary::-webkit-details-marker {
       display: none
     }
@@ -9201,6 +9256,7 @@ img.preview-scaled {
     summary::after {
       content: url("../images/icons/arrow-right.svg");
     }
+
     details[open] summary:after {
       content: url("../images/icons/arrow-down.svg");
     }
@@ -9327,7 +9383,7 @@ img.preview-scaled {
         display: flex;
         justify-content: flex-end;
         flex-wrap: wrap;
-        width: calc( 100% - 50px );
+        width: calc(100% - 50px);
 
 
         p {
@@ -9385,7 +9441,7 @@ img.preview-scaled {
 
       thead {
         height: 60px;
-        width: calc( 100% - 1em ); /* scrollbar is average 1em/16px width, remove it from thead width */
+        width: calc(100% - 1em); /* scrollbar is average 1em/16px width, remove it from thead width */
 
         th {
           font-size: 22px;
@@ -9515,7 +9571,7 @@ img.preview-scaled {
   order: 3;
   border-radius: 5px;
   height: 40px;
-  border: 1 px solid #7166f8;
+  border: 1px solid #7166f8;
 }
 
 .scienceSearchSubmit {
@@ -9553,6 +9609,7 @@ img.preview-scaled {
 .scienceArticleData {
   flex: 10;
 }
+
 .scinceItems {
   margin-bottom: 10px;
 
@@ -9576,6 +9633,7 @@ img.preview-scaled {
 .scienceCreateNodeButton {
   flex: 1;
 }
+
 .creatGraphScience {
   margin-bottom: 15px;
 }
@@ -9603,6 +9661,7 @@ img.preview-scaled {
 .scienceInput:focus {
   outline: none;
 }
+
 .scinceGraphResukt {
   overflow-x: scroll;
   overflow-y: scroll;

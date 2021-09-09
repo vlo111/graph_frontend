@@ -191,6 +191,10 @@ openHelpsModal = () => {
   this.setState({
     openHelpsModal: !openHelpsModal,
   });
+
+  setTimeout(() => {
+    Utils.calculateCollapse();
+  }, 20)
 }
 
   closeModal = () => {
@@ -201,11 +205,19 @@ openHelpsModal = () => {
     this.setState({
       openHelpsModal: false,
     })
+
+    setTimeout(() => {
+      Utils.calculateCollapse();
+    }, 20)
   }
 
   toggleShowModal = () => {
     const { showMenu } = this.state;
     this.setState({ showMenu: !showMenu });
+
+    setTimeout(() => {
+      Utils.calculateCollapse();
+    }, 20)
   };
 
   handleOver = (mode) => {
