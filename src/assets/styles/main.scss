@@ -9132,24 +9132,64 @@ img.preview-scaled {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute; 
+  position: absolute;
+  left: 213px;
   bottom: 2%;
-  font-size: smaller;
-  div {
-    display: flex;
-    padding: 15px 15px;
-        color: white !important;
-    align-items: center;
-    box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
-    border-radius: 3px;
-    height: 40px;
-        background-color: rgba($color-main, .5);
+  user-select: none;
 
-    .ghButton {
-      color: white !important;
+  .info-content {
+    display: none;
+    padding: 0 !important;
+  }
+
+  .info {
+    display: flex;
+    padding: 0;
+    color: $color-very-light-green;
+    align-items: center;
+    border-radius: 5px;
+    height: 42px;
+    margin-right: 10px;
+    background: $color-white;
+    box-shadow: 0 4px 13px rgb(0 0 0 / 10%);
+    width: 50px;
+    transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
+
+    div {
+      padding: 9px;
+    }
+
+    .info-icon {
+      cursor: pointer;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        display: flex;
+
+        path {
+          fill: $color-main;
+        }
+      }
     }
   }
 
+  .mapMode {
+    background-color: $color-white;
+    height: 42px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 180px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-shadow: 0 4px 13px rgba(0, 0, 0, 0.1);
+
+    span {
+      margin: 0 10px;
+      color: $color-graph-name;
+    }
+  }
 }
 
 .linkedinModal {
