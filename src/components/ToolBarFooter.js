@@ -74,8 +74,11 @@ class ToolBarFooter extends Component {
 
                     infoContentElement.style.display = 'none';
                   } else {
+                    if(updateLocation){  
                     infoElement.style.width = '360px';
-
+                        } else { 
+                          infoElement.style.width = '500px' ;
+                      }
                     setTimeout(() => {
                       infoContentElement.style.display = 'flex';
                     }, 150);
