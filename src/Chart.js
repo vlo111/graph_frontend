@@ -3186,8 +3186,8 @@ class Chart {
       .append('use')
       .attr('fill', ChartUtils.cursorColor(fullName))
       .attr('href', '#mouseCursor')
-      .attr('width', 30)  
-      .attr('height', 30)
+      .attr('width', 25)  
+      .attr('height', 25)
       .attr('x', position.x)
       .attr('y', position.y);
     mouseCursorPosition
