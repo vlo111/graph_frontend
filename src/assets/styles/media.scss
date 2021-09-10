@@ -401,10 +401,13 @@
     }
   }
 }
-@media (max-height: 768px) {
+
+
+
+@media (max-height: 750px) {
   .menu {
   overflow-x: scroll;
-  height: 88%;
+  height: 91%;
   
 }
 .menu .containerMenu .collapse:hover{
@@ -414,9 +417,40 @@
     overflow-x: scroll;
     width: 31%;
   }
-  .react-tabs{
-    top: 13%;
-    height: 80%;
-  }
+  .helpResultText {
+    overflow: scroll;
+    position: relative;
+    top: 60px;
+    height: 50% ;
+    max-height: 235px !important;
+}
+.react-tabs{
+margin-top: -5px;
+}
+ 
+}
+@media (max-height:850px) {
+
+.help_img {
+  overflow: scroll;
+  // position: relative;
+  // top: 60px;
+  height: auto;
+  max-height: 226px;
+}
+.helpResultText{
+  overflow: scroll;
+  position: relative;
+  top: 60px;
+  height: 50%;
+  max-height: 400px;
+
+}
+.react-tabs{
+  // margin-top: auto !imporztant;
+// display: flex;
+// align-items: center;
+// justify-content: center;
+}
 
 }

@@ -51,7 +51,7 @@ class ToolBarFooter extends Component {
     return (!graphId ? null 
         :(
           <>
-            <footer id="graphs-data-info" style={updateLocation ? { left: "213px"}:  { left: "15px"}} > 
+            <footer id="graphs-data-info"  style={updateLocation ? { left: "213px"}:  { left: "15px"}} > 
             {showInMap ? (         
                 <div className="mapMode">          
                   <Button

@@ -191,6 +191,16 @@ openHelpsModal = () => {
   this.setState({
     openHelpsModal: !openHelpsModal,
   });
+ 
+  if (document.getElementById("graphs-data-info").style.display == "none") 
+{
+  document.getElementById('graphs-data-info').style.display = 'flex';
+}
+else 
+{
+  document.getElementById('graphs-data-info').style.display = 'none';
+}
+  
 }
 
   closeModal = () => {
@@ -200,7 +210,12 @@ openHelpsModal = () => {
   closeHelpModal = () => {
     this.setState({
       openHelpsModal: false,
-    })
+    });
+    if (document.getElementById("graphs-data-info").style.display == "none") 
+    {
+      document.getElementById('graphs-data-info').style.display = 'flex';
+    }
+
   }
 
   toggleShowModal = () => {
