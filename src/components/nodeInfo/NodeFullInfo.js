@@ -39,6 +39,12 @@ class NodeFullInfo extends Component {
     this.setState({ loading: true });
     await this.props.getNodeCustomFieldsRequest(graphId, nodeId);
     this.setState({ loading: false });
+
+    if (document.getElementsByClassName('ghModalFilters')[0]) {
+      const tabElement = document.getElementById('nodeFullInfo');
+      tabElement.style.marginRight = '300px';
+      tabElement.style.width = '30%';
+    }
   });
 
   closeNodeInfo = () => {
@@ -49,7 +55,11 @@ class NodeFullInfo extends Component {
   }
 
   render() {
-    const { editable, singleGraph: { id, nodesPartial, linksPartial, labels } } = this.props;
+    const {
+      editable, singleGraph: {
+        id, nodesPartial, linksPartial, labels,
+      },
+    } = this.props;
 
     const { loading } = this.state;
 

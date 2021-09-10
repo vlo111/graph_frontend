@@ -7,6 +7,7 @@ import _ from 'lodash';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodeContextMenu from './NodeContextMenu';
+import ExpandNodeContextMenu from './ExpandNodeContextMenu';
 import LinkContextMenu from './LinkContextMenu';
 import NodeFullInfoContext from './NodeFullInfoContext';
 import LabelContextMenu from './LabelContextMenu';
@@ -107,7 +108,7 @@ class ContextMenu extends Component {
       const index = +ev.target.getAttribute('id').replace('l', '');
       params = { index };
       element = 'link';
-    } else if (ev.target.classList.contains('nodeCreate') || ev.target.classList.contains('labelsBoard')) {
+    } else if (ev.target.tagName === 'svg' || ev.target.classList.contains('labelsBoard')) {
       element = 'chart';
     }
     // else if (ev.target.closest('.contentWrapper')) {
@@ -166,16 +167,21 @@ class ContextMenu extends Component {
 
   render() {
     const {
-      x, y, show, params, deleteDataModal,
+      x, y,  params, deleteDataModal, element,  
     } = this.state;
-    const { activeButton } = this.props;
+    let { show } = this.state;
+    const { activeButton, location: { pathname }, } = this.props;
+    const viewLocation = pathname.startsWith('/graphs/view/'); 
 
     if (activeButton !== 'deleteModal') {
       if (!show) {
         return null;
       }
     }
-    const { match: { params: { graphId = '' } } } = this.props;
+    if (viewLocation && show === 'node' ) {
+     show = 'expand';
+    }  
+    const { match: { params: { graphId = '' } }, expand } = this.props;
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d.location);
     const pastData = LabelUtils.getData();
@@ -201,12 +207,13 @@ class ContextMenu extends Component {
               style={{ left: left, top: top }}
             >
               {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
+              {show === 'expand' ? <ExpandNodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
               {/* {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null} */}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
-              {['label', 'chart'].includes(show) ? (
+              {['label', 'chart'].includes(show)  && !expand ? (
                 <>
                   <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
                     Create node
@@ -231,14 +238,14 @@ class ContextMenu extends Component {
                 </div>
               ) : null}
 
-              {['selectSquare'].includes(show) ? (
+              {['selectSquare'].includes(show) && !viewLocation ? (
                 <>
                   <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
                     Create a folder
                   </Button>
                 </>
               ) : null}
-              {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
+              {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) && !viewLocation ? (
                 <>
                   {show === 'node' ? (!params.readOnly ? (
                     <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
@@ -252,7 +259,7 @@ class ContextMenu extends Component {
                     )}
                 </>
               ) : null}
-              {['chart'].includes(show) ? (
+              {['chart'].includes(show)  && !expand ? (
                 <>
                   {/* <div className="ghButton notClose"> */}
                   {/*  <Icon value="fa-plus-square" /> */}

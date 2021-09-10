@@ -100,6 +100,17 @@ export default function reducer(state = initialState, action) {
         ...state,
         graphsListStatus: 'request',
         graphsList: [],
+        // singleGraph: {
+        //   ...state.singleGraph,
+        //   nodes: [],
+        //   links: [],
+        //   labels: [],          
+        //   nodesPartial: [],
+        //   linksPartial: [], 
+        //   customFields: [],
+        //   nodeCustomFields: [],
+        //   graphFilterInfo: {}
+        // },
       };
     }
     case GET_GRAPHS_LIST.SUCCESS: {
@@ -109,6 +120,17 @@ export default function reducer(state = initialState, action) {
         graphsListStatus: 'success',
         graphsList,
         graphsListInfo,
+        // singleGraph: {
+        //   ...state.singleGraph,
+        //   nodes: [],
+        //   links: [],
+        //   labels: [],          
+        //   nodesPartial: [],
+        //   linksPartial: [], 
+        //   customFields: [],
+        //   nodeCustomFields: [],
+        //   graphFilterInfo: {}
+        // },
       };
     }
     // case GENERATE_THUMBNAIL_WORKER: {
@@ -358,7 +380,7 @@ export default function reducer(state = initialState, action) {
       singleGraph.customFields = CustomFields.removeNode(singleGraph.customFields, nodeId);
       return {
         ...state,
-        singleGraph,
+        customFields: singleGraph.customFields,
       };
     }
     case UPDATE_SINGLE_GRAPH: {
@@ -375,6 +397,17 @@ export default function reducer(state = initialState, action) {
         actionsCount: {
           ...state.actionsCount,
           ...action.payload.data.result,
+        },
+        singleGraph: {
+          ...state.singleGraph,
+          nodes: [],
+          links: [],
+          labels: [],          
+          nodesPartial: [],
+          linksPartial: [], 
+          customFields: [],
+          nodeCustomFields: [],
+          graphFilterInfo: {}
         },
       };
     }

@@ -9,7 +9,7 @@ import Tooltip from 'rc-tooltip';
 
 class GraphListItem extends Component {
   static propTypes = {
-    graph: PropTypes.object.isRequired,
+    graphs: PropTypes.object.isRequired,
   }
 
 

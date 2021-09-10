@@ -51,8 +51,10 @@ class Input extends Component {
     let { value, valueNumber = +value, name } = ev.target;
 
     if (isNumber) {
-      if (Number.isNaN(valueNumber) || valueNumber > 50) {
+      if (Number.isNaN(valueNumber)) {
         return;
+      } else if (valueNumber > 50) {
+        valueNumber = 50;
       }
       valueNumber = valueNumber === 0 ? prevValue : valueNumber;
     }

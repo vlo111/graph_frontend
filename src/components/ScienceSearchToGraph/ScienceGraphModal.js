@@ -5,7 +5,8 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { parseStringPromise } from 'xml2js';
 import moment from 'moment';
-import {setActiveButton, toggleNodeModal} from '../../store/actions/app';
+import { toast } from 'react-toastify';
+import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 import ApiImg from '../../assets/images/icons/science.png';
@@ -13,8 +14,8 @@ import arxivImg from '../../assets/images/icons/arxiv.jpg';
 import coreImg from '../../assets/images/icons/core.png';
 import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
-import { toast } from 'react-toastify';
-import Button from '../form/Button'
+import Button from '../form/Button';
+import Checkbox from './../form/Checkbox';
 
 const {
   REACT_APP_ARXIV_URL,
@@ -81,13 +82,13 @@ class ScienceGraphModal extends Component {
         url: arxivUrl,
         name: 'arxiv',
       },
-      {
-        url: coreUrl,
-        name: 'core',
-      },
+      // {
+      //   url: coreUrl,
+      //   name: 'core',
+      // },
     ];
-
-    const fetchedSources = await this.fetchUrls(urls);
+    let fetchedSources = await this.fetchUrls(urls);
+    fetchedSources = fetchedSources.filter(source => source?.articles)
     if (!fetchedSources.filter((source) => source != undefined)) {
       this.setState({
         searchResults: 0,
@@ -217,11 +218,14 @@ class ScienceGraphModal extends Component {
   fetchUrls = async (urls) => {
     const result = await Promise.all(
       urls.map(async (url) => {
-        const result = {
-          articles: await fetch(url.url),
-          name: url.name,
-        };
-        return result;
+        try {
+          const result = {
+            articles: await fetch(url.url),
+            name: url.name,
+          };
+          return result;
+        } catch (e) {
+        }
       }),
     );
     return result;
@@ -356,9 +360,10 @@ class ScienceGraphModal extends Component {
       ]
       : '';
     const _type = type || _.last(nodes)?.type || '';
+
     const node = {
       create: true,
-      color: ChartUtils.nodeColorObj[_type] || '',
+      color: '',
       fx: -189.21749877929688 + Math.random() * 150,
       fy: -61.72186279296875 + Math.random() * 150,
       icon,
@@ -374,6 +379,11 @@ class ScienceGraphModal extends Component {
       createdUser: currentUserId,
       updatedUser: currentUserId,
     };
+
+    ChartUtils.nodeColor(node);
+
+    node.color = ChartUtils.nodeColorObj[_type];
+
     return node;
   };
 
@@ -479,21 +489,26 @@ class ScienceGraphModal extends Component {
 
   getListOfArticles = (apiSearchReturnValues, checkedList) => {
     const apiSearchResults = [];
-    for (const index in apiSearchReturnValues) { // move to separate function
+    for (const index in apiSearchReturnValues) { 
       apiSearchResults.push(
-        <div className="scienceResultsList" key={index}>
+        <label className="pull-left" htmlFor={index} >
+        <div className="scine scienceResultsList"
+        tabIndex="0"
+        onFocus={() => {
+          const items = document.getElementsByClassName('scine');
+          items[index].style.backgroundColor = '#e5e3f5';
+        }}
+         key={index}>
           <div className="scienceCheckBox">
-            <input
+            <Checkbox
               onChange={() => this.handleCheckedButton(index)}
               checked={checkedList.includes(index)}
-              className="scienceArticleCheckbox"
               type="checkbox"
               name="layout"
               id={index}
               value="option1"
             />
 
-            <label className="pull-left" htmlFor={index} />
           </div>
 
           <div className="scienceArticleData">
@@ -520,6 +535,27 @@ class ScienceGraphModal extends Component {
             ) : (
               ''
             )}
+            <div>
+            {apiSearchReturnValues[index].origin.includes(
+                'arxiv',
+              ) ? (
+                <b>Source:
+                  <a>https://arxiv.org/</a>
+                   </b>
+                
+                ) : (
+                  ''
+                )} 
+             {apiSearchReturnValues[index].origin.includes(
+                'core',
+              ) ? (
+                <b>Source: 
+                  <a>https://core.ac.uk/</a>
+                </b>
+                ) : (
+                  ''
+                )} 
+            </div>
             <p
               className=" scienceArticleDescription"
               dangerouslySetInnerHTML={{
@@ -531,32 +567,9 @@ class ScienceGraphModal extends Component {
                     : '',
               }}
             />
-            <div>
-              {apiSearchReturnValues[index].origin.includes(
-                'arxiv',
-              ) ? (
-                <img
-                  src={arxivImg}
-                  alt="arxiv"
-                  className="arxivLogo sourceLogo"
-                />
-                ) : (
-                  ''
-                )}
-              {apiSearchReturnValues[index].origin.includes(
-                'core',
-              ) ? (
-                <img
-                  src={coreImg}
-                  alt="arxiv"
-                  className="coreLogo sourceLogo"
-                />
-                ) : (
-                  ''
-                )}
-            </div>
           </div>
-        </div>,
+        </div>
+        </label>
       );
     }
     return apiSearchResults;
@@ -608,7 +621,7 @@ class ScienceGraphModal extends Component {
                     autoFocus
                   />
                   <button
-                    className="scienceSearchSubmit button"
+                    className="scienceSearchSubmit button btn-classic"
                     type="submit"
                     onClick={this.handleSearch}
                   >
@@ -622,18 +635,18 @@ class ScienceGraphModal extends Component {
                 <p className="scienceResultAmount">{resultAmount}</p>
               </div>
             </div>
-            {apiSearchResults}
+            <div className="scinceGraphResukt"> {apiSearchResults} </div>
           </div>
           <div className="acceptCheckedItems">
             {checkedList.length ? (
               <>
                 <Button
                   onClick={(ev) => this.createSelectedNodes(ev)}
-                  className="ghButton btn-classic"
+                  className="ghButton btn-classic creatGraphScience"
                 >
                   Create Graph
                 </Button>
-                <p className="selectedItemsAmount">
+                <p className="selectedItemsAmount scinceItems">
                   Selected Articles
                   {' '}
                   {checkedList.length}

@@ -25,7 +25,7 @@ export function deleteShareGraphWithUsersRequest(shareId) {
 }
 
 export const GET_SHARE_GRAPH_LIST = define('GET_SHARE_GRAPH_LIST');
-export function getShareGraphListRequest(page = 1) {
-  return GET_SHARE_GRAPH_LIST.request(() => Api.getShareGraphsList(page));
+export function getShareGraphListRequest(page = 1, params) {
+  return GET_SHARE_GRAPH_LIST.request(() => Api.getShareGraphsList(page, params));
 }
 

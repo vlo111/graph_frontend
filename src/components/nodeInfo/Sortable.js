@@ -172,7 +172,7 @@ class Sortable extends Component {
             <RightArrowSvg />
           </div>
 
-          {node.location ? (
+          {node?.location?.length ? (
             <div className="location">
               <Tooltip overlay="Location" placement="top">
                 <Button

@@ -5,25 +5,32 @@ import { Link, Prompt } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
+import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
+import { userGraphRequest } from '../store/actions/shareGraphs';
+import Chart from '../Chart';
+import AnalysisUtils from '../helpers/AnalysisUtils';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import { setActiveButton, toggleSearch } from '../store/actions/app';
+import { setActiveButton, toggleExplore } from '../store/actions/app';
 import Button from '../components/form/Button';
-import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
-import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import Filters from '../components/filters/Filters';
 import Search from '../components/search/Search';
+import ContextMenu from '../components/contextMenu/ContextMenu';
 import Zoom from '../components/Zoom';
 import NodeDescription from '../components/NodeDescription';
-import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
-import { userGraphRequest } from '../store/actions/shareGraphs';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
-import AnalysisUtils from '../helpers/AnalysisUtils';
-import Chart from '../Chart';
+import ToolBarFooter from '../components/ToolBarFooter';
 import AnalyticalTab from '../components/Analysis/AnalyticalTab';
 import AnalyticalPage from '../components/Analysis/AnalyticalPage';
+import FindPath from '../components/FindPath';
+import AutoPlay from '../components/AutoPlay';
+import MapsGraph from '../components/maps/MapsGraph';
+import Crop from '../components/chart/Crop';
+import DataView from '../components/dataView/DataView';
+import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
+import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 
 class GraphView extends Component {
   static propTypes = {
@@ -31,7 +38,7 @@ class GraphView extends Component {
     deleteGraphRequest: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
     userGraphRequest: PropTypes.func.isRequired,
-    toggleSearch: PropTypes.func.isRequired,
+    toggleExplore: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     graphInfo: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
@@ -51,6 +58,10 @@ class GraphView extends Component {
       this.props.getGraphInfoRequest(graphId);
     }
   })
+
+  componentWillUnmount() {
+    this.props.toggleExplore(false)
+  }
 
   deleteGraph = async () => {
     const { match: { params: { graphId = '' } } } = this.props;
@@ -74,12 +85,11 @@ class GraphView extends Component {
 
   render() {
     const {
-      singleGraph, singleGraphStatus, graphInfo, showSearch,
+      singleGraph, singleGraphStatus, graphInfo, showSearch, activeButton, 
       location: { pathname, search }, match: { params: { graphId = '' } },
-    } = this.props;
-    const preview = pathname.startsWith('/graphs/preview/');
-
-    let shortestNodes = [];
+    } = this.props; 
+    const preview = pathname.startsWith('/graphs/preview/'); 
+    let shortestNodes = []; 
     // let shortestLinks = [];
 
     // view the shortest path to the analysis field
@@ -93,14 +103,14 @@ class GraphView extends Component {
         const { listNodes, listLinks } = AnalysisUtils.getShortestPath(start, end, nodes, links);
 
         const originalListPath = links.filter((p) => {
-          let listChack = false;
+          let listCheck = false;
           listLinks.forEach((l) => {
             if ((l.source === p.source || l.target === p.source)
                 && (l.source === p.target || l.target === p.target)) {
-              listChack = true;
+              listCheck = true;
             }
           });
-          return listChack;
+          return listCheck;
         });
 
         // shortestLinks = originalListPath;
@@ -123,6 +133,7 @@ class GraphView extends Component {
           when={this.preventReload}
           message={this.handleRouteChange}
         />
+        {activeButton === 'data' && <DataView />} 
         {search.includes('analytics')
           ? (
             <AnalyticalPage
@@ -168,7 +179,7 @@ class GraphView extends Component {
                       </Link>
                     )}
                     <NodeDescription />
-                    <Link to="/">
+                    <Link to={pathname?.includes('filter') ? `/graphs/update/${graphId}` : '/'}>
                       <Tooltip overlay="Back">
                         <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
                       </Tooltip>
@@ -176,11 +187,24 @@ class GraphView extends Component {
                   </>
                 )}
                 <ToolBarHeader graph={singleGraph}/>
+                  <Search />
                 <NodeFullInfo editable={false} />
                 <LabelTooltip />
                 <Filters />
-                <Search />
+                <AutoPlay />
+                <ContextMenu expand={true}/>
+                {activeButton === 'maps-view' && <MapsGraph />}
+                {activeButton.includes('findPath')
+                && (
+                <FindPath
+                  history={this.props.history}
+                  start={activeButton.substring(activeButton.length, activeButton.indexOf('.') + 1)}
+                />
+                )}
               <Zoom />
+              <Crop />
+              
+              <ToolBarFooter partOf = {true}/>
               </div>
             ))}
       </Wrapper>
@@ -202,6 +226,7 @@ const mapDispatchToProps = {
   deleteGraphRequest,
   userGraphRequest,
   getGraphInfoRequest,
+  toggleExplore
 };
 const Container = connect(
   mapStateToProps,

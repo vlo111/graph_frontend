@@ -30,7 +30,7 @@
 
       .fa-caret-right {
         position: absolute;
-        right: 26px;
+        right: 20px;
         top: 76px;
         font-size: 20px;
       }
@@ -53,13 +53,13 @@
   }
 
   .dropdown-addNew, .dropdown-node, .create_label {
-    position: absolute;
+    position: fixed;
     left: 208px;
     width: 140px;
     background: #FFFFFF;
     box-shadow: 0 4px 33px rgb(0 0 0 / 25%);
     border-radius: 3px;
-    top: 90px;
+    top: 150px;
     font-size: 17px;
     height: 130px;
 
@@ -76,6 +76,14 @@
       &:hover {
         background: rgba(113, 102, 248, 0.1);
         color: #7E75EF;
+       .lablMenu{
+        stroke:  #7E75EF;
+        stroke: #7E75EF;
+    stroke-width: .4;
+         circle {
+         stroke: #7E75EF; 
+         }
+       }
       }
     }
 
@@ -94,7 +102,7 @@
     left: 355px;
     width: 190px;
     height: 210px;
-    top: 120px;
+    top: 170px;
 
     li {
       top: 5px;
@@ -106,10 +114,9 @@
   .create_label {
     width: 160px;
     height: 130px;
-    top: 165px;
-
+    top: 205px;
     li {
-      padding: 7px 5px;
+      padding: 7px 20px;
 
       i {
         margin-left: 20px;

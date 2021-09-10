@@ -196,11 +196,7 @@ class AnalysisUtils {
                 // ditarkel nayev havasar koxmeri depq@
                 if (path < p.shortestPath) {
                   p.prevNode = currentNode;
-                }
-                if (path === p.shortestPath) {
-                  console.log(currentNode);
-                  console.log(p);
-                }
+                } 
 
                 path = path <= p.shortestPath ? path : p.shortestPath;
                 p.shortestPath = path;

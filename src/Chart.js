@@ -37,7 +37,7 @@ class Chart {
 
   static isLoading = () => {
     const loading = document.querySelector('#graph .loading');
-    return loading.classList.contains('show') ? true : false
+    return loading?.classList?.contains('show') ? true : false
   }
 
   // gets the passed d3 element center coordinates
@@ -1172,8 +1172,8 @@ class Chart {
       .append('use')
       .attr('href', '#folderIcon')
       .attr('class', 'folderIconSmall')
-      .attr('width', '30')
-      .attr('height', '30')
+      .attr('width', '40')
+      .attr('height', '40')
       .attr('fill', '#58595b')
       .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 10)
       .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 - 50);
@@ -1184,7 +1184,8 @@ class Chart {
       .attr('class', 'folder-name')
       .attr('height', '40')
       .attr('fill', '#58595b')
-      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 50)
+      .attr('font-size', (d) => 40)
+      .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / -2 + 55)
       .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 - 30);
 
     folderWrapper.selectAll('.folderOpen')
@@ -1681,6 +1682,9 @@ class Chart {
         .data(listLink)
         .join('path')
         .attr('id', (d) => `l${d.index}`)
+        .attr('class', (d) => {
+          return d.new ? 'emphasisConnection' : ''
+        })
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
         .attr('stroke', ChartUtils.linkColor)
@@ -1699,7 +1703,7 @@ class Chart {
         .join('g')
         .attr('class', (d) => {
           const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(d);
-          return `node ${d.nodeType || 'circle'} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
+          return `node ${d.nodeType || 'circle'} ${!!d.new ? 'emphasisIcon' : ''} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
         })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
@@ -1804,6 +1808,7 @@ class Chart {
       ChartInfography.render(this);
 
       this.event.emit('render', this);
+      this.event.emit('expandData', this);
       return this;
     } catch (e) {
       console.error(e);
@@ -3152,18 +3157,17 @@ class Chart {
    * @param {*} links 
    * @returns array
    */
-  static getLinksBetweenNodes(nodes, links) {
+  static getLinksBetweenNodes(nodes, chosenNodes, links) {
     const nodeCouples = []
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        for (let linkIndex = 0; linkIndex < links?.length; linkIndex++) {
-          if (this.ifNodesConnected(nodes[i].id, nodes[j].id, links[linkIndex])) {
-            nodeCouples.push(links[linkIndex])
+    for (let j = 0; j < chosenNodes.length; j++) {
+      for (let i = 0; i < nodes.length; i++) {
+          for (let linkIndex = 0; linkIndex < links?.length; linkIndex++) {
+            if (this.ifNodesConnected(chosenNodes[j].id, nodes[i].id, links[linkIndex])) {
+              nodeCouples.push(links[linkIndex])
+            }
           }
         }
       }
-    }
-
     return nodeCouples
   }
 

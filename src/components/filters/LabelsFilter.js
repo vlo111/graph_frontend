@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Tooltip from 'rc-tooltip/es';
 import { setFilter } from '../../store/actions/app';
 import Checkbox from '../form/Checkbox';
+import Button from '../form/Button';
 
 class LabelsFilter extends Component {
   static propTypes = {
@@ -53,51 +54,55 @@ class LabelsFilter extends Component {
 
     return (
       <div className="labelsFilter graphFilter">
-        <h4 className="title">Labels</h4>
+        <details open>
+          <summary>
+            Labels
+          </summary>
+          <ul className="list labelCheckAllBlock">
+            <li className="item">
+              <div className="filterCheckBox">
+                <Checkbox
+                  onChange={() => this.toggleAll(labelsInfo, allChecked)}
+                  checked={allChecked}
+                  label="All"
+                  id="labelCheckAll"
+                />
+              </div>
+              <div className="dashed-border" />
+              <span className="badge">
+                {_.sumBy(labelsInfo, (d) => +d.length || 0)}
+              </span>
+            </li>
+          </ul>
+          <ul className="list ">
+            {labelsInfo.map((item) => (
+              <Tooltip key={item.id} overlay={item.name}>
+                <li className="item labels-item">
+                  <div className="filterCheckBox">
+                    <div className="label-checkBox">
+                      <input
+                        className="labelsCheckInput"
+                        checked={filters.labels.includes(item.id)}
+                        onChange={() => this.handleChange(item.id)}
+                        id={item.id}
+                        type="checkbox"
+                      />
+                      <label className="labelsCheckbox" htmlFor={item.id}>
+                        <div className="colorBox" style={{ borderColor: item.color }}>
+                          <div style={{ backgroundColor: item.color }} />
+                        </div>
+                      </label>
+                      <span className="badge">
+                        {item.length}
+                      </span>
+                    </div>
+                  </div>
 
-        <ul className="list labelCheckAllBlock">
-          <li className="item">
-            <div className="filterCheckBox">
-              <input
-                onChange={() => this.toggleAll(labelsInfo, allChecked)}
-                checked={allChecked}
-                className="graphsCheckbox"
-                type="checkbox"
-                name="layout"
-                id="labelCheckAll"
-              />
-              <label className="pull-left" htmlFor="labelCheckAll">{allChecked ? 'Uncheck All' : 'Check All'}</label>
-            </div>
-            <div className="dashed-border" />
-            <span className="badge">
-              {_.sumBy(labelsInfo, (d) => +d.length || 0)}
-            </span>
-          </li>
-        </ul>
-        <ul className="list ">
-          {labelsInfo.map((item) => (
-            <Tooltip key={item.id} overlay={item.name}>
-              <li className="item">
-                <div className="filterCheckBox">
-                  <Checkbox
-                    label={(
-                      <div className="colorBox" style={{ borderColor: item.color }}>
-                        <div style={{ backgroundColor: item.color }} />
-                      </div>
-                    )}
-                    checked={filters.labels.includes(item.id)}
-                    onChange={() => this.handleChange(item.id)}
-                  >
-                    <span className="badge">
-                      {item.length}
-                    </span>
-                  </Checkbox>
-                </div>
-
-              </li>
-            </Tooltip>
-          ))}
-        </ul>
+                </li>
+              </Tooltip>
+            ))}
+          </ul>
+        </details>
       </div>
     );
   }

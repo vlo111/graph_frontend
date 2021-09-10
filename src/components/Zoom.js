@@ -28,13 +28,13 @@ class Zoom extends Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
-    Chart.event.on('render', this.autoScale);
-    Chart.event.on('zoom', this.handleChartZoom);
+   // Chart.event.on('render', this.autoScale);
+    Chart.event.on('zoom', this.handleChartZoom); 
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
-    Chart.event.removeListener('render', this.autoScale);
+   // Chart.event.removeListener('render', this.autoScale);
     Chart.event.removeListener('zoom', this.handleChartZoom);
   }
 
@@ -43,30 +43,8 @@ class Zoom extends Component {
   }
 
   autoScale = () => {
-    const {
-      width, height, min, max,
-    } = ChartUtils.getDimensions(false);
-    if (width && Chart.svg) {
-      Chart.event.removeListener('render', this.autoScale);
-
-      const mode = this.props.activeButton;
-
-      const LEFT_PADDING = mode === 'view' ? 0 : 201;
-      const TOP_PADDING = mode === 'view' ? 5 : 75;
-
-      const graphHeight = document.querySelector('#graph svg')
-        .getBoundingClientRect().height;
-
-      const scaleW = (window.innerWidth - LEFT_PADDING) / width;
-      const scaleH = (graphHeight - TOP_PADDING) / height;
-      const scale = Math.min(scaleW, scaleH, 1);
-      let left = min[0] * scale * -1 + LEFT_PADDING;
-      let top = min[1] * scale * -1 + TOP_PADDING;
-
-      left += ((window.innerWidth - LEFT_PADDING) - (scale * width)) / 2;
-      top += ((graphHeight - TOP_PADDING) - (scale * height)) / 2;
-      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(scale));
-    }
+    
+    ChartUtils.autoScale();
   }
 
   handleKeyDown = (ev) => {

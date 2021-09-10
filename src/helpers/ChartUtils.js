@@ -263,6 +263,86 @@ class ChartUtils {
     const nodes = Chart.getNodes();
     return _.groupBy(nodes, 'type');
   }
+  /**
+   * Return link data
+   * @param {*} linksPartial 
+   * @param {*} id 
+   * @param {*} group 
+   * @param {*} hidden 
+   * @returns 
+   */
+  static getLinkGroupedByNodeId(linksPartial, id, group = true , hidden = 0) {
+    const node = Chart.getNodes().find((d) => d.id === id); 
+    const chartLinks = Chart.getLinks(); 
+    if (!node) return null; 
+    const links = linksPartial.filter((l) => (l.source ===  node.id || l.target === node.id)
+       && chartLinks && !chartLinks.find((s) => (s.id === l.id)));  
+    if(group) 
+      return _.groupBy(links, 'type');
+    else 
+      return links?.length 
+  }
+  /**
+   * Return color by type
+   * @param {*} links 
+   * @param {*} type 
+   * @returns 
+   */
+  static getLinkColorByType(links, type) {
+    const link = links && links.find((l) => ( l.type ===  type ));  
+    return link?.color ? link?.color : this.linkColorObj[type]
+  }
+  /**
+   * 
+   * @param {*} nodes 
+   * @param {*} linksPartial 
+   * @returns 
+   */
+  static getLinksBetweenNodes(nodes, linksPartial){ 
+    const links = linksPartial.filter((l) => 
+       nodes && nodes.some((n) => (l.target === n.id && l.source === n.id )) 
+    );
+    return links
+
+  }
+  /**
+   * Fit data
+   */
+  static autoScale() { 
+    const {
+      width, height, min, max,
+    } = ChartUtils.getDimensions(false);
+    if (width && Chart.svg) {
+      Chart.event.removeListener('render', this.autoScale); 
+      const mode = Chart.activeButton;
+
+      const LEFT_PADDING = mode === 'view' ? 0 : 201;
+      const TOP_PADDING = mode === 'view' ? 5 : 75;
+
+      const graphHeight = document.querySelector('#graph svg')
+        .getBoundingClientRect().height;
+
+      const scaleW = (window.innerWidth - LEFT_PADDING) / width;
+      const scaleH = (graphHeight - TOP_PADDING) / height;
+      const scale = Math.min(scaleW, scaleH, 1);
+      let left = min[0] * scale * -1 + LEFT_PADDING;
+      let top = min[1] * scale * -1 + TOP_PADDING;
+
+      left += ((window.innerWidth - LEFT_PADDING) - (scale * width)) / 2;
+      top += ((graphHeight - TOP_PADDING) - (scale * height)) / 2;
+      Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(scale));
+    }
+  }
+  /**
+   * Call scale function by params
+   * @param {*} time 
+   */
+  static autoScaleTimeOut(time = 0) {
+    
+    setTimeout(() => {   
+      this.autoScale(); 
+    }, time);
+  }
 
   static center = ([x1, y1], [x2, y2]) => ([(x1 + x2) / 2, (y1 + y2) / 2])
 
@@ -421,7 +501,7 @@ class ChartUtils {
         d.priority = 6;
       } else if (d.keywords.some((k) => k.toLowerCase().includes(s))) {
         d.priority = 7;
-      } else if (stripHtml(d.description).result.toLowerCase().includes(s)) {
+      } else if (d.description && stripHtml(d.description).result.toLowerCase().includes(s)) {
         d.priority = 8;
       }
       return d;
@@ -1024,6 +1104,19 @@ class ChartUtils {
     return {
       x, y, width, height,
     };
+  }
+
+  static startAutoPosition = () => {
+    setTimeout(() => {
+      document.addEventListener('click', this.stopAutoPosition)
+      document.addEventListener('contextmenu', this.stopAutoPosition)
+    }, 200)
+  }
+
+  static stopAutoPosition = () => {
+    Chart.render({},{ignoreAutoSave: true, isAutoPosition: false})
+    document.removeEventListener('click', this.stopAutoPosition)
+    document.removeEventListener('contextmenu', this.stopAutoPosition)
   }
 }
 

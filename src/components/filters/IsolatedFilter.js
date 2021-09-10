@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import Checkbox from "../form/Checkbox";
-import { setFilter } from "../../store/actions/app";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { setFilter } from '../../store/actions/app';
+import Checkbox from '../form/Checkbox';
 
 class IsolatedFilter extends Component {
   static propTypes = {
@@ -17,15 +17,10 @@ class IsolatedFilter extends Component {
         <div className="filterCheckBox">
           <Checkbox
             label="Hide isolated nodes"
+            id="isolated"
             checked={filters.hideIsolated}
-            // labelReverse
-            onChange={() =>
-              this.props.setFilter("hideIsolated", !filters.hideIsolated)
-            }
-            className="graphsCheckbox"
-          >
-             <span className="badge"></span>
-            </Checkbox>
+            onChange={() => this.props.setFilter('hideIsolated', !filters.hideIsolated)}
+          />
         </div>
       </div>
     );

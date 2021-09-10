@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
 import Button from '../form/Button';
+import Checkbox from '../form/Checkbox';
 
 class NodesStatusFilter extends Component {
   static propTypes = {
@@ -18,7 +18,7 @@ class NodesStatusFilter extends Component {
 
   checkAllNodes = memoizeOne((status) => {
     if (status.length) {
-      this.props.setFilter('nodeStatus', status.map((d) => d.status), true,);
+      this.props.setFilter('nodeStatus', status.map((d) => d.status), true);
     }
   }, _.isEqual);
 
@@ -50,37 +50,44 @@ class NodesStatusFilter extends Component {
     const allChecked = nodeStatus.length === filters.nodeStatus.length;
     return (
       <div className="nodesStatusFilter graphFilter">
-        <h4 className="title">Status</h4>
-        <ul className="list">
-          <li className="item">
-            <div className="filterCheckBox">
-              <Checkbox
-                label={allChecked ? 'Uncheck All' : 'Check All'}
-                checked={allChecked}
-                onChange={() => this.toggleAll(nodeStatus, allChecked)}
-                className="graphsCheckbox"
-              />
-            </div>
-            <span className="badge">{_.sumBy(nodeStatus, 'length')}</span>
-          </li>
-          {nodeStatus.map((item) => (
-            <li
-              key={item.status}
-              className="item"
-              style={{ color: ChartUtils.nodeColor(item) }}
-            >
+        <details open>
+          <summary>
+            Node Status
+          </summary>
+          <ul className="list">
+            <li className="item">
               <div className="filterCheckBox">
                 <Checkbox
-                  label={item.status}
-                  checked={filters.nodeStatus.includes(item.status)}
-                  onChange={() => this.handleChange(item.status)}
-                  className="graphsCheckbox"
+                  label="All"
+                  id="allnodeStatus"
+                  checked={allChecked}
+                  onChange={() => this.toggleAll(nodeStatus, allChecked)}
                 />
               </div>
-              <span className="badge">{item.length}</span>
+              <span className="badge">{_.sumBy(nodeStatus, 'length')}</span>
             </li>
-          ))}
-        </ul>
+            {nodeStatus.map((item) => (
+              <li
+                key={item.status}
+                className="item"
+                style={{ color: ChartUtils.nodeColor(item) }}
+              >
+                <div className="filterCheckBox">
+
+                  <div className="checkWithLabel">
+                    <Checkbox
+                      id={item.status}
+                      checked={filters.nodeStatus.includes(item.status)}
+                      onChange={() => this.handleChange(item.status)}
+                    />
+                    <label className="check-label pull-left" htmlFor={item.status}>{item.status}</label>
+                  </div>
+                </div>
+                <span className="badge">{item.length}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
       </div>
     );
   }

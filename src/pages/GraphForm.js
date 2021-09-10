@@ -22,6 +22,7 @@ import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
+import ToolBarFooter from '../components/ToolBarFooter';
 import CreateGraphModal from '../components/CreateGraphModal';
 import { socketSetActiveGraph } from '../store/actions/socket';
 import AutoSave from '../components/AutoSave';
@@ -71,21 +72,15 @@ class GraphForm extends Component {
     this.getSingleGraph(graphId);
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
-        <div className="graphWrapper">
-          <ReactChart />
-        </div>
-        <ToolBarHeader />
-        <ToolBar />
-        <Crop />
-        <AddNodeModal />
-        {activeButton === 'data' && <DataView />}
-        {activeButton.includes('findPath')
-        && (
-        <FindPath
-          history={this.props.history}
-          start={activeButton.substring(activeButton.length, activeButton.indexOf('.') + 1)}
-        />
-        )}
+        <>
+          <div className="graphWrapper">
+            <ReactChart />
+          </div>
+          <ToolBarHeader />
+          <ToolBar />
+          <Crop />
+          <AddNodeModal />
+          {activeButton === 'data' && <DataView />} 
         <Search history={this.props.history} />
         {activeButton === 'media' && <MediaModal history={this.props.history} /> }
         {activeButton === 'maps-view' && <MapsGraph />}
@@ -108,7 +103,9 @@ class GraphForm extends Component {
         <LabelCopy />
         <AutoSave />
         <ExitMode />
+          <ToolBarFooter />
         {isTracker && <MousePosition graphId={graphId} /> }
+        </> 
       </Wrapper>
     );
   }

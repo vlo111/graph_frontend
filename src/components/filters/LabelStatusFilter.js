@@ -6,7 +6,8 @@ import _ from 'lodash';
 import ChartUtils from '../../helpers/ChartUtils';
 import LabelUtils from '../../helpers/LabelUtils';
 import { setFilter } from '../../store/actions/app';
-import Checkbox from '../form/Checkbox';
+import Button from '../form/Button';
+import Checkbox from "../form/Checkbox";
 
 class LabelStatusFilter extends Component {
   static propTypes = {
@@ -54,37 +55,41 @@ class LabelStatusFilter extends Component {
 
     return (
       <div className="nodesStatusFilter graphFilter">
-        <h4 className="title">Label status</h4>
-        <ul className="list">
-          <li className="item">
-            <div className="filterCheckBox">
-              <Checkbox
-                label={allChecked ? 'Uncheck All' : 'Check All'}
-                checked={allChecked}
-                onChange={() => this.toggleAll(labelsStatus, allChecked)}
-                className="graphsCheckbox"
-              />
-            </div>
-            <span className="badge">
-              {_.sumBy(labelsStatus, 'length')}
-            </span>
-          </li>
-          {labelsStatus.map((item) => (
-            <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
+        <details open>
+          <summary>
+            Label Status
+          </summary>
+          <ul className="list">
+            <li className="item">
               <div className="filterCheckBox">
                 <Checkbox
-                  label={this.statusName(item.status)}
-                  checked={filters.labelStatus.includes(item.status)}
-                  onChange={() => this.handleChange(item.status)}
-                  className="graphsCheckbox"
+                  id="allLabelStatus"
+                  label="All"
+                  checked={allChecked}
+                  onChange={() => this.toggleAll(labelsStatus, allChecked)}
                 />
               </div>
               <span className="badge">
-                {item.length}
+                {_.sumBy(labelsStatus, 'length')}
               </span>
             </li>
-          ))}
-        </ul>
+            {labelsStatus.map((item) => (
+              <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
+                <div className="filterCheckBox">
+                  <Checkbox
+                    id={this.statusName(item.status)}
+                    label={this.statusName(item.status)}
+                    checked={filters.labelStatus.includes(item.status)}
+                    onChange={() => this.handleChange(item.status)}
+                  />
+                </div>
+                <span className="badge">
+                  {item.length}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </details>
       </div>
     );
   }

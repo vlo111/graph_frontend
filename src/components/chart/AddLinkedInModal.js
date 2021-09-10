@@ -111,7 +111,7 @@ class AddLinkedInModal extends Component {
       return (
         <Modal
           className="ghModal"
-          overlayClassName="ghModalOverlay"
+          overlayClassName="ghModalOverlay linkedinModal"
           isOpen
           onRequestClose={this.closeModal}
         >

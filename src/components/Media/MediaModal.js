@@ -15,7 +15,6 @@ import Button from '../form/Button';
 import { getDocumentsRequest } from '../../store/actions/document';
 import NodeIcon from '../NodeIcon';
 import { getSingleGraphRequest, getAllTabsRequest, setActiveTab } from '../../store/actions/graphs';
-import Checkbox from '../form/Checkbox';
 import ChartUtils from '../../helpers/ChartUtils';
 import Input from '../form/Input';
 import Utils from '../../helpers/Utils';

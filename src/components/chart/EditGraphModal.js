@@ -77,7 +77,7 @@ requestData: {
     const svg = ChartUtils.getChartSvg();
     if (!defaultImage) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
-      this.props.getSingleGraphRequest()
+      this.props.getSingleGraphRequest(graphId)
     }
   }
 
@@ -104,7 +104,7 @@ requestData: {
   }
 
   saveGraph = async (status) => {
-    const { requestData, image } = this.state;
+    let { requestData, image } = this.state;
 
     let { singleGraph, graph } = this.props;
     
@@ -207,6 +207,7 @@ requestData: {
               className="thumbnailSave"
               value={image || `${singleGraph.thumbnail}?t=${moment(singleGraph.updatedAt).unix()}`}
               onChange={(val) => this.handleChange('image', val)}
+              userImage={ requestData.userImage }
             />
 
           </div>
