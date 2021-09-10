@@ -3180,7 +3180,7 @@ class Chart {
     const mouseCursorPosition = this.svg.select('.mouseCursorPosition');
     // wrapper.selectAll('text').remove();
     mouseCursorPosition
-      .append('g')
+      .append('use')
       .attr('class', 'mouseCursor')
       .attr('fill', '#000')
       .append('use')

@@ -215,7 +215,7 @@ class ChartUpdate {
    * @param {*} cursors
    */
   static mouseMovePositions = (graphId, userId, cursors) => {
-    Chart.svg.select('.mouseCursorPosition').selectAll('g').remove();
+    Chart.svg.select('.mouseCursorPosition').selectAll('use').remove();
     Chart.svg.select('.mouseCursorPosition').selectAll('text').remove();
     let fullName = ' ';
     cursors.forEach((cursor) => {
