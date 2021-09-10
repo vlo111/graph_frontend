@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { setActiveButton } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import { ReactComponent as MediaDocument } from '../../assets/images/icons/mediaDocument.svg';
 import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
 import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
 import Button from '../form/Button';
@@ -20,6 +19,7 @@ import Input from '../form/Input';
 import Utils from '../../helpers/Utils';
 import Outside from '../Outside';
 import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
+import Checkbox from '../form/Checkbox';
 
 class MediaModal extends Component {
   static propTypes = {
@@ -286,25 +286,21 @@ class MediaModal extends Component {
                     label="Node icon"
                     checked={getCheckedNodes}
                     onChange={() => this.filterHandleChange('icon', !getCheckedNodes)}
-                    className="graphsCheckbox"
                   />
                   <Checkbox
                     label="Documents of tabs"
                     checked={getCheckedDocs}
                     onChange={() => this.filterHandleChange('docs', !getCheckedDocs)}
-                    className="graphsCheckbox"
                   />
                   <Checkbox
                     label="Images of tabs"
                     checked={getCheckedImages}
                     onChange={() => this.filterHandleChange('Image', !getCheckedImages)}
-                    className="graphsCheckbox"
                   />
                   <Checkbox
                     label="Videos"
                     checked={getCheckedVideos}
                     onChange={() => this.filterHandleChange('videos', !getCheckedVideos)}
-                    className="graphsCheckbox"
                   />
                 </div>
               </Outside>
@@ -313,7 +309,6 @@ class MediaModal extends Component {
               placeholder="Search ..."
               autoComplete="off"
               value={search}
-              // icon="fa-search"
               onFocus={() => this.searchHandleChange(search)}
               onChangeText={this.searchHandleChange}
               className='mediaSearch '
@@ -324,7 +319,7 @@ class MediaModal extends Component {
             ? (
               <div className="mediaContainer mediaGallery">
                 {documentSearch.map((document) => {
-                  console.log('document --- ', document.node);
+                  // console.log('document --- ', document);
                   return document.id && (
                     <div className="imageFrameTTT">
                       <figure className="img-container">

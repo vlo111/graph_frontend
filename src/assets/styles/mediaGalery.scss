@@ -125,32 +125,10 @@
       top: 44px;
       z-index: 100;
 
-     .ghCheckbox{
-      margin: 12px 0px 15px 0px !important;
+     label{
+       font-weight: 400 !important;
+       margin-left: 6px !important;
      }
-     .graphsCheckbox + label {
-      position: relative;
-      display: block;
-      padding-left: 20px;
-      cursor: pointer;
-      vertical-align: middle;
-      margin: -2px 12px !important;
-
-        &::before{
-          background-color: white !important;
-          border: .5px solid #7166F8 !important;
-          width: 12px !important;
-          height: 12px !important;
-        }
-
-        &::after{
-          border-color: #7166F8 !important;
-          top: 2px;
-          left: 4px !important;
-          width: 6px !important;
-          height: 9px !important;
-        }
-      }
      
     }
     .showCheck{
