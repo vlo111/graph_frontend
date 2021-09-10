@@ -3180,12 +3180,14 @@ class Chart {
     const mouseCursorPosition = this.svg.select('.mouseCursorPosition');
     // wrapper.selectAll('text').remove();
     mouseCursorPosition
-      .append('use')
+      .append('g')
       .attr('class', 'mouseCursor')
       .attr('fill', '#000')
       .append('use')
       .attr('fill', ChartUtils.cursorColor(fullName))
       .attr('href', '#mouseCursor')
+      .attr('width', 30)  
+      .attr('height', 30)
       .attr('x', position.x)
       .attr('y', position.y);
     mouseCursorPosition
