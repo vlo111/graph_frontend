@@ -49,7 +49,7 @@ class ToolBar extends Component {
   }
 
   handleKeyDown = (ev) => {
-    if (ev.chartEvent && ev.ctrlPress && !ev.shiftKey) {
+    if (ev.chartEvent && ev.ctrlPress && !ev.shiftKey && !ev.altKey) {
       if (ev.keyCode === KEY_CODES.analytic_code) {
         ev.preventDefault();
         ChartUtils.keyEvent(ev);
