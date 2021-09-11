@@ -255,7 +255,7 @@ class MediaModal extends Component {
     documentSearch = this.insertVideo(documentSearch);
 
     // Search media
-    documentSearch = documentSearch?.filter((p) => p.node.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+    documentSearch = documentSearch?.filter((p) => p.node?.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
 
     return (
       <div className="mediaModal">
@@ -319,7 +319,7 @@ class MediaModal extends Component {
             ? (
               <div className="mediaContainer mediaGallery">
                 {documentSearch.map((document) => {
-                  // console.log('document --- ', document);
+                  document.tags = document?.tags?.filter(p => p !== '');
                   return document.id && (
                     <div className="imageFrameTTT">
                       <figure className="img-container">
@@ -328,39 +328,69 @@ class MediaModal extends Component {
                             <div className={`xxxx xxxx1_${document.id}`}>
                               <div className='mediaInfo'>
                                 <span className='mediaLeter'>Uploaded:</span>
-                                <span>{moment(document.updatedAt).calendar()}</span>
+                                <span className='item'>{moment(document.updatedAt).format('YYYY.MM.DD')}</span>
                               </div>
                               <div className='mediaInfo'>
                                 <span className='mediaLeter'>User Name:</span>
-                                <span className='mediUser'>
+                                <span className='mediaUser item'>
                                   <Link to={`/profile/${document.user.id}`}>
                                     {`${document.user.firstName} ${document.user.lastName}`}
                                   </Link>
                                 </span>
                               </div>
-                              <div className='mediaInfo docType'>
-                                <span className='mediaLeter'>type:</span>
-                                {/* <span>{document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}</span> */}
-                              </div>
-                              <div className='mediaInfo'>
-                                <span className='mediaLeter'>Description:</span>
-                                <span  >
-                                  {(document.description && document.description.length > 18
-                                    ? `${document.description.substr(0, 18)}... `
-                                    : document.description)}
-                                </span>
-                              </div>
-                              <div className='mediaInfo'>
-                                <span className='mediaLeter'>Tags:</span>
-                                <span>{`${document.tags} `} </span>
-                              </div>
+                              {_.isEmpty(document.data)
+                                ? (
+                                  <></>
+                                ) : (
+                                  <div className='mediaInfo docType'>
+                                    <span className='mediaLeter'>type:</span>
+                                    <span className='item'>{document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}</span>
+                                  </div>
+                                )}
+                              {_.isEmpty(document.description)
+                                ? (
+                                  <></>
+                                ) : (
+                                  <div className='mediaInfo mediaDescription'>
+                                    <span className='mediaLeter'>Description:</span>
+                                    <span className='descriptionLeng'>
+                                      {(document.description && document.description.length > 45
+                                        ? `${document.description.substr(0, 45)}... `
+                                        : document.description)}
+                                    </span>
+                                  </div>
+                                )}
+                              {_.isEmpty(document.tags)
+                                ? (
+                                  <></>
+                                ) : (
+                                  <div className='mediaInfo'>
+                                    <span className='mediaLeter'>Tags:</span>
+                                    <span className='item'>{`${document.tags} `} </span>
+                                  </div>
+                                )}
+                              {document.type !== "Image" && document.type !== "Video"
+                                ? (
+                                  <div className='wiewDoc'>
+                                    <a target="_blank" href={document.data} rel="noreferrer">Download</a>
+                                  </div>
+                                ) : document.type === "Image" ? (
+                                  <div className='wiewDoc'>
+                                    <a target="_blank" href={document.data} rel="noreferrer">View</a>
+                                  </div>) : (
+                                  <div className='wiewDoc'>
+                                    <a target="_blank" href={document.data} rel="noreferrer">Play</a>
+                                  </div>
+                                )}
                             </div>
-                            {/* <a target="_blank" href={document.data} rel="noreferrer"> */}
                             <div>
                               {typeof document.data !== 'string'
                                 ? (
                                   <div>
-                                    <iframe src={document.data.src} />
+                                    <iframe
+                                      src={document.data.src}
+                                      className='mediaVideo'
+                                    />
                                   </div>
                                 )
                                 : (
@@ -370,7 +400,6 @@ class MediaModal extends Component {
                                   />
                                 )}
                             </div>
-                            {/* </a> */}
                           </div>
                           <span
                             className="nodeLink"
@@ -389,7 +418,12 @@ class MediaModal extends Component {
                                     ? `${document.node.name.substr(0, 8)}... `
                                     : document.node.name}
                                 </span>
-                                <span className='typeDocument'> {document.type}  </span>
+                                {document.type === 'Video' || document.type === 'Image'
+                                  ? (
+                                    <span className='typeDocument'> {document.type}  </span>
+                                  ) : (
+                                    <span className='typeDocument'>Null</span>
+                                  )}
                               </div>
                             </div>
                           </span>
