@@ -190,19 +190,24 @@
     .ghModalContent {
       display: flex;
       padding: 3% 0;
+      overflow: hidden;
 
       > .left {
         width: 69%;
         padding: 0 3%;
         border-right: 1px solid $color-light-gray;
-        overflow: auto;
+        overflow: hidden;
 
         .nodeTabs {
           margin-top: -20px;
 
           .contentWrapper {
-            height: 400px;
-            padding: 50px 0 0;
+            height: 330px;
+
+            .content {
+              max-height: 265px;
+              padding: 0 20px;
+            }
           }
         }
       }
@@ -300,6 +305,10 @@
 
       .nodeTabs {
         padding: 20px 0;
+
+        #tab-title {
+          margin: 0;
+        }
       }
     }
   }
