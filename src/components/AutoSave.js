@@ -388,13 +388,13 @@ class AutoSave extends Component {
   }
 
   updateThumbnail = async () => {
-    const { defaultImage } = this.props
+    const { defaultImage, nodesCount } = this.props
     const page = 1
     const order = 'newest'
     document.body.classList.add('autoSave');
     const svg = ChartUtils.getChartSvg();
     const { match: { params: { graphId } } } = this.props;
-    if (!defaultImage && graphId) {
+    if (!defaultImage && graphId && nodesCount < 500) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
       this.props.getGraphsListRequest(page, {filter: order})
     }
@@ -409,6 +409,7 @@ class AutoSave extends Component {
 const mapStateToProps = (state) => ({
   defaultImage: state.graphs.singleGraph.defaultImage,
   deleteState: state.app.deleteState,
+  nodesCount: state.graphs.graphInfo
 });
 
 const mapDispatchToProps = {
