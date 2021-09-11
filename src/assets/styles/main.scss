@@ -9131,7 +9131,9 @@ img.preview-scaled {
   user-select: none;
 
   .info-content {
-    display: none;
+    visibility: hidden;
+    display: flex;
+    position: fixed;
     padding: 0 !important;
   }
 
@@ -9149,7 +9151,7 @@ img.preview-scaled {
     transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
 
     div {
-      padding: 9px;
+      padding: 15px 15px;
     }
 
     .info-icon {
