@@ -360,27 +360,6 @@ class Utils {
    */
   static isImg = (link) => !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg', 'jfif']
     .filter((v) => link.includes(v)))
-
-  static calculateCollapse = () => {
-    const closedMenu = document.getElementsByClassName('closed_menu')[0];
-    const menu = document.getElementsByClassName('menu')[0];
-    const tab = document.getElementsByClassName('react-tabs')[0];
-    const footer = document.getElementById('graphs-data-info');
-
-    let left;
-
-    if (closedMenu) {
-      left = closedMenu.offsetWidth;
-    } else {
-      left = menu.offsetWidth;
-    }
-
-    if (tab) {
-      left += tab.offsetWidth + 15;
-    }
-
-    footer.style.left = `${left + 13}px`;
-  }
 }
 
 export default Utils;
