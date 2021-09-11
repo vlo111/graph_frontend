@@ -189,9 +189,8 @@ class AutoSave extends Component {
     document.body.classList.remove('autoSave');
   }
 
-  saveGraph = async () => {
-    const deleteState = this.props.deleteState
-    const { match: { params: { graphId } } } = this.props;
+  saveGraph = async () => { 
+    const { match: { params: { graphId }}, deleteState  } = this.props;
     if (!graphId || Chart.isAutoPosition) {
       return;
     }
@@ -363,7 +362,7 @@ class AutoSave extends Component {
       }  
     });
     if (res.length) {
-      await this.props.getSingleGraphRequest(graphId)
+     position && await this.props.getSingleGraphRequest(graphId)
     }
     document.body.classList.remove('autoSave');
     this.props.toggleDeleteState(false); 
@@ -387,14 +386,13 @@ class AutoSave extends Component {
     }
   }
 
-  updateThumbnail = async () => {
-    const { defaultImage, nodesCount } = this.props
+  updateThumbnail = async () => { 
     const page = 1
     const order = 'newest'
     document.body.classList.add('autoSave');
     const svg = ChartUtils.getChartSvg();
-    const { match: { params: { graphId } } } = this.props;
-    if (!defaultImage && graphId && nodesCount < 500) {
+    const { match: { params: { graphId } } , defaultImage} = this.props;
+    if (!defaultImage && graphId) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
       this.props.getGraphsListRequest(page, {filter: order})
     }

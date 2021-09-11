@@ -5329,20 +5329,6 @@ body .gh__menu {
   }
 }
 
-.wikiSearch {
-  height: 130px;
-  width: 650px;
-  margin: 0 auto;
-  text-align: left;
-  margin-bottom: 10px !important;
-  margin-left: 10px;
-  border: 1px solid #dedede;
-
-  div {
-    padding: 4px;
-  }
-}
-
 label.pull-left::before {
   display: none !important;
 }
@@ -5357,7 +5343,7 @@ label.pull-left::before {
   .Wiki {
     margin: 0 auto;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
   }
   .Wiki form {
     border-radius: 5px;
@@ -5381,10 +5367,11 @@ label.pull-left::before {
   }
 
   .wikibutton {
+    position: relative;
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 250px;
+    top: -25px;
   }
 
   .Wiki input {
@@ -5484,6 +5471,8 @@ label.pull-left::before {
     position: absolute;
   }
   .wikiCreateNode {
+    position: relative;
+    top: -25%;
     font-size: 13px !important;
     width: 20%;
     border-radius: 5px !important;
@@ -5492,9 +5481,15 @@ label.pull-left::before {
   .wikiresult {
     overflow-y: auto;
     overflow-x: hidden;
-    .wikiSearch{
+    .wikiSearch {
       margin-bottom: 10px !important;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .wikiresaltselcted {
+      padding: 0 10px;
     }
   }
 
@@ -5507,16 +5502,6 @@ label.pull-left::before {
     }
   }
 
-  .scienceAuthor {
-    margin-bottom: 0.3em;
-    color: #7166f8;
-    font-weight: 400;
-  }
-
-  .scienceGraph {
-    right: 31%;
-  }
-
   .resultAmount {
     color: #1a0dab;
     font-size: 1.5em;
@@ -5527,6 +5512,73 @@ label.pull-left::before {
     margin-left: 1em !important;
     max-width: 3em;
     margin-top: 0.5em;
+  }
+
+  .radiochecket {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .radiochecket input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    background-color: white;
+    border-radius: 50%;
+    border: 1px solid #ababab;
+  }
+
+  .radiochecket:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+
+  .radiochecket input:checked ~ .checkmark {
+    border: 3px solid #ababab;
+    background-color: white;
+  }
+
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .radiochecket input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  .radiochecket .checkmark:after {
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #7166f8;
+  }
+  .wikiSearch {
+    height: 130px;
+    width: 650px;
+    margin: 0 auto;
+    text-align: left;
+    margin-bottom: 10px !important;
+    margin-left: 10px;
+    border: 1px solid #dedede;
   }
 }
 
@@ -7284,9 +7336,9 @@ img.preview-scaled {
   font-size: 1em;
 }
 
-.scienceFormInside {
-  width: 90%
-}
+// .scienceFormInside {
+//   width: 90%
+// }
 
 .acceptCheckedItems {
   width: 100%;
@@ -9072,24 +9124,64 @@ img.preview-scaled {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute; 
+  position: absolute;
+  left: 213px;
   bottom: 2%;
-  font-size: smaller;
-  div {
-    display: flex;
-    padding: 15px 15px;
-        color: white !important;
-    align-items: center;
-    box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
-    border-radius: 3px;
-    height: 40px;
-        background-color: rgba($color-main, .5);
+  user-select: none;
 
-    .ghButton {
-      color: white !important;
+  .info-content {
+    display: none;
+    padding: 0 !important;
+  }
+
+  .info {
+    display: flex;
+    padding: 0;
+    color: $color-very-light-green;
+    align-items: center;
+    border-radius: 5px;
+    height: 42px;
+    margin-right: 10px;
+    background: $color-white;
+    box-shadow: 0 4px 13px rgb(0 0 0 / 10%);
+    width: 50px;
+    transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
+
+    div {
+      padding: 9px;
+    }
+
+    .info-icon {
+      cursor: pointer;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        display: flex;
+
+        path {
+          fill: $color-main;
+        }
+      }
     }
   }
 
+  .mapMode {
+    background-color: $color-white;
+    height: 42px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 180px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-shadow: 0 4px 13px rgba(0, 0, 0, 0.1);
+
+    span {
+      margin: 0 10px;
+      color: $color-graph-name;
+    }
+  }
 }
 
 .linkedinModal {
@@ -9529,9 +9621,8 @@ img.preview-scaled {
   flex-direction: row;
   justify-content: space-around;
   border: 1px solid #dedede;
-  margin: 0 37px;
-  padding: 0 20px;
-  margin-bottom: 10px;
+  padding: 10px 21px;
+  margin: 0 35px 0px;
 }
 
 .scienceCheckBox {
@@ -9550,6 +9641,9 @@ img.preview-scaled {
 
 .scienceArticleData {
   flex: 10;
+  b a {
+    margin-left: 5px;
+  }
 }
 .scinceItems {
   margin-bottom: 10px;
@@ -9595,6 +9689,10 @@ img.preview-scaled {
 }
 
 .scienceFormInside {
+  .btn-classic{
+    font-size: 
+    14px !important;
+  }
   width: 90%;
 }
 

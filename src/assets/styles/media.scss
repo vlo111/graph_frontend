@@ -401,3 +401,22 @@
     }
   }
 }
+@media (max-height: 768px) {
+  .menu {
+  overflow-x: scroll;
+  height: 88%;
+  
+}
+.menu .containerMenu .collapse:hover{
+  overflow: hidden;
+  }
+  .helpName{
+    overflow-x: scroll;
+    width: 31%;
+  }
+  .react-tabs{
+    top: 13%;
+    height: 80%;
+  }
+
+}

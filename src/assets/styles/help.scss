@@ -1,9 +1,10 @@
 .help_menu {
-  position: relative;
-  top: 220px;
   color: #7166f8 !important;
   box-shadow: none !important;
-
+  position: sticky;
+  top: 93%;
+  margin-bottom: 36px;
+  height: 50px;
   &:hover {
     background-color: transparent !important;
   }
@@ -21,14 +22,14 @@
   display: flex;
   margin-left: 15px;
 
-  width: 760px;
-  height: 817px;
+  width: 56%;
+  height: 87%;
   color: white;
   background: white;
   margin-top: 28px;
   box-shadow: 4px 0px 31px rgb(119 113 183 / 22%);
   border-radius: 3px;
-  position: absolute;
+  position: fixed;
 }
 
 .react-tabs__tab-list {
@@ -135,7 +136,7 @@
   border-bottom: 15px solid transparent;
   position: fixed;
   /* background-color: red; */
-  top: 95%;
+  top: 93%;
   left: 199px;
 }
 
