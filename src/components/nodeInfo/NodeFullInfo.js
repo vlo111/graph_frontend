@@ -92,8 +92,8 @@ class NodeFullInfo extends Component {
           />
           <div className="nodeFullContent">
             <NodeTabs nodeId={node.id} editable={editable} />
+            <ConnectionDetails labels={labels} nodes={nodesPartial} links={linksPartial} nodeId={node.id} />
           </div>
-          <ConnectionDetails labels={labels} nodes={nodesPartial} links={linksPartial} nodeId={node.id} />
         </div>
 
         {loading ? (
