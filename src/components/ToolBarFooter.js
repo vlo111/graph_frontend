@@ -67,21 +67,24 @@ class ToolBarFooter extends Component {
               <div
                 onClick={() => {
                   const infoElement = document.getElementsByClassName('info')[0];
-                  const infoContentElement = document.getElementsByClassName('info-content')[0];
+                  const infoContentElement = infoElement.lastElementChild;
 
-                  if (infoElement.style.width.includes('360')) {
-                    infoElement.style.width = '50px';
+                  if (infoContentElement.style.position === '' || infoContentElement.style.position === 'fixed') {
+                    const width = `${infoElement.offsetWidth + infoElement.lastElementChild.offsetWidth + 30}px`;
 
-                    infoContentElement.style.display = 'none';
-                  } else {
-                    if(updateLocation){  
-                    infoElement.style.width = '360px';
-                        } else { 
-                          infoElement.style.width = '500px' ;
-                      }
+                    infoContentElement.style.position = 'relative';
+
+                    infoElement.style.width = width;
+
                     setTimeout(() => {
-                      infoContentElement.style.display = 'flex';
-                    }, 150);
+                      infoContentElement.style.visibility = 'initial';
+                    }, 140);
+                  } else {
+                    infoContentElement.style.position = 'fixed';
+
+                    infoContentElement.style.visibility = 'hidden';
+
+                    infoElement.style.width = '50px';
                   }
                 }}
                 className="info-icon"
