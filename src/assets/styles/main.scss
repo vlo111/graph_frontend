@@ -715,7 +715,6 @@ p {
   max-height: 100vh;
   position: relative;
   background-color: #eeeeee;
-
   &.maps-view {
     display: none !important;
   }
@@ -876,6 +875,9 @@ p {
         opacity: 0.1 !important;
         pointer-events: none;
       }
+      &.emphasisConnection {
+          stroke: yellow !important;
+        }
     }
   }
 
@@ -977,6 +979,13 @@ p {
       }
     }
 
+    &.emphasisIcon {
+      :not(text) {
+        stroke-width: 4 !important;
+        stroke: yellow !important;
+        stroke-dasharray: 12 !important;
+      }
+    }
     text {
       font-family: $font-family;
       dominant-baseline: central;
@@ -1580,8 +1589,8 @@ p {
       object-fit: cover;
     }
 
-    .graphInputName {
-      border: none;
+    .graphInputName{
+      border:none;
       border-bottom: 1px solid #AAAAAA;
       border-radius: 1px;
       color: $color-graph-name;
@@ -1604,33 +1613,32 @@ p {
     }
   }
 
-  .createGraph {
+  .createGraph{
     width: 370px;
     padding-bottom: 30px;
 
-    .form {
+    .form{
       margin: auto;
       width: 84%;
       height: 84%;
-
-      .ghInput input {
+      .ghInput input{
         padding: 0;
         width: 210px;
-        border: none;
-        border-bottom: 1px solid $color-user-text;
-        border-radius: 0;
-        font-size: 23px;
-        color: $color-dark;
+        border:none;
+        border-bottom:1px solid $color-user-text;
+        border-radius:0;
+        font-size:23px;
+        color:$color-dark;
         margin: -20px auto auto;
 
         &::-webkit-input-placeholder {
           color: $color-graph-name;
           font-weight: 700;
-          text-align: center;
+          text-align:center;
         }
       }
 
-      .ghInput textarea {
+      .ghInput textarea{
         margin-top: 20px;
         border-radius: 5px;
         border: 1px solid #AAAAAA;
@@ -1643,8 +1651,7 @@ p {
           font-size: 16px;
         }
       }
-
-      .buttons {
+      .buttons{
         justify-content: space-between;
       }
     }
@@ -1974,7 +1981,7 @@ p {
     min-width: 640px;
 
     thead {
-      .allTableCellChekked {
+      .allTableCellChecked {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -2961,21 +2968,21 @@ p {
         margin-top: 2%;
       }
 
-      .colorBox {
-        height: 30px;
-        width: 75px;
-        background-color: #f4f4ff;
-        border-radius: 7px;
-        overflow: hidden;
-        border: 3px solid;
-        pointer-events: none;
+          .colorBox {
+            height: 30px;
+            width: 75px;
+            background-color: #f4f4ff;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 3px solid;
+            pointer-events: none;
 
-        div {
-          width: 100%;
-          height: 100%;
+            div {
+              width: 100%;
+              height: 100%;
           opacity: .7;
-        }
-      }
+            }
+          }
 
       .badge {
         position: absolute;
@@ -3445,13 +3452,12 @@ body .gh__menu {
 
               .nodeType {
                 margin: 0 21px;
-
+                
                 .typeText {
                   color: $color-border;
                   font-weight: 800;
                 }
               }
-
               .toggleTabBox {
                 padding: 0 5px;
               }
@@ -3568,7 +3574,7 @@ body .gh__menu {
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    
     .nodeItem {
       height: 44px;
     }
@@ -3610,7 +3616,6 @@ body .gh__menu {
               white-space: inherit;
             }
           }
-
           .tabRight {
             margin-left: 0;
           }
@@ -4533,7 +4538,7 @@ body .gh__menu {
   width: 64%;
   margin: 0 auto 50px;
   align-items: flex-start;
-  position: relative;
+  position: relative; 
   top: 130px;
 
   .tabsList {
@@ -4550,7 +4555,7 @@ body .gh__menu {
       margin-left: -10px;
 
       .ghButton {
-        background-color: $color-white;
+        background-color:$color-white;
         color: $color-gray;
         border-radius: 24px 24px 0 0;
         padding: 12px 30px 60px;
@@ -4613,11 +4618,9 @@ body .gh__menu {
       position: static;
       margin-left: 10px;
       margin-bottom: -20px;
-
-      .lastItem {
+      .lastItem{
         display: none;
       }
-
       .item {
         margin-left: -10px;
 
@@ -4901,11 +4904,10 @@ body .gh__menu {
 }
 
 
-.embedModal {
+.embedModal{
   border-radius: 0 !important;
   max-width: 638px !important;
   padding: 18px 53px 29px 53px !important;
-
   .graphEmbed {
     h2 {
       font-weight: bold;
@@ -4914,13 +4916,13 @@ body .gh__menu {
       color: $color-main;
       margin-bottom: 10px;
     }
-
+  
     .row {
       display: flex;
       align-items: center;
       margin: 0;
     }
-
+  
     input {
       width: 438px;
       height: 35px;
@@ -4928,39 +4930,37 @@ body .gh__menu {
       box-sizing: border-box;
       border-radius: 3px;
     }
-
-    .copyEmbed {
-      width: 80px;
-      height: 35px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 2px;
-      line-height: normal;
-      font-weight: 400;
-      transition: all 0.25s;
-      text-align: center;
-      font-size: 16px;
-      color: $color-white;
-      cursor: pointer;
-      touch-action: manipulation;
-      outline: none;
-      border: solid 1px;
-      border-color: $color-main;
-      user-select: none;
-      background-color: $color-main;
-      opacity: 1;
-      padding: 0;
-      margin-left: 12px;
-
-      &:hover {
-        background-color: $color-white;
-        color: $color-main;
+    .copyEmbed{
+        width: 80px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 2px;
+        line-height: normal;
+        font-weight: 400;
+        transition: all 0.25s;
+        text-align: center;
+        font-size: 16px;
+        color: $color-white;
+        cursor: pointer;
+        touch-action: manipulation;
+        outline: none;
+        border: solid 1px;
         border-color: $color-main;
-      }
+        user-select: none;
+        background-color: $color-main;
+        opacity:1;
+        padding: 0;
+        margin-left: 12px;
+        &:hover {
+          background-color: $color-white;
+          color: $color-main;
+          border-color: $color-main;
+        }
     }
   }
-}
+  }
 
 .searchData {
   margin-right: auto;
@@ -5235,7 +5235,7 @@ body .gh__menu {
   padding: 0 0 10px;
 }
 
-.undefined .tabsList .lastItem {
+.undefined .tabsList .lastItem{
   display: none;
 }
 
@@ -5329,20 +5329,6 @@ body .gh__menu {
   }
 }
 
-.wikiSearch {
-  height: 130px;
-  width: 650px;
-  margin: 0 auto;
-  text-align: left;
-  margin-bottom: 10px !important;
-  margin-left: 10px;
-  border: 1px solid #dedede;
-
-  div {
-    padding: 4px;
-  }
-}
-
 label.pull-left::before {
   display: none !important;
 }
@@ -5357,9 +5343,8 @@ label.pull-left::before {
   .Wiki {
     margin: 0 auto;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
   }
-
   .Wiki form {
     border-radius: 5px;
     border: 1px solid #7166f8;
@@ -5370,7 +5355,6 @@ label.pull-left::before {
     top: 36px;
     margin: 0 auto 80px;
   }
-
   .Wiki button {
     color: white;
     line-height: 40px;
@@ -5383,10 +5367,11 @@ label.pull-left::before {
   }
 
   .wikibutton {
+    position: relative;
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 250px;
+    top: -25px;
   }
 
   .Wiki input {
@@ -5396,27 +5381,21 @@ label.pull-left::before {
     width: 520px;
     padding: 0 20px;
   }
-
   .Wiki input:focus {
     outline: none;
   }
-
   .Wiki button:focus {
     outline: none;
   }
-
   input[type="checkbox"] {
     display: none;
   }
-
   label.pull-left::before {
     display: none !important;
   }
-
   label.pull-left::after {
     display: none;
   }
-
   .wikiSearch {
     max-height: 150px;
     width: 650px;
@@ -5432,7 +5411,6 @@ label.pull-left::before {
     &:last-child {
       margin-bottom: 0px !important;
     }
-
     h3 {
       color: #1a0dab;
     }
@@ -5461,12 +5439,11 @@ label.pull-left::before {
     a:visited {
       color: #1a0dab;
     }
-
     .searchmatch {
       font-weight: bold;
     }
 
-    .link a:hover {
+    .link  a:hover {
       text-decoration: none;
     }
 
@@ -5486,7 +5463,6 @@ label.pull-left::before {
       line-height: 1.5em;
     }
   }
-
   h2 {
     top: 15%;
     left: 42%;
@@ -5494,21 +5470,26 @@ label.pull-left::before {
     font-size: 40px !important;
     position: absolute;
   }
-
   .wikiCreateNode {
+    position: relative;
+    top: -25%;
     font-size: 13px !important;
     width: 20%;
     border-radius: 5px !important;
     border: 1px solid #dedede !important;
   }
-
   .wikiresult {
     overflow-y: auto;
     overflow-x: hidden;
-
     .wikiSearch {
       margin-bottom: 10px !important;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .wikiresaltselcted {
+      padding: 0 10px;
     }
   }
 
@@ -5521,27 +5502,83 @@ label.pull-left::before {
     }
   }
 
-  .scienceAuthor {
-    margin-bottom: 0.3em;
-    color: #7166f8;
-    font-weight: 400;
-  }
-
-  .scienceGraph {
-    right: 31%;
-  }
-
   .resultAmount {
     color: #1a0dab;
     font-size: 1.5em;
     text-align: center;
     margin: 0em 0 1em 1em;
   }
-
   .sourceLogo {
     margin-left: 1em !important;
     max-width: 3em;
     margin-top: 0.5em;
+  }
+
+  .radiochecket {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .radiochecket input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    background-color: white;
+    border-radius: 50%;
+    border: 1px solid #ababab;
+  }
+
+  .radiochecket:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+
+  .radiochecket input:checked ~ .checkmark {
+    border: 3px solid #ababab;
+    background-color: white;
+  }
+
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .radiochecket input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  .radiochecket .checkmark:after {
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #7166f8;
+  }
+  .wikiSearch {
+    height: 130px;
+    width: 650px;
+    margin: 0 auto;
+    text-align: left;
+    margin-bottom: 10px !important;
+    margin-left: 10px;
+    border: 1px solid #dedede;
   }
 }
 
@@ -7118,7 +7155,7 @@ img.preview-scaled {
 
     .zoomLevel {
       font-size: 12px;
-      color: $color-main;
+      color: $color-button;
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -7299,9 +7336,9 @@ img.preview-scaled {
   font-size: 1em;
 }
 
-.scienceFormInside {
-  width: 90%
-}
+// .scienceFormInside {
+//   width: 90%
+// }
 
 .acceptCheckedItems {
   width: 100%;
@@ -9112,7 +9149,7 @@ img.preview-scaled {
     transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
 
     div {
-      padding: 15px 15px;
+      padding: 9px;
     }
 
     .info-icon {
@@ -9245,10 +9282,9 @@ img.preview-scaled {
     position: fixed;
     z-index: 2;
 
-    details > summary {
+    details>summary {
       list-style: none;
     }
-
     summary::-webkit-details-marker {
       display: none
     }
@@ -9256,7 +9292,6 @@ img.preview-scaled {
     summary::after {
       content: url("../images/icons/arrow-right.svg");
     }
-
     details[open] summary:after {
       content: url("../images/icons/arrow-down.svg");
     }
@@ -9383,7 +9418,7 @@ img.preview-scaled {
         display: flex;
         justify-content: flex-end;
         flex-wrap: wrap;
-        width: calc(100% - 50px);
+        width: calc( 100% - 50px );
 
 
         p {
@@ -9441,7 +9476,7 @@ img.preview-scaled {
 
       thead {
         height: 60px;
-        width: calc(100% - 1em); /* scrollbar is average 1em/16px width, remove it from thead width */
+        width: calc( 100% - 1em ); /* scrollbar is average 1em/16px width, remove it from thead width */
 
         th {
           font-size: 22px;
@@ -9571,7 +9606,7 @@ img.preview-scaled {
   order: 3;
   border-radius: 5px;
   height: 40px;
-  border: 1px solid #7166f8;
+  border: 1 px solid #7166f8;
 }
 
 .scienceSearchSubmit {
@@ -9587,9 +9622,8 @@ img.preview-scaled {
   flex-direction: row;
   justify-content: space-around;
   border: 1px solid #dedede;
-  margin: 0 37px;
-  padding: 0 20px;
-  margin-bottom: 10px;
+  padding: 10px 21px;
+  margin: 0 35px 0px;
 }
 
 .scienceCheckBox {
@@ -9608,8 +9642,10 @@ img.preview-scaled {
 
 .scienceArticleData {
   flex: 10;
+  b a {
+    margin-left: 5px;
+  }
 }
-
 .scinceItems {
   margin-bottom: 10px;
 
@@ -9633,7 +9669,6 @@ img.preview-scaled {
 .scienceCreateNodeButton {
   flex: 1;
 }
-
 .creatGraphScience {
   margin-bottom: 15px;
 }
@@ -9655,13 +9690,16 @@ img.preview-scaled {
 }
 
 .scienceFormInside {
+  .btn-classic{
+    font-size: 
+    14px !important;
+  }
   width: 90%;
 }
 
 .scienceInput:focus {
   outline: none;
 }
-
 .scinceGraphResukt {
   overflow-x: scroll;
   overflow-y: scroll;

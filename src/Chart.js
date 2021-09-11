@@ -2579,7 +2579,7 @@ class Chart {
         const hideNodes = this.node.filter((n) => !nodeIds.has(n.id));
         hideNodes.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
 
-        const hideLinks = this.link.filter((n) => !links.some((l) => l.index === n.index));
+        const hideLinks = this.link.filter((n) => !links.some((l) => l.id === n.id));
         hideLinks.attr('class', ChartUtils.setClass(() => ({ hidden: true })));
 
         const hideDirections = this.directions.filter((n) => !links.some((l) => l.index === n.index));
@@ -3186,6 +3186,8 @@ class Chart {
       .append('use')
       .attr('fill', ChartUtils.cursorColor(fullName))
       .attr('href', '#mouseCursor')
+      .attr('width', 25)  
+      .attr('height', 25)
       .attr('x', position.x)
       .attr('y', position.y);
     mouseCursorPosition

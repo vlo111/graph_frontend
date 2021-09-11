@@ -190,7 +190,7 @@ class AutoSave extends Component {
   }
 
   saveGraph = async () => { 
-    const { match: { params: { graphId }, deleteState } } = this.props;
+    const { match: { params: { graphId }}, deleteState  } = this.props;
     if (!graphId || Chart.isAutoPosition) {
       return;
     }
