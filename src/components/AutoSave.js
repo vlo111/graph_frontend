@@ -409,7 +409,7 @@ class AutoSave extends Component {
 const mapStateToProps = (state) => ({
   defaultImage: state.graphs.singleGraph.defaultImage,
   deleteState: state.app.deleteState,
-  nodesCount: state.graphs.graphInfo
+  nodesCount: state.graphs.graphInfo.totalNodes
 });
 
 const mapDispatchToProps = {
