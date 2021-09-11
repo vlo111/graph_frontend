@@ -73,8 +73,12 @@ class ConnectionDetails extends Component {
     return (!connectedNodes.length ? null
       : (
         <div className="connectionDetails">
-          <details open>
-            <summary>
+          <details open id="connection-title">
+            <summary
+              onClick={() => {
+                document.getElementById('tab-title').removeAttribute('open');
+              }}
+            >
               Connections (
               {length}
               )
@@ -87,35 +91,39 @@ class ConnectionDetails extends Component {
                     <legend className="linkTypes">{nodeGroup[0].linkType}</legend>
                     <ul className="list">
                       {nodeGroup.map((d) => (
-                          <li className="item" key={d.connected.id}>
-                            {exportNode === undefined || exportNode === false
-                                ? (
-                                    <Link
-                                        onClick={(ev) => this.openFolder(ev, d)}
-                                        replace
-                                        to={`?${queryString.stringify({ ...queryObj, info: d.connected.id })}`}
-                                    >
-                                      <div className="left">
-                                        <NodeIcon node={d.connected} />
-                                      </div>
-                                      <div className="right">
-                                        <span className="name">{d.connected.name}</span>
-                                        <span className="type">{d.connected.type}</span>
-                                      </div>
-                                    </Link>
-                                )
-                                : (
-                                    <a href="#">
-                                      <div className="left">
-                                        <NodeIcon node={d.connected} />
-                                      </div>
-                                      <div className="right">
-                                        <span className="name">{d.connected.name}</span>
-                                        <span className="type">{d.connected.type}</span>
-                                      </div>
-                                    </a>
-                                )}
-                          </li>
+                        <li className="item" key={d.connected.id}>
+                          {exportNode === undefined || exportNode === false
+                            ? (
+                              <Link
+                                onClick={(ev) => this.openFolder(ev, d)}
+                                replace
+                                to={`?${queryString.stringify({ ...queryObj, info: d.connected.id })}`}
+                              >
+                                <div className="left">
+                                  <NodeIcon node={d.connected} />
+                                </div>
+                                <div className="right">
+                                  <span className="name">
+                                    {d.connected.name && d.connected.name.length > 18
+                                      ? `${d.connected.name.substr(0, 18)}... `
+                                      : d.connected.name}
+                                  </span>
+                                  <span className="type">{d.connected.type}</span>
+                                </div>
+                              </Link>
+                            )
+                            : (
+                              <a href="#">
+                                <div className="left">
+                                  <NodeIcon node={d.connected} />
+                                </div>
+                                <div className="right">
+                                  <span className="name">{d.connected.name}</span>
+                                  <span className="type">{d.connected.type}</span>
+                                </div>
+                              </a>
+                            )}
+                        </li>
                       ))}
                     </ul>
                   </fieldset>
