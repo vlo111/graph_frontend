@@ -1498,10 +1498,6 @@ p {
       svg {
         width: 13px;
         height: 13px;
-
-        path {
-          fill: $color-accent;
-        }
       }
     }
 
@@ -1629,7 +1625,7 @@ p {
         border-radius:0;
         font-size:23px;
         color:$color-dark;
-        margin: -20px auto auto;
+        margin: -4px auto auto;
 
         &::-webkit-input-placeholder {
           color: $color-graph-name;

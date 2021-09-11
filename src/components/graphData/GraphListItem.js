@@ -11,7 +11,21 @@ class GraphListItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
   }
+  
+  updateGraph = (graph) => {
+    const { graphs } = this.props;
 
+    graphs.map((p) => {
+      if (p.id === graph.id) {
+        p.title = graph.title;
+        p.description = graph.description;
+      }
+    });
+
+    this.setState({
+      graphs,
+    });
+  }
 
   render() {
     const { graphs, headerTools, mode } = this.props;
@@ -24,7 +38,7 @@ class GraphListItem extends Component {
         <article className="graphsItem" >
         <div>
           <Tooltip overlay={graph.title} placement="bottom" className='tooltipList'>
-            <h3> {graph.title.length > 18 ? `${graph.title.substring(0, 18)}...` : graph.title}</h3>
+            <h3> {graph.title.length > 30 ? `${graph.title.substring(0, 30)}...` : graph.title}</h3>
           </Tooltip>
           {(mode === 'card') ? (<p> {graph.description}</p>) : ''}
         </div>  
@@ -53,7 +67,7 @@ class GraphListItem extends Component {
           
         </div>
         <div className="sub-menus" >
-              <GraphDashboardSubMnus graph={graph} headerTools={headerTools} />
+              <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={graph} headerTools={headerTools} />
         </div>
         
       </article>
