@@ -82,10 +82,10 @@ class ScienceGraphModal extends Component {
         url: arxivUrl,
         name: 'arxiv',
       },
-      // {
-      //   url: coreUrl,
-      //   name: 'core',
-      // },
+      {
+        url: coreUrl,
+        name: 'core',
+      },
     ];
     let fetchedSources = await this.fetchUrls(urls);
     fetchedSources = fetchedSources.filter(source => source?.articles)
@@ -224,8 +224,7 @@ class ScienceGraphModal extends Component {
             name: url.name,
           };
           return result;
-        } catch (e) {
-        }
+        } catch (e) {}
       }),
     );
     return result;
