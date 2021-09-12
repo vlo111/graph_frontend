@@ -17,6 +17,8 @@ import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 import Button from "../form/Button";
 import Checkbox from '../form/Checkbox';
 
+const { REACT_APP_MAX_NODE_AND_LINK } = process.env;
+
 class SearchModal extends Component {
   static propTypes = {
     getAllTabsRequest: PropTypes.func.isRequired,
@@ -61,7 +63,7 @@ class SearchModal extends Component {
     const { nodes, links } = this.props.singleGraph
     const chartNodes = Chart.getNodes()
     if (!chartNodes.length && nodes?.length) {
-      if (nodes?.length + links?.length > 1000) {
+      if (nodes?.length + links?.length > REACT_APP_MAX_NODE_AND_LINK) {
         Chart.render({nodes:[], links:[]}, {ignoreAutoSave: true,}) 
       } else {
         Chart.render({nodes, links}, {ignoreAutoSave: true,}) 
