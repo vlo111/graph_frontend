@@ -10,9 +10,9 @@ import { setActiveButton } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
 import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
+import bgImage from '../../assets/images/mediaDocument.png';
 import Button from '../form/Button';
 import { getDocumentsRequest } from '../../store/actions/document';
-import NodeIcon from '../NodeIcon';
 import { getSingleGraphRequest, getAllTabsRequest, setActiveTab } from '../../store/actions/graphs';
 import ChartUtils from '../../helpers/ChartUtils';
 import Input from '../form/Input';
@@ -57,6 +57,7 @@ class MediaModal extends Component {
       getCheckedVideos: true,
       search: '',
       showDropDown: false,
+      showVideo: false,
       fullWidth: false,
 
     };
@@ -211,17 +212,22 @@ class MediaModal extends Component {
     this.setState({ showDropDown: !showDropDown });
 
   }
+  toggleVideo = () => {
+    const { showVideo } = this.state;
+    this.setState({ showVideo: !showVideo });
+
+  }
 
   toggleFullWidth = () => {
     const { fullWidth } = this.state;
     this.setState({ fullWidth: !fullWidth });
   }
   showMediaOver = (id) => {
-    document.getElementsByClassName(`xxxx1_${id}`)[0].style.display = 'flex'
+    document.getElementsByClassName(`medInfo1_${id}`)[0].style.display = 'flex'
   }
 
   hideMediaOver = (id) => {
-    document.getElementsByClassName(`xxxx1_${id}`)[0].style.display = 'none'
+    document.getElementsByClassName(`medInfo1_${id}`)[0].style.display = 'none'
   }
 
 
@@ -234,7 +240,7 @@ class MediaModal extends Component {
     this.initialGraph();
 
     const {
-      fullWidth, showDropDown, getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
+      fullWidth, showDropDown, showVideo, getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
     } = this.state;
 
     const graphIdParam = Utils.getGraphIdFormUrl();
@@ -272,7 +278,6 @@ class MediaModal extends Component {
           </div>
           <h2>Media gallery</h2>
           <div className="mediaHeader">
-
             <div className='showCheck' onClick={this.toggleDropDown}>
               <div>Show</div>
               <div className='carretMedia'>
@@ -320,12 +325,13 @@ class MediaModal extends Component {
               <div className="mediaContainer mediaGallery">
                 {documentSearch.map((document) => {
                   document.tags = document?.tags?.filter(p => p !== '');
+                  console.log('data----', document);
                   return document.id && (
-                    <div className="imageFrameTTT">
+                    <div className="imageFrame">
                       <figure className="img-container">
                         <div>
                           <div onMouseOver={() => this.showMediaOver(document.id)} onMouseOut={() => this.hideMediaOver(document.id)}>
-                            <div className={`xxxx xxxx1_${document.id}`}>
+                            <div className={`medInfo medInfo1_${document.id}`}>
                               <div className='mediaInfo'>
                                 <span className='mediaLeter'>Uploaded:</span>
                                 <span className='item'>{moment(document.updatedAt).format('YYYY.MM.DD')}</span>
@@ -379,7 +385,16 @@ class MediaModal extends Component {
                                     <a target="_blank" href={document.data} rel="noreferrer">View</a>
                                   </div>) : (
                                   <div className='wiewDoc'>
-                                    <a target="_blank" href={document.data} rel="noreferrer">Play</a>
+                                    <div onClick={this.toggleVideo} className="viewDocModal" >
+                                      <button id="button"><i class="fa fa-play" aria-hidden="true"></i></button>
+                                    </div>
+                                    {showVideo ? (
+                                      <Outside onClick={this.toggleVideo} exclude=".viewDocModal">
+                                        <div className='mediaVideoModal'>
+                                          <p>Not internet conection!</p>
+                                        </div>
+                                      </Outside>
+                                    ) : null}
                                   </div>
                                 )}
                             </div>
@@ -393,7 +408,14 @@ class MediaModal extends Component {
                                     />
                                   </div>
                                 )
-                                : (
+                                : document.type !== "Image" && document.type !== "Video" ? (
+                                  <div className='documContainer'>
+                                    <img
+                                      src={bgImage}
+                                      className='mediaDocument'
+                                    />
+                                  </div>
+                                ) : (
                                   <img
                                     className="gallery-box__img"
                                     src={document.data}
@@ -414,8 +436,8 @@ class MediaModal extends Component {
                               />
                               <div className="ooo">
                                 <span title={document.node.name} className="headerName">
-                                  {document.node.name && document.node.name.length > 8
-                                    ? `${document.node.name.substr(0, 8)}... `
+                                  {document.node.name && document.node.name.length > 15
+                                    ? `${document.node.name.substr(0, 15)}... `
                                     : document.node.name}
                                 </span>
                                 {document.type === 'Video' || document.type === 'Image'
