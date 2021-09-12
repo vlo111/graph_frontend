@@ -4,8 +4,8 @@ import SearchModal from "./SearchModal";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import Chart from "../../Chart";
-import memoizeOne from 'memoize-one';
 
+const  { REACT_APP_MAX_NODE_AND_LINK } = process.env
 
 class Search extends Component {
   static propTypes = {
@@ -34,7 +34,7 @@ class Search extends Component {
 
     if(graphId && Object.keys(graphInfo)?.length && (
       showSearch 
-      || (graphInfo?.totalNodes + graphInfo?.totalLinks > 1000
+      || (graphInfo?.totalNodes + graphInfo?.totalLinks > REACT_APP_MAX_NODE_AND_LINK
         && !nodes?.length && !exploreMode)
     )) {
       if (!exploreMode) {

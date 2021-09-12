@@ -33,6 +33,8 @@ import { GENERATE_THUMBNAIL_WORKER, SOCKET_ACTIVE_MOUSE_TRACKER  } from '../acti
 import { UPDATE_NODES_CUSTOM_FIELDS } from '../actions/nodes';
 import { ONLINE_USERS } from '../actions/app';
 
+const  { REACT_APP_MAX_NODE_AND_LINK } = process.env
+
 const initialState = {
   importData: {},
   graphsList: [],
@@ -195,7 +197,7 @@ export default function reducer(state = initialState, action) {
       const {
         nodes, links, labels, lastUid,
       } = singleGraph;
-      
+
       Chart.render({
         nodes,
         links: ChartUtils.cleanLinks(links, nodes),
@@ -231,7 +233,7 @@ export default function reducer(state = initialState, action) {
       const {
         nodes, links, labels, lastUid,
       } = singleGraph;
-      if (nodes?.length + links?.length > 1000) {
+      if (nodes?.length + links?.length > REACT_APP_MAX_NODE_AND_LINK) {
         Chart.render({
           nodes:[],
           links:[],
