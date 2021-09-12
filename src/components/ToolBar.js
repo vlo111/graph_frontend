@@ -11,10 +11,11 @@ import ChartUtils from '../helpers/ChartUtils';
 import { KEY_CODES } from '../data/keyCodes';
 import AnalyseModal from './Analysis/AnalyseModal';
 import Outside from './Outside';
-import HelpsModal from './Helps'
-import { ReactComponent as Ellipse } from "../assets/images/Ellipse.svg";
-import { ReactComponent as FreeForm } from "../assets/images/freeform.svg";
-import { ReactComponent as Square } from "../assets/images/Square.svg";
+import HelpsModal from './Helps';
+import { ReactComponent as Ellipse } from '../assets/images/Ellipse.svg';
+import { ReactComponent as FreeForm } from '../assets/images/freeform.svg';
+import { ReactComponent as Square } from '../assets/images/Square.svg';
+
 class ToolBar extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
@@ -99,7 +100,7 @@ class ToolBar extends Component {
       }
     }
     if (ev.keyCode === KEY_CODES.escape) {
-      this.props.setActiveButton('create')
+      this.props.setActiveButton('create');
     }
   }
 
@@ -183,15 +184,18 @@ class ToolBar extends Component {
       });
     }
   }
-//Help click open
+  // Help click open
 
+  openHelpsModal = () => {
+    const { openHelpsModal } = this.state;
+    this.setState({
+      openHelpsModal: !openHelpsModal,
+    });
 
-openHelpsModal = () => {
-  const { openHelpsModal } = this.state;
-  this.setState({
-    openHelpsModal: !openHelpsModal,
-  });
-}
+    setTimeout(() => {
+      this.collapse();
+    }, 20);
+  }
 
   closeModal = () => {
     this.props.setActiveButton('create');
@@ -200,12 +204,20 @@ openHelpsModal = () => {
   closeHelpModal = () => {
     this.setState({
       openHelpsModal: false,
-    })
+    });
+
+    setTimeout(() => {
+      this.collapse();
+    }, 20);
   }
 
   toggleShowModal = () => {
     const { showMenu } = this.state;
     this.setState({ showMenu: !showMenu });
+
+    setTimeout(() => {
+      this.collapse();
+    }, 20);
   };
 
   handleOver = (mode) => {
@@ -266,6 +278,27 @@ openHelpsModal = () => {
     });
   }
 
+  collapse = () => {
+    const closedMenu = document.getElementsByClassName('closed_menu')[0];
+    const menu = document.getElementsByClassName('menu')[0];
+    const tab = document.getElementsByClassName('react-tabs')[0];
+    const footer = document.getElementById('graphs-data-info');
+
+    let left;
+
+    if (closedMenu) {
+      left = closedMenu.offsetWidth;
+    } else {
+      left = menu.offsetWidth;
+    }
+
+    if (tab) {
+      left += tab.offsetWidth + 15;
+    }
+
+    footer.style.left = `${left + 13}px`;
+  }
+
   render() {
     const {
       activeButton,
@@ -273,7 +306,7 @@ openHelpsModal = () => {
     } = this.props;
 
     const {
-      showMenu, overMenu, createNewPopup, showAddNode, showAddLabel, selected, openHelpsModal
+      showMenu, overMenu, createNewPopup, showAddNode, showAddLabel, selected, openHelpsModal,
     } = this.state;
 
     return (
@@ -377,23 +410,24 @@ openHelpsModal = () => {
            <i class="fa fa-history"></i>
            <div className="sidebar_text"> History </div>
          </li> */}
-         <li
+          <li
             onClick={() => this.openHelpsModal()}
             onMouseOver={() => this.handleOver('help')}
             onMouseLeave={this.handleLeave}
-           className={`${overMenu === 'help' ? 'collapse_over' : ''} collapse help_menu `}
-         >
-           <i className="fa fa-question-circle"></i>
-           <div className="sidebar_text"> Help </div>
-         </li>
+            className={`${overMenu === 'help' ? 'collapse_over' : ''} collapse help_menu `}
+          >
+            <i className="fa fa-question-circle" />
+            <div className="sidebar_text"> Help </div>
+          </li>
 
         </ul>
         {createNewPopup ? (
           <Outside onClick={() => this.toggleOutside()}>
             <ul className="dropdown-addNew">
-              <li className={`${selected.includes('node') ? 'selected' : ''}`}
-               onClick={this.showAddNode}
-               >
+              <li
+                className={`${selected.includes('node') ? 'selected' : ''}`}
+                onClick={this.showAddNode}
+              >
                 Node
                 <i className="fa fa-caret-right" />
               </li>
@@ -450,21 +484,21 @@ openHelpsModal = () => {
                 onClick={() => this.handleClick('create-label')}
                 className={`${selected.includes('freeForm') ? 'selected' : ''}`}
               >
-                  <FreeForm className="lablMenu" />
+                <FreeForm className="lablMenu" />
                 <span> Free form </span>
               </li>
               <li
                 onClick={() => this.handleClick('create-label-square')}
                 className={`${selected.includes('create-label-square') ? 'selected' : ''}`}
               >
-                  <Square className="lablMenu" />
+                <Square className="lablMenu" />
                 <span> Square </span>
               </li>
               <li
                 onClick={() => this.handleClick('create-label-ellipse')}
                 className={`${selected.includes('create-label-ellipse') ? 'selected' : ''}`}
               >
-                  <Ellipse className="lablMenu" />
+                <Ellipse className="lablMenu" />
                 <span> Ellipse </span>
               </li>
             </ul>
@@ -472,10 +506,10 @@ openHelpsModal = () => {
           </Outside>
         ) : <></>}
         {activeButton === 'Share' && (
-        <ShareModal closeModal={this.closeModal} graph={singleGraph} />
+          <ShareModal closeModal={this.closeModal} graph={singleGraph} />
         )}
         {openHelpsModal && (
-        <HelpsModal closeModal={this.closeHelpModal}/>
+          <HelpsModal closeModal={this.closeHelpModal} />
         )}
         <AnalyseModal />
       </div>

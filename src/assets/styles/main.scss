@@ -3980,8 +3980,6 @@ body .gh__menu {
 }
 
 .connectionDetails {
-  padding: 0 46px;
-
   details {
 
     .connection-container {
@@ -3997,6 +3995,7 @@ body .gh__menu {
 
         .item {
           margin-bottom: 30px;
+          width: 180px;
 
           a {
             display: flex;
@@ -4040,12 +4039,14 @@ body .gh__menu {
 
         .list {
           margin-top: -15px;
+          display: flex;
+          flex-wrap: wrap;
         }
 
         .linkTypes {
           color: $color-passive;
           font-weight: 600;
-          font-size: 20px;
+          font-size: 16px;
         }
       }
     }
@@ -9082,24 +9083,6 @@ img.preview-scaled {
   }
 }
 
-.connectionDetails, .ghModalFilters {
-  details {
-    padding-bottom: 16px;
-    margin: 10px 0;
-
-    summary {
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      width: 170px;
-
-      &::marker {
-        color: $color-main;
-      }
-    }
-  }
-}
-
 .connection-item {
   display: flex;
   align-items: center;
@@ -9130,7 +9113,9 @@ img.preview-scaled {
   user-select: none;
 
   .info-content {
-    display: none;
+    visibility: hidden;
+    display: flex;
+    position: fixed;
     padding: 0 !important;
   }
 
@@ -9148,7 +9133,7 @@ img.preview-scaled {
     transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
 
     div {
-      padding: 9px;
+      padding: 15px 15px;
     }
 
     .info-icon {
@@ -9281,20 +9266,6 @@ img.preview-scaled {
     position: fixed;
     z-index: 2;
 
-    details>summary {
-      list-style: none;
-    }
-    summary::-webkit-details-marker {
-      display: none
-    }
-
-    summary::after {
-      content: url("../images/icons/arrow-right.svg");
-    }
-    details[open] summary:after {
-      content: url("../images/icons/arrow-down.svg");
-    }
-
     details[open] {
       background: linear-gradient(0deg, rgba(136, 130, 209, 0.12), rgba(136, 130, 209, 0.12));
     }
@@ -9304,16 +9275,10 @@ img.preview-scaled {
       height: 80px;
       background: none;
       box-sizing: border-box;
-      user-select: none;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       line-height: 1px;
       border: 1px solid #DEDEDE;
       padding: 0 35px;
       margin-bottom: 20px;
-      border-radius: 3px;
 
       &:hover {
         background: linear-gradient(0deg, rgba(136, 130, 209, 0.12), rgba(136, 130, 209, 0.12));
@@ -9705,3 +9670,26 @@ img.preview-scaled {
 }
 
 ////main science end
+
+details>summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 3px;
+  height: 100%;
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+summary::after {
+  content: url("../images/icons/arrow-right.svg");
+}
+
+details[open] summary:after {
+  content: url("../images/icons/arrow-down.svg");
+}
