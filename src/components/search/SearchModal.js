@@ -58,12 +58,17 @@ class SearchModal extends Component {
   }
 
   componentWillUnmount() {
+    debugger
     const { nodes, links } = this.props.singleGraph
     const chartNodes = Chart.getNodes()
     if (!chartNodes.length && nodes?.length) {
-      Chart.render({nodes:[], links:[]}, {ignoreAutoSave: true,}) 
+      if (nodes?.length + links?.length > 1000) {
+        Chart.render({nodes:[], links:[]}, {ignoreAutoSave: true,}) 
+      } else {
+        Chart.render({nodes, links}, {ignoreAutoSave: true,}) 
+      }
     } else {
-      // this.props.toggleExplore(true)
+      this.props.toggleExplore(true)
     }
   }
 
@@ -73,6 +78,11 @@ class SearchModal extends Component {
   });
 
   closeModal = () => {
+    debugger
+    const nodes = Chart.getNodes()
+    if (!nodes?.length) {
+      this.props.toggleExplore(true)
+    }
     this.props.toggleSearch(false);
   };
 

@@ -24,12 +24,18 @@ class Search extends Component {
       match: {
         params: { graphId },
       },
+        history: {location: {pathname}}
     } = this.props;
     const nodes = Chart.getNodes()
+
+    if(!pathname.startsWith('/graphs/view/')) {
+      return <></>
+    }
+
     if(graphId && Object.keys(graphInfo)?.length && (
       showSearch 
       || (graphInfo?.totalNodes + graphInfo?.totalLinks > 1000
-        && !nodes?.length)
+        && !nodes?.length && !exploreMode)
     )) {
       if (!exploreMode) {
         Chart.render({nodes:[], links:[], labels: []}, {ignoreAutoSave: true,})
