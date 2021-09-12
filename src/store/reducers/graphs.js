@@ -9,6 +9,7 @@ import {
   GET_NODES_LIST,
   GET_SINGLE_GRAPH,
   GET_ALL_TABS,
+  GET_SINGLE_GRAPH_VIEW,
   SET_NODE_CUSTOM_FIELD,
   ADD_NODE_CUSTOM_FIELD_KEY,
   REMOVE_NODE_CUSTOM_FIELD_KEY,
@@ -202,6 +203,51 @@ export default function reducer(state = initialState, action) {
         embedLabels,
         lastUid,
       });
+      Chart.loading(false);
+      return {
+        ...state,
+        singleGraph,
+        embedLabels,
+        graphInfo: info,
+        singleGraphStatus: 'success',
+      };
+    }
+
+    case GET_SINGLE_GRAPH_VIEW.REQUEST: {
+      return {
+        ...state,
+        singleGraph: {
+          ...state.singleGraph,
+          nodes: [],
+          links: [],
+          labels: [],
+        },
+        singleGraphStatus: 'request',
+      };
+    }
+
+    case GET_SINGLE_GRAPH_VIEW.SUCCESS: {
+      const { graph: singleGraph, embedLabels, info } = action.payload.data;
+      const {
+        nodes, links, labels, lastUid,
+      } = singleGraph;
+      if (nodes?.length + links?.length > 1000) {
+        Chart.render({
+          nodes:[],
+          links:[],
+          links:[],
+          embedLabels:[],
+          lastUid:[],
+        })
+      } else {
+        Chart.render({
+          nodes,
+          links: ChartUtils.cleanLinks(links, nodes),
+          labels,
+          embedLabels,
+          lastUid,
+        });
+      }
       Chart.loading(false);
       return {
         ...state,
