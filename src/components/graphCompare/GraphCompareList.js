@@ -108,7 +108,7 @@ class GraphCompareList extends Component {
         </tr>
       );
 
-      const singleGraph1List = singleGraph1?.nodes?.map((node, index) => {
+      const singleGraph1List = singleGraph1?.nodes?.map((node) => {
         const node2 = singleGraph2?.nodes?.find((n) => n.name === node.name);
         return (
           <>
@@ -134,7 +134,7 @@ class GraphCompareList extends Component {
         );
       });
 
-      const singleGraph2List = singleGraph2?.nodes?.map((node, index) => (
+      const singleGraph2List = (!isSimilar && !singleGraph1) ? singleGraph2?.nodes?.map((node) => (
         <>
           <tr>
             <td>
@@ -146,7 +146,7 @@ class GraphCompareList extends Component {
             </td>
           </tr>
         </>
-      ));
+      )) : null;
 
       return (
         <div className="compareList">
