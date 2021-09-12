@@ -44,13 +44,13 @@ class SearchModal extends Component {
       docs: [],
       keywords: [],
       checkBoxValues: {
-        name: true,
-        tab: true,
-        tag: true,
+        name: false,
+        tab: false,
+        tag: false,
         keyword: true,
       },
       tabsContentVisibility: {},
-      checkBoxAll: true,
+      checkBoxAll: false,
       allNodesSelected: false,
       chosenNodes: [],
       toggleFilterBox: false
@@ -61,7 +61,11 @@ class SearchModal extends Component {
     const { nodes, links } = this.props.singleGraph
     const chartNodes = Chart.getNodes()
     if (!chartNodes.length && nodes?.length) {
-      Chart.render({nodes, links}, {ignoreAutoSave: true,})
+      if (nodes?.length + links?.length > 1000) {
+        Chart.render({nodes:[], links:[]}, {ignoreAutoSave: true,}) 
+      } else {
+        Chart.render({nodes, links}, {ignoreAutoSave: true,}) 
+      }
     } else {
       this.props.toggleExplore(true)
     }
@@ -73,6 +77,10 @@ class SearchModal extends Component {
   });
 
   closeModal = () => {
+    const nodes = Chart.getNodes()
+    if (!nodes?.length) {
+      this.props.toggleExplore(true)
+    }
     this.props.toggleSearch(false);
   };
 
@@ -464,7 +472,12 @@ class SearchModal extends Component {
       links = links.concat(oldLinks)
     }
     links = linksPartial.filter(link => links.some(oldLink => oldLink.id === link.id))
+    // if links are in folder they have fake source and target 
     links = links.filter(link => {
+      if(link.source.startsWith('fake')) {
+        link.source = link._source
+        link.target = link._target
+      }
       if (!keep) {
         link.new = true
         return true
@@ -485,10 +498,10 @@ class SearchModal extends Component {
         ignoreAutoSave: true,
         isAutoPosition: true
     })
-    const newChartNodes = Chart.getNodes();
     ChartUtils.autoScaleTimeOut();
-    // ChartUtils.autoScaleTimeOut(100);
-    // ChartUtils.autoScaleTimeOut(400);
+    ChartUtils.autoScaleTimeOut(200);
+    ChartUtils.autoScaleTimeOut(400);
+    this.props.toggleExplore(true)
     this.closeModal();
     ChartUtils.startAutoPosition()
   }
@@ -559,6 +572,7 @@ class SearchModal extends Component {
       docs, 
       keywords, 
       checkBoxValues,
+      checkBoxAll,
       chosenNodes, 
       allNodesSelected 
     } = this.state;
@@ -587,13 +601,15 @@ class SearchModal extends Component {
                 <div 
                   onClick={this.handleFilterCheckBoxChange}
                   className={"checkBox checkBoxall"}
+                  style={{color: checkBoxAll ? "#7166F8" : "#BEBEBE"}}
                 >
                   All
                 </div>
                 {Object.keys(checkBoxValues).map( field => (
                   <div 
                     onClick={this.handleFilterCheckBoxChange}
-                      className={`checkBox checkBox${field}`}
+                    className={`checkBox checkBox${field}`}
+                    style={{color: checkBoxValues[field] ? "#7166F8" : "#BEBEBE"}}
                   >
                   {field}
                   </div>

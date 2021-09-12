@@ -1161,8 +1161,8 @@ class Chart {
       .append('use')
       .attr('href', '#folderCloseIcon')
       .attr('class', 'closeIcon')
-      .attr('width', '20')
-      .attr('height', '40')
+      .attr('width', '40')
+      .attr('height', '60')
       .attr('fill', '#58595b')
       .attr('x', (d) => _.get(d, 'd[1][0]', squareSize) / 2 - 40)
       .attr('y', (d) => _.get(d, 'd[1][1]', squareSize) / -2 + 10)
@@ -3142,13 +3142,23 @@ class Chart {
    * @returns bool
    */
   static ifNodesConnected(fNodeId, sNodeId, link) {
-    if (link.source === fNodeId && link.target === sNodeId) {
-      return true
+    if (link.source.startsWith('fake')) {
+      if (link._source === fNodeId && link._target === sNodeId) {
+        return true
+      }
+      if (link._source === sNodeId && link._target === fNodeId) {
+        return true
+      }
+      return false
+    } else {
+      if (link.source === fNodeId && link.target === sNodeId) {
+        return true
+      }
+      if (link.source === sNodeId && link.target === fNodeId) {
+        return true
+      }
+      return false
     }
-    if (link.source === sNodeId && link.target === fNodeId) {
-      return true
-    }
-    return false
   }
 
   /**

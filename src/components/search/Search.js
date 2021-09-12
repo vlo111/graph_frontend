@@ -11,6 +11,7 @@ class Search extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
+    graphInfo: PropTypes.object.isRequired,
     showSearch: PropTypes.bool.isRequired,
     exploreMode: PropTypes.bool.isRequired,
   };
@@ -19,23 +20,36 @@ class Search extends Component {
     const {
       showSearch,
       exploreMode,
+      graphInfo,
       match: {
         params: { graphId },
       },
+        history: {location: {pathname}}
     } = this.props;
-    if (!graphId || !showSearch) {
-      return null;
+    const nodes = Chart.getNodes()
+
+    if(!pathname.startsWith('/graphs/view/')) {
+      return <></>
     }
-    if (showSearch === true && exploreMode === false) {
-      Chart.render({nodes:[], links:[], labels: []}, {ignoreAutoSave: true,})
+
+    if(graphId && Object.keys(graphInfo)?.length && (
+      showSearch 
+      || (graphInfo?.totalNodes + graphInfo?.totalLinks > 1000
+        && !nodes?.length && !exploreMode)
+    )) {
+      if (!exploreMode) {
+        Chart.render({nodes:[], links:[], labels: []}, {ignoreAutoSave: true,})
+      }
+      return <SearchModal history={this.props.history} />;
     }
-    return <SearchModal history={this.props.history} />;
+    return <></>
   }
 }
 
 const mapStateToProps = (state) => ({
   filters: state.app.filters,
   customFields: state.graphs.singleGraph.customFields,
+  graphInfo: state.graphs.graphInfo,
   showSearch: state.app.showSearch,
   exploreMode: state.app.exploreMode,
 });
