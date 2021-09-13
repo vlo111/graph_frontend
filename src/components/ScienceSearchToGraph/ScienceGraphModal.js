@@ -9,13 +9,12 @@ import { toast } from 'react-toastify';
 import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
-import ApiImg from '../../assets/images/icons/science.png';
-import arxivImg from '../../assets/images/icons/arxiv.jpg';
-import coreImg from '../../assets/images/icons/core.png';
+import { ReactComponent as ApiImg } from '../../assets/images/icons/science.svg';
+
 import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
 import Button from '../form/Button';
-import Checkbox from './../form/Checkbox';
+import Checkbox from '../form/Checkbox';
 
 const {
   REACT_APP_ARXIV_URL,
@@ -88,7 +87,7 @@ class ScienceGraphModal extends Component {
       },
     ];
     let fetchedSources = await this.fetchUrls(urls);
-    fetchedSources = fetchedSources.filter(source => source?.articles)
+    fetchedSources = fetchedSources.filter((source) => source?.articles);
     if (!fetchedSources.filter((source) => source != undefined)) {
       this.setState({
         searchResults: 0,
@@ -488,87 +487,91 @@ class ScienceGraphModal extends Component {
 
   getListOfArticles = (apiSearchReturnValues, checkedList) => {
     const apiSearchResults = [];
-    for (const index in apiSearchReturnValues) { 
+    for (const index in apiSearchReturnValues) {
       apiSearchResults.push(
-        <label className="pull-left" htmlFor={index} >
-        <div className="scine scienceResultsList"
-        tabIndex="0"
-        onFocus={() => {
-          const items = document.getElementsByClassName('scine');
-          items[index].style.backgroundColor = '#e5e3f5';
-        }}
-         key={index}>
-          <div className="scienceCheckBox">
-            <Checkbox
-              onChange={() => this.handleCheckedButton(index)}
-              checked={checkedList.includes(index)}
-              type="checkbox"
-              name="layout"
-              id={index}
-              value="option1"
-            />
+        <label className="pull-left" htmlFor={index}>
+          <div
+            tabIndex="0"
+            className="scine scienceResultsList"
+            onFocus={() => {
+              const items = document.getElementsByClassName('scienceResultsList');
+              items[index].style.backgroundColor = '#e5e3f5';
+            }}
+            key={index}
+          >
+            <div className="scienceCheckBox">
+              <Checkbox
+                onChange={() => this.handleCheckedButton(index)}
+                checked={checkedList.includes(index)}
+                type="checkbox"
+                name="layout"
+                id={index}
+                value="option1"
+              />
 
-          </div>
-
-          <div className="scienceArticleData">
-            <h3>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={apiSearchReturnValues[index].url}
-              >
-                {apiSearchReturnValues[index].title}
-              </a>
-            </h3>
-            <p className="scienceAuthor">
-
-              <b>Authors: </b>
-              {' '}
-              {apiSearchReturnValues[index].authors}
-            </p>
-            {apiSearchReturnValues[index].topics ? (
-              <p className="scienceAuthor">
-                <b>Topic: </b>
-                {apiSearchReturnValues[index].topics.join(', ')}
-              </p>
-            ) : (
-              ''
-            )}
-            <div>
-            {apiSearchReturnValues[index].origin.includes(
-                'arxiv',
-              ) ? (
-                <b>Source:
-                  <a>https://arxiv.org/</a>
-                   </b>
-                
-                ) : (
-                  ''
-                )} 
-             {apiSearchReturnValues[index].origin.includes(
-                'core',
-              ) ? (
-                <b>Source: 
-                  <a>https://core.ac.uk/</a>
-                </b>
-                ) : (
-                  ''
-                )} 
             </div>
-            <p
-              className=" scienceArticleDescription"
-              dangerouslySetInnerHTML={{
-                __html:
+
+            <div className="scienceArticleData">
+              <h3>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={apiSearchReturnValues[index].url}
+                >
+                  {apiSearchReturnValues[index].title}
+                </a>
+              </h3>
+              <p className="scienceAuthor">
+
+                <b>Authors: </b>
+                {' '}
+                {apiSearchReturnValues[index].authors}
+              </p>
+              {apiSearchReturnValues[index].topics ? (
+                <p className="scienceAuthor">
+                  <b>Topic: </b>
+                  {apiSearchReturnValues[index].topics.join(', ')}
+                </p>
+              ) : (
+                ''
+              )}
+              <div>
+                {apiSearchReturnValues[index].origin.includes(
+                  'arxiv',
+                ) ? (
+                  <b>
+                    Source:
+                    <a>https://arxiv.org/</a>
+                  </b>
+
+                  ) : (
+                    ''
+                  )}
+                {apiSearchReturnValues[index].origin.includes(
+                  'core',
+                ) ? (
+                  <b>
+                    Source:
+                    <a>https://core.ac.uk/</a>
+                  </b>
+                  ) : (
+                    ''
+                  )}
+              </div>
+              <p
+                className=" scienceArticleDescription"
+                dangerouslySetInnerHTML={{
+                  __html:
                   `Abstract:${
                     apiSearchReturnValues[index].abstract}`
                   !== undefined
                     ? apiSearchReturnValues[index].abstract
                     : '',
-              }}
-            />
+                }}
+              />
+            </div>
           </div>
-        </div>
-        </label>
+        </label>,
       );
     }
     return apiSearchResults;
@@ -600,7 +603,9 @@ class ScienceGraphModal extends Component {
           onRequestClose={this.close}
         >
           <div className="scienceModalsubBox">
-            <img src={ApiImg} alt="api" className="scienceLogo" />
+            <div className="scienceLogo">
+              <ApiImg />
+            </div>
             <div className="scienceForm">
               <div className="scienceFormInside">
                 <form action="">
@@ -632,9 +637,22 @@ class ScienceGraphModal extends Component {
             <div className="scienceResultBox">
               <div className="scienceResultAmountBox">
                 <p className="scienceResultAmount">{resultAmount}</p>
+                {checkedList.length ? (
+                  <p className="selectedItemsAmount scinceItems">
+                    Selected Articles
+                    {' '}
+                    {checkedList.length}
+                  </p>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
-            <div className="scinceGraphResukt"> {apiSearchResults} </div>
+            <div className="scinceGraphResukt">
+              {' '}
+              {apiSearchResults}
+              {' '}
+            </div>
           </div>
           <div className="acceptCheckedItems">
             {checkedList.length ? (
@@ -643,13 +661,8 @@ class ScienceGraphModal extends Component {
                   onClick={(ev) => this.createSelectedNodes(ev)}
                   className="ghButton btn-classic creatGraphScience"
                 >
-                  Create Graph
+                  Create Sub Graph
                 </Button>
-                <p className="selectedItemsAmount scinceItems">
-                  Selected Articles
-                  {' '}
-                  {checkedList.length}
-                </p>
               </>
             ) : (
               ''
