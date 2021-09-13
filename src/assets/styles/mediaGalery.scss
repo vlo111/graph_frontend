@@ -182,7 +182,7 @@
     
      
       
-      .container {
+      .containerMedia {
         display: grid;
         grid-template-columns: 30px 1fr;
         grid-template-rows: 38px;
@@ -212,6 +212,10 @@
         span{
           line-height: 1;
           color:#6356FF ;
+
+          &hover{
+            cursor: pointer;
+          }
         }
         .typeDocument{
           font-size: 13px;

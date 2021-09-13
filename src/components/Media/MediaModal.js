@@ -432,7 +432,7 @@ class MediaModal extends Component {
                               () => this.openTab(document.graphId, document.node, document.tabName)
                             }
                           >
-                            <div className="right container">
+                            <div className="right containerMedia">
                               <img
                                 className="userImg"
                                 src={document.user.avatar}
@@ -442,7 +442,7 @@ class MediaModal extends Component {
                                   {document.node.name && document.node.name.length > 15
                                     ? `${document.node.name.substr(0, 15)}... `
                                     : document.node.name}
-                                </span>
+                                 </span>
                                 {document.type === 'Video' || document.type === 'Image'
                                   ? (
                                     <span className="typeDocument">
