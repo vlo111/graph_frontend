@@ -5,7 +5,12 @@ import { Link, Prompt } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
-import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
+import {
+  deleteGraphRequest,
+  getGraphInfoRequest,
+  getSingleGraphViewRequest,
+  getSingleGraphRequest 
+} from '../store/actions/graphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import Chart from '../Chart';
 import AnalysisUtils from '../helpers/AnalysisUtils';

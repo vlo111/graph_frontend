@@ -876,8 +876,8 @@ p {
         pointer-events: none;
       }
       &.emphasisConnection {
-          stroke: yellow !important;
-        }
+        stroke: yellow !important;
+      }
     }
   }
 
@@ -2964,21 +2964,21 @@ p {
         margin-top: 2%;
       }
 
-          .colorBox {
-            height: 30px;
-            width: 75px;
-            background-color: #f4f4ff;
-            border-radius: 7px;
-            overflow: hidden;
-            border: 3px solid;
-            pointer-events: none;
+      .colorBox {
+        height: 30px;
+        width: 75px;
+        background-color: #f4f4ff;
+        border-radius: 7px;
+        overflow: hidden;
+        border: 3px solid;
+        pointer-events: none;
 
-            div {
-              width: 100%;
-              height: 100%;
+        div {
+          width: 100%;
+          height: 100%;
           opacity: .7;
-            }
-          }
+        }
+      }
 
       .badge {
         position: absolute;
@@ -4928,36 +4928,36 @@ body .gh__menu {
       border-radius: 3px;
     }
     .copyEmbed{
-        width: 80px;
-        height: 35px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 2px;
-        line-height: normal;
-        font-weight: 400;
-        transition: all 0.25s;
-        text-align: center;
-        font-size: 16px;
-        color: $color-white;
-        cursor: pointer;
-        touch-action: manipulation;
-        outline: none;
-        border: solid 1px;
+      width: 80px;
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 2px;
+      line-height: normal;
+      font-weight: 400;
+      transition: all 0.25s;
+      text-align: center;
+      font-size: 16px;
+      color: $color-white;
+      cursor: pointer;
+      touch-action: manipulation;
+      outline: none;
+      border: solid 1px;
+      border-color: $color-main;
+      user-select: none;
+      background-color: $color-main;
+      opacity:1;
+      padding: 0;
+      margin-left: 12px;
+      &:hover {
+        background-color: $color-white;
+        color: $color-main;
         border-color: $color-main;
-        user-select: none;
-        background-color: $color-main;
-        opacity:1;
-        padding: 0;
-        margin-left: 12px;
-        &:hover {
-          background-color: $color-white;
-          color: $color-main;
-          border-color: $color-main;
-        }
+      }
     }
   }
-  }
+}
 
 .searchData {
   margin-right: auto;
@@ -6927,135 +6927,9 @@ img.preview-scaled {
   }
 }
 
-.scienceModalsubBox {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  overflow-x: scroll;
-}
-
 .showLabelForm {
   width: 90px;
 }
-
-.scienceModalLoading {
-  right: 50% !important;
-}
-
-.scienceLogo {
-  margin: 0.7em auto;
-  width: 100px;
-}
-
-// style for search form
-.scienceForm {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
-}
-
-.scienceForm form {
-  border-radius: 20px;
-  box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
-  margin-bottom: 30px;
-  max-height: 40px;
-  display: flex;
-}
-
-.scienceForm input, .scienceForm button {
-  line-height: 3em;
-  border-radius: 2em 0 0 2em;
-  border: none;
-  padding: 0 20px;
-}
-
-.scienceForm input {
-  width: 43%
-}
-
-.scienceAuthorInput {
-  flex: 4;
-  order: 1;
-}
-
-.scienceTitleInput {
-  flex: 4;
-  order: 2;
-}
-
-.scienceForm button {
-  flex: 1;
-  order: 3;
-  border-radius: 2em;
-}
-
-.scienceSearchSubmit {
-  outline: none;
-}
-
-.scienceResultAmount {
-  margin-left: 3em;
-}
-
-// style for search results
-.scienceResultsList {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.scienceCheckBox {
-  flex: .7;
-  display: flex;
-  justify-content: center;
-  margin: 0 5px;
-}
-
-.scienceCheckBox input {
-  margin-top: .7em;
-  height: 1.5em;
-  width: 1.5em;
-}
-
-.scienceArticleData {
-  flex: 10
-}
-
-.scienceArticleData .scienceArticleDescription {
-  max-height: 4em;
-  overflow: hidden;
-}
-
-.scienceArticleData h3 {
-  font-weight: 700;
-  font-size: 1.2em;
-  line-height: 1em;
-  margin: .5em 0;
-}
-
-.scienceCreateNodeButton {
-  flex: 1
-}
-
-.scienceCreateNodeButton button {
-  font-size: 0.7em !important;
-  padding: 1em 1.5em !important;
-  margin-right: 3px;
-}
-
-.scienceResultAmountBox {
-  display: flex;
-  justify-content: center;
-}
-
-.scienceResultAmountBox p {
-  font-size: 1em;
-}
-
-// .scienceFormInside {
-//   width: 90%
-// }
 
 .acceptCheckedItems {
   width: 100%;
@@ -7080,10 +6954,6 @@ img.preview-scaled {
 .selectedItemsAmount {
   margin-left: 1em;
   margin-bottom: 0px;
-}
-
-.scienceInput:focus {
-  outline: none;
 }
 
 .social_icon {
@@ -8831,6 +8701,7 @@ img.preview-scaled {
   left: 213px;
   bottom: 2%;
   user-select: none;
+  overflow: hidden;
 
   .info-content {
     visibility: hidden;
@@ -9232,161 +9103,182 @@ img.preview-scaled {
 
 ////main science
 
-.scienceModalsubBox {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  overflow-x: scroll;
-}
+.scienceModal {
+  height: auto !important;
+  max-height: calc(100% - 110px) !important;
+  top: 90px !important;
 
-.scienceModalLoading {
-  right: 50% !important;
-}
-
-.scienceLogo {
-  margin: 0.7em auto;
-  width: 100px;
-}
-
-.scienceForm {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
-}
-
-.scienceForm form {
-  border-radius: 20px;
-  box-shadow: 0 0 19px 1px rgba(0, 0, 0, 0.39);
-  margin-bottom: 30px;
-  max-height: 40px;
-  display: flex;
-}
-
-.scienceForm input,
-.scienceForm button {
-  // line-height: 3em;
-  border-radius: 5px;
-  border: none;
-  padding: 0 20px;
-}
-
-.scienceForm input {
-  width: 43%;
-}
-
-.scienceAuthorInput {
-  flex: 4;
-  order: 1;
-}
-
-.scienceTitleInput {
-  flex: 4;
-  order: 2;
-}
-
-.scienceForm button {
-  flex: 1;
-  order: 3;
-  border-radius: 5px;
-  height: 40px;
-  border: 1 px solid #7166f8;
-}
-
-.scienceSearchSubmit {
-  outline: none;
-}
-
-.scienceResultAmount {
-  margin-left: 3em;
-}
-
-.scienceResultsList {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  border: 1px solid #dedede;
-  padding: 10px 21px;
-  margin: 0 35px 0px;
-}
-
-.scienceCheckBox {
-  flex: 0.7;
-  display: flex;
-  justify-content: center;
-  margin: 0 5px;
-  align-items: center;
-}
-
-.scienceCheckBox input {
-  height: 1.5em;
-  width: 1.5em;
-  color: #727272;
-}
-
-.scienceArticleData {
-  flex: 10;
-  b a {
-    margin-left: 5px;
+  .scienceModalsubBox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: scroll;
   }
-}
-.scinceItems {
-  margin-bottom: 10px;
 
-  color: #7166f8;
-  font-size: 16px;
-  margin-left: 9px;
-}
-
-.scienceArticleData .scienceArticleDescription {
-  max-height: 4em;
-  overflow: hidden;
-}
-
-.scienceArticleData h3 {
-  font-weight: 700;
-  font-size: 1.2em;
-  line-height: 1em;
-  margin: 0.5em 0;
-}
-
-.scienceCreateNodeButton {
-  flex: 1;
-}
-.creatGraphScience {
-  margin-bottom: 15px;
-}
-
-.scienceCreateNodeButton button {
-  font-size: 0.7em !important;
-  padding: 1em 1.5em !important;
-  margin-right: 3px;
-}
-
-.scienceResultAmountBox {
-  display: flex;
-  justify-content: center;
-}
-
-.scienceResultAmountBox p {
-  font-size: 1em;
-  color: #787878;
-}
-
-.scienceFormInside {
-  .btn-classic{
-    font-size: 
-    14px !important;
+  .scienceForm {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 42px 0px 35px;
   }
-  width: 90%;
-}
 
-.scienceInput:focus {
-  outline: none;
-}
-.scinceGraphResukt {
-  overflow-x: scroll;
-  overflow-y: scroll;
+  .scienceForm input,
+  .scienceForm button {
+    // line-height: 3em;
+    border-radius: 5px;
+    border: none;
+    padding: 0 20px;
+  }
+
+  .scienceForm input {
+    width: 43%;
+  }
+
+  .scienceAuthorInput {
+    flex: 4;
+    order: 1;
+    border-right: 1px solid $color-main !important;
+    border-radius: 5px 0 0 5px !important;
+  }
+
+  .scienceTitleInput {
+    flex: 4;
+    order: 2;
+  }
+
+  .scienceForm button {
+    flex: 1;
+    order: 3;
+    border-radius: 5px;
+    height: 40px;
+    border: 1 px solid #7166f8;
+  }
+
+  .scienceSearchSubmit {
+    outline: none;
+  }
+
+  .scienceResultAmount {
+    margin-left: 3em;
+  }
+
+  .scienceResultsList {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border: 1px solid #dedede;
+    padding: 10px 21px;
+    margin: 0 35px 0px;
+  }
+
+  .scienceCheckBox {
+    flex: 0.7;
+    display: flex;
+    justify-content: center;
+    margin: 0 5px;
+    align-items: center;
+  }
+
+  .scienceCheckBox input {
+    height: 1.5em;
+    width: 1.5em;
+    color: #727272;
+  }
+
+  .scienceArticleData {
+    flex: 10;
+    b a {
+      margin-left: 5px;
+      font-weight: 500;
+    }
+  }
+  .scinceItems {
+    margin-bottom: 10px;
+
+    color: #7166f8;
+    font-size: 16px;
+    margin-left: 9px;
+  }
+
+  .scienceArticleData .scienceArticleDescription {
+    max-height: 4em;
+    overflow: hidden;
+  }
+
+  .scienceArticleData h3 {
+    font-weight: 700;
+    font-size: 1.2em;
+    line-height: 1em;
+    margin: 0.5em 0;
+  }
+
+  .scienceCreateNodeButton {
+    flex: 1;
+  }
+
+  .creatGraphScience {
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+
+  .scienceCreateNodeButton button {
+    font-size: 0.7em !important;
+    padding: 1em 1.5em !important;
+    margin-right: 3px;
+  }
+
+  .scienceResultAmountBox {
+    margin: -15px 40px 15px -7px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .scienceResultAmountBox p {
+    font-size: 14px;
+    color: #787878;
+  }
+
+  .scienceFormInside {
+    .btn-classic{
+      font-size: 14px !important;
+      margin-right: -1px;
+      margin-top: -1px;
+      height: 39px;
+
+      &:hover {
+        background-color: $color-main;
+        color: white;
+      }
+    }
+    width: 100%;
+  }
+
+  .scienceInput:focus {
+    outline: none;
+  }
+
+  .scinceGraphResukt {
+    overflow: scroll;
+  }
+
+  .scienceModalLoading {
+    right: 50% !important;
+  }
+
+  .scienceLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  .scienceForm form {
+    border: 1px solid #7166F8;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    display: flex;
+  }
 }
 
 ////main science end

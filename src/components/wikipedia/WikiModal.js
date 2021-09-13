@@ -6,7 +6,6 @@ import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import Utils from '../../helpers/Utils';
 import { ReactComponent as WikiSvg } from '../../assets/images/wikipedia.svg';
-// import Checkbox from '../form/Checkbox';
 
 class WikiModal extends Component {
   constructor(props) {
