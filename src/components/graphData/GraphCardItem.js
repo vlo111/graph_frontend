@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import GraphListFooter from './GraphListFooter';
 import GraphDashboardSubMnus from './GraphListHeader';
 import { ReactComponent as PlusSvg } from '../../assets/images/icons/plusGraph.svg';
+import Tooltip from 'rc-tooltip';
 
 class GraphCardItem extends Component {
   static propTypes = {
@@ -63,7 +64,7 @@ class GraphCardItem extends Component {
           ? (
             <div className="startGraph" onClick={this.startGraph}>
               <PlusSvg />
-              <h3>Start Graph</h3>
+              <h3>Start a Graph</h3>
             </div>
           ) : null}
         { graphs.map((graph) => (
@@ -80,7 +81,7 @@ class GraphCardItem extends Component {
                     <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
                   </Link>
                   <div className="info">
-                    <span>{moment(graph.updatedAt).startOf('minute').fromNow()}</span>
+                    <span>{moment(graph.updatedAt).calendar()}</span>
                     <span className="nodesCount">{` ${graph.nodesCount} nodes `}</span>
                   </div>
                 </div>
@@ -90,15 +91,19 @@ class GraphCardItem extends Component {
               </div>
             </div>
             <div>
+             <Tooltip overlay={graph.title} placement="bottom" >
               <h3>
                 {' '}
-                {graph.title.length > 18 ? `${graph.title.substring(0, 18)}...` : graph.title}
+                {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
               </h3>
+             </Tooltip> 
               <div className="descriptionGraph">
+              <Tooltip overlay={graph.description} placement="bottom" >
                 <span>
                   {' '}
                   {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
                 </span>
+                </Tooltip>
               </div>
             </div>
 

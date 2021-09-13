@@ -197,7 +197,7 @@ class NodeTabs extends Component {
         <details id="tab-title">
           <summary
             onClick={() => {
-              document.getElementById('connection-title').removeAttribute('open');
+              document.getElementById('connection-title')?.removeAttribute('open');
             }}
           >
             Tabs
