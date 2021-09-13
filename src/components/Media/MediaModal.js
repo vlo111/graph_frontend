@@ -9,7 +9,7 @@ import _ from 'lodash';
 import { setActiveButton } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import { ReactComponent as CompressScreen } from '../../assets/images/icons/compress.svg';
-import { ReactComponent as FullScreen } from '../../assets/images/icons/full-screen.svg';
+import { ReactComponent as FullScreen } from '../../assets/images/icons/CompresMediaModal.svg';
 import bgImage from '../../assets/images/mediaDocument.png';
 import Button from '../form/Button';
 import { getDocumentsRequest } from '../../store/actions/document';
