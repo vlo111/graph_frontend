@@ -9112,6 +9112,7 @@ img.preview-scaled {
   left: 213px;
   bottom: 2%;
   user-select: none;
+  overflow: hidden;
 
   .info-content {
     visibility: hidden;
