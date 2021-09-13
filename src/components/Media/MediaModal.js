@@ -46,7 +46,6 @@ class MediaModal extends Component {
     });
   })
 
-
   constructor() {
     super();
     this.state = {
@@ -174,7 +173,6 @@ class MediaModal extends Component {
   }
 
   insertVideo = (_document) => {
-
     const { singleGraph: { nodesPartial, user }, graphTabs } = this.props;
 
     const { getCheckedVideos } = this.state;
@@ -210,27 +208,26 @@ class MediaModal extends Component {
   toggleDropDown = () => {
     const { showDropDown } = this.state;
     this.setState({ showDropDown: !showDropDown });
-
   }
+
   toggleVideo = () => {
     const { showVideo } = this.state;
     this.setState({ showVideo: !showVideo });
-
   }
 
   toggleFullWidth = () => {
     const { fullWidth } = this.state;
     this.setState({ fullWidth: !fullWidth });
   }
+
   showMediaOver = (id) => {
-    document.getElementsByClassName(`medInfo1_${id}`)[0].style.display = 'flex'
+    console.log(id)
+    // document.getElementsByClassName(`medInfo1_${id}`)[0].style.display = 'flex';
   }
 
   hideMediaOver = (id) => {
-    document.getElementsByClassName(`medInfo1_${id}`)[0].style.display = 'none'
+    document.getElementsByClassName(`medInfo1_${id}`)[0].style.display = 'none';
   }
-
-
 
   render() {
     let { documentSearch } = this.props;
@@ -278,9 +275,9 @@ class MediaModal extends Component {
           </div>
           <h2>Media gallery</h2>
           <div className="mediaHeader">
-            <div className='showCheck' onClick={this.toggleDropDown}>
+            <div className="showCheck" onClick={this.toggleDropDown}>
               <div>Show</div>
-              <div className='carretMedia'>
+              <div className="carretMedia">
                 <ArrowSvg />
               </div>
             </div>
@@ -316,7 +313,7 @@ class MediaModal extends Component {
               value={search}
               onFocus={() => this.searchHandleChange(search)}
               onChangeText={this.searchHandleChange}
-              className='mediaSearch '
+              className="mediaSearch "
               containerClassName="mediaSearch"
             />
           </div>
@@ -324,21 +321,19 @@ class MediaModal extends Component {
             ? (
               <div className="mediaContainer mediaGallery">
                 {documentSearch.map((document) => {
-                  document.tags = document?.tags?.filter(p => p !== '');
-                  console.log('data----', document);
+                  document.tags = document?.tags?.filter((p) => p !== '');
                   return document.id && (
                     <div className="imageFrame">
                       <figure className="img-container">
-                        <div>
-                          <div onMouseOver={() => this.showMediaOver(document.id)} onMouseOut={() => this.hideMediaOver(document.id)}>
-                            <div className={`medInfo medInfo1_${document.id}`}>
-                              <div className='mediaInfo'>
-                                <span className='mediaLeter'>Uploaded:</span>
-                                <span className='item'>{moment(document.updatedAt).format('YYYY.MM.DD')}</span>
+                          <div className={`${document.type !== 'Video' ? 'media-item-hover' : ''}`}>
+                            <div className="medInfo">
+                              <div className="mediaInfo">
+                                <span className="mediaLeter">Uploaded:</span>
+                                <span className="item">{moment(document.updatedAt).format('YYYY.MM.DD')}</span>
                               </div>
-                              <div className='mediaInfo'>
-                                <span className='mediaLeter'>User Name:</span>
-                                <span className='mediaUser item'>
+                              <div className="mediaInfo">
+                                <span className="mediaLeter">User Name:</span>
+                                <span className="mediaUser item">
                                   <Link to={`/profile/${document.user.id}`}>
                                     {`${document.user.firstName} ${document.user.lastName}`}
                                   </Link>
@@ -348,18 +343,18 @@ class MediaModal extends Component {
                                 ? (
                                   <></>
                                 ) : (
-                                  <div className='mediaInfo docType'>
-                                    <span className='mediaLeter'>type:</span>
-                                    <span className='item'>{document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}</span>
+                                  <div className="mediaInfo docType">
+                                    <span className="mediaLeter">type:</span>
+                                    <span className="item">{document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}</span>
                                   </div>
                                 )}
                               {_.isEmpty(document.description)
                                 ? (
                                   <></>
                                 ) : (
-                                  <div className='mediaInfo mediaDescription'>
-                                    <span className='mediaLeter'>Description:</span>
-                                    <span className='descriptionLeng'>
+                                  <div className="mediaInfo mediaDescription">
+                                    <span className="mediaLeter">Description:</span>
+                                    <span className="descriptionLeng">
                                       {(document.description && document.description.length > 45
                                         ? `${document.description.substr(0, 45)}... `
                                         : document.description)}
@@ -370,27 +365,31 @@ class MediaModal extends Component {
                                 ? (
                                   <></>
                                 ) : (
-                                  <div className='mediaInfo'>
-                                    <span className='mediaLeter'>Tags:</span>
-                                    <span className='item'>{`${document.tags} `} </span>
+                                  <div className="mediaInfo">
+                                    <span className="mediaLeter">Tags:</span>
+                                    <span className="item">
+                                      {`${document.tags} `}
+                                      {' '}
+                                    </span>
                                   </div>
                                 )}
-                              {document.type !== "Image" && document.type !== "Video"
+                              {document.type !== 'Image' && document.type !== 'Video'
                                 ? (
-                                  <div className='wiewDoc'>
+                                  <div className="wiewDoc">
                                     <a target="_blank" href={document.data} rel="noreferrer">Download</a>
                                   </div>
-                                ) : document.type === "Image" ? (
-                                  <div className='wiewDoc'>
+                                ) : document.type === 'Image' ? (
+                                  <div className="wiewDoc">
                                     <a target="_blank" href={document.data} rel="noreferrer">View</a>
-                                  </div>) : (
-                                  <div className='wiewDoc'>
-                                    <div onClick={this.toggleVideo} className="viewDocModal" >
-                                      <button id="button"><i class="fa fa-play" aria-hidden="true"></i></button>
+                                  </div>
+                                ) : (
+                                  <div className="wiewDoc">
+                                    <div onClick={this.toggleVideo} className="viewDocModal">
+                                      <button id="button"><i className="fa fa-play" aria-hidden="true" /></button>
                                     </div>
                                     {showVideo ? (
                                       <Outside onClick={this.toggleVideo} exclude=".viewDocModal">
-                                        <div className='mediaVideoModal'>
+                                        <div className="mediaVideoModal">
                                           <p>Not internet conection!</p>
                                         </div>
                                       </Outside>
@@ -404,15 +403,15 @@ class MediaModal extends Component {
                                   <div>
                                     <iframe
                                       src={document.data.src}
-                                      className='mediaVideo'
+                                      className="mediaVideo"
                                     />
                                   </div>
                                 )
-                                : document.type !== "Image" && document.type !== "Video" ? (
-                                  <div className='documContainer'>
+                                : document.type !== 'Image' && document.type !== 'Video' ? (
+                                  <div className="documContainer">
                                     <img
                                       src={bgImage}
-                                      className='mediaDocument'
+                                      className="mediaDocument"
                                     />
                                   </div>
                                 ) : (
@@ -442,18 +441,20 @@ class MediaModal extends Component {
                                 </span>
                                 {document.type === 'Video' || document.type === 'Image'
                                   ? (
-                                    <span className='typeDocument'> {document.type}  </span>
+                                    <span className="typeDocument">
+                                      {' '}
+                                      {document.type}
+                                      {' '}
+                                    </span>
                                   ) : (
-                                    <span className='typeDocument'>Null</span>
+                                    <span className="typeDocument">Null</span>
                                   )}
                               </div>
                             </div>
                           </span>
-                        </div>
-
                       </figure>
                     </div>
-                  )
+                  );
                 })}
               </div>
             ) : <h3 className="mediaNotFound">No Media Found</h3>}
