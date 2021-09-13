@@ -376,10 +376,14 @@ class MediaModal extends Component {
                               {document.type !== 'Image' && document.type !== 'Video'
                                 ? (
                                   <div className="wiewDoc">
-                                    <a target="_blank" href={document.data} rel="noreferrer">Download</a>
+                                    <i class="fa fa-download"></i>
+                                    <a target="_blank" href={document.data} rel="noreferrer">
+                                      Download
+                                      </a>
                                   </div>
                                 ) : document.type === 'Image' ? (
-                                  <div className="wiewDoc">
+                                  <div className="wiewDoc viewImg">
+                                    <i class="fa fa-eye"></i>
                                     <a target="_blank" href={document.data} rel="noreferrer">View</a>
                                   </div>
                                 ) : (

@@ -265,10 +265,20 @@
       font-size: 16px;
       font-weight: 500;
       position: absolute;
+      left: 25%;
       top: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+
+      i{
+        margin-right:5px ;
+      }
 
       a{
         color: white !important;
+        
       }
       #button {
         font-size: 21px;
@@ -352,6 +362,9 @@
         }
       }
     }
+    .viewImg{
+      left: 33% !important;
+    }
     .videoMed{
       position: initial !important;
     }
@@ -375,7 +388,6 @@
     }
     a{
        color: white !important;
-       text-decoration: none;
     }
   }
   }
