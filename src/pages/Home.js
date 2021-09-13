@@ -51,7 +51,7 @@ class Home extends Component {
               <NoGraph />
               <div className="startGraph" onClick={this.startGraph}>
                 <PlusSvg />
-                <h3>Start Graph</h3>
+                <h3>Start a Graph</h3>
               </div>
             </div>
           ) : mode === 'list' ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} headerTools="home" />}
