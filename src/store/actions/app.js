@@ -141,3 +141,13 @@ export function toggleDeleteState(open) {
     },
   };
 }
+export const AUTO_SCALE = 'AUTO_SCALE';
+
+export function autoScale(mode) {
+  return {
+    type: AUTO_SCALE,
+    payload: {
+      mode,
+    },
+  };
+}
