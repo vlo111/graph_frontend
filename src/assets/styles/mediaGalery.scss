@@ -182,7 +182,7 @@
     
      
       
-      .container {
+      .containerMedia {
         display: grid;
         grid-template-columns: 30px 1fr;
         grid-template-rows: 38px;
@@ -266,7 +266,7 @@
       font-weight: 500;
       position: absolute;
       left: 25%;
-      top: 80%;
+      top: 86%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -381,6 +381,14 @@
       .descriptionLeng{
         max-width: 200px !important;
       }
+   }
+   .maediaTags{
+    display: flex !important;
+    flex-direction: column !important;
+    
+    .maediaTagsleng{
+      max-width:200px !important;
+    }
    }
    .mediaUser{
     &:hover{
