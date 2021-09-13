@@ -1,17 +1,20 @@
 .ghModalMedia {
-    width: 42%;
+    width: 60%;
     max-width: unset !important;
     padding: 20px !important;
     max-height: 76% !important;
     align-items: center !important;
     min-height: 32% !important;
+    left: 3% !important;
 
     &#fullWidth {
       position: absolute;
-      width: 67%;
+      width: 80%;
       height: 100%;
       z-index: 10;
       overflow: hidden;
+      left: 15% !important;
+
     }
 
     .mediaNotFound {
@@ -33,12 +36,14 @@
 
       svg{
         color:rgb(112, 112, 112);
-      }
-    }
 
-    .mediaGallery {
-      display: flex;
-      flex-wrap: wrap;
+        .full-screen-Media{
+          fill: #707070;
+        }
+        .comresMedia{
+          fill: #707070;
+        }
+      }
     }
   
     .mediaContainer {
@@ -153,10 +158,11 @@
   }
 
   .mediaGallery {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  
   .imageFrame{
-    width: 220px;
+    // width: 220px;
     height: 300px;
     padding: 12px;
     background: #FFFFFF;
@@ -241,7 +247,7 @@
     display:none;
     height: 230px;
     background: linear-gradient(144.3deg, rgba(226, 55, 21, 0.86) -34.1%, rgba(113, 102, 248, 0.86) 156.19%);
-    width: 89%;
+    width: 91%;
     position: absolute;
     border-radius: 5px;
     flex-direction: column;

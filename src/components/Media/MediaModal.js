@@ -239,7 +239,7 @@ class MediaModal extends Component {
     const {
       fullWidth, showDropDown, showVideo, getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
     } = this.state;
-
+    const size =3;
     const graphIdParam = Utils.getGraphIdFormUrl();
 
     this.searchDocuments(graphIdParam);
@@ -368,7 +368,10 @@ class MediaModal extends Component {
                                   <div className="mediaInfo maediaTags">
                                     <span className="mediaLeter">Tags:</span>
                                     <span className="maediaTagsleng">
-                                      {`${document.tags} `}
+                                      {`${document.tags 
+                                      ? `${document.tags.slice(0,size)}...`
+                                      : document.tags
+                                      } `}
                                       {' '}
                                     </span>
                                   </div>
