@@ -345,7 +345,6 @@
     }
 
     .nodeFullContent .nodeTabs .contentWrapper {
-      height: 250px;
 
       .no-tabs .no-tab-content {
         .header {
@@ -372,6 +371,10 @@
             line-height: 25px;
           }
         }
+      }
+
+      .content {
+        height: 250px;
       }
     }
 

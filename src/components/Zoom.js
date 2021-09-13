@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Icon from './form/Icon';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
-import { toggleGraphMap } from '../store/actions/app';
+import { toggleGraphMap, autoScale } from '../store/actions/app';
 import ReactChartMap from './chart/ReactChartMap';
 import { ReactComponent as FullScreenSvg } from '../assets/images/icons/full-screen.svg';
 import { ReactComponent as FullScreenCloseSvg } from '../assets/images/icons/full-screen-close.svg';
@@ -19,6 +19,7 @@ class Zoom extends Component {
       showMap: false,
       zoom: 100,
       fullScreen: false,
+      scaleCount: 0
     };
   }
 
@@ -27,15 +28,19 @@ class Zoom extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-   // Chart.event.on('render', this.autoScale);
-    Chart.event.on('zoom', this.handleChartZoom); 
+    
+    let { scaleCount }  = this.state;   
+    window.addEventListener('keydown', this.handleKeyDown); 
+     if(scaleCount === 0) Chart.event.on('render', this.autoScale);
+    Chart.event.on('zoom', this.handleChartZoom);
+    scaleCount++;
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-   // Chart.event.removeListener('render', this.autoScale);
+  componentWillUnmount() {    
+    window.removeEventListener('keydown', this.handleKeyDown);  
+    Chart.event.removeListener('render', this.autoScale);
     Chart.event.removeListener('zoom', this.handleChartZoom);
+    this.props.autoScale(false);
   }
 
   handleChartZoom = (ev, d) => {
@@ -184,6 +189,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   toggleGraphMap,
+  autoScale
 };
 
 const Container = connect(

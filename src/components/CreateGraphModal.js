@@ -36,8 +36,8 @@ class CreateGraphModal extends Component {
   }
 
   componentDidMount() {
-    const {show} = this.props
-    if (show) {
+    const {history: {location: {pathname}}} = this.props
+    if (pathname === "/graphs/create") {
       Chart.loading(false);
     }
   }

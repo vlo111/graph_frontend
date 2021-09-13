@@ -194,17 +194,26 @@ class NodeTabs extends Component {
             setActiveTab={this.setActiveTab}
           />
         ) : null}
-        {(activeTab !== '_location')
-        && (
-        <NodeTabsContent
-          name={activeTab}
-          node={node}
-          customFields={nodeCustomFields}
-          activeTab={activeTab}
-          openAddTabModal={this.openFormModal}
-          deleteCustomField={this.deleteCustomField}
-        />
-        )}
+        <details id="tab-title">
+          <summary
+            onClick={() => {
+              document.getElementById('connection-title').removeAttribute('open');
+            }}
+          >
+            Tabs
+          </summary>
+          {(activeTab !== '_location')
+          && (
+          <NodeTabsContent
+            name={activeTab}
+            node={node}
+            customFields={nodeCustomFields}
+            activeTab={activeTab}
+            openAddTabModal={this.openFormModal}
+            deleteCustomField={this.deleteCustomField}
+          />
+          )}
+        </details>
       </div>
     );
   }
