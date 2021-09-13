@@ -365,9 +365,9 @@ class MediaModal extends Component {
                                 ? (
                                   <></>
                                 ) : (
-                                  <div className="mediaInfo">
+                                  <div className="mediaInfo maediaTags">
                                     <span className="mediaLeter">Tags:</span>
-                                    <span className="item">
+                                    <span className="maediaTagsleng">
                                       {`${document.tags} `}
                                       {' '}
                                     </span>
@@ -432,7 +432,7 @@ class MediaModal extends Component {
                               () => this.openTab(document.graphId, document.node, document.tabName)
                             }
                           >
-                            <div className="right container">
+                            <div className="right containerMedia">
                               <img
                                 className="userImg"
                                 src={document.user.avatar}
