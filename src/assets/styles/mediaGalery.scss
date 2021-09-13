@@ -170,10 +170,6 @@
       height: 230px;
       object-fit: cover;
       border-radius: 5px;
-      
-      &:hover{
-        opacity: 0.2;
-      }
     }
     iframe{
       width: 100%;
@@ -383,3 +379,11 @@
     }
   }
   }
+
+.media-item-hover {
+  &:hover {
+    .medInfo {
+      display: flex;
+    }
+  }
+}
