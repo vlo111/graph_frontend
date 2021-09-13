@@ -183,7 +183,7 @@ class GraphSettings extends Component {
 
                 <div className="graphNameList">
                   {graphList.map((graph) => (
-                    <Link to={`/graphs/view/${graph.id}`}>
+                    <Link to={`/graphs/update/${graph.id}`}>
                       <div title={graph.title}>
                         {graph.title.length > 11 ? `${graph.title.substring(0, 11)}...` : graph.title}
                       </div>
