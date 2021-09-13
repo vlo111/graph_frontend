@@ -55,12 +55,12 @@ class GraphView extends Component {
 
   preventReload = true;
 
-  getSingleRequest = memoizeOne((pathname) => {
+  getSingleRequest = memoizeOne((pathname, search) => {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('view');
     this.props.userGraphRequest();
     if (+graphId) {
-      if (pathname.startsWith('/graphs/view/')) {
+      if (pathname === `/graphs/view/${graphId}` && search === '') {
         this.props.getSingleGraphViewRequest(graphId);
       } else {
         this.props.getSingleGraphRequest(graphId);
@@ -133,7 +133,7 @@ class GraphView extends Component {
         // ChartUtils.findNodeInDom(shortestNodes[0]);
       }
     }
-    this.getSingleRequest(pathname);
+    this.getSingleRequest(pathname, search);
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
