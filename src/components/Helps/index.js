@@ -6,6 +6,28 @@ import "react-tabs/style/react-tabs.css";
 import HelpSvg from "../../assets/images/Help.svg";
 import liinkSvg from "../../assets/images/liink.svg";
 import HelpLeftSvg from "../../assets/images/helpleft.svg";
+import Mapsgoogle from "../../assets/images/Map.png";
+import Wiki from "../../assets/images/Wiki.png";
+import Linkedin from "../../assets/images/Linkdin.png";
+import MinScince from "../../assets/images/Mind.png";
+import FindNode from "../../assets/images/Find.png";
+import LinkNode from "../../assets/images/Linknode.png";
+import Label from "../../assets/images/Label.png";
+import Folder from "../../assets/images/Folder.png";
+import Import from "../../assets/images/Import.png";
+import Export from "../../assets/images/Export.png";
+import Compare from "../../assets/images/Compare.png";
+import CompareNode from "../../assets/images/CompareNodes.png";
+import ShareGraph from "../../assets/images/ShareGraph.png";
+import SharelLAbelFolder from "../../assets/images/ShareLabelfolder.png";
+import Search from "../../assets/images/Search.png";
+import Filter from "../../assets/images/Filter.png";
+import Media from "../../assets/images/Media.png";
+import Analyses from "../../assets/images/Analyses.png";
+
+
+
+
 
 export default (props) => {
   const handleClose = () => {
@@ -48,7 +70,7 @@ export default (props) => {
             <Tab>Share a graph </Tab>
             <Tab>Share label and folder </Tab>
             <h3 className="helpTitle">Search</h3>
-            <Tab>More options of nodes</Tab>
+            {/* <Tab>More options of nodes</Tab> */}
             <Tab>Search</Tab>
             <Tab>
               <h4 className="helpTitlePages">Filter</h4>
@@ -76,14 +98,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <iframe
-              className="help_img"
-              src="https://www.youtube.com/embed/8aJt88yJ8eY"
-              title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
+            <iframe width="1280" height="720" className="help_img" src="https://www.youtube.com/embed/kCe9OOKsVtc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
        
           <div>
@@ -133,8 +148,7 @@ export default (props) => {
         </TabPanel>
         <TabPanel>
           <div>
-            {" "}
-            <img src={HelpSvg} className="help_img" />
+            <iframe width="1280" height="720" className="help_img"  src="https://www.youtube.com/embed/8aJt88yJ8eY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
           <div>
             <p>Create new nodes</p>
@@ -160,10 +174,8 @@ export default (props) => {
           </div>
         </TabPanel>
         <TabPanel>
-          <div>
-            {" "}
-            <img src={HelpSvg} className="help_img" />
-          </div>
+                 {" "}
+            <img src={Mapsgoogle} className="help_img" /> 
           <div>
             <p>Create node via Google map</p>
           </div>
@@ -198,7 +210,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Wiki} className="help_img" />
           </div>
           <div>
             <p>Create node via Wikipedia</p>
@@ -232,7 +244,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Linkedin} className="help_img" />
           </div>
           <div>
             <p>Create node via Linkedin</p>
@@ -268,7 +280,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={MinScince} className="help_img" />
           </div>
           <div>
             <p>Create node by Science Mind </p>
@@ -315,7 +327,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={FindNode} className="help_img" />
           </div>
           <div>
             <p>Find node</p>
@@ -337,7 +349,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={LinkNode} className="help_img" />
           </div>
           <div>
             <p>Link the nodes</p>
@@ -367,7 +379,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Label} className="help_img" />
           </div>
           <div>
             <div>
@@ -444,7 +456,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Folder} className="help_img" />
           </div>
           <div>
             <p>Folder</p>
@@ -502,7 +514,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Import} className="help_img" />
           </div>
           <div>
             <p>Import a graph</p>
@@ -529,7 +541,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Export} className="help_img" />
           </div>
           <div>
             <p>Export a graph</p>
@@ -579,7 +591,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Compare} className="help_img" />
           </div>
           <div>
             <p>Compare and merge graphs</p>
@@ -618,7 +630,7 @@ export default (props) => {
           Compare nodes of a Label/Folder
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={CompareNode} className="help_img" />
           </div>
           <div>
             <p>
@@ -661,7 +673,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={ShareGraph} className="help_img" />
           </div>
           <div>
             <p>Share a graph </p>
@@ -709,7 +721,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={SharelLAbelFolder} className="help_img" />
           </div>
           <div>
             <p>Share a Label and Folder </p>
@@ -755,35 +767,11 @@ export default (props) => {
           </div>
           </div>
         </TabPanel>
+       
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
-          </div>
-          <div>
-            <p>More options of nodes</p>
-          </div>
-          <div className="helpResultText">
-          <div className="help_text">
-            <ol>
-              <li>Edit or complete any option of the node</li>
-              <li>
-                Find path: Using Dijkstra's algorithm the program finds the
-                shortest way to another node.{" "}
-              </li>
-              <li>Delete the node</li>
-              <li>
-                Show on Google map if in the options of the node you have
-                mentioned a location.
-              </li>
-            </ol>
-          </div>
-          </div>
-        </TabPanel>
-        <TabPanel>
-          <div>
-            {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Search} className="help_img" />
           </div>
           <div>
             <p>Search</p>
@@ -801,7 +789,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Filter} className="help_img" />
           </div>
           <div>
             <p>Filter </p>
@@ -850,7 +838,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Media} className="help_img" />
           </div>
           <div>
             <p>Media</p>
@@ -893,7 +881,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {" "}
-            <img src={HelpSvg} className="help_img" />
+            <img src={Analyses} className="help_img" />
           </div>
           <div>
             <p>Analysis</p>
@@ -952,12 +940,9 @@ export default (props) => {
           </div>
         </TabPanel>
         <TabPanel>
-          <div>
-            {" "}
-            <img src={HelpSvg} className="help_img" />
-          </div>
-          <div className="helpResultText">
-          <div className="help-text">
+       
+          <div className="helpResultText shotcouts">
+          <div className="help-text ">
             <ul>
               <li>
                 <span className="HelpCommand">Analysis</span>
