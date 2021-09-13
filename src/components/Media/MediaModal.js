@@ -384,7 +384,7 @@ class MediaModal extends Component {
                                   <div className='wiewDoc'>
                                     <a target="_blank" href={document.data} rel="noreferrer">View</a>
                                   </div>) : (
-                                  <div className='wiewDoc'>
+                                  <div className='wiewDoc videoMed'>
                                     <div onClick={this.toggleVideo} className="viewDocModal" >
                                       <button id="button"><i class="fa fa-play" aria-hidden="true"></i></button>
                                     </div>
