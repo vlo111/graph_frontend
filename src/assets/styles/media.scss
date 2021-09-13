@@ -409,8 +409,7 @@
 
 @media (max-height: 750px) {
   .menu {
-  overflow-x: scroll;
-  height: 91%;
+  overflow-y: scroll;
   
 }
 .menu .containerMenu .collapse:hover{
