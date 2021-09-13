@@ -365,9 +365,9 @@ class MediaModal extends Component {
                                 ? (
                                   <></>
                                 ) : (
-                                  <div className="mediaInfo">
+                                  <div className="mediaInfo maediaTags">
                                     <span className="mediaLeter">Tags:</span>
-                                    <span className="item">
+                                    <span className="maediaTagsleng">
                                       {`${document.tags} `}
                                       {' '}
                                     </span>
