@@ -183,7 +183,7 @@ class ContextMenu extends Component {
     }  
     const { match: { params: { graphId = '' } }, expand } = this.props;
     const undoCount = Chart.undoManager.undoCount();
-    const showInMap = Chart.getNodes().some((d) => d.location);
+    const showInMap = Chart.getNodes().some((d) => d?.location?.length > 0);
     const pastData = LabelUtils.getData();
 
     const showPast = !_.isEmpty(pastData) && !_.isEmpty(pastData.nodes) && (show === 'chart' || show === 'label');

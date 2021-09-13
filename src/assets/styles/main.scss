@@ -876,8 +876,8 @@ p {
         pointer-events: none;
       }
       &.emphasisConnection {
-        stroke: yellow !important;
-      }
+          stroke: yellow !important;
+        }
     }
   }
 
@@ -2964,21 +2964,21 @@ p {
         margin-top: 2%;
       }
 
-      .colorBox {
-        height: 30px;
-        width: 75px;
-        background-color: #f4f4ff;
-        border-radius: 7px;
-        overflow: hidden;
-        border: 3px solid;
-        pointer-events: none;
+          .colorBox {
+            height: 30px;
+            width: 75px;
+            background-color: #f4f4ff;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 3px solid;
+            pointer-events: none;
 
-        div {
-          width: 100%;
-          height: 100%;
+            div {
+              width: 100%;
+              height: 100%;
           opacity: .7;
-        }
-      }
+            }
+          }
 
       .badge {
         position: absolute;
@@ -4928,36 +4928,36 @@ body .gh__menu {
       border-radius: 3px;
     }
     .copyEmbed{
-      width: 80px;
-      height: 35px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 2px;
-      line-height: normal;
-      font-weight: 400;
-      transition: all 0.25s;
-      text-align: center;
-      font-size: 16px;
-      color: $color-white;
-      cursor: pointer;
-      touch-action: manipulation;
-      outline: none;
-      border: solid 1px;
-      border-color: $color-main;
-      user-select: none;
-      background-color: $color-main;
-      opacity:1;
-      padding: 0;
-      margin-left: 12px;
-      &:hover {
-        background-color: $color-white;
-        color: $color-main;
+        width: 80px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 2px;
+        line-height: normal;
+        font-weight: 400;
+        transition: all 0.25s;
+        text-align: center;
+        font-size: 16px;
+        color: $color-white;
+        cursor: pointer;
+        touch-action: manipulation;
+        outline: none;
+        border: solid 1px;
         border-color: $color-main;
-      }
+        user-select: none;
+        background-color: $color-main;
+        opacity:1;
+        padding: 0;
+        margin-left: 12px;
+        &:hover {
+          background-color: $color-white;
+          color: $color-main;
+          border-color: $color-main;
+        }
     }
   }
-}
+  }
 
 .searchData {
   margin-right: auto;
@@ -6930,6 +6930,8 @@ img.preview-scaled {
 .showLabelForm {
   width: 90px;
 }
+
+
 
 .acceptCheckedItems {
   width: 100%;
@@ -9130,9 +9132,9 @@ img.preview-scaled {
     padding: 0 20px;
   }
 
-  .scienceForm input {
-    width: 43%;
-  }
+.scienceForm input {
+  width: 43%;
+}
 
   .scienceAuthorInput {
     flex: 4;
@@ -9141,49 +9143,49 @@ img.preview-scaled {
     border-radius: 5px 0 0 5px !important;
   }
 
-  .scienceTitleInput {
-    flex: 4;
-    order: 2;
-  }
+.scienceTitleInput {
+  flex: 4;
+  order: 2;
+}
 
-  .scienceForm button {
-    flex: 1;
-    order: 3;
-    border-radius: 5px;
-    height: 40px;
-    border: 1 px solid #7166f8;
-  }
+.scienceForm button {
+  flex: 1;
+  order: 3;
+  border-radius: 5px;
+  height: 40px;
+  border: 1 px solid #7166f8;
+}
 
-  .scienceSearchSubmit {
-    outline: none;
-  }
+.scienceSearchSubmit {
+  outline: none;
+}
 
-  .scienceResultAmount {
-    margin-left: 3em;
-  }
+.scienceResultAmount {
+  margin-left: 3em;
+}
 
-  .scienceResultsList {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    border: 1px solid #dedede;
-    padding: 10px 21px;
-    margin: 0 35px 0px;
-  }
+.scienceResultsList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border: 1px solid #dedede;
+  padding: 10px 21px;
+  margin: 0 35px 0px;
+}
 
-  .scienceCheckBox {
-    flex: 0.7;
-    display: flex;
-    justify-content: center;
-    margin: 0 5px;
-    align-items: center;
-  }
+.scienceCheckBox {
+  flex: 0.7;
+  display: flex;
+  justify-content: center;
+  margin: 0 5px;
+  align-items: center;
+}
 
-  .scienceCheckBox input {
-    height: 1.5em;
-    width: 1.5em;
-    color: #727272;
-  }
+.scienceCheckBox input {
+  height: 1.5em;
+  width: 1.5em;
+  color: #727272;
+}
 
   .scienceArticleData {
     flex: 10;
@@ -9195,26 +9197,26 @@ img.preview-scaled {
   .scinceItems {
     margin-bottom: 10px;
 
-    color: #7166f8;
-    font-size: 16px;
-    margin-left: 9px;
-  }
+  color: #7166f8;
+  font-size: 16px;
+  margin-left: 9px;
+}
 
-  .scienceArticleData .scienceArticleDescription {
-    max-height: 4em;
-    overflow: hidden;
-  }
+.scienceArticleData .scienceArticleDescription {
+  max-height: 4em;
+  overflow: hidden;
+}
 
-  .scienceArticleData h3 {
-    font-weight: 700;
-    font-size: 1.2em;
-    line-height: 1em;
-    margin: 0.5em 0;
-  }
+.scienceArticleData h3 {
+  font-weight: 700;
+  font-size: 1.2em;
+  line-height: 1em;
+  margin: 0.5em 0;
+}
 
-  .scienceCreateNodeButton {
-    flex: 1;
-  }
+.scienceCreateNodeButton {
+  flex: 1;
+}
 
   .creatGraphScience {
     margin-bottom: 15px;

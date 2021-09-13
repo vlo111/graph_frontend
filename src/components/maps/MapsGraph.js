@@ -28,6 +28,10 @@ class MapsGraph extends Component {
     super(props);
     this.state = {
       activeNode: {},
+      initLocation: {
+        lat: 40.1872023, 
+        lng: 44.51520
+      }
     };
   }
 
@@ -51,9 +55,13 @@ class MapsGraph extends Component {
 
   render() {
     const { activeNode } = this.state;
+    let { initLocation } = this.state;
     const { google, location: { pathname }, } = this.props;
-    let nodes = Chart.getNodes().filter((d) => d.location).map((d) => {
+    let nodes = Chart.getNodes().filter((d) => d.location).map((d) => { 
       d.locationObj = _.isObject(d?.location) && d?.location?.map((p) => ({ lat: p.location.lat, lng: p.location.lng }));
+      if(d?.location?.length > 0) { 
+         initLocation = (d?.location?.map((p) => ({ lat: p.location.lat, lng: p.location.lng })))
+      }
       return d;
     });
     const links = Chart.getLinks().map((d) => {
@@ -81,7 +89,7 @@ class MapsGraph extends Component {
           styles={MapsStyle.mapStyle}
           google={google}
           zoom={7}
-          initialCenter={nodes[0].locationObj[0]}
+          initialCenter={initLocation[0]}
           streetViewControl={false}
           fullscreenControl={false}
           onClick={this.handleMapClick}

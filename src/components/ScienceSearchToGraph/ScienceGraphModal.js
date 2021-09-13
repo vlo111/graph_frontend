@@ -489,13 +489,15 @@ class ScienceGraphModal extends Component {
     const apiSearchResults = [];
     for (const index in apiSearchReturnValues) {
       apiSearchResults.push(
-        <label className="pull-left" htmlFor={index}>
+        <label className="pull-left" htmlFor={index} >
           <div
             tabIndex="0"
             className="scine scienceResultsList"
             onFocus={() => {
               const items = document.getElementsByClassName('scienceResultsList');
               items[index].style.backgroundColor = '#e5e3f5';
+             
+              
             }}
             key={index}
           >
