@@ -9216,6 +9216,10 @@ img.preview-scaled {
   max-height: calc(100% - 110px) !important;
   top: 90px !important;
 
+  p, h3 {
+    margin-bottom: 2px;
+  }
+
   .scienceModalsubBox {
     display: flex;
     flex-direction: column;
@@ -9379,6 +9383,11 @@ img.preview-scaled {
     align-items: center;
     width: 100%;
     margin: 20px 0;
+
+    .ApiImg {
+      width: 50px;
+      height: 50px;
+    }
   }
 
   .scienceForm form {
