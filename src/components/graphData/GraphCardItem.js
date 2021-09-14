@@ -64,7 +64,7 @@ class GraphCardItem extends Component {
           ? (
             <div className="startGraph" onClick={this.startGraph}>
               <PlusSvg />
-              <h3>Start a Graph</h3>
+              <h3>Create a Graph</h3>
             </div>
           ) : null}
         { graphs.map((graph) => (
