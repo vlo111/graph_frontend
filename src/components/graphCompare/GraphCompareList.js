@@ -108,8 +108,8 @@ class GraphCompareList extends Component {
         </tr>
       );
 
-      const singleGraph1List = singleGraph1?.nodes?.map((node) => {
-        const node2 = singleGraph2?.nodes?.find((n) => n.name === node.name);
+      const singleGraph1List = singleGraph1?.nodesPartial?.map((node, index) => {
+        const node2 = singleGraph2?.nodesPartial?.find((n) => n.name === node.name);
         return (
           <>
             <tr>
@@ -125,7 +125,7 @@ class GraphCompareList extends Component {
                 <LabelCompareItem
                   node={node2}
                   checked={selected.some((d) => d.id === node2.id)}
-                  onChange={(checked) => this.props.onChange(node, checked, 2)}
+                  onChange={(checked) => this.props.onChange(node2, checked, 2)}
                 />
               </td>
               )}
@@ -134,7 +134,7 @@ class GraphCompareList extends Component {
         );
       });
 
-      const singleGraph2List = (!isSimilar && !singleGraph1) ? singleGraph2?.nodes?.map((node) => (
+      const singleGraph2List = singleGraph2?.nodesPartial?.map((node, index) => (
         <>
           <tr>
             <td>
@@ -146,7 +146,7 @@ class GraphCompareList extends Component {
             </td>
           </tr>
         </>
-      )) : null;
+      ));
 
       return (
         <div className="compareList">

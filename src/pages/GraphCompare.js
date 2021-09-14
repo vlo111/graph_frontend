@@ -85,9 +85,16 @@ class GraphCompare extends Component {
     const key = pos === 1 ? 'selectedNodes1' : 'selectedNodes2';
     const data = this.state[key];
     const i = data.findIndex((n) => n.id === d.id);
+    let graph = {}
+    if (pos === 1) {
+      graph = this.props.singleGraph
+    } else {
+      graph = this.state.singleGraph2
+    }
     if (checked) {
       if (i === -1) {
-        data.push(d);
+        const node = graph?.nodesPartial?.find(nd => nd.id === d.id)
+        data.push(node);
       }
     } else if (i > -1) {
       data.splice(i, 1);
