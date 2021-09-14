@@ -3547,7 +3547,6 @@ body .gh__menu {
       .name {
         font: normal normal 600 16px/22px Open Sans;
         letter-spacing: 0;
-        font-size: 1.5625rem !important;
         font-weight: 400;
       }
 
@@ -3596,6 +3595,7 @@ body .gh__menu {
         display: flex;
         align-items: center;
         background-color: transparent;
+        box-shadow: none;
         text-align: left;
         flex-direction: row;
 
@@ -3607,6 +3607,7 @@ body .gh__menu {
 
           .row {
             display: flex;
+            flex-wrap: wrap;
             margin: 0;
           }
 
@@ -3622,6 +3623,7 @@ body .gh__menu {
           .name {
             margin-right: 10px;
             overflow: hidden;
+            width: 100%;
           }
 
           .keywords {
@@ -3647,6 +3649,7 @@ body .gh__menu {
           max-width: calc(50% - 70px);
           color: $color-dark-blue;
           white-space: nowrap;
+          margin-left: 15px;
         }
       }
     }
@@ -7353,6 +7356,11 @@ img.preview-scaled {
 }
 
 // Search modal inside graph
+
+.searchOverlay {
+  position: relative;
+}
+
 .searchNodes {
   height: auto;
   width: 450px;
@@ -7363,6 +7371,10 @@ img.preview-scaled {
   padding: 0 !important;
   box-shadow: none !important;
   background-color: transparent !important;
+
+  .btn-existing {
+    width: 170px;
+  }
 
   .ghButton {
     &:hover {
