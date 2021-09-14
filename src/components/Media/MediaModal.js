@@ -135,10 +135,10 @@ class MediaModal extends Component {
     return document.filter((p) => {
       const type = typeof p.data === 'string' ? (Utils.isImg(p.data) ? 'Image' : 'document') : 'video';
 
-      if (type === 'Image' && getCheckedImages) {
+      if (type === 'Image'  &&  getCheckedImages) {
         return true;
       }
-      return type !== 'Image' && type !== 'video' && getCheckedDocs;
+      return type !== 'Image' && type !== 'video'  && getCheckedDocs;
     });
   }
 
@@ -322,6 +322,7 @@ class MediaModal extends Component {
               <div className="mediaContainer mediaGallery">
                 {documentSearch.map((document) => {
                   document.tags = document?.tags?.filter((p) => p !== '');
+                  console.log('data----',document.data.typeof);
                   return document.id && (
                     <div className="imageFrame">
                       <figure className="img-container">
@@ -331,12 +332,12 @@ class MediaModal extends Component {
                                 <span className="mediaLeter">Uploaded:</span>
                                 <span className="item">{moment(document.updatedAt).format('YYYY.MM.DD')}</span>
                               </div>
-                              <div className="mediaInfo">
+                              <div className="mediaInfo maediaUserBloc">
                                 <span className="mediaLeter">User Name:</span>
-                                <span className="mediaUser item">
-                                  <Link to={`/profile/${document.user.id}`}>
+                                <span className="mediaUser">
+                                  <a href={`/profile/${document.user.id}`} target='_blank'>
                                     {`${document.user.firstName} ${document.user.lastName}`}
-                                  </Link>
+                                  </a>
                                 </span>
                               </div>
                               {_.isEmpty(document.data)
@@ -367,16 +368,16 @@ class MediaModal extends Component {
                                 ) : (
                                   <div className="mediaInfo maediaTags">
                                     <span className="mediaLeter">Tags:</span>
-                                    <span className="maediaTagsleng">
+                                    <div className="maediaTagsleng">
                                       {`${document.tags 
                                       ? `${document.tags.slice(0,size)}...`
                                       : document.tags
                                       } `}
                                       {' '}
-                                    </span>
+                                    </div>
                                   </div>
                                 )}
-                              {document.type !== 'Image' && document.type !== 'Video'
+                              {document.type !== 'Image' && document.type !== 'Video' 
                                 ? (
                                   <div className="wiewDoc">
                                     <i class="fa fa-download"></i>
@@ -384,24 +385,25 @@ class MediaModal extends Component {
                                       Download
                                       </a>
                                   </div>
-                                ) : document.type === 'Image' ? (
+                                ) : document.type === 'Image' && document.data !== _.isEmpty ? (
                                   <div className="wiewDoc viewImg">
                                     <i class="fa fa-eye"></i>
                                     <a target="_blank" href={document.data} rel="noreferrer">View</a>
                                   </div>
                                 ) : (
-                                  <div className="wiewDoc">
-                                    <div onClick={this.toggleVideo} className="viewDocModal">
-                                      <button id="button"><i className="fa fa-play" aria-hidden="true" /></button>
-                                    </div>
-                                    {showVideo ? (
-                                      <Outside onClick={this.toggleVideo} exclude=".viewDocModal">
-                                        <div className="mediaVideoModal">
-                                          <p>Not internet conection!</p>
-                                        </div>
-                                      </Outside>
-                                    ) : null}
-                                  </div>
+                                  // <div className="wiewDoc">
+                                  //   <div onClick={this.toggleVideo} className="viewDocModal">
+                                  //     <button id="button"><i className="fa fa-play" aria-hidden="true" /></button>
+                                  //   </div>
+                                  //   {showVideo ? (
+                                  //     <Outside onClick={this.toggleVideo} exclude=".viewDocModal">
+                                  //       <div className="mediaVideoModal">
+                                  //         <p>Not internet conection!</p>
+                                  //       </div>
+                                  //     </Outside>
+                                  //   ) : null}
+                                  // </div>
+                                  <></>
                                 )}
                             </div>
                             <div>
@@ -435,7 +437,7 @@ class MediaModal extends Component {
                               () => this.openTab(document.graphId, document.node, document.tabName)
                             }
                           >
-                            <div className="right containerMedia">
+                            <div className="containerMedia">
                               <img
                                 className="userImg"
                                 src={document.user.avatar}
@@ -454,7 +456,7 @@ class MediaModal extends Component {
                                       {' '}
                                     </span>
                                   ) : (
-                                    <span className="typeDocument">Null</span>
+                                    <span className="typeDocument">Document</span>
                                   )}
                               </div>
                             </div>
