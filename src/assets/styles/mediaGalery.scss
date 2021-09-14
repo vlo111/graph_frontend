@@ -2,10 +2,11 @@
     width: 60%;
     max-width: unset !important;
     padding: 20px !important;
-    max-height: 76% !important;
+    max-height: 85% !important;
     align-items: center !important;
-    min-height: 35% !important;
+    min-height: 38% !important;
     left: 3% !important;
+    top:80px !important;
 
     &#fullWidth {
       position: absolute;
@@ -265,7 +266,7 @@
     .mediaInfo{
       color: white;
       font-weight: 400;
-      font-size: 14px;
+      font-size: 13px;
       font-style: italic;
 
      

@@ -432,9 +432,16 @@
     }
   }
 }
-
-
-
+@media screen and (max-height: 700px) {
+  .ghModalMedia {
+     top:80px !important;
+     max-height: 88% !important;
+    
+    &#fullWidth{
+      top:80px !important;
+    }
+  }
+}
 @media (max-height: 750px) {
   .menu {
   overflow-y: scroll;
