@@ -81,10 +81,12 @@ class SearchModal extends Component {
 
   closeModal = () => {
     const nodes = Chart.getNodes();
-    if (!nodes?.length) {
-      this.props.toggleExplore(true);
-    }
-    this.props.toggleSearch(false);
+    // if (!nodes?.length) {
+    //   this.props.toggleExplore(true);
+    // }
+    // this.props.toggleSearch(false);
+
+    this.handleChange('');
   };
 
   /**
@@ -588,8 +590,8 @@ class SearchModal extends Component {
       <Modal
         isOpen
         className="ghModal ghModalSearch searchNodes"
-        overlayClassName="ghModalOverlay"
-        onRequestClose={this.closeModal}
+        overlayClassName="ghModalOverlay searchOverlay"
+        // onRequestClose={this.closeModal}
       >
         <div className="searchField">
           <div className="searchBox">
@@ -877,7 +879,7 @@ class SearchModal extends Component {
               {chartNodes.length ? (
                 <button
                   onClick={(ev) => this.showSelectedNodes(true)}
-                  className="btn-classic"
+                  className="btn-classic btn-existing"
                 >
                   Add to existing
                 </button>
