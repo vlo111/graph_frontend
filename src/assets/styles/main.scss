@@ -3563,13 +3563,13 @@ body .gh__menu {
 .searchInputWrapper,
 .ghModalSearch {
   .list {
-    max-height: 500%;
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: white;
     
     .nodeItem {
       height: 44px;
@@ -3581,6 +3581,9 @@ body .gh__menu {
       margin: .8em 0;
       width: 91%;
       align-items: center;
+      height: 70px;
+      border: 1px solid #D5D5D5;
+      padding: 10px;
 
       .searchResultCheckbox {
         margin-right: .5em;
@@ -3627,6 +3630,7 @@ body .gh__menu {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            margin-left: 15px;
           }
         }
 
@@ -6934,11 +6938,14 @@ img.preview-scaled {
 
 
 .acceptCheckedItems {
-  width: 100%;
+  width: 450px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  margin: 0px;
+  margin: 0;
+  background-color: $color-white;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .createGraphButton {
@@ -6955,7 +6962,9 @@ img.preview-scaled {
 
 .selectedItemsAmount {
   margin-left: 1em;
-  margin-bottom: 0px;
+  margin-bottom: 0;
+  color: $color-gray1;
+
 }
 
 .social_icon {
@@ -7345,14 +7354,71 @@ img.preview-scaled {
 
 // Search modal inside graph
 .searchNodes {
-  min-height: 45%;
-  min-width: 62%;
-  right: 3%;
+  height: auto;
+  width: 450px;
+  left: 15px;
+  position: fixed !important;
+  top: 75px !important;
+  min-height: 38px;
+  padding: 0 !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+
+  .ghButton {
+    &:hover {
+      color: #0d0905 !important;
+      box-shadow: none;
+    }
+  }
+
+  .selectedNodesCheckBox {
+    .check-label {
+      margin-left: 5px !important;
+      font-weight: 400 !important;
+      font-size: 14px !important;
+      color: #707070 !important;
+    }
+
+    .check-box label {
+      padding: 8px !important;
+    }
+
+    .check-box .input-check:checked + label:after {
+      top: -3px;
+      left: 15%;
+    }
+
+    .checkWithLabel {
+      user-select: none;
+    }
+  }
+
+  .btn-classic {
+    min-width: 115px;
+    font-size: 17px;
+  }
+
+  .selectedNodesCheckBox {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px 0;
+    background-color: $color-white;
+  }
+
+  .search-content {
+    margin-top: 5px;
+    width: 450px;
+    border-radius: 3px;
+    overflow: auto;
+    height: 79%;
+    background: $color-white;
+  }
 
   .searchField {
     display: flex;
     flex-direction: column;
     width: 100%;
+    background-color: $color-white;
 
     .searchText {
       display: flex;
@@ -7369,9 +7435,9 @@ img.preview-scaled {
 
       .searchBoxInside {
         border: 1px solid #7166F8;
-        border-radius: 5px;
+        border-radius: 3px;
         display: flex;
-        width: 90%;
+        width: 100%;
 
         .searchFieldCheckBox {
           justify-content: center;
@@ -7395,14 +7461,14 @@ img.preview-scaled {
 
           .searchFieldCheckBoxList {
             flex-direction: column;
-            position: absolute;
-            top: 6.3em;
             background-color: white;
             z-index: 103;
             border-radius: 3px;
-            box-shadow: 0px 4px 16px rgb(0 0 0 / 25%);
             display: none;
             width: 7em;
+            position: fixed;
+            top: 115px;
+            border: 1px solid $color-main;
 
             .checkBox {
               color: #7166F8;
@@ -7445,6 +7511,14 @@ img.preview-scaled {
 
   ul {
     margin-bottom: 0px;
+
+    .item {
+      &:hover {
+        background: linear-gradient(0deg, rgba(136, 130, 209, 0.07), rgba(136, 130, 209, 0.07));
+        border: 1px solid #D5D5D5;
+        box-sizing: border-box;
+      }
+    }
   }
 }
 
