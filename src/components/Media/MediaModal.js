@@ -4,7 +4,6 @@ import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { setActiveButton } from '../../store/actions/app';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
@@ -134,11 +133,10 @@ class MediaModal extends Component {
 
     return document.filter((p) => {
       const type = typeof p.data === 'string' ? (Utils.isImg(p.data) ? 'Image' : 'document') : 'video';
-
-      if (type === 'Image'  &&  getCheckedImages) {
+      if (type === 'Image'  && getCheckedImages) {
         return true;
       }
-      return type !== 'Image' && type !== 'video'  && getCheckedDocs;
+      return type !== 'Image' && type !== 'video'   && getCheckedDocs;
     });
   }
 
@@ -237,7 +235,7 @@ class MediaModal extends Component {
     this.initialGraph();
 
     const {
-      fullWidth, showDropDown, showVideo, getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
+      fullWidth, showDropDown, getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
     } = this.state;
     const size =3;
     const graphIdParam = Utils.getGraphIdFormUrl();
@@ -322,7 +320,6 @@ class MediaModal extends Component {
               <div className="mediaContainer mediaGallery">
                 {documentSearch.map((document) => {
                   document.tags = document?.tags?.filter((p) => p !== '');
-                  console.log('data----',document.data.typeof);
                   return document.id && (
                     <div className="imageFrame">
                       <figure className="img-container">
