@@ -246,8 +246,6 @@
   }
 } 
 
-
-
 @media screen and (max-width: 900px) {
   .ghModalSearch {
     width: 40% ;
@@ -353,7 +351,6 @@
   }
 }
 
-
 @media only screen and (max-height: 900px) {
 
   #nodeFullInfo {
@@ -436,9 +433,16 @@
     }
   }
 }
-
-
-
+@media screen and (max-height: 700px) {
+  .ghModalMedia {
+     top:80px !important;
+     max-height: 88% !important;
+    
+    &#fullWidth{
+      top:80px !important;
+    }
+  }
+}
 @media (max-height: 750px) {
   .menu {
   overflow-y: scroll;
