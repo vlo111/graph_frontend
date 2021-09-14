@@ -606,7 +606,7 @@ class ScienceGraphModal extends Component {
         >
           <div className="scienceModalsubBox">
             <div className="scienceLogo">
-              <ApiImg />
+              <ApiImg className="ApiImg"/>
             </div>
             <div className="scienceForm">
               <div className="scienceFormInside">
