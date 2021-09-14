@@ -283,6 +283,27 @@ class ChartUtils {
       return links?.length 
   }
   /**
+   * 
+   * @param {*} nodesPartial 
+   * @param {*} id 
+   * @param {*} group 
+   * @param {*} hidden 
+   * @returns 
+   */
+   static getMathNodeGroupedByNodeId(nodesPartial, id, group = true , hidden = 0) {
+      const node = Chart.getNodes().find((d) => d.id === id); 
+      const chartNodes = Chart.getNodes(); 
+      if (!node) return null; 
+      const nodes = nodesPartial.filter((l) => (
+        node.keywords.length > 0 && l.keywords.length > 0 && (l.keywords.some((n) =>  node.keywords.includes(n))) 
+        )
+         && chartNodes && !chartNodes.find((s) => (s.id === l.id))); 
+      if(group) 
+        return _.groupBy(nodes, 'type');
+      else 
+        return nodes?.length 
+    }
+  /**
    * Return color by type
    * @param {*} links 
    * @param {*} type 
