@@ -662,30 +662,30 @@ p {
   right: 0;
 }
 
-.ghButton2 {
-  display: inline-block;
-  padding: 0.46em 1.6em;
-  border: none;
-  color: $color-white;
-  background-color: $color-button;
-  border-radius: 0.38em;
-  box-sizing: border-box;
-  text-decoration: none;
-  font-weight: 300;
-  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
-  text-align: center;
-  transition: all 0.15s;
-}
+// .ghButton2 {
+//   display: inline-block;
+//   padding: 0.46em 1.6em;
+//   border: none;
+//   color: $color-white;
+//   background-color: $color-button;
+//   border-radius: 0.38em;
+//   box-sizing: border-box;
+//   text-decoration: none;
+//   font-weight: 300;
+//   text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
+//   text-align: center;
+//   transition: all 0.15s;
+// }
 
-.ghButton2:hover {
-  background-color: $color-white;
-  color: #0062FF;
-}
+// .ghButton2:hover {
+//   background-color: $color-white;
+//   color: #0062FF;
+// }
 
-.ghButton2:hover button:after {
-  opacity: 1;
-  right: 0;
-}
+// .ghButton2:hover button:after {
+//   opacity: 1;
+//   right: 0;
+// }
 
 .ghRangeSelect {
   padding-bottom: 20px;
@@ -1280,7 +1280,21 @@ p {
     }
   }
 
- 
+  //.ghButton {
+  //  margin: 16px 0 0 0;
+  //  height: 44px;
+  //  flex-direction: column;
+  //  background-color: transparent;
+  //  color: $color-dark;
+  //  font-weight: 400;
+  //
+  //  justify-content: center;
+  //  align-items: center;
+  //
+  //  &.active {
+  //    opacity: 0.6;
+  //  }
+  //}
 }
 
 #offline {
@@ -8406,6 +8420,8 @@ img.preview-scaled {
   margin-left: -1px;
   color: #9F9F9F;
   background-color: $color-white;
+  height: 36px !important;
+  // max-height: auto !important;
 }
 
 .jodit-status-bar {
@@ -9625,15 +9641,12 @@ details[open] summary:after {
 .jodit-ui-separator {
   border-left: 0;
   border-right: 1px solid #dadada;
-  /* cursor: default; */
   margin: 0; 
   padding: 0;
 }
 .jodit-toolbar-button {
   align-items: center;
-  /* border: 1px solid transparent; */
   border-radius: 3px;
-  /* display: flex; */
   width: 2px;
   height: 34px;
   justify-content: unset;
@@ -9654,6 +9667,7 @@ details[open] summary:after {
   height: 34px;
   min-width: 22px;
   padding: 0;
+  border: none !important;
 }
 .comment hr{
   display: none;
@@ -9671,4 +9685,16 @@ details[open] summary:after {
     height: 60px;
     justify-content: space-between;
 }
-///comment modal end
+.jodit-container:not(.jodit_inline) .jodit-workplace {
+  display: flex;
+  flex-direction: column;
+  min-height: 50px;
+  overflow: hidden;
+}
+.jodit-xpath {
+  display: flex;
+  margin-left: calc(8px/-2);
+  // flex-direction: column;
+  // position: relative !important;
+  // top: -3px !important;
+}
