@@ -133,10 +133,10 @@ class MediaModal extends Component {
 
     return document.filter((p) => {
       const type = typeof p.data === 'string' ? (Utils.isImg(p.data) ? 'Image' : 'document') : 'video';
-      if (type === 'Image'  && getCheckedImages) {
+      if (type === 'Image' && getCheckedImages) {
         return true;
       }
-      return type !== 'Image' && type !== 'video'   && getCheckedDocs;
+      return type !== 'Image' && type !== 'video' && getCheckedDocs;
     });
   }
 
@@ -237,7 +237,7 @@ class MediaModal extends Component {
     const {
       fullWidth, showDropDown, getCheckedVideos, getCheckedDocs, getCheckedImages, getCheckedNodes, search,
     } = this.state;
-    const size =3;
+    const size = 3;
     const graphIdParam = Utils.getGraphIdFormUrl();
 
     this.searchDocuments(graphIdParam);
@@ -323,141 +323,136 @@ class MediaModal extends Component {
                   return document.id && (
                     <div className="imageFrame">
                       <figure className="img-container">
-                          <div className={`${document.type !== 'Video' ? 'media-item-hover' : ''}`}>
-                            <div className="medInfo">
-                              <div className="mediaInfo">
-                                <span className="mediaLeter">Uploaded:</span>
-                                <span className="item">{moment(document.updatedAt).format('YYYY.MM.DD')}</span>
-                              </div>
-                              <div className="mediaInfo maediaUserBloc">
-                                <span className="mediaLeter">User Name:</span>
-                                <span className="mediaUser">
-                                  <a href={`/profile/${document.user.id}`} target='_blank'>
-                                    {`${document.user.firstName} ${document.user.lastName}`}
-                                  </a>
-                                </span>
-                              </div>
-                              {_.isEmpty(document.data)
-                                ? (
-                                  <></>
-                                ) : (
-                                  <div className="mediaInfo docType">
-                                    <span className="mediaLeter">type:</span>
-                                    <span className="item">{document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}</span>
-                                  </div>
-                                )}
-                              {_.isEmpty(document.description)
-                                ? (
-                                  <></>
-                                ) : (
-                                  <div className="mediaInfo mediaDescription">
-                                    <span className="mediaLeter">Description:</span>
-                                    <span className="descriptionLeng">
-                                      {(document.description && document.description.length > 45
-                                        ? `${document.description.substr(0, 45)}... `
-                                        : document.description)}
-                                    </span>
-                                  </div>
-                                )}
-                              {_.isEmpty(document.tags)
-                                ? (
-                                  <></>
-                                ) : (
-                                  <div className="mediaInfo maediaTags">
-                                    <span className="mediaLeter">Tags:</span>
-                                    <div className="maediaTagsleng">
-                                      {`${document.tags 
-                                      ? `${document.tags.slice(0,size)}...`
+                        <div className={`${document.type !== 'Video' ? 'media-item-hover' : ''}`}>
+                          <div className="medInfo">
+                            <div className="mediaInfo">
+                              <span className="mediaLeter">Uploaded:</span>
+                              <span className="item">{moment(document.updatedAt).format('YYYY.MM.DD')}</span>
+                            </div>
+                            <div className="mediaInfo maediaUserBloc">
+                              <span className="mediaLeter">User Name:</span>
+                              <span className="mediaUser">
+                                <a href={`/profile/${document.user.id}`} target='_blank'>
+                                  {`${document.user.firstName} ${document.user.lastName}`}
+                                </a>
+                              </span>
+                            </div>
+                            {_.isEmpty(document.data)
+                              ? (
+                                <></>
+                              ) : (
+                                <div className="mediaInfo docType">
+                                  <span className="mediaLeter">type:</span>
+                                  <span className="item">{document.data.substring(document.data.lastIndexOf('.') + 1).toUpperCase()}</span>
+                                </div>
+                              )}
+                            {_.isEmpty(document.description)
+                              ? (
+                                <></>
+                              ) : (
+                                <div className="mediaInfo mediaDescription">
+                                  <span className="mediaLeter">Description:</span>
+                                  <span className="descriptionLeng">
+                                    {(document.description && document.description.length > 45
+                                      ? `${document.description.substr(0, 45)}... `
+                                      : document.description)}
+                                  </span>
+                                </div>
+                              )}
+                            {_.isEmpty(document.tags)
+                              ? (
+                                <></>
+                              ) : (
+                                <div className="mediaInfo maediaTags">
+                                  <span className="mediaLeter">Tags:</span>
+                                  <div className="maediaTagsleng">
+                                    {`${document.tags
+                                      ? `${document.tags.slice(0, size)}...`
                                       : document.tags
                                       } `}
-                                      {' '}
-                                    </div>
+                                    {' '}
                                   </div>
-                                )}
-                              {document.type !== 'Image' && document.type !== 'Video' 
-                                ? (
-                                  <div className="wiewDoc">
-                                    <i class="fa fa-download"></i>
-                                    <a target="_blank" href={document.data} rel="noreferrer">
-                                      Download
-                                      </a>
-                                  </div>
-                                ) : document.type === 'Image' && document.data !== _.isEmpty ? (
-                                  <div className="wiewDoc viewImg">
-                                    <i class="fa fa-eye"></i>
-                                    <a target="_blank" href={document.data} rel="noreferrer">View</a>
-                                  </div>
-                                ) : (
-                                  // <div className="wiewDoc">
-                                  //   <div onClick={this.toggleVideo} className="viewDocModal">
-                                  //     <button id="button"><i className="fa fa-play" aria-hidden="true" /></button>
-                                  //   </div>
-                                  //   {showVideo ? (
-                                  //     <Outside onClick={this.toggleVideo} exclude=".viewDocModal">
-                                  //       <div className="mediaVideoModal">
-                                  //         <p>Not internet conection!</p>
-                                  //       </div>
-                                  //     </Outside>
-                                  //   ) : null}
-                                  // </div>
-                                  <></>
-                                )}
-                            </div>
-                            <div>
-                              {typeof document.data !== 'string'
-                                ? (
-                                  <div>
-                                    <iframe
-                                      src={document.data.src}
-                                      className="mediaVideo"
-                                    />
-                                  </div>
-                                )
-                                : document.type !== 'Image' && document.type !== 'Video' ? (
-                                  <div className="documContainer">
-                                    <img
-                                      src={bgImage}
-                                      className="mediaDocument"
-                                    />
-                                  </div>
-                                ) : (
-                                  <img
-                                    className="gallery-box__img"
-                                    src={document.data}
+                                </div>
+                              )}
+                            {document.type !== 'Image' && document.type !== 'Video' && !Utils.isImg(document.data)
+                              ? (
+                                <div className="wiewDoc">
+                                  <i class="fa fa-download"></i>
+                                  <a target="_blank" href={document.data} rel="noreferrer">
+                                    Download
+                                  </a>
+                                </div>
+                              ) : document.type === 'Image' && Utils.isImg(document.data) ? (
+                                <div className="wiewDoc viewImg">
+                                  <i class="fa fa-eye"></i>
+                                  <a target="_blank" href={document.data} rel="noreferrer">View</a>
+                                </div>
+                              ) : (
+                                <div className="wiewDoc viewImg">
+                                  <i class="fa fa-eye"></i>
+                                  <a target="_blank" href={document.data} rel="noreferrer">View</a>
+                                </div>
+                              )}
+                          </div>
+                          <div>
+                            {typeof document.data !== 'string'
+                              ? (
+                                <div>
+                                  <iframe
+                                    src={document.data.src}
+                                    className="mediaVideo"
                                   />
-                                )}
+                                </div>
+                              )
+                              : document.type !== 'Image' && document.type !== 'Video' && !Utils.isImg(document.data) ? (
+                                <div className="documContainer">
+                                  <img
+                                    src={Utils.isImg(document.data) ? document.data : bgImage}
+                                    className="mediaDocument"
+                                  />
+                                </div>
+                              ) : (
+                                <img
+                                  className="gallery-box__img"
+                                  src={document.data}
+                                />
+                              )}
+                          </div>
+                        </div>
+                        <span
+                          className="nodeLink"
+                          onClick={
+                            () => this.openTab(document.graphId, document.node, document.tabName)
+                          }
+                        >
+                          <div className="containerMedia">
+                            <img
+                              className="userImg"
+                              src={document.user.avatar}
+                            />
+                            <div className="ooo">
+                              <span title={document.node.name} className="headerName">
+                                {document.node.name && document.node.name.length > 15
+                                  ? `${document.node.name.substr(0, 15)}... `
+                                  : document.node.name}
+                              </span>
+                              {document.type === 'Video' || document.type === 'Image'
+                                ? (
+                                  <span className="typeDocument">
+                                    {' '}
+                                    {document.type}
+                                    {' '}
+                                  </span>
+                                ) : Utils.isImg(document.data) ? (
+                                  <span className="typeDocument">Image</span>
+                                ) : !Utils.isImg(document.data) ? (
+                                  <span className="typeDocument">Document</span>
+                                ) :
+                                  (<span className="typeDocument">Document</span>)
+                              }
                             </div>
                           </div>
-                          <span
-                            className="nodeLink"
-                            onClick={
-                              () => this.openTab(document.graphId, document.node, document.tabName)
-                            }
-                          >
-                            <div className="containerMedia">
-                              <img
-                                className="userImg"
-                                src={document.user.avatar}
-                              />
-                              <div className="ooo">
-                                <span title={document.node.name} className="headerName">
-                                  {document.node.name && document.node.name.length > 15
-                                    ? `${document.node.name.substr(0, 15)}... `
-                                    : document.node.name}
-                                 </span>
-                                {document.type === 'Video' || document.type === 'Image'
-                                  ? (
-                                    <span className="typeDocument">
-                                      {' '}
-                                      {document.type}
-                                      {' '}
-                                    </span>
-                                  ) : (
-                                    <span className="typeDocument">Document</span>
-                                  )}
-                              </div>
-                            </div>
-                          </span>
+                        </span>
                       </figure>
                     </div>
                   );
