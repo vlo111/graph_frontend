@@ -33,18 +33,6 @@ export default () => {
 
   return (
     ""
-    // <NotifyMe
-    //   data={list}
-    //   notific_key="createdAt"
-    //   link="link"
-    //   notifyLink={NotifyLink}
-    //   notific_value="text"
-    //   heading="Notification Alerts"
-    //   sortedByKey={false}
-    //   // showDate
-    //   size={30}
-    //   color="#7166F8"
-    //   onMarkAsRead={() => { dispatch(NotificationsUpdateRequest()); }}
-    // />
+    
   );
 };
