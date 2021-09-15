@@ -30,7 +30,7 @@ const AddComment = ({ graph, closeModal, isReply }) => {
       />
       <div className="comment-modal__add-comment-buttons">
         <Button
-          className="btn-delete ghButton2 comment-modal__add-comment-cancel"
+          className="ghButton2 comment-modal__add-comment-cancel btn-delete "
           onClick={() => {
             if (parent.id) {
               dispatch(setGraphCommentParent({}));
