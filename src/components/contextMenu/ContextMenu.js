@@ -8,6 +8,7 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import NodeContextMenu from './NodeContextMenu';
 import ExpandNodeContextMenu from './ExpandNodeContextMenu';
+import MatchNodeContextMenu from './MatchNodeContextMenu';
 import LinkContextMenu from './LinkContextMenu';
 import NodeFullInfoContext from './NodeFullInfoContext';
 import LabelContextMenu from './LabelContextMenu';
@@ -183,7 +184,7 @@ class ContextMenu extends Component {
     }  
     const { match: { params: { graphId = '' } }, expand } = this.props;
     const undoCount = Chart.undoManager.undoCount();
-    const showInMap = Chart.getNodes().some((d) => d.location);
+    const showInMap = Chart.getNodes().some((d) => d?.location?.length > 0);
     const pastData = LabelUtils.getData();
 
     const showPast = !_.isEmpty(pastData) && !_.isEmpty(pastData.nodes) && (show === 'chart' || show === 'label');
@@ -208,6 +209,7 @@ class ContextMenu extends Component {
             >
               {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'expand' ? <ExpandNodeContextMenu onClick={this.handleClick} params={params} /> : null}
+              {show === 'expand' ? <MatchNodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
               {/* {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null} */}

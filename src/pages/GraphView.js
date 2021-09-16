@@ -5,12 +5,7 @@ import { Link, Prompt } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
-import {
-  deleteGraphRequest,
-  getGraphInfoRequest,
-  getSingleGraphViewRequest,
-  getSingleGraphRequest 
-} from '../store/actions/graphs';
+import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import Chart from '../Chart';
 import AnalysisUtils from '../helpers/AnalysisUtils';
@@ -41,7 +36,6 @@ class GraphView extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     deleteGraphRequest: PropTypes.func.isRequired,
-    getSingleGraphViewRequest: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
     userGraphRequest: PropTypes.func.isRequired,
     toggleExplore: PropTypes.func.isRequired,
@@ -60,11 +54,7 @@ class GraphView extends Component {
     this.props.setActiveButton('view');
     this.props.userGraphRequest();
     if (+graphId) {
-      if (pathname === `/graphs/view/${graphId}` && search === '') {
-        this.props.getSingleGraphViewRequest(graphId);
-      } else {
-        this.props.getSingleGraphRequest(graphId);
-      }
+      this.props.getSingleGraphRequest(graphId);
       this.props.getGraphInfoRequest(graphId);
     }
   })
@@ -232,7 +222,6 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   setActiveButton,
-  getSingleGraphViewRequest,
   getSingleGraphRequest,
   deleteGraphRequest,
   userGraphRequest,

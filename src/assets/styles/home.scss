@@ -351,7 +351,7 @@
           font-size: 16px !important;
           color: $color-gray1 !important;
           font-weight: 400 !important;
-          width: 200px !important;
+          width: 230px !important;
           display: flex;
           justify-content: space-between !important;
             .nodesCount{
@@ -425,6 +425,10 @@
          align-items: center;
          opacity: .9;
          object-fit: cover;
+
+         &:hover{
+           opacity: 1;
+         }
      } 
     }
     .buttonView{
@@ -436,13 +440,10 @@
          width:300px ;
          z-index: 1 ;
          flex-direction: column;
-         background: linear-gradient(
-          145.22deg,
-          rgba(240, 119, 96, 0.42) -11.83%,
-          rgba(113, 102, 248, 0.42) 114.34%
-              );
+         background: linear-gradient(144.3deg, rgba(241, 142, 122, 0.86) -34.1%, rgba(113, 102, 248, 0.86) 156.19%);
          cursor: pointer;
          border-radius: 5px;
+         opacity: 1;
 
      .btn-edit  {
           border: none;

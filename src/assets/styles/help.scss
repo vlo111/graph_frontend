@@ -1,3 +1,4 @@
+
 .help_menu {
   color: #7166f8 !important;
   box-shadow: none !important;
@@ -5,23 +6,22 @@
   top: 93%;
   margin-bottom: 36px;
   height: 50px;
+ 
   &:hover {
     background-color: transparent !important;
   }
 }
 
 .HelpsModal {
-  // font-family: sans-serif;
   background: #1c1d1f;
   color: white;
-  // height: 100vh;
   box-sizing: border-box;
 }
 
 .react-tabs {
   display: flex;
   margin-left: 15px;
-
+  max-width: 780px;
   width: 56%;
   height: 87%;
   color: white;
@@ -35,13 +35,19 @@
 .react-tabs__tab-list {
   display: flex;
   flex-direction: column;
-  width: 173px;
+  width: 200px;
   margin: 0;
   background: white;
+  border: none;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: relative;
+  left: 10px;
   h1 {
     margin-top: 16px;
     font-weight: 700;
-    font-size: 42px;
+    font-size: 30px;
     color: #7166f8;
   }
 }
@@ -50,17 +56,20 @@
   border: none;
   color: #757575;
   height: auto;
-  width: 160px;
+  width: 213px;
   position: relative;
   top: 20px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   text-align: -webkit-left;
+  padding: 0px 25px;
+  margin: 0 4px;
+  line-height: 21px;
 }
 
-.react-tabs__tab:hover{
+.react-tabs__tab:hover {
   background: rgba(113, 102, 248, 0.1);
-  color: #7166F8;
+  color: #7166f8;
 }
 
 .react-tabs p {
@@ -72,7 +81,6 @@
   color: #7166f8;
   font-weight: bold;
   text-align: justify;
-  /* text-align: start; */
   line-height: 17px;
 
   &:hover {
@@ -82,13 +90,11 @@
 }
 
 .react-tabs__tab-panel {
-
   padding: 0px 15px;
 
   display: none;
   width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+
 }
 
 .react-tabs__tab-panel--selected {
@@ -135,39 +141,17 @@
   border-left: 17px solid white;
   border-bottom: 15px solid transparent;
   position: fixed;
-  /* background-color: red; */
   top: 93%;
   left: 199px;
 }
 
 .help_img {
+  height: 290px !important;
   position: relative;
   top: 40px;
   left: -4px;
-}
-
-.helpinfo {
-  position: relative;
-  top: 31px;
-  display: flex;
-  justify-content: flex-end;
-  color: #7166f8;
-  font-size: 12px;
-  font-weight: 700;
-
-  left: -5px;
-}
-
-.helplink {
-  top: 36px;
-    position: relative;
-    right: -190px;
-  color: #545454;
-}
-
-.linkicon {
-  position: relative;
-  left: -10px;
+  width: 100%;
+  object-fit: scale-down;
 }
 
 .help_text {
@@ -177,7 +161,6 @@
   color: #545454;
   font-size: 14px;
   padding-bottom: 2px;
-  // -webkit-user-modify: read-write-plaintext-only;
 
   ol {
     padding: 25px;
@@ -187,15 +170,12 @@
       font-weight: 400;
       text-align-last: start;
       line-height: 23px !important;
-      a {
-        position: absolute;
-    color: #7166f8 !important;
-    left: 428px;
-
+      b {
+        color: #7166f8 !important;
       }
     }
   }
-  a{
+  a {
     display: flex;
     position: relative;
     top: 50px;
@@ -222,34 +202,33 @@
     top: 15px;
     left: -20px;
   }
-  .marg_graph_text{
+  .marg_graph_text {
     font-style: italic;
     top: 4px;
     font-size: 12px;
     font-weight: 400;
   }
-  .export_graph_text{
+  .export_graph_text {
     font-size: 12px;
     font-style: italic;
     font-weight: 400;
     top: 90px;
   }
   .link_text {
-  a{
-    position: relative !important;
-    top: 130px !important;
-    margin-bottom: 10px;
-
+    a {
+      position: relative !important;
+      top: 130px !important;
+      margin-bottom: 10px;
+    }
   }
-}
-.export_help_text{
-  a> img{
+  .export_help_text {
+    a > img {
+      position: relative;
+      left: -5px;
+    }
     position: relative;
-    left: -5px;
+    top: 50px;
   }
-  position: relative;
-  top: 50px;
-}
 }
 
 .help_label-text {
@@ -302,6 +281,78 @@
   }
 }
 
-.ghModal> .findinput > label {
+.ghModal > .findinput > label {
   font-size: 50px !important;
+}
+
+.helpTitle {
+  color: #7166f8;
+  font-weight: 400;
+  font-size: 14px;
+  position: relative;
+  top: 20px;
+  display: flex;
+  left: 9px;
+}
+.helpTitlePages {
+  color: #747474;
+  font-size: 14px;
+  font-weight: 700;
+  position: relative;
+  top: 5px;
+  left: -20px;
+  margin-bottom: 7px;
+  line-height: 20px;
+}
+.react-tabs__tab:focus {
+  box-shadow: none;
+  border-color: none;
+  outline: none;
+}
+
+.help-text {
+  padding: 20px 0;
+  ol {
+    li {
+      color: #545454;
+      font-size: 14px;
+      padding-bottom: 2px;
+      -webkit-user-modify: read-write-plaintext-only;
+    }
+  }
+}
+.help-text ul li {
+  display: flex;
+  margin-top: 18px;
+  justify-content: space-between;
+}
+.help-text ul li div {
+  width: 24%;
+  text-align: justify;
+}
+.help-text ul li div span {
+  margin-left: 13px;
+  border: 2px solid #dfdfdf;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 5px 9px;
+  color: #757575;
+}
+.HelpCommand {
+  color: #424242;
+  font-size: 14px;
+  font-weight: 700;
+}
+.helpResultText{
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: relative;
+  top: 60px;
+  height: 50%;
+  max-height: 400px;
+}
+.shotcouts{
+  height: 100%;
+  max-height: 100%;
 }

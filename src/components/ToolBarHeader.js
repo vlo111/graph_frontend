@@ -151,6 +151,7 @@ class ToolBarHeader extends Component {
                 icon={<CursorSvg />}
                 className={`transparent alt ${mouseTracker ? 'activeMouseTracker' : 'mouseTracker'}`}
                 onClick={() => this.handleCursor(mouseTracker)}
+                title={`${mouseTracker ? 'hide collaborators cursor' : 'show collaborators cursor'}`}
               />
               )}
             </li>
@@ -169,6 +170,7 @@ class ToolBarHeader extends Component {
                         icon={<CommentSvg />}
                         className="transparent footer-icon"
                         onClick={() => this.openCommentModal(true)}
+                        title='Comments'
                     />
                   </div>
               )}
