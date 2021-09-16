@@ -102,6 +102,7 @@ class ToolBarHeader extends Component {
 
     const updateLocation = pathname.startsWith('/graphs/update/');
     const filter = pathname.startsWith('/graphs/filter/'); 
+    const view = pathname.startsWith('/graphs/view/'); 
     return (
       <>
         <header id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
@@ -116,7 +117,7 @@ class ToolBarHeader extends Component {
               {updateLocation &&  <Legend /> }
             </li>
             <li>
-              { !filter && 
+              { !filter && !view &&
                 <div className="graphs">
                     <Button
                       icon={<SearchSvg />}
