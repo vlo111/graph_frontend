@@ -662,31 +662,6 @@ p {
   right: 0;
 }
 
-.ghButton2 {
-  display: inline-block;
-  padding: 0.46em 1.6em;
-  border: none;
-  color: $color-white;
-  background-color: $color-button;
-  border-radius: 0.38em;
-  box-sizing: border-box;
-  text-decoration: none;
-  font-weight: 300;
-  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
-  text-align: center;
-  transition: all 0.15s;
-}
-
-.ghButton2:hover {
-  background-color: $color-white;
-  color: #0062FF;
-}
-
-.ghButton2:hover button:after {
-  opacity: 1;
-  right: 0;
-}
-
 .ghRangeSelect {
   padding-bottom: 20px;
 
@@ -3270,6 +3245,8 @@ body .gh__menu {
     background-color: white;
     padding: 15px 0 15px 30px;
     cursor: pointer;
+    margin: 5px 0px ;
+    height: 50px;
 
     .node-icons {
       .nodestyletext {
@@ -4172,228 +4149,6 @@ body .gh__menu {
       justify-content: flex-start;
       padding: 8px 0;
     }
-  }
-}
-
-.commentModal {
-
-  .ghFormField {
-    width: 410px;
-  }
-
-  .close {
-    padding: 0;
-    position: absolute;
-    top: 15px;
-    right: 16px;
-
-    svg {
-      width: 11px;
-      height: 10px;
-
-      path {
-        fill: $color-gray;
-      }
-    }
-  }
-
-  .jodit-workplace {
-    min-height: 50px !important;
-  }
-
-  .comment {
-    width: 100%;
-    padding: 10px 0 10px 0;
-  }
-
-  .node-name, .user-name {
-    font-size: 20px;
-    color: #6356FF;
-  }
-
-  .comment-modal {
-    max-width: 900px;
-
-    .ghButton {
-      position: absolute;
-      right: 25px !important;
-    }
-
-    &__add-comment-buttons {
-      display: flex;
-
-      .btn-classic {
-        margin-left: auto;
-        margin-top: 25px;
-      }
-
-      .btn-delete {
-        margin-top: 25px;
-      }
-    }
-
-
-    &__add-comment-input {
-      font-size: 0.9rem;
-      margin-bottom: 0;
-      resize: vertical;
-      height: 90px !important;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      -ms-border-radius: 3px;
-      border-radius: 3px;
-      font-family: chaparral-pro, serif;
-    }
-
-    &__title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      width: 100%;
-
-      .node-name {
-        font-size: 24px;
-      }
-
-      .close {
-        margin-top: 0;
-        padding-left: 480px;
-      }
-
-      .closeNode {
-        margin-top: -22px;
-        padding-left: 423px;
-      }
-    }
-
-    &__comments-wrapper {
-      height: 100%;
-      width: 100%;
-      overflow: auto;
-    }
-
-    &__comment-item {
-      background: #F7F7FB;
-      border-radius: 3px;
-      min-height: 146px;
-
-      &--reply {
-        background-color: #f7f7fb;
-        padding-left: 61px;
-        border-radius: 3px;
-        font-family: chaparral-pro, serif;
-        margin-top: -30px;
-
-        .user-info {
-          grid-gap: 0 !important;
-        }
-
-        .remove {
-          right: 20px;
-        }
-
-        .reply {
-          right: 50px;
-        }
-
-        div {
-          padding: 10px 10px 10px 10px;
-          line-height: 30px;
-        }
-      }
-
-      .remove {
-        right: 20px;
-      }
-
-      .reply {
-        right: 80px;
-      }
-
-      .comment-content {
-        padding: 0 50px 5px 75px;
-        line-height: 30px !important;
-      }
-    }
-
-    &__owner {
-      display: flex;
-      align-items: center;
-      padding: 7px 0 17px 12px;
-
-      .user-info {
-        display: grid;
-        grid-gap: 10px;
-
-        .user-name {
-          font-size: 16px;
-        }
-      }
-
-      .settings {
-        display: flex;
-        margin: 0 0 0 auto;
-      }
-    }
-
-    &__owner-logo {
-      margin-right: 10px;
-    }
-
-    &__comment-date {
-      font-size: 12px;
-    }
-
-    &__add-comment-section {
-      margin-top: 40px;
-
-      &--reply {
-        margin-left: 0;
-      }
-    }
-
-    &__add-comment-section--reply {
-      width: 100%;
-      padding: 10px 10px 10px 61px;
-    }
-  }
-}
-
-.tabComment, .graphUsersInfo {
-  transition: all 0.6s ease-in-out 0.0s;
-  transform-origin: right top;
-  transform: scaleX(0);
-  z-index: 0;
-  position: absolute !important;
-  right: 500px;
-  width: 640px;
-  max-width: 640px !important;
-  padding: 30px 34px !important;
-  height: auto;
-  max-height: 93% !important;
-  top: 70px !important;
-  margin-left: 280px;
-  box-shadow: none !important;
-  border-radius: 0px !important;
-  background-color: #ffffff !important;
-  border: 1px solid #dbd9fd;
-
-  .close {
-    left: 35px;
-
-    svg {
-      width: 40px !important;
-      height: 40px !important;
-
-      path {
-        fill: $color-gray1 !important;
-      }
-    }
-  }
-
-  .jodit-workplace {
-    min-height: 50px !important;
   }
 }
 
@@ -8417,6 +8172,8 @@ img.preview-scaled {
   margin-left: -1px;
   color: #9F9F9F;
   background-color: $color-white;
+  height: 36px !important;
+  // max-height: auto !important;
 }
 
 .jodit-status-bar {
@@ -9420,4 +9177,276 @@ summary::after {
 
 details[open] summary:after {
   content: url("../images/icons/arrow-down.svg");
+}
+
+///comment modal
+
+.commentModal {
+
+  .ghFormField {
+    width: 410px;
+  }
+
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
+
+  .jodit-workplace {
+    min-height: 50px !important;
+  }
+
+  .comment {
+    width: 100%;
+    padding: 10px 0 10px 0;
+  }
+
+  .node-name, .user-name {
+    font-size: 20px;
+    color: #6356FF;
+  }
+
+  .comment-modal {
+    max-width: 900px;
+
+    .ghButton {
+      position: absolute;
+      right: 25px !important;
+    }
+    &__add-comment-input {
+      font-size: 0.9rem;
+      margin-bottom: 0;
+      resize: vertical;
+      height: 90px !important;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      -ms-border-radius: 3px;
+      border-radius: 3px;
+      font-family: chaparral-pro, serif;
+    }
+
+    &__title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      width: 100%;
+      color:#7E75EF;
+
+
+      .node-name {
+        font-size: 24px;
+      }
+
+      .close {
+        margin-top: 0;
+        padding-left: 480px;
+      }
+
+      .closeNode {
+        margin-top: -22px;
+        padding-left: 423px;
+      }
+    }
+
+    &__comments-wrapper {
+      height: 100%;
+      width: 100%;
+      overflow: auto;
+    }
+
+    &__comment-item {
+      background: #F7F7FB;
+      border-radius: 3px;
+      min-height: 146px;
+
+      &--reply {
+        background-color: #f7f7fb;
+        padding-left: 61px;
+        border-radius: 3px;
+        font-family: chaparral-pro, serif;
+        margin-top: -30px;
+
+        .user-info {
+          grid-gap: 0 !important;
+        }
+
+        .remove {
+          right: 20px;
+        }
+
+        .reply {
+          right: 50px;
+        }
+
+        div {
+          padding: 10px 10px 10px 10px;
+          line-height: 30px;
+        }
+      }
+
+      .remove {
+        right: 20px;
+      }
+
+      .reply {
+        right: 80px;
+      }
+
+      .comment-content {
+        padding: 0 50px 5px 75px;
+        line-height: 30px !important;
+      }
+    }
+
+    &__owner {
+      display: flex;
+      align-items: center;
+      padding: 7px 0 17px 12px;
+
+      .user-info {
+        display: grid;
+        grid-gap: 10px;
+
+        .user-name {
+          font-size: 16px;
+        }
+      }
+
+      .settings {
+        display: flex;
+        margin: 0 0 0 auto;
+      }
+    }
+
+    &__owner-logo {
+      margin-right: 10px;
+    }
+
+    &__comment-date {
+      font-size: 12px;
+    }
+
+    &__add-comment-section {
+      margin-top: 40px;
+
+      &--reply {
+        margin-left: 0;
+      }
+    }
+
+    &__add-comment-section--reply {
+      width: 100%;
+      padding: 10px 10px 10px 61px;
+    }
+  }
+}
+
+.tabComment, .graphUsersInfo {
+  transition: all 0.6s ease-in-out 0.0s;
+  transform-origin: right top;
+  transform: scaleX(0);
+  z-index: 0;
+  position: absolute !important;
+  right: 500px;
+  width: 640px;
+  max-width: 640px !important;
+  padding: 30px 34px !important;
+  height: auto;
+  max-height: 93% !important;
+  top: 70px !important;
+  margin-left: 280px;
+  box-shadow: none !important;
+  border-radius: 0px !important;
+  background-color: #ffffff !important;
+  border: 1px solid #dbd9fd;
+
+  .close {
+    left: 35px;
+
+    svg {
+      width: 40px !important;
+      height: 40px !important;
+
+      path {
+        fill: $color-gray1 !important;
+      }
+    }
+  }
+
+  .jodit-workplace {
+    min-height: 50px !important;
+  }
+}
+
+.jodit-ui-separator {
+  border-left: 0;
+  border-right: 1px solid #dadada;
+  margin: 0; 
+  padding: 0;
+}
+.jodit-toolbar-button {
+  align-items: center;
+  border-radius: 3px;
+  width: 2px;
+  height: 34px;
+  justify-content: unset;
+  min-width: 34px;
+  overflow: hidden;
+}
+
+.jodit-ui-group {
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  max-width: none;
+}
+.jodit-toolbar-button button {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 34px;
+  min-width: 22px;
+  padding: 0;
+  border: none !important;
+}
+.comment hr{
+  display: none;
+}
+.jodit-ui-separator {
+  border-left: 0;
+  cursor: default;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.commentModal .comment-modal__add-comment-buttons {
+      display: flex;
+    align-items: end;
+    height: 60px;
+    justify-content: space-between;
+}
+.jodit-container:not(.jodit_inline) .jodit-workplace {
+  display: flex;
+  flex-direction: column;
+  min-height: 50px;
+  overflow: hidden;
+}
+.jodit-xpath {
+  display: flex;
+  margin-left: calc(8px/-2);
+  // flex-direction: column;
+  // position: relative !important;
+  // top: -3px !important;
 }
