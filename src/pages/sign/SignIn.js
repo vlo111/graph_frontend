@@ -159,7 +159,7 @@ class Login extends Component {
               <Input
                 name="email"
                 className={`InputIvalid ${
-                  errors.email ? "border-error" : null
+                  errors.email ? "" : null
                 }`}
                 type="email"
                 placeholder="E-mail"
@@ -173,7 +173,7 @@ class Login extends Component {
                 name="password"
                 className="InputIvalid"
                 className={`InputIvalid ${
-                  errors.password ? "border-error" : null
+                  errors.password ? "" : null
                 }`}
                 placeholder="Password"
                 value={requestData.password}
