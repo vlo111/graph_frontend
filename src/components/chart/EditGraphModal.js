@@ -18,6 +18,7 @@ import {
   updateGraphRequest,
   updateGraphThumbnailRequest,
   deleteGraphRequest,
+  getGraphsListRequest,
 } from '../../store/actions/graphs';
 import { setActiveButton, setLoading } from '../../store/actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -39,6 +40,7 @@ class EditGraphModal extends Component {
     toggleModal: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
+    getGraphsListRequest: PropTypes.func.isRequired,
   }
 
   initValues = memoizeOne((singleGraph) => {
@@ -106,7 +108,7 @@ requestData: {
   saveGraph = async (status) => {
     let { requestData, image } = this.state;
 
-    let { singleGraph, graph } = this.props;
+    let { singleGraph, graph, location: { pathname } } = this.props;
     
     if(graph) {
       singleGraph = graph
@@ -149,14 +151,21 @@ requestData: {
       
       this.props.updateGraph(newGraph);  
     }
+    if (pathname === '/') {
+      const page = 1
+      const order = 'newest'
+      this.props.getGraphsListRequest(page, {filter: order})
+    }
 
     this.props.setLoading(false);
     this.props.toggleModal(false);
   }
 
   handleChange = async (path, value) => {
-    const { id: graphId } = this.props.singleGraph;
-
+    let { singleGraph: {id: graphId}, graph } = this.props;
+    if (graphId === undefined) {
+      graphId = graph.id
+    }
     const { requestData } = this.state;
 
     if (path == 'image') {
@@ -284,6 +293,7 @@ const mapDispatchToProps = {
   setActiveButton,
   setLoading,
   deleteGraphRequest,
+  getGraphsListRequest
 };
 
 const Container = connect(
