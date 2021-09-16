@@ -18,31 +18,14 @@ class Search extends Component {
 
   render() {
     const {
-      showSearch,
-      exploreMode,
-      graphInfo,
-      match: {
-        params: { graphId },
-      },
-        history: {location: {pathname}}
+      history: {location: {pathname}}
     } = this.props;
     const nodes = Chart.getNodes()
 
     if(!pathname.startsWith('/graphs/view/')) {
       return <></>
     }
-
-    if(graphId && Object.keys(graphInfo)?.length && (
-      showSearch 
-      || (graphInfo?.totalNodes + graphInfo?.totalLinks > REACT_APP_MAX_NODE_AND_LINK
-        && !nodes?.length && !exploreMode)
-    )) {
-      if (!exploreMode) {
-        Chart.render({nodes:[], links:[], labels: []}, {ignoreAutoSave: true,})
-      }
-      return <SearchModal history={this.props.history} />;
-    }
-    return <></>
+    return <SearchModal history={this.props.history} />;
   }
 }
 

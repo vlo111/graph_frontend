@@ -60,32 +60,8 @@ class SearchModal extends Component {
     };
   }
 
-  componentWillUnmount() {
-    const { nodes, links } = this.props.singleGraph;
-    const chartNodes = Chart.getNodes();
-    if (!chartNodes.length && nodes?.length) {
-      if (nodes?.length + links?.length > REACT_APP_MAX_NODE_AND_LINK) {
-        Chart.render({ nodes: [], links: [] }, { ignoreAutoSave: true });
-      } else {
-        Chart.render({ nodes, links }, { ignoreAutoSave: true });
-      }
-    } else {
-      this.props.toggleExplore(true);
-    }
-  }
-
-  initTabs = memoizeOne(() => {
-    const { graphId } = this.props;
-    // this.props.getAllTabsRequest(graphId);
-  });
 
   closeModal = () => {
-    const nodes = Chart.getNodes();
-    // if (!nodes?.length) {
-    //   this.props.toggleExplore(true);
-    // }
-    // this.props.toggleSearch(false);
-
     this.handleChange('');
   };
 
@@ -584,14 +560,13 @@ class SearchModal extends Component {
       chosenNodes,
       allNodesSelected,
     } = this.state;
-    this.initTabs();
+    const { totalNodes } = this.props
     const chartNodes = Chart.getNodes();
     return (
       <Modal
         isOpen
         className="ghModal ghModalSearch searchNodes"
         overlayClassName="ghModalOverlay searchOverlay"
-        // onRequestClose={this.closeModal}
       >
         <div className="searchField">
           <div className="searchBox">
@@ -876,7 +851,7 @@ class SearchModal extends Component {
               >
                 Show
               </button>
-              {chartNodes.length ? (
+              {chartNodes.length !== totalNodes ? (
                 <button
                   onClick={(ev) => this.showSelectedNodes(true)}
                   className="btn-classic btn-existing"
@@ -901,6 +876,7 @@ const mapStateToProps = (state) => ({
   currentUserId: state.account.myAccount.id,
   linksPartial: state.graphs.singleGraph?.linksPartial || [],
   nodesPartial: state.graphs.singleGraph?.nodesPartial || [],
+  totalNodes: state.graphs.graphInfo.totalNodes
 });
 
 const mapDispatchToProps = {

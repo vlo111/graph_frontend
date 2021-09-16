@@ -37,6 +37,7 @@ import AddLinkedInModal from '../components/chart/AddLinkedInModal';
 import MapsModal from '../components/maps/MapsModal';
 import ScienceGraphModal from "../components/ScienceSearchToGraph/ScienceGraphModal";
 import WikiModal from "../components/wikipedia/WikiModal";
+import SearchModal from '../components/search/hiddenSearchModal'
 
 class GraphForm extends Component {
   static propTypes = {
@@ -87,6 +88,7 @@ class GraphForm extends Component {
         {activeButton === 'maps' && <MapsModal />}
         {activeButton === 'sciGraph' && <ScienceGraphModal />}
         {activeButton === 'wikipedia' && <WikiModal />}
+        {activeButton === 'search' && <SearchModal history={this.props.history}/>}
         <AddLinkModal />
         <AddLabelModal />
         <AddLinkedInModal />
