@@ -368,7 +368,7 @@ class SearchModal extends Component {
     return (
       <Modal
         isOpen
-        className="ghModal ghModalOldSearch oldSearchNodes"
+        className="ghModal ghModalEditSearch editSearchNodes"
         overlayClassName="ghModalOverlay"
         onRequestClose={this.closeModal}
       >
