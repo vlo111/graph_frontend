@@ -432,12 +432,20 @@
     }
   }
 }
-
-
-
+@media screen and (max-height: 700px) {
+  .ghModalMedia {
+     top:80px !important;
+     max-height: 88% !important;
+    
+    &#fullWidth{
+      top:80px !important;
+    }
+  }
+}
 @media (max-height: 750px) {
   .menu {
-  overflow-y: scroll;
+    overflow-y: scroll;
+    height: 89%;
   
 }
   .menu .containerMenu .collapse:hover{

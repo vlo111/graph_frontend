@@ -2,10 +2,11 @@
     width: 60%;
     max-width: unset !important;
     padding: 20px !important;
-    max-height: 76% !important;
+    max-height: 85% !important;
     align-items: center !important;
-    min-height: 35% !important;
+    min-height: 41% !important;
     left: 3% !important;
+    top:80px !important;
 
     &#fullWidth {
       position: absolute;
@@ -256,7 +257,7 @@
     display:none;
     height: 230px;
     background: linear-gradient(144.3deg, rgba(226, 55, 21, 0.86) -34.1%, rgba(113, 102, 248, 0.86) 156.19%);
-    width: 91%;
+    width: 90%;
     position: absolute;
     border-radius: 5px;
     flex-direction: column;
@@ -265,7 +266,7 @@
     .mediaInfo{
       color: white;
       font-weight: 400;
-      font-size: 14px;
+      font-size: 13px;
       font-style: italic;
 
      

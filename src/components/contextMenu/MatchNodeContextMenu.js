@@ -7,7 +7,7 @@ import Icon from '../form/Icon';
 import Chart from '../../Chart'; 
 import Zoom from '../Zoom'; 
 import ChartUtils from '../../helpers/ChartUtils';
-import { ReactComponent as MachSvg } from '../../assets/images/icons/nodes.svg';
+import { ReactComponent as MachSvg } from '../../assets/images/icons/match.svg';
 import { ReactComponent as EyeBallSvg } from '../../assets/images/icons/eye-ball.svg';
 import { ReactComponent as LinksSvg } from '../../assets/images/icons/link.svg';
 class MatchNodeContextMenu extends Component {
