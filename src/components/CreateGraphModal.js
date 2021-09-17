@@ -94,7 +94,8 @@ class CreateGraphModal extends Component {
             value={requestData.title}
             onChangeText={(v) => this.handleChange('title', v)}
             autoComplete="off"
-            placeholder="New Graph Name"
+            placeholder="Type Graph Name"
+            autoFocus
           />
           <Input
             placeholder="Description"
