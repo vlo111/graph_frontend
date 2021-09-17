@@ -1594,7 +1594,7 @@ p {
       height: 84%;
       .ghInput input{
         padding: 0;
-        width: 210px;
+        width: 100%;
         border:none;
         border-bottom:1px solid $color-user-text;
         border-radius:0;
@@ -1602,9 +1602,10 @@ p {
         color:$color-dark;
         margin: -4px auto auto;
 
+        
         &::-webkit-input-placeholder {
-          color: $color-graph-name;
-          font-weight: 700;
+          color:$color-passive;
+          font-weight: 400;
           text-align:center;
         }
       }

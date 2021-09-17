@@ -30,7 +30,7 @@ class CreateGraphModal extends Component {
       requestData: {
         title: '',
         description: '',
-        ...props.data,
+        ...props.data,      
       },
     };
   }
@@ -41,6 +41,7 @@ class CreateGraphModal extends Component {
       Chart.loading(false);
     }
   }
+
 
   handleChange = (path, value) => {
     const { requestData } = this.state;
@@ -94,7 +95,8 @@ class CreateGraphModal extends Component {
             value={requestData.title}
             onChangeText={(v) => this.handleChange('title', v)}
             autoComplete="off"
-            placeholder="New Graph Name"
+            placeholder="Type Graph Name"
+            autoFocus
           />
           <Input
             placeholder="Description"
