@@ -7,6 +7,9 @@ import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
 import memoizeOne from 'memoize-one';
 import { getGraphsListRequest } from '../../store/actions/graphs';
+import Tooltip from 'rc-tooltip';
+import GraphListFooter from '../../components/graphData/GraphListFooter';
+import GraphDashboardSubMnus from '../../components/graphData/GraphListHeader';
 
 class SearchGraphs extends Component {
   static propTypes = {
@@ -22,19 +25,25 @@ class SearchGraphs extends Component {
   getGraphs = memoizeOne((page, searchParam) => {
     this.props.getGraphsListRequest(page, { s: searchParam });
   })
+  showCardOver = (id) => {
+    document.getElementsByClassName(`graph-card_${id}`)[0].style.display = 'flex';
+  }
 
+  hideCardOver = (id) => {
+    document.getElementsByClassName(`graph-card_${id}`)[0].style.display = 'none';
+  }
   render() {
-    const { setLimit, graphsList } = this.props;
+    const { setLimit, graphsList,headerTools } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
     this.getGraphs(page, searchParam);
     return (
-      <div className="searchData">
-        {graphsList && !isEmpty(graphsList) && graphsList.length ? (
-          <div className="searchData__wrapper">
-            <h3>{`Graph${graphsList.length > 1 ? 's' : ''}`}</h3>
+      <div className="graphsCard">
+        {graphsList && !isEmpty(graphsList) && graphsList.length  ? (
+          <>
+            {/* <h3>{`Graph${graphsList.length > 1 ? 's' : ''}`}</h3> */}
             {graphsList.slice(0, 5).map((graph) => (
-              <article key={graph.id} className="searchData__graph">
-                <div className="searchData__graphInfo">
+              <article key={graph.id} className="graphs">
+                {/* <div className="searchData__graphInfo">
                   <img
                     className="avatar"
                     src={graph.user.avatar}
@@ -59,15 +68,67 @@ class SearchGraphs extends Component {
                       <span>{` (${graph.nodesCount} nodes )`}</span>
                     </div>
                   </div>
+                </div> */}
+                <div className="top">
+              <div className="infoContent">
+                <img
+                  className="avatar"
+                  src={graph.user.avatar}
+                  alt={graph.user.name}
+                />
+                <div className="infoWrapper">
+                  <Link to={`/profile/${graph.user.id}`}>
+                    <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
+                  </Link>
+                  <div className="info">
+                    <span>{moment(graph.updatedAt).calendar()}</span>
+                    <span className="nodesCount">{` ${graph.nodesCount} nodes `}</span>
+                  </div>
                 </div>
+              </div>
+              <div className="sub-menus">
+                <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={graph} headerTools={headerTools} />
+              </div>
+            </div>
+            <div>
+             <Tooltip overlay={graph.title} placement="bottom" >
+              <h3>
+                {' '}
+                {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
+              </h3>
+             </Tooltip> 
+              <div className="descriptionGraph">
+              <Tooltip overlay={graph.description} placement="bottom" >
+                <span>
+                  {' '}
+                  {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
+                </span>
+                </Tooltip>
+              </div>
+            </div>
+
+            <div
+              onMouseOver={() => this.showCardOver(graph.id)}
+              onMouseOut={() => this.hideCardOver(graph.id)}
+              className="graph-image"
+            >
+
+              <div className={`buttonView graph-card_${graph.id}`}>
+                <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>
+                <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
+              </div>
+              <img
+                className="thumbnail"
+                src={`${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
+                alt={graph.title}
+              />
+            </div>
+            <GraphListFooter graph={graph} />
               </article>
             ))}
-            {
-              setLimit && graphsList.length > 5
-              && <div className="viewAll"><Link to={`search-graph?s=${searchParam}`}>View all</Link></div>
-            }
-          </div>
-        ) : ((!setLimit && <h3>No Graph Found</h3>) || null)}
+          
+          </>
+        ) : ((<h3>No Graph Found</h3>) || null)}
       </div>
     );
   }

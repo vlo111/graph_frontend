@@ -1,0 +1,58 @@
+.searchPageTabs{
+    width: 100% !important;
+    .tabsList{
+        position: relative !important;
+        transform: none !important;
+        padding: 0px !important;
+        top: -13px !important;
+        width: 100% !important;
+        margin-left: 70px !important;
+    
+        .item{
+          margin-left:10px !important;
+          width: 120px !important;
+          height: 44px !important;
+          
+        } 
+        .item .ghButton{
+          background-color: transparent !important;
+          color: #9BA6B4;
+          padding: 0 !important;
+          margin: 0 !important;
+          box-shadow: 0px 5px 12px #0d090514;
+          white-space: nowrap;
+          font-size: 12px !important;
+          font-weight: 400 !important;
+          margin-right: 11px !important;
+          border-radius: 5px !important;
+          width: 120px;
+          height: 44px;
+          
+        }
+       .item.active .ghButton {
+        background: -webkit-linear-gradient(#F07760, #7166F8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+         font-weight: 700 !important;
+      }
+      .item.active{
+        background-color: white;
+        border-radius: 5px;
+      }
+  
+      }
+
+      .content {
+        min-height: 800px !important; 
+        border-radius: 0 !important; 
+        border: none !important; 
+        margin: 0px !important;
+
+        .graphCard{
+          .graphs > div > .sharGraphSearch{
+            color: $color-avatar-border !important;
+          }
+        }
+    }
+
+}
