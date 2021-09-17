@@ -96,17 +96,7 @@ class Login extends Component {
       case "password":
         if (!value) {
           return "Invalid email or password";
-        } else if (value.length < 8 || value.length > 15) {
-          return " ";
-        } else if (!value.match(/[a-z]/g)) {
-          return " ";
-        } else if (!value.match(/[A-Z]/g)) {
-          return " ";
-        } else if (!value.match(/[0-9]/g)) {
-          return " ";
-        } else {
-          return "";
-        }
+        } 
       default: {
         return "";
       }
@@ -159,7 +149,7 @@ class Login extends Component {
               <Input
                 name="email"
                 className={`InputIvalid ${
-                  errors.email ? "" : null
+                  errors.email ? "border-error" : null
                 }`}
                 type="email"
                 placeholder="E-mail"
@@ -173,7 +163,7 @@ class Login extends Component {
                 name="password"
                 className="InputIvalid"
                 className={`InputIvalid ${
-                  errors.password ? "" : null
+                  errors.password ? "border-error" : null
                 }`}
                 placeholder="Password"
                 value={requestData.password}
