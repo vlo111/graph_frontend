@@ -215,7 +215,7 @@ class SignUp extends Component {
                 className={`InputIvalid ${
                   errors.password ? "border-error" : null
                 }`}
-                placeholder="password"
+                placeholder="Password"
                 value={requestData.password}
                 error={errors.password}
                 onChange={this.handleChange}
@@ -227,7 +227,7 @@ class SignUp extends Component {
                 className={`InputIvalid ${
                   errors.passwordConfirm ? "border-error" : null
                 }`}
-                placeholder="passwordConfirm"
+                placeholder="Confirm password"
                 value={requestData.passwordConfirm}
                 error={errors.passwordConfirm}
                 onChange={this.handleChange}
