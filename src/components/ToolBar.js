@@ -191,14 +191,6 @@ class ToolBar extends Component {
     this.setState({
       openHelpsModal: !openHelpsModal,
     });
-    if (document.getElementById("graphs-data-info").style.display == "none") 
-    {
-      document.getElementById('graphs-data-info').style.display = 'flex';
-    }
-    else 
-    {
-      document.getElementById('graphs-data-info').style.display = 'none';
-    }
 
     setTimeout(() => {
       this.collapse();
@@ -214,10 +206,10 @@ class ToolBar extends Component {
     this.setState({
       openHelpsModal: false,
     });
-    if (document.getElementById("graphs-data-info").style.display == "none") 
-    {
-      document.getElementById('graphs-data-info').style.display = 'flex';
-    }
+    // if (document.getElementById("graphs-data-info").style.display == "none") 
+    // {
+    //   document.getElementById('graphs-data-info').style.display = 'flex';
+    // }
     setTimeout(() => {
       this.collapse();
     }, 20);

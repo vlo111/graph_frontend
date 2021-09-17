@@ -21,117 +21,60 @@ import PasswordInput from "../../components/form/PasswordInput";
 class Login extends Component {
   static propTypes = {
     signInRequest: PropTypes.func.isRequired,
-  };
+  }
 
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       requestData: {
-        email: "",
-        password: "",
+        email: '',
+        password: '',
       },
       failedLoginAttempts: 0,
-      errors: {
-        email: "",
-        password: "",
-      },
+      errors: ''
     };
   }
 
-  handleChange = (value, path) => {
-    const { requestData, errors } = this.state;
+  
+  handleTextChange = (value, path) => {
+    const { requestData } = this.state;
     _.set(requestData, path, value);
-    _.unset(errors, path, value);
-    this.setState({
-      requestData,
-      errors,
-    });
-  };
+    this.setState({ requestData });
+  }
 
   signIn = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
-    this.setState({ loading: true });
-    const { payload } = await this.props.signInRequest(
-      requestData.email,
-      requestData.password
-    );
-    this.setState({ loading: false });
-    const { data = {} } = payload;
-    if (data.status !== "ok") {
-      if (!data.message.includes("confirmed")) {
-        this.setState({
-          failedLoginAttempts: this.state.failedLoginAttempts + 1,
-        });
-      }
 
-      if (this.state.failedLoginAttempts === 3) {
-        await this.props.forgotPasswordRequest(
-          requestData.email,
-          `${origin}/sign/reset-password`
-        );
-      }
-      // if (this.state.failedLoginAttempts < 3) {
-      //   toast.dismiss(this.toast);
-      //   this.toast = toast.error(data.message || 'Invalid email or password');
-      // }
+    const errorMessage = "Invalid Email or Password";
 
-      this.setState({ loading: false });
-    }
-  };
-  validate = (name, value) => {
-    const { requestData } = this.state;
-    switch (name) {
-      case "email":
-        if (!value) {
-          return " ";
-        } else if (
-          !value.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
-        ) {
-          return " ";
-        } else {
-          return "";
-        }
-      case "password":
-        if (!value) {
-          return "Invalid email or password";
-        } 
-      default: {
-        return "";
-      }
-    }
-  };
-  handleChange = (e) => {
-    this.setState({
-      errors: {
-        ...this.state.errors,
-        [e.target.name]: this.validate(e.target.name, e.target.value),
-      },
-      requestData: {
-        ...this.state.requestData,
-        [e.target.name]: e.target.value,
-      },
-    });
-  };
-
-  handleSubmit = (e) => {
-    const { requestData } = this.state;
-    // e.preventDefault();
-    let validationErrors = {};
-    Object.keys(requestData).forEach((name) => {
-      const error = this.validate(name, requestData[name]);
-      if (error && error.length > 0) {
-        validationErrors[name] = error;
-      }
-    });
-    if (Object.keys(validationErrors).length > 0) {
-      this.setState({ errors: validationErrors });
+    if(!requestData.email || !requestData.password) {
+      this.setState({
+        errors: errorMessage,
+      })
       return;
     }
-  };
+
+    this.setState({ loading: true });
+    const { payload } = await this.props.signInRequest(requestData.email, requestData.password);
+    this.setState({ loading: true });
+    const { data = {} } = payload;
+    if (data.status !== 'ok') {
+      this.setState({
+        failedLoginAttempts: this.state.failedLoginAttempts + 1,
+        errors: errorMessage + '',
+      });
+     
+       
+      if (this.state.failedLoginAttempts === 3) {
+        await this.props.forgotPasswordRequest(requestData.email, `${origin}/sign/reset-password`);
+      } 
+    
+    }
+  }
   render() {
-    const { requestData, errors, failedLoginAttempts } = this.state;
+    const { requestData, failedLoginAttempts, errors } = this.state;
     return (
       <WrapperSign>
         <div className="SigninLeft signIn" />
@@ -146,41 +89,40 @@ class Login extends Component {
               <div className="socialLogin">
                 <h4>Sign in </h4>
               </div>
-              <Input
+               <Input
                 name="email"
-                className={`InputIvalid ${
-                  errors.email ? "border-error" : null
-                }`}
-                type="email"
-                placeholder="E-mail"
+                placeholder="Email address"
                 value={requestData.email}
-                error={errors.email}
-                onChange={this.handleChange}
+                onChangeText={this.handleTextChange}
                 autoComplete="off"
               />
-
               <PasswordInput
                 name="password"
-                className="InputIvalid"
-                className={`InputIvalid ${
-                  errors.password ? "border-error" : null
-                }`}
                 placeholder="Password"
                 value={requestData.password}
-                error={errors.password}
-                onChange={this.handleChange}
+                onChangeText={this.handleTextChange}
               />
 
               <Link to="/sign/forgot-password" className="forgotPassword">
                 Forgot password?
               </Link>
 
-              {failedLoginAttempts >= 3 && (
+              {
+              
+              
+              failedLoginAttempts >= 3 ? (
                 <p className="errorRecovery">
-                  {/* <i class="fa fa-exclamation-triangle"></i> */}
                     Please check your email to recover your account
                 </p>
-              )}
+              ) : 
+              (errors && (failedLoginAttempts <= 3) && (
+                <p className="errorRecovery">
+                    {errors}
+                </p>
+                
+              ))
+              }
+
               <Button
                 type="submit"
                 className="submit"
@@ -222,3 +164,5 @@ const mapDispatchToProps = {
 const Container = connect(mapStateToProps, mapDispatchToProps)(Login);
 
 export default Container;
+
+
