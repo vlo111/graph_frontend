@@ -62,12 +62,6 @@ export function getSingleGraphRequest(graphId, params) {
   return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId, params));
 }
 
-export const GET_SINGLE_GRAPH_VIEW = define('GET_SINGLE_GRAPH_VIEW');
-
-export function getSingleGraphViewRequest(graphId, params) {
-  return GET_SINGLE_GRAPH_VIEW.request(() => Api.getSingleGraph(graphId, params));
-}
-
 export const GET_ALL_TABS = define('GET_ALL_TABS');
 
 export function getAllTabsRequest(graphId) {
