@@ -34,15 +34,15 @@ class SearchPictures extends Component {
     }
 
     return (
-        <div className="searchData">
-          <div className="searchData__wrapper">
-            {documentSearch?.length ? <h3>Pictures</h3> : null}
+        <>
+          <>
+            {/* {documentSearch?.length ? <h3>Pictures</h3> : null} */}
             <SearchMediaPart setLimit={setLimit} mediaMode={'picture'} data={documentSearch} history={this.props.history} />
             {setLimit && documentSearch.length > 5
             && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link>
             </div>}
-          </div>
-        </div>
+          </>
+        </>
     );
   }
 

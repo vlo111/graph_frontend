@@ -48,10 +48,33 @@
         border: none !important; 
         margin: 0px !important;
 
-        .graphCard{
-          .graphs > div > .sharGraphSearch{
-            color: $color-avatar-border !important;
-          }
+        .graphsCard{
+          .graphs{
+            .searchData__graphUsers{
+              display: flex !important;
+              justify-content: space-between !important;
+              width: 100% !important;
+              align-items:  center !important;
+              text-align: center !important;
+
+              button{
+                padding: 0 !important;
+              }
+            }
+            .searchData__graphUsers_img{
+              object-fit: cover !important;
+              .avatar{
+              width: 100% !important;
+              height: 250px !important;
+              border-radius: 5px !important;
+              margin-top: 65px !important;
+              border: 1px solid #D9D9D9 !important;
+             }
+            }
+            .sharGraphSearch{
+              color: $color-avatar-border !important;
+            }
+          }  
         }
     }
 

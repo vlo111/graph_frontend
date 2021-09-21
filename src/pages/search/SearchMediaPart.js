@@ -42,11 +42,11 @@ class SearchMediaPart extends Component {
         }
 
         return (
-            <div>
+            <>
                 {data && data.length ? (
                     data.map((document) => (
-                            <div className="searchMediaContent">
-                                <article key={document.userId} className="searchData__graph">
+                            <>
+                                <article key={document.userId} className="graphs">
                                     <div className="searchDocumentContent documentContainer">
                                         <div className="nodeTabs tabDoc">
                                             <p
@@ -114,12 +114,12 @@ class SearchMediaPart extends Component {
                                         </div>
                                     </div>
                                 </article>
-                            </div>
+                            </>
                         ))
                 ) : ((!setLimit && (!loading
                     ? <Loading/>
                     : <h3 className="mediaNotFound">No Documents Found</h3>)) || null)}
-            </div>
+            </>
         );
     }
 }

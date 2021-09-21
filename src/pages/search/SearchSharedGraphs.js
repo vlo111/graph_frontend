@@ -32,6 +32,20 @@ class SearchSharedGraphs extends Component {
   hideCardOver = (id) => {
     document.getElementsByClassName(`graph-card_${id}`)[0].style.display = 'none';
   }
+  updateGraph = (graph) => {
+    const { graphs } = this.props;
+
+    graphs.map((p) => {
+      if (p.id === graph.id) {
+        p.title = graph.title;
+        p.description = graph.description;
+      }
+    });
+
+    this.setState({
+      graphs,
+    });
+  }
 
 
   render() {
@@ -39,7 +53,7 @@ class SearchSharedGraphs extends Component {
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
     this.getGraphs(page, searchParam); 
     return (
-      <div className="graphsCard">
+      <>
         {shareGraphsList && shareGraphsList.length ? (
           <>
             {/* <h3>{`Graph${shareGraphsList.length > 1 ? 's' : ''} shared with you`}</h3> */}
@@ -91,7 +105,7 @@ class SearchSharedGraphs extends Component {
                 </div>
               </div>
               <div className="sub-menus">
-                <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={shGraph.graph}  />
+                <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={shGraph}  />
               </div>
             </div>
             <div>
@@ -133,8 +147,8 @@ class SearchSharedGraphs extends Component {
             ))}
             
           </>
-        ) : (( <h3>No Shared Graphs Found</h3>) || null)}
-      </div>
+        ) : ( null)}
+      </>
     );
   }
 }

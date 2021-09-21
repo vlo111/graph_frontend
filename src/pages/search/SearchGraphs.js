@@ -21,6 +21,7 @@ class SearchGraphs extends Component {
   static defaultProps = {
     setLimit: false,
   }
+  
 
   getGraphs = memoizeOne((page, searchParam) => {
     this.props.getGraphsListRequest(page, { s: searchParam });
@@ -32,16 +33,32 @@ class SearchGraphs extends Component {
   hideCardOver = (id) => {
     document.getElementsByClassName(`graph-card_${id}`)[0].style.display = 'none';
   }
+
+  updateGraph = (graph) => {
+    const { graphs } = this.props;
+
+    graphs.map((p) => {
+      if (p.id === graph.id) {
+        p.title = graph.title;
+        p.description = graph.description;
+      }
+    });
+
+    this.setState({
+      graphs,
+    });
+  }
+
   render() {
     const { setLimit, graphsList,headerTools } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
     this.getGraphs(page, searchParam);
     return (
-      <div className="graphsCard">
+      <>
         {graphsList && !isEmpty(graphsList) && graphsList.length  ? (
           <>
             {/* <h3>{`Graph${graphsList.length > 1 ? 's' : ''}`}</h3> */}
-            {graphsList.slice(0, 5).map((graph) => (
+            {graphsList.map((graph) => (
               <article key={graph.id} className="graphs">
                 {/* <div className="searchData__graphInfo">
                   <img
@@ -70,7 +87,7 @@ class SearchGraphs extends Component {
                   </div>
                 </div> */}
                 <div className="top">
-              <div className="infoContent">
+               <div className="infoContent">
                 <img
                   className="avatar"
                   src={graph.user.avatar}
@@ -129,7 +146,7 @@ class SearchGraphs extends Component {
           
           </>
         ) : ((<h3>No Graph Found</h3>) || null)}
-      </div>
+      </>
     );
   }
 }
