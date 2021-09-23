@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import queryString from 'query-string'; 
 import GraphListFooter from './GraphListFooter'; 
 import GraphDashboardSubMnus from './GraphListHeader';
 import Tooltip from 'rc-tooltip';
@@ -10,15 +10,16 @@ import Tooltip from 'rc-tooltip';
 class GraphListItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
+    graphsList: PropTypes.array.isRequired,
   }
   
   updateGraph = (graph) => {
-    const { graphs } = this.props;
-
-    graphs.map((p) => {
+    let { graphs } = this.props;
+    graphs = graphs.forEach((p) => {
       if (p.id === graph.id) {
         p.title = graph.title;
         p.description = graph.description;
+        p.thumbnail = graph.thumbnail;
       }
     });
 
@@ -28,9 +29,8 @@ class GraphListItem extends Component {
   }
 
   render() {
-    const { graphs, headerTools, mode } = this.props;
-    const { s } = queryString.parse(window.location.search);
-    if(!graphs && !graphs?.length) return null;
+    const { graphsList: graphs , headerTools, mode } = this.props;
+    if (!graphs?.length) return null;
 
     return (
       graphs ?
@@ -77,4 +77,9 @@ class GraphListItem extends Component {
   }
 }
 
-export default GraphListItem;
+const mapStateToProps = (state) => ({
+  graphsList: state.graphs.graphsList || [],
+})
+
+const Container = connect(mapStateToProps)(GraphListItem)
+export default withRouter(Container);
