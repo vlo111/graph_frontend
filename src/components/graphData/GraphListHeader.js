@@ -78,13 +78,6 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
               </div>
              ) : (
              <>
-                {/* <div
-                  className="child "
-                  onClick={() => setOpenEditModal(true)} > 
-                  <span>
-                    Rename
-                  </span>
-                </div>   */}
                 <div
                   className="child "
                   onClick={() => setOpenEditGraphModal(true)} > 
@@ -111,12 +104,6 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
               </div>
             </Popover>
          </div> 
-      {/* {openEditModal && (
-        <UpdateGraphModal
-          closeModal={() => setOpenEditModal(false)}
-          graph={graph}
-        />
-      )} */}
       {openShareModal && (
         <ShareModal 
           closeModal={() => setOpenShareModal(false)} 

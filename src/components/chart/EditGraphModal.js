@@ -77,7 +77,7 @@ requestData: {
   async componentDidMount () {
     const { match: { params: { graphId } }, singleGraph: {defaultImage} } = this.props;
     const svg = ChartUtils.getChartSvg();
-    if (!defaultImage) {
+    if (!defaultImage && graphId) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
       this.props.getSingleGraphRequest(graphId)
     }

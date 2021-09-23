@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
+import Tooltip from 'rc-tooltip';
+import { connect } from 'react-redux';
 import GraphListFooter from './GraphListFooter';
 import GraphDashboardSubMnus from './GraphListHeader';
 import { ReactComponent as PlusSvg } from '../../assets/images/icons/plusGraph.svg';
-import Tooltip from 'rc-tooltip';
 
 class GraphCardItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
+    graphsList: PropTypes.array.isRequired,
+    headerTools: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -33,30 +35,24 @@ class GraphCardItem extends Component {
   }
 
   updateGraph = (graph) => {
-    const { graphs } = this.props;
-
-    graphs.map((p) => {
+    let { graphs } = this.props;
+    graphs = graphs.map((p) => {
       if (p.id === graph.id) {
         p.title = graph.title;
         p.description = graph.description;
+        p.thumbnail = graph.thumbnail;
       }
+      return p;
     });
 
-    this.setState({
-      graphs,
-    });
+    this.setState({ graphs });
   }
 
   render() {
-    let { graphs, headerTools, mode } = this.props;
-    const { graphs: graphState } = this.state;
+    let { headerTools, graphsList } = this.props;
+    const graphs = graphsList;
 
-    if (graphState && graphState.length) {
-      graphs = graphState;
-    }
-
-    const { s } = queryString.parse(window.location.search);
-    if (!graphs && !graphs?.length) return null;
+    if (!graphsList?.length) return null;
 
     return (
       <>
@@ -91,18 +87,18 @@ class GraphCardItem extends Component {
               </div>
             </div>
             <div>
-             <Tooltip overlay={graph.title} placement="bottom" >
-              <h3>
-                {' '}
-                {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
-              </h3>
-             </Tooltip> 
-              <div className="descriptionGraph">
-              <Tooltip overlay={graph.description} placement="bottom" >
-                <span>
+              <Tooltip overlay={graph.title} placement="bottom">
+                <h3>
                   {' '}
-                  {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
-                </span>
+                  {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
+                </h3>
+              </Tooltip>
+              <div className="descriptionGraph">
+                <Tooltip overlay={graph.description} placement="bottom">
+                  <span>
+                    {' '}
+                    {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
+                  </span>
                 </Tooltip>
               </div>
             </div>
@@ -132,4 +128,10 @@ class GraphCardItem extends Component {
   }
 }
 
-export default GraphCardItem;
+const mapStateToProps = (state) => ({
+  graphsList: state.graphs.graphsList || [],
+});
+
+const Container = connect(mapStateToProps)(GraphCardItem);
+
+export default withRouter(Container);
