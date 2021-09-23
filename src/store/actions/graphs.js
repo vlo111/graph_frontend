@@ -50,6 +50,12 @@ export function getGraphsListRequest(page = 1, requestData = {}) {
   return GET_GRAPHS_LIST.request(() => Api.getGraphsList(page, requestData)).takeLatest();
 }
 
+export const GET_GRAPHS_SHAREGRAPHS_COUNT = define('GET_GRAPHS_SHAREGRAPHS_COUNT');
+
+export function getGraphsAndSharegraphsCount(id) {
+  return GET_GRAPHS_SHAREGRAPHS_COUNT.request(() => Api.getCountGraphs(id)).takeLatest();
+}
+
 export const GET_NODES_LIST = define('GET_NODES_LIST');
 
 export function getGraphNodesRequest(page = 1, requestData = {}) {

@@ -18,6 +18,7 @@ import Page404 from './pages/Page404';
 import suspense from './helpers/suspense';
 import Search from './pages/search/Search';
 import Profile from './pages/account';
+import Profilenew from './pages/accountnew';
 import GraphThumbnail from './pages/GraphThumbnail';
 import GraphCompare from './pages/GraphCompare';
 import UserConfirmation from "./pages/sign/UserConfirmation";
@@ -66,6 +67,7 @@ class App extends Component {
             <Route path="/account" component={Account} />
 
             <Route path="/profile/:userId" exact component={Profile} />
+            <Route path="/profile/new/:userId" exact component={Profilenew} />
 
             <Route path="/sign/sign-in" component={SignIn} />
             <Route path="/sign/sign-up" component={SignUp} />

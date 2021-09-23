@@ -61,7 +61,7 @@ const AddFriend = React.memo(({ user }) => {
       }
     }
     return <Button className="ghButton2" icon={<PlusFriendsSvg />} onClick={() => dispatch(AddFriendRequest({ receiverUserId: id }))}> Add Friend </Button>;
-  }, [dispatch, selectAction, myFriends]);
+  }, [dispatch, selectAction, myFriends, id]);
 
   return loggedInUserId !== id ? getButtonClick : null;
 });

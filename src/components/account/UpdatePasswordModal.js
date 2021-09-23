@@ -7,6 +7,8 @@ import _ from 'lodash';
 import Button from '../form/Button';
 import { updateMyAccountPasswordRequest } from '../../store/actions/account';
 import PasswordInput from '../form/PasswordInput';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+
 
 class UpdatePasswordModal extends Component {
   static propTypes = {
@@ -77,7 +79,7 @@ class UpdatePasswordModal extends Component {
           />
           <PasswordInput
             name="confirmPassword"
-            label="Confirm New Password"
+            label="Confirm Password"
             type="password"
             value={requestData.confirmPassword}
             error={errors.confirmPassword}
@@ -88,8 +90,9 @@ class UpdatePasswordModal extends Component {
               color="transparent"
               className="cancel"
               onClick={this.props.onClose}
+              icon={<CloseSvg />}
             >
-              Cancel
+              
             </Button>
             <Button color="accent" type="submit">Save</Button>
           </div>

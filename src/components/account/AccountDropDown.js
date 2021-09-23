@@ -55,6 +55,9 @@ class AccountDropDown extends Component {
                    <Link to={`/profile/${id}`}>Account</Link>
                 </li>
                 <li className="item">
+                   <Link to={`/profile/new/${id}`}>Account New</Link>
+                </li>
+                <li className="item">
                   <Link to="/sign/sign-out">Sign Out</Link>
                 </li>
               </ul>
