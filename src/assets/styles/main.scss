@@ -9191,3 +9191,41 @@ details[open] summary:after {
   // position: relative !important;
   // top: -3px !important;
 }
+.icon-container img{
+  height: 35px;
+  width: 35px;
+  border-radius: 50px;
+  margin-right: 12px;
+  
+}
+.contributors-container{
+  width: 200px;
+  height: auto;
+ 
+div{
+  display: flex;
+  padding: 5px 0px;
+
+  
+}
+.group-header{
+  color:#AAAAAA;
+  
+}
+.lineBorder{
+  border-bottom: 1px solid #7166F8;
+
+}
+
+}
+.rc-tooltip-content{
+  position: absolute;
+    left: -63px;
+    top: -186px;
+}
+.rc-tooltip-placement-right .rc-tooltip-arrow {
+  display: none;
+}
+.rc-tooltip-placement-bottom .rc-tooltip-arrow{
+  display: none;
+}

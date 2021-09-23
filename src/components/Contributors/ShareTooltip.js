@@ -169,7 +169,7 @@ const ShareTooltip = React.memo(({
         </span>
         <div
           id="edit"
-          className="group scrollY"
+          className="group scrollY lineBorder"
           onDragOver={(e) => handleDragOver(e)}
           onDrop={(e) => { handleDrop(e, 'view'); }}
         >
@@ -187,7 +187,7 @@ const ShareTooltip = React.memo(({
         </span>
         <div
           id="view"
-          className="group scrollY"
+          className="group scrollY "
           onDragOver={(e) => handleDragOver(e)}
           onDrop={(e) => { handleDrop(e, 'edit'); }}
         >
