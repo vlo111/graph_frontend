@@ -29,6 +29,7 @@ class AnalyticalPage extends Component {
   }
 
   handleNodeClick = (ev, node) => {
+    
     this.setState({
       localNodeId: node.id,
     });
@@ -40,7 +41,7 @@ class AnalyticalPage extends Component {
     setTimeout(() => {
       document.getElementsByClassName('close')[0].style.display = 'block';
     }, 700);
-  }
+  };
 
   componentDidMount() {
     Chart.event.on('node.click', this.handleNodeClick);
@@ -48,9 +49,9 @@ class AnalyticalPage extends Component {
     const graphElement = document.getElementById('graph');
 
     if (graphElement) {
-      graphElement.style.height = '620px';
+      graphElement.style.height = '100%';
 
-      graphElement.querySelector('svg').style.height = '620px';
+      graphElement.querySelector('svg').style.height = '100%';
     }
   }
 
@@ -93,8 +94,8 @@ class AnalyticalPage extends Component {
             </Tooltip>
           </Link>
           <div className="container">
+          <AnalysePieChart nodes={nodes} />
             <AnalyseBarChart degreeDistribution={degreeDistribution} />
-            <AnalysePieChart nodes={nodes} />
             <div className="localAnalyse">
               <div>
                 <strong>Number of nodes</strong>
