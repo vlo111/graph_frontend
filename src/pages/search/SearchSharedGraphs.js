@@ -16,7 +16,6 @@ class SearchSharedGraphs extends Component {
     setLimit: PropTypes.bool,
     searchGraphsListRequest: PropTypes.func.isRequired,
     shareGraphsList: PropTypes.array.isRequired,
-    shareGraphsListStatus: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -54,13 +53,12 @@ class SearchSharedGraphs extends Component {
 
 
   render() {
-    const { setLimit, shareGraphsList,shareGraphsListStatus} = this.props;
-    console.log(shareGraphsListStatus,'dfsdfsdfsdfsdfsdfdsfsdf')
+    const { setLimit, shareGraphsList } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
     this.getGraphs(page, searchParam);
     return (
       <>
-        {searchGraphsListRequest !== 'request' && shareGraphsList && shareGraphsList.length  ? (
+        {shareGraphsList && shareGraphsList.length ? (
           <>
             {/* <h3>{`Graph${shareGraphsList.length > 1 ? 's' : ''} shared with you`}</h3> */}
             {shareGraphsList.slice(0, 5).map((shGraph) => (
@@ -164,7 +162,6 @@ class SearchSharedGraphs extends Component {
 
 const mapStateToProps = (state) => ({
   shareGraphsList: state.shareGraphs.shareGraphsList,
-  shareGraphsListStatus: state.share.shareGraphsListStatus,
 });
 const mapDispatchToProps = {
   searchGraphsListRequest,
