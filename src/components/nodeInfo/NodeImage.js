@@ -2,12 +2,7 @@ import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import Chart from '../../Chart';
-<<<<<<< HEAD
 import bgImage from '../../assets/images/tabDefault.jpg';
-=======
-import bgImage from '../../assets/images/Colorful-Plait-Background.jpg';
-import Utils from "../../helpers/Utils";
->>>>>>> origin/master
 import ChartUtils from "../../helpers/ChartUtils";
 
 class NodeImage extends Component {
@@ -29,12 +24,9 @@ class NodeImage extends Component {
   }
 
   setSvgParams = memoizeOne((node) => {
-<<<<<<< HEAD
     if (!Chart.nodesWrapper) {
       return;
     }
-=======
->>>>>>> origin/master
     const s = Chart.nodesWrapper.select(`[data-i="${node.index}"] rect`);
     if (s.empty() || !this.wrapper) {
       return;
@@ -83,19 +75,11 @@ class NodeImage extends Component {
     const {
       x, y, clipPath, fill, transform, width, height,
     } = this.state;
-<<<<<<< HEAD
    const iconSize = props.width === 50 ? false : true
     if (node.nodeType !== 'infography' || !node.d) {
       return (
         <img
           src={node.icon ? ChartUtils.normalizeIcon(node.icon, iconSize) : bgImage}
-=======
-
-    if (node.nodeType !== 'infography' || !node.d) {
-      return (
-        <img
-          src={node.icon ? ChartUtils.normalizeIcon(node.icon, true) : bgImage}
->>>>>>> origin/master
           onError={this.handleImageError}
           alt="node"
           {...props}

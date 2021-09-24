@@ -64,7 +64,6 @@ class KeywordsFilter extends Component {
     const allChecked = keywords.length === filters.nodeKeywords.length;
     return (
       <div className="tagsFilter graphFilter">
-<<<<<<< HEAD
         <details open>
           <summary>
             Node Keywords
@@ -108,46 +107,6 @@ class KeywordsFilter extends Component {
 
           </ul>
         </details>
-=======
-        <h4 className="title">Node Keywords</h4>
-        <ul className="list">
-          <li className="item">
-          <div className="filterCheckBox">
-            <Checkbox
-              label={allChecked ? 'Uncheck All' : 'Check All'}
-              checked={allChecked}
-              onChange={() => this.toggleAll(typesFull, allChecked)}
-              className="graphsCheckbox"
-            >           
-            </Checkbox>
-            </div>
-            <span className="badge">
-                {_.sumBy(typesFull, 'length')}
-              </span>
-          </li>
-          {types.map((item) => (
-            <li key={item.keyword} className="item">
-               <div className="filterCheckBox"> 
-              <Checkbox
-                label={item.keyword}
-                checked={filters.nodeKeywords.includes(item.keyword)}
-                onChange={() => this.handleChange(item.keyword)}
-                className="graphsCheckbox"
-              >               
-              </Checkbox>
-              </div>
-              <span className="badge">
-                  {item.length}
-                </span>
-            </li>
-          ))}
-        </ul>
-        {typesFull.length > types.length || showMore ? (
-          <Button onClick={this.toggleMore}>
-            {showMore ? '- Less' : '+ More'}
-          </Button>
-        ) : null}
->>>>>>> origin/master
       </div>
     );
   }

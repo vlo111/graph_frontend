@@ -7,7 +7,6 @@ import Tooltip from 'rc-tooltip/es';
 import Button from '../form/Button';
 import NodeTabsContent from './NodeTabsContent';
 import ContextMenu from '../contextMenu/ContextMenu';
-<<<<<<< HEAD
 import { getNodeCustomFieldsRequest, removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/graphs';
 import Sortable from './Sortable';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -15,11 +14,6 @@ import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 import Utils from '../../helpers/Utils';
 import Api from '../../Api';
 import NodeTabsFormModal from './NodeTabsFormModal';
-=======
-import { removeNodeCustomFieldKey, setActiveTab } from '../../store/actions/graphs';
-import FlexTabs from '../FlexTabs';
-import MapsInfo from '../maps/MapsInfo';
->>>>>>> origin/master
 
 class NodeTabs extends Component {
   static propTypes = {
@@ -28,11 +22,7 @@ class NodeTabs extends Component {
     removeNodeCustomFieldKey: PropTypes.func.isRequired,
     activeTab: PropTypes.string.isRequired,
     setActiveTab: PropTypes.func.isRequired,
-<<<<<<< HEAD
   };
-=======
-  }
->>>>>>> origin/master
 
   constructor(props) {
     super(props);
@@ -43,7 +33,6 @@ class NodeTabs extends Component {
     };
   }
 
-<<<<<<< HEAD
   updateTabFilePath = async (data) => {
     const { graphId, nodeId, nodeCustomFields } = this.props;
 
@@ -89,17 +78,6 @@ class NodeTabs extends Component {
   setFirstTab = memoizeOne(() => {
     this.setState({ activeTab: '_description' });
     this.props.setActiveTab('_description');
-=======
-  setFirstTab = memoizeOne((node, customField) => {
-    this.setState(
-      {
-        activeTab: !_.isEmpty(customField)
-          ? (this.props.activeTab ? this.props.activeTab : Object.keys(customField)[0])
-          : node.location ? '_location' : '',
-      },
-    );
-    this.props.setActiveTab('');
->>>>>>> origin/master
   }, _.isEqual);
 
   componentDidMount() {
@@ -182,7 +160,6 @@ class NodeTabs extends Component {
 
     return (
       <div className="nodeTabs">
-<<<<<<< HEAD
         <div className="container-tabs">
           <div className="tab-names">
             <Sortable
@@ -208,33 +185,6 @@ class NodeTabs extends Component {
             />
           </div>
         </div>
-=======
-        <FlexTabs>
-          {_.map(customField, (val, key) => (
-            <Button
-              className={activeTab === key ? 'active' : undefined}
-              key={key}
-              onClick={() => this.setActiveTab(key)}
-            >
-              <p>{key.length > 15 ? `${key.substr(0, 13)}..` : key}</p>
-            </Button>
-          ))}
-          {node.location ? (
-            <Button
-              className={activeTab === '_location' ? 'active activeNoShadow' : undefined}
-              onClick={() => this.setActiveTab('_location')}
-            >
-              <p>Location</p>
-            </Button>
-          ) : null}
-          {editable && !node.sourceId && Object.values(customField).length < CustomFields.LIMIT ? (
-            <Tooltip overlay="Add New Tab" placement="top">
-              <Button className="addTab" icon="fa-plus" onClick={() => this.openFormModal()} />
-            </Tooltip>
-          ) : null}
-          <div className="empty" />
-        </FlexTabs>
->>>>>>> origin/master
         {!_.isNull(formModalOpen) ? (
           <NodeTabsFormModal
             node={node}
@@ -270,14 +220,9 @@ class NodeTabs extends Component {
 }
 
 const mapStateToProps = (state) => ({
-<<<<<<< HEAD
   activeTab: state.graphs.activeTab,
   graphId: state.graphs.singleGraph.id,
   nodeCustomFields: state.graphs.nodeCustomFields,
-=======
-  customFields: state.graphs.singleGraph.customFields || {},
-  activeTab: state.graphs.activeTab,
->>>>>>> origin/master
 });
 
 const mapDispatchToProps = {

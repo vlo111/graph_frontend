@@ -99,7 +99,6 @@ class ChartInfography {
       nodes[data.node.index] = data.node;
 
       this.chart.event.emit('node.resize', ev, data.node);
-<<<<<<< HEAD
       this.chart.render({ nodes }, { ignoreAutoSave: true });
     };
 
@@ -107,13 +106,6 @@ class ChartInfography {
       this.chart.event.emit('node.resize-end', ev, data.node);
     };
 
-=======
-      this.chart.render({ nodes });
-    };
-    const handleDragEnd = (ev) => {
-
-    };
->>>>>>> origin/master
     nodeResizeIcons.call(d3.drag()
       .on('start', handleDragStart)
       .on('drag', handleDrag)
@@ -181,11 +173,7 @@ class ChartInfography {
     datum.d = ChartUtils.coordinatesCompass(datum.d, 3);
     line.datum(datum)
       .attr('d', (i) => this.renderPath(i.d));
-<<<<<<< HEAD
     const nodeDatum = _.cloneDeep(node.datum());
-=======
-    const nodeDatum = node.datum();
->>>>>>> origin/master
 
     Chart.event.emit('node.edit', ev, {
       name: d.name,

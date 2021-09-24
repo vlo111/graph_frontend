@@ -53,19 +53,11 @@ class Legend extends Component {
 
       return (
         <div className={showLegendButton === 'close' ? 'legends' : 'legends open'}>
-<<<<<<< HEAD
           <button className="dropdown-btn legendButton" onClick={() => this.handleClick()}>
             Legends
             <div className="carretNew">
               <DownSvg />
             </div>
-=======
-          <button className="dropdown-btn" onClick={() => this.handleClick()}>
-            Legends
-            <span className="carret">
-              <Arrow />
-            </span>
->>>>>>> origin/master
           </button>
           <div className="dropdown">
             <div className="nodes">

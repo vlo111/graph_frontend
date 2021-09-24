@@ -2,22 +2,14 @@ import io from 'socket.io-client';
 import Chart from '../../Chart';
 import Api from '../../Api';
 import Account from '../../helpers/Account';
-<<<<<<< HEAD
 import { GET_SINGLE_GRAPH, getSingleGraphRequest, updateSingleGraph } from './graphs';
 import { graphUsersRequest } from './shareGraphs';
-=======
-import { GET_SINGLE_GRAPH, getSingleGraphRequest, updateSingleGraph } from './graphs'; 
-import { graphUsersRequest } from './shareGraphs'; 
->>>>>>> origin/master
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
 import Utils from '../../helpers/Utils';
 import ChartUtils from '../../helpers/ChartUtils';
 import { getSingleGraph } from '../selectors/graphs';
-<<<<<<< HEAD
 import ChartUpdate from '../../helpers/ChartUpdate';
-=======
->>>>>>> origin/master
 
 let socket;
 const notPushedEmits = [];
@@ -34,12 +26,9 @@ export const SOCKET_LABEL_EMBED_COPY = 'SOCKET_LABEL_EMBED_COPY';
 export const GENERATE_THUMBNAIL_WORKER = 'GENERATE_THUMBNAIL_WORKER';
 export const ONLINE_USERS = 'ONLINE_USERS';
 export const GRAPH_SHARED_USERS = 'GRAPH_SHARED_USERS';
-<<<<<<< HEAD
 export const ACTIVE_MOUSE_TRACKER = 'ACTIVE_MOUSE_TRACKER';
 export const MOUSE_POSITION_TRACKER = 'MOUSE_POSITION_TRACKER';
 export const SOCKET_ACTIVE_MOUSE_TRACKER = 'SOCKET_ACTIVE_MOUSE_TRACKER ';
-=======
->>>>>>> origin/master
 
 export function socketInit() {
   return (dispatch, getState) => {
@@ -102,7 +91,6 @@ export function socketInit() {
         type: GENERATE_THUMBNAIL_WORKER,
         payload: { data },
       });
-<<<<<<< HEAD
     });
 
     socket.on('node.update-positions', (data) => {
@@ -200,8 +188,6 @@ export function socketInit() {
       if (graphId === +data.graphId) {
         ChartUpdate.labelDelete(data);
       }
-=======
->>>>>>> origin/master
     });
 
     socket.on('labelEmbedCopy', (labelEmbed) => {
@@ -218,14 +204,7 @@ export function socketInit() {
         },
       });
     });
-    socket.on('online', (data) => {
-      const onlineUsers = JSON.parse(data);
-       dispatch({
-        type: ONLINE_USERS,
-        payload: { onlineUsers },
-      });
 
-<<<<<<< HEAD
     socket.on('online', (data) => {
       const onlineUsers = JSON.parse(data);
       const { account: { myAccount: { id: userId } } } = getState();
@@ -246,15 +225,10 @@ export function socketInit() {
       }
     });
 
-=======
-      
-    });
->>>>>>> origin/master
     /**
      * Call share graphs user list
      */
     socket.on('shareList', async (result) => {
-<<<<<<< HEAD
       const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
       const graphId = +result.graphId;
       if (graphId === +singleGraph.id) {
@@ -262,17 +236,6 @@ export function socketInit() {
       }
     });
 
-=======
-
-      const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
-      const graphId = +result.graphId; 
-      if( graphId === +singleGraph.id){ 
-            await dispatch(graphUsersRequest(result))
-         
-      }       
-    });
-    
->>>>>>> origin/master
     socket.on('embedLabelDataChange', (data) => {
       const { labels } = Chart;
 

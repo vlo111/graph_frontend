@@ -160,12 +160,9 @@ class ChartUtils {
     } else if (icon.startsWith('data:image/') || /https?:\/\//.test(icon)) {
       return icon;
     }
-<<<<<<< HEAD
     if (icon.includes('person.svg') || icon.includes('article.svg')) {
       return url
     }
-=======
->>>>>>> origin/master
     if (large) {
       url += '.large';
     }
@@ -608,26 +605,9 @@ class ChartUtils {
         const squareX = d[0][0] - (width / 2);
         const squareY = d[0][1] - (height / 2);
         return this.isInSquare([squareX, squareY], [width, height], [x, y]);
-<<<<<<< HEAD
-=======
       }
     }
 
-    let odd = false;
-    let i;
-    let
-      j = d.length - 1;
-    for (i = 0; i < d.length; i++) {
-      if ((d[i][1] < y && d[j][1] >= y || d[j][1] < y && d[i][1] >= y)
-        && (d[i][0] <= x || d[j][0] <= x)) {
-        odd ^= (d[i][0] + (y - d[i][1]) * (d[j][0] - d[i][0]) / (d[j][1] - d[i][1])) < x;
->>>>>>> origin/master
-      }
-
-      j = i;
-    }
-
-<<<<<<< HEAD
     if (label.type === 'square') {
       if ((x > size.x && x < (size.x + size.width)) && (y > size.y && y < (size.y + size.height))) {
         return true;
@@ -660,8 +640,6 @@ class ChartUtils {
       j = i;
     }
 
-=======
->>>>>>> origin/master
     for (let i = 0, j = d.length - 1; i < d.length; j = i++) {
       const xi = d[i][0];
       const yi = d[i][1];
@@ -679,7 +657,6 @@ class ChartUtils {
     const firstFolder = node.labels?.find((l) => l.startsWith('f_'));
     const firstLabel = node.labels?.find((l) => !l.startsWith('f_'));
     const labels = Chart.getLabels().filter((l) => this.isNodeInLabel(node, l)).map((l) => l.id);
-<<<<<<< HEAD
     if (firstLabel) {
       return labels.filter((l) => !l.startsWith('f_'));
     }
@@ -695,16 +672,6 @@ class ChartUtils {
         return l;
       });
 
-=======
-    if (node.index === 128) {
-      console.log(labels);
-    }
-    if (firstLabel) {
-      return labels.filter((l) => !l.startsWith('f_'));
-    }
-    if (labels.includes(firstFolder)) {
-      console.log(33333);
->>>>>>> origin/master
       return [firstFolder];
     }
     if (firstFolder) {
@@ -983,7 +950,6 @@ class ChartUtils {
     return [d.x || d.fx, d.y || d.fy, false];
   }
 
-<<<<<<< HEAD
   static margeGraphs = (graph1, graph2, selectedNodes1, selectedNodes2) => {
     graph1.nodes = [...graph1.nodes];
     graph2.nodes = [...graph2.nodes];
@@ -996,11 +962,6 @@ class ChartUtils {
       selectedNodes2 = [...graph2.nodes];
     }
 
-=======
-  static margeGraphs = (graph1, graph2, selectedNodes1 = graph1.nodes, selectedNodes2 = graph2.nodes) => {
-    let links = [...graph1.links || [], ...graph2.links || []];
-    let labels = new Set();
->>>>>>> origin/master
     const nodes = selectedNodes1.map((node1) => {
       const node2 = selectedNodes2.find((n) => n.name === node1.name);
       if (node2) {
@@ -1019,11 +980,8 @@ class ChartUtils {
 
       delete node1.color;
 
-<<<<<<< HEAD
       node1.import = true;
 
-=======
->>>>>>> origin/master
       // graph1.labels.filter((l) => node1.labels?.includes(l.id) && l.type !== 'folder').forEach(labels.add, labels);
       return node1;
     });
@@ -1036,27 +994,17 @@ class ChartUtils {
         delete node2.color;
         delete node2.hidden;
 
-<<<<<<< HEAD
         node2.import = true;
 
         nodes.push(node2);
       }
     });
     const labels = [...graph1.labels, ...graph2.labels];
-=======
-        nodes.push(node2);
-      }
-    });
-
-    labels = [...labels];
-
->>>>>>> origin/master
     links = ChartUtils.uniqueLinks(links).map((l) => {
       delete l.color;
       return l;
     });
 
-<<<<<<< HEAD
     // const { customFields } = graph1;
     //
     // const customFieldsMerged = {};
@@ -1191,48 +1139,6 @@ class ChartUtils {
     document.removeEventListener('click', this.stopAutoPosition)
     document.removeEventListener('contextmenu', this.stopAutoPosition)
   }
-=======
-    const { customFields } = graph1;
-
-    const customFieldsMerged = {};
-
-    const customFieldsFull = Utils.mergeDeep(graph2.customFields, customFields);
-    for (const type in customFieldsFull) {
-      const customField = customFieldsFull[type];
-      for (const tab in customField) {
-        const { values } = customFieldsFull[type][tab];
-        for (const nodeId in values) {
-          const n1 = selectedNodes1.find((n) => n.id === nodeId);
-          const n2 = selectedNodes2.find((n) => n.id === nodeId);
-          const mainNode = nodes.find((n) => n.name === n1?.name || n.name === n2?.name);
-          if (mainNode) {
-            const node1 = selectedNodes1.find((n) => n.name === mainNode.name);
-            const node2 = selectedNodes2.find((n) => n.name === mainNode.name);
-
-            const value1 = node1 ? _.get(customFields, [node1.type, tab, 'values', node1.id]) : null;
-            const value2 = node2 ? _.get(graph2.customFields, [node2.type, tab, 'values', node2.id]) : null;
-
-            if (value1 && !value2) {
-              _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value1, Object);
-            } else if (!value1 && value2) {
-              _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
-            } else if (value1 && value2) {
-              if (value1 !== value2) {
-                _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], `${value1}\n<hr />\n${value2}`, Object);
-              } else {
-                _.setWith(customFieldsMerged, [mainNode.type, tab, 'values', mainNode.id], value2, Object);
-              }
-            }
-          }
-        }
-      }
-    }
-
-    return {
-      labels, nodes, links, customFields: customFieldsMerged,
-    };
-  }
->>>>>>> origin/master
 }
 
 export default ChartUtils;

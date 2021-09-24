@@ -89,13 +89,7 @@ class AddLabelModal extends Component {
       nodes = nodes.filter((d) => d.sourceId || !squareData.selectedNodes.includes(d.id));
       links = ChartUtils.cleanLinks(links, nodes);
       Chart.render({ links, nodes });
-    } else if (data.type === 'selectNode.delete') {
-      let nodes = Chart.getNodes();
-      let links = Chart.getLinks();
-      nodes = nodes.filter((d) => d.sourceId ||  !squareDara.selectedNodes.includes(d.id)); 
-      links = ChartUtils.cleanLinks(links, nodes);
-      Chart.render({ links, nodes });
-    }else {
+    } else {
       params.contextMenu = true;
       ContextMenu.event.emit(data.type, data.ev, { ...params });
     }
@@ -138,15 +132,10 @@ class AddLabelModal extends Component {
   }
 
   render() {
-<<<<<<< HEAD
     const {
       activeButton, data, params, params: { squareData },
     } = this.props;
 
-=======
-    const { activeButton, data, params, params: { squareDara } } = this.props; 
-    
->>>>>>> origin/master
     if (activeButton !== 'deleteModal') {
       return null;
     }
@@ -164,11 +153,7 @@ class AddLabelModal extends Component {
             <p>
               Do you want to remove this
               {' '}
-<<<<<<< HEAD
               {['selectSquare.delete', 'selectNode.delete'].includes(data.type) ? 'part' : (params.type == 'folder' ? 'folder' : data.type.replace('.delete', ''))}
-=======
-              {['selectSquare.delete', 'selectNode.delete'].includes(data.type)  ? 'part' : (params.type == 'folder' ? 'folder' :  data.type.replace('.delete', ''))}
->>>>>>> origin/master
             </p>
             <div className="buttons">
               <Button className="ghButton cancel transparent alt" onClick={this.closeDelete}>

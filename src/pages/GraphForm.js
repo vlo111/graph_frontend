@@ -72,7 +72,6 @@ class GraphForm extends Component {
     this.getSingleGraph(graphId);
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
-<<<<<<< HEAD
         <>
           <div className="graphWrapper">
             <ReactChart />
@@ -83,17 +82,6 @@ class GraphForm extends Component {
           <AddNodeModal />
           {activeButton === 'data' && <DataView />} 
         <Search history={this.props.history} />
-=======
-        <div className="graphWrapper">
-          <ReactChart />
-        </div>
-        <ToolBarHeader />
-        <ToolBar />
-        <Crop />
-        <AddNodeModal />
-        {activeButton === 'data' && <DataView />}
-        {activeButton === 'search' && <SearchModal history={this.props.history} />}
->>>>>>> origin/master
         {activeButton === 'media' && <MediaModal history={this.props.history} /> }
         {activeButton === 'maps-view' && <MapsGraph />}
         {activeButton === 'maps' && <MapsModal />}

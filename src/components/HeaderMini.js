@@ -12,22 +12,14 @@ import Button from './form/Button';
 import CommentModal from './CommentNode';
 import ContextMenu from './contextMenu/ContextMenu';
 import CustomFields from '../helpers/CustomFields';
-<<<<<<< HEAD
 import NodeImage from './nodeInfo/NodeImage';
 import NodeFullInfoModal from './nodeInfo/NodeFullInfoModal';
-=======
-import { toggleNodeModal } from '../store/actions/app';
-
->>>>>>> origin/master
 import { getActionsCountRequest } from '../store/actions/commentNodes';
 import { setLoading, toggleNodeModal } from '../store/actions/app';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/comment.svg';
-<<<<<<< HEAD
 import { ReactComponent as ExpandSvg } from '../assets/images/icons/expand.svg';
-=======
->>>>>>> origin/master
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 
 class HeaderMini extends Component {
@@ -35,7 +27,6 @@ class HeaderMini extends Component {
     getActionsCount: PropTypes.func.isRequired,
     commentCount: PropTypes.func.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
-<<<<<<< HEAD
   }
 
   componentDidMount() {
@@ -53,29 +44,8 @@ class HeaderMini extends Component {
     }
     const customField = CustomFields.get(tabs, 'node.edit', node.id);
     this.props.toggleNodeModal({ ...node, customField });
-=======
-
   }
 
-  componentDidMount() {
-    ContextMenu.event.on('node.edit', this.editNode); 
-  }
-
-  componentWillUnmount() {
-    ContextMenu.event.removeListener('node.edit', this.editNode); 
->>>>>>> origin/master
-  }
-
-  editNode = (ev) => {
-    const { node, tabs } = this.props;
-    if (node.readOnly) {
-      return;
-    } 
-    const customField = CustomFields.get(tabs, 'node.edit', node.id);
-    this.props.toggleNodeModal({ ...node, customField });
-  }
-   
-  
   commentCountData() {
     const { match: { params: { graphId } } } = this.props;
 
@@ -202,13 +172,9 @@ class HeaderMini extends Component {
 
   render() {
     const { showGraphUsersInfo, showNodeComment } = this.state;
-<<<<<<< HEAD
     const {
       editable, singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } }, expand, queryObj,
     } = this.props;
-=======
-    const { editable, singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } } } = this.props; 
->>>>>>> origin/master
     return (
       <header id="headerMini">
         <div className="header">
@@ -221,7 +187,6 @@ class HeaderMini extends Component {
             >
               Expand
             </Button>
-<<<<<<< HEAD
             <ExportNodeTabs
               node={node}
               tabs={tabs}
@@ -281,30 +246,6 @@ class HeaderMini extends Component {
               ? `${node.link.substr(0, 45)}...`
               : node.link}
           </a>
-=======
-          <Button className="commentsInfo"
-            icon={<CommentSvg />}
-            title="Comment"
-            className="b-navbar"
-            onClick={() => this.toggleNodeComment(true)}>
-            Comment
-              {<span>({commentsCount?.commentsCount})</span>}
-          </Button>
-          <ExportNodeTabs
-            node={node}
-            tabs={tabs}
-            nodeData={this.state.nodeData}
-            image={this.state.image}
-          />
-          {editable ? (<Button className="commentsInfo"
-            icon={<EditSvg />}
-            title="Comment"
-            className="b-navbar"
-            onClick={(ev) => this.editNode(ev)}>
-            Edit              
-          </Button>
-          ) : null} 
->>>>>>> origin/master
         </div>
 
         {showGraphUsersInfo ? (
@@ -337,11 +278,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setLoading,
   getActionsCountRequest,
-<<<<<<< HEAD
   toggleNodeModal,
-=======
-  toggleNodeModal
->>>>>>> origin/master
 };
 
 const Container = connect(

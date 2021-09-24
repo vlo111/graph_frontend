@@ -183,28 +183,6 @@ class AddLinkModal extends Component {
             <h2>
               {isUpdate ? 'Edit Link' : 'Add new Link'}
             </h2>
-<<<<<<< HEAD
-=======
-            <Select
-              label="Status"
-              portal
-              options={TYPE_STATUS}
-              value={TYPE_STATUS.filter((t) => t.value === linkData.status)}
-              error={errors.status}
-              onChange={(v) => this.handleChange('status', v?.value || '')}
-            />
-            <Select
-              label="Link Type"
-              value={[linkData.linkType]}
-              error={errors.linkType}
-              onChange={(v) => this.handleChange('linkType', v)}
-              options={dashTypes}
-              portal
-              containerClassName="lineTypeSelect"
-              getOptionValue={(v) => v}
-              getOptionLabel={(v) => <SvgLine type={v} />}
-            />
->>>>>>> origin/master
 
             <Select
               label="Relation Type"

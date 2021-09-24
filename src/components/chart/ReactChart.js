@@ -17,17 +17,12 @@ import FolderCloseIcon from './icons/FolderCloseIcon';
 import FolderIcon from './icons/FolderIcon';
 import LabelLock from './icons/LabelLock';
 import SelectedNodeFilter from './icons/SelectedNodeFilter';
-<<<<<<< HEAD
 import ResizeIcons from './icons/ResizeIcons';
 import NotFound from './NotFound';
 import { deleteNodesRequest, updateNodesRequest, updateNodesPositionRequest } from '../../store/actions/nodes';
 import { deleteLinksRequest } from '../../store/actions/links';
 import { deleteLabelsRequest, updateLabelsRequest } from '../../store/actions/labels';
 import MouseCursor from './icons/MouseCursor';
-=======
-import ResizeIcons from "./icons/ResizeIcons";
-import NotFound from "./NotFound";
->>>>>>> origin/master
 
 class ReactChart extends Component {
   static propTypes = {
@@ -58,12 +53,8 @@ class ReactChart extends Component {
     ContextMenu.event.on('node.edit', this.editNode);
 
     ContextMenu.event.on('active-button', this.setActiveButton);
-<<<<<<< HEAD
     Chart.event.on('click', this.handleChartClick);
 
-=======
-    // Chart.event.on('click', this.handleChartClick);
->>>>>>> origin/master
     ContextMenu.event.on('node.create', this.addNewNode);
 
     Chart.event.on('link.click', this.deleteLink);
@@ -170,32 +161,19 @@ class ReactChart extends Component {
     const labels = Chart.getLabels().filter((l) => l.id !== d.id);
     const nodes = Chart.getNodes().filter((n) => !n.labels || !n.labels.includes(d.id));
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
-<<<<<<< HEAD
 
     // this.props.deleteLabelsRequest(graphId, [d.id]);
 
     if (d.sourceId) {
       const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
-=======
-    
-    if (d.sourceId) {
-       const embedLabels = Chart.data.embedLabels.filter((l) => l.labelId !== d.id);
->>>>>>> origin/master
       Chart.render({
         labels, nodes, links, embedLabels,
       });
       Api.labelDelete(d.sourceId, d.id, graphId);
-<<<<<<< HEAD
 
       return;
     }
     // delete labe  from share list
-=======
-     
-      return;
-    }
-    //delete labe  from share list
->>>>>>> origin/master
     Api.shareLabelDelete(d.id, graphId);
     Chart.render({ labels, nodes, links });
     Chart.event.emit('label.mouseleave', ev, d);
@@ -303,10 +281,6 @@ class ReactChart extends Component {
   render() {
     const { ctrlPress, shiftKey } = this.state;
     const { activeButton, singleGraphStatus, singleGraph: { currentUserRole } } = this.props;
-<<<<<<< HEAD
-=======
-    console.log(singleGraphStatus)
->>>>>>> origin/master
 
     // this.renderChart(singleGraph, embedLabels);
     return (
@@ -354,10 +328,7 @@ class ReactChart extends Component {
               <FolderIcon />
               <FolderCloseIcon />
               <FolderResizeIcon />
-<<<<<<< HEAD
               <MouseCursor />
-=======
->>>>>>> origin/master
 
             </defs>
           </g>

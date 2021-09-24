@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import ReactCrop from 'react-image-crop';
+import ReactCrop from 'react-image-crop';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ContextMenu from '../contextMenu/ContextMenu';
@@ -82,21 +82,20 @@ class Crop extends Component {
       return null;
     }
     return (
-      ""
-      // <ReactCrop
-      //   className="chartCrop"
-      //   crop={crop}
-      //   onChange={this.handleCropChange}
-      //   renderComponent={<div />}
-      // >
-      //   <div className="content">
-      //     <div className="buttons">
-      //       <Button icon="fa-times" className="warning" onClick={this.cancel}>Cancel</Button>
-      //       <Button icon="fa-save" onClick={this.crop}>Crop</Button>
-      //     </div>
+      <ReactCrop
+        className="chartCrop"
+        crop={crop}
+        onChange={this.handleCropChange}
+        renderComponent={<div />}
+      >
+        <div className="content">
+          <div className="buttons">
+            <Button icon="fa-times" className="warning" onClick={this.cancel}>Cancel</Button>
+            <Button icon="fa-save" onClick={this.crop}>Crop</Button>
+          </div>
 
-      //   </div>
-      // </ReactCrop>
+        </div>
+      </ReactCrop>
     );
   }
 }

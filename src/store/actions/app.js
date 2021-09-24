@@ -89,16 +89,10 @@ export function setLegendButton(mode) {
   };
 }
 
-<<<<<<< HEAD
 
 export const ONLINE_USERS = 'ONLINE_USERS';
 
 export function getOnlineUsersRequest(data) {
-=======
-export const ONLINE_USERS = 'ONLINE_USERS';
-
-export function getOnlineUsersRequest(data) {   
->>>>>>> origin/master
   return {
     type: ONLINE_USERS,
     payload: {
@@ -106,7 +100,6 @@ export function getOnlineUsersRequest(data) {
     },
   };
 }
-<<<<<<< HEAD
 
 export const TOGGLE_GRAPH_MAP = 'TOGGLE_GRAPH_MAP';
 
@@ -158,5 +151,3 @@ export function autoScale(mode) {
     },
   };
 }
-=======
->>>>>>> origin/master

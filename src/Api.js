@@ -145,7 +145,6 @@ class Api {
   static getSingleGraph(graphId, params = {}) {
     return api.get(`/graphs/single/${graphId}`, {
       params,
-      cancelToken: this.#cancel('getSingleGraph'),
     });
   }
 
@@ -206,13 +205,6 @@ class Api {
 
   static copyDocumentForGraph(requestData) {
     return api.post('/document/copy-documents', requestData);
-<<<<<<< HEAD
-=======
-  }
-
-  static createShareGraph(requestData) {
-    return api.post('/share-graphs/create', requestData);
->>>>>>> origin/master
   }
 
     static createDocument(graphId, nodeId, tabName, fileData, file) {
@@ -397,7 +389,6 @@ class Api {
     });
   }
 
-<<<<<<< HEAD
   static getShareGraphsList(page, requestData) {
     const params = { page, ...requestData };
     return api.get('/share', { params });
@@ -521,11 +512,6 @@ class Api {
 
   static confirmEmail(token) {
     return api.get(`/users/confirmation/${token}`);
-=======
-
-  static getShareGraphsList() {
-    return api.get('/share');
->>>>>>> origin/master
   }
 }
 

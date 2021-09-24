@@ -48,18 +48,8 @@ class NodeTabsFormModal extends Component {
     };
   }
 
-<<<<<<< HEAD
     getLink = (value) => {
       const currentValue = document.createElement('div');
-=======
-  handleChange = (path, value) => {
-    value = value.replace(/href/g, 'target="_blank" href');
-    const { tabData, errors } = this.state;
-    _.set(tabData, path, value);
-    _.remove(errors, path);
-    this.setState({ tabData, errors });
-  }
->>>>>>> origin/master
 
       currentValue.innerHTML = value.trim();
 
@@ -107,18 +97,10 @@ class NodeTabsFormModal extends Component {
       this.setState({ tabData, errors });
     }
 
-<<<<<<< HEAD
     insertFile = (file) => {
       const { files } = this.state;
 
       files.push(file);
-=======
-    tabData.documents = tabData.documents?.sort((x, y) => {
-      const first = x.file.type.includes('image');
-      const second = y.file.type.includes('image');
-      return (first === second) ? 0 : first ? -1 : 1;
-    });
->>>>>>> origin/master
 
       this.setState({
         files,

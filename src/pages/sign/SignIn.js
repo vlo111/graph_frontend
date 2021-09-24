@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
@@ -18,24 +17,6 @@ import OAuthButtonGoogle from "../../components/account/OAuthButtonGoogle";
 import OAuthButtonLinkedin from "../../components/account/OAuthButtonLinkedin";
 import OAuthButtonTwitter from "../../components/account/OAuthButtonTwitter";
 import PasswordInput from "../../components/form/PasswordInput";
-=======
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { connect } from 'react-redux';
-import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
-import { forgotPasswordRequest, signInRequest } from '../../store/actions/account';
-import WrapperSign from '../../components/WrapperSign';
-import Input from '../../components/form/Input';
-import Button from '../../components/form/Button';
-import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
-import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
-import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
-import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
-import PasswordInput from '../../components/form/PasswordInput';
->>>>>>> origin/master
 
 class Login extends Component {
   static propTypes = {
@@ -51,10 +32,7 @@ class Login extends Component {
         password: '',
       },
       failedLoginAttempts: 0,
-<<<<<<< HEAD
       errors: ''
-=======
->>>>>>> origin/master
     };
   }
 
@@ -85,7 +63,6 @@ class Login extends Component {
     if (data.status !== 'ok') {
       this.setState({
         failedLoginAttempts: this.state.failedLoginAttempts + 1,
-<<<<<<< HEAD
         errors: errorMessage + '',
       });
      
@@ -94,25 +71,10 @@ class Login extends Component {
         await this.props.forgotPasswordRequest(requestData.email, `${origin}/sign/reset-password`);
       } 
     
-=======
-      });
-
-      if (this.state.failedLoginAttempts === 3) {
-        await this.props.forgotPasswordRequest(requestData.email, `${origin}/sign/reset-password`);
-      }
-      if (this.state.failedLoginAttempts < 3){
-        toast.dismiss(this.toast);
-        this.toast = toast.error('Invalid email or password');
-      }
->>>>>>> origin/master
     }
   }
   render() {
-<<<<<<< HEAD
     const { requestData, failedLoginAttempts, errors } = this.state;
-=======
-    const { requestData, failedLoginAttempts } = this.state;
->>>>>>> origin/master
     return (
       <WrapperSign>
         <div className="SigninLeft signIn" />
@@ -141,7 +103,6 @@ class Login extends Component {
                 onChangeText={this.handleTextChange}
               />
 
-<<<<<<< HEAD
               <Link to="/sign/forgot-password" className="forgotPassword">
                 Forgot password?
               </Link>
@@ -168,16 +129,6 @@ class Login extends Component {
                 color="orange"
                 onClick={this.handleSubmit}
               >
-=======
-              {failedLoginAttempts >= 3
-              && (
-              <p className="errorRecovery">
-                Please check your email to recover your account
-              </p>
-              )}
-
-              <Button type="submit" className="submit" color="orange">
->>>>>>> origin/master
                 Sign In
               </Button>
               <div>

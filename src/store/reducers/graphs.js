@@ -18,7 +18,6 @@ import {
   SET_GRAPH_CUSTOM_FIELDS,
   GET_SINGLE_GRAPH_PREVIEW,
   UPDATE_GRAPH,
-<<<<<<< HEAD
   REMOVE_NODE_FROM_CUSTOM_FIELD,
   RENAME_NODE_CUSTOM_FIELD_KEY,
   SET_ACTIVE_TAB,
@@ -26,9 +25,6 @@ import {
   GET_GRAPH_INFO,
   ACTIVE_MOUSE_TRACKER,
   UPDATE_GRAPH_THUMBNAIL
-=======
-  REMOVE_NODE_FROM_CUSTOM_FIELD, RENAME_NODE_CUSTOM_FIELD_KEY, SET_ACTIVE_TAB
->>>>>>> origin/master
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -56,7 +52,6 @@ const initialState = {
     totalPages: 0,
   },
   actionsCount: {},
-<<<<<<< HEAD
   nodeCustomFields: [],
   activeTab: '_description',
   graphTabs: [],
@@ -65,9 +60,6 @@ const initialState = {
   mouseMoveTracker: [],
   onlineUsers: [],
   trackers: [],
-=======
-  activeTab: '',
->>>>>>> origin/master
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -160,15 +152,12 @@ export default function reducer(state = initialState, action) {
     //   };
     // }
     case GET_GRAPHS_LIST.FAIL: {
-<<<<<<< HEAD
       return {
         ...state,
         graphsListStatus: 'fail',
       };
     }
     case GET_NODES_LIST.REQUEST: {
-=======
->>>>>>> origin/master
       return {
         ...state,
         graphsListStatus: 'request',
@@ -266,7 +255,6 @@ export default function reducer(state = initialState, action) {
         ...state,
         singleGraph,
         embedLabels,
-<<<<<<< HEAD
         graphInfo: info,
         singleGraphStatus: 'success',
       };
@@ -278,17 +266,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         graphFilterInfo: filter,
         graphInfo: info,
-=======
-        singleGraphStatus: 'success',
->>>>>>> origin/master
       };
     }
 
     case GET_SINGLE_GRAPH.FAIL: {
-<<<<<<< HEAD
       Chart.loading(false)
-=======
->>>>>>> origin/master
       return {
         ...state,
         singleGraphStatus: 'fail',
@@ -486,7 +468,6 @@ export default function reducer(state = initialState, action) {
         activeTab: action.payload.tabName,
       };
     }
-<<<<<<< HEAD
     case GET_ALL_TABS.REQUEST: {
       return {
         ...state,
@@ -547,8 +528,6 @@ export default function reducer(state = initialState, action) {
         mouseMoveTracker: trackers, 
       };
     } 
-=======
->>>>>>> origin/master
     default: {
       return state;
     }

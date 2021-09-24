@@ -15,11 +15,10 @@ class AnalyticalPage extends Component {
   }
 
   onShowPartPie = (data, index) => {
-  
     const {
       color, type, value, percent,
     } = data;
-    
+
     this.setState({
       effectPie: index,
     });
@@ -59,7 +58,6 @@ class AnalyticalPage extends Component {
   }
 
   renderActiveShape = (props) => {
-   
     const RADIAN = Math.PI / 180;
     const {
       cx,
@@ -120,11 +118,9 @@ class AnalyticalPage extends Component {
               margin={{
                 top: 0,
               }}
-
             >
               <Pie
                 isAnimationActive={false}
-                
                 data={types}
                 className="pie_part"
                 activeIndex={this.state?.effectPie}

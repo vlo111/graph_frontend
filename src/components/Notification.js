@@ -32,14 +32,13 @@ export default () => {
   });
 
   return (
-   
     <NotifyMe
       data={list}
       notific_key="createdAt"
       link="link"
       notifyLink={NotifyLink}
       notific_value="text"
-      heading="Notification"
+      heading="Notification Alerts"
       sortedByKey={false}
       // showDate
       size={30}

@@ -447,13 +447,10 @@
     overflow-y: scroll;
     height: 89%;
   
-  
 }
-.collapse_over {
-      // width: 190px !important;
-      overflow: hidden  !important;
-   
-    }
+  .menu .containerMenu .collapse:hover{
+  overflow: hidden;
+  }
   .helpName{
     overflow-x: scroll;
     width: 31%;

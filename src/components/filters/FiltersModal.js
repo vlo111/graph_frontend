@@ -99,7 +99,6 @@ class FiltersModal extends Component {
           </Link>
         </>
         )}
-<<<<<<< HEAD
         <div className="filter-container">
           <h3 className="title">Filter</h3>
           <div className="row resetAll">
@@ -114,18 +113,6 @@ class FiltersModal extends Component {
           </div>
 
           <IsolatedFilter />
-=======
-        <div className="row resetAll">
-          <span
-            className="nodeCount"
-          >
-            {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${nodes.length}`}
-          </span>
-          <div>
-            <Button className="ghButton2 resetButton" onClick={this.props.resetFilter}>RESET ALL</Button>
-          </div>
-        </div>
->>>>>>> origin/master
 
           <NodesFilter nodes={nodes} />
 

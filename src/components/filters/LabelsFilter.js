@@ -54,40 +54,12 @@ class LabelsFilter extends Component {
 
     return (
       <div className="labelsFilter graphFilter">
-<<<<<<< HEAD
         <details open>
           <summary>
             Labels
           </summary>
           <ul className="list labelCheckAllBlock">
             <li className="item">
-=======
-        <h4 className="title">Labels</h4>
-        
-        <ul className="list labelCheckAllBlock">
-          <li className="item">
-            <div className="filterCheckBox">
-              <input
-                  onChange={() => this.toggleAll(labelsFormatted, allChecked)}
-                  checked={allChecked}
-                  className="graphsCheckbox"
-                  type="checkbox"
-                  name="layout"
-                  id="labelCheckAll"
-              />
-              <label className="pull-left" htmlFor="labelCheckAll">{allChecked ? 'Uncheck All' : 'Check All'}</label>
-            </div>
-            <div className="dashed-border" />
-            <span className="badge">
-            {_.sumBy(labelsFormatted, (d) => +d.length || 0)}
-          </span>
-          </li>
-        </ul>
-        <ul className="list ">
-          {labelsFormatted.map((item) => (
-            <Tooltip key={item.id} overlay={item.name}>
-              <li className="item">
->>>>>>> origin/master
               <div className="filterCheckBox">
                 <Checkbox
                   onChange={() => this.toggleAll(labelsInfo, allChecked)}
@@ -124,7 +96,6 @@ class LabelsFilter extends Component {
                         {item.length}
                       </span>
                     </div>
-<<<<<<< HEAD
                   </div>
 
                 </li>
@@ -132,23 +103,6 @@ class LabelsFilter extends Component {
             ))}
           </ul>
         </details>
-=======
-                  )}
-                  checked={filters.labels.includes(item.id)}
-                  onChange={() => this.handleChange(item.id)}
-                 
-                >     
-                <span className="badge">
-                    {item.length}
-                  </span>             
-                </Checkbox>
-                </div>
-                
-              </li>
-            </Tooltip>
-          ))}
-        </ul>
->>>>>>> origin/master
       </div>
     );
   }

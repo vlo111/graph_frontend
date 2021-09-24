@@ -11,12 +11,8 @@ import bgImage from '../../assets/images/no-img.png';
 import HeaderMini from '../HeaderMini';
 import ConnectionDetails from './ConnectionDetails';
 import ChartUtils from '../../helpers/ChartUtils';
-<<<<<<< HEAD
 import { getNodeCustomFieldsRequest } from '../../store/actions/graphs';
 import Loading from '../Loading';
-=======
-import NodeImage from "./NodeImage";
->>>>>>> origin/master
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -90,7 +86,6 @@ class NodeFullInfo extends Component {
           <HeaderMini
             headerImg={node.icon ? node.icon : bgImage}
             node={node}
-<<<<<<< HEAD
             editable={editable}
             expand={expand}
             queryObj={queryObj}
@@ -98,24 +93,6 @@ class NodeFullInfo extends Component {
           <div className="nodeFullContent">
             <NodeTabs nodeId={node.id} editable={editable} />
             <ConnectionDetails labels={labels} nodes={nodesPartial} links={linksPartial} nodeId={node.id} />
-=======
-            tabs={customFields}
-            editable={editable}
-          />
-          <div className="nodeFullContent">
-            <div className="headerBanner">
-              <NodeImage node={node} />
-
-              <div className="textWrapper">
-                <h2 className="name">{node.name}</h2>
-                <h3 className="type">{node.type}</h3>
-              </div>
-              <Link replace className="expand" to={`?${queryString.stringify({ ...queryObj, expand: '1' })}`}>
-                Expand
-              </Link>
-            </div>
-            <NodeTabs node={node} editable={editable} />
->>>>>>> origin/master
           </div>
         </div>
 
@@ -129,7 +106,6 @@ class NodeFullInfo extends Component {
   }
 }
 
-<<<<<<< HEAD
 const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
 });
@@ -137,21 +113,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getNodeCustomFieldsRequest,
 };
-=======
-const
-  mapStateToProps = (state) => ({
-    singleGraph: state.graphs.singleGraph, // rerender then data changed
-    customFields: state.graphs.singleGraph.customFields || {},
-  });
 
-const
-  mapDispatchToProps = {};
->>>>>>> origin/master
-
-const
-  Container = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(NodeFullInfo);
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NodeFullInfo);
 
 export default withRouter(Container);

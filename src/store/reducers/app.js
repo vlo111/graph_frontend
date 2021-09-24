@@ -3,12 +3,8 @@ import {
   LOADING,
   NEW_NODE_MODAL, PREVIOUS_ACTIVE_BUTTON, RESET_FILTER,
   SET_ACTIVE_BUTTON, SET_FILTER, SET_GRID_INDEXES,
-<<<<<<< HEAD
   TOGGLE_GRID, SET_LEGEND_BUTTON,ONLINE_USERS, TOGGLE_GRAPH_MAP, TOGGLE_SEARCH, 
   TOGGLE_EXPLORE, TOGGLE_DELETE_STATE, AUTO_SCALE
-=======
-  TOGGLE_GRID, SET_LEGEND_BUTTON, ONLINE_USERS 
->>>>>>> origin/master
 } from '../actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
 import {DEFAULT_FILTERS} from '../../data/filter';
@@ -126,17 +122,12 @@ export default function reducer(state = initialState, action) {
         legendButton: action.payload.mode,
       };
     }
-<<<<<<< HEAD
     case ONLINE_USERS: {
-=======
-    case ONLINE_USERS: {   
->>>>>>> origin/master
       return {
         ...state,
         onlineUsers: action.payload.onlineUsers,
       };
     }
-<<<<<<< HEAD
     case TOGGLE_GRAPH_MAP: {
       return {
         ...state,
@@ -167,8 +158,6 @@ export default function reducer(state = initialState, action) {
         autoScale: action.payload.mode
       }
     }
-=======
->>>>>>> origin/master
     default: {
       return state;
     }

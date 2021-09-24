@@ -29,7 +29,6 @@ class AnalyticalPage extends Component {
   }
 
   handleNodeClick = (ev, node) => {
-    
     this.setState({
       localNodeId: node.id,
     });

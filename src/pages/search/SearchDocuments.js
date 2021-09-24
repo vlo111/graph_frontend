@@ -43,7 +43,6 @@ class SearchDocuments extends Component {
             });
         }
 
-<<<<<<< HEAD
         return (
             <div className="searchData">
                 <div className="searchData__wrapper">
@@ -52,74 +51,6 @@ class SearchDocuments extends Component {
                     {setLimit && documentSearch.length > 5
                     && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link>
                     </div>}
-=======
-      return (
-        <div className="searchData">
-          {Object.keys(users) && Object.keys(users).length ? (
-            <div className="searchData__wrapper">
-              <h3>Documents</h3>
-              {Object.keys(users).map((item) => (
-                <div>
-                  {Object.keys(users[item]).map((graph) => (
-                      users[item].user?.id && users[item][graph].length
-                        ? (
-                          <div className="searchMediaContent">
-                            <article key={users[item].user.id} className="searchData__graph">
-                              <div className="searchData__graphInfo">
-                                <div>
-                                  <h3>{users[item][graph][0].graphName}</h3>
-                                </div>
-                                <div className="searchData__graphInfo-details">
-                                  <p className="createdBy">
-                                    <span>created by </span>
-                                    <Link to={`/profile/${users[item].user.id}`}>
-                                      {`${users[item].user.firstName} ${users[item].user.lastName}`}
-                                    </Link>
-                                  </p>
-                                  <p className="createdBy">{moment(users[item][graph][0].graphCreated).calendar()}</p>
-                                </div>
-                              </div>
-                              <hr className="line" />
-                              <div className="searchDocumentContent">
-                                {users[item][graph].map((document, index, array) => (
-                                  document.id && (
-                                  <div
-                                    style={document.nodeType !== array[index === 0 ? index : index - 1].nodeType
-                                      ? { gridColumnEnd: 2 } : {}}
-                                    className="nodeTabs tabDoc"
-                                  >
-                                    <p
-                                      className="nodeLink"
-                                      onClick={() => this.goToNodeTab(
-                                        document.graphId,
-                                        document.node,
-                                        users[item].user.id,
-                                      )}
-                                    >
-                                      <div className="left">
-                                        <NodeIcon node={document.node} />
-                                      </div>
-                                      <div className="right">
-                                        <span className="headerName">{document.node.name}</span>
-                                        <span className="type">{document.node.type}</span>
-                                      </div>
-                                    </p>
-                                    {
-                                        document.altText
-                                          ? <a download={document.altText} href={document.data}>{document.altText}</a>
-                                          : (
-                                            <a download={document.name} href={document.data}>{document.name}</a>
-                                          )
-                                      }
-                                  </div>
-                                  )
-                                ))}
-                              </div>
-                            </article>
-                          </div>
-                        ) : <div />
-                  ))}
->>>>>>> origin/master
                 </div>
             </div>
         );

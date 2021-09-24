@@ -10,37 +10,10 @@ import { socketLabelDataChange } from '../store/actions/socket';
 import { LABEL_STATUS } from '../data/node';
 
 class LabelUtils {
-<<<<<<< HEAD
   static async copy(sourceId, labelId) {
     localStorage.removeItem('label.copy');
     const { data } = await Api.labelCopy(sourceId, labelId);
     localStorage.setItem('label.copy', JSON.stringify(data.data));
-=======
-  static copy(sourceId, id, customFields, singleGraph) {
-    const labels = Chart.getLabels();
-    const label = labels.find((l) => l.id === id);
-    if (label.type === 'folder') {
-      label.open = true;
-    }
-
-    const nodes = Chart.getNodes().filter((n) => n.labels.includes(id)).map((d) => {
-      d.labels = [id];
-      return d;
-    });
-
-    const links = Chart.getLinks().filter((l) => nodes.some((n) => l.source === n.id) && nodes.some((n) => l.target === n.id));
-
-    const data = {
-      sourceId: +sourceId,
-      label,
-      nodes,
-      links,
-      customFields,
-      title: singleGraph.title,
-    };
-    localStorage.setItem('label.copy', JSON.stringify(data));
-
->>>>>>> origin/master
     return data;
   }
 
@@ -54,81 +27,6 @@ class LabelUtils {
     return data || {};
   }
 
-<<<<<<< HEAD
-=======
-  static compare() {
-    const data = this.getData();
-    if (!data.label) {
-      return {};
-    }
-    const nodes = Chart.getNodes();
-    const sourceNodes = _.intersectionBy(nodes, data.nodes, 'name');
-    const duplicatedNodes = _.intersectionBy(data.nodes, nodes, 'name');
-    return {
-      duplicatedNodes,
-      sourceNodes,
-    };
-  }
-
-  static pastAndMerge(data, position, sources, duplicates, customFields) {
-    let links = Chart.getLinks();
-    let nodes = Chart.getNodes();
-    data.nodes = data.nodes.map((n) => {
-      const selected = duplicates.find((d) => d.name === n.name);
-      const merge = sources.find((d) => d.name === n.name);
-      if (merge && selected) {
-        const originalId = n.id;
-        n.originalId = originalId;
-        n.id = merge.id;
-        n.merge = true;
-        const customFieldDuplicate = CustomFields.get(data.customFields, n.type, n.id);
-        const customField = CustomFields.get(customFields, merge.type, merge.id);
-        _.forEach(customFieldDuplicate, (k, name) => {
-          if (Object.keys(customField).includes(name)) {
-            store.dispatch(renameNodeCustomFieldKey(merge.type, name, CustomFields.uniqueName(customFields, merge.type, name)));
-          } else {
-            // todo
-          }
-        });
-
-        data.links = data.links.map((l) => {
-          if (l.source === originalId) {
-            l.source = n.id;
-          }
-          if (l.target === originalId) {
-            l.target = n.id;
-          }
-          return l;
-        });
-      } else if (!merge && selected) {
-        nodes = nodes.filter((d) => {
-          if (n.name === d.name) {
-            const customField = Object.keys(CustomFields.get(customFields, d.type, d.id));
-            customField.forEach((name) => {
-              store.dispatch(removeNodeCustomFieldKey(d.type, name, d.id));
-            });
-            return false;
-          }
-          return true;
-        });
-        links = ChartUtils.cleanLinks(links, nodes);
-      } else if (merge && !selected) {
-
-      } else {
-        return undefined;
-      }
-
-      return n;
-    });
-    data.nodes = _.compact(data.nodes);
-    data.links = ChartUtils.cleanLinks(data.links, data.nodes);
-    links = ChartUtils.cleanLinks(links, nodes);
-    Chart.render({ nodes, links });
-    console.log(data.nodes, ' data.nodes');
-    return LabelUtils.past(data, position);
-  }
-
->>>>>>> origin/master
   static async past(data, position, isEmbed, graphId) {
     if (!data || !data.label) {
       return {};
@@ -323,7 +221,6 @@ class LabelUtils {
     const labelStatus = LABEL_STATUS.filter((c) => c.value === status);
     return labelStatus.length ? labelStatus[0].label : null;
   }
-
 }
 
 export default LabelUtils;
