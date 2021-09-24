@@ -32,7 +32,7 @@ class Shared extends Component {
     const {
       shareGraphsListStatus, shareGraphsList, shareGraphsListInfo: { totalPages }, mode,
     } = this.props;
-
+    console.log(shareGraphsList, 'shareGraphsList', totalPages);
     return (
       <>
         <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!shareGraphsList.length ? 'empty' : ''}`}>
