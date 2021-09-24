@@ -6,6 +6,7 @@ import NotifyMe from 'react-notification-timeline';
 import { listNotificationsRequest, NotificationsUpdateRequest } from '../store/actions/notifications';
 import { notificationsList } from '../store/selectors/notifications';
 
+
 const NotifyLink = ({ url, children }) => (url ? <Link to={url}>{children}</Link> : <>{children}</>);
 NotifyLink.defaultProps = {
   url: '',
@@ -30,6 +31,7 @@ export default () => {
       item.link = `/graphs/preview/${item.graphId}`;
     }
   });
+  
 
   return (
     <NotifyMe
@@ -38,7 +40,7 @@ export default () => {
       link="link"
       notifyLink={NotifyLink}
       notific_value="text"
-      heading="Notification Alerts"
+      heading="Notification"
       sortedByKey={false}
       // showDate
       size={30}
