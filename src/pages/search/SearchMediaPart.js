@@ -6,6 +6,7 @@ import Utils from "../../helpers/Utils";
 import ChartUtils from "../../helpers/ChartUtils";
 import Loading from "../../components/Loading";
 import bgImage from '../../assets/images/mediaDocument.png';
+import NotFound from '../../assets/images/NotFound.png';
 
 class SearchMediaPart extends Component {
 
@@ -20,14 +21,6 @@ class SearchMediaPart extends Component {
         this.props.history.replace(`/graphs/${mode}/${graphId}?info=${node.id}`);
         ChartUtils.findNodeInDom(node);
     }
-    showMediaOver = (id) => {
-        console.log(id)
-        // document.getElementsByClassName(`medInfo1_${id}`)[0].style.display = 'flex';
-    }
-
-    hideMediaOver = (id) => {
-        document.getElementsByClassName(`medInfo1_${id}`)[0].style.display = 'none';
-    }
 
     componentDidMount() {
         if (this.state.loading) {
@@ -41,23 +34,26 @@ class SearchMediaPart extends Component {
     render() {
         let { mediaMode, data, setLimit } = this.props;
         const { loading } = this.state;
-        const size = 3;
+        const size = 5;
+
 
         if (data) {
             data.map((d) => {
                 d.node = d.graphs.nodes.filter((n) => n.id === d.nodeId)[0];
                 d.graphName = d.graphs.title;
-                d.userName = `${d.user.firstName} ${d.user.lastName}`;
+                d.userName = `${d.user.firstName} ${d.user.lastName} `;
             });
+
         }
-        console.log(data)
         return (
             <>
                 {data && data.length ? (
+
                     data.map((document) => (
+
                         <>
                             <article key={document.userId} className="graphs">
-                                <div className={`${document.type !== 'Video' ? 'mediaPart_wrapper' : ''}`}>
+                                <div className='mediaPart_wrapper'>
                                     <div className="top">
                                         <p
                                             className="nodeLink"
@@ -73,7 +69,7 @@ class SearchMediaPart extends Component {
                                         <div className="infoContent">
                                             <img
                                                 className="avatar"
-                                                src={document.user.avatar}
+                                                src={document.avatar}
                                                 alt={document.user.name}
                                             />
                                             <div className="infoWrapper">
@@ -124,11 +120,11 @@ class SearchMediaPart extends Component {
                                                 <div></div>
                                             )}
                                     </div>
-                                    <div>
+                                    <div className={`${document.type !== 'Video' ? 'media-item-hover' : ''}`}>
                                         <div className="medInfo">
                                             <div className="mediaInfo">
                                                 <span className="mediaLeter">Uploaded:</span>
-                                                <span className="item">{moment(document.updatedAt).format('YYYY.MM.DD')}</span>
+                                                <span className="searchDate">{moment(document.updatedAt).format('YYYY.MM.DD')}</span>
                                             </div>
                                             <div className="mediaInfo maediaUserBloc">
                                                 <span className="mediaLeter">User Name:</span>
@@ -154,8 +150,8 @@ class SearchMediaPart extends Component {
                                                     <div className="mediaInfo mediaDescription">
                                                         <span className="mediaLeter">Description:</span>
                                                         <span className="descriptionLeng">
-                                                            {(document.description && document.description.length > 45
-                                                                ? `${document.description.substr(0, 45)}... `
+                                                            {(document.description && document.description.length > 90
+                                                                ? `${document.description.substr(0, 90)}... `
                                                                 : document.description)}
                                                         </span>
                                                     </div>
@@ -251,7 +247,10 @@ class SearchMediaPart extends Component {
                     ))
                 ) : ((!setLimit && (!loading
                     ? <Loading />
-                    : <h3 className="mediaNotFound">No Documents Found</h3>)) || null)}
+                    : <div className='not_found'>
+                        <img src={NotFound} />
+                        <h3>Not Found</h3>
+                    </div>)) || null)}
             </>
         );
     }

@@ -11,8 +11,8 @@ import SearchPictures from './SearchPictures';
 import SearchDocuments from './SearchDocuments';
 
 class Search extends Component {
-  handleRouteChange = (tab) => {
-    this.props.history.push(tab.to + window.location.search)
+  handleRouteChange = (tab) => { 
+     this.props.history.push(tab.to + window.location.search)
   }
 
   render() {
@@ -23,7 +23,7 @@ class Search extends Component {
         <VerticalTabs
           className="searchPageTabs"
           direction="horizontal"
-          onChange={this.handleRouteChange}
+          handleRouteChange={this.handleRouteChange}
           tabs={[
             { to: '/search', name: 'Search', component: <SearchResult /> },
             { to: '/search-graph', name: 'Graphs', component:<div className='graphsCard'><SearchGraphs /> </div>},

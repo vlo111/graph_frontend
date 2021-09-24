@@ -19,7 +19,7 @@ class PageTabs extends Component {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
-    onChange: PropTypes.func,
+    handleRouteChange: PropTypes.func,
     direction: PropTypes.oneOf(['vertical', 'horizontal']),
     getGraphsListRequest: PropTypes.func.isRequired,
     getShareGraphListRequest: PropTypes.func.isRequired,
@@ -34,13 +34,17 @@ class PageTabs extends Component {
   }
 
   static defaultProps = {
-    onChange: undefined,
+    handleRouteChange: undefined,
     direction: 'vertical',
   }
-
   setActiveTab = (tab) => {
-    this.props.history.push(tab.to);
+    if (this.props.handleRouteChange) {
+      this.props.handleRouteChange(tab);
+    } else {
+      this.props.history.push(tab.to);
+    }
   }
+
 
   onChange = (mode) => {
     this.setState({
@@ -84,11 +88,10 @@ class PageTabs extends Component {
     const tab = tabs.find((t) => t.to === location.pathname);
     const list = direction === 'vertical' ? _.reverse([...tabs]) : tabs;
     const isHome = direction === 'vertical' && className === 'homePageTabs';
-    const { selected, showFilterModal } = this.state;
-
+    const { selected, showFilterModal } = this.state; 
     const { path: currentTab } = this.props.match;
     return (
-      <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser'}`} {...props}>
+      <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser' } `} {...props}>
         <ul className={`tabsList ${selected}`}>
           <li className="lastItem">
             <div className="cart-item" onClick={() => this.onChange('tab_card')}>

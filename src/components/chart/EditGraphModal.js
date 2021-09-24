@@ -154,9 +154,9 @@ requestData: {
     this.props.toggleModal(false);
   }
 
-  handleChange = async (path, value) => {
+  handleChange = async (path, value) => { 
     const { id: graphId } = this.props.singleGraph;
-
+    
     const { requestData } = this.state;
 
     if (path == 'image') {

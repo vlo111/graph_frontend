@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import AddFriend from './addFriend';
 import { getUsersByTextRequest } from '../../store/actions/account';
 import { myFriendsRequest } from '../../store/actions/userFriends';
+import NotFound from '../../assets/images/NotFound.png';
 
 class SearchUsers extends Component {
   static propTypes = {
@@ -40,16 +41,16 @@ class SearchUsers extends Component {
             {/* <h3>{`${userSearch.length > 1 ? 'People' : 'Person'}`}</h3> */}
             {userSearch.slice(0, 5).map((user) => (
               <article key={user.id} className="graphs">
-                <div className="searchData__graphUsers">  
-                    <Link to={`/profile/${user.id}`}>
-                      <span className='author'>{`${user.firstName} ${user.lastName}`}</span>
-                    </Link> 
+                <div className="searchData__graphUsers">
+                  <Link to={`/profile/${user.id}`}>
+                    <span className='author'>{`${user.firstName} ${user.lastName}`}</span>
+                  </Link>
                   <div>
-                  <AddFriend user={user} />
+                    <AddFriend user={user} />
                   </div>
                 </div>
                 <div className='searchData__graphUsers_img'>
-                <img
+                  <img
                     className="avatar UserImage"
                     src={user.avatar}
                     alt={user.firstName}
@@ -62,7 +63,10 @@ class SearchUsers extends Component {
               && <div className="viewAll"><Link to={`search-people?s=${searchParam}`}>View all</Link></div>
             }
           </>
-        ) : ((!setLimit && <h3>No User Found</h3>) || null)}
+        ) : ((!setLimit && <div className='not_found'>
+          <img src={NotFound} />
+          <h3>Not Found</h3>
+        </div>) || null)}
       </>
     );
   }
