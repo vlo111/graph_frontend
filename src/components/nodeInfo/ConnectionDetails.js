@@ -58,8 +58,12 @@ class ConnectionDetails extends Component {
   render() {
     const { nodeId, exportNode, nodeData } = this.props;
     const queryObj = queryString.parse(window.location.search);
+<<<<<<< HEAD
     const { connectedNodes, length } = this.getGroupedConnections(nodeId);
 
+=======
+    const connectedNodes = this.getGroupedConnections(nodeId);
+>>>>>>> origin/master
     if (exportNode) {
       connectedNodes.map((nodeGroup) => {
         nodeGroup.map((d) => {

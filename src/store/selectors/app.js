@@ -6,7 +6,10 @@ export const getOnlineUsers = createSelector(
   getApp,
   (items) => items.onlineUsers,
 ); 
+<<<<<<< HEAD
 export const getMouseTracker = createSelector(
   getApp,
   (items) => items.mouseTracker,
 ); 
+=======
+>>>>>>> origin/master

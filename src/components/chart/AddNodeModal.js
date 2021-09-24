@@ -20,11 +20,14 @@ import Validate from '../../helpers/Validate';
 import Utils from '../../helpers/Utils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import ChartUtils from '../../helpers/ChartUtils';
+<<<<<<< HEAD
 import Api from '../../Api';
 import markerImg from '../../assets/images/icons/marker-black.svg';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
+=======
+>>>>>>> origin/master
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -38,8 +41,13 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
+<<<<<<< HEAD
       fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale, link,
       d, infographyId, manually_size, customFields,
+=======
+      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale,
+      d, infographyId, manually_size
+>>>>>>> origin/master
     } = _.cloneDeep(addNodeParams);
     const _type = type || _.last(nodes)?.type || '';
     this.setState({
@@ -59,7 +67,11 @@ class AddNodeModal extends Component {
         scale,
         infographyId,
         manually_size: manually_size || 1,
+<<<<<<< HEAD
         customFields,
+=======
+
+>>>>>>> origin/master
       },
       nodeId: addNodeParams.id,
       customField,
@@ -294,6 +306,7 @@ class AddNodeModal extends Component {
               onChangeText={(v) => this.handleChange('name', v)}
               autoComplete="off"
             />
+<<<<<<< HEAD
             {expand ? (
               <>
                 <Input
@@ -445,6 +458,84 @@ class AddNodeModal extends Component {
               <Link className="" onClick={this.toggleExpand}>
                 {!expand ? 'Show More' : 'Show Less'}
               </Link>
+=======
+            <Select
+              label="Status"
+              portal
+              options={NODE_STATUS}
+              isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
+              value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
+              error={errors.status}
+              onChange={(v) => this.handleChange('status', v?.value || '')}
+            />
+            {!editPartial ? (
+              <>
+                <Select
+                  label="Icon shape"
+                  portal
+                  options={NODE_TYPES}
+                  value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
+                  error={errors.nodeType}
+                  onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+                />
+                <ColorPicker
+                  label="Color"
+                  value={nodeData.color}
+                  error={errors.color}
+                  readOnly
+                  style={{ color: nodeData.color }}
+                  onChangeText={(v) => this.handleChange('color', v)}
+                  autoComplete="off"
+                />
+
+                <FileInput
+                  label={nodeData.nodeType === 'infography' ? 'Image' : 'Icon'}
+                  accept=".png,.jpg,.gif"
+                  value={nodeData.icon}
+                  onChangeFile={(v) => this.handleChange('icon', v)}
+                />
+                <Select
+                  label="keywords"
+                  isCreatable
+                  isMulti
+                  value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
+                  menuIsOpen={false}
+                  placeholder="Add..."
+                  onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
+                />
+              </>
+            ) : null}
+            <Input
+              label="Set size manually"
+              value={nodeData.manually_size}
+              error={errors.manually_size}
+              min="1"
+              max="50"
+              type="number"
+              autoComplete="off"
+              onBlur={() => {
+                if (nodeData.value < 1) {
+                  nodeData.value = 1;
+                } else if (nodeData.value > 50) {
+                  nodeData.value = 50;
+                }
+                this.handleChange('value', nodeData.value);
+              }}
+              onChangeText={(v) => this.handleChange('manually_size', v)}
+            />
+            <LocationInputs
+              error={errors.location}
+              value={nodeData.location}
+              onChange={(v) => this.handleChange('location', v)}
+            />
+            <div className="buttons">
+              <Button className="ghButton cancel transparent alt" onClick={this.closeModal}>
+                Cancel
+              </Button>
+              <Button className="ghButton accent alt main main" type="submit">
+                {_.isNull(index) ? 'Add' : 'Save'}
+              </Button>
+>>>>>>> origin/master
             </div>
           </form>
         </div>

@@ -15,7 +15,11 @@ class ChartUndoManager {
     this.data = [];
   }
 
+<<<<<<< HEAD
   async push(datum, eventId) {
+=======
+  async push(datum) {
+>>>>>>> origin/master
     if (_.isEmpty(datum?.nodes) && _.isEmpty(datum?.links)) {
       return;
     }

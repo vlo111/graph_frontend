@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import stripHtml from 'string-strip-html';
 import moment from 'moment';
 import Api from '../../Api';
+<<<<<<< HEAD
 import { ReactComponent as NoTabSvg } from '../../assets/images/icons/sad.svg';
 import { ReactComponent as AddTabSvg } from '../../assets/images/icons/plus-add-tab.svg';
 import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
@@ -11,6 +12,8 @@ import { ReactComponent as DeleteSvg } from '../../assets/images/icons/delete.sv
 import { ReactComponent as ExpandTabSvg } from '../../assets/images/icons/expand-tab-content.svg';
 import Button from '../form/Button';
 import NodeExpand from './NodeExpand';
+=======
+>>>>>>> origin/master
 
 class NodeTabsContent extends Component {
   static propTypes = {
@@ -47,6 +50,7 @@ class NodeTabsContent extends Component {
   }
 
   render() {
+<<<<<<< HEAD
     const {
       name, node, customFields, activeTab,
     } = this.props;
@@ -54,6 +58,11 @@ class NodeTabsContent extends Component {
     const { expandNode } = this.state;
 
     const html = customFields.find((f) => f.name === name)?.value || '';
+=======
+    // const { contentType } = this.state;
+    const { content, name, node } = this.props;
+    const html = String(content?.content || content || '');
+>>>>>>> origin/master
     // this.getContentType(html);
     // const { result: text } = stripHtml(html);
     // if (['text/html', 'application/pdf'].includes(contentType)) {
@@ -69,6 +78,7 @@ class NodeTabsContent extends Component {
     //       </div>
     //   );
     // }
+<<<<<<< HEAD
 
     return (
       <div data-field-name={!node.sourceId ? name : ''} className="contentWrapper">
@@ -141,6 +151,11 @@ class NodeTabsContent extends Component {
           onClose={this.expand}
         />
         )}
+=======
+    return (
+      <div data-field-name={!node.sourceId ? name : undefined} className="contentWrapper">
+        <div className="content" dangerouslySetInnerHTML={{ __html: html || 'no content' }} />
+>>>>>>> origin/master
       </div>
     );
   }

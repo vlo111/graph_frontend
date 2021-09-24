@@ -62,6 +62,7 @@ export function getSingleGraphRequest(graphId, params) {
   return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId, params));
 }
 
+<<<<<<< HEAD
 export const GET_SINGLE_GRAPH_VIEW = define('GET_SINGLE_GRAPH_VIEW');
 
 export function getSingleGraphViewRequest(graphId, params) {
@@ -80,6 +81,8 @@ export function getGraphInfoRequest(graphId) {
   return GET_GRAPH_INFO.request(() => Api.getGraphInfo(graphId));
 }
 
+=======
+>>>>>>> origin/master
 export const GET_SINGLE_GRAPH_PREVIEW = define('GET_SINGLE_GRAPH_PREVIEW');
 
 export function getSingleGraphPreviewRequest(graphId, userId, token) {
@@ -192,6 +195,7 @@ export function setActiveTab(tabName) {
     },
   };
 }
+<<<<<<< HEAD
 
 const UPDATE_GRAPH_POSITIONS = define('UPDATE_GRAPH_POSITIONS');
 
@@ -209,3 +213,5 @@ export function setActiveMouseTracker(tracker, userId) {
     },
   };
 }
+=======
+>>>>>>> origin/master

@@ -11,6 +11,7 @@ import {
 import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
 import Utils from '../../helpers/Utils';
+<<<<<<< HEAD
 import { setActiveTab, getAllTabsRequest, getGraphNodesRequest } from '../../store/actions/graphs';
 import Chart from '../../Chart';
 
@@ -19,11 +20,15 @@ import Button from '../form/Button';
 import Checkbox from '../form/Checkbox';
 
 const { REACT_APP_MAX_NODE_AND_LINK } = process.env;
+=======
+import { setActiveTab } from '../../store/actions/graphs';
+>>>>>>> origin/master
 
 class SearchModal extends Component {
   static propTypes = {
     getAllTabsRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
+<<<<<<< HEAD
     toggleSearch: PropTypes.func.isRequired,
     toggleExplore: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
@@ -36,6 +41,12 @@ class SearchModal extends Component {
     nodesPartial: PropTypes.array.isRequired,
     linksPartial: PropTypes.array.isRequired,
   };
+=======
+    customFields: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    setActiveTab: PropTypes.func.isRequired,
+  }
+>>>>>>> origin/master
 
   constructor(props) {
     super(props);
@@ -43,6 +54,7 @@ class SearchModal extends Component {
     this.state = {
       nodes: [],
       tabs: [],
+<<<<<<< HEAD
       search: '',
       docs: [],
       keywords: [],
@@ -57,6 +69,8 @@ class SearchModal extends Component {
       allNodesSelected: false,
       chosenNodes: [],
       toggleFilterBox: false,
+=======
+>>>>>>> origin/master
     };
   }
 
@@ -107,6 +121,7 @@ class SearchModal extends Component {
     if (!search) {
       return;
     }
+<<<<<<< HEAD
     if (search.length > 1) {
       this.displaySearchResultList(search);
     }
@@ -155,6 +170,61 @@ class SearchModal extends Component {
         }
         return false;
       };
+=======
+    const { customFields } = this.props;
+    const nodes = ChartUtils.nodeSearch(search);
+
+    const tabs = [];
+
+    if (search.length > 2) {
+      const nodeTypes = Object.keys(customFields);
+
+      nodeTypes.forEach((nmodeType) => {
+        const tabNames = Object.keys(customFields[nmodeType]);
+
+        tabNames.forEach((tabName) => {
+          const tabValue = customFields[nmodeType][tabName].values;
+
+          Object.keys(tabValue).forEach((nodeId) => {
+
+            const tabContent = tabValue[nodeId];
+
+            const node = ChartUtils.getNodeById(nodeId);
+
+            const tabContentHtml = document.createElement('div');
+
+            tabContentHtml.innerHTML = tabContent;
+
+            const tabSearchValue = tabContentHtml.textContent;
+
+            if (tabName.toLowerCase().includes(search.toLowerCase())
+                    || tabSearchValue.toLowerCase().includes(search.toLowerCase())) {
+              if (nodeId && (nodeId !== 'undefined')) {
+                tabs.push({
+                  nodeId: node.id,
+                  node,
+                  tabName,
+                  tabContent,
+                  tabSearchValue,
+                });
+              }
+            }
+          });
+        });
+      });
+    }
+
+    const groupBy = (array, key) => array.reduce((result, obj) => {
+      (result[obj[key]] = result[obj[key]] || []).push(obj);
+      result[obj[key]].node = obj.node;
+      return result;
+    }, {});
+
+    const tabArray = groupBy(tabs, 'nodeId');
+
+    this.setState({ nodes, search, tabs: tabArray });
+  }
+>>>>>>> origin/master
 
       if (foundNodes.tags && foundNodes.tags.length > 0) {
         docs = foundNodes.tags ? foundNodes.tags : [];
@@ -572,7 +642,15 @@ class SearchModal extends Component {
     }
   }
 
+  openTab = (node, tabName) => {
+    this.props.setActiveTab(tabName);
+    ChartUtils.findNodeInDom(node);
+    this.props.history.replace(`${window.location.pathname}?info=${node.id}`);
+    this.closeModal();
+  }
+
   render() {
+<<<<<<< HEAD
     const {
       nodes,
       tabs,
@@ -586,6 +664,9 @@ class SearchModal extends Component {
     } = this.state;
     this.initTabs();
     const chartNodes = Chart.getNodes();
+=======
+    const { nodes, tabs, search } = this.state;
+>>>>>>> origin/master
     return (
       <Modal
         isOpen
@@ -593,6 +674,7 @@ class SearchModal extends Component {
         overlayClassName="ghModalOverlay searchOverlay"
         // onRequestClose={this.closeModal}
       >
+<<<<<<< HEAD
         <div className="searchField">
           <div className="searchBox">
             <div className="searchBoxInside">
@@ -603,6 +685,73 @@ class SearchModal extends Component {
                     <path d="M15.313 0H0.692176C0.25364 0 0.00877185 0.463023 0.280353 0.779125L7.59077 9.25601C7.80002 9.49865 8.20294 9.49865 8.41442 9.25601L15.7248 0.779125C15.9964 0.463023 15.7516 0 15.313 0Z" fill="#7166F8" />
                   </svg>
 
+=======
+        <Input
+          label="Search"
+          autoComplete="off"
+          value={search}
+          containerClassName="graphSearch"
+          onChangeText={this.handleChange}
+          autoFocus
+        />
+        <ul className="list">
+          {Object.keys(tabs) && Object.keys(tabs).map((item) => (
+            <li className="item" key={tabs[item].node.id}>
+              <div tabIndex="0" role="button" className="ghButton tabButton">
+                <div className="header">
+                  <NodeIcon node={tabs[item].node} />
+                  <div className="headerArea">
+                    <span className="name">{tabs[item].node.name}</span>
+                    <span className="type">{tabs[item].node.type}</span>
+                  </div>
+                </div>
+                <div className="right">
+                  {
+                    Object.keys(tabs[item]).map((tab) => (
+                      tabs[item][tab].nodeId && (
+                      <div className="contentTabs">
+                        <span className="row nodeTabs">
+                          <div
+                            className="contentWrapper"
+                            onClick={() => this.openTab(tabs[item].node, tabs[item][tab].tabName)}
+                          >
+                            <span
+                              title={tabs[item][tab].tabName}
+                              className="name"
+                              dangerouslySetInnerHTML={{ __html: this.formatHtml(tabs[item][tab].tabName) }}
+                            />
+                            <div className="content">
+                              <span
+                                className="type"
+                                dangerouslySetInnerHTML={{ __html: this.formatHtml(tabs[item][tab].tabContent) }}
+                              />
+                            </div>
+                          </div>
+                        </span>
+                        {!tabs[item][tab].tabName.toLowerCase().includes(search)
+                          && !tabs[item][tab].tabSearchValue.toLowerCase().includes(search) ? (
+                            <span
+                              className="keywords"
+                              dangerouslySetInnerHTML={{
+                                __html: tabs[item][tab].keywords?.map((k) => this.formatHtml(k)).join(', '),
+                              }}
+                            />
+                          ) : null}
+                      </div>
+                      )
+                    ))
+                  }
+                </div>
+
+              </div>
+            </li>
+          ))}
+          {nodes.map((d) => (
+            <li className="item" key={d.index}>
+              <div tabIndex="0" role="button" className="ghButton" onClick={() => this.findNode(d)}>
+                <div className="left">
+                  <NodeIcon node={d} />
+>>>>>>> origin/master
                 </div>
                 <div className="searchFieldCheckBoxList">
                   <div
@@ -894,6 +1043,7 @@ class SearchModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
+<<<<<<< HEAD
   graphTabs: state.graphs.graphTabs,
   graphId: state.graphs.singleGraph.id,
   singleGraph: state.graphs.singleGraph,
@@ -901,6 +1051,9 @@ const mapStateToProps = (state) => ({
   currentUserId: state.account.myAccount.id,
   linksPartial: state.graphs.singleGraph?.linksPartial || [],
   nodesPartial: state.graphs.singleGraph?.nodesPartial || [],
+=======
+  customFields: state.graphs.singleGraph.customFields || {},
+>>>>>>> origin/master
 });
 
 const mapDispatchToProps = {

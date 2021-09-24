@@ -11,6 +11,7 @@ import { getSingleGraphRequest,
   getGraphsListRequest,
 } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
+<<<<<<< HEAD
 import {
   createNodesRequest,
   deleteNodesRequest, updateNodesCustomFieldsRequest,
@@ -26,6 +27,8 @@ import {
   updateLabelsRequest,
 } from '../store/actions/labels';
 import Utils from '../helpers/Utils';
+=======
+>>>>>>> origin/master
 
 class AutoSave extends Component {
   static propTypes = {
@@ -101,6 +104,7 @@ class AutoSave extends Component {
 
   handleChartRender = (ev) => {
     clearTimeout(this.timeout);
+<<<<<<< HEAD
     if (ev === Chart && Chart.ignoreAutoSave) {
       return;
     }
@@ -187,6 +191,12 @@ class AutoSave extends Component {
     document.body.classList.add('autoSave');
     await this.props.updateNodesRequest(graphId, [d]);
     document.body.classList.remove('autoSave');
+=======
+    if (!Chart.autoSave) {
+      return;
+    }
+    this.timeout = setTimeout(this.saveGraph, 1000);
+>>>>>>> origin/master
   }
 
   saveGraph = async () => { 

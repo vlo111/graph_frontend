@@ -97,7 +97,11 @@ class ContextMenu extends Component {
     if (ev.target.closest('.nodes')) {
       if (ev.target.classList.contains('selectMultyNodes')) {
         params = {
+<<<<<<< HEAD
           squareData: Chart.squareData || {},
+=======
+          squareDara: Chart.squareDara || {},
+>>>>>>> origin/master
         };
         element = 'selectNode';
       } else {
@@ -184,6 +188,7 @@ class ContextMenu extends Component {
     }  
     const { match: { params: { graphId = '' } }, expand } = this.props;
     const undoCount = Chart.undoManager.undoCount();
+<<<<<<< HEAD
     const showInMap = Chart.getNodes().some((d) => d?.location?.length > 0);
     const pastData = LabelUtils.getData();
 
@@ -197,6 +202,14 @@ class ContextMenu extends Component {
 
     const left = window.innerWidth - x < 170 ? window.innerWidth - 170 : x;
 
+=======
+    const showInMap = Chart.getNodes().some((d) => d.location);
+    const showPast = !!localStorage.getItem('label.copy')
+      && (show === 'chart' || show === 'label');
+    if (params.fieldName === '_location') {
+      return null;
+    }
+>>>>>>> origin/master
     // remove curve points
     Chart.wrapper.selectAll('#fcurve, #lcurve').remove();
     return (
@@ -211,11 +224,19 @@ class ContextMenu extends Component {
               {show === 'expand' ? <ExpandNodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'expand' ? <MatchNodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
+<<<<<<< HEAD
               {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
               {/* {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null} */}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
               {['label', 'chart'].includes(show)  && !expand ? (
+=======
+              {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null} 
+              {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null}
+              {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
+
+              {['label', 'chart'].includes(show) ? (
+>>>>>>> origin/master
                 <>
                   <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
                     Create node
@@ -240,14 +261,22 @@ class ContextMenu extends Component {
                 </div>
               ) : null}
 
+<<<<<<< HEAD
               {['selectSquare'].includes(show) && !viewLocation ? (
+=======
+              {['selectSquare'].includes(show) ? (
+>>>>>>> origin/master
                 <>
                   <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
                     Create a folder
                   </Button>
                 </>
               ) : null}
+<<<<<<< HEAD
               {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) && !viewLocation ? (
+=======
+              {['node', 'link', 'label', 'selectSquare', 'selectNode'].includes(show) ? (
+>>>>>>> origin/master
                 <>
                   {show === 'node' ? (!params.readOnly ? (
                     <Button icon="fa-eraser" onClick={(ev) => this.handleClick(ev, `${show}.delete`)}>
@@ -261,6 +290,7 @@ class ContextMenu extends Component {
                     )}
                 </>
               ) : null}
+<<<<<<< HEAD
               {['chart'].includes(show)  && !expand ? (
                 <>
                   {/* <div className="ghButton notClose"> */}
@@ -277,6 +307,24 @@ class ContextMenu extends Component {
                   {/*    </Button> */}
                   {/*  </div> */}
                   {/* </div> */}
+=======
+              {['chart'].includes(show) ? (
+                <>
+                  <div className="ghButton notClose">
+                    <Icon value="fa-plus-square" />
+                    Create
+                    <Icon className="arrow" value="fa-angle-right" />
+                    <div className="contextmenu">
+
+                      <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.new')}>
+                        Folder
+                      </Button>
+                      <Button icon="fa-tags" onClick={() => this.props.setActiveButton('create-label')}>
+                        Label
+                      </Button>
+                    </div>
+                  </div>
+>>>>>>> origin/master
                   {showInMap ? (
                     <Button
                       icon="fa-globe"
@@ -295,7 +343,11 @@ class ContextMenu extends Component {
                 </>
               ) : null}
               {['node'].includes(show) ? (
+<<<<<<< HEAD
                 <>
+=======
+                <>                   
+>>>>>>> origin/master
                   {showInMap ? (
                     <Button
                       icon="fa-globe"
@@ -304,7 +356,11 @@ class ContextMenu extends Component {
                       Show on map
                     </Button>
                   ) : null}
+<<<<<<< HEAD
 
+=======
+                   
+>>>>>>> origin/master
                 </>
               ) : null}
             </div>

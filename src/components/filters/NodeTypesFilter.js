@@ -103,6 +103,7 @@ class NodeTypesFilter extends Component {
     const allChecked = nodeTypes.length === filters.nodeTypes.length;
     return (
       <div className="nodesTypesFilter graphFilter">
+<<<<<<< HEAD
         <details open>
           <summary>
             Node Types
@@ -176,6 +177,75 @@ class NodeTypesFilter extends Component {
             ) : null}
           </ul>
         </details>
+=======
+        <h4 className="title">Node Types</h4>
+        <ul className="list">
+          <li className="item">
+          <div className="filterCheckBox"> 
+            <Checkbox
+              label={allChecked ? 'Uncheck All' : 'Check All'}
+              checked={allChecked}
+              onChange={() => this.toggleAll(typesFull, allChecked)}
+              className="graphsCheckbox" /> 
+            </div>           
+            <span className="badge">
+                {_.sumBy(typesFull, 'length')}
+              </span>
+          </li>
+          {types.map((item) => (
+            <li key={item.type} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
+              <div className="filterCheckBox">
+                <input
+                  onChange={() => this.handleChange(item.type)}
+                  checked={filters.nodeTypes.includes(item.type)}
+                  className="graphsCheckbox"
+                  type="checkbox"
+                  name="layout"
+                  id={item.type}
+                />
+                <label className="pull-left" htmlFor={item.type}>{item.type}</label>
+                <div>
+                  {!_.isEmpty(customFields[item.type]) ? (
+                    <Button
+                      className="dropdownArrow"
+                      icon="fa-chevron-down"
+                      onClick={() => this.toggleDropdown(item.type)}
+                    />
+                  ) : null}
+                  {openList.includes(item.type) && customFields[item.type] ? (
+                    <ul className="list subList">
+                      {_.map(customFields[item.type], (val, key) => (
+                        <li key={key} className="item">
+                          <div className="filterCheckBox nestedCheckBox">
+                            <input
+                              onChange={() => this.handleFilterChange(key)}
+                              checked={filters.nodeCustomFields.includes(key)}
+                              className="graphsCheckbox"
+                              type="checkbox"
+                              name="layout"
+                              id={key}
+                            />
+                            <label className="pull-left" htmlFor={key}>{key}</label>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              </div>
+              <div className="dashed-border" />
+              <span className="badge">
+                {item.length}
+              </span>
+            </li>
+          ))}
+           </ul>
+        {typesFull.length > types.length || showMore ? (
+          <Button onClick={this.toggleMore}>
+            {showMore ? '- Less' : '+ More'}
+          </Button>
+        ) : null}
+>>>>>>> origin/master
       </div>
     );
   }

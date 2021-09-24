@@ -94,9 +94,15 @@ class AddLabelModal extends Component {
     y += height / 2;
     const id = `f_${ChartUtils.uniqueId(labels)}`;
     const labelData = {
+<<<<<<< HEAD
       id,
       color: ChartUtils.labelColors({ id }),
       d: [[x, y], [width, height]],
+=======
+      id: `f_${ChartUtils.uniqueId(labels)}`,
+      color: ChartUtils.labelColors(),
+      d: [[x, y], [500, 500]],
+>>>>>>> origin/master
       name: '',
       type: 'folder',
       open: true,
@@ -104,10 +110,48 @@ class AddLabelModal extends Component {
 
     this.setState({ show: true, labelData });
   }
+  handleFolderEdit = (ev, labelData) => {   
+    this.setState({ show: true, labelData, edit: true });
+  }
+  handleFolderCrateSquare = async (ev, d) => { 
+    let { squareDara: { x, y, width, height }, originalEvent} = d;   
+    let links = Chart.getLinks();
+    let labels = Chart.getLabels();
+    // eslint-disable-next-line prefer-const
+    // let { nodes} = await ChartUtils.getNodesWithFiles(
+    //   this.props.customFields
+    // );
+
+    // nodes = nodes.filter((d) => squareDara.nodes.includes(d.id));
+    // links = links.filter(
+    //   (l) =>
+    //     squareDara.nodes.includes(l.source) &&
+    //     squareDara.nodes.includes(l.target)
+    // ); 
+     if (width < 200) width = 200;
+     if (height < 200) height = 200; 
+     x = x + width / 2;
+     y= y + height / 2;
+     
+    const labelData = {
+      id: `f_${ChartUtils.uniqueId(labels)}`,
+      color: ChartUtils.labelColors(),
+      d: [[x, y], [width, height]],
+      name: '',
+      type: "folder",
+      open: true,
+    };
+
+     this.setState({ show: true, labelData });
+  }
 
   deleteLabel = () => {
     const { labelData, edit } = this.state;
+<<<<<<< HEAD
     if (!edit) {
+=======
+    if(!edit) {
+>>>>>>> origin/master
       let labels = Chart.getLabels();
       labels = labels.filter((l) => l.id !== labelData.id);
       Chart.render({ labels });
@@ -157,9 +201,13 @@ class AddLabelModal extends Component {
   }
 
   render() {
+<<<<<<< HEAD
     const {
       labelData, errors, show, edit,
     } = this.state;
+=======
+    const { labelData, errors, show, edit } = this.state;
+>>>>>>> origin/master
     if (!show) {
       return null;
     }
@@ -173,12 +221,20 @@ class AddLabelModal extends Component {
         <div className="containerModal">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.deleteLabel} />
           <form className="form" onSubmit={this.addLabel}>
+<<<<<<< HEAD
             <h2>
               {labelData.type === 'folder'
                 ? (edit ? 'Edit Folder' : 'Add new Folder')
                 : (edit ? 'Edit label' : 'Add new label')}
             </h2>
             <Input
+=======
+            <h2>{labelData.type === 'folder' ?  
+              ( edit ? 'Edit Folder' : 'Add new Folder') :
+              ( edit ? 'Edit label' : 'Add new label')} 
+             </h2>
+             <Input
+>>>>>>> origin/master
               value={labelData.name}
               error={errors.name}
               label="Name"

@@ -14,9 +14,15 @@ class labelContextMenu extends Component {
     customFields: PropTypes.object.isRequired,
   }
 
+<<<<<<< HEAD
   handleCopyClick = async (ev) => {
     const { params, match: { params: { graphId = '' } }, singleGraph } = this.props;
     await LabelUtils.copy(graphId, params.id, singleGraph);
+=======
+  handleCopyClick = (ev) => {
+    const { params, customFields, match: { params: { graphId = '' } }, singleGraph } = this.props;
+    const data = LabelUtils.copy(graphId, params.id, customFields, singleGraph);
+>>>>>>> origin/master
     // this.props.onClick(ev, 'label.copy', { data, graphId });
   }
 
@@ -38,11 +44,19 @@ class labelContextMenu extends Component {
     }
     return (
       <>
+<<<<<<< HEAD
 
         <Button icon="fa-pencil-square-o" onClick={(ev) => this.props.onClick(ev, 'label.edit')}>
           Edit
         </Button>
 
+=======
+        
+        <Button icon="fa-pencil-square-o" onClick={(ev) => this.props.onClick(ev, 'label.edit')}>
+          Edit
+        </Button>
+        
+>>>>>>> origin/master
         <Button icon="fa-copy" onClick={this.handleCopyClick}>
           Copy
         </Button>

@@ -33,7 +33,11 @@ class AccountDropDown extends Component {
     const { showDropDown } = this.state;
     const { mini, myAccount: { firstName, lastName, id, avatar }, match: { params: { graphId = '' } } } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
+<<<<<<< HEAD
     return (
+=======
+     return (
+>>>>>>> origin/master
       <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
           <img src={avatar} className="avatar" alt={name} />  
@@ -44,6 +48,7 @@ class AccountDropDown extends Component {
           <Outside onClick={this.toggleDropDown} exclude="#accountDropDown">
             <div className="dropdown">
               <ul>
+<<<<<<< HEAD
                 <li className="nameSign">
                     {mini ? (
                 <Icon value="fa-chevron-down" className="down" />
@@ -54,6 +59,11 @@ class AccountDropDown extends Component {
                 <li className="item">
                    <Link to={`/profile/${id}`}>Account</Link>
                 </li>
+=======
+                <li className="item">
+                  <Link to="/account">Account</Link>
+                </li> 
+>>>>>>> origin/master
                 <li className="item">
                   <Link to="/sign/sign-out">Sign Out</Link>
                 </li>

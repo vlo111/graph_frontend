@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import memoizeOne from 'memoize-one';
 import { setActiveButton } from '../store/actions/app';
+<<<<<<< HEAD
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Utils from '../helpers/Utils';
 import ShareModal from './ShareModal';
@@ -15,12 +16,25 @@ import HelpsModal from './Helps';
 import { ReactComponent as Ellipse } from '../assets/images/Ellipse.svg';
 import { ReactComponent as FreeForm } from '../assets/images/freeform.svg';
 import { ReactComponent as Square } from '../assets/images/Square.svg';
+=======
+import SaveGraph from './chart/SaveGraph';
+import Undo from './Undo';
+import Chart from '../Chart';
+import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
+import { ReactComponent as AddSvg } from '../assets/images/icons/add.svg';
+import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
+import { ReactComponent as LoopSvg } from '../assets/images/icons/loop.svg';
+import { ReactComponent as TagSvg } from '../assets/images/icons/tag.svg'; 
+import { getSingleGraphRequest } from '../store/actions/graphs'; 
+import ShareTooltip from './ShareTooltip/ShareTooltip';
+>>>>>>> origin/master
 
 class ToolBar extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
     activeButton: PropTypes.string.isRequired,
+<<<<<<< HEAD
   };
 
   constructor(props) {
@@ -40,6 +54,11 @@ class ToolBar extends Component {
 
     };
   }
+=======
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+  } 
+>>>>>>> origin/master
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
@@ -488,6 +507,7 @@ class ToolBar extends Component {
                 onClick={() => this.handleClick('create-label')}
                 className={`${selected.includes('freeForm') ? 'selected' : ''}`}
               >
+<<<<<<< HEAD
                 <FreeForm className="lablMenu" />
                 <span> Free form </span>
               </li>
@@ -516,6 +536,45 @@ class ToolBar extends Component {
           <HelpsModal closeModal={this.closeHelpModal} />
         )}
         <AnalyseModal />
+=======
+                Create Label
+              </Button>
+            ) : null}
+
+            {false ? <Button
+              icon={<LoopSvg />}
+              className={activeButton === 'reset' ? 'active' : undefined}
+              onClick={this.resetGraph}
+            >
+              Reset project
+            </Button> : null}
+            <Button
+              className={activeButton === 'data' ? 'active' : undefined}
+              icon={<LoopSvg />}
+              onClick={() => this.handleClick('data')}
+            >
+              Data sheet
+            </Button>
+            <Button
+              className={activeButton === 'import' ? 'active' : undefined}
+              icon={<LoopSvg />}
+              onClick={() => this.handleClick('import')}
+            >
+              Import data
+            </Button> 
+          </div>
+        </div>
+
+        <div className="bottom ">
+
+        {graphId && <ShareTooltip graphId={graphId} graphOwner={singleGraphUser} isOwner = 'true'/>}
+        </div>
+        <div className="bottom helpWrapper">
+          <Button icon={<InfoSvg />}>
+            Help
+          </Button>
+        </div>
+>>>>>>> origin/master
       </div>
     );
   }

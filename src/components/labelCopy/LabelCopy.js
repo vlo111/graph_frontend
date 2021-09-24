@@ -3,7 +3,10 @@ import _ from 'lodash';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+<<<<<<< HEAD
 import { toast } from 'react-toastify';
+=======
+>>>>>>> origin/master
 import ContextMenu from '../contextMenu/ContextMenu';
 import LabelUtils from '../../helpers/LabelUtils';
 import Button from '../form/Button';
@@ -19,16 +22,23 @@ import { ReactComponent as KeepBothSvg } from '../../assets/images/icons/Keep_bo
 import { ReactComponent as MergeNodesSvg } from '../../assets/images/icons/Merge_nodes.svg';
 import { ReactComponent as ReplaceSvg } from '../../assets/images/icons/Replace.svg';
 import { ReactComponent as SkipNodesSvg } from '../../assets/images/icons/Skip_these_nodes.svg';
+<<<<<<< HEAD
 import { createNodesRequest, deleteNodesRequest, updateNodesRequest } from '../../store/actions/nodes';
 import { createLinksRequest } from '../../store/actions/links';
 import { createLabelsRequest } from '../../store/actions/labels';
 import { getSingleGraphRequest } from '../../store/actions/graphs';
 import Api from '../../Api';
+=======
+>>>>>>> origin/master
 
 class LabelCopy extends Component {
   static propTypes = {
     copyDocumentForGraphRequest: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
+<<<<<<< HEAD
+=======
+    customFields: PropTypes.object.isRequired,
+>>>>>>> origin/master
   }
 
   constructor(props) {
@@ -62,6 +72,18 @@ class LabelCopy extends Component {
         nodes,
       },
     );
+<<<<<<< HEAD
+=======
+  }
+
+  fixDuplications = () => {
+    const { position } = this.state;
+    const { id } = this.props.singleGraph;
+    const data = LabelUtils.getData();
+    LabelUtils.past(data, position);
+    this.copyDocuments(data.sourceId, id, data.nodes);
+    this.closeModal();
+>>>>>>> origin/master
   }
 
   handleLabelAppend = async (ev, params) => {
@@ -70,7 +92,13 @@ class LabelCopy extends Component {
        Chart.isAutoPosition = false;
 
     const { x, y } = params;
+<<<<<<< HEAD
     const { singleGraph } = this.props;
+=======
+    const { id } = this.props.singleGraph;
+    const compare = LabelUtils.compare();
+    const position = [x, y];
+>>>>>>> origin/master
     const data = LabelUtils.getData();
 
     // todo global loading
@@ -78,7 +106,14 @@ class LabelCopy extends Component {
 
     const position = [x, y];
     if (_.isEmpty(compare.duplicatedNodes)) {
+<<<<<<< HEAD
       this.copyDocument('keep');
+=======
+      LabelUtils.past(data, position);
+
+      this.copyDocuments(data.sourceId, id, data.nodes);
+
+>>>>>>> origin/master
       return;
     }
     this.setState({
@@ -86,6 +121,7 @@ class LabelCopy extends Component {
     });
   }
 
+<<<<<<< HEAD
   handleNodeAppend = (ev, params) => {
     const data = LabelUtils.getData();
     this.setState({
@@ -97,6 +133,12 @@ class LabelCopy extends Component {
     const { compare: { duplicatedNodes, sourceNodes }, position } = this.state;
     const { singleGraph } = this.props;
     const data = LabelUtils.getData();
+=======
+  skipDuplications = () => {
+    const { compare: { duplicatedNodes, sourceNodes }, position } = this.state;
+    const { id } = this.props.singleGraph;
+    const data = LabelUtils.getData();
+>>>>>>> origin/master
     const nodes = Chart.getNodes();
     data.links = data.links.map((l) => {
       const duplicateNode = data.nodes.find((n) => n.id === l.source);
@@ -119,7 +161,12 @@ class LabelCopy extends Component {
     data.nodes = data.nodes.filter((n) => !duplicatedNodes.some((d) => n.name === d.name));
 
     data.links = ChartUtils.cleanLinks(data.links, [...data.nodes, ...nodes]);
+<<<<<<< HEAD
     this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
+=======
+    LabelUtils.past(data, position);
+    this.copyDocuments(data.sourceId, id, data.nodes);
+>>>>>>> origin/master
     this.closeModal();
 
     // const {
@@ -137,7 +184,11 @@ class LabelCopy extends Component {
     });
   }
 
+<<<<<<< HEAD
   replaceDuplications = async () => {
+=======
+  replaceDuplications = () => {
+>>>>>>> origin/master
     const { customFields, singleGraph } = this.props;
     const { position } = this.state;
     const data = LabelUtils.getData();
@@ -164,6 +215,10 @@ class LabelCopy extends Component {
       }
       return n;
     });
+<<<<<<< HEAD
+=======
+    LabelUtils.past(data, position);
+>>>>>>> origin/master
     this.copyDocuments(data.sourceId, singleGraph.id, data.nodes);
 
     this.closeModal();
@@ -173,16 +228,26 @@ class LabelCopy extends Component {
     this.setState({ showCompareModal });
   }
 
+<<<<<<< HEAD
   compareAndMerge = async (sources, duplications) => {
     Chart.loading(true);
     const merge = {
       sources: sources.map((d) => d.id),
       duplications: duplications.map((d) => d.id),
     };
+=======
+  merge = () => {
+    const { customFields, singleGraph } = this.props;
+>>>>>>> origin/master
     const { position } = this.state;
     const { x, y } = ChartUtils.calcScaledPosition(position[0], position[1]);
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
+<<<<<<< HEAD
+=======
+    LabelUtils.pastAndMerge(data, position, [], data.nodes, customFields);
+
+>>>>>>> origin/master
     this.closeModal();
     const { data: res } = await Api.dataPast(id, undefined, [x, y], 'merge-compare', {
       labels: data.labels,
@@ -196,13 +261,45 @@ class LabelCopy extends Component {
     Chart.loading(false);
   }
 
+<<<<<<< HEAD
   copyDocument = async (action, sourceId = undefined) => {
     Chart.loading(true);
+=======
+  compareAndMerge = (sources, duplicates) => {
+>>>>>>> origin/master
     const { position } = this.state;
     const { x, y } = ChartUtils.calcScaledPosition(position[0], position[1]);
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
+<<<<<<< HEAD
     this.closeModal();
+=======
+    let nodes = Chart.getNodes();
+    let links = Chart.getLinks();
+    nodes = nodes.map((n) => {
+      const i = duplicates.findIndex((d) => d && d.name === n.name);
+      if (!sources.some((s) => s.id === n.id)) {
+        if (i !== -1) {
+          return undefined;
+        }
+        return n;
+      }
+      if (i > -1) {
+        data.nodes = data.nodes.filter((d) => {
+          if (d.name === n.name) {
+            d.merge = true;
+          }
+          return d;
+        });
+      } else {
+        data.nodes = data.nodes.filter((d) => d.name !== n.name);
+      }
+      return n;
+    });
+
+    nodes = _.compact(nodes);
+    // duplicates = _.compact(duplicates);
+>>>>>>> origin/master
 
     const { data: res } = await Api.dataPast(id, sourceId, [x, y], action, {
       labels: data.labels,
@@ -218,12 +315,21 @@ class LabelCopy extends Component {
     Chart.loading(false);
   }
 
+<<<<<<< HEAD
   handleLabelEmbed = async (params) => {
     const { x, y } = params;
     const { sourceId } = LabelUtils.getData();
     const position = [x, y];
     await this.setState({ position })
     this.copyDocument('embed', sourceId);
+=======
+    Chart.render({ nodes, links });
+    LabelUtils.past(data, position);
+
+    this.setState({
+      compare: {}, data: {}, position: [], showQuestionModal: false, showCompareModal: false,
+    });
+>>>>>>> origin/master
   }
 
   render() {
@@ -249,6 +355,7 @@ class LabelCopy extends Component {
             {`The destinations has ${compare.duplicatedNodes?.length || 0} nodes with the same type and name`}
           </h2>
           <p className="subtitle">
+<<<<<<< HEAD
             {'Moving '}
             <span className="headerContents">
               {data.nodes?.length}
@@ -262,6 +369,26 @@ class LabelCopy extends Component {
               {singleGraph.title}
             </span>
             {'. '}
+=======
+            Moving
+            {' '}
+            <span className="headerContents">
+              {data.nodes.length}
+            </span>
+            {' '}
+            nodes from
+            {' '}
+            <span className="headerContents">
+              {data.title}
+            </span>
+            {' '}
+            to
+            {' '}
+            <span className="headerContents">
+              {singleGraph.title}
+            </span>
+            .
+>>>>>>> origin/master
           </p>
           <div className="buttonsWrapper">
             <div className="part">
@@ -276,24 +403,40 @@ class LabelCopy extends Component {
               </div>
               <div className="component">
                 <Button
+<<<<<<< HEAD
                   onClick={() => this.copyDocument('merge')}
+=======
+                  onClick={() => this.compareAndMerge(compare.sourceNodes, compare.duplicatedNodes)}
+>>>>>>> origin/master
                   className="actionButton"
                   icon={<MergeNodesSvg />}
                 />
                 <p className="textContent">Merge nodes</p>
               </div>
               <div className="component">
+<<<<<<< HEAD
                 <Button onClick={() => this.copyDocument('skip')} className="actionButton" icon={<SkipNodesSvg />} />
+=======
+                <Button onClick={this.skipDuplications} className="actionButton" icon={<SkipNodesSvg />} />
+>>>>>>> origin/master
                 <p className="textContent">Skip these nodes</p>
               </div>
             </div>
             <div className="part">
               <div className="component">
+<<<<<<< HEAD
                 <Button onClick={() => this.copyDocument('replace')} className="actionButton" icon={<ReplaceSvg />} />
                 <p className="textContent">Replace the nodes in the destination</p>
               </div>
               <div className="component">
                 <Button onClick={() => this.copyDocument('keep')} className="actionButton" icon={<KeepBothSvg />} />
+=======
+                <Button onClick={this.replaceDuplications} className="actionButton" icon={<ReplaceSvg />} />
+                <p className="textContent">Replace the nodes in the destination</p>
+              </div>
+              <div className="component">
+                <Button onClick={this.fixDuplications} className="actionButton" icon={<KeepBothSvg />} />
+>>>>>>> origin/master
                 <p className="textContent">Keep both</p>
               </div>
             </div>

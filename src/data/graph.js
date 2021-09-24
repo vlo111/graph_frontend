@@ -14,6 +14,7 @@ export const GRAPH_SHARE_TYPES = [
   { value: 'view', label: 'View' },
   { value: 'edit', label: 'Edit' },
    { value: 'admin', label: 'Admin' },
+<<<<<<< HEAD
 ];
 
 export const ONLINE = {
@@ -21,3 +22,6 @@ export const ONLINE = {
   online: 1,   // Just online
   not_online: 0,  //Not online
 };
+=======
+]; 
+>>>>>>> origin/master

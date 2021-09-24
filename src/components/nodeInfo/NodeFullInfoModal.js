@@ -9,7 +9,11 @@ import Button from '../form/Button';
 import NodeTabs from './NodeTabs';
 import ConnectionDetails from './ConnectionDetails';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+<<<<<<< HEAD
 import NodeImage from './NodeImage';
+=======
+import NodeImage from "./NodeImage";
+>>>>>>> origin/master
 
 class NodeFullInfo extends Component {
   static propTypes = {
@@ -52,10 +56,15 @@ class NodeFullInfo extends Component {
             {/*  <span className="userName">{[singleGraph.user?.firstName, singleGraph.user?.lastName].join(' ')}</span> */}
             {/* </div> */}
             <div className="nodeFullContent">
+<<<<<<< HEAD
               <div className="headerBanner ">
                 <div className="frame">
                   <NodeImage node={node} />
                 </div>
+=======
+              <div className="headerBanner">
+                <NodeImage node={node} />
+>>>>>>> origin/master
                 <div className="textWrapper">
                   <h2 className="name glow">
                     {node.name}

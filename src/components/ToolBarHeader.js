@@ -3,13 +3,19 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './form/Button';
+<<<<<<< HEAD
 import { setActiveButton, toggleSearch } from '../store/actions/app';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
+=======
+import { setActiveButton } from '../store/actions/app';
+import { ReactComponent as Logo, ReactComponent as LogoSvg } from '../assets/images/logo.svg';
+>>>>>>> origin/master
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
 import { getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/graphs';
 import { socketMousePositionTracker } from '../store/actions/socket';
 import AccountDropDown from './account/AccountDropDown';
 import Legend from './Legend';
+<<<<<<< HEAD
 import GraphSettings from './graphData/GraphSettings';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/commentGraph.svg';
 import CommentModal from './CommentModal/CommentModal.js';
@@ -19,6 +25,14 @@ import ContributorsModal from './Contributors';
 import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
+=======
+import MapsButton from './maps/MapsButton';
+import Utils from '../helpers/Utils';
+import WikiButton from './wiki/WikiButton';
+
+import { ReactComponent as MediaSvg } from '../assets/images/icons/gallery.svg';
+import SearchModal from './search/SearchModal';
+>>>>>>> origin/master
 
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -111,6 +125,7 @@ class ToolBarHeader extends Component {
     const updateLocation = pathname.startsWith('/graphs/update/');
     const filter = pathname.startsWith('/graphs/filter/'); 
     return (
+<<<<<<< HEAD
       <>
         <header id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
           <ul className="container">
@@ -195,6 +210,79 @@ class ToolBarHeader extends Component {
         />
         )}
       </>
+=======
+      <div>
+        <header className="headerPanel" id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
+          <Link to="/" className="logoWrapper">
+            <LogoSvg className="logo orange" />
+            <span className="autoSaveText">Saving...</span>
+          </Link>
+          <Legend />
+          {!updateLocation && (
+          <div className="searchInputWrapper">
+            <Button
+              icon={<SearchSvg />}
+              className={activeButton === 'search' ? 'active' : undefined}
+              onClick={() => this.handleClick('search')}
+            >
+              Search
+            </Button>
+          </div>
+          )}
+          <div className="graphs">
+            {updateLocation ? (
+              <Button
+                icon={<SearchSvg />}
+                className={activeButton === 'search' ? 'active' : undefined}
+                onClick={() => this.handleClick('search')}
+              >
+                Search
+              </Button>
+            ) : null}
+            <ShareGraph graphId={+graphId} setButton />
+            {updateLocation ? (
+              <Button
+                icon={<ViewSvg />}
+                onClick={() => this.props.history.replace(`/graphs/view/${graphId}`)}
+              >
+                View
+              </Button>
+            ) : null}
+            <Button
+              icon={<FilterSvg />}
+              onClick={() => {
+                isInEmbed ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
+                  : this.props.history.replace(`/graphs/filter/${graphId}`);
+              }}
+            >
+              Filter
+            </Button>
+            {updateLocation ? (
+              <Button
+                icon={<MediaSvg />}
+                className={activeButton === 'media' ? 'active' : undefined}
+                onClick={() => this.handleClick('media')}
+              >
+                Media
+              </Button>
+            ) : null}
+          </div>
+
+          {updateLocation ? (
+            <MapsButton />
+          ) : null}
+          {updateLocation ? (
+            <WikiButton />
+          ) : null}
+
+          <div className="signOut">
+            <AccountDropDown />
+          </div>
+
+        </header>
+        {activeButton === 'search' && <SearchModal history={this.props.history} />}
+      </div>
+>>>>>>> origin/master
     );
   }
 }

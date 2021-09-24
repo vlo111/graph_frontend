@@ -34,6 +34,7 @@ class ImportCompare extends Component {
 
   merge = () => {
     const { selectedNodes1, selectedNodes2 } = this.state;
+<<<<<<< HEAD
     const { importData: singleGraph2 } = this.props;
     const singleGraph = Chart.getData();
 
@@ -43,6 +44,20 @@ class ImportCompare extends Component {
     Chart.render({
       nodes, links, labels,
     });
+=======
+    const { importData: singleGraph2, customFields: customFieldsGraph1 } = this.props;
+    const singleGraph = Chart.getData();
+    singleGraph.customFields = customFieldsGraph1;
+
+    const {
+      nodes, links, labels, customFields,
+    } = ChartUtils.margeGraphs(singleGraph, singleGraph2, selectedNodes1, selectedNodes2);
+
+    Chart.render({
+      nodes, links, labels,
+    });
+    this.props.setGraphCustomFields(customFields);
+>>>>>>> origin/master
     this.props.setActiveButton('create');
   }
 
@@ -62,7 +77,10 @@ class ImportCompare extends Component {
             singleGraph2={singleGraph2}
             onChange={this.handleChange}
             selected={selected}
+<<<<<<< HEAD
             width={640}
+=======
+>>>>>>> origin/master
             scrollContainer=".ghImportModal"
           />
         </div>

@@ -7,7 +7,10 @@ import LabelCompareItem from './LabelCompareItem';
 import Button from '../form/Button';
 import { removeNodeCustomFieldKey, renameNodeCustomFieldKey } from '../../store/actions/graphs';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+<<<<<<< HEAD
 import Checkbox from '../form/Checkbox';
+=======
+>>>>>>> origin/master
 
 class LabelCompare extends Component {
   constructor(props) {
@@ -70,7 +73,11 @@ class LabelCompare extends Component {
       compare: { duplicatedNodes, sourceNodes }, onRequestClose, customFields,
     } = this.props;
 
+<<<<<<< HEAD
     const { sources, duplications } = this.state;
+=======
+    const { sources, duplicates } = this.state;
+>>>>>>> origin/master
     const data = LabelUtils.getData();
     return (
       <Modal
@@ -92,22 +99,46 @@ class LabelCompare extends Component {
               <div className="bottom">
                 <div className="node node_left">
                   <div className="allCheckedContent">
+<<<<<<< HEAD
                     <Checkbox
                       id="all_left"
                       label="Select all"
                       onChange={() => this.toggleAllDuplicate()}
                       checked={duplications.length === duplicatedNodes.length}
+=======
+                    <input
+                      onChange={() => this.toggleAllDuplicate()}
+                      checked={duplicates.length === duplicatedNodes.length}
+                      className="graphsCheckbox"
+                      type="checkbox"
+                      name="layout"
+                      id="all_left"
+                      value="All"
+>>>>>>> origin/master
                     />
+                    <label className="pull-left" htmlFor="all_left"> Select all </label>
                   </div>
                 </div>
                 <div className="node node_right">
                   <div className="allCheckedContent">
+<<<<<<< HEAD
                     <Checkbox
                       id="all_right"
                       label="Select all"
                       onChange={() => this.toggleAllSource()}
                       checked={sources.length === sourceNodes.length}
+=======
+                    <input
+                      onChange={() => this.toggleAllSource()}
+                      checked={sources.length === sourceNodes.length}
+                      className="graphsCheckbox"
+                      type="checkbox"
+                      name="layout"
+                      id="all_right"
+                      value="All"
+>>>>>>> origin/master
                     />
+                    <label className="pull-left" htmlFor="all_right"> Select all </label>
                   </div>
                 </div>
               </div>
@@ -121,8 +152,13 @@ class LabelCompare extends Component {
                       <LabelCompareItem
                         node={nodeDuplicate}
                         customFields={data.customFields}
+<<<<<<< HEAD
                         checked={duplications.some((d) => d.id === nodeDuplicate.id)}
                         onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplications')}
+=======
+                        checked={duplicates.some((d) => d.id === nodeDuplicate.id)}
+                        onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplicates')}
+>>>>>>> origin/master
                       />
                     </div>
                     <div className="node node_right">
@@ -138,7 +174,11 @@ class LabelCompare extends Component {
               );
             })}
           </ul>
+<<<<<<< HEAD
           <Button onClick={this.handleSubmit} className="alt main" type="submit">
+=======
+          <Button onClick={this.handleSubmit} className="ghButton accent alt main main" type="submit">
+>>>>>>> origin/master
             Save
           </Button>
         </div>

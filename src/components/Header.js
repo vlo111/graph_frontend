@@ -10,6 +10,9 @@ class Header extends Component {
   startGraph = () => {
     window.location.href = '/graphs/create';
   }
+  compareGraph = () => {
+    window.location.href = '/graphs/compare';
+  }
 
   compareGraph = () => {
     window.location.href = '/graphs/compare';
@@ -29,11 +32,19 @@ class Header extends Component {
             <Button className="btn-startgraph" color="accent" onClick={this.startGraph}>
               Start a graph
             </Button>
+<<<<<<< HEAD
 
             <Button className="btn-comparegraph" color="accent" onClick={this.compareGraph}>
               Compare graphs
             </Button>
 
+=======
+          
+              <Button color="accent" onClick={this.compareGraph}>
+                Compare graphs
+              </Button>
+            
+>>>>>>> origin/master
           </div>
         </div>
         <div className="notify_container">

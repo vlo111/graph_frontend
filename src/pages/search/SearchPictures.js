@@ -36,11 +36,103 @@ class SearchPictures extends Component {
     return (
         <div className="searchData">
           <div className="searchData__wrapper">
+<<<<<<< HEAD
             {documentSearch?.length ? <h3>Pictures</h3> : null}
             <SearchMediaPart setLimit={setLimit} mediaMode={'picture'} data={documentSearch} history={this.props.history} />
             {setLimit && documentSearch.length > 5
             && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link>
             </div>}
+=======
+            <h3>Pictures</h3>
+            {Object.keys(users).map((item) => (
+              <div>
+                {Object.keys(users[item]).map((graph) => (
+                  users[item].user?.id && users[item][graph].length
+                    ? (
+                      <div className="searchMediaContent">
+                        <article key={users[item].user.id} className="searchData__graph">
+                          <div className="searchData__graphInfo">
+                            <div>
+                              <h3>{users[item][graph][0].graphName}</h3>
+                            </div>
+                            <div className="searchData__graphInfo-details">
+                              <p className="createdBy">
+                                <span>created by </span>
+                                <Link to={`/profile/${users[item].user.id}`}>
+                                  {`${users[item].user.firstName} ${users[item].user.lastName}`}
+                                </Link>
+                              </p>
+                              <p className="createdBy">{moment(users[item][graph][0].graphCreated).calendar()}</p>
+                            </div>
+                          </div>
+                          <hr className="line" />
+                          <div className="searchDocumentContent">
+                            {users[item][graph].map((document, index, array) => (
+                              document.id && (
+                                <div
+                                  style={document.nodeType !== array[index === 0 ? index : index - 1].nodeType
+                                    ? { gridColumnEnd: 2 } : {}}
+                                  className="nodeTabs tabDoc"
+                                >
+                                  <p
+                                    className="nodeLink"
+                                    onClick={() => this.goToNodeTab(
+                                      document.graphId,
+                                      document.node,
+                                      users[item].user.id,
+                                    )}
+                                  >
+                                    <div className="left">
+                                      {document.node &&<NodeIcon node={document.node} />}
+                                    </div>
+                                    <div className="right">
+                                      <span className="headerName">{document.node?.name}</span>
+                                      <span className="type">{document.node?.type}</span>
+                                    </div>
+                                  </p>
+                                  {document.altText
+                                    ? <a target="_blank" href={document.data}>{document.altText}</a>
+                                    : (
+                                      <table className="mediaTable">
+                                        <tbody>
+                                          <tr>
+                                            <td>
+                                              <div className="mediaTumbnail">
+                                                <div className="container">
+                                                  <a target="_blank" href={document.data}>
+                                                    <img
+                                                      target="_blank"
+                                                      src={document.data}
+                                                      width="300px"
+                                                    />
+                                                  </a>
+                                                </div>
+                                                <p title={document.description}>
+                                                  { document.description && document.description.length > 59
+                                                    ? `${document.description.substr(0, 59)}... `
+                                                    : document.description}
+                                                </p>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    )}
+                                </div>
+                              )
+                            ))}
+                          </div>
+                        </article>
+                      </div>
+                    ) : <div />
+                ))}
+              </div>
+            ))}
+            {
+              setLimit && document.length > 5
+              && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link></div>
+            }
+>>>>>>> origin/master
           </div>
         </div>
     );

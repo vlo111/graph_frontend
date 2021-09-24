@@ -31,17 +31,29 @@ class ImportStep2 extends Component {
 
   import = async () => {
     const { importData } = this.props;
+<<<<<<< HEAD
     const singleGraph = _.cloneDeep(Chart.getData());
 
     const duplications = _.intersectionBy(singleGraph.nodes, importData.nodes, 'name');
     if (duplications.length) {
+=======
+    const singleGraph = Chart.getData();
+
+    const duplicates = _.intersectionBy(singleGraph.nodes, importData.nodes, 'name');
+    if (duplicates.length) {
+>>>>>>> origin/master
       this.setState({ compare: true });
       return;
     }
     const {
+<<<<<<< HEAD
       nodes, links, labels,
     } = ChartUtils.margeGraphs(singleGraph, importData);
 
+=======
+      nodes, links, labels, customFields,
+    } = ChartUtils.margeGraphs(singleGraph, importData);
+>>>>>>> origin/master
     Chart.render({
       nodes, links, labels,
     });

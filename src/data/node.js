@@ -6,11 +6,19 @@ import { ReactComponent as HexagonSvg } from '../assets/images/icons/hexagon.svg
 import { ReactComponent as EllipseSvg } from '../assets/images/icons/node-ellipse.svg';
 
 export const NODE_TYPES = [
+<<<<<<< HEAD
   { value: 'square', label: 'Square', icon: <RectangleSvg /> },
   { value: 'circle', label: 'Circle', icon: <EllipseSvg /> },
   { value: 'triangle', label: 'Triangle', icon: <TriangleSvg /> },
   { value: 'hexagon', label: 'Hexagon', icon: <HexagonSvg /> },
   { value: 'image', label: ' Image', icon: <ImageSvg /> },
+=======
+  { value: 'circle', label: 'Circle' },
+  { value: 'infography', label: 'Image' },
+  { value: 'square', label: 'Square' },
+  { value: 'triangle', label: 'Triangle' },
+  { value: 'hexagon', label: 'Hexagon' },
+>>>>>>> origin/master
 ];
 
 export const NODE_STATUS = [
