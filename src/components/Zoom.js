@@ -28,19 +28,19 @@ class Zoom extends Component {
   }
 
   componentDidMount() {
-    
-    let { scaleCount }  = this.state;   
-    window.addEventListener('keydown', this.handleKeyDown); 
-     if(scaleCount === 0) Chart.event.on('render', this.autoScale);
+
+    // let { scaleCount } = this.state;
+    window.addEventListener('keydown', this.handleKeyDown);
+    //if(scaleCount === 0) Chart.event.on('render', this.autoScale);
     Chart.event.on('zoom', this.handleChartZoom);
-    scaleCount++;
+    //scaleCount++;
   }
 
-  componentWillUnmount() {    
-    window.removeEventListener('keydown', this.handleKeyDown);  
-    Chart.event.removeListener('render', this.autoScale);
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+    // Chart.event.removeListener('render', this.autoScale);
     Chart.event.removeListener('zoom', this.handleChartZoom);
-    this.props.autoScale(false);
+    // this.props.autoScale(false);
   }
 
   handleChartZoom = (ev, d) => {
@@ -48,7 +48,7 @@ class Zoom extends Component {
   }
 
   autoScale = () => {
-    
+
     ChartUtils.autoScale();
   }
 
