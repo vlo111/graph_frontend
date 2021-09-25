@@ -7759,7 +7759,7 @@ img.preview-scaled {
 
   label {
     background-color: #7166F8;
-    width: 43px;
+    width: auto !important;
     height: 43px;
     border-radius: 10px;
     border: none;
@@ -7790,6 +7790,7 @@ img.preview-scaled {
         color: #ffffff;
         position: relative;
         left: 6px;
+        top: -3px;
       }
 
       .icon {
@@ -8099,6 +8100,10 @@ img.preview-scaled {
         margin-top: 2px;
         margin-right: -1px;
         border-radius: 5px;
+      }
+      svg{
+        position: relative;
+        top: -3px;
       }
     }
 
