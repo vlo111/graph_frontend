@@ -41,7 +41,6 @@ class SearchSharedGraphs extends Component {
       if (p.id === graph.id) {
         p.title = graph.title;
         p.description = graph.description;
-        p.thumbnail = graph.thumbnail;
       }
     });
 
@@ -55,10 +54,11 @@ class SearchSharedGraphs extends Component {
   render() {
     const { setLimit, shareGraphsList } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
+
     this.getGraphs(page, searchParam);
     return (
       <>
-        {shareGraphsList && shareGraphsList.length ? (
+        {shareGraphsList && shareGraphsList.length  ? (
           <>
             {/* <h3>{`Graph${shareGraphsList.length > 1 ? 's' : ''} shared with you`}</h3> */}
             {shareGraphsList.slice(0, 5).map((shGraph) => (

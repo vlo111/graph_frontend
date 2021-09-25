@@ -161,11 +161,9 @@ requestData: {
     this.props.toggleModal(false);
   }
 
-  handleChange = async (path, value) => {
-    let { singleGraph: {id: graphId}, graph } = this.props;
-    if (graphId === undefined) {
-      graphId = graph.id
-    }
+  handleChange = async (path, value) => { 
+    const { id: graphId } = this.props.singleGraph;
+    
     const { requestData } = this.state;
 
     if (path == 'image') {

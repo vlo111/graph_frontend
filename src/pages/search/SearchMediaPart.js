@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import NodeIcon from "../../components/NodeIcon";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import Utils from "../../helpers/Utils";
@@ -12,7 +11,8 @@ class SearchMediaPart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { loading: true };
+        this.state = 
+        { loading: true };
     }
 
     goToNodeTab = (graphId, node, userId) => {
@@ -41,10 +41,10 @@ class SearchMediaPart extends Component {
             data.map((d) => {
                 d.node = d.graphs.nodes.filter((n) => n.id === d.nodeId)[0];
                 d.graphName = d.graphs.title;
-                d.userName = `${d.user.firstName} ${d.user.lastName} `;
+                d.userName = `${d.user.firstName} ${d.user.lastName} `;            
             });
-
         }
+       console.log(data);
         return (
             <>
                 {data && data.length ? (
@@ -69,11 +69,11 @@ class SearchMediaPart extends Component {
                                         <div className="infoContent">
                                             <img
                                                 className="avatar"
-                                                src={document.avatar}
+                                                src={document.user.avatar}
                                                 alt={document.user.name}
                                             />
                                             <div className="infoWrapper">
-                                                <Link to={`/profile/${document.user.id}`}>
+                                                <Link to={`/profile/${document.userId}`}>
                                                     <span className="author">{`${document.user.firstName} ${document.user.lastName}`}</span>
                                                 </Link>
                                                 <div className="info">
