@@ -9198,14 +9198,11 @@ details[open] summary:after {
   
 }
 .contributors-container{
-  width: 200px;
-  height: auto;
+  width: 198px;
  
 div{
   display: flex;
-  padding: 5px 0px;
-
-  
+  margin-right: -7px;
 }
 .group-header{
   color:#AAAAAA;
@@ -9214,6 +9211,10 @@ div{
 .lineBorder{
   border-bottom: 1px solid #7166F8;
 
+}
+.d-flex {
+  display: block!important;
+  padding: 15px 0px;
 }
 
 }
