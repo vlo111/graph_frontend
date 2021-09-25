@@ -38,7 +38,7 @@ export default () => {
       link="link"
       notifyLink={NotifyLink}
       notific_value="text"
-      heading="Notification Alerts"
+      heading="Notification"
       sortedByKey={false}
       // showDate
       size={30}
