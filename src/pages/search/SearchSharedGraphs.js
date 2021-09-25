@@ -58,39 +58,10 @@ class SearchSharedGraphs extends Component {
     this.getGraphs(page, searchParam);
     return (
       <>
-        {shareGraphsList && shareGraphsList.length  ? (
+        {shareGraphsList && shareGraphsList.length ? (
           <>
-            {/* <h3>{`Graph${shareGraphsList.length > 1 ? 's' : ''} shared with you`}</h3> */}
             {shareGraphsList.slice(0, 5).map((shGraph) => (
               <article key={shGraph.graph.id} className="graphs">
-                {/* <div className="searchData__graphInfo">
-                  <img
-                    className="avatar"
-                    src={shGraph.graph.user.avatar}
-                    alt={shGraph.graph.user.name}
-                  />
-                  <div className="searchData__graphInfo-details">
-                    <Link to={`/graphs/preview/${shGraph.graph.id}`}>
-                      {shGraph.graph?.title}
-                      {searchParam && shGraph?.graph?.status !== 'active'
-                        ? (
-                          <span>{` (${shGraph?.graph?.status})`}</span>
-                        ) : null}
-                    </Link>
-                    <span className="description">
-                      {shGraph?.graph?.description.length > 300
-                        ? `${shGraph.graph?.description.substr(0, 300)}... `
-                        : shGraph.graph.description}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="author">{`${shGraph.graph?.user.firstName} ${shGraph.graph?.user.lastName}`}</span>
-                    <div className="info">
-                      <span>{moment(shGraph.graph.updatedAt).calendar()}</span>
-                      <span>{`  (${shGraph.graph.nodesCount} nodes) `}</span>
-                    </div>
-                  </div>
-                </div> */}
                 <div className="top">
                   <div className="infoContent">
                     <img

@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import queryString from 'query-string';
-import {Link, withRouter} from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
-import {getDocumentsByTagRequest} from '../../store/actions/document';
+import { getDocumentsByTagRequest } from '../../store/actions/document';
 import SearchMediaPart from "./SearchMediaPart";
 import Utils from "../../helpers/Utils";
 
@@ -18,7 +18,7 @@ class SearchDocuments extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {loading: true};
+        this.state = { loading: true };
     }
 
     static defaultProps = {
@@ -30,10 +30,10 @@ class SearchDocuments extends Component {
     })
 
     render() {
-        let {setLimit, documentSearch} = this.props
+        let { setLimit, documentSearch } = this.props
 
 
-        const {s: searchParam} = queryString.parse(window.location.search);
+        const { s: searchParam } = queryString.parse(window.location.search);
 
         this.searchDocuments(searchParam);
 
@@ -46,11 +46,10 @@ class SearchDocuments extends Component {
         return (
             <>
                 <>
-                    {/* {documentSearch?.length ? <h3>Documents</h3> : null} */}
                     <SearchMediaPart setLimit={setLimit} mediaMode={'document'} data={documentSearch} history={this.props.history} />
                     {setLimit && documentSearch.length > 5
-                    && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link>
-                    </div>}
+                        && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link>
+                        </div>}
                 </>
             </>
         );
@@ -66,8 +65,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = { getDocumentsByTagRequest, };
 const Container = connect(
-mapStateToProps,
-mapDispatchToProps,
+    mapStateToProps,
+    mapDispatchToProps,
 )(SearchDocuments);
 
 export default withRouter(Container);

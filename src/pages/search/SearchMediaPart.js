@@ -11,8 +11,8 @@ class SearchMediaPart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = 
-        { loading: true };
+        this.state =
+            { loading: true };
     }
 
     goToNodeTab = (graphId, node, userId) => {
@@ -41,10 +41,10 @@ class SearchMediaPart extends Component {
             data.map((d) => {
                 d.node = d.graphs.nodes.filter((n) => n.id === d.nodeId)[0];
                 d.graphName = d.graphs.title;
-                d.userName = `${d.user.firstName} ${d.user.lastName} `;            
+                d.userName = `${d.user.firstName} ${d.user.lastName} `;
             });
         }
-       console.log(data);
+        console.log(data);
         return (
             <>
                 {data && data.length ? (
@@ -86,38 +86,10 @@ class SearchMediaPart extends Component {
                                             ? <a download={document.altText} target="_blank"
                                                 href={document.data}>{document.altText}</a>
                                             : (mediaMode === 'document' ?
-                                                // <a download={document.name} href={document.data}>
-                                                //     <p> {`Ext: ${document.data.substring(document.data.lastIndexOf('.') + 1, document.data.length)}`} </p>
-                                                //     <p> {`Desctiption: ${document.description}`}</p>
-                                                // </a> 
-                                                <div>
-
-                                                </div> :
-                                                // <table className="mediaTable">
-                                                //     <tbody>
-                                                //     <tr>
-                                                //         <td>
-                                                //             <div className="mediaTumbnail">
-                                                //                 <div className="container">
-                                                //                     <a target="_blank" href={document.data}>
-                                                //                         <img
-                                                //                             target="_blank"
-                                                //                             src={document.data}
-                                                //                             width="300px"
-                                                //                         />
-                                                //                     </a>
-                                                //                 </div>
-                                                //                 <p title={document.description}>
-                                                //                     {document.description && document.description.length > 59
-                                                //                         ? `${document.description.substr(0, 59)}... `
-                                                //                         : document.description}
-                                                //                 </p>
-                                                //             </div>
-                                                //         </td>
-                                                //     </tr>
-                                                //     </tbody>
-                                                // </table>
-                                                <div></div>
+                                                <>
+                                                </> :
+                                                <>
+                                                </>
                                             )}
                                     </div>
                                     <div className={`${document.type !== 'Video' ? 'media-item-hover' : ''}`}>
@@ -210,19 +182,6 @@ class SearchMediaPart extends Component {
                                                     src={document.data}
                                                 />
                                             )}
-                                        {/* <div>
-                                                <h3>{document.graphName}</h3>
-                                            </div> */}
-                                        {/* <div className="searchData__graphInfo-details">
-                                                <p className="createdBy">
-                                                    <span>created by </span>
-                                                    <Link to={`/profile/${document.userId}`}>
-                                                        {document.userName}
-                                                    </Link>
-                                                </p>
-                                                <p className="createdBy">{moment(document.graphCreated).calendar()}</p>
-                                            </div> */}
-
                                         <div className="ooo">
 
                                             {document.type === 'Video' || document.type === 'Image'

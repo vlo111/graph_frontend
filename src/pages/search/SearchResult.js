@@ -9,11 +9,11 @@ class SearchResult extends Component {
   render() {
     return (
       <div className='graphsCard'>
-         <SearchGraphs setLimit />
-         <SearchSharedGraphs setLimit />
-         <SearchUsers setLimit />
-         <SearchPictures setLimit />
-         <SearchDocuments setLimit />
+        <SearchGraphs setLimit />
+        <SearchSharedGraphs setLimit />
+        <SearchUsers setLimit />
+        <SearchPictures setLimit />
+        <SearchDocuments setLimit />
       </div>
     );
   }

@@ -38,7 +38,6 @@ class SearchUsers extends Component {
       <>
         {userSearch && userSearch.length ? (
           <>
-            {/* <h3>{`${userSearch.length > 1 ? 'People' : 'Person'}`}</h3> */}
             {userSearch.slice(0, 5).map((user) => (
               <article key={user.id} className="graphs">
                 <div className="searchData__graphUsers">

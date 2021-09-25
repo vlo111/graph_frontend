@@ -58,35 +58,8 @@ class SearchGraphs extends Component {
       <>
         {graphsList && !isEmpty(graphsList) && graphsList.length ? (
           <>
-            {/* <h3>{`Graph${graphsList.length > 1 ? 's' : ''}`}</h3> */}
             {graphsList.map((graph) => (
               <article key={graph.id} className="graphs">
-                {/* <div className="searchData__graphInfo">
-                  <img
-                    className="avatar"
-                    src={graph.user.avatar}
-                    alt={graph.user.name}
-                  />
-                  <div className="searchData__graphInfo-details">
-                    <Link to={`/graphs/preview/${graph.id}`}>
-                      {graph.title}
-                      {searchParam && graph.status !== 'active'
-                        ? (
-                          <span>{` (${graph.status})`}</span>
-                        ) : null}
-                    </Link>
-                    <span className="description">
-                      {graph.description.length > 300 ? `${graph.description.substr(0, 300)}... ` : graph.description}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
-                    <div className="info">
-                      <span>{moment(graph.updatedAt).calendar()}</span>
-                      <span>{` (${graph.nodesCount} nodes )`}</span>
-                    </div>
-                  </div>
-                </div> */}
                 <div className="top">
                   <div className="infoContent">
                     <img
@@ -144,10 +117,6 @@ class SearchGraphs extends Component {
                 <GraphListFooter graph={graph} />
               </article>
             ))}
-            {/* {
-              setLimit && graphsList.length > 5
-              && <div className="viewAll"><Link to={`search-graph?s=${searchParam}`}>View all</Link></div>
-            } */}
           </>
         ) : ((!setLimit && <div className='not_found'>
           <img src={NotFound} />

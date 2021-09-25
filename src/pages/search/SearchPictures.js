@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import queryString from 'query-string';
-import {Link, withRouter} from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
-import {getDocumentsByTagRequest} from '../../store/actions/document';
+import { getDocumentsByTagRequest } from '../../store/actions/document';
 import SearchMediaPart from "./SearchMediaPart";
 import Utils from "../../helpers/Utils";
 
@@ -21,9 +21,9 @@ class SearchPictures extends Component {
   })
 
   render() {
-    let {setLimit, documentSearch} = this.props
+    let { setLimit, documentSearch } = this.props
 
-    const {s: searchParam} = queryString.parse(window.location.search);
+    const { s: searchParam } = queryString.parse(window.location.search);
 
     this.searchDocuments(searchParam);
 
@@ -34,15 +34,14 @@ class SearchPictures extends Component {
     }
 
     return (
+      <>
         <>
-          <>
-            {/* {documentSearch?.length ? <h3>Pictures</h3> : null} */}
-            <SearchMediaPart setLimit={setLimit} mediaMode={'picture'} data={documentSearch} history={this.props.history} />
-            {setLimit && documentSearch.length > 5
+          <SearchMediaPart setLimit={setLimit} mediaMode={'picture'} data={documentSearch} history={this.props.history} />
+          {setLimit && documentSearch.length > 5
             && <div className="viewAll"><Link to={`search-documents?s=${searchParam}`}>View all</Link>
             </div>}
-          </>
         </>
+      </>
     );
   }
 
@@ -56,8 +55,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = { getDocumentsByTagRequest, };
 const Container = connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(SearchPictures);
 
 export default withRouter(Container);
