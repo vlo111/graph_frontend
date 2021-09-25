@@ -9200,7 +9200,8 @@ details[open] summary:after {
   
 }
 .contributors-container{
-  width: 198px;
+  // width: 198px;
+  
  
 div{
   display: flex;
@@ -9220,18 +9221,23 @@ div{
   padding: 15px 0px;
 }
 
+
 }
-.rc-tooltip-content{
-  position: absolute;
-    left: -63px;
-    top: -186px;
-}
+
 .rc-tooltip-placement-right .rc-tooltip-arrow {
   display: none;
 }
 .rc-tooltip-placement-bottom .rc-tooltip-arrow{
   display: none;
 }
+.rc-tooltip {
+ opacity: 10 ; 
+}
+
+
+
+ 
+
 
 /// notification 
 .notificationHeader {

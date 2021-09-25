@@ -51,7 +51,7 @@ const GraphListFooter = ({ graph }) => {
       </Button>
       {actionsCount?.shares
         ? (
-          <Tooltip overlay={<TooltipContent graphId={graph.id}  graphOwner={graph.user} />} trigger={['click']} >
+          <Tooltip  overlay={<TooltipContent graphId={graph.id}  graphOwner={graph.user} />} trigger={['click']}  placement={["top"]} >
             <Button icon={<ShareSvg />} className="transparent footer-icon">
               <span className="graphListFooter__count">{actionsCount?.shares}</span>
             </Button>
