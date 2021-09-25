@@ -1427,9 +1427,11 @@ p {
     }
 
     label {
+     
       font-size: 16px;
-      margin-bottom: 5px;
-      color: #757575;
+    margin-bottom: 5px;
+    color: #757575;
+    width: 100%;
     }
   }
 
@@ -5158,7 +5160,7 @@ label.pull-left::before {
   }
   .wikiSearch {
     max-height: 150px;
-    width: 650px;
+    // width: 650px;
     margin: 0 5px;
     padding: 0 20px;
     text-align: left;
@@ -5333,7 +5335,7 @@ label.pull-left::before {
   }
   .wikiSearch {
     height: 130px;
-    width: 650px;
+    // width: 650px;
     margin: 0 auto;
     text-align: left;
     margin-bottom: 10px !important;
@@ -6697,12 +6699,12 @@ img.preview-scaled {
 
 
 .acceptCheckedItems {
-  width: 450px;
+  width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   margin: 0;
-  background-color: $color-white;
+  background-color: #ffffff;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -9230,7 +9232,9 @@ div{
 .rc-tooltip {
  opacity: 10 ; 
 }
-
+.rc-tooltip-content{
+  min-width: 200px;;
+}
 
 
  
