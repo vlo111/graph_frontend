@@ -29,9 +29,8 @@ class GraphListItem extends Component {
   }
 
   render() {
-    const { graphsList: graphs , headerTools, mode } = this.props;
+    const { graphs , headerTools, mode } = this.props; 
     if (!graphs?.length) return null;
-
     return (
       graphs ?
       graphs.map((graph) => (

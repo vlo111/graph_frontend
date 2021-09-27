@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import memoizeOne from 'memoize-one';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import NoGraph from '../components/NoGraph';
@@ -32,7 +31,6 @@ class Shared extends Component {
     const {
       shareGraphsListStatus, shareGraphsList, shareGraphsListInfo: { totalPages }, mode,
     } = this.props;
-    console.log(shareGraphsList, 'shareGraphsList', totalPages);
     return (
       <>
         <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!shareGraphsList.length ? 'empty' : ''}`}>
@@ -62,3 +60,4 @@ const Container = connect(
 )(Shared);
 
 export default withRouter(Container);
+
