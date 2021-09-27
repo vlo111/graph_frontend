@@ -201,8 +201,7 @@ class ChartUpdate {
     labelsDelete.forEach((l) => {
       Chart.data.embedLabels = Chart.data.embedLabels.filter((em) => em.labelId !== l.id);
     });
-
-    const nodes = Chart.getNodes().filter((d) => labelsDelete.some((l) => d.labels.includes(l)));
+    const nodes = Chart.getNodes().filter((d) => labelsDelete.some((l) => !d.labels.includes(l)));
     const links = ChartUtils.cleanLinks(Chart.getLinks(), nodes);
 
     Chart.render({ nodes, links, labels }, { ignoreAutoSave: true, eventId });
