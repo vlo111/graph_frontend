@@ -75,11 +75,13 @@ requestData: {
   }
 
   async componentDidMount () {
-    const { match: { params: { graphId } }, singleGraph: {defaultImage} } = this.props;
+    const { match: { params: { graphId } }, singleGraph: {defaultImage}, singleGraph } = this.props;
     const svg = ChartUtils.getChartSvg();
     if (!defaultImage && graphId) {
-      await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
-      this.props.getSingleGraphRequest(graphId)
+      if (!(singleGraph?.nodesPartial?.length > 500)) {
+        await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
+        this.props.getSingleGraphRequest(graphId)
+      }
     }
   }
 
@@ -123,9 +125,12 @@ requestData: {
     
     if (image) {
       let userEdited = true
-      if (typeof(image) === 'string') {
+      if (typeof(image) === 'string' && singleGraph?.nodesPartial?.length < 500) {
         image = svg
         userEdited = false
+      } else if (typeof(image) !== 'object') {
+        userEdited = false
+        image = ''
       }
       await this.props.updateGraphThumbnailRequest(graphId, image, 'medium', userEdited)
     }
@@ -139,17 +144,13 @@ requestData: {
 
     resGraphId = data.graphId;
 
-    if (resGraphId) {
+    if (graph && resGraphId) {
       toast.info('Successfully saved');
-      this.props.getSingleGraphRequest(resGraphId);
-    } else {
-      toast.error('Something went wrong. Please try again');
-    }
-
-    if(graph) {
       const { payload : { data: { graph: newGraph } } } = (await this.props.getSingleGraphRequest(resGraphId))
       
       this.props.updateGraph(newGraph);  
+    } else if (!resGraphId) {
+      toast.error('Something went wrong. Please try again');
     }
     if (pathname === '/') {
       const page = 1
@@ -162,15 +163,21 @@ requestData: {
   }
 
   handleChange = async (path, value) => {
-    let { singleGraph: {id: graphId}, graph } = this.props;
+    let { singleGraph, singleGraph: {id: graphId}, graph } = this.props;
     if (graphId === undefined) {
       graphId = graph.id
+    }
+    if (!graph && singleGraph) {
+      graph = singleGraph
+    }
+    if (!graph) {
+      toast.error('Something went wrong')
     }
     const { requestData } = this.state;
 
     if (path == 'image') {
       if (value == '') {
-        const svg = ChartUtils.getChartSvg();
+        const svg = graph?.nodesPartial?.length < 500 ? ChartUtils.getChartSvg() : '';
         _.set(requestData, 'userImage', false);
         let savedImageRequest = await Api.updateGraphThumbnail(graphId, svg, "small", "tmp")
         const image = savedImageRequest?.data?.thumbUrl + `?t=${moment(graph.updatedAt).unix()}`
