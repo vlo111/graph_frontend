@@ -5,6 +5,7 @@ import { Link, Prompt } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
+import { Redirect } from 'react-router-dom';
 import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import Chart from '../Chart';
@@ -82,14 +83,19 @@ class GraphView extends Component {
     Chart.nodesPath = false;
     Chart.clearLinkShortestPath();
   }
+  getPermission = () => {
+    const { singleGraphStatus } = this.props;
+
+    return (singleGraphStatus === 'fail');
+  }
 
   render() {
     const {
-      singleGraph, singleGraphStatus, graphInfo, showSearch, activeButton, 
+      singleGraph, singleGraphStatus, graphInfo, showSearch, activeButton,
       location: { pathname, search }, match: { params: { graphId = '' } },
-    } = this.props; 
-    const preview = pathname.startsWith('/graphs/preview/'); 
-    let shortestNodes = []; 
+    } = this.props;
+    const preview = pathname.startsWith('/graphs/preview/');
+    let shortestNodes = [];
     // let shortestLinks = [];
 
     // view the shortest path to the analysis field
@@ -106,7 +112,7 @@ class GraphView extends Component {
           let listCheck = false;
           listLinks.forEach((l) => {
             if ((l.source === p.source || l.target === p.source)
-                && (l.source === p.target || l.target === p.target)) {
+              && (l.source === p.target || l.target === p.target)) {
               listCheck = true;
             }
           });
@@ -123,7 +129,11 @@ class GraphView extends Component {
         // ChartUtils.findNodeInDom(shortestNodes[0]);
       }
     }
-    this.getSingleRequest();
+    this.getSingleRequest(pathname);
+    const isPermission = this.getPermission();
+    if (isPermission) {
+      return (<Redirect to="/403" />);
+    }
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
@@ -133,7 +143,7 @@ class GraphView extends Component {
           when={this.preventReload}
           message={this.handleRouteChange}
         />
-        {activeButton === 'data' && <DataView />} 
+        {activeButton === 'data' && <DataView />}
         {search.includes('analytics')
           ? (
             <AnalyticalPage
@@ -186,25 +196,25 @@ class GraphView extends Component {
                     </Link>
                   </>
                 )}
-                <ToolBarHeader graph={singleGraph}/>
-                  <Search />
+                <ToolBarHeader graph={singleGraph} />
+                <Search />
                 <NodeFullInfo editable={false} />
                 <LabelTooltip />
                 <Filters />
                 <AutoPlay />
-                <ContextMenu expand={true}/>
+                <ContextMenu expand={true} />
                 {activeButton === 'maps-view' && <MapsGraph />}
                 {activeButton.includes('findPath')
-                && (
-                <FindPath
-                  history={this.props.history}
-                  start={activeButton.substring(activeButton.length, activeButton.indexOf('.') + 1)}
-                />
-                )}
-              <Zoom />
-              <Crop />
-              
-              <ToolBarFooter partOf = {true}/>
+                  && (
+                    <FindPath
+                      history={this.props.history}
+                      start={activeButton.substring(activeButton.length, activeButton.indexOf('.') + 1)}
+                    />
+                  )}
+                <Zoom />
+                <Crop />
+
+                <ToolBarFooter partOf={true} />
               </div>
             ))}
       </Wrapper>

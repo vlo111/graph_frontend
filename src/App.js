@@ -14,7 +14,8 @@ import OAuth from './pages/sign/OAuth';
 import Shared from './pages/Shared';
 import Index from './pages/Index';
 import Account from './pages/profile/Account';
-import Page404 from './pages/Page404';
+import Page404 from './pages/message/Page404';
+import Page403 from './pages/message/Page403';
 import suspense from './helpers/suspense';
 import Search from './pages/search/Search';
 import Profile from './pages/account';
@@ -76,6 +77,7 @@ class App extends Component {
             <Route path="/sign/confirmation/:token" component={UserConfirmation} />
 
             <Route path="/404" component={Page404} />
+            <Route path="/403" component={Page403} />
 
             <Route path="/" component={Index} />
           </Switch>
