@@ -106,7 +106,8 @@ class GraphCompare extends Component {
     const { singleGraph } = this.props;
     const { singleGraph2 } = this.state;
     const { selectedNodes1, selectedNodes2 } = this.state;
-    const createGraphData = ChartUtils.margeGraphs(singleGraph, singleGraph2, selectedNodes1, selectedNodes2);
+    const keepLabels = false
+    const createGraphData = ChartUtils.margeGraphs(singleGraph, singleGraph2, selectedNodes1, selectedNodes2, keepLabels);
     this.setState({ createGraphData });
   }
 
@@ -118,16 +119,18 @@ class GraphCompare extends Component {
     const {
       match: { params: { graphId, graph2Id } }, singleGraph,
     } = this.props;
-    const {
-      singleGraph2, selectedNodes1, selectedNodes2, createGraphData,
-    } = this.state;
     this.getGraph1Request(graphId);
     this.getGraph2Request(graph2Id);
+    let { 
+      singleGraph2, selectedNodes1, selectedNodes2, createGraphData,
+    } = this.state;
     const graph1Nodes = _.differenceBy(singleGraph.nodes, singleGraph2.nodes, 'name');
     const graph2Nodes = _.differenceBy(singleGraph2.nodes, singleGraph.nodes, 'name');
 
     const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
 
+    selectedNodes1 = selectedNodes1.filter(node => node?.id)
+    selectedNodes2 = selectedNodes2.filter(node => node?.id)
     const selected = [...selectedNodes1, ...selectedNodes2];
     return (
       <Wrapper className="graph-compare" showFooter={false}>
@@ -173,6 +176,8 @@ class GraphCompare extends Component {
               count={graph1CompareNodes.length}
               singleGraph1={{ ...singleGraph, nodes: graph1CompareNodes }}
               singleGraph2={singleGraph2}
+              selectedNodes1={selectedNodes1}
+              selectedNodes2={selectedNodes2}
               onChange={this.handleChange}
               selected={selected}
             />
@@ -185,6 +190,7 @@ class GraphCompare extends Component {
                 )}
               count={graph1Nodes.length}
               singleGraph1={{ ...singleGraph, nodes: graph1Nodes }}
+              selectedNodes1={selectedNodes1}
               onChange={this.handleChange}
               selected={selected}
             />
@@ -197,6 +203,7 @@ class GraphCompare extends Component {
                 )}
               count={graph2Nodes.length}
               singleGraph2={{ ...singleGraph2, nodes: graph2Nodes }}
+              selectedNodes2={selectedNodes2}
               onChange={this.handleChange}
               selected={selected}
             />

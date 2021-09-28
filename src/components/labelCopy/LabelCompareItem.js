@@ -18,9 +18,9 @@ class LabelCompareItem extends Component {
   }
 
   render() {
-    const { node, checked } = this.props;
+    const { node, checked, nodes } = this.props;
 
-    const customFields = CustomFields.getCustomField(node, Chart.getNodes());
+    const customFields = CustomFields.getCustomField(node, nodes);
 
     const uniqueCheckboxId = Math.random().toString(36).substring(7);
 
@@ -47,14 +47,6 @@ class LabelCompareItem extends Component {
               {node.createdAt ? (
                 <span className="createdAt">{moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}</span>
               ) : null}
-              {/* {(node.attachedFiles && node.attachedFiles.length) ? ( */}
-              {/*  <span className="createdAt"> */}
-              {/*    { node.attachedFiles } */}
-              {/*    {' '} */}
-              {/*    attached files */}
-              {/*  </span> */}
-              {/* ) */}
-              {/*  : <span className="createdAt"> 0 </span>} */}
             </div>
             <div className="tab">
               {_.map(customFields.filter((p) => p.name !== '_description'), (val, key) => (

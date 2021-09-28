@@ -70,6 +70,31 @@ class GraphCompareList extends Component {
       }
     }
 
+    handleChange (node, checked, col) {
+      {this.props.onChange(node, checked, col)}
+      let { singleGraph1, singleGraph2, selectedNodes1, selectedNodes2 } = this.props;
+      if (singleGraph1 && col === 1) {
+      node.fx = node.x
+      node.fy = node.y
+        if (checked) {
+          selectedNodes1.push(node)
+        } else {
+          selectedNodes1 = selectedNodes1.filter(nd => nd.fx !== node.fx && nd.fy !== node.fy)
+        }
+        const allNodesAreSelected = !singleGraph1.nodes.find(nd => !!selectedNodes1.find(n => nd.x == n.fx && nd.y == n.fy) !== true)
+        this.setState({ selectAllLeft: allNodesAreSelected })
+      }
+      if (singleGraph2 && col === 2) {
+        if (checked) {
+          selectedNodes2.push(node)
+        } else {
+          selectedNodes2 = selectedNodes2.filter(nd => nd.fx !== node.fx && nd.fy !== node.fy)
+        }
+        const allNodesAreSelected = !singleGraph2.nodes.find(nd => !selectedNodes2.find(n => nd.fx == n.fx && nd.fy == n.fy))
+        this.setState({ selectAllRight: allNodesAreSelected })
+      }
+    }
+
     render() {
       const {
         singleGraph1, singleGraph2, title, selected, count,
@@ -108,24 +133,26 @@ class GraphCompareList extends Component {
         </tr>
       );
 
-      const singleGraph1List = singleGraph1?.nodesPartial?.map((node, index) => {
-        const node2 = singleGraph2?.nodesPartial?.find((n) => n.name === node.name);
+      const singleGraph1List = singleGraph1?.nodes?.map((node) => {
+        const node2 = singleGraph2?.nodes?.find((n) => n.name === node.name);
         return (
           <>
             <tr>
               <td>
                 <LabelCompareItem
                   node={node}
-                  checked={selected.some((d) => d.id === node.id)}
-                  onChange={(checked) => this.props.onChange(node, checked, 1)}
+                  checked={selected.some((d) => d?.id === node?.id)}
+                  onChange={(checked) => this.handleChange(node, checked, 1)}
+                  nodes={singleGraph1.nodes}
                 />
               </td>
-              {node2 && (
+              {node2?.id && (
               <td>
                 <LabelCompareItem
                   node={node2}
-                  checked={selected.some((d) => d.id === node2.id)}
-                  onChange={(checked) => this.props.onChange(node2, checked, 2)}
+                  checked={selected.some((d) => d?.id === node2?.id)}
+                  onChange={(checked) => this.handleChange(node2, checked, 2)}
+                  nodes={singleGraph2.nodes}
                 />
               </td>
               )}
@@ -134,14 +161,15 @@ class GraphCompareList extends Component {
         );
       });
 
-      const singleGraph2List = singleGraph2?.nodesPartial?.map((node, index) => (
-        <>
+      const singleGraph2List = singleGraph2?.nodes?.map((node) => (
+      <>
           <tr>
             <td>
               <LabelCompareItem
                 node={node}
-                checked={selected.some((d) => d.id === node.id)}
-                onChange={(checked) => this.props.onChange(node, checked, 2)}
+                checked={selected.some((d) => d?.id === node?.id)}
+                onChange={(checked) => this.handleChange(node, checked, 2)}
+                nodes={singleGraph2.nodes}
               />
             </td>
           </tr>
@@ -189,7 +217,7 @@ class GraphCompareList extends Component {
                 <tbody className={`${!isSimilar ? 'tableContent' : ''}`}>
                   {selectAllSimilar}
                   {singleGraph1List}
-                  {singleGraph2List}
+                  {isSimilar ? '' : singleGraph2List}
                 </tbody>
               </table>
 

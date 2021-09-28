@@ -217,13 +217,6 @@ export function socketInit() {
         payload: { userId },
       });
     });
-    socket.on('shareList', async (result) => {
-      const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
-      const graphId = +result.graphId;
-      if (graphId === +singleGraph.id) {
-        await dispatch(graphUsersRequest(result));
-      }
-    });
 
     /**
      * Call share graphs user list
