@@ -1,0 +1,195 @@
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+
+import prfImg from '../../assets/images/168.png';
+import ImageUploader from '../../components/ImageUploader';
+import { getProfile } from '../../store/selectors/profile';
+import { getUserFriendsList, friendsList } from '../../store/selectors/userFriends';
+import {  getGraphsCount } from '../../store/selectors/graphs';
+import { getId } from '../../store/selectors/account';
+
+
+import fcb_img from '../../assets/images/fcb.png';
+import twit from '../../assets/images/twit.png';
+import linkdein from '../../assets/images/linkdein.png';
+import skype from '../../assets/images/skype.png';
+
+import { getGraphsAndSharegraphsCount } from '../../store/actions/graphs';
+import { myFriendsRequest } from '../../store/actions/userFriends';
+
+
+
+
+
+
+const ProfileMain = React.memo(({ edit, userId }) => {
+    const dispatch = useDispatch();
+
+    //get profile
+    const profile = useSelector(getProfile);
+
+
+    const myfriends = useSelector(friendsList);
+    const userFriendsList = edit ? myfriends : useSelector(getUserFriendsList);
+    const friends = userFriendsList.filter((friend) => (friend.status == 'accepted'));
+    //get graphs
+    // const graphListsInfo = useSelector(getListInfo);
+    const allGraphsCount = useSelector(getGraphsCount);
+
+
+
+
+    // select current user id
+    const currentUserId = useSelector(getId);
+
+    // check user is friend or not
+    let isFriend = false;
+    if (!edit && userId) {
+        for (let friend of myfriends) {
+            if (userId == friend.friendUserId && friend.status == 'accepted') {
+                isFriend = true;
+                break;
+            }
+        }
+    }
+
+
+    useEffect(() => {
+        dispatch(getGraphsAndSharegraphsCount(userId));
+        if (!myfriends.length) {
+            dispatch(myFriendsRequest());
+        }
+    }, [dispatch, getGraphsAndSharegraphsCount]);
+
+    return (
+        <>
+            {profile.id && (
+                <>
+                    <div className="colm-sm-6 section1">
+                        <div className="profile_desc">
+                            <div className="img">
+                                {edit ? <ImageUploader
+                                    value={profile.avatar}
+                                    email={profile.email}
+                                    onChange={(val) => this.edit(val || '', 'avatar')}
+                                /> : <img src={prfImg}></img>}
+
+                            </div>
+                            <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
+                            <div className="profile_address text-size-16">
+                                <div>{profile.email}</div>
+                                <div>{profile.address ? profile.address : 'Armenia, yerevan'}</div>
+                                <div>{profile.phone}</div>
+                            </div>
+                            <p className="text-size-16"> {profile.bio} </p>
+
+                        </div>
+
+                        {isFriend && (
+                            <div className="row_ profile_info user_prf_color1 fw-bold">
+                                <div className="colm">
+                                    <div className='number text-size-50'>{friends.length}</div>
+                                    <div className='text'>Friends</div>
+                                </div>
+                                <div className="colm">
+                                    <div className='number text-size-50'>{allGraphsCount?.totalGraphs}</div>
+                                    <div className='text'>Graphs</div>
+                                </div>
+                                <div className="colm">
+                                    <div className='number text-size-50'>{allGraphsCount?.totalShareGraphs}</div>
+                                    <div className='text'>Share Graphs</div>
+                                </div>
+
+                            </div>
+                        )}
+
+                    </div>
+
+
+                    {!edit && (
+                        <div className="colm-sm-6 section2" >
+                            {currentUserId != userId && (
+                                <AddFriend user={profile} />
+                            )}
+
+                            <div className="edit_profile">
+                                <div>User details</div>
+                                {currentUserId === profile.id && (
+                                    <a className="accountedit user_prf_color1" href="/account">
+                                        {' '}
+                                        <i className="fa fa-pencil" />
+                                        {' '}
+                                        Edit Profile
+                                    </a>
+                                )}
+                                {/* <div className="user_prf_color1">Edit Profile</div> */}
+                            </div>
+                            <div className="user_address_info email">
+                                <h1>Email address</h1>
+                                <p className="user_prf_color1">{profile.email}</p>
+                            </div>
+                            {profile.country && (
+                                <div className="user_address_info">
+                                    <h1>Country</h1>
+                                    <p>{profile.country}</p>
+                                </div>
+                            )}
+
+                            {profile.city && (
+                                <div className="user_address_info">
+                                    <h1>City/ Town</h1>
+                                    <p>{profile.city}</p>
+                                </div>
+                            )}
+
+                            <div className="user_address_info">
+                                <h1>Social</h1>
+                                <div className="social-img d-flex">
+                                    {profile.facebook && (
+                                        <a href={profile.facebook} target=" ">
+                                            <img src={fcb_img}></img>
+                                        </a>
+                                    )}
+
+                                    {profile.twitter && (
+                                        <a href={profile.twitter} target=" ">
+                                            <img src={twit}></img>
+                                        </a>
+                                    )}
+                                    {profile.linkedin && (
+                                        <a href={profile.linkedin} target=" ">
+                                            <img src={linkdein}></img>
+                                        </a>
+                                    )}
+                                    {profile.skype && (
+                                        <a href={profile.skype} target=" ">
+                                            <img src={skype}></img>
+                                        </a>
+                                    )}
+
+                                </div>
+                            </div>
+                            {/* <div className="user_address_info">
+<h1>Interest</h1>
+<div className="interest">
+<div>Natuer</div>
+<div>Winemaking</div>
+<div>Plants</div>
+</div>
+
+</div> */}
+                        </div>
+
+                    )}
+
+                </>
+            )}
+        </>
+    );
+
+})
+
+
+
+export default ProfileMain;

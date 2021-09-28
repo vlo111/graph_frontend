@@ -1633,7 +1633,7 @@ p {
   &.changePasswordModalOverlay {
     .ghModal {
       top: 25%;
-      max-width: 339px;
+      min-width: 550px;
       padding: 0 35px 50px;
 
       form {
@@ -1646,6 +1646,7 @@ p {
         text-align: center;
         width: 100%;
         margin: 20px 0;
+        color: #7166f8;
       }
 
       .buttonsWrapper {
