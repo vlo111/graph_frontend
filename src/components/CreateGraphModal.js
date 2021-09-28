@@ -30,7 +30,7 @@ class CreateGraphModal extends Component {
       requestData: {
         title: '',
         description: '',
-        ...props.data,
+        ...props.data,      
       },
     };
   }
@@ -41,6 +41,7 @@ class CreateGraphModal extends Component {
       Chart.loading(false);
     }
   }
+
 
   handleChange = (path, value) => {
     const { requestData } = this.state;

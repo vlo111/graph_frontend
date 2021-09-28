@@ -49,10 +49,8 @@ class GraphCardItem extends Component {
   }
 
   render() {
-    let { headerTools, graphsList } = this.props;
-    const graphs = graphsList;
-
-    if (!graphsList?.length) return null;
+    let { headerTools, graphs } = this.props; 
+    if (!graphs?.length) return null;
 
     return (
       <>
@@ -122,7 +120,6 @@ class GraphCardItem extends Component {
             <GraphListFooter graph={graph} />
           </article>
         ))}
-
       </>
     );
   }

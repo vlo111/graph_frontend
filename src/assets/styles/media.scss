@@ -233,16 +233,15 @@
   .searchNodes {
     right: -11%;
   }
-} 
-.ghModalMedia {
-  .mediaHeader{
-    .showCheck{
-      padding: 10px;
+  .ghModalMedia {
+    .mediaHeader{
+      .showCheck{
+        padding: 10px;
+      }
+    
     }
-  
   }
 } 
-
 
 @media screen and (max-width: 900px) {
   .ghModalSearch {
@@ -348,7 +347,6 @@
     max-height: 11em;
   }
 }
-
 
 @media only screen and (max-height: 900px) {
 
@@ -490,7 +488,4 @@ margin-top: -5px;
     top: 500px!important;
   }
 
-  .compareContent .compare-footer {
-    top: 500px!important;
-  }
 }

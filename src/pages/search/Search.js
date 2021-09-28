@@ -11,8 +11,8 @@ import SearchPictures from './SearchPictures';
 import SearchDocuments from './SearchDocuments';
 
 class Search extends Component {
-  handleRouteChange = (tab) => {
-    this.props.history.push(tab.to + window.location.search)
+  handleRouteChange = (tab) => { 
+     this.props.history.push(tab.to + window.location.search)
   }
 
   render() {
@@ -23,14 +23,14 @@ class Search extends Component {
         <VerticalTabs
           className="searchPageTabs"
           direction="horizontal"
-          onChange={this.handleRouteChange}
+          handleRouteChange={this.handleRouteChange}
           tabs={[
             { to: '/search', name: 'Search', component: <SearchResult /> },
-            { to: '/search-graph', name: 'Graphs', component: <SearchGraphs /> },
-            { to: '/search-shared-graph', name: 'Shared Graphs', component: <SearchSharedGraphs /> },
-            { to: '/search-people', name: 'People', component: <SearchPeople /> },
-            { to: '/search-pictures', name: 'Pictures', component: <SearchPictures /> },
-            { to: '/search-documents', name: 'Documents', component: <SearchDocuments /> },
+            { to: '/search-graph', name: 'Graphs', component:<div className='graphsCard'><SearchGraphs /> </div>},
+            { to: '/search-shared-graph', name: 'Shared Graphs', component: <div className='graphsCard'> <SearchSharedGraphs /></div> },
+            { to: '/search-people', name: 'People', component:<div className='graphsCard'><SearchPeople /></div> },
+            { to: '/search-pictures', name: 'Pictures', component:<div className='graphsCard'> <SearchPictures /></div> },
+            { to: '/search-documents', name: 'Documents', component:<div className='graphsCard'><SearchDocuments /> </div>},
           ]}
         />
         <ScrollButton />

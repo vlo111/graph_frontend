@@ -8,13 +8,13 @@ import SearchDocuments from './SearchDocuments';
 class SearchResult extends Component {
   render() {
     return (
-      <>
+      <div className='graphsCard'>
         <SearchGraphs setLimit />
         <SearchSharedGraphs setLimit />
         <SearchUsers setLimit />
         <SearchPictures setLimit />
         <SearchDocuments setLimit />
-      </>
+      </div>
     );
   }
 }

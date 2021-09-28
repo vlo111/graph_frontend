@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import AddFriend from './addFriend';
 import { getUsersByTextRequest } from '../../store/actions/account';
 import { myFriendsRequest } from '../../store/actions/userFriends';
+import NotFound from '../../assets/images/NotFound.png';
 
 class SearchUsers extends Component {
   static propTypes = {
@@ -34,26 +35,25 @@ class SearchUsers extends Component {
     this.searchUsers(searchParam);
 
     return (
-      <div className="searchData">
+      <>
         {userSearch && userSearch.length ? (
-          <div className="searchData__wrapper">
-            <h3>{`${userSearch.length > 1 ? 'People' : 'Person'}`}</h3>
+          <>
             {userSearch.slice(0, 5).map((user) => (
-              <article key={user.id} className="searchData__graph">
-                <div className="searchData__graphInfo">
+              <article key={user.id} className="graphs">
+                <div className="searchData__graphUsers">
+                  <Link to={`/profile/${user.id}`}>
+                    <span className='author'>{`${user.firstName} ${user.lastName}`}</span>
+                  </Link>
+                  <div>
+                    <AddFriend user={user} />
+                  </div>
+                </div>
+                <div className='searchData__graphUsers_img'>
                   <img
-                    className="avatar"
+                    className="avatar UserImage"
                     src={user.avatar}
                     alt={user.firstName}
                   />
-                  <div className="searchData__graphInfo-details">
-                    <Link to={`/profile/${user.id}`}>
-                      {`${user.firstName} ${user.lastName}`}
-                    </Link> 
-                  </div>
-                </div>
-                <div>
-                  <AddFriend user={user} />
                 </div>
               </article>
             ))}
@@ -61,9 +61,12 @@ class SearchUsers extends Component {
               setLimit && userSearch.length > 5
               && <div className="viewAll"><Link to={`search-people?s=${searchParam}`}>View all</Link></div>
             }
-          </div>
-        ) : ((!setLimit && <h3>No User Found</h3>) || null)}
-      </div>
+          </>
+        ) : ((!setLimit && <div className='not_found'>
+          <img src={NotFound} />
+          <h3>Not Found</h3>
+        </div>) || null)}
+      </>
     );
   }
 }
