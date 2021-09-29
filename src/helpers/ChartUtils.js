@@ -950,7 +950,7 @@ class ChartUtils {
     return [d.x || d.fx, d.y || d.fy, false];
   }
 
-  static margeGraphs = (graph1, graph2, selectedNodes1, selectedNodes2) => {
+  static margeGraphs = (graph1, graph2, selectedNodes1, selectedNodes2, keepLabels = true) => {
     graph1.nodes = [...graph1.nodes];
     graph2.nodes = [...graph2.nodes];
 
@@ -1041,9 +1041,15 @@ class ChartUtils {
     //   }
     // }
 
-    return {
-      labels, nodes, links,
-    };
+    if (keepLabels) {
+      return {
+        labels, nodes, links,
+      };
+    } else {
+      return {
+        nodes, links,
+      };
+    }
   }
 
   static objectAndProto(d) {

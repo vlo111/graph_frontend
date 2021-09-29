@@ -371,16 +371,19 @@ class AutoSave extends Component {
 
   handleUnload = (ev) => {
     ev.preventDefault();
-    this.updateThumbnail();
+    const { nodesCount, defaultImage } = this.props
+    if (nodesCount < 500 || !defaultImage) {
+      this.updateThumbnail();
+    }
     ev.returnValue = 'Changes you made may not be saved.';
   }
 
   handleRouteChange = (newLocation) => {
+    const { nodesCount, location, defaultImage } = this.props
     if (Chart.isLoading()) {
       return
     }
-    const { location } = this.props;
-    if (location.pathname !== newLocation.pathname) {
+    if (location.pathname !== newLocation.pathname && nodesCount < 500 && !defaultImage) {
       Chart.loading(true)
       this.updateThumbnail();
     }
