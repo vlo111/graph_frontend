@@ -26,6 +26,8 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
   const notification = false;
 
   async function deleteGraph(graphId) {
+    //select data from localStorage
+    const order = JSON.parse(localStorage.getItem('/')) || 'newest';
     try {
       if (graphId) {
         await dispatch(deleteGraphRequest(graph.id));
@@ -36,7 +38,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
         await dispatch(deleteGraphRequest(graph.id));
         // use selector
         toast.info('Successfully deleted');
-        await dispatch(getGraphsListRequest(page, { s: searchParam }));
+          await dispatch(getGraphsListRequest(page, { s: searchParam, filter: order }));
 
         history.push('/');
       }
