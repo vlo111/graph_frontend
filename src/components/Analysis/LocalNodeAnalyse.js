@@ -25,7 +25,7 @@ class AnalyticalPage extends Component {
         <div className="container">
           <div>
             <strong>
-              {`Node name: ${nodes.filter(p => p.id === nodeId)[0].name}`}
+              {`Node name: ${nodes.filter((p) => p.id === nodeId)[0].name}`}
             </strong>
           </div>
           <div>

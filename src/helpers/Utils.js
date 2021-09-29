@@ -29,8 +29,8 @@ class Utils {
    * @param callback
    * @param timeout
    */
-  static checkImageUrl = (url, callback, timeout) => {
-    timeout = timeout || 5000;
+  static checkImageUrl = (url, callback, timeOut) => {
+    const timeout = timeOut || 5000;
     let timedOut = false; let
       timer;
     const img = new Image();
@@ -89,7 +89,9 @@ class Utils {
     if (/^https?:\/\//.test(src) || src.toString().includes('base64,') || src.toString().startsWith('blob:')) {
       return src;
     }
-    if (!src) return;
+    if (!src) {
+      return undefined;
+    }
 
     return `${Api.url}${src}`;
   }
@@ -225,7 +227,7 @@ class Utils {
     return url;
   }
 
-  static wikiUrlByImage(name) {
+  static wikiUrlByImage() {
     let url = 'https://en.wikipedia.org/w/api.php';
 
     const params = {
@@ -263,7 +265,6 @@ class Utils {
         const id = Object.keys(result)[0];
         if (result[id].original) {
           const imgURL = result[id].original.source;
-          console.log(imgURL);
           return imgURL;
         }
       })

@@ -5,7 +5,7 @@ import { ReactComponent as UndoBackSvg } from '../assets/images/icons/undo-back.
 import Chart from '../Chart';
 import ContextMenu from './contextMenu/ContextMenu';
 import ChartUtils from '../helpers/ChartUtils';
-import { KEY_CODES } from '../data/keyCodes'
+import { KEY_CODES } from '../data/keyCodes';
 
 class Undo extends Component {
   constructor(props) {

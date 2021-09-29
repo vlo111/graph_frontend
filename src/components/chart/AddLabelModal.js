@@ -25,6 +25,7 @@ class AddLabelModal extends Component {
       errors: {},
     };
   }
+
   static defaultProps = {
     setAvtiveButton: 'create',
   }
@@ -43,14 +44,12 @@ class AddLabelModal extends Component {
   }
 
   handleLabelCrate = (ev, d) => {
-    if(Chart.isAutoPosition)
-       Chart.isAutoPosition = false;
+    if (Chart.isAutoPosition) Chart.isAutoPosition = false;
     this.setState({ show: true, labelData: { ...d } });
   }
 
   handleFolderCrate = (ev, d) => {
-    if(Chart.isAutoPosition)
-      Chart.isAutoPosition = false;
+    if (Chart.isAutoPosition) Chart.isAutoPosition = false;
 
     const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
     const labels = Chart.getLabels();

@@ -8,7 +8,7 @@ import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
 import { setActiveButton } from '../store/actions/app';
-import Filters from "../components/filters/Filters";
+import Filters from '../components/filters/Filters';
 
 class GraphEmbed extends Component {
   static propTypes = {
@@ -42,7 +42,7 @@ class GraphEmbed extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = () => ({});
 const mapDispatchToProps = {
   getSingleEmbedGraphRequest,
   setActiveButton,

@@ -80,7 +80,7 @@ class GraphSettings extends Component {
       s: search,
       limit: search === '' ? LIMIT : undefined,
       graphName: 'true',
-      graphId
+      graphId,
     });
 
     const graphList = result?.data?.graphs;
@@ -142,7 +142,9 @@ class GraphSettings extends Component {
 
   render() {
     const { singleGraph } = this.props;
-    const { showModal, showModalTemplet, search, graphList, requestData, showDropDown } = this.state;
+    const {
+      showModal, showModalTemplet, search, graphList, requestData, showDropDown,
+    } = this.state;
     const nodes = Chart.getNodes();
     const isTemplate = singleGraph.status === 'template';
     const canSave = nodes.length && requestData.title;

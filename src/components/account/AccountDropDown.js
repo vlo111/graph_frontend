@@ -31,28 +31,32 @@ class AccountDropDown extends Component {
 
   render() {
     const { showDropDown } = this.state;
-    const { mini, myAccount: { firstName, lastName, id, avatar }, match: { params: { graphId = '' } } } = this.props;
+    const {
+      mini, myAccount: {
+        firstName, lastName, id, avatar,
+      }, match: { params: { graphId = '' } },
+    } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
     return (
       <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
-          <img src={avatar} className="avatar" alt={name} />  
+          <img src={avatar} className="avatar" alt={name} />
           <DownSvg />
         </div>
-        
+
         {showDropDown ? (
           <Outside onClick={this.toggleDropDown} exclude="#accountDropDown">
             <div className="dropdown">
               <ul>
                 <li className="nameSign">
-                    {mini ? (
-                <Icon value="fa-chevron-down" className="down" />
-                 ) : (
-                <span className="name">{name}</span>
-                )}
+                  {mini ? (
+                    <Icon value="fa-chevron-down" className="down" />
+                  ) : (
+                    <span className="name">{name}</span>
+                  )}
                 </li>
                 <li className="item">
-                   <Link to={`/profile/${id}`}>Account</Link>
+                  <Link to={`/profile/${id}`}>Account</Link>
                 </li>
                 <li className="item">
                   <Link to="/sign/sign-out">Sign Out</Link>

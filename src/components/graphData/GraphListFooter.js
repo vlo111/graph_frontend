@@ -16,7 +16,7 @@ import EmbedButton from '../embed/EmbedButton';
 
 const TooltipContent = ({ graphId, graphOwner }) => (
   <Suspense fallback={<div>Loading...</div>}>
-    <ShareTooltip graphId={graphId} graphOwner={graphOwner}/>
+    <ShareTooltip graphId={graphId} graphOwner={graphOwner} />
   </Suspense>
 );
 TooltipContent.propTypes = {
@@ -51,7 +51,7 @@ const GraphListFooter = ({ graph }) => {
       </Button>
       {actionsCount?.shares
         ? (
-          <Tooltip  overlay={<TooltipContent graphId={graph.id}  graphOwner={graph.user} />} trigger={['click']}  placement={["top"]} >
+          <Tooltip overlay={<TooltipContent graphId={graph.id} graphOwner={graph.user} />} trigger={['click']} placement={['top']}>
             <Button icon={<ShareSvg />} className="transparent footer-icon">
               <span className="graphListFooter__count">{actionsCount?.shares}</span>
             </Button>

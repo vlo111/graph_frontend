@@ -38,8 +38,7 @@ const Owner = ({
               }}
               className="transparent reply"
               title="reply"
-            >
-            </Button>
+            />
           )}
           {remove && (
             <Button
@@ -49,8 +48,7 @@ const Owner = ({
               }}
               className="transparent remove"
               title="Remove"
-            > 
-            </Button>
+            />
           )}
         </>
       )}

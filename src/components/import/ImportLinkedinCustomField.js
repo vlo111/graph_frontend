@@ -17,7 +17,7 @@ class ImportLinkedinCustomField extends Component {
       <>
         {data.work.map((row) => (
           <Fragment key={row.startDate}>
-            <section className='linkedin'>
+            <section className="linkedin">
               <p className="company">
                 {row.company}
               </p>
@@ -28,7 +28,9 @@ class ImportLinkedinCustomField extends Component {
               ) : null}
               {row.date ? (
                 <p className="date">
-                  {row.date} {`${row.duration}`}
+                  {row.date}
+                  {' '}
+                  {`${row.duration}`}
                 </p>
               ) : null}
               {row.location ? (
@@ -80,10 +82,10 @@ class ImportLinkedinCustomField extends Component {
       <>
         {data.education.map((row) => (
           <Fragment key={row.name}>
-            <div className='linkedin'>
+            <div className="linkedin">
               {row.institution ? (
                 row.wikipedia ? (
-                  <a href={`https://en.wikipedia.org/wiki/${row.institution}`} target="_blank">
+                  <a href={`https://en.wikipedia.org/wiki/${row.institution}`} target="_blank" rel="noreferrer">
                     {row.institution}
                   </a>
                 ) : (
@@ -116,6 +118,7 @@ class ImportLinkedinCustomField extends Component {
       </>
     );
   }
+
   renderSkills = () => {
     const { data } = this.props;
     if (_.isEmpty(data.skills)) {
@@ -125,7 +128,7 @@ class ImportLinkedinCustomField extends Component {
       <>
         {data.skills.map((row, index) => (
           <Fragment key={row.name}>
-            <div className='linkedin'>
+            <div className="linkedin">
               <p>
                 <strong className="skills">
                   {`${index + 1}. `}
@@ -139,7 +142,6 @@ class ImportLinkedinCustomField extends Component {
     );
   }
 
-
   render() {
     const { type } = this.props;
 
@@ -150,7 +152,7 @@ class ImportLinkedinCustomField extends Component {
     if (type === 'education') {
       return this.renderEduction();
     }
-    
+
     if (type === 'skills') {
       return this.renderSkills();
     }

@@ -16,13 +16,11 @@ class Home extends Component {
     getGraphsListRequest: PropTypes.func.isRequired,
     graphsList: PropTypes.array.isRequired,
     graphsListInfo: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
   }
 
   getGraphsList = memoizeOne((page) => {
     this.props.getGraphsListRequest(page, { status: 'draft' });
   })
-
 
   render() {
     const { graphsList, graphsListInfo: { totalPages } } = this.props;

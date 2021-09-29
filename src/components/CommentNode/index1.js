@@ -13,12 +13,12 @@ import Chart from '../../Chart';
 
 import { getActionsCountRequest } from '../../store/actions/graphs';
 
-const CommentModal = React.memo(({ closeModal, graph}) => {
+const CommentModal = React.memo(({ closeModal, graph }) => {
   const { info: nodeName } = queryString.parse(window.location.search);
-  const node = Chart.getNodes().find((d) => d.name === nodeName); 
+  const node = Chart.getNodes().find((d) => d.name === nodeName);
   const afterOpenModal = () => {};
   const dispatch = useDispatch();
-  
+
   const onClose = () => {
     closeModal();
     dispatch(getActionsCountRequest(graph.id));
@@ -42,7 +42,7 @@ const CommentModal = React.memo(({ closeModal, graph}) => {
             className="transparent"
           />
         </div>
-        <CommentItems graph={graph} node={node} closeModal={closeModal}  />
+        <CommentItems graph={graph} node={node} closeModal={closeModal} />
         <AddComment
           graph={graph}
           node={node}

@@ -205,7 +205,7 @@ class ToolBar extends Component {
     this.setState({
       openHelpsModal: false,
     });
-    // if (document.getElementById("graphs-data-info").style.display == "none") 
+    // if (document.getElementById("graphs-data-info").style.display == "none")
     // {
     //   document.getElementById('graphs-data-info').style.display = 'flex';
     // }

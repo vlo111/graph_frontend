@@ -20,7 +20,7 @@ import { setActiveButton, setLoading } from '../../store/actions/app';
 import Select from '../form/Select';
 import { GRAPH_STATUS } from '../../data/graph';
 import ChartUtils from '../../helpers/ChartUtils';
-import {ReactComponent as CloseSvg} from "../../assets/images/icons/close.svg";
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class SaveAsTempletModal extends Component {
   static propTypes = {
@@ -147,7 +147,7 @@ class SaveAsTempletModal extends Component {
         <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() => this.props.toggleModal(false)} />
         <div className="form">
           <h2>
-           Save this template
+            Save this template
           </h2>
           <Input
             label="Title"
@@ -175,7 +175,7 @@ class SaveAsTempletModal extends Component {
             ) : (
               <>
                 <Button className="accent alt" onClick={() => this.saveGraph('template', true)}>
-                   Save
+                  Save
                 </Button>
 
               </>

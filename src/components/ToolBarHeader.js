@@ -51,7 +51,6 @@ class ToolBarHeader extends Component {
 
   handleClick = (button) => {
     this.props.setActiveButton(button);
-    
   }
 
   openCommentModal = (open) => {
@@ -114,20 +113,20 @@ class ToolBarHeader extends Component {
               </Link>
             </li>
             <li className="legend">
-              {updateLocation &&  <Legend /> }
+              {updateLocation && <Legend /> }
             </li>
             <li>
               { !filter && !view &&
                 <div className="graphs">
-                    <Button
-                      icon={<SearchSvg />}
-                      className={activeButton === 'search' ? 'active' : undefined}
-                      onClick={(ev) => this.handleClick('search')}
-                    >
-                      Search
-                    </Button>
+                  <Button
+                    icon={<SearchSvg />}
+                    className={activeButton === 'search' ? 'active' : undefined}
+                    onClick={(ev) => this.handleClick('search')}
+                  >
+                    Search
+                  </Button>
                 </div>
-             }
+              }
             </li>
             <li>
               {updateLocation ? (
@@ -151,22 +150,22 @@ class ToolBarHeader extends Component {
             </li>
             <li className="user">
               {updateLocation && (
-                  <div className="button-group social-button-group">
+              <div className="button-group social-button-group">
 
-                    {graphId && <ContributorsModal graphId={graphId} graphOwner={singleGraphUser} isOwner="true" />}
-                  </div>
+                {graphId && <ContributorsModal graphId={graphId} graphOwner={singleGraphUser} isOwner="true" />}
+              </div>
               )}
             </li>
             <li>
               {updateLocation && (
-                  <div className="commentHeader">
-                    <Button
-                        icon={<CommentSvg />}
-                        className="transparent footer-icon"
-                        onClick={() => this.openCommentModal(true)}
-                        title='Comments'
-                    />
-                  </div>
+              <div className="commentHeader">
+                <Button
+                  icon={<CommentSvg />}
+                  className="transparent footer-icon"
+                  onClick={() => this.openCommentModal(true)}
+                  title="Comments"
+                />
+              </div>
               )}
             </li>
             <li className="notify_container">
@@ -202,7 +201,7 @@ const mapDispatchToProps = {
   setActiveButton,
   setActiveMouseTracker,
   socketMousePositionTracker,
-  toggleSearch
+  toggleSearch,
 };
 const Container = connect(mapStateToProps, mapDispatchToProps)(ToolBarHeader);
 

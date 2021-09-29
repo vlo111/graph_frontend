@@ -81,17 +81,17 @@ class DataTableNodes extends Component {
   }
 
   handleCheckBoxChange = (isAllChecked) => {
-    let { nodes, selectedNodes } = this.props
+    let { nodes, selectedNodes } = this.props;
     if (!isAllChecked) {
-      nodes.map(node => {
+      nodes.map((node) => {
         if (!selectedNodes.includes(node.index)) {
-          selectedNodes.push(node.index)
+          selectedNodes.push(node.index);
         }
-      })
+      });
     } else {
-      selectedNodes = selectedNodes.filter(index => !nodes.some(node => node.index === index))
+      selectedNodes = selectedNodes.filter((index) => !nodes.some((node) => node.index === index));
     }
-    this.props.setGridIndexes('nodes', selectedNodes)
+    this.props.setGridIndexes('nodes', selectedNodes);
   }
 
   renderSheet = (props, className) => {
@@ -163,15 +163,15 @@ class DataTableNodes extends Component {
 
       return (
         <td className={`${position} cell index ${CHECKED && 'checked'}`}>
-            <div className="items">
-              <Checkbox
-                onChange={() => this.toggleGrid(cell.value)}
-                checked={CHECKED}
-                id={cell.value}
-              />
-              <label className="pull-left" htmlFor={cell.value} />
-            </div>
-            {/* {props.row + 1} */}
+          <div className="items">
+            <Checkbox
+              onChange={() => this.toggleGrid(cell.value)}
+              checked={CHECKED}
+              id={cell.value}
+            />
+            <label className="pull-left" htmlFor={cell.value} />
+          </div>
+          {/* {props.row + 1} */}
         </td>
       );
     }

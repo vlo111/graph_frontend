@@ -1,5 +1,5 @@
 import {
-  SIGN_IN, GET_MY_ACCOUNT, OAUTH, GET_USER_BY_TEXT, UPDATE_MY_ACCOUNT
+  SIGN_IN, GET_MY_ACCOUNT, OAUTH, GET_USER_BY_TEXT, UPDATE_MY_ACCOUNT,
 } from '../actions/account';
 import Account from '../../helpers/Account';
 

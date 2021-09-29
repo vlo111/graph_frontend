@@ -1,7 +1,6 @@
 import _ from 'lodash';
-import React from 'react';
 import Chart from '../Chart';
-import CustomFields from './CustomFields';
+// import CustomFields from './CustomFields';
 import ChartUtils from './ChartUtils';
 
 class Validate {
@@ -46,7 +45,8 @@ class Validate {
   static nodeColor(val, type) {
     const value = (val || '').trim();
     let error = null;
-    if (ChartUtils.nodeColorObj[type] !== val && Object.entries(ChartUtils.nodeColorObj).find(([t, c]) => value === c)) {
+    if (ChartUtils.nodeColorObj[type] !== val
+      && Object.entries(ChartUtils.nodeColorObj).find(([, c]) => value === c)) {
       error = 'Already exists';
     }
     return [error, value];
@@ -131,15 +131,13 @@ class Validate {
   }
 
   static customFieldType(val, node, customField) {
-    const customFields = CustomFields.getCustomField(node, Chart.getNodes());
+    // const customFields = CustomFields.getCustomField(node, Chart.getNodes());
     const value = (val || '').trim();
     let error;
     if (!value) {
       error = 'Field is required';
     } else if (customField.some((f) => f.name === val)) {
       error = 'Field already exists';
-    } else if (false) { // todo
-      error = 'You can\'t add more tabs';
     }
     return [error, value];
   }

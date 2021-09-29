@@ -1,12 +1,10 @@
-import _ from 'lodash';
-import { toast } from 'react-toastify';
-import { 
-  NODE_HISTORY, GRAPH_HISTORY, RESET_GRAPH_HISTORY
-} from '../actions/graphsHistory'; 
+import {
+  NODE_HISTORY, GRAPH_HISTORY, RESET_GRAPH_HISTORY,
+} from '../actions/graphsHistory';
 
-const initialState = { 
-  singleNodeHistory: [], 
-  singleGraphHistory: [], 
+const initialState = {
+  singleNodeHistory: [],
+  singleGraphHistory: [],
   nodePositionCount: null,
   nodeTabsViewCount: null,
 };
@@ -23,10 +21,9 @@ export default function reducer(state = initialState, action) {
     }
     case NODE_HISTORY.SUCCESS: {
       const { singleNodeHistory } = action.payload.data;
-     // state.graphsHistory.singleNodeHistory = singleNodeHistory;
-      console.log(singleNodeHistory, 'action.payload.data');
+      // state.graphsHistory.singleNodeHistory = singleNodeHistory;
       return {
-        ...state, 
+        ...state,
         singleNodeHistory: singleNodeHistory.data,
         nodePositionCount: singleNodeHistory?.countPositions,
         nodeTabsViewCount: singleNodeHistory?.countTabsView,
@@ -34,23 +31,22 @@ export default function reducer(state = initialState, action) {
     }
     case GRAPH_HISTORY.REQUEST: {
       return {
-        ...state, 
-        singleGraphHistory: [], 
+        ...state,
+        singleGraphHistory: [],
       };
     }
     case GRAPH_HISTORY.SUCCESS: {
       const { data } = action.payload.data;
-     // state.graphsHistory.singleNodeHistory = singleNodeHistory;
-      console.log(data, 'action.payload.data');
-      return {
-        ...state, 
-        singleGraphHistory: data, 
-      };
-    }
-    case RESET_GRAPH_HISTORY: { 
+      // state.graphsHistory.singleNodeHistory = singleNodeHistory;
       return {
         ...state,
-        //singleGraphHistory: [],
+        singleGraphHistory: data,
+      };
+    }
+    case RESET_GRAPH_HISTORY: {
+      return {
+        ...state,
+        // singleGraphHistory: [],
       };
     }
     default: {

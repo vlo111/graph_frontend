@@ -15,7 +15,7 @@ export function updateGraphRequest(id, requestData) {
 
 export const DELETE_SHARE_GRAPH = define('DELETE_SHARE_GRAPH');
 
-export function deleteGraphRequest(id, requestData) {  
+export function deleteGraphRequest(id, requestData) {
   return DELETE_SHARE_GRAPH.request(() => Api.deleteShareGraph(id, requestData));
 }
 

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import SearchModal from "./SearchModal";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import Chart from "../../Chart";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import SearchModal from './SearchModal';
+import Chart from '../../Chart';
 
-const  { REACT_APP_MAX_NODE_AND_LINK } = process.env
+const { REACT_APP_MAX_NODE_AND_LINK } = process.env;
 
 class Search extends Component {
   static propTypes = {
@@ -18,14 +18,31 @@ class Search extends Component {
 
   render() {
     const {
-      history: {location: {pathname}}
+      showSearch,
+      exploreMode,
+      graphInfo,
+      match: {
+        params: { graphId },
+      },
+      history: { location: { pathname } },
     } = this.props;
-    const nodes = Chart.getNodes()
+    const nodes = Chart.getNodes();
 
-    if(!pathname.startsWith('/graphs/view/')) {
-      return <></>
+    if (!pathname.startsWith('/graphs/view/')) {
+      return <></>;
     }
-    return <SearchModal history={this.props.history} />;
+
+    if (graphId && Object.keys(graphInfo)?.length && (
+      showSearch
+      || (graphInfo?.totalNodes + graphInfo?.totalLinks > REACT_APP_MAX_NODE_AND_LINK
+        && !nodes?.length && !exploreMode)
+    )) {
+      if (!exploreMode) {
+        Chart.render({ nodes: [], links: [], labels: [] }, { ignoreAutoSave: true });
+      }
+      return <SearchModal history={this.props.history} />;
+    }
+    return <></>;
   }
 }
 

@@ -8,18 +8,20 @@ import { getUsersByTextRequest } from '../../../store/actions/account';
 import { updateShareGraphStatusRequest, graphUsersRequest } from '../../../store/actions/shareGraphs';
 import Button from '../../form/Button';
 
-const Search = ({ select, setSelect, user, singleGraph,  closeModal }) => {
+const Search = ({
+  select, setSelect, user, singleGraph, closeModal,
+}) => {
   const dispatch = useDispatch();
   const options = useSelector((state) => state.account.userSearch);
   let graph = useSelector((state) => state.graphs.singleGraph);
   const [isLoading, setIsLoading] = useState(false);
   const refTypeahead = useRef();
-  
-  graph = !isEmpty(graph) ? graph : singleGraph; 
 
-  const handleSearch = async (query) => { 
+  graph = !isEmpty(graph) ? graph : singleGraph;
+
+  const handleSearch = async (query) => {
     setIsLoading(true);
-    await dispatch(getUsersByTextRequest(query)); 
+    await dispatch(getUsersByTextRequest(query));
     setIsLoading(false);
   };
 
@@ -28,7 +30,7 @@ const Search = ({ select, setSelect, user, singleGraph,  closeModal }) => {
     // reload list user
     await dispatch(graphUsersRequest({ graphId: graph.id }));
     closeModal();
-  }
+  };
 
   return (
     <div className="share-modal__search-user">
@@ -36,14 +38,14 @@ const Search = ({ select, setSelect, user, singleGraph,  closeModal }) => {
         id="search-user"
         className="ghInput share-modal__search"
         isLoading={isLoading}
-        labelKey={option =>`${option.firstName} ${option.lastName} ${option.email}`}
+        labelKey={(option) => `${option.firstName} ${option.lastName} ${option.email}`}
         minLength={3}
         onSearch={handleSearch}
         options={options}
         placeholder="Search user..."
         ref={refTypeahead}
         onChange={(selected) => selected && refTypeahead.current.clear()}
-        renderMenuItemChildren={(option, props) => <SearchData user={user} singleGraph = {graph} option={option} select={select} setSelect={setSelect} />}
+        renderMenuItemChildren={(option, props) => <SearchData user={user} singleGraph={graph} option={option} select={select} setSelect={setSelect} />}
       />
       <Button className="accent alt" onClick={() => changeStatus()}> Save </Button>
     </div>

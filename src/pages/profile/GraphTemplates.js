@@ -9,21 +9,15 @@ import { getGraphsListRequest } from '../../store/actions/graphs';
 import Pagination from '../../components/Pagination';
 import GraphCardItem from '../../components/graphData/GraphCardItem';
 import GraphListItem from '../../components/graphData/GraphListItem';
-
 import NoGraph from '../../components/NoGraph';
 
 class Home extends Component {
   static propTypes = {
     getGraphsListRequest: PropTypes.func.isRequired,
     graphsList: PropTypes.array.isRequired,
-    graphsCard: PropTypes.array.isRequired,
     graphsListInfo: PropTypes.object.isRequired,
     graphsListStatus: PropTypes.string.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = { dataGrid: false };
+    mode: PropTypes.string.isRequired,
   }
 
   getGraphsList = memoizeOne((page = 1, s) => {
@@ -33,15 +27,10 @@ class Home extends Component {
 
     this.props.getGraphsListRequest(page, { s, filter: order, status });
   })
-  
-  handleClick = (list) => {
-    this.setState({ dataGrid: list });
-  }
 
   render() {
-    const { dataGrid } = this.state;
     const {
-      graphsList, graphsListStatus, graphsListInfo: { totalPages }, headerTools, mode,
+      graphsList, graphsListStatus, graphsListInfo: { totalPages }, mode,
     } = this.props;
     const { page = 1, s } = queryString.parse(window.location.search);
     this.getGraphsList(page, s);

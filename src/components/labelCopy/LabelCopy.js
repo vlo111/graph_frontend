@@ -10,7 +10,7 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import LabelCompare from './LabelCompare';
 import CustomFields from '../../helpers/CustomFields';
-import { removeNodeCustomFieldKey } from '../../store/actions/graphs';
+import { removeNodeCustomFieldKey, getSingleGraphRequest } from '../../store/actions/graphs';
 import ChartUtils from '../../helpers/ChartUtils';
 import { copyDocumentForGraphRequest } from '../../store/actions/document';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
@@ -22,7 +22,6 @@ import { ReactComponent as SkipNodesSvg } from '../../assets/images/icons/Skip_t
 import { createNodesRequest, deleteNodesRequest, updateNodesRequest } from '../../store/actions/nodes';
 import { createLinksRequest } from '../../store/actions/links';
 import { createLabelsRequest } from '../../store/actions/labels';
-import { getSingleGraphRequest } from '../../store/actions/graphs';
 import Api from '../../Api';
 
 class LabelCopy extends Component {
@@ -65,9 +64,7 @@ class LabelCopy extends Component {
   }
 
   handleLabelAppend = async (ev, params) => {
-
-    if(Chart.isAutoPosition)
-       Chart.isAutoPosition = false;
+    if (Chart.isAutoPosition) Chart.isAutoPosition = false;
 
     const { x, y } = params;
     const { singleGraph } = this.props;
@@ -214,7 +211,7 @@ class LabelCopy extends Component {
       Chart.loading(false);
       return;
     }
-    await this.props.getSingleGraphRequest(id)
+    await this.props.getSingleGraphRequest(id);
     Chart.loading(false);
   }
 
@@ -222,7 +219,7 @@ class LabelCopy extends Component {
     const { x, y } = params;
     const { sourceId } = LabelUtils.getData();
     const position = [x, y];
-    await this.setState({ position })
+    await this.setState({ position });
     this.copyDocument('embed', sourceId);
   }
 
@@ -325,7 +322,7 @@ const mapDispatchToProps = {
   deleteNodesRequest,
   createLinksRequest,
   createLabelsRequest,
-  getSingleGraphRequest
+  getSingleGraphRequest,
 };
 const Container = connect(
   mapStateToProps,

@@ -49,7 +49,7 @@ class GraphCardItem extends Component {
   }
 
   render() {
-    let { headerTools, graphsList } = this.props;
+    const { headerTools, graphsList } = this.props;
     const graphs = graphsList;
 
     if (!graphsList?.length) return null;

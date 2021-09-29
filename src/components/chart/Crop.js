@@ -6,7 +6,7 @@ import ContextMenu from '../contextMenu/ContextMenu';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton, setGridIndexes } from '../../store/actions/app';
-import ChartUtils from "../../helpers/ChartUtils";
+import ChartUtils from '../../helpers/ChartUtils';
 
 class Crop extends Component {
   static propTypes = {
@@ -30,7 +30,6 @@ class Crop extends Component {
   componentDidMount() {
     ContextMenu.event.on('crop', this.enableCrop);
   }
-
 
   handleCropChange = (crop) => {
     this.setState({ crop });
