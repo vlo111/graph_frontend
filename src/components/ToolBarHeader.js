@@ -51,11 +51,11 @@ class ToolBarHeader extends Component {
   }
 
   handleClick = (button) => {
-    const { match: { params: { graphId }}, location: { pathname} } = this.props;
+    const { match: { params: { graphId } }, location: { pathname } } = this.props;
     this.props.setActiveButton(button);
-    
+
     if (button === 'search') {
-      this.props.toggleSearch(true)
+      this.props.toggleSearch(true);
       if (!pathname.startsWith('/graphs/view')) {
         this.props.history.replace(`/graphs/view/${graphId}`);
       }
@@ -109,7 +109,7 @@ class ToolBarHeader extends Component {
     this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId);
 
     const updateLocation = pathname.startsWith('/graphs/update/');
-    const filter = pathname.startsWith('/graphs/filter/'); 
+    const filter = pathname.startsWith('/graphs/filter/');
     return (
       <>
         <header id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
@@ -121,20 +121,21 @@ class ToolBarHeader extends Component {
               </Link>
             </li>
             <li className="legend">
-              {updateLocation &&  <Legend /> }
+              {updateLocation && <Legend /> }
             </li>
             <li>
-              { !filter && 
+              { !filter
+                && (
                 <div className="graphs">
-                    <Button
-                      icon={<SearchSvg />}
-                      className={activeButton === 'search' ? 'active' : undefined}
-                      onClick={(ev) => this.handleClick('search')}
-                    >
-                      Search
-                    </Button>
+                  <Button
+                    icon={<SearchSvg />}
+                    className={activeButton === 'search' ? 'active' : undefined}
+                    onClick={(ev) => this.handleClick('search')}
+                  >
+                    Search
+                  </Button>
                 </div>
-             }
+                )}
             </li>
             <li>
               {updateLocation ? (
@@ -158,22 +159,22 @@ class ToolBarHeader extends Component {
             </li>
             <li className="user">
               {updateLocation && (
-                  <div className="button-group social-button-group">
+              <div className="button-group social-button-group">
 
-                    {graphId && <ContributorsModal graphId={graphId} graphOwner={singleGraphUser} isOwner="true" />}
-                  </div>
+                {graphId && <ContributorsModal graphId={graphId} graphOwner={singleGraphUser} isOwner="true" />}
+              </div>
               )}
             </li>
             <li>
               {updateLocation && (
-                  <div className="commentHeader">
-                    <Button
-                        icon={<CommentSvg />}
-                        className="transparent footer-icon"
-                        onClick={() => this.openCommentModal(true)}
-                        title='Comments'
-                    />
-                  </div>
+              <div className="commentHeader">
+                <Button
+                  icon={<CommentSvg />}
+                  className="transparent footer-icon"
+                  onClick={() => this.openCommentModal(true)}
+                  title="Comments"
+                />
+              </div>
               )}
             </li>
             <li className="notify_container">
@@ -210,7 +211,7 @@ const mapDispatchToProps = {
   getSingleGraphRequest,
   setActiveMouseTracker,
   socketMousePositionTracker,
-  toggleSearch
+  toggleSearch,
 };
 const Container = connect(mapStateToProps, mapDispatchToProps)(ToolBarHeader);
 

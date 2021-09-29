@@ -10,13 +10,13 @@ import { getShareGraphListRequest } from '../store/actions/share';
 import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
 
-
 class Shared extends Component {
   static propTypes = {
     shareGraphsList: PropTypes.array.isRequired,
     shareGraphsListStatus: PropTypes.string.isRequired,
     getShareGraphListRequest: PropTypes.func.isRequired,
     shareGraphsListInfo: PropTypes.object.isRequired,
+    mode: PropTypes.string.isRequired,
   }
 
   componentDidMount() {
@@ -33,10 +33,14 @@ class Shared extends Component {
     } = this.props;
     return (
       <>
-        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!shareGraphsList.length ? 'empty' : ''}`}>
+        <div
+          className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!shareGraphsList.length ? 'empty' : ''}`}
+        >
           {shareGraphsListStatus !== 'request' && _.isEmpty(shareGraphsList) ? (
             <NoGraph />
-          ) : mode === 'list' ? <GraphListItem graphs={shareGraphsList} headerTools="shared" /> : <GraphCardItem graphs={shareGraphsList} headerTools="shared" />}
+          ) : mode === 'list'
+            ? <GraphListItem graphs={shareGraphsList} headerTools="shared" />
+            : <GraphCardItem graphs={shareGraphsList} headerTools="shared" />}
         </div>
         {shareGraphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>

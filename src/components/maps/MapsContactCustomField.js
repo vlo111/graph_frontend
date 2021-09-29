@@ -45,7 +45,7 @@ class MapsContactCustomField extends Component {
           <br />
           {wikiData}
           <br />
-          <a href={`https://en.wikipedia.org/wiki/${data.name}`} target="_blank">
+          <a href={`https://en.wikipedia.org/wiki/${data.name}`} target="_blank" rel="noreferrer">
             {`https://en.wikipedia.org/wiki/${data.name}`}
           </a>
         </div>

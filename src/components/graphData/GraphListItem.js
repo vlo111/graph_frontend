@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import GraphListFooter from './GraphListFooter';
 import GraphDashboardSubMnus from './GraphListHeader';
 import Tooltip from 'rc-tooltip';
+import GraphListFooter from './GraphListFooter';
+import GraphDashboardSubMnus from './GraphListHeader';
 
 class GraphListItem extends Component {
   static propTypes = {
@@ -77,7 +79,7 @@ class GraphListItem extends Component {
 
 const mapStateToProps = (state) => ({
   graphsList: state.graphs.graphsList || [],
-})
+});
 
-const Container = connect(mapStateToProps)(GraphListItem)
+const Container = connect(mapStateToProps)(GraphListItem);
 export default withRouter(Container);

@@ -9,14 +9,12 @@ import { getGraphsListRequest } from '../../store/actions/graphs';
 import Pagination from '../../components/Pagination';
 import GraphCardItem from '../../components/graphData/GraphCardItem';
 import GraphListItem from '../../components/graphData/GraphListItem';
-
 import NoGraph from '../../components/NoGraph';
 
 class Home extends Component {
   static propTypes = {
     getGraphsListRequest: PropTypes.func.isRequired,
     graphsList: PropTypes.array.isRequired,
-    graphsCard: PropTypes.array.isRequired,
     graphsListInfo: PropTypes.object.isRequired,
     graphsListStatus: PropTypes.string.isRequired,
     headerTools: PropTypes.object.isRequired,

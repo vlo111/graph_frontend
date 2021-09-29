@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import Api from '../../Api';
 
 function UserConfirmation(props) {
   const { match: { params: { token } } } = props;
 
-  const [status, setstatus] = useState('');
+  const [status, setStatus] = useState('');
 
   useEffect(async () => {
-    const { data: { status } } = await Api.confirmEmail(token);
+    const { data: { status: aipStatus } } = await Api.confirmEmail(token);
 
-    if (status === 'ok') {
-      setstatus(status);
+    if (aipStatus === 'ok') {
+      setStatus(status);
       props.history.replace('/');
     }
     // else {
@@ -25,5 +26,10 @@ function UserConfirmation(props) {
     ) : <></>
   );
 }
+
+UserConfirmation.propTypes = {
+  match: PropTypes.any.isRequired,
+  history: PropTypes.string.isRequired,
+};
 
 export default UserConfirmation;

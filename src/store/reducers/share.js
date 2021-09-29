@@ -16,7 +16,7 @@ export default function reducer(state = initialState, action) {
       };
     }
     case GET_SHARED_WITH_USERS.SUCCESS: {
-      const { users: shareWithUsers } = action.payload.data; 
+      const { users: shareWithUsers } = action.payload.data;
       return {
         ...state,
         shareWithUsers,

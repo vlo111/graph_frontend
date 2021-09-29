@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChartUtils from '../helpers/ChartUtils';
-import NodeImage from "./nodeInfo/NodeImage";
+import NodeImage from './nodeInfo/NodeImage';
 
 class NodeIcon extends Component {
   static propTypes = {
@@ -13,7 +13,7 @@ class NodeIcon extends Component {
     super(props);
     this.state = {
       error: false,
-    }
+    };
   }
 
   handleError = () => {

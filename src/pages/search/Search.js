@@ -1,4 +1,5 @@
-import React, { Component } from 'react'; 
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import VerticalTabs from '../../components/PageTabs';
 import Wrapper from '../../components/Wrapper';
 import Header from '../../components/Header';

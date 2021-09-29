@@ -44,5 +44,12 @@ module.exports = {
       depth: 3,
     }],
     'max-len': ['error', { code: 120 }],
+    'jsx-a11y/no-noninteractive-element-interactions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'react/no-unescaped-entities': 'off',
+
+    'no-nested-ternary': 'off',
+    'interactive-supports-focus': 'off',
+    'no-static-element-interactions': 'off',
   },
 };

@@ -1,42 +1,37 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import _ from "lodash";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { connect } from "react-redux";
-import { ReactComponent as LogoSvg } from "../../assets/images/araks_logo.svg";
-import {
-  forgotPasswordRequest,
-  signInRequest,
-} from "../../store/actions/account";
-import WrapperSign from "../../components/WrapperSign";
-import Input from "../../components/form/Input";
-import Button from "../../components/form/Button";
-import OAuthButtonFacebook from "../../components/account/OAuthButtonFacebook";
-import OAuthButtonGoogle from "../../components/account/OAuthButtonGoogle";
-import OAuthButtonLinkedin from "../../components/account/OAuthButtonLinkedin";
-import OAuthButtonTwitter from "../../components/account/OAuthButtonTwitter";
-import PasswordInput from "../../components/form/PasswordInput";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { ReactComponent as LogoSvg } from '../../assets/images/araks_logo.svg';
+import { forgotPasswordRequest, signInRequest } from '../../store/actions/account';
+import WrapperSign from '../../components/WrapperSign';
+import Input from '../../components/form/Input';
+import Button from '../../components/form/Button';
+import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
+import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
+import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
+import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
+import PasswordInput from '../../components/form/PasswordInput';
 
 class Login extends Component {
   static propTypes = {
     signInRequest: PropTypes.func.isRequired,
+    forgotPasswordRequest: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
       requestData: {
         email: '',
         password: '',
       },
       failedLoginAttempts: 0,
-      errors: ''
+      errors: '',
     };
   }
 
-  
   handleTextChange = (value, path) => {
     const { requestData } = this.state;
     _.set(requestData, path, value);
@@ -45,34 +40,32 @@ class Login extends Component {
 
   signIn = async (ev) => {
     ev.preventDefault();
-    const { requestData } = this.state;
+    const { requestData, failedLoginAttempts } = this.state;
+    // const { forgotPasswordRequest } = this.props;
 
-    const errorMessage = "Invalid Email or Password";
+    const errorMessage = 'Invalid Email or Password';
 
-    if(!requestData.email || !requestData.password) {
+    if (!requestData.email || !requestData.password) {
       this.setState({
         errors: errorMessage,
-      })
+      });
       return;
     }
 
-    this.setState({ loading: true });
     const { payload } = await this.props.signInRequest(requestData.email, requestData.password);
-    this.setState({ loading: true });
     const { data = {} } = payload;
     if (data.status !== 'ok') {
       this.setState({
-        failedLoginAttempts: this.state.failedLoginAttempts + 1,
-        errors: errorMessage + '',
+        failedLoginAttempts: failedLoginAttempts + 1,
+        errors: `${errorMessage}`,
       });
-     
-       
+
       if (this.state.failedLoginAttempts === 3) {
         await this.props.forgotPasswordRequest(requestData.email, `${origin}/sign/reset-password`);
-      } 
-    
+      }
     }
   }
+
   render() {
     const { requestData, failedLoginAttempts, errors } = this.state;
     return (
@@ -89,7 +82,7 @@ class Login extends Component {
               <div className="socialLogin">
                 <h4>Sign in </h4>
               </div>
-               <Input
+              <Input
                 name="email"
                 placeholder="Email address"
                 value={requestData.email}
@@ -108,19 +101,18 @@ class Login extends Component {
               </Link>
 
               {
-              
-              
+
               failedLoginAttempts >= 3 ? (
                 <p className="errorRecovery">
-                    Please check your email to recover your account
+                  Please check your email to recover your account
                 </p>
-              ) : 
-              (errors && (failedLoginAttempts <= 3) && (
+              )
+                : (errors && (failedLoginAttempts <= 3) && (
                 <p className="errorRecovery">
                     {errors}
                 </p>
-                
-              ))
+
+                ))
               }
 
               <Button
@@ -154,7 +146,7 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   signInRequest,
@@ -164,5 +156,3 @@ const mapDispatchToProps = {
 const Container = connect(mapStateToProps, mapDispatchToProps)(Login);
 
 export default Container;
-
-

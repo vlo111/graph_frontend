@@ -119,7 +119,7 @@ class File extends Component {
             />
             <div>
               {localFile ? (
-                  <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
+                <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
               ) : null}
               <label>
                 <img className="uploadImg" src={SelectImg} />

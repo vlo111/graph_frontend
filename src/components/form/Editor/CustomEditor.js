@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Utils from '../../../helpers/Utils';
 import Outside from '../../Outside';
 import MediaModal from './MediaModal';
-// import Picker from 'emoji-picker-react'; 
+// import Picker from 'emoji-picker-react';
 // import { MentionsInput, Mention } from 'react-mentions'
 
 class CustomEditor extends Component {
@@ -28,12 +28,12 @@ class CustomEditor extends Component {
     placeholder: '',
     error: '',
     height: 200,
-    toolbarButtonSize: "middle",
+    toolbarButtonSize: 'middle',
     buttons: [
-      'bold', 'italic', 'underline', 'fontsize', 'font', '|', 'file', 'video', '|',      
-      'align', 'undo', 'redo', 'brush', '|', 
-      'eraser', '|', 
-      
+      'bold', 'italic', 'underline', 'fontsize', 'font', '|', 'file', 'video', '|',
+      'align', 'undo', 'redo', 'brush', '|',
+      'eraser', '|',
+
     ],
   }
 
@@ -82,8 +82,7 @@ class CustomEditor extends Component {
       },
     };
 
-    this.editor = new Jodit(this.textarea, options); 
-
+    this.editor = new Jodit(this.textarea, options);
 
     if (ref) {
       ref(this.editor);
@@ -111,7 +110,7 @@ class CustomEditor extends Component {
   }
 
   insertFile = (popUpData) => {
-    const file = popUpData.file[0]; 
+    const file = popUpData.file[0];
 
     const { tags } = popUpData;
 
@@ -123,13 +122,11 @@ class CustomEditor extends Component {
 
       let anchor = '';
 
-      if (isImg ) {
-    
-          anchor = `<img
+      if (isImg) {
+        anchor = `<img
           class=preview-scaled
           src=${file.preview}
           download="${file.name}"/>`;
-         
       } else {
         anchor = `<a 
 href="${file.preview}"
@@ -173,7 +170,7 @@ ${popUpData.alt || file.name}
         <textarea ref={(ref) => this.textarea = ref} />
         {error ? <span className="error">{error}</span> : null}
         {showPopUp === 'file' ? (
-           <MediaModal close={this.closePopUp} insertFile={this.insertFile}/>
+          <MediaModal close={this.closePopUp} insertFile={this.insertFile} />
         ) : null}
       </div>
     );

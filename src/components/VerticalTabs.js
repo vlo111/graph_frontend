@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-
 class VerticalTabs extends Component {
   static propTypes = {
     children: PropTypes.any.isRequired,
@@ -42,9 +41,7 @@ class VerticalTabs extends Component {
     if (tab.name) {
       return (
         <div className={checkHomeTabs ? 'homePageTabs' : 'verticalTabs'} {...props}>
-          <ul className="tabsList">
-            
-          </ul>
+          <ul className="tabsList" />
           <div className="content">
             {tab?.component}
           </div>

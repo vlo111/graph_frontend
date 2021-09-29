@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import _, { divide } from 'lodash';
+import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import { withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
@@ -18,6 +18,7 @@ class Home extends Component {
     graphsList: PropTypes.array.isRequired,
     graphsListInfo: PropTypes.object.isRequired,
     graphsListStatus: PropTypes.string.isRequired,
+    mode: PropTypes.string.isRequired,
   }
 
   getGraphsList = memoizeOne((page, s) => {
@@ -49,12 +50,13 @@ class Home extends Component {
           {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
             <div className="no-graphs">
               <NoGraph />
-              <div className="startGraph" onClick={this.startGraph}>
+              <div className="startGraph" role="button" onClick={this.startGraph}>
                 <PlusSvg />
                 <h3>Create a graph</h3>
               </div>
             </div>
-          ) : mode === 'list' ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} headerTools="home" />}
+          ) : mode === 'list'
+            ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} headerTools="home" />}
         </div>
         {graphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>

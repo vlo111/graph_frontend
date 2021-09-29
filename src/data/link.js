@@ -17,7 +17,7 @@ export const LINK_COLORS = [
   '#94f7f0', '#e5f291', '#a2d2f2', '#daa4f9', '#ef8fb7', '#aefcef', '#f99fde', '#ea696b', '#f9a4b0', '#c1c8ff',
 ];
 export const LINK_DRAFT_COLORS = [
-  '#de1d26', 
+  '#de1d26',
 ];
 export const DASH_TYPES = {
   a: null,
