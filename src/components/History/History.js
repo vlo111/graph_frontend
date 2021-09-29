@@ -5,7 +5,6 @@ import memoizeOne from 'memoize-one';
 import { connect } from 'react-redux';
 import GraphHistory from './GraphHistory';
 
-
 class Histroy extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
@@ -18,14 +17,12 @@ class Histroy extends Component {
     customFields: undefined,
   }
 
-   
-
   render() {
     const {
       singleGraph, match: { params: { graphId } }, location: { pathname },
     } = this.props;
     const show = pathname.startsWith('/graphs/history/');
-     if (!graphId || !show) {
+    if (!graphId || !show) {
       return null;
     }
     return <GraphHistory graphId={graphId} />;
@@ -33,10 +30,10 @@ class Histroy extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  
+
 });
 
-const mapDispatchToProps = { 
+const mapDispatchToProps = {
 };
 
 const Container = connect(

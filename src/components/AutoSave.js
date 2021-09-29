@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Chart from '../Chart';
-import { getSingleGraphRequest, 
-  updateGraphPositionsRequest, 
-  updateGraphThumbnailRequest, 
+import {
+  getSingleGraphRequest,
+  updateGraphPositionsRequest,
+  updateGraphThumbnailRequest,
   getGraphsListRequest,
 } from '../store/actions/graphs';
 import ChartUtils from '../helpers/ChartUtils';
@@ -50,7 +51,7 @@ class AutoSave extends Component {
     toggleFolderRequest: PropTypes.func.isRequired,
 
     updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
-    
+
     getSingleGraphRequest: PropTypes.func.isRequired,
     getGraphsListRequest: PropTypes.func.isRequired,
 
@@ -79,7 +80,7 @@ class AutoSave extends Component {
 
   componentWillUnmount() {
     clearTimeout(this.thumbnailTimeout);
-    if (typeof(this.thumbnailListener) === "function") {
+    if (typeof (this.thumbnailListener) === 'function') {
       this.thumbnailListener();
     }
     window.removeEventListener('beforeunload', this.handleUnload);
@@ -108,7 +109,7 @@ class AutoSave extends Component {
       return;
     }
     if (Chart.isLoading() === true) {
-      return
+      return;
     }
     this.timeout = setTimeout(this.saveGraph, 0);
   }
@@ -189,8 +190,8 @@ class AutoSave extends Component {
     document.body.classList.remove('autoSave');
   }
 
-  saveGraph = async () => { 
-    const { match: { params: { graphId }}, deleteState  } = this.props;
+  saveGraph = async () => {
+    const { match: { params: { graphId } }, deleteState } = this.props;
     if (!graphId || Chart.isAutoPosition) {
       return;
     }
@@ -317,7 +318,7 @@ class AutoSave extends Component {
     //   promise.push(this.props.updateNodesPositionRequest(graphId, updateNodePositions));
     // }
     if (updateNodePositions.length || updateLabelPositions.length) {
-      position = false
+      position = false;
       promise.push(this.props.updateGraphPositionsRequest(graphId, updateNodePositions, updateLabelPositions));
     } else if (createNodes.length) {
       promise.push(this.props.createNodesRequest(graphId, createNodes));
@@ -353,25 +354,25 @@ class AutoSave extends Component {
     Chart.event.emit('auto-save');
 
     const res = await Promise.all(promise);
-    res.forEach( async (d) => {
+    res.forEach(async (d) => {
       if (d?.payload?.data?.status !== 'ok') {
         toast.error('Graph save error');
-      } 
+      }
       if (!_.isEmpty(d?.payload?.data?.error)) {
         toast.error('Something went wrong');
-      }  
+      }
     });
     if (res.length) {
-     position && await this.props.getSingleGraphRequest(graphId)
+      position && await this.props.getSingleGraphRequest(graphId);
     }
     document.body.classList.remove('autoSave');
-    this.props.toggleDeleteState(false); 
+    this.props.toggleDeleteState(false);
     position = true;
   }
 
   handleUnload = (ev) => {
     ev.preventDefault();
-    const { nodesCount, defaultImage } = this.props
+    const { nodesCount, defaultImage } = this.props;
     if (nodesCount < 500 || !defaultImage) {
       this.updateThumbnail();
     }
@@ -379,25 +380,25 @@ class AutoSave extends Component {
   }
 
   handleRouteChange = (newLocation) => {
-    const { nodesCount, location, defaultImage } = this.props
+    const { nodesCount, location, defaultImage } = this.props;
     if (Chart.isLoading()) {
-      return
+      return;
     }
     if (location.pathname !== newLocation.pathname && nodesCount < 500 && !defaultImage) {
-      Chart.loading(true)
+      Chart.loading(true);
       this.updateThumbnail();
     }
   }
 
-  updateThumbnail = async () => { 
-    const page = 1
-    const order = 'newest'
+  updateThumbnail = async () => {
+    const page = 1;
+    const order = 'newest';
     document.body.classList.add('autoSave');
     const svg = ChartUtils.getChartSvg();
-    const { match: { params: { graphId } } , defaultImage, nodesCount } = this.props;
+    const { match: { params: { graphId } }, defaultImage, nodesCount } = this.props;
     if (!defaultImage && graphId && nodesCount < 500) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
-      this.props.getGraphsListRequest(page, {filter: order})
+      this.props.getGraphsListRequest(page, { filter: order });
     }
     document.body.classList.remove('autoSave');
   }
@@ -410,7 +411,7 @@ class AutoSave extends Component {
 const mapStateToProps = (state) => ({
   defaultImage: state.graphs.singleGraph.defaultImage,
   deleteState: state.app.deleteState,
-  nodesCount: state.graphs.graphInfo.totalNodes
+  nodesCount: state.graphs.graphInfo.totalNodes,
 });
 
 const mapDispatchToProps = {
@@ -435,7 +436,7 @@ const mapDispatchToProps = {
   toggleFolderRequest,
   getSingleGraphRequest,
   getGraphsListRequest,
-  toggleDeleteState
+  toggleDeleteState,
 };
 
 const Container = connect(

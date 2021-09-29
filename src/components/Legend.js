@@ -31,21 +31,21 @@ class Legend extends Component {
     })
 
     render() {
-      const { showLegendButton, singleGraph: { nodesPartial, linksPartial} } = this.props;
+      const { showLegendButton, singleGraph: { nodesPartial, linksPartial } } = this.props;
 
       const nodes = this.orderData([...new Map(nodesPartial?.map((node) => [node.type, node])).values()]);
 
       const links = this.orderData([...new Map(linksPartial?.map((link) => [link.type, link])).values()]);
 
       const listNodeItems = nodes.map((node) => (
-        <li className="node-item" key={node.id} >
+        <li className="node-item" key={node.id}>
           <span className="indicator" style={{ backgroundColor: ChartUtils.nodeColor(node) }} />
           <a title={node.type} href="#">{node.type}</a>
         </li>
       ));
 
       const listLinkItems = links.map((link) => (
-        <li className="connection-item" key={link.id} >
+        <li className="connection-item" key={link.id}>
           <span className="indicator" style={{ backgroundColor: link.color }} />
           <a title={link.type} href="#">{link.type}</a>
         </li>

@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import _ from "lodash";
-import Modal from "react-modal";
-import { connect, useDispatch } from "react-redux"; 
-import { withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
-import ContextMenu from "../contextMenu/ContextMenu";
-import Select from "../form/Select";
-import { searchUsers } from "../../store/actions/profile";
+import React, { Component } from 'react';
+import _ from 'lodash';
+import Modal from 'react-modal';
+import { connect, useDispatch } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
+import ContextMenu from '../contextMenu/ContextMenu';
+import Select from '../form/Select';
+import { searchUsers } from '../../store/actions/profile';
 import {
   getSharedWithUsersRequest,
   shareGraphWithUsersRequest,
-} from "../../store/actions/share";
+} from '../../store/actions/share';
 import { updateShareGraphStatusRequest, graphUsersRequest } from '../../store/actions/shareGraphs';
 
-import ShareUserItem from "./ShareUserItem";
-import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
-import Button from "../form/Button";
-import { toast } from "react-toastify";
+import ShareUserItem from './ShareUserItem';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Button from '../form/Button';
 
 class LabelShare extends Component {
   static propTypes = {
@@ -24,7 +24,7 @@ class LabelShare extends Component {
     shareGraphWithUsersRequest: PropTypes.func.isRequired,
     getSharedWithUsersRequest: PropTypes.func.isRequired,
     searchUsers: PropTypes.func.isRequired,
-    shareWithUsers: PropTypes.array.isRequired, 
+    shareWithUsers: PropTypes.array.isRequired,
   };
 
   constructor(props) {
@@ -35,31 +35,31 @@ class LabelShare extends Component {
   }
 
   componentDidMount() {
-    ContextMenu.event.on("label.share", this.openShareModal);
+    ContextMenu.event.on('label.share', this.openShareModal);
   }
 
   componentWillUnmount() {
-    ContextMenu.event.removeListener("label.share", this.openShareModal);
+    ContextMenu.event.removeListener('label.share', this.openShareModal);
   }
 
   openShareModal = (ev, params) => {
     const {
       match: {
-        params: { graphId = "" },
+        params: { graphId = '' },
       },
     } = this.props;
     const { id: labelId } = params;
-    this.props.getSharedWithUsersRequest(graphId, "label", labelId);
+    this.props.getSharedWithUsersRequest(graphId, 'label', labelId);
     this.setState({ labelId });
   };
 
-  closeModal = async() => {
-    const {match: {params: { graphId = "" },},} = this.props; 
-    //change status
+  closeModal = async () => {
+    const { match: { params: { graphId = '' } } } = this.props;
+    // change status
     await this.props.updateShareGraphStatusRequest({ graphId });
     // reload list user
-    await this.props.graphUsersRequest({graphId });
-    this.setState({ labelId: null }); 
+    await this.props.graphUsersRequest({ graphId });
+    this.setState({ labelId: null });
   };
 
   searchUser = async (value) => {
@@ -73,13 +73,13 @@ class LabelShare extends Component {
     const { labelId } = this.state;
     const {
       match: {
-        params: { graphId = "" },
+        params: { graphId = '' },
       },
     } = this.props;
     await this.props.shareGraphWithUsersRequest({
       graphId,
       userId: value.id,
-      type: "label",
+      type: 'label',
       objectId: labelId,
     });
     this.handleUserRoleChange();
@@ -89,13 +89,14 @@ class LabelShare extends Component {
     const { labelId } = this.state;
     const {
       match: {
-        params: { graphId = "" },
+        params: { graphId = '' },
       },
     } = this.props;
-    this.props.getSharedWithUsersRequest(graphId, "label", labelId);
-  }; 
-  save = async () => {   
-    toast.info("Successfully confirmed");    
+    this.props.getSharedWithUsersRequest(graphId, 'label', labelId);
+  };
+
+  save = async () => {
+    toast.info('Successfully confirmed');
     this.closeModal();
   };
 
@@ -119,7 +120,7 @@ class LabelShare extends Component {
           label="Collaborators"
           portal
           containerClassName={`addUserField ${
-            shareWithUsers.length && " userFildSize"
+            shareWithUsers.length && ' userFildSize'
           } `}
           placeholder="Search..."
           isAsync
@@ -128,7 +129,7 @@ class LabelShare extends Component {
           onChange={this.addUser}
           loadOptions={this.searchUser}
           getOptionLabel={(d) => {
-            let label = `${d.firstName} ${d.lastName}`;
+            const label = `${d.firstName} ${d.lastName}`;
             // if (d.email) {
             //   label += `(${d.email})`;
             // }
@@ -146,8 +147,9 @@ class LabelShare extends Component {
         ))}
         {shareWithUsers.length > 0 && (
           <Button className="saveShareGraph" color="accent" onClick={this.save}>
-            {" "}
-            Save{" "}
+            {' '}
+            Save
+            {' '}
           </Button>
         )}
       </Modal>

@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
-import {toast} from 'react-toastify';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Button from '../form/Button';
 import Chart from '../../Chart';
-import {setActiveButton, setGridIndexes} from '../../store/actions/app';
+import { setActiveButton, setGridIndexes } from '../../store/actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
-import {createGraphRequest} from '../../store/actions/graphs';
+import { createGraphRequest } from '../../store/actions/graphs';
 import Api from '../../Api';
 
 class SelectSquare extends Component {
@@ -33,11 +33,11 @@ class SelectSquare extends Component {
   }
 
   createNewGraph = async () => {
-    const { singleGraph, params: { squareData }, location:{ pathname } } = this.props;
-    const viewLocation = pathname.startsWith('/graphs/view/'); 
+    const { singleGraph, params: { squareData }, location: { pathname } } = this.props;
+    const viewLocation = pathname.startsWith('/graphs/view/');
     const {
       width, height, x, y,
-    } = squareData; 
+    } = squareData;
 
     let squareLinks = Chart.getLinks();
     let squareLabels = Chart.getLabels();
@@ -48,18 +48,16 @@ class SelectSquare extends Component {
     squareLabels = squareLabels.filter((l) => squareData.labels.includes(l.id));
     squareLinks = squareLinks.filter((l) => squareData.nodes.includes(l.source) && squareData.nodes.includes(l.target));
 
-    
-      const { data: copyData } = await Api.dataCopy(singleGraph.id, {
-        width, height, x, y,
-      });
-      let  { nodes, links, labels } = copyData.data || {};
+    const { data: copyData } = await Api.dataCopy(singleGraph.id, {
+      width, height, x, y,
+    });
+    const { nodes, links, labels } = copyData.data || {};
 
-
-      const { payload: { data } } = await this.props.createGraphRequest({
-        nodes: !viewLocation ?  nodes : squareNodes,
-        links: !viewLocation ?  links : squareLinks,
-        labels: !viewLocation ?  labels : squareLabels,
-      }); 
+    const { payload: { data } } = await this.props.createGraphRequest({
+      nodes: !viewLocation ? nodes : squareNodes,
+      links: !viewLocation ? links : squareLinks,
+      labels: !viewLocation ? labels : squareLabels,
+    });
     if (data.graphId) {
       window.location.href = `/graphs/update/${data.graphId}?new=1`;
     } else {
@@ -68,7 +66,7 @@ class SelectSquare extends Component {
   }
 
   handleCopyClick = async () => {
-    const { singleGraph, params: { squareData }, location:{ pathname } } = this.props;
+    const { singleGraph, params: { squareData }, location: { pathname } } = this.props;
     const {
       width, height, x, y,
     } = squareData;
@@ -76,7 +74,7 @@ class SelectSquare extends Component {
     const { data } = await Api.dataCopy(singleGraph.id, {
       width, height, x, y,
     });
-    const viewLocation = pathname.startsWith('/graphs/view/');  
+    const viewLocation = pathname.startsWith('/graphs/view/');
     let { nodes, files, customFields } = await ChartUtils.getNodesWithFiles(this.props.customFields);
     let links = Chart.getLinks();
     let labels = Chart.getLabels();
@@ -86,11 +84,11 @@ class SelectSquare extends Component {
 
     const copyData = {
       sourceId: data.data?.sourceId,
-      type: data.data?.type, 
-      nodes: !viewLocation ?  data.data?.nodes :  nodes,
-      links: !viewLocation ?  data.data?.links :  links,
+      type: data.data?.type,
+      nodes: !viewLocation ? data.data?.nodes : nodes,
+      links: !viewLocation ? data.data?.links : links,
       labels: !viewLocation ? data.data?.labels : labels,
-      title: data.data?.title, 
+      title: data.data?.title,
     };
 
     localStorage.setItem('label.copy', JSON.stringify(copyData));

@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { setFilter } from '../../store/actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
 import Button from '../form/Button';
-import Checkbox from "../form/Checkbox";
+import Checkbox from '../form/Checkbox';
 
 class LinkTypesFilter extends Component {
   static propTypes = {

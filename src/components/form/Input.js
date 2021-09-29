@@ -45,7 +45,7 @@ class Input extends Component {
 
   handleChange = (ev) => {
     const {
-      onChangeText, onChange, limit, isNumber, value: prevValue
+      onChangeText, onChange, limit, isNumber, value: prevValue,
     } = this.props;
 
     let { value, valueNumber = +value, name } = ev.target;
@@ -53,7 +53,7 @@ class Input extends Component {
     if (isNumber) {
       if (Number.isNaN(valueNumber)) {
         return;
-      } else if (valueNumber > 50) {
+      } if (valueNumber > 50) {
         valueNumber = 50;
       }
       valueNumber = valueNumber === 0 ? prevValue : valueNumber;

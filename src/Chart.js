@@ -1,4 +1,4 @@
-﻿import * as d3 from 'd3';
+import * as d3 from 'd3';
 import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
@@ -37,7 +37,7 @@ class Chart {
 
   static isLoading = () => {
     const loading = document.querySelector('#graph .loading');
-    return loading?.classList?.contains('show') ? true : false
+    return !!loading?.classList?.contains('show');
   }
 
   // gets the passed d3 element center coordinates
@@ -716,8 +716,8 @@ class Chart {
       }
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
-        .force('center', d3.forceCenter(width / 2, height / 2)) 
-         .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -4000 : -5000)).distanceMin(50).distanceMax(500))
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -4000 : -5000)).distanceMin(50).distanceMax(500))
         .force('y', d3.forceY(0.05))
         .force('x', d3.forceX(0.05));
     }
@@ -977,8 +977,8 @@ class Chart {
       .attr('fill', ChartUtils.labelColors)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
-      .on('dblclick', (ev, d) => { 
-        if(this.activeButton === 'view'){
+      .on('dblclick', (ev, d) => {
+        if (this.activeButton === 'view') {
           toast.info('You are in preview mode');
           return;
         }
@@ -1663,7 +1663,7 @@ class Chart {
       this.svg = d3.select('#graph svg');
       this.zoom = d3.zoom()
         .on('zoom', this.handleZoom)
-        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250% 
+        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250%
       this.svg = this.svg
         .call(this.zoom)
         .on('dblclick.zoom', null)
@@ -1682,9 +1682,7 @@ class Chart {
         .data(listLink)
         .join('path')
         .attr('id', (d) => `l${d.index}`)
-        .attr('class', (d) => {
-          return d.new ? 'emphasisConnection' : ''
-        })
+        .attr('class', (d) => (d.new ? 'emphasisConnection' : ''))
         .attr('stroke-dasharray', (d) => ChartUtils.dashType(d.linkType, d.value || 1))
         .attr('stroke-linecap', (d) => ChartUtils.dashLinecap(d.linkType))
         .attr('stroke', ChartUtils.linkColor)
@@ -1703,7 +1701,7 @@ class Chart {
         .join('g')
         .attr('class', (d) => {
           const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(d);
-          return `node ${d.nodeType || 'circle'} ${!!d.new ? 'emphasisIcon' : ''} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
+          return `node ${d.nodeType || 'circle'} ${d.new ? 'emphasisIcon' : ''} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
         })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
@@ -3136,49 +3134,48 @@ class Chart {
 
   /**
    * check if given nodes are connected with the given link
-   * @param {*} fNodeId 
-   * @param {*} sNodeId 
-   * @param {*} link 
+   * @param {*} fNodeId
+   * @param {*} sNodeId
+   * @param {*} link
    * @returns bool
    */
   static ifNodesConnected(fNodeId, sNodeId, link) {
     if (link.source.startsWith('fake')) {
       if (link._source === fNodeId && link._target === sNodeId) {
-        return true
+        return true;
       }
       if (link._source === sNodeId && link._target === fNodeId) {
-        return true
+        return true;
       }
-      return false
-    } else {
-      if (link.source === fNodeId && link.target === sNodeId) {
-        return true
-      }
-      if (link.source === sNodeId && link.target === fNodeId) {
-        return true
-      }
-      return false
+      return false;
     }
+    if (link.source === fNodeId && link.target === sNodeId) {
+      return true;
+    }
+    if (link.source === sNodeId && link.target === fNodeId) {
+      return true;
+    }
+    return false;
   }
 
   /**
    * find all links between given nodes
-   * @param {*} node 
-   * @param {*} links 
+   * @param {*} node
+   * @param {*} links
    * @returns array
    */
   static getLinksBetweenNodes(nodes, chosenNodes, links) {
-    const nodeCouples = []
+    const nodeCouples = [];
     for (let j = 0; j < chosenNodes.length; j++) {
       for (let i = 0; i < nodes.length; i++) {
-          for (let linkIndex = 0; linkIndex < links?.length; linkIndex++) {
-            if (this.ifNodesConnected(chosenNodes[j].id, nodes[i].id, links[linkIndex])) {
-              nodeCouples.push(links[linkIndex])
-            }
+        for (let linkIndex = 0; linkIndex < links?.length; linkIndex++) {
+          if (this.ifNodesConnected(chosenNodes[j].id, nodes[i].id, links[linkIndex])) {
+            nodeCouples.push(links[linkIndex]);
           }
         }
       }
-    return nodeCouples
+    }
+    return nodeCouples;
   }
 
   /**
@@ -3196,7 +3193,7 @@ class Chart {
       .append('use')
       .attr('fill', ChartUtils.cursorColor(fullName))
       .attr('href', '#mouseCursor')
-      .attr('width', 25)  
+      .attr('width', 25)
       .attr('height', 25)
       .attr('x', position.x)
       .attr('y', position.y);

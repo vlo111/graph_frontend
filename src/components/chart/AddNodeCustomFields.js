@@ -9,7 +9,7 @@ import { addNodeCustomFieldKey, removeNodeCustomFieldKey } from '../../store/act
 import CustomFields from '../../helpers/CustomFields';
 import Button from '../form/Button';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import Editor from "../form/Editor";
+import Editor from '../form/Editor';
 
 class AddNodeCustomFields extends Component {
   static propTypes = {

@@ -219,7 +219,7 @@ class MediaModal extends Component {
   }
 
   showMediaOver = (id) => {
-    console.log(id)
+    console.log(id);
     // document.getElementsByClassName(`medInfo1_${id}`)[0].style.display = 'flex';
   }
 
@@ -332,7 +332,7 @@ class MediaModal extends Component {
                             <div className="mediaInfo maediaUserBloc">
                               <span className="mediaLeter">User Name:</span>
                               <span className="mediaUser">
-                                <a href={`/profile/${document.user.id}`} target='_blank'>
+                                <a href={`/profile/${document.user.id}`} target="_blank" rel="noreferrer">
                                   {`${document.user.firstName} ${document.user.lastName}`}
                                 </a>
                               </span>
@@ -369,7 +369,7 @@ class MediaModal extends Component {
                                     {`${document.tags
                                       ? `${document.tags.slice(0, size)}...`
                                       : document.tags
-                                      } `}
+                                    } `}
                                     {' '}
                                   </div>
                                 </div>
@@ -377,19 +377,19 @@ class MediaModal extends Component {
                             {document.type !== 'Image' && document.type !== 'Video' && !Utils.isImg(document.data)
                               ? (
                                 <div className="wiewDoc">
-                                  <i class="fa fa-download"></i>
+                                  <i className="fa fa-download" />
                                   <a target="_blank" href={document.data} rel="noreferrer">
                                     Download
                                   </a>
                                 </div>
                               ) : document.type === 'Image' && Utils.isImg(document.data) ? (
                                 <div className="wiewDoc viewImg">
-                                  <i class="fa fa-eye"></i>
+                                  <i className="fa fa-eye" />
                                   <a target="_blank" href={document.data} rel="noreferrer">View</a>
                                 </div>
                               ) : (
                                 <div className="wiewDoc viewImg">
-                                  <i class="fa fa-eye"></i>
+                                  <i className="fa fa-eye" />
                                   <a target="_blank" href={document.data} rel="noreferrer">View</a>
                                 </div>
                               )}
@@ -447,9 +447,8 @@ class MediaModal extends Component {
                                   <span className="typeDocument">Image</span>
                                 ) : !Utils.isImg(document.data) ? (
                                   <span className="typeDocument">Document</span>
-                                ) :
-                                  (<span className="typeDocument">Document</span>)
-                              }
+                                )
+                                  : (<span className="typeDocument">Document</span>)}
                             </div>
                           </div>
                         </span>

@@ -89,7 +89,7 @@ class Profile extends Component {
             <div className="profileSettings profileEdit">
                 <div className="row_">
                     <div className="colm-md-6">
-                        <ProfileMain userId = {myAccount.id} edit/>
+                        <ProfileMain userId = {myAccount.id} edit={true}/>
                     </div>
                     <div className="colm-md-6">
                         <form onSubmit={this.saveAccount}>

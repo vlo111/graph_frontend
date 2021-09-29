@@ -8,7 +8,7 @@ import ReactDOMServer from 'react-dom/server';
 import MapsSearch from './MapsSearch';
 import markerImg from '../../assets/images/icons/marker.svg';
 import ChartUtils from '../../helpers/ChartUtils';
-import {setActiveButton, toggleNodeModal} from '../../store/actions/app';
+import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import Utils from '../../helpers/Utils';
 import Loading from '../Loading';
 import withGoogleMap from '../../helpers/withGoogleMap';

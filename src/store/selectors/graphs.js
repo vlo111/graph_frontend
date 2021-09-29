@@ -21,7 +21,7 @@ export const getListInfo = createSelector(
   getGraph,
   (items) => items.graphsListInfo,
 );
- 
+
 export const getSingleGraphOwner = createSelector(
   getGraph,
   (items) => items.singleGraph.userId,
@@ -30,7 +30,6 @@ export const getMouseMoveTracker = createSelector(
   getGraph,
   (items) => items.mouseMoveTracker,
 );
-
 export const getGraphsCount = createSelector(
   getGraph,
   (items) => items.allGraghsCount,

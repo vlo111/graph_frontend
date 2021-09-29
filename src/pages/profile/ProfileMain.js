@@ -8,6 +8,8 @@ import { getProfile } from '../../store/selectors/profile';
 import { getUserFriendsList, friendsList } from '../../store/selectors/userFriends';
 import {  getGraphsCount } from '../../store/selectors/graphs';
 import { getId } from '../../store/selectors/account';
+import AddFriend from '../search/addFriend';
+
 
 
 import fcb_img from '../../assets/images/fcb.png';
@@ -45,13 +47,19 @@ const ProfileMain = React.memo(({ edit, userId }) => {
 
     // check user is friend or not
     let isFriend = false;
-    if (!edit && userId) {
-        for (let friend of myfriends) {
-            if (userId == friend.friendUserId && friend.status == 'accepted') {
-                isFriend = true;
-                break;
+    
+    if (userId && myfriends.length) {
+        if(currentUserId == userId) {
+            isFriend = true;
+        } else {
+            for (let friend of myfriends) {
+                if (userId == friend.friendUserId && friend.status == 'accepted') {
+                    isFriend = true;
+                    break;
+                }
             }
         }
+       
     }
 
 

@@ -37,9 +37,9 @@ class Header extends Component {
           </div>
         </div>
         <div className="notify_container">
-            <div className="notificationHeader">
-                <Notification />
-            </div>
+          <div className="notificationHeader">
+            <Notification />
+          </div>
         </div>
         <div className="signOut">
           <AccountDropDown />

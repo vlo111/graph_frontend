@@ -1,4 +1,4 @@
-﻿import React, { Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
@@ -7,7 +7,7 @@ import ChartUtils from '../../helpers/ChartUtils';
 import LabelUtils from '../../helpers/LabelUtils';
 import { setFilter } from '../../store/actions/app';
 import Button from '../form/Button';
-import Checkbox from "../form/Checkbox";
+import Checkbox from '../form/Checkbox';
 
 class LabelStatusFilter extends Component {
   static propTypes = {

@@ -1,21 +1,21 @@
 import React, {
-  useState
+  useState,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import Button from '../form/Button';
 import queryString from 'query-string';
 import Modal from 'react-modal';
+import Button from '../form/Button';
 import Input from '../form/Input';
 import { updateGraphDataRequest, getGraphsListRequest }
   from '../../store/actions/graphs';
-  import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 const UpdateGraphModal = ({ graph, closeModal }) => {
   const dispatch = useDispatch();
-  const history = useHistory()
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [graphData, setGraphData] = useState(graph);
   const { page = 1, s: searchParam } = queryString.parse(window.location.search);
@@ -24,17 +24,15 @@ const UpdateGraphModal = ({ graph, closeModal }) => {
     event.preventDefault();
     try {
       const { payload: { data } } = await dispatch(updateGraphDataRequest(graphData.id,
-        { title: graphData.title, description: graphData.description })
-      );
+        { title: graphData.title, description: graphData.description }));
       await dispatch(getGraphsListRequest(page, { s: searchParam }));
-      closeModal()
+      closeModal();
       history.push('/');
       toast.success('Successfully saved');
-
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   function validateForm() {
     return (
@@ -43,14 +41,14 @@ const UpdateGraphModal = ({ graph, closeModal }) => {
   }
   const handleChange = (path, value) => {
     setGraphData({ ...graphData, [path]: value });
-  }
+  };
   return (
     <Modal
       className="ghModal"
       overlayClassName="ghModalOverlay"
       isOpen
     >
-      <Button color="transparent" className="close" icon={<CloseSvg />}  onClick={() => closeModal()} />
+      <Button color="transparent" className="close" icon={<CloseSvg />} onClick={() => closeModal()} />
 
       <h2> Update Graph </h2>
       <Input
@@ -67,21 +65,21 @@ const UpdateGraphModal = ({ graph, closeModal }) => {
       <div className="buttons">
         <Button className="cancel transparent alt" onClick={() => closeModal()}>
           Cancel
-      </Button>
+        </Button>
         <Button
           className="accent alt"
           disabled={validateForm()}
           onClick={updateGraph}
         >
           Update
-      </Button>
+        </Button>
       </div>
     </Modal>
   );
 };
 
 UpdateGraphModal.propTypes = {
-  graph: PropTypes.object.isRequired
+  graph: PropTypes.object.isRequired,
 };
 
 export default React.memo(UpdateGraphModal);

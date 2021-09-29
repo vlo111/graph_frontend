@@ -9,7 +9,7 @@ import {
 const initialState = {
   nodeComments: [],
   nodeCommentParent: {},
-  commentCount: 0
+  commentCount: 0,
 };
 
 export default function reducer(state = initialState, action) {

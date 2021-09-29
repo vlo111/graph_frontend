@@ -154,8 +154,8 @@ class CustomFields {
       .value();
     return customFieldType;
   }
-  
-  static getOrder(customFields, type, key) { 
+
+  static getOrder(customFields, type, key) {
     if (!customFields[type]) {
       return [];
     }
@@ -164,11 +164,11 @@ class CustomFields {
         key,
         order: val.order,
       }))
-      .filter((d)=> (d.key == key)) 
-      .map((d) =>  d.order )
-      .value(); 
+      .filter((d) => (d.key == key))
+      .map((d) => d.order)
+      .value();
     return customFieldType;
-  } 
+  }
 }
 
 export default CustomFields;

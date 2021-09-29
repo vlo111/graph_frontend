@@ -22,7 +22,7 @@ import Profile from './pages/account';
 import Profilenew from './pages/accountnew';
 import GraphThumbnail from './pages/GraphThumbnail';
 import GraphCompare from './pages/GraphCompare';
-import UserConfirmation from "./pages/sign/UserConfirmation";
+import UserConfirmation from './pages/sign/UserConfirmation';
 
 const GraphEmbed = React.lazy(() => import('./pages/GraphEmbed'));
 

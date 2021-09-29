@@ -1,37 +1,39 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Modal from "react-modal";
-import moment from "moment";
-import { useHistory } from "react-router-dom";
-import { toast } from "react-toastify";
-import PropTypes from "prop-types";
-import queryString from "query-string";
-import isEmpty from "lodash/isEmpty";
-import Button from "../form/Button";
-import Chart from "../../Chart";
+import React, {
+  useEffect, useRef, useState, useCallback,
+} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Modal from 'react-modal';
+import moment from 'moment';
+import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
+import queryString from 'query-string';
+import isEmpty from 'lodash/isEmpty';
+import _, { reduceRight } from 'lodash';
+import HorizontalTimelineContent from 'react-horizontal-timeline';
+import Button from '../form/Button';
+import Chart from '../../Chart';
 import {
   getGraphHistoryRequest,
   resetGraphHistory,
   getHistoryDataRequst,
-} from "../../store/actions/graphsHistory";
+} from '../../store/actions/graphsHistory';
 import {
   getSingleGraphHistory,
   getSingleGraphHistoryData,
-} from "../../store/selectors/graphsHistory";
-import { getSingleGraph } from "../../store/selectors/graphs";
+} from '../../store/selectors/graphsHistory';
+import { getSingleGraph } from '../../store/selectors/graphs';
 import {
   createGraphRequest,
   revertGraphRequest,
-} from "../../store/actions/graphs";
-import { ReactComponent as CloseSvg } from "../../assets/images/icons/close.svg";
-import { ReactComponent as TriangleSvg } from "../../assets/images/icons/triangle.svg"; 
+} from '../../store/actions/graphs';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { ReactComponent as TriangleSvg } from '../../assets/images/icons/triangle.svg';
 // import Swiper from "react-id-swiper";
 // import "swiper/swiper.scss";
 // import "swiper/components/navigation/navigation.scss";
 // import "swiper/components/pagination/pagination.scss";
-import _, { reduceRight } from "lodash";
 // import { Chrono } from "react-chrono";
-import HorizontalTimelineContent from "react-horizontal-timeline"; 
 // import { tree } from 'd3-hierarchy';
 
 const GraphHistory = React.memo(({ graphId }) => {
@@ -43,7 +45,7 @@ const GraphHistory = React.memo(({ graphId }) => {
     previous: 0,
   });
   const [title, setTitle] = useState([]);
-   // const [swiper, setSwiper] = useState(null);
+  // const [swiper, setSwiper] = useState(null);
   // Slides current index
   const [currentIndex, updateCurrentIndex] = useState(0);
 
@@ -52,8 +54,8 @@ const GraphHistory = React.memo(({ graphId }) => {
   const swiperRef = useRef(null);
 
   const graphHistory = useSelector(getSingleGraphHistory);
-  const graphHistoryData = useSelector(getSingleGraphHistoryData); 
-  //useEffect
+  const graphHistoryData = useSelector(getSingleGraphHistoryData);
+  // useEffect
   useEffect(() => {
     dispatch(getGraphHistoryRequest(graphId));
   }, []);
@@ -63,9 +65,8 @@ const GraphHistory = React.memo(({ graphId }) => {
   }, [graphHistory.length]);
 
   useEffect(() => {
-
     Chart.loading(true);
-   // Chart.setAutoSave(false);
+    // Chart.setAutoSave(false);
 
     Chart.render(
       {
@@ -73,7 +74,7 @@ const GraphHistory = React.memo(({ graphId }) => {
         labels: graphHistoryData.labels,
         links: graphHistoryData.links,
       },
-      { ignoreAutoSave: false }
+      { ignoreAutoSave: false },
     );
     Chart.loading(false);
   }, [graphHistoryData]);
@@ -112,17 +113,17 @@ const GraphHistory = React.memo(({ graphId }) => {
   // Params definition
   const updateIndex = useCallback(
     () => updateCurrentIndex(swiperRef.current.swiper.realIndex),
-    []
+    [],
   );
   const params = {
     pagination: {
-      el: ".swiper-pagination",
-      type: "bullets",
+      el: '.swiper-pagination',
+      type: 'bullets',
       clickable: true,
     },
     navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
     },
     loop: true,
     // autoplay: true
@@ -156,22 +157,20 @@ const GraphHistory = React.memo(({ graphId }) => {
     }
   };
 
-  const getHistoryData = (items) => {console.log(items.eventId, items.id, 'itemsitemsitems');
+  const getHistoryData = (items) => {
+    console.log(items.eventId, items.id, 'itemsitemsitems');
     if (!items.id) return;
-    dispatch(getHistoryDataRequst(graphId, items.eventId, items.id ));
+    dispatch(getHistoryDataRequst(graphId, items.eventId, items.id));
   };
-   const checkUnqiueDate = (date) => {  
-     let d = moment.unix(date).format("YYYY-MM-DD")   
-       if(!title.includes(d)){  
-         
-       
-        //  setTitle(a => [...a, moment.unix(date).format("YYYY-MM-DD")]);
-          // setTitle([...title,  d]) 
-         return 1;
-      }
-      return 0 ;
-
-   }
+  const checkUnqiueDate = (date) => {
+    const d = moment.unix(date).format('YYYY-MM-DD');
+    if (!title.includes(d)) {
+      //  setTitle(a => [...a, moment.unix(date).format("YYYY-MM-DD")]);
+      // setTitle([...title,  d])
+      return 1;
+    }
+    return 0;
+  };
   // const getHistoryData = async (items) => {
   //   if (!items.id) return;
   //   Chart.loading(true);
@@ -194,7 +193,7 @@ const GraphHistory = React.memo(({ graphId }) => {
   // Revert modal
   const revert = () => {
     if (graphHistory.length - 1 === item.value) {
-      toast.info("Please select an older revision");
+      toast.info('Please select an older revision');
       return;
     }
     setOpenRevertModal(!openRevertModal);
@@ -223,7 +222,7 @@ const GraphHistory = React.memo(({ graphId }) => {
               <span>
                 {moment
                   .unix(graphHistory[item.value]?.id)
-                  .format("MMM D, YYYY, HH:mmA")}
+                  .format('MMM D, YYYY, HH:mmA')}
               </span>
             </div>
             <span>{graphHistory[item.value]?.title}</span>
@@ -238,27 +237,26 @@ const GraphHistory = React.memo(({ graphId }) => {
               index={item.value}
               fillingMotion={{ stiffness: 150, damping: 25 }}
               slidingMotion={{ stiffness: 150, damping: 25 }}
-              getLabel={function (date, index) {  
+              getLabel={function (date, index) {
                 // console.log('checkUnqiueDate(date) ', checkUnqiueDate(date),  moment.unix(date).format("YYYY-MM-DD"));
-                 let a = moment.unix(date).format("YYYY-MM-DD"); console.log(a, 'aaa');
+                const a = moment.unix(date).format('YYYY-MM-DD'); console.log(a, 'aaa');
                 //  return checkUnqiueDate(date)
- 
-                //  if(!title.includes(a)){  
-      
+
+                //  if(!title.includes(a)){
+
                 //   // setTitle(title => [...title, moment.unix(date).format("YYYY-MM-DD")]);
                 //    setTitle([...title,   moment.unix(date).format("YYYY-MM-DD")])
                 //   return 'aaaaaaaaa';
-                // }else{ 
-                 
+                // }else{
+
                 //   return '';
                 // }
-                //return checkUnqiueDate(date) ?  checkUnqiueDate(date) : null
-
+                // return checkUnqiueDate(date) ?  checkUnqiueDate(date) : null
               }}
               styles={{
-                background: "white",
-                outline: "#c0c0c0",
-                foreground: "#2E57A1",
+                background: 'white',
+                outline: '#c0c0c0',
+                foreground: '#2E57A1',
               }}
               indexClick={(index) => {
                 setItem({ ...item, value: index, previous: item.value });
@@ -268,7 +266,7 @@ const GraphHistory = React.memo(({ graphId }) => {
               values={graphHistory.map((x) => x.id)}
             />
           ) : (
-            " No history data"
+            ' No history data'
           )}
         </div>
         <div className="controls">
@@ -313,11 +311,11 @@ export default GraphHistory;
 const Revert = ({ closeModal, graphId }) => {
   const dispatch = useDispatch();
   const singleGraph = useSelector(getSingleGraph);
-  const defaultValue = "newGraph";
+  const defaultValue = 'newGraph';
   const [selectOptions, setSelectOptions] = useState(defaultValue);
   const afterOpenModal = () => {};
   const save = async () => {
-    if (selectOptions === "newGraph") {
+    if (selectOptions === 'newGraph') {
       const nodes = Chart.getNodes();
       const links = Chart.getLinks();
       const labels = Chart.getLabels();
@@ -329,17 +327,17 @@ const Revert = ({ closeModal, graphId }) => {
           nodes,
           links,
           labels,
-        })
+        }),
       );
       Chart.loading(false);
       if (data.graphId) {
         window.location.href = `/graphs/update/${data.graphId}?new=1`;
       } else {
-        toast.error("Something went wrong");
+        toast.error('Something went wrong');
       }
     }
-    if (selectOptions === "revert") {
-      const status = "active";
+    if (selectOptions === 'revert') {
+      const status = 'active';
       const nodes = Chart.getNodes();
       const links = Chart.getLinks();
       const labels = Chart.getLabels();
@@ -352,23 +350,23 @@ const Revert = ({ closeModal, graphId }) => {
           nodes,
           links,
           labels,
-        })
+        }),
       );
-     // Chart.setAutoSave(true);
+      // Chart.setAutoSave(true);
       if (data.graphId) {
         window.location.href = `/graphs/update/${data.graphId}`;
       } else {
-        toast.error("Something went wrong");
+        toast.error('Something went wrong');
       }
       Chart.loading(false);
     }
   };
-  //close modeal
+  // close modeal
   const onClose = () => {
     closeModal();
   };
 
-  //Change value
+  // Change value
   const onValueChange = (e) => {
     setSelectOptions(e.target.value);
   };
@@ -392,35 +390,37 @@ const Revert = ({ closeModal, graphId }) => {
             <input
               type="radio"
               value="newGraph"
-              checked={selectOptions === "newGraph"}
+              checked={selectOptions === 'newGraph'}
               onChange={(e) => onValueChange(e)}
             />
             <span className="info">
               Create a duplicate map from this version (non-destructive)
             </span>
-            <span class="checkmark"></span>
+            <span className="checkmark" />
           </label>
           <label className="container-label">
             Revert to this version
             <input
               type="radio"
               value="revert"
-              checked={selectOptions === "revert"}
+              checked={selectOptions === 'revert'}
               onChange={(e) => onValueChange(e)}
             />
             <span className="info">
               Undo all changes made after this version (destructive)
             </span>
-            <span class="checkmark"></span>
+            <span className="checkmark" />
           </label>
           <div className="buttons">
             <Button className="cancel transparent alt" onClick={onClose}>
-              {" "}
-              Cancel{" "}
+              {' '}
+              Cancel
+              {' '}
             </Button>
             <Button className="accent alt" onClick={save}>
-              {" "}
-              Save{" "}
+              {' '}
+              Save
+              {' '}
             </Button>
           </div>
         </div>
