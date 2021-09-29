@@ -25,11 +25,8 @@ class Home extends Component {
   
   getGraphsList = memoizeOne((page = 1, s) => {
     const status = 'template';
-
     const order = JSON.parse(localStorage.getItem(`/${status}s`));
-
     this.props.getGraphsListRequest(page, { s, filter: order, status });
-    console.log(status);
   })
   
   handleClick = (list) => {

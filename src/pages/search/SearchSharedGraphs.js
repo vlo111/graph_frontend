@@ -49,8 +49,6 @@ class SearchSharedGraphs extends Component {
     });
   }
 
-
-
   render() {
     const { setLimit, shareGraphsList } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
@@ -74,13 +72,13 @@ class SearchSharedGraphs extends Component {
                         <span className="author">{`${shGraph.graph.user.firstName} ${shGraph.graph.user.lastName}`}</span>
                       </Link>
                       <div className="info">
-                        <span>{moment(shGraph.graph.updatedAt).calendar()}</span>
+                        <span>{moment(shGraph.graph.updatedAt).format('YYYY.MM.DD HH:mm')}</span>
                         <span className="nodesCount">{` ${shGraph.graph.nodesCount} nodes `}</span>
                       </div>
                     </div>
                   </div>
                   <div className="sub-menus">
-                    <GraphDashboardSubMnus updateGraph={this.updateGraph} shGraph={shGraph} />
+                    <GraphDashboardSubMnus updateGraph={this.updateGraph} shGraph={shareGraphsList} headerTools="shared"/>
                   </div>
                 </div>
                 <div>
