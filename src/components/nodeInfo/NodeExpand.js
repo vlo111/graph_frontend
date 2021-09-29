@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { ReactComponent as TabExpandSvg } from '../../assets/images/icons/tab_expand_header.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
@@ -37,5 +38,10 @@ const NodeExpand = ({
     </Modal>
   );
 };
-
+NodeExpand.propTypes = {
+  html: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  onClose: PropTypes.string.isRequired,
+  created: PropTypes.string.isRequired,
+};
 export default NodeExpand;

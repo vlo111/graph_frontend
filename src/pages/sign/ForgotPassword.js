@@ -1,18 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import _ from "lodash";
-import { Link, Redirect } from "react-router-dom";
-import { toast } from "react-toastify";
-import { connect } from "react-redux";
-import { ReactComponent as LogoSvg } from "../../assets/images/araks_logo.svg";
-import { forgotPasswordRequest } from "../../store/actions/account";
-import WrapperSign from "../../components/WrapperSign";
-import Input from "../../components/form/Input";
-import Button from "../../components/form/Button";
-import OAuthButtonFacebook from "../../components/account/OAuthButtonFacebook";
-import OAuthButtonGoogle from "../../components/account/OAuthButtonGoogle";
-import OAuthButtonLinkedin from "../../components/account/OAuthButtonLinkedin";
-import OAuthButtonTwitter from "../../components/account/OAuthButtonTwitter"; 
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import { Link, Redirect } from 'react-router-dom';
+// import { toast } from 'react-toastify';
+import { connect } from 'react-redux';
+import { ReactComponent as LogoSvg } from '../../assets/images/araks_logo.svg';
+import { forgotPasswordRequest } from '../../store/actions/account';
+import WrapperSign from '../../components/WrapperSign';
+import Input from '../../components/form/Input';
+import Button from '../../components/form/Button';
+import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
+import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
+import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
+import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
+
 class ForgotPassword extends Component {
   static propTypes = {
     forgotPasswordRequest: PropTypes.func.isRequired,
@@ -22,13 +23,12 @@ class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
       requestData: {
-        email: "",
+        email: '',
       },
       // required: false
       errors: {
-        email: "",
+        email: '',
       },
     };
   }
@@ -43,14 +43,16 @@ class ForgotPassword extends Component {
     //     required: false
     //   })
   };
+
   handleChange = (e) => {
+    const { requestData, errors } = this.state;
     this.setState({
       errors: {
-        ...this.state.errors,
+        ...errors,
         [e.target.name]: this.validate(e.target.name, e.target.value),
       },
       requestData: {
-        ...this.state.requestData,
+        ...requestData,
         [e.target.name]: e.target.value,
       },
     });
@@ -60,49 +62,48 @@ class ForgotPassword extends Component {
     ev.preventDefault();
     const { requestData } = this.state;
     const { origin } = window.location;
-    this.setState({ loading: true });
-    const { payload } = await this.props.forgotPasswordRequest(
+    // const { payload } =
+    await this.props.forgotPasswordRequest(
       requestData.email,
-      `${origin}/sign/reset-password`
+      `${origin}/sign/reset-password`,
     );
-    this.setState({ loading: false });
-    const { data = {} } = payload;
+    // const { data = {} } = payload;
     // if (data.status !== 'ok') {
     //   // toast.dismiss(this.toast);
     //   // this.toast = toast.error('Invalid email');
     //   toast.error('?? Wow so easy!', { });
     //   return;
     // }
-    this.setState({ loading: true });
-    if (_.isEmpty(requestData.InputIvalid)) {
-      this.setState({
-        required: true,
-      });
-    }
+    // if (_.isEmpty(requestData.InputIvalid)) {
+    // this.setState({
+    //   required: true,
+    // });
+    // }
     // this.toast = toast.info('Please check your email');
   };
+
   validate = (name, value) => {
-    const { requestData } = this.state;
     switch (name) {
-      case "email":
+      case 'email':
         if (!value) {
-          return "Email is Required";
-        } else if (
+          return 'Email is Required';
+        } if (
           !value.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
         ) {
-          return "Enter a valid email address";
-        } else {
-          return "";
+          return 'Enter a valid email address';
         }
+        return '';
+
       default: {
-        return "";
+        return '';
       }
     }
   };
+
   handleSubmit = (e) => {
     const { requestData } = this.state;
     e.preventDefault();
-    let validationErrors = {};
+    const validationErrors = {};
     Object.keys(requestData).forEach((name) => {
       const error = this.validate(name, requestData[name]);
       if (error && error.length > 0) {
@@ -111,9 +112,9 @@ class ForgotPassword extends Component {
     });
     if (Object.keys(validationErrors).length > 0) {
       this.setState({ errors: validationErrors });
-      return;
     }
   };
+
   render() {
     const { token } = this.props;
     const { requestData, errors } = this.state;
@@ -145,7 +146,7 @@ class ForgotPassword extends Component {
               </div>
               <Input
                 className={`InputIvalid ${
-                  errors.email ? "border-error" : null
+                  errors.email ? 'border-error' : null
                 }`}
                 name="email"
                 type="email"

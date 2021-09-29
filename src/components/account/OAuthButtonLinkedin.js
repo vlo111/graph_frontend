@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { oAuthRequest } from '../../store/actions/account';
 import linkedinImg from '../../assets/images/icons/linkedin.png';
-import Utils from "../../helpers/Utils";
+import Utils from '../../helpers/Utils';
 
 const { REACT_APP_LINKEDIN_CLIENT_ID } = process.env;
 

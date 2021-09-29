@@ -32,7 +32,7 @@ class GraphThumbnail extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = () => ({});
 const mapDispatchToProps = {
   getSingleGraphPreviewRequest,
 };

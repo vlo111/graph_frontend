@@ -20,10 +20,9 @@ class FindPath extends Component {
       super(props);
       this.state = {
         nodes: [],
-        inComponent: [], 
+        inComponent: [],
       };
-    } 
-  
+    }
 
     closeModal = () => {
       this.props.setActiveButton('view');
@@ -34,22 +33,20 @@ class FindPath extends Component {
         this.setState({ nodes: [], search });
         return;
       }
-      // node in component 
+      // node in component
       const { start, singleGraph } = this.props;
       const { nodesPartial, linksPartial } = singleGraph;
 
       let foundNodes = ChartUtils.nodeSearch(search, 15, nodesPartial).filter((p) => p.id !== start);
-    
+
       if (nodesPartial.length && linksPartial.length) {
-        const { components } = AnalysisUtils.getComponent(nodesPartial, linksPartial); 
-        foundNodes = foundNodes.filter((d) => { 
-          return  components
-            .filter((component) => component.filter((n) => n.id === start || n.id === d.id)
-              .length > 1); 
-        }) 
-      } 
+        const { components } = AnalysisUtils.getComponent(nodesPartial, linksPartial);
+        foundNodes = foundNodes.filter((d) => components
+          .filter((component) => component.filter((n) => n.id === start || n.id === d.id)
+            .length > 1));
+      }
       this.setState({
-        nodes: foundNodes, 
+        nodes: foundNodes,
         search,
       });
     }
@@ -60,59 +57,52 @@ class FindPath extends Component {
     }
 
     showPath = (node) => {
-      const { start } = this.props;       
-      const {nodes, links} = this.shortPath(start, node.id); 
-      Chart.render({nodes, links}, { ignoreAutoSave: true, isAutoPosition: true }); 
+      const { start } = this.props;
+      const { nodes, links } = this.shortPath(start, node.id);
+      Chart.render({ nodes, links }, { ignoreAutoSave: true, isAutoPosition: true });
       this.closeModal();
-      ChartUtils.autoScaleTimeOut(); 
-      ChartUtils.autoScaleTimeOut(100); 
+      ChartUtils.autoScaleTimeOut();
+      ChartUtils.autoScaleTimeOut(100);
       ChartUtils.autoScaleTimeOut(200);
-      ChartUtils.startAutoPosition()
-    } 
+      ChartUtils.startAutoPosition();
+    }
 
-    shortPath = (start , end ) => {
-      let chartNodes = Chart.getNodes();
-      let chartLinks = Chart.getLinks(); 
-      const {singleGraph } = this.props;
-      const {nodesPartial,  linksPartial } = singleGraph;
-      if (start) { 
+    shortPath = (start, end) => {
+      const chartNodes = Chart.getNodes();
+      const chartLinks = Chart.getLinks();
+      const { singleGraph } = this.props;
+      const { nodesPartial, linksPartial } = singleGraph;
+      if (start) {
         if (nodesPartial?.length && linksPartial?.length) {
           const { listNodes, listLinks } = AnalysisUtils.getShortestPath(start, end, nodesPartial, linksPartial);
-          if(listNodes.length > 0 ) {
-
-            let newNodes = nodesPartial.filter((d) => {
-              if(listNodes.includes(d.id)) {
-                d.new = true
-                return true
-              } else {
-                d.new = false
-                return false
+          if (listNodes.length > 0) {
+            const newNodes = nodesPartial.filter((d) => {
+              if (listNodes.includes(d.id)) {
+                d.new = true;
+                return true;
               }
-            })
-            
-            let newLinks = linksPartial.filter((l) => {
+              d.new = false;
+              return false;
+            });
+
+            const newLinks = linksPartial.filter((l) => {
               if (listLinks.some((link) => (link.source === l.source || link.target === l.source)
                 && (link.source === l.target || link.target === l.target))) {
-                l.new = true
-                return true
-              } else {
-                l.new =false
-                return false
+                l.new = true;
+                return true;
               }
-            })
+              l.new = false;
+              return false;
+            });
 
-            let nodes = nodesPartial.filter((d) => ( chartNodes && chartNodes.some((n) => n.id === d.id))); 
-            let links = linksPartial.filter((l) => ( chartLinks && chartLinks.some((n) => n.id === l.id))); 
-            nodes = nodes.concat(newNodes)
-            links = links.concat(newLinks) 
+            let nodes = nodesPartial.filter((d) => (chartNodes && chartNodes.some((n) => n.id === d.id)));
+            let links = linksPartial.filter((l) => (chartLinks && chartLinks.some((n) => n.id === l.id)));
+            nodes = nodes.concat(newNodes);
+            links = links.concat(newLinks);
 
-            nodes = nodes.filter( (node, position) => {
-              return nodes.findIndex(n => n.id === node.id) === position
-            })
-            links = links.filter( (link, position) => {
-              return links.findIndex(n => n.id === link.id) === position
-            })
-            return { nodes, links}
+            nodes = nodes.filter((node, position) => nodes.findIndex((n) => n.id === node.id) === position);
+            links = links.filter((link, position) => links.findIndex((n) => n.id === link.id) === position);
+            return { nodes, links };
           }
         }
       }

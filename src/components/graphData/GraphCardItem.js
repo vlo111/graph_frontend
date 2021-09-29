@@ -49,7 +49,7 @@ class GraphCardItem extends Component {
   }
 
   render() {
-    let { headerTools, graphsList } = this.props;
+    const { headerTools, graphsList } = this.props;
     const graphs = graphsList;
 
     if (!graphsList?.length) return null;
@@ -87,18 +87,18 @@ class GraphCardItem extends Component {
               </div>
             </div>
             <div>
-             <Tooltip overlay={graph.title} placement="bottom" >
-              <h3>
-                {' '}
-                {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
-              </h3>
-             </Tooltip> 
-              <div className="descriptionGraph">
-              <Tooltip overlay={graph.description} placement="bottom" >
-                <span>
+              <Tooltip overlay={graph.title} placement="bottom">
+                <h3>
                   {' '}
-                  {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
-                </span>
+                  {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
+                </h3>
+              </Tooltip>
+              <div className="descriptionGraph">
+                <Tooltip overlay={graph.description} placement="bottom">
+                  <span>
+                    {' '}
+                    {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
+                  </span>
                 </Tooltip>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Chart from '../Chart';
-import ContextMenu from "./contextMenu/ContextMenu";
+import ContextMenu from './contextMenu/ContextMenu';
 
 class LabelTooltip extends Component {
   constructor(props) {

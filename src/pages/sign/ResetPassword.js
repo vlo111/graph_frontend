@@ -20,7 +20,6 @@ class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
       requestData: {
         password: '',
       },
@@ -38,9 +37,7 @@ class ResetPassword extends Component {
     ev.preventDefault();
     const { requestData } = this.state;
     const { token } = queryString.parse(window.location.search);
-    this.setState({ loading: true });
     const { payload } = await this.props.resetPasswordRequest(token, requestData.password);
-    this.setState({ loading: false });
     const { data = {} } = payload;
     if (data.status !== 'ok') {
       toast.dismiss(this.toast);
@@ -93,7 +90,7 @@ class ResetPassword extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   resetPasswordRequest,

@@ -93,7 +93,7 @@ class AnalyticalPage extends Component {
             </Tooltip>
           </Link>
           <div className="container">
-          <AnalysePieChart nodes={nodes} />
+            <AnalysePieChart nodes={nodes} />
             <AnalyseBarChart degreeDistribution={degreeDistribution} />
             <div className="localAnalyse">
               <div>

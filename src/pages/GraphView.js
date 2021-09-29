@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link, Prompt } from 'react-router-dom';
+import { Link, Prompt, Redirect } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
-import { Redirect } from 'react-router-dom';
 import { deleteGraphRequest, getGraphInfoRequest, getSingleGraphRequest } from '../store/actions/graphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import Chart from '../Chart';
@@ -45,7 +44,9 @@ class GraphView extends Component {
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    showSearch: PropTypes.bool.isRequired
+    getGraphInfoRequest: PropTypes.func.isRequired,
+    singleGraphStatus: PropTypes.func.isRequired,
+    activeButton: PropTypes.string.isRequired,
   }
 
   preventReload = true;
@@ -61,7 +62,7 @@ class GraphView extends Component {
   })
 
   componentWillUnmount() {
-    this.props.toggleExplore(false)
+    this.props.toggleExplore(false);
   }
 
   deleteGraph = async () => {
@@ -73,16 +74,11 @@ class GraphView extends Component {
     }
   }
 
-  shareGraph = async () => {
-    if (window.confirm('Are you sure?')) {
-      this.setState({ openShareModal: true });
-    }
-  }
-
   handleRouteChange = () => {
     Chart.nodesPath = false;
     Chart.clearLinkShortestPath();
   }
+
   getPermission = () => {
     const { singleGraphStatus } = this.props;
 
@@ -91,7 +87,7 @@ class GraphView extends Component {
 
   render() {
     const {
-      singleGraph, singleGraphStatus, graphInfo, showSearch, activeButton,
+      singleGraph, singleGraphStatus, graphInfo, activeButton,
       location: { pathname, search }, match: { params: { graphId = '' } },
     } = this.props;
     const preview = pathname.startsWith('/graphs/preview/');
@@ -202,7 +198,7 @@ class GraphView extends Component {
                 <LabelTooltip />
                 <Filters />
                 <AutoPlay />
-                <ContextMenu expand={true} />
+                <ContextMenu expand />
                 {activeButton === 'maps-view' && <MapsGraph />}
                 {activeButton.includes('findPath')
                   && (
@@ -214,7 +210,7 @@ class GraphView extends Component {
                 <Zoom />
                 <Crop />
 
-                <ToolBarFooter partOf={true} />
+                <ToolBarFooter partOf />
               </div>
             ))}
       </Wrapper>
@@ -228,7 +224,6 @@ const mapStateToProps = (state) => ({
   userGraphs: state.shareGraphs.userGraphs,
   graphInfo: state.graphs.graphInfo,
   singleGraphStatus: state.graphs.singleGraphStatus,
-  showSearch: state.app.showSearch,
 });
 const mapDispatchToProps = {
   setActiveButton,
@@ -236,7 +231,7 @@ const mapDispatchToProps = {
   deleteGraphRequest,
   userGraphRequest,
   getGraphInfoRequest,
-  toggleExplore
+  toggleExplore,
 };
 const Container = connect(
   mapStateToProps,

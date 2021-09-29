@@ -9,7 +9,7 @@ import markerImg from '../../assets/images/icons/marker.svg';
 import Button from '../form/Button';
 import ContextMenu from '../contextMenu/ContextMenu';
 import Chart from '../../Chart';
-import MapsStyle from "./MapsStyle";
+import MapsStyle from './MapsStyle';
 
 class MapsInfo extends Component {
   static propTypes = {

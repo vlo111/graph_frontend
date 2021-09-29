@@ -1,7 +1,7 @@
 const { REACT_APP_MODE } = process.env;
 const config = {
   dev: {
-    API_URL: 'test'
+    API_URL: 'test',
   },
   prod: {},
   local: {},

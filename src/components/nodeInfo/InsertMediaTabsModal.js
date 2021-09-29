@@ -7,7 +7,7 @@ import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg'
 import FileUpload from '../form/FileUpload';
 import Input from '../form/Input';
 import Select from '../form/Select';
-import Utils from "../../helpers/Utils";
+import Utils from '../../helpers/Utils';
 
 class InsertMediaTabsModal extends Component {
   static propTypes = {
@@ -41,17 +41,17 @@ class InsertMediaTabsModal extends Component {
   }
 
     insertData = () => {
-        const {files, fileData} = this.state;
+      const { files, fileData } = this.state;
 
-        const file = files[0];
+      const file = files[0];
 
-        const id = Utils.generateUUID();
+      const id = Utils.generateUUID();
 
-        file.id = id
-        fileData.id = id
+      file.id = id;
+      fileData.id = id;
 
-        this.props.insertFile(file, fileData);
-        this.props.close();
+      this.props.insertFile(file, fileData);
+      this.props.close();
     }
 
   addFile = (files) => {

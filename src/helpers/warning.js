@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { warn, error } = console;
 
 console.warn = (...args) => {

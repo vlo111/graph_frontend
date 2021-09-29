@@ -1,4 +1,4 @@
-import ChartUtils from "../helpers/ChartUtils";
+import ChartUtils from '../helpers/ChartUtils';
 
 export default function renderDefs(wrapper, linksData) {
   let directions = wrapper.select('.directions');

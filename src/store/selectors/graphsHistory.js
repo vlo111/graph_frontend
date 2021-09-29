@@ -15,15 +15,13 @@ export const getSingleNodePositionCount = createSelector(
   getGraphsHistory,
   (items) => items.nodePositionCount,
 );
- 
+
 export const getSingleNodeTabsViewCount = createSelector(
   getGraphsHistory,
   (items) => items.nodeTabsViewCount,
 );
- 
+
 export const getSingleGraphHistory = createSelector(
   getGraphsHistory,
   (items) => items.singleGraphHistory,
 );
- 
- 

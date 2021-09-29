@@ -11,5 +11,5 @@ export const KEY_CODES = {
   copy_code: 67, // key code for l
   undo_code: 90, // key code for z
   create_code: 78, // key code for n
-  search_code: 83// key code for s
+  search_code: 83, // key code for s
 };

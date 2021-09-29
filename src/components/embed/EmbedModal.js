@@ -43,7 +43,7 @@ class EmbedModal extends Component {
               onFocus={this.handleFocus}
               value={`<iframe width="1280" height="720" frameBorder="0" src="${window.location.origin}/graphs/embed/${graph.id}/${graph.token}"></iframe>`}
             />
-            <Button onClick={this.copy} className='copyEmbed'>Copy</Button>
+            <Button onClick={this.copy} className="copyEmbed">Copy</Button>
           </div>
 
         </div>

@@ -2,13 +2,12 @@ import io from 'socket.io-client';
 import Chart from '../../Chart';
 import Api from '../../Api';
 import Account from '../../helpers/Account';
-import { GET_SINGLE_GRAPH, getSingleGraphRequest, updateSingleGraph } from './graphs';
+import { getSingleGraphRequest, updateSingleGraph } from './graphs';
 import { graphUsersRequest } from './shareGraphs';
 import { addNotification } from './notifications';
 import { addMyFriends } from './userFriends';
 import Utils from '../../helpers/Utils';
 import ChartUtils from '../../helpers/ChartUtils';
-import { getSingleGraph } from '../selectors/graphs';
 import ChartUpdate from '../../helpers/ChartUpdate';
 
 let socket;
@@ -59,7 +58,7 @@ export function socketInit() {
     });
 
     socket.on('graphChange', async (data) => {
-      const { graphs: { singleGraph }, account: { myAccount } } = getState();
+      const { account: { myAccount } } = getState();
       if (+data.id === +singleGraph.id && +myAccount.id !== +data.userId) {
         Chart.setAutoSave(false);
         await dispatch(getSingleGraphRequest(data.id, {}, true));
@@ -70,7 +69,6 @@ export function socketInit() {
     });
 
     socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
-      const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
       data.id = +data.id;
       return (
         (data.id === singleGraph.id)
@@ -207,7 +205,7 @@ export function socketInit() {
 
     socket.on('online', (data) => {
       const onlineUsers = JSON.parse(data);
-      const { account: { myAccount: { id: userId } } } = getState();
+      // const { account: { myAccount: { id: userId } } } = getState();
       dispatch({
         type: ONLINE_USERS,
         payload: { onlineUsers },
@@ -222,7 +220,7 @@ export function socketInit() {
      * Call share graphs user list
      */
     socket.on('shareList', async (result) => {
-      const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
+      // const { graphs: { singleGraph }, account: { myAccount: { id: userId } } } = getState();
       const graphId = +result.graphId;
       if (graphId === +singleGraph.id) {
         await dispatch(graphUsersRequest(result));
@@ -282,7 +280,7 @@ export function socketInit() {
     });
 
     socket.on('mousemoving', (data) => {
-      const { graphs: { mouseMoveTracker, mouseTracker }, account: { myAccount: { id: userId } } } = getState();
+      const { graphs: { mouseMoveTracker } } = getState();
       const isTracker = mouseMoveTracker && mouseMoveTracker.some(
         (m) => m.userId === userId && m.tracker === true,
       );
