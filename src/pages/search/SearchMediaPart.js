@@ -44,7 +44,6 @@ class SearchMediaPart extends Component {
                 d.userName = `${d.user.firstName} ${d.user.lastName} `;
             });
         }
-        console.log(data);
         return (
             <>
                 {data && data.length ? (
