@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import NotifyMe from 'react-notification-timeline';
+import NotifyMe from 'react-notification-timeline';
 import { listNotificationsRequest, NotificationsUpdateRequest } from '../store/actions/notifications';
 import { notificationsList } from '../store/selectors/notifications';
-
 
 const NotifyLink = ({ url, children }) => (url ? <Link to={url}>{children}</Link> : <>{children}</>);
 NotifyLink.defaultProps = {
@@ -31,8 +30,6 @@ export default () => {
       item.link = `/graphs/preview/${item.graphId}`;
     }
   });
-  
-
   return (
     <NotifyMe
       data={list}
