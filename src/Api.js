@@ -127,7 +127,7 @@ class Api {
   }
 
   static getCountGraphs(id) {
-    return api.get(`/graphs/user/${id}`);
+    return api.get(`/graphs/graphDataByUser/${id}`);
   }
 
   static getGraphsList(page, requestData = {}) {

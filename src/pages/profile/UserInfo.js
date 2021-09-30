@@ -1,28 +1,21 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { getGraphsAndSharegraphsCount } from '../../store/actions/graphs';
+import { myFriendsRequest } from '../../store/actions/userFriends';
 
-import prfImg from '../../assets/images/168.png';
-import ImageUploader from '../../components/ImageUploader';
 import { getProfile } from '../../store/selectors/profile';
 import { getUserFriendsList, friendsList } from '../../store/selectors/userFriends';
 import {  getGraphsCount } from '../../store/selectors/graphs';
 import { getId } from '../../store/selectors/account';
+
 import AddFriend from '../search/addFriend';
-
-
+import ImageUploader from '../../components/ImageUploader';
 
 import fcb_img from '../../assets/images/fcb.png';
 import twit from '../../assets/images/twit.png';
 import linkdein from '../../assets/images/linkdein.png';
 import skype from '../../assets/images/skype.png';
-
-import { getGraphsAndSharegraphsCount } from '../../store/actions/graphs';
-import { myFriendsRequest } from '../../store/actions/userFriends';
-
-
-
-
 
 
 const ProfileMain = React.memo(({ edit, userId }) => {
@@ -31,16 +24,11 @@ const ProfileMain = React.memo(({ edit, userId }) => {
     //get profile
     const profile = useSelector(getProfile);
 
-
     const myfriends = useSelector(friendsList);
     const userFriendsList = edit ? myfriends : useSelector(getUserFriendsList);
     const friends = userFriendsList.filter((friend) => (friend.status == 'accepted'));
-    //get graphs
-    // const graphListsInfo = useSelector(getListInfo);
+    //graphs and share graphs
     const allGraphsCount = useSelector(getGraphsCount);
-
-
-
 
     // select current user id
     const currentUserId = useSelector(getId);
@@ -62,13 +50,15 @@ const ProfileMain = React.memo(({ edit, userId }) => {
        
     }
 
-
     useEffect(() => {
-        dispatch(getGraphsAndSharegraphsCount(userId));
+        if(isFriend) {
+            dispatch(getGraphsAndSharegraphsCount(userId));
+        }
+       
         if (!myfriends.length) {
             dispatch(myFriendsRequest());
         }
-    }, [dispatch, getGraphsAndSharegraphsCount]);
+    }, [dispatch, getGraphsAndSharegraphsCount,userId]);
 
     return (
         <>
@@ -81,7 +71,7 @@ const ProfileMain = React.memo(({ edit, userId }) => {
                                     value={profile.avatar}
                                     email={profile.email}
                                     onChange={(val) => this.edit(val || '', 'avatar')}
-                                /> : <img src={prfImg}></img>}
+                                /> : <img src={profile.avatar}></img>}
 
                             </div>
                             <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
@@ -114,7 +104,6 @@ const ProfileMain = React.memo(({ edit, userId }) => {
 
                     </div>
 
-
                     {!edit && (
                         <div className="colm-sm-6 section2" >
                             {currentUserId != userId && (
@@ -131,7 +120,6 @@ const ProfileMain = React.memo(({ edit, userId }) => {
                                         Edit Profile
                                     </a>
                                 )}
-                                {/* <div className="user_prf_color1">Edit Profile</div> */}
                             </div>
                             <div className="user_address_info email">
                                 <h1>Email address</h1>

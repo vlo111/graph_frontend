@@ -7533,7 +7533,7 @@ img.preview-scaled {
   background-color: #fff;
   position: fixed;
   width: 100%;
-  z-index: 1;
+  z-index: 6;
 
   .start-graphs {
     .buttonsWrapper {
@@ -9323,12 +9323,13 @@ div{
   background-color: #F0EFFF;
   color: #939393;
   margin: 8px 8px;
+  height: 70px;
+
 }
 .notification-info-panel .notification-message .timestamp {
-  position: absolute;
+  position: relative;
   font-size: 10px;
-  right: 25px;
-  font-weight: 600;
+  margin-left: 71%;
 }
 .avatar, .notification-message > .content > img {
   width: 40px;
@@ -9337,15 +9338,17 @@ div{
   border: 1px solid #ffffff;
 }
 .notification-message p strong:nth-child(1){
+  position: absolute;
   color: #6C6C6C;
   font-size: 16px;
   font-weight: 500;
-  white-space: break-spaces;
+  margin-left: -3px;
+  top: -20px;
     a{
       color: #6C6C6C;
       font-size: 16px;
       font-weight: 500;
-      margin-left: -3px;
+      margin-left: 3px;
     }
    
 }
@@ -9355,19 +9358,22 @@ div{
   border: 1px solid #ececec;
   border-radius: 5px;
   margin: 1px 10px;
-  li p{
+  li {
+    margin-top: -5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+   p{
     font-size: 12px;
     font-weight: 400;
     color: #939393;
-    display: inline-block;
-    width: 230px;
-    white-space: nowrap;
-    overflow: hidden !important;
-    text-overflow: ellipsis;
-    position: absolute;
-    margin-top: -43px;
-    left: 68px;
+    position: relative;
+    margin-top: -23px;
+    line-height: 12px;
+    left: 45px;
+    width: 85%;
   }
+}
 }
 .notification-info-panel {
   max-height: 500px;
@@ -9375,7 +9381,7 @@ div{
   padding: 0;
 }
 
-///error 403
+///error 403 and 404
 .errorPages{
   display:block;
   width: 100%;
@@ -9396,9 +9402,19 @@ div{
     width: 100%;
     justify-content: center;
     position: absolute;
-    margin-top: 31%;
+    top: 93%;
   }
 }
 .permissionLogo{
   padding: 30px;
 }
+.notFound{
+  background-color: E5E5E5;
+}
+.notFoundSvg{
+
+width: 100%;
+margin-top: 10%;}
+//////end 
+
+////////////////Backend mail 
