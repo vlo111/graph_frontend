@@ -1427,11 +1427,9 @@ p {
     }
 
     label {
-     
       font-size: 16px;
-    margin-bottom: 5px;
-    color: #757575;
-    width: 100%;
+      margin-bottom: 5px;
+      color: #757575;
     }
   }
 
@@ -6062,6 +6060,7 @@ img.preview-scaled {
 }
 
 
+
 .line {
   border: none;
   width: 100%;
@@ -7533,7 +7532,7 @@ img.preview-scaled {
   background-color: #fff;
   position: fixed;
   width: 100%;
-  z-index: 6;
+  z-index: 1;
 
   .start-graphs {
     .buttonsWrapper {
@@ -9196,8 +9195,6 @@ details[open] summary:after {
   // position: relative !important;
   // top: -3px !important;
 }
-
-/////////////////////////////////////////////
 .icon-container img{
   height: 35px;
   width: 35px;
@@ -9241,15 +9238,9 @@ div{
 .rc-tooltip-content{
   min-width: 200px;;
 }
-#tooltipPoupap{
-  position: relative;
-  top: 14px;
-  left: -15px;
-}
-.rc-tooltip-placement-topLeft .rc-tooltip-arrow {
-  top: 190px;
-  left: 15%;
-}
+
+
+ 
 
 
 /// notification 
@@ -9425,3 +9416,4 @@ width: 100%;
 margin-top: 10%;}
 //////end 
 
+////////////////Backend mail 
