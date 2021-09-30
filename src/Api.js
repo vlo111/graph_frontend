@@ -207,35 +207,33 @@ class Api {
     return api.post('/document/copy-documents', requestData);
   }
 
-    static createDocument(graphId, nodeId, tabName, fileData, file) {
-        return api.post(`/document/create-documents/${graphId}`,
-            this.toFormData({
-                nodeId,
-                tabName,
-                file,
-                fileData: JSON.stringify(fileData),
-            })
-        );
-    }
+  static createDocument(graphId, nodeId, tabName, fileData, file) {
+    return api.post(`/document/create-documents/${graphId}`,
+      this.toFormData({
+        nodeId,
+        tabName,
+        file,
+        fileData: JSON.stringify(fileData),
+      }));
+  }
 
-    static updateDocument(graphId, nodeId, tabName, updateFile, file) {
-        return api.post(`/document/update-documents/${graphId}`,
-            this.toFormData({
-                nodeId,
-                tabName,
-                file,
-                updateFile: JSON.stringify(updateFile),
-            })
-        );
-    }
+  static updateDocument(graphId, nodeId, tabName, updateFile, file) {
+    return api.post(`/document/update-documents/${graphId}`,
+      this.toFormData({
+        nodeId,
+        tabName,
+        file,
+        updateFile: JSON.stringify(updateFile),
+      }));
+  }
 
-    static documentPath(graphId, fileId) {
-        return api.get(`/document/get-documentPath/${graphId}/${fileId}`);
-    }
+  static documentPath(graphId, fileId) {
+    return api.get(`/document/get-documentPath/${graphId}/${fileId}`);
+  }
 
-    static createShareGraph(requestData) {
-        return api.post('/share-graphs/create', requestData);
-    }
+  static createShareGraph(requestData) {
+    return api.post('/share-graphs/create', requestData);
+  }
 
   static graphUsers(requestData) {
     return api.post('/share-graphs/graph-users', requestData);
@@ -417,11 +415,11 @@ class Api {
     }));
   }
 
-    static deleteNodes(graphId, nodes) {
-        return api.delete(`/nodes/delete/${graphId}`, {
-            data: {nodes},
-        });
-    }
+  static deleteNodes(graphId, nodes) {
+    return api.delete(`/nodes/delete/${graphId}`, {
+      data: { nodes },
+    });
+  }
 
   static createLinks(graphId, links) {
     return api.post(`/links/create/${graphId}`, { links });

@@ -168,20 +168,20 @@ class ContextMenu extends Component {
 
   render() {
     const {
-      x, y,  params, deleteDataModal, element,  
+      x, y, params, deleteDataModal, element,
     } = this.state;
     let { show } = this.state;
-    const { activeButton, location: { pathname }, } = this.props;
-    const viewLocation = pathname.startsWith('/graphs/view/'); 
+    const { activeButton, location: { pathname } } = this.props;
+    const viewLocation = pathname.startsWith('/graphs/view/');
 
     if (activeButton !== 'deleteModal') {
       if (!show) {
         return null;
       }
     }
-    if (viewLocation && show === 'node' ) {
-     show = 'expand';
-    }  
+    if (viewLocation && show === 'node') {
+      show = 'expand';
+    }
     const { match: { params: { graphId = '' } }, expand } = this.props;
     const undoCount = Chart.undoManager.undoCount();
     const showInMap = Chart.getNodes().some((d) => d?.location?.length > 0);
@@ -205,7 +205,7 @@ class ContextMenu extends Component {
           <div className={`contextmenuOverlay ${x + 360 > window.innerWidth ? 'toLeft' : ''}`} onClick={this.closeMenu}>
             <div
               className="contextmenu"
-              style={{ left: left, top: top }}
+              style={{ left, top }}
             >
               {show === 'node' ? <NodeContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'expand' ? <ExpandNodeContextMenu onClick={this.handleClick} params={params} /> : null}
@@ -215,7 +215,7 @@ class ContextMenu extends Component {
               {/* {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null} */}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
-              {['label', 'chart'].includes(show)  && !expand ? (
+              {['label', 'chart'].includes(show) && !expand ? (
                 <>
                   <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
                     Create node
@@ -261,7 +261,7 @@ class ContextMenu extends Component {
                     )}
                 </>
               ) : null}
-              {['chart'].includes(show)  && !expand ? (
+              {['chart'].includes(show) && !expand ? (
                 <>
                   {/* <div className="ghButton notClose"> */}
                   {/*  <Icon value="fa-plus-square" /> */}

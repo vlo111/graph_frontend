@@ -196,7 +196,7 @@ class AnalysisUtils {
                 // ditarkel nayev havasar koxmeri depq@
                 if (path < p.shortestPath) {
                   p.prevNode = currentNode;
-                } 
+                }
 
                 path = path <= p.shortestPath ? path : p.shortestPath;
                 p.shortestPath = path;
@@ -405,7 +405,7 @@ class AnalysisUtils {
    */
     static getCluster = (triangles, linkCount) => triangles / ((linkCount * (linkCount - 1)) / 2)
 
-  /**
+    /**
    * Get Closeness Centrality
    * In disconnected graphs
    * @param nodes

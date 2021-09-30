@@ -16,7 +16,7 @@ import EmbedButton from '../embed/EmbedButton';
 
 const TooltipContent = ({ graphId, graphOwner }) => (
   <Suspense fallback={<div>Loading...</div>}>
-    <ShareTooltip graphId={graphId} graphOwner={graphOwner}/>
+    <ShareTooltip graphId={graphId} graphOwner={graphOwner} />
   </Suspense>
 );
 TooltipContent.propTypes = {

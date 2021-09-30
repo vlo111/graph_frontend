@@ -5,7 +5,6 @@ import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import Wrapper from '../components/Wrapper';
 import { setActiveButton } from '../store/actions/app';
-import Button from '../components/form/Button';
 import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
 import { userGraphRequest } from '../store/actions/shareGraphs';
 import Api from '../Api';
@@ -14,12 +13,12 @@ import Select from '../components/form/Select';
 import GraphCompareList from '../components/graphCompare/GraphCompareList';
 import ChartUtils from '../helpers/ChartUtils';
 import CreateGraphModal from '../components/CreateGraphModal';
-import Utils from '../helpers/Utils';
 
 class GraphCompare extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
+    clearSingleGraph: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
@@ -49,7 +48,6 @@ class GraphCompare extends Component {
   }
 
   async componentDidMount() {
-    const { match: { params: { graphId, graph2Id } } } = this.props;
     this.props.setActiveButton('view');
     this.props.clearSingleGraph();
   }
@@ -85,15 +83,15 @@ class GraphCompare extends Component {
     const key = pos === 1 ? 'selectedNodes1' : 'selectedNodes2';
     const data = this.state[key];
     const i = data.findIndex((n) => n.id === d.id);
-    let graph = {}
+    let graph = {};
     if (pos === 1) {
-      graph = this.props.singleGraph
+      graph = this.props.singleGraph;
     } else {
-      graph = this.state.singleGraph2
+      graph = this.state.singleGraph2;
     }
     if (checked) {
       if (i === -1) {
-        const node = graph?.nodesPartial?.find(nd => nd.id === d.id)
+        const node = graph?.nodesPartial?.find((nd) => nd.id === d.id);
         data.push(node);
       }
     } else if (i > -1) {
@@ -106,8 +104,14 @@ class GraphCompare extends Component {
     const { singleGraph } = this.props;
     const { singleGraph2 } = this.state;
     const { selectedNodes1, selectedNodes2 } = this.state;
-    const keepLabels = false
-    const createGraphData = ChartUtils.margeGraphs(singleGraph, singleGraph2, selectedNodes1, selectedNodes2, keepLabels);
+    const keepLabels = false;
+    const createGraphData = ChartUtils.margeGraphs(
+      singleGraph,
+      singleGraph2,
+      selectedNodes1,
+      selectedNodes2,
+      keepLabels,
+    );
     this.setState({ createGraphData });
   }
 
@@ -121,16 +125,15 @@ class GraphCompare extends Component {
     } = this.props;
     this.getGraph1Request(graphId);
     this.getGraph2Request(graph2Id);
-    let { 
-      singleGraph2, selectedNodes1, selectedNodes2, createGraphData,
-    } = this.state;
+    let { selectedNodes1, selectedNodes2 } = this.state;
+    const { singleGraph2, createGraphData } = this.state;
     const graph1Nodes = _.differenceBy(singleGraph.nodes, singleGraph2.nodes, 'name');
     const graph2Nodes = _.differenceBy(singleGraph2.nodes, singleGraph.nodes, 'name');
 
     const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
 
-    selectedNodes1 = selectedNodes1.filter(node => node?.id)
-    selectedNodes2 = selectedNodes2.filter(node => node?.id)
+    selectedNodes1 = selectedNodes1.filter((node) => node?.id);
+    selectedNodes2 = selectedNodes2.filter((node) => node?.id);
     const selected = [...selectedNodes1, ...selectedNodes2];
     return (
       <Wrapper className="graph-compare" showFooter={false}>
@@ -208,7 +211,13 @@ class GraphCompare extends Component {
               selected={selected}
             />
             <div className="compareList compare-footer">
-              <button onClick={this.createGraph} className="btn-classic createNewGraphBtn" color="main" icon="fa-plus">
+              <button
+                onClick={this.createGraph}
+                className="btn-classic createNewGraphBtn"
+                color="main"
+                icon="fa-plus"
+                type="button"
+              >
                 Create New Graph
               </button>
 

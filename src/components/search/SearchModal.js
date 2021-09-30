@@ -2,33 +2,33 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
-import memoizeOne from 'memoize-one';
+// import memoizeOne from 'memoize-one';
 import _ from 'lodash';
-import queryString from 'query-string';
+// import queryString from 'query-string';
 import {
-  setActiveButton, toggleSearch, toggleGraphMap, toggleExplore,
+  toggleGraphMap, toggleExplore,
 } from '../../store/actions/app';
 import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
 import Utils from '../../helpers/Utils';
-import { setActiveTab, getAllTabsRequest, getGraphNodesRequest } from '../../store/actions/graphs';
+import { setActiveTab, getGraphNodesRequest } from '../../store/actions/graphs';
 import Chart from '../../Chart';
 
 import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
-import Button from '../form/Button';
 import Checkbox from '../form/Checkbox';
 
 const { REACT_APP_MAX_NODE_AND_LINK } = process.env;
 
 class SearchModal extends Component {
   static propTypes = {
-    getAllTabsRequest: PropTypes.func.isRequired,
-    setActiveButton: PropTypes.func.isRequired,
-    toggleSearch: PropTypes.func.isRequired,
+    // getAllTabsRequest: PropTypes.func.isRequired,
+    // setActiveButton: PropTypes.func.isRequired,
+    // toggleSearch: PropTypes.func.isRequired,
     toggleExplore: PropTypes.func.isRequired,
+    getGraphNodesRequest: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     setActiveTab: PropTypes.func.isRequired,
-    graphTabs: PropTypes.array.isRequired,
+    // graphTabs: PropTypes.array.isRequired,
     graphId: PropTypes.number.isRequired,
     singleGraph: PropTypes.object.isRequired,
     userId: PropTypes.number.isRequired,
@@ -39,7 +39,7 @@ class SearchModal extends Component {
 
   constructor(props) {
     super(props);
-    const { s } = queryString.parse(window.location.search);
+    // const { s } = queryString.parse(window.location.search);
     this.state = {
       nodes: [],
       tabs: [],
@@ -74,13 +74,13 @@ class SearchModal extends Component {
     }
   }
 
-  initTabs = memoizeOne(() => {
-    const { graphId } = this.props;
-    // this.props.getAllTabsRequest(graphId);
-  });
+  // initTabs = memoizeOne(() => {
+  // const { graphId } = this.props;
+  // this.props.getAllTabsRequest(graphId);
+  // });
 
   closeModal = () => {
-    const nodes = Chart.getNodes();
+    // const nodes = Chart.getNodes();
     // if (!nodes?.length) {
     //   this.props.toggleExplore(true);
     // }
@@ -167,11 +167,11 @@ class SearchModal extends Component {
         const tabsList = foundNodes.tabs;
         if (tabsList.length > 0) {
           const tabsContentVisibility = {};
-          tabsList.map((node) => {
+          tabsList.forEach((node) => {
             // set all tabs content visibility false
             tabsContentVisibility[`content_${node.id.replace('.', '_')}`] = false;
             if (node.customFields?.length) {
-              node.customFields.map((tab) => {
+              node.customFields.forEach((tab) => {
                 if (tab.value === undefined) {
                   return;
                 }
@@ -210,6 +210,7 @@ class SearchModal extends Component {
         }, {});
         tabArray = groupBy(tabs, 'nodeId') ?? [];
       }
+    // eslint-disable-next-line no-empty
     } catch (e) {}
     this.setState({
       nodes, tabs: tabArray, docs, keywords,
@@ -221,9 +222,7 @@ class SearchModal extends Component {
    * @param {string} text
    * @returns
    */
-  formatHtml = (text, type = undefined) => {
-    if (type === 'keywords') {
-    }
+  formatHtml = (text) => {
     const { search } = this.state;
     return text.replace(new RegExp(Utils.escRegExp(search), 'ig'), '<b>$&</b>');
   };
@@ -235,86 +234,86 @@ class SearchModal extends Component {
    * @param {object} node
    * @param {string} tabName
    */
-  openFolder = (e, label, node, tabName = false) => {
-    label.open = true;
-    Chart.event.emit('folder.open', e, label);
-    const lbs = Chart.getLabels().map((lb) => {
-      if (lb.id === label.id) {
-        lb.open = true;
-      }
-      return lb;
-    });
-    Chart.render({ labels: lbs });
-    this.closeModal();
+  // openFolder = (e, label, node, tabName = false) => {
+  //   label.open = true;
+  //   Chart.event.emit('folder.open', e, label);
+  //   const lbs = Chart.getLabels().map((lb) => {
+  //     if (lb.id === label.id) {
+  //       lb.open = true;
+  //     }
+  //     return lb;
+  //   });
+  //   Chart.render({ labels: lbs });
+  //   this.closeModal();
 
-    setTimeout(() => {
-      const nodes = Chart.getNodes();
-      const theNode = nodes.find((n) => n.id === node.id);
-      if (theNode) {
-        ChartUtils.findNodeInDom(node);
-      }
-      if (tabName) {
-        this.props.setActiveTab(tabName);
-      }
-      this.props.history.replace(`${window.location.pathname}?info=${node.id}`);
-    }, 500);
-  };
+  //   setTimeout(() => {
+  //     const nodes = Chart.getNodes();
+  //     const theNode = nodes.find((n) => n.id === node.id);
+  //     if (theNode) {
+  //       ChartUtils.findNodeInDom(node);
+  //     }
+  //     if (tabName) {
+  //       this.props.setActiveTab(tabName);
+  //     }
+  //     this.props.history.replace(`${window.location.pathname}?info=${node.id}`);
+  //   }, 500);
+  // };
 
   /**
    * Open node which contains searched tags if it's inside folder call openFolder
    * @param {object} e
    * @param {object} tagNode
    */
-  openNodeByTag = async (e, tagNode) => {
-    const availableNodes = Chart.getNodes();
-    const labels = Chart.getLabels();
-    const isNodeAvailable = availableNodes.find((nd) => nd.id === tagNode.id);
-    if (isNodeAvailable) {
-      this.closeModal();
-      ChartUtils.findNodeInDom(isNodeAvailable);
-      if (tagNode.tabName) {
-        this.props.setActiveTab(tagNode.tabName);
-      }
-      this.props.history.replace(
-        `${window.location.pathname}?info=${isNodeAvailable.id}`,
-      );
-    } else {
-      const label = labels.find((label) => label.nodes.includes(tagNode.id));
-      if (tagNode.tabName) {
-        this.openFolder(e, label, tagNode, tagNode.tabName);
-      } else {
-        this.openFolder(e, label, tagNode);
-      }
-    }
-  };
+  // openNodeByTag = async (e, tagNode) => {
+  //   const availableNodes = Chart.getNodes();
+  //   const labels = Chart.getLabels();
+  //   const isNodeAvailable = availableNodes.find((nd) => nd.id === tagNode.id);
+  //   if (isNodeAvailable) {
+  //     this.closeModal();
+  //     ChartUtils.findNodeInDom(isNodeAvailable);
+  //     if (tagNode.tabName) {
+  //       this.props.setActiveTab(tagNode.tabName);
+  //     }
+  //     this.props.history.replace(
+  //       `${window.location.pathname}?info=${isNodeAvailable.id}`,
+  //     );
+  //   } else {
+  //     const label = labels.find((label) => label.nodes.includes(tagNode.id));
+  //     if (tagNode.tabName) {
+  //       this.openFolder(e, label, tagNode, tagNode.tabName);
+  //     } else {
+  //       this.openFolder(e, label, tagNode);
+  //     }
+  //   }
+  // };
 
   /**
    * Open chosen node if it's inside folder call openFolder
    * @param {object} e
    * @param {object} node
    */
-  openNode = async (e, node) => {
-    const availableNodes = Chart.getNodes();
-    const labels = Chart.getLabels();
-    const ifNode = !node.tags;
-    const isNodeAvailable = availableNodes.find((nd) => nd.id === node.id);
-    if (isNodeAvailable) {
-      ChartUtils.findNodeInDom(node);
-      this.props.history.replace(
-        `${window.location.pathname}?info=${isNodeAvailable.id}`,
-      );
-      this.closeModal();
-    } else if (ifNode) {
-      await node.labels.map(async (labelId) => {
-        const label = labels.find((lb) => lb.id === labelId);
-        if (label && label.type === 'folder') {
-          if (label.open === false) {
-            this.openFolder(e, label, node);
-          }
-        }
-      });
-    }
-  };
+  // openNode = async (e, node) => {
+  //   const availableNodes = Chart.getNodes();
+  //   const labels = Chart.getLabels();
+  //   const ifNode = !node.tags;
+  //   const isNodeAvailable = availableNodes.find((nd) => nd.id === node.id);
+  //   if (isNodeAvailable) {
+  //     ChartUtils.findNodeInDom(node);
+  //     this.props.history.replace(
+  //       `${window.location.pathname}?info=${isNodeAvailable.id}`,
+  //     );
+  //     this.closeModal();
+  //   } else if (ifNode) {
+  //     await node.labels.map(async (labelId) => {
+  //       const label = labels.find((lb) => lb.id === labelId);
+  //       if (label && label.type === 'folder') {
+  //         if (label.open === false) {
+  //           this.openFolder(e, label, node);
+  //         }
+  //       }
+  //     });
+  //   }
+  // };
 
   /**
    * Open chosen tab of node if it's inside folder call openFolder
@@ -322,74 +321,74 @@ class SearchModal extends Component {
    * @param {*} node
    * @param {*} tabName
    */
-  openTab = (e, node, tabName) => {
-    const availableNodes = Chart.getNodes();
-    const labels = Chart.getLabels();
-    const isNodeAvailable = availableNodes.find((nd) => nd.id === node.id);
-    if (isNodeAvailable) {
-      ChartUtils.findNodeInDom(node);
-      this.props.setActiveTab(tabName);
-      this.props.history.replace(
-        `${window.location.pathname}?info=${isNodeAvailable.id}`,
-      );
-      this.closeModal();
-    } else {
-      const label = labels.find((label) => label.nodes.includes(node.id));
-      if (label) {
-        this.openFolder(e, label, node, tabName);
-      }
-    }
-  };
+  // openTab = (e, node, tabName) => {
+  //   const availableNodes = Chart.getNodes();
+  //   const labels = Chart.getLabels();
+  //   const isNodeAvailable = availableNodes.find((nd) => nd.id === node.id);
+  //   if (isNodeAvailable) {
+  //     ChartUtils.findNodeInDom(node);
+  //     this.props.setActiveTab(tabName);
+  //     this.props.history.replace(
+  //       `${window.location.pathname}?info=${isNodeAvailable.id}`,
+  //     );
+  //     this.closeModal();
+  //   } else {
+  //     const label = labels.find((label) => label.nodes.includes(node.id));
+  //     if (label) {
+  //       this.openFolder(e, label, node, tabName);
+  //     }
+  //   }
+  // };
 
   /**
    * Filter user search by name, tab, tag, keywords
    * @param {object} e
    */
-  handleFilterCheckBoxChange = (e) => {
-    const { checkBoxValues, search } = this.state;
-    const { target } = e;
-    const name = target.innerText.toLowerCase();
-    if (name == 'all') {
-      let value = true;
-      const checkBoxFields = Object.values(checkBoxValues).filter((el) => el === value);
-      if (checkBoxFields.length === 4) {
-        value = false;
-      } else {
-        value = true;
-      }
-      const allCheckElements = Array.from(document.getElementsByClassName('checkBox'));
+  // handleFilterCheckBoxChange = (e) => {
+  //   const { checkBoxValues, search } = this.state;
+  //   const { target } = e;
+  //   const name = target.innerText.toLowerCase();
+  //   if (name == 'all') {
+  //     let value = true;
+  //     const checkBoxFields = Object.values(checkBoxValues).filter((el) => el === value);
+  //     if (checkBoxFields.length === 4) {
+  //       value = false;
+  //     } else {
+  //       value = true;
+  //     }
+  //     const allCheckElements = Array.from(document.getElementsByClassName('checkBox'));
 
-      allCheckElements.map((element) => {
-        element.style.color = value ? '#7166F8' : '#BEBEBE';
-      });
-      this.setState({ checkBoxAll: value });
-      for (const key in checkBoxValues) {
-        _.set(checkBoxValues, key, value);
-        this.setState({ checkBoxValues });
-      }
-    } else {
-      const value = !checkBoxValues[name];
-      _.set(checkBoxValues, name, value);
-      this.setState({ checkBoxValues });
-      target.style.color = value ? '#7166F8' : '#BEBEBE';
-      const checkBoxFields = Object.values(checkBoxValues).filter((el) => el === value);
-      if (checkBoxFields.length === 4) {
-        this.setState({ checkBoxAll: value });
-        Array.from(document.getElementsByClassName('checkBoxall')).map((element) => element.style.color = value ? '#7166F8' : '#BEBEBE');
-      }
-    }
-    this.handleChange(search);
-  };
+  //     allCheckElements.map((element) => {
+  //       element.style.color = value ? '#7166F8' : '#BEBEBE';
+  //     });
+  //     this.setState({ checkBoxAll: value });
+  //     for (const key in checkBoxValues) {
+  //       _.set(checkBoxValues, key, value);
+  //       this.setState({ checkBoxValues });
+  //     }
+  //   } else {
+  //     const value = !checkBoxValues[name];
+  //     _.set(checkBoxValues, name, value);
+  //     this.setState({ checkBoxValues });
+  //     target.style.color = value ? '#7166F8' : '#BEBEBE';
+  //     const checkBoxFields = Object.values(checkBoxValues).filter((el) => el === value);
+  //     if (checkBoxFields.length === 4) {
+  //       this.setState({ checkBoxAll: value });
+  //       Array.from(document.getElementsByClassName('checkBoxall')).map((element) => element.style.color = value ? '#7166F8' : '#BEBEBE');
+  //     }
+  //   }
+  //   this.handleChange(search);
+  // };
 
-  findNodeInDom = (node, closeModal = true) => {
-    if (closeModal === 'closeMap') {
-    } else if (closeModal) {
-      this.closeModal();
-    } else {
-    }
-    const nodeInDom = Chart.getNodes().find((nd) => nd.id === node.id);
-    ChartUtils.findNodeInDom(nodeInDom);
-  }
+  // findNodeInDom = (node, closeModal = true) => {
+  //   if (closeModal === 'closeMap') {
+  //   } else if (closeModal) {
+  //     this.closeModal();
+  //   } else {
+  //   }
+  //   const nodeInDom = Chart.getNodes().find((nd) => nd.id === node.id);
+  //   ChartUtils.findNodeInDom(nodeInDom);
+  // }
 
   handleTabToggle = (ev, id, tabName) => {
     const { tabsContentVisibility } = this.state;
@@ -584,7 +583,7 @@ class SearchModal extends Component {
       chosenNodes,
       allNodesSelected,
     } = this.state;
-    this.initTabs();
+    // this.initTabs();
     const chartNodes = Chart.getNodes();
     return (
       <Modal
@@ -809,7 +808,7 @@ class SearchModal extends Component {
                         className="name"
                         title={d.name}
                         dangerouslySetInnerHTML={{
-                          __html: this.formatHtml(d.name, 'name'),
+                          __html: this.formatHtml(d.name),
                         }}
                       />
                       <span
@@ -823,7 +822,7 @@ class SearchModal extends Component {
                     <span
                       className="keywords"
                       dangerouslySetInnerHTML={{
-                        __html: this.formatHtml(d.keywords.join(', '), 'keywords'),
+                        __html: this.formatHtml(d.keywords.join(', ')),
                       }}
                     />
                   </div>
@@ -868,33 +867,33 @@ class SearchModal extends Component {
             ))}
           </ul>
         </div>
-          {chosenNodes.length ? (
-            <div className="acceptCheckedItems">
+        {chosenNodes.length ? (
+          <div className="acceptCheckedItems">
+            <button
+              onClick={(ev) => this.showSelectedNodes()}
+              className="btn-classic"
+            >
+              Show
+            </button>
+            {chartNodes.length ? (
               <button
-                onClick={(ev) => this.showSelectedNodes()}
-                className="btn-classic"
+                onClick={(ev) => this.showSelectedNodes(true)}
+                className="btn-classic btn-existing"
               >
-                Show
+                Add to existing
               </button>
-              {chartNodes.length ? (
-                <button
-                  onClick={(ev) => this.showSelectedNodes(true)}
-                  className="btn-classic btn-existing"
-                >
-                  Add to existing
-                </button>
-              ) : ''}
-            </div>
-          ) : (
-            ''
-          )}
+            ) : ''}
+          </div>
+        ) : (
+          ''
+        )}
       </Modal>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  graphTabs: state.graphs.graphTabs,
+  // graphTabs: state.graphs.graphTabs,
   graphId: state.graphs.singleGraph.id,
   singleGraph: state.graphs.singleGraph,
   userId: state.graphs.singleGraph.userId,
@@ -905,11 +904,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   setActiveTab,
-  setActiveButton,
-  getAllTabsRequest,
+  // setActiveButton,
+  // getAllTabsRequest,
   getGraphNodesRequest,
   toggleGraphMap,
-  toggleSearch,
+  // toggleSearch,
   toggleExplore,
 };
 

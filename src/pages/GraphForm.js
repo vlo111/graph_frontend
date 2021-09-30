@@ -13,7 +13,7 @@ import DataView from '../components/dataView/DataView';
 import DataImport from '../components/import/DataImportModal';
 import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
-import { clearSingleGraph, getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/graphs';
+import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
 import Search from '../components/search/Search';
@@ -30,14 +30,13 @@ import AutoSave from '../components/AutoSave';
 import LabelShare from '../components/share/LabelShare';
 import MediaModal from '../components/Media/MediaModal';
 import LabelCopy from '../components/labelCopy/LabelCopy';
-import FindPath from '../components/FindPath';
 import FindNode from '../components/FindNode';
 import MousePosition from '../components/chart/MousePosition';
 import ExitMode from '../components/ExitMode';
 import AddLinkedInModal from '../components/chart/AddLinkedInModal';
 import MapsModal from '../components/maps/MapsModal';
-import ScienceGraphModal from "../components/ScienceSearchToGraph/ScienceGraphModal";
-import WikiModal from "../components/wikipedia/WikiModal";
+import ScienceGraphModal from '../components/ScienceSearchToGraph/ScienceGraphModal';
+import WikiModal from '../components/wikipedia/WikiModal';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -46,8 +45,12 @@ class GraphForm extends Component {
     clearSingleGraph: PropTypes.func.isRequired,
     socketSetActiveGraph: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
+    singleGraphStatus: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
     currentUserId: PropTypes.number.isRequired,
+    mouseMoveTracker: PropTypes.array.isRequired,
+    currentUserRole: PropTypes.string.isRequired,
+    history: PropTypes.string.isRequired,
   }
 
   getSingleGraph = memoizeOne((graphId) => {
@@ -66,6 +69,7 @@ class GraphForm extends Component {
       (m) => m.userId !== currentUserId && m.tracker === true,
     );
   }
+
   getPermission = () => {
     const { singleGraphStatus, currentUserRole } = this.props;
 
@@ -76,7 +80,7 @@ class GraphForm extends Component {
   }
 
   render() {
-    const { activeButton, mouseMoveTracker, match: { params: { graphId } } } = this.props;
+    const { activeButton, match: { params: { graphId } } } = this.props;
     const isTracker = this.getMouseMoveTracker();
     this.getSingleGraph(graphId);
     const isPermission = this.getPermission();

@@ -6,7 +6,7 @@ import memoizeOne from 'memoize-one';
 import Button from '../form/Button';
 import FileInput from '../form/FileInput';
 import Input from '../form/Input';
-import ShortCode from "../../helpers/ShortCode";
+import ShortCode from '../../helpers/ShortCode';
 
 class DataEditorFiles extends Component {
   static propTypes = {
@@ -34,7 +34,6 @@ class DataEditorFiles extends Component {
       values: [],
     };
   }
-
 
   closeModal = async (ev) => {
     this.props.onClose(ev);
@@ -79,7 +78,7 @@ class DataEditorFiles extends Component {
     const {
       onClose, onChangeText, value, ...props
     } = this.props;
-    const { values } = this.state; 
+    const { values } = this.state;
     this.initValues(value);
     return (
       <div>

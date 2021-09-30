@@ -16,6 +16,7 @@ class SearchGraphs extends Component {
   static propTypes = {
     setLimit: PropTypes.bool,
     getGraphsListRequest: PropTypes.func.isRequired,
+    graphsListStatus: PropTypes.string.isRequired,
     graphsList: PropTypes.array.isRequired,
   };
 
@@ -51,12 +52,12 @@ class SearchGraphs extends Component {
   }
 
   render() {
-    const { setLimit, graphsList, headerTools } = this.props;
+    const { setLimit, graphsList, headerTools,graphsListStatus } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
     this.getGraphs(page, searchParam);
     return (
       <>
-        {graphsList && !isEmpty(graphsList) && graphsList.length ? (
+        {graphsList && !isEmpty(graphsList) && graphsList.length  ? (
           <>
             {graphsList.map((graph) => (
               <article key={graph.id} className="graphs">
@@ -72,7 +73,7 @@ class SearchGraphs extends Component {
                         <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
                       </Link>
                       <div className="info">
-                        <span>{moment(graph.updatedAt).calendar()}</span>
+                        <span>{moment(graph.updatedAt).format('YYYY.MM.DD HH:mm')}</span>
                         <span className="nodesCount">{` ${graph.nodesCount} nodes `}</span>
                       </div>
                     </div>
@@ -118,7 +119,7 @@ class SearchGraphs extends Component {
               </article>
             ))}
           </>
-        ) : ((!setLimit && <div className='not_found'>
+        ) : ((!setLimit && graphsListStatus !== 'request'&& <div className='not_found'>
           <img src={NotFound} />
           <h3>Not Found</h3>
         </div>) || null)}
@@ -128,6 +129,7 @@ class SearchGraphs extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  graphsListStatus: state.graphs.graphsListStatus,
   graphsList: state.graphs.graphsList,
 });
 const mapDispatchToProps = {

@@ -70,28 +70,30 @@ class GraphCompareList extends Component {
       }
     }
 
-    handleChange (node, checked, col) {
-      {this.props.onChange(node, checked, col)}
-      let { singleGraph1, singleGraph2, selectedNodes1, selectedNodes2 } = this.props;
+    handleChange(node, checked, col) {
+      { this.props.onChange(node, checked, col); }
+      let {
+        singleGraph1, singleGraph2, selectedNodes1, selectedNodes2,
+      } = this.props;
       if (singleGraph1 && col === 1) {
-      node.fx = node.x
-      node.fy = node.y
+        node.fx = node.x;
+        node.fy = node.y;
         if (checked) {
-          selectedNodes1.push(node)
+          selectedNodes1.push(node);
         } else {
-          selectedNodes1 = selectedNodes1.filter(nd => nd.fx !== node.fx && nd.fy !== node.fy)
+          selectedNodes1 = selectedNodes1.filter((nd) => nd.fx !== node.fx && nd.fy !== node.fy);
         }
-        const allNodesAreSelected = !singleGraph1.nodes.find(nd => !!selectedNodes1.find(n => nd.x == n.fx && nd.y == n.fy) !== true)
-        this.setState({ selectAllLeft: allNodesAreSelected })
+        const allNodesAreSelected = !singleGraph1.nodes.find((nd) => !!selectedNodes1.find((n) => nd.x == n.fx && nd.y == n.fy) !== true);
+        this.setState({ selectAllLeft: allNodesAreSelected });
       }
       if (singleGraph2 && col === 2) {
         if (checked) {
-          selectedNodes2.push(node)
+          selectedNodes2.push(node);
         } else {
-          selectedNodes2 = selectedNodes2.filter(nd => nd.fx !== node.fx && nd.fy !== node.fy)
+          selectedNodes2 = selectedNodes2.filter((nd) => nd.fx !== node.fx && nd.fy !== node.fy);
         }
-        const allNodesAreSelected = !singleGraph2.nodes.find(nd => !selectedNodes2.find(n => nd.fx == n.fx && nd.fy == n.fy))
-        this.setState({ selectAllRight: allNodesAreSelected })
+        const allNodesAreSelected = !singleGraph2.nodes.find((nd) => !selectedNodes2.find((n) => nd.fx == n.fx && nd.fy == n.fy));
+        this.setState({ selectAllRight: allNodesAreSelected });
       }
     }
 
@@ -162,7 +164,7 @@ class GraphCompareList extends Component {
       });
 
       const singleGraph2List = singleGraph2?.nodes?.map((node) => (
-      <>
+        <>
           <tr>
             <td>
               <LabelCompareItem

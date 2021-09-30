@@ -3,7 +3,7 @@ import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import Chart from '../../Chart';
 import bgImage from '../../assets/images/tabDefault.jpg';
-import ChartUtils from "../../helpers/ChartUtils";
+import ChartUtils from '../../helpers/ChartUtils';
 
 class NodeImage extends Component {
   static propTypes = {
@@ -55,12 +55,11 @@ class NodeImage extends Component {
   }
 
   handleImageError = (ev) => {
-
     const { node } = this.props;
     if (ev.target.src !== node.icon) {
       ev.target.src = node.icon;
       return;
-    } else if (ev.target.src !== bgImage) {
+    } if (ev.target.src !== bgImage) {
       ev.target.src = bgImage;
       return;
     }
@@ -75,7 +74,7 @@ class NodeImage extends Component {
     const {
       x, y, clipPath, fill, transform, width, height,
     } = this.state;
-   const iconSize = props.width === 50 ? false : true
+    const iconSize = props.width !== 50;
     if (node.nodeType !== 'infography' || !node.d) {
       return (
         <img

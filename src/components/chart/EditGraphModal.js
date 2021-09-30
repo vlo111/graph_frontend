@@ -24,7 +24,7 @@ import { setActiveButton, setLoading } from '../../store/actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import 'rc-switch/assets/index.css';
-import ImageUploader from '../ImageUploader'
+import ImageUploader from '../ImageUploader';
 import Api from '../../Api';
 
 class EditGraphModal extends Component {
@@ -45,7 +45,7 @@ class EditGraphModal extends Component {
 
   initValues = memoizeOne((singleGraph) => {
     const {
-      title, description, status, publicState, defaultImage
+      title, description, status, publicState, defaultImage,
     } = singleGraph;
 
     this.setState({
@@ -54,7 +54,7 @@ class EditGraphModal extends Component {
         description,
         publicState,
         status: status === 'template' ? 'active' : status,
-        userImage: defaultImage
+        userImage: defaultImage,
       },
       image: '',
     });
@@ -63,24 +63,24 @@ class EditGraphModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-requestData: {
+      requestData: {
         title: '',
         description: '',
         status: 'active',
         publicState: false,
         disabled: false,
-        userImage: false
+        userImage: false,
       },
     };
   }
 
-  async componentDidMount () {
-    const { match: { params: { graphId } }, singleGraph: {defaultImage}, singleGraph } = this.props;
+  async componentDidMount() {
+    const { match: { params: { graphId } }, singleGraph: { defaultImage }, singleGraph } = this.props;
     const svg = ChartUtils.getChartSvg();
     if (!defaultImage && graphId) {
       if (!(singleGraph?.nodesPartial?.length > 500)) {
         await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
-        this.props.getSingleGraphRequest(graphId)
+        this.props.getSingleGraphRequest(graphId);
       }
     }
   }
@@ -91,10 +91,9 @@ requestData: {
 
       toast.info('Successfully deleted');
 
-      
-      if(this.props.deleteGraph) {
+      if (this.props.deleteGraph) {
         this.props.deleteGraph(graphId);
-        this.props.toggleModal(false)  
+        this.props.toggleModal(false);
       } else {
         this.props.history.push('/');
       }
@@ -111,9 +110,9 @@ requestData: {
     let { requestData, image } = this.state;
 
     let { singleGraph, graph, location: { pathname } } = this.props;
-    
-    if(graph) {
-      singleGraph = graph
+
+    if (graph) {
+      singleGraph = graph;
     }
 
     const { id: graphId } = singleGraph;
@@ -122,17 +121,17 @@ requestData: {
     const labels = Chart.getLabels();
     const svg = ChartUtils.getChartSvg();
     let resGraphId;
-    
+
     if (image) {
-      let userEdited = true
-      if (typeof(image) === 'string' && singleGraph?.nodesPartial?.length < 500) {
-        image = svg
-        userEdited = false
-      } else if (typeof(image) !== 'object') {
-        userEdited = false
-        image = ''
+      let userEdited = true;
+      if (typeof (image) === 'string' && singleGraph?.nodesPartial?.length < 500) {
+        image = svg;
+        userEdited = false;
+      } else if (typeof (image) !== 'object') {
+        userEdited = false;
+        image = '';
       }
-      await this.props.updateGraphThumbnailRequest(graphId, image, 'medium', userEdited)
+      await this.props.updateGraphThumbnailRequest(graphId, image, 'medium', userEdited);
     }
 
     const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
@@ -146,16 +145,16 @@ requestData: {
 
     if (graph && resGraphId) {
       toast.info('Successfully saved');
-      const { payload : { data: { graph: newGraph } } } = (await this.props.getSingleGraphRequest(resGraphId))
-      
-      this.props.updateGraph(newGraph);  
+      const { payload: { data: { graph: newGraph } } } = (await this.props.getSingleGraphRequest(resGraphId));
+
+      this.props.updateGraph(newGraph);
     } else if (!resGraphId) {
       toast.error('Something went wrong. Please try again');
     }
     if (pathname === '/') {
-      const page = 1
-      const order = 'newest'
-      this.props.getGraphsListRequest(page, {filter: order})
+      const page = 1;
+      const order = 'newest';
+      this.props.getGraphsListRequest(page, { filter: order });
     }
 
     this.props.setLoading(false);
@@ -163,15 +162,15 @@ requestData: {
   }
 
   handleChange = async (path, value) => {
-    let { singleGraph, singleGraph: {id: graphId}, graph } = this.props;
+    let { singleGraph, singleGraph: { id: graphId }, graph } = this.props;
     if (graphId === undefined) {
-      graphId = graph.id
+      graphId = graph.id;
     }
     if (!graph && singleGraph) {
-      graph = singleGraph
+      graph = singleGraph;
     }
     if (!graph) {
-      toast.error('Something went wrong')
+      toast.error('Something went wrong');
     }
     const { requestData } = this.state;
 
@@ -179,11 +178,11 @@ requestData: {
       if (value == '') {
         const svg = graph?.nodesPartial?.length < 500 ? ChartUtils.getChartSvg() : '';
         _.set(requestData, 'userImage', false);
-        let savedImageRequest = await Api.updateGraphThumbnail(graphId, svg, "small", "tmp")
-        const image = savedImageRequest?.data?.thumbUrl + `?t=${moment(graph.updatedAt).unix()}`
-        this.setState({[path]: image})
+        const savedImageRequest = await Api.updateGraphThumbnail(graphId, svg, 'small', 'tmp');
+        const image = `${savedImageRequest?.data?.thumbUrl}?t=${moment(graph.updatedAt).unix()}`;
+        this.setState({ [path]: image });
       } else {
-        this.setState({ [path]: value})
+        this.setState({ [path]: value });
         _.set(requestData, 'userImage', true);
       }
     } else {
@@ -195,9 +194,9 @@ requestData: {
   render() {
     const { requestData, disabled, image } = this.state;
     let { singleGraph, graph } = this.props;
-    
-    if(graph) {
-      singleGraph = graph
+
+    if (graph) {
+      singleGraph = graph;
     }
 
     const { id: graphId } = singleGraph;
@@ -223,7 +222,7 @@ requestData: {
               className="thumbnailSave"
               value={image || `${singleGraph.thumbnail}?t=${moment(singleGraph.updatedAt).unix()}`}
               onChange={(val) => this.handleChange('image', val)}
-              userImage={ requestData.userImage }
+              userImage={requestData.userImage}
             />
 
           </div>
@@ -278,7 +277,11 @@ requestData: {
               <Button
                 className="btn-classic"
                 onClick={() => this.saveGraph(requestData.status)}
-              > Save </Button>
+              >
+                {' '}
+                Save
+                {' '}
+              </Button>
             </>
           </div>
         </div>
@@ -300,7 +303,7 @@ const mapDispatchToProps = {
   setActiveButton,
   setLoading,
   deleteGraphRequest,
-  getGraphsListRequest
+  getGraphsListRequest,
 };
 
 const Container = connect(

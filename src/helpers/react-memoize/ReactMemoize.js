@@ -1,4 +1,4 @@
-import { Component } from 'react';
+// import { Component } from 'react';
 
 class ReactMemoize {
   static #init = false
@@ -8,21 +8,20 @@ class ReactMemoize {
       return;
     }
     this.#init = true;
-    const { componentDidMount, componentDidUpdate } = Component.prototype;
-    console.log(Component.prototype, Component);
-    return;
-    Component.prototype.componentDidMount = (...args) => {
-      if (Component.prototype.componentDidRender) {
-        Component.prototype.componentDidRender(...args);
-      }
-      componentDidMount(...args);
-    };
-    Component.prototype.componentDidUpdate = (...args) => {
-      if (Component.prototype.componentDidRender) {
-        Component.prototype.componentDidRender(...args);
-      }
-      componentDidUpdate(...args);
-    };
+
+    // const { componentDidMount, componentDidUpdate } = Component.prototype;
+    // Component.prototype.componentDidMount = (...args) => {
+    //   if (Component.prototype.componentDidRender) {
+    //     Component.prototype.componentDidRender(...args);
+    //   }
+    //   componentDidMount(...args);
+    // };
+    // Component.prototype.componentDidUpdate = (...args) => {
+    //   if (Component.prototype.componentDidRender) {
+    //     Component.prototype.componentDidRender(...args);
+    //   }
+    //   componentDidUpdate(...args);
+    // };
   }
 }
 

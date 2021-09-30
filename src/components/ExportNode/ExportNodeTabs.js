@@ -23,7 +23,7 @@ class ExportNodeTabs extends Component {
     this.props.setLoading(true);
 
     const {
-      node, tabs, image, nodeData
+      node, tabs, image, nodeData,
     } = this.props;
 
     const html = this.decode(renderToString(<ExportNode
@@ -40,7 +40,8 @@ class ExportNodeTabs extends Component {
 
   render() {
     return (
-      <Button onClick={this.export}
+      <Button
+        onClick={this.export}
         title="Export"
         className="b-navbar"
         to="/#"

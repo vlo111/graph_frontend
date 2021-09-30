@@ -7,7 +7,7 @@ import Chart from '../../Chart';
 class ExportNode extends Component {
   render() {
     const {
-      tabs, node, nodeData, image
+      tabs, node, nodeData, image,
     } = this.props;
 
     const customField = CustomFields.get(tabs, node.type, node.id);
