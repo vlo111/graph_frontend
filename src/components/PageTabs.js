@@ -19,7 +19,7 @@ class PageTabs extends Component {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
-    onChange: PropTypes.func,
+    handleRouteChange: PropTypes.func,
     direction: PropTypes.oneOf(['vertical', 'horizontal']),
     getGraphsListRequest: PropTypes.func.isRequired,
     getShareGraphListRequest: PropTypes.func.isRequired,
@@ -34,12 +34,15 @@ class PageTabs extends Component {
   }
 
   static defaultProps = {
-    onChange: undefined,
+    handleRouteChange: undefined,
     direction: 'vertical',
   }
-
   setActiveTab = (tab) => {
-    this.props.history.push(tab.to);
+    if (this.props.handleRouteChange) {
+      this.props.handleRouteChange(tab);
+    } else {
+      this.props.history.push(tab.to);
+    }
   }
 
   onChange = (mode) => {
