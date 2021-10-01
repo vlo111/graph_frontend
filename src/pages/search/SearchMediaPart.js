@@ -12,7 +12,7 @@ class SearchMediaPart extends Component {
     constructor(props) {
         super(props);
         this.state =
-            { loading: true };
+            { loading: true, limit: 5 };
     }
 
     goToNodeTab = (graphId, node, userId) => {
@@ -33,8 +33,7 @@ class SearchMediaPart extends Component {
 
     render() {
         let { mediaMode, data, setLimit } = this.props;
-        const { loading } = this.state;
-        const size = 5;
+        const { loading, limit } = this.state;
 
 
         if (data) {
@@ -135,7 +134,7 @@ class SearchMediaPart extends Component {
                                                         <span className="mediaLeter">Tags:</span>
                                                         <div className="maediaTagsleng">
                                                             {`${document.tags
-                                                                ? `${document.tags.slice(0, size)}...`
+                                                                ? `${document.tags.slice(0, limit)}...`
                                                                 : document.tags
                                                                 } `}
                                                             {' '}
