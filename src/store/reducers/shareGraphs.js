@@ -15,6 +15,7 @@ const initialState = {
   total: 0,
   totalPages: 0,
   graphUsers: {},
+  shareGraphsListStatus: '',
 };
 
 export default function reducer(state = initialState, action) {
@@ -28,6 +29,7 @@ export default function reducer(state = initialState, action) {
         page: 0,
         total: 0,
         totalPages: 0,
+        shareGraphsListStatus: 'request',
       };
     }
     case LIST_SHARE_GRAPH.SUCCESS:
@@ -40,7 +42,12 @@ export default function reducer(state = initialState, action) {
         shareGraphs: shareGraphsList, page, total, totalPages,
       } = action.payload.data;
       return {
-        ...state, shareGraphsList, page, total, totalPages,
+        ...state,
+        shareGraphsList,
+        shareGraphsListStatus: 'success',
+        totalPages,
+        total,
+        page,
       };
     }
     case USER_SHARE_GRAPH.SUCCESS:
