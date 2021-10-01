@@ -47,45 +47,20 @@ class SearchModal extends Component {
       docs: [],
       keywords: [],
       checkBoxValues: {
-        name: false,
-        tab: false,
-        tag: false,
+        name: true,
+        tab: true,
+        tag: true,
         keyword: true,
       },
       tabsContentVisibility: {},
-      checkBoxAll: false,
+      checkBoxAll: true,
       allNodesSelected: false,
       chosenNodes: [],
       toggleFilterBox: false,
     };
   }
 
-  componentWillUnmount() {
-    const { nodes, links } = this.props.singleGraph;
-    const chartNodes = Chart.getNodes();
-    if (!chartNodes.length && nodes?.length) {
-      if (nodes?.length + links?.length > REACT_APP_MAX_NODE_AND_LINK) {
-        Chart.render({ nodes: [], links: [] }, { ignoreAutoSave: true });
-      } else {
-        Chart.render({ nodes, links }, { ignoreAutoSave: true });
-      }
-    } else {
-      this.props.toggleExplore(true);
-    }
-  }
-
-  // initTabs = memoizeOne(() => {
-  // const { graphId } = this.props;
-  // this.props.getAllTabsRequest(graphId);
-  // });
-
   closeModal = () => {
-    // const nodes = Chart.getNodes();
-    // if (!nodes?.length) {
-    //   this.props.toggleExplore(true);
-    // }
-    // this.props.toggleSearch(false);
-
     this.handleChange('');
   };
 
@@ -344,41 +319,43 @@ class SearchModal extends Component {
    * Filter user search by name, tab, tag, keywords
    * @param {object} e
    */
-  // handleFilterCheckBoxChange = (e) => {
-  //   const { checkBoxValues, search } = this.state;
-  //   const { target } = e;
-  //   const name = target.innerText.toLowerCase();
-  //   if (name == 'all') {
-  //     let value = true;
-  //     const checkBoxFields = Object.values(checkBoxValues).filter((el) => el === value);
-  //     if (checkBoxFields.length === 4) {
-  //       value = false;
-  //     } else {
-  //       value = true;
-  //     }
-  //     const allCheckElements = Array.from(document.getElementsByClassName('checkBox'));
+  handleFilterCheckBoxChange = (e) => {
+    const { checkBoxValues, search } = this.state;
+    const { target } = e;
+    const name = target.innerText.toLowerCase();
+    if (name === 'all') {
+      let value = true;
+      const checkBoxFields = Object.values(checkBoxValues).filter((el) => el === value);
+      if (checkBoxFields.length === 4) {
+        value = false;
+      } else {
+        value = true;
+      }
+      const allCheckElements = Array.from(document.getElementsByClassName('checkBox'));
 
-  //     allCheckElements.map((element) => {
-  //       element.style.color = value ? '#7166F8' : '#BEBEBE';
-  //     });
-  //     this.setState({ checkBoxAll: value });
-  //     for (const key in checkBoxValues) {
-  //       _.set(checkBoxValues, key, value);
-  //       this.setState({ checkBoxValues });
-  //     }
-  //   } else {
-  //     const value = !checkBoxValues[name];
-  //     _.set(checkBoxValues, name, value);
-  //     this.setState({ checkBoxValues });
-  //     target.style.color = value ? '#7166F8' : '#BEBEBE';
-  //     const checkBoxFields = Object.values(checkBoxValues).filter((el) => el === value);
-  //     if (checkBoxFields.length === 4) {
-  //       this.setState({ checkBoxAll: value });
-  //       Array.from(document.getElementsByClassName('checkBoxall')).map((element) => element.style.color = value ? '#7166F8' : '#BEBEBE');
-  //     }
-  //   }
-  //   this.handleChange(search);
-  // };
+      allCheckElements.map((element) => {
+        element.style.color = value ? '#7166F8' : '#BEBEBE';
+      });
+      this.setState({ checkBoxAll: value });
+      for (const key in checkBoxValues) {
+        _.set(checkBoxValues, key, value);
+        this.setState({ checkBoxValues });
+      }
+    } else {
+      const value = !checkBoxValues[name];
+      _.set(checkBoxValues, name, value);
+      this.setState({ checkBoxValues });
+      target.style.color = value ? '#7166F8' : '#BEBEBE';
+      const checkBoxFields = Object.values(checkBoxValues).filter((el) => el === value);
+      if (checkBoxFields.length === 4) {
+        this.setState({ checkBoxAll: value });
+        Array.from(document.getElementsByClassName('checkBoxall')).map(
+          (element) => element.style.color = value ? '#7166F8' : '#BEBEBE',
+        );
+      }
+    }
+    this.handleChange(search);
+  };
 
   // findNodeInDom = (node, closeModal = true) => {
   //   if (closeModal === 'closeMap') {
@@ -900,6 +877,7 @@ const mapStateToProps = (state) => ({
   currentUserId: state.account.myAccount.id,
   linksPartial: state.graphs.singleGraph?.linksPartial || [],
   nodesPartial: state.graphs.singleGraph?.nodesPartial || [],
+  totalNodes: state.graphs.graphInfo.totalNodes,
 });
 
 const mapDispatchToProps = {

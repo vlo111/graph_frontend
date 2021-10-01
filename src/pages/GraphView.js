@@ -14,7 +14,7 @@ import ReactChart from '../components/chart/ReactChart';
 import { setActiveButton, toggleExplore } from '../store/actions/app';
 import Button from '../components/form/Button';
 import Filters from '../components/filters/Filters';
-import Search from '../components/search/Search';
+import SearchModal from '../components/search/SearchModal';
 import ContextMenu from '../components/contextMenu/ContextMenu';
 import Zoom from '../components/Zoom';
 import NodeDescription from '../components/NodeDescription';
@@ -193,7 +193,7 @@ class GraphView extends Component {
                   </>
                 )}
                 <ToolBarHeader graph={singleGraph} />
-                <Search />
+                <SearchModal />
                 <NodeFullInfo editable={false} />
                 <LabelTooltip />
                 <Filters />
