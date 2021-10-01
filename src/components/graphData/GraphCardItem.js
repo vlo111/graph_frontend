@@ -49,21 +49,19 @@ class GraphCardItem extends Component {
   }
 
   render() {
-    const { headerTools, graphsList } = this.props;
-    const graphs = graphsList;
-
-    if (!graphsList?.length) return null;
+    let { headerTools, graphs } = this.props;
+    if (!graphs?.length) return null;
 
     return (
       <>
-        { (headerTools === 'home' && graphs.length)
+        {(headerTools === 'home' && graphs.length)
           ? (
             <div className="startGraph" onClick={this.startGraph}>
               <PlusSvg />
               <h3>Create a Graph</h3>
             </div>
           ) : null}
-        { graphs.map((graph) => (
+        {graphs.map((graph) => (
           <article className="graphs">
             <div className="top">
               <div className="infoContent">
@@ -77,7 +75,7 @@ class GraphCardItem extends Component {
                     <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
                   </Link>
                   <div className="info">
-                    <span>{moment(graph.updatedAt).calendar()}</span>
+                    <span>{moment(graph.updatedAt).format('YYYY.MM.DD HH:mm')}</span>
                     <span className="nodesCount">{` ${graph.nodesCount} nodes `}</span>
                   </div>
                 </div>
@@ -87,14 +85,14 @@ class GraphCardItem extends Component {
               </div>
             </div>
             <div>
-              <Tooltip overlay={graph.title} placement="bottom">
+              <Tooltip overlay={graph.title} placement="bottom" >
                 <h3>
                   {' '}
                   {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
                 </h3>
               </Tooltip>
               <div className="descriptionGraph">
-                <Tooltip overlay={graph.description} placement="bottom">
+                <Tooltip overlay={graph.description} placement="bottom" >
                   <span>
                     {' '}
                     {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
@@ -122,7 +120,6 @@ class GraphCardItem extends Component {
             <GraphListFooter graph={graph} />
           </article>
         ))}
-
       </>
     );
   }

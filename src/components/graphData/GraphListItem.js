@@ -29,26 +29,17 @@ class GraphListItem extends Component {
   }
 
   render() {
-    const { graphsList: graphs, headerTools, mode } = this.props;
+    const { graphs, headerTools, mode } = this.props;
     if (!graphs?.length) return null;
-
     return (
-      graphs
-        ? graphs.map((graph) => (
-          <article className="graphsItem">
+      graphs ?
+        graphs.map((graph) => (
+          <article className="graphsItem" >
             <div>
-              <Tooltip overlay={graph.title} placement="bottom" className="tooltipList">
-                <h3>
-                  {' '}
-                  {graph.title.length > 30 ? `${graph.title.substring(0, 30)}...` : graph.title}
-                </h3>
+              <Tooltip overlay={graph.title} placement="bottom" className='tooltipList'>
+                <h3> {graph.title.length > 30 ? `${graph.title.substring(0, 30)}...` : graph.title}</h3>
               </Tooltip>
-              {(mode === 'card') ? (
-                <p>
-                  {' '}
-                  {graph.description}
-                </p>
-              ) : ''}
+              {(mode === 'card') ? (<p> {graph.description}</p>) : ''}
             </div>
             <div className="top">
               <img
@@ -61,7 +52,7 @@ class GraphListItem extends Component {
                   <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
                 </Link>
                 <div className="info">
-                  <span>{moment(graph.updatedAt).calendar()}</span>
+                  <span>{moment(graph.updatedAt).format('YYYY.MM.DD HH:mm')}</span>
                   <span className="nodesCount">{` ${graph.nodesCount} nodes `}</span>
                 </div>
               </div>
@@ -71,8 +62,10 @@ class GraphListItem extends Component {
               <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>
               <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
             </div>
-            <div className="unlucky" />
-            <div className="sub-menus">
+            <div className="unlucky">
+
+            </div>
+            <div className="sub-menus" >
               <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={graph} headerTools={headerTools} />
             </div>
 
