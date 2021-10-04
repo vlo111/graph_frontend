@@ -15,6 +15,7 @@ class SearchUsers extends Component {
     getUsersByTextRequest: PropTypes.func.isRequired,
     myFriendsRequest: PropTypes.func.isRequired,
     userSearch: PropTypes.array.isRequired,
+    status:PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -30,10 +31,9 @@ class SearchUsers extends Component {
   }
 
   render() {
-    const { setLimit, userSearch } = this.props;
+    const { setLimit, userSearch, status } = this.props;
     const { s: searchParam } = queryString.parse(window.location.search);
     this.searchUsers(searchParam);
-
     return (
       <>
         {userSearch && userSearch.length ? (
@@ -42,13 +42,13 @@ class SearchUsers extends Component {
               <article key={user.id} className="graphs">
                 <div className="searchData__graphUsers">
                   <Link to={`/profile/${user.id}`}>
-                    <span className='author'>{`${user.firstName} ${user.lastName}`}</span>
+                    <span className="author">{`${user.firstName} ${user.lastName}`}</span>
                   </Link>
                   <div>
                     <AddFriend user={user} />
                   </div>
                 </div>
-                <div className='searchData__graphUsers_img'>
+                <div className="searchData__graphUsers_img">
                   <img
                     className="avatar UserImage"
                     src={user.avatar}
@@ -62,16 +62,19 @@ class SearchUsers extends Component {
               && <div className="viewAll"><Link to={`search-people?s=${searchParam}`}>View all</Link></div>
             }
           </>
-        ) : ((!setLimit && <div className='not_found'>
-          <img src={NotFound} />
+        ) : ((!setLimit && status !== 'request' && (
+        <div className="not_found">
+          <img src={NotFound} alt="" />
           <h3>Not Found</h3>
-        </div>) || null)}
+        </div>
+        )) || null)}
       </>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  status: state.account.status,
   userSearch: state.account.userSearch,
 });
 const mapDispatchToProps = {

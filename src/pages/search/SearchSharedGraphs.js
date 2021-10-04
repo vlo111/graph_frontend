@@ -5,8 +5,8 @@ import queryString from 'query-string';
 import { Link, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import memoizeOne from 'memoize-one';
-import { searchGraphsListRequest } from '../../store/actions/shareGraphs';
 import Tooltip from 'rc-tooltip';
+import { searchGraphsListRequest } from '../../store/actions/shareGraphs';
 import GraphListFooter from '../../components/graphData/GraphListFooter';
 import GraphDashboardSubMnus from '../../components/graphData/GraphListHeader';
 import NotFound from '../../assets/images/NotFound.png';
@@ -16,6 +16,7 @@ class SearchSharedGraphs extends Component {
     setLimit: PropTypes.bool,
     searchGraphsListRequest: PropTypes.func.isRequired,
     shareGraphsList: PropTypes.array.isRequired,
+    shareGraphsListStatus: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -50,7 +51,7 @@ class SearchSharedGraphs extends Component {
   }
 
   render() {
-    const { setLimit, shareGraphsList } = this.props;
+    const { setLimit, shareGraphsList, shareGraphsListStatus } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
     this.getGraphs(page, searchParam);
     return (
@@ -68,7 +69,9 @@ class SearchSharedGraphs extends Component {
                     />
                     <div className="infoWrapper">
                       <Link to={`/profile/${shGraph.graph.user.id}`}>
-                        <span className="author">{`${shGraph.graph.user.firstName} ${shGraph.graph.user.lastName}`}</span>
+                        <span className="author">
+                          {`${shGraph.graph.user.firstName} ${shGraph.graph.user.lastName}`}
+                        </span>
                       </Link>
                       <div className="info">
                         <span>{moment(shGraph.graph.updatedAt).format('YYYY.MM.DD HH:mm')}</span>
@@ -77,21 +80,29 @@ class SearchSharedGraphs extends Component {
                     </div>
                   </div>
                   <div className="sub-menus">
-                    <GraphDashboardSubMnus updateGraph={this.updateGraph} shGraph={shareGraphsList} headerTools="shared"/>
+                    <GraphDashboardSubMnus
+                      updateGraph={this.updateGraph}
+                      shGraph={shareGraphsList}
+                      headerTools="shared"
+                    />
                   </div>
                 </div>
                 <div>
-                  <Tooltip overlay={shGraph.graph.title} placement="bottom" >
+                  <Tooltip overlay={shGraph.graph.title} placement="bottom">
                     <h3 className="sharGraphSearch">
                       {' '}
-                      {shGraph.graph.title.length > 25 ? `${shGraph.graph.title.substring(0, 25)}...` : shGraph.graph.title}
+                      {shGraph.graph.title.length > 25
+                        ? `${shGraph.graph.title.substring(0, 25)}...`
+                        : shGraph.graph.title}
                     </h3>
                   </Tooltip>
                   <div className="descriptionGraph">
-                    <Tooltip overlay={shGraph.graph.description} placement="bottom" >
+                    <Tooltip overlay={shGraph.graph.description} placement="bottom">
                       <span>
                         {' '}
-                        {shGraph.graph.description.length > 40 ? `${shGraph.graph.description.substring(0, 40)}...` : shGraph.graph.description}
+                        {shGraph.graph.description.length > 40
+                          ? `${shGraph.graph.description.substring(0, 40)}...`
+                          : shGraph.graph.description}
                       </span>
                     </Tooltip>
                   </div>
@@ -119,16 +130,19 @@ class SearchSharedGraphs extends Component {
             ))}
 
           </>
-        ) : ((!setLimit && <div className='not_found'>
-          <img src={NotFound} />
+        ) : ((!setLimit && shareGraphsListStatus !== 'request' && (
+        <div className="not_found">
+          <img src={NotFound} alt="" />
           <h3>Not Found</h3>
-        </div>) || null)}
+        </div>
+        )) || null)}
       </>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  shareGraphsListStatus: state.shareGraphs.shareGraphsListStatus,
   shareGraphsList: state.shareGraphs.shareGraphsList,
 });
 const mapDispatchToProps = {
