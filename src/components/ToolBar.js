@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import memoizeOne from 'memoize-one';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
@@ -19,23 +19,26 @@ import { ReactComponent as Square } from '../assets/images/Square.svg';
 class ToolBar extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
+    getSingleGraphRequest: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     activeButton: PropTypes.string.isRequired,
+    history: PropTypes.string.isRequired,
   };
+
+  initialGraph = memoizeOne(async (graphId) => {
+    await this.props.getSingleGraphRequest(graphId, { full: true });
+  });
 
   constructor(props) {
     super(props);
     this.state = {
-      showLabelForm: false,
       showMenu: true,
       overMenu: '',
       selected: '',
       createNewPopup: false,
       showAddNode: false,
       showAddLabel: false,
-      helpOpenNewModal: false,
-      showHelp: false,
-      setShowHelp: false,
       openHelpsModal: false,
 
     };
@@ -114,7 +117,7 @@ class ToolBar extends Component {
     const { selected } = this.state;
 
     switch (button) {
-      case 'analytic':
+      case 'analytic': {
         await this.initialGraph(graphId);
 
         const { nodes, links } = this.props.singleGraph;
@@ -125,6 +128,7 @@ class ToolBar extends Component {
           this.props.history.replace(`/graphs/view/${graphId}?analytics`);
         }
         break;
+      }
       case 'filter':
         Utils.isInEmbed()
           ? this.props.history.replace(`/graphs/embed/filter/${graphId}/${token}`)
@@ -150,7 +154,7 @@ class ToolBar extends Component {
       case 'wikipedia':
       case 'sciGraph':
       case 'create-label-square':
-      case 'create-label-ellipse':
+      case 'create-label-ellipse': {
         let value;
         if (selected.search('->')) {
           value = `${selected.split('->')[0]}->${button}`;
@@ -161,6 +165,7 @@ class ToolBar extends Component {
           selected: value,
         });
         break;
+      }
       default:
         break;
     }
@@ -270,10 +275,6 @@ class ToolBar extends Component {
     });
   }
 
-  initialGraph = memoizeOne(async (graphId) => {
-    await this.props.getSingleGraphRequest(graphId, { full: true });
-  });
-
   toggleOutside = () => {
     this.setState({
       createNewPopup: false,
@@ -374,7 +375,7 @@ class ToolBar extends Component {
             className={`${overMenu === 'view' ? 'collapse_over' : ''} collapse`}
           >
             <i className="fa fa-eye"> </i>
-            <div className="sidebar_text"> View </div>
+            <div className="sidebar_text"> Explore </div>
           </li>
           <li
             onClick={() => this.handleClick('filter')}

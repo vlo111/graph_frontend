@@ -6699,7 +6699,7 @@ img.preview-scaled {
 .acceptCheckedItems {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   margin: 0;
   background-color: #ffffff;
@@ -6866,6 +6866,10 @@ img.preview-scaled {
   padding: 0 !important;
   box-shadow: none !important;
   background-color: transparent !important;
+
+  .ghModalSearchInside {
+    width: 100%;
+  }
 
   .btn-existing {
     width: 170px;

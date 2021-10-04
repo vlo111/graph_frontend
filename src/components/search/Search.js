@@ -7,6 +7,10 @@ import Chart from '../../Chart';
 
 const { REACT_APP_MAX_NODE_AND_LINK } = process.env;
 
+/**
+ * This Component currently is not used !!!
+ */
+
 class Search extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
