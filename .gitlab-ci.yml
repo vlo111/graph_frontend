@@ -1,7 +1,7 @@
 production_job:
     stage: deploy
     only:
-      - master
+      - develop
 
     before_script:
         # Generate SSH Key
