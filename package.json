@@ -59,7 +59,7 @@
   },
   "scripts": {
     "prod": "react-scripts start",
-    "dev": "PORT=3001 react-scripts start",
+    "dev": "PORT=3002 react-scripts start",
     "start": "react-scripts start",
     "svg": "svgo -f src/assets/images/icons --config='{\"plugins\":[{\"removeViewBox\":false,\"removeAttrs\":{\"attrs\":\"data.*\"}},{\"removeNonInheritableGroupAttrs\":true},{\"collapseGroups\":true}]}'",
     "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build && node build.js",

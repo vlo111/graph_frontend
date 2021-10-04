@@ -11,8 +11,8 @@ production_job:
         - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
     script:
-      - bash .deploy-production.sh
+      - bash .deploy-development.sh
 
     environment:
-      name: production
-      url: https://graphs2.analysed.ai/
+      name: development
+      url: https://d.araks.analysed.ai/
