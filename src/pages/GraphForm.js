@@ -16,7 +16,7 @@ import { setActiveButton } from '../store/actions/app';
 import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
-import Search from '../components/search/Search';
+import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
 import MapsGraph from '../components/maps/MapsGraph';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
@@ -98,7 +98,7 @@ class GraphForm extends Component {
           <Crop />
           <AddNodeModal />
           {activeButton === 'data' && <DataView />}
-          <Search history={this.props.history} />
+          {activeButton === 'search' && <SearchModal history={this.props.history} />}
           {activeButton === 'media' && <MediaModal history={this.props.history} />}
           {activeButton === 'maps-view' && <MapsGraph />}
           {activeButton === 'maps' && <MapsModal />}
