@@ -1,4 +1,4 @@
-production_job:
+development_job:
     stage: deploy
     only:
       - develop
@@ -15,4 +15,4 @@ production_job:
 
     environment:
       name: development
-      url: https://d.araks.analysed.ai/
+      url: https://d-araks.analysed.ai/
