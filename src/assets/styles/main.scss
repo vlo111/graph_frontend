@@ -6854,6 +6854,7 @@ img.preview-scaled {
 
 .searchOverlay {
   position: relative;
+  z-index: 1 !important;
 }
 
 .searchNodes {
@@ -7626,7 +7627,7 @@ img.preview-scaled {
   background: white;
   padding: 10px;
   box-shadow: 4px 0 31px rgb(119 113 183 / 22%);
-  z-index: 6;
+  z-index: 200;
 
   .container > li {
     display: flex;
