@@ -12,6 +12,11 @@ import { ReactComponent as ExportSvg } from '../../assets/images/icons/export.sv
 class ExportNodeTabs extends Component {
   static propTypes = {
     setLoading: PropTypes.func.isRequired,
+    node: PropTypes.func.isRequired,
+    tabs: PropTypes.func.isRequired,
+    image: PropTypes.func.isRequired,
+    nodeData: PropTypes.func.isRequired,
+    title: PropTypes.func.isRequired,
   }
 
   decode = (str) => str.replace(/&lt;/g, '<')
@@ -23,7 +28,7 @@ class ExportNodeTabs extends Component {
     this.props.setLoading(true);
 
     const {
-      node, tabs, image, nodeData,
+      node, tabs, image, nodeData, title,
     } = this.props;
 
     const html = this.decode(renderToString(<ExportNode
@@ -31,6 +36,7 @@ class ExportNodeTabs extends Component {
       tabs={tabs}
       image={image}
       nodeData={nodeData}
+      title={title}
     />));
 
     await Api.download('node-info-pdf', { html, image });

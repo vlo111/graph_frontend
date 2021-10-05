@@ -34,22 +34,22 @@ class GraphCardItem extends Component {
     document.getElementsByClassName(`graph-card_${id}`)[0].style.display = 'none';
   }
 
-  updateGraph = (graph) => {
-    let { graphs } = this.props;
-    graphs = graphs.map((p) => {
-      if (p.id === graph.id) {
-        p.title = graph.title;
-        p.description = graph.description;
-        p.thumbnail = graph.thumbnail;
-      }
-      return p;
-    });
+  // updateGraph = (graph) => {
+  //   let { graphs } = this.props;
+  //   graphs = graphs.map((p) => {
+  //     if (p.id === graph.id) {
+  //       p.title = graph.title;
+  //       p.description = graph.description;
+  //       p.thumbnail = graph.thumbnail;
+  //     }
+  //     return p;
+  //   });
 
-    this.setState({ graphs });
-  }
+  //   this.setState({ graphs });
+  // }
 
   render() {
-    let { headerTools, graphs } = this.props;
+    const { headerTools, graphs } = this.props;
     if (!graphs?.length) return null;
 
     return (
@@ -85,14 +85,14 @@ class GraphCardItem extends Component {
               </div>
             </div>
             <div>
-              <Tooltip overlay={graph.title} placement="bottom" >
+              <Tooltip overlay={graph.title} placement="bottom">
                 <h3>
                   {' '}
                   {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
                 </h3>
               </Tooltip>
               <div className="descriptionGraph">
-                <Tooltip overlay={graph.description} placement="bottom" >
+                <Tooltip overlay={graph.description} placement="bottom">
                   <span>
                     {' '}
                     {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}

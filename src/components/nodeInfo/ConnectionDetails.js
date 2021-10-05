@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
@@ -8,12 +9,22 @@ import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
 
 class ConnectionDetails extends Component {
+  static propTypes = {
+    filter: PropTypes.object.isRequired,
+    links: PropTypes.object.isRequired,
+    nodes: PropTypes.func.isRequired,
+    labels: PropTypes.func.isRequired,
+    nodeId: PropTypes.func.isRequired,
+    exportNode: PropTypes.func.isRequired,
+    nodeData: PropTypes.func.isRequired,
+  }
+
   getGroupedConnections = memoizeOne((nodeId) => {
     const { links, nodes } = this.props;
 
-    const nodeLinks = links.filter((d) => (d.source === nodeId || d.target === nodeId));
+    const nodeLinks = links && links.filter((d) => (d.source === nodeId || d.target === nodeId));
 
-    const connectedNodes = nodeLinks.map((l) => {
+    const connectedNodes = nodeLinks && nodeLinks.map((l) => {
       let connected;
       if (l.source === nodeId) {
         connected = nodes.find((d) => d.id === l.target);
@@ -27,7 +38,10 @@ class ConnectionDetails extends Component {
     });
 
     const connectedNodesGroup = Object.values(_.groupBy(connectedNodes, 'linkType'));
-    return { connectedNodes: _.orderBy(connectedNodesGroup, (d) => d.length, 'desc'), length: connectedNodes.length };
+    return {
+      connectedNodes: _.orderBy(connectedNodesGroup, (d) => d.length && d.length, 'desc'),
+      // length: connectedNodes.length,
+    };
   })
 
   openFolder = (e, d) => {
@@ -61,8 +75,8 @@ class ConnectionDetails extends Component {
     const { connectedNodes, length } = this.getGroupedConnections(nodeId);
 
     if (exportNode) {
-      connectedNodes.map((nodeGroup) => {
-        nodeGroup.map((d) => {
+      connectedNodes.forEach((nodeGroup) => {
+        nodeGroup.forEach((d) => {
           if (d.connected.icon && d.connected.icon.startsWith('blob')) {
             d.connected.icon = nodeData.find((node) => node.id === d.connected.id).icon;
           }
