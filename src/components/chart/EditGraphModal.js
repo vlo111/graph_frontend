@@ -172,6 +172,12 @@ class EditGraphModal extends Component {
     if (!graph) {
       toast.error('Something went wrong');
     }
+    if (!graph && singleGraph) {
+      graph = singleGraph
+    }
+    if (!graph) {
+      toast.error('Something went wrong')
+    }
     const { requestData } = this.state;
 
     if (path == 'image') {
