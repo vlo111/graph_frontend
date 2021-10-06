@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes, { number } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import { Link, withRouter } from 'react-router-dom';

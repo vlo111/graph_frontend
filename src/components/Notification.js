@@ -30,6 +30,7 @@ export default () => {
       item.link = `/graphs/preview/${item.graphId}`;
     }
   });
+
   return (
     <NotifyMe
       data={list}

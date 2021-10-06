@@ -33,4 +33,3 @@ UserConfirmation.propTypes = {
 };
 
 export default UserConfirmation;
-

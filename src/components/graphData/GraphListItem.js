@@ -3,10 +3,9 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import Tooltip from 'rc-tooltip';
 import GraphListFooter from './GraphListFooter';
 import GraphDashboardSubMnus from './GraphListHeader';
-import Tooltip from 'rc-tooltip';
-
 
 class GraphListItem extends Component {
   static propTypes = {
@@ -69,6 +68,7 @@ class GraphListItem extends Component {
             <div className="sub-menus" >
               <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={graph} headerTools={headerTools} />
             </div>
+
           </article>
         ))
         : <></>

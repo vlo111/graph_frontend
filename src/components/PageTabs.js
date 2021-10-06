@@ -45,7 +45,6 @@ class PageTabs extends Component {
     }
   }
 
-
   onChange = (mode) => {
     this.setState({
       selected: mode,
@@ -88,10 +87,11 @@ class PageTabs extends Component {
     const tab = tabs.find((t) => t.to === location.pathname);
     const list = direction === 'vertical' ? _.reverse([...tabs]) : tabs;
     const isHome = direction === 'vertical' && className === 'homePageTabs';
-    const { selected, showFilterModal } = this.state; 
+    const { selected, showFilterModal } = this.state;
+
     const { path: currentTab } = this.props.match;
     return (
-      <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser' } `} {...props}>
+      <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser'}`} {...props}>
         <ul className={`tabsList ${selected}`}>
           <li className="lastItem">
             <div className="cart-item" onClick={() => this.onChange('tab_card')}>
