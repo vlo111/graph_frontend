@@ -27,10 +27,6 @@ class Home extends Component {
     this.props.getGraphsListRequest(page, { s, filter: order, status });
   })
   
-  handleClick = (list) => {
-    this.setState({ dataGrid: list });
-  }
-  
   
   render() {
     const {
@@ -49,7 +45,7 @@ class Home extends Component {
           ) : null}
           {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
             <NoGraph />
-          ) : mode === 'list' ? <GraphListItem graphs={graphsList}  /> : <GraphCardItem graphs={graphsList} />}
+          ) : mode === 'list' ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} />}
         </div>
         {graphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>

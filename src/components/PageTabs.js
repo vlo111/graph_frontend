@@ -91,7 +91,7 @@ class PageTabs extends Component {
     const { selected, showFilterModal } = this.state; 
     const { path: currentTab } = this.props.match;
     return (
-      <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser' } `} {...props}>
+      <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser'}`} {...props}>
         <ul className={`tabsList ${selected}`}>
           <li className="lastItem">
             <div className="cart-item" onClick={() => this.onChange('tab_card')}>
