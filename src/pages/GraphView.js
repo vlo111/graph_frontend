@@ -11,10 +11,10 @@ import Chart from '../Chart';
 import AnalysisUtils from '../helpers/AnalysisUtils';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import { setActiveButton, toggleExplore } from '../store/actions/app';
+import { setActiveButton } from '../store/actions/app';
 import Button from '../components/form/Button';
 import Filters from '../components/filters/Filters';
-import Search from '../components/search/Search';
+import SearchModal from '../components/search/ExploreModal';
 import ContextMenu from '../components/contextMenu/ContextMenu';
 import Zoom from '../components/Zoom';
 import NodeDescription from '../components/NodeDescription';
@@ -38,7 +38,6 @@ class GraphView extends Component {
     deleteGraphRequest: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
     userGraphRequest: PropTypes.func.isRequired,
-    toggleExplore: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     graphInfo: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
@@ -60,10 +59,6 @@ class GraphView extends Component {
       this.props.getGraphInfoRequest(graphId);
     }
   })
-
-  componentWillUnmount() {
-    this.props.toggleExplore(false);
-  }
 
   deleteGraph = async () => {
     const { match: { params: { graphId = '' } } } = this.props;
@@ -193,7 +188,7 @@ class GraphView extends Component {
                   </>
                 )}
                 <ToolBarHeader graph={singleGraph} />
-                <Search />
+                <SearchModal />
                 <NodeFullInfo editable={false} />
                 <LabelTooltip />
                 <Filters />
@@ -231,7 +226,6 @@ const mapDispatchToProps = {
   deleteGraphRequest,
   userGraphRequest,
   getGraphInfoRequest,
-  toggleExplore,
 };
 const Container = connect(
   mapStateToProps,

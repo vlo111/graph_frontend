@@ -50,6 +50,9 @@ module.exports = {
 
     'no-nested-ternary': 'off',
     'interactive-supports-focus': 'off',
-    'no-static-element-interactions': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/mouse-events-have-key-events': 'off',
+    'jsx-a11y/no-autofocus': 'off',
+    'react/no-danger': 'off',
   },
 };

@@ -6700,7 +6700,7 @@ img.preview-scaled {
 .acceptCheckedItems {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   margin: 0;
   background-color: #ffffff;
@@ -6868,6 +6868,10 @@ img.preview-scaled {
   box-shadow: none !important;
   background-color: transparent !important;
 
+  .ghModalSearchInside {
+    width: 100%;
+  }
+
   .btn-existing {
     width: 170px;
   }
@@ -6954,7 +6958,6 @@ img.preview-scaled {
           cursor: pointer;
           width: 7em;
 
-
           .chooseSearchFields {
             display: flex;
             justify-content: center;
@@ -7027,6 +7030,356 @@ img.preview-scaled {
         box-sizing: border-box;
       }
     }
+  }
+}
+
+.ghModalEditSearch {
+  width: 60%;
+  min-height: 15%;
+  max-width: 90% !important;
+  display: flex;
+  flex-direction: column;
+
+  .graphSearch {
+    width: 50%;
+    align-self: center;
+    align-items: center;
+
+    label {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .list {
+    .tabButton {
+      display: grid !important;
+      grid-template-columns: 100%;
+      box-shadow: 0 2px 9px #022f771a;
+      cursor: unset;
+
+      .right {
+        flex-direction: unset !important;
+        display: grid !important;
+        width: 97% !important;
+
+        .contentTabs {
+          width: 100%;
+
+          .contentWrapper {
+            display: block;
+            max-height: 300px;
+            padding-top: 1em;
+            margin-bottom: 1em;
+            overflow: scroll;
+            box-shadow: 0px 4px 11px rgb(0 0 0 / 25%);
+            border-radius: 3px;
+            background: #FFFFFF;
+            margin: 11px 9px 11px;
+            width: 100%;
+
+            .tabNameLine {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-between;
+              padding-right: 5px;
+
+              .nodeType {
+                margin: 0 21px;
+                
+                .typeText {
+                  color: $color-border;
+                  font-weight: 800;
+                }
+              }
+              .toggleTabBox {
+                padding: 0 5px;
+              }
+            }
+
+            .content {
+              max-height: 80%;
+              padding: 11px;
+              padding-top: 0px;
+            }
+
+            .name {
+              display: block;
+              font-weight: 600;
+              margin: 1em 0 .5em 0;
+              padding-left: 21px
+            }
+
+            .type, .name {
+              jodit {
+                max-width: 190px;
+                max-height: 190px;
+
+                &:after {
+                  position: relative;
+                }
+              }
+
+              iframe {
+                min-width: 190px;
+                min-height: 190px;
+                max-width: 100%;
+                width: 100%;
+              }
+
+              b {
+                font-weight: bold;
+                color: white;
+                background-color: $color-marked;
+                padding: 0 5px;
+                border-radius: 2px;
+              }
+
+              .scaled {
+                max-width: 100%;
+              }
+            }
+
+            table {
+              max-width: 195px;
+            }
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      &:hover {
+        color: #0D0905;
+      }
+
+    }
+
+    .header {
+      cursor: pointer;
+      align-items: center;
+      display: flex !important;
+      flex-direction: unset !important;
+
+      .nodeIcon {
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+
+
+        img {
+          width: 35px;
+          height: 35px;
+
+        }
+      }
+
+      .headerArea {
+        margin-left: 18px;
+        display: flex;
+      }
+
+      .name {
+        font: normal normal 600 16px/22px Open Sans;
+        letter-spacing: 0;
+        font-size: 1.5625rem !important;
+        font-weight: 400;
+      }
+
+      .type {
+        display: block;
+        margin-left: 1em;
+      }
+    }
+  }
+
+}
+
+
+
+
+
+.searchInputWrapper,
+.ghModalEditSearch {
+  .list {
+    max-height: 500%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    .nodeItem {
+      height: 44px;
+    }
+
+
+    .item {
+      display: flex;
+      margin: .8em 0;
+      width: 91%;
+      align-items: center;
+
+
+      .ghButton {
+        width: 100%;
+        margin: 0;
+        padding: 5px 5px;
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        text-align: left;
+        flex-direction: row;
+
+        .right {
+          display: flex;
+          flex-direction: column;
+          margin-left: .5em;
+          width: calc(100% - 60px);
+
+          .row {
+            display: flex;
+            margin: 0;
+          }
+
+          .nodeTabs {
+            .type {
+              white-space: inherit;
+            }
+          }
+          .tabRight {
+            margin-left: 0;
+          }
+
+          .name {
+            margin-right: 10px;
+            overflow: hidden;
+          }
+
+          .keywords {
+            font-size: 12px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+
+        .name {
+          font-size: 15px;
+          max-width: 80%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          margin-left: 1em;
+        }
+
+        .type {
+          max-width: calc(50% - 70px);
+          color: $color-dark-blue;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+.editSearchNodes {
+  min-height: 45%;
+  min-width: 62%;
+  right: 3%;
+
+  .searchField {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .searchText {
+      display: flex;
+      justify-content: center;
+      font-size: 2em;
+    }
+
+    .searchBox {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: center;
+
+      .searchBoxInside {
+        border: 1px solid #7166F8;
+        border-radius: 5px;
+        display: flex;
+        width: 90%;
+
+        .searchFieldCheckBox  {
+          justify-content: center;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+
+          .chooseSearchFields {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #7166F8;
+
+            .dropDownSvg {
+              margin-left: 7px;
+              width: 10px;
+            }
+          }
+
+          .searchFieldCheckBoxList {
+            flex-direction: column;
+            position: absolute;
+            top: 6.3em;
+            background-color: white;
+            z-index: 103;
+            border-radius: 3px;
+            box-shadow: 0px 4px 16px rgb(0 0 0 / 25%);
+            display: none;
+
+            .checkBox {
+              color: #7166F8;
+              cursor: pointer;
+              text-transform: capitalize;
+            }
+          }
+
+          .searchFieldCheckBoxList div {
+            padding: .1em .5em;
+          }
+        }
+
+        .searchFieldCheckBox:hover .searchFieldCheckBoxList {
+          display: flex;
+        }
+
+        .nodeSearch {
+          height: 36px;
+          flex: 6;
+          border: none;
+          border-left: 1px solid #7166F8;
+          border-radius: 0px;
+          outline: none;
+          margin-right: .2em;
+          padding-left: 1em;
+        }
+      }
+    }
+  }
+  .searchItem {
+    cursor: pointer;
   }
 }
 

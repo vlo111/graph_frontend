@@ -51,6 +51,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         userSearch: [],
+        status: 'request',
       };
     }
     case GET_USER_BY_TEXT.SUCCESS: {
@@ -58,6 +59,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         userSearch: data,
+        status: 'success',
       };
     }
     default: {

@@ -4,7 +4,7 @@ import {
   NEW_NODE_MODAL, PREVIOUS_ACTIVE_BUTTON, RESET_FILTER,
   SET_ACTIVE_BUTTON, SET_FILTER, SET_GRID_INDEXES,
   TOGGLE_GRID, SET_LEGEND_BUTTON, ONLINE_USERS, TOGGLE_GRAPH_MAP, TOGGLE_SEARCH,
-  TOGGLE_EXPLORE, TOGGLE_DELETE_STATE, AUTO_SCALE,
+  TOGGLE_DELETE_STATE, AUTO_SCALE,
 } from '../actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
 import Chart from '../../Chart';
@@ -25,7 +25,6 @@ const initialState = {
   GraphNameButton: 'close',
   showGraphMap: false,
   showSearch: false,
-  exploreMode: false,
   deleteState: false,
   autoScale: true,
 };
@@ -137,12 +136,6 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         showSearch: action.payload.open,
-      };
-    }
-    case TOGGLE_EXPLORE: {
-      return {
-        ...state,
-        exploreMode: action.payload.open,
       };
     }
     case TOGGLE_DELETE_STATE: {

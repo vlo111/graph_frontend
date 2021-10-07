@@ -55,7 +55,7 @@ class ContextMenu extends Component {
    * @param {object} ev
    */
   handleKeyDown = async (ev) => {
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.copy_code
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.copy_code && !ev.altKey
     ) {
       await this.handleCopy(ev);
     }
