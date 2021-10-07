@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from './form/Button';
-import { ReactComponent as UndoSvg } from '../assets/images/icons/Undo-back.svg';
+import { ReactComponent as UndoSvg } from '../assets/images/icons/Undo_back.svg';
 import { ReactComponent as UndoBackSvg } from '../assets/images/icons/Redo.svg';
 import Chart from '../Chart';
 import ContextMenu from './contextMenu/ContextMenu';
