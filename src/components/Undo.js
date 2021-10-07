@@ -53,23 +53,26 @@ class Undo extends Component {
   render() {
     const { undoCount, redoCount } = this.state;
     return (
-      <div className="undoWrapper">
-        <Button
-          onClick={() => Chart.undoManager.undo()}
-          className="undo"
-          icon={<UndoSvg fill="#717ea0" />}
-          disabled={!undoCount}
-        >
-          {undoCount}
-        </Button>
-        <Button
-          onClick={() => Chart.undoManager.redo()}
-          className="undoBack"
-          icon={<UndoBackSvg fill="#717ea0" />}
-          disabled={!redoCount}
-        >
-          {redoCount}
-        </Button>
+      <div className="undoWrapper" id="undoWrapper">
+        <div className="info-content">
+          <Button
+            onClick={() => Chart.undoManager.undo()}
+            className="undo"
+            icon={<UndoSvg fill="#717ea0" />}
+            disabled={!undoCount}
+          >
+            {undoCount}
+          </Button>
+          <Button
+            onClick={() => Chart.undoManager.redo()}
+            className="undoBack"
+            icon={<UndoBackSvg fill="#717ea0" />}
+            disabled={!redoCount}
+          >
+            {redoCount}
+          </Button>
+        </div>
+
       </div>
     );
   }
