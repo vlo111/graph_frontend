@@ -58,7 +58,7 @@ class Undo extends Component {
           <Button
             onClick={() => Chart.undoManager.undo()}
             className="undo"
-            icon={<UndoSvg fill="#717ea0" />}
+            icon={<UndoSvg />}
             disabled={!undoCount}
           >
             {undoCount}
@@ -66,7 +66,7 @@ class Undo extends Component {
           <Button
             onClick={() => Chart.undoManager.redo()}
             className="undoBack"
-            icon={<UndoBackSvg fill="#717ea0" />}
+            icon={<UndoBackSvg />}
             disabled={!redoCount}
           >
             {redoCount}
