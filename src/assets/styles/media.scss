@@ -343,6 +343,10 @@
       margin-right: 7px !important; 
     }
   }
+
+  .section2 .ghButton2, .section2 .ghSelect {
+    position:initial;
+  }
 }
 
 @media (min-width: 992px) {
@@ -626,6 +630,9 @@ margin-top: -5px;
   .section2 > div {
     margin-bottom: 30px;
   }
+  .section2 .ghButton2{
+    margin-bottom: 25px;
+  }
 
 
 }
@@ -681,6 +688,9 @@ margin-top: -5px;
   }
   .friends-requests > div:first-child {
     padding-left: 30px;
+  }
+  .section2 .ghSelect  {
+    margin: 25px auto;
   }
   
 }
