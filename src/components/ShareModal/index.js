@@ -16,7 +16,7 @@ const ShareModal = React.memo(({ graph, closeModal }) => {
   const dispatch = useDispatch();
   const [select, setSelect] = useState([]);
   const [sharedUsers, setShardUsers] = useState([]);
-  const afterOpenModal = () => {};
+  const afterOpenModal = () => { };
 
   const changeStatus = () => {
     dispatch(updateShareGraphStatusRequest({ graphId: graph.id }));

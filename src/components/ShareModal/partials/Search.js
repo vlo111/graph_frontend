@@ -17,7 +17,7 @@ const Search = ({
   const [isLoading, setIsLoading] = useState(false);
   const refTypeahead = useRef();
 
-  graph = !isEmpty(graph) ? graph : singleGraph;
+  graph = !isEmpty(singleGraph) ? singleGraph : graph;
 
   const handleSearch = async (query) => {
     setIsLoading(true);

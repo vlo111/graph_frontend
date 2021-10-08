@@ -43,7 +43,7 @@ module.exports = {
       assert: 'both',
       depth: 3,
     }],
-    'max-len': ['error', { code: 140 }],
+    'max-len': ['error', { code: 160 }],
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'react/no-unescaped-entities': 'off',

@@ -9514,11 +9514,13 @@ details[open] summary:after {
   // width: 198px;
   
  
-div{
-  display: flex;
-  margin-right: -7px;
-  min-height: 40px;
-}
+  .group {
+    display: flex;
+    align-items: center;
+    margin: 3px 0;
+    min-height: 50px;
+    padding: 5px 0;  
+  }
 .group-header{
   color:#AAAAAA;
   
