@@ -21,7 +21,7 @@ import Checkbox from '../form/Checkbox';
 
 class AddLinkModal extends Component {
   static propTypes = {
-    currentUserId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.string.isRequired,
   }
 
   getTypes = memoizeOne((links) => {

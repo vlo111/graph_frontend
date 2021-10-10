@@ -23,7 +23,7 @@ class ToolBar extends Component {
     singleGraph: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     activeButton: PropTypes.string.isRequired,
-    history: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   initialGraph = memoizeOne(async (graphId) => {
