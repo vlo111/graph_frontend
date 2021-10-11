@@ -49,6 +49,7 @@ class AutoSave extends Component {
     deleteLabelsRequest: PropTypes.func.isRequired,
     updateLabelsRequest: PropTypes.func.isRequired,
     toggleFolderRequest: PropTypes.func.isRequired,
+    toggleDeleteState: PropTypes.func.isRequired,
 
     updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
 
@@ -56,7 +57,7 @@ class AutoSave extends Component {
     getGraphsListRequest: PropTypes.func.isRequired,
 
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
-    getGraphsListRequest: PropTypes.func.isRequired,
+    location: PropTypes.object.isRequired,
   }
 
   async componentDidMount() {

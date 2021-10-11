@@ -12,6 +12,7 @@ import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
 import EditGraphModal from '../chart/EditGraphModal';
 import SaveAsTempletModal from '../chart/SaveasTampletModal';
 import CreateGraphModal from '../CreateGraphModal';
+import Select from '../form/Select';
 import Button from '../form/Button';
 import Api from '../../Api';
 import Input from '../form/Input';
@@ -24,9 +25,12 @@ const PAGE = 1;
 
 class GraphSettings extends Component {
   static propTypes = {
-    singleGraph: PropTypes.object.isRequired,
+    createGraphRequest: PropTypes.func.isRequired,
+    updateGraphRequest: PropTypes.func.isRequired,
     setLoading: PropTypes.func.isRequired,
+    singleGraph: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
 
   }
 
@@ -52,7 +56,6 @@ class GraphSettings extends Component {
       showModalTemplet: false,
       search: '',
       graphList: [],
-      openEdit: false,
       showDropDown: false,
       requestData: {
         title: '',
@@ -153,7 +156,7 @@ class GraphSettings extends Component {
     return (
 
       <div className="GraphNames">
-        <button className="dropdown-btn" onClick={this.toggleDropDown}>
+        <button className="dropdown-btn" type="button" onClick={this.toggleDropDown}>
           <div className="graphNname1">
 
             <span title={singleGraph.title} className="graphNames">
