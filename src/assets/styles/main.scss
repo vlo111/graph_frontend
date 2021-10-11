@@ -1202,53 +1202,8 @@ p {
         }
       }
     }
-  }
-
-  .undoWrapper {
-    display: flex;
-    padding-top: 6px;
-    margin-top: 13px;
-    border-top: 1px solid $color-light-gray;
-    width: 100%;
-    justify-content: center;
-
-    .ghButton {
-      background-color: $color-light-gray;
-      border-radius: 10px;
-      margin-right: 7.5px;
-      margin-left: 7.5px;
-      color: $color-dark-blue;
-      font-size: 14px;
-      padding: 11px 10px;
-      font-weight: normal;
-
-      .icon {
-        width: 16px;
-      }
-    }
-
-    .undo {
-      margin: 12px 10px;
-      display: flex;
-      align-items: center;
-
-      .icon {
-        margin-right: 8px;
-      }
-    }
-
-    .undoBack {
-      margin: 12px 10px;
-      flex-direction: row-reverse;
-      align-items: center;
-      display: flex;
-
-      .icon {
-        margin-left: 8px;
-      }
-    }
-  }
-
+  } 
+ 
   .imageUpload {
     .ghFileInput {
       width: 100%;
@@ -8660,7 +8615,7 @@ img.preview-scaled {
   justify-content: center;
   align-items: center;
   position: absolute;
-  left: 213px;
+  left: 273px;
   bottom: 2%;
   user-select: none;
   overflow: hidden;
@@ -9559,11 +9514,13 @@ details[open] summary:after {
   // width: 198px;
   
  
-div{
-  display: flex;
-  margin-right: -7px;
-  min-height: 40px;
-}
+  .group {
+    display: flex;
+    align-items: center;
+    margin: 3px 0;
+    min-height: 50px;
+    padding: 5px 0;  
+  }
 .group-header{
   color:#AAAAAA;
   
@@ -9769,4 +9726,63 @@ width: 100%;
 margin-top: 10%;}
 //////end 
 
-////////////////Backend mail 
+//Start undo  style
+
+.undoWrapper { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 200px;
+  bottom: 2%;
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
+
+  .info-content { 
+    display: flex;
+    padding: 0;
+    color: #BEBEBE;
+    align-items: center;
+    border-radius: 5px;
+    height: 42px;
+    margin-right: 10px; 
+    transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
+ 
+  }
+  .ghButton {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    margin-left: 7.5px;
+    color: $color-dark-blue;
+    font-size: 14px;
+    padding: 15px 15px;
+    font-weight: normal; 
+    .icon {
+      width: 16px;
+    }
+  }
+
+  .undo {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin-right: 8px;
+    }
+  }
+
+  .undoBack {
+    margin: 0px 10px;
+    flex-direction: row-reverse;
+    align-items: center;
+    display: flex;
+
+    .icon {
+      margin-left: 8px;
+      margin-right: 0 !important;
+    }
+  }
+}
+//end undo  style
+

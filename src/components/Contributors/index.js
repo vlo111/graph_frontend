@@ -114,6 +114,9 @@ const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
   );
 });
 
-ContributorsModal.propTypes = {};
+ContributorsModal.propTypes = {
+  graphId: PropTypes.number.isRequired,
+
+};
 
 export default ContributorsModal;
