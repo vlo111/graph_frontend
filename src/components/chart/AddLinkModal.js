@@ -21,7 +21,7 @@ import Checkbox from '../form/Checkbox';
 
 class AddLinkModal extends Component {
   static propTypes = {
-    currentUserId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.string.isRequired,
   }
 
   getTypes = memoizeOne((links) => {
@@ -105,7 +105,7 @@ class AddLinkModal extends Component {
           }
           return d;
         });
-        //this.props.updateLinksRequest(graphId, [linkData]);
+        // this.props.updateLinksRequest(graphId, [linkData]);
       } else {
         linkData.create = true;
 
@@ -114,7 +114,7 @@ class AddLinkModal extends Component {
         linkData.id = linkData.id || ChartUtils.uniqueId(links);
         links.push({ ...linkData });
 
-        //this.props.createLinksRequest(graphId, [linkData]);
+        // this.props.createLinksRequest(graphId, [linkData]);
       }
       this._dataLinks = null;
 
@@ -236,9 +236,9 @@ class AddLinkModal extends Component {
             </div>
             <div className="show-direction">
               <Checkbox
-                  label="Show Direction"
-                  checked={linkData.direction}
-                  onChange={() => this.handleChange('direction', !linkData.direction)}
+                label="Show Direction"
+                checked={linkData.direction}
+                onChange={() => this.handleChange('direction', !linkData.direction)}
               />
             </div>
             <div className="buttons">

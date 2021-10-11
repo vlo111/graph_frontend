@@ -28,7 +28,7 @@ class NodeContextMenu extends Component {
               Open Link
             </a>
           </Button>
-        ) : null} 
+        ) : null}
       </>
     );
   }

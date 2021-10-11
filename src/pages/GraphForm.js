@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
+import { Redirect } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import ToolBar from '../components/ToolBar';
 import ReactChart from '../components/chart/ReactChart';
@@ -12,10 +13,10 @@ import DataView from '../components/dataView/DataView';
 import DataImport from '../components/import/DataImportModal';
 import NodeDescription from '../components/NodeDescription';
 import { setActiveButton } from '../store/actions/app';
-import { clearSingleGraph, getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/graphs';
+import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
-import Search from '../components/search/Search';
+import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
 import MapsGraph from '../components/maps/MapsGraph';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
@@ -29,14 +30,13 @@ import AutoSave from '../components/AutoSave';
 import LabelShare from '../components/share/LabelShare';
 import MediaModal from '../components/Media/MediaModal';
 import LabelCopy from '../components/labelCopy/LabelCopy';
-import FindPath from '../components/FindPath';
 import FindNode from '../components/FindNode';
 import MousePosition from '../components/chart/MousePosition';
 import ExitMode from '../components/ExitMode';
 import AddLinkedInModal from '../components/chart/AddLinkedInModal';
 import MapsModal from '../components/maps/MapsModal';
-import ScienceGraphModal from "../components/ScienceSearchToGraph/ScienceGraphModal";
-import WikiModal from "../components/wikipedia/WikiModal";
+import ScienceGraphModal from '../components/ScienceSearchToGraph/ScienceGraphModal';
+import WikiModal from '../components/wikipedia/WikiModal';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -45,8 +45,12 @@ class GraphForm extends Component {
     clearSingleGraph: PropTypes.func.isRequired,
     socketSetActiveGraph: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
+    singleGraphStatus: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
-    currentUserId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.string.isRequired,
+    mouseMoveTracker: PropTypes.array.isRequired,
+    currentUserRole: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   getSingleGraph = memoizeOne((graphId) => {
@@ -66,10 +70,23 @@ class GraphForm extends Component {
     );
   }
 
+  getPermission = () => {
+    const { singleGraphStatus, currentUserRole } = this.props;
+
+    return (singleGraphStatus === 'fail'
+      || (singleGraphStatus === 'success'
+        && currentUserRole && !['admin', 'edit', 'edit_inside'].includes(currentUserRole))
+    );
+  }
+
   render() {
-    const { activeButton, mouseMoveTracker, match: { params: { graphId } } } = this.props;
+    const { activeButton, match: { params: { graphId } } } = this.props;
     const isTracker = this.getMouseMoveTracker();
     this.getSingleGraph(graphId);
+    const isPermission = this.getPermission();
+    if (isPermission) {
+      return (<Redirect to="/403" />);
+    }
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
         <>
@@ -80,32 +97,32 @@ class GraphForm extends Component {
           <ToolBar />
           <Crop />
           <AddNodeModal />
-          {activeButton === 'data' && <DataView />} 
-        <Search history={this.props.history} />
-        {activeButton === 'media' && <MediaModal history={this.props.history} /> }
-        {activeButton === 'maps-view' && <MapsGraph />}
-        {activeButton === 'maps' && <MapsModal />}
-        {activeButton === 'sciGraph' && <ScienceGraphModal />}
-        {activeButton === 'wikipedia' && <WikiModal />}
-        <AddLinkModal />
-        <AddLabelModal />
-        <AddLinkedInModal />
-        <ContextMenu />
-        <DataImport />
-        <FindNode />
-        <NodeDescription />
-        <NodeFullInfo />
-        <AutoPlay />
-        <Zoom />
-        <LabelTooltip />
-        <CreateGraphModal />
-        <LabelShare />
-        <LabelCopy />
-        <AutoSave />
-        <ExitMode />
+          {activeButton === 'data' && <DataView />}
+          {activeButton === 'search' && <SearchModal history={this.props.history} />}
+          {activeButton === 'media' && <MediaModal history={this.props.history} />}
+          {activeButton === 'maps-view' && <MapsGraph />}
+          {activeButton === 'maps' && <MapsModal />}
+          {activeButton === 'sciGraph' && <ScienceGraphModal />}
+          {activeButton === 'wikipedia' && <WikiModal />}
+          <AddLinkModal />
+          <AddLabelModal />
+          <AddLinkedInModal />
+          <ContextMenu />
+          <DataImport />
+          <FindNode />
+          <NodeDescription />
+          <NodeFullInfo />
+          <AutoPlay />
+          <Zoom />
+          <LabelTooltip />
+          <CreateGraphModal />
+          <LabelShare />
+          <LabelCopy />
+          <AutoSave />
+          <ExitMode />
           <ToolBarFooter />
-        {isTracker && <MousePosition graphId={graphId} /> }
-        </> 
+          {isTracker && <MousePosition graphId={graphId} />}
+        </>
       </Wrapper>
     );
   }
@@ -116,6 +133,8 @@ const mapStateToProps = (state) => ({
   singleGraphLabels: state.graphs.singleGraph.labels || [],
   mouseMoveTracker: state.graphs.mouseMoveTracker,
   currentUserId: state.account.myAccount.id,
+  singleGraphStatus: state.graphs.singleGraphStatus,
+  currentUserRole: state.graphs.singleGraph.currentUserRole || '',
 });
 const mapDispatchToProps = {
   setActiveButton,

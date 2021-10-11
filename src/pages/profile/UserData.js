@@ -4,6 +4,10 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class UserData extends Component {
+  static propTypes = {
+    myAccount: PropTypes.string.isRequired,
+  };
+
   render() {
     const { myAccount } = this.props;
 
@@ -15,13 +19,13 @@ class UserData extends Component {
             {' '}
             {`${myAccount.firstName} ${myAccount.lastName}`}
           </h4>
-          <a href={myAccount.website} target="_blank">{myAccount.website}</a>
+          <a href={myAccount.website} target="_blank" rel="noreferrer">{myAccount.website}</a>
           <p>{myAccount.bio}</p>
         </div>
       </>
     );
   }
-} 
+}
 
 const mapStateToProps = (state) => ({
   myAccount: state.account.myAccount,

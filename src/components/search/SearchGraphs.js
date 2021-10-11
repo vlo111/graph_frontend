@@ -34,6 +34,7 @@ class SearchGraphs extends Component {
       this.props.history.replace(`/search?${query}`);
     }
   }
+ 
 
   render() {
     return (

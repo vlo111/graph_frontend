@@ -41,7 +41,7 @@ class ChartInfography {
       };
     };
     const handleDrag = (ev) => {
-      let { dx, dy } = ev;
+      const { dx, dy } = ev;
       if (!data.node.scale || !data.node.scale[0]) {
         _.set(data.node, 'scale', [1, 1, 0]);
       }

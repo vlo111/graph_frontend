@@ -17,9 +17,7 @@ import { NODE_STATUS, NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
-import Utils from '../../helpers/Utils';
-import Button from '../form/Button';
-import Checkbox from '../form/Checkbox';
+import Checkbox from '../form/Checkbox'
 
 let CHECKED = false;
 
@@ -83,17 +81,17 @@ class DataTableNodes extends Component {
   }
 
   handleCheckBoxChange = (isAllChecked) => {
-    let { nodes, selectedNodes } = this.props
+    let { nodes, selectedNodes } = this.props;
     if (!isAllChecked) {
-      nodes.map(node => {
+      nodes.map((node) => {
         if (!selectedNodes.includes(node.index)) {
-          selectedNodes.push(node.index)
+          selectedNodes.push(node.index);
         }
-      })
+      });
     } else {
-      selectedNodes = selectedNodes.filter(index => !nodes.some(node => node.index === index))
+      selectedNodes = selectedNodes.filter((index) => !nodes.some((node) => node.index === index));
     }
-    this.props.setGridIndexes('nodes', selectedNodes)
+    this.props.setGridIndexes('nodes', selectedNodes);
   }
 
   renderSheet = (props, className) => {
@@ -115,7 +113,7 @@ class DataTableNodes extends Component {
         <thead>
           <tr>
             <th className={`${position} cell index`} width="60">
-              <div className="allTableCellChekked">
+              <div className='allTableCellChecked'>
                 <Checkbox
                   onChange={() => this.handleCheckBoxChange(isAllChecked)}
                   checked={isAllChecked}
@@ -165,15 +163,15 @@ class DataTableNodes extends Component {
 
       return (
         <td className={`${position} cell index ${CHECKED && 'checked'}`}>
-            <div className="items">
-              <Checkbox
-                onChange={() => this.toggleGrid(cell.value)}
-                checked={CHECKED}
-                id={cell.value}
-              />
-              <label className="pull-left" htmlFor={cell.value} />
-            </div>
-            {/* {props.row + 1} */}
+          <div className="items">
+            <Checkbox
+              onChange={() => this.toggleGrid(cell.value)}
+              checked={CHECKED}
+              id={cell.value}
+            />
+            <label className="pull-left" htmlFor={cell.value} />
+          </div>
+          {/* {props.row + 1} */}
         </td>
       );
     }

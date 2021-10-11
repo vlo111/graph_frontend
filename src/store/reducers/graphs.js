@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import { uniqueId } from 'react-bootstrap-typeahead/lib/utils';
 import {
   CLEAR_SINGLE_GRAPH,
   UPDATE_SINGLE_GRAPH,
@@ -9,7 +8,6 @@ import {
   GET_NODES_LIST,
   GET_SINGLE_GRAPH,
   GET_ALL_TABS,
-  GET_SINGLE_GRAPH_VIEW,
   SET_NODE_CUSTOM_FIELD,
   ADD_NODE_CUSTOM_FIELD_KEY,
   REMOVE_NODE_CUSTOM_FIELD_KEY,
@@ -24,16 +22,16 @@ import {
   GET_NODE_CUSTOM_FIELDS,
   GET_GRAPH_INFO,
   ACTIVE_MOUSE_TRACKER,
-  UPDATE_GRAPH_THUMBNAIL
+  UPDATE_GRAPH_THUMBNAIL,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
-import { GENERATE_THUMBNAIL_WORKER, SOCKET_ACTIVE_MOUSE_TRACKER  } from '../actions/socket';
+import { SOCKET_ACTIVE_MOUSE_TRACKER } from '../actions/socket';
 import { UPDATE_NODES_CUSTOM_FIELDS } from '../actions/nodes';
 import { ONLINE_USERS } from '../actions/app';
 
-const  { REACT_APP_MAX_NODE_AND_LINK } = process.env
+const { REACT_APP_MAX_NODE_AND_LINK } = process.env;
 
 const initialState = {
   importData: {},
@@ -107,9 +105,9 @@ export default function reducer(state = initialState, action) {
         //   ...state.singleGraph,
         //   nodes: [],
         //   links: [],
-        //   labels: [],          
+        //   labels: [],
         //   nodesPartial: [],
-        //   linksPartial: [], 
+        //   linksPartial: [],
         //   customFields: [],
         //   nodeCustomFields: [],
         //   graphFilterInfo: {}
@@ -127,9 +125,9 @@ export default function reducer(state = initialState, action) {
         //   ...state.singleGraph,
         //   nodes: [],
         //   links: [],
-        //   labels: [],          
+        //   labels: [],
         //   nodesPartial: [],
-        //   linksPartial: [], 
+        //   linksPartial: [],
         //   customFields: [],
         //   nodeCustomFields: [],
         //   graphFilterInfo: {}
@@ -197,7 +195,7 @@ export default function reducer(state = initialState, action) {
       const {
         nodes, links, labels, lastUid,
       } = singleGraph;
-      
+
       Chart.render({
         nodes,
         links: ChartUtils.cleanLinks(links, nodes),
@@ -205,51 +203,6 @@ export default function reducer(state = initialState, action) {
         embedLabels,
         lastUid,
       });
-      Chart.loading(false);
-      return {
-        ...state,
-        singleGraph,
-        embedLabels,
-        graphInfo: info,
-        singleGraphStatus: 'success',
-      };
-    }
-
-    case GET_SINGLE_GRAPH_VIEW.REQUEST: {
-      return {
-        ...state,
-        singleGraph: {
-          ...state.singleGraph,
-          nodes: [],
-          links: [],
-          labels: [],
-        },
-        singleGraphStatus: 'request',
-      };
-    }
-
-    case GET_SINGLE_GRAPH_VIEW.SUCCESS: {
-      const { graph: singleGraph, embedLabels, info } = action.payload.data;
-      const {
-        nodes, links, labels, lastUid,
-      } = singleGraph;
-      if (nodes?.length + links?.length > REACT_APP_MAX_NODE_AND_LINK) {
-        Chart.render({
-          nodes:[],
-          links:[],
-          links:[],
-          embedLabels:[],
-          lastUid:[],
-        })
-      } else {
-        Chart.render({
-          nodes,
-          links: ChartUtils.cleanLinks(links, nodes),
-          labels,
-          embedLabels,
-          lastUid,
-        });
-      }
       Chart.loading(false);
       return {
         ...state,
@@ -270,7 +223,7 @@ export default function reducer(state = initialState, action) {
     }
 
     case GET_SINGLE_GRAPH.FAIL: {
-      Chart.loading(false)
+      Chart.loading(false);
       return {
         ...state,
         singleGraphStatus: 'fail',
@@ -279,7 +232,8 @@ export default function reducer(state = initialState, action) {
 
     case GET_SINGLE_GRAPH_PREVIEW.SUCCESS: {
       const { graph: singleGraph } = action.payload.data;
-      let { nodes, links, labels } = singleGraph;
+      const { nodes, labels } = singleGraph;
+      let { links } = singleGraph;
       if (_.isEmpty(nodes)) {
         nodes.push({
           id: '0',
@@ -318,6 +272,7 @@ export default function reducer(state = initialState, action) {
       Chart.render({
         nodes,
       });
+      return null;
     }
     case CLEAR_SINGLE_GRAPH: {
       return {
@@ -450,12 +405,12 @@ export default function reducer(state = initialState, action) {
           ...state.singleGraph,
           nodes: [],
           links: [],
-          labels: [],          
+          labels: [],
           nodesPartial: [],
-          linksPartial: [], 
+          linksPartial: [],
           customFields: [],
           nodeCustomFields: [],
-          graphFilterInfo: {}
+          graphFilterInfo: {},
         },
       };
     }
@@ -490,44 +445,35 @@ export default function reducer(state = initialState, action) {
         graphTabsStatus: 'fail',
       };
     }
-    case ONLINE_USERS: {  
-      const singleGraph = { ...state.singleGraph }; 
-      const { onlineUsers } = action.payload; 
-      const online = onlineUsers && onlineUsers.filter((d) => {
-          return +d.activeGraphId === +singleGraph?.id 
-         },
-        ); 
+    case ONLINE_USERS: {
+      const singleGraph = { ...state.singleGraph };
+      const { onlineUsers } = action.payload;
+      const online = onlineUsers && onlineUsers.filter((d) => +d.activeGraphId === +singleGraph?.id);
       return {
-        ...state, 
+        ...state,
         onlineUsers: online,
       };
     }
-    
-    case ACTIVE_MOUSE_TRACKER: {  
+
+    case ACTIVE_MOUSE_TRACKER: {
       const { onlineUsers, singleGraph: { id } } = state;
-      const { userId, tracker: mouseTracker } = action.payload;  
-      const trackers = onlineUsers.filter((d) => {
-          return +d.activeGraphId === +id && +d.userId !== +userId;
-         },
-        );  
+      const { userId, tracker: mouseTracker } = action.payload;
+      const trackers = onlineUsers.filter((d) => +d.activeGraphId === +id && +d.userId !== +userId);
       return {
-        ...state,  
-        trackers: trackers,
-        mouseTracker: mouseTracker,
+        ...state,
+        trackers,
+        mouseTracker,
       };
     }
-    case SOCKET_ACTIVE_MOUSE_TRACKER: {    
-      const { mouseMoveTracker } = action.payload; 
-      const { singleGraph: { id }  } = state;      
-      const trackers = mouseMoveTracker && mouseMoveTracker.filter((d) => {
-        return +d.graphId === +id ;
-       },
-      ); 
+    case SOCKET_ACTIVE_MOUSE_TRACKER: {
+      const { mouseMoveTracker } = action.payload;
+      const { singleGraph: { id } } = state;
+      const trackers = mouseMoveTracker && mouseMoveTracker.filter((d) => +d.graphId === +id);
       return {
-        ...state, 
-        mouseMoveTracker: trackers, 
+        ...state,
+        mouseMoveTracker: trackers,
       };
-    } 
+    }
     default: {
       return state;
     }

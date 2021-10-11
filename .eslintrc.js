@@ -43,6 +43,16 @@ module.exports = {
       assert: 'both',
       depth: 3,
     }],
-    'max-len': ['error', { code: 120 }],
+    'max-len': ['error', { code: 160 }],
+    'jsx-a11y/no-noninteractive-element-interactions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'react/no-unescaped-entities': 'off',
+
+    'no-nested-ternary': 'off',
+    'interactive-supports-focus': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/mouse-events-have-key-events': 'off',
+    'jsx-a11y/no-autofocus': 'off',
+    'react/no-danger': 'off',
   },
 };

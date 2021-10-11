@@ -6,13 +6,13 @@ import { createGraphRequest } from '../../../store/actions/shareGraphs';
 import { shareGraphs } from '../../../store/selectors/shareGraphs';
 
 const SearchData = ({
-  setSelect, select, option, user, singleGraph
+  setSelect, select, option, user, singleGraph,
 }) => {
   const dispatch = useDispatch();
   const shareGraphsList = useSelector(shareGraphs);
-  let  graph = useSelector((state) => state.graphs.singleGraph);
-  graph = !isEmpty(graph) ? graph : singleGraph; 
-  
+  let graph = useSelector((state) => state.graphs.singleGraph);
+  graph = !isEmpty(graph) ? graph : singleGraph;
+
   const optionSelected = () => {
     if (option.id !== user.id && shareGraphsList.findIndex((item) => item.userId === option.id) === -1) {
       dispatch(createGraphRequest({ graphId: graph.id, userId: option.id }));
@@ -29,8 +29,11 @@ const SearchData = ({
           width: '24px',
           borderRadius: '50%',
         }}
-      /> 
-      <span> {`${option.firstName} ${option.lastName}`}</span>
+      />
+      <span>
+        {' '}
+        {`${option.firstName} ${option.lastName}`}
+      </span>
     </div>
   );
 };

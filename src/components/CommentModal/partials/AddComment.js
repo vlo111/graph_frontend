@@ -12,18 +12,18 @@ const AddComment = ({ graph, closeModal, isReply }) => {
   const myAccount = useSelector(getAccount);
   const parent = useSelector(getGraphCommentParent);
   const [text, setText] = useState('');
-  //const editor = useRef(null) 
+  // const editor = useRef(null)
   const handleChange = (path, value) => {
     setText(value);
-  }
+  };
   return (
     <div className={isReply ? 'comment-modal__add-comment-section--reply comment--reply' : 'comment'}>
       <hr />
 
       <Editor
         id={isReply ? 'reply-comment' : 'add-comment'}
-        class='comment-modal__add-comment-input'
-        //error={errors.content}
+        class="comment-modal__add-comment-input"
+        // error={errors.content}
         limit={250}
         value={text}
         onChange={(v) => handleChange('text', v)}
@@ -43,10 +43,9 @@ const AddComment = ({ graph, closeModal, isReply }) => {
         </Button>
         <Button
           onClick={() => {
-            text.trim() === '' ?
-              alert('Text cannot be blank.')
-              :
-              dispatch(createGraphCommentRequest(
+            text.trim() === ''
+              ? alert('Text cannot be blank.')
+              : dispatch(createGraphCommentRequest(
                 {
                   graphId: graph.id,
                   text,

@@ -109,13 +109,15 @@ class HeaderMini extends Component {
   })
 
   updateTab = (show, className) => {
-    const { tableElement, closeTabElement, item, name } = this.getSettingsElements(className);
+    const {
+      tableElement, closeTabElement, item, name,
+    } = this.getSettingsElements(className);
 
     if (show) {
       tableElement.style.width = '500px';
       closeTabElement.style.display = 'none';
       setTimeout(() => {
-        name.classList.add("name-overflow");
+        name.classList.add('name-overflow');
       }, 400);
     } else {
       closeTabElement.style.display = 'flex';
@@ -125,7 +127,7 @@ class HeaderMini extends Component {
 
       setTimeout(() => {
         tableElement.style.width = '45%';
-        name.classList.remove("name-overflow");
+        name.classList.remove('name-overflow');
       }, 400);
     }
   }
@@ -233,7 +235,7 @@ class HeaderMini extends Component {
             </h3>
             <div className="node-keywords">
               {node.keywords.map((p) => (
-                  <span>{`${p}  `}</span>
+                <span>{`${p}  `}</span>
               ))}
             </div>
           </div>

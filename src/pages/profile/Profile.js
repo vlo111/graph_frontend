@@ -118,8 +118,9 @@ class Profile extends Component {
                 type="url"
                 value={requestData.website}
                 error={errors.website}
-                onChangeText={this.handleChange}   
-                //pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:google\.com|go(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
+                onChangeText={this.handleChange}
+                // pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:google\.com|go(?:\.me|\.com))\/
+                // (?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
               />
             </div>
             <div className="socialright">
@@ -138,6 +139,7 @@ class Profile extends Component {
                   value={requestData.facebook}
                   error={errors.facebook}
                   onChangeText={this.handleChange}
+                  // eslint-disable-next-line max-len
                   pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:facebook\.com|fb(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
                 />
               </div>
@@ -152,6 +154,7 @@ class Profile extends Component {
                   value={requestData.twitter}
                   error={errors.twitter}
                   onChangeText={this.handleChange}
+                  // eslint-disable-next-line max-len
                   pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:twitter\.com|tw(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
 
                 />
@@ -167,6 +170,7 @@ class Profile extends Component {
                   value={requestData.linkedin}
                   error={errors.linkedin}
                   onChangeText={this.handleChange}
+                  // eslint-disable-next-line max-len
                   pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:linkedin\.com|in(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
                 />
               </div>
@@ -181,6 +185,7 @@ class Profile extends Component {
                   value={requestData.skype}
                   error={errors.skype}
                   onChangeText={this.handleChange}
+                  // eslint-disable-next-line max-len
                   pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:skype\.com|sk(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
                 />
               </div>

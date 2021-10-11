@@ -161,7 +161,7 @@ class ChartUtils {
       return icon;
     }
     if (icon.includes('person.svg') || icon.includes('article.svg')) {
-      return url
+      return url;
     }
     if (large) {
       url += '.large';
@@ -263,78 +263,76 @@ class ChartUtils {
     const nodes = Chart.getNodes();
     return _.groupBy(nodes, 'type');
   }
+
   /**
    * Return link data
-   * @param {*} linksPartial 
-   * @param {*} id 
-   * @param {*} group 
-   * @param {*} hidden 
-   * @returns 
+   * @param {*} linksPartial
+   * @param {*} id
+   * @param {*} group
+   * @param {*} hidden
+   * @returns
    */
-  static getLinkGroupedByNodeId(linksPartial, id, group = true , hidden = 0) {
-    const node = Chart.getNodes().find((d) => d.id === id); 
-    const chartLinks = Chart.getLinks(); 
-    if (!node) return null; 
-    const links = linksPartial.filter((l) => (l.source ===  node.id || l.target === node.id)
-       && chartLinks && !chartLinks.find((s) => (s.id === l.id)));  
-    if(group) 
-      return _.groupBy(links, 'type');
-    else 
-      return links?.length 
+  static getLinkGroupedByNodeId(linksPartial, id, group = true, hidden = 0) {
+    const node = Chart.getNodes().find((d) => d.id === id);
+    const chartLinks = Chart.getLinks();
+    if (!node) return null;
+    const links = linksPartial.filter((l) => (l.source === node.id || l.target === node.id)
+       && chartLinks && !chartLinks.find((s) => (s.id === l.id)));
+    if (group) { return _.groupBy(links, 'type'); }
+    return links?.length;
   }
+
   /**
-   * 
-   * @param {*} nodesPartial 
-   * @param {*} id 
-   * @param {*} group 
-   * @param {*} hidden 
-   * @returns 
+   *
+   * @param {*} nodesPartial
+   * @param {*} id
+   * @param {*} group
+   * @param {*} hidden
+   * @returns
    */
-   static getMathNodeGroupedByNodeId(nodesPartial, id, group = true , hidden = 0) {
-      const node = Chart.getNodes().find((d) => d.id === id); 
-      const chartNodes = Chart.getNodes(); 
-      if (!node) return null; 
-      const nodes = nodesPartial.filter((l) => (
-        node.keywords.length > 0 && l.keywords.length > 0 && (l.keywords.some((n) =>  node.keywords.includes(n))) 
-        )
-         && chartNodes && !chartNodes.find((s) => (s.id === l.id))); 
-      if(group) 
-        return _.groupBy(nodes, 'type');
-      else 
-        return nodes?.length 
-    }
+  static getMathNodeGroupedByNodeId(nodesPartial, id, group = true, hidden = 0) {
+    const node = Chart.getNodes().find((d) => d.id === id);
+    const chartNodes = Chart.getNodes();
+    if (!node) return null;
+    const nodes = nodesPartial.filter((l) => (
+      node.keywords.length > 0 && l.keywords.length > 0 && (l.keywords.some((n) => node.keywords.includes(n)))
+    )
+         && chartNodes && !chartNodes.find((s) => (s.id === l.id)));
+    if (group) return _.groupBy(nodes, 'type');
+    return nodes?.length;
+  }
+
   /**
    * Return color by type
-   * @param {*} links 
-   * @param {*} type 
-   * @returns 
+   * @param {*} links
+   * @param {*} type
+   * @returns
    */
   static getLinkColorByType(links, type) {
-    const link = links && links.find((l) => ( l.type ===  type ));  
-    return link?.color ? link?.color : this.linkColorObj[type]
+    const link = links && links.find((l) => (l.type === type));
+    return link?.color ? link?.color : this.linkColorObj[type];
   }
-  /**
-   * 
-   * @param {*} nodes 
-   * @param {*} linksPartial 
-   * @returns 
-   */
-  static getLinksBetweenNodes(nodes, linksPartial){ 
-    const links = linksPartial.filter((l) => 
-       nodes && nodes.some((n) => (l.target === n.id && l.source === n.id )) 
-    );
-    return links
 
+  /**
+   *
+   * @param {*} nodes
+   * @param {*} linksPartial
+   * @returns
+   */
+  static getLinksBetweenNodes(nodes, linksPartial) {
+    const links = linksPartial.filter((l) => nodes && nodes.some((n) => (l.target === n.id && l.source === n.id)));
+    return links;
   }
+
   /**
    * Fit data
    */
-  static autoScale() { 
+  static autoScale() {
     const {
       width, height, min, max,
     } = ChartUtils.getDimensions(false);
     if (width && Chart.svg) {
-      Chart.event.removeListener('render', this.autoScale); 
+      Chart.event.removeListener('render', this.autoScale);
       const mode = Chart.activeButton;
 
       const LEFT_PADDING = mode === 'view' ? 0 : 201;
@@ -354,14 +352,14 @@ class ChartUtils {
       Chart.svg.call(Chart.zoom.transform, d3.zoomIdentity.translate(left, top).scale(scale));
     }
   }
+
   /**
    * Call scale function by params
-   * @param {*} time 
+   * @param {*} time
    */
   static autoScaleTimeOut(time = 0) {
-    
-    setTimeout(() => {   
-      this.autoScale(); 
+    setTimeout(() => {
+      this.autoScale();
     }, time);
   }
 
@@ -415,9 +413,11 @@ class ChartUtils {
   }
 
   static nodeColorObj = {};
+
   static cursorColorObj = {};
 
   static nodeColorsArr = _.clone(NODE_COLOR);
+
   static cursorColorsArr = _.clone(NODE_COLOR);
 
   static nodeColor = (d) => {
@@ -631,7 +631,7 @@ class ChartUtils {
     let i;
     let
       j = d.length - 1;
-    for (i = 0; i < d.length; i++) {
+    for (i = 0; i < d.length; i += 1) {
       if ((d[i][1] < y && d[j][1] >= y || d[j][1] < y && d[i][1] >= y)
         && (d[i][0] <= x || d[j][0] <= x)) {
         odd ^= (d[i][0] + (y - d[i][1]) * (d[j][0] - d[i][0]) / (d[j][1] - d[i][1])) < x;
@@ -950,7 +950,7 @@ class ChartUtils {
     return [d.x || d.fx, d.y || d.fy, false];
   }
 
-  static margeGraphs = (graph1, graph2, selectedNodes1, selectedNodes2) => {
+  static margeGraphs = (graph1, graph2, selectedNodes1, selectedNodes2, keepLabels = true) => {
     graph1.nodes = [...graph1.nodes];
     graph2.nodes = [...graph2.nodes];
 
@@ -1041,9 +1041,15 @@ class ChartUtils {
     //   }
     // }
 
-    return {
-      labels, nodes, links,
-    };
+    if (keepLabels) {
+      return {
+        labels, nodes, links,
+      };
+    } else {
+      return {
+        nodes, links,
+      };
+    }
   }
 
   static objectAndProto(d) {
@@ -1078,14 +1084,12 @@ class ChartUtils {
       if (l.type === 'folder') {
         arrX.push(l.d[0][0]);
         arrY.push(l.d[0][1]);
+      } else if (l.type === 'square' || l.type === 'ellipse') {
+        arrX.push(l.size.x);
+        arrY.push(l.size.y);
       } else {
-        if (l.type === 'square' || l.type === 'ellipse') {
-          arrX.push(l.size.x);
-          arrY.push(l.size.y);
-        } else {
-          arrX.push(...l.d.map((p) => p[0]));
-          arrY.push(...l.d.map((p) => p[1]));
-        }
+        arrX.push(...l.d.map((p) => p[0]));
+        arrY.push(...l.d.map((p) => p[1]));
       }
     });
     const min = [_.min(arrX), _.min(arrY)];
@@ -1129,15 +1133,15 @@ class ChartUtils {
 
   static startAutoPosition = () => {
     setTimeout(() => {
-      document.addEventListener('click', this.stopAutoPosition)
-      document.addEventListener('contextmenu', this.stopAutoPosition)
-    }, 200)
+      document.addEventListener('click', this.stopAutoPosition);
+      document.addEventListener('contextmenu', this.stopAutoPosition);
+    }, 200);
   }
 
   static stopAutoPosition = () => {
-    Chart.render({},{ignoreAutoSave: true, isAutoPosition: false})
-    document.removeEventListener('click', this.stopAutoPosition)
-    document.removeEventListener('contextmenu', this.stopAutoPosition)
+    Chart.render({}, { ignoreAutoSave: true, isAutoPosition: false });
+    document.removeEventListener('click', this.stopAutoPosition);
+    document.removeEventListener('contextmenu', this.stopAutoPosition);
   }
 }
 

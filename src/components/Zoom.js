@@ -19,7 +19,7 @@ class Zoom extends Component {
       showMap: false,
       zoom: 100,
       fullScreen: false,
-      scaleCount: 0
+      scaleCount: 0,
     };
   }
 
@@ -28,19 +28,18 @@ class Zoom extends Component {
   }
 
   componentDidMount() {
-    
-    let { scaleCount }  = this.state;   
-    window.addEventListener('keydown', this.handleKeyDown); 
-     if(scaleCount === 0) Chart.event.on('render', this.autoScale);
+    // let { scaleCount } = this.state;
+    window.addEventListener('keydown', this.handleKeyDown);
+    // if(scaleCount === 0) Chart.event.on('render', this.autoScale);
     Chart.event.on('zoom', this.handleChartZoom);
-    scaleCount++;
+    // scaleCount++;
   }
 
-  componentWillUnmount() {    
-    window.removeEventListener('keydown', this.handleKeyDown);  
-    Chart.event.removeListener('render', this.autoScale);
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+    // Chart.event.removeListener('render', this.autoScale);
     Chart.event.removeListener('zoom', this.handleChartZoom);
-    this.props.autoScale(false);
+    // this.props.autoScale(false);
   }
 
   handleChartZoom = (ev, d) => {
@@ -48,7 +47,6 @@ class Zoom extends Component {
   }
 
   autoScale = () => {
-    
     ChartUtils.autoScale();
   }
 
@@ -77,7 +75,7 @@ class Zoom extends Component {
     let x = +Chart.wrapper.attr('data-x') || 0;
     let y = +Chart.wrapper.attr('data-y') || 0;
     if (scale >= 2.4) {
-      scale = 2.5
+      scale = 2.5;
     } else if (scale > 0.9) {
       scale += 0.1;
       x -= 100 * scale;
@@ -113,7 +111,7 @@ class Zoom extends Component {
   toggleGraphMap = () => {
     const { showMap } = this.state;
     this.setState({ showMap: !showMap });
-    this.props.toggleGraphMap(showMap)
+    this.props.toggleGraphMap(showMap);
   }
 
   toggleFullScreen = async () => {
@@ -151,7 +149,7 @@ class Zoom extends Component {
 
   render() {
     const { showMap, zoom, fullScreen } = this.state;
-    const { showGraphMap } = this.props
+    const { showGraphMap } = this.props;
     return (
       <>
         <div className={`graphControlPanel ${showGraphMap ? 'showMap' : ''} ${fullScreen ? 'fullScreen' : ''}`}>
@@ -189,7 +187,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   toggleGraphMap,
-  autoScale
+  autoScale,
 };
 
 const Container = connect(

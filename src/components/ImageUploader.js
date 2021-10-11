@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip';
 import { ReactComponent as RefreshSvg } from '../assets/images/icons/refresh.svg';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
-import Api from '../Api'
+import Api from '../Api';
+
 class ImageUploader extends Component {
   static propTypes = {
     value: PropTypes.any.isRequired,
     email: PropTypes.string,
     onChange: PropTypes.func.isRequired,
   }
-  
+
   static defaultProps = {
     email: '',
   }
@@ -46,18 +47,22 @@ class ImageUploader extends Component {
     const { image } = this.state;
     this.setImage(value);
     return (
-      <div className={!!email ? "avatarUploader imageUploader" : "imageUploader"}>
+      <div className={email ? 'avatarUploader imageUploader' : 'imageUploader'}>
         <img
           src={image || `${Api.url}/public/gravatar/${encodeURIComponent(email)}.png`}
-          className={!!email ? "avatar" : "thumbnailSave"}
-          alt="image"
+          className={email ? 'avatar' : 'thumbnailSave'}
+          alt=""
         />
-        <label className={!!value ? "selectImage" : "selectImage addImage"}>
+        <label className={value ? 'selectImage' : 'selectImage addImage'}>
           <div className="icon">
-          <RefreshSvg />
+            <RefreshSvg />
           </div>
           <input type="file" accept="image/*" onChange={this.handleChange} />
-          <span className="addOrReplaceImage">{!!value ? "Replace" : "Add"} Image</span>
+          <span className="addOrReplaceImage">
+            {value ? 'Replace' : 'Add'}
+            {' '}
+            Image
+          </span>
 
         </label>
         {((email && image && !image.includes('gravatar')) || (!email && userImage)) ? (

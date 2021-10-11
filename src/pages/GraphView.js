@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link, Prompt } from 'react-router-dom';
+import { Link, Prompt, Redirect } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import { toast } from 'react-toastify';
 import memoizeOne from 'memoize-one';
@@ -11,10 +11,10 @@ import Chart from '../Chart';
 import AnalysisUtils from '../helpers/AnalysisUtils';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import { setActiveButton, toggleExplore } from '../store/actions/app';
+import { setActiveButton } from '../store/actions/app';
 import Button from '../components/form/Button';
 import Filters from '../components/filters/Filters';
-import Search from '../components/search/Search';
+import SearchModal from '../components/search/ExploreModal';
 import ContextMenu from '../components/contextMenu/ContextMenu';
 import Zoom from '../components/Zoom';
 import NodeDescription from '../components/NodeDescription';
@@ -38,13 +38,14 @@ class GraphView extends Component {
     deleteGraphRequest: PropTypes.func.isRequired,
     getSingleGraphRequest: PropTypes.func.isRequired,
     userGraphRequest: PropTypes.func.isRequired,
-    toggleExplore: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     graphInfo: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    showSearch: PropTypes.bool.isRequired
+    getGraphInfoRequest: PropTypes.func.isRequired,
+    singleGraphStatus: PropTypes.func.isRequired,
+    activeButton: PropTypes.string.isRequired,
   }
 
   preventReload = true;
@@ -59,10 +60,6 @@ class GraphView extends Component {
     }
   })
 
-  componentWillUnmount() {
-    this.props.toggleExplore(false)
-  }
-
   deleteGraph = async () => {
     const { match: { params: { graphId = '' } } } = this.props;
     if (window.confirm('Are you sure?')) {
@@ -72,24 +69,24 @@ class GraphView extends Component {
     }
   }
 
-  shareGraph = async () => {
-    if (window.confirm('Are you sure?')) {
-      this.setState({ openShareModal: true });
-    }
-  }
-
   handleRouteChange = () => {
     Chart.nodesPath = false;
     Chart.clearLinkShortestPath();
   }
 
+  getPermission = () => {
+    const { singleGraphStatus } = this.props;
+
+    return (singleGraphStatus === 'fail');
+  }
+
   render() {
     const {
-      singleGraph, singleGraphStatus, graphInfo, showSearch, activeButton, 
+      singleGraph, singleGraphStatus, graphInfo, activeButton,
       location: { pathname, search }, match: { params: { graphId = '' } },
-    } = this.props; 
-    const preview = pathname.startsWith('/graphs/preview/'); 
-    let shortestNodes = []; 
+    } = this.props;
+    const preview = pathname.startsWith('/graphs/preview/');
+    let shortestNodes = [];
     // let shortestLinks = [];
 
     // view the shortest path to the analysis field
@@ -106,7 +103,7 @@ class GraphView extends Component {
           let listCheck = false;
           listLinks.forEach((l) => {
             if ((l.source === p.source || l.target === p.source)
-                && (l.source === p.target || l.target === p.target)) {
+              && (l.source === p.target || l.target === p.target)) {
               listCheck = true;
             }
           });
@@ -124,6 +121,10 @@ class GraphView extends Component {
       }
     }
     this.getSingleRequest(pathname);
+    const isPermission = this.getPermission();
+    if (isPermission) {
+      return (<Redirect to="/403" />);
+    }
     return (
       <Wrapper className="graphView" showFooter={false}>
         <div className="graphWrapper">
@@ -133,7 +134,7 @@ class GraphView extends Component {
           when={this.preventReload}
           message={this.handleRouteChange}
         />
-        {activeButton === 'data' && <DataView />} 
+        {activeButton === 'data' && <DataView />}
         {search.includes('analytics')
           ? (
             <AnalyticalPage
@@ -186,25 +187,25 @@ class GraphView extends Component {
                     </Link>
                   </>
                 )}
-                <ToolBarHeader graph={singleGraph}/>
-                  <Search />
+                <ToolBarHeader graph={singleGraph} />
+                <SearchModal />
                 <NodeFullInfo editable={false} />
                 <LabelTooltip />
                 <Filters />
                 <AutoPlay />
-                <ContextMenu expand={true}/>
+                <ContextMenu expand />
                 {activeButton === 'maps-view' && <MapsGraph />}
                 {activeButton.includes('findPath')
-                && (
-                <FindPath
-                  history={this.props.history}
-                  start={activeButton.substring(activeButton.length, activeButton.indexOf('.') + 1)}
-                />
-                )}
-              <Zoom />
-              <Crop />
-              
-              <ToolBarFooter partOf = {true}/>
+                  && (
+                    <FindPath
+                      history={this.props.history}
+                      start={activeButton.substring(activeButton.length, activeButton.indexOf('.') + 1)}
+                    />
+                  )}
+                <Zoom />
+                <Crop />
+
+                <ToolBarFooter partOf />
               </div>
             ))}
       </Wrapper>
@@ -218,7 +219,6 @@ const mapStateToProps = (state) => ({
   userGraphs: state.shareGraphs.userGraphs,
   graphInfo: state.graphs.graphInfo,
   singleGraphStatus: state.graphs.singleGraphStatus,
-  showSearch: state.app.showSearch,
 });
 const mapDispatchToProps = {
   setActiveButton,
@@ -226,7 +226,6 @@ const mapDispatchToProps = {
   deleteGraphRequest,
   userGraphRequest,
   getGraphInfoRequest,
-  toggleExplore
 };
 const Container = connect(
   mapStateToProps,

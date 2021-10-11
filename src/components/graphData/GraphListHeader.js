@@ -1,143 +1,127 @@
 import React, {
-  useState, useCallback
+  useState, useCallback,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from "react-router-dom";
-import PropTypes, { func } from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
+import { toast } from 'react-toastify';
 import Popover from '../form/Popover';
-import Button from '../form/Button';
-import { toast } from 'react-toastify'; 
-// import UpdateGraphModal from './chart/UpdateGraphModal';
-import { deleteGraphRequest } from '../../store/actions/graphs';
-import {deleteGraphRequest as DeleteShareGraphRequest} from '../../store/actions/shareGraphs';
-import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellipsis.svg'; 
-import { getGraphsListRequest } from '../../store/actions/graphs';
+import { deleteGraphRequest, getGraphsListRequest } from '../../store/actions/graphs';
+import { deleteGraphRequest as DeleteShareGraphRequest } from '../../store/actions/shareGraphs';
+import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellipsis.svg';
 import ShareModal from '../ShareModal';
 import EditGraphModal from '../chart/EditGraphModal';
 
 const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
   const dispatch = useDispatch();
-  // const [openEditModal, setOpenEditModal] = useState(false); 
-  const [openEditGraphModal, setOpenEditGraphModal] = useState(false); 
-  const [openShareModal, setOpenShareModal] = useState(false); 
+  // const [openEditModal, setOpenEditModal] = useState(false);
+  const [openEditGraphModal, setOpenEditGraphModal] = useState(false);
+  const [openShareModal, setOpenShareModal] = useState(false);
   const history = useHistory();
-  const { page = 1, s: searchParam } = queryString.parse(window.location.search); 
+  const { page = 1, s: searchParam } = queryString.parse(window.location.search);
   const notification = false;
-   
-  
+
   async function deleteGraph(graphId) {
+    //  select data from localStorage
+    const order = JSON.parse(localStorage.getItem('/')) || 'newest';
     try {
-      if(graphId) {
+      if (graphId) {
         await dispatch(deleteGraphRequest(graph.id));
         // use selector
-        
+
         await dispatch(getGraphsListRequest(page, { s: searchParam }));
-      } else {
-      if (window.confirm('Are you sure?')) {
+      } else if (window.confirm('Are you sure?')) {
         await dispatch(deleteGraphRequest(graph.id));
         // use selector
         toast.info('Successfully deleted');
-        await dispatch(getGraphsListRequest(page, { s: searchParam }));
+        await dispatch(getGraphsListRequest(page, { s: searchParam, filter: order }));
 
-        history.push("/");
-      } 
-     
-    }
+        history.push('/');
+      }
     } catch (e) {
     }
   }
 
-
   const handleDeleteShareGraph = useCallback((shareGraphId) => {
-
-    if (window.confirm('Are you sure?')) { 
-      //delete
+    if (window.confirm('Are you sure?')) {
+      // delete
       dispatch(DeleteShareGraphRequest(shareGraphId, notification));
-      history.push("/");
+      history.push('/');
       toast.info('Successfully deleted');
     }
-  }, [dispatch]);  
+  }, [dispatch]);
 
   return (
-    <div className="graphListHeader">      
-       <div>  
-          <Popover
-            showArrow
-            triggerNode={<div className="ar-popover-trigger" ><EllipsisVSvg /></div>}
-            trigger='click'
-          >
-            <div className="ar-popover-list">
+    <div className="graphListHeader">
+      <div>
+        <Popover
+          showArrow
+          triggerNode={<div className="ar-popover-trigger"><EllipsisVSvg /></div>}
+          trigger="click"
+        >
+          <div className="ar-popover-list">
             {headerTools === 'shared' ? (
-              <div 
+              <div
                 onClick={() => handleDeleteShareGraph(graph?.share.id)}
-                className="child dashboard-delete" >
-                  <span className='dashboard-delete'>
-                   Delete
-                  </span>
+                className="child dashboard-delete"
+              >
+                <span className="dashboard-delete">
+                  Delete
+                </span>
               </div>
-             ) : (
-             <>
-                {/* <div
-                  className="child "
-                  onClick={() => setOpenEditModal(true)} > 
-                  <span>
-                    Rename
-                  </span>
-                </div>   */}
+            ) : (
+              <>
                 <div
                   className="child "
-                  onClick={() => setOpenEditGraphModal(true)} > 
+                  onClick={() => setOpenEditGraphModal(true)}
+                >
                   <span>
-                   Edit
+                    Edit
                   </span>
-                </div>              
-                <div 
+                </div>
+                <div
                   className="child "
-                  onClick={() => setOpenShareModal(true)} > 
+                  onClick={() => setOpenShareModal(true)}
+                >
                   <span>
-                   Share
+                    Share
                   </span>
-                  </div>             
-                <div 
+                </div>
+                <div
                   onClick={() => deleteGraph(false)}
-                  className="child dashboard-delete" >  
-                  <span className='dashboard-delete'>
-                     Delete
+                  className="child dashboard-delete"
+                >
+                  <span className="dashboard-delete">
+                    Delete
                   </span>
                 </div>
               </>
-             )}
-              </div>
-            </Popover>
-         </div> 
-      {/* {openEditModal && (
-        <UpdateGraphModal
-          closeModal={() => setOpenEditModal(false)}
-          graph={graph}
-        />
-      )} */}
+            )}
+          </div>
+        </Popover>
+      </div>
       {openShareModal && (
-        <ShareModal 
-          closeModal={() => setOpenShareModal(false)} 
-          graph={graph} 
+        <ShareModal
+          closeModal={() => setOpenShareModal(false)}
+          graph={graph}
           setButton
         />
-     )}
+      )}
       {openEditGraphModal && (
-        <EditGraphModal 
-         toggleModal={(value) => setOpenEditGraphModal(value)}  
-         graph={graph}
-         deleteGraph={(graphId) => deleteGraph(graphId)}
-         updateGraph={updateGraph}
+        <EditGraphModal
+          toggleModal={(value) => setOpenEditGraphModal(value)}
+          graph={graph}
+          deleteGraph={(graphId) => deleteGraph(graphId)}
+          updateGraph={updateGraph}
         />
-     )}
+      )}
     </div>
   );
 };
 
 GraphListHeader.propTypes = {
-  graph: PropTypes.object.isRequired, 
+  graph: PropTypes.object.isRequired,
 };
 
 export default React.memo(GraphListHeader);

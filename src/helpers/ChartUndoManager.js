@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Chart from '../Chart';
-import ChartUtils from "./ChartUtils";
+import ChartUtils from './ChartUtils';
 
 const MAX_COUNT = 10;
 

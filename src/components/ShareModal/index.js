@@ -12,18 +12,18 @@ import Search from './partials/Search';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
 
-const ShareModal = React.memo(({ graph, closeModal }) => {  
-  const dispatch = useDispatch(); 
+const ShareModal = React.memo(({ graph, closeModal }) => {
+  const dispatch = useDispatch();
   const [select, setSelect] = useState([]);
   const [sharedUsers, setShardUsers] = useState([]);
-  const afterOpenModal = () => {};
+  const afterOpenModal = () => { };
 
   const changeStatus = () => {
-     dispatch(updateShareGraphStatusRequest({ graphId: graph.id }));
+    dispatch(updateShareGraphStatusRequest({ graphId: graph.id }));
     // reload list user
-     dispatch(graphUsersRequest({ graphId: graph.id }));
+    dispatch(graphUsersRequest({ graphId: graph.id }));
     closeModal();
-  }
+  };
   return (isEmpty(graph) ? null
     : (
       <Modal
@@ -33,11 +33,11 @@ const ShareModal = React.memo(({ graph, closeModal }) => {
         contentLabel="Share"
         style={{
           overlay: {
-            zIndex: 10
+            zIndex: 10,
           },
         }}
       >
-        <div className='share-modal__title'>
+        <div className="share-modal__title">
           <h3>Collaborators</h3>
           <Button
             icon={<CloseSvg style={{ height: 30 }} />}

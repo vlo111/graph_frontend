@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import noGraphSvg from '../assets/images/icons/sad.svg';
 
 class NoGraph extends Component {
   static propTypes = {
 
   }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -12,17 +13,15 @@ class NoGraph extends Component {
     };
   }
 
+  render() {
+    return (
+      <div className="no-graphs">
+        <img src={noGraphSvg} className="no-graph-img" alt="No Graphs" />
+        <h1 className="title">You have no graph yet</h1>
+      </div>
 
- render(){
+    );
+  }
+}
 
-  return (
-    <div className="no-graphs">
-      <img src={noGraphSvg} className="no-graph-img" alt="No Graphs" />
-      <h1 className="title">You have no graph yet</h1> 
-    </div>
-    
-  );
-};
-} 
-
-export default   NoGraph
+export default NoGraph;

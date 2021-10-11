@@ -1,5 +1,5 @@
 import {
-  SIGN_IN, GET_MY_ACCOUNT, OAUTH, GET_USER_BY_TEXT, UPDATE_MY_ACCOUNT
+  SIGN_IN, GET_MY_ACCOUNT, OAUTH, GET_USER_BY_TEXT, UPDATE_MY_ACCOUNT,
 } from '../actions/account';
 import Account from '../../helpers/Account';
 
@@ -51,6 +51,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         userSearch: [],
+        status: 'request',
       };
     }
     case GET_USER_BY_TEXT.SUCCESS: {
@@ -58,6 +59,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         userSearch: data,
+        status: 'success',
       };
     }
     default: {

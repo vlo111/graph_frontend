@@ -233,16 +233,15 @@
   .searchNodes {
     right: -11%;
   }
-} 
-.ghModalMedia {
-  .mediaHeader{
-    .showCheck{
-      padding: 10px;
+  .ghModalMedia {
+    .mediaHeader{
+      .showCheck{
+        padding: 10px;
+      }
+    
     }
-  
   }
 } 
-
 
 @media screen and (max-width: 900px) {
   .ghModalSearch {

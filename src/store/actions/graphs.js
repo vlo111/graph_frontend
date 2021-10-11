@@ -1,6 +1,5 @@
 import { define } from '../../helpers/redux-request';
 import Api from '../../Api';
-import { UPDATE_NODES_POSITION } from "./nodes";
 
 export const CONVERT_GRAPH = define('CONVERT_GRAPH');
 
@@ -40,7 +39,7 @@ export function deleteGraphRequest(id) {
 
 export const UPDATE_GRAPH_THUMBNAIL = define('UPDATE_GRAPH_THUMBNAIL');
 
-export function updateGraphThumbnailRequest(id, svg, size, byUser=false) {
+export function updateGraphThumbnailRequest(id, svg, size, byUser = false) {
   return UPDATE_GRAPH_THUMBNAIL.request(() => Api.updateGraphThumbnail(id, svg, size, byUser));
 }
 
@@ -60,12 +59,6 @@ export const GET_SINGLE_GRAPH = define('GET_SINGLE_GRAPH');
 
 export function getSingleGraphRequest(graphId, params) {
   return GET_SINGLE_GRAPH.request(() => Api.getSingleGraph(graphId, params));
-}
-
-export const GET_SINGLE_GRAPH_VIEW = define('GET_SINGLE_GRAPH_VIEW');
-
-export function getSingleGraphViewRequest(graphId, params) {
-  return GET_SINGLE_GRAPH_VIEW.request(() => Api.getSingleGraph(graphId, params));
 }
 
 export const GET_ALL_TABS = define('GET_ALL_TABS');
@@ -201,11 +194,11 @@ export function updateGraphPositionsRequest(graphId, nodes, labels) {
 
 export const ACTIVE_MOUSE_TRACKER = 'ACTIVE_MOUSE_TRACKER';
 
-export function setActiveMouseTracker(tracker, userId) {   
+export function setActiveMouseTracker(tracker, userId) {
   return {
     type: ACTIVE_MOUSE_TRACKER,
-    payload: { 
-      tracker, userId
+    payload: {
+      tracker, userId,
     },
   };
 }

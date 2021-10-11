@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import Input from "../../components/form/Input";
-import Button from "../../components/form/Button";
-import { signUpRequest } from "../../store/actions/account";
-import WrapperSign from "../../components/WrapperSign";
-import PasswordInput from "../../components/form/PasswordInput";
-import { ReactComponent as LogoSvg } from "../../assets/images/araks_logo.svg";
-import OAuthButtonFacebook from "../../components/account/OAuthButtonFacebook";
-import OAuthButtonGoogle from "../../components/account/OAuthButtonGoogle";
-import OAuthButtonLinkedin from "../../components/account/OAuthButtonLinkedin";
-import OAuthButtonTwitter from "../../components/account/OAuthButtonTwitter";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Input from '../../components/form/Input';
+import Button from '../../components/form/Button';
+import { signUpRequest } from '../../store/actions/account';
+import WrapperSign from '../../components/WrapperSign';
+import PasswordInput from '../../components/form/PasswordInput';
+import { ReactComponent as LogoSvg } from '../../assets/images/araks_logo.svg';
+import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
+import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
+import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
+import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
 
 class SignUp extends Component {
   static propTypes = {
@@ -23,30 +23,31 @@ class SignUp extends Component {
     super(props);
     this.state = {
       requestData: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        passwordConfirm: "",
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        passwordConfirm: '',
       },
       errors: {
-        firstName: "",
-        email: "",
-        password: "",
-        lastName: "",
-        passwordConfirm: "",
+        firstName: '',
+        email: '',
+        password: '',
+        lastName: '',
+        passwordConfirm: '',
       },
     };
   }
 
   handleChange = (e) => {
+    const { errors, requestData } = this.state;
     this.setState({
       errors: {
-        ...this.state.errors,
+        ...errors,
         [e.target.name]: this.validate(e.target.name, e.target.value),
       },
       requestData: {
-        ...this.state.requestData,
+        ...requestData,
         [e.target.name]: e.target.value,
       },
     });
@@ -57,28 +58,32 @@ class SignUp extends Component {
     const { requestData, errors } = this.state;
 
     this.setState({ loading: true });
-    const error =
-      this.validate("firstName", requestData.firstName) ||
-      this.validate("lastName", requestData.lastName) ||
-      this.validate("email", requestData.email) ||
-      this.validate("password", requestData.password);
+    const error = this.validate('firstName', requestData.firstName)
+      || this.validate('lastName', requestData.lastName)
+      || this.validate('email', requestData.email)
+      || this.validate('password', requestData.password);
 
     if (error) {
-      const errorName = error.substring(0, error.indexOf(" "));
+      const errorName = error.substring(0, error.indexOf(' '));
 
       switch (errorName) {
-        case "First": {
-          errors.firstName = this.validate("firstName", requestData.firstName);
+        case 'First': {
+          errors.firstName = this.validate('firstName', requestData.firstName);
+          break;
         }
-        case "Last": {
-          errors.lastName = this.validate("lastName", requestData.lastName);
+        case 'Last': {
+          errors.lastName = this.validate('lastName', requestData.lastName);
+          break;
         }
-        case "email": {
-          errors.email = this.validate("email", requestData.email);
+        case 'email': {
+          errors.email = this.validate('email', requestData.email);
+          break;
         }
-        case "password": {
-          errors.password = this.validate("password", requestData.password);
+        case 'password': {
+          errors.password = this.validate('password', requestData.password);
+          break;
         }
+        default:
       }
       this.setState({
         errors,
@@ -87,8 +92,8 @@ class SignUp extends Component {
     } else {
       const { payload } = await this.props.signUpRequest(requestData);
       const { data = {} } = payload;
-      if (data.status === "ok") {
-        this.props.history.push("/sign/sign-in");
+      if (data.status === 'ok') {
+        this.props.history.push('/sign/sign-in');
         return;
       }
 
@@ -102,54 +107,52 @@ class SignUp extends Component {
   validate = (name, value) => {
     const { requestData } = this.state;
     switch (name) {
-      case "firstName":
-        if (!value || value.trim() === "") {
-          return "First name is Required ";
-        } else {
-          return "";
+      case 'firstName':
+        if (!value || value.trim() === '') {
+          return 'First name is Required ';
         }
+        return '';
 
-      case "lastName":
-        if (!value || value.trim() === "") {
-          return "Last name is Required";
-        } else {
-          return "";
+      case 'lastName':
+        if (!value || value.trim() === '') {
+          return 'Last name is Required';
         }
-      case "email":
+        return '';
+
+      case 'email':
         if (!value) {
-          return "Email is Required";
-        } else if (
+          return 'Email is Required';
+        } if (
           !value.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
         ) {
-          return "Enter a valid email address";
-        } else {
-          return "";
+          return 'Enter a valid email address';
         }
-      case "password":
+        return '';
+
+      case 'password':
         if (!value) {
-          return "Password is Required";
-        } else if (value.length < 8 || value.length > 15) {
-          return "Please fill at least 8 character";
-        } else if (!value.match(/[a-z]/g)) {
-          return "Please enter at least lower character.";
-        } else if (!value.match(/[A-Z]/g)) {
-          return "Please enter at least upper character.";
-        } else if (!value.match(/[0-9]/g)) {
-          return "Please enter at least one digit.";
-        } else {
-          return "";
+          return 'Password is Required';
+        } if (value.length < 8 || value.length > 15) {
+          return 'Please fill at least 8 character';
+        } if (!value.match(/[a-z]/g)) {
+          return 'Please enter at least lower character.';
+        } if (!value.match(/[A-Z]/g)) {
+          return 'Please enter at least upper character.';
+        } if (!value.match(/[0-9]/g)) {
+          return 'Please enter at least one digit.';
         }
-      case "passwordConfirm":
+        return '';
+
+      case 'passwordConfirm':
         if (!value) {
-          return "Confirm Password Required";
-        } else if (value !== requestData.password) {
-          return "New Password and Confirm Password Must be Same";
-        } else {
-          return "";
+          return 'Confirm Password Required';
+        } if (value !== requestData.password) {
+          return 'New Password and Confirm Password Must be Same';
         }
+        return '';
 
       default: {
-        return "";
+        return '';
       }
     }
   };
@@ -177,7 +180,7 @@ class SignUp extends Component {
               <Input
                 name="firstName"
                 className={`InputIvalid ${
-                  errors.firstName ? "border-error" : null
+                  errors.firstName ? 'border-error' : null
                 }`}
                 placeholder="First Name"
                 value={requestData.firstName}
@@ -188,7 +191,7 @@ class SignUp extends Component {
               <Input
                 name="lastName"
                 className={`InputIvalid ${
-                  errors.lastName ? "border-error" : null
+                  errors.lastName ? 'border-error' : null
                 }`}
                 placeholder="Last Name"
                 value={requestData.lastName}
@@ -200,7 +203,7 @@ class SignUp extends Component {
               <Input
                 name="email"
                 className={`InputIvalid ${
-                  errors.email ? "border-error" : null
+                  errors.email ? 'border-error' : null
                 }`}
                 type="email"
                 placeholder="E-mail"
@@ -213,9 +216,9 @@ class SignUp extends Component {
               <PasswordInput
                 name="password"
                 className={`InputIvalid ${
-                  errors.password ? "border-error" : null
+                  errors.password ? 'border-error' : null
                 }`}
-                placeholder="password"
+                placeholder="Password"
                 value={requestData.password}
                 error={errors.password}
                 onChange={this.handleChange}
@@ -225,9 +228,9 @@ class SignUp extends Component {
               <PasswordInput
                 name="passwordConfirm"
                 className={`InputIvalid ${
-                  errors.passwordConfirm ? "border-error" : null
+                  errors.passwordConfirm ? 'border-error' : null
                 }`}
-                placeholder="passwordConfirm"
+                placeholder="Confirm password"
                 value={requestData.passwordConfirm}
                 error={errors.passwordConfirm}
                 onChange={this.handleChange}

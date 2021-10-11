@@ -77,7 +77,6 @@ export function resetFilter() {
   };
 }
 
-
 export const SET_LEGEND_BUTTON = 'SET_LEGEND_BUTTON';
 
 export function setLegendButton(mode) {
@@ -88,7 +87,6 @@ export function setLegendButton(mode) {
     },
   };
 }
-
 
 export const ONLINE_USERS = 'ONLINE_USERS';
 
@@ -116,16 +114,6 @@ export const TOGGLE_SEARCH = 'TOGGLE_SEARCH';
 export function toggleSearch(open) {
   return {
     type: TOGGLE_SEARCH,
-    payload: {
-      open,
-    },
-  };
-}
-
-export const TOGGLE_EXPLORE = 'TOGGLE_EXPLORE';
-export function toggleExplore(open) {
-  return {
-    type: TOGGLE_EXPLORE,
     payload: {
       open,
     },

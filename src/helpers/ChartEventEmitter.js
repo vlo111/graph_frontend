@@ -3,7 +3,6 @@ import EventEmitter from 'events';
 const emitter = new EventEmitter();
 
 class ChartEventEmitter {
-
   static on = (name, fn) => {
     emitter.on(name, fn);
     return this._remove(name, fn);
@@ -25,6 +24,5 @@ class ChartEventEmitter {
     emitter.removeAllListeners();
   }
 }
-
 
 export default ChartEventEmitter;

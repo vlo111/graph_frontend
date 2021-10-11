@@ -26,7 +26,6 @@ class NodeFullInfo extends Component {
     this.state = {
       loading: false,
     };
-
   }
 
   static defaultProps = {

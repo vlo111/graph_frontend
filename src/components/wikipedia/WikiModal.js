@@ -156,19 +156,19 @@ https://en.wikipedia.org/wiki/${name}
             key={i}
           >
             <div>
-            <label class="radiochecket">
-              <input
-                style={{ display: 'none' }}
-                onChange={() => this.checkedWiki(i)}
-                checked={isNaN(getChecked) ? getChecked : i === getChecked}
-                type="radio" 
-                 name="radio"
-                name="layout"
-                id={i}
-                value="option1"
-              />
-               <span class="checkmark"></span>
-               </label>
+              <label className="radiochecket">
+                <input
+                  style={{ display: 'none' }}
+                  onChange={() => this.checkedWiki(i)}
+                  checked={isNaN(getChecked) ? getChecked : i === getChecked}
+                  type="radio"
+                  name="radio"
+                  name="layout"
+                  id={i}
+                  value="option1"
+                />
+                <span className="checkmark" />
+              </label>
             </div>
             <div className="wikiresaltselcted">
               <h3>

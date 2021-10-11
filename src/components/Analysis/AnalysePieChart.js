@@ -113,6 +113,7 @@ class AnalyticalPage extends Component {
         </div>
         <div className="piePanel" onMouseLeave={this.onClosePartPie}>
           <ResponsiveContainer>
+
             <PieChart
               margin={{
                 top: 0,

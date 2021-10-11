@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import memoizeOne from 'memoize-one';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import NoGraph from '../components/NoGraph';
@@ -11,13 +10,13 @@ import { getShareGraphListRequest } from '../store/actions/share';
 import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
 
-
 class Shared extends Component {
   static propTypes = {
     shareGraphsList: PropTypes.array.isRequired,
     shareGraphsListStatus: PropTypes.string.isRequired,
     getShareGraphListRequest: PropTypes.func.isRequired,
     shareGraphsListInfo: PropTypes.object.isRequired,
+    mode: PropTypes.string.isRequired,
   }
 
   componentDidMount() {
@@ -32,13 +31,16 @@ class Shared extends Component {
     const {
       shareGraphsListStatus, shareGraphsList, shareGraphsListInfo: { totalPages }, mode,
     } = this.props;
-
     return (
       <>
-        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!shareGraphsList.length ? 'empty' : ''}`}>
+        <div
+          className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!shareGraphsList.length ? 'empty' : ''}`}
+        >
           {shareGraphsListStatus !== 'request' && _.isEmpty(shareGraphsList) ? (
             <NoGraph />
-          ) : mode === 'list' ? <GraphListItem graphs={shareGraphsList} headerTools="shared" /> : <GraphCardItem graphs={shareGraphsList} headerTools="shared" />}
+          ) : mode === 'list'
+            ? <GraphListItem graphs={shareGraphsList} headerTools="shared" />
+            : <GraphCardItem graphs={shareGraphsList} headerTools="shared" />}
         </div>
         {shareGraphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>
@@ -62,3 +64,4 @@ const Container = connect(
 )(Shared);
 
 export default withRouter(Container);
+

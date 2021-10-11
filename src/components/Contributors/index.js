@@ -93,10 +93,10 @@ const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
                     <img className="avatar-user d-block" src={item.user.avatar} alt={item.user.id} />
                     { onlineUser && onlineUser.some((n) => n.userId === item.user.id) ? (
                       <div className="status-online ">
-                       { onlineUser && onlineUser.some((n) => n.userId === item.user.id && n.activeGraphId === +graphId) ? (
-                         <div className="status-in-graph " />
-                       ) : ''}
-                     </div>
+                        { onlineUser && onlineUser.some((n) => n.userId === item.user.id && n.activeGraphId === +graphId) ? (
+                          <div className="status-in-graph " />
+                        ) : ''}
+                      </div>
                     ) : ''}
                   </div>
                 </Tooltip>
@@ -114,6 +114,9 @@ const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
   );
 });
 
-ContributorsModal.propTypes = {};
+ContributorsModal.propTypes = {
+  graphId: PropTypes.number.isRequired,
+
+};
 
 export default ContributorsModal;

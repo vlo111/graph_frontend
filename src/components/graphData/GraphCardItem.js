@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
+import Tooltip from 'rc-tooltip';
+import { connect } from 'react-redux';
 import GraphListFooter from './GraphListFooter';
 import GraphDashboardSubMnus from './GraphListHeader';
 import { ReactComponent as PlusSvg } from '../../assets/images/icons/plusGraph.svg';
-import Tooltip from 'rc-tooltip';
 
 class GraphCardItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
+    graphsList: PropTypes.array.isRequired,
+    headerTools: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -33,41 +35,33 @@ class GraphCardItem extends Component {
   }
 
   updateGraph = (graph) => {
-    const { graphs } = this.props;
-
-    graphs.map((p) => {
+    let { graphs } = this.props;
+    graphs = graphs.map((p) => {
       if (p.id === graph.id) {
         p.title = graph.title;
         p.description = graph.description;
+        p.thumbnail = graph.thumbnail;
       }
+      return p;
     });
 
-    this.setState({
-      graphs,
-    });
+    this.setState({ graphs });
   }
 
   render() {
-    let { graphs, headerTools, mode } = this.props;
-    const { graphs: graphState } = this.state;
-
-    if (graphState && graphState.length) {
-      graphs = graphState;
-    }
-
-    const { s } = queryString.parse(window.location.search);
-    if (!graphs && !graphs?.length) return null;
+    let { headerTools, graphs } = this.props;
+    if (!graphs?.length) return null;
 
     return (
       <>
-        { (headerTools === 'home' && graphs.length)
+        {(headerTools === 'home' && graphs.length)
           ? (
             <div className="startGraph" onClick={this.startGraph}>
               <PlusSvg />
               <h3>Create a Graph</h3>
             </div>
           ) : null}
-        { graphs.map((graph) => (
+        {graphs.map((graph) => (
           <article className="graphs">
             <div className="top">
               <div className="infoContent">
@@ -81,7 +75,7 @@ class GraphCardItem extends Component {
                     <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
                   </Link>
                   <div className="info">
-                    <span>{moment(graph.updatedAt).calendar()}</span>
+                    <span>{moment(graph.updatedAt).format('YYYY.MM.DD HH:mm')}</span>
                     <span className="nodesCount">{` ${graph.nodesCount} nodes `}</span>
                   </div>
                 </div>
@@ -91,18 +85,18 @@ class GraphCardItem extends Component {
               </div>
             </div>
             <div>
-             <Tooltip overlay={graph.title} placement="bottom" >
-              <h3>
-                {' '}
-                {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
-              </h3>
-             </Tooltip> 
-              <div className="descriptionGraph">
-              <Tooltip overlay={graph.description} placement="bottom" >
-                <span>
+              <Tooltip overlay={graph.title} placement="bottom" >
+                <h3>
                   {' '}
-                  {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
-                </span>
+                  {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
+                </h3>
+              </Tooltip>
+              <div className="descriptionGraph">
+                <Tooltip overlay={graph.description} placement="bottom" >
+                  <span>
+                    {' '}
+                    {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
+                  </span>
                 </Tooltip>
               </div>
             </div>
@@ -126,10 +120,15 @@ class GraphCardItem extends Component {
             <GraphListFooter graph={graph} />
           </article>
         ))}
-
       </>
     );
   }
 }
 
-export default GraphCardItem;
+const mapStateToProps = (state) => ({
+  graphsList: state.graphs.graphsList || [],
+});
+
+const Container = connect(mapStateToProps)(GraphCardItem);
+
+export default withRouter(Container);

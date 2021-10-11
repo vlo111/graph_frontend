@@ -21,7 +21,7 @@ export const getListInfo = createSelector(
   getGraph,
   (items) => items.graphsListInfo,
 );
- 
+
 export const getSingleGraphOwner = createSelector(
   getGraph,
   (items) => items.singleGraph.userId,

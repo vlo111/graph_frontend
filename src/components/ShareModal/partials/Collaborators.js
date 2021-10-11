@@ -8,7 +8,7 @@ import { listGraphRequest, updateGraphRequest, deleteGraphRequest } from '../../
 import { shareGraphs } from '../../../store/selectors/shareGraphs';
 import { getId } from '../../../store/selectors/account';
 import Button from '../../form/Button';
-import { ReactComponent as TrashSvg } from '../../../assets/images/icons/trash.svg'; 
+import { ReactComponent as TrashSvg } from '../../../assets/images/icons/trash.svg';
 
 const Collaborators = ({ select, graph }) => {
   const dispatch = useDispatch();
@@ -38,9 +38,9 @@ const Collaborators = ({ select, graph }) => {
             src={item.user.avatar}
             alt={`${item.user.firstName} ${item.user.lastName}`}
           />
-          <span>{`${item.user.firstName} ${item.user.lastName}`}</span> 
+          <span>{`${item.user.firstName} ${item.user.lastName}`}</span>
         </div>
-        <div className='share-modal__collaborators--status'>
+        <div className="share-modal__collaborators--status">
           {item.status === 'new' && 'Not Saved'}
         </div>
         <div className="share-modal__search--selected-action">

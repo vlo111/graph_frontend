@@ -49,6 +49,7 @@ class AutoSave extends Component {
     deleteLabelsRequest: PropTypes.func.isRequired,
     updateLabelsRequest: PropTypes.func.isRequired,
     toggleFolderRequest: PropTypes.func.isRequired,
+    toggleDeleteState: PropTypes.func.isRequired,
 
     updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
 
@@ -56,7 +57,7 @@ class AutoSave extends Component {
     getGraphsListRequest: PropTypes.func.isRequired,
 
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
-    getGraphsListRequest: PropTypes.func.isRequired,
+    location: PropTypes.object.isRequired,
   }
 
   async componentDidMount() {
@@ -354,14 +355,14 @@ class AutoSave extends Component {
     Chart.event.emit('auto-save');
 
     const res = await Promise.all(promise);
-    for (const d of res) {
+    res.forEach(async (d) => {
       if (d?.payload?.data?.status !== 'ok') {
         toast.error('Graph save error');
       }
       if (!_.isEmpty(d?.payload?.data?.error)) {
         toast.error('Something went wrong');
       }
-    }
+    });
     if (res.length) {
       position && await this.props.getSingleGraphRequest(graphId);
     }
@@ -372,16 +373,19 @@ class AutoSave extends Component {
 
   handleUnload = (ev) => {
     ev.preventDefault();
-    this.updateThumbnail();
+    const { nodesCount, defaultImage } = this.props;
+    if (nodesCount < 500 || !defaultImage) {
+      this.updateThumbnail();
+    }
     ev.returnValue = 'Changes you made may not be saved.';
   }
 
   handleRouteChange = (newLocation) => {
+    const { nodesCount, location, defaultImage } = this.props;
     if (Chart.isLoading()) {
       return;
     }
-    const { location } = this.props;
-    if (location.pathname !== newLocation.pathname) {
+    if (location.pathname !== newLocation.pathname && nodesCount < 500 && !defaultImage) {
       Chart.loading(true);
       this.updateThumbnail();
     }

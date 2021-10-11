@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './form/Button';
-import { setActiveButton, toggleSearch } from '../store/actions/app';
+import { setActiveButton } from '../store/actions/app';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
-import { getSingleGraphRequest, setActiveMouseTracker } from '../store/actions/graphs';
 import { socketMousePositionTracker } from '../store/actions/socket';
 import AccountDropDown from './account/AccountDropDown';
 import Legend from './Legend';
 import GraphSettings from './graphData/GraphSettings';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/commentGraph.svg';
-import CommentModal from './CommentModal/CommentModal.js';
+import CommentModal from './CommentModal/CommentModal';
 import Notification from './Notification';
 import { KEY_CODES } from '../data/keyCodes';
 import ContributorsModal from './Contributors';
@@ -23,15 +22,12 @@ import ChartUtils from '../helpers/ChartUtils';
 class ToolBarHeader extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
-    getSingleGraphRequest: PropTypes.func.isRequired,
-    toggleSearch: PropTypes.func.isRequired,
+    socketMousePositionTracker: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    setActiveMouseTracker: PropTypes.func.isRequired,
-    currentUserId: PropTypes.number.isRequired,
-    graph: PropTypes.object.isRequired,
+    currentUserId: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -51,15 +47,7 @@ class ToolBarHeader extends Component {
   }
 
   handleClick = (button) => {
-    const { match: { params: { graphId }}, location: { pathname} } = this.props;
     this.props.setActiveButton(button);
-    
-    if (button === 'search') {
-      this.props.toggleSearch(true)
-      if (!pathname.startsWith('/graphs/view')) {
-        this.props.history.replace(`/graphs/view/${graphId}`);
-      }
-    }
   }
 
   openCommentModal = (open) => {
@@ -79,7 +67,7 @@ class ToolBarHeader extends Component {
   };
 
   handleKeyDown = (ev) => {
-    if (ev.chartEvent && !ev.ctrlPress && ev.shiftKey) {
+    if (ev.chartEvent && !ev.ctrlPress && ev.shiftKey && !ev.altKey) {
       if (ev.keyCode === KEY_CODES.search_code) {
         ChartUtils.keyEvent(ev);
         ev.preventDefault();
@@ -109,7 +97,8 @@ class ToolBarHeader extends Component {
     this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId);
 
     const updateLocation = pathname.startsWith('/graphs/update/');
-    const filter = pathname.startsWith('/graphs/filter/'); 
+    const filter = pathname.startsWith('/graphs/filter/');
+    const view = pathname.startsWith('/graphs/view/');
     return (
       <>
         <header id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
@@ -121,20 +110,21 @@ class ToolBarHeader extends Component {
               </Link>
             </li>
             <li className="legend">
-              {updateLocation &&  <Legend /> }
+              {updateLocation && <Legend /> }
             </li>
             <li>
-              { !filter && 
+              { !filter && !view
+                && (
                 <div className="graphs">
-                    <Button
-                      icon={<SearchSvg />}
-                      className={activeButton === 'search' ? 'active' : undefined}
-                      onClick={(ev) => this.handleClick('search')}
-                    >
-                      Search
-                    </Button>
+                  <Button
+                    icon={<SearchSvg />}
+                    className={activeButton === 'search' ? 'active' : undefined}
+                    onClick={() => this.handleClick('search')}
+                  >
+                    Search
+                  </Button>
                 </div>
-             }
+                )}
             </li>
             <li>
               {updateLocation ? (
@@ -158,22 +148,22 @@ class ToolBarHeader extends Component {
             </li>
             <li className="user">
               {updateLocation && (
-                  <div className="button-group social-button-group">
+              <div className="button-group social-button-group">
 
-                    {graphId && <ContributorsModal graphId={graphId} graphOwner={singleGraphUser} isOwner="true" />}
-                  </div>
+                {graphId && <ContributorsModal graphId={graphId} graphOwner={singleGraphUser} isOwner="true" />}
+              </div>
               )}
             </li>
             <li>
               {updateLocation && (
-                  <div className="commentHeader">
-                    <Button
-                        icon={<CommentSvg />}
-                        className="transparent footer-icon"
-                        onClick={() => this.openCommentModal(true)}
-                        title='Comments'
-                    />
-                  </div>
+              <div className="commentHeader">
+                <Button
+                  icon={<CommentSvg />}
+                  className="transparent footer-icon"
+                  onClick={() => this.openCommentModal(true)}
+                  title="Comments"
+                />
+              </div>
               )}
             </li>
             <li className="notify_container">
@@ -207,10 +197,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   setActiveButton,
-  getSingleGraphRequest,
-  setActiveMouseTracker,
   socketMousePositionTracker,
-  toggleSearch
 };
 const Container = connect(mapStateToProps, mapDispatchToProps)(ToolBarHeader);
 
