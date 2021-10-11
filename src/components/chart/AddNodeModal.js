@@ -29,10 +29,9 @@ import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg'
 class AddNodeModal extends Component {
   static propTypes = {
     toggleNodeModal: PropTypes.func.isRequired,
-    currentUserId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.string.isRequired,
     addNodeParams: PropTypes.object.isRequired,
     currentUserRole: PropTypes.string.isRequired,
-    graphNodes: PropTypes.array.isRequired,
   }
 
   initNodeData = memoizeOne((addNodeParams) => {

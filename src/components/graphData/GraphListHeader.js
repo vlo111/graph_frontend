@@ -3,16 +3,13 @@ import React, {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import PropTypes, { func } from 'prop-types';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import Popover from '../form/Popover';
-import Button from '../form/Button';
-// import UpdateGraphModal from './chart/UpdateGraphModal';
-import { deleteGraphRequest } from '../../store/actions/graphs';
+import { deleteGraphRequest, getGraphsListRequest } from '../../store/actions/graphs';
 import { deleteGraphRequest as DeleteShareGraphRequest } from '../../store/actions/shareGraphs';
 import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellipsis.svg';
-import { getGraphsListRequest } from '../../store/actions/graphs';
 import ShareModal from '../ShareModal';
 import EditGraphModal from '../chart/EditGraphModal';
 
@@ -26,7 +23,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
   const notification = false;
 
   async function deleteGraph(graphId) {
-    //select data from localStorage
+    //  select data from localStorage
     const order = JSON.parse(localStorage.getItem('/')) || 'newest';
     try {
       if (graphId) {
@@ -38,7 +35,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
         await dispatch(deleteGraphRequest(graph.id));
         // use selector
         toast.info('Successfully deleted');
-          await dispatch(getGraphsListRequest(page, { s: searchParam, filter: order }));
+        await dispatch(getGraphsListRequest(page, { s: searchParam, filter: order }));
 
         history.push('/');
       }
