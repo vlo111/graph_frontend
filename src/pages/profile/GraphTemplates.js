@@ -17,17 +17,17 @@ class Home extends Component {
     graphsList: PropTypes.array.isRequired,
     graphsListInfo: PropTypes.object.isRequired,
     graphsListStatus: PropTypes.string.isRequired,
-    mode: PropTypes.string.isRequired,
+    headerTools: PropTypes.object.isRequired,
   }
 
+  
   getGraphsList = memoizeOne((page = 1, s) => {
     const status = 'template';
-
     const order = JSON.parse(localStorage.getItem(`/${status}s`));
-
     this.props.getGraphsListRequest(page, { s, filter: order, status });
   })
-
+  
+  
   render() {
     const {
       graphsList, graphsListStatus, graphsListInfo: { totalPages }, mode,

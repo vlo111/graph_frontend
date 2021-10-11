@@ -2569,7 +2569,6 @@ p {
     margin-right: 0;
     background-color: white !important;
     width: 50px;
-    z-index: 2;
 
     .icon {
       margin: 0;
@@ -6015,7 +6014,6 @@ img.preview-scaled {
 }
 
 
-
 .line {
   border: none;
   width: 100%;
@@ -6809,6 +6807,7 @@ img.preview-scaled {
 
 .searchOverlay {
   position: relative;
+  z-index: 1 !important;
 }
 
 .searchNodes {
@@ -7934,7 +7933,7 @@ img.preview-scaled {
   background: white;
   padding: 10px;
   box-shadow: 4px 0 31px rgb(119 113 183 / 22%);
-  z-index: 6;
+  z-index: 4;
 
   .container > li {
     display: flex;
