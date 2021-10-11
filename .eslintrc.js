@@ -30,7 +30,7 @@ module.exports = {
       checkChildContextTypes: true,
     }],
     'global-require': 0,
-    // 'no-param-reassign': [2, { props: false }],
+    'no-param-reassign': [2, { props: false }],
     'no-underscore-dangle': [0],
     radix: [0],
     'react/static-property-placement': [0],
