@@ -2614,7 +2614,7 @@ p {
     margin-right: 0;
     background-color: white !important;
     width: 50px;
-    z-index: 2;
+    // z-index: 2;
 
     .icon {
       margin: 0;
@@ -7979,7 +7979,7 @@ img.preview-scaled {
   background: white;
   padding: 10px;
   box-shadow: 4px 0 31px rgb(119 113 183 / 22%);
-  z-index: 12;
+  z-index: 4;
 
   .container > li {
     display: flex;
