@@ -131,7 +131,7 @@ class SearchSharedGraphs extends Component {
 
           </>
         ) : ((!setLimit && shareGraphsListStatus !== 'request' && (
-        <div className="not_found">
+        <div className="not_Found">
           <img src={NotFound} alt="" />
           <h3>Not Found</h3>
         </div>
