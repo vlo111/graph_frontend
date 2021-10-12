@@ -400,15 +400,16 @@ class AutoSave extends Component {
   }
 
   updateThumbnail = async () => {
+    const { graphChanged } = this.state;
+    const { match: { params: { graphId } }, defaultImage, nodesCount } = this.props;
     const page = 1;
     const order = 'newest';
     document.body.classList.add('autoSave');
     const svg = ChartUtils.getChartSvg();
-    const { graphChanged } = this.state;
-    const { match: { params: { graphId } }, defaultImage, nodesCount } = this.props;
     if (graphChanged && !defaultImage && graphId && nodesCount < 500) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
       this.props.getGraphsListRequest(page, { filter: order });
+      this.setState({ graphChanged: false });
     }
     document.body.classList.remove('autoSave');
   }
