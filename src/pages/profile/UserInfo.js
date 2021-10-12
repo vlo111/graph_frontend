@@ -18,7 +18,7 @@ import linkdein from '../../assets/images/linkdein.png';
 import skype from '../../assets/images/skype.png';
 
 
-const ProfileMain = React.memo(({ edit, userId }) => {
+const ProfileMain = React.memo(({ edit, userId, avatar,  handleChange }) => {
     const dispatch = useDispatch();
 
     //get profile
@@ -36,7 +36,7 @@ const ProfileMain = React.memo(({ edit, userId }) => {
     // check user is friend or not
     let isFriend = false;
     
-    if (userId && myfriends.length) {
+    if (userId && userFriendsList.length) {
         if(currentUserId == userId) {
             isFriend = true;
         } else {
@@ -48,6 +48,17 @@ const ProfileMain = React.memo(({ edit, userId }) => {
             }
         }
        
+    }
+
+    if (userId && currentUserId == userId) {
+        isFriend = true;
+    } else {
+        for (let friend of userFriendsList) {
+            if (userId == friend.friendUserId && friend.status == 'accepted') {
+                isFriend = true;
+                break;
+            }
+        }
     }
 
     useEffect(() => {
@@ -68,9 +79,9 @@ const ProfileMain = React.memo(({ edit, userId }) => {
                         <div className="profile_desc">
                             <div className="img">
                                 {edit ? <ImageUploader
-                                    value={profile.avatar}
+                                    value={avatar || profile.avatar}
                                     email={profile.email}
-                                    onChange={(val) => this.edit(val || '', 'avatar')}
+                                    onChange={(val) => handleChange(val || '', 'avatar')}
                                 /> : <img src={profile.avatar}></img>}
 
                             </div>

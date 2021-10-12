@@ -12,6 +12,7 @@ import { KEY_CODES } from '../data/keyCodes';
 import AnalyseModal from './Analysis/AnalyseModal';
 import Outside from './Outside';
 import HelpsModal from './Helps';
+import Undo from './Undo';
 import { ReactComponent as Ellipse } from '../assets/images/Ellipse.svg';
 import { ReactComponent as FreeForm } from '../assets/images/freeform.svg';
 import { ReactComponent as Square } from '../assets/images/Square.svg';
@@ -23,7 +24,7 @@ class ToolBar extends Component {
     singleGraph: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     activeButton: PropTypes.string.isRequired,
-    history: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   initialGraph = memoizeOne(async (graphId) => {
@@ -286,8 +287,8 @@ class ToolBar extends Component {
     const closedMenu = document.getElementsByClassName('closed_menu')[0];
     const menu = document.getElementsByClassName('menu')[0];
     const tab = document.getElementsByClassName('react-tabs')[0];
+    const undo = document.getElementById('undoWrapper');
     const footer = document.getElementById('graphs-data-info');
-
     let left;
 
     if (closedMenu) {
@@ -299,8 +300,11 @@ class ToolBar extends Component {
     if (tab) {
       left += tab.offsetWidth + 15;
     }
-
-    footer.style.left = `${left + 13}px`;
+    undo.style.left = `${left + 13}px`;
+    if (undo) {
+      left += undo.offsetWidth;
+    }
+    footer.style.left = `${left}px`;
   }
 
   render() {
@@ -314,96 +318,97 @@ class ToolBar extends Component {
     } = this.state;
 
     return (
-      <div className={`${!showMenu ? 'closed_menu' : ''} menu`}>
-        <ul className="containerMenu">
-          <li onClick={this.toggleShowModal} className="collapse">
-            <i className="fa fa-align-justify"> </i>
-            <div className="sidebar_text"> Menu </div>
-          </li>
-          <li
-            onClick={() => this.handleOpenNewModal()}
-            onMouseOver={() => this.handleOver('create')}
-            onMouseLeave={this.handleLeave}
-            className={`${((overMenu === 'create') || createNewPopup) ? 'collapse_over' : ''} collapse`}
-          >
-            <i className="fa fa-plus"> </i>
-            <div className="sidebar_text">
-              Create Node
-              <i className="fa fa-caret-right" />
-            </div>
-          </li>
-          <li
-            onClick={() => this.handleClick('media')}
-            onMouseOver={() => this.handleOver('media')}
-            onMouseLeave={this.handleLeave}
-            className={`${overMenu === 'media' ? 'collapse_over' : ''} collapse`}
-          >
-            <i className="fa fa-picture-o"> </i>
-            <div className="sidebar_text"> Media </div>
-          </li>
-          <li
-            onClick={() => this.handleClick('Share')}
-            onMouseOver={() => this.handleOver('share')}
-            onMouseLeave={this.handleLeave}
-            className={`${overMenu === 'share' ? 'collapse_over' : ''} collapse`}
-          >
-            <i className="fa fa-share-alt"> </i>
-            <div className="sidebar_text"> Share </div>
-          </li>
-          <li
-            onClick={() => this.handleClick('data')}
-            onMouseOver={() => this.handleOver('data_sheet')}
-            onMouseLeave={this.handleLeave}
-            className={`${overMenu === 'data_sheet' ? 'collapse_over' : ''} collapse`}
-          >
-            <i className="fa fa-th-list"> </i>
-            <div className="sidebar_text"> Data Sheet </div>
-          </li>
-          <li
-            onClick={() => this.handleClick('import')}
-            onMouseOver={() => this.handleOver('import')}
-            onMouseLeave={this.handleLeave}
-            className={`${overMenu === 'import' ? 'collapse_over' : ''} collapse`}
-          >
-            <i className="fa fa-arrow-down"> </i>
-            <div className="sidebar_text"> Import Data </div>
-          </li>
-          <li
-            onClick={() => this.handleClick('view')}
-            onMouseOver={() => this.handleOver('view')}
-            onMouseLeave={this.handleLeave}
-            className={`${overMenu === 'view' ? 'collapse_over' : ''} collapse`}
-          >
-            <i className="fa fa-eye"> </i>
-            <div className="sidebar_text"> Explore </div>
-          </li>
-          <li
-            onClick={() => this.handleClick('filter')}
-            onMouseOver={() => this.handleOver('filter')}
-            onMouseLeave={this.handleLeave}
-            className={`${overMenu === 'filter' ? 'collapse_over' : ''} collapse`}
-          >
-            <i className="fa fa-filter"> </i>
-            <div className="sidebar_text"> Filter </div>
-          </li>
-          <li
-            onClick={() => this.handleClick('analytic')}
-            onMouseOver={() => this.handleOver('analytic')}
-            onMouseLeave={this.handleLeave}
-            className={`${overMenu === 'analytic' ? 'collapse_over' : ''} collapse`}
-          >
-            <i className="fa fa-bar-chart" />
-            <div className="sidebar_text"> Analysis </div>
-          </li>
-          <li
-            onClick={() => this.handleClick('findNode')}
-            onMouseOver={() => this.handleOver('findNode')}
-            onMouseLeave={this.handleLeave}
-            className={`${overMenu === 'findNode' ? 'collapse_over' : ''} collapse`}
-          >
-            <i className="fa fa-search-plus" />
-            <div className="sidebar_text"> Find Node </div>
-          </li>
+      <>
+        <div className={`${!showMenu ? 'closed_menu' : ''} menu`}>
+          <ul className="containerMenu">
+            <li onClick={this.toggleShowModal} className="collapse">
+              <i className="fa fa-align-justify"> </i>
+              <div className="sidebar_text"> Menu </div>
+            </li>
+            <li
+              onClick={() => this.handleOpenNewModal()}
+              onMouseOver={() => this.handleOver('create')}
+              onMouseLeave={this.handleLeave}
+              className={`${((overMenu === 'create') || createNewPopup) ? 'collapse_over' : ''} collapse`}
+            >
+              <i className="fa fa-plus"> </i>
+              <div className="sidebar_text">
+                Create Node
+                <i className="fa fa-caret-right" />
+              </div>
+            </li>
+            <li
+              onClick={() => this.handleClick('media')}
+              onMouseOver={() => this.handleOver('media')}
+              onMouseLeave={this.handleLeave}
+              className={`${overMenu === 'media' ? 'collapse_over' : ''} collapse`}
+            >
+              <i className="fa fa-picture-o"> </i>
+              <div className="sidebar_text"> Media </div>
+            </li>
+            <li
+              onClick={() => this.handleClick('Share')}
+              onMouseOver={() => this.handleOver('share')}
+              onMouseLeave={this.handleLeave}
+              className={`${overMenu === 'share' ? 'collapse_over' : ''} collapse`}
+            >
+              <i className="fa fa-share-alt"> </i>
+              <div className="sidebar_text"> Share </div>
+            </li>
+            <li
+              onClick={() => this.handleClick('data')}
+              onMouseOver={() => this.handleOver('data_sheet')}
+              onMouseLeave={this.handleLeave}
+              className={`${overMenu === 'data_sheet' ? 'collapse_over' : ''} collapse`}
+            >
+              <i className="fa fa-th-list"> </i>
+              <div className="sidebar_text"> Data Sheet </div>
+            </li>
+            <li
+              onClick={() => this.handleClick('import')}
+              onMouseOver={() => this.handleOver('import')}
+              onMouseLeave={this.handleLeave}
+              className={`${overMenu === 'import' ? 'collapse_over' : ''} collapse`}
+            >
+              <i className="fa fa-arrow-down"> </i>
+              <div className="sidebar_text"> Import Data </div>
+            </li>
+            <li
+              onClick={() => this.handleClick('view')}
+              onMouseOver={() => this.handleOver('view')}
+              onMouseLeave={this.handleLeave}
+              className={`${overMenu === 'view' ? 'collapse_over' : ''} collapse`}
+            >
+              <i className="fa fa-eye"> </i>
+              <div className="sidebar_text"> Explore </div>
+            </li>
+            <li
+              onClick={() => this.handleClick('filter')}
+              onMouseOver={() => this.handleOver('filter')}
+              onMouseLeave={this.handleLeave}
+              className={`${overMenu === 'filter' ? 'collapse_over' : ''} collapse`}
+            >
+              <i className="fa fa-filter"> </i>
+              <div className="sidebar_text"> Filter </div>
+            </li>
+            <li
+              onClick={() => this.handleClick('analytic')}
+              onMouseOver={() => this.handleOver('analytic')}
+              onMouseLeave={this.handleLeave}
+              className={`${overMenu === 'analytic' ? 'collapse_over' : ''} collapse`}
+            >
+              <i className="fa fa-bar-chart" />
+              <div className="sidebar_text"> Analysis </div>
+            </li>
+            <li
+              onClick={() => this.handleClick('findNode')}
+              onMouseOver={() => this.handleOver('findNode')}
+              onMouseLeave={this.handleLeave}
+              className={`${overMenu === 'findNode' ? 'collapse_over' : ''} collapse`}
+            >
+              <i className="fa fa-search-plus" />
+              <div className="sidebar_text"> Find Node </div>
+            </li>
 
           {/* <li
 
@@ -414,109 +419,111 @@ class ToolBar extends Component {
            <i class="fa fa-history"></i>
            <div className="sidebar_text"> History </div>
          </li> */}
-          <li
-            onClick={() => this.openHelpsModal()}
-            onMouseOver={() => this.handleOver('help')}
-            onMouseLeave={this.handleLeave}
-            className={`${overMenu === 'help' ? 'collapse_over' : ''} collapse help_menu `}
-          >
-            <i className="fa fa-question-circle" />
-            <div className="sidebar_text"> Help </div>
-          </li>
+            <li
+              onClick={() => this.openHelpsModal()}
+              onMouseOver={() => this.handleOver('help')}
+              onMouseLeave={this.handleLeave}
+              className={`${overMenu === 'help' ? 'collapse_over' : ''} collapse help_menu `}
+            >
+              <i className="fa fa-question-circle" />
+              <div className="sidebar_text"> Help </div>
+            </li>
 
-        </ul>
-        {createNewPopup ? (
-          <Outside onClick={() => this.toggleOutside()}>
-            <ul className="dropdown-addNew">
-              <li
-                className={`${selected.includes('node') ? 'selected' : ''}`}
-                onClick={this.showAddNode}
-              >
-                Node
-                <i className="fa fa-caret-right" />
-              </li>
-              <li className={`${selected.includes('label') ? 'selected' : ''}`} onClick={this.showAddLabel}>
-                Label
-                <i className="fa fa-caret-right" />
-              </li>
-              <li
-                className={`${selected.includes('folder') ? 'selected' : ''}`}
-                onClick={() => {
-                  this.handleClick('create-folder');
-                }}
-              >
-                Folder
-              </li>
-            </ul>
-            {showAddNode && (
-            <ul className="dropdown-node">
-              <li
-                className={`${selected.includes('create-node') ? 'selected' : ''}`}
-                onClick={() => this.handleClick('create-node')}
-              >
-                New
-              </li>
-              <li
-                className={`${selected.includes('maps') ? 'selected' : ''}`}
-                onClick={() => this.handleClick('maps')}
-              >
-                Use Map
-              </li>
-              <li
-                className={`${selected.includes('linkedIn') ? 'selected' : ''}`}
-                onClick={() => this.handleClick('linkedIn')}
-              >
-                Use LinkedIn
-              </li>
-              <li
-                className={`${selected.includes('wikipedia') ? 'selected' : ''}`}
-                onClick={() => this.handleClick('wikipedia')}
-              >
-                Use Wikipedia
-              </li>
-              <li
-                className={`${selected.includes('sciGraph') ? 'selected' : ''}`}
-                onClick={() => this.handleClick('sciGraph')}
-              >
-                Use Mind Science
-              </li>
-            </ul>
-            )}
-            {showAddLabel && (
-            <ul className="create_label">
-              <li
-                onClick={() => this.handleClick('create-label')}
-                className={`${selected.includes('freeForm') ? 'selected' : ''}`}
-              >
-                <FreeForm className="lablMenu" />
-                <span> Free form </span>
-              </li>
-              <li
-                onClick={() => this.handleClick('create-label-square')}
-                className={`${selected.includes('create-label-square') ? 'selected' : ''}`}
-              >
-                <Square className="lablMenu" />
-                <span> Square </span>
-              </li>
-              <li
-                onClick={() => this.handleClick('create-label-ellipse')}
-                className={`${selected.includes('create-label-ellipse') ? 'selected' : ''}`}
-              >
-                <Ellipse className="lablMenu" />
-                <span> Ellipse </span>
-              </li>
-            </ul>
-            )}
-          </Outside>
-        ) : <></>}
-        {activeButton === 'Share' && (
-          <ShareModal closeModal={this.closeModal} graph={singleGraph} />
-        )}
-        {openHelpsModal && (
-          <HelpsModal closeModal={this.closeHelpModal} />
-        )}
-        <AnalyseModal />
-      </div>
+          </ul>
+          {createNewPopup ? (
+            <Outside onClick={() => this.toggleOutside()}>
+              <ul className="dropdown-addNew">
+                <li
+                  className={`${selected.includes('node') ? 'selected' : ''}`}
+                  onClick={this.showAddNode}
+                >
+                  Node
+                  <i className="fa fa-caret-right" />
+                </li>
+                <li className={`${selected.includes('label') ? 'selected' : ''}`} onClick={this.showAddLabel}>
+                  Label
+                  <i className="fa fa-caret-right" />
+                </li>
+                <li
+                  className={`${selected.includes('folder') ? 'selected' : ''}`}
+                  onClick={() => {
+                    this.handleClick('create-folder');
+                  }}
+                >
+                  Folder
+                </li>
+              </ul>
+              {showAddNode && (
+                <ul className="dropdown-node">
+                  <li
+                    className={`${selected.includes('create-node') ? 'selected' : ''}`}
+                    onClick={() => this.handleClick('create-node')}
+                  >
+                    New
+                  </li>
+                  <li
+                    className={`${selected.includes('maps') ? 'selected' : ''}`}
+                    onClick={() => this.handleClick('maps')}
+                  >
+                    Use Map
+                  </li>
+                  <li
+                    className={`${selected.includes('linkedIn') ? 'selected' : ''}`}
+                    onClick={() => this.handleClick('linkedIn')}
+                  >
+                    Use LinkedIn
+                  </li>
+                  <li
+                    className={`${selected.includes('wikipedia') ? 'selected' : ''}`}
+                    onClick={() => this.handleClick('wikipedia')}
+                  >
+                    Use Wikipedia
+                  </li>
+                  <li
+                    className={`${selected.includes('sciGraph') ? 'selected' : ''}`}
+                    onClick={() => this.handleClick('sciGraph')}
+                  >
+                    Use Mind Science
+                  </li>
+                </ul>
+              )}
+              {showAddLabel && (
+                <ul className="create_label">
+                  <li
+                    onClick={() => this.handleClick('create-label')}
+                    className={`${selected.includes('freeForm') ? 'selected' : ''}`}
+                  >
+                    <FreeForm className="lablMenu" />
+                    <span> Free form </span>
+                  </li>
+                  <li
+                    onClick={() => this.handleClick('create-label-square')}
+                    className={`${selected.includes('create-label-square') ? 'selected' : ''}`}
+                  >
+                    <Square className="lablMenu" />
+                    <span> Square </span>
+                  </li>
+                  <li
+                    onClick={() => this.handleClick('create-label-ellipse')}
+                    className={`${selected.includes('create-label-ellipse') ? 'selected' : ''}`}
+                  >
+                    <Ellipse className="lablMenu" />
+                    <span> Ellipse </span>
+                  </li>
+                </ul>
+              )}
+            </Outside>
+          ) : <></>}
+          {activeButton === 'Share' && (
+            <ShareModal closeModal={this.closeModal} graph={singleGraph} />
+          )}
+          {openHelpsModal && (
+            <HelpsModal closeModal={this.closeHelpModal} />
+          )}
+          <AnalyseModal />
+        </div>
+        <Undo />
+      </>
     );
   }
 }

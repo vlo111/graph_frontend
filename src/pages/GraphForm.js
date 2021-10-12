@@ -47,10 +47,10 @@ class GraphForm extends Component {
     activeButton: PropTypes.string.isRequired,
     singleGraphStatus: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
-    currentUserId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.string.isRequired,
     mouseMoveTracker: PropTypes.array.isRequired,
     currentUserRole: PropTypes.string.isRequired,
-    history: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   getSingleGraph = memoizeOne((graphId) => {
@@ -134,7 +134,7 @@ const mapStateToProps = (state) => ({
   mouseMoveTracker: state.graphs.mouseMoveTracker,
   currentUserId: state.account.myAccount.id,
   singleGraphStatus: state.graphs.singleGraphStatus,
-  currentUserRole: state.graphs.singleGraph.currentUserRole || [],
+  currentUserRole: state.graphs.singleGraph.currentUserRole || '',
 });
 const mapDispatchToProps = {
   setActiveButton,

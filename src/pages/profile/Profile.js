@@ -85,7 +85,7 @@ class Profile extends Component {
             <div className="profileSettings profileEdit">
                 <div className="row_">
                     <div className="colm-md-6">
-                        <UserInfo userId = {myAccount.id} edit={true}/>
+                        <UserInfo userId = {myAccount.id} avatar ={myAccount.avatar}  edit={true} handleChange= {this.handleChange}/>
                     </div>
                     <div className="colm-md-6">
                         <form onSubmit={this.saveAccount}>
@@ -250,7 +250,7 @@ class Profile extends Component {
                     </div>
                 </div>
                 {changePassword ? (
-                    <UpdatePasswordModal
+                    <UpdatePasswordModal className='changePasswordProfile'
                         onClose={() => this.toggleChangePassword(false)}
                     />
                 ) : null}

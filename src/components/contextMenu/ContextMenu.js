@@ -23,7 +23,6 @@ import { KEY_CODES } from '../../data/keyCodes';
 class ContextMenu extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
-    singleGraphId: PropTypes.number.isRequired,
   }
 
   static event = new EventEmitter();

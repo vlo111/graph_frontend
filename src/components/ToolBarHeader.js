@@ -27,7 +27,7 @@ class ToolBarHeader extends Component {
     match: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    currentUserId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.string.isRequired,
   };
 
   constructor(props) {

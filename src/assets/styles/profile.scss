@@ -363,6 +363,7 @@
   
         .ghInput textarea {
           min-width:initial;
+          padding: 5px 15px;
         }
         .social_icon_new { 
           padding:0;
@@ -452,37 +453,43 @@
     padding-right: 0; 
   }
 
-  .ghModalOverlay.changePasswordModalOverlay .ghFormFieldPassword {
-    flex-direction: row;
-    width:initial;
-  }
-  .ghModalOverlay .ghModal label { 
-    font-size: 16px;
-    min-width:150px;
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 30px;
-    align-items: center;
+  .changePasswordProfile {
+
+   .ghFormFieldPassword {
+      flex-direction: row;
+      width:initial;
+    }
+
+   .ghModal label { 
+      font-size: 16px;
+      min-width:150px;
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 30px;
+      align-items: center;
+    }
+  
+    .ghInput input {
+      width:270px;
+    }
+
+    .ghFormFieldPassword   .icon {
+      left:190px;
+    }
+
+    .buttonsWrapper    .ghButton.accent {
+      background-color: #7166f8 !important;
+    }
+
+    .ghModal .buttonsWrapper .cancel {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  
   }
 
-  .ghModalOverlay.changePasswordModalOverlay  .ghInput input {
-    width:270px;
-    
-  }
-
-  .ghFormFieldPassword   .icon {
-    left:190px;
-  }
-  .buttonsWrapper    .ghButton.accent {
-    background-color: #7166f8 !important;
-  }
-
-  .ghModalOverlay.changePasswordModalOverlay .ghModal .buttonsWrapper .cancel {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-
+  
   .friend-unfriend {
     position: relative;
     .unfriend {

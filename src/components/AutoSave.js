@@ -49,6 +49,7 @@ class AutoSave extends Component {
     deleteLabelsRequest: PropTypes.func.isRequired,
     updateLabelsRequest: PropTypes.func.isRequired,
     toggleFolderRequest: PropTypes.func.isRequired,
+    toggleDeleteState: PropTypes.func.isRequired,
 
     updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
 
@@ -56,7 +57,14 @@ class AutoSave extends Component {
     getGraphsListRequest: PropTypes.func.isRequired,
 
     updateGraphThumbnailRequest: PropTypes.func.isRequired,
-    getGraphsListRequest: PropTypes.func.isRequired,
+    location: PropTypes.object.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      graphChanged: false,
+    };
   }
 
   async componentDidMount() {
@@ -363,6 +371,7 @@ class AutoSave extends Component {
       }
     });
     if (res.length) {
+      this.setState({ graphChanged: true });
       position && await this.props.getSingleGraphRequest(graphId);
     }
     document.body.classList.remove('autoSave');
@@ -391,14 +400,16 @@ class AutoSave extends Component {
   }
 
   updateThumbnail = async () => {
+    const { graphChanged } = this.state;
+    const { match: { params: { graphId } }, defaultImage, nodesCount } = this.props;
     const page = 1;
     const order = 'newest';
     document.body.classList.add('autoSave');
     const svg = ChartUtils.getChartSvg();
-    const { match: { params: { graphId } }, defaultImage, nodesCount } = this.props;
-    if (!defaultImage && graphId && nodesCount < 500) {
+    if (graphChanged && !defaultImage && graphId && nodesCount < 500) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
       this.props.getGraphsListRequest(page, { filter: order });
+      this.setState({ graphChanged: false });
     }
     document.body.classList.remove('autoSave');
   }
