@@ -48,7 +48,7 @@ class EditGraphModal extends Component {
     const {
       title, description, status, publicState, defaultImage,
     } = singleGraph;
-
+    const { image } = this.state;
     this.setState({
       requestData: {
         title,
@@ -57,7 +57,7 @@ class EditGraphModal extends Component {
         status: status === 'template' ? 'active' : status,
         userImage: defaultImage,
       },
-      image: '',
+      image: image || '',
     });
   })
 
@@ -165,7 +165,6 @@ class EditGraphModal extends Component {
     });
 
     const resGraphId = data.graphId;
-
     if (singleGraph && resGraphId) {
       toast.info('Successfully saved');
       const { payload: { data: { graph: newGraph } } } = (await this.props.getSingleGraphRequest(resGraphId));
