@@ -60,6 +60,13 @@ class AutoSave extends Component {
     location: PropTypes.object.isRequired,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      graphChanged: false,
+    };
+  }
+
   async componentDidMount() {
     await Utils.sleep(500);
     Chart.event.on('render', this.handleChartRender);
@@ -364,6 +371,7 @@ class AutoSave extends Component {
       }
     });
     if (res.length) {
+      this.setState({ graphChanged: true });
       position && await this.props.getSingleGraphRequest(graphId);
     }
     document.body.classList.remove('autoSave');
@@ -396,8 +404,9 @@ class AutoSave extends Component {
     const order = 'newest';
     document.body.classList.add('autoSave');
     const svg = ChartUtils.getChartSvg();
+    const { graphChanged } = this.state;
     const { match: { params: { graphId } }, defaultImage, nodesCount } = this.props;
-    if (!defaultImage && graphId && nodesCount < 500) {
+    if (graphChanged && !defaultImage && graphId && nodesCount < 500) {
       await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
       this.props.getGraphsListRequest(page, { filter: order });
     }
