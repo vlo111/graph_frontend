@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import Chart from '../../Chart';
 import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
+import Button from '../form/Button';
 
 class ConnectionDetails extends Component {
   static propTypes = {
     filter: PropTypes.object.isRequired,
-    links: PropTypes.object.isRequired,
-    nodes: PropTypes.func.isRequired,
+    // links: PropTypes.object.isRequired,
+    // nodes: PropTypes.func.isRequired,
     labels: PropTypes.func.isRequired,
     nodeId: PropTypes.func.isRequired,
     exportNode: PropTypes.func.isRequired,
@@ -20,10 +21,9 @@ class ConnectionDetails extends Component {
   }
 
   getGroupedConnections = memoizeOne((nodeId) => {
-    const { links, nodes } = this.props;
-
-    const nodeLinks = links && links.filter((d) => (d.source === nodeId || d.target === nodeId));
-
+    // const { links, nodes } = this.props;
+    const nodes = Chart.getNodes();
+    const nodeLinks = Chart.getNodeLinks(nodeId, 'all');
     const connectedNodes = nodeLinks && nodeLinks.map((l) => {
       let connected;
       if (l.source === nodeId) {
@@ -36,7 +36,7 @@ class ConnectionDetails extends Component {
         connected,
       };
     });
-
+    // connectedNodes.length.open = true;
     const connectedNodesGroup = Object.values(_.groupBy(connectedNodes, 'linkType'));
     return {
       connectedNodes: _.orderBy(connectedNodesGroup, (d) => d.length && d.length, 'desc'),
@@ -48,7 +48,7 @@ class ConnectionDetails extends Component {
     const label = this.props.labels.filter((p) => p.id === d.connected.labels[0])[0];
 
     if (label) {
-      Chart.event.emit('folder.open', e, label);
+      Chart.event.emit('folder.open', e, label, 'true');
 
       const lbs = Chart.getLabels().map((lb) => {
         if (lb.id === label.id) {
@@ -99,9 +99,9 @@ class ConnectionDetails extends Component {
             </summary>
             <div className="connection-container">
               {connectedNodes.map((nodeGroup) => (
-                <div className="row" key={nodeGroup[0].linkType}>
+                <div className="row " key={nodeGroup[0].linkType}>
 
-                  <fieldset>
+                  <fieldset className="resultBorder">
                     <legend className="linkTypes">{nodeGroup[0].linkType}</legend>
                     <ul className="list">
                       {nodeGroup.map((d) => (
@@ -113,7 +113,7 @@ class ConnectionDetails extends Component {
                                 replace
                                 to={`?${queryString.stringify({ ...queryObj, info: d.connected.id })}`}
                               >
-                                <div className="left">
+                                <div className="left ">
                                   <NodeIcon node={d.connected} />
                                 </div>
                                 <div className="right">
@@ -127,15 +127,16 @@ class ConnectionDetails extends Component {
                               </Link>
                             )
                             : (
-                              <a href="#">
-                                <div className="left">
+                              <Button className="resultBorder">
+                                <div className="left  ">
                                   <NodeIcon node={d.connected} />
+                                  {/* {console.log(d.connected)}; */}
                                 </div>
-                                <div className="right">
+                                <div className="right connectedResult">
                                   <span className="name">{d.connected.name}</span>
                                   <span className="type">{d.connected.type}</span>
                                 </div>
-                              </a>
+                              </Button>
                             )}
                         </li>
                       ))}
