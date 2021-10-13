@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Button from './form/Button';
-import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
-import { ReactComponent as UndoBackSvg } from '../assets/images/icons/undo-back.svg';
+import { ReactComponent as UndoSvg } from '../assets/images/icons/Undo_back.svg';
+import { ReactComponent as UndoBackSvg } from '../assets/images/icons/Redo.svg';
 import Chart from '../Chart';
 import ContextMenu from './contextMenu/ContextMenu';
 import ChartUtils from '../helpers/ChartUtils';
@@ -30,7 +30,7 @@ class Undo extends Component {
 
   handleKeyDown = (ev) => {
     ChartUtils.keyEvent(ev);
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.undo_code) {
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.undo_code && !ev.altKey) {
       if (ev.shiftKey) {
         Chart.undoManager.redo();
       } else {
@@ -53,23 +53,26 @@ class Undo extends Component {
   render() {
     const { undoCount, redoCount } = this.state;
     return (
-      <div className="undoWrapper">
-        <Button
-          onClick={() => Chart.undoManager.undo()}
-          className="undo"
-          icon={<UndoSvg fill="#717ea0" />}
-          disabled={!undoCount}
-        >
-          {undoCount}
-        </Button>
-        <Button
-          onClick={() => Chart.undoManager.redo()}
-          className="undoBack"
-          icon={<UndoBackSvg fill="#717ea0" />}
-          disabled={!redoCount}
-        >
-          {redoCount}
-        </Button>
+      <div className="undoWrapper" id="undoWrapper">
+        <div className="info-content">
+          <Button
+            onClick={() => Chart.undoManager.undo()}
+            className="undo"
+            icon={<UndoSvg />}
+            disabled={!undoCount}
+          >
+            {undoCount}
+          </Button>
+          <Button
+            onClick={() => Chart.undoManager.redo()}
+            className="undoBack"
+            icon={<UndoBackSvg />}
+            disabled={!redoCount}
+          >
+            {redoCount}
+          </Button>
+        </div>
+
       </div>
     );
   }

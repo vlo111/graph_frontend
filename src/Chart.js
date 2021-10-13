@@ -2016,6 +2016,7 @@ class Chart {
             if (nodes.length > 0 && (nodes.length === existNodes.length)) {
               return true;
             }
+            return true;
           }).map((l) => l.id);
 
         this.squareData.nodes = this.squareData.nodes.map((d) => d.id);

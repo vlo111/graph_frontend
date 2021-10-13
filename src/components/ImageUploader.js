@@ -51,7 +51,7 @@ class ImageUploader extends Component {
         <img
           src={image || `${Api.url}/public/gravatar/${encodeURIComponent(email)}.png`}
           className={email ? 'avatar' : 'thumbnailSave'}
-          alt="image"
+          alt=""
         />
         <label className={value ? 'selectImage' : 'selectImage addImage'}>
           <div className="icon">

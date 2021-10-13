@@ -16,7 +16,7 @@ import { setActiveButton } from '../store/actions/app';
 import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
 import Zoom from '../components/Zoom';
-import Search from '../components/search/Search';
+import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
 import MapsGraph from '../components/maps/MapsGraph';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
@@ -47,10 +47,10 @@ class GraphForm extends Component {
     activeButton: PropTypes.string.isRequired,
     singleGraphStatus: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
-    currentUserId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.string.isRequired,
     mouseMoveTracker: PropTypes.array.isRequired,
     currentUserRole: PropTypes.string.isRequired,
-    history: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   getSingleGraph = memoizeOne((graphId) => {
@@ -98,7 +98,7 @@ class GraphForm extends Component {
           <Crop />
           <AddNodeModal />
           {activeButton === 'data' && <DataView />}
-          <Search history={this.props.history} />
+          {activeButton === 'search' && <SearchModal history={this.props.history} />}
           {activeButton === 'media' && <MediaModal history={this.props.history} />}
           {activeButton === 'maps-view' && <MapsGraph />}
           {activeButton === 'maps' && <MapsModal />}
@@ -134,7 +134,7 @@ const mapStateToProps = (state) => ({
   mouseMoveTracker: state.graphs.mouseMoveTracker,
   currentUserId: state.account.myAccount.id,
   singleGraphStatus: state.graphs.singleGraphStatus,
-  currentUserRole: state.graphs.singleGraph.currentUserRole || [],
+  currentUserRole: state.graphs.singleGraph.currentUserRole || '',
 });
 const mapDispatchToProps = {
   setActiveButton,

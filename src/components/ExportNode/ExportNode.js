@@ -97,7 +97,7 @@ class ExportNode extends Component {
                   {tabs.filter((p) => p.name !== '_description').map((item) => (
                     <div className="content-parts">
                       <h2>{item.name}</h2>
-                      {item.value}
+                      <p>{item.value}</p>
                     </div>
                   ))}
                 </div>

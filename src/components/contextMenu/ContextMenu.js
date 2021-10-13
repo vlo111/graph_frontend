@@ -23,7 +23,6 @@ import { KEY_CODES } from '../../data/keyCodes';
 class ContextMenu extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
-    singleGraphId: PropTypes.number.isRequired,
   }
 
   static event = new EventEmitter();
@@ -55,7 +54,7 @@ class ContextMenu extends Component {
    * @param {object} ev
    */
   handleKeyDown = async (ev) => {
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.copy_code
+    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.copy_code && !ev.altKey
     ) {
       await this.handleCopy(ev);
     }

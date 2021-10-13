@@ -17,9 +17,7 @@ import { NODE_STATUS, NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
-import Utils from '../../helpers/Utils';
-import Button from '../form/Button';
-import Checkbox from '../form/Checkbox';
+import Checkbox from '../form/Checkbox'
 
 let CHECKED = false;
 
@@ -115,7 +113,7 @@ class DataTableNodes extends Component {
         <thead>
           <tr>
             <th className={`${position} cell index`} width="60">
-              <div className="allTableCellChekked">
+              <div className='allTableCellChecked'>
                 <Checkbox
                   onChange={() => this.handleCheckBoxChange(isAllChecked)}
                   checked={isAllChecked}

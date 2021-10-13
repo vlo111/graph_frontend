@@ -17,7 +17,6 @@ class ExportNodeTabs extends Component {
     image: PropTypes.func.isRequired,
     nodeData: PropTypes.func.isRequired,
     title: PropTypes.func.isRequired,
-    name: PropTypes.func.isRequired,
   }
 
   decode = (str) => str.replace(/&lt;/g, '<')
@@ -25,7 +24,6 @@ class ExportNodeTabs extends Component {
     .replace(/&quot;/g, '\\"')
     .replace(/&amp;/g, '&')
     .replace('=\\"', '="')
-
 
   export = async () => {
     this.props.setLoading(true);
@@ -42,8 +40,6 @@ class ExportNodeTabs extends Component {
       // name={name}
     />));
 
-    console.log(html);
-debugger
     await Api.download('node-info-pdf', { html, image });
 
     this.props.setLoading(false);

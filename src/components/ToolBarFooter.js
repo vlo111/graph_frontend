@@ -14,6 +14,7 @@ class ToolBarFooter extends Component {
     getGraphInfoRequest: PropTypes.func.isRequired,
     graphInfo: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
+    graphId: PropTypes.number.isRequired,
   };
 
   constructor(props) {
@@ -57,7 +58,7 @@ class ToolBarFooter extends Component {
     return (!graphId ? null
       : (
         <>
-          <footer id="graphs-data-info" style={updateLocation ? { left: '213px' } : { left: '15px' }}>
+          <footer id="graphs-data-info" style={updateLocation ? { left: '352px' } : { left: '15px' }}>
             <div
               onClick={() => {
                 document.getElementsByClassName('info')[0].style.width = '28';

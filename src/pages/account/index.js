@@ -19,11 +19,10 @@ const Profile = React.memo((props) => {
   const friends = useSelector(getUserFriendsList);
   // select current user id
   const currentUserId = useSelector(getId);
-
   useEffect(() => {
     dispatch(getUserRequest(userId));
     dispatch(getFriendsRequest(userId));
-  }, [dispatch, getUserRequest]);
+  }, [dispatch, getUserRequest, userId]);
 
   return (
     <Wrapper>
@@ -32,15 +31,12 @@ const Profile = React.memo((props) => {
         {profile.id && (
           <>
             <div className="editrect">
-              { currentUserId === profile.id && (
-              <a className="accountedit" href="/account">
-                {' '}
-                <i className="fa fa-pencil" />
-                {' '}
-                Edit
-              </a>
+              {currentUserId === profile.id && (
+                <a className="accountedit" href="/account">
+                  <i className="fa fa-pencil" />
+                  Edit
+                </a>
               )}
-              {' '}
             </div>
             <h3 className="profile__title">{`Welcome to ${profile.firstName} ${profile.lastName}'s profile page`}</h3>
             <div className="profile__my">
@@ -61,10 +57,9 @@ const Profile = React.memo((props) => {
                     >
                       <AddButton user={profile} />
                     </div>
-                    {currentUserId == userId && (
+                    {currentUserId === userId && (
                       <span className="email">
                         <strong>Email : </strong>
-                        {' '}
                         {profile.email}
                       </span>
                     )}
@@ -77,11 +72,9 @@ const Profile = React.memo((props) => {
                     </div>
                     <span className="profile__description">
                       <span>
-                        {' '}
                         <strong>About : </strong>
-                        {' '}
                         {profile.bio}
-                        {' '}
+
                       </span>
                     </span>
 
@@ -94,46 +87,38 @@ const Profile = React.memo((props) => {
         )}
         <div className="social-list">
           {profile.facebook && (
-          <div className="social-list-facebook">
-            <a href={profile.facebook} target=" ">
-              {' '}
-              <i className="fa fa-facebook-square" />
-              {' '}
-            </a>
-          </div>
+            <div className="social-list-facebook">
+              <a href={profile.facebook} target=" ">
+                <i className="fa fa-facebook-square" />
+              </a>
+            </div>
           )}
 
           {profile.twitter && (
-          <div className="social-list-twitter">
-            <a href={profile.twitter} target=" ">
-              {' '}
-              <i className="fa fa-twitter" />
-              {' '}
-            </a>
-          </div>
+            <div className="social-list-twitter">
+              <a href={profile.twitter} target=" ">
+                <i className="fa fa-twitter" />
+              </a>
+            </div>
           )}
 
           {profile.linkedin && (
-          <div className="social-list-linkedin">
-            <a href={profile.linkedin} target=" ">
-              {' '}
-              <i className="fa fa-linkedin"> </i>
-              {' '}
-            </a>
-          </div>
+            <div className="social-list-linkedin">
+              <a href={profile.linkedin} target=" ">
+                <i className="fa fa-linkedin"> </i>
+              </a>
+            </div>
           )}
           {profile.skype && (
-          <div className="social-list-skype">
-            <a href={profile.skype} target=" ">
-              {' '}
-              <i className="fa fa-skype" />
-              {' '}
-            </a>
-          </div>
+            <div className="social-list-skype">
+              <a href={profile.skype} target=" ">
+                <i className="fa fa-skype" />
+              </a>
+            </div>
           )}
         </div>
 
-        {currentUserId == userId && (
+        {currentUserId === userId && (
           <div className="profile__friends">
             <h4>Friend requests</h4>
             {friends && friends.length ? (

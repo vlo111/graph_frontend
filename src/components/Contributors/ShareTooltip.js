@@ -40,7 +40,6 @@ const ShareTooltip = React.memo(({
   useEffect(() => {
     dispatch(socketSetActiveGraph(+graphId || null));
   }, [dispatch, graphId]);
-
   useEffect(() => {
     if (graphId) {
       dispatch(graphUsersRequest({ graphId }));
@@ -73,10 +72,10 @@ const ShareTooltip = React.memo(({
      * @param {*} role
      */
   const handleDragStart = (e, id, role) => {
-    	if (graphOwner.id === userId) {
+    if (graphOwner.id === userId) {
       setOwner(true);
     }
-    	setDropId(id);
+    setDropId(id);
     setDragRole(role);
   };
   /**
@@ -84,7 +83,7 @@ const ShareTooltip = React.memo(({
      * @param {*} e
      */
   const handleDragOver = (e) => {
-	    e.preventDefault();
+    e.preventDefault();
   };
   /**
      *
@@ -118,9 +117,9 @@ const ShareTooltip = React.memo(({
      */
   const roleTypeForShareTools = (role) => (['edit', 'edit_inside', 'admin'].includes(role)
     ? 'edit' : 'view');
-    /**
-     * Add new array role data
-     */
+  /**
+   * Add new array role data
+   */
   const roles = {
     edit: [],
     view: [],
@@ -140,9 +139,9 @@ const ShareTooltip = React.memo(({
           <Tooltip overlay={<TooltipContent user={item.user} role={item.role} type={item.type} objectId={item.objectId} />} trigger={['click']} placement={['bottom']}>
             <div className="icon-container">
               <img className="avatar-user d-block" src={item.user.avatar} alt={item.user.id} />
-              { onlineUser && onlineUser.some((n) => n.userId === item.user.id) ? (
+              {onlineUser && onlineUser.some((n) => n.userId === item.user.id) ? (
                 <div className="status-online ">
-                  { onlineUser && onlineUser.some((n) => n.userId === item.user.id && n.activeGraphId === +graphId) ? (
+                  {onlineUser && onlineUser.some((n) => n.userId === item.user.id && n.activeGraphId === +graphId) ? (
                     <div className="status-in-graph " />
                   ) : ''}
                 </div>
@@ -158,7 +157,6 @@ const ShareTooltip = React.memo(({
   const numberOfViewItems = showMoreView ? roles.view.length : limit;
   const subEditLimitCount = roles.edit.length - numberOfEditItems;
   const subViewLimitCount = roles.view.length - numberOfViewItems;
-
   return (
 
     <div className="contributors-container">

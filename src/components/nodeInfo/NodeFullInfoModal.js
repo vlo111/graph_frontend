@@ -4,7 +4,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import Modal from 'react-modal';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Button from '../form/Button';
 import NodeTabs from './NodeTabs';
 import ConnectionDetails from './ConnectionDetails';
@@ -49,8 +49,7 @@ class NodeFullInfo extends Component {
             {/*    src={singleGraph.user?.avatar} */}
             {/*    alt={singleGraph.user?.firstName || ''} */}
             {/*  /> */}
-            {/*  <span className="userName">{[singleGraph.user?.firstName,
-               singleGraph.user?.lastName].join(' ')}</span> */}
+            {/*  <span className="userName">{[singleGraph.user?.firstName, singleGraph.user?.lastName].join(' ')}</span> */}
             {/* </div> */}
             <div className="nodeFullContent">
               <div className="headerBanner ">
