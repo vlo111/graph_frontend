@@ -8,149 +8,163 @@ import { getUserRequest } from '../../store/actions/profile';
 import { getFriendsRequest } from '../../store/actions/userFriends';
 import { getProfile } from '../../store/selectors/profile';
 import { getUserFriendsList } from '../../store/selectors/userFriends';
-import AddButton from '../search/addFriend';
-import { friendType } from '../../data/friend';
 import { getId } from '../../store/selectors/account';
+import moment from 'moment';
+import AddFriend from '../search/addFriend';
+import Button from '../../components/form/Button';
+import { friendType } from '../../data/friend';
+import Carousel from 'react-bootstrap/Carousel';
+import UserInfo from '../profile/UserInfo';
+
+
 
 const Profile = React.memo((props) => {
   const { userId } = props.match.params;
   const dispatch = useDispatch();
   const profile = useSelector(getProfile);
   const friends = useSelector(getUserFriendsList);
+  const friendsConfirmList = [];
+  const friendsRequests = [];
+  const frindsItemForSlide = [];
+
+  // define count of friend slide depends on window size
+  const { innerWidth: width } = window;
+  const eachCountsSlideItem = (width >= 768) ? 6 : 3;
+
   // select current user id
   const currentUserId = useSelector(getId);
+
+  if (currentUserId === profile.id) {
+    for (let friend of friends) {
+      if (friend.status == friendType.accepted) {
+        friendsConfirmList.push(friend);
+      }
+      else if (friend.status == friendType.pending) {
+        friendsRequests.push(friend);
+      }
+    }
+
+    for (let i = 0; i < friendsRequests.length; i = i + eachCountsSlideItem) {
+      frindsItemForSlide.push(friendsRequests.slice(i, i + eachCountsSlideItem))
+    }
+  }
+
   useEffect(() => {
     dispatch(getUserRequest(userId));
     dispatch(getFriendsRequest(userId));
   }, [dispatch, getUserRequest, userId]);
 
+  const handleFriend = (e) => {
+    const el = e.target.nextElementSibling;
+    const typeStyle = el.style.display == 'none' || !el.style.display ? 'block' : 'none';
+    el.style.display = typeStyle;
+  }
+
+
   return (
     <Wrapper>
       <Header />
-      <div className="profile">
-        {profile.id && (
+      <div className="profile newVersion">
+        <div className="row_">
+          <UserInfo userId={userId} />
+        </div>
+        {currentUserId == userId && (
           <>
-            <div className="editrect">
-              {currentUserId === profile.id && (
-                <a className="accountedit" href="/account">
-                  <i className="fa fa-pencil" />
-                  Edit
-                </a>
-              )}
-            </div>
-            <h3 className="profile__title">{`Welcome to ${profile.firstName} ${profile.lastName}'s profile page`}</h3>
-            <div className="profile__my">
-              <article key={profile.id}>
-                <img
-                  className="profile__avatar"
-                  src={profile.avatar}
-                  alt={profile.firstName}
-                />
-                <div className="profile__user">
+            {frindsItemForSlide.length > 0 && (
+              <div className="friends-requests row_">
+                <div className="colm-md-6 d-flex"> <span>Friend Requests </span>  <span style={{ width: "90px", height: "10px" }}></span></div>
+                <Carousel interval={null} indicators={frindsItemForSlide.length > 1} controls={frindsItemForSlide.length > 1}>
+                  {frindsItemForSlide.map((item, i) => {
+                    return (
+                      <Carousel.Item key={i}>
+                        {
+                          item.map((friendship, i) => {
+                            const { senderUser, receiverUser } = friendship;
+                            const userIsSender = senderUser.id == userId;
+                            const friend = !userIsSender ? friendship.senderUser : receiverUser;
+                            return (
+                              <div className="d-flex friend_box" key={i}>
+                                <div>
+                                  <div className="img_box">
+                                    <img
+                                      className="w-100"
+                                      src={friend.avatar}
+                                      alt="First slide"
+                                    />
+                                  </div>
 
-                  <div className="profile__user-details">
+                                  <div>
 
-                    <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
-                    <div style={{
-                      position: 'absolute', right: '-30%', left: '100%', top: '1px',
-                    }}
-                    >
-                      <AddButton user={profile} />
-                    </div>
-                    {currentUserId === userId && (
-                      <span className="email">
-                        <strong>Email : </strong>
-                        {profile.email}
-                      </span>
-                    )}
-                    <div>
-                      <strong>Website : </strong>
-                      <a className="website" href={profile.website} target="_blank" rel="noreferrer">
+                                    <Link to={`/profile/${friend.id}`}>
+                                      <h6 > {`${friend.firstName} ${friend.lastName}`} </h6>
+                                    </Link>
 
-                        {profile.website}
-                      </a>
-                    </div>
-                    <span className="profile__description">
-                      <span>
-                        <strong>About : </strong>
-                        {profile.bio}
+                                    <p >{moment(friend.updatedAt).calendar()}</p>
+                                  </div>
 
-                      </span>
-                    </span>
+                                </div>
+                                <AddFriend user={friend} />
+                              </div>
+                            )
+                          })
+                        }
+                      </Carousel.Item>
 
-                  </div>
-                </div>
+                    )
+                  })}
 
-              </article>
-            </div>
+                </Carousel>
+              </div>
+            )}
+
+            {friendsConfirmList.length > 0 && (
+              <div className="row_ friends">
+                <div className="colm-12 fw-bold">Friends</div>
+                {
+                  friendsConfirmList.map((friendship, j) => {
+
+                    const { senderUser, receiverUser } = friendship;
+                    const userIsReceiver = receiverUser.id == userId;
+                    const friend = !userIsReceiver ? receiverUser : senderUser;
+                    return (
+                      <div className="colm-md-4 colm-sm-6 friend_box " key={j}>
+                        <div>
+                          <div className="img_box">
+                            <img
+                              src={friend.avatar}
+                              alt="First slide"
+                            />
+                          </div>
+
+                          <div className="friendname text-size-16">
+                            <Link to={`/profile/${friend.id}`}>
+                              <h6 > {`${friend.firstName} ${friend.lastName}`} </h6>
+                            </Link>
+
+                            <p >{moment(friend.updatedAt).calendar()}</p>
+                          </div>
+
+                        </div>
+                        <div className='friend-unfriend'>
+                          <Button className="btn-link d-flex" type="submit" onClick={handleFriend}>Friend</Button>
+                          <div className="unfriend">  <AddFriend user={friend} /> </div>
+                        </div>
+
+                      </div>
+
+                    )
+                  })}
+
+              </div>
+
+            )}
+
           </>
         )}
-        <div className="social-list">
-          {profile.facebook && (
-            <div className="social-list-facebook">
-              <a href={profile.facebook} target=" ">
-                <i className="fa fa-facebook-square" />
-              </a>
-            </div>
-          )}
 
-          {profile.twitter && (
-            <div className="social-list-twitter">
-              <a href={profile.twitter} target=" ">
-                <i className="fa fa-twitter" />
-              </a>
-            </div>
-          )}
-
-          {profile.linkedin && (
-            <div className="social-list-linkedin">
-              <a href={profile.linkedin} target=" ">
-                <i className="fa fa-linkedin"> </i>
-              </a>
-            </div>
-          )}
-          {profile.skype && (
-            <div className="social-list-skype">
-              <a href={profile.skype} target=" ">
-                <i className="fa fa-skype" />
-              </a>
-            </div>
-          )}
-        </div>
-
-        {currentUserId === userId && (
-          <div className="profile__friends">
-            <h4>Friend requests</h4>
-            {friends && friends.length ? (
-              friends.map((friendship) => {
-                const { senderUser } = friendship;
-                const userIsSender = senderUser.id === userId;
-                const friend = !userIsSender ? friendship.receiverUser : senderUser;
-
-                return (
-                  friendship.status === friendType.pending && (
-                    <article key={friend.id} className="searchData__graph">
-                      <div className="searchData__graphInfo">
-                        <img
-                          className="avatar"
-                          src={friend.avatar}
-                          alt={friend.firstName}
-                        />
-                        <div className="searchData__graphInfo-details">
-                          <Link to={`/profile/${friend.id}`}>
-                            {`${friend.firstName} ${friend.lastName}`}
-                          </Link>
-                        </div>
-                      </div>
-                      <AddButton user={friend} />
-                    </article>
-                  )
-                );
-              })
-            ) : null}
-          </div>
-        )}
       </div>
+
+
     </Wrapper>
   );
 });

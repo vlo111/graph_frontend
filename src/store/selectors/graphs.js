@@ -30,3 +30,7 @@ export const getMouseMoveTracker = createSelector(
   getGraph,
   (items) => items.mouseMoveTracker,
 );
+export const getGraphsCount = createSelector(
+  getGraph,
+  (items) => items.allGraghsCount,
+);

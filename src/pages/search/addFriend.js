@@ -91,6 +91,7 @@ const AddFriend = React.memo(({ user }) => {
           );
       }
     }
+
     return (
       <Button
         className="ghButton2"
@@ -100,7 +101,7 @@ const AddFriend = React.memo(({ user }) => {
         Add Friend
       </Button>
     );
-  }, [dispatch, selectAction, myFriends]);
+  }, [dispatch, selectAction, myFriends,id]);
 
   return loggedInUserId !== id ? getButtonClick : null;
 });
