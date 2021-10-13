@@ -116,7 +116,7 @@ class Input extends Component {
   render() {
     const {
       id, label, containerClassName, containerId, children,
-      textArea, limit, onRef,
+      textArea, limit, onRef, previewError, preview,
       error, onChangeText, icon, isNumber, ...props
     } = this.props;
     const inputId = id || `input_${this.id}`;
@@ -128,6 +128,14 @@ class Input extends Component {
         {label ? (
           <label htmlFor={inputId}>{label}</label>
         ) : null}
+        {(preview && previewError !== 'error')
+        && (
+        <img
+          className="img-thumbnail"
+          src={preview}
+          alt=""
+        />
+        )}
         <Icon value={icon} />
         {textArea ? (
           <textarea ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
