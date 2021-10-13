@@ -16,13 +16,6 @@
   
 }
 
-@media (min-width: 1800px) { 
-  .profile.newVersion,.profileEdit {
-    margin: 80px auto;
-    width:60%;
-  }
-}
-
 @media screen and (min-width: 1700px) {
   #header {
 
@@ -208,20 +201,6 @@
   }
 }
 
-@media (min-width: 1400px) {
-  .profile.newVersion,.profileEdit {
-    font-family: Roboto;
-    margin: 80px auto;
-    width:70%;
-  }
-  
-  .friends  .friend_box  button.btn-link{
-      margin-left: 70px;
-  }
-
- 
-}
-
 @media screen and (max-width: 1200px){
   #header{
     grid-template-columns: 16% 34% 36% 7% 7% !important;
@@ -265,43 +244,6 @@
     }
   }
 } 
-
-@media (min-width: 1200px) {
-  .profile.newVersion,.profileEdit {
-    font-family: Roboto;
-    margin: 80px auto;
-    width:75%;
-  }
-
-
-  .friends-requests .friend_box:nth-child(odd) {
-    padding: 0px 35px 0 0px;
-  }
-  .friends-requests .friend_box:nth-child(even) {
-    padding: 0px 0px 0 35px;
-  }
-  .carousel-control-prev {
-    justify-content: flex-start;
-  }
-  
-  .carousel-control-next {
-    justify-content: flex-end;
-  }
-
-  .carousel-control-prev {
-    left: -60px;
-  }
-  
-  .carousel-control-next {
-    right: -60px;
-  }
-
-  .friends-requests > div:first-child {
-    padding-left: 15px;
-  }
-
- 
-}
 
 @media screen and (max-width: 900px) {
   .ghModalSearch {
@@ -349,16 +291,6 @@
   }
 }
 
-@media (min-width: 992px) {
-  .friends-requests .friend_box {
-    width:50%;
-    padding:  0 0 0 70px;
-  }
-  .friends-requests > div:first-child {
-    padding-left: 85px;
-  }
-}
-
 @media only screen and (max-width: 900px) {
   .scienceForm form {
     flex-direction: column;
@@ -380,6 +312,9 @@
   }
   .scienceForm button {
     flex: 1;
+  }
+  .profile_info div.text {
+    font-size: 20px;
   }
 }
 
@@ -596,9 +531,6 @@ margin-top: -5px;
       padding:0
     }
   }
-  .profile_info div.text {
-    font-size: 20px;
-  }
 
   .profile_info div.number {
     font-size: 30px;
@@ -695,3 +627,123 @@ margin-top: -5px;
   
 }
 
+@media (min-width: 576px){
+  .colm-sm-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .friends-requests .friend_box {
+      padding: 5px 70px;
+   }
+
+   .friends-requests > div:first-child {
+    padding-left: 85px;
+  }
+  .carousel-control-prev {
+    left: -6px;
+  }
+  
+  .carousel-control-next {
+    right: -6px;
+  }
+}
+
+@media (min-width: 768px) {
+  .colm-md-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+
+  .colm-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .profile.newVersion {
+    padding:45px;
+  }
+  
+  .friends-requests .friend_box {
+      width:50%;
+      padding:  0 0 0 22px;
+  }
+  .friends-requests > div:first-child {
+    padding-left: 40px;
+  }
+  .carousel-control-prev {
+    left: -25px;
+  }
+  
+  .carousel-control-next {
+    right: -25px;
+  }
+
+ 
+}
+
+@media (min-width: 992px) {
+  .friends-requests .friend_box {
+    width:50%;
+    padding:  0 0 0 70px;
+  }
+  .friends-requests > div:first-child {
+    padding-left: 85px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .profile.newVersion,.profileEdit {
+    font-family: Roboto;
+    margin: 80px auto;
+    width:75%;
+  }
+
+
+  .friends-requests .friend_box:nth-child(odd) {
+    padding: 0px 35px 0 0px;
+  }
+  .friends-requests .friend_box:nth-child(even) {
+    padding: 0px 0px 0 35px;
+  }
+  .carousel-control-prev {
+    justify-content: flex-start;
+  }
+  
+  .carousel-control-next {
+    justify-content: flex-end;
+  }
+
+  .carousel-control-prev {
+    left: -60px;
+  }
+  
+  .carousel-control-next {
+    right: -60px;
+  }
+
+  .friends-requests > div:first-child {
+    padding-left: 15px;
+  }
+
+ 
+}
+
+@media (min-width: 1400px) {
+  .profile.newVersion,.profileEdit {
+    font-family: Roboto;
+    margin: 80px auto;
+    width:70%;
+  }
+  
+  .friends  .friend_box  button.btn-link{
+      margin-left: 70px;
+  }
+
+ 
+}
+
+@media (min-width: 1800px) { 
+  .profile.newVersion,.profileEdit {
+    margin: 80px auto;
+    width:60%;
+  }
+}

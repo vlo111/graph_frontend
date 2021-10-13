@@ -60,6 +60,7 @@ const Profile = React.memo((props) => {
     el.style.display = typeStyle;
   }
 
+
   return (
     <Wrapper>
       <Header />
