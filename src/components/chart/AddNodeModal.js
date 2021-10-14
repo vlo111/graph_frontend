@@ -5,9 +5,7 @@ import Modal from 'react-modal';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
-import { Link } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
-import { components } from 'react-select';
 import { toggleNodeModal } from '../../store/actions/app';
 import Select from '../form/Select';
 import ColorPicker from '../form/ColorPicker';
@@ -24,7 +22,6 @@ import Api from '../../Api';
 import markerImg from '../../assets/images/icons/marker-black.svg';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
-import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -254,8 +251,6 @@ class AddNodeModal extends Component {
 
     Utils.orderGroup(groups, nodeData.type);
 
-    if (nodeData.icon && typeof nodeData.icon === 'object') nodeData.icon = nodeData.icon.name;
-
     return (
       <Modal
         className={expand ? 'ghModal expandAddNode' : 'ghModal'}
@@ -340,16 +335,10 @@ class AddNodeModal extends Component {
                       value={nodeData.icon}
                       onChangeImgPreview={(v) => this.handleImgPreviewChange(v)}
                       onChangeFile={(v, file) => this.handleChange('icon', file)}
+                      preview={nodeData.icon}
+                      previewError={imgUrl}
                     />
 
-                    {imgUrl && imgUrl !== 'error'
-                    && (
-                    <img
-                      className="img-thumbnail"
-                      src={Utils.fileSrc(nodeData.icon) || imgUrl}
-                      alt=""
-                    />
-                    )}
                     <Select
                       isCreatable
                       isMulti
@@ -441,9 +430,9 @@ class AddNodeModal extends Component {
               </div>
             </div>
             <div className="advanced right">
-              <Link className="" onClick={this.toggleExpand}>
+              <div className="show-more" onClick={this.toggleExpand}>
                 {!expand ? 'Show More' : 'Show Less'}
-              </Link>
+              </div>
             </div>
           </form>
         </div>
