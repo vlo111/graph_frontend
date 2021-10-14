@@ -66,11 +66,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "./node_modules/.bin/eslint src/. --config .eslintrc.js",
-<<<<<<< HEAD
     "postinstall": "cd ./node_modules/react-notification-timeline && build.sh"
-=======
-    "postinstall": "cd ./node_modules/react-notification-timeline && test -f ./build.sh && chmod 777 ./build.sh && ./build.sh"
->>>>>>> c3133f3ab0bd5751bf7c1c1b8cda49a0a15007b2
   },
   "eslintConfig": {
     "extends": "react-app"
