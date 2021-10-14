@@ -37,7 +37,7 @@ class FileInput extends Component {
     const uri = Utils.fileToBlob(file);
     this.constructor.blobs[uri] = file.name;
     file.uri = uri;
-    this.props.onChangeFile(uri, file);
+    this.props.onChangeFile(uri, file.uri);
     this.props.onChangeImgPreview('');
 
     ev.target.value = '';
@@ -83,8 +83,6 @@ class FileInput extends Component {
       accept, selectLabel, onChangeFile, ...props
     } = this.props;
 
-    let { preview } = this.props;
-
     let value = props.value || file.name || '';
     let localFile = file instanceof File;
     if (_.isObject(value) && 'name' in value) {
@@ -95,17 +93,6 @@ class FileInput extends Component {
     } else if (value.toString().startsWith('data:')) {
       value = '';
     }
-
-    if (preview) {
-      if (typeof preview === 'object') {
-        if (preview.uri) {
-          preview = preview.uri;
-        } else {
-          preview = preview.name;
-        }
-      }
-    }
-
     return (
       <div className={`ghFileInput  ${focused ? 'focused' : ''}`}>
         <Input
@@ -116,7 +103,6 @@ class FileInput extends Component {
           value={value}
           disabled={localFile}
           onChangeText={this.handleTextChange}
-          preview={preview}
         />
         {/* <div className="buttons">
             {localFile ? (
