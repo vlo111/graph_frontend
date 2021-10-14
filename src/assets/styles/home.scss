@@ -90,12 +90,36 @@
               }
           }
             }
-          h3{
+          .public_context{
+            display: flex;
+            align-items: center;
+            h3{
             margin-left: 23px;
             font-size: 18px;
             font-weight: 600;
             color:$color-main;
             }
+            .public_icon{
+              line-height: 0;
+              width: 35px;
+              height: 35px;
+              border-radius: 50%;
+              display: flex;
+              justify-content: center;
+              text-align: center;
+              background: #FFFFFF;
+              box-shadow: 0px 4px 12px rgb(0 0 0 / 25%);
+              position: relative;
+              z-index: 2;
+              left: 11px;
+      
+               i{
+                 color:$color-main;
+                 font-size: 23px;
+                 margin: auto;
+               }
+             }
+          }
          .graphListFooter {    
               .ghButton{
                 padding: 0 !important;
@@ -375,7 +399,36 @@
      
     }
     div{
-       h3{
+      .public_text{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        text-align: center;
+        align-items: center;
+      
+
+       .public_icon{
+        line-height: 0;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        background: #FFFFFF;
+        box-shadow: 0px 4px 12px rgb(0 0 0 / 25%);
+        position: relative;
+        top: 94px;
+        z-index: 2;
+        left: 11px;
+
+         i{
+           color:$color-main;
+           font-size: 23px;
+           margin: auto;
+         }
+       }
+       h3 {
          font-size: 20px;
          line-height: 0;
          color: $color-main ;
@@ -384,6 +437,7 @@
          .grpahTitle{
           display: none !important;
         }
+      }
       } 
       .descriptionGraph{
        margin-top: 20px;
