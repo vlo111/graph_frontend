@@ -5,6 +5,7 @@ import {
   UPDATE_SINGLE_GRAPH,
   CONVERT_GRAPH,
   GET_GRAPHS_LIST,
+  GET_GRAPHS_SHAREGRAPHS_COUNT,
   GET_NODES_LIST,
   GET_SINGLE_GRAPH,
   GET_ALL_TABS,
@@ -45,6 +46,10 @@ const initialState = {
   embedLabels: [],
   graphsListInfo: {
     totalPages: 0,
+  },
+  allGraghsCount: {
+    totalGraphs:0,
+    totalShareGraphs:0
   },
   nodesListInfo: {
     totalPages: 0,
@@ -96,6 +101,18 @@ export default function reducer(state = initialState, action) {
         importData,
       };
     }
+    
+
+
+    case GET_GRAPHS_SHAREGRAPHS_COUNT.SUCCESS: {
+
+      const { ...allGraghsCount } = action.payload.data;
+      return {
+        ...state,
+        allGraghsCount
+      };
+    }
+
     case GET_GRAPHS_LIST.REQUEST: {
       return {
         ...state,

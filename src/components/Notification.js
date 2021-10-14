@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import NotifyMe from 'react-notification-timeline';
 import { listNotificationsRequest, NotificationsUpdateRequest } from '../store/actions/notifications';
 import { notificationsList } from '../store/selectors/notifications';
 
