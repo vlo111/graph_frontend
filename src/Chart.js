@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+﻿import * as d3 from 'd3';
 import _ from 'lodash';
 import EventEmitter from 'events';
 import { toast } from 'react-toastify';
@@ -977,8 +977,8 @@ class Chart {
       .attr('fill', ChartUtils.labelColors)
       .attr('transform', (d) => `translate(${d.d[0][0]}, ${d.d[0][1]})`)
       .attr('class', (d) => `folder ${d.open ? 'folderOpen' : 'folderClose'}`)
-      .on('dblclick', (ev, d) => {
-        if (this.activeButton === 'view') {
+      .on('dblclick', (ev, d) => { 
+        if(this.activeButton === 'view'){
           toast.info('You are in preview mode');
           return;
         }
@@ -1663,7 +1663,7 @@ class Chart {
       this.svg = d3.select('#graph svg');
       this.zoom = d3.zoom()
         .on('zoom', this.handleZoom)
-        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250%
+        .scaleExtent([0.04, 2.5]); // 4% min zoom level to max 250% 
       this.svg = this.svg
         .call(this.zoom)
         .on('dblclick.zoom', null)

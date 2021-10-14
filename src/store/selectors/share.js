@@ -16,3 +16,8 @@ export const getGraphUsers = createSelector(
   getShare,
   (items) => items.shareWithUsers,
 );
+
+export const shareGraphListInfo = createSelector(
+  getShare,
+  (items) => items.shareGraphsListInfo,
+);
