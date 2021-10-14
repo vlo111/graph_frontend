@@ -53,6 +53,8 @@ export const GET_PUBLIC_GRAPHS_LIST = define('GET_PUBLIC_GRAPHS_LIST');
 
 export function getPublicListRequest(page = 1, requestData = {}) {
   return GET_PUBLIC_GRAPHS_LIST.request(() => Api.getPublicGraphList(page, requestData)).takeLatest();
+}
+
 export const GET_GRAPHS_SHAREGRAPHS_COUNT = define('GET_GRAPHS_SHAREGRAPHS_COUNT');
 
 export function getGraphsAndSharegraphsCount(id) {
