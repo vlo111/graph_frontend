@@ -83,12 +83,14 @@ class SearchGraphs extends Component {
                   </div>
                 </div>
                 <div>
+                  <div className='public_text'>
                   <Tooltip overlay={graph.title} placement="bottom" >
                     <h3>
                       {' '}
                       {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
                     </h3>
                   </Tooltip>
+                  </div>
                   <div className="descriptionGraph">
                     <Tooltip overlay={graph.description} placement="bottom" >
                       <span>

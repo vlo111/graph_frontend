@@ -55,13 +55,14 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
   return (
     <div className="graphListHeader">
       <div>
+      {headerTools !== 'public'  ? (
         <Popover
           showArrow
           triggerNode={<div className="ar-popover-trigger"><EllipsisVSvg /></div>}
           trigger="click"
         >
           <div className="ar-popover-list">
-            {headerTools === 'shared' ? (
+            {headerTools === 'shared'  ? (
               <div
                 onClick={() => handleDeleteShareGraph(graph?.share.id)}
                 className="child dashboard-delete"
@@ -100,6 +101,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
             )}
           </div>
         </Popover>
+        ): null}
       </div>
       {openShareModal && (
         <ShareModal

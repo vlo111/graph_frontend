@@ -49,6 +49,12 @@ export function getGraphsListRequest(page = 1, requestData = {}) {
   return GET_GRAPHS_LIST.request(() => Api.getGraphsList(page, requestData)).takeLatest();
 }
 
+export const GET_PUBLIC_GRAPHS_LIST = define('GET_PUBLIC_GRAPHS_LIST');
+
+export function getPublicListRequest(page = 1, requestData = {}) {
+  return GET_PUBLIC_GRAPHS_LIST.request(() => Api.getPublicGraphList(page, requestData)).takeLatest();
+}
+
 export const GET_NODES_LIST = define('GET_NODES_LIST');
 
 export function getGraphNodesRequest(page = 1, requestData = {}) {

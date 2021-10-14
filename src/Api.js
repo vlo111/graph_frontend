@@ -134,6 +134,10 @@ class Api {
     });
   }
 
+  static getPublicGraphList(page) {
+    return api.get('graphs/getPublicGraphs', {params: {page}});
+  }
+
   static getGraphNodes(page, requestData = {}) {
     const params = { page, ...requestData };
     return api.get('/graphs/nodes', {
