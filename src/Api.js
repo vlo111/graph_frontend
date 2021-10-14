@@ -126,6 +126,10 @@ class Api {
     });
   }
 
+  static getCountGraphs(id) {
+    return api.get(`/graphs/graphDataByUser/${id}`);
+  }
+
   static getGraphsList(page, requestData = {}) {
     const params = { page, ...requestData };
     return api.get('/graphs', {

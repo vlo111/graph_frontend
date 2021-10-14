@@ -170,7 +170,7 @@ class Input extends Component {
                 />
               </div>
             )
-            : <input ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
+            : <input  ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
         )}
         {!error && limit ? (
           <div className="limit">{`${limit - (props.value || '').length} / ${limit} characters`}</div>

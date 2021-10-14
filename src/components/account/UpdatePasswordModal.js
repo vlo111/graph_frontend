@@ -3,15 +3,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
+import classNames from 'classnames';
 import _ from 'lodash';
 import Button from '../form/Button';
 import { updateMyAccountPasswordRequest } from '../../store/actions/account';
 import PasswordInput from '../form/PasswordInput';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+
 
 class UpdatePasswordModal extends Component {
   static propTypes = {
     onClose: PropTypes.func.isRequired,
     updateMyAccountPasswordRequest: PropTypes.func.isRequired,
+    className: PropTypes.string,
   }
 
   constructor(props) {
@@ -49,10 +53,11 @@ class UpdatePasswordModal extends Component {
 
   render() {
     const { requestData, errors } = this.state;
+    const { className } = this.props;
     return (
       <Modal
         className="ghModal changePasswordModal"
-        overlayClassName="ghModalOverlay changePasswordModalOverlay"
+        overlayClassName={classNames('ghModalOverlay changePasswordModalOverlay',className)}
         isOpen
         onRequestClose={this.props.onClose}
       >
@@ -77,7 +82,7 @@ class UpdatePasswordModal extends Component {
           />
           <PasswordInput
             name="confirmPassword"
-            label="Confirm New Password"
+            label="Confirm Password"
             type="password"
             value={requestData.confirmPassword}
             error={errors.confirmPassword}
@@ -88,8 +93,9 @@ class UpdatePasswordModal extends Component {
               color="transparent"
               className="cancel"
               onClick={this.props.onClose}
+              icon={<CloseSvg />}
             >
-              Cancel
+              
             </Button>
             <Button color="accent" type="submit">Save</Button>
           </div>
