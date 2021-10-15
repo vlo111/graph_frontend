@@ -108,7 +108,7 @@ class GraphCardItem extends Component {
             >
 
               <div className={`buttonView graph-card_${graph.id}`}>
-                <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>
+                {(graph?.share?.role !== 'view') && <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>}
                 <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
               </div>
               <img
