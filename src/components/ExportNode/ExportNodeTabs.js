@@ -37,7 +37,6 @@ class ExportNodeTabs extends Component {
       image={image}
       nodeData={nodeData}
       title={title}
-      // name={name}
     />));
 
     await Api.download('node-info-pdf', { html, image });

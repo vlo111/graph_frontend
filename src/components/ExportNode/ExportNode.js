@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-// import fs from 'fs';
-// import path from 'path';
 import moment from 'moment';
-// import HTMLToPDF from 'convert-html-to-pdf';
 import CustomFields from '../../helpers/CustomFields';
 import ConnectionDetails from '../nodeInfo/ConnectionDetails';
 import Chart from '../../Chart';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
-// import Converter from '../../../../Backend/services/Converter';
 
 class ExportNode extends Component {
   static propTypes = {
@@ -27,8 +23,6 @@ class ExportNode extends Component {
     const {
       nodesPartial, linksPartial, labels, nodeData,
     } = this.setState;
-      // result ===  result.splice(result.indexOf('timePlace'), 9, moment().format('YYYY-MM-DD hh:mm:ss'));
-    // const customField = CustomFields.get(tabs, node.type, node.id);
     let links = Chart.getLinks();
     links = links.find((n) => n.source === node.id || n.target === node.id);
 
