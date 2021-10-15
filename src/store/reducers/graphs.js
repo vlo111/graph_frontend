@@ -162,8 +162,6 @@ export default function reducer(state = initialState, action) {
     }
     case GET_PUBLIC_GRAPHS_LIST.SUCCESS: {
       const { graphs: publicGraphList, ...graphsListInfo } = action.payload.data;
-
-      console.log('teast - ', action.payload.data);
       return {
         ...state,
         graphsListStatus: 'success',

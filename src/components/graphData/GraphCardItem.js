@@ -50,11 +50,10 @@ class GraphCardItem extends Component {
     this.setState({ graphs });
   }
 
-
+ 
   render() {
     let { headerTools, graphs, myAccount } = this.props;
     if (!graphs?.length) return null;
-    console.log(myAccount)
     return (
       <>
         {(headerTools === 'home' && graphs.length)
@@ -65,7 +64,7 @@ class GraphCardItem extends Component {
             </div>
           ) : null}
         {graphs.map((graph) => (
-          <article className="graphs">
+          <article className="graphs" key={graph.id}>
             <div className="top">
               <div className="infoContent">
                 <img
@@ -97,7 +96,7 @@ class GraphCardItem extends Component {
                 </Tooltip>
                 {graph.publicState === true && myAccount.id === graph.user.id ?
                   <div className='public_icon'>
-                    <i class="fa fa-globe"></i>
+                    <i className="fa fa-globe"></i>
                   </div> : null}
               </div>
               <div className="descriptionGraph">
@@ -115,7 +114,7 @@ class GraphCardItem extends Component {
               onMouseOut={() => this.hideCardOver(graph.id)}
               className="graph-image"
             >
-              {(graph.publicState === true && myAccount.id !== graph.user.id) ? (
+              {(graph.publicState === true && myAccount.id !== graph.user.id && headerTools !== "shared") ? (
                 <div className={`buttonView graph-card_${graph.id}`}>
                   <Link className="btn-edit view" to={`/graphs/view/${graph.id}`} replace>Preview</Link>
                 </div>)

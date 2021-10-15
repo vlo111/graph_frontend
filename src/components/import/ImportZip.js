@@ -68,7 +68,6 @@ class DataImportModal extends Component {
     requestData.graphId = graphId;
     this.setState({ loading: true });
     const { payload: { data } } = await this.props.convertGraphRequest(convertType, requestData);
-    console.log(data, 'datadatadata');
     if (data.nodes?.length) {
       this.setState({ loading: false, step: 2 });
       this.props.showSelectHandler(false);
