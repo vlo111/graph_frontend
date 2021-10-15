@@ -465,7 +465,7 @@ export default function reducer(state = initialState, action) {
     case ONLINE_USERS: {
       const singleGraph = { ...state.singleGraph };
       const { onlineUsers } = action.payload;
-      const online = onlineUsers && onlineUsers.filter((d) => +d.activeGraphId === +singleGraph?.id);
+      const online = onlineUsers && onlineUsers.filter((d) => d.activeGraphId === singleGraph?.id);
       return {
         ...state,
         onlineUsers: online,
@@ -475,7 +475,7 @@ export default function reducer(state = initialState, action) {
     case ACTIVE_MOUSE_TRACKER: {
       const { onlineUsers, singleGraph: { id } } = state;
       const { userId, tracker: mouseTracker } = action.payload;
-      const trackers = onlineUsers.filter((d) => +d.activeGraphId === +id && +d.userId !== +userId);
+      const trackers = onlineUsers.filter((d) => d.activeGraphId === id && d.userId !== userId);
       return {
         ...state,
         trackers,
@@ -485,7 +485,7 @@ export default function reducer(state = initialState, action) {
     case SOCKET_ACTIVE_MOUSE_TRACKER: {
       const { mouseMoveTracker } = action.payload;
       const { singleGraph: { id } } = state;
-      const trackers = mouseMoveTracker && mouseMoveTracker.filter((d) => +d.graphId === +id);
+      const trackers = mouseMoveTracker && mouseMoveTracker.filter((d) => d.graphId === id);
       return {
         ...state,
         mouseMoveTracker: trackers,

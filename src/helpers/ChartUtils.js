@@ -1051,11 +1051,10 @@ class ChartUtils {
       return {
         labels, nodes, links,
       };
-    } else {
-      return {
-        nodes, links,
-      };
     }
+    return {
+      nodes, links,
+    };
   }
 
   static objectAndProto(d) {

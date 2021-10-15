@@ -59,7 +59,7 @@ export function socketInit() {
 
     socket.on('graphChange', async (data) => {
       const { account: { myAccount } } = getState();
-      if (+data.id === +singleGraph.id && +myAccount.id !== +data.userId) {
+      if (data.id === singleGraph.id && myAccount.id !== data.userId) {
         Chart.setAutoSave(false);
         await dispatch(getSingleGraphRequest(data.id, {}, true));
         setTimeout(() => {
@@ -68,13 +68,10 @@ export function socketInit() {
       }
     });
 
-    socket.on(`graphUpdate-${singleGraph.id}`, (data) => {
-      data.id = +data.id;
-      return (
-        (data.id === singleGraph.id)
+    socket.on(`graphUpdate-${singleGraph.id}`, (data) => (
+      (data.id === singleGraph.id)
         && dispatch(updateSingleGraph(data))
-      );
-    });
+    ));
 
     socket.on(`notificationsListGraphShared-${userId}`, (data) => {
       dispatch(addNotification(data));
@@ -92,98 +89,98 @@ export function socketInit() {
     });
 
     socket.on('node.update-positions', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.nodePositionsChange(data);
       }
     });
 
     socket.on('graph.update-positions', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.graphPositionsChange(data);
       }
     });
 
     socket.on('node.update-fields', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         // ChartUpdate.nodeCustomFieldsChange(data.nodes);
       }
     });
 
     socket.on('node.create', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.nodesCrate(data);
       }
     });
 
     socket.on('node.delete', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.nodesDelete(data);
       }
     });
 
     socket.on('node.update', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.nodesUpdate(data);
       }
     });
 
     socket.on('link.create', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.linkCreate(data);
       }
     });
 
     socket.on('link.update', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.linkUpdate(data);
       }
     });
 
     socket.on('link.delete', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.linkDelete(data);
       }
     });
 
     socket.on('label.create', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.labelCreate(data);
       }
     });
 
     socket.on('label.update', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.labelUpdate(data);
       }
     });
     socket.on('label.toggle', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.labelToggle(data);
       }
     });
 
     socket.on('label.update-positions', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.labelUpdatePosition(data);
       }
     });
 
     socket.on('label.delete', (data) => {
-      const graphId = +Utils.getGraphIdFormUrl();
-      if (graphId === +data.graphId) {
+      const graphId = Utils.getGraphIdFormUrl();
+      if (graphId === data.graphId) {
         ChartUpdate.labelDelete(data);
       }
     });
@@ -260,7 +257,7 @@ export function socketInit() {
 
       const graphId = Utils.getGraphIdFormUrl();
       const { app: { filters } } = getState();
-      if (+data.sourceId === graphId) {
+      if (data.sourceId === graphId) {
         return;
       }
       if (!Chart.getLabels().some((l) => l.id === data.label?.id)) {
@@ -286,7 +283,7 @@ export function socketInit() {
         (m) => m.userId === userId && m.tracker === true,
       );
       if (!mouseMoveTracker || !isTracker) return;
-      const graphId = +Utils.getGraphIdFormUrl();
+      const graphId = Utils.getGraphIdFormUrl();
       const cursors = JSON.parse(data);
       ChartUpdate.mouseMovePositions(graphId, userId, cursors);
     });

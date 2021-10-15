@@ -54,7 +54,7 @@ class GraphView extends Component {
     const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('view');
     this.props.userGraphRequest();
-    if (+graphId) {
+    if (graphId) {
       this.props.getSingleGraphRequest(graphId);
       this.props.getGraphInfoRequest(graphId);
     }

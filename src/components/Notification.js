@@ -31,7 +31,7 @@ export default () => {
   });
 
   return (
-    ""
+    ''
     // <NotifyMe
     //   data={list}
     //   notific_key="createdAt"

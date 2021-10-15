@@ -19,7 +19,7 @@ const CommentItem = ({ comment, isReply }) => {
         date={moment.utc(comment.createdAt).format('DD.MM.YYYY')}
         comment={comment}
         edit={!isReply}
-        remove={+userId === +comment.user.id}
+        remove={userId === comment.user.id}
       />
       <div className="comment-content" dangerouslySetInnerHTML={{ __html: comment.text }} />
     </div>

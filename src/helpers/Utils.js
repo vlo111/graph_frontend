@@ -274,8 +274,8 @@ class Utils {
   }
 
   static getGraphIdFormUrl() {
-    const [, graphId] = window.location.pathname.match(/\/(\d+)$/) || [];
-    return +graphId || '';
+    const [graphId] = window.location.pathname.split('/').slice(-1) || [];
+    return graphId || '';
   }
 
   static mergeDeep(a, b) {

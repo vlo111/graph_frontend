@@ -55,12 +55,12 @@ class GraphForm extends Component {
 
   getSingleGraph = memoizeOne((graphId) => {
     this.props.setActiveButton('create');
-    if (+graphId) {
+    if (graphId) {
       this.props.getSingleGraphRequest(graphId);
     } else {
       this.props.clearSingleGraph();
     }
-    this.props.socketSetActiveGraph(+graphId || null);
+    this.props.socketSetActiveGraph(graphId || null);
   })
 
   getMouseMoveTracker = () => {

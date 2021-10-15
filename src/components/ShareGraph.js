@@ -58,7 +58,7 @@ const ShareGraph = ({ graphId, setButton }) => {
 };
 
 ShareGraph.propTypes = {
-  graphId: PropTypes.number.isRequired,
+  graphId: PropTypes.string.isRequired,
   setButton: PropTypes.bool,
 };
 

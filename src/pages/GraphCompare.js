@@ -25,14 +25,14 @@ class GraphCompare extends Component {
   }
 
   getGraph1Request = memoizeOne(async (graphId) => {
-    if (+graphId) {
+    if (graphId) {
       const { payload: { data = {} } } = await this.props.getSingleGraphRequest(graphId, { full: true });
       this.setState({ selectedNodes1: _.cloneDeep(ChartUtils.objectAndProto(data.graph?.nodes || [])) });
     }
   })
 
   getGraph2Request = memoizeOne(async (graph2Id) => {
-    if (+graph2Id) {
+    if (graph2Id) {
       const { data = {} } = await Api.getSingleGraph(graph2Id, { full: true }).catch((e) => e);
       this.setState({ singleGraph2: data.graph || {}, selectedNodes2: _.cloneDeep(data.graph?.nodes || []) });
     }
@@ -59,7 +59,7 @@ class GraphCompare extends Component {
       onlyTitle: 1,
     });
     const graphs = data.graphs
-      .filter((g) => +g.id !== +graphId && +g.id !== +graph2Id)
+      .filter((g) => g.id !== graphId && g.id !== graph2Id)
       .map((g) => ({
         value: g.id,
         label: `${g.title} (${g.nodesCount})`,
@@ -73,9 +73,9 @@ class GraphCompare extends Component {
     } = this.props;
     const { value = 0 } = val;
     if (graph === 1) {
-      this.props.history.replace(`/graphs/compare/${value}/${+graph2Id || 0}`);
+      this.props.history.replace(`/graphs/compare/${value}/${graph2Id || 0}`);
     } else {
-      this.props.history.replace(`/graphs/compare/${+graphId || 0}/${value}`);
+      this.props.history.replace(`/graphs/compare/${graphId || 0}/${value}`);
     }
   }
 
