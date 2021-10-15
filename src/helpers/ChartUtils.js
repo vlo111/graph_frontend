@@ -446,6 +446,11 @@ class ChartUtils {
       }
       return n;
     });
+
+    const node = Chart.node;
+
+    node.select('circle').attr('fill', color)
+
     this.nodeColorObj[type] = color;
   }
 
