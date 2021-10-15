@@ -15,7 +15,7 @@ import { getGraphNodesRequest, getSingleGraphRequest, setGraphCustomFields } fro
 import Api from '../Api';
 import Chart from '../Chart';
 import circleImg from '../assets/images/icons/circle.svg';
-import LabelCopy from './labelCopy/LabelCopy';
+// import LabelCopy from './labelCopy/LabelCopy';
 import ContextMenu from './contextMenu/ContextMenu';
 import NodeIcon from './NodeIcon';
 
@@ -29,16 +29,15 @@ class FindNode extends Component {
       singleGraph: PropTypes.object.isRequired,
     }
 
-    async componentDidMount() {
-      document.addEventListener('mouseup', this.handleMouseUp);
-      document.addEventListener('mousemove', this.handleMouseMove);
-    }
+    initialGraph = memoizeOne(async (graphId) => {
+      await this.props.getSingleGraphRequest(graphId, { full: true });
+    });
 
     constructor(props) {
       super(props);
       this.state = {
         search: '',
-        graphIdParam: window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1),
+        // graphIdParam: window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1),
         selected: {},
         drag: false,
         showCompare: false,
@@ -49,10 +48,15 @@ class FindNode extends Component {
       };
     }
 
+    async componentDidMount() {
+      document.addEventListener('mouseup', this.handleMouseUp);
+      document.addEventListener('mousemove', this.handleMouseMove);
+    }
+
     closeModal = () => {
       this.setState({
         search: '',
-        graphIdParam: window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1),
+        // graphIdParam: window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1),
         selected: {},
         drag: false,
         showCompare: false,
@@ -152,7 +156,7 @@ class FindNode extends Component {
           this.setState({ showCompare: !showCompare, position, duplicateNode: compare });
 
           const data = {
-            sourceId: +graph.id,
+            sourceId: graph.id,
             label: null,
             nodes: [node],
             links: null,
@@ -189,15 +193,11 @@ class FindNode extends Component {
       });
     }
 
-    initialGraph = memoizeOne(async (graphId) => {
-      await this.props.getSingleGraphRequest(graphId, { full: true });
-    });
-
     render() {
       const { activeButton, graphNodes } = this.props;
 
       const {
-        virtualPos, drag, showCompare, position, duplicateNode, overDrag, search,
+        virtualPos, drag, overDrag, search,
       } = this.state;
 
       if (activeButton === 'findNode') {

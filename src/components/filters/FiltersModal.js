@@ -80,7 +80,7 @@ class FiltersModal extends Component {
   render() {
     const { nodes, links, labels } = this.state;
     const { userGraphs, match: { params: { graphId = '', token = '' } } } = this.props;
-    const userGraph = userGraphs && userGraphs.find((item) => item.graphId === +graphId);
+    const userGraph = userGraphs && userGraphs.find((item) => item.graphId === graphId);
     const hiddenNodes = nodes.filter((d) => !d.hidden && !d.fake).length;
     const totalNodes = nodes.filter((d) => !d.fake).length;
     return (

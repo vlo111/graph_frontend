@@ -22,6 +22,7 @@ const TooltipContent = ({
 );
 TooltipContent.propTypes = {
   user: PropTypes.object.isRequired,
+  isOwner: PropTypes.any.isRequired,
 };
 const ShareTooltip = React.memo(({
   graphId, graphOwner, isOwner, closeModal,
@@ -38,7 +39,7 @@ const ShareTooltip = React.memo(({
   const [limit, setLimit] = useState(4);
 
   useEffect(() => {
-    dispatch(socketSetActiveGraph(+graphId || null));
+    dispatch(socketSetActiveGraph(graphId || null));
   }, [dispatch, graphId]);
   useEffect(() => {
     if (graphId) {
@@ -56,7 +57,7 @@ const ShareTooltip = React.memo(({
   const isLabelShare = graphUsers && graphUsers.some((n) => n.type === 'label' && n.userId === userId);
   // const graphUsersList = isLabelShare ? graphUsers.filter((n) => n.type === 'label' && n.userId === userId) : graphUsers;
   const graphUsersList = graphUsers && graphUsers.map((item, index) => {
-    if (onlineUser && onlineUser.some((n) => (n.userId === item.userId && n.activeGraphId === +graphId))) {
+    if (onlineUser && onlineUser.some((n) => (n.userId === item.userId && n.activeGraphId === graphId))) {
       return { ...item, online: ONLINE.online_in_graph };
     }
     if (onlineUser && onlineUser.some((n) => (n.userId === item.userId))) {
@@ -141,7 +142,7 @@ const ShareTooltip = React.memo(({
               <img className="avatar-user d-block" src={item.user.avatar} alt={item.user.id} />
               {onlineUser && onlineUser.some((n) => n.userId === item.user.id) ? (
                 <div className="status-online ">
-                  {onlineUser && onlineUser.some((n) => n.userId === item.user.id && n.activeGraphId === +graphId) ? (
+                  {onlineUser && onlineUser.some((n) => n.userId === item.user.id && n.activeGraphId === graphId) ? (
                     <div className="status-in-graph " />
                   ) : ''}
                 </div>
@@ -201,9 +202,10 @@ const ShareTooltip = React.memo(({
   );
 });
 ShareTooltip.propTypes = {
-  graphId: PropTypes.object.isRequired,
+  graphId: PropTypes.string.isRequired,
   graphOwner: PropTypes.object.isRequired,
   closeModal: PropTypes.func.isRequired,
+  isOwner: PropTypes.any.isRequired,
 };
 
 export default ShareTooltip;

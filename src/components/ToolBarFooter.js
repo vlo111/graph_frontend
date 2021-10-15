@@ -14,7 +14,7 @@ class ToolBarFooter extends Component {
     getGraphInfoRequest: PropTypes.func.isRequired,
     graphInfo: PropTypes.object.isRequired,
     setActiveButton: PropTypes.func.isRequired,
-    graphId: PropTypes.number.isRequired,
+    graphId: PropTypes.string.isRequired,
   };
 
   constructor(props) {
