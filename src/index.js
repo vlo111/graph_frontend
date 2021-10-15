@@ -8,6 +8,7 @@ import './helpers/Promise.allValues';
 import App from './App';
 import store from './store';
 
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-input-range/lib/css/index.css';

@@ -2788,7 +2788,7 @@ class Chart {
         hidden: d.hidden,
         keywords: d.keywords || [],
         location: d.location || undefined,
-        color: ChartUtils.nodeColor(d),
+        color: d.color,
         createdAt: d.createdAt,
         updatedAt: d.updatedAt,
         createdUser: d.createdUser,

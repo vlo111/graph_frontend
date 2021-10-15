@@ -12,25 +12,31 @@ import { ReactComponent as ExportSvg } from '../../assets/images/icons/export.sv
 class ExportNodeTabs extends Component {
   static propTypes = {
     setLoading: PropTypes.func.isRequired,
+    node: PropTypes.func.isRequired,
+    tabs: PropTypes.func.isRequired,
+    image: PropTypes.func.isRequired,
+    nodeData: PropTypes.func.isRequired,
+    title: PropTypes.func.isRequired,
   }
 
   decode = (str) => str.replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '\\"')
     .replace(/&amp;/g, '&')
+    .replace('=\\"', '="')
 
   export = async () => {
     this.props.setLoading(true);
 
     const {
-      node, tabs, image, nodeData,
+      node, tabs, image, nodeData, title,
     } = this.props;
-
     const html = this.decode(renderToString(<ExportNode
       node={node}
       tabs={tabs}
       image={image}
       nodeData={nodeData}
+      title={title}
     />));
 
     await Api.download('node-info-pdf', { html, image });
@@ -53,7 +59,9 @@ class ExportNodeTabs extends Component {
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  nodeCustomFields: state.graphs.nodeCustomFields,
+});
 
 const mapDispatchToProps = {
   setLoading,

@@ -1588,7 +1588,7 @@ p {
   &.changePasswordModalOverlay {
     .ghModal {
       top: 25%;
-      max-width: 339px;
+      min-width: 550px;
       padding: 0 35px 50px;
 
       form {
@@ -1601,6 +1601,7 @@ p {
         text-align: center;
         width: 100%;
         margin: 20px 0;
+        color: #7166f8;
       }
 
       .buttonsWrapper {
@@ -8269,10 +8270,17 @@ img.preview-scaled {
     .advanced {
       text-align: center;
       margin-top: 30px;
+      display: flex;
+      justify-content: center;
 
-      a {
+      .show-more {
+        cursor: pointer;
         font-size: 16px;
         color: #7E75EF;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
@@ -8516,14 +8524,9 @@ img.preview-scaled {
   height: 38px;
   object-fit: cover;
   width: 51px;
-  margin-top: -53px;
-  margin-bottom: 15px;
-
-  //cursor: pointer;
-
-  //&:hover {
-  //  opacity: 0.7;
-  //}
+  margin-left: -50px;
+  margin-top: 26.8px;
+  position: absolute;
 }
 
 .number-wrapper {

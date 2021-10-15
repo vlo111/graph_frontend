@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { values } from 'react-bootstrap-typeahead/lib/utils';
 import Utils from './Utils';
 
 class CustomFields {
@@ -160,11 +159,11 @@ class CustomFields {
       return [];
     }
     const customFieldType = _.chain(customFields[type])
-      .map((val, key) => ({
+      .map((val) => ({
         key,
         order: val.order,
       }))
-      .filter((d) => (d.key == key))
+      .filter((d) => (d.key === key))
       .map((d) => d.order)
       .value();
     return customFieldType;

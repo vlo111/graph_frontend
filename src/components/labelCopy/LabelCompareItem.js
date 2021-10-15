@@ -20,7 +20,7 @@ class LabelCompareItem extends Component {
   render() {
     const { node, checked, nodes } = this.props;
 
-    const customFields = CustomFields.getCustomField(node, nodes);
+    const customFields = CustomFields.getCustomField(node, Chart.getNodes());
 
     const uniqueCheckboxId = Math.random().toString(36).substring(7);
 
@@ -49,7 +49,7 @@ class LabelCompareItem extends Component {
               ) : null}
             </div>
             <div className="tab">
-              {_.map(customFields.filter((p) => p.name !== '_description'), (val, key) => (
+              {_.map(customFields, (val, key) => (
                 <Tooltip key={val.name} overlay={val.name} placement="top">
                   <span>
                     {val.name && val.name.length > 10
