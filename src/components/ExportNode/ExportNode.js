@@ -98,6 +98,7 @@ class ExportNode extends Component {
                     <div className="content-parts">
                       <h2>{item.name}</h2>
                       <p>{item.value}</p>
+                      
                     </div>
                   ))}
                 </div>
