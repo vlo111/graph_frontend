@@ -15,7 +15,7 @@
 # misc
 .DS_Store
 .env
-.env.* 
+.env.*
 
 npm-debug.log*
 yarn-debug.log*
@@ -27,4 +27,4 @@ yarn.lock
 package-lock.json
 
 #gitlabs
-.gitlab-ci.yml 
+.gitlab-ci.yml

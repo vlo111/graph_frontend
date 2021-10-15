@@ -116,62 +116,70 @@ class Input extends Component {
   render() {
     const {
       id, label, containerClassName, containerId, children,
-      textArea, limit, onRef,
+      textArea, limit, onRef, previewError, preview,
       error, onChangeText, icon, isNumber, ...props
     } = this.props;
     const inputId = id || `input_${this.id}`;
     return (
-      <div
-        id={containerId}
-        className={classNames(containerClassName, 'ghFormField', 'ghInput')}
-      >
-        {label ? (
-          <label htmlFor={inputId}>{label}</label>
-        ) : null}
-        <Icon value={icon} />
-        {textArea ? (
-          <textarea ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
-        ) : (
-          isNumber
-            ? (
-              <div className="number-input-container" onMouseLeave={() => this.showHideNumberArrow('leave')}>
+        <div
+            id={containerId}
+            className={classNames(containerClassName, 'ghFormField', 'ghInput')}
+        >
+          {label ? (
+              <label htmlFor={inputId}>{label}</label>
+          ) : null}
+          {(preview && previewError !== 'error')
+          && (
+              <img
+                  className="img-thumbnail"
+                  src={preview}
+                  alt=""
+              />
+          )}
+          <Icon value={icon} />
+          {textArea ? (
+              <textarea ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
+          ) : (
+              isNumber
+                  ? (
+                      <div className="number-input-container" onMouseLeave={() => this.showHideNumberArrow('leave')}>
                 <span
-                  className="arrow-top"
-                  onClick={() => this.numberArrowClick('ArrowUp')}
-                  onMouseDown={() => this.numberArrowOnMouseDown('arrow-top')}
-                  onMouseUp={() => this.numberArrowOnMouseUp('arrow-top')}
+                    className="arrow-top"
+                    onClick={() => this.numberArrowClick('ArrowUp')}
+                    onMouseDown={() => this.numberArrowOnMouseDown('arrow-top')}
+                    onMouseUp={() => this.numberArrowOnMouseUp('arrow-top')}
                 >
                   <ArrowSvg />
                 </span>
-                <span
-                  className="arrow-down"
-                  onClick={() => this.numberArrowClick('ArrowDown')}
-                  onMouseDown={() => this.numberArrowOnMouseDown('arrow-down')}
-                  onMouseUp={() => this.numberArrowOnMouseUp('arrow-down')}
-                  onWheel={() => this.numberArrowClick('ArrowDown')}
-                >
+                        <span
+                            className="arrow-down"
+                            onClick={() => this.numberArrowClick('ArrowDown')}
+                            onMouseDown={() => this.numberArrowOnMouseDown('arrow-down')}
+                            onMouseUp={() => this.numberArrowOnMouseUp('arrow-down')}
+                            onWheel={() => this.numberArrowClick('ArrowDown')}
+                        >
                   <ArrowSvg />
                 </span>
-                <input
-                  ref={(ref) => onRef && onRef(ref)}
-                  {...props}
-                  id={inputId}
-                  onChange={this.handleChange}
-                  onKeyDown={this.handleKeyDown}
-                  onMouseOver={() => this.showHideNumberArrow('hover')}
-                />
-              </div>
-            )
-            : <input  ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
-        )}
-        {!error && limit ? (
-          <div className="limit">{`${limit - (props.value || '').length} / ${limit} characters`}</div>
-        ) : null}
-        {children}
-        {error ? (
-          <div className="error">{error}</div>
-        ) : null}
-      </div>
+                        <input
+                            ref={(ref) => onRef && onRef(ref)}
+                            {...props}
+                            id={inputId}
+                            onChange={this.handleChange}
+                            onKeyDown={this.handleKeyDown}
+                            onMouseOver={() => this.showHideNumberArrow('hover')}
+                        />
+                      </div>
+                  )
+                  : <input ref={(ref) => onRef && onRef(ref)} {...props} id={inputId} onChange={this.handleChange} />
+          )}
+          {!error && limit ? (
+              <div className="limit">{`${limit - (props.value || '').length} / ${limit} characters`}</div>
+          ) : null}
+          {children}
+          {error ? (
+              <div className="error">{error}</div>
+          ) : null}
+        </div>
     );
   }
 }
