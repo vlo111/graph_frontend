@@ -317,6 +317,7 @@ class AutoSave extends Component {
 
     const promise = [];
     if (updateNodes.length) {
+      position = false;
       promise.push(this.props.updateNodesRequest(graphId, updateNodes));
     }
     if (deleteNodes.length && deleteState) {
@@ -370,13 +371,12 @@ class AutoSave extends Component {
         toast.error('Something went wrong');
       }
     });
-    if (res.length) {
+    if (res.length && position) {
       this.setState({ graphChanged: true });
-      position && await this.props.getSingleGraphRequest(graphId);
+      await this.props.getSingleGraphRequest(graphId);
     }
     document.body.classList.remove('autoSave');
     this.props.toggleDeleteState(false);
-    position = true;
   }
 
   handleUnload = (ev) => {
@@ -451,8 +451,8 @@ const mapDispatchToProps = {
 };
 
 const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
+    mapStateToProps,
+    mapDispatchToProps,
 )(AutoSave);
 
 export default withRouter(Container);
