@@ -120,9 +120,6 @@ class AddNodeModal extends Component {
     nodeData.updatedUser = currentUserId;
 
     if (!Validate.hasError(errors)) {
-      if (nodeData.color) {
-        ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
-      }
 
       nodeData.id = nodeId || ChartUtils.uniqueId(nodes);
 
@@ -153,6 +150,10 @@ class AddNodeModal extends Component {
       }
 
       Chart.render({ nodes });
+
+      if (nodeData.color) {
+        ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
+      }
 
       this.closeExpand();
       // this.props.setNodeCustomField(nodeData.type, nodeData.id, customField);
