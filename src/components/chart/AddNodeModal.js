@@ -5,9 +5,7 @@ import Modal from 'react-modal';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import memoizeOne from 'memoize-one';
-import { Link } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
-import { components } from 'react-select';
 import { toggleNodeModal } from '../../store/actions/app';
 import Select from '../form/Select';
 import ColorPicker from '../form/ColorPicker';
@@ -24,7 +22,6 @@ import Api from '../../Api';
 import markerImg from '../../assets/images/icons/marker-black.svg';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
-import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
 
 class AddNodeModal extends Component {
   static propTypes = {
@@ -69,10 +66,10 @@ class AddNodeModal extends Component {
 
   getTypes = memoizeOne((nodes) => {
     const types = nodes.filter((d) => d.type)
-      .map((d) => ({
-        value: d.type,
-        label: d.type,
-      }));
+        .map((d) => ({
+          value: d.type,
+          label: d.type,
+        }));
 
     return _.uniqBy(types, 'value');
   }, _.isEqual)
@@ -254,200 +251,192 @@ class AddNodeModal extends Component {
 
     Utils.orderGroup(groups, nodeData.type);
 
-    if (nodeData.icon && typeof nodeData.icon === 'object') nodeData.icon = nodeData.icon.name;
-
     return (
-      <Modal
-        className={expand ? 'ghModal expandAddNode' : 'ghModal'}
-        overlayClassName="ghModalOverlay addNode"
-        isOpen={!_.isEmpty(addNodeParams)}
-        onRequestClose={this.closeModal}
-      >
-        <div className="addNodeContainer containerModal">
-          <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
-          <h2 className="add-node-text">{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
-          <form
-            className={`form ${imgUrl === 'error' ? '' : (nodeData.icon ? 'update-upload' : '')}`}
-            onSubmit={this.saveNode}
-          >
-            <div className="node-type">
-              <Select
-                label="Node Type"
-                isCreatable
-                value={[
-                  groups.find((t) => t.value === nodeData.type) || {
-                    value: nodeData.type,
-                    label: nodeData.type ? nodeData.type : 'Node Type',
-                  },
-                ]}
-                options={groups}
-                error={errors.type}
-                onChange={(v) => this.handleChange('type', v?.value || '')}
-              />
-            </div>
-            <Input
-              label="Node Name"
-              value={nodeData.name}
-              error={errors.name}
-              autoFocus
-              onChangeText={(v) => this.handleChange('name', v)}
-              autoComplete="off"
-            />
-            {expand ? (
-              <>
-                <Input
-                  label="Node Link"
-                  value={nodeData.link}
-                  error={errors.link}
-                  autoFocus
-                  onChangeText={(v) => this.handleChange('link', v)}
-                  autoComplete="off"
-                />
+        <Modal
+            className={expand ? 'ghModal expandAddNode' : 'ghModal'}
+            overlayClassName="ghModalOverlay addNode"
+            isOpen={!_.isEmpty(addNodeParams)}
+            onRequestClose={this.closeModal}
+        >
+          <div className="addNodeContainer containerModal">
+            <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
+            <h2 className="add-node-text">{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
+            <form
+                className={`form ${imgUrl === 'error' ? '' : (nodeData.icon ? 'update-upload' : '')}`}
+                onSubmit={this.saveNode}
+            >
+              <div className="node-type">
                 <Select
-                  label="Node Status"
-                  portal
-                  options={NODE_STATUS}
-                  isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
-                  value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
-                  error={errors.status}
-                  onChange={(v) => this.handleChange('status', v?.value || '')}
+                    label="Node Type"
+                    isCreatable
+                    value={[
+                      groups.find((t) => t.value === nodeData.type) || {
+                        value: nodeData.type,
+                        label: nodeData.type ? nodeData.type : 'Node Type',
+                      },
+                    ]}
+                    options={groups}
+                    error={errors.type}
+                    onChange={(v) => this.handleChange('type', v?.value || '')}
                 />
-                {!editPartial ? (
+              </div>
+              <Input
+                  label="Node Name"
+                  value={nodeData.name}
+                  error={errors.name}
+                  autoFocus
+                  onChangeText={(v) => this.handleChange('name', v)}
+                  autoComplete="off"
+              />
+              {expand ? (
                   <>
+                    <Input
+                        label="Node Link"
+                        value={nodeData.link}
+                        error={errors.link}
+                        autoFocus
+                        onChangeText={(v) => this.handleChange('link', v)}
+                        autoComplete="off"
+                    />
                     <Select
-                      label="Node Type"
-                      portal
-                      options={NODE_TYPES}
-                      value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
-                      error={errors.nodeType}
-                      onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+                        label="Node Status"
+                        portal
+                        options={NODE_STATUS}
+                        isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
+                        value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
+                        error={errors.status}
+                        onChange={(v) => this.handleChange('status', v?.value || '')}
                     />
-                    <ColorPicker
-                      label="Select Color"
-                      value={nodeData.color}
-                      error={errors.color}
-                      readOnly
-                      style={{ color: nodeData.color }}
-                      onChangeText={(v) => this.handleChange('color', v)}
-                      autoComplete="off"
-                      expand={!expand}
-                    />
-                    <div style={{ backgroundColor: nodeData.color }} className="color-preview" />
+                    {!editPartial ? (
+                        <>
+                          <Select
+                              label="Node Type"
+                              portal
+                              options={NODE_TYPES}
+                              value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
+                              error={errors.nodeType}
+                              onChange={(v) => this.handleChange('nodeType', v?.value || '')}
+                          />
+                          <ColorPicker
+                              label="Select Color"
+                              value={nodeData.color}
+                              error={errors.color}
+                              readOnly
+                              style={{ color: nodeData.color }}
+                              onChangeText={(v) => this.handleChange('color', v)}
+                              autoComplete="off"
+                              expand={!expand}
+                          />
+                          <div style={{ backgroundColor: nodeData.color }} className="color-preview" />
 
-                    <FileInput
-                      label="Past icon link or select"
-                      accept=".png,.jpg,.gif,.svg"
-                      value={nodeData.icon}
-                      onChangeImgPreview={(v) => this.handleImgPreviewChange(v)}
-                      onChangeFile={(v, file) => this.handleChange('icon', file)}
-                    />
+                          <FileInput
+                              label="Past icon link or select"
+                              accept=".png,.jpg,.gif,.svg"
+                              value={nodeData.icon}
+                              onChangeImgPreview={(v) => this.handleImgPreviewChange(v)}
+                              onChangeFile={(v, file) => this.handleChange('icon', file)}
+                              preview={nodeData.icon}
+                              previewError={imgUrl}
+                          />
 
-                    {imgUrl && imgUrl !== 'error'
-                    && (
-                    <img
-                      className="img-thumbnail"
-                      src={Utils.fileSrc(nodeData.icon) || imgUrl}
-                      alt=""
-                    />
+                          <Select
+                              isCreatable
+                              isMulti
+                              value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
+                              menuIsOpen={false}
+                              label="Keywords"
+                              onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
+                          />
+                        </>
+                    ) : null}
+
+                    <label className="nodeSize" htmlFor="nodeSize">Set size manually</label>
+
+                    <div className="number-wrapper">
+                      <Input
+                          id="nodeSize"
+                          value={nodeData.manually_size}
+                          error={errors.manually_size}
+                          type="text"
+                          autoComplete="off"
+                          isNumber
+                          onChangeText={(v) => this.handleChange('manually_size', v)}
+                      />
+                    </div>
+                    <div className="addLocation" onClick={this.openMap}>+ Add Location</div>
+                    {openMap && (
+                        <MapsLocationPicker
+                            onClose={this.toggleMap}
+                            value={editLocation != null
+                                ? nodeData.location.filter((p, index) => index === editLocation) : nodeData.location}
+                            onChange={(v, edit) => this.handleChange('location', v, edit)}
+                            edit={Number.isInteger(editLocation) ? editLocation : null}
+                        />
                     )}
-                    <Select
-                      isCreatable
-                      isMulti
-                      value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
-                      menuIsOpen={false}
-                      label="Keywords"
-                      onChange={(value) => this.handleChange('keywords', (value || []).map((v) => v.value))}
-                    />
-                  </>
-                ) : null}
+                    <div className="ghFormField locationExpandForm">
+                      {_.isObject(nodeData?.location)
+                      && nodeData.location
+                          .map((p, index) => (
+                              <div className="locForm">
+                                <div className="locName">
+                                  <p title={p.address}>
+                                    {p.address
+                                    && p.address.length > (!expand ? 20 : 37)
+                                        ? `${p.address.substr(
+                                            0,
+                                            !expand ? 20 : 37,
+                                        )} ...`
+                                        : p.address}
+                                  </p>
+                                </div>
 
-                <label className="nodeSize" htmlFor="nodeSize">Set size manually</label>
-
-                <div className="number-wrapper">
-                  <Input
-                    id="nodeSize"
-                    value={nodeData.manually_size}
-                    error={errors.manually_size}
-                    type="text"
-                    autoComplete="off"
-                    isNumber
-                    onChangeText={(v) => this.handleChange('manually_size', v)}
-                  />
-                </div>
-                <div className="addLocation" onClick={this.openMap}>+ Add Location</div>
-                {openMap && (
-                <MapsLocationPicker
-                  onClose={this.toggleMap}
-                  value={editLocation != null
-                    ? nodeData.location.filter((p, index) => index === editLocation) : nodeData.location}
-                  onChange={(v, edit) => this.handleChange('location', v, edit)}
-                  edit={Number.isInteger(editLocation) ? editLocation : null}
-                />
-                )}
-                <div className="ghFormField locationExpandForm">
-                  {_.isObject(nodeData?.location)
-                  && nodeData.location
-                    .map((p, index) => (
-                      <div className="locForm">
-                        <div className="locName">
-                          <p title={p.address}>
-                            {p.address
-                                && p.address.length > (!expand ? 20 : 37)
-                              ? `${p.address.substr(
-                                0,
-                                !expand ? 20 : 37,
-                              )} ...`
-                              : p.address}
-                          </p>
-                        </div>
-
-                        <Tooltip overlay={p.address} placement="top">
-                          <div className="locEdit">
+                                <Tooltip overlay={p.address} placement="top">
+                                  <div className="locEdit">
                             <span
-                              title="edit"
-                              onClick={() => this.editLocation(index)}
+                                title="edit"
+                                onClick={() => this.editLocation(index)}
                             >
                               <img
-                                src={markerImg}
-                                className="locMarker"
-                                alt="marker"
+                                  src={markerImg}
+                                  className="locMarker"
+                                  alt="marker"
                               />
                             </span>
-                          </div>
-                        </Tooltip>
+                                  </div>
+                                </Tooltip>
 
-                        <div className="locDelete">
+                                <div className="locDelete">
                           <span
-                            title="delete"
-                            onClick={() => this.deleteLocation(index)}
+                              title="delete"
+                              onClick={() => this.deleteLocation(index)}
                           >
                             <CloseSvg
-                              className="deletelocation"
-                              alt="marker"
+                                className="deletelocation"
+                                alt="marker"
                             />
                           </span>
-                        </div>
-                      </div>
-                    ))
-                    .slice(!expand ? -2 : nodeData.location)}
+                                </div>
+                              </div>
+                          ))
+                          .slice(!expand ? -2 : nodeData.location)}
+                    </div>
+                  </>
+              ) : null}
+              <div className="footerButtons">
+                <div className="buttons">
+                  <button className="btn-classic" type="submit">
+                    {_.isNull(index) ? 'Add' : 'Save'}
+                  </button>
                 </div>
-              </>
-            ) : null}
-            <div className="footerButtons">
-              <div className="buttons">
-                <button className="btn-classic" type="submit">
-                  {_.isNull(index) ? 'Add' : 'Save'}
-                </button>
               </div>
-            </div>
-            <div className="advanced right">
-              <Link className="" onClick={this.toggleExpand}>
-                {!expand ? 'Show More' : 'Show Less'}
-              </Link>
-            </div>
-          </form>
-        </div>
-      </Modal>
+              <div className="advanced right">
+                <div className="show-more" onClick={this.toggleExpand}>
+                  {!expand ? 'Show More' : 'Show Less'}
+                </div>
+              </div>
+            </form>
+          </div>
+        </Modal>
     );
   }
 }
@@ -466,8 +455,8 @@ const mapDispatchToProps = {
 };
 
 const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
+    mapStateToProps,
+    mapDispatchToProps,
 )(AddNodeModal);
 
 export default Container;
