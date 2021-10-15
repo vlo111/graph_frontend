@@ -17,8 +17,13 @@ import Loading from '../Loading';
 class NodeFullInfo extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
     editable: PropTypes.bool,
     getNodeCustomFieldsRequest: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    editable: true,
   }
 
   constructor() {
@@ -28,13 +33,9 @@ class NodeFullInfo extends Component {
     };
   }
 
-  static defaultProps = {
-    editable: true,
-  }
-
   getCustomFields = memoizeOne(async (graphId, nodeId) => {
     this.setState({ loading: false });
-    if(!graphId || !nodeId) return;
+    if (!graphId || !nodeId) return;
     this.setState({ loading: true });
     await this.props.getNodeCustomFieldsRequest(graphId, nodeId);
     this.setState({ loading: false });
@@ -56,7 +57,7 @@ class NodeFullInfo extends Component {
   render() {
     const {
       editable, singleGraph: {
-        id, nodesPartial, linksPartial, labels,
+        id, nodesPartial, linksPartial, labels, title,
       },
     } = this.props;
 
@@ -88,6 +89,7 @@ class NodeFullInfo extends Component {
             editable={editable}
             expand={expand}
             queryObj={queryObj}
+            title={title}
           />
           <div className="nodeFullContent">
             <NodeTabs nodeId={node.id} editable={editable} />

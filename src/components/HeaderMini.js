@@ -24,49 +24,33 @@ import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 
 class HeaderMini extends Component {
   static propTypes = {
-    getActionsCount: PropTypes.func.isRequired,
-    commentCount: PropTypes.func.isRequired,
+    // getActionsCount: PropTypes.func.isRequired,
+    // commentCount: PropTypes.func.isRequired,
     toggleNodeModal: PropTypes.func.isRequired,
-  }
-
-  componentDidMount() {
-    ContextMenu.event.on('node.edit', this.editNode);
-  }
-
-  componentWillUnmount() {
-    ContextMenu.event.removeListener('node.edit', this.editNode);
-  }
-
-  editNode = (ev) => {
-    const { node, tabs } = this.props;
-    if (node.readOnly) {
-      return;
-    }
-    const customField = CustomFields.get(tabs, 'node.edit', node.id);
-    this.props.toggleNodeModal({ ...node, customField });
-  }
-
-  commentCountData() {
-    const { match: { params: { graphId } } } = this.props;
-
-    const { info: nodeId } = queryString.parse(window.location.search);
-    if (!nodeId) {
-      return null;
-    }
-    const nodeDatas = Chart.getNodes().find((n) => n.id === nodeId);
-    if (!nodeDatas) {
-      return null;
-    }
-    this.props.getActionsCountRequest(graphId, nodeId);
+    headerImg: PropTypes.func.isRequired,
+    node: PropTypes.func.isRequired,
+    tabs: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
+    history: PropTypes.func.isRequired,
+    match: PropTypes.func.isRequired,
+    getActionsCountRequest: PropTypes.func.isRequired,
+    editable: PropTypes.func.isRequired,
+    singleGraph: PropTypes.func.isRequired,
+    commentsCount: PropTypes.func.isRequired,
+    expand: PropTypes.func.isRequired,
+    queryObj: PropTypes.func.isRequired,
+    title: PropTypes.func.isRequired,
+    nodeCustomFields: PropTypes.func.isRequired,
+    // name: PropTypes.func.isRequired,
   }
 
   async componentWillMount() {
     this.commentCountData();
 
     let {
-      headerImg, node,
+      headerImg,
     } = this.props;
-
+    const { node } = this.props;
     const nodeData = [];
 
     const nodeLinks = Chart.getNodeLinks(node.id, 'all');
@@ -99,6 +83,23 @@ class HeaderMini extends Component {
       headerImg = await Utils.blobToBase64(headerImg);
     }
     this.setState({ image: headerImg });
+  }
+
+  componentDidMount() {
+    ContextMenu.event.on('node.edit', this.editNode);
+  }
+
+  componentWillUnmount() {
+    ContextMenu.event.removeListener('node.edit', this.editNode);
+  }
+
+  editNode = () => {
+    const { node, tabs } = this.props;
+    if (node.readOnly) {
+      return;
+    }
+    const customField = CustomFields.get(tabs, 'node.edit', node.id);
+    this.props.toggleNodeModal({ ...node, customField });
   }
 
   getSettingsElements = (name) => ({
@@ -172,10 +173,27 @@ class HeaderMini extends Component {
     this.props.history.replace(`?${query}`);
   }
 
+  commentCountData() {
+    const { match: { params: { graphId } } } = this.props;
+
+    const { info: nodeId } = queryString.parse(window.location.search);
+    if (!nodeId) {
+      return null;
+    }
+    const nodeDatas = Chart.getNodes().find((n) => n.id === nodeId);
+    if (!nodeDatas) {
+      return null;
+    }
+    this.props.getActionsCountRequest(graphId, nodeId);
+  }
+
   render() {
     const { showGraphUsersInfo, showNodeComment } = this.state;
     const {
-      editable, singleGraph, commentsCount, tabs, node, match: { params: { graphId = '', token = '' } }, expand, queryObj,
+      editable,
+      singleGraph,
+      commentsCount, node, title,
+      nodeCustomFields, match: { params: { graphId = '', token = '' } }, expand, queryObj,
     } = this.props;
     return (
       <header id="headerMini">
@@ -191,9 +209,11 @@ class HeaderMini extends Component {
             </Button>
             <ExportNodeTabs
               node={node}
-              tabs={tabs}
+              tabs={nodeCustomFields}
               nodeData={this.state.nodeData}
               image={this.state.image}
+              title={title}
+              // name={name}
             />
             {editable ? (
               <Button
@@ -275,6 +295,7 @@ class HeaderMini extends Component {
 const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
   commentsCount: state.commentNodes.commentCount.commentsCount,
+  nodeCustomFields: state.graphs.nodeCustomFields,
 });
 
 const mapDispatchToProps = {
