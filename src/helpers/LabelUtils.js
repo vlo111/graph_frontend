@@ -207,7 +207,7 @@ class LabelUtils {
     if ((label.hasInEmbed && !label.sourceId) || force) {
       const { nodes, links } = ChartUtils.getFilteredGraphByLabel(labelId);
       const graph = {
-        nodes, links, sourceId: +graphId, label, labelId: label.id, customFields: {},
+        nodes, links, sourceId: graphId, label, labelId: label.id, customFields: {},
       };
       store.dispatch(socketLabelDataChange(graph));
     }

@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import { getSingleEmbedGraphRequest } from '../store/actions/graphs';
 import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
-import { setActiveButton } from '../store/actions/app';
+import AutoPlay from '../components/AutoPlay';
+import Zoom from '../components/Zoom';
 import Filters from '../components/filters/Filters';
+import { getSingleEmbedGraphRequest } from '../store/actions/graphs';
+import { setActiveButton } from '../store/actions/app';
 
 class GraphEmbed extends Component {
   static propTypes = {
@@ -33,10 +35,11 @@ class GraphEmbed extends Component {
         <div className="graphWrapper">
           <ReactChart />
         </div>
-        <Legend />
         <NodeFullInfo editable={false} />
         <LabelTooltip />
         <Filters />
+        <AutoPlay />
+        <Zoom />
       </Wrapper>
     );
   }

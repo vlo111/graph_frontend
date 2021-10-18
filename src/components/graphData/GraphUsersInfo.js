@@ -44,7 +44,7 @@ const GraphUsersInfo = ({ graph, closeModal }) => {
   const onClose = () => {
     closeModal();
   };
-  const createdUser = graph.users.find((u) => +u.id === +(node.createdUser || graph.userId)) || {
+  const createdUser = graph.users.find((u) => u.id === (node.createdUser || graph.userId)) || {
     firstName: '',
     lastName: '',
   };

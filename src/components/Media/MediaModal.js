@@ -30,7 +30,6 @@ class MediaModal extends Component {
     singleGraph: PropTypes.object.isRequired,
     setActiveTab: PropTypes.func.isRequired,
     user: PropTypes.func.isRequired,
-    graph: PropTypes.object.isRequired,
   }
 
   initTabs = memoizeOne(() => {
@@ -38,12 +37,20 @@ class MediaModal extends Component {
   })
 
   initDocument = memoizeOne((document) => {
-    document.map((p) => {
+    document.forEach((p) => {
       if (p.graphs?.nodes && p.graphs?.nodes.length) {
         p.node = p.graphs.nodes.filter((n) => n.id === p.nodeId)[0];
       }
     });
   })
+
+  searchDocuments = memoizeOne((searchParam) => {
+    this.props.getDocumentsRequest(searchParam);
+  })
+
+  initialGraph = memoizeOne(() => {
+    this.props.getSingleGraphRequest(this.props.singleGraph.id);
+  });
 
   constructor() {
     super();
@@ -61,14 +68,6 @@ class MediaModal extends Component {
     };
   }
 
-  closeModal = () => {
-    this.props.setActiveButton('create');
-  }
-
-  searchDocuments = memoizeOne((searchParam) => {
-    this.props.getDocumentsRequest(searchParam);
-  })
-
   componentDidMount() {
     if (this.state.loading) {
       const { documentSearch } = this.props;
@@ -78,9 +77,9 @@ class MediaModal extends Component {
     }
   }
 
-  initialGraph = memoizeOne(() => {
-    this.props.getSingleGraphRequest(this.props.singleGraph.id);
-  });
+  closeModal = () => {
+    this.props.setActiveButton('create');
+  }
 
   filterHandleChange = (path, value) => {
     switch (path) {
@@ -149,7 +148,7 @@ class MediaModal extends Component {
       if (!getCheckedNodes) {
         document = document.filter((p) => !p.added);
       } else {
-        nodesPartial.map((node) => {
+        nodesPartial.forEach((node) => {
           if (node.icon) {
             if (!document.filter((p) => p.added === node.id).length) {
               document.push({

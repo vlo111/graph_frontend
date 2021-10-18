@@ -446,6 +446,12 @@ class ChartUtils {
       }
       return n;
     });
+
+    const node = Chart.node;
+
+    node.select('circle').attr('fill', color)
+    node.select('text').attr('fill', color)
+
     this.nodeColorObj[type] = color;
   }
 
@@ -1045,11 +1051,10 @@ class ChartUtils {
       return {
         labels, nodes, links,
       };
-    } else {
-      return {
-        nodes, links,
-      };
     }
+    return {
+      nodes, links,
+    };
   }
 
   static objectAndProto(d) {

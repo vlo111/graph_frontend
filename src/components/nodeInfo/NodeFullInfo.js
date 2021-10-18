@@ -17,8 +17,13 @@ import Loading from '../Loading';
 class NodeFullInfo extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
     editable: PropTypes.bool,
     getNodeCustomFieldsRequest: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    editable: true,
   }
 
   constructor() {
@@ -28,13 +33,9 @@ class NodeFullInfo extends Component {
     };
   }
 
-  static defaultProps = {
-    editable: true,
-  }
-
   getCustomFields = memoizeOne(async (graphId, nodeId) => {
     this.setState({ loading: false });
-    if(!graphId || !nodeId) return;
+    if (!graphId || !nodeId) return;
     this.setState({ loading: true });
     await this.props.getNodeCustomFieldsRequest(graphId, nodeId);
     this.setState({ loading: false });
@@ -56,8 +57,9 @@ class NodeFullInfo extends Component {
   render() {
     const {
       editable, singleGraph: {
-        id, nodesPartial, linksPartial, labels,
+        id, nodesPartial, linksPartial, labels, title,
       },
+      location: { pathname },
     } = this.props;
 
     const { loading } = this.state;
@@ -81,13 +83,14 @@ class NodeFullInfo extends Component {
 
     return (
       <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
-        <div id="nodeFullInfo">
+        <div id="nodeFullInfo" style={pathname.startsWith('/graphs/embed') ? { top: '0px' } : { top: '69px' }}>
           <HeaderMini
             headerImg={node.icon ? node.icon : bgImage}
             node={node}
             editable={editable}
             expand={expand}
             queryObj={queryObj}
+            title={title}
           />
           <div className="nodeFullContent">
             <NodeTabs nodeId={node.id} editable={editable} />

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Tooltip from 'rc-tooltip/es';
-import { getId } from '../../store/selectors/account';
+// import { getId } from '../../store/selectors/account';
 import { graphUsersRequest } from '../../store/actions/shareGraphs';
 import { getGraphUsers } from '../../store/selectors/shareGraphs';
 import { getOnlineUsersRequest } from '../../store/actions/app';
@@ -32,9 +32,9 @@ TooltipContent.propTypes = {
   user: PropTypes.object.isRequired,
 };
 
-const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
+const ContributorsModal = React.memo(({ graphId, graphOwner }) => {
   const dispatch = useDispatch();
-  const userId = useSelector(getId);
+  // const userId = useSelector(getId);
   const onlineUser = useSelector(getOnlineUsers);
   const graphUsers = useSelector(getGraphUsers)[graphId];
   const [limit, setLimit] = useState(2);
@@ -52,8 +52,8 @@ const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
   }
   // const isLabelShare = graphUsers && graphUsers.some((n) => n.type === 'label' && n.userId === userId);
   // const graphUsersList = isLabelShare ? graphUsers.filter((n) => n.type === 'label' && n.userId === userId) : graphUsers;
-  const graphUsersList = graphUsers && graphUsers.map((item, index) => {
-    if (onlineUser && onlineUser.some((n) => (n.userId === item.userId && n.activeGraphId === +graphId))) {
+  const graphUsersList = graphUsers && graphUsers.map((item) => {
+    if (onlineUser && onlineUser.some((n) => (n.userId === item.userId && n.activeGraphId === graphId))) {
       return { ...item, online: ONLINE.online_in_graph };
     }
     if (onlineUser && onlineUser.some((n) => (n.userId === item.userId))) {
@@ -75,7 +75,7 @@ const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
                 <img className="avatar-user d-block" src={graphOwner.avatar} alt="" />
                 { onlineUser && onlineUser.some((n) => n.userId === graphOwner.id) ? (
                   <div className="status-online ">
-                    { onlineUser && onlineUser.some((n) => (n.userId === graphOwner.id && n.activeGraphId === +graphId)) ? (
+                    { onlineUser && onlineUser.some((n) => (n.userId === graphOwner.id && n.activeGraphId === graphId)) ? (
                       <div className="status-in-graph " />
                     ) : ''}
                   </div>
@@ -85,15 +85,26 @@ const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
           </Link>
         </li>
         {graphUsersList && graphUsersList.filter((item, index) => index < limit)
-          .map((item, index) => (
+          .map((item) => (
             <li className="item">
               <Link to={`/profile/${item.user.id}`} target="_blank">
-                <Tooltip overlay={<TooltipContent user={item.user} role={item.role} type={item.type} objectId={item.objectId} />} trigger={['hover']} placement={['bottom']}>
+                <Tooltip
+                  overlay={(
+                    <TooltipContent
+                      user={item.user}
+                      role={item.role}
+                      type={item.type}
+                      objectId={item.objectId}
+                    />
+)}
+                  trigger={['hover']}
+                  placement={['bottom']}
+                >
                   <div className="icon-container">
                     <img className="avatar-user d-block" src={item.user.avatar} alt={item.user.id} />
                     { onlineUser && onlineUser.some((n) => n.userId === item.user.id) ? (
                       <div className="status-online ">
-                        { onlineUser && onlineUser.some((n) => n.userId === item.user.id && n.activeGraphId === +graphId) ? (
+                        { onlineUser && onlineUser.some((n) => n.userId === item.user.id && n.activeGraphId === graphId) ? (
                           <div className="status-in-graph " />
                         ) : ''}
                       </div>
@@ -116,6 +127,7 @@ const ContributorsModal = React.memo(({ graphId, graphOwner, isOwner }) => {
 
 ContributorsModal.propTypes = {
   graphId: PropTypes.number.isRequired,
+  graphOwner: PropTypes.object.isRequired,
 
 };
 

@@ -20,7 +20,7 @@ const TooltipContent = ({ graphId, graphOwner }) => (
   </Suspense>
 );
 TooltipContent.propTypes = {
-  graphId: PropTypes.number.isRequired,
+  graphId: PropTypes.string.isRequired,
 };
 
 const GraphListFooter = ({ graph }) => {
