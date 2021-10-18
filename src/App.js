@@ -12,7 +12,6 @@ import ForgotPassword from './pages/sign/ForgotPassword';
 import ResetPassword from './pages/sign/ResetPassword';
 import OAuth from './pages/sign/OAuth';
 import Shared from './pages/Shared';
-import Public from './pages/Public';
 import Index from './pages/Index';
 import Account from './pages/profile/Account';
 import Page404 from './pages/message/Page404';
@@ -46,7 +45,7 @@ class App extends Component {
             <Route path="/search-graph" component={Search} />
             <Route path="/search-shared-graph" component={Search} />
 
-            <Route path="/Public" exact component={Index} />
+            <Route path="/public" exact component={Index} />
             <Route path="/templates" exact component={Index} />
             <Route path="/shared" exact component={Index} />
             

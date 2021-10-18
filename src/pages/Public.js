@@ -17,9 +17,9 @@ class Public extends Component {
   }
 
   componentDidMount() {
-    const order = JSON.parse(localStorage.getItem('/Public')) || 'newest';
+    const order = JSON.parse(localStorage.getItem('/public')) || 'newest';
     const { page = 1 } = queryString.parse(window.location.search);
-    this.props.getPublicListRequest(page);
+    this.props.getPublicListRequest(page, {filter: order});
   }
 
   render() {

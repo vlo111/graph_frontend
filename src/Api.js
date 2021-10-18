@@ -138,8 +138,8 @@ class Api {
     });
   }
 
-  static getPublicGraphList(page) {
-    return api.get('graphs/public', {params: {page}});
+  static getPublicGraphList(page, requestData = {}) {
+    return api.get('graphs/public', {params: {page, ...requestData}});
   }
 
   static getGraphNodes(page, requestData = {}) {

@@ -71,8 +71,8 @@ class PageTabs extends Component {
       this.props.getGraphsListRequest(page, { s, filter: value, status });
     } else if (currentTab === '/shared') {
       this.props.getShareGraphListRequest(page, { s, filter: value });
-    } else if (currentTab === '/Public') {
-      this.props.getPublicListRequest(page);
+    } else if (currentTab === '/public') {
+      this.props.getPublicListRequest(page, { s, filter: value });
     }
   }
 
