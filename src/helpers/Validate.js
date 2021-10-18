@@ -199,7 +199,7 @@ class Validate {
 
     if (!passwordConfirm) {
       errors.passwordConfirm = 'Confirm password is required';
-    } else if (passwordConfirm !== requestData.passwordConfirm) {
+    } else if (passwordConfirm !== passwordConfirm) {
       errors.passwordConfirm = 'Password and confirm password must be same';
     }
 
