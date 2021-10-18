@@ -111,6 +111,9 @@ class PageTabs extends Component {
           {list.filter((t) => !t.hidden).map((t) => (
             <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`}>
               <Button onClick={() => this.setActiveTab(t)}>
+                { t.name === 'Public' ?
+                <i className="fa fa-globe"></i>
+                 :null}
                 {t.name}
               </Button>
             </li>

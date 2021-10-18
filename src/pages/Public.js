@@ -25,7 +25,7 @@ class Public extends Component {
   render() {
     const {
       publicGraphList, graphsListStatus, graphsListInfo: { totalPages }, mode,
-    } = this.props; 
+    } = this.props;  
     return (
       <>
       <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!publicGraphList.length ? 'empty' : ''}`}>
@@ -34,7 +34,7 @@ class Public extends Component {
               <NoGraph />
             </div>
           ) : mode === 'list'
-            ? <GraphListItem graphs={publicGraphList}  headerTools="public" /> : <GraphCardItem graphs={publicGraphList} headerTools="public" />}
+            ? <GraphListItem graphs={publicGraphList} headerTools="public" /> : <GraphCardItem graphs={publicGraphList} headerTools="public" />}
         </div>
         {publicGraphList.length >5 ? <Pagination totalPages={totalPages} /> : null}
       </>
