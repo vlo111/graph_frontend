@@ -20,7 +20,7 @@ const Collaborators = ({ select, graph }) => {
   }, [dispatch, id]);
 
   const handleSelectChange = useCallback((newValue, shareGraphId) => {
-    dispatch(updateGraphRequest(shareGraphId, { role: newValue.value }));
+    dispatch(updateGraphRequest(shareGraphId, { role: newValue.value, confirm: false }));
   }, [dispatch]);
 
   const handledelete = useCallback((shareGraphId) => {

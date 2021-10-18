@@ -37,7 +37,7 @@
     "react-lazyload": "^3.2.0",
     "react-lines-ellipsis": "^0.14.1",
     "react-modal": "^3.11.2",
-    "react-notification-timeline": "github:davoasrn/notifyme",
+    "react-notification-timeline": "0.0.9",
     "react-paginate": "^6.5.0",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
@@ -65,8 +65,7 @@
     "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build && node build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "eslint": "./node_modules/.bin/eslint src/. --config .eslintrc.js",
-    "postinstall": "cd ./node_modules/react-notification-timeline && test -f ./build.sh && chmod 777 ./build.sh && ./build.sh"
+    "eslint": "./node_modules/.bin/eslint src/. --config .eslintrc.js"
   },
   "eslintConfig": {
     "extends": "react-app"
