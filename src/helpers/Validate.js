@@ -187,7 +187,7 @@ class Validate {
 
     if (!password) {
       errors.password = 'Password is required';
-    } else if (password.length < 8 || value.length > 15) {
+    } else if (password.length < 8 || password.length > 15) {
       errors.password = 'Please fill at least 8 character';
     } else if (!password.match(/[a-z]/g)) {
       errors.password = 'Please enter at least lower character.';
@@ -199,7 +199,7 @@ class Validate {
 
     if (!passwordConfirm) {
       errors.passwordConfirm = 'Confirm password is required';
-    } else if (passwordConfirm !== requestData.passwordConfirm) {
+    } else if (passwordConfirm !== passwordConfirm) {
       errors.passwordConfirm = 'Password and confirm password must be same';
     }
 
