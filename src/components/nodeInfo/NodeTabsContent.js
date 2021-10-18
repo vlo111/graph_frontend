@@ -134,7 +134,7 @@ class NodeTabsContent extends Component {
         {expandNode
         && (
         <NodeExpand
-          html={html}
+          html={html || node.description}
           name={name}
           created={moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}
           createdBy={node.userId}
