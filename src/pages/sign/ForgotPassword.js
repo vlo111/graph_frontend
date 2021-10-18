@@ -62,24 +62,10 @@ class ForgotPassword extends Component {
     ev.preventDefault();
     const { requestData } = this.state;
     const { origin } = window.location;
-    // const { payload } =
     await this.props.forgotPasswordRequest(
       requestData.email,
       `${origin}/sign/reset-password`,
     );
-    // const { data = {} } = payload;
-    // if (data.status !== 'ok') {
-    //   // toast.dismiss(this.toast);
-    //   // this.toast = toast.error('Invalid email');
-    //   toast.error('?? Wow so easy!', { });
-    //   return;
-    // }
-    // if (_.isEmpty(requestData.InputIvalid)) {
-    // this.setState({
-    //   required: true,
-    // });
-    // }
-    // this.toast = toast.info('Please check your email');
   };
 
   validate = (name, value) => {
@@ -145,7 +131,7 @@ class ForgotPassword extends Component {
                 <h4>Forgot your password?</h4>
               </div>
               <Input
-                className={`InputIvalid ${
+                className={`${
                   errors.email ? 'border-error' : null
                 }`}
                 name="email"

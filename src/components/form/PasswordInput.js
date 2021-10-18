@@ -28,14 +28,14 @@ class PasswordInput extends Component {
 
   render() {
     const { show } = this.state;
-    const { containerClassName, ...props } = this.props;
+    const { containerClassName, showIcon, ...props } = this.props;
     return (
       <Input
         {...props}
         onRef={(ref) => this.ref = ref}
         containerClassName={`ghFormFieldPassword ${containerClassName} `}
         type={show ? 'text' : 'password'}
-        icon={show ? (
+        icon={showIcon ? (show ? (
           <EyeSvg
             width={14}
             onClick={() => this.toggleShowPassword(false)}
@@ -45,7 +45,7 @@ class PasswordInput extends Component {
             width={14}
             onClick={() => this.toggleShowPassword(true)}
           />
-        )}
+        )) : null}
       />
     );
   }

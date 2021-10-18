@@ -59,7 +59,7 @@
     max-width: 100%;
     display: flex;
     flex-direction: column;
-    margin: 10px 0;
+    margin: 15px 0;
     position: relative;
 
     label,
@@ -1149,6 +1149,7 @@
 
     .icon {
       left: 93%;
+      top: 5px;
       right: 3px;
       bottom: 5px;
       cursor: pointer;
