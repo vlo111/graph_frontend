@@ -75,9 +75,9 @@ class GraphView extends Component {
   }
 
   getPermission = () => {
-    const { singleGraphStatus } = this.props;
+    const { singleGraphStatus, singleGraph} = this.props;
 
-    return (singleGraphStatus === 'fail');
+    return (singleGraph.publicState === 1 && singleGraphStatus === 'fail');
   }
 
   render() {
