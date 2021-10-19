@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { Link, Redirect } from 'react-router-dom';
-// import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { ReactComponent as LogoSvg } from '../../assets/images/araks_logo.svg';
 import { forgotPasswordRequest } from '../../store/actions/account';
@@ -26,23 +24,11 @@ class ForgotPassword extends Component {
       requestData: {
         email: '',
       },
-      // required: false
       errors: {
         email: '',
       },
     };
   }
-
-  handleChange = (value, path) => {
-    const { requestData, errors } = this.state;
-    _.set(requestData, path, value);
-    _.unset(errors, path, value);
-    this.setState({ requestData, errors });
-
-    //   this.setState({
-    //     required: false
-    //   })
-  };
 
   handleChange = (e) => {
     const { requestData, errors } = this.state;
@@ -58,14 +44,36 @@ class ForgotPassword extends Component {
     });
   };
 
-  signIn = async (ev) => {
+  resetPassword = async (ev) => {
     ev.preventDefault();
+
+    this.setState({ loading: true });
+
     const { requestData } = this.state;
+
+    const validationErrors = {};
+    Object.keys(requestData).forEach((name) => {
+      const error = this.validate(name, requestData[name]);
+      if (error && error.length > 0) {
+        validationErrors[name] = error;
+      }
+    });
+    if (Object.keys(validationErrors).length > 0) {
+      this.setState({ errors: validationErrors });
+    }
+
     const { origin } = window.location;
-    await this.props.forgotPasswordRequest(
+
+    const { payload: { data } } = await this.props.forgotPasswordRequest(
       requestData.email,
       `${origin}/sign/reset-password`,
     );
+
+    this.setState({ loading: false });
+
+    if (data.status === 'ok') {
+      this.props.history.replace(origin)
+    }
   };
 
   validate = (name, value) => {
@@ -86,30 +94,12 @@ class ForgotPassword extends Component {
     }
   };
 
-  handleSubmit = (e) => {
-    const { requestData } = this.state;
-    e.preventDefault();
-    const validationErrors = {};
-    Object.keys(requestData).forEach((name) => {
-      const error = this.validate(name, requestData[name]);
-      if (error && error.length > 0) {
-        validationErrors[name] = error;
-      }
-    });
-    if (Object.keys(validationErrors).length > 0) {
-      this.setState({ errors: validationErrors });
-    }
-  };
-
   render() {
     const { token } = this.props;
-    const { requestData, errors } = this.state;
+    const { requestData, loading, errors } = this.state;
     if (token) {
       return <Redirect to="/" />;
     }
-    // toast('?? Wow so easy!', {
-
-    //   });
 
     return (
       <WrapperSign>
@@ -122,9 +112,8 @@ class ForgotPassword extends Component {
           </div>
           <div>
             <form
-              onSubmit={this.signIn}
+              onSubmit={this.resetPassword}
               id="login"
-              // className="forgotPasswordAuthform"
               className="forgotPasswordAuthform"
             >
               <div className="forgotPasswordText">
@@ -147,7 +136,7 @@ class ForgotPassword extends Component {
                   type="submit"
                   className="submit"
                   color="blue"
-                  onClick={this.handleSubmit}
+                  loading={loading}
                 >
                   Reset
                 </Button>

@@ -140,9 +140,7 @@ class SignUp extends Component {
 
   render() {
     const { requestData, errors, loading } = this.state;
-    console.log('requestData.password')
-    console.log(requestData.password)
-    console.log('requestData.password')
+
     return (
       <WrapperSign>
         <div className="SignUpLeft signUp">

@@ -440,14 +440,18 @@ class ChartUtils {
   }
 
   static setNodeTypeColor = (type, color) => {
+    const index = [];
     Chart.data.nodes = Chart.data.nodes.map((n) => {
       if (n.type === type) {
         n.color = color;
+        index.push(n.index)
       }
       return n;
     });
 
-    const node = Chart.node;
+    const node = Chart.nodesWrapper
+        .selectAll('.node')
+        .filter(d => index.includes(d.index));
 
     node.select('circle').attr('fill', color)
     node.select('text').attr('fill', color)
