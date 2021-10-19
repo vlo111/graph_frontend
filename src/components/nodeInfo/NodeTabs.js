@@ -112,6 +112,7 @@ class NodeTabs extends Component {
       this.props.updateNodesCustomFieldsRequest(graphId, [{
         id: nodeId,
         customFields: nodeCustomFields.filter((f) => f.name !== fieldName),
+        fieldName,
       }]);
     }
     this.setActiveTab('_description');
