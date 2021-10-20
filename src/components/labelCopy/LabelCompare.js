@@ -67,7 +67,7 @@ class LabelCompare extends Component {
 
   render() {
     const {
-      compare: { duplicatedNodes, sourceNodes }, onRequestClose, customFields,
+      compare: { duplicatedNodes, sourceNodes }, onRequestClose, customFields, from, to
     } = this.props;
 
     const { sources, duplications } = this.state;
@@ -87,60 +87,73 @@ class LabelCompare extends Component {
           <h4 className="subtitle">
             If you select both versions, the moved node will have a number added to its name.
           </h4>
-          <ul className="compareList">
-            <li className="item allChecked">
-              <div className="bottom">
-                <div className="node node_left">
-                  <div className="allCheckedContent">
-                    <Checkbox
-                      id="all_left"
-                      label="Select all"
-                      onChange={() => this.toggleAllDuplicate()}
+          <div className="graphCompareData">
+            <table>
+              <thead>
+              <tr>
+                <th>
+                      <span className="caption-left">
+                        {from}
+                      </span>
+                  {/*<span className="similar-nodes">*/}
+                  {/*      Similar nodes*/}
+                  {/*  {` (${duplicatedNodes?.length})`}*/}
+                  {/*    </span>*/}
+                </th>
+                    <th>
+                      <span className="caption-right">
+                        {to}
+                      </span>
+                    </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>
+                  <Checkbox
                       checked={duplications.length === duplicatedNodes.length}
-                    />
-                  </div>
-                </div>
-                <div className="node node_right">
-                  <div className="allCheckedContent">
-                    <Checkbox
-                      id="all_right"
-                      label="Select all"
-                      onChange={() => this.toggleAllSource()}
+                      onChange={() => this.toggleAllDuplicate()}
+                      label="Check All"
+                      id={'all_left'}
+                  />
+                </td>
+                <td>
+                  <Checkbox
                       checked={sources.length === sourceNodes.length}
-                    />
-                  </div>
-                </div>
-              </div>
-            </li>
-            {duplicatedNodes.map((nodeDuplicate) => {
-              const nodeSource = sourceNodes.find((n) => n.name === nodeDuplicate.name);
-              return (
-                <li className="item">
-                  <div className="bottom">
-                    <div className="node node_left">
-                      <LabelCompareItem
-                        node={nodeDuplicate}
-                        customFields={data.customFields}
-                        checked={duplications.some((d) => d.id === nodeDuplicate.id)}
-                        onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplications')}
-                      />
-                    </div>
-                    <div className="node node_right">
-                      <LabelCompareItem
-                        node={nodeSource}
-                        customFields={customFields}
-                        checked={sources.some((d) => d.id === nodeSource.id)}
-                        onChange={(checked) => this.handleChange(checked, nodeSource, 'sources')}
-                      />
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-          <Button onClick={this.handleSubmit} className="alt main" type="submit">
+                      onChange={() => this.toggleAllSource()}
+                      label="Check All"
+                      id={'all_right'}
+                  />
+                </td>
+              </tr>
+              {duplicatedNodes.map((nodeDuplicate) => {
+                const nodeSource = sourceNodes.find((n) => n.name === nodeDuplicate.name);
+                return (
+                    <tr>
+                      <td>
+                        <LabelCompareItem
+                            node={nodeDuplicate}
+                            customFields={data.customFields}
+                            checked={duplications.some((d) => d.id === nodeDuplicate.id)}
+                            onChange={(checked) => this.handleChange(checked, nodeDuplicate, 'duplications')}
+                        />
+                      </td>
+                      <td>
+                        <LabelCompareItem
+                            node={nodeSource}
+                            customFields={customFields}
+                            checked={sources.some((d) => d.id === nodeSource.id)}
+                            onChange={(checked) => this.handleChange(checked, nodeSource, 'sources')}
+                        />
+                      </td>
+                    </tr>
+              )})}
+              </tbody>
+            </table>
+          </div>
+          <button onClick={this.handleSubmit} className="btn-classic" type="submit">
             Save
-          </Button>
+          </button>
         </div>
       </Modal>
     );

@@ -1202,8 +1202,8 @@ p {
         }
       }
     }
-  } 
- 
+  }
+
   .imageUpload {
     .ghFileInput {
       width: 100%;
@@ -1494,7 +1494,7 @@ p {
         color:$color-dark;
         margin: -4px auto auto;
 
-        
+
         &::-webkit-input-placeholder {
           color:$color-passive;
           font-weight: 400;
@@ -3164,12 +3164,12 @@ body .gh__menu {
 }
 
 .nodeIcon {
-  width: 50px;
-  min-width: 50px;
-  height: 50px;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
   overflow: hidden;
   color: $color-white;
-  font-size: 30px;
+  font-size: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3318,7 +3318,7 @@ body .gh__menu {
 
               .nodeType {
                 margin: 0 21px;
-                
+
                 .typeText {
                   color: $color-border;
                   font-weight: 800;
@@ -3439,7 +3439,7 @@ body .gh__menu {
     flex-direction: column;
     align-items: center;
     background: white;
-    
+
     .nodeItem {
       height: 44px;
     }
@@ -4190,7 +4190,7 @@ body .gh__menu {
   width: 64%;
   margin: 0 auto 50px;
   align-items: flex-start;
-  position: relative; 
+  position: relative;
   top: 130px;
 
   .tabsList {
@@ -4568,13 +4568,13 @@ body .gh__menu {
       color: $color-main;
       margin-bottom: 10px;
     }
-  
+
     .row {
       display: flex;
       align-items: center;
       margin: 0;
     }
-  
+
     input {
       width: 438px;
       height: 35px;
@@ -5581,6 +5581,7 @@ img.preview-scaled {
   .graphCompare {
     max-width: 55%;
     width: 55%;
+    top: 10%;
 
     .title {
       width: 100%;
@@ -5597,6 +5598,15 @@ img.preview-scaled {
     .graphCompareContainer {
       width: 100%;
       padding: 3% 7%;
+      overflow: hidden;
+
+      .graphCompareData {
+        tbody {
+          max-height: 490px;
+          overflow: auto;
+          height: auto;
+        }
+      }
 
       .ghButton {
         float: right;
@@ -5638,6 +5648,13 @@ img.preview-scaled {
 
       .node_left {
         margin-right: 15px;
+      }
+
+      .btn-classic {
+        margin: 30px auto 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
 
@@ -5893,7 +5910,7 @@ img.preview-scaled {
 .headerName {
   font: normal normal 600 16px/22px Open Sans;
   letter-spacing: 0px;
-  color: #0C69FF;
+  color: $color-main;
 }
 
 #nodeResizeIcons {
@@ -6724,7 +6741,7 @@ img.preview-scaled {
   color: black;
 }
 
- 
+
 
 
 
@@ -6978,7 +6995,7 @@ img.preview-scaled {
 
               .nodeType {
                 margin: 0 21px;
-                
+
                 .typeText {
                   color: $color-border;
                   font-weight: 800;
@@ -7103,7 +7120,7 @@ img.preview-scaled {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     .nodeItem {
       height: 44px;
     }
@@ -8533,7 +8550,7 @@ img.preview-scaled {
     display: flex;
     align-items: center;
     margin-bottom: 16px;
-  
+
     .indicator {
       height: 10px;
       width: 10px;
@@ -8542,7 +8559,7 @@ img.preview-scaled {
       margin-right: 16px;
       box-shadow: 0px 0px 0px 5px white, 0px 0px 0px 6px #0062FF21;
     }
-  
+
     a {
       cursor: auto;
     }
@@ -8802,7 +8819,7 @@ img.preview-scaled {
     margin-bottom: 0;
     margin-left: 40px;
 
-    .right-block {
+    .graphCompareData {
       position: fixed;
       top: 150px;
       left: 30%;
@@ -8813,131 +8830,6 @@ img.preview-scaled {
       border-radius: 5px;
       width: 65%;
       overflow: hidden;
-
-      .tableContent .items {
-        justify-content: flex-start;
-      }
-
-      .caption-left {
-        display: flex;
-        flex-wrap: wrap;
-        width: 100px;
-        margin-left: 50px;
-      }
-
-      .caption-right {
-        display: flex;
-        justify-content: flex-end;
-        flex-wrap: wrap;
-        width: calc( 100% - 50px );
-
-
-        p {
-          margin-left: calc(100% - 68px);
-        }
-      }
-
-      .similar-nodes {
-        top: 18px;
-        position: absolute;
-        left: 39%;
-      }
-
-      header {
-        display: flex;
-        justify-content: space-evenly;
-        margin: 15px 0;
-
-        * {
-          font-weight: bold;
-          color: $color-main;
-          font-size: 25px;
-        }
-      }
-
-      .graph-compare-list {
-
-      }
-
-      tbody {
-        display: block;
-        height: 650px;
-        overflow-x: hidden;
-        overflow-y: auto;
-
-        &::-webkit-scrollbar {
-          width: 10px;
-          height: 10px;
-          background: rgba(119, 113, 183, 0.22);
-          z-index: 0;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          border-radius: 3.5px;
-          z-index: 0;
-        }
-      }
-
-      thead, tbody tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-        height: 80px;
-      }
-
-      thead {
-        height: 60px;
-        width: calc( 100% - 1em ); /* scrollbar is average 1em/16px width, remove it from thead width */
-
-        th {
-          font-size: 22px;
-          color: $color-main;
-        }
-      }
-
-      .items {
-        display: flex;
-        align-items: center;
-        margin-left: 50px;
-        height: 140px;
-
-        .node-icon {
-          margin: 0 25px;
-        }
-
-        .description {
-          display: flex;
-          flex-wrap: wrap;
-          margin: 12px 0;
-
-          .headerName {
-            width: 100%;
-          }
-        }
-      }
-
-      .checkWithLabel {
-        margin-left: 50px;
-      }
-
-      .tab {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0;
-        max-width: 450px;
-        max-height: 70px;
-        overflow: auto;
-
-        span {
-          padding: 5px 15px;
-          margin: 0 4px 4px 0;
-          display: flex;
-          border-radius: 3px;
-          background: #FFFFFF 0% 0% no-repeat padding-box;
-          border: 1px solid #DBDBDB;
-          font-size: 13px;
-        }
-      }
     }
 
     .node {
@@ -8953,6 +8845,138 @@ img.preview-scaled {
 
     .node {
       margin-right: 100px;
+    }
+  }
+}
+
+.graphCompareData {
+
+  .compareCheckBox {
+    margin-top: 15px;
+  }
+
+  .tableContent .items {
+    justify-content: flex-start;
+  }
+
+  .caption-left {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100px;
+    margin-left: 50px;
+  }
+
+  .caption-right {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    width: calc( 100% - 50px );
+
+
+    p {
+      margin-left: calc(100% - 68px);
+    }
+  }
+
+  .similar-nodes {
+    top: 18px;
+    position: absolute;
+    left: 39%;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 15px 0;
+
+    * {
+      font-weight: bold;
+      color: $color-main;
+      font-size: 25px;
+    }
+  }
+
+  tbody {
+    display: block;
+    height: 650px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      background: rgba(119, 113, 183, 0.22);
+      z-index: 0;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3.5px;
+      z-index: 0;
+    }
+  }
+
+  thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    height: 80px;
+  }
+
+  thead {
+    height: 60px;
+    width: calc( 100% - 1em ); /* scrollbar is average 1em/16px width, remove it from thead width */
+
+    th {
+      font-size: 22px;
+      color: $color-main;
+    }
+  }
+
+  .items {
+    display: flex;
+    margin-left: 50px;
+    height: 140px;
+
+    .node-icon {
+      margin: 6px 20px;
+    }
+
+    .description {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 0 12px;
+      color: $color-date;
+
+      .headerName {
+        width: 100%;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .checkWithLabel {
+    margin-left: 50px;
+    user-select: none;
+  }
+
+  .tab {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    max-width: 450px;
+    max-height: 70px;
+    overflow: auto;
+
+    span {
+      padding: 5px 15px;
+      margin: 0 4px 4px 0;
+      display: flex;
+      border-radius: 2px;
+      background: #FFFFFF 0 0 no-repeat padding-box;
+      border: 1px solid $color-compare-border;
+      font-size: 12px;
+      line-height: 16px;
+      color: $color-compare-border;
     }
   }
 }
@@ -9011,7 +9035,7 @@ img.preview-scaled {
   order: 3;
   border-radius: 5px;
   height: 40px;
-  border: 1 px solid #7166f8;
+  border: 1px solid #7166f8;
 }
 
 .scienceSearchSubmit {
@@ -9385,7 +9409,7 @@ details[open] summary:after {
 .jodit-ui-separator {
   border-left: 0;
   border-right: 1px solid #dadada;
-  margin: 0; 
+  margin: 0;
   padding: 0;
 }
 .jodit-toolbar-button {
@@ -9447,22 +9471,22 @@ details[open] summary:after {
   width: 35px;
   border-radius: 50px;
   margin-right: 12px;
-  
+
 }
 .contributors-container{
   // width: 198px;
-  
- 
+
+
   .group {
     display: flex;
     align-items: center;
     margin: 3px 0;
     min-height: 50px;
-    padding: 5px 0;  
+    padding: 5px 0;
   }
 .group-header{
   color:#AAAAAA;
-  
+
 }
 .lineBorder{
   border-bottom: 1px solid #7166F8;
@@ -9482,17 +9506,17 @@ details[open] summary:after {
   display: none;
 }
 .rc-tooltip {
- opacity: 10 ; 
+ opacity: 10 ;
 }
 .rc-tooltip-content{
   min-width: 200px;;
 }
 
 
- 
 
 
-/// notification 
+
+/// notification
 .notificationHeader {
 
   #popover-contained {
@@ -9598,7 +9622,7 @@ details[open] summary:after {
       font-weight: 500;
       margin-left: 3px;
     }
-   
+
 }
 .notification-info-panel .notification-message {
   list-style: none;
@@ -9663,11 +9687,11 @@ details[open] summary:after {
 
 width: 100%;
 margin-top: 10%;}
-//////end 
+//////end
 
 //Start undo  style
 
-.undoWrapper { 
+.undoWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9678,16 +9702,16 @@ margin-top: 10%;}
   user-select: none;
   overflow: hidden;
 
-  .info-content { 
+  .info-content {
     display: flex;
     padding: 0;
     color: #BEBEBE;
     align-items: center;
     border-radius: 5px;
     height: 42px;
-    margin-right: 10px; 
+    margin-right: 10px;
     transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
- 
+
   }
   .ghButton {
     background-color: #FFFFFF;
@@ -9696,7 +9720,7 @@ margin-top: 10%;}
     color: $color-dark-blue;
     font-size: 14px;
     padding: 15px 15px;
-    font-weight: normal; 
+    font-weight: normal;
     .icon {
       width: 16px;
     }

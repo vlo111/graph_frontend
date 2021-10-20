@@ -192,7 +192,7 @@ class GraphCompareList extends Component {
             >
               {title}
             </summary>
-            <div className="right-block">
+            <div className="graphCompareData">
               <table>
                 <thead>
                   <tr>
