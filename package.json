@@ -31,6 +31,7 @@
     "react-datasheet": "^1.4.9",
     "react-dom": "17.0.2",
     "react-dropzone": "^6.2.4",
+    "react-editable-label": "^1.3.2",
     "react-helmet": "^6.1.0",
     "react-image-crop": "^8.6.9",
     "react-input-range": "^1.3.0",
