@@ -138,7 +138,7 @@ class AnalyticalPage extends Component {
                   <Cell
                     className={`partPie_${index}`}
                     key={`cell-${index}`}
-                    fill={entry.color ? entry.color : ChartUtils.nodeColorObj[entry.type]}
+                    fill={entry.color || ChartUtils.nodeColorObj[entry.type]}
                   />
                 ))}
               </Pie>
