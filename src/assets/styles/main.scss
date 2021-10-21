@@ -9726,27 +9726,29 @@ margin-top: 10%;}
 //end undo  style
 
 ///Query
-.save_query{
-  position: absolute;
-    left: 500px;
-    top: 73px; 
-    background-color: white !important;
-     
+.dashboards {
+  .save_query{
+    position: absolute;
+      left: 500px;
+      top: 73px; 
+      background-color: white !important;
+       
+  }
+  .setting_query{
+    position: absolute;
+      left: 800px;
+      top: 73px; 
+      background-color: white !important;
+       
+  }
+  .resetAll{
+    position: absolute;
+      left: 900px;
+      top: 73px; 
+      background-color: white !important; 
+  }
 }
-.setting_query{
-  position: absolute;
-    left: 800px;
-    top: 73px; 
-    background-color: white !important;
-     
-}
-.save_query{
-  position: absolute;
-    left: 500px;
-    top: 73px; 
-    background-color: white !important;
-     
-}
+
 .createQueryModal {
   // padding: 30px 20px 20px;
   min-width: 400px;
