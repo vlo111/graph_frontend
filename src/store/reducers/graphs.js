@@ -493,12 +493,6 @@ export default function reducer(state = initialState, action) {
         mouseMoveTracker: trackers,
       };
     }
-    case GET_SINGLE_GRAPH_QUERY: {
-      console.log(action.payload, ' action.payload');
-      return {
-        ...state,
-      };
-    }
     case GET_GRAPH_QUERY.REQUEST: {
       return {
         ...state,

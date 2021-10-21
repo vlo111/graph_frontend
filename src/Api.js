@@ -516,12 +516,6 @@ class Api {
     return api.get(`/users/confirmation/${token}`);
   }
 
-  static getSingleGraphQuery(graphId, queryId) {
-    return api.get(`/graphs/query/${graphId}`, {
-      queryId,
-    });
-  }
-
   static getGraphQuery(graphId) {
     return api.get(`/query/${graphId}`);
   }
@@ -538,7 +532,7 @@ class Api {
     return api.delete(`/query/delete/${id}`);
   }
 
-  static updateGraphQuery(id, title) {
+  static updateGraphQuery(id, title, description) {
     return api.put(`/query/update/${id}`, { title, description });
   }
 }
