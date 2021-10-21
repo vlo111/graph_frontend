@@ -48,7 +48,6 @@ class App extends Component {
             <Route path="/public" exact component={Index} />
             <Route path="/templates" exact component={Index} />
             <Route path="/shared" exact component={Index} />
-            
 
             <Route path="/graphs/thumbnail/:graphId/:userId" component={GraphThumbnail} />
             <Route path="/graphs/view/:graphId" component={GraphView} />

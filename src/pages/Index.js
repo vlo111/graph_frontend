@@ -7,7 +7,7 @@ import Home from './Home';
 import VerticalTabs from '../components/PageTabs';
 import ScrollButton from '../components/ScrollButton';
 import Friends from './friends';
-import Public from './Public';
+import Public from './PublicGraph';
 
 class Index extends Component {
   constructor(props) {

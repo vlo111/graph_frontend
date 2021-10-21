@@ -50,7 +50,6 @@ class GraphCardItem extends Component {
     this.setState({ graphs });
   }
 
- 
   render() {
     let { headerTools, graphs, myAccount } = this.props;
     if (!graphs?.length) return null;
@@ -64,7 +63,7 @@ class GraphCardItem extends Component {
             </div>
           ) : null}
         {graphs.map((graph) => (
-          <article className="graphs" key={graph.id}>
+          <article className="graphs">
             <div className="top">
               <div className="infoContent">
                 <img

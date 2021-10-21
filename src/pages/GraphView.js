@@ -53,7 +53,6 @@ class GraphView extends Component {
 
   getSingleRequest = memoizeOne(() => {
     const { match: { params: { graphId } }, location: { search } } = this.props;
-    const params = search.includes('public') ? { publicState: 1 } : null;
     this.props.setActiveButton('view');
     this.props.userGraphRequest();
     if (graphId) {

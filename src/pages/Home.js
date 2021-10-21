@@ -39,7 +39,6 @@ class Home extends Component {
     } = this.props;
     const { page = 1, s } = queryString.parse(window.location.search);
     this.getGraphsList(page, s);
-    
     return (
       <>
         <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`}>

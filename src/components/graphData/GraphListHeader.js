@@ -62,7 +62,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
           trigger="click"
         >
           <div className="ar-popover-list">
-            {headerTools === 'shared'  ? (
+            {headerTools === 'shared' ? (
               <div
                 onClick={() => handleDeleteShareGraph(graph?.share.id)}
                 className="child dashboard-delete"
