@@ -114,9 +114,9 @@ class GraphCardItem extends Component {
               onMouseOut={() => this.hideCardOver(graph.id)}
               className="graph-image"
             >
-              {(graph.publicState === true && myAccount.id !== graph.user.id && headerTools !== "shared") ? (
+              {(graph.publicState === true && myAccount.id !== graph.user.id && headerTools === "public") ? (
                 <div className={`buttonView graph-card_${graph.id}`}>
-                  <Link className="btn-edit view" to={`/graphs/view/${graph.id}`} replace>Preview</Link>
+                  <Link className="btn-edit view" to={`/graphs/view/${graph.id}?public=1`} replace>Preview</Link>
                 </div>)
                 : 
                 <div className={`buttonView graph-card_${graph.id}`}>

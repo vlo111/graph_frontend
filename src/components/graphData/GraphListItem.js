@@ -69,13 +69,13 @@ class GraphListItem extends Component {
               </div>
             </div>
             <GraphListFooter graph={graph} />
-            {(graph.publicState === true && myAccount.id !== graph.user.id) ? (
+            {(graph.publicState === true && myAccount.id !== graph.user.id && headerTools === "public") ? (
                <div className="buttonHidden">
-               <Link className="btn-edit view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
+               <Link className="btn-edit view" to={`/graphs/view/${graph.id}?public=1`} replace> Preview</Link>
              </div>
             ) :
             <div className="buttonHidden">
-                <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>
+                 {(graph?.share?.role !== 'view') && <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>}
                 <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
               </div>
              
