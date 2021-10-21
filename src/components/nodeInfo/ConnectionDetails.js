@@ -40,7 +40,7 @@ class ConnectionDetails extends Component {
     const connectedNodesGroup = Object.values(_.groupBy(connectedNodes, 'linkType'));
     return {
       connectedNodes: _.orderBy(connectedNodesGroup, (d) => d.length && d.length, 'desc'),
-      // length: connectedNodes.length,
+      length: connectedNodes.length,
     };
   })
 

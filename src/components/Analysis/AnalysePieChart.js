@@ -4,6 +4,7 @@ import {
 } from 'recharts';
 import CustomPieChartLabel from './CustomPieChartLabel';
 import Chart from '../../Chart';
+import ChartUtils from '../../helpers/ChartUtils';
 
 class AnalyticalPage extends Component {
   constructor() {
@@ -83,7 +84,7 @@ class AnalyticalPage extends Component {
         outerRadius={outerRadius}
         startAngle={startAngle}
         endAngle={endAngle}
-        fill={color}
+        fill={color || ChartUtils.nodeColorObj[type]}
       />
     );
   };
@@ -137,7 +138,7 @@ class AnalyticalPage extends Component {
                   <Cell
                     className={`partPie_${index}`}
                     key={`cell-${index}`}
-                    fill={entry.color}
+                    fill={entry.color ? entry.color : ChartUtils.nodeColorObj[entry.type]}
                   />
                 ))}
               </Pie>
