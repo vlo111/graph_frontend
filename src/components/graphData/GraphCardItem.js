@@ -11,7 +11,6 @@ import { ReactComponent as PlusSvg } from '../../assets/images/icons/plusGraph.s
 class GraphCardItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
-    myAccount: PropTypes.object.isRequired,
     graphsList: PropTypes.array.isRequired,
     headerTools: PropTypes.object.isRequired,
   }
@@ -20,7 +19,6 @@ class GraphCardItem extends Component {
     super(props);
     this.state = {
       graphs: [],
-      myAccount: [],
     };
   }
 
@@ -51,7 +49,7 @@ class GraphCardItem extends Component {
   }
 
   render() {
-    let { headerTools, graphs, myAccount } = this.props;
+    let { headerTools, graphs } = this.props;
     if (!graphs?.length) return null;
     return (
       <>
@@ -93,10 +91,10 @@ class GraphCardItem extends Component {
                     {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
                   </h3>
                 </Tooltip>
-                {graph.publicState === true && myAccount.id === graph.user.id ?
+                {(headerTools === 'home' && graph.publicState) &&
                   <div className='public_icon'>
                     <i className="fa fa-globe"></i>
-                  </div> : null}
+                  </div>}
               </div>
               <div className="descriptionGraph">
                 <Tooltip overlay={graph.description} placement="bottom" >
@@ -113,13 +111,13 @@ class GraphCardItem extends Component {
               onMouseOut={() => this.hideCardOver(graph.id)}
               className="graph-image"
             >
-              {(graph.publicState === true && myAccount.id !== graph.user.id && headerTools === "public") ? (
+              {(headerTools === "public") ? (
                 <div className={`buttonView graph-card_${graph.id}`}>
                   <Link className="btn-edit view" to={`/graphs/view/${graph.id}?public=1`} replace>Preview</Link>
                 </div>)
-                : 
+                :
                 <div className={`buttonView graph-card_${graph.id}`}>
-                 {(graph?.share?.role !== 'view') && <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>}
+                  {(graph?.share?.role !== 'view') && <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>}
                   <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
                 </div>
               }
@@ -139,7 +137,6 @@ class GraphCardItem extends Component {
 
 const mapStateToProps = (state) => ({
   graphsList: state.graphs.graphsList || [],
-  myAccount: state.account.myAccount,
 });
 
 const Container = connect(mapStateToProps)(GraphCardItem);
