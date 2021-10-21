@@ -57,7 +57,7 @@ class Home extends Component {
               </div>
             </div>
           ) : mode === 'list'
-            ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} headerTools="home" />}
+            ? <GraphListItem graphs={graphsList} headerTools="home" /> : <GraphCardItem graphs={graphsList} headerTools="home" />}
         </div>
         {graphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>
