@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
+import { toast } from 'react-toastify';
 import Button from '../form/Button';
 import Input from '../form/Input';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -18,6 +19,7 @@ const AddQuery = ({ closeModal, graph }) => {
   const [errors, setErrors] = useState({});
   const afterOpenModal = () => { };
   const nodes = ChartUtils.getNodeIdList();
+  const [data, setData] = useState(nodes.length);
   const links = ChartUtils.getLinksId() || [];
   const dispatch = useDispatch();
   const handleChange = (e) => {
@@ -34,6 +36,9 @@ const AddQuery = ({ closeModal, graph }) => {
   const handlerSumbit = (e) => {
     e.preventDefault();
     setErrors(validate(query));
+    if (data === 0) {
+      toast.error('You have no data');
+    }
     if (query.title !== '') { saveGraphQuery(); }
   };
   const saveGraphQuery = () => {
@@ -87,6 +92,7 @@ const AddQuery = ({ closeModal, graph }) => {
             <Button
               className="btn-classic"
               type="submit"
+              disabled={!data}
             >
               Save
             </Button>
