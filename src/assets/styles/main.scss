@@ -8672,7 +8672,7 @@ img.preview-scaled {
 
   .input-check:checked + label {
     &:after {
-      content: "✔";
+      content: "\2713";
       position: absolute;
       top: 0;
       color: $color-main;
