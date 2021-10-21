@@ -214,3 +214,9 @@ export function setActiveMouseTracker(tracker, userId) {
     },
   };
 }
+
+export const GET_SINGLE_GRAPH_QUERY = define('GET_SINGLE_GRAPH_QUERY');
+
+export function getSingleGrapQueryhRequest(graphId, queryId) {
+  return GET_SINGLE_GRAPH_QUERY.request(() => Api.getSingleGraphQuery(graphId, queryId));
+}

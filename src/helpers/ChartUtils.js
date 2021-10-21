@@ -132,6 +132,16 @@ class ChartUtils {
     return nodes.find((d) => d.id === id);
   }
 
+  static getNodeIdList() {
+    const nodes = Chart.getNodes();
+    return nodes.map((d) => d.id);
+  }
+
+  static getLinksId() {
+    const links = Chart.getLinks();
+    return links.map((d) => d.id);
+  }
+
   static getLabelById(id) {
     const labels = Chart.getLabels();
     return labels.find((d) => d.id === id);

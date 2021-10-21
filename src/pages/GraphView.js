@@ -31,6 +31,7 @@ import Crop from '../components/chart/Crop';
 import DataView from '../components/dataView/DataView';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
+import Dashboard from '../components/graphDashboard/Dashboard';
 
 class GraphView extends Component {
   static propTypes = {
@@ -195,6 +196,7 @@ class GraphView extends Component {
                 <Filters />
                 <AutoPlay />
                 <ContextMenu expand />
+                <Dashboard graph={singleGraph} />
                 {activeButton === 'maps-view' && <MapsGraph />}
                 {activeButton.includes('findPath')
                   && (
