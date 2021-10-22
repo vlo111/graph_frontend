@@ -759,6 +759,10 @@
         width: 100%;
         overflow-wrap: anywhere;
 
+        ol {
+          padding-left: 25px;
+        }
+
         &::-webkit-scrollbar {
           width: 4px;
           height: 4px;
