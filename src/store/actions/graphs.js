@@ -49,12 +49,6 @@ export function getGraphsListRequest(page = 1, requestData = {}) {
   return GET_GRAPHS_LIST.request(() => Api.getGraphsList(page, requestData)).takeLatest();
 }
 
-export const GET_PUBLIC_GRAPHS_LIST = define('GET_PUBLIC_GRAPHS_LIST');
-
-export function getPublicListRequest(page = 1, requestData = {}) {
-  return GET_PUBLIC_GRAPHS_LIST.request(() => Api.getPublicGraphList(page, requestData)).takeLatest();
-}
-
 export const GET_GRAPHS_SHAREGRAPHS_COUNT = define('GET_GRAPHS_SHAREGRAPHS_COUNT');
 
 export function getGraphsAndSharegraphsCount(id) {
@@ -213,10 +207,4 @@ export function setActiveMouseTracker(tracker, userId) {
       tracker, userId,
     },
   };
-}
-
-export const GET_SINGLE_GRAPH_QUERY = define('GET_SINGLE_GRAPH_QUERY');
-
-export function getSingleGrapQueryhRequest(graphId, queryId) {
-  return GET_SINGLE_GRAPH_QUERY.request(() => Api.getSingleGraphQuery(graphId, queryId));
 }

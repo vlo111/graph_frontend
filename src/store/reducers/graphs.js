@@ -24,7 +24,6 @@ import {
   GET_GRAPH_INFO,
   ACTIVE_MOUSE_TRACKER,
   UPDATE_GRAPH_THUMBNAIL,
-  GET_PUBLIC_GRAPHS_LIST,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -39,7 +38,6 @@ const { REACT_APP_MAX_NODE_AND_LINK } = process.env;
 const initialState = {
   importData: {},
   graphsList: [],
-  publicGraphList: [],
   graphNodes: [],
   graphsListStatus: '',
   singleGraphStatus: '',
@@ -153,22 +151,6 @@ export default function reducer(state = initialState, action) {
         //   nodeCustomFields: [],
         //   graphFilterInfo: {}
         // },
-      };
-    }
-    case GET_PUBLIC_GRAPHS_LIST.REQUEST: {
-      return {
-        ...state,
-        graphsListStatus: 'request',
-        publicGraphList: [],
-      };
-    }
-    case GET_PUBLIC_GRAPHS_LIST.SUCCESS: {
-      const { graphs: publicGraphList, ...graphsListInfo } = action.payload.data;
-      return {
-        ...state,
-        graphsListStatus: 'success',
-        publicGraphList,
-        graphsListInfo,
       };
     }
     case GET_GRAPHS_LIST.FAIL: {

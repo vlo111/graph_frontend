@@ -9,7 +9,6 @@ import { ReactComponent as CardDesign } from '../assets/images/icons/cardDesign.
 import { ReactComponent as ListDesign } from '../assets/images/icons/listDesign.svg';
 import { ReactComponent as Filter } from '../assets/images/icons/filterGraph.svg';
 import { getGraphsListRequest } from '../store/actions/graphs';
-import { getPublicListRequest } from '../store/actions/graphs';
 import { getShareGraphListRequest } from '../store/actions/share';
 import GraphOrder from './graphData/GraphOrder';
 
@@ -24,7 +23,6 @@ class PageTabs extends Component {
     direction: PropTypes.oneOf(['vertical', 'horizontal']),
     getGraphsListRequest: PropTypes.func.isRequired,
     getShareGraphListRequest: PropTypes.func.isRequired,
-    getPublicListRequest: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -72,7 +70,7 @@ class PageTabs extends Component {
     } else if (currentTab === '/shared') {
       this.props.getShareGraphListRequest(page, { s, filter: value });
     } else if (currentTab === '/public') {
-      this.props.getPublicListRequest(page, { s, filter: value });
+      this.props.getGraphsListRequest(page, {  filter: value, publica:1 });
     }
   }
 
@@ -140,7 +138,6 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = {
   getGraphsListRequest,
   getShareGraphListRequest,
-  getPublicListRequest,
 };
 
 const Container = connect(

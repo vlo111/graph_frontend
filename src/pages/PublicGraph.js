@@ -4,7 +4,8 @@ import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
-import { getPublicListRequest } from '../store/actions/graphs';
+import { getGraphsListRequest } from '../store/actions/graphs';
+import memoizeOne from 'memoize-one';
 import NoGraph from '../components/NoGraph';
 import GraphListItem from '../components/graphData/GraphListItem';
 import Pagination from '../components/Pagination';
@@ -12,31 +13,35 @@ import GraphCardItem from '../components/graphData/GraphCardItem';
 
 class Public extends Component {
   static propTypes = {
-    getPublicListRequest: PropTypes.func.isRequired,
-    publicGraphList: PropTypes.array.isRequired,
+    getGraphsListRequest: PropTypes.func.isRequired,
+    graphsList: PropTypes.array.isRequired,
+    graphsListInfo: PropTypes.object.isRequired,
+    graphsListStatus: PropTypes.string.isRequired,
+    mode: PropTypes.string.isRequired,
   }
 
-  componentDidMount() {
+  getGraphsList = memoizeOne((page) => {
     const order = JSON.parse(localStorage.getItem('/public')) || 'newest';
-    const { page = 1 } = queryString.parse(window.location.search);
-    this.props.getPublicListRequest(page, {filter: order});
-  }
+    this.props.getGraphsListRequest(page, {  filter: order, publica:1 });
+  })
 
   render() {
     const {
-      publicGraphList, graphsListStatus, graphsListInfo: { totalPages }, mode,
+      graphsList, graphsListStatus, graphsListInfo: { totalPages }, mode,
     } = this.props;  
+    const { page = 1} = queryString.parse(window.location.search);
+    this.getGraphsList(page);
     return (
       <>
-      <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!publicGraphList.length ? 'empty' : ''}`}>
-        {graphsListStatus !== 'request' && _.isEmpty(publicGraphList) ? (
+      <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`}>
+        {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
             <div className="no-graphs">
               <NoGraph />
             </div>
           ) : mode === 'list'
-            ? <GraphListItem graphs={publicGraphList} headerTools="public" /> : <GraphCardItem graphs={publicGraphList} headerTools="public" />}
+            ? <GraphListItem graphs={graphsList} headerTools="public" /> : <GraphCardItem graphs={graphsList} headerTools="public" />}
         </div>
-        {publicGraphList.length >5 ? <Pagination totalPages={totalPages} /> : null}
+        {graphsList.length >5 ? <Pagination totalPages={totalPages} /> : null}
       </>
     );
   }
@@ -44,12 +49,12 @@ class Public extends Component {
 
 const mapStateToProps = (state) => ({
   graphsListStatus: state.graphs.graphsListStatus,
-  publicGraphList: state.graphs.publicGraphList || [],
+  graphsList: state.graphs.graphsList || [],
   graphsListInfo: state.graphs.graphsListInfo || {},
 });
 
 const mapDispatchToProps = {
-  getPublicListRequest,
+  getGraphsListRequest,
 };
 
 const Container = connect(

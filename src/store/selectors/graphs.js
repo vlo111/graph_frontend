@@ -17,11 +17,6 @@ export const getList = createSelector(
   (items) => items.graphsList,
 );
 
-export const getPublicListGraphs = createSelector(
-  getGraph,
-  (items) => items.publicGraphList,
-);
-
 export const getListInfo = createSelector(
   getGraph,
   (items) => items.graphsListInfo,

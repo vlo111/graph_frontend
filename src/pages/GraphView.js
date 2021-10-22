@@ -57,7 +57,7 @@ class GraphView extends Component {
     this.props.userGraphRequest();
     if (graphId) {
       this.props.getSingleGraphRequest(graphId, search.includes('public') ? { publicState: 1 } : null);
-      this.props.getGraphInfoRequest(graphId);
+      this.props.getGraphInfoRequest(graphId, search.includes('public') ? { publicState: 1 } : null);
     }
   })
 
@@ -76,9 +76,9 @@ class GraphView extends Component {
   }
 
   getPermission = () => {
-    const { singleGraphStatus, singleGraph} = this.props;
+    const { singleGraphStatus } = this.props;
 
-    return (singleGraph.publicState === 1 && singleGraphStatus === 'fail');
+    return (singleGraphStatus === 'fail');
   }
 
   render() {
