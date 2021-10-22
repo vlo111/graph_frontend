@@ -431,7 +431,7 @@ class ChartUtils {
   static cursorColorsArr = _.clone(NODE_COLOR);
 
   static nodeColor = (d) => {
-    if (!this.nodeColorObj[d.type]) {
+    if (!this.nodeColorObj[d.type] || d.color) {
       if (d.color) {
         this.nodeColorsArr = this.nodeColorsArr.filter((c) => d.color !== c);
         this.nodeColorObj[d.type] = d.color;
