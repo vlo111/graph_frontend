@@ -53,51 +53,55 @@ const AddQuery = ({ closeModal, graph }) => {
         isOpen
         onAfterOpen={afterOpenModal}
         contentLabel="Query"
-        id="query-modal"
-        className="ghModal createQueryModal"
+        className="ghModal createQueryModal "
         overlayClassName="ghModalOverlay  graphQueryOverlay"
       >
-        <div className="query-modal__title">
-          <h3>Query</h3>
-          <Button
-            icon={<CloseSvg style={{ height: 30 }} />}
-            onClick={() => closeModal()}
-            className="transparent"
-          />
-        </div>
-        <div className="query">
-          <form onSubmit={handlerSumbit}>
-            <div className="title">
-              <Input
-                label="Title"
-                className={`title input ${errors.title && 'is-danger'}`}
-                name="title"
-                value={query.title}
-                onChange={handleChange}
-                error={errors.title}
-                limit={15}
-              />
-            </div>
-            <div className="textareaEdit">
-              <Input
-                label="Description"
-                className="description"
-                name="description"
-                value={query.description}
-                onChange={handleChange}
-                textArea
-                limit={50}
-              />
-            </div>
+        <div className="query-modal">
+          <div className="query-modal__title">
+            <h3 className="caption">Query</h3>
             <Button
-              className="btn-classic"
-              type="submit"
-              disabled={!data}
-            >
-              Save
-            </Button>
+                icon={<CloseSvg style={{ height: 30 }} />}
+                onClick={() => closeModal()}
+                className="transparent"
+            />
+          </div>
+          <div className="query">
+            <form onSubmit={handlerSumbit}>
+              <div className="title">
+                <Input
+                    maxlength={20}
+                    label="Title"
+                    className={`title input ${errors.title && 'is-danger'}`}
+                    name="title"
+                    value={query.title}
+                    onChange={handleChange}
+                    error={errors.title}
+                    limit={20}
+                />
+              </div>
+              <div className="textareaEdit">
+                <Input
+                    maxlength={250}
+                    label="Description"
+                    className="description"
+                    name="description"
+                    value={query.description}
+                    onChange={handleChange}
+                    textArea
+                    limit={250}
+                />
+              </div>
+              <Button
+                  className="btn-classic"
+                  type="submit"
+                  style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto'}}
+                  disabled={!data}
+              >
+                Save
+              </Button>
 
-          </form>
+            </form>
+          </div>
         </div>
       </Modal>
     )
