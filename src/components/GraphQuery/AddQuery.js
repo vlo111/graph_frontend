@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import Button from '../form/Button';
 import Input from '../form/Input';
 import ChartUtils from '../../helpers/ChartUtils';
-import { createGraphQueryRequest } from '../../store/actions/query';
+import { createGraphQueryRequest, getGraphQueryRequest } from '../../store/actions/query';
 
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
@@ -41,10 +41,11 @@ const AddQuery = ({ closeModal, graph }) => {
     }
     if (query.title !== '') { saveGraphQuery(); }
   };
-  const saveGraphQuery = () => {
-    dispatch(createGraphQueryRequest({
+  const saveGraphQuery = async () => {
+    await dispatch(createGraphQueryRequest({
       graphId: graph.id, title: query.title, description: query.description, nodes, links,
     }));
+    await dispatch(getGraphQueryRequest(graph.id));
     closeModal();
   };
   return (isEmpty(graph) ? null
@@ -60,42 +61,44 @@ const AddQuery = ({ closeModal, graph }) => {
           <div className="query-modal__title">
             <h3 className="caption">Query</h3>
             <Button
-                icon={<CloseSvg style={{ height: 30 }} />}
-                onClick={() => closeModal()}
-                className="transparent"
+              icon={<CloseSvg style={{ height: 30 }} />}
+              onClick={() => closeModal()}
+              className="transparent"
             />
           </div>
           <div className="query">
             <form onSubmit={handlerSumbit}>
               <div className="title">
                 <Input
-                    maxlength={20}
-                    label="Title"
-                    className={`title input ${errors.title && 'is-danger'}`}
-                    name="title"
-                    value={query.title}
-                    onChange={handleChange}
-                    error={errors.title}
-                    limit={20}
+                  maxlength={20}
+                  label="Title"
+                  className={`title input ${errors.title && 'is-danger'}`}
+                  name="title"
+                  value={query.title}
+                  onChange={handleChange}
+                  error={errors.title}
+                  limit={20}
                 />
               </div>
               <div className="textareaEdit">
                 <Input
-                    maxlength={250}
-                    label="Description"
-                    className="description"
-                    name="description"
-                    value={query.description}
-                    onChange={handleChange}
-                    textArea
-                    limit={250}
+                  maxlength={250}
+                  label="Description"
+                  className="description"
+                  name="description"
+                  value={query.description}
+                  onChange={handleChange}
+                  textArea
+                  limit={250}
                 />
               </div>
               <Button
-                  className="btn-classic"
-                  type="submit"
-                  style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto'}}
-                  disabled={!data}
+                className="btn-classic"
+                type="submit"
+                style={{
+                  display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto',
+                }}
+                disabled={!data}
               >
                 Save
               </Button>
