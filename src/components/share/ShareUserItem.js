@@ -22,7 +22,7 @@ class ShareUserItem extends Component {
   handleUserRoleChange = async (value) => {
     const { user } = this.props;
 
-    await this.props.updateShareGraphWithUsersRequest(user.share.id, { role: value.value });
+    await this.props.updateShareGraphWithUsersRequest(user.share.id, { role: value.value, confirm: false });
 
     this.props.onChange(user, value.value);
   }

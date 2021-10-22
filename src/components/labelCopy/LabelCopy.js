@@ -303,6 +303,8 @@ class LabelCopy extends Component {
               position={position}
               onRequestClose={() => this.toggleCompareNodes(false)}
               onSubmit={this.compareAndMerge}
+              from={singleGraph.title}
+              to={data.title}
             />
           )
           : null}

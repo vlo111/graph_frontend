@@ -27,7 +27,7 @@ class NodeTabsFormModal extends Component {
       const tabData = {
         name: fieldName,
         originalName: fieldName,
-        value: customField.value,
+        value: fieldName == '_description' ? node.description : customField.value,
         subtitle: customField.subtitle,
       };
       this.setState({ tabData });
@@ -279,6 +279,9 @@ class NodeTabsFormModal extends Component {
     const { node, fieldName, customFields } = this.props;
     this.initValues(node, fieldName, customFields);
     const isUpdate = !!fieldName;
+
+    console.log(tabData)
+
     return (
       <Modal
         isOpen

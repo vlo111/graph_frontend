@@ -31,6 +31,7 @@ import ChartUtils from '../../helpers/ChartUtils';
 import { SOCKET_ACTIVE_MOUSE_TRACKER } from '../actions/socket';
 import { UPDATE_NODES_CUSTOM_FIELDS } from '../actions/nodes';
 import { ONLINE_USERS } from '../actions/app';
+import { GET_GRAPH_QUERY, UPDATE_GRAPH_QUERY, DELETE_GRAPH_QUERY } from '../actions/query';
 
 const { REACT_APP_MAX_NODE_AND_LINK } = process.env;
 
@@ -48,8 +49,8 @@ const initialState = {
     totalPages: 0,
   },
   allGraghsCount: {
-    totalGraphs:0,
-    totalShareGraphs:0
+    totalGraphs: 0,
+    totalShareGraphs: 0,
   },
   nodesListInfo: {
     totalPages: 0,
@@ -63,6 +64,7 @@ const initialState = {
   mouseMoveTracker: [],
   onlineUsers: [],
   trackers: [],
+  query: [],
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -109,7 +111,7 @@ export default function reducer(state = initialState, action) {
       const { ...allGraghsCount } = action.payload.data;
       return {
         ...state,
-        allGraghsCount
+        allGraghsCount,
       };
     }
 
@@ -491,6 +493,28 @@ export default function reducer(state = initialState, action) {
         mouseMoveTracker: trackers,
       };
     }
+    case GET_GRAPH_QUERY.REQUEST: {
+      return {
+        ...state,
+        query: [],
+      };
+    }
+    case GET_GRAPH_QUERY.SUCCESS: {
+      const { query, total } = action.payload.data;
+      return {
+        ...state,
+        query: { queryList: query, total },
+      };
+    }
+    case UPDATE_GRAPH_QUERY.SUCCESS:
+    case DELETE_GRAPH_QUERY.SUCCESS:
+      {
+        const { query } = action.payload.data;
+        return {
+          ...state,
+          query: { queryList: query },
+        };
+      }
     default: {
       return state;
     }

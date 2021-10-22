@@ -94,6 +94,7 @@ class Login extends Component {
                 placeholder="Password"
                 value={requestData.password}
                 onChangeText={this.handleTextChange}
+                showIcon={(!!requestData.password)}
               />
 
               <Link to="/sign/forgot-password" className="forgotPassword">

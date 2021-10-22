@@ -132,6 +132,16 @@ class ChartUtils {
     return nodes.find((d) => d.id === id);
   }
 
+  static getNodeIdList() {
+    const nodes = Chart.getNodes();
+    return nodes.map((d) => d.id);
+  }
+
+  static getLinksId() {
+    const links = Chart.getLinks();
+    return links.map((d) => d.id);
+  }
+
   static getLabelById(id) {
     const labels = Chart.getLabels();
     return labels.find((d) => d.id === id);
@@ -421,7 +431,7 @@ class ChartUtils {
   static cursorColorsArr = _.clone(NODE_COLOR);
 
   static nodeColor = (d) => {
-    if (!this.nodeColorObj[d.type]) {
+    if (!this.nodeColorObj[d.type] || d.color) {
       if (d.color) {
         this.nodeColorsArr = this.nodeColorsArr.filter((c) => d.color !== c);
         this.nodeColorObj[d.type] = d.color;
@@ -440,14 +450,18 @@ class ChartUtils {
   }
 
   static setNodeTypeColor = (type, color) => {
+    const index = [];
     Chart.data.nodes = Chart.data.nodes.map((n) => {
       if (n.type === type) {
         n.color = color;
+        index.push(n.index)
       }
       return n;
     });
 
-    const node = Chart.node;
+    const node = Chart.nodesWrapper
+        .selectAll('.node')
+        .filter(d => index.includes(d.index));
 
     node.select('circle').attr('fill', color)
     node.select('text').attr('fill', color)

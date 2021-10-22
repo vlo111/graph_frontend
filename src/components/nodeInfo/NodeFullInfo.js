@@ -59,6 +59,7 @@ class NodeFullInfo extends Component {
       editable, singleGraph: {
         id, nodesPartial, linksPartial, labels, title,
       },
+      location: { pathname },
     } = this.props;
 
     const { loading } = this.state;
@@ -82,7 +83,7 @@ class NodeFullInfo extends Component {
 
     return (
       <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
-        <div id="nodeFullInfo">
+        <div id="nodeFullInfo" style={pathname.startsWith('/graphs/embed') ? { top: '0px' } : { top: '69px' }}>
           <HeaderMini
             headerImg={node.icon ? node.icon : bgImage}
             node={node}

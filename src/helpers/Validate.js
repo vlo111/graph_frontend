@@ -164,6 +164,47 @@ class Validate {
     }
     return [error, value];
   }
+
+  static register(data) {
+
+    const { firstName, lastName, email, password, passwordConfirm } = data;
+
+    const errors = {};
+
+    if(!firstName || firstName.trim() === '') {
+      errors.firstName = 'First name is required'
+    }
+
+    if(!lastName || lastName.trim() === '') {
+      errors.lastName = 'last name is required'
+    }
+
+    if (!email) {
+      errors.email = 'Email is required';
+    } else if (!email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)) {
+      errors.email = 'Enter a valid email address';
+    }
+
+    if (!password) {
+      errors.password = 'Password is required';
+    } else if (password.length < 8) {
+      errors.password = 'Please fill at least 8 character';
+    } else if (!password.match(/[a-z]/g)) {
+      errors.password = 'Please enter at least lower character.';
+    } else if (!password.match(/[A-Z]/g)) {
+      errors.password = 'Please enter at least upper character.';
+    } else if (!password.match(/[0-9]/g)) {
+      errors.password = 'Please enter at least one digit.';
+    }
+
+    if (!passwordConfirm) {
+      errors.passwordConfirm = 'Confirm password is required';
+    } else if (passwordConfirm !== password) {
+      errors.passwordConfirm = 'Password and confirm password must be same';
+    }
+
+    return errors;
+  }
 }
 
 export default Validate;

@@ -58,30 +58,33 @@ class ResetPassword extends Component {
       <WrapperSign>
         <div className="left forgotPassword">
           <Link to="/">
-            <LogoSvg className="logo white" />
+            <LogoSvg className="logo white logoReset" />
           </Link>
         </div>
         <div className="right">
           <div>
             <form onSubmit={this.signIn} id="login" className="authForm">
               <h1>Reset Password</h1>
-              <LogoSvg className="logo orange" />
               <PasswordInput
+                placeholder="New password"
                 name="password"
-                label="New password"
                 value={requestData.password}
                 onChangeText={this.handleTextChange}
                 error={errors.password}
               />
+              <PasswordInput
+                name="passwordConfirm"
+                placeholder="Confirm password"
+                value={requestData.passwordConfirm}
+                error={errors.passwordConfirm}
+                onChange={this.handleChange}
+                autoComplete="off"
+              />
 
               <Button disabled={requestData.password.length < 5} type="submit" className="submit" color="blue">
-                Set Password
+                Reset
               </Button>
             </form>
-            <p className="switchSignMode">
-              {"Don't have an admin yet? "}
-              <Link to="/sign/sign-up">Get started</Link>
-            </p>
           </div>
         </div>
 

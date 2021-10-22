@@ -59,7 +59,7 @@
     max-width: 100%;
     display: flex;
     flex-direction: column;
-    margin: 10px 0;
+    margin: 15px 0;
     position: relative;
 
     label,
@@ -1139,6 +1139,78 @@
     }
   }
 
+//// Reset Password
+
+.logoReset{
+  max-width: 150px !important;
+    left: 85% !important;
+}
+.authForm {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    border-radius: 10px;
+    position: absolute;
+    min-width: 450px;
+    margin-left: 36%;
+    top: 30%;
+
+
+  a {
+    color: $color-main;
+  }
+
+  .ghFormField {
+    width: 100%;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 53px;
+    margin: 12px;
+    color: #424242;
+  }
+
+  .hr {
+    margin-bottom: 32px;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+
+    .forgotPasswordBack {
+      margin: 32px 38px 0 0;
+    }
+
+  }
+
+  .forgotPassword {
+    color: $color-dark;
+    font-size: 14px;
+    text-align: right;
+    align-self: flex-end;
+    padding: 0 10px;
+  }
+
+  .forgotPasswordText {
+    text-align: center;
+
+    h4 {
+      font-weight: 600;
+      font-size: 20px;
+      margin-top: 32px;
+    }
+
+    p {
+      font-weight: normal;
+      font-size: 16px;
+      margin: 32px 0;
+    }
+  }
+}
+
   // Eyes Icon and Error
 
   .ghFormFieldPassword {
@@ -1149,6 +1221,7 @@
 
     .icon {
       left: 93%;
+      top: 5px;
       right: 3px;
       bottom: 5px;
       cursor: pointer;

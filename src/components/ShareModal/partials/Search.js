@@ -38,7 +38,7 @@ const Search = ({
         id="search-user"
         className="ghInput share-modal__search"
         isLoading={isLoading}
-        labelKey={(option) => `${option.firstName} ${option.lastName} ${option.email}`}
+        labelKey={(option) => `${option.firstName} ${option.lastName}`}
         minLength={3}
         onSearch={handleSearch}
         options={options}
@@ -47,7 +47,7 @@ const Search = ({
         onChange={(selected) => selected && refTypeahead.current.clear()}
         renderMenuItemChildren={(option, props) => <SearchData user={user} singleGraph={graph} option={option} select={select} setSelect={setSelect} />}
       />
-      <Button className="accent alt" onClick={() => changeStatus()}> Save </Button>
+      <Button className="accent alt" onClick={() => changeStatus()}> Ok </Button>
     </div>
   );
 };

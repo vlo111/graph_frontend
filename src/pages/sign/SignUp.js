@@ -12,6 +12,8 @@ import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
 import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
 import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
 import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
+import Validate from "../../helpers/Validate";
+import _ from "lodash";
 
 class SignUp extends Component {
   static propTypes = {
@@ -55,52 +57,29 @@ class SignUp extends Component {
 
   signUp = async (ev) => {
     ev.preventDefault();
-    const { requestData, errors } = this.state;
+    const { requestData } = this.state;
 
     this.setState({ loading: true });
-    const error = this.validate('firstName', requestData.firstName)
-      || this.validate('lastName', requestData.lastName)
-      || this.validate('email', requestData.email)
-      || this.validate('password', requestData.password);
 
-    if (error) {
-      const errorName = error.substring(0, error.indexOf(' '));
+    const errors = Validate.register(requestData)
 
-      switch (errorName) {
-        case 'First': {
-          errors.firstName = this.validate('firstName', requestData.firstName);
-          break;
+    if (_.isEmpty(errors)) {
+        const { payload } = await this.props.signUpRequest(requestData);
+        const { data = {} } = payload;
+        if (data.status === 'ok') {
+          this.props.history.push('/sign/sign-in');
+          return;
         }
-        case 'Last': {
-          errors.lastName = this.validate('lastName', requestData.lastName);
-          break;
-        }
-        case 'email': {
-          errors.email = this.validate('email', requestData.email);
-          break;
-        }
-        case 'password': {
-          errors.password = this.validate('password', requestData.password);
-          break;
-        }
-        default:
-      }
-      this.setState({
-        errors,
-        loading: false,
-      });
+
+        this.setState({
+          errors: data.errors || { email: data.message },
+          loading: false,
+        });
     } else {
-      const { payload } = await this.props.signUpRequest(requestData);
-      const { data = {} } = payload;
-      if (data.status === 'ok') {
-        this.props.history.push('/sign/sign-in');
-        return;
-      }
-
-      this.setState({
-        errors: data.errors || { email: data.message },
-        loading: false,
-      });
+        this.setState({
+          errors,
+          loading: false,
+        });
     }
   };
 
@@ -109,20 +88,22 @@ class SignUp extends Component {
     switch (name) {
       case 'firstName':
         if (!value || value.trim() === '') {
-          return 'First name is Required ';
+          return 'First name is required';
         }
         return '';
 
       case 'lastName':
         if (!value || value.trim() === '') {
-          return 'Last name is Required';
+          return 'Last name is required';
         }
         return '';
 
       case 'email':
         if (!value) {
-          return 'Email is Required';
-        } if (
+          return 'Email is required';
+        }
+
+        if (
           !value.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
         ) {
           return 'Enter a valid email address';
@@ -131,7 +112,7 @@ class SignUp extends Component {
 
       case 'password':
         if (!value) {
-          return 'Password is Required';
+          return 'Password is required';
         } if (value.length < 8 || value.length > 15) {
           return 'Please fill at least 8 character';
         } if (!value.match(/[a-z]/g)) {
@@ -145,9 +126,9 @@ class SignUp extends Component {
 
       case 'passwordConfirm':
         if (!value) {
-          return 'Confirm Password Required';
+          return 'Confirm password is required';
         } if (value !== requestData.password) {
-          return 'New Password and Confirm Password Must be Same';
+          return 'Password and confirm password must be same';
         }
         return '';
 
@@ -159,6 +140,7 @@ class SignUp extends Component {
 
   render() {
     const { requestData, errors, loading } = this.state;
+
     return (
       <WrapperSign>
         <div className="SignUpLeft signUp">
@@ -179,7 +161,7 @@ class SignUp extends Component {
               </div>
               <Input
                 name="firstName"
-                className={`InputIvalid ${
+                className={`${
                   errors.firstName ? 'border-error' : null
                 }`}
                 placeholder="First Name"
@@ -190,7 +172,7 @@ class SignUp extends Component {
               />
               <Input
                 name="lastName"
-                className={`InputIvalid ${
+                className={`${
                   errors.lastName ? 'border-error' : null
                 }`}
                 placeholder="Last Name"
@@ -202,7 +184,7 @@ class SignUp extends Component {
 
               <Input
                 name="email"
-                className={`InputIvalid ${
+                className={`${
                   errors.email ? 'border-error' : null
                 }`}
                 type="email"
@@ -215,7 +197,7 @@ class SignUp extends Component {
 
               <PasswordInput
                 name="password"
-                className={`InputIvalid ${
+                className={`${
                   errors.password ? 'border-error' : null
                 }`}
                 placeholder="Password"
@@ -223,11 +205,12 @@ class SignUp extends Component {
                 error={errors.password}
                 onChange={this.handleChange}
                 autoComplete="off"
+                showIcon={(!!requestData.password)}
               />
 
               <PasswordInput
                 name="passwordConfirm"
-                className={`InputIvalid ${
+                className={`${
                   errors.passwordConfirm ? 'border-error' : null
                 }`}
                 placeholder="Confirm password"
@@ -235,6 +218,7 @@ class SignUp extends Component {
                 error={errors.passwordConfirm}
                 onChange={this.handleChange}
                 autoComplete="off"
+                showIcon={(!!requestData.passwordConfirm)}
               />
               <Button
                 color="orange"
