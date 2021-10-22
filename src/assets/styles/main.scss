@@ -9886,6 +9886,10 @@ details[open] summary:after {
     top: 75px;
     background-color: white;
     height: 38px;
+
+    svg {
+      margin-top: -2px;
+    }
   }
 
   .query-modal {
@@ -9946,6 +9950,9 @@ details[open] summary:after {
     }
 
     &__title {
+      display: flex;
+      justify-content: center;
+
       .name {
         color: $color-main;
         font-weight: bold;
