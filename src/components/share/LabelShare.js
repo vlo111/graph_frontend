@@ -81,6 +81,7 @@ class LabelShare extends Component {
       userId: value.id,
       type: 'label',
       objectId: labelId,
+      confirm: false,
     });
     this.handleUserRoleChange();
   };
@@ -147,9 +148,7 @@ class LabelShare extends Component {
         ))}
         {shareWithUsers.length > 0 && (
           <Button className="saveShareGraph" color="accent" onClick={this.save}>
-            {' '}
-            Save
-            {' '}
+            OK
           </Button>
         )}
       </Modal>
