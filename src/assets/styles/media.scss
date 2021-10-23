@@ -13,7 +13,7 @@
       left: 15% !important;
     }
   }
-  
+
 }
 
 @media screen and (min-width: 1700px) {
@@ -44,10 +44,10 @@
     .right-elements {
       right: 30px;
     }
-    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
+    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
       width: 200px !important;
       font-size: 14px !important;
-      margin-right: 20px !important; 
+      margin-right: 20px !important;
     }
   }
 
@@ -94,7 +94,7 @@
     grid-template-columns: 10% 42% 36% 5% 7% !important;
     grid-gap:0 !important;
     .graphSearch>input{
-      width: 400px !important; 
+      width: 400px !important;
     }
     #accountDropDown .dropdown {
       left: 86%;
@@ -120,7 +120,7 @@
   }
   .ghModalMedia {
     left: 6% !important;
-    
+
     &#fullWidth {
       left: 17% !important;
     }
@@ -130,15 +130,15 @@
 @media screen and (max-width: 1500px) {
   #header{
     .graphSearch>input{
-      width: 350px !important; 
+      width: 350px !important;
     }
     #accountDropDown .dropdown {
       left: 85%;
    }
-   .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
+   .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
      width: 190px !important;
      font-size: 14px !important;
-     margin-right: 15px !important; 
+     margin-right: 15px !important;
    }
   }
 
@@ -158,7 +158,7 @@
 @media screen and (max-width: 1400px) {
   #header {
     .graphSearch>input{
-      width: 300px !important; 
+      width: 300px !important;
     }
     .signOut {
       right: 1%;
@@ -193,7 +193,7 @@
   .ghModalMedia {
     left: 6% !important;
     width: 46% !important;
-    
+
     &#fullWidth {
       left: 17% !important;
       width: 82% !important;
@@ -213,12 +213,12 @@
       left: 82%;
   }
   .graphSearch>input{
-    width: 280px !important; 
+    width: 280px !important;
   }
-  .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
+  .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
     width:160px !important;
     font-size: 14px !important;
-    margin-right: 10px !important; 
+    margin-right: 10px !important;
   }
   }
   .homeWithUser{
@@ -228,8 +228,8 @@
         &:hover .buttonHidden .btn-edit {
           margin-right: 7px;
           margin-left: 7px;
-      }    
-      } 
+      }
+      }
   }
 }
   .searchNodes {
@@ -240,10 +240,10 @@
       .showCheck{
         padding: 10px;
       }
-    
+
     }
   }
-} 
+}
 
 @media screen and (max-width: 900px) {
   .ghModalSearch {
@@ -277,12 +277,12 @@
   }
   #header{
     .graphSearch>input{
-      width: 200px !important; 
+      width: 200px !important;
     }
-    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph { 
+    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
       width: 130px !important;
       font-size: 13px !important;
-      margin-right: 7px !important; 
+      margin-right: 7px !important;
     }
   }
 
@@ -431,7 +431,7 @@
 
   .compareContent {
 
-    .right-block {
+    .graphCompareData {
       max-height: 620px;
     }
 
@@ -444,7 +444,7 @@
   .ghModalMedia {
      top:80px !important;
      max-height: 88% !important;
-    
+
     &#fullWidth{
       top:80px !important;
     }
@@ -454,7 +454,7 @@
   .menu {
     overflow-y: scroll;
     height: 89%;
-  
+
 }
   .menu .containerMenu .collapse:hover{
   overflow: hidden;
@@ -523,7 +523,7 @@ margin-top: -5px;
 
   .profileEdit .profile_desc {
     width:310px;
-    
+
   }
   .profile_info {
     // width: 400px;
@@ -572,7 +572,7 @@ margin-top: -5px;
 
 }
 
-@media (max-width: 576px) { 
+@media (max-width: 576px) {
   .profile_desc {
     text-align:center;
     align-items: center;
@@ -615,7 +615,7 @@ margin-top: -5px;
   }
 
   .interest {
-    justify-content: center; 
+    justify-content: center;
      margin-top: 20px;
   }
   .social-img {
@@ -627,7 +627,7 @@ margin-top: -5px;
   .section2 .ghSelect  {
     margin: 25px auto;
   }
-  
+
 }
 
 @media (min-width: 576px){
@@ -645,7 +645,7 @@ margin-top: -5px;
   .carousel-control-prev {
     left: -6px;
   }
-  
+
   .carousel-control-next {
     right: -6px;
   }
@@ -664,7 +664,7 @@ margin-top: -5px;
   .profile.newVersion {
     padding:45px;
   }
-  
+
   .friends-requests .friend_box {
       width:50%;
       padding:  0 0 0 22px;
@@ -675,12 +675,12 @@ margin-top: -5px;
   .carousel-control-prev {
     left: -25px;
   }
-  
+
   .carousel-control-next {
     right: -25px;
   }
 
- 
+
 }
 
 @media (min-width: 992px) {
@@ -710,7 +710,7 @@ margin-top: -5px;
   .carousel-control-prev {
     justify-content: flex-start;
   }
-  
+
   .carousel-control-next {
     justify-content: flex-end;
   }
@@ -718,7 +718,7 @@ margin-top: -5px;
   .carousel-control-prev {
     left: -60px;
   }
-  
+
   .carousel-control-next {
     right: -60px;
   }
@@ -727,7 +727,7 @@ margin-top: -5px;
     padding-left: 15px;
   }
 
- 
+
 }
 
 @media (min-width: 1400px) {
@@ -736,15 +736,15 @@ margin-top: -5px;
     margin: 80px auto;
     width:70%;
   }
-  
+
   .friends  .friend_box  button.btn-link{
       margin-left: 70px;
   }
 
- 
+
 }
 
-@media (min-width: 1800px) { 
+@media (min-width: 1800px) {
   .profile.newVersion,.profileEdit {
     margin: 80px auto;
     width:60%;
