@@ -67,19 +67,24 @@ class LabelCopy extends Component {
     if (Chart.isAutoPosition) Chart.isAutoPosition = false;
 
     const { x, y } = params;
+
+    const position = [x, y];
+
+    this.setState({ position });
+
     const { singleGraph } = this.props;
     const data = LabelUtils.getData();
 
     // todo global loading
     const { data: compare } = await Api.dataPastCompare(singleGraph.id, data.nodes).catch((e) => e.response);
 
-    const position = [x, y];
     if (_.isEmpty(compare.duplicatedNodes)) {
       this.copyDocument('keep');
       return;
     }
+
     this.setState({
-      compare, data, position, showQuestionModal: true,
+      compare, data, showQuestionModal: true,
     });
   }
 
@@ -196,6 +201,7 @@ class LabelCopy extends Component {
   copyDocument = async (action, sourceId = undefined) => {
     Chart.loading(true);
     const { position } = this.state;
+    console.log(position)
     const { x, y } = ChartUtils.calcScaledPosition(position[0], position[1]);
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
