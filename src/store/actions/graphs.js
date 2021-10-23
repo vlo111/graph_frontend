@@ -75,8 +75,8 @@ export function getAllTabsRequest(graphId) {
 
 export const GET_GRAPH_INFO = define('GET_GRAPH_INFO');
 
-export function getGraphInfoRequest(graphId) {
-  return GET_GRAPH_INFO.request(() => Api.getGraphInfo(graphId));
+export function getGraphInfoRequest(graphId, params) {
+  return GET_GRAPH_INFO.request(() => Api.getGraphInfo(graphId, params));
 }
 
 export const GET_SINGLE_GRAPH_PREVIEW = define('GET_SINGLE_GRAPH_PREVIEW');
