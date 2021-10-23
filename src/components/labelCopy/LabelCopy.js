@@ -201,7 +201,7 @@ class LabelCopy extends Component {
   copyDocument = async (action, sourceId = undefined) => {
     Chart.loading(true);
     const { position } = this.state;
-    console.log(position)
+
     const { x, y } = ChartUtils.calcScaledPosition(position[0], position[1]);
     const { id } = this.props.singleGraph;
     const data = LabelUtils.getData();
