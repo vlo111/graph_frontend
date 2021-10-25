@@ -95,10 +95,10 @@ class InsertMediaTabsModal extends Component {
               onChange={(value) => this.handleChange('tags', (value || []).map((v) => v.value))}
             />
             <div className="buttons">
-              <Button className="cancel transparent alt" onClick={this.closeInsertMedia}>
+              <Button className="inserCancel btn-delete" onClick={this.closeInsertMedia}>
                 Back
               </Button>
-              <Button onClick={this.insertData} className="accent alt">
+              <Button onClick={this.insertData} className="accent btn-classic">
                 Insert
               </Button>
             </div>
