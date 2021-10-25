@@ -52,12 +52,12 @@ class GraphView extends Component {
   preventReload = true;
 
   getSingleRequest = memoizeOne(() => {
-    const { match: { params: { graphId } }, location: { search } } = this.props;
+    const { match: { params: { graphId } } } = this.props;
     this.props.setActiveButton('view');
     this.props.userGraphRequest();
     if (graphId) {
-      this.props.getSingleGraphRequest(graphId, search.includes('public') ? { publicState: 1 } : null);
-      this.props.getGraphInfoRequest(graphId, search.includes('public') ? { publicState: 1 } : null);
+      this.props.getSingleGraphRequest(graphId,{viewMode: true});
+      this.props.getGraphInfoRequest(graphId,{viewMode: true});
     }
   })
 

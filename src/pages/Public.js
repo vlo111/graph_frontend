@@ -22,7 +22,7 @@ class Public extends Component {
 
   getGraphsList = memoizeOne((page) => {
     const order = JSON.parse(localStorage.getItem('/public')) || 'newest';
-    this.props.getGraphsListRequest(page, {  filter: order, publica:1 });
+    this.props.getGraphsListRequest(page, {  filter: order, publicGraph:1 });
   })
 
   render() {
