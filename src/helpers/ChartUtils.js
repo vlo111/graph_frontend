@@ -339,7 +339,7 @@ class ChartUtils {
    */
   static autoScale() {
     const {
-      width, height, min, max,
+      width, height, min,
     } = ChartUtils.getDimensions(false);
     if (width && Chart.svg) {
       Chart.event.removeListener('render', this.autoScale);
@@ -454,17 +454,17 @@ class ChartUtils {
     Chart.data.nodes = Chart.data.nodes.map((n) => {
       if (n.type === type) {
         n.color = color;
-        index.push(n.index)
+        index.push(n.index);
       }
       return n;
     });
 
     const node = Chart.nodesWrapper
-        .selectAll('.node')
-        .filter(d => index.includes(d.index));
+      .selectAll('.node')
+      .filter((d) => index.includes(d.index));
 
-    node.select('circle').attr('fill', color)
-    node.select('text').attr('fill', color)
+    node.select('circle').attr('fill', color);
+    node.select('text').attr('fill', color);
 
     this.nodeColorObj[type] = color;
   }
@@ -520,7 +520,7 @@ class ChartUtils {
     const dx = d.source.x - d.target.x;
     const dy = d.source.y - d.target.y;
     const radians = Math.atan2(dy, dx);
-    const degrees = (radians * 180 / Math.PI) + 180;
+    const degrees = ((radians * 180) / Math.PI) + 180;
     return degrees > 90 && degrees < 270;
   }
 
@@ -832,9 +832,9 @@ class ChartUtils {
     const ids = [0];
     data.forEach((d) => {
       const [_id = 0] = /[\d.]+/.exec(d.id) || [];
-      const id = +String(_id).split('.')[0];
-      if (id && !d.sourceId) {
-        ids.push(id);
+      const newId = +String(_id).split('.')[0];
+      if (newId && !d.sourceId) {
+        ids.push(newId);
       }
     });
     const max = _.max(ids);
