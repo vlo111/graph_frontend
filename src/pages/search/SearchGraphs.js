@@ -121,7 +121,7 @@ class SearchGraphs extends Component {
               </article>
             ))}
           </>
-        ) : ((!setLimit && graphsListStatus !== 'request'&& <div className='not_Found'>
+        ) : ((!setLimit && graphsListStatus !== 'request'&& <div className='not_graphfound'>
           <img src={NotFound} />
           <h3>Not Found</h3>
         </div>) || null)}
