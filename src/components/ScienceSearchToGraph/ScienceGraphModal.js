@@ -493,9 +493,14 @@ class ScienceGraphModal extends Component {
           <div
             tabIndex="0"
             className="scine scienceResultsList"
-            onFocus={() => {
+            onClick={(ev) => {
               const items = document.getElementsByClassName('scienceResultsList');
-              items[index].style.backgroundColor = '#e5e3f5';
+
+              if (!checkedList.includes(index)) {
+                items[index].style.backgroundColor = '#e5e3f5';
+              } else {
+                items[index].style.backgroundColor = 'white';
+              }
             }}
             key={index}
           >
