@@ -153,7 +153,7 @@ export default function reducer(state = initialState, action) {
         // },
       };
     }
-       // case GENERATE_THUMBNAIL_WORKER: {
+    // case GENERATE_THUMBNAIL_WORKER: {
     //   const { graph } = action.payload.data;
     //
     //   const graphsList = [...state.graphsList].map((g) => {

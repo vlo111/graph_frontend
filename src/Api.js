@@ -517,6 +517,26 @@ class Api {
   static confirmEmail(token) {
     return api.get(`/users/confirmation/${token}`);
   }
+  
+  static getGraphQuery(graphId) {
+    return api.get(`/query/${graphId}`);
+  }
+
+  static getGraphQueryData(id, graphId) {
+    return api.get(`/query/data/${id}/${graphId}`);
+  }
+
+  static createGraphQuery(requestData) {
+    return api.post('/query/create', requestData);
+  }
+
+  static deleteGraphQuery(id) {
+    return api.delete(`/query/delete/${id}`);
+  }
+
+  static updateGraphQuery(id, title, description) {
+    return api.put(`/query/update/${id}`, { title, description });
+  }
 }
 
 export default Api;
