@@ -48,6 +48,7 @@ const AddQuery = ({ closeModal, graph }) => {
     await dispatch(getGraphQueryRequest(graph.id));
     closeModal();
   };
+  
   return (isEmpty(graph) ? null
     : (
       <Modal
