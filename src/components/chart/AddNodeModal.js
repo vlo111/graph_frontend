@@ -306,7 +306,7 @@ class AddNodeModal extends Component {
                   label="Node Status"
                   portal
                   options={NODE_STATUS}
-                  isDisabled={currentUserRole === 'edit' && +addNodeParams.createdUser !== +currentUserId}
+                  isDisabled={currentUserRole === 'edit' && addNodeParams.createdUser !== currentUserId}
                   value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
                   error={errors.status}
                   onChange={(v) => this.handleChange('status', v?.value || '')}
