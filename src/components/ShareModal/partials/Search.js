@@ -47,7 +47,7 @@ const Search = ({
         onChange={(selected) => selected && refTypeahead.current.clear()}
         renderMenuItemChildren={(option, props) => <SearchData user={user} singleGraph={graph} option={option} select={select} setSelect={setSelect} />}
       />
-      <Button className="accent alt" onClick={() => changeStatus()}> Ok </Button>
+      <Button className="accent  btn-classic" onClick={() => changeStatus()}> Ok </Button>
     </div>
   );
 };
