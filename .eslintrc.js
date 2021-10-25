@@ -55,5 +55,6 @@ module.exports = {
     'jsx-a11y/no-autofocus': 'off',
     'no-unused-expressions': 'off',
     'react/no-danger': 'off',
+    'no-plusplus': 'off',
   },
 };

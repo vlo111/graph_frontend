@@ -451,8 +451,8 @@ const mapDispatchToProps = {
 };
 
 const Container = connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(AutoSave);
 
 export default withRouter(Container);
