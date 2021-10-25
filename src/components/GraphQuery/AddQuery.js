@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import Button from '../form/Button';
 import Input from '../form/Input';
 import ChartUtils from '../../helpers/ChartUtils';
-import { createGraphQueryRequest } from '../../store/actions/query';
+import { createGraphQueryRequest, getGraphQueryRequest } from '../../store/actions/query';
 
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
@@ -41,63 +41,71 @@ const AddQuery = ({ closeModal, graph }) => {
     }
     if (query.title !== '') { saveGraphQuery(); }
   };
-  const saveGraphQuery = () => {
-    dispatch(createGraphQueryRequest({
+  const saveGraphQuery = async () => {
+    await dispatch(createGraphQueryRequest({
       graphId: graph.id, title: query.title, description: query.description, nodes, links,
     }));
+    await dispatch(getGraphQueryRequest(graph.id));
     closeModal();
   };
+  
   return (isEmpty(graph) ? null
     : (
       <Modal
         isOpen
         onAfterOpen={afterOpenModal}
         contentLabel="Query"
-        id="query-modal"
-        className="ghModal createQueryModal"
+        className="ghModal createQueryModal "
         overlayClassName="ghModalOverlay  graphQueryOverlay"
       >
-        <div className="query-modal__title">
-          <h3>Query</h3>
-          <Button
-            icon={<CloseSvg style={{ height: 30 }} />}
-            onClick={() => closeModal()}
-            className="transparent"
-          />
-        </div>
-        <div className="query">
-          <form onSubmit={handlerSumbit}>
-            <div className="title">
-              <Input
-                label="Title"
-                className={`title input ${errors.title && 'is-danger'}`}
-                name="title"
-                value={query.title}
-                onChange={handleChange}
-                error={errors.title}
-                limit={15}
-              />
-            </div>
-            <div className="textareaEdit">
-              <Input
-                label="Description"
-                className="description"
-                name="description"
-                value={query.description}
-                onChange={handleChange}
-                textArea
-                limit={50}
-              />
-            </div>
+        <div className="query-modal">
+          <div className="query-modal__title">
+            <h3 className="caption">Query</h3>
             <Button
-              className="btn-classic"
-              type="submit"
-              disabled={!data}
-            >
-              Save
-            </Button>
+              icon={<CloseSvg style={{ height: 30 }} />}
+              onClick={() => closeModal()}
+              className="transparent"
+            />
+          </div>
+          <div className="query">
+            <form onSubmit={handlerSumbit}>
+              <div className="title">
+                <Input
+                  maxlength={20}
+                  label="Title"
+                  className={`title input ${errors.title && 'is-danger'}`}
+                  name="title"
+                  value={query.title}
+                  onChange={handleChange}
+                  error={errors.title}
+                  limit={20}
+                />
+              </div>
+              <div className="textareaEdit">
+                <Input
+                  maxlength={250}
+                  label="Description"
+                  className="description"
+                  name="description"
+                  value={query.description}
+                  onChange={handleChange}
+                  textArea
+                  limit={250}
+                />
+              </div>
+              <Button
+                className="btn-classic"
+                type="submit"
+                style={{
+                  display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto',
+                }}
+                disabled={!data}
+              >
+                Save
+              </Button>
 
-          </form>
+            </form>
+          </div>
         </div>
       </Modal>
     )

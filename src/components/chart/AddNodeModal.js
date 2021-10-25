@@ -154,8 +154,6 @@ class AddNodeModal extends Component {
 
       if (nodeData.color) {
         ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
-      // } else {
-      //   nodeData.color = ChartUtils.nodeColor(nodeData);
       }
 
       Chart.render({ nodes });
