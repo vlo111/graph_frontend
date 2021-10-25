@@ -110,7 +110,9 @@ class DataImportModal extends Component {
             accept=".pdf"
           />
         </div>
-        <Button className="importButton" color="accent" onClick={this.convert} loading={loading}>Import</Button>
+        <div className="importButton">
+          <button className="btn-classic" onClick={this.convert} loading={loading}>Import</button>
+        </div>
       </>
     );
   }

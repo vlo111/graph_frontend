@@ -1295,7 +1295,8 @@ p {
     overflow-x: hidden;
 
     .importButton {
-      margin-left: auto;
+      display: flex;
+      justify-content: center;
     }
 
     .addLocation {
@@ -9092,10 +9093,6 @@ img.preview-scaled {
     outline: none;
   }
 
-  .scienceResultAmount {
-    margin-left: 3em;
-  }
-
   .scienceResultsList {
     display: flex;
     flex-direction: row;
@@ -9129,15 +9126,12 @@ img.preview-scaled {
   }
 
   .scinceItems {
-    margin-bottom: 10px;
-
     color: #7166f8;
     font-size: 16px;
-    margin-left: 9px;
   }
 
   .scienceArticleData .scienceArticleDescription {
-    max-height: 4em;
+    max-height: 68px;
     overflow: hidden;
   }
 
@@ -9164,7 +9158,7 @@ img.preview-scaled {
   }
 
   .scienceResultAmountBox {
-    margin: -15px 40px 15px -7px;
+    margin: 0 35px 0;
     display: flex;
     justify-content: space-between;
   }

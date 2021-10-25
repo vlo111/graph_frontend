@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Input from './Input';
 import Icon from './Icon';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import SelectImg from '../../assets/images/icons/upload.png';
+import { ReactComponent as SelectImg } from '../../assets/images/icons/upload.svg';
 
 class File extends Component {
   static propTypes = {
@@ -122,7 +122,7 @@ class File extends Component {
                 <Icon value={<CloseSvg />} className="clear" onClick={this.clearFile} />
               ) : null}
               <label>
-                <img className="uploadImg" src={SelectImg} />
+                <SelectImg />
                 <span>Select</span>
                 <input {...props} id={inputId} type="file" onChange={(ev) => this.handleChange(ev)} />
               </label>

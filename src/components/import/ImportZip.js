@@ -105,7 +105,9 @@ class DataImportModal extends Component {
               ) : null}
             </div>
 
-            <Button className="importButton" color="accent" onClick={this.convert} loading={loading}>Next</Button>
+            <div className="importButton">
+              <button className="btn-classic" onClick={this.convert} loading={loading}>Next</button>
+            </div>
           </>
         ) : null}
         {step === 2 ? <ImportStep2 updateShowSelect={this.updateShowSelect} /> : null}
