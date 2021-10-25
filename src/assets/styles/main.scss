@@ -1295,7 +1295,8 @@ p {
     overflow-x: hidden;
 
     .importButton {
-      margin-left: auto;
+      display: flex;
+      justify-content: center;
     }
 
     .addLocation {
