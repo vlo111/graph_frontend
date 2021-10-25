@@ -10,7 +10,7 @@ export const NODE_TYPES = [
   { value: 'circle', label: 'Circle', icon: <EllipseSvg /> },
   { value: 'triangle', label: 'Triangle', icon: <TriangleSvg /> },
   { value: 'hexagon', label: 'Hexagon', icon: <HexagonSvg /> },
-  { value: 'image', label: ' Image', icon: <ImageSvg /> },
+  { value: 'infography', label: ' Image', icon: <ImageSvg /> },
 ];
 
 export const NODE_STATUS = [
