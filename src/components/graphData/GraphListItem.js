@@ -13,11 +13,6 @@ class GraphListItem extends Component {
     graphsList: PropTypes.array.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
   updateGraph = (graph) => {
     let { graphs } = this.props;
     graphs = graphs.forEach((p) => {
