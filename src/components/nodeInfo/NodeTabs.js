@@ -208,6 +208,7 @@ class NodeTabs extends Component {
           <NodeTabsContent
             name={activeTab}
             node={node}
+            editable={editable}
             customFields={nodeCustomFields}
             activeTab={activeTab}
             openAddTabModal={this.openFormModal}

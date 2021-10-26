@@ -48,7 +48,7 @@ class NodeTabsContent extends Component {
 
   render() {
     const {
-      name, node, customFields, activeTab,
+      name, node, customFields, activeTab, editable,
     } = this.props;
 
     const { expandNode } = this.state;
@@ -73,7 +73,7 @@ class NodeTabsContent extends Component {
     return (
       <div data-field-name={!node.sourceId ? name : ''} className="contentWrapper">
         <div className="tab-data-settings">
-          {(html || node.description) && (
+          {editable && ((html || node.description) && (
           <Button
             icon={<EditSvg />}
             title="Edit"
@@ -81,7 +81,7 @@ class NodeTabsContent extends Component {
           >
             Edit
           </Button>
-          )}
+          ))}
 
           {activeTab !== '_description'
           && (
@@ -114,7 +114,7 @@ class NodeTabsContent extends Component {
               <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
             </div>
           )
-            : (
+            : editable && (
               <div className="no-tabs">
                 <div className="no-tab-content">
                   <div className="header">
