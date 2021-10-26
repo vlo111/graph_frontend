@@ -105,7 +105,7 @@ class NodeTabsContent extends Component {
 
         {((activeTab === '_description') && node.description)
           ? (
-            <div>
+            <div className="container">
               <div className="content" dangerouslySetInnerHTML={{ __html: node.description }} />
             </div>
           )
