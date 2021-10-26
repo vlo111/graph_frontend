@@ -56,8 +56,8 @@ class GraphView extends Component {
     this.props.setActiveButton('view');
     this.props.userGraphRequest();
     if (graphId) {
-      this.props.getSingleGraphRequest(graphId);
-      this.props.getGraphInfoRequest(graphId);
+      this.props.getSingleGraphRequest(graphId,{viewMode: true});
+      this.props.getGraphInfoRequest(graphId,{viewMode: true});
     }
   })
 

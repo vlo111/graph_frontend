@@ -20,6 +20,7 @@ class SearchModal extends Component {
   static propTypes = {
     getGraphNodesRequest: PropTypes.func.isRequired,
     graphId: PropTypes.number.isRequired,
+    publicState: PropTypes.bool.isRequired,
     userId: PropTypes.number.isRequired,
     currentUserId: PropTypes.number.isRequired,
     totalNodes: PropTypes.number.isRequired,
@@ -105,14 +106,14 @@ class SearchModal extends Component {
    * @returns
    */
   searchResults = async (search) => {
-    const { graphId, currentUserId, userId } = this.props;
+    const { graphId, publicState, currentUserId, userId } = this.props;
     const { checkBoxValues } = this.state;
     const argument = {
       s: search,
       graphId,
       findNode: false,
       searchParameters: checkBoxValues,
-      isOwner: currentUserId === userId,
+      isOwner: publicState ? publicState : currentUserId === userId,
     };
     const searchResults = await this.props.getGraphNodesRequest(1, argument);
     return searchResults.payload.data;
@@ -801,6 +802,7 @@ class SearchModal extends Component {
 
 const mapStateToProps = (state) => ({
   graphId: state.graphs.singleGraph.id,
+  publicState: state.graphs.singleGraph.publicState,
   userId: state.graphs.singleGraph.userId,
   currentUserId: state.account.myAccount.id,
   linksPartial: state.graphs.singleGraph?.linksPartial || [],
