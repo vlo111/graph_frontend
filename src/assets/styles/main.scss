@@ -593,7 +593,7 @@ p {
   }
 
   &.accent {
-    background-color: $color-accent;
+  
 
     &:hover {
       box-shadow: 0 3px 6px rgba($color-accent, 0.4);
@@ -1295,8 +1295,7 @@ p {
     overflow-x: hidden;
 
     .importButton {
-      display: flex;
-      justify-content: center;
+      margin-left: auto;
     }
 
     .addLocation {
@@ -5494,6 +5493,9 @@ label.pull-left::before {
   .buttons, h2, .ghFileInput, .ghFormField {
     width: auto !important;
   }
+  .inserCancel{
+    margin: 0 auto;
+  }
 }
 
 .nodeTabs table {
@@ -8137,6 +8139,8 @@ img.preview-scaled {
 
   .import-input label {
     top: 25px;
+    display: flex;
+    align-items: center;
   }
 
   label {
@@ -8420,7 +8424,7 @@ img.preview-scaled {
 
       svg {
         position: relative;
-        top: -3px;
+        top: -5px;
       }
     }
 
@@ -8686,6 +8690,8 @@ img.preview-scaled {
 
 .linkedinModal {
   .import-input label {
+    display: flex;
+    align-items: center;
     margin-top: 15px;
     margin-right: 10px;
   }

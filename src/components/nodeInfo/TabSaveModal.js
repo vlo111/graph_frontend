@@ -20,10 +20,10 @@ class TabSaveModal extends Component {
               Do you want your changes to be saved ?
             </p>
             <div className="buttons">
-              <Button className="ghButton cancel transparent alt" onClick={this.props.onClose}>
+              <Button className="btn-delete" onClick={this.props.onClose}>
                 NO
               </Button>
-              <Button className="ghButton accent alt" type="submit" onClick={this.props.save}>
+              <Button className="ghButton accent btn-classic" type="submit" onClick={this.props.save}>
                 YES
               </Button>
             </div>
