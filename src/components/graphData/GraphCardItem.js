@@ -113,7 +113,7 @@ class GraphCardItem extends Component {
             >
               {(headerTools === "public") ? (
                 <div className={`buttonView graph-card_${graph.id}`}>
-                  <Link className="btn-edit view" to={`/graphs/view/${graph.id}?public=1`} replace>Preview</Link>
+                  <Link className="btn-edit view" to={`/graphs/view/${graph.id}`} replace>Preview</Link>
                 </div>)
                 :
                 <div className={`buttonView graph-card_${graph.id}`}>
