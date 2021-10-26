@@ -51,22 +51,25 @@ class ImportCompare extends Component {
     const { importData: singleGraph2, customFields } = this.props;
     const singleGraph = Chart.getData();
     singleGraph.customFields = customFields;
+    singleGraph.title = this.props.title;
+    singleGraph2.title = 'Incoming data';
     const graph1CompareNodes = _.intersectionBy(singleGraph.nodes, singleGraph2.nodes, 'name');
     const selected = [...selectedNodes1, ...selectedNodes2];
     return (
       <div className="compareWrapper">
         <div className="compareListWrapper">
           <GraphCompareList
-            title={`Similar Nodes (${graph1CompareNodes.length}) `}
             singleGraph1={{ ...singleGraph, nodes: graph1CompareNodes }}
             singleGraph2={singleGraph2}
             onChange={this.handleChange}
             selected={selected}
-            width={640}
             scrollContainer=".ghImportModal"
+            importGraph
           />
         </div>
-        <Button className="mergeButton" onClick={this.merge}>Merge</Button>
+        <div className="mergeButton">
+          <button className="btn-classic" onClick={this.merge}>Merge</button>
+        </div>
       </div>
     );
   }
@@ -74,6 +77,7 @@ class ImportCompare extends Component {
 
 const mapStateToProps = (state) => ({
   customFields: state.graphs.singleGraph.customFields || {},
+  title: state.graphs.singleGraph.title || {},
 });
 const mapDispatchToProps = {
   setGraphCustomFields,

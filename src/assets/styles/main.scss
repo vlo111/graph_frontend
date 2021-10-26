@@ -3936,7 +3936,8 @@ body .gh__menu {
 .ghModalOverlay .ghImportModal {
   max-width: 718px;
   display: block !important;
-
+  overflow: hidden;
+  top: 10%;
 
   .compareListWrapper {
     margin-top: 0;
@@ -3948,8 +3949,7 @@ body .gh__menu {
     width: auto;
 
     .mergeButton {
-      margin-bottom: 20px;
-      margin-right: auto;
+      display: flex;justify-content: center;
     }
 
     .compareWrapper {
@@ -3986,6 +3986,10 @@ body .gh__menu {
         fill: $color-gray;
       }
     }
+  }
+
+  .prev-next {
+    gap: 15px;
   }
 }
 
@@ -5781,6 +5785,31 @@ img.preview-scaled {
   }
 }
 
+.importCompare {
+  margin-top: -25px;
+  margin-bottom: 0;
+
+  .title {
+    display: none !important;
+  }
+
+  .caption-right {
+    color: $color-gray;
+    font-style: italic;
+  }
+
+  .caption-left, .caption-right, .items, .checkWithLabel {
+    margin-left: 0 !important;
+  }
+
+  .caption-right {
+    justify-content: flex-start !important;
+  }
+
+  .graphCompareData tbody {
+    height: 360px;
+  }
+}
 
 .searchMediaContent {
   .searchData__graph {

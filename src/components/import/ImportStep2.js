@@ -112,11 +112,11 @@ class ImportStep2 extends Component {
             {importData.warnings?.length}
           </div>
         ) : null}
-        <div className="buttons">
-          <Button className="ghButton cancel transparent alt" onClick={this.back}>
+        <div className="buttons prev-next">
+          <button className="btn-delete" onClick={this.back}>
             Prev
-          </Button>
-          <Button className="alt main" onClick={this.import}>Import</Button>
+          </button>
+          <button className="btn-classic" onClick={this.import}>Import</button>
         </div>
       </>
     );
