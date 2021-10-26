@@ -4853,7 +4853,6 @@ body .gh__menu {
 }
 
 .linkedin {
-  // padding: 3px 72px 1px 14px;
 
   .company, .institution {
     color: #181818;
@@ -5002,7 +5001,6 @@ label.pull-left::before {
   top: 10% !important;
   height: auto !important;
   max-height: 84% !important;
-  max-width: 55% !important;
 
   .Wiki {
     margin: 0 auto;
@@ -5011,6 +5009,7 @@ label.pull-left::before {
   }
 
   .Wiki form {
+    display: flex;
     border-radius: 5px;
     border: 1px solid #7166f8;
   }
@@ -5027,9 +5026,8 @@ label.pull-left::before {
     border: none;
     background-color: #7166f8;
     padding: 0 20px;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 2px 2px 0;
     cursor: pointer;
-    margin-left: 50px !important;
   }
 
   .wikibutton {
@@ -5070,7 +5068,6 @@ label.pull-left::before {
 
   .wikiSearch {
     max-height: 150px;
-    // width: 650px;
     margin: 0 5px;
     padding: 0 20px;
     text-align: left;
@@ -5254,7 +5251,6 @@ label.pull-left::before {
 
   .wikiSearch {
     height: 130px;
-    // width: 650px;
     margin: 0 auto;
     text-align: left;
     margin-bottom: 10px !important;
