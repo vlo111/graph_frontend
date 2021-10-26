@@ -13,6 +13,7 @@ class GraphCardItem extends Component {
     graphs: PropTypes.object.isRequired,
     graphsList: PropTypes.array.isRequired,
     headerTools: PropTypes.object.isRequired,
+    myAccount: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -49,7 +50,7 @@ class GraphCardItem extends Component {
   }
 
   render() {
-    let { headerTools, graphs } = this.props;
+    let { headerTools, graphs, myAccount } = this.props;
     if (!graphs?.length) return null;
     return (
       <>
@@ -111,7 +112,7 @@ class GraphCardItem extends Component {
               onMouseOut={() => this.hideCardOver(graph.id)}
               className="graph-image"
             >
-              {(headerTools === "public") ? (
+              {(graph?.user?.id !== myAccount?.id && headerTools === 'public') ? (
                 <div className={`buttonView graph-card_${graph.id}`}>
                   <Link className="btn-edit view" to={`/graphs/view/${graph.id}`} replace>Preview</Link>
                 </div>)
@@ -137,6 +138,7 @@ class GraphCardItem extends Component {
 
 const mapStateToProps = (state) => ({
   graphsList: state.graphs.graphsList || [],
+  myAccount: state.account.myAccount,
 });
 
 const Container = connect(mapStateToProps)(GraphCardItem);
