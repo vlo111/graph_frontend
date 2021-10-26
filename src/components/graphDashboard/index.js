@@ -34,14 +34,13 @@ const Dashboard = ({ graph }) => {
             title="Save query"
             className="save_query"
           />
-          <Button
+          <button
             onClick={() => toggleGraphQuerySetting(!showGraphQuerySetting)}
             title="Save query"
             className={`${showGraphQuerySetting ? 'setting_queryBtn__active' : ''} setting_queryBtn btn-classic`}
           >
             <Icon value={<SettingSvg style={{ marginTop: '-2.5px' }} />} />
-
-          </Button>
+          </button>
         </>
       )}
       <Button
