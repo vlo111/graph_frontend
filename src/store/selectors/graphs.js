@@ -34,3 +34,11 @@ export const getGraphsCount = createSelector(
   getGraph,
   (items) => items.allGraghsCount,
 );
+export const currentUserRole = createSelector(
+  getGraph,
+  (items) => items.singleGraph.currentUserRole,
+);
+export const currentUserRolePermission = createSelector(
+  getGraph,
+  (items) => items.singleGraph.currentUserRole && ['admin', 'edit', 'edit_inside'].includes(items.singleGraph.currentUserRole),
+);
