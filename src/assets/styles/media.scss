@@ -108,7 +108,7 @@
 
   .pieChart {
     .recharts-surface {
-      height: 250px !important;
+      // height: 250px !important;
     }
   }
   .homeWithUser{
@@ -150,7 +150,7 @@
 
   .pieChart {
     .recharts-surface {
-      height: 200px !important;
+      // height: 200px !important;
     }
   }
 }
@@ -184,7 +184,7 @@
 
   .pieChart {
     .recharts-surface {
-      height: 180px !important;
+      // height: 180px !important;
     }
   }
   .homeWithUser .content .graphsList .graphsItem {
@@ -453,7 +453,7 @@
 @media (max-height: 750px) {
   .menu {
     overflow-y: scroll;
-    height: 89%;
+    height: 91vh;
 
 }
   .menu .containerMenu .collapse:hover{
@@ -494,16 +494,13 @@ margin-top: -5px;
   height: 100%;
   max-height: 86% !important;
 }
-.compareContent .compare-footer {
+  .compareContent .compare-footer {
     top: 500px!important;
-}
-.compareContent .compare-footer {
-    top: 500px!important;
-}
-.searchPageTabs .content .graphsCard .not_graphfound{
-   top: 15%;
-}
+  }
 
+  .compareContent .compare-footer {
+    top: 500px!important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -750,7 +747,7 @@ margin-top: -5px;
     width:60%;
   }
 }
-@media (max-width: 1030px) {
+@media (max-width: 10px) {
   .wikiModal .Wiki input {
     
     width:auto;
