@@ -9914,6 +9914,7 @@ details[open] summary:after {
       .name {
         font-size: 16px;
         color: $color-main;
+        cursor: pointer;
       }
 
       .description {
@@ -9926,6 +9927,7 @@ details[open] summary:after {
         text-align: justify;
         color: $color-query-description;
         width: 100%;
+        cursor: pointer;
       }
 
       .edit-query, .remove-query {

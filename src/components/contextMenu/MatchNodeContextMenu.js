@@ -91,7 +91,6 @@ class MatchNodeContextMenu extends Component {
     let { match, mathNodes, hiddenData } = this.state;
     mathNodes = ChartUtils.getMathNodeGroupedByNodeId(nodesPartial, id, true, hiddenData);
     match = ChartUtils.getMathNodeGroupedByNodeId(nodesPartial, id, false, hiddenData);
-    console.log(match, match);
     return (
       <>
         <div className="ghButton notClose">
