@@ -158,8 +158,10 @@ class Api {
     });
   }
 
-  static getGraphInfo(graphId) {
-    return api.get(`/graphs/info/${graphId}`);
+  static getGraphInfo(graphId, params = {}) {
+    return api.get(`/graphs/info/${graphId}`, {
+      params,
+    });
   }
 
   static getNodeCustomFields(graphId, nodeId) {
@@ -515,7 +517,7 @@ class Api {
   static confirmEmail(token) {
     return api.get(`/users/confirmation/${token}`);
   }
-
+  
   static getGraphQuery(graphId) {
     return api.get(`/query/${graphId}`);
   }

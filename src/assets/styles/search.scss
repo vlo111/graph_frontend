@@ -125,14 +125,14 @@
               }
             }
           } 
-          .not_found{
-             display: flex;
-             flex-direction: column;
-             justify-content: center;
-             align-items: center;
-             position: absolute;
-             top: 30%;
-             left: 40%;
+          .not_graphfound{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 30%;
+            left: 40%;
 
              h3{
                font-size: 50px;

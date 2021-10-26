@@ -55,6 +55,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
   return (
     <div className="graphListHeader">
       <div>
+      {headerTools !== 'public'  ? (
         <Popover
           showArrow
           triggerNode={<div className="ar-popover-trigger"><EllipsisVSvg /></div>}
@@ -100,6 +101,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
             )}
           </div>
         </Popover>
+        ): null}
       </div>
       {openShareModal && (
         <ShareModal

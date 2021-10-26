@@ -45,6 +45,7 @@ class App extends Component {
             <Route path="/search-graph" component={Search} />
             <Route path="/search-shared-graph" component={Search} />
 
+            <Route path="/public" exact component={Index} />
             <Route path="/templates" exact component={Index} />
             <Route path="/shared" exact component={Index} />
 

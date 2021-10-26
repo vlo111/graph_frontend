@@ -90,12 +90,36 @@
               }
           }
             }
-          h3{
+          .public_context{
+            display: flex;
+            align-items: center;
+            h3{
             margin-left: 23px;
             font-size: 18px;
             font-weight: 600;
             color:$color-main;
             }
+            .public_icon{
+              line-height: 0;
+              width: 35px;
+              height: 35px;
+              border-radius: 50%;
+              display: flex;
+              justify-content: center;
+              text-align: center;
+              background: #FFFFFF;
+              box-shadow: 0px 4px 12px rgb(0 0 0 / 25%);
+              position: relative;
+              z-index: 2;
+              left: 11px;
+      
+               i{
+                 color:$color-main;
+                 font-size: 23px;
+                 margin: auto;
+               }
+             }
+          }
          .graphListFooter {    
               .ghButton{
                 padding: 0 !important;
@@ -235,7 +259,8 @@
           }
        }
       }
-      .item .ghButton{
+      .item 
+      .ghButton{
         background-color: transparent !important;
         color: #9BA6B4;
         padding: 0 !important;
@@ -248,8 +273,12 @@
         border-radius: 5px !important;
         width: 120px;
         height: 44px;
-        
       }
+      i{
+        margin-right: 10px;
+        font-size: 20px;
+      }
+
      .item.active .ghButton {
       background: -webkit-linear-gradient(#F07760, #7166F8);
       -webkit-background-clip: text;
@@ -287,7 +316,7 @@
    box-shadow: 0px 0px 62px 2px rgba(136, 130, 209, 0.11);
    border-radius: 5px;
    width: 340px;
-   height: 380px;
+   height: 384px;
     &:hover{
       cursor: pointer;
       box-shadow: 0px 0px 62px 2px rgba(136, 130, 209, 0.33);
@@ -303,7 +332,7 @@
  }
  .graphs{
    width: 340px;
-   height: 380px;
+   height: 384px;
    background: #FFFFFF;
    box-shadow: 0px 0px 62px 2px rgba(136, 130, 209, 0.22);
    border-radius: 5px;
@@ -375,7 +404,36 @@
      
     }
     div{
-       h3{
+      .public_text{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        text-align: center;
+        align-items: center;
+        height: 35px;
+
+       .public_icon{
+        line-height: 0;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        background: #FFFFFF;
+        box-shadow: 0px 4px 12px rgb(0 0 0 / 25%);
+        position: relative;
+        top: 94px;
+        z-index: 2;
+        left: 11px;
+
+         i{
+           color:$color-main;
+           font-size: 23px;
+           margin: auto;
+         }
+       }
+       h3 {
          font-size: 20px;
          line-height: 0;
          color: $color-main ;
@@ -384,6 +442,7 @@
          .grpahTitle{
           display: none !important;
         }
+      }
       } 
       .descriptionGraph{
        margin-top: 20px;
