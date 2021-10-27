@@ -154,6 +154,8 @@ class GraphSettings extends Component {
   resize = () => {
     const arrowElement = document.getElementsByClassName('modal-arrow-top')[0];
 
+    if (!arrowElement) return;
+
     const x = document.querySelector('.GraphNames .dropdown')?.getBoundingClientRect().x;
 
     const width = document.querySelector('.GraphNames .dropdown')?.offsetWidth / 2;

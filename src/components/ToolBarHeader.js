@@ -149,7 +149,7 @@ class ToolBarHeader extends Component {
               )}
             </li>
             <li className="cursor">
-              <div className="kolo">
+              <div className="header-right-panel">
                 {updateLocation && (
                 <div
                   className={`cursor-header ${mouseTracker ? 'activeMouseTracker' : 'mouseTracker'}`}
