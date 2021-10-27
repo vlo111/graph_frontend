@@ -143,6 +143,24 @@ class GraphSettings extends Component {
     this.setState({ showModalTemplet });
   }
 
+  componentDidMount() {
+    window.addEventListener('resize', this.resize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resize);
+  }
+
+  resize = () => {
+    const arrowElement = document.getElementsByClassName('modal-arrow-top')[0];
+
+    const x = document.querySelector('.GraphNames .dropdown')?.getBoundingClientRect().x;
+
+    const width = document.querySelector('.GraphNames .dropdown')?.offsetWidth / 2;
+
+    arrowElement.style.left = `${(x + width) - 10}px`;
+  }
+
   render() {
     const { singleGraph } = this.props;
     const {
@@ -152,6 +170,12 @@ class GraphSettings extends Component {
     const isTemplate = singleGraph.status === 'template';
     const canSave = nodes.length && requestData.title;
     this.initValues(singleGraph);
+
+    const arrowStyle = {
+      marginTop: '15px',
+      left: `${(document.querySelector('.GraphNames .dropdown')?.getBoundingClientRect().x
+          + (document.querySelector('.GraphNames .dropdown')?.offsetWidth / 2)) - 10}px`,
+    };
 
     return (
 
@@ -169,6 +193,7 @@ class GraphSettings extends Component {
         </button>
         {showDropDown ? (
           <Outside onClick={this.toggleDropDown} exclude=".GraphNames">
+            <div className="modal-arrow-top" style={arrowStyle} />
             <div className="dropdown">
               <div className="graphname">
                 <span title={singleGraph.title} className="graphNames">
@@ -205,14 +230,6 @@ class GraphSettings extends Component {
                 <CreateGraphModal toggleModal={this.toggleModal} />
               ) : null}
 
-              {false ? (
-                <Select
-                  label="Status"
-                  value={GRAPH_STATUS.find((o) => o.value === requestData.status)}
-                  options={GRAPH_STATUS}
-                  onChange={(v) => this.handleChange('status', v?.value || 'active')}
-                />
-              ) : null}
               {isTemplate ? (
                 <>
                   <Button className="accent alt" onClick={() => this.saveGraph('active', true)} disabled={!canSave}>

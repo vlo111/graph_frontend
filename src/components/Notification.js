@@ -31,6 +31,7 @@ export default () => {
     }
   });
 
+
   return (
     <NotifyMe
       data={list}
@@ -41,7 +42,7 @@ export default () => {
       heading="Notification"
       sortedByKey={false}
       // showDate
-      size={30}
+      size={24}
       color="#7166F8"
       markAsReadFn={() => { dispatch(NotificationsUpdateRequest()); }}
     />

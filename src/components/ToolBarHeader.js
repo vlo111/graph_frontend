@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import ReactDOMServer from 'react-dom/server';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
@@ -16,6 +17,7 @@ import Notification from './Notification';
 import { KEY_CODES } from '../data/keyCodes';
 import ContributorsModal from './Contributors';
 import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
+import { ReactComponent as NotifySvg } from '../assets/images/icons/notification.svg';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
 
@@ -40,6 +42,8 @@ class ToolBarHeader extends Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
+
+    document.getElementsByClassName('notification')[0].innerHTML = ReactDOMServer.renderToString(<NotifySvg />);
   }
 
   componentWillUnmount() {
@@ -136,16 +140,6 @@ class ToolBarHeader extends Component {
               </span>
               )}
             </li>
-            <li className="cursor">
-              {updateLocation && (
-              <Button
-                icon={<CursorSvg />}
-                className={`transparent alt ${mouseTracker ? 'activeMouseTracker' : 'mouseTracker'}`}
-                onClick={() => this.handleCursor(mouseTracker)}
-                title={`${mouseTracker ? 'hide collaborators cursor' : 'show collaborators cursor'}`}
-              />
-              )}
-            </li>
             <li className="user">
               {updateLocation && (
               <div className="button-group social-button-group">
@@ -154,21 +148,32 @@ class ToolBarHeader extends Component {
               </div>
               )}
             </li>
-            <li>
-              {updateLocation && (
-              <div className="commentHeader">
-                <Button
-                  icon={<CommentSvg />}
-                  className="transparent footer-icon"
-                  onClick={() => this.openCommentModal(true)}
-                  title="Comments"
-                />
-              </div>
-              )}
-            </li>
-            <li className="notify_container">
-              <div className="notificationHeader">
-                <Notification />
+            <li className="cursor">
+              <div className="kolo">
+                {updateLocation && (
+                <div
+                  className={`cursor-header ${mouseTracker ? 'activeMouseTracker' : 'mouseTracker'}`}
+                  onClick={() => this.handleCursor(mouseTracker)}
+                  title={`${mouseTracker ? 'hide collaborators cursor' : 'show collaborators cursor'}`}
+                >
+                  <CursorSvg />
+                </div>
+                )}
+                {updateLocation && (
+                <div className="commentHeader">
+                  <Button
+                    icon={<CommentSvg />}
+                    className="transparent footer-icon"
+                    onClick={() => this.openCommentModal(true)}
+                    title="Comments"
+                  />
+                </div>
+                )}
+                <div className="notify_container">
+                  <div className="notificationHeader">
+                    <Notification />
+                  </div>
+                </div>
               </div>
             </li>
             <li className="user">

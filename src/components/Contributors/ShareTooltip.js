@@ -158,47 +158,56 @@ const ShareTooltip = React.memo(({
   const numberOfViewItems = showMoreView ? roles.view.length : limit;
   const subEditLimitCount = roles.edit.length - numberOfEditItems;
   const subViewLimitCount = roles.view.length - numberOfViewItems;
+
+  const arrowStyle = {
+    marginTop: '57px',
+    transform: 'translate(35px)',
+  };
+
   return (
 
-    <div className="contributors-container">
-      <ul className={`list-style-none d-flex flex-wrap mb-n2 groups ${showMoreEdit ? ' scrollY' : ' '}`}>
+      <>
+      <div className="modal-arrow-top" style={arrowStyle}/>
+        <div className="contributors-container">
+          <ul className={`list-style-none d-flex flex-wrap mb-n2 groups ${showMoreEdit ? ' scrollY' : ' '}`}>
         <span className="group-header">
           Can Edit
           {`(${roles?.edit?.length}) `}
         </span>
-        <div
-          id="edit"
-          className="group scrollY lineBorder"
-          onDragOver={(e) => handleDragOver(e)}
-          onDrop={(e) => { handleDrop(e, 'view'); }}
-        >
-          {roles.edit.slice(0, numberOfEditItems)}
-          {!isLabelShare && subEditLimitCount >= 0 ? (
-            <a className="more" onClick={handlerShowMoreEdit}>
-              {' '}
-              {showMoreEdit ? '- Less' : (subEditLimitCount > 0 ? `+ ${subEditLimitCount}` : '')}
-            </a>
-          ) : null}
-        </div>
-        <span className="group-header">
+            <div
+                id="edit"
+                className="group scrollY lineBorder"
+                onDragOver={(e) => handleDragOver(e)}
+                onDrop={(e) => { handleDrop(e, 'view'); }}
+            >
+              {roles.edit.slice(0, numberOfEditItems)}
+              {!isLabelShare && subEditLimitCount >= 0 ? (
+                  <a className="more" onClick={handlerShowMoreEdit}>
+                    {' '}
+                    {showMoreEdit ? '- Less' : (subEditLimitCount > 0 ? `+ ${subEditLimitCount}` : '')}
+                  </a>
+              ) : null}
+            </div>
+            <span className="group-header">
           Can View
-          {`(${roles?.view?.length}) `}
+              {`(${roles?.view?.length}) `}
         </span>
-        <div
-          id="view"
-          className="group scrollY "
-          onDragOver={(e) => handleDragOver(e)}
-          onDrop={(e) => { handleDrop(e, 'edit'); }}
-        >
-          {roles.view.slice(0, numberOfViewItems)}
-          {!isLabelShare && subViewLimitCount >= 0 ? (
-            <a className="more" onClick={handlerShowMoreView}>
-              {showMoreView ? '- Less' : (subViewLimitCount > 0 ? `+ ${subViewLimitCount}` : '')}
-            </a>
-          ) : null}
+            <div
+                id="view"
+                className="group scrollY "
+                onDragOver={(e) => handleDragOver(e)}
+                onDrop={(e) => { handleDrop(e, 'edit'); }}
+            >
+              {roles.view.slice(0, numberOfViewItems)}
+              {!isLabelShare && subViewLimitCount >= 0 ? (
+                  <a className="more" onClick={handlerShowMoreView}>
+                    {showMoreView ? '- Less' : (subViewLimitCount > 0 ? `+ ${subViewLimitCount}` : '')}
+                  </a>
+              ) : null}
+            </div>
+          </ul>
         </div>
-      </ul>
-    </div>
+      </>
   );
 });
 ShareTooltip.propTypes = {

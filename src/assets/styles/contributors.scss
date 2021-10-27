@@ -17,7 +17,7 @@
     background-color: white;
     border-radius: 3px;
     font-size: 14px;
-    box-shadow: 0 4px 16px rgb(5 0 56 / 12%);
+    border: 1px solid $color-arrow-border;
     transform-origin: top center;
     margin-left: -100px;
 
@@ -206,25 +206,24 @@
     }
   }
   .status-online {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     border: 1px solid white;
-    bottom: 15px;
+    bottom: 4px;
     position: absolute;
-    background-color: #59A635;
+    background-color: $color-green-online;
   }
 
   .status-in-graph {
-    width: 8px;
-    height: 8px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
-    border: 2px solid white;
-    bottom: 3px;
-    right: 3px;
+    border: 4px solid white;
+    bottom: 1px;
+    right: 1px;
     position: absolute;
     background-color: white;
-
   }
 }
 
