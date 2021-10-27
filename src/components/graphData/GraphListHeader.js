@@ -12,18 +12,18 @@ import { deleteGraphRequest as DeleteShareGraphRequest } from '../../store/actio
 import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellipsis.svg';
 import ShareModal from '../ShareModal';
 import EditGraphModal from '../chart/EditGraphModal'
-import { getAccount } from '../../store/selectors/account';;
+import { getId } from '../../store/selectors/account';;
 
 const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
   const dispatch = useDispatch();
-  const account = useSelector(getAccount);
+  const userId = useSelector(getId);
   // const [openEditModal, setOpenEditModal] = useState(false);
   const [openEditGraphModal, setOpenEditGraphModal] = useState(false);
   const [openShareModal, setOpenShareModal] = useState(false);
   const history = useHistory();
   const { page = 1, s: searchParam } = queryString.parse(window.location.search);
   const notification = false;
-
+  
   async function deleteGraph(graphId) {
     //  select data from localStorage
     const order = JSON.parse(localStorage.getItem('/')) || 'newest';
@@ -53,11 +53,11 @@ const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
       toast.info('Successfully deleted');
     }
   }, [dispatch]);
-  
+
   return (
     <div className="graphListHeader">
       <div>
-      {(graph?.user?.id === account?.myAccount?.id || headerTools === 'shared') ? (
+      {(graph.userId === userId || headerTools === 'shared') ? (
         <Popover
           showArrow
           triggerNode={<div className="ar-popover-trigger"><EllipsisVSvg /></div>}
