@@ -147,7 +147,7 @@ class LabelShare extends Component {
           />
         ))}
         {shareWithUsers.length > 0 && (
-          <Button className="saveShareGraph" color="accent" onClick={this.save}>
+          <Button className="saveShareGraph btn-classic"  onClick={this.save}>
             OK
           </Button>
         )}

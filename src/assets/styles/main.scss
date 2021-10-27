@@ -593,7 +593,7 @@ p {
   }
 
   &.accent {
-    background-color: $color-accent;
+
 
     &:hover {
       box-shadow: 0 3px 6px rgba($color-accent, 0.4);
@@ -1295,8 +1295,7 @@ p {
     overflow-x: hidden;
 
     .importButton {
-      display: flex;
-      justify-content: center;
+      margin-left: auto;
     }
 
     .addLocation {
@@ -3937,7 +3936,8 @@ body .gh__menu {
 .ghModalOverlay .ghImportModal {
   max-width: 718px;
   display: block !important;
-
+  overflow: hidden;
+  top: 10%;
 
   .compareListWrapper {
     margin-top: 0;
@@ -3949,8 +3949,7 @@ body .gh__menu {
     width: auto;
 
     .mergeButton {
-      margin-bottom: 20px;
-      margin-right: auto;
+      display: flex;justify-content: center;
     }
 
     .compareWrapper {
@@ -3987,6 +3986,10 @@ body .gh__menu {
         fill: $color-gray;
       }
     }
+  }
+
+  .prev-next {
+    gap: 15px;
   }
 }
 
@@ -4854,7 +4857,6 @@ body .gh__menu {
 }
 
 .linkedin {
-  // padding: 3px 72px 1px 14px;
 
   .company, .institution {
     color: #181818;
@@ -5003,7 +5005,6 @@ label.pull-left::before {
   top: 10% !important;
   height: auto !important;
   max-height: 84% !important;
-  max-width: 55% !important;
 
   .Wiki {
     margin: 0 auto;
@@ -5012,6 +5013,7 @@ label.pull-left::before {
   }
 
   .Wiki form {
+    display: flex;
     border-radius: 5px;
     border: 1px solid #7166f8;
   }
@@ -5028,9 +5030,8 @@ label.pull-left::before {
     border: none;
     background-color: #7166f8;
     padding: 0 20px;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 2px 2px 0;
     cursor: pointer;
-    margin-left: 50px !important;
   }
 
   .wikibutton {
@@ -5071,7 +5072,6 @@ label.pull-left::before {
 
   .wikiSearch {
     max-height: 150px;
-    // width: 650px;
     margin: 0 5px;
     padding: 0 20px;
     text-align: left;
@@ -5255,7 +5255,6 @@ label.pull-left::before {
 
   .wikiSearch {
     height: 130px;
-    // width: 650px;
     margin: 0 auto;
     text-align: left;
     margin-bottom: 10px !important;
@@ -5331,12 +5330,6 @@ label.pull-left::before {
       justify-content: space-between;
       padding: 0 1px;
 
-      .separator {
-        border-right: 1px solid #c3c6cc;
-        right: 15%;
-        position: absolute;
-        height: 4%;
-      }
 
       .icon {
         width: 20px;
@@ -5493,6 +5486,9 @@ label.pull-left::before {
 
   .buttons, h2, .ghFileInput, .ghFormField {
     width: auto !important;
+  }
+  .inserCancel{
+    margin: 0 auto;
   }
 }
 
@@ -5783,6 +5779,31 @@ img.preview-scaled {
   }
 }
 
+.importCompare {
+  margin-top: -25px;
+  margin-bottom: 0;
+
+  .title {
+    display: none !important;
+  }
+
+  .caption-right {
+    color: $color-gray;
+    font-style: italic;
+  }
+
+  .caption-left, .caption-right, .items, .checkWithLabel {
+    margin-left: 0 !important;
+  }
+
+  .caption-right {
+    justify-content: flex-start !important;
+  }
+
+  .graphCompareData tbody {
+    height: 360px;
+  }
+}
 
 .searchMediaContent {
   .searchData__graph {
@@ -8137,6 +8158,8 @@ img.preview-scaled {
 
   .import-input label {
     top: 25px;
+    display: flex;
+    align-items: center;
   }
 
   label {
@@ -8420,7 +8443,7 @@ img.preview-scaled {
 
       svg {
         position: relative;
-        top: -3px;
+        top: -5px;
       }
     }
 
@@ -8686,6 +8709,8 @@ img.preview-scaled {
 
 .linkedinModal {
   .import-input label {
+    display: flex;
+    align-items: center;
     margin-top: 15px;
     margin-right: 10px;
   }
@@ -9540,6 +9565,7 @@ details[open] summary:after {
     margin: 3px 0;
     min-height: 50px;
     padding: 5px 0;
+    min-width: 200px;
   }
 
   .group-header {
@@ -9571,11 +9597,6 @@ details[open] summary:after {
 .rc-tooltip {
   opacity: 10;
 }
-
-.rc-tooltip-content {
-  min-width: 200px;;
-}
-
 
 /// notification
 .notificationHeader {
@@ -9916,6 +9937,7 @@ details[open] summary:after {
       .name {
         font-size: 16px;
         color: $color-main;
+        cursor: pointer;
       }
 
       .description {
@@ -9928,6 +9950,7 @@ details[open] summary:after {
         text-align: justify;
         color: $color-query-description;
         width: 100%;
+        cursor: pointer;
       }
 
       .edit-query, .remove-query {

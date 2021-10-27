@@ -20,12 +20,9 @@ class LabelCompareItem extends Component {
   render() {
     const { node, checked, nodes } = this.props;
 
-    let nds = Chart.getNodes();
-    if (nodes) {
-      nds = nodes;
-    }
+    const nds = nodes || Chart.getNodes();
 
-    const customFields = CustomFields.getCustomField(node, nds);
+    const customFields = CustomFields.getCustomField(node, nds)?.filter((t) => t.name !== '_description');
 
     const uniqueCheckboxId = Math.random().toString(36).substring(7);
 

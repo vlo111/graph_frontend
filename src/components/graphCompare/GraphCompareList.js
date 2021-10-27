@@ -115,7 +115,7 @@ class GraphCompareList extends Component {
 
     render() {
       const {
-        singleGraph1, singleGraph2, title, selected, count,
+        singleGraph1, singleGraph2, title, selected, count, importGraph,
       } = this.props;
       const { selectAllLeft, selectAllRight } = this.state;
 
@@ -194,9 +194,9 @@ class GraphCompareList extends Component {
       ));
 
       return (
-        <div className="compareList">
+        <div className={`${importGraph ? 'importCompare' : ''} compareList`}>
 
-          <details className="listExpand">
+          <details className="listExpand" open={importGraph}>
             <summary
               onClick={() => {
                 Array.from(document.getElementsByClassName('listExpand')).forEach((el) => {
@@ -217,10 +217,13 @@ class GraphCompareList extends Component {
                         {singleGraph1?.title}
                       </span>
                       )}
+                      {!importGraph
+                      && (
                       <span className="similar-nodes">
                         {title}
                         {` (${count})`}
                       </span>
+                      )}
                     </th>
                     {isSimilar && (
                     <th>
@@ -237,7 +240,6 @@ class GraphCompareList extends Component {
                   {isSimilar ? '' : singleGraph2List}
                 </tbody>
               </table>
-
             </div>
           </details>
         </div>

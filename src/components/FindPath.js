@@ -38,7 +38,7 @@ class FindPath extends Component {
     const { nodesPartial, linksPartial } = singleGraph;
     let fNodes = [];
     const foundNodes = ChartUtils.nodeSearch(search, 15, nodesPartial).filter((p) => p.id !== start);
-    if (nodesPartial.length && linksPartial.length) {
+    if (nodesPartial?.length && linksPartial?.length) {
       const { components } = AnalysisUtils.getComponent(nodesPartial, linksPartial);
       const component = components.filter((c) => c.some((e) => e.id === start));
       fNodes = foundNodes.filter((d) => component[0]?.filter((n) => n.id === d.id).length > 0);

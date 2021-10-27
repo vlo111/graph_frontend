@@ -1,7 +1,7 @@
 import React, {
   useState, useCallback,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
@@ -11,17 +11,19 @@ import { deleteGraphRequest, getGraphsListRequest } from '../../store/actions/gr
 import { deleteGraphRequest as DeleteShareGraphRequest } from '../../store/actions/shareGraphs';
 import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellipsis.svg';
 import ShareModal from '../ShareModal';
-import EditGraphModal from '../chart/EditGraphModal';
+import EditGraphModal from '../chart/EditGraphModal'
+import { getId } from '../../store/selectors/account';;
 
-const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
+const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
   const dispatch = useDispatch();
+  const userId = useSelector(getId);
   // const [openEditModal, setOpenEditModal] = useState(false);
   const [openEditGraphModal, setOpenEditGraphModal] = useState(false);
   const [openShareModal, setOpenShareModal] = useState(false);
   const history = useHistory();
   const { page = 1, s: searchParam } = queryString.parse(window.location.search);
   const notification = false;
-
+  
   async function deleteGraph(graphId) {
     //  select data from localStorage
     const order = JSON.parse(localStorage.getItem('/')) || 'newest';
@@ -55,6 +57,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
   return (
     <div className="graphListHeader">
       <div>
+      {(graph.userId === userId || headerTools === 'shared') ? (
         <Popover
           showArrow
           triggerNode={<div className="ar-popover-trigger"><EllipsisVSvg /></div>}
@@ -100,6 +103,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
             )}
           </div>
         </Popover>
+        ): null}
       </div>
       {openShareModal && (
         <ShareModal
@@ -122,6 +126,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph }) => {
 
 GraphListHeader.propTypes = {
   graph: PropTypes.object.isRequired,
+  myAccount: PropTypes.object.isRequired,
 };
 
 export default React.memo(GraphListHeader);

@@ -31,7 +31,7 @@ import Crop from '../components/chart/Crop';
 import DataView from '../components/dataView/DataView';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
-import Dashboard from '../components/graphDashboard/Dashboard';
+import Dashboard from '../components/graphDashboard';
 
 class GraphView extends Component {
   static propTypes = {
@@ -56,8 +56,8 @@ class GraphView extends Component {
     this.props.setActiveButton('view');
     this.props.userGraphRequest();
     if (graphId) {
-      this.props.getSingleGraphRequest(graphId);
-      this.props.getGraphInfoRequest(graphId);
+      this.props.getSingleGraphRequest(graphId,{viewMode: true});
+      this.props.getGraphInfoRequest(graphId,{viewMode: true});
     }
   })
 

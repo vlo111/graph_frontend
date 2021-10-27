@@ -7,6 +7,7 @@ import Home from './Home';
 import VerticalTabs from '../components/PageTabs';
 import ScrollButton from '../components/ScrollButton';
 import Friends from './friends';
+import Public from './Public';
 
 class Index extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ render() {
           className="homePageTabs"
           // direction="horizontal"
           tabs={[
+            { to: '/public', name: 'Public', component: <Public mode={mode} /> },
             { to: '/', name: 'Home', component: <Home mode={mode} /> },
             {
               to: '/search', name: 'Search', hidden: true, component: <Home />,

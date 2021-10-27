@@ -23,7 +23,6 @@ class Home extends Component {
 
   getGraphsList = memoizeOne((page, s) => {
     const order = JSON.parse(localStorage.getItem('/')) || 'newest';
-
     this.props.getGraphsListRequest(page, { s, filter: order });
   })
 
@@ -37,7 +36,6 @@ class Home extends Component {
     } = this.props;
     const { page = 1, s } = queryString.parse(window.location.search);
     this.getGraphsList(page, s);
-
     return (
       <>
         <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`}>
@@ -56,7 +54,7 @@ class Home extends Component {
               </div>
             </div>
           ) : mode === 'list'
-            ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} headerTools="home" />}
+            ? <GraphListItem graphs={graphsList} headerTools="home" /> : <GraphCardItem graphs={graphsList} headerTools="home" />}
         </div>
         {graphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>

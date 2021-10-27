@@ -11,6 +11,7 @@ class GraphListItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
     graphsList: PropTypes.array.isRequired,
+    currentUserId: PropTypes.string.isRequired,
   }
 
   updateGraph = (graph) => {
@@ -29,13 +30,17 @@ class GraphListItem extends Component {
   }
 
   render() {
-    const { graphs, headerTools, mode } = this.props;
+    const { graphs, headerTools, mode, currentUserId } = this.props;
     if (!graphs?.length) return null;
     return (
       graphs ?
         graphs.map((graph) => (
           <article className="graphsItem" >
-            <div>
+            <div className='public_context'>
+              {(headerTools === 'home' && graph.publicState) &&
+                <div className='public_icon'>
+                  <i className="fa fa-globe"></i>
+                </div>}
               <Tooltip overlay={graph.title} placement="bottom" className='tooltipList'>
                 <h3> {graph.title.length > 30 ? `${graph.title.substring(0, 30)}...` : graph.title}</h3>
               </Tooltip>
@@ -58,10 +63,17 @@ class GraphListItem extends Component {
               </div>
             </div>
             <GraphListFooter graph={graph} />
-            <div className="buttonHidden">
-              <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>
-              <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
-            </div>
+            {(graph.userId !== currentUserId && headerTools === 'public') ? (
+              <div className="buttonHidden">
+                <Link className="btn-edit view" to={`/graphs/view/${graph.id}?public=1`} replace> Preview</Link>
+              </div>
+            ) :
+              <div className="buttonHidden">
+                {(graph?.share?.role !== 'view') && <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>}
+                <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
+              </div>
+
+            }
             <div className="unlucky">
 
             </div>
@@ -78,6 +90,7 @@ class GraphListItem extends Component {
 
 const mapStateToProps = (state) => ({
   graphsList: state.graphs.graphsList || [],
+  currentUserId: state.account.myAccount.id,
 });
 
 const Container = connect(mapStateToProps)(GraphListItem);

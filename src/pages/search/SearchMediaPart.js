@@ -204,7 +204,7 @@ class SearchMediaPart extends Component {
                     ))
                 ) : ((!setLimit && (!loading
                     ? <Loading />
-                    : <div className='not_found'>
+                    : <div className='not_graphfound'>
                         <img src={NotFound} />
                         <h3>Not Found</h3>
                     </div>)) || null)}
