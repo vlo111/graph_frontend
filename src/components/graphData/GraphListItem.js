@@ -11,6 +11,7 @@ class GraphListItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
     graphsList: PropTypes.array.isRequired,
+    currentUserId: PropTypes.string.isRequired,
   }
 
   updateGraph = (graph) => {
@@ -29,7 +30,7 @@ class GraphListItem extends Component {
   }
 
   render() {
-    const { graphs, headerTools, mode } = this.props;
+    const { graphs, headerTools, mode, currentUserId } = this.props;
     if (!graphs?.length) return null;
     return (
       graphs ?
@@ -62,7 +63,7 @@ class GraphListItem extends Component {
               </div>
             </div>
             <GraphListFooter graph={graph} />
-            {(headerTools === "public") ? (
+            {(graph.userId !== currentUserId && headerTools === 'public') ? (
               <div className="buttonHidden">
                 <Link className="btn-edit view" to={`/graphs/view/${graph.id}?public=1`} replace> Preview</Link>
               </div>
@@ -89,6 +90,7 @@ class GraphListItem extends Component {
 
 const mapStateToProps = (state) => ({
   graphsList: state.graphs.graphsList || [],
+  currentUserId: state.account.myAccount.id,
 });
 
 const Container = connect(mapStateToProps)(GraphListItem);
