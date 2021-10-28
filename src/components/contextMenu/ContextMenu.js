@@ -11,7 +11,7 @@ import ExpandNodeContextMenu from './ExpandNodeContextMenu';
 import QueryContextMenu from './QueryContextMenu';
 import MatchNodeContextMenu from './MatchNodeContextMenu';
 import LinkContextMenu from './LinkContextMenu';
-import NodeFullInfoContext from './NodeFullInfoContext';
+import TabContext from './TabContext';
 import LabelContextMenu from './LabelContextMenu';
 import Icon from '../form/Icon';
 import LabelUtils from '../../helpers/LabelUtils';
@@ -116,7 +116,7 @@ class ContextMenu extends Component {
     //   const el = ev.target.closest('.contentWrapper');
     //   const fieldName = el.getAttribute('data-field-name');
     //   if (fieldName) {
-    //     element = 'nodeFullInfo';
+    //     element = 'Tab';
     //     params = { fieldName };
     //   }
     // }
@@ -213,7 +213,7 @@ class ContextMenu extends Component {
               {viewLocation ? <QueryContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'link' ? <LinkContextMenu onClick={this.handleClick} params={params} /> : null}
               {show === 'label' ? <LabelContextMenu onClick={this.handleClick} params={params} /> : null}
-              {/* {show === 'nodeFullInfo' ? <NodeFullInfoContext onClick={this.handleClick} params={params} /> : null} */}
+              {/* {show === 'Tab' ? <TabContext onClick={this.handleClick} params={params} /> : null} */}
               {show === 'selectSquare' ? <SelectSquare onClick={this.handleClick} params={params} /> : null}
 
               {['label', 'chart'].includes(show) && !expand ? (

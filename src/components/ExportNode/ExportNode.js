@@ -3,7 +3,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import CustomFields from '../../helpers/CustomFields';
-import ConnectionDetails from '../nodeInfo/ConnectionDetails';
+import ConnectionDetails from '../tab/ConnectionDetails';
 import Chart from '../../Chart';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
 
@@ -27,7 +27,7 @@ class ExportNode extends Component {
     links = links.find((n) => n.source === node.id || n.target === node.id);
 
     return (
-      <div id="nodeFullInfo">
+      <div id="Tab">
         <div className="nodeFullContent">
           <div className="nodeHeader">
 
@@ -92,7 +92,7 @@ class ExportNode extends Component {
                     <div className="content-parts">
                       <h2>{item.name}</h2>
                       <p>{item.value}</p>
-                      
+
                     </div>
                   ))}
                 </div>

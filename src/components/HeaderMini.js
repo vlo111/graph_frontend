@@ -12,8 +12,8 @@ import Button from './form/Button';
 import CommentModal from './CommentNode';
 import ContextMenu from './contextMenu/ContextMenu';
 import CustomFields from '../helpers/CustomFields';
-import NodeImage from './nodeInfo/NodeImage';
-import NodeFullInfoModal from './nodeInfo/NodeFullInfoModal';
+import NodeImage from './tab/NodeImage';
+import TabModal from './tab/TabModal';
 import { getActionsCountRequest } from '../store/actions/commentNodes';
 import { setLoading, toggleNodeModal } from '../store/actions/app';
 import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
@@ -103,7 +103,7 @@ class HeaderMini extends Component {
   }
 
   getSettingsElements = (name) => ({
-    tableElement: document.getElementById('nodeFullInfo'),
+    tableElement: document.getElementById('Tab'),
     closeTabElement: document.getElementsByClassName('close')[0],
     name: document.getElementsByClassName('name')[0],
     item: document.getElementsByClassName(name)[0],
@@ -284,7 +284,7 @@ class HeaderMini extends Component {
         ) : null}
 
         {expand === '1' ? (
-          <NodeFullInfoModal node={node} />
+          <TabModal node={node} />
         ) : null}
 
       </header>

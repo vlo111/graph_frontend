@@ -14,7 +14,7 @@ import ChartUtils from '../../helpers/ChartUtils';
 import { getNodeCustomFieldsRequest } from '../../store/actions/graphs';
 import Loading from '../Loading';
 
-class NodeFullInfo extends Component {
+class Tab extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
@@ -41,7 +41,7 @@ class NodeFullInfo extends Component {
     this.setState({ loading: false });
 
     if (document.getElementsByClassName('ghModalFilters')[0]) {
-      const tabElement = document.getElementById('nodeFullInfo');
+      const tabElement = document.getElementById('Tab');
       tabElement.style.marginRight = '300px';
       tabElement.style.width = '30%';
     }
@@ -83,7 +83,7 @@ class NodeFullInfo extends Component {
 
     return (
       <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
-        <div id="nodeFullInfo" style={pathname.startsWith('/graphs/embed') ? { top: '0px' } : { top: '69px' }}>
+        <div id="Tab" style={pathname.startsWith('/graphs/embed') ? { top: '0px' } : { top: '69px' }}>
           <HeaderMini
             headerImg={node.icon ? node.icon : bgImage}
             node={node}
@@ -119,6 +119,6 @@ const mapDispatchToProps = {
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(NodeFullInfo);
+)(Tab);
 
 export default withRouter(Container);

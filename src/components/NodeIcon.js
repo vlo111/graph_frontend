@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChartUtils from '../helpers/ChartUtils';
-import NodeImage from './nodeInfo/NodeImage';
+import NodeImage from './tab/NodeImage';
 
 class NodeIcon extends Component {
   static propTypes = {
