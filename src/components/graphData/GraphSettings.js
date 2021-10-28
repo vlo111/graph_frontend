@@ -173,14 +173,19 @@ class GraphSettings extends Component {
     const canSave = nodes.length && requestData.title;
     this.initValues(singleGraph);
 
-    const arrowStyle = {
-      marginTop: '15px',
-      left: `${(document.querySelector('.GraphNames .dropdown')?.getBoundingClientRect().x
-          + (document.querySelector('.GraphNames .dropdown')?.offsetWidth / 2)) - 10}px`,
-    };
+    let arrowStyle = {};
+
+    const settingModalElement = document.querySelector('.GraphNames .dropdown');
+
+    if (settingModalElement) {
+      arrowStyle = {
+        marginTop: '15px',
+        left: `${(settingModalElement.getBoundingClientRect().x
+        + (settingModalElement.offsetWidth / 2)) - 10}px`,
+      };
+    }
 
     return (
-
       <div className="GraphNames">
         <button className="dropdown-btn" type="button" onClick={this.toggleDropDown}>
           <div className="graphNname1">
@@ -195,7 +200,7 @@ class GraphSettings extends Component {
         </button>
         {showDropDown ? (
           <Outside onClick={this.toggleDropDown} exclude=".GraphNames">
-            <div className="modal-arrow-top" style={arrowStyle} />
+            {settingModalElement && <div className="modal-arrow-top" style={arrowStyle} />}
             <div className="dropdown">
               <div className="graphname">
                 <span title={singleGraph.title} className="graphNames">
