@@ -3002,9 +3002,9 @@ p {
 
   .dropdown {
     border-radius: 3px;
-    background-color: #ffffff;
+    background-color: $color-white;
+    border: 1px solid $color-arrow-border;
     padding: 10px 10px 22px;
-    box-shadow: 0 4px 20px rgb(0 0 0 / 25%);
     width: 200px;
     position: fixed;
     left: 88%;
@@ -7870,6 +7870,7 @@ img.preview-scaled {
       width: 100%;
 
       button {
+        min-width: 130px;
         max-width: 150px;
         border-radius: 3px;
         font-size: 14px;
@@ -9622,24 +9623,6 @@ details[open] summary:after {
 /// notification
 
 .notify_container {
-
-  //.notification {
-  //  svg {
-  //    display: none;
-  //  }
-  //}
-
-  //.notification.show-count::after {
-  //  color: #F07760;
-  //  font-size: 11px;
-  //  top: 10px;
-  //  right: -8.5px;
-  //  border-radius: 85px;
-  //  background: #fff;
-  //  text-shadow: none;
-  //  border-left: 2px solid #7166f8;
-  //}
-
   .notificationHeader {
 
     #popover-contained {

@@ -20,6 +20,7 @@ import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
 import { ReactComponent as NotifySvg } from '../assets/images/icons/notification.svg';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
+import { ReactComponent as NotifyEmptySvg } from '../assets/images/icons/notificationComplete.svg';
 
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -43,7 +44,18 @@ class ToolBarHeader extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
 
-    document.getElementsByClassName('notification')[0].innerHTML = ReactDOMServer.renderToString(<NotifySvg />);
+    const notifyElement = document.querySelector('.notification');
+
+    setTimeout(() => {
+      if (notifyElement) {
+        const dataCount = notifyElement.getAttribute('data-count');
+        if (dataCount == 0) {
+          notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifyEmptySvg />);
+        } else {
+          notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifySvg />);
+        }
+      }
+    }, 100);
   }
 
   componentWillUnmount() {

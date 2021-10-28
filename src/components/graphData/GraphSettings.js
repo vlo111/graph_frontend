@@ -152,7 +152,7 @@ class GraphSettings extends Component {
   }
 
   resize = () => {
-    const arrowElement = document.getElementsByClassName('modal-arrow-top')[0];
+    const arrowElement = document.querySelector('.settingArrow');
 
     if (!arrowElement) return;
 
@@ -200,7 +200,7 @@ class GraphSettings extends Component {
         </button>
         {showDropDown ? (
           <Outside onClick={this.toggleDropDown} exclude=".GraphNames">
-            {settingModalElement && <div className="modal-arrow-top" style={arrowStyle} />}
+            {settingModalElement && <div className="modal-arrow-top settingArrow" style={arrowStyle} />}
             <div className="dropdown">
               <div className="graphname">
                 <span title={singleGraph.title} className="graphNames">

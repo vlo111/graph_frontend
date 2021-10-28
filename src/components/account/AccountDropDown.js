@@ -21,12 +21,34 @@ class AccountDropDown extends Component {
     super(props);
     this.state = {
       showDropDown: false,
+      arrowStyle: '',
     };
   }
 
   toggleDropDown = () => {
     const { showDropDown } = this.state;
+
     this.setState({ showDropDown: !showDropDown });
+  }
+
+  componentDidUpdate() {
+    const { showDropDown } = this.state;
+
+    const arrow = document.querySelector('.accountArrow');
+
+    if (arrow) {
+      if (showDropDown) {
+        const settingModalElement = document.querySelector('#accountDropDown .dropdown');
+
+        if (settingModalElement) {
+
+          arrow.style.left = `${(settingModalElement.getBoundingClientRect().x
+              + (settingModalElement.offsetWidth / 2)) + 20}px`;
+        }
+      } else {
+        arrow.style.display = 'none';
+      }
+    }
   }
 
   render() {
@@ -37,6 +59,7 @@ class AccountDropDown extends Component {
       }, match: { params: { graphId = '' } },
     } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
+
     return (
       <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
@@ -45,25 +68,28 @@ class AccountDropDown extends Component {
         </div>
 
         {showDropDown ? (
-          <Outside onClick={this.toggleDropDown} exclude="#accountDropDown">
-            <div className="dropdown">
-              <ul>
-                <li className="nameSign">
-                  {mini ? (
-                    <Icon value="fa-chevron-down" className="down" />
-                  ) : (
-                    <span className="name">{name}</span>
-                  )}
-                </li>
-                <li className="item">
-                  <Link to={`/profile/${id}`}>Account</Link>
-                </li>
-                <li className="item">
-                  <Link to="/sign/sign-out">Sign Out</Link>
-                </li>
-              </ul>
-            </div>
-          </Outside>
+          <>
+            <div className="modal-arrow-top accountArrow" style={{ top: '67px' }} />
+            <Outside onClick={this.toggleDropDown} exclude="#accountDropDown">
+              <div className="dropdown">
+                <ul>
+                  <li className="nameSign">
+                    {mini ? (
+                      <Icon value="fa-chevron-down" className="down" />
+                    ) : (
+                      <span className="name">{name}</span>
+                    )}
+                  </li>
+                  <li className="item">
+                    <Link to={`/profile/${id}`}>Account</Link>
+                  </li>
+                  <li className="item">
+                    <Link to="/sign/sign-out">Sign Out</Link>
+                  </li>
+                </ul>
+              </div>
+            </Outside>
+          </>
         ) : null}
 
       </div>
