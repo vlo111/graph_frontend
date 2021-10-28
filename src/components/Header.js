@@ -20,19 +20,19 @@ class Header extends Component {
       <header className="headerPanel" id="header">
         <div className="logo-graphs">
           <Link to="/">
-            <LogoSvg className="logo orange" />
+            <LogoSvg />
           </Link>
         </div>
         <SearchGraphs />
         <div className="start-graphs">
           <div className="buttonsWrapper">
-            <Button className="btn-startgraph" color="accent" onClick={this.startGraph}>
+            <button className="btn-classic" onClick={this.startGraph}>
               Start a graph
-            </Button>
+            </button>
 
-            <Button className="btn-comparegraph" color="accent" onClick={this.compareGraph}>
+            <button className="btn-classic__alt" onClick={this.compareGraph}>
               Compare graphs
-            </Button>
+            </button>
 
           </div>
         </div>

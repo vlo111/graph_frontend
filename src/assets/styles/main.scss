@@ -1113,8 +1113,6 @@ p {
 }
 
 .searchInputWrapper {
-  width: 90%;
-  justify-self: left;
 
   .graphSearch {
     width: 100%;
@@ -7854,67 +7852,27 @@ img.preview-scaled {
 
 #header {
   display: grid;
-  grid-template-columns: 8% 41% 25% 15% 7%;
-  grid-gap: 1%;
-  height: 75px;
+  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+  height: 56px;
   background-color: #fff;
   position: fixed;
   width: 100%;
   z-index: 6;
 
+  .ghFormField {
+    margin: 0;
+  }
+
   .start-graphs {
     .buttonsWrapper {
       display: flex;
+      justify-content: space-evenly;
+      width: 100%;
 
-      .btn-startgraph {
-        width: 216px;
-        height: 42px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-        line-height: normal;
-        font-weight: 400;
-        font-style: normal;
-        text-align: center;
-        font-size: 16px;
-        background-color: $color-main;
-        color: $color-white;
-        cursor: pointer;
-        border: none;
-
-        &:hover {
-          background-color: white;
-          border: 1px solid $color-main;
-          color: $color-main;
-        }
-      }
-
-      .btn-comparegraph {
-        width: 216px;
-        height: 42px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-        line-height: normal;
-        font-weight: 400;
-        font-style: normal;
-        text-align: center;
-        font-size: 16px;
-        background-color: #ffffff;
-        color: $color-main;
-        cursor: pointer;
-        border: solid 1px $color-main;
-
-        &:hover {
-          background-color: $color-main;
-          color: #ffffff;
-        }
-      }
-
-      .ghButton {
-        margin-right: 30px;
+      button {
+        max-width: 150px;
+        border-radius: 3px;
+        font-size: 14px;
       }
     }
   }
@@ -7927,22 +7885,45 @@ img.preview-scaled {
 
     input {
       height: 33px;
-      width: 500px !important;
       color: $color-graph-name !important;
-      border-radius: 5px;
+      border-radius: 3px;
       border: 1px solid #B3ADF5;
     }
   }
 
   .logo-graphs, .searchInputWrapper, .start-graphs, .notify_container, .signOut {
     display: flex;
-    justify-content: center !important;
+    justify-content: center;
     align-items: center;
+    width: 100%;
+  }
+
+  .searchInputWrapper {
+    justify-content: flex-start;
+  }
+
+  .notify_container, .signOut {
+    justify-content: flex-end;
+  }
+
+  #accountDropDown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42%;
   }
 
   .logo-graphs {
+    justify-content: flex-start;
+
+    a {
+      min-width: 41%;
+      display: flex;
+      justify-content: center;
+    }
+
     .logo {
-      min-width: 100px;
+      min-width: 100%;
     }
   }
 }
@@ -8217,9 +8198,10 @@ img.preview-scaled {
     color: $color-white;
   }
 
-  &.alt {
+  &__alt {
     background: $color-white;
     color: $color-main;
+    border: 1px solid $color-main;
 
     &:hover {
       background-color: $color-main;
