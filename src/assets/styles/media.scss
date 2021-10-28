@@ -16,41 +16,7 @@
 
 }
 
-@media screen and (min-width: 1700px) {
-  #header {
-
-    .signOut {
-      right: 6%;
-    }
-
-    .right-elements {
-      right: 5%;
-    }
-  }
-
-
-  #header-on-view-graph {
-    grid-template-columns: 22% auto auto auto 25%;
-
-  }
-}
-
 @media screen and (max-width: 1699px) {
-  #header {
-    .signOut {
-      right: 2%;
-    }
-
-    .right-elements {
-      right: 30px;
-    }
-    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
-      width: 200px !important;
-      font-size: 14px !important;
-      margin-right: 20px !important;
-    }
-  }
-
   .account-edit{
     width: 80px;
     height: 80px;
@@ -65,41 +31,9 @@
     cursor: pointer;
     color: blue;
   }
-
-  #header-on-view-graph {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr) );
-
-    .graphs {
-      position: relative;
-    }
-
-    .searchInputWrapper {
-      width: 50%;
-    }
-
-    .legends {
-      left: 19%;
-    }
-    .graphNames{
-      color:$color-main;
-      font-size:16px;
-      text-align:center;
-    }
-
-  }
 }
 
 @media screen and (max-width: 1600px) {
-  #header{
-    grid-template-columns: 10% 42% 36% 5% 7% !important;
-    grid-gap:0 !important;
-    .graphSearch>input{
-      width: 400px !important;
-    }
-    #accountDropDown .dropdown {
-      left: 86%;
-  }
-  }
   .barContainer {
     .recharts-surface {
       width: 500px;
@@ -128,20 +62,6 @@
 }
 
 @media screen and (max-width: 1500px) {
-  #header{
-    .graphSearch>input{
-      width: 350px !important;
-    }
-    #accountDropDown .dropdown {
-      left: 85%;
-   }
-   .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
-     width: 190px !important;
-     font-size: 14px !important;
-     margin-right: 15px !important;
-   }
-  }
-
   .barContainer {
     .recharts-surface {
       width: 450px !important;
@@ -156,25 +76,6 @@
 }
 
 @media screen and (max-width: 1400px) {
-  #header {
-    .graphSearch>input{
-      width: 300px !important;
-    }
-    .signOut {
-      right: 1%;
-    }
-
-    .right-elements {
-      right: -48px;
-    }
-
-    .ghButton {
-      padding: 12px 14px;
-    }
-    #accountDropDown .dropdown {
-      left: 84%;
-    }
-  }
 
   .barContainer {
     .recharts-surface {
@@ -202,25 +103,6 @@
 }
 
 @media screen and (max-width: 1200px){
-  #header{
-    grid-template-columns: 16% 34% 36% 7% 7% !important;
-    #accountDropDown {
-    .accountInfo{
-      svg{
-        display: none;
-      }
-    }
-      left: 82%;
-  }
-  .graphSearch>input{
-    width: 280px !important;
-  }
-  .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
-    width:160px !important;
-    font-size: 14px !important;
-    margin-right: 10px !important;
-  }
-  }
   .homeWithUser{
     .content{
       .graphsList .graphsItem{
@@ -273,16 +155,6 @@
       left: auto;
       padding: 0;
       border-radius: 15px;
-    }
-  }
-  #header{
-    .graphSearch>input{
-      width: 200px !important;
-    }
-    .start-graphs>.buttonsWrapper> .btn-startgraph , .btn-comparegraph {
-      width: 130px !important;
-      font-size: 13px !important;
-      margin-right: 7px !important;
     }
   }
 
@@ -357,29 +229,9 @@
   }
 }
 
-
 @media only screen and (max-height: 900px) {
 
   #nodeFullInfo {
-
-    #headerMini {
-      height: 265px;
-
-      .headerBanner {
-        height: 200px;
-        margin-top: 15px;
-
-        img {
-          max-width: 170px;
-          max-height: 170px;
-        }
-      }
-
-      button {
-        margin-left: 15px;
-      }
-    }
-
     .nodeFullContent .nodeTabs .contentWrapper {
 
       .no-tabs .no-tab-content {
@@ -749,7 +601,7 @@ margin-top: -5px;
 }
 @media (max-width: 10px) {
   .wikiModal .Wiki input {
-    
+
     width:auto;
   }
 }
