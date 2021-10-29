@@ -333,26 +333,26 @@ class Utils {
     return array;
   }
 
-    /**
-     * Generate id uuidv4 version 4
-     * @returns {string} // uniq id
-     */
-    static generateUUID = () => uuid()
+  /**
+   * Generate id uuidv4 version 4
+   * @returns {string} // uniq id
+   */
+  static generateUUID = () => uuid()
 
-    /**
-     * Tab editor element
-     * @param customField
-     * @returns {{documentElement: NodeListOf<Element>}}
-     */
-    static tabHtmlFile = (customField) => {
-      const tempDiv = document.createElement('div');
+  /**
+   * Tab editor element
+   * @param customField
+   * @returns {{documentElement: NodeListOf<Element>}}
+   */
+  static tabHtmlFile = (customField) => {
+    const tempDiv = document.createElement('div');
 
-      tempDiv.innerHTML = customField.trim();
+    tempDiv.innerHTML = customField.trim();
 
-      const documentElement = tempDiv.querySelectorAll('.document');
+    const documentElement = tempDiv.querySelectorAll('.document');
 
-      return { documentElement };
-    }
+    return { documentElement };
+  }
 
   /**
    * check img on path
@@ -361,6 +361,26 @@ class Utils {
    */
   static isImg = (link) => !_.isEmpty(['png', 'jpg', 'jpeg', 'gif', 'svg', 'jfif']
     .filter((v) => link.includes(v)))
+
+  /**
+     *
+     * @param {*} first
+     * @param {*} second
+     * @returns
+     */
+  static findSimilarity = (first, second) => {
+    const firstLength = first.length;
+    const secondLength = second.length;
+    const smaller = firstLength < secondLength ? first : second;
+    const greater = smaller === first ? second : first;
+    const count = smaller.reduce((index, val) => {
+      if (greater.includes(val)) {
+        return ++index;
+      }
+      return index;
+    }, 0);
+    return (count / Math.min(firstLength, secondLength)) * 100;
+  };
 }
 
 export default Utils;

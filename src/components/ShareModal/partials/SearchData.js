@@ -10,8 +10,7 @@ const SearchData = ({
 }) => {
   const dispatch = useDispatch();
   const shareGraphsList = useSelector(shareGraphs);
-  let graph = useSelector((state) => state.graphs.singleGraph);
-  graph = !isEmpty(graph) ? graph : singleGraph;
+  const graph = singleGraph;
 
   const optionSelected = () => {
     if (option.id !== user.id && shareGraphsList.findIndex((item) => item.userId === option.id) === -1) {
@@ -43,6 +42,7 @@ SearchData.propTypes = {
   setSelect: PropTypes.func.isRequired,
   option: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
+  singleGraph: PropTypes.object.isRequired,
 };
 
 export default SearchData;

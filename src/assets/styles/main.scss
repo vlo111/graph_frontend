@@ -4151,6 +4151,18 @@ body .gh__menu {
       fill: #9BA6B4;
     }
   }
+  .footer-icon-transparent {
+    color: #9BA6B4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+
+    &:focus, :hover {
+      border: none;
+      outline: none;
+    }
+  }
 
   .ghButton {
     padding: 20px 10px 0;

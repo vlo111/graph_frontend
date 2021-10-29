@@ -11,7 +11,7 @@ import ConnectionDetails from './ConnectionDetails';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import NodeImage from './NodeImage';
 
-class NodeFullInfo extends Component {
+class Tab extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
     node: PropTypes.object.isRequired,
@@ -36,7 +36,7 @@ class NodeFullInfo extends Component {
     return (
       <Modal
         className="ghModal"
-        overlayClassName="ghModalOverlay modalNodeFullInfoOverlay"
+        overlayClassName="ghModalOverlay modalTabOverlay"
         isOpen
         onRequestClose={this.closeNodeInfoModal}
       >
@@ -87,6 +87,6 @@ const mapDispatchToProps = {};
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(NodeFullInfo);
+)(Tab);
 
 export default withRouter(Container);
