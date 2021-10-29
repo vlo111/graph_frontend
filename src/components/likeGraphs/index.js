@@ -26,6 +26,9 @@ const Likes = React.memo(({ graphId, actionsCount }) => {
     await dispatch(getActionsCountRequest(graphId));
   }, [dispatch, graphId]);
   const onMouseEnter = () => {
+    if (graphId) {
+      dispatch(getActionsCountRequest(graphId));
+    }
     dispatch(getLikeGraphsListRequest(graphId));
   };
   return (
