@@ -76,9 +76,9 @@ class EditGraphModal extends Component {
   }
 
   async componentDidMount() {
-    const { match: { params: { graphId } }, singleGraph: { defaultImage }, singleGraph } = this.props;
+    const { match: { params: { graphId } }, singleGraph: { defaultImage, publicState }, singleGraph } = this.props;
     const svg = ChartUtils.getChartSvg();
-    if (!defaultImage && graphId) {
+    if (!defaultImage && graphId && !publicState) {
       if (!(singleGraph?.nodesPartial?.length > 500)) {
         await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
         this.props.getSingleGraphRequest(graphId);
@@ -138,7 +138,6 @@ class EditGraphModal extends Component {
     if (graph) {
       singleGraph = graph;
     }
-
     const { id: graphId } = singleGraph;
 
     this.props.setLoading(true);
@@ -244,7 +243,6 @@ class EditGraphModal extends Component {
               <div>
                 <Switch
                   onChange={this.onChange}
-                  onClick={this.onChange}
                   disabled={disabled}
                   defaultChecked={publicState}
                 />

@@ -106,14 +106,16 @@ class SearchModal extends Component {
    * @returns
    */
   searchResults = async (search) => {
-    const { graphId, publicState, currentUserId, userId } = this.props;
+    const {
+      graphId, publicState, currentUserId, userId,
+    } = this.props;
     const { checkBoxValues } = this.state;
     const argument = {
       s: search,
       graphId,
       findNode: false,
       searchParameters: checkBoxValues,
-      isOwner: publicState ? publicState : currentUserId === userId,
+      isOwner: publicState || currentUserId === userId,
     };
     const searchResults = await this.props.getGraphNodesRequest(1, argument);
     return searchResults.payload.data;
@@ -319,7 +321,6 @@ class SearchModal extends Component {
   showSelectedNodes = (keep = false) => {
     const { chosenNodes } = this.state;
     const { linksPartial, nodesPartial } = this.props;
-
     const oldNodes = Chart.getNodes();
     const oldLinks = Chart.getLinks();
     let nodes = chosenNodes;
