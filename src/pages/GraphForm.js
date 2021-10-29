@@ -19,7 +19,7 @@ import Zoom from '../components/Zoom';
 import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
 import MapsGraph from '../components/maps/MapsGraph';
-import NodeFullInfo from '../components/nodeInfo/NodeFullInfo';
+import Tab from '../components/tabs/Tab';
 import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
@@ -111,7 +111,7 @@ class GraphForm extends Component {
           <DataImport />
           <FindNode />
           <NodeDescription />
-          <NodeFullInfo />
+          <Tab />
           <AutoPlay />
           <Zoom />
           <LabelTooltip />

@@ -3,7 +3,7 @@ import { Jodit } from 'jodit';
 import 'jodit/build/jodit.min.css';
 import PropTypes from 'prop-types';
 import ReactDOMServer from 'react-dom/server';
-import InsertMediaTabsModal from '../nodeInfo/InsertMediaTabsModal';
+import InsertMediaTabsModal from '../tabs/InsertMediaTabsModal';
 import EditorMedia from './EditorMedia';
 
 class Editor extends Component {

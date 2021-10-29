@@ -29,7 +29,7 @@ class AnalyticalTab extends Component {
 
       return (
         <Outside exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
-          <div id="nodeFullInfo" className="analyticalResult">
+          <div id="Tab" className="analyticalResult">
             <h3 className="shortest-tab-title">Shortest path</h3>
             <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.goToBackHandle} />
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../form/Button';
 
-class NodeFullInfoContext extends Component {
+class TabContext extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
@@ -29,4 +29,4 @@ class NodeFullInfoContext extends Component {
   }
 }
 
-export default NodeFullInfoContext;
+export default TabContext;

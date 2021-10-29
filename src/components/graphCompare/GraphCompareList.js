@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import LabelCompareItem from '../labelCopy/LabelCompareItem';
 import Checkbox from '../form/Checkbox';
 
 class GraphCompareList extends Component {
     static defaultProps = {
       width: Math.min(window.innerWidth - 220, 1024),
+    }
+
+    static propTypes = {
+      singleGraph1: PropTypes.object.isRequired,
+      singleGraph2: PropTypes.object.isRequired,
+      selectedNodes1: PropTypes.object.isRequired,
+      selectedNodes2: PropTypes.object.isRequired,
+      onChange: PropTypes.func.isRequired,
+      title: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
+      selected: PropTypes.array.isRequired,
     }
 
     constructor(props) {
@@ -29,6 +41,37 @@ class GraphCompareList extends Component {
           selectAllLeft: totalSelected1,
           selectAllRight: totalSelected2,
         });
+      }
+    }
+
+    handleChange(node, checked, col) {
+      this.props.onChange(node, checked, col);
+      let {
+        selectedNodes1, selectedNodes2,
+      } = this.props;
+      const {
+        singleGraph1, singleGraph2,
+      } = this.props;
+
+      if (singleGraph1 && col === 1) {
+        node.fx = node.x;
+        node.fy = node.y;
+        if (checked) {
+          selectedNodes1.push(node);
+        } else {
+          selectedNodes1 = selectedNodes1.filter((nd) => nd.fx !== node.fx && nd.fy !== node.fy);
+        }
+        const allNodesAreSelected = !singleGraph1.nodes.find((nd) => !!selectedNodes1.find((n) => nd.x === n.fx && nd.y === n.fy) !== true);
+        this.setState({ selectAllLeft: allNodesAreSelected });
+      }
+      if (singleGraph2 && col === 2) {
+        if (checked) {
+          selectedNodes2.push(node);
+        } else {
+          selectedNodes2 = selectedNodes2.filter((nd) => nd.fx !== node.fx && nd.fy !== node.fy);
+        }
+        const allNodesAreSelected = !singleGraph2.nodes.find((nd) => !selectedNodes2.find((n) => nd.fx === n.fx && nd.fy === n.fy));
+        this.setState({ selectAllRight: allNodesAreSelected });
       }
     }
 
@@ -70,39 +113,10 @@ class GraphCompareList extends Component {
       }
     }
 
-    handleChange(node, checked, col) {
-      { this.props.onChange(node, checked, col); }
-      let {
-        singleGraph1, singleGraph2, selectedNodes1, selectedNodes2,
-      } = this.props;
-      if (!(singleGraph1 && singleGraph2) || !(selectedNodes1 && selectedNodes2)) return;
-      if (singleGraph1 && col === 1) {
-        node.fx = node.x;
-        node.fy = node.y;
-        if (checked) {
-          selectedNodes1.push(node);
-        } else {
-          selectedNodes1 = selectedNodes1.filter((nd) => nd.fx !== node.fx && nd.fy !== node.fy);
-        }
-        const allNodesAreSelected = !singleGraph1.nodes.find((nd) => !!selectedNodes1.find((n) => nd.x == n.fx && nd.y == n.fy) !== true);
-        this.setState({ selectAllLeft: allNodesAreSelected });
-      }
-      if (singleGraph2 && col === 2) {
-        if (checked) {
-          selectedNodes2.push(node);
-        } else {
-          selectedNodes2 = selectedNodes2.filter((nd) => nd.fx !== node.fx && nd.fy !== node.fy);
-        }
-        const allNodesAreSelected = !singleGraph2.nodes.find((nd) => !selectedNodes2.find((n) => nd.fx == n.fx && nd.fy == n.fy));
-        this.setState({ selectAllRight: allNodesAreSelected });
-      }
-    }
-
     render() {
       const {
         singleGraph1, singleGraph2, title, selected, count, importGraph,
       } = this.props;
-
       const { selectAllLeft, selectAllRight } = this.state;
 
       if (_.isEmpty(singleGraph1?.nodes) && _.isEmpty(singleGraph2?.nodes)) {

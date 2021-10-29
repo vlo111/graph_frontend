@@ -1,4 +1,4 @@
-#nodeFullInfo {
+#Tab {
   position: fixed;
   overflow: hidden;
   background: $color-white;
@@ -177,7 +177,7 @@
   }
 }
 
-.modalNodeFullInfoOverlay {
+.modalTabOverlay {
   z-index: 101 !important;
 
   .ghModal {
