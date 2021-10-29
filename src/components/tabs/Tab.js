@@ -83,7 +83,7 @@ class Tab extends Component {
 
     return (
       <Outside onClick={this.closeNodeInfo} exclude=".ghModalOverlay,.contextmenuOverlay,.jodit">
-        <div id="Tab" style={pathname.startsWith('/graphs/embed') ? { top: '0px' } : { top: '69px' }}>
+        <div id="Tab" style={pathname.startsWith('/graphs/embed') ? { top: '0px' } : { top: '56px' }}>
           <HeaderMini
             headerImg={node.icon ? node.icon : bgImage}
             node={node}
