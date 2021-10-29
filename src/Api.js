@@ -537,6 +537,14 @@ class Api {
   static updateGraphQuery(id, title, description) {
     return api.put(`/query/update/${id}`, { title, description });
   }
+
+  static getLikeOrDislike(graphId, liked) {
+    return api.put(`/like-graphs/likes/${graphId}`, { liked });
+  }
+
+  static getLikeGraphsList(graphId) {
+    return api.get(`/like-graphs/${graphId}`);
+  }
 }
 
 export default Api;

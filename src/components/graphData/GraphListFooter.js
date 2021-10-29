@@ -1,18 +1,18 @@
-import React, {
-  useEffect, Suspense, useState,
-} from 'react';
+import React, { useEffect, Suspense, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip/es';
-import { ReactComponent as ShareSvg } from '../../assets/images/icons/shareGraph.svg';
-import { ReactComponent as CommentSvg } from '../../assets/images/icons/commentGraph.svg';
-import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/viewGraph.svg';
 import { getActionsCount } from '../../store/selectors/graphs';
 import { getActionsCountRequest } from '../../store/actions/graphs';
 import Button from '../form/Button';
 import ShareTooltip from '../Contributors/ShareTooltip';
 import CommentModal from '../CommentModal';
 import EmbedButton from '../embed/EmbedButton';
+import LikeGraphs from '../likeGraphs';
+
+import { ReactComponent as ShareSvg } from '../../assets/images/icons/shareGraph.svg';
+import { ReactComponent as CommentSvg } from '../../assets/images/icons/commentGraph.svg';
+import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/viewGraph.svg';
 
 const TooltipContent = ({ graphId, graphOwner }) => (
   <Suspense fallback={<div>Loading...</div>}>
@@ -36,9 +36,7 @@ const GraphListFooter = ({ graph }) => {
   }, [dispatch, graph.id]);
   return (
     <div className="graphListFooter">
-      {/* <Button icon={<HeartSvg />} className="transparent footer-icon"> */}
-      {/*  <span className="graphListFooter__count">{actionsCount?.likes}</span> */}
-      {/* </Button> */}
+      <LikeGraphs graphId={graph.id} actionsCount={actionsCount} key={graph.id} />
       <Button
         icon={<CommentSvg />}
         className="transparent footer-icon"
