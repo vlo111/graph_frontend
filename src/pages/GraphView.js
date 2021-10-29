@@ -18,7 +18,7 @@ import SearchModal from '../components/search/ExploreModal';
 import ContextMenu from '../components/contextMenu/ContextMenu';
 import Zoom from '../components/Zoom';
 import NodeDescription from '../components/NodeDescription';
-import Tab from '../components/tab/Tab';
+import Tab from '../components/tabs/Tab';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
 import ToolBarFooter from '../components/ToolBarFooter';

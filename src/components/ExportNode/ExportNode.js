@@ -3,7 +3,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import CustomFields from '../../helpers/CustomFields';
-import ConnectionDetails from '../tab/ConnectionDetails';
+import ConnectionDetails from '../tabs/ConnectionDetails';
 import Chart from '../../Chart';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
 
