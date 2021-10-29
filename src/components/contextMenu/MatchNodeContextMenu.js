@@ -10,6 +10,7 @@ import ChartUtils from '../../helpers/ChartUtils';
 import { ReactComponent as MachSvg } from '../../assets/images/icons/match.svg';
 import { ReactComponent as EyeBallSvg } from '../../assets/images/icons/eye-ball.svg';
 import { ReactComponent as LinksSvg } from '../../assets/images/icons/link.svg';
+import Utils from '../../helpers/Utils';
 
 class MatchNodeContextMenu extends Component {
   static propTypes = {
@@ -60,10 +61,11 @@ class MatchNodeContextMenu extends Component {
     if (!node || !checkNode) return null;
 
     const nodes = nodesPartial.filter((d) => ((type ? d.type === type : true)
-           && d.keywords.length > 0 && checkNode.keywords.length > 0 && (d.keywords.some((n) => checkNode.keywords.includes(n)))
+      && d.keywords.length > 0 && checkNode.keywords.length > 0 && (
+        Utils.findSimilarity(d.keywords, checkNode.keywords) >= 50)
 
     )
-          || chartNodes && chartNodes.some((n) => n.id === d.id));
+      || (chartNodes && chartNodes.some((n) => n.id === d.id)));
 
     // let links = linksPartial.filter((l) =>
     //     (nodesPartial && nodesPartial.some((n) =>
@@ -106,7 +108,6 @@ class MatchNodeContextMenu extends Component {
                   <span className="node-item">
                     <span className="indicator" style={{ backgroundColor: ChartUtils.getLinkColorByType(nodesPartial, type) }} />
                     {type}
-                    {' '}
                     {`[${n.length}]`}
                   </span>
                 </span>

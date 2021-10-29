@@ -305,9 +305,11 @@ class ChartUtils {
     const chartNodes = Chart.getNodes();
     if (!node) return null;
     const nodes = nodesPartial.filter((l) => (
-      node.keywords.length > 0 && l.keywords.length > 0 && (l.keywords.some((n) => node.keywords.includes(n)))
-    )
-         && chartNodes && !chartNodes.find((s) => (s.id === l.id)));
+      (
+
+        node.keywords.length > 0 && l.keywords.length > 0 && (Utils.findSimilarity(l.keywords, node.keywords) >= 50)
+      )
+      && chartNodes && !chartNodes.find((s) => (s.id === l.id))));
     if (group) return _.groupBy(nodes, 'type');
     return nodes?.length;
   }
