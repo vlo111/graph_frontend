@@ -9993,6 +9993,15 @@ details[open] summary:after {
         font-weight: bold;
         font-size: 16px;
       }
+      .transparent {
+        position: absolute;
+        right: 8px;
+        margin-top: -18px;
+
+        svg {
+          height: 13px !important;
+        }
+      }
     }
   }
 }

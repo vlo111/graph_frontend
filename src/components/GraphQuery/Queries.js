@@ -100,12 +100,6 @@ const Queries = ({ graphId, closeModal }) => {
                   onClick={() => handleDelete(item.id)}
                   title="Delete"
                 />
-                <Button
-                  icon={<DeleteSvg style={{ height: 30 }} />}
-                  className="transparent remove-query"
-                  onClick={() => handleDelete(item.id)}
-                  title="Delete"
-                />
               </div>
               <div className="description" onClick={() => showQueryData(item.id)}>{item.description}</div>
             </div>
