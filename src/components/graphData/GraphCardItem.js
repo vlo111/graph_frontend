@@ -50,7 +50,7 @@ class GraphCardItem extends Component {
   }
 
   render() {
-    let { headerTools, graphs, currentUserId } = this.props;
+    const { headerTools, graphs, currentUserId } = this.props;
     if (!graphs?.length) return null;
     return (
       <>
@@ -85,20 +85,21 @@ class GraphCardItem extends Component {
               </div>
             </div>
             <div>
-              <div className='public_text'>
-                <Tooltip overlay={graph.title} placement="bottom" >
+              <div className="public_text">
+                <Tooltip overlay={graph.title} placement="bottom">
                   <h3>
                     {' '}
                     {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
                   </h3>
                 </Tooltip>
-                {(headerTools === 'home' && graph.publicState) &&
-                  <div className='public_icon'>
-                    <i className="fa fa-globe"></i>
-                  </div>}
+                {(headerTools === 'home' && graph.publicState) && (
+                  <div className="public_icon">
+                    <i className="fa fa-globe" />
+                  </div>
+                )}
               </div>
               <div className="descriptionGraph">
-                <Tooltip overlay={graph.description} placement="bottom" >
+                <Tooltip overlay={graph.description} placement="bottom">
                   <span>
                     {' '}
                     {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
@@ -114,14 +115,15 @@ class GraphCardItem extends Component {
             >
               {(graph.userId !== currentUserId && headerTools === 'public') ? (
                 <div className={`buttonView graph-card_${graph.id}`}>
-                  <Link className="btn-edit view" to={`/graphs/view/${graph.id}`} replace>Preview</Link>
-                </div>)
-                :
-                <div className={`buttonView graph-card_${graph.id}`}>
-                  {(graph?.share?.role !== 'view') && <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>}
-                  <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
+                  <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace>Preview</Link>
                 </div>
-              }
+              )
+                : (
+                  <div className={`buttonView graph-card_${graph.id}`}>
+                    {(graph?.share?.role !== 'view') && <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>}
+                    <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
+                  </div>
+                )}
               <img
                 className="thumbnail"
                 src={`${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
