@@ -15,8 +15,9 @@ import ModalConfirmation from '../../helpers/ModalConfirmation';
 import Chart from '../../Chart';
 import { ReactComponent as DeleteSvg } from '../../assets/images/icons/delete.svg';
 import { ReactComponent as QuerySvg } from '../../assets/images/icons/query.svg';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
-const Queries = ({ graphId }) => {
+const Queries = ({ graphId, closeModal }) => {
   const dispatch = useDispatch();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [deleteId, setdeleteId] = useState(null);
@@ -55,6 +56,11 @@ const Queries = ({ graphId }) => {
       <div className="query-modal">
         <div className="query-modal__title">
           <p className="name">Query</p>
+          <Button
+            icon={<CloseSvg style={{ height: 30 }} />}
+            onClick={() => closeModal()}
+            className="transparent"
+          />
         </div>
         <div className="query-modal__list">
           {queryLIst && queryLIst.map((item, index) => (
@@ -94,6 +100,12 @@ const Queries = ({ graphId }) => {
                   onClick={() => handleDelete(item.id)}
                   title="Delete"
                 />
+                <Button
+                  icon={<DeleteSvg style={{ height: 30 }} />}
+                  className="transparent remove-query"
+                  onClick={() => handleDelete(item.id)}
+                  title="Delete"
+                />
               </div>
               <div className="description" onClick={() => showQueryData(item.id)}>{item.description}</div>
             </div>
@@ -120,6 +132,7 @@ const Queries = ({ graphId }) => {
 
 Queries.propTypes = {
   graphId: PropTypes.string.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default Queries;

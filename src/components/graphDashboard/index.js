@@ -6,9 +6,13 @@ import AddQuery from '../GraphQuery/AddQuery';
 import Queries from '../GraphQuery/Queries';
 import { getSingleGraphRequest } from '../../store/actions/graphs';
 import { currentUserRolePermission } from '../../store/selectors/graphs';
+import Icon from '../form/Icon';
+import Api from '../../Api';
 import { ReactComponent as SaveSvg } from '../../assets/images/icons/save.svg';
 import { ReactComponent as SettingSvg } from '../../assets/images/icons/setting.svg';
-import Icon from '../form/Icon';
+import { ReactComponent as ExportSvg } from '../../assets/images/icons/export.svg';
+import Chart from '../../Chart';
+import ChartUtils from '../../helpers/ChartUtils';
 
 const Dashboard = ({ graph }) => {
   const [showGraphQuery, setshowGraphQuery] = useState(false);
@@ -22,7 +26,20 @@ const Dashboard = ({ graph }) => {
     setShowGraphQuerySetting(togle);
   };
   const toggleGraphReset = () => {
-    dispatch(getSingleGraphRequest(graph.id, { viewMode: true }));
+    dispatch(getSingleGraphRequest(graph.id));
+  };
+
+  const exportGraphData = (graphId) => {
+    const nodes = Chart.getNodes();
+    const links = Chart.getLinks();
+    const labels = Chart.getLabels();
+
+    const nodesId = nodes.map((n) => n.id);
+    const linksId = ChartUtils.cleanLinks(links, nodes).map((l) => l.id);
+    const labelsId = labels.map((l) => l.id);
+    Api.download('xlsx', {
+      graphId, nodesId, linksId, labelsId,
+    });
   };
   return (
     <div className="dashboards">
@@ -33,6 +50,12 @@ const Dashboard = ({ graph }) => {
             onClick={() => toggleGraphQuery(true)}
             title="Save query"
             className="save_query"
+          />
+          <Button
+            icon={<ExportSvg style={{ height: 30 }} />}
+            onClick={() => exportGraphData(graph.id)}
+            title="Export"
+            className="export"
           />
           <button
             onClick={() => toggleGraphQuerySetting(!showGraphQuerySetting)}
@@ -61,6 +84,7 @@ const Dashboard = ({ graph }) => {
       {showGraphQuerySetting ? (
         <Queries
           graphId={graph.id}
+          closeModal={() => setShowGraphQuerySetting(false)}
         />
       ) : null}
     </div>

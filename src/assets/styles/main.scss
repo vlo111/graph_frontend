@@ -9914,7 +9914,17 @@ details[open] summary:after {
       margin-top: -2px;
     }
   }
+  .export {
+    position: absolute;
+    left: 520px;
+    top: 75px;
+    background-color: white;
+    height: 38px;
 
+    svg {
+      margin-top: -2px;
+    }
+  }
   .query-modal {
     width: 400px;
     min-height: 200px;
