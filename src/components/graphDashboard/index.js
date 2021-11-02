@@ -26,7 +26,7 @@ const Dashboard = ({ graph }) => {
     setShowGraphQuerySetting(togle);
   };
   const toggleGraphReset = () => {
-    dispatch(getSingleGraphRequest(graph.id));
+    dispatch(getSingleGraphRequest(graph.id, { viewMode: true }));
   };
 
   const exportGraphData = (graphId) => {

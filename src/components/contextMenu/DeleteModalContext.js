@@ -158,10 +158,10 @@ class AddLabelModal extends Component {
               {['selectSquare.delete', 'selectNode.delete'].includes(data.type) ? 'part' : (params.type == 'folder' ? 'folder' : data.type.replace('.delete', ''))}
             </p>
             <div className="buttons">
-              <Button className="ghButton cancel transparent alt" onClick={this.closeDelete}>
+              <Button className="btn-delete" onClick={this.closeDelete}>
                 Cancel
               </Button>
-              <Button className="ghButton accent alt" type="submit" onClick={this.remove}>
+              <Button className="btn-classic" type="submit" onClick={this.remove}>
                 Remove
               </Button>
             </div>
