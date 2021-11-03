@@ -85,19 +85,12 @@ class GraphCardItem extends Component {
               </div>
             </div>
             <div>
-              <div className="public_text">
-                <Tooltip overlay={graph.title} placement="bottom">
-                  <h3>
-                    {' '}
-                    {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
-                  </h3>
-                </Tooltip>
-                {(headerTools === 'home' && graph.publicState) && (
-                  <div className="public_icon">
-                    <i className="fa fa-globe" />
-                  </div>
-                )}
-              </div>
+              <Tooltip overlay={graph.title} placement="bottom">
+                <h3>
+                  {' '}
+                  {graph.title.length > 23 ? `${graph.title.substring(0, 23)}...` : graph.title}
+                </h3>
+              </Tooltip>
               <div className="descriptionGraph">
                 <Tooltip overlay={graph.description} placement="bottom">
                   <span>
@@ -131,6 +124,11 @@ class GraphCardItem extends Component {
               />
             </div>
             <GraphListFooter graph={graph} />
+            {(headerTools === 'home' && graph.publicState) && (
+            <div className="public_icon">
+              <i className="fa fa-globe" />
+            </div>
+            )}
           </article>
         ))}
       </>
