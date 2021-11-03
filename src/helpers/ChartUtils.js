@@ -413,7 +413,7 @@ class ChartUtils {
     if (d.status === 'draft') {
       return ChartUtils.linkDraftColor;
     }
-    if (!this.linkColorObj[d.type]) {
+    if (!this.linkColorObj[d.type] || d.color) {
       if (d.color) {
         this.linkColorArr = this.linkColorArr.filter((c) => d.color !== c);
         this.linkColorObj[d.type] = d.color;
