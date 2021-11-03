@@ -309,7 +309,9 @@ class ChartUtils {
 
         node.keywords.length > 0 && l.keywords.length > 0 && (Utils.findSimilarity(l.keywords, node.keywords) >= 50)
       )
-      && chartNodes && !chartNodes.find((s) => (s.id === l.id))));
+      && l.id !== node.id
+      // && chartNodes && !chartNodes.find((s) => (s.id === l.id))
+    ));
     if (group) return _.groupBy(nodes, 'type');
     return nodes?.length;
   }
