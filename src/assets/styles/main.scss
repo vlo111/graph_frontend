@@ -983,6 +983,16 @@ p {
       letter-spacing: 2px;
       transform: rotate(-15deg);
     }
+    .match {
+      font-family: $font-family;
+      dominant-baseline: central;
+      stroke-width: 0.3;
+      text-anchor: middle;
+      transform: rotate(-15deg);
+      width: 100px;
+      height: 200px;
+      background-color: red;
+    }
 
     &.hidden {
       opacity: 0.2 !important;
