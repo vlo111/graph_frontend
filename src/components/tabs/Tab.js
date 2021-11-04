@@ -33,11 +33,12 @@ class Tab extends Component {
     };
   }
 
-  getCustomFields = memoizeOne(async (graphId, nodeId) => {
+  getCustomFields = memoizeOne((graphId, nodeId) => {
+    const { singleGraph: { publicState } } = this.props;
     this.setState({ loading: false });
     if (!graphId || !nodeId) return;
     this.setState({ loading: true });
-    await this.props.getNodeCustomFieldsRequest(graphId, nodeId);
+    this.props.getNodeCustomFieldsRequest(graphId, nodeId, { isPublic: publicState });
     this.setState({ loading: false });
 
     if (document.getElementsByClassName('ghModalFilters')[0]) {

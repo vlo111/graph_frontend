@@ -83,7 +83,7 @@ class NodeTabsContent extends Component {
           </Button>
           ))}
 
-          {activeTab !== '_description'
+          {activeTab !== '_description' && editable
           && (
           <Button
             icon={<DeleteSvg />}

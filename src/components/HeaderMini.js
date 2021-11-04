@@ -41,6 +41,7 @@ class HeaderMini extends Component {
     queryObj: PropTypes.func.isRequired,
     title: PropTypes.func.isRequired,
     nodeCustomFields: PropTypes.func.isRequired,
+    currentUserId: PropTypes.string.isRequired,
     // name: PropTypes.func.isRequired,
   }
 
@@ -191,6 +192,7 @@ class HeaderMini extends Component {
     const { showGraphUsersInfo, showNodeComment } = this.state;
     const {
       editable,
+      currentUserId,
       singleGraph,
       commentsCount, node, title,
       nodeCustomFields, match: { params: { graphId = '', token = '' } }, expand, queryObj,
@@ -207,14 +209,16 @@ class HeaderMini extends Component {
             >
               Expand
             </Button>
-            <ExportNodeTabs
-              node={node}
-              tabs={nodeCustomFields}
-              nodeData={this.state.nodeData}
-              image={this.state.image}
-              title={title}
+            {currentUserId === singleGraph.userId ? (
+              <ExportNodeTabs
+                node={node}
+                tabs={nodeCustomFields}
+                nodeData={this.state.nodeData}
+                image={this.state.image}
+                title={title}
               // name={name}
-            />
+              />
+            ):null }
             {editable ? (
               <Button
                 icon={<EditSvg />}
@@ -230,13 +234,15 @@ class HeaderMini extends Component {
           <div className="frame">
             <NodeImage node={node} />
             <div className="bottom-icons">
-              <Button
-                icon={<InfoSvg />}
-                title="Info"
-                onClick={() => this.toggleGraphUsersInfo(true)}
-              >
-                History
-              </Button>
+              {currentUserId === singleGraph.userId ? (
+                <Button
+                  icon={<InfoSvg />}
+                  title="Info"
+                  onClick={() => this.toggleGraphUsersInfo(true)}
+                >
+                  History
+                </Button>
+              ) : null}
               <Button
                 icon={<CommentSvg />}
                 title="Comment"
@@ -296,6 +302,7 @@ const mapStateToProps = (state) => ({
   singleGraph: state.graphs.singleGraph,
   commentsCount: state.commentNodes.commentCount.commentsCount,
   nodeCustomFields: state.graphs.nodeCustomFields,
+  currentUserId: state.account.myAccount.id,
 });
 
 const mapDispatchToProps = {
