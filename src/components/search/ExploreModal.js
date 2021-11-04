@@ -347,7 +347,7 @@ class SearchModal extends Component {
     if (keep) {
       links = links.concat(oldLinks);
     }
-    // links = linksPartial.filter((link) => links.some((oldLink) => oldLink.id === link.id));
+    links = linksPartial.filter((link) => links.some((oldLink) => oldLink.id === link.id));
     // if links are in folder they have fake source and target
     links = links.filter((link) => {
       if (link.source.startsWith('fake')) {

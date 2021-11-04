@@ -747,6 +747,7 @@ class Chart {
     this.renderNodeText(transform.k);
     this.renderIcons(transform.k);
     this.renderNodeStatusText(transform.k);
+    this.renderNodeMatchText(transform.k);
   }
 
   static setAreaBoardZoom(transform) {
@@ -1799,6 +1800,7 @@ class Chart {
       this.renderLinkStatusText();
       this.renderNodeText();
       this.renderNodeStatusText();
+      this.renderNodeMatchText();
       this.renderNewLink();
       this.renderSelectSquare();
       this.nodeFilter();
@@ -2478,6 +2480,45 @@ class Chart {
       .attr('class', 'draft')
       .attr('font-size', (d) => 20.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
       .text('draft');
+  }
+
+  static renderNodeMatchText(scale) {
+    if (!scale && !this.wrapper.empty()) {
+      // eslint-disable-next-line no-param-reassign
+      scale = +this.wrapper.attr('data-scale') || 1;
+    }
+
+    // this.nodesWrapper.selectAll('.node text').remove();
+
+    this.nodesWrapper.selectAll('.node')
+      .filter((d) => {
+        if (!d.new || !d.match) {
+          return false;
+        }
+        if (scale >= 0.8) {
+          return true;
+        }
+        if (this.radiusList[d.index] < 11) {
+          return false;
+        }
+        return true;
+      })
+      .append('text')
+      .attr('y', 3)
+      .attr('x', 45)
+      .attr('fill', (d) => {
+        if (d.match > 90) { return '#19993D'; }
+        if (d.match > 70) { return '#007F24'; }
+        return '#00FF48';
+      })
+      .attr('stroke', (d) => {
+        if (d.match > 90) { return '#19993D'; }
+        if (d.match > 70) { return '#007F24'; }
+        return '#00FF48';
+      })
+      .attr('class', 'match')
+      .attr('font-size', (d) => 20.5 + (this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4)
+      .text((d) => `${d.match}%`);
   }
 
   static renderLinkText(links = []) {

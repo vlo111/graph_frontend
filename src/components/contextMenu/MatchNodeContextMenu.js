@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { tree } from 'd3-hierarchy';
 import { getSingleGraphRequest } from '../../store/actions/graphs';
 import Button from '../form/Button';
 import Icon from '../form/Icon';
@@ -56,29 +57,31 @@ class MatchNodeContextMenu extends Component {
     const chartNodes = Chart.getNodes();
     const chartLinks = Chart.getLinks();
     const labels = [];
+    const matchNodes = [];
     const node = nodesPartial && nodesPartial.find((d) => (type ? d.type === type : true));
     const checkNode = Chart.getNodes().find((d) => d.id === id);
     if (!node || !checkNode) return null;
 
-    const nodes = nodesPartial.filter((d) => ((type ? d.type === type : true)
-      && d.keywords.length > 0 && checkNode.keywords.length > 0 && (
-        Utils.findSimilarity(d.keywords, checkNode.keywords) >= 50)
+    const nodes = nodesPartial.filter((d) => {
+      if (((type ? d.type === type : true)
+        && d.keywords.length > 0 && checkNode.keywords.length > 0 && (
+          Utils.findSimilarity(d.keywords, checkNode.keywords) >= 50
 
-    )
-      || (chartNodes && chartNodes.some((n) => n.id === d.id)));
-
-    // let links = linksPartial.filter((l) =>
-    //     (nodesPartial && nodesPartial.some((n) =>
-
-    //   ( (type ? n.type === type : true) ||
-    //    chartNodes && chartNodes.some((d) => n.id === d.id) )
-    //    &&
-
-    //     (l.target === n.id || l.source === n.id)))
-    //     ||
-    //       chartLinks && chartLinks.some((n) => n.id === l.id)
-    //   );
-
+        ))) {
+        d.match = Utils.findSimilarity(d.keywords, checkNode.keywords);
+        d.new = true;
+        return true;
+      }
+      if (chartNodes && chartNodes.some((n) => n.id === d.id)) {
+        if (d.id !== id) {
+          d.match = Utils.findSimilarity(d.keywords, checkNode.keywords);
+          d.new = true;
+        }
+        return true;
+      }
+      d.new = false;
+      return false;
+    });
     const links = ChartUtils.cleanLinks(linksPartial, nodes);
     Chart.render({ nodes, links, labels }, { ignoreAutoSave: true, isAutoPosition: true });
     ChartUtils.autoScaleTimeOut();
