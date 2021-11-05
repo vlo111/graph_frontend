@@ -343,7 +343,7 @@ class SearchModal extends Component {
       }
       return false;
     });
-    let links = Chart.getLinksBetweenNodes(nodes, chosenNodes, linksPartial);
+    let links = ChartUtils.cleanLinks(linksPartial, chosenNodes);
     if (keep) {
       links = links.concat(oldLinks);
     }
@@ -357,10 +357,10 @@ class SearchModal extends Component {
       if (!keep) {
         link.new = true;
         return true;
-      } if (keep && oldLinks.some((lk) => lk.id === link.id)) {
+      } if (keep && oldLinks.some((l) => l.id === link.id)) {
         link.new = false;
         return true;
-      } if (!oldLinks.some((lk) => lk.id === link.id)) {
+      } if (!oldLinks.some((l) => l.id === link.id)) {
         link.new = true;
         return true;
       }
@@ -482,17 +482,7 @@ class SearchModal extends Component {
               <div className="searchFieldCheckBox">
                 <div className="chooseSearchFields" onClick={this.toggleFilter}>
                   Filters
-                  <svg
-                    className="dropDownSvg"
-                    width="16"
-                    height="10"
-                    viewBox="0 0 16 10"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M15.313 0H0.692176C0.25364 0 0.00877185 0.463023 0.280353 0.779125L7.59077 9.25601C7.80002 9.49865 8.20294 9.49865 8.41442 9.25601L15.7248 0.779125C15.9964 0.463023 15.7516 0 15.313 0Z" fill="#7166F8" />
-                  </svg>
-
+                  <DownSvg className="dropDownSvg" />
                 </div>
                 <div className="searchFieldCheckBoxList">
                   <div
