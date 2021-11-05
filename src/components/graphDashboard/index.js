@@ -11,6 +11,8 @@ import Api from '../../Api';
 import { ReactComponent as SaveSvg } from '../../assets/images/icons/save.svg';
 import { ReactComponent as SettingSvg } from '../../assets/images/icons/setting.svg';
 import { ReactComponent as ExportSvg } from '../../assets/images/icons/export.svg';
+import { ReactComponent as LegendSvg } from '../../assets/images/icons/legend.svg';
+import Legend from '../Legend';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 
@@ -41,10 +43,11 @@ const Dashboard = ({ graph }) => {
       graphId, nodesId, linksId, labelsId,
     });
   };
+  
   return (
     <div className="dashboards">
       {userPermission && (
-        <>
+        <>      
           <Button
             icon={<SaveSvg style={{ height: 30 }} />}
             onClick={() => toggleGraphQuery(true)}
@@ -73,7 +76,11 @@ const Dashboard = ({ graph }) => {
       >
         Reset
       </Button>
-
+      <button className="legendView" >  
+      <div className="asds">
+           <Legend />
+      </div>    
+      </button>
       {showGraphQuery ? (
 
         <AddQuery

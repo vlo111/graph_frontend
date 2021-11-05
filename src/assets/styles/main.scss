@@ -3538,7 +3538,7 @@ body .gh__menu {
 #autoPlay {
   position: absolute;
   bottom: 70px;
-  right: 17px;
+  right: 29px;
   background-color: $color-white;
   width: 40px;
   height: 40px;
@@ -6522,7 +6522,7 @@ img.preview-scaled {
   position: fixed;
   z-index: 4;
   bottom: 15px;
-  right: 15px;
+  right: 29px;
   background: #ffffff;
   overflow: hidden;
   transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
@@ -7493,6 +7493,9 @@ img.preview-scaled {
 
 .legendButton {
   display: flex;
+  .legendSvg{
+    display: none;
+  }
 }
 
 .GraphNames {
@@ -7749,7 +7752,7 @@ img.preview-scaled {
 
   ul {
     list-style: none;
-    max-height: 300px;
+    height: 350px;
     overflow: auto;
   }
 
@@ -7764,9 +7767,10 @@ img.preview-scaled {
 
     .dropdown {
       display: block;
-      position: fixed;
-      width: 200px;
-      top: 75px;
+    position: fixed;
+    width: 200px;
+    top: 70px;
+    height: 91vh;
     }
   }
 
@@ -7779,9 +7783,12 @@ img.preview-scaled {
     padding: 12px;
     display: flex;
     outline: none;
+    border-radius: 3px;
+    height: 45px;
 
     .carretNew {
       margin-left: 7px;
+      margin-top: -2px;
     }
   }
 
@@ -7795,8 +7802,11 @@ img.preview-scaled {
     box-shadow: 0px 11px 20px rgb(0 0 0 / 25%);
 
     h4 {
-      margin-bottom: 10px;
-      font-size: 15px;
+      margin-left: 7px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #424242;
+    display: flex;
     }
 
     .indicator {
@@ -7806,7 +7816,9 @@ img.preview-scaled {
     a {
       max-width: calc(100% - 32px);
       text-decoration: none;
-      color: #0D0905;
+      color: #FFFFFF !important;
+      font-weight: 400;
+      font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -7816,9 +7828,13 @@ img.preview-scaled {
       margin-bottom: 15px;
 
       .node-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 16px;
+        display: -webkit-inline-box;
+        padding: 2px 12px;
+        border-radius: 50px;
+        margin-bottom: 10px;
+        margin-left: 5px;
+        float: left;
+       
 
         .indicator {
           height: 10px;
@@ -7832,9 +7848,18 @@ img.preview-scaled {
         a {
           cursor: auto;
         }
+        .nodeCount{
+          margin-left: 2px;
+        }
       }
     }
 
+  }
+  .borderLegends{
+    border-bottom: 4px solid #edecff;
+    margin-top: 20px;
+    position: relative;
+    top: -10px;
   }
 }
 
@@ -8611,9 +8636,15 @@ img.preview-scaled {
 }
 
 .connection-item {
-  display: flex;
-  align-items: center;
   margin-bottom: 16px;
+  border-radius: 50px;
+  display: -webkit-inline-box;
+  padding: 0 10px;
+  margin-left: 5px !important;
+  float: left;
+  .linkColor{
+    color: #424242 !important;
+  }
 
   .indicator {
     height: 2px;
@@ -9902,6 +9933,13 @@ details[open] summary:after {
       color: white;
     }
   }
+  .legendView{
+    position: absolute;
+    right: 165px;
+    border: none;
+    top: 75px;
+  width: none;
+  }
 
   .save_query {
     position: absolute;
@@ -10004,6 +10042,30 @@ details[open] summary:after {
       }
     }
   }
+ .asds{
+ 
+      height: 45px;
+      .legends.open .dropdown{
+        top: 125px !important;
+        height: 74% !important;
+      }
+      .legends.open .dropdown{
+        width: 188px !important
+      }
+      .legends ul{
+        height: 275px !important;
+      }
+      .legends .dropdown-btn h6 , .carretNew{
+        display: none !important;
+      }
+      .legendSvg{
+        display: flex !important;
+    position: relative;
+    top: -4px !important;
+    left: 2px !important;
+      }
+
+ }
 }
 
 .createQueryModal {
