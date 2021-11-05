@@ -50,7 +50,7 @@ class App extends Component {
             <Route path="/shared" exact component={Index} />
 
             <Route path="/graphs/thumbnail/:graphId/:userId" component={GraphThumbnail} />
-            <Route path="/graphs/view/:graphId" component={GraphView} />
+            <Route path="/graphs/view/:graphId" component={GraphView} history={this.props.history} />
             <Route path="/graphs/preview/:graphId" component={GraphView} />
             <Route path="/graphs/filter/:graphId" component={GraphView} />
             <Route path="/graphs/create" component={GraphForm} />

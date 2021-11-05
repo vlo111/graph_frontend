@@ -186,7 +186,7 @@ class Sortable extends Component {
 
           <div className="add-tab">
             {editable && !node.sourceId && node.customFields?.length < CustomFields.LIMIT ? (
-              <Tooltip overlay="Add New Tab" placement="top">
+              <Tooltip overlay="Add New Index" placement="top">
                 <Button
                   className="addTab tab-button"
                   icon={<PlusSvg />}

@@ -524,21 +524,14 @@ p {
 
   border: none;
   color: $color-dark;
-  background-color: $color-button;
   padding: 7px 14px 6px;
   border-radius: 4px;
   font-size: 14px;
+  box-shadow: none;
+  background: none;
 
   &:focus {
     outline: none;
-  }
-
-  &:hover {
-    box-shadow: 0 2px 9px rgba(2, 47, 119, 0.1);
-  }
-
-  &:active {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
   }
 
   &.alt {
@@ -650,11 +643,6 @@ p {
       margin-right: 0;
     }
   }
-}
-
-.ghButton:hover {
-  background-color: $color-white;
-  color: #0062FF;
 }
 
 .ghButton:hover button:after {
@@ -3177,12 +3165,12 @@ body .gh__menu {
 }
 
 .nodeIcon {
-  width: 40px;
-  min-width: 40px;
-  height: 40px;
+  width: 35px;
+  min-width: 35px;
+  height: 35px;
   overflow: hidden;
   color: $color-white;
-  font-size: 25px;
+  font-size: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3868,75 +3856,67 @@ body .gh__menu {
 }
 
 .connectionDetails {
-  details {
+  .connection-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 10px;
 
-    .connection-container {
-      overflow-x: hidden;
-      overflow-y: auto;
-      height: 700px;
-      margin-top: 10px;
+    .item {
+      margin-bottom: 20px;
+      width: 100%;
 
-      .row {
+      a {
+        display: flex;
+        color: $color-dark;
+        text-decoration: none;
+      }
+
+      .left {
+        margin-right: 20px;
+      }
+
+      .right {
+        display: flex;
         flex-direction: column;
-        margin-left: 0;
-        margin-right: 0;
+        justify-content: center;
+        line-height: 1;
+        text-decoration: underline;
 
-        .item {
-          margin-bottom: 30px;
-          width: 180px;
-
-          a {
-            display: flex;
-            color: $color-dark;
-            text-decoration: none;
-          }
-
-          .left {
-            margin-right: 20px;
-          }
-
-          .right {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            .name {
-              font-weight: 600;
-              font-size: 16px;
-            }
-
-            .type {
-              font-size: 14px;
-            }
-          }
+        .name {
+          font-weight: 500;
+          font-size: 14px;
         }
 
-        &:last-child {
-          .item {
-            &:last-child {
-              margin-bottom: 10px;
-            }
-          }
+        .type {
+          font-size: 14px;
+          line-height: 2;
         }
       }
+    }
 
-      fieldset {
-        padding: 28px 35px 0px;
-        margin-bottom: 5px;
-        border: none;
+    .list {
+      display: flex;
+      flex-wrap: wrap;
+      max-height: 230px;
+      overflow: auto;
 
-        .list {
-          margin-top: -15px;
-          display: flex;
-          flex-wrap: wrap;
-        }
-
-        .linkTypes {
-          color: $color-passive;
-          font-weight: 600;
-          font-size: 16px;
-        }
+      &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        background: rgba(119, 113, 183, 0.22);
+        z-index: 0;
       }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        z-index: 0;
+      }
+    }
+
+    .linkTypes {
+      color: $color-passive;
+      font-weight: 600;
+      font-size: 16px;
     }
   }
 }
@@ -3957,7 +3937,8 @@ body .gh__menu {
     width: auto;
 
     .mergeButton {
-      display: flex;justify-content: center;
+      display: flex;
+      justify-content: center;
     }
 
     .compareWrapper {
@@ -5408,6 +5389,7 @@ label.pull-left::before {
 
     .form {
       margin-bottom: 10px;
+
       p {
         margin-bottom: 30px;
       }
@@ -5507,7 +5489,8 @@ label.pull-left::before {
   .buttons, h2, .ghFileInput, .ghFormField {
     width: auto !important;
   }
-  .inserCancel{
+
+  .inserCancel {
     margin: 0 auto;
   }
 }
@@ -7956,7 +7939,6 @@ img.preview-scaled {
   position: fixed;
   height: 56px;
   background: white;
-  box-shadow: 4px 0 31px rgb(119 113 183 / 22%);
   z-index: 4;
 
   .header-right-panel {
@@ -7980,7 +7962,7 @@ img.preview-scaled {
 
   .container {
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(13%,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(13%, 1fr));
     max-width: 100%;
     gap: 10px;
     padding: 0;
@@ -9626,7 +9608,7 @@ details[open] summary:after {
     border-style: solid;
     top: 0;
     border-width: 0 .5rem .5rem;
-    border-bottom-color: rgba(0,0,0,.25);
+    border-bottom-color: rgba(0, 0, 0, .25);
   }
 }
 
