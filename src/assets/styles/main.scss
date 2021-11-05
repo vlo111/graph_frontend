@@ -7744,16 +7744,7 @@ img.preview-scaled {
 }
 
 .legends {
-  //position: fixed;
-  //border: none;
-  //display: flex;
-  //z-index: 2;
-  //left: 22%;
-  //top: 10px;
-  //color: #0D0905;
-  //max-width: 200px;
-  //min-width: 200px;
-
+ 
   * {
     padding: 0;
     margin: 0;
@@ -7762,7 +7753,7 @@ img.preview-scaled {
 
   ul {
     list-style: none;
-    height: 350px;
+    height: 325px;
     overflow: auto;
   }
 
@@ -7778,9 +7769,8 @@ img.preview-scaled {
     .dropdown {
       display: block;
     position: fixed;
-    width: 200px;
+    width: 235px;
     top: 70px;
-    height: 91vh;
     }
   }
 
@@ -9953,7 +9943,7 @@ details[open] summary:after {
 
   .save_query {
     position: absolute;
-    right: 166px;
+    right: 165px;
     top: 75px;
     background-color: white;
     height: 45px;
@@ -9964,7 +9954,7 @@ details[open] summary:after {
   }
   .export {
     position: absolute;
-    right: 216px;
+    right: 212px;
     top: 75px;
     background-color: white;
     height: 45px;
@@ -10053,14 +10043,15 @@ details[open] summary:after {
     }
   }
  .asds{
- 
-      height: 45px;
+  height: 45px;
+      position: fixed;
+      right: 259px;
       .legends.open .dropdown{
         top: 125px !important;
         height: 74% !important;
       }
       .legends.open .dropdown{
-        width: 188px !important
+        width: 282px !important
       }
       .legends ul{
         height: 275px !important;
