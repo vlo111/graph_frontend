@@ -68,8 +68,8 @@ class MatchNodeContextMenu extends Component {
           Utils.findSimilarity(d.keywords, checkNode.keywords) >= 50
 
         ))) {
-        d.match = Utils.findSimilarity(d.keywords, checkNode.keywords);
-        d.new = true;
+        d.match = d.id !== id ? Utils.findSimilarity(d.keywords, checkNode.keywords) : null;
+        d.new = d.id !== id;
         return true;
       }
       if (chartNodes && chartNodes.some((n) => n.id === d.id)) {
@@ -79,6 +79,8 @@ class MatchNodeContextMenu extends Component {
         }
         return true;
       }
+
+      d.match = null;
       d.new = false;
       return false;
     });

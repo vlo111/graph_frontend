@@ -373,13 +373,13 @@ class Utils {
     const secondLength = second.length;
     const smaller = firstLength < secondLength ? first : second;
     const greater = smaller === first ? second : first;
-    const count = smaller.reduce((index, val) => {
-      if (greater.includes(val)) {
+    const count = second.reduce((index, val) => {
+      if (first.includes(val)) {
         return ++index;
       }
       return index;
     }, 0);
-    return Math.round((count / Math.min(firstLength, secondLength)) * 100);
+    return Math.round((count / secondLength) * 100);
   };
 }
 
