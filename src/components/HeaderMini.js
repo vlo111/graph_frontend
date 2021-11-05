@@ -218,7 +218,7 @@ class HeaderMini extends Component {
                 title={title}
               // name={name}
               />
-            ):null }
+            ) : null }
             {editable ? (
               <Button
                 icon={<EditSvg />}

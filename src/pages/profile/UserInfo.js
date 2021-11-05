@@ -18,60 +18,55 @@ import linkdein from '../../assets/images/linkdein.png';
 import skype from '../../assets/images/skype.png';
 
 
-const ProfileMain = React.memo(({ edit, userId, avatar,  handleChange }) => {
-  const dispatch = useDispatch();
-
-  //get profile
-  const profile = useSelector(getProfile);
-
-  const myfriends = useSelector(friendsList);
-  const userFriendsList = edit ? myfriends : useSelector(getUserFriendsList);
-  const friends = userFriendsList.filter((friend) => (friend.status == 'accepted'));
-  //graphs and share graphs
-  const allGraphsCount = useSelector(getGraphsCount);
-
-  // select current user id
-  const currentUserId = useSelector(getId);
-
-  // check user is friend or not
-  let isFriend = false;
-    
-  if (userId && userFriendsList.length) {
-    if(currentUserId == userId) {
-      isFriend = true;
-    } else {
-      for (let friend of myfriends) {
-        if (userId == friend.friendUserId && friend.status == 'accepted') {
-          isFriend = true;
-          break;
+const ProfileMain = React.memo(({ edit, userId, avatar, handleChange }) => {
+    const dispatch = useDispatch();
+    //get profile
+    const profile = useSelector(getProfile);
+    const myfriends = useSelector(friendsList);
+    const userFriendsList = edit ? myfriends : useSelector(getUserFriendsList);
+    const friends = userFriendsList.filter((friend) => (friend.status == 'accepted'));
+    //graphs and share graphs
+    const allGraphsCount = useSelector(getGraphsCount);
+    // select current user id
+    const currentUserId = useSelector(getId);
+    // check user is friend or not
+    let isFriend = false;
+    if (userId && userFriendsList.length) {
+        if (currentUserId == userId) {
+            isFriend = true;
+        } else {
+            for (let friend of myfriends) {
+                if (userId == friend.friendUserId && friend.status == 'accepted') {
+                    isFriend = true;
+                    break;
+                }
+            }
         }
-      }
-    }
-       
-  }
 
-  if (userId && currentUserId == userId) {
-    isFriend = true;
-  } else {
-    for (let friend of userFriendsList) {
-      if (userId == friend.friendUserId && friend.status == 'accepted') {
+    }
+
+    if (userId && currentUserId == userId) {
         isFriend = true;
-        break;
-      }
+    } else {
+        for (let friend of userFriendsList) {
+            if (userId == friend.friendUserId && friend.status == 'accepted') {
+                isFriend = true;
+                break;
+            }
+        }
     }
-  }
 
-  useEffect(() => {
-    if(isFriend) {
-      dispatch(getGraphsAndSharegraphsCount(userId));
-    }
-       
-    if (!myfriends.length) {
-      dispatch(myFriendsRequest());
-    }
-  }, [dispatch, getGraphsAndSharegraphsCount,userId]);
+    useEffect(() => {
+        if (isFriend) {
+            dispatch(getGraphsAndSharegraphsCount(userId));
+        }
 
-  return (
+        if (!myfriends.length) {
+            dispatch(myFriendsRequest());
+        }
+    }, [dispatch, getGraphsAndSharegraphsCount, userId]);
+
+    return (
         <>
             {profile.id && (
                 <>
@@ -83,16 +78,14 @@ const ProfileMain = React.memo(({ edit, userId, avatar,  handleChange }) => {
                                     email={profile.email}
                                     onChange={(val) => handleChange(val || '', 'avatar')}
                                 /> : <img src={profile.avatar}></img>}
-
                             </div>
                             <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
                             <div className="profile_address text-size-16">
-                                <div>{profile.email}</div>
-                                <div>{profile.address ? profile.address : 'Armenia, yerevan'}</div>
+                                {currentUserId === userId && (<div>{profile.email}</div>)}
+                                {/* <div>{profile.address ? profile.address : 'Armenia, yerevan'}</div> */}
                                 <div>{profile.phone}</div>
                             </div>
                             <p className="text-size-16"> {profile.bio} </p>
-
                         </div>
 
                         {isFriend && (
@@ -109,7 +102,6 @@ const ProfileMain = React.memo(({ edit, userId, avatar,  handleChange }) => {
                                     <div className='number text-size-50'>{allGraphsCount?.totalShareGraphs}</div>
                                     <div className='text'>Share Graphs</div>
                                 </div>
-
                             </div>
                         )}
 
@@ -120,7 +112,6 @@ const ProfileMain = React.memo(({ edit, userId, avatar,  handleChange }) => {
                             {currentUserId != userId && (
                                 <AddFriend user={profile} />
                             )}
-
                             <div className="edit_profile">
                                 <div>User details</div>
                                 {currentUserId === profile.id && (
@@ -132,19 +123,18 @@ const ProfileMain = React.memo(({ edit, userId, avatar,  handleChange }) => {
                                     </a>
                                 )}
                             </div>
-                            <div className="user_address_info email">
-                                <h1>Email address</h1>
-                                {currentUserId === profile.id && (
-                                <p className="user_prf_color1">{profile.email}</p>
-                                )}                
-                            </div>
+                            {currentUserId === profile.id && (
+                                <div className="user_address_info email">
+                                    <h1>Email address</h1>
+                                    <p className="user_prf_color1">{profile.email}</p>
+                                </div>
+                            )}
                             {profile.country && (
                                 <div className="user_address_info">
                                     <h1>Country</h1>
                                     <p>{profile.country}</p>
                                 </div>
                             )}
-
                             {profile.city && (
                                 <div className="user_address_info">
                                     <h1>City/ Town</h1>
@@ -173,7 +163,7 @@ const ProfileMain = React.memo(({ edit, userId, avatar,  handleChange }) => {
                                     )}
                                     {profile.skype && (
                                         <a href={profile.skype} target=" ">
-                                          <img src={skype}></img>
+                                            <img src={skype}></img>
                                         </a>
                                     )}
 
@@ -195,7 +185,7 @@ const ProfileMain = React.memo(({ edit, userId, avatar,  handleChange }) => {
                 </>
             )}
         </>
-  );
+    );
 
 })
 
