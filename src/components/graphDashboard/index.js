@@ -77,7 +77,7 @@ const Dashboard = ({ graph }) => {
         Reset
       </Button>
       <button className="legendView" >  
-      <div className="asds">
+      <div className="LegendExplorer">
            <Legend />
       </div>    
       </button>
