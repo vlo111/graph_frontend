@@ -379,7 +379,7 @@ class Utils {
       }
       return index;
     }, 0);
-    return (count / Math.min(firstLength, secondLength)) * 100;
+    return Math.round((count / Math.min(firstLength, secondLength)) * 100);
   };
 }
 
