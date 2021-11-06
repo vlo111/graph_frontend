@@ -344,7 +344,6 @@ class SearchModal extends Component {
 
     if (keep) {
       nodes = chosenNodes.concat(oldNodes);
-    } else {
       searchQueryList = [];
     }
 
