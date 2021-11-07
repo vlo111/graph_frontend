@@ -1088,6 +1088,11 @@ class ChartUtils {
     return _.uniq(nodes).length;
   }
 
+  static getTotalNodesByType(nodes, type) {
+    const node = nodes && nodes.filter((n) => !n.fake && n.type === type);
+    return node;
+  }
+
   static getTotalLinks(nodes, labels) {
     const nodeIds = nodes.filter((n) => !n.fake).map((n) => n.id);
     nodeIds.push(...labels.map((d) => d.nodes).flat(1));
@@ -1165,6 +1170,17 @@ class ChartUtils {
     Chart.render({}, { ignoreAutoSave: true, isAutoPosition: false });
     document.removeEventListener('click', this.stopAutoPosition);
     document.removeEventListener('contextmenu', this.stopAutoPosition);
+  }
+
+  static getNodeIdListByObj(data) {
+    const nodes = data.slice(-1);
+    const chartNodesId = nodes.map((n) => n.chartNodesId);
+    return chartNodesId[0];
+  }
+
+  static getNodeTypeListByObj(nodes) {
+    const types = nodes.map((n) => n.type);
+    return _.uniq(types);
   }
 }
 
