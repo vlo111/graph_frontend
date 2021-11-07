@@ -32,7 +32,7 @@ const SwitchTab = ({
       <div className="tab_list">
         <div className="tab_list-header">
           <div className="tab_list-header-text">{`Tabs (${nodeCustomFields.length + 1})`}</div>
-          <div className="tab_list-header-add" onClick={() => setOpenAddTab(true)}>+ add tab</div>
+          <div className="tab_list-header-add" onClick={() => setOpenAddTab('')}>+ add tab</div>
         </div>
         <div style={contentStyle} className="tab_list-content">
           {(activeTab === '_description')

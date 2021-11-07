@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 import Outside from '../Outside';
 import General from './content/General';
 import Chart from '../../Chart';
@@ -68,7 +69,7 @@ const Tabs = ({ history, editable }) => {
 
   const [activeTab, setActiveTab] = useState('_description');
 
-  const [openAddTab, setOpenAddTab] = useState(false);
+  const [openAddTab, setOpenAddTab] = useState(null);
 
   const updateTabWithFile = () => {
     const graphId = id;
@@ -163,14 +164,14 @@ const Tabs = ({ history, editable }) => {
           )}
         </div>
       </div>
-      {openAddTab && (
+      {!_.isNull(openAddTab) && (
       <AddTabModal
         node={node}
         fieldName={openAddTab}
         customFields={nodeCustomFields}
         onClose={() => {
           updateTabWithFile();
-          setOpenAddTab(false);
+          setOpenAddTab(null);
         }}
         setActiveTab={(tabName) => setActiveTab(tabName)}
       />

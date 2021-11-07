@@ -22,7 +22,7 @@ class AddTabModal extends Component {
     }
 
     initValues = memoizeOne((node, fieldName, customFields) => {
-      let tabData;
+      let tabData = {};
       if (fieldName === '_description') {
         tabData = {
           name: fieldName,

@@ -1155,7 +1155,7 @@
       position: absolute;
       color: $color-white;
       font-style: normal;
-      font-size: 36px;
+      font-size: 28px;
       line-height: 49px;
       margin: 30px 60px;
     }
@@ -1164,7 +1164,7 @@
       position: absolute;
       color: $color-white;
       display: block;
-      right: 65px;
+      right: 3%;
       top: 50px;
 
       * {
@@ -1189,8 +1189,8 @@
   }
 
   .close {
-    margin-right: 50px;
-    margin-top: 10px;
+    top: 1%;
+    left: 96%;
 
     svg {
       width: 30px !important;
