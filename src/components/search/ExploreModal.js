@@ -123,7 +123,6 @@ class SearchModal extends Component {
       findNode: false,
       searchParameters: checkBoxValues,
       isOwner: publicState || currentUserId === userId,
-      searchNodesList: { listId },
     };
     const searchResults = await this.props.getGraphNodesRequest(1, argument);
     return searchResults.payload.data;
@@ -140,9 +139,11 @@ class SearchModal extends Component {
     let docs = [];
     let nodes = [];
     let types = [];
+    let tabs1 = [];
 
     try {
       const foundNodes = await this.searchResults(search); // handle the promise
+      const { searchQueryList } = this.state;
       const ifNodeExists = (node) => {
         const frontNodes = Chart.getNodes();
         if (frontNodes.filter((nd) => nd.id === node.id).length) {
@@ -163,9 +164,15 @@ class SearchModal extends Component {
       nodes = foundNodes.nodes ? foundNodes.nodes : [];
       keywords = foundNodes.keywords ? foundNodes.keywords : [];
       types = foundNodes.types ? _.uniq(foundNodes.types) : [];
-
-      if (foundNodes?.tabs?.length > 0) {
-        const tabsList = foundNodes.tabs;
+      tabs1 = foundNodes?.tabs?.length > 0 ? foundNodes.tabs : [];
+      const nodeListId = ChartUtils.getNodeIdListByObj(searchQueryList);
+      if (nodeListId) {
+        nodes = nodes && nodes.filter((n) => nodeListId.includes(n.id));
+        keywords = keywords && keywords.filter((n) => nodeListId.includes(n.id));
+        tabs1 = tabs1 && tabs1.filter((n) => nodeListId.includes(n.id));
+      }
+      if (tabs1.length > 0) {
+        const tabsList = tabs1;
         if (tabsList.length > 0) {
           const tabsContentVisibility = {};
           tabsList.forEach((node) => {
