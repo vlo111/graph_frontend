@@ -1177,6 +1177,11 @@ class ChartUtils {
     const chartNodesId = nodes.map((n) => n.chartNodesId);
     return chartNodesId[0];
   }
+
+  static getNodeTypeListByObj(nodes) {
+    const types = nodes.map((n) => n.type);
+    return _.uniq(types);
+  }
 }
 
 export default ChartUtils;

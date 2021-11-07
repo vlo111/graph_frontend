@@ -168,6 +168,7 @@ class SearchModal extends Component {
       const nodeListId = ChartUtils.getNodeIdListByObj(searchQueryList);
       if (nodeListId) {
         nodes = nodes && nodes.filter((n) => nodeListId.includes(n.id));
+        types = types && types.filter((n) => nodeListId.includes(n.id));
         keywords = keywords && keywords.filter((n) => nodeListId.includes(n.id));
         tabs1 = tabs1 && tabs1.filter((n) => nodeListId.includes(n.id));
       }
@@ -504,15 +505,16 @@ class SearchModal extends Component {
       search,
       docs,
       keywords,
-      types,
       checkBoxValues,
       checkBoxAll,
       chosenNodes,
       allNodesSelected,
       searchQueryList,
     } = this.state;
+    let { types } = this.state;
     const { totalNodes, nodesPartial } = this.props;
     const chartNodes = Chart.getNodes();
+    types = ChartUtils.getNodeTypeListByObj(types); 
     return (
 
       <>
