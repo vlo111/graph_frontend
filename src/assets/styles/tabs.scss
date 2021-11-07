@@ -519,164 +519,9 @@
 //  }
 //}
 
-.ghModalOverlay .nodeTabsFormModal {
-  width: 65%;
-  max-width: unset !important;
-  padding: 1.6% 2.1% !important;
-  min-width: 920px;
-  max-height: 90%;
-  top: 10%;
-
-  .row {
-    display: flex;
-    width: 100%;
-    margin: 0 0 10px;
-
-    .ghFormField {
-      margin: 10px 0;
-    }
-
-    > * {
-      margin-right: 5%;
-      width: 47.5%;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
-
-  .buttonsWrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 35px;
-
-    button {
-      margin-right: 40px !important;
-    }
-  }
-
-  h3 {
-    font-size: 26px;
-    margin: 0 auto 20px;
-  }
-
-  .description, h3 {
-    color: #727272;
-    font-weight: normal;
-    font-size: 25px;
-    line-height: 29px;
-  }
-
-
-  .contentEditor {
-    width: 101%;
-
-    .label {
-      font-size: 12px;
-      font-weight: 600;
-    }
-  }
-
-  .ghFormField {
-    label {
-      font-size: 12px;
-      font-weight: 600;
-    }
-  }
-
-  .close {
-    padding: 0;
-    position: absolute;
-    top: 15px;
-    right: 16px;
-
-    svg {
-      width: 11px;
-      height: 10px;
-
-      path {
-        fill: $color-gray;
-      }
-    }
-  }
-}
-
 //.tab-data-hover {
 //  max-width: 130px;
 //  padding: 2px;
-//}
-//
-//.expandTabNode {
-//  top: 5% !important;
-//  width: 87.5%;
-//  max-height: 84% !important;
-//  max-width: 100% !important;
-//  padding: 0 !important;
-//  background: none !important;
-//
-//
-//  .tab-expand-node {
-//    display: block;
-//    justify-content: flex-start;
-//    align-items: flex-start;
-//    width: 100%;
-//
-//    .header {
-//      width: 100%;
-//      height: 112px;
-//      background-color: $color-main;
-//    }
-//
-//    .name {
-//      position: absolute;
-//      color: $color-white;
-//      font-style: normal;
-//      font-size: 36px;
-//      line-height: 49px;
-//      margin: 30px 60px;
-//    }
-//
-//    .info {
-//      position: absolute;
-//      color: $color-white;
-//      display: block;
-//      right: 65px;
-//      top: 50px;
-//
-//      * {
-//        text-align: right;
-//        margin-bottom: 6px;
-//        margin-top: 5px;
-//        font-size: 15px;
-//      }
-//    }
-//
-//    .tab-expand-container {
-//      border-radius: 5px;
-//      background-color: $color-white;
-//
-//      .content {
-//        padding: 10px 60px;
-//        height: 700px;
-//        overflow: auto;
-//      }
-//    }
-//  }
-//
-//  .close {
-//    margin-right: 50px;
-//    margin-top: 10px;
-//
-//    svg {
-//      width: 30px !important;
-//      height: 20px !important;
-//
-//      path {
-//        fill: $color-white !important;
-//      }
-//    }
-//  }
 //}
 //
 //.nodeFullContent {
@@ -1134,6 +979,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
+
+            &:hover {
+              path {
+                fill: $color-main;
+              }
+            }
           }
 
           .expand {
@@ -1274,6 +1125,163 @@
       border-radius: 5px;
       background: #B9B4EF;
       z-index: 0;
+    }
+  }
+}
+
+.expandTabNode {
+  top: 5% !important;
+  width: 87.5%;
+  max-height: 84% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  background: none !important;
+
+
+  .tab-expand-node {
+    display: block;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    overflow: hidden;
+
+    .header {
+      width: 100%;
+      height: 112px;
+      background-color: $color-main;
+    }
+
+    .name {
+      position: absolute;
+      color: $color-white;
+      font-style: normal;
+      font-size: 36px;
+      line-height: 49px;
+      margin: 30px 60px;
+    }
+
+    .info {
+      position: absolute;
+      color: $color-white;
+      display: block;
+      right: 65px;
+      top: 50px;
+
+      * {
+        text-align: right;
+        margin-bottom: 6px;
+        margin-top: 5px;
+        font-size: 15px;
+      }
+    }
+
+    .tab-expand-container {
+      border-radius: 5px;
+      background-color: $color-white;
+
+      .content {
+        padding: 10px 60px;
+        max-height: 700px;
+        min-height: 300px;
+        overflow: auto;
+      }
+    }
+  }
+
+  .close {
+    margin-right: 50px;
+    margin-top: 10px;
+
+    svg {
+      width: 30px !important;
+      height: 20px !important;
+
+      path {
+        fill: $color-white !important;
+      }
+    }
+  }
+}
+
+.ghModalOverlay .nodeTabsFormModal {
+  width: 65%;
+  max-width: unset !important;
+  padding: 1.6% 2.1% !important;
+  min-width: 920px;
+  max-height: 90%;
+  top: 10%;
+
+  .row {
+    display: flex;
+    width: 100%;
+    margin: 0 0 10px;
+
+    .ghFormField {
+      margin: 10px 0;
+    }
+
+    > * {
+      margin-right: 5%;
+      width: 47.5%;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .buttonsWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+
+    button {
+      margin-right: 40px !important;
+    }
+  }
+
+  h3 {
+    font-size: 26px;
+    margin: 0 auto 20px;
+  }
+
+  .description, h3 {
+    color: #727272;
+    font-weight: normal;
+    font-size: 25px;
+    line-height: 29px;
+  }
+
+
+  .contentEditor {
+    width: 101%;
+
+    .label {
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .ghFormField {
+    label {
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
     }
   }
 }

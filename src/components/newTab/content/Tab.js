@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { ReactComponent as DeleteSvg } from '../../../assets/images/icons/delete.svg';
 import Button from '../../form/Button';
 import { ReactComponent as EditSvg } from '../../../assets/images/icons/edit.svg';
 import { ReactComponent as ExpandTabSvg } from '../../../assets/images/icons/expand.svg';
 import ModalConfirmation from '../../../helpers/ModalConfirmation';
 import { updateNodesCustomFieldsRequest } from '../../../store/actions/nodes';
+import ExpandSingleTab from '../expand/ExpandSingleTab';
 
 const Tab = ({
   node, customFields,
@@ -61,9 +63,12 @@ const Tab = ({
   );
 
   const expandElement = (
-    <div onClick={expand} className="expand">
-      <ExpandTabSvg />
-    </div>
+    <Button
+      className="expand"
+      icon={<ExpandTabSvg />}
+      title="expand"
+      onClick={() => setExpandNode(!expandNode)}
+    />
   );
 
   if (name === '_description') {
@@ -132,6 +137,16 @@ const Tab = ({
         no="Cancel"
         onCancel={() => setShowConfirmModal(false)}
         onAccept={deleteTab}
+      />
+      )}
+      {expandNode
+      && (
+      <ExpandSingleTab
+        html={html || node.description}
+        name={name}
+        created={moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}
+        createdBy={node.userId}
+        onClose={expand}
       />
       )}
     </div>
