@@ -518,87 +518,90 @@
 //    }
 //  }
 //}
-//
-//.ghModalOverlay .nodeTabsFormModal {
-//  width: 65%;
-//  max-width: unset !important;
-//  padding: 1.6% 2.1% !important;
-//  min-width: 920px;
-//  height: 80%;
-//  top: 10%;
-//
-//  .row {
-//    display: flex;
-//    width: 100%;
-//    margin: 0 0 10px;
-//
-//    > * {
-//      margin-right: 5%;
-//      width: 47.5%;
-//
-//      &:last-child {
-//        margin-right: 0;
-//      }
-//    }
-//  }
-//
-//  .buttonsWrapper {
-//    display: flex;
-//    justify-content: center;
-//    margin-top: 100px;
-//
-//    button {
-//      margin-right: 40px !important;
-//    }
-//  }
-//
-//  h3 {
-//    font-size: 26px;
-//    margin: 0 auto 20px;
-//  }
-//
-//  .description, h3 {
-//    color: #727272;
-//    margin-bottom: 35px;
-//    font-weight: normal;
-//    font-size: 25px;
-//    line-height: 29px;
-//  }
-//
-//
-//  .contentEditor {
-//    width: 101%;
-//
-//    .label {
-//      font-size: 12px;
-//      font-weight: 600;
-//    }
-//  }
-//
-//  .ghFormField {
-//    label {
-//      font-size: 12px;
-//      font-weight: 600;
-//    }
-//  }
-//
-//  .close {
-//    padding: 0;
-//    position: absolute;
-//    top: 15px;
-//    right: 16px;
-//
-//    svg {
-//      width: 11px;
-//      height: 10px;
-//
-//      path {
-//        fill: $color-gray;
-//      }
-//    }
-//  }
-//}
-//
+
+.ghModalOverlay .nodeTabsFormModal {
+  width: 65%;
+  max-width: unset !important;
+  padding: 1.6% 2.1% !important;
+  min-width: 920px;
+  max-height: 90%;
+  top: 10%;
+
+  .row {
+    display: flex;
+    width: 100%;
+    margin: 0 0 10px;
+
+    .ghFormField {
+      margin: 10px 0;
+    }
+
+    > * {
+      margin-right: 5%;
+      width: 47.5%;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .buttonsWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+
+    button {
+      margin-right: 40px !important;
+    }
+  }
+
+  h3 {
+    font-size: 26px;
+    margin: 0 auto 20px;
+  }
+
+  .description, h3 {
+    color: #727272;
+    font-weight: normal;
+    font-size: 25px;
+    line-height: 29px;
+  }
+
+
+  .contentEditor {
+    width: 101%;
+
+    .label {
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .ghFormField {
+    label {
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+
+    svg {
+      width: 11px;
+      height: 10px;
+
+      path {
+        fill: $color-gray;
+      }
+    }
+  }
+}
+
 //.tab-data-hover {
 //  max-width: 130px;
 //  padding: 2px;
@@ -1152,6 +1155,14 @@
         overflow-y: auto;
         overflow-x: hidden;
 
+        &-nodata {
+          position: absolute;
+          left: 150px;
+          font-size: 14px;
+          color: $color-tab-no-data;
+          top: 50%;
+        }
+
         * {
           max-width: 380px;
           margin: 0 !important;
@@ -1255,7 +1266,7 @@
     &::-webkit-scrollbar {
       width: 5px;
       height: 5px;
-      background:  #5454E2;
+      background: #5454E2;
       z-index: 0;
     }
 

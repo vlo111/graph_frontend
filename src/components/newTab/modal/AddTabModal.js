@@ -22,16 +22,25 @@ class AddTabModal extends Component {
     }
 
     initValues = memoizeOne((node, fieldName, customFields) => {
-      const customField = customFields.find((f) => f.name === fieldName);
-      if (customField) {
-        const tabData = {
+      let tabData;
+      if (fieldName === '_description') {
+        tabData = {
           name: fieldName,
           originalName: fieldName,
-          value: fieldName == '_description' ? node.description : customField.value,
-          subtitle: customField.subtitle,
+          value: node.description,
         };
-        this.setState({ tabData });
+      } else {
+        const customField = customFields.find((f) => f.name === fieldName);
+        if (customField) {
+          tabData = {
+            name: fieldName,
+            originalName: fieldName,
+            value: customField.value,
+            subtitle: customField.subtitle,
+          };
+        }
       }
+      this.setState({ tabData });
     }, _.isEqual)
 
     constructor(props) {
@@ -204,63 +213,67 @@ class AddTabModal extends Component {
         node, fieldName, customFields,
       } = this.props;
 
-      const isUpdate = !!fieldName;
       const { tabData, errors } = this.state;
 
-      if (!isUpdate || (tabData.originalName !== tabData.name)) {
-        [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node, customFields);
-      }
-      // return;
-      [errors.value, tabData.value] = Validate.customFieldContent(tabData.value);
-      [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
+      if (fieldName === '_description') {
+        const nodes = Chart.getNodes();
 
-      if (!Validate.hasError(errors)) {
-        const data = {
-          name: tabData.name,
-          value: tabData.value,
-          subtitle: tabData.subtitle,
-        };
-
-        if (tabData.name === '_description') {
-          const nodes = Chart.getNodes();
-
-          nodes.map((p) => {
-            if (p.id === node.id) {
-              p.description = data.value;
-            }
-          });
-          Chart.render({ nodes });
-        } else if (!isUpdate) {
-          customFields.push(data);
-
-          const { fileData, files } = this.getFileFromTab(customFields[customFields.length - 1]);
-
-          if (fileData.length) {
-            await Api.createDocument(Utils.getGraphIdFormUrl(), node.id, data.name, fileData, files).catch((d) => d);
+        nodes.map((p) => {
+          if (p.id === node.id) {
+            p.description = tabData.value;
           }
-        } else {
-          const i = customFields.findIndex((f) => f.name === tabData.originalName);
-          if (i > -1) {
-            customFields[i] = data;
-
-            const { insertFiles, updatedFiles } = this.getUpdatedFiles(customFields[i]);
-
-            await Api.updateDocument(Utils.getGraphIdFormUrl(),
-              node.id, data.name,
-              { fileData: insertFiles?.fileData, updatedFiles },
-              insertFiles?.files)
-              .catch((d) => d);
-          }
-        }
-
-        this.props.setActiveTab(tabData.name);
-        this.props.onClose(data);
-      } else {
-        this.setState({
-          showSaveModal: false,
         });
+        Chart.render({ nodes });
+        this.props.onClose(tabData.value);
+      } else {
+        const isUpdate = !!fieldName;
+
+        if (!isUpdate || (tabData.originalName !== tabData.name)) {
+          [errors.name, tabData.name] = Validate.customFieldType(tabData.name, node, customFields);
+        }
+        // return;
+        [errors.value, tabData.value] = Validate.customFieldContent(tabData.value);
+        [errors.subtitle, tabData.subtitle] = Validate.customFieldSubtitle(tabData.subtitle);
+
+        if (!Validate.hasError(errors)) {
+          const data = {
+            name: tabData.name,
+            value: tabData.value,
+            subtitle: tabData.subtitle,
+          };
+
+          if (!isUpdate) {
+            customFields.push(data);
+
+            const { fileData, files } = this.getFileFromTab(customFields[customFields.length - 1]);
+
+            if (fileData.length) {
+              await Api.createDocument(Utils.getGraphIdFormUrl(), node.id, data.name, fileData, files).catch((d) => d);
+            }
+          } else {
+            const i = customFields.findIndex((f) => f.name === tabData.originalName);
+            if (i > -1) {
+              customFields[i] = data;
+
+              const { insertFiles, updatedFiles } = this.getUpdatedFiles(customFields[i]);
+
+              await Api.updateDocument(Utils.getGraphIdFormUrl(),
+                node.id, data.name,
+                { fileData: insertFiles?.fileData, updatedFiles },
+                insertFiles?.files)
+                .catch((d) => d);
+            }
+          }
+
+          this.props.setActiveTab(tabData.name);
+          this.props.onClose(data);
+        } else {
+          this.setState({
+            showSaveModal: false,
+          });
+        }
+        this.setState({ errors, tabData });
       }
-      this.setState({ errors, tabData });
     }
 
     showSaveModal = async () => {

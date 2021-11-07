@@ -1,31 +1,99 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import { ReactComponent as DeleteSvg } from '../../../assets/images/icons/delete.svg';
 import Button from '../../form/Button';
 import { ReactComponent as EditSvg } from '../../../assets/images/icons/edit.svg';
 import { ReactComponent as ExpandTabSvg } from '../../../assets/images/icons/expand.svg';
+import ModalConfirmation from '../../../helpers/ModalConfirmation';
+import { updateNodesCustomFieldsRequest } from '../../../store/actions/nodes';
 
 const Tab = ({
   node, customFields,
-  editable = true, name, openAddTabModal, deleteCustomField,
+  editable = true, name, setOpenAddTab, setActiveTab, graphId,
 }) => {
+  const dispatch = useDispatch();
+
   const html = customFields.find((f) => f.name === name)?.value || '';
 
   const [expandNode, setExpandNode] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const expand = () => {
     setExpandNode(!expandNode);
   };
 
   /* @todo get document elements size
-  * 56 graph header height
-  * 40 - switch tabs header
-  * 20 - tab header
-  * 50 - padding tab header content
-  *  */
+    * 56 graph header height
+    * 40 - switch tabs header
+    * 20 - tab header
+    * 50 - padding tab header content
+    *  */
   const height = window.innerHeight - 56 - 40 - 20 - 50;
 
   const contentStyle = {
     height,
+  };
+
+  const noTab = <div className="tab_content-description-nodata">you have no data yet</div>;
+
+  let description;
+  let tab;
+  let expandTab;
+  let editOrPlus;
+
+  const editElement = (
+    <Button
+      icon={<EditSvg />}
+      title="Edit"
+      onClick={() => setOpenAddTab(name)}
+    />
+  );
+
+  const plusElement = (
+    <Button
+      // icon={<EditSvg />}
+      title="Add"
+      onClick={() => setOpenAddTab(name)}
+    >
+      +
+    </Button>
+  );
+
+  const expandElement = (
+    <div onClick={expand} className="expand">
+      <ExpandTabSvg />
+    </div>
+  );
+
+  if (name === '_description') {
+    if (node.description) {
+      editOrPlus = editElement;
+      expandTab = expandElement;
+      description = <div dangerouslySetInnerHTML={{ __html: node.description }} />;
+    } else {
+      editOrPlus = plusElement;
+      description = noTab;
+      expandTab = <></>;
+    }
+  } else if (html) {
+    editOrPlus = editElement;
+    expandTab = expandElement;
+    tab = <div dangerouslySetInnerHTML={{ __html: html }} />;
+  } else {
+    editOrPlus = plusElement;
+    tab = noTab;
+    expandTab = <></>;
+  }
+
+  const deleteTab = () => {
+    dispatch(updateNodesCustomFieldsRequest(graphId, [{
+      id: node.id,
+      customFields: customFields.filter((f) => f.name !== name),
+      name,
+    }]));
+    setActiveTab('_description');
+    setShowConfirmModal(false);
   };
 
   return (
@@ -36,35 +104,48 @@ const Tab = ({
           <>
             {editable && (
             <>
-              <Button
-                icon={<EditSvg />}
-                title="Edit"
-                onClick={(ev) => openAddTabModal(ev, name)}
-              />
-              <div onClick={expand} className="expand">
-                <ExpandTabSvg />
-              </div>
+              {editOrPlus}
               {name !== '_description'
-                  && (
-                  <Button
-                    icon={<DeleteSvg />}
-                    title="Delete"
-                  />
-                  )}
+              && (
+              <Button
+                icon={<DeleteSvg />}
+                title="Delete"
+                onClick={() => setShowConfirmModal(true)}
+              />
+              )}
             </>
             )}
+            {expandTab}
           </>
         </div>
       </div>
       <div style={contentStyle} className="tab_content-description">
-        {name === '_description'
-          ? <div dangerouslySetInnerHTML={{ __html: node.description }} />
-          : <div dangerouslySetInnerHTML={{ __html: html }} />}
+        {description}
+        {tab}
       </div>
+      {showConfirmModal
+      && (
+      <ModalConfirmation
+        title="Are you sure ?"
+        description="Are you want to delete this tab"
+        yes="Delete"
+        no="Cancel"
+        onCancel={() => setShowConfirmModal(false)}
+        onAccept={deleteTab}
+      />
+      )}
     </div>
   );
 };
 
-Tab.propTypes = {};
+Tab.propTypes = {
+  customFields: PropTypes.object.isRequired,
+  node: PropTypes.object.isRequired,
+  setActiveTab: PropTypes.func.isRequired,
+  editable: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
+  setOpenAddTab: PropTypes.func.isRequired,
+  graphId: PropTypes.string.isRequired,
+};
 
 export default Tab;

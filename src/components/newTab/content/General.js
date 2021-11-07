@@ -90,11 +90,6 @@ const General = ({
               onClick={updateNode}
             />
             )}
-            <Button
-              icon={<ExpandSvg />}
-              title="expand"
-              onClick={() => { history.replace(`?${queryString.stringify({ ...queryObj, expand: '1' })}`); }}
-            />
             <ExportNodeTabs
               node={node}
               // tabs={nodeCustomFields}
@@ -102,6 +97,11 @@ const General = ({
               // image={this.state.image}
               // title={title}
                 // name={name}
+            />
+            <Button
+              icon={<ExpandSvg />}
+              title="expand"
+              onClick={() => { history.replace(`?${queryString.stringify({ ...queryObj, expand: '1' })}`); }}
             />
           </div>
         </div>
