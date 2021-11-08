@@ -7502,8 +7502,8 @@ img.preview-scaled {
 }
 
 .legendButton {
-  display: flex;
-  .legendSvg{
+    display: flex;
+ .legendSvg{
     display: none;
   }
 }
@@ -7768,9 +7768,9 @@ img.preview-scaled {
 
     .dropdown {
       display: block;
-    position: fixed;
-    width: 235px;
-    top: 70px;
+      position: fixed;
+      width: 235px;
+      top: 70px;
     }
   }
 
@@ -7803,10 +7803,10 @@ img.preview-scaled {
 
     h4 {
       margin-left: 7px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: #424242;
-    display: flex;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #424242;
+      display: flex;
     }
 
     .indicator {
@@ -9938,7 +9938,7 @@ details[open] summary:after {
     right: 165px;
     border: none;
     top: 75px;
-  width: none;
+    width: none;
   }
 
   .save_query {
@@ -10043,27 +10043,27 @@ details[open] summary:after {
     }
   }
  .LegendExplorer{
-  height: 45px;
+      height: 45px;
       position: fixed;
       right: 259px;
-      .legends.open .dropdown{
+    .legends.open .dropdown{
         top: 125px !important;
         height: 74% !important;
       }
-      .legends.open .dropdown{
+     .legends.open .dropdown{
         width: 282px !important
       }
-      .legends ul{
+    .legends ul{
         height: 275px !important;
       }
-      .legends .dropdown-btn h6 , .carretNew{
+    .legends .dropdown-btn h6 , .carretNew{
         display: none !important;
       }
-      .legendSvg{
+    .legendSvg{
         display: flex !important;
-    position: relative;
-    top: -4px !important;
-    left: 2px !important;
+        position: relative;
+        top: -4px !important;
+        left: 2px !important;
       }
 
  }

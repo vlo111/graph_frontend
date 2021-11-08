@@ -35,11 +35,11 @@ class Legend extends Component {
       return 0;
     })
 
-    renderActiveShape = (props) => {
-      const { type } = props;
-      Chart.showSpecifiedNodes(Chart.getNodes().filter((node) => node.type === type));
+    // renderActiveShape = (props) => {
+    //   const { type } = props;
+    //   Chart.showSpecifiedNodes(Chart.getNodes().filter((node) => node.type === type));
      
-    };
+    // };
     render() {
       const { showLegendButton, singleGraph: {nodesPartial, linksPartial  } } = this.props;
 
