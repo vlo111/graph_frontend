@@ -102,7 +102,7 @@ const Tabs = ({ history, editable }) => {
   };
 
   useEffect(() => {
-    updateTabWithFile();
+    if (activeTab !== '_description') updateTabWithFile();
   }, []);
 
   return (
