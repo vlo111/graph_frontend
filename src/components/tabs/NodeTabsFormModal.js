@@ -280,8 +280,6 @@ class NodeTabsFormModal extends Component {
     this.initValues(node, fieldName, customFields);
     const isUpdate = !!fieldName;
 
-    console.log(tabData)
-
     return (
       <Modal
         isOpen

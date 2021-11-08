@@ -82,15 +82,13 @@ class SearchGraphs extends Component {
                     <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={graph} />
                   </div>
                 </div>
-                <div>
-                  <div className='public_text'>
+                <div> 
                   <Tooltip overlay={graph.title} placement="bottom" >
                     <h3>
                       {' '}
-                      {graph.title.length > 25 ? `${graph.title.substring(0, 25)}...` : graph.title}
+                      {graph.title.length > 23 ? `${graph.title.substring(0, 23)}...` : graph.title}
                     </h3>
                   </Tooltip>
-                  </div>
                   <div className="descriptionGraph">
                     <Tooltip overlay={graph.description} placement="bottom" >
                       <span>
