@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes, { node } from 'prop-types';
+import PropTypes from 'prop-types';
 import { setLegendButton } from '../store/actions/app';
 import ChartUtils from '../helpers/ChartUtils';
 import { ReactComponent as DownSvg } from '../assets/images/icons/down.svg';
@@ -8,7 +8,6 @@ import { ReactComponent as LegendSvg } from '../assets/images/icons/legend.svg';
 
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Utils from '../helpers/Utils';
-import Chart from '../Chart';
 import _ from 'lodash'
 
 class Legend extends Component {
@@ -35,11 +34,6 @@ class Legend extends Component {
       return 0;
     })
 
-    // renderActiveShape = (props) => {
-    //   const { type } = props;
-    //   Chart.showSpecifiedNodes(Chart.getNodes().filter((node) => node.type === type));
-     
-    // };
     render() {
       const { showLegendButton, singleGraph: {nodesPartial, linksPartial  } } = this.props;
 
