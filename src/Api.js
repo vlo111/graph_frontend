@@ -164,8 +164,8 @@ class Api {
     });
   }
 
-  static getNodeCustomFields(graphId, nodeId) {
-    return api.get(`/nodes/get-fields/${graphId}/${nodeId}`);
+  static getNodeCustomFields(graphId, nodeId, params) {
+    return api.get(`/nodes/get-fields/${graphId}/${nodeId}`, { params });
   }
 
   static getSingleGraphWithAccessToken(graphId, userId, token) {
@@ -517,7 +517,7 @@ class Api {
   static confirmEmail(token) {
     return api.get(`/users/confirmation/${token}`);
   }
-  
+
   static getGraphQuery(graphId) {
     return api.get(`/query/${graphId}`);
   }

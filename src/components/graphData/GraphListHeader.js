@@ -42,7 +42,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
         history.push('/');
       }
     } catch (e) {
-    }
+  }
   }
 
   const handleDeleteShareGraph = useCallback((shareGraphId) => {
@@ -57,53 +57,53 @@ const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
   return (
     <div className="graphListHeader">
       <div>
-      {(graph.userId === userId || headerTools === 'shared') ? (
-        <Popover
-          showArrow
-          triggerNode={<div className="ar-popover-trigger"><EllipsisVSvg /></div>}
-          trigger="click"
+        {(graph?.userId === userId || headerTools === 'shared') ? (
+          <Popover
+            showArrow
+            triggerNode={<div className="ar-popover-trigger"><EllipsisVSvg /></div>}
+            trigger="click"
         >
-          <div className="ar-popover-list">
-            {headerTools === 'shared' ? (
-              <div
-                onClick={() => handleDeleteShareGraph(graph?.share.id)}
-                className="child dashboard-delete"
-              >
-                <span className="dashboard-delete">
-                  Delete
-                </span>
-              </div>
-            ) : (
-              <>
+            <div className="ar-popover-list">
+              {headerTools === 'shared' ? (
                 <div
-                  className="child "
-                  onClick={() => setOpenEditGraphModal(true)}
-                >
-                  <span>
-                    Edit
-                  </span>
-                </div>
-                <div
-                  className="child "
-                  onClick={() => setOpenShareModal(true)}
-                >
-                  <span>
-                    Share
-                  </span>
-                </div>
-                <div
-                  onClick={() => deleteGraph(false)}
+                  onClick={() => handleDeleteShareGraph(graph?.share.id)}
                   className="child dashboard-delete"
                 >
                   <span className="dashboard-delete">
                     Delete
                   </span>
                 </div>
-              </>
-            )}
-          </div>
-        </Popover>
-        ): null}
+              ) : (
+                <>
+                  <div
+                    className="child "
+                    onClick={() => setOpenEditGraphModal(true)}
+                  >
+                    <span>
+                      Edit
+                    </span>
+                  </div>
+                  <div
+                    className="child "
+                    onClick={() => setOpenShareModal(true)}
+                  >
+                    <span>
+                      Share
+                    </span>
+                  </div>
+                  <div
+                    onClick={() => deleteGraph(false)}
+                    className="child dashboard-delete"
+                  >
+                    <span className="dashboard-delete">
+                      Delete
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
+          </Popover>
+        ) : null}
       </div>
       {openShareModal && (
         <ShareModal

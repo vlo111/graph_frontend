@@ -282,12 +282,13 @@ class ChartUtils {
    * @param {*} hidden
    * @returns
    */
-  static getLinkGroupedByNodeId(linksPartial, id, group = true, hidden = 0) {
+  static getLinkGroupedByNodeId(linksPartial, nodesPartial, id, group = true, hidden = 0) {
     const node = Chart.getNodes().find((d) => d.id === id);
     const chartLinks = Chart.getLinks();
     if (!node) return null;
-    const links = linksPartial.filter((l) => (l.source === node.id || l.target === node.id)
-       && chartLinks && !chartLinks.find((s) => (s.id === l.id)));
+    let links = linksPartial.filter((l) => (l.source === node.id || l.target === node.id)
+      && chartLinks && !chartLinks.find((s) => (s.id === l.id)));
+    links = this.cleanLinks(links, nodesPartial);
     if (group) { return _.groupBy(links, 'type'); }
     return links?.length;
   }
