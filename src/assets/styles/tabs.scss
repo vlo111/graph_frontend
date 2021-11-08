@@ -734,6 +734,7 @@
   background: $color-white;
   display: block;
   top: 56px;
+  z-index: 1;
 
   &-header {
     display: flex;
