@@ -70,7 +70,6 @@ class CreateGraphModal extends Component {
       this.props.onChange();
     } else {
       this.props.history.goBack();
-      alert(this.props.history.goBack())
     }
   }
 
