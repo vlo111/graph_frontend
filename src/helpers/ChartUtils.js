@@ -282,12 +282,13 @@ class ChartUtils {
    * @param {*} hidden
    * @returns
    */
-  static getLinkGroupedByNodeId(linksPartial, id, group = true, hidden = 0) {
+  static getLinkGroupedByNodeId(linksPartial, nodesPartial, id, group = true, hidden = 0) {
     const node = Chart.getNodes().find((d) => d.id === id);
     const chartLinks = Chart.getLinks();
     if (!node) return null;
-    const links = linksPartial.filter((l) => (l.source === node.id || l.target === node.id)
-       && chartLinks && !chartLinks.find((s) => (s.id === l.id)));
+    let links = linksPartial.filter((l) => (l.source === node.id || l.target === node.id)
+      && chartLinks && !chartLinks.find((s) => (s.id === l.id)));
+    links = this.cleanLinks(links, nodesPartial);
     if (group) { return _.groupBy(links, 'type'); }
     return links?.length;
   }
@@ -1088,6 +1089,11 @@ class ChartUtils {
     return _.uniq(nodes).length;
   }
 
+  static getTotalNodesByType(nodes, type) {
+    const node = nodes && nodes.filter((n) => !n.fake && n.type === type);
+    return node;
+  }
+
   static getTotalLinks(nodes, labels) {
     const nodeIds = nodes.filter((n) => !n.fake).map((n) => n.id);
     nodeIds.push(...labels.map((d) => d.nodes).flat(1));
@@ -1165,6 +1171,17 @@ class ChartUtils {
     Chart.render({}, { ignoreAutoSave: true, isAutoPosition: false });
     document.removeEventListener('click', this.stopAutoPosition);
     document.removeEventListener('contextmenu', this.stopAutoPosition);
+  }
+
+  static getNodeIdListByObj(data) {
+    const nodes = data.slice(-1);
+    const chartNodesId = nodes.map((n) => n.chartNodesId);
+    return chartNodesId[0];
+  }
+
+  static getNodeTypeListByObj(nodes) {
+    const types = nodes.map((n) => n.type);
+    return _.uniq(types);
   }
 }
 
