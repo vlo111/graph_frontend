@@ -24,7 +24,7 @@ class Editor extends Component {
     label: '',
     placeholder: '',
     error: '',
-    height: 300,
+    height: 400,
     toolbarButtonSize: 'middle',
     buttons: [
       'bold', 'italic', 'underline', 'fontsize', 'font', '|', 'file', 'video', '|',
@@ -69,7 +69,7 @@ class Editor extends Component {
 
     options.controls = options.controls || {};
 
-    options.minHeight = 300;
+    options.minHeight = 400;
 
     options.controls.file = {
       popup: (jodit, anchor) => {
