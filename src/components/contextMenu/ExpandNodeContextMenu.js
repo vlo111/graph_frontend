@@ -53,27 +53,32 @@ class NodeContextMenu extends Component {
   expandType = (type = '') => {
     const { params: { id }, nodesPartial, linksPartial } = this.props;
     const link = linksPartial && linksPartial.find((d) => (type ? d.type === type : true));
+
     if (!link) return null;
     const chartNodes = Chart.getNodes();
     const chartLinks = Chart.getLinks();
     let nodes = nodesPartial.filter((d) => linksPartial && linksPartial.some((n) => (type ? n.type === type : true)
-          && (n.target === d.id || n.source === d.id)
-          && (n.target === id || n.source === id))
-          || chartNodes && chartNodes.some((n) => n.id === d.id));
+      && (n.target === d.id || n.source === d.id)
+      && (n.target === id || n.source === id))
+      || chartNodes && chartNodes.some((n) => n.id === d.id));
     let newNodes = nodes.filter((newNode) => !chartNodes.find((oldNode) => oldNode.id === newNode.id));
     newNodes = newNodes.map((node) => {
       node.new = true;
       return node;
     });
     nodes = newNodes.concat(chartNodes);
-    let links = linksPartial.filter((l) => ((type ? l.type === type : true) && (l.target === id || l.source === id))
+    let links = linksPartial && linksPartial.filter((l) => ((type ? l.type === type : true) && (l.target === id || l.source === id)
+
+    )
       || chartLinks && chartLinks.some((n) => n.id === l.id));
     let newLinks = links.filter((newLink) => !chartLinks.find((oldLink) => oldLink.id === newLink.id));
     newLinks = newLinks.map((newLink) => {
       newLink.new = true;
       return newLink;
     });
+
     links = newLinks.concat(chartLinks);
+    links = ChartUtils.cleanLinks(links, nodes);
     const labels = [];
     Chart.render({ nodes, links, labels }, { ignoreAutoSave: true, isAutoPosition: true });
     ChartUtils.autoScaleTimeOut();
@@ -84,10 +89,10 @@ class NodeContextMenu extends Component {
   }
 
   render() {
-    const { params: { id }, linksPartial } = this.props;
+    const { params: { id }, linksPartial, nodesPartial } = this.props;
     let { expands, expandsLink, hiddenData } = this.state;
-    expandsLink = ChartUtils.getLinkGroupedByNodeId(linksPartial, id, true, hiddenData);
-    expands = ChartUtils.getLinkGroupedByNodeId(linksPartial, id, false, hiddenData);
+    expandsLink = ChartUtils.getLinkGroupedByNodeId(linksPartial, nodesPartial, id, true, hiddenData);
+    expands = ChartUtils.getLinkGroupedByNodeId(linksPartial, nodesPartial, id, false, hiddenData);
 
     return (
       <>
