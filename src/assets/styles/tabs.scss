@@ -995,6 +995,11 @@
             justify-content: center;
             align-items: center;
           }
+
+          .add svg {
+            transform: rotate(45deg);
+            width: 10px;
+          }
         }
       }
 

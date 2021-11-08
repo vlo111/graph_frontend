@@ -5,6 +5,7 @@ import moment from 'moment';
 import { ReactComponent as DeleteSvg } from '../../../assets/images/icons/delete.svg';
 import Button from '../../form/Button';
 import { ReactComponent as EditSvg } from '../../../assets/images/icons/edit.svg';
+import { ReactComponent as CloseSvg } from '../../../assets/images/icons/close.svg';
 import { ReactComponent as ExpandTabSvg } from '../../../assets/images/icons/expand.svg';
 import ModalConfirmation from '../../../helpers/ModalConfirmation';
 import { updateNodesCustomFieldsRequest } from '../../../store/actions/nodes';
@@ -42,7 +43,7 @@ const Tab = ({
   let description;
   let tab;
   let expandTab;
-  let editOrPlus;
+  let editOrAdd;
 
   const editElement = (
     <Button
@@ -52,14 +53,13 @@ const Tab = ({
     />
   );
 
-  const plusElement = (
+  const addElement = (
     <Button
-      // icon={<EditSvg />}
+      icon={<CloseSvg />}
+      className="add"
       title="Add"
       onClick={() => setOpenAddTab(name)}
-    >
-      +
-    </Button>
+    />
   );
 
   const expandElement = (
@@ -73,20 +73,20 @@ const Tab = ({
 
   if (name === '_description') {
     if (node.description) {
-      editOrPlus = editElement;
+      editOrAdd = editElement;
       expandTab = expandElement;
       description = <div dangerouslySetInnerHTML={{ __html: node.description }} />;
     } else {
-      editOrPlus = plusElement;
+      editOrAdd = addElement;
       description = noTab;
       expandTab = <></>;
     }
   } else if (html) {
-    editOrPlus = editElement;
+    editOrAdd = editElement;
     expandTab = expandElement;
     tab = <div dangerouslySetInnerHTML={{ __html: html }} />;
   } else {
-    editOrPlus = plusElement;
+    editOrAdd = addElement;
     tab = noTab;
     expandTab = <></>;
   }
@@ -109,7 +109,7 @@ const Tab = ({
           <>
             {editable && (
             <>
-              {editOrPlus}
+              {editOrAdd}
               {name !== '_description'
               && (
               <Button
