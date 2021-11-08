@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import Tab from '../components/tabs/Tab';
+import Tabs from '../components/newTab';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
 import AutoPlay from '../components/AutoPlay';
@@ -35,7 +35,7 @@ class GraphEmbed extends Component {
         <div className="graphWrapper">
           <ReactChart />
         </div>
-        <Tab editable={false} />
+        <Tabs editable={false} />
         <LabelTooltip />
         <Filters />
         <AutoPlay />

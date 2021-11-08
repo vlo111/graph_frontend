@@ -18,7 +18,6 @@ import SearchModal from '../components/search/ExploreModal';
 import ContextMenu from '../components/contextMenu/ContextMenu';
 import Zoom from '../components/Zoom';
 import NodeDescription from '../components/NodeDescription';
-import Tab from '../components/tabs/Tab';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
 import ToolBarFooter from '../components/ToolBarFooter';
@@ -32,6 +31,7 @@ import DataView from '../components/dataView/DataView';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import Dashboard from '../components/graphDashboard';
+import Tabs from "../components/newTab";
 
 class GraphView extends Component {
   static propTypes = {
@@ -190,7 +190,7 @@ class GraphView extends Component {
                 )}
                 <ToolBarHeader graph={singleGraph} />
                 <SearchModal />
-                <Tab editable={false} />
+                <Tabs editable={false} />
                 <LabelTooltip />
                 <Filters />
                 <AutoPlay />
