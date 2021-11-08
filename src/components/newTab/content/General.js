@@ -20,7 +20,6 @@ import Chart from '../../../Chart';
 import GraphUsersInfo from '../../History/GraphUsersInfo';
 
 const getGroupedConnections = memoizeOne((nodeId) => {
-  // const { links, nodes } = this.props;
   const nodes = Chart.getNodes();
   const nodeLinks = Chart.getNodeLinks(nodeId, 'all');
   const connectedNodes = nodeLinks && nodeLinks.map((l) => {
@@ -48,7 +47,7 @@ const General = ({
 }) => {
   const dispatch = new useDispatch();
 
-  const { connectedNodes, length } = getGroupedConnections(node.id);
+  const { connectedNodes } = getGroupedConnections(node.id);
 
   const [showNodeInfo, setShowNodeInfo] = useState(false);
 
@@ -63,7 +62,7 @@ const General = ({
 
   const singleGraph = useSelector(getSingleGraph);
 
-  const { nodesPartial, linksPartial, labels } = singleGraph;
+  const { linksPartial, labels } = singleGraph;
 
   useEffect(() => {
 
@@ -176,21 +175,12 @@ const General = ({
 };
 
 General.propTypes = {
-  toggleNodeModal: PropTypes.func.isRequired,
-  headerImg: PropTypes.func.isRequired,
   node: PropTypes.func.isRequired,
   tabs: PropTypes.func.isRequired,
   replace: PropTypes.func.isRequired,
   history: PropTypes.func.isRequired,
-  match: PropTypes.func.isRequired,
-  getActionsCountRequest: PropTypes.func.isRequired,
   editable: PropTypes.func.isRequired,
-  singleGraph: PropTypes.func.isRequired,
-  commentsCount: PropTypes.func.isRequired,
-  expand: PropTypes.func.isRequired,
   queryObj: PropTypes.func.isRequired,
-  title: PropTypes.func.isRequired,
-  nodeCustomFields: PropTypes.func.isRequired,
 };
 
 export default withRouter(General);

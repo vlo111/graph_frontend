@@ -15,6 +15,7 @@ import AddTabModal from './modal/AddTabModal';
 import Utils from '../../helpers/Utils';
 import Api from '../../Api';
 import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
+import Comment from './content/Comment';
 
 const Tabs = ({ history, editable }) => {
   const { info: nodeId } = queryString.parse(window.location.search);
@@ -27,9 +28,9 @@ const Tabs = ({ history, editable }) => {
 
   if (!node) return null;
 
-  const {
-    id,
-  } = useSelector(getSingleGraph);
+  const singleGraph = useSelector(getSingleGraph);
+
+  const { id } = singleGraph;
 
   const nodeCustomFields = useSelector(getCustomField);
 
@@ -161,6 +162,10 @@ const Tabs = ({ history, editable }) => {
             setOpenAddTab={(tab) => setOpenAddTab(tab)}
             setActiveTab={(tabName) => setActiveTab(tabName)}
           />
+          )}
+          {mode === 'comments'
+          && (
+          <Comment graph={singleGraph} node={node} />
           )}
         </div>
       </div>

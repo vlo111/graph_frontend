@@ -20,11 +20,7 @@ const AddComment = ({
   const handleChange = (path, value) => {
     setText(value);
   };
-  useEffect(() => {
-    const commentModalElement = document.getElementsByClassName('tabComment')[0];
 
-    commentModalElement.style.transform = 'scaleX(1)';
-  });
   return (
     <div className={isReply ? 'comment-modal__add-comment-section--reply comment--reply' : 'comment'}>
       <Editor
@@ -36,6 +32,7 @@ const AddComment = ({
         onChange={(v) => handleChange('text', v)}
       />
       <div className="comment-modal__add-comment-buttons">
+        {isReply && (
         <Button
           className=" ghButton2 btn-delete"
           onClick={() => {
@@ -48,6 +45,7 @@ const AddComment = ({
         >
           Cancel
         </Button>
+        )}
         <Button
           onClick={() => {
             text.trim() === ''

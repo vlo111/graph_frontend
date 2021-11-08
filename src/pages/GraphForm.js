@@ -36,7 +36,7 @@ import AddLinkedInModal from '../components/chart/AddLinkedInModal';
 import MapsModal from '../components/maps/MapsModal';
 import ScienceGraphModal from '../components/ScienceSearchToGraph/ScienceGraphModal';
 import WikiModal from '../components/wikipedia/WikiModal';
-import Tabs from '../components/newTab/Index';
+import Tabs from '../components/newTab';
 
 class GraphForm extends Component {
   static propTypes = {

@@ -779,7 +779,7 @@
       padding: 10px 20px;
 
       &-hider {
-        height: 260px;
+        max-height: 260px;
 
         &-title {
           display: flex;
@@ -1030,6 +1030,34 @@
         &::-webkit-scrollbar-thumb {
           border-radius: 5px;
           z-index: 0;
+        }
+      }
+    }
+
+    .comment {
+
+      &-content {
+        width: 425px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-left: 12.5px;
+
+        .btn-delete, .btn-classic {
+          min-width: 100px;
+          max-width: 100px;
+          height: 30px;
+          font-size: 13px;
+          display: flex;
+          border-radius: 3px;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .comment-modal__add-comment-buttons {
+          display: flex;
+          gap: 15px;
+          margin-top: 5px;
         }
       }
     }

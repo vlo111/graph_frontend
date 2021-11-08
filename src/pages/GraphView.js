@@ -31,7 +31,7 @@ import DataView from '../components/dataView/DataView';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import Dashboard from '../components/graphDashboard';
-import Tabs from "../components/newTab/Index";
+import Tabs from "../components/newTab";
 
 class GraphView extends Component {
   static propTypes = {
