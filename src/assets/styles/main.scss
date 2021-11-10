@@ -1323,6 +1323,7 @@ p {
     }
 
     h2 {
+      font-size: 25px;
       text-align: center;
     }
 
@@ -4219,7 +4220,7 @@ body .gh__menu {
   margin: 0 auto 50px;
   align-items: flex-start;
   position: relative;
-  top: 130px;
+  top: 110px;
 
   .tabsList {
     display: flex;
@@ -7924,12 +7925,13 @@ img.preview-scaled {
   .start-graphs {
     .buttonsWrapper {
       display: flex;
-      justify-content: space-evenly;
+      justify-content: flex-start;
       width: 100%;
 
       button {
-        min-width: 130px;
-        max-width: 150px;
+        min-width: 200px;
+        margin-left: 20px;
+        max-width: 250px;
         border-radius: 3px;
         font-size: 14px;
       }
