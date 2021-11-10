@@ -7842,7 +7842,6 @@ img.preview-scaled {
  
 
       .node-item {
-        display: -webkit-inline-box;
         padding: 2px 12px 5px;
         border-radius: 50px;
         margin-bottom: 10px;
@@ -8659,12 +8658,9 @@ img.preview-scaled {
 }
 
 .connection-item {
+  display: flex;
+  align-items: center;
   margin-bottom: 16px;
-  border-radius: 50px;
-  display: -webkit-inline-box;
-  padding: 2px 12px 5px;
-  margin-left: 5px !important;
-  float: left;
   .linkColor{
     color: #424242 !important;
   }
@@ -8702,6 +8698,14 @@ img.preview-scaled {
     a {
       cursor: auto;
     }
+  }
+  .connection-item {
+    margin-bottom: 16px;
+    border-radius: 50px;
+    display: block;
+    padding: 2px 12px 5px;
+    margin-left: 5px !important;
+    float: left;
   }
 }
 
