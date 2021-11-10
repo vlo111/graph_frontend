@@ -7828,20 +7828,19 @@ img.preview-scaled {
     }
 
     a {
-      max-width: calc(100% - 32px);
       text-decoration: none;
       color: #FFFFFF !important;
       font-weight: 400;
       font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .nodes {
  
 
       .node-item {
+        display: -webkit-inline-box;
         padding: 2px 12px 5px;
         border-radius: 50px;
         margin-bottom: 10px;
@@ -8702,7 +8701,7 @@ img.preview-scaled {
   .connection-item {
     margin-bottom: 16px;
     border-radius: 50px;
-    display: block;
+    display: flex;
     padding: 2px 12px 5px;
     margin-left: 5px !important;
     float: left;
