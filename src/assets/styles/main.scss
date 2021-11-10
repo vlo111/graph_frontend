@@ -5635,10 +5635,10 @@ img.preview-scaled {
       }
 
       .actionButton {
-        background-color: transparent;
         width: 100%;
         height: 100%;
-        padding: 20px;
+        background: #EDF1F5 0% 0% no-repeat padding-box;
+        box-shadow: none;
 
         > .icon {
           display: flex;
@@ -5652,6 +5652,8 @@ img.preview-scaled {
             width: 30%;
             height: auto;
           }
+        &:hover{
+          box-shadow: 4px 0px 75px rgba(119, 113, 183, 0.22);        }
         }
       }
     }
