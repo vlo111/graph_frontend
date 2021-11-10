@@ -9660,16 +9660,16 @@ details[open] summary:after {
     border-bottom-color: #fff;
   }
 
-  &:before {
-    content: "";
-    position: absolute;
-    display: block;
-    border-color: transparent;
-    border-style: solid;
-    top: 0;
-    border-width: 0 .5rem .5rem;
-    border-bottom-color: rgba(0,0,0,.25);
-  }
+  // &:before {
+  //   content: "";
+  //   position: absolute;
+  //   display: block;
+  //   border-color: transparent;
+  //   border-style: solid;
+  //   top: 0;
+  //   border-width: 0 .5rem .5rem;
+  //   border-bottom-color: rgba(0,0,0,.25);
+  // }
 }
 
 .rc-tooltip-placement-right .rc-tooltip-arrow {
