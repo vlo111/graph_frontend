@@ -9002,7 +9002,8 @@ img.preview-scaled {
     justify-content: flex-start;
   }
 
-  .caption-left {
+  .caption-left { 
+    font-size: 16px;
     display: flex;
     flex-wrap: wrap;
     width: 100px;
@@ -9010,6 +9011,7 @@ img.preview-scaled {
   }
 
   .caption-right {
+    font-size: 16px;
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
