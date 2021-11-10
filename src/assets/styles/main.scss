@@ -524,7 +524,6 @@ p {
 
   border: none;
   color: $color-dark;
-  background-color: $color-button;
   padding: 7px 14px 6px;
   border-radius: 4px;
   font-size: 14px;
@@ -654,7 +653,6 @@ p {
 
 .ghButton:hover {
   background-color: $color-white;
-  color: #0062FF;
 }
 
 .ghButton:hover button:after {
@@ -4955,6 +4953,7 @@ body .gh__menu {
   max-width: 52px;
 
   .showExportButton {
+    background-color: white;
     position: relative;
     z-index: 9;
     padding: 7px 10px 7px 10px;
