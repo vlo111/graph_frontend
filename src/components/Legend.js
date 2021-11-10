@@ -61,11 +61,27 @@ class Legend extends Component {
         
       ));
 
+////////////////////////////
+      const linkData= linksPartial?.map((p) => ({
+        name: p.name,
+        type: p.type,
+      }));
+      const linkTypes = _.groupBy(linkData, 'type');
+      const typesLinke = [];
+      Object.keys(linkTypes).forEach((l) => {
+        const currentType = linkTypes[l];
+        typesLinke.push({ type: currentType[0].type, count: currentType.length });
+      });
+
       const listLinkItems = links.map((link) => (
         <li className="connection-item" key={link.id }  style={{ backgroundColor: link.color }}>
           <a title={link.type} className="linkColor">{link.type}</a>
+          <a className="nodeCount">{`(${linkTypes[Object.keys(linkTypes).filter(p => p === link.type)].length})`}</a>
+
         </li>
       ));
+
+
 
 
       return (
@@ -80,24 +96,24 @@ class Legend extends Component {
           </button>
 
           <div className="dropdown">
-            <div className="nodes">
-              <h4>
+          <h4>
                 Nodes (
                 {nodesPartial?.length}
                 )
               </h4>
+            <div className="nodes">
               <ul className="node-list"
               >
                 {listNodeItems} 
               </ul>
             </div>
             <div class="borderLegends"></div>
-            <div className="connections">
-              <h4>
+            <h4>
                 Connections (
-                {links.length}
+                {linksPartial?.length}
                 )
               </h4>
+            <div className="connections">
               <ul className="connection-list">
                 {listLinkItems}
               </ul>
