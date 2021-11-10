@@ -605,3 +605,20 @@ margin-top: -5px;
     width:auto;
   }
 }
+@media (max-height: 830px) {
+  .dropdown .connections, .nodes{
+  
+  max-height: 40% !important;
+  }
+  .LegendExplorer .connections, .nodes{
+   
+    max-height: 40% !important;
+  }
+}
+@media (max-height: 899px) {
+  
+  .LegendExplorer .connections, .nodes{
+   
+    max-height: 40% !important;
+  }
+}

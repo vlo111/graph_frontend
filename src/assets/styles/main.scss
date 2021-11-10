@@ -524,7 +524,6 @@ p {
 
   border: none;
   color: $color-dark;
-  background-color: $color-button;
   padding: 7px 14px 6px;
   border-radius: 4px;
   font-size: 14px;
@@ -654,7 +653,6 @@ p {
 
 .ghButton:hover {
   background-color: $color-white;
-  color: #0062FF;
 }
 
 .ghButton:hover button:after {
@@ -939,7 +937,6 @@ p {
 
     &.infography {
       &.crop {
-        //cursor: url("../images/cut.png") 0 0, auto;
         cursor: url("../images/pen.png") 0 50, auto;
 
       }
@@ -2039,7 +2036,7 @@ p {
     height: 140px;
     display: block;
     align-items: center;
-    scroll-snap-type: x mandatory;
+    overflow: scroll;
     user-select: none;
 
     .nodesMode span, .linksMode span {
@@ -4943,7 +4940,6 @@ body .gh__menu {
 
 .exportDropDown .ghFormField {
   position: relative !important;
-  background: #C6E6FF 0% 0% no-repeat padding-box !important;
 }
 
 .exportData {
@@ -4957,12 +4953,13 @@ body .gh__menu {
   max-width: 52px;
 
   .showExportButton {
+    background-color: white;
     position: relative;
     z-index: 9;
     padding: 7px 10px 7px 10px;
-    border-radius: 15px;
+    border-radius: 5px;
     margin-bottom: -15px;
-    background: #C6E6FF 0% 0% no-repeat padding-box;
+    box-shadow: 0 0 6px rgb(136 130 209 / 22%);
   }
 
   .exportDropDown {
@@ -4970,19 +4967,28 @@ body .gh__menu {
     z-index: 4;
     position: absolute;
     margin-left: 5px;
+    margin-top: 14px;
     width: 50%;
     padding: 50px 40px 21px;
-    border-radius: 12px;
-    background: #C6E6FF 0% 0% no-repeat padding-box;
-    box-shadow: 0px 6px 20px #0D090529;
-    border: 1px solid #ABD6F780;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 38px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
     opacity: 1;
     border-top-left-radius: 0px 0px;
+
+    p{
+      color:#424242;
+      font-size: 25px !important;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+    }
   }
 
   .exportButton {
-    float: right;
-    margin: 30px 0 10px;
+    display: flex;
+    justify-content: center;
+    padding: 25px;
   }
 
   .icon {
@@ -4995,19 +5001,21 @@ body .gh__menu {
   }
 
   .gh__control {
-    border-radius: 10px !important;
+    border: 2px solid #7E75EF !important;
+    border-radius:5px !important;
     height: 45px !important;
     font: normal normal normal 18px/19px Open Sans !important;
   }
 
   label {
-    font: normal normal 600 15px/17px Open Sans;
-    padding-bottom: 15px;
+    font: normal normal 600 15px/17px
+     Open Sans;
+        padding: 15px 11px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #A5A5A5;
   }
 
-  .gh__indicator svg {
-    background: #F2F5F7 0% 0% no-repeat padding-box !important;
-  }
 
   .gh__single-value {
     color: #9BA6B4;
@@ -5338,7 +5346,6 @@ label.pull-left::before {
 
     .userFildSize {
       .gh__control {
-        width: 63%;
         margin-left: auto;
       }
     }
@@ -5347,6 +5354,7 @@ label.pull-left::before {
       display: flex;
       align-items: center;
       width: 100%;
+      height: 50px;
       justify-content: space-between;
       padding: 0 1px;
 
@@ -7758,7 +7766,6 @@ img.preview-scaled {
 
   ul {
     list-style: none;
-    height: 325px;
     overflow: auto;
   }
 
@@ -7776,6 +7783,7 @@ img.preview-scaled {
       position: fixed;
       width: 235px;
       top: 70px;
+      height: calc(100% - 145px);
     }
   }
 
@@ -7801,7 +7809,7 @@ img.preview-scaled {
     display: none;
     width: 100%;
     top: 60px;
-    padding: 26px 16px 20px 16px;
+    padding: 15px 16px 20px 16px;
     background-color: #FFFFFF;
     border-radius: 3px;
     box-shadow: 0px 11px 20px rgb(0 0 0 / 25%);
@@ -7830,11 +7838,11 @@ img.preview-scaled {
     }
 
     .nodes {
-      margin-bottom: 15px;
+ 
 
       .node-item {
         display: -webkit-inline-box;
-        padding: 2px 12px;
+        padding: 2px 12px 5px;
         border-radius: 50px;
         margin-bottom: 10px;
         margin-left: 5px;
@@ -7857,6 +7865,14 @@ img.preview-scaled {
           margin-left: 2px;
         }
       }
+    }
+    .connections, .nodes{
+    overflow: scroll;
+    height: auto;
+    max-height: 44%;
+    }
+    .nodeCount{
+      margin-left: 2px;
     }
 
   }
@@ -8644,7 +8660,7 @@ img.preview-scaled {
   margin-bottom: 16px;
   border-radius: 50px;
   display: -webkit-inline-box;
-  padding: 0 10px;
+  padding: 2px 12px 5px;
   margin-left: 5px !important;
   float: left;
   .linkColor{
@@ -9772,6 +9788,7 @@ details[open] summary:after {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    font-size: 14px;
 
     p {
       font-size: 12px;
@@ -9779,7 +9796,7 @@ details[open] summary:after {
       color: #939393;
       position: relative;
       margin-top: -23px;
-      line-height: 12px;
+      line-height: 13px;
       left: 45px;
       width: 85%;
     }
@@ -10060,13 +10077,17 @@ details[open] summary:after {
       right: 259px;
     .legends.open .dropdown{
         top: 125px !important;
-        height: 74% !important;
+        // height: 74% !important;
       }
      .legends.open .dropdown{
-        width: 282px !important
+        width: 282px !important;
+        height: calc(100% - 250px) !important;
       }
-    .legends ul{
-        height: 275px !important;
+    .nodes{
+          margin-bottom: 15px;
+          overflow: scroll;
+          height: auto;
+          max-height: 44%;
       }
     .legends .dropdown-btn h6 , .carretNew{
         display: none !important;
@@ -10074,11 +10095,20 @@ details[open] summary:after {
     .legendSvg{
         display: flex !important;
         position: relative;
-        top: -4px !important;
         left: 2px !important;
+      }
+      .connections{
+        overflow: scroll;
+        height: auto;
+        max-height: 44%;
+      }
+      .nodeCount{
+        margin-left: 2px;
       }
 
  }
+
+
 }
 
 .createQueryModal {
@@ -10127,8 +10157,7 @@ details[open] summary:after {
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    // width: 100%;
-    // min-width: 150px;
+    border-radius: 5px;
     height:36px;
     margin-left: 10px; 
     background-color: white;
@@ -10151,3 +10180,4 @@ details[open] summary:after {
     }
   }
 }
+

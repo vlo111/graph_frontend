@@ -244,6 +244,7 @@ class DataView extends Component {
                 {showExport ? (
                   <Outside onClick={(ev) => this.closeExport(ev)} exclude=".exportData">
                     <div className="exportDropDown">
+                      <p>Export Data </p>
                       <Select
                         label="Type File"
                         portal
@@ -251,9 +252,11 @@ class DataView extends Component {
                         value={EXPORT_TYPES.filter((t) => t.value === exportType)}
                         onChange={(v) => this.setState({ exportType: v.value })}
                       />
-                      <Button onClick={this.handleExport} className="exportButton ghButton accent alt" type="submit">
+                      <div className="exportButton">
+                      <Button onClick={this.handleExport} className=" btn-classic" type="submit">
                         Export
                       </Button>
+                      </div>
                     </div>
                   </Outside>
                 ) : null}
