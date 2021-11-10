@@ -52,7 +52,9 @@ class ExportNodeTabs extends Component {
         className="b-navbar"
         to="/#"
         icon={<ExportSvg />}
-      />
+      >
+        Export
+      </Button>
     );
   }
 }

@@ -42,7 +42,11 @@ const Queries = ({ graphId, closeModal }) => {
       links = data.links;
       links = ChartUtils.cleanLinks(links, nodes);
     }
-    Chart.render({ nodes, links }, { ignoreAutoSave: true });
+    Chart.render({ nodes, links }, { ignoreAutoSave: true, isAutoPosition: true });
+    ChartUtils.autoScaleTimeOut();
+    ChartUtils.autoScaleTimeOut(100);
+    ChartUtils.autoScaleTimeOut(200);
+    ChartUtils.startAutoPosition();
   };
   const handleEdit = useCallback((id, title, description) => {
     if (title.trim() === '') {

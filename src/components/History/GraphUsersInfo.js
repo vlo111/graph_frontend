@@ -20,6 +20,12 @@ import {
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 const GraphUsersInfo = ({ graph, closeModal }) => {
+  useEffect(() => {
+    const historyModalElement = document.getElementsByClassName('graphUsersInfo')[0];
+
+    if (historyModalElement) { historyModalElement.style.transform = 'scaleX(1)'; }
+  });
+
   const { info: nodeId } = queryString.parse(window.location.search);
   if (!nodeId) {
     return null;

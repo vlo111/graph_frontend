@@ -19,6 +19,7 @@ import Zoom from '../components/Zoom';
 import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
 import MapsGraph from '../components/maps/MapsGraph';
+import Tab from '../components/tabs/Tab';
 import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
@@ -36,7 +37,6 @@ import AddLinkedInModal from '../components/chart/AddLinkedInModal';
 import MapsModal from '../components/maps/MapsModal';
 import ScienceGraphModal from '../components/ScienceSearchToGraph/ScienceGraphModal';
 import WikiModal from '../components/wikipedia/WikiModal';
-import Tabs from '../components/newTab';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -111,7 +111,7 @@ class GraphForm extends Component {
           <DataImport />
           <FindNode />
           <NodeDescription />
-          <Tabs />
+          <Tab />
           <AutoPlay />
           <Zoom />
           <LabelTooltip />

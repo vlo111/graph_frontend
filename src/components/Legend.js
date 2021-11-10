@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { setLegendButton } from '../store/actions/app';
 import ChartUtils from '../helpers/ChartUtils';
 import { ReactComponent as DownSvg } from '../assets/images/icons/down.svg';
@@ -8,7 +9,6 @@ import { ReactComponent as LegendSvg } from '../assets/images/icons/legend.svg';
 
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Utils from '../helpers/Utils';
-import _ from 'lodash'
 
 class Legend extends Component {
     static propTypes = {
@@ -61,7 +61,6 @@ class Legend extends Component {
         
       ));
 
-////////////////////////////
       const linkData= linksPartial?.map((p) => ({
         name: p.name,
         type: p.type,
@@ -120,8 +119,8 @@ class Legend extends Component {
             </div>
           </div>
         </div>
-      );
-    }
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
