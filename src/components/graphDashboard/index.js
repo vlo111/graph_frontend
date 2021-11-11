@@ -11,6 +11,7 @@ import Api from '../../Api';
 import { ReactComponent as SaveSvg } from '../../assets/images/icons/save.svg';
 import { ReactComponent as SettingSvg } from '../../assets/images/icons/setting.svg';
 import { ReactComponent as ExportSvg } from '../../assets/images/icons/export.svg';
+import { ReactComponent as LegendSvg } from '../../assets/images/icons/legend.svg';
 import Legend from '../Legend';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -46,15 +47,15 @@ const Dashboard = ({ graph }) => {
   return (
     <div className="dashboards">
       {userPermission && (
-        <>       
+        <>      
           <Button
-            icon={<SaveSvg style={{ height: 23 }} />}
+            icon={<SaveSvg style={{ height: 30 }} />}
             onClick={() => toggleGraphQuery(true)}
             title="Save query"
             className="save_query"
           />
           <Button
-            icon={<ExportSvg style={{ height: 23 }} />}
+            icon={<ExportSvg style={{ height: 30 }} />}
             onClick={() => exportGraphData(graph.id)}
             title="Export"
             className="export"

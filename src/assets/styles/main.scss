@@ -527,17 +527,11 @@ p {
   padding: 7px 14px 6px;
   border-radius: 4px;
   font-size: 14px;
+  box-shadow: none;
+  background: none;
 
   &:focus {
     outline: none;
-  }
-
-  &:hover {
-    box-shadow: 0 2px 9px rgba(2, 47, 119, 0.1);
-  }
-
-  &:active {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
   }
 
   &.alt {
@@ -649,10 +643,6 @@ p {
       margin-right: 0;
     }
   }
-}
-
-.ghButton:hover {
-  background-color: $color-white;
 }
 
 .ghButton:hover button:after {
@@ -937,6 +927,7 @@ p {
 
     &.infography {
       &.crop {
+        //cursor: url("../images/cut.png") 0 0, auto;
         cursor: url("../images/pen.png") 0 50, auto;
 
       }
@@ -1323,7 +1314,6 @@ p {
     }
 
     h2 {
-      font-size: 25px;
       text-align: center;
     }
 
@@ -2037,7 +2027,7 @@ p {
     height: 140px;
     display: block;
     align-items: center;
-    overflow: scroll;
+    scroll-snap-type: x mandatory;
     user-select: none;
 
     .nodesMode span, .linksMode span {
@@ -3175,12 +3165,12 @@ body .gh__menu {
 }
 
 .nodeIcon {
-  width: 40px;
-  min-width: 40px;
-  height: 40px;
+  width: 35px;
+  min-width: 35px;
+  height: 35px;
   overflow: hidden;
   color: $color-white;
-  font-size: 25px;
+  font-size: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3245,7 +3235,6 @@ body .gh__menu {
     .leftPanel {
       width: 30%;
       display: flex;
-      align-items: center;
       cursor: pointer;
 
       .left {
@@ -3558,6 +3547,9 @@ body .gh__menu {
   z-index: 2;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+
+  transition: all .4s ease-in-out 0s;
+  transform-origin: right top;
 }
 
 .mapButton {
@@ -3867,75 +3859,55 @@ body .gh__menu {
 }
 
 .connectionDetails {
-  details {
+  .connection-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 10px;
 
-    .connection-container {
-      overflow-x: hidden;
-      overflow-y: auto;
-      height: 700px;
-      margin-top: 10px;
+    .item {
+      margin-bottom: 20px;
+      width: 100%;
 
-      .row {
+      a {
+        display: flex;
+        color: $color-dark;
+        text-decoration: none;
+      }
+
+      .left {
+        margin-right: 20px;
+      }
+
+      .right {
+        display: flex;
         flex-direction: column;
-        margin-left: 0;
-        margin-right: 0;
+        justify-content: center;
+        line-height: 1;
+        text-decoration: underline;
 
-        .item {
-          margin-bottom: 30px;
-          width: 180px;
-
-          a {
-            display: flex;
-            color: $color-dark;
-            text-decoration: none;
-          }
-
-          .left {
-            margin-right: 20px;
-          }
-
-          .right {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            .name {
-              font-weight: 600;
-              font-size: 16px;
-            }
-
-            .type {
-              font-size: 14px;
-            }
-          }
+        .name {
+          font-weight: 500;
+          font-size: 14px;
         }
 
-        &:last-child {
-          .item {
-            &:last-child {
-              margin-bottom: 10px;
-            }
-          }
+        .type {
+          font-size: 14px;
+          line-height: 2;
         }
       }
+    }
 
-      fieldset {
-        padding: 28px 35px 0px;
-        margin-bottom: 5px;
-        border: none;
+    .list {
+      display: flex;
+      flex-wrap: wrap;
+      max-height: 230px;
+      overflow: auto;
+    }
 
-        .list {
-          margin-top: -15px;
-          display: flex;
-          flex-wrap: wrap;
-        }
-
-        .linkTypes {
-          color: $color-passive;
-          font-weight: 600;
-          font-size: 16px;
-        }
-      }
+    .linkTypes {
+      color: $color-passive;
+      font-weight: 600;
+      font-size: 16px;
     }
   }
 }
@@ -3956,7 +3928,8 @@ body .gh__menu {
     width: auto;
 
     .mergeButton {
-      display: flex;justify-content: center;
+      display: flex;
+      justify-content: center;
     }
 
     .compareWrapper {
@@ -4221,7 +4194,7 @@ body .gh__menu {
   margin: 0 auto 50px;
   align-items: flex-start;
   position: relative;
-  top: 110px;
+  top: 130px;
 
   .tabsList {
     display: flex;
@@ -4942,6 +4915,7 @@ body .gh__menu {
 
 .exportDropDown .ghFormField {
   position: relative !important;
+  background: #C6E6FF 0% 0% no-repeat padding-box !important;
 }
 
 .exportData {
@@ -4955,13 +4929,12 @@ body .gh__menu {
   max-width: 52px;
 
   .showExportButton {
-    background-color: white;
     position: relative;
     z-index: 9;
     padding: 7px 10px 7px 10px;
-    border-radius: 5px;
+    border-radius: 15px;
     margin-bottom: -15px;
-    box-shadow: 0 0 6px rgb(136 130 209 / 22%);
+    background: #C6E6FF 0% 0% no-repeat padding-box;
   }
 
   .exportDropDown {
@@ -4969,28 +4942,19 @@ body .gh__menu {
     z-index: 4;
     position: absolute;
     margin-left: 5px;
-    margin-top: 14px;
     width: 50%;
     padding: 50px 40px 21px;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 38px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
+    border-radius: 12px;
+    background: #C6E6FF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 6px 20px #0D090529;
+    border: 1px solid #ABD6F780;
     opacity: 1;
     border-top-left-radius: 0px 0px;
-
-    p{
-      color:#424242;
-      font-size: 25px !important;
-      font-weight: 700;
-      display: flex;
-      justify-content: center;
-    }
   }
 
   .exportButton {
-    display: flex;
-    justify-content: center;
-    padding: 25px;
+    float: right;
+    margin: 30px 0 10px;
   }
 
   .icon {
@@ -5003,21 +4967,19 @@ body .gh__menu {
   }
 
   .gh__control {
-    border: 2px solid #7E75EF !important;
-    border-radius:5px !important;
+    border-radius: 10px !important;
     height: 45px !important;
     font: normal normal normal 18px/19px Open Sans !important;
   }
 
   label {
-    font: normal normal 600 15px/17px
-     Open Sans;
-        padding: 15px 11px;
-        font-size: 14px;
-        font-weight: 400;
-        color: #A5A5A5;
+    font: normal normal 600 15px/17px Open Sans;
+    padding-bottom: 15px;
   }
 
+  .gh__indicator svg {
+    background: #F2F5F7 0% 0% no-repeat padding-box !important;
+  }
 
   .gh__single-value {
     color: #9BA6B4;
@@ -5348,6 +5310,7 @@ label.pull-left::before {
 
     .userFildSize {
       .gh__control {
+        width: 63%;
         margin-left: auto;
       }
     }
@@ -5356,7 +5319,6 @@ label.pull-left::before {
       display: flex;
       align-items: center;
       width: 100%;
-      height: 50px;
       justify-content: space-between;
       padding: 0 1px;
 
@@ -5418,6 +5380,7 @@ label.pull-left::before {
 
     .form {
       margin-bottom: 10px;
+
       p {
         margin-bottom: 30px;
       }
@@ -5517,7 +5480,8 @@ label.pull-left::before {
   .buttons, h2, .ghFileInput, .ghFormField {
     width: auto !important;
   }
-  .inserCancel{
+
+  .inserCancel {
     margin: 0 auto;
   }
 }
@@ -5636,10 +5600,10 @@ img.preview-scaled {
       }
 
       .actionButton {
+        background-color: transparent;
         width: 100%;
         height: 100%;
-        background: #EDF1F5 0% 0% no-repeat padding-box;
-        box-shadow: none;
+        padding: 20px;
 
         > .icon {
           display: flex;
@@ -5653,8 +5617,6 @@ img.preview-scaled {
             width: 30%;
             height: auto;
           }
-        &:hover{
-          box-shadow: 4px 0px 75px rgba(119, 113, 183, 0.22);        }
         }
       }
     }
@@ -6555,6 +6517,8 @@ img.preview-scaled {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   padding-top: 10px;
   width: 50px;
+  transition: all .4s ease-in-out 0s;
+  transform-origin: right top;
 
   &:hover {
     width: 280px;
@@ -7519,8 +7483,8 @@ img.preview-scaled {
 }
 
 .legendButton {
-    display: flex;
- .legendSvg{
+  display: flex;
+  .legendSvg{
     display: none;
   }
 }
@@ -7761,7 +7725,7 @@ img.preview-scaled {
 }
 
 .legends {
- 
+
   * {
     padding: 0;
     margin: 0;
@@ -7770,6 +7734,7 @@ img.preview-scaled {
 
   ul {
     list-style: none;
+    height: 325px;
     overflow: auto;
   }
 
@@ -7787,7 +7752,6 @@ img.preview-scaled {
       position: fixed;
       width: 235px;
       top: 70px;
-      height: calc(100% - 145px);
     }
   }
 
@@ -7813,10 +7777,9 @@ img.preview-scaled {
     display: none;
     width: 100%;
     top: 60px;
-    padding: 15px 16px 20px 16px;
+    padding: 26px 16px 20px 16px;
     background-color: #FFFFFF;
     border-radius: 3px;
-    box-shadow: 0px 11px 20px rgb(0 0 0 / 25%);
 
     h4 {
       margin-left: 7px;
@@ -7831,25 +7794,27 @@ img.preview-scaled {
     }
 
     a {
+      max-width: calc(100% - 32px);
       text-decoration: none;
       color: #FFFFFF !important;
       font-weight: 400;
       font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .nodes {
- 
+      margin-bottom: 15px;
 
       .node-item {
         display: -webkit-inline-box;
-        padding: 2px 12px 5px;
+        padding: 2px 12px;
         border-radius: 50px;
         margin-bottom: 10px;
         margin-left: 5px;
         float: left;
-       
+
 
         .indicator {
           height: 10px;
@@ -7867,14 +7832,6 @@ img.preview-scaled {
           margin-left: 2px;
         }
       }
-    }
-    .connections, .nodes{
-    overflow: scroll;
-    height: auto;
-    max-height: 44%;
-    }
-    .nodeCount{
-      margin-left: 2px;
     }
 
   }
@@ -7926,13 +7883,12 @@ img.preview-scaled {
   .start-graphs {
     .buttonsWrapper {
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-evenly;
       width: 100%;
 
       button {
-        min-width: 200px;
-        margin-left: 20px;
-        max-width: 250px;
+        min-width: 130px;
+        max-width: 150px;
         border-radius: 3px;
         font-size: 14px;
       }
@@ -7995,7 +7951,6 @@ img.preview-scaled {
   position: fixed;
   height: 56px;
   background: white;
-  box-shadow: 4px 0 31px rgb(119 113 183 / 22%);
   z-index: 4;
 
   .header-right-panel {
@@ -8019,7 +7974,7 @@ img.preview-scaled {
 
   .container {
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(13%,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(13%, 1fr));
     max-width: 100%;
     gap: 10px;
     padding: 0;
@@ -8322,7 +8277,7 @@ img.preview-scaled {
 }
 
 .jodit-workplace {
-  min-height: 206px !important;
+  min-height: 100px !important;
 }
 
 .addNode {
@@ -8660,9 +8615,12 @@ img.preview-scaled {
 }
 
 .connection-item {
-  display: flex;
-  align-items: center;
   margin-bottom: 16px;
+  border-radius: 50px;
+  display: -webkit-inline-box;
+  padding: 0 10px;
+  margin-left: 5px !important;
+  float: left;
   .linkColor{
     color: #424242 !important;
   }
@@ -8700,13 +8658,6 @@ img.preview-scaled {
     a {
       cursor: auto;
     }
-  }
-  .connection-item {
-    border-radius: 50px;
-    display: flex;
-    padding: 2px 12px 5px;
-    margin-left: 5px !important;
-    float: left;
   }
 }
 
@@ -9005,8 +8956,7 @@ img.preview-scaled {
     justify-content: flex-start;
   }
 
-  .caption-left { 
-    font-size: 16px;
+  .caption-left {
     display: flex;
     flex-wrap: wrap;
     width: 100px;
@@ -9014,7 +8964,6 @@ img.preview-scaled {
   }
 
   .caption-right {
-    font-size: 16px;
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
@@ -9514,10 +9463,13 @@ details[open] summary:after {
   }
 }
 
-.tabComment, .graphUsersInfo {
+.tabComment {
   transition: all 0.6s ease-in-out 0.0s;
   transform-origin: right top;
   transform: scaleX(0);
+}
+
+.tabComment, .graphUsersInfo {
   z-index: 0;
   position: absolute !important;
   right: 500px;
@@ -9669,16 +9621,16 @@ details[open] summary:after {
     border-bottom-color: #fff;
   }
 
-  // &:before {
-  //   content: "";
-  //   position: absolute;
-  //   display: block;
-  //   border-color: transparent;
-  //   border-style: solid;
-  //   top: 0;
-  //   border-width: 0 .5rem .5rem;
-  //   border-bottom-color: rgba(0,0,0,.25);
-  // }
+  &:before {
+    content: "";
+    position: absolute;
+    display: block;
+    border-color: transparent;
+    border-style: solid;
+    top: 0;
+    border-width: 0 .5rem .5rem;
+    border-bottom-color: rgba(0, 0, 0, .25);
+  }
 }
 
 .rc-tooltip-placement-right .rc-tooltip-arrow {
@@ -9797,7 +9749,6 @@ details[open] summary:after {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    font-size: 14px;
 
     p {
       font-size: 12px;
@@ -9805,7 +9756,7 @@ details[open] summary:after {
       color: #939393;
       position: relative;
       margin-top: -23px;
-      line-height: 13px;
+      line-height: 12px;
       left: 45px;
       width: 85%;
     }
@@ -9824,34 +9775,34 @@ details[open] summary:after {
   width: 100%;
   height: 80px;
 
-.permission {
-  width: 100%;
-
-  .peremissiomSvg {
+  .permission {
     width: 100%;
-    height: 100vh;
-  }
 
-  .backErrorPages {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    justify-content: center;
-    position: absolute;
-    top: 60%;
-    font-size: 33px;
-
-    &:hover{
-      color: $color-main;
-      text-decoration: none;
+    .peremissiomSvg {
+      width: 100%;
+      height: 100vh;
     }
-    .ghButton {
-      .icon{
-        width: 45px;
+
+    .backErrorPages {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: center;
+      position: absolute;
+      top: 60%;
+      font-size: 33px;
+
+      &:hover{
+        color: $color-main;
+        text-decoration: none;
+      }
+      .ghButton {
+        .icon{
+          width: 45px;
+        }
       }
     }
   }
-}
 }
 .permissionLogo {
   padding: 30px;
@@ -10080,44 +10031,31 @@ details[open] summary:after {
       }
     }
   }
- .LegendExplorer{
-      height: 45px;
-      position: fixed;
-      right: 259px;
+  .LegendExplorer{
+    height: 45px;
+    position: fixed;
+    right: 259px;
     .legends.open .dropdown{
-        top: 125px !important;
-        // height: 74% !important;
-      }
-     .legends.open .dropdown{
-        width: 282px !important;
-        height: calc(100% - 250px) !important;
-      }
-    .nodes{
-          margin-bottom: 15px;
-          overflow: scroll;
-          height: auto;
-          max-height: 44%;
-      }
+      top: 125px !important;
+      height: 74% !important;
+    }
+    .legends.open .dropdown{
+      width: 282px !important
+    }
+    .legends ul{
+      height: 275px !important;
+    }
     .legends .dropdown-btn h6 , .carretNew{
-        display: none !important;
-      }
+      display: none !important;
+    }
     .legendSvg{
-        display: flex !important;
-        position: relative;
-        left: 2px !important;
-      }
-      .connections{
-        overflow: scroll;
-        height: auto;
-        max-height: 44%;
-      }
-      .nodeCount{
-        margin-left: 2px;
-      }
+      display: flex !important;
+      position: relative;
+      top: -4px !important;
+      left: 2px !important;
+    }
 
- }
-
-
+  }
 }
 
 .createQueryModal {
@@ -10166,27 +10104,27 @@ details[open] summary:after {
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    border-radius: 5px;
+    // width: 100%;
+    // min-width: 150px;
     height:36px;
-    margin-left: 10px; 
+    margin-left: 10px;
     background-color: white;
     box-shadow: 0 0 6px rgb(136 130 209 / 22%);
     &__name {
       flex: 70%;
-      color: #7166F8; 
-      display: flex; 
+      color: #7166F8;
+      display: flex;
       align-items: center;
       justify-content: center;
       white-space: nowrap;
       margin: 7px;
     }
     &__title {
-      display: flex; 
+      display: flex;
       align-items: center;
-      position: unset !important;  
-      justify-content: flex-end; 
+      position: unset !important;
+      justify-content: flex-end;
       flex: 30%;
     }
   }
 }
-

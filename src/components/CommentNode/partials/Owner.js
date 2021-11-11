@@ -9,22 +9,54 @@ import { ReactComponent as RemoveSvg } from '../../../assets/images/icons/trash.
 const Owner = ({
   user, date, edit, remove, comment,
 }) => {
+  const ownerStyles = {
+    owner: {
+      display: 'flex',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      padding: '10px 30px',
+    },
+    logo: {
+      height: '40px',
+      width: '40px',
+    },
+    user_info: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    user_name: {
+      color: '#6356ff',
+      fontSize: '15px',
+      fontWeight: 600,
+    },
+    user_date: {
+      fontSize: '13px',
+      color: '#424242',
+    },
+    settings: {
+      marginBottom: '0',
+      fontWeight: 600,
+      fontSize: '1rem',
+    },
+  };
+
   const dispatch = useDispatch();
 
   return (
-    <div className="comment-modal__owner">
+    <div style={ownerStyles.owner} className="owner">
       {user && (
         <>
           <img
-            className="avatar circle comment-modal__owner-logo"
+            style={ownerStyles.logo}
+            className="avatar circle"
             src={user && user.avatar}
             alt={`${user.firstName} ${user.lastName}`}
           />
-          <span className="user-info">
-            <h3 className="user-name">
+          <span style={ownerStyles.user_info}>
+            <span style={ownerStyles.user_name}>
               {`${user.firstName} ${user.lastName}`}
-            </h3>
-            <span className="comment-modal__comment-date">{date}</span>
+            </span>
+            <span style={ownerStyles.user_date}>{date}</span>
           </span>
           <div className="settings">
             {edit && (

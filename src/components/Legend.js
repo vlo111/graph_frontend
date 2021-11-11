@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { setLegendButton } from '../store/actions/app';
 import ChartUtils from '../helpers/ChartUtils';
 import { ReactComponent as DownSvg } from '../assets/images/icons/down.svg';
@@ -9,6 +8,7 @@ import { ReactComponent as LegendSvg } from '../assets/images/icons/legend.svg';
 
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Utils from '../helpers/Utils';
+import _ from 'lodash'
 
 class Legend extends Component {
     static propTypes = {
@@ -61,26 +61,11 @@ class Legend extends Component {
         
       ));
 
-      const linkData= linksPartial?.map((p) => ({
-        name: p.name,
-        type: p.type,
-      }));
-      const linkTypes = _.groupBy(linkData, 'type');
-      const typesLinke = [];
-      Object.keys(linkTypes).forEach((l) => {
-        const currentType = linkTypes[l];
-        typesLinke.push({ type: currentType[0].type, count: currentType.length });
-      });
-
       const listLinkItems = links.map((link) => (
         <li className="connection-item" key={link.id }  style={{ backgroundColor: link.color }}>
           <a title={link.type} className="linkColor">{link.type}</a>
-          <a className="nodeCount">{`(${linkTypes[Object.keys(linkTypes).filter(p => p === link.type)].length})`}</a>
-
         </li>
       ));
-
-
 
 
       return (
@@ -95,32 +80,32 @@ class Legend extends Component {
           </button>
 
           <div className="dropdown">
-          <h4>
+            <div className="nodes">
+              <h4>
                 Nodes (
                 {nodesPartial?.length}
                 )
               </h4>
-            <div className="nodes">
               <ul className="node-list"
               >
                 {listNodeItems} 
               </ul>
             </div>
             <div class="borderLegends"></div>
-            <h4>
+            <div className="connections">
+              <h4>
                 Connections (
-                {linksPartial?.length}
+                {links.length}
                 )
               </h4>
-            <div className="connections">
               <ul className="connection-list">
                 {listLinkItems}
               </ul>
             </div>
           </div>
         </div>
-    );
-  }
+      );
+    }
 }
 
 const mapStateToProps = (state) => ({
