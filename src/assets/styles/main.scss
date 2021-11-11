@@ -1323,6 +1323,7 @@ p {
     }
 
     h2 {
+      font-size: 25px;
       text-align: center;
     }
 
@@ -3244,6 +3245,7 @@ body .gh__menu {
     .leftPanel {
       width: 30%;
       display: flex;
+      align-items: center;
       cursor: pointer;
 
       .left {
@@ -4219,7 +4221,7 @@ body .gh__menu {
   margin: 0 auto 50px;
   align-items: flex-start;
   position: relative;
-  top: 130px;
+  top: 110px;
 
   .tabsList {
     display: flex;
@@ -5634,10 +5636,10 @@ img.preview-scaled {
       }
 
       .actionButton {
-        background-color: transparent;
         width: 100%;
         height: 100%;
-        padding: 20px;
+        background: #EDF1F5 0% 0% no-repeat padding-box;
+        box-shadow: none;
 
         > .icon {
           display: flex;
@@ -5651,6 +5653,8 @@ img.preview-scaled {
             width: 30%;
             height: auto;
           }
+        &:hover{
+          box-shadow: 4px 0px 75px rgba(119, 113, 183, 0.22);        }
         }
       }
     }
@@ -7827,14 +7831,12 @@ img.preview-scaled {
     }
 
     a {
-      max-width: calc(100% - 32px);
       text-decoration: none;
       color: #FFFFFF !important;
       font-weight: 400;
       font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .nodes {
@@ -7924,12 +7926,13 @@ img.preview-scaled {
   .start-graphs {
     .buttonsWrapper {
       display: flex;
-      justify-content: space-evenly;
+      justify-content: flex-start;
       width: 100%;
 
       button {
-        min-width: 130px;
-        max-width: 150px;
+        min-width: 200px;
+        margin-left: 20px;
+        max-width: 250px;
         border-radius: 3px;
         font-size: 14px;
       }
@@ -8657,12 +8660,9 @@ img.preview-scaled {
 }
 
 .connection-item {
+  display: flex;
+  align-items: center;
   margin-bottom: 16px;
-  border-radius: 50px;
-  display: -webkit-inline-box;
-  padding: 2px 12px 5px;
-  margin-left: 5px !important;
-  float: left;
   .linkColor{
     color: #424242 !important;
   }
@@ -8700,6 +8700,13 @@ img.preview-scaled {
     a {
       cursor: auto;
     }
+  }
+  .connection-item {
+    border-radius: 50px;
+    display: flex;
+    padding: 2px 12px 5px;
+    margin-left: 5px !important;
+    float: left;
   }
 }
 
@@ -8998,7 +9005,8 @@ img.preview-scaled {
     justify-content: flex-start;
   }
 
-  .caption-left {
+  .caption-left { 
+    font-size: 16px;
     display: flex;
     flex-wrap: wrap;
     width: 100px;
@@ -9006,6 +9014,7 @@ img.preview-scaled {
   }
 
   .caption-right {
+    font-size: 16px;
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
@@ -9660,16 +9669,16 @@ details[open] summary:after {
     border-bottom-color: #fff;
   }
 
-  &:before {
-    content: "";
-    position: absolute;
-    display: block;
-    border-color: transparent;
-    border-style: solid;
-    top: 0;
-    border-width: 0 .5rem .5rem;
-    border-bottom-color: rgba(0,0,0,.25);
-  }
+  // &:before {
+  //   content: "";
+  //   position: absolute;
+  //   display: block;
+  //   border-color: transparent;
+  //   border-style: solid;
+  //   top: 0;
+  //   border-width: 0 .5rem .5rem;
+  //   border-bottom-color: rgba(0,0,0,.25);
+  // }
 }
 
 .rc-tooltip-placement-right .rc-tooltip-arrow {
