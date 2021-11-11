@@ -174,10 +174,11 @@ class SaveAsTempletModal extends Component {
               </>
             ) : (
               <>
-                <Button className="accent alt" onClick={() => this.saveGraph('template', true)}>
+              <div className="saveTempleteButton">
+                <Button className="btn-classic" onClick={() => this.saveGraph('template', true)}>
                   Save
                 </Button>
-
+                 </div>
               </>
             )}
           </div>

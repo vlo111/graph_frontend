@@ -1347,6 +1347,11 @@ p {
     .buttons {
       margin-top: 40px;
     }
+    .saveTempleteButton{
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
   }
 
   .ghModalEdit {
@@ -9412,11 +9417,17 @@ details[open] summary:after {
 
       .reply {
         right: 80px;
+        margin-left: 40%;
       }
 
       .comment-content {
         padding: 0 50px 5px 75px;
         line-height: 30px !important;
+      }
+      p{
+        width: 100%;
+        display: flex;
+        padding-left: 17%;
       }
     }
 
