@@ -22,12 +22,27 @@ const SwitchTab = ({
 
   return (
     <>
-      {mode === 'tabs' && (
       <div className="tab_list">
         <div className="tab_list-header">
           <div className="tab_list-header-text">{`Tabs (${nodeCustomFields.length + 1})`}</div>
           <div className="tab_list-header-add" onClick={() => setOpenAddTab('')}>+ add tab</div>
         </div>
+        {(activeTab === '_description')
+          ? (
+            <div
+              className="description description_active"
+              onClick={() => setActiveTab('_description')}
+            >
+              Description
+            </div>
+          ) : (
+            <div
+              className="description"
+              onClick={() => setActiveTab('_description')}
+            >
+              Description
+            </div>
+          )}
         <Sortable
           onChange={handleOrderChange}
           items={nodeCustomFields.filter((p) => p.name !== '_description')}
@@ -44,13 +59,12 @@ const SwitchTab = ({
                 className={`tab_list-content-item ${activeTab === p.value.name ? 'tab_list-content-active' : ''}`}
                 onMouseDown={() => setActiveTab(p.value.name)}
               >
-                {p.value.name}
+                {p.value.name.length > 15 ? `${p.value.name.substring(0, 15)} ...` : p.value.name}
               </div>
             </>
           )}
         />
       </div>
-      )}
     </>
   );
 };

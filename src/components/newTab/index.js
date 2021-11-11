@@ -15,6 +15,9 @@ import { updateNodesCustomFieldsRequest } from '../../store/actions/nodes';
 import '../../assets/styles/tabs.scss';
 import TabHeader from './header/TabHeader';
 import NodeInfoHeader from './header/NodeInfoHeader';
+import General from './content/General';
+import Tab from './content/Tab';
+import Comment from './content/Comment';
 
 const getElement = (name) => document.querySelector(name);
 
@@ -50,7 +53,12 @@ const Tabs = ({ history, editable }) => {
   const { id: graphId } = singleGraph;
 
   const moveAutoPlay = () => {
-    const left = document.querySelector('.tab_list') ? '660px' : '460px';
+    const tab = getElement('.tab_list');
+    let left;
+
+    if (!tab.style.transform || tab.style.transform !== 'scaleX(1)') {
+      left = '460px';
+    } else left = '660px';
 
     // move autoplay right
     getElement('#autoPlay').style.right = left;
@@ -100,17 +108,36 @@ const Tabs = ({ history, editable }) => {
           nodeCustomFields={nodeCustomFields}
           setOpenAddTab={(tab) => setOpenAddTab(tab)}
         />
-        <TabHeader
-          mode={mode}
-          setMode={setMode}
-          node={node}
-          singleGraph={singleGraph}
-          activeTab={activeTab}
-          editable={editable}
-          nodeCustomFields={nodeCustomFields}
-          setActiveTab={setActiveTab}
-          setOpenAddTab={setOpenAddTab}
-        />
+        <div className="tab">
+          <TabHeader
+            mode={mode}
+            setMode={setMode}
+          />
+          <div className="tab-container">
+            {mode === 'general'
+            && (
+            <General
+              editable={editable}
+              node={node}
+            />
+            )}
+            {mode === 'tabs'
+            && (
+            <Tab
+              node={node}
+              graphId={graphId}
+              customFields={nodeCustomFields}
+              name={activeTab}
+              setOpenAddTab={(tab) => setOpenAddTab(tab)}
+              setActiveTab={(tabName) => setActiveTab(tabName)}
+            />
+            )}
+            {mode === 'comments'
+            && (
+            <Comment graph={singleGraph} node={node} />
+            )}
+          </div>
+        </div>
       </div>
       {!_.isNull(openAddTab) && (
         <AddTabModal

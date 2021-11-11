@@ -10,6 +10,10 @@ import ModalConfirmation from '../../../helpers/ModalConfirmation';
 import { updateNodesCustomFieldsRequest } from '../../../store/actions/nodes';
 import { getNodeCustomFieldsRequest } from '../../../store/actions/graphs';
 
+const getElement = (name) => document.querySelector(name);
+
+const getMultyElements = (names) => document.querySelectorAll(names);
+
 const Tab = ({
   node, customFields,
   editable = true, name, setOpenAddTab, setActiveTab, graphId,
@@ -35,11 +39,6 @@ const Tab = ({
 
   const noTab = <div className="tab_content-description-nodata">you have no data yet</div>;
 
-  let description;
-  let tab;
-  let expandTab;
-  let editOrAdd;
-
   const editElement = (
     <Button
       icon={<EditSvg />}
@@ -58,28 +57,28 @@ const Tab = ({
   );
 
   const expandHandle = () => {
-    const tabElement = document.querySelector('.tab-wrapper');
+    const tabElement = getElement('.tab-wrapper');
 
-    const closeElems = document.querySelectorAll('.menu, .ReactModalPortal, .edit, .back, #graphs-data-info,.tab-close');
-    const disableElems = document.querySelectorAll('#header-on-graph, #header-on-view-graph');
+    const closeElems = getMultyElements('.menu, .ReactModalPortal, .edit, .back, #graphs-data-info');
+    const disableElems = getMultyElements('#header-on-graph, #header-on-view-graph');
 
-    if (!tabElement.className.includes('node_expand')) {
-      tabElement.style.transform = 'none';
-      tabElement.className += ' node_expand';
-      closeElems.forEach((p) => p.style.display = 'none');
-      disableElems.forEach((p) => {
-        p.style.pointerEvents = 'none';
-        p.style.opacity = '0.7';
-      });
-    } else {
-      tabElement.className = 'tab-wrapper';
-      closeElems.forEach((p) => p.style.display = 'flex');
-      disableElems.forEach((p) => {
-        p.style.pointerEvents = 'auto';
-        p.style.opacity = '1';
-      });
-    }
-  }
+    // if (!tabElement.className.includes('node_expand')) {
+    //   tabElement.style.transform = 'none';
+    //   tabElement.className += ' node_expand';
+    //   closeElems.forEach((p) => p.style.display = 'none');
+    //   disableElems.forEach((p) => {
+    //     p.style.pointerEvents = 'none';
+    //     p.style.opacity = '0.7';
+    //   });
+    // } else {
+    //   tabElement.className = 'tab-wrapper';
+    //   closeElems.forEach((p) => p.style.display = 'flex');
+    //   disableElems.forEach((p) => {
+    //     p.style.pointerEvents = 'auto';
+    //     p.style.opacity = '1';
+    //   });
+    // }
+  };
 
   const expandElement = (
     <Button
@@ -89,6 +88,11 @@ const Tab = ({
       onClick={expandHandle}
     />
   );
+
+  let description;
+  let tab;
+  let expandTab;
+  let editOrAdd;
 
   if (name === '_description') {
     if (node.description) {
@@ -130,9 +134,10 @@ const Tab = ({
         <p className="tab_content-header-text">{name === '_description' ? 'Description' : name}</p>
         <div className="tab_content-header-icons">
           <>
+            {editable && editOrAdd}
+            {expandTab}
             {editable && (
             <>
-              {editOrAdd}
               {name !== '_description'
               && (
               <Button
@@ -143,7 +148,6 @@ const Tab = ({
               )}
             </>
             )}
-            {expandTab}
           </>
         </div>
       </div>
@@ -162,16 +166,6 @@ const Tab = ({
         onAccept={deleteTab}
       />
       )}
-      {/* {expandNode */}
-      {/* && ( */}
-      {/* <ExpandSingleTab */}
-      {/*  html={html || node.description} */}
-      {/*  name={name} */}
-      {/*  created={moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')} */}
-      {/*  createdBy={node.userId} */}
-      {/*  onClose={expand} */}
-      {/* /> */}
-      {/* )} */}
     </div>
   );
 };

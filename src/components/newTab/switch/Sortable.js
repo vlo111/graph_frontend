@@ -26,11 +26,12 @@ class Sortable extends Component {
 
       /* @todo get document elements size
         * 56 graph header height
+        * 55 description with margin
         * 100 - add tab block
         * 20 - padding from button
       */
 
-      const height = window.innerHeight - 56 - 100 - 20;
+      const height = window.innerHeight - 56 - 50 - 100 - 20;
 
       const contentStyle = {
         height,
@@ -38,22 +39,6 @@ class Sortable extends Component {
 
       return (
         <div style={contentStyle} className="tab_list-content SortableList">
-          {(activeTab === '_description')
-            ? (
-              <div
-                className="tab_list-content-active tab_list-content-item"
-                onClick={() => setActiveTab('_description')}
-              >
-                Description
-              </div>
-            ) : (
-              <div
-                className="tab_list-content-item SortableItem"
-                onClick={() => setActiveTab('_description')}
-              >
-                Description
-              </div>
-            )}
           {items.map((value, index) => (
             <SortableItem
               onClick={() => this.props.setActiveTab(value)}
