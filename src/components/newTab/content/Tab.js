@@ -121,15 +121,11 @@ const Tab = ({
     const tabElement = getElement('.tab-wrapper');
     const graphElement = getElement('.graphsPage') || getElement('.graphView');
 
-    const closeElements = getMultyElements('#graph, .menu, .ReactModalPortal, .edit, .back, #graphs-data-info');
-
     const enableEffect = () => {
       graphElement.className = getElement('.graphsPage') ? 'graphsPage' : 'graphView';
 
       tabElement.style.width = '450px';
       getElement('.tab_list').style.right = '100%';
-
-      closeElements.forEach((p) => p.style.display = 'flex');
     };
 
     if (enable) {
@@ -137,8 +133,6 @@ const Tab = ({
     } else if (!expand) {
       graphElement.className += ' node_expand';
       Utils.sleep(150).then(() => tabElement.style.width = 'calc(100% - 200px)');
-
-      Utils.sleep(400).then(() => closeElements.forEach((p) => p.style.display = 'none'));
     } else {
       enableEffect();
     }

@@ -1304,7 +1304,10 @@
 }
 
 .node_expand {
-  #header-on-graph, #header-on-view-graph, .tab-header {
+  #header-on-graph, #graphs-data-info, .ReactModalPortal,
+  .edit, .back,
+  #header-on-view-graph, .tab-header,
+  .menu, #graph {
     pointer-events: none;
     opacity: 0.7;
   }
