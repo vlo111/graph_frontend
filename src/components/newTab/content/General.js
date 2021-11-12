@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import queryString from 'query-string';
 import { useDispatch, useSelector } from 'react-redux';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
@@ -43,7 +41,7 @@ const getGroupedConnections = memoizeOne((nodeId) => {
 });
 
 const General = ({
-  node, tabs, history, editable = true,
+  node, tabs, editable = true,
 }) => {
   const dispatch = new useDispatch();
 
@@ -172,9 +170,7 @@ const General = ({
 General.propTypes = {
   node: PropTypes.func.isRequired,
   tabs: PropTypes.func.isRequired,
-  replace: PropTypes.func.isRequired,
-  history: PropTypes.func.isRequired,
   editable: PropTypes.func.isRequired,
 };
 
-export default withRouter(General);
+export default General;

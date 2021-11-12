@@ -35,7 +35,7 @@ const NodeInfoHeader = ({ node, history, setSingleExpand }) => {
         <div className="node">
           <NodeIcon node={node} />
           <div className="name">{node.name}</div>
-        <div className="type">{`Type: ${node.type}`}</div>
+          <div className="type">{`Type: ${node.type}`}</div>
         </div>
         <div className="tab-close">
           <Icon value={<CloseSvg />} className="clear" onClick={closeNodeInfo} />
@@ -48,6 +48,7 @@ const NodeInfoHeader = ({ node, history, setSingleExpand }) => {
 NodeInfoHeader.propTypes = {
   node: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  setSingleExpand: PropTypes.func.isRequired,
 };
 
 export default NodeInfoHeader;

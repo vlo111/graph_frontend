@@ -1,8 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import General from '../content/General';
-import Tab from '../content/Tab';
-import Comment from '../content/Comment';
 
 const getElement = (name) => document.querySelector(name);
 

@@ -14,8 +14,6 @@ import Utils from '../../../helpers/Utils';
 
 const getElement = (name) => document.querySelector(name);
 
-const getMultyElements = (names) => document.querySelectorAll(names);
-
 const Tab = ({
   node, customFields,
   editable = true, name, setOpenAddTab, setActiveTab, graphId,
@@ -187,7 +185,9 @@ Tab.propTypes = {
   editable: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   setOpenAddTab: PropTypes.func.isRequired,
+  setSingleExpand: PropTypes.func.isRequired,
   graphId: PropTypes.string.isRequired,
+  singleExpand: PropTypes.string.isRequired,
 };
 
 export default Tab;
