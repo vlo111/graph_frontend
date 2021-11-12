@@ -40,6 +40,8 @@ const Tabs = ({ history, editable }) => {
 
   const [activeTab, setActiveTab] = useState('_description');
 
+  const [nodeIdMemo, setNodeIdMemo] = useState('');
+
   const [openAddTab, setOpenAddTab] = useState(null);
 
   const [singleExpand, setSingleExpand] = useState(false);
@@ -93,6 +95,16 @@ const Tabs = ({ history, editable }) => {
       customFields: nodeCustomFields,
     }]));
   };
+
+  if (nodeId !== nodeIdMemo) {
+    setNodeIdMemo(nodeId);
+    setActiveTab('_description');
+  }
+
+  useEffect(() => {
+    dispatch(getNodeCustomFieldsRequest(graphId, nodeId, {}));
+    // dispatch(getNodeCommentsRequest({ graphId, nodeId: node.id }));
+  }, [nodeIdMemo]);
 
   return (
     <>

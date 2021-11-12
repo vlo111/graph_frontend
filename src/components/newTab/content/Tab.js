@@ -119,10 +119,10 @@ const Tab = ({
 
   const expandNode = (enable) => {
     const tabElement = getElement('.tab-wrapper');
-    const graphElement = getElement('.graphsPage') || getElement('.graphView');
+    const { body } = document;
 
     const enableEffect = () => {
-      graphElement.className = getElement('.graphsPage') ? 'graphsPage' : 'graphView';
+      body.className = body.className.replace('node_expand', '');
 
       tabElement.style.width = '450px';
       getElement('.tab_list').style.right = '100%';
@@ -131,7 +131,7 @@ const Tab = ({
     if (enable) {
       enableEffect();
     } else if (!expand) {
-      graphElement.className += ' node_expand';
+      body.className += ' node_expand';
       Utils.sleep(150).then(() => tabElement.style.width = 'calc(100% - 200px)');
     } else {
       enableEffect();

@@ -1304,10 +1304,10 @@
 }
 
 .node_expand {
-  #header-on-graph, #graphs-data-info, .ReactModalPortal,
+  #header-on-graph, #graphs-data-info,
   .edit, .back,
   #header-on-view-graph, .tab-header,
-  .menu, #graph {
+  .menu, #graph, .searchField {
     pointer-events: none;
     opacity: 0.7;
   }
