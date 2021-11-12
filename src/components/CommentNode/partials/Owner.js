@@ -10,19 +10,14 @@ const Owner = ({
   user, date, edit, remove, comment,
 }) => {
   const ownerStyles = {
-    owner: {
-      display: 'flex',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      padding: '10px 30px',
-    },
     logo: {
-      height: '40px',
-      width: '40px',
+      height: '30px',
+      width: '30px',
     },
     user_info: {
       display: 'flex',
-      flexDirection: 'column',
+      justifyContent: 'space-between',
+      width: '65%',
     },
     user_name: {
       color: '#6356ff',
@@ -43,51 +38,49 @@ const Owner = ({
   const dispatch = useDispatch();
 
   return (
-    <div style={ownerStyles.owner} className="owner">
-      {user && (
-        <>
-          <img
-            style={ownerStyles.logo}
-            className="avatar circle"
-            src={user && user.avatar}
-            alt={`${user.firstName} ${user.lastName}`}
-          />
-          <span style={ownerStyles.user_info}>
-            <span style={ownerStyles.user_name}>
-              {`${user.firstName} ${user.lastName}`}
-            </span>
-            <span style={ownerStyles.user_date}>{date}</span>
-          </span>
-          <div className="settings">
-            {edit && (
-            <Button
-              icon={<ReplySvg style={{ height: 17 }} />}
-              onClick={() => {
-                dispatch(setNodeCommentParent(comment));
-                setTimeout(() => {
-                  const replyInput = document.getElementById('reply-comment');
-                  // if (replyInput) replyInput.focus();
-                  // else document.getElementById('add-comment').focus();
-                });
-              }}
-              className="transparent reply"
-              title="reply"
-            />
-            )}
-            {remove && (
-            <Button
-              icon={<RemoveSvg style={{ height: 17 }} />}
-              onClick={() => {
-                dispatch(deleteNodeComment(comment.id));
-              }}
-              className="transparent remove"
-              title="Remove"
-            />
-            )}
-          </div>
-        </>
-      )}
-    </div>
+    user && (
+    <>
+      <img
+        style={ownerStyles.logo}
+        className="avatar circle"
+        src={user && user.avatar}
+        alt={`${user.firstName} ${user.lastName}`}
+      />
+      <span style={ownerStyles.user_info}>
+        <span style={ownerStyles.user_name}>
+          {`${user.firstName} ${user.lastName}`}
+        </span>
+        <span style={ownerStyles.user_date}>{date}</span>
+      </span>
+      <div className="settings">
+        {edit && (
+        <Button
+          icon={<ReplySvg style={{ height: 17 }} />}
+          onClick={() => {
+            dispatch(setNodeCommentParent(comment));
+            setTimeout(() => {
+              const replyInput = document.getElementById('reply-comment');
+              // if (replyInput) replyInput.focus();
+              // else document.getElementById('add-comment').focus();
+            });
+          }}
+          className="transparent reply"
+          title="reply"
+        />
+        )}
+        {remove && (
+        <Button
+          icon={<RemoveSvg style={{ height: 17 }} />}
+          onClick={() => {
+            dispatch(deleteNodeComment(comment.id));
+          }}
+          className="transparent remove"
+          title="Remove"
+        />
+        )}
+      </div>
+    </>
+    )
   );
 };
 

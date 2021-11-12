@@ -39,14 +39,16 @@ const CommentItem = ({ comment, isReply }) => {
 
   return (
     <div className={`comment-content-wrapper-item ${isReply ? '--reply' : ''}`} key={`comment-${comment.id}`}>
-      <Owner
-        user={comment.user}
-        date={moment.utc(comment.createdAt).format('DD.MM.YYYY')}
-        comment={comment}
-        edit={!isReply}
-        remove={userId === comment.user.id}
-      />
-      <div className="comment-text" onClick={expandText} dangerouslySetInnerHTML={{ __html: compressComment || comment.text }} />
+      <div className="owner">
+        <Owner
+          user={comment.user}
+          date={moment.utc(comment.createdAt).format('DD.MM.YYYY')}
+          comment={comment}
+          edit={!isReply}
+          remove={userId === comment.user.id}
+        />
+        <div className="comment-text" onClick={expandText} dangerouslySetInnerHTML={{ __html: compressComment || comment.text }} />
+      </div>
     </div>
   );
 };

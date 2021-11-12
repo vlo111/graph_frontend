@@ -915,7 +915,6 @@
           display: flex;
           padding: 10px 0 0 20px;
           justify-content: flex-start;
-          max-width: 450px;
           overflow-y: auto;
           overflow-x: hidden;
 
@@ -928,7 +927,7 @@
           }
 
           * {
-            max-width: 380px;
+            width: 380px;
             margin: 0 !important;
             padding: 0 !important;;
           }
@@ -945,6 +944,8 @@
 
           .commentWrite {
             width: 430px;
+            position: absolute;
+            bottom: 25px;
           }
 
           .btn-delete, .btn-classic {
@@ -991,7 +992,14 @@
               }
 
               .comment-text {
-                padding: 10px 30px;
+                width: 100%;
+                margin-left: 50px;
+
+                p {
+                  color: #939393;
+                  font-weight: bold;
+                  font-size: 12px;
+                }
 
                 .more-btn, .less-btn {
                   border: none;
@@ -999,6 +1007,17 @@
                   background-color: $color-comment-bg;
                 }
               }
+
+              .owner {
+                display: flex;
+                justify-content: space-between;
+                flex-flow: row wrap;
+                align-items: flex-start;
+                padding: 10px 15px;
+              }
+            }
+            .--reply {
+              padding: 0 15px 0 65px;
             }
           }
         }
@@ -1032,8 +1051,6 @@
     align-items: center;
     flex-direction: column;
     z-index: 5;
-    transition: all .4s ease-in-out 0s;
-    transform-origin: right top;
     transform: scaleX(0);
 
     &-header {
@@ -1200,8 +1217,6 @@
     }
   }
 
-  transition: all .4s ease-in-out 0s;
-  transform-origin: right top;
   transform: scaleX(0);
 }
 
@@ -1304,24 +1319,22 @@
 }
 
 .node_expand {
-  #header-on-graph, #graphs-data-info,
-  .edit, .back,
-  #header-on-view-graph, .tab-header,
-  .menu, #graph, .searchField {
-    pointer-events: none;
-    opacity: 0.7;
-  }
+  //#header-on-graph, #graphs-data-info,
+  //.edit, .back,
+  //#header-on-view-graph, .tab-header,
+  //.menu, #graph, .searchField, #mapsGraph {
+  //  pointer-events: none;
+  //  opacity: 0.7;
+  //}
 
-  .tab_list {
-    background-color: #948eda;
-    pointer-events: none;
-  }
+  //.tab_list {
+  //  background-color: #948eda;
+  //  pointer-events: none;
+  //}
 
   .tab_content-description {
-    max-width: initial !important;
-
     * {
-      max-width: calc(100% - 15px) !important;
+      width: calc(100% - 15px) !important;
     }
   }
 }
