@@ -1150,7 +1150,7 @@
     position: fixed;
     right: 0;
     z-index: 9999999;
-    width: 450px;
+    width: 100%;
 
     &-container {
       display: flex;
@@ -1177,6 +1177,7 @@
         font-weight: bold;
         font-size: 12px;
         color: $color-passive;
+        margin-left: 15px;
       }
 
       .name {
@@ -1303,32 +1304,13 @@
 }
 
 .node_expand {
-  width: 800px;
-
-  .tab_list {
-    left: 0;
-    position: relative;
-  }
-
-  .tab_list {
+  #header-on-graph, #header-on-view-graph, .tab-header {
     pointer-events: none;
     opacity: 0.7;
-    transform: scaleX(1);
   }
 
-  .tab-header {
-    display: none;
-  }
-
-  .tab {
-    margin-top: 40px;
-
-    .tab-container .tab_content-description {
-      max-width: 100%;
-
-      * {
-        max-width: 100%;
-      }
-    }
+  .tab_list {
+    background-color: #948eda;
+    pointer-events: none;
   }
 }

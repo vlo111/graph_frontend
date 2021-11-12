@@ -42,6 +42,8 @@ const Tabs = ({ history, editable }) => {
 
   const [openAddTab, setOpenAddTab] = useState(null);
 
+  const [singleExpand, setSingleExpand] = useState(false);
+
   useEffect(() => {
     dispatch(getNodeCustomFieldsRequest(graphId, nodeId));
 
@@ -95,7 +97,7 @@ const Tabs = ({ history, editable }) => {
   return (
     <>
       <div className="tab-wrapper">
-        <NodeInfoHeader node={node} history={history} />
+        <NodeInfoHeader node={node} history={history} setSingleExpand={setSingleExpand} />
         <SwitchTab
           mode={mode}
           moveAutoPlay={moveAutoPlay}
@@ -124,6 +126,8 @@ const Tabs = ({ history, editable }) => {
             {mode === 'tabs'
             && (
             <Tab
+              setSingleExpand={setSingleExpand}
+              singleExpand={singleExpand}
               node={node}
               graphId={graphId}
               customFields={nodeCustomFields}

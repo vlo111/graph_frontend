@@ -6,9 +6,11 @@ import Button from '../../form/Button';
 import { ReactComponent as EditSvg } from '../../../assets/images/icons/edit.svg';
 import { ReactComponent as CloseSvg } from '../../../assets/images/icons/close.svg';
 import { ReactComponent as NodeExpandTabSvg } from '../../../assets/images/icons/node-expand.svg';
+import { ReactComponent as NodeShortenTabSvg } from '../../../assets/images/icons/node-shorten.svg';
 import ModalConfirmation from '../../../helpers/ModalConfirmation';
 import { updateNodesCustomFieldsRequest } from '../../../store/actions/nodes';
 import { getNodeCustomFieldsRequest } from '../../../store/actions/graphs';
+import Utils from '../../../helpers/Utils';
 
 const getElement = (name) => document.querySelector(name);
 
@@ -17,6 +19,7 @@ const getMultyElements = (names) => document.querySelectorAll(names);
 const Tab = ({
   node, customFields,
   editable = true, name, setOpenAddTab, setActiveTab, graphId,
+  singleExpand: expand, setSingleExpand,
 }) => {
   const dispatch = useDispatch();
 
@@ -56,34 +59,16 @@ const Tab = ({
     />
   );
 
-  const expandHandle = () => {
-    const tabElement = getElement('.tab-wrapper');
-
-    const closeElems = getMultyElements('.menu, .ReactModalPortal, .edit, .back, #graphs-data-info');
-    const disableElems = getMultyElements('#header-on-graph, #header-on-view-graph');
-
-    // if (!tabElement.className.includes('node_expand')) {
-    //   tabElement.style.transform = 'none';
-    //   tabElement.className += ' node_expand';
-    //   closeElems.forEach((p) => p.style.display = 'none');
-    //   disableElems.forEach((p) => {
-    //     p.style.pointerEvents = 'none';
-    //     p.style.opacity = '0.7';
-    //   });
-    // } else {
-    //   tabElement.className = 'tab-wrapper';
-    //   closeElems.forEach((p) => p.style.display = 'flex');
-    //   disableElems.forEach((p) => {
-    //     p.style.pointerEvents = 'auto';
-    //     p.style.opacity = '1';
-    //   });
-    // }
+  const expandHandle = (ev) => {
+    ev.stopPropagation();
+    expandNode();
+    setSingleExpand(!expand);
   };
 
   const expandElement = (
     <Button
       className="expand"
-      icon={<NodeExpandTabSvg />}
+      icon={expand ? <NodeExpandTabSvg /> : <NodeShortenTabSvg />}
       title="expand"
       onClick={expandHandle}
     />
@@ -127,6 +112,37 @@ const Tab = ({
   useEffect(() => {
     dispatch(getNodeCustomFieldsRequest(graphId, node.id));
   }, []);
+
+  useEffect(() => {
+    if (!expand) expandNode(true);
+  }, [expand]);
+
+  const expandNode = (enable) => {
+    const tabElement = getElement('.tab-wrapper');
+    const graphElement = getElement('.graphsPage') || getElement('.graphView');
+
+    const closeElements = getMultyElements('#graph, .menu, .ReactModalPortal, .edit, .back, #graphs-data-info');
+
+    const enableEffect = () => {
+      graphElement.className = getElement('.graphsPage') ? 'graphsPage' : 'graphView';
+
+      tabElement.style.width = '450px';
+      getElement('.tab_list').style.right = '100%';
+
+      closeElements.forEach((p) => p.style.display = 'flex');
+    };
+
+    if (enable) {
+      enableEffect();
+    } else if (!expand) {
+      graphElement.className += ' node_expand';
+      Utils.sleep(150).then(() => tabElement.style.width = 'calc(100% - 200px)');
+
+      Utils.sleep(400).then(() => closeElements.forEach((p) => p.style.display = 'none'));
+    } else {
+      enableEffect();
+    }
+  };
 
   return (
     <div className="tab_content">

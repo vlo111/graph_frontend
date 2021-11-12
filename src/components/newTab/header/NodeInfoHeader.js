@@ -8,7 +8,7 @@ import Utils from '../../../helpers/Utils';
 
 const getElement = (name) => document.querySelector(name);
 
-const NodeInfoHeader = ({ node, history }) => {
+const NodeInfoHeader = ({ node, history, setSingleExpand }) => {
   const closeNodeInfo = () => {
     getElement('.tab-wrapper').style.transform = 'scaleX(0)';
 
@@ -25,6 +25,8 @@ const NodeInfoHeader = ({ node, history }) => {
 
     getElement('#autoPlay').style.right = right;
     getElement('.graphControlPanel').style.right = right;
+
+    setSingleExpand(false);
   };
 
   return (
@@ -33,8 +35,8 @@ const NodeInfoHeader = ({ node, history }) => {
         <div className="node">
           <NodeIcon node={node} />
           <div className="name">{node.name}</div>
-        </div>
         <div className="type">{`Type: ${node.type}`}</div>
+        </div>
         <div className="tab-close">
           <Icon value={<CloseSvg />} className="clear" onClick={closeNodeInfo} />
         </div>
