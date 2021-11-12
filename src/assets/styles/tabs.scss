@@ -1316,4 +1316,12 @@
     background-color: #948eda;
     pointer-events: none;
   }
+
+  .tab_content-description {
+    max-width: initial !important;
+
+    * {
+      max-width: calc(100% - 15px) !important;
+    }
+  }
 }

@@ -133,6 +133,7 @@ const Tabs = ({ history, editable }) => {
             <General
               editable={editable}
               node={node}
+              tabs={nodeCustomFields}
             />
             )}
             {mode === 'tabs'
