@@ -5,7 +5,7 @@ import Sortable from './Sortable';
 import { updateNodesCustomFieldsRequest } from '../../../store/actions/nodes';
 
 const SwitchTab = ({
-  mode, nodeCustomFields, setActiveTab, activeTab, moveAutoPlay, setOpenAddTab, node, editable, graphId,
+  nodeCustomFields, setActiveTab, activeTab, moveAutoPlay, setOpenAddTab, node, editable, graphId,
 }) => {
   const dispatch = useDispatch();
 
@@ -73,7 +73,6 @@ SwitchTab.propTypes = {
   nodeCustomFields: PropTypes.object.isRequired,
   setActiveTab: PropTypes.func.isRequired,
   moveAutoPlay: PropTypes.func.isRequired,
-  mode: PropTypes.object.isRequired,
   node: PropTypes.object.isRequired,
   setOpenAddTab: PropTypes.func.isRequired,
   activeTab: PropTypes.object.isRequired,

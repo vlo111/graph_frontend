@@ -58,6 +58,7 @@ const Tabs = ({ history, editable }) => {
 
   const moveAutoPlay = () => {
     const tab = getElement('.tab_list');
+    if (getElement('.tab-wrapper').style.transform === 'scaleX(0)') return;
     let left;
 
     if (!tab.style.transform || tab.style.transform !== 'scaleX(1)') {
