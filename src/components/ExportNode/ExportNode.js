@@ -40,7 +40,6 @@ class ExportNode extends Component {
 
                 <p>
                   {title}
-
                 </p>
               </h3>
               <h3 className="name">

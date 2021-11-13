@@ -41,7 +41,7 @@ const getGroupedConnections = memoizeOne((nodeId) => {
 });
 
 const General = ({
-  node, tabs, editable = true,
+  node, tabs, editable = true, tabs, title,
 }) => {
   const dispatch = new useDispatch();
 
@@ -98,17 +98,17 @@ const General = ({
             )}
             <ExportNodeTabs
               node={node}
-              // tabs={nodeCustomFields}
-              // nodeData={this.state.nodeData}
-              // image={this.state.image}
-              // title={title}
-                // name={name}
+              tabs={tabs}
+              nodeData="nodeData"
+              image={node.icon}
+              title={title}
+              name="name"
             />
-            <Button
-              icon={<ExpandSvg />}
-              title="expand"
-              // onClick={() => { history.replace(`?${queryString.stringify({ ...queryObj, expand: '1' })}`); }}
-            />
+            {/* <Button */}
+            {/*  icon={<ExpandSvg />} */}
+            {/*  title="expand" */}
+            {/*  // onClick={() => { history.replace(`?${queryString.stringify({ ...queryObj, expand: '1' })}`); }} */}
+            {/* /> */}
           </div>
         </div>
         <div className="general-hider-caption">
@@ -168,9 +168,11 @@ const General = ({
 };
 
 General.propTypes = {
-  node: PropTypes.func.isRequired,
-  tabs: PropTypes.func.isRequired,
-  editable: PropTypes.func.isRequired,
+  node: PropTypes.object.isRequired,
+  tabs: PropTypes.object.isRequired,
+  nodeCustomFields: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  editable: PropTypes.bool.isRequired,
 };
 
 export default General;

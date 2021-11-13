@@ -54,7 +54,7 @@ const Tabs = ({ history, editable }) => {
     if (activeTab !== '_description') updateTabWithFile();
   }, []);
 
-  const { id: graphId } = singleGraph;
+  const { id: graphId, title } = singleGraph;
 
   const moveAutoPlay = () => {
     const tab = getElement('.tab_list');
@@ -134,6 +134,7 @@ const Tabs = ({ history, editable }) => {
             {mode === 'general'
             && (
             <General
+              title={title}
               editable={editable}
               node={node}
               tabs={nodeCustomFields}

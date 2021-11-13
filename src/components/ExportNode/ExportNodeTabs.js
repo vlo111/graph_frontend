@@ -8,6 +8,7 @@ import Button from '../form/Button';
 import { setLoading } from '../../store/actions/app';
 import Api from '../../Api';
 import { ReactComponent as ExportSvg } from '../../assets/images/icons/export.svg';
+import bgImage from '../../assets/images/no-img.png';
 
 class ExportNodeTabs extends Component {
   static propTypes = {
@@ -31,10 +32,11 @@ class ExportNodeTabs extends Component {
     const {
       node, tabs, image, nodeData, title,
     } = this.props;
+
     const html = this.decode(renderToString(<ExportNode
       node={node}
       tabs={tabs}
-      image={image}
+      image={image || bgImage}
       nodeData={nodeData}
       title={title}
     />));
