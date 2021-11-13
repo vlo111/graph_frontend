@@ -17,9 +17,12 @@ const CommentItem = ({ comment, isReply }) => {
   const lessBtn = '<button class="less-btn">less</button>';
 
   useEffect(() => {
-    if (comment.text.length > 60) {
-      let commentText;
-      commentText = comment.text.substr(0, 400);
+    const commentHtml = document.createElement('div');
+    commentHtml.innerHTML = comment.text;
+
+    if (commentHtml.innerText.length > 60) {
+      let commentText = controlLink(comment.text);
+
       commentText += `... ${moreBtn}`;
       setCompressComment(commentText);
     } else {
@@ -33,8 +36,24 @@ const CommentItem = ({ comment, isReply }) => {
     if (target.className === 'more-btn') {
       setCompressComment(`${comment.text.substr(0, comment.text.length - 4)} ${lessBtn}`);
     } else if (target.className === 'less-btn') {
-      setCompressComment(`${comment.text.substr(0, 400)}... ${moreBtn}`);
+      setCompressComment(`${controlLink(comment.text).substr(0, 400)}... ${moreBtn}`);
     }
+  };
+
+  const controlLink = (commentText) => {
+    let modifiedComment;
+
+    modifiedComment = commentText.substr(0, 400);
+
+    const link = modifiedComment.split('<a href');
+
+    const subComment = link[link.length - 1];
+
+    if (!subComment.includes('</a>')) {
+      modifiedComment = modifiedComment.replace(`<a href${subComment}`, '');
+    }
+
+    return modifiedComment;
   };
 
   return (

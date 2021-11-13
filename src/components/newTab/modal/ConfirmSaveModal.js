@@ -15,7 +15,6 @@ class ConfirmSaveModal extends Component {
         <div className="containerModal">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.props.hide} />
           <div className="form">
-            <h2>Are you sure ?</h2>
             <p>
               Do you want your changes to be saved ?
             </p>

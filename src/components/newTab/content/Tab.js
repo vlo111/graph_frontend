@@ -63,38 +63,24 @@ const Tab = ({
     setSingleExpand(!expand);
   };
 
-  const expandElement = (
-    <Button
-      className="expand"
-      icon={expand ? <NodeExpandTabSvg /> : <NodeShortenTabSvg />}
-      title="expand"
-      onClick={expandHandle}
-    />
-  );
-
   let description;
   let tab;
-  let expandTab;
   let editOrAdd;
 
   if (name === '_description') {
     if (node.description) {
       editOrAdd = editElement;
-      expandTab = expandElement;
       description = <div dangerouslySetInnerHTML={{ __html: node.description }} />;
     } else {
       editOrAdd = addElement;
       description = noTab;
-      expandTab = <></>;
     }
   } else if (html) {
     editOrAdd = editElement;
-    expandTab = expandElement;
     tab = <div dangerouslySetInnerHTML={{ __html: html }} />;
   } else {
     editOrAdd = addElement;
     tab = noTab;
-    expandTab = <></>;
   }
 
   const deleteTab = () => {
@@ -142,8 +128,13 @@ const Tab = ({
         <p className="tab_content-header-text">{name === '_description' ? 'Description' : name}</p>
         <div className="tab_content-header-icons">
           <>
+            <Button
+              className="expand"
+              icon={expand ? <NodeExpandTabSvg /> : <NodeShortenTabSvg />}
+              title="expand"
+              onClick={expandHandle}
+            />
             {editable && editOrAdd}
-            {expandTab}
             {editable && (
             <>
               {name !== '_description'
@@ -166,8 +157,7 @@ const Tab = ({
       {showConfirmModal
       && (
       <ModalConfirmation
-        title="Are you sure ?"
-        description="Are you want to delete this tab"
+        description="Do you want to delete this tab?"
         yes="Delete"
         no="Cancel"
         onCancel={() => setShowConfirmModal(false)}

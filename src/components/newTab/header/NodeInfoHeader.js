@@ -8,7 +8,9 @@ import Utils from '../../../helpers/Utils';
 
 const getElement = (name) => document.querySelector(name);
 
-const NodeInfoHeader = ({ node, history, setSingleExpand }) => {
+const NodeInfoHeader = ({
+  node, history, setSingleExpand, expand,
+}) => {
   const closeNodeInfo = () => {
     getElement('.tab-wrapper').style.transform = 'scaleX(0)';
 
@@ -34,8 +36,16 @@ const NodeInfoHeader = ({ node, history, setSingleExpand }) => {
       <div className="node-info-container">
         <div className="node">
           <NodeIcon node={node} />
-          <div className="name">{node.name}</div>
-          <div className="type">{`Type: ${node.type}`}</div>
+          <div className="name">
+            {!expand ? (node.name.length > 15
+              ? `${node.name.substring(0, 15)}...`
+              : node.name) : node.name}
+          </div>
+          <div className="type">
+            {`Type: ${!expand ? (node.type.length > 15
+              ? `${node.type.substring(0, 15)}...`
+              : node.type) : node.name}`}
+          </div>
         </div>
         <div className="tab-close">
           <Icon value={<CloseSvg />} className="clear" onClick={closeNodeInfo} />

@@ -920,10 +920,10 @@
 
           &-nodata {
             position: absolute;
-            left: 150px;
             font-size: 14px;
             color: $color-tab-no-data;
             top: 50%;
+            text-align: center;
           }
 
           * {
@@ -1017,7 +1017,8 @@
               }
             }
             .--reply {
-              padding: 0 15px 0 65px;
+              padding: 0 15px 0 50px;
+              margin-top: -5px;
             }
           }
         }
@@ -1205,7 +1206,6 @@
       }
 
       .tab-close {
-
         .clear {
           cursor: pointer;
         }
@@ -1226,7 +1226,7 @@
   padding: 1.6% 2.1% !important;
   min-width: 920px;
   max-height: 90%;
-  top: 10%;
+  top: 10% !important;
 
   .row {
     display: flex;
@@ -1319,22 +1319,26 @@
 }
 
 .node_expand {
-  //#header-on-graph, #graphs-data-info,
-  //.edit, .back,
-  //#header-on-view-graph, .tab-header,
-  //.menu, #graph, .searchField, #mapsGraph {
-  //  pointer-events: none;
-  //  opacity: 0.7;
-  //}
-
-  //.tab_list {
-  //  background-color: #948eda;
-  //  pointer-events: none;
-  //}
+  #header-on-graph, #graphs-data-info,
+  .edit, .back,
+  #header-on-view-graph, .tab-header,
+  .menu, #graph, .searchField, #mapsGraph {
+    pointer-events: none;
+    opacity: 0.7;
+  }
 
   .tab_content-description {
     * {
       width: calc(100% - 15px) !important;
     }
+  }
+  .tab-header {
+    visibility: hidden;
+  }
+  .tab-close {
+    margin-right: 20px;
+  }
+  .node-info-container {
+    margin-top: 30px;
   }
 }

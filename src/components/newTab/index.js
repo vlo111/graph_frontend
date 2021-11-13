@@ -110,7 +110,7 @@ const Tabs = ({ history, editable }) => {
   return (
     <>
       <div className="tab-wrapper">
-        <NodeInfoHeader node={node} history={history} setSingleExpand={setSingleExpand} />
+        <NodeInfoHeader expand={singleExpand} node={node} history={history} setSingleExpand={setSingleExpand} />
         <SwitchTab
           mode={mode}
           moveAutoPlay={moveAutoPlay}
