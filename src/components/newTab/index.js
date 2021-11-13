@@ -70,7 +70,7 @@ const Tabs = ({ history, editable }) => {
     getElement('.graphControlPanel').style.right = left;
   };
 
-  const updateTabWithFile = (prevName) => {
+  const updateTabWithFile = async (prevName) => {
     for (let i = 0; i < nodeCustomFields.length; i++) {
       const tab = nodeCustomFields[i];
 
@@ -83,7 +83,7 @@ const Tabs = ({ history, editable }) => {
           const documentPath = media.querySelector('img')?.src ?? media.querySelector('a')?.href;
 
           if (documentPath) {
-            const path = Api.documentPath(graphId, media.querySelector('#docId').innerText).catch((d) => d);
+            const path = await Api.documentPath(graphId, media.querySelector('#docId').innerText).catch((d) => d);
 
             nodeCustomFields[i].value = nodeCustomFields[i].value.replace(documentPath, path.data?.path);
           }
