@@ -71,6 +71,7 @@ class NodeImage extends Component {
 
   render() {
     const { node, ...props } = this.props;
+    console.log('icon ---- ', node.icon);
     const {
       x, y, clipPath, fill, transform, width, height,
     } = this.state;

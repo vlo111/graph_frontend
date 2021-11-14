@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
-import Chart from '../../Chart';
-import NodeIcon from '../NodeIcon';
-import ChartUtils from '../../helpers/ChartUtils';
-import Button from '../form/Button';
+import Chart from '../../../Chart';
+import NodeIcon from '../../NodeIcon';
+import ChartUtils from '../../../helpers/ChartUtils';
+import Button from '../../form/Button';
 
-const ConnectionDetails = ({
+const NodeOfConnection = ({
   nodes, isExport, labels,
 }) => {
   const queryObj = queryString.parse(window.location.search);
@@ -82,11 +82,11 @@ const ConnectionDetails = ({
   ) : null;
 };
 
-ConnectionDetails.propTypes = {
+NodeOfConnection.propTypes = {
   filter: PropTypes.object.isRequired,
   nodes: PropTypes.object.isRequired,
   labels: PropTypes.func.isRequired,
   isExport: PropTypes.func.isRequired,
 };
 
-export default ConnectionDetails;
+export default NodeOfConnection;

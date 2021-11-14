@@ -3,9 +3,9 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import CustomFields from '../../helpers/CustomFields';
-import ConnectionDetails from '../tabs/ConnectionDetails';
 import Chart from '../../Chart';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
+import NodeOfConnection from '../newTab/content/NodeOfConnection';
 
 class ExportNode extends Component {
   static propTypes = {
@@ -13,11 +13,12 @@ class ExportNode extends Component {
     title: PropTypes.func.isRequired,
     image: PropTypes.object.isRequired,
     tabs: PropTypes.func.isRequired,
+    connectedNodes: PropTypes.object.isRequired,
   }
 
   render() {
     const {
-      node, title, image, tabs,
+      node, title, image, tabs, connectedNodes, exportNodes,
     } = this.props;
 
     const {
@@ -37,7 +38,6 @@ class ExportNode extends Component {
             <div className="textWrapper">
               <h3 className="graph">
                 Graph:
-
                 <p>
                   {title}
                 </p>
@@ -91,28 +91,29 @@ class ExportNode extends Component {
                     <div className="content-parts">
                       <h2>{item.name}</h2>
                       <p>{item.value}</p>
-
                     </div>
                   ))}
                 </div>
               </div>
             </div>
           ) : null}
-
         </div>
         {links ? (
           <div className="connectionDetailsGeneral">
             <div className="contentWrapper">
               <h2 className="connectionDetails">Connections</h2>
-              <ConnectionDetails
-                nodeId={node.id}
-                exportNode
-                nodeData={nodeData}
-                links={linksPartial}
-                labels={labels}
-                nodes={nodesPartial}
-                tabs={tabs}
-              />
+              {connectedNodes.map((nodeGroup) => (
+                <div className="connections">
+                  <NodeOfConnection
+                    nodes={nodeGroup}
+                    links={linksPartial}
+                    nodeId={node.id}
+                    isExport
+                  />
+                  {nodeGroup[0].linkType}
+                </div>
+              ))}
+
             </div>
           </div>
         ) : null}

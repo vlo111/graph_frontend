@@ -12,10 +12,10 @@ import CustomFields from '../../../helpers/CustomFields';
 import { toggleNodeModal } from '../../../store/actions/app';
 import ExportNodeTabs from '../../ExportNode/ExportNodeTabs';
 import NodeImage from '../../tabs/NodeImage';
-import ConnectionDetails from '../../tabs/ConnectionDetails';
 import { getSingleGraph } from '../../../store/selectors/graphs';
 import Chart from '../../../Chart';
 import GraphUsersInfo from '../../History/GraphUsersInfo';
+import NodeOfConnection from './NodeOfConnection';
 
 const getGroupedConnections = memoizeOne((nodeId) => {
   const nodes = Chart.getNodes();
@@ -41,7 +41,7 @@ const getGroupedConnections = memoizeOne((nodeId) => {
 });
 
 const General = ({
-  node, tabs, editable = true, tabs, title,
+  node, tabs, editable = true, title,
 }) => {
   const dispatch = new useDispatch();
 
@@ -99,15 +99,15 @@ const General = ({
             <ExportNodeTabs
               node={node}
               tabs={tabs}
-              nodeData="nodeData"
               image={node.icon}
+              connectedNodes={connectedNodes}
               title={title}
               name="name"
             />
             {/* <Button */}
             {/*  icon={<ExpandSvg />} */}
             {/*  title="expand" */}
-            {/*  // onClick={() => { history.replace(`?${queryString.stringify({ ...queryObj, expand: '1' })}`); }} */}
+            {/*  onClick={() => { history.replace(`?${queryString.stringify({ ...queryObj, expand: '1' })}`); }} */}
             {/* /> */}
           </div>
         </div>
@@ -152,7 +152,7 @@ const General = ({
               <div className="node-name">{`${nodeGroup.length} ${nodeGroup.length > 1 ? 'connections' : 'connection'}`}</div>
             </summary>
             <div className="connections">
-              <ConnectionDetails labels={labels} nodes={nodeGroup} links={linksPartial} nodeId={node.id} />
+              <NodeOfConnection labels={labels} nodes={nodeGroup} links={linksPartial} nodeId={node.id} />
             </div>
           </details>
         ))}
