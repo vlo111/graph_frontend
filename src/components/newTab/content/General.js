@@ -11,7 +11,7 @@ import { ReactComponent as InfoSvg } from '../../../assets/images/icons/info.svg
 import CustomFields from '../../../helpers/CustomFields';
 import { toggleNodeModal } from '../../../store/actions/app';
 import ExportNodeTabs from '../../ExportNode/ExportNodeTabs';
-import NodeImage from '../../tabs/NodeImage';
+import NodeImage from './NodeImage';
 import { getSingleGraph } from '../../../store/selectors/graphs';
 import Chart from '../../../Chart';
 import GraphUsersInfo from '../../History/GraphUsersInfo';

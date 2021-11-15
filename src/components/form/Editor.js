@@ -3,8 +3,8 @@ import { Jodit } from 'jodit';
 import 'jodit/build/jodit.min.css';
 import PropTypes from 'prop-types';
 import ReactDOMServer from 'react-dom/server';
-import InsertMediaTabsModal from '../tabs/InsertMediaTabsModal';
 import EditorMedia from './EditorMedia';
+import InsertMediaModal from "../newTab/content/InsertMediaModal";
 
 class Editor extends Component {
   static propTypes = {
@@ -147,7 +147,7 @@ class Editor extends Component {
         <textarea ref={(ref) => this.textarea = ref} />
         {error ? <span className="error">{error}</span> : null}
         {showPopUp === 'file' ? (
-          <InsertMediaTabsModal close={this.closePopUp} insertFile={this.insertFile} />
+          <InsertMediaModal close={this.closePopUp} insertFile={this.insertFile} />
         ) : null}
       </div>
     );
