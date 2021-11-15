@@ -19,7 +19,7 @@ import Zoom from '../components/Zoom';
 import SearchModal from '../components/search/SearchModal';
 import AutoPlay from '../components/AutoPlay';
 import MapsGraph from '../components/maps/MapsGraph';
-import Tabs from '../components/newTab';
+import Tabs from '../components/tabs';
 import AddLabelModal from '../components/chart/AddLabelModal';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';

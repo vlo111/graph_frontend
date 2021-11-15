@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
-import Tabs from '../components/newTab';
+import Tabs from '../components/tabs';
 import LabelTooltip from '../components/LabelTooltip';
 import Legend from '../components/Legend';
 import AutoPlay from '../components/AutoPlay';

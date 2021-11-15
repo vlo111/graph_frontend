@@ -4,7 +4,7 @@ import 'jodit/build/jodit.min.css';
 import PropTypes from 'prop-types';
 import ReactDOMServer from 'react-dom/server';
 import EditorMedia from './EditorMedia';
-import InsertMediaModal from "../newTab/content/InsertMediaModal";
+import InsertMediaModal from "../tabs/content/InsertMediaModal";
 
 class Editor extends Component {
   static propTypes = {

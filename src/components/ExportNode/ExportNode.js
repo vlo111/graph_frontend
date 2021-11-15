@@ -5,7 +5,7 @@ import moment from 'moment';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
-import NodeOfConnection from '../newTab/content/NodeOfConnection';
+import NodeOfConnection from '../tabs/content/NodeOfConnection';
 
 class ExportNode extends Component {
   static propTypes = {
