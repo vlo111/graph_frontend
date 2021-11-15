@@ -1,51 +1,20 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import memoizeOne from 'memoize-one';
-import _ from 'lodash';
 import Button from '../../form/Button';
-import { ReactComponent as ExpandSvg } from '../../../assets/images/icons/expand.svg';
 import { ReactComponent as EditSvg } from '../../../assets/images/icons/edit.svg';
 import { ReactComponent as InfoSvg } from '../../../assets/images/icons/info.svg';
-
 import CustomFields from '../../../helpers/CustomFields';
 import { toggleNodeModal } from '../../../store/actions/app';
-import ExportNodeTabs from '../../ExportNode/ExportNodeTabs';
 import NodeImage from './NodeImage';
 import { getSingleGraph } from '../../../store/selectors/graphs';
-import Chart from '../../../Chart';
 import GraphUsersInfo from '../../History/GraphUsersInfo';
 import NodeOfConnection from './NodeOfConnection';
 
-const getGroupedConnections = memoizeOne((nodeId) => {
-  const nodes = Chart.getNodes();
-  const nodeLinks = Chart.getNodeLinks(nodeId, 'all');
-  const connectedNodes = nodeLinks && nodeLinks.map((l) => {
-    let connected;
-    if (l.source === nodeId) {
-      connected = nodes.find((d) => d.id === l.target);
-    } else {
-      connected = nodes.find((d) => d.id === l.source);
-    }
-    return {
-      linkType: l.type,
-      node: connected,
-    };
-  });
-  // connectedNodes.length.open = true;
-  const connectedNodesGroup = Object.values(_.groupBy(connectedNodes, 'linkType'));
-  return {
-    connectedNodes: _.orderBy(connectedNodesGroup, (d) => d.length && d.length, 'desc'),
-    length: connectedNodes.length,
-  };
-});
-
 const General = ({
-  node, tabs, editable = true, title,
+  node, tabs, editable = true, connectedNodes
 }) => {
   const dispatch = new useDispatch();
-
-  const { connectedNodes } = getGroupedConnections(node.id);
 
   const [showNodeInfo, setShowNodeInfo] = useState(false);
 
@@ -96,19 +65,6 @@ const General = ({
               />
             </>
             )}
-            <ExportNodeTabs
-              node={node}
-              tabs={tabs}
-              image={node.icon}
-              connectedNodes={connectedNodes}
-              title={title}
-              name="name"
-            />
-            {/* <Button */}
-            {/*  icon={<ExpandSvg />} */}
-            {/*  title="expand" */}
-            {/*  onClick={() => { history.replace(`?${queryString.stringify({ ...queryObj, expand: '1' })}`); }} */}
-            {/* /> */}
           </div>
         </div>
         <div className="general-hider-caption">
@@ -170,8 +126,7 @@ const General = ({
 General.propTypes = {
   node: PropTypes.object.isRequired,
   tabs: PropTypes.object.isRequired,
-  nodeCustomFields: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
+  connectedNodes: PropTypes.string.isRequired,
   editable: PropTypes.bool.isRequired,
 };
 

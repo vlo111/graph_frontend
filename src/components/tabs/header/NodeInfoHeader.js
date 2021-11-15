@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import NodeIcon from '../../NodeIcon';
-import Icon from '../../form/Icon';
 import { ReactComponent as CloseSvg } from '../../../assets/images/icons/close.svg';
 import Utils from '../../../helpers/Utils';
+import ExportNodeTabs from '../../ExportNode/ExportNodeTabs';
+import Button from '../../form/Button';
+import { ReactComponent as ExpandSvg } from '../../../assets/images/icons/expand.svg';
 
 const getElement = (name) => document.querySelector(name);
 
 const NodeInfoHeader = ({
-  node, history, setSingleExpand, expand,
+  node, history, setSingleExpand, singleExpand,
+  setTabsExpand, connectedNodes, title, tabs,
 }) => {
   const closeNodeInfo = () => {
     getElement('.tab-wrapper').style.transform = 'scaleX(0)';
@@ -31,24 +34,45 @@ const NodeInfoHeader = ({
     setSingleExpand(false);
   };
 
+  const expandTabs = () => {
+    setTabsExpand(true);
+  };
+
   return (
     <div className="node-info">
       <div className="node-info-container">
         <div className="node">
           <NodeIcon node={node} />
           <div className="name">
-            {!expand ? (node.name.length > 15
+            {!singleExpand ? (node.name.length > 15
               ? `${node.name.substring(0, 15)}...`
               : node.name) : node.name}
           </div>
           <div className="type">
-            {`Type: ${!expand ? (node.type.length > 15
+            {`Type: ${!singleExpand ? (node.type.length > 15
               ? `${node.type.substring(0, 15)}...`
               : node.type) : node.name}`}
           </div>
         </div>
         <div className="tab-close">
-          <Icon value={<CloseSvg />} className="clear" onClick={closeNodeInfo} />
+          <Button
+            icon={<ExpandSvg />}
+            title="expand"
+            onClick={expandTabs}
+          />
+          <ExportNodeTabs
+            node={node}
+            tabs={tabs}
+            image={node.icon}
+            connectedNodes={connectedNodes}
+            title={title}
+            name="name"
+          />
+          <Button
+            icon={<CloseSvg />}
+            className="clear"
+            onClick={closeNodeInfo}
+          />
         </div>
       </div>
     </div>
@@ -57,8 +81,13 @@ const NodeInfoHeader = ({
 
 NodeInfoHeader.propTypes = {
   node: PropTypes.object.isRequired,
+  singleExpand: PropTypes.bool.isRequired,
   history: PropTypes.object.isRequired,
+  connectedNodes: PropTypes.object.isRequired,
   setSingleExpand: PropTypes.func.isRequired,
+  setTabsExpand: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  tabs: PropTypes.object.isRequired,
 };
 
 export default NodeInfoHeader;

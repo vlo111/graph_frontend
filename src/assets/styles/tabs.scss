@@ -1210,6 +1210,16 @@
           cursor: pointer;
         }
 
+        .ghButton {
+          padding: 0 8px;
+
+          &:hover {
+            path {
+              fill: $color-main;
+            }
+          }
+        }
+
         svg {
           height: 11px;
         }
@@ -1336,7 +1346,7 @@
     visibility: hidden;
   }
   .tab-close {
-    margin-right: 20px;
+    margin-right: 15px;
   }
   .node-info-container {
     margin-top: 30px;

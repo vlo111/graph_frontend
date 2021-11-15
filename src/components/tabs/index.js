@@ -18,8 +18,32 @@ import NodeInfoHeader from './header/NodeInfoHeader';
 import General from './content/General';
 import Tab from './content/Tab';
 import Comment from './content/Comment';
+import memoizeOne from "memoize-one";
 
 const getElement = (name) => document.querySelector(name);
+
+const getGroupedConnections = memoizeOne((nodeId) => {
+  const nodes = Chart.getNodes();
+  const nodeLinks = Chart.getNodeLinks(nodeId, 'all');
+  const connectedNodes = nodeLinks && nodeLinks.map((l) => {
+    let connected;
+    if (l.source === nodeId) {
+      connected = nodes.find((d) => d.id === l.target);
+    } else {
+      connected = nodes.find((d) => d.id === l.source);
+    }
+    return {
+      linkType: l.type,
+      node: connected,
+    };
+  });
+  // connectedNodes.length.open = true;
+  const connectedNodesGroup = Object.values(_.groupBy(connectedNodes, 'linkType'));
+  return {
+    connectedNodes: _.orderBy(connectedNodesGroup, (d) => d.length && d.length, 'desc'),
+    length: connectedNodes.length,
+  };
+});
 
 const Tabs = ({ history, editable }) => {
   const { info: nodeId } = queryString.parse(window.location.search);
@@ -45,6 +69,10 @@ const Tabs = ({ history, editable }) => {
   const [openAddTab, setOpenAddTab] = useState(null);
 
   const [singleExpand, setSingleExpand] = useState(false);
+
+  const [tabsExpand, setTabsExpand] = useState(false);
+
+  const { connectedNodes } = getGroupedConnections(node.id);
 
   useEffect(() => {
     dispatch(getNodeCustomFieldsRequest(graphId, nodeId));
@@ -112,7 +140,16 @@ const Tabs = ({ history, editable }) => {
   return (
     <>
       <div className="tab-wrapper">
-        <NodeInfoHeader expand={singleExpand} node={node} history={history} setSingleExpand={setSingleExpand} />
+        <NodeInfoHeader
+          singleExpand={singleExpand}
+          title={title}
+          tabs={nodeCustomFields}
+          node={node}
+          history={history}
+          setSingleExpand={setSingleExpand}
+          setTabsExpand={setTabsExpand}
+          connectedNodes={connectedNodes}
+        />
         <SwitchTab
           mode={mode}
           moveAutoPlay={moveAutoPlay}
@@ -138,6 +175,7 @@ const Tabs = ({ history, editable }) => {
               editable={editable}
               node={node}
               tabs={nodeCustomFields}
+              connectedNodes={connectedNodes}
             />
             )}
             {mode === 'tabs'

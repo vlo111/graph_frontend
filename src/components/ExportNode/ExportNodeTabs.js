@@ -33,8 +33,6 @@ class ExportNodeTabs extends Component {
       node, tabs, image, title, connectedNodes,
     } = this.props;
 
-    console.log('co ap jan - ', image);
-
     const html = this.decode(renderToString(<ExportNode
       node={node}
       connectedNodes={connectedNodes}
