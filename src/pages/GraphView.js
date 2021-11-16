@@ -18,7 +18,7 @@ import SearchModal from '../components/search/ExploreModal';
 import ContextMenu from '../components/contextMenu/ContextMenu';
 import Zoom from '../components/Zoom';
 import NodeDescription from '../components/NodeDescription';
-import Tab from '../components/tabs/Tab';
+import Tabs from '../components/tabs';
 import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
 import ToolBarFooter from '../components/ToolBarFooter';
@@ -190,7 +190,7 @@ class GraphView extends Component {
                 )}
                 <ToolBarHeader graph={singleGraph} />
                 <SearchModal />
-                <Tab editable={false} />
+                <Tabs editable={false} />
                 <LabelTooltip />
                 <Filters />
                 <AutoPlay />

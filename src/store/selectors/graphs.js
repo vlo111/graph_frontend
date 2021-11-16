@@ -42,3 +42,8 @@ export const currentUserRolePermission = createSelector(
   getGraph,
   (items) => items.singleGraph.currentUserRole && ['admin', 'edit', 'edit_inside'].includes(items.singleGraph.currentUserRole),
 );
+
+export const getCustomField = createSelector(
+  getGraph,
+  (items) => items.nodeCustomFields,
+);
