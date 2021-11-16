@@ -21,7 +21,7 @@ const SwitchTab = ({
       <div className="tab_list">
         <div className="tab_list-header">
           <div className="tab_list-header-text">{`Tabs (${nodeCustomFields.length + 1})`}</div>
-          <div className="tab_list-header-add" onClick={() => setOpenAddTab('')}>+ add tab</div>
+          {editable && <div className="tab_list-header-add" onClick={() => setOpenAddTab('')}>+ add tab</div>}
         </div>
         {(activeTab === '_description')
           ? (
