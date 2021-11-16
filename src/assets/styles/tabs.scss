@@ -674,12 +674,21 @@
 }
 
 .node_expand {
-  #header-on-graph, #graphs-data-info,
-  .edit, .back,
-  #header-on-view-graph, .tab-header,
+   #graphs-data-info,
+  .edit, .back, .tab-header,
   .menu, #graph, .searchField, #mapsGraph {
     pointer-events: none;
     opacity: 0.7;
+  }
+
+  #header-on-graph, #header-on-view-graph {
+    background-color: #fbfbfb;
+
+    .legendButton, .ghButton,
+    .dropdown-btn, .notify {
+      pointer-events: none;
+      background-color: #fbfbfb;
+    }
   }
 
   .tab_content-description {

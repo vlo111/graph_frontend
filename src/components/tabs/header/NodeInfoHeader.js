@@ -42,7 +42,7 @@ const NodeInfoHeader = ({
         <div className="node">
           <NodeIcon node={node} />
           <div className="name">
-            {!singleExpand ? (node.name.length > 15
+            {(!singleExpand && !tabsExpand) ? (node.name.length > 15
               ? `${node.name.substring(0, 15)}...`
               : node.name) : node.name}
           </div>
