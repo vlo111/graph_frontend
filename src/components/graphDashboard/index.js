@@ -61,7 +61,7 @@ const Dashboard = ({ graph }) => {
           />
           <button
             onClick={() => toggleGraphQuerySetting(!showGraphQuerySetting)}
-            title="Save query"
+            title="Save list"
             className={`${showGraphQuerySetting ? 'setting_queryBtn__active' : ''} setting_queryBtn btn-classic`}
           >
             <Icon value={<SettingSvg className="viewIconQuery " />} />
@@ -75,7 +75,7 @@ const Dashboard = ({ graph }) => {
       >
         Reset
       </Button>
-      <button className="legendView" >  
+      <button className="legendView" title="Legend" >  
       <div className="LegendExplorer">
            <Legend />
       </div>    
