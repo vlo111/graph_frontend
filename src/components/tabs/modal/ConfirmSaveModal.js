@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import Button from '../form/Button';
-import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Button from '../../form/Button';
+import { ReactComponent as CloseSvg } from '../../../assets/images/icons/close.svg';
 
-class TabSaveModal extends Component {
+class ConfirmSaveModal extends Component {
   render() {
     return (
       <Modal
@@ -15,7 +15,6 @@ class TabSaveModal extends Component {
         <div className="containerModal">
           <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.props.hide} />
           <div className="form">
-            <h2>Are you sure ?</h2>
             <p>
               Do you want your changes to be saved ?
             </p>
@@ -34,4 +33,4 @@ class TabSaveModal extends Component {
   }
 }
 
-export default TabSaveModal;
+export default ConfirmSaveModal;

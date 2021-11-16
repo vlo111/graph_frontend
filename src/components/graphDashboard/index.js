@@ -42,11 +42,11 @@ const Dashboard = ({ graph }) => {
       graphId, nodesId, linksId, labelsId,
     });
   };
-  
+
   return (
     <div className="dashboards">
       {userPermission && (
-        <>       
+        <>
           <Button
             icon={<SaveSvg className="viewIconQuery " />}
             onClick={() => toggleGraphQuery(true)}
@@ -75,10 +75,10 @@ const Dashboard = ({ graph }) => {
       >
         Reset
       </Button>
-      <button className="legendView" title="Legend" >  
+      <button className="legendView" title="Legend" >
       <div className="LegendExplorer">
            <Legend />
-      </div>    
+      </div>
       </button>
       {showGraphQuery ? (
 

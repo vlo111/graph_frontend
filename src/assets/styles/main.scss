@@ -527,12 +527,14 @@ p {
   padding: 7px 14px 6px;
   border-radius: 4px;
   font-size: 14px;
+  box-shadow: none;
+  background: none;
 
   &:focus {
     outline: none;
   }
 
- 
+
 
   &:active {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
@@ -642,10 +644,6 @@ p {
       margin-right: 0;
     }
   }
-}
-
-.ghButton:hover {
-  background-color: $color-white;
 }
 
 .ghButton:hover button:after {
@@ -1281,7 +1279,7 @@ p {
     top: 16%;
     max-width: 460px;
     background-color: white;
-    box-shadow: 0px 4px 38px rgb(0 0 0 / 25%);
+    box-shadow: 0px 4px 38px #00000014;
     padding: 15px;
     max-height: 80%;
     overflow: hidden;
@@ -1316,7 +1314,6 @@ p {
     }
 
     h2 {
-      font-size: 25px;
       text-align: center;
     }
 
@@ -1656,7 +1653,7 @@ p {
 
     &:hover {
       background-color: #f2f2f2;
-      color: #7166F8;
+      color: $color-main;
     }
 
     .icon {
@@ -2036,7 +2033,7 @@ p {
     height: 140px;
     display: block;
     align-items: center;
-    overflow: scroll;
+    scroll-snap-type: x mandatory;
     user-select: none;
 
     .nodesMode span, .linksMode span {
@@ -3174,12 +3171,12 @@ body .gh__menu {
 }
 
 .nodeIcon {
-  width: 40px;
-  min-width: 40px;
-  height: 40px;
+  width: 35px;
+  min-width: 35px;
+  height: 35px;
   overflow: hidden;
   color: $color-white;
-  font-size: 25px;
+  font-size: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3244,7 +3241,6 @@ body .gh__menu {
     .leftPanel {
       width: 30%;
       display: flex;
-      align-items: center;
       cursor: pointer;
 
       .left {
@@ -3866,75 +3862,55 @@ body .gh__menu {
 }
 
 .connectionDetails {
-  details {
+  .connection-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 10px;
 
-    .connection-container {
-      overflow-x: hidden;
-      overflow-y: auto;
-      height: 700px;
-      margin-top: 10px;
+    .item {
+      margin-bottom: 20px;
+      width: 100%;
 
-      .row {
+      a {
+        display: flex;
+        color: $color-dark;
+        text-decoration: none;
+      }
+
+      .left {
+        margin-right: 20px;
+      }
+
+      .right {
+        display: flex;
         flex-direction: column;
-        margin-left: 0;
-        margin-right: 0;
+        justify-content: center;
+        line-height: 1;
+        text-decoration: underline;
 
-        .item {
-          margin-bottom: 30px;
-          width: 180px;
-
-          a {
-            display: flex;
-            color: $color-dark;
-            text-decoration: none;
-          }
-
-          .left {
-            margin-right: 20px;
-          }
-
-          .right {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            .name {
-              font-weight: 600;
-              font-size: 16px;
-            }
-
-            .type {
-              font-size: 14px;
-            }
-          }
+        .name {
+          font-weight: 500;
+          font-size: 14px;
         }
 
-        &:last-child {
-          .item {
-            &:last-child {
-              margin-bottom: 10px;
-            }
-          }
+        .type {
+          font-size: 14px;
+          line-height: 2;
         }
       }
+    }
 
-      fieldset {
-        padding: 28px 35px 0px;
-        margin-bottom: 5px;
-        border: none;
+    .list {
+      display: flex;
+      flex-wrap: wrap;
+      max-height: 230px;
+      overflow: auto;
+    }
 
-        .list {
-          margin-top: -15px;
-          display: flex;
-          flex-wrap: wrap;
-        }
-
-        .linkTypes {
-          color: $color-passive;
-          font-weight: 600;
-          font-size: 16px;
-        }
-      }
+    .linkTypes {
+      color: $color-passive;
+      font-weight: 600;
+      font-size: 16px;
     }
   }
 }
@@ -3955,7 +3931,8 @@ body .gh__menu {
     width: auto;
 
     .mergeButton {
-      display: flex;justify-content: center;
+      display: flex;
+      justify-content: center;
     }
 
     .compareWrapper {
@@ -4223,7 +4200,7 @@ body .gh__menu {
   margin: 0 auto 50px;
   align-items: flex-start;
   position: relative;
-  top: 110px;
+  top: 130px;
 
   .tabsList {
     display: flex;
@@ -4945,6 +4922,7 @@ body .gh__menu {
 
 .exportDropDown .ghFormField {
   position: relative !important;
+  background: #C6E6FF 0% 0% no-repeat padding-box !important;
 }
 
 .exportData {
@@ -4958,13 +4936,12 @@ body .gh__menu {
   max-width: 52px;
 
   .showExportButton {
-    background-color: white;
     position: relative;
     z-index: 9;
     padding: 7px 10px 7px 10px;
-    border-radius: 5px;
+    border-radius: 15px;
     margin-bottom: -15px;
-    box-shadow: 0 0 6px rgb(136 130 209 / 22%);
+    background: #C6E6FF 0% 0% no-repeat padding-box;
   }
 
   .exportDropDown {
@@ -4972,28 +4949,19 @@ body .gh__menu {
     z-index: 4;
     position: absolute;
     margin-left: 5px;
-    margin-top: 14px;
     width: 50%;
     padding: 50px 40px 21px;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 38px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
+    border-radius: 12px;
+    background: #C6E6FF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 6px 20px #0D090529;
+    border: 1px solid #ABD6F780;
     opacity: 1;
     border-top-left-radius: 0px 0px;
-
-    p{
-      color:#424242;
-      font-size: 25px !important;
-      font-weight: 700;
-      display: flex;
-      justify-content: center;
-    }
   }
 
   .exportButton {
-    display: flex;
-    justify-content: center;
-    padding: 25px;
+    float: right;
+    margin: 30px 0 10px;
   }
 
   .icon {
@@ -5006,21 +4974,19 @@ body .gh__menu {
   }
 
   .gh__control {
-    border: 2px solid #7E75EF !important;
-    border-radius:5px !important;
+    border-radius: 10px !important;
     height: 45px !important;
     font: normal normal normal 18px/19px Open Sans !important;
   }
 
   label {
-    font: normal normal 600 15px/17px
-     Open Sans;
-        padding: 15px 11px;
-        font-size: 14px;
-        font-weight: 400;
-        color: #A5A5A5;
+    font: normal normal 600 15px/17px Open Sans;
+    padding-bottom: 15px;
   }
 
+  .gh__indicator svg {
+    background: #F2F5F7 0% 0% no-repeat padding-box !important;
+  }
 
   .gh__single-value {
     color: #9BA6B4;
@@ -6545,7 +6511,7 @@ img.preview-scaled {
 
 .graphControlPanel {
   position: fixed;
-  z-index: 4;
+  z-index: 2;
   bottom: 15px;
   right: 29px;
   background: #ffffff;
@@ -7522,8 +7488,8 @@ img.preview-scaled {
 }
 
 .legendButton {
-    display: flex;
- .legendSvg{
+  display: flex;
+  .legendSvg{
     display: none;
   }
 }
@@ -7764,7 +7730,7 @@ img.preview-scaled {
 }
 
 .legends {
- 
+
   * {
     padding: 0;
     margin: 0;
@@ -7843,7 +7809,7 @@ img.preview-scaled {
     }
 
     .nodes {
- 
+
 
       .node-item {
         padding: 2px 12px 5px;
@@ -7851,7 +7817,7 @@ img.preview-scaled {
         margin-bottom: 10px;
         margin-left: 5px;
         float: left;
-       
+
 
         .indicator {
           height: 10px;
@@ -7997,7 +7963,6 @@ img.preview-scaled {
   position: fixed;
   height: 56px;
   background: white;
-  box-shadow: 4px 0 31px rgb(119 113 183 / 22%);
   z-index: 4;
 
   .header-right-panel {
@@ -8021,7 +7986,7 @@ img.preview-scaled {
 
   .container {
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(13%,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(13%, 1fr));
     max-width: 100%;
     gap: 10px;
     padding: 0;
@@ -8325,7 +8290,7 @@ img.preview-scaled {
 }
 
 .jodit-workplace {
-  min-height: 206px !important;
+  min-height: 100px !important;
 }
 
 .addNode {
@@ -9009,7 +8974,7 @@ img.preview-scaled {
     justify-content: flex-start;
   }
 
-  .caption-left { 
+  .caption-left {
     font-size: 16px;
     display: flex;
     flex-wrap: wrap;
@@ -10127,7 +10092,7 @@ details[open] summary:after {
 
  }
  .viewIcon{
-  min-height: 21px; 
+  min-height: 21px;
   min-width: 18px;
  }
  .viewIconQuery{
@@ -10185,23 +10150,23 @@ details[open] summary:after {
     flex-direction: row;
     border-radius: 5px;
     height:36px;
-    margin-left: 10px; 
+    margin-left: 10px;
     background-color: white;
     box-shadow: 0 0 6px rgb(136 130 209 / 22%);
     &__name {
       flex: 70%;
-      color: #7166F8; 
-      display: flex; 
+      color: #7166F8;
+      display: flex;
       align-items: center;
       justify-content: center;
       white-space: nowrap;
       margin: 7px;
     }
     &__title {
-      display: flex; 
+      display: flex;
       align-items: center;
-      position: unset !important;  
-      justify-content: flex-end; 
+      position: unset !important;
+      justify-content: flex-end;
       flex: 30%;
     }
   }
