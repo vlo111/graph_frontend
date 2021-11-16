@@ -11,6 +11,7 @@ class Sortable extends Component {
       items: PropTypes.array.isRequired,
       activeTab: PropTypes.string.isRequired,
       setActiveTab: PropTypes.func.isRequired,
+      tabsExpand: PropTypes.bool.isRequired,
     }
 
     static defaultProps = {
@@ -22,16 +23,21 @@ class Sortable extends Component {
     sortableList = SortableContainer(({ items }) => {
       const SortableItem = this.sortableItem;
 
-      const { activeTab, setActiveTab } = this.props;
+      const { tabsExpand } = this.props;
 
       /* @todo get document elements size
         * 56 graph header height
         * 55 description with margin
         * 100 - add tab block
+        * 30 - tab header padding
         * 20 - padding from button
       */
 
-      const height = window.innerHeight - 56 - 50 - 100 - 20;
+      let height = window.innerHeight - 56 - 50 - 100 - 20;
+
+      if (tabsExpand) {
+        height -= 30;
+      }
 
       const contentStyle = {
         height,

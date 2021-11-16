@@ -741,6 +741,10 @@
   .tab_list {
     left: 400px;
     top: 75px;
+
+    .tab_list-content {
+      margin-bottom: 100px;
+    }
   }
 
   .tab-container {
@@ -761,6 +765,11 @@
 
     .comment {
       width: calc(100% - 400px);
+
+      .commentWrite {
+        left: calc(50% - 10px);
+      }
+
       .comment-content {
         margin-left: 0;
       }

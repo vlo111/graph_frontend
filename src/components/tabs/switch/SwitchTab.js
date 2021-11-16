@@ -5,7 +5,7 @@ import Sortable from './Sortable';
 import { updateNodesCustomFieldsRequest } from '../../../store/actions/nodes';
 
 const SwitchTab = ({
-  nodeCustomFields, setActiveTab, activeTab, moveAutoPlay, setOpenAddTab, node, editable, graphId,
+  nodeCustomFields, setActiveTab, activeTab, moveAutoPlay, setOpenAddTab, node, editable, graphId, tabsExpand,
 }) => {
   const dispatch = useDispatch();
 
@@ -44,6 +44,7 @@ const SwitchTab = ({
             </div>
           )}
         <Sortable
+          tabsExpand={tabsExpand}
           onChange={handleOrderChange}
           items={nodeCustomFields.filter((p) => p.name !== '_description')}
           keyExtractor={(v) => v.name}

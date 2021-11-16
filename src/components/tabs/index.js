@@ -162,6 +162,7 @@ const Tabs = ({ history, editable }) => {
           node={node}
           editable={editable}
           activeTab={activeTab}
+          tabsExpand={tabsExpand}
           setActiveTab={(tabName) => setActiveTab(tabName)}
           nodeCustomFields={nodeCustomFields}
           setOpenAddTab={(tab) => setOpenAddTab(tab)}
