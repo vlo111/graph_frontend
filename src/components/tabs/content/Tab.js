@@ -17,7 +17,7 @@ const getElement = (name) => document.querySelector(name);
 const Tab = ({
   node, customFields,
   editable = true, name, setOpenAddTab, setActiveTab, graphId,
-  singleExpand: expand, setSingleExpand,
+  singleExpand: expand, setSingleExpand, tabsExpand,
 }) => {
   const dispatch = useDispatch();
 
@@ -128,12 +128,14 @@ const Tab = ({
         <p className="tab_content-header-text">{name === '_description' ? 'Description' : name}</p>
         <div className="tab_content-header-icons">
           <>
+            {!tabsExpand && (
             <Button
               className="expand"
               icon={expand ? <NodeExpandTabSvg /> : <NodeShortenTabSvg />}
               title="expand"
               onClick={expandHandle}
             />
+            )}
             {editable && editOrAdd}
             {editable && (
             <>
@@ -178,6 +180,7 @@ Tab.propTypes = {
   setSingleExpand: PropTypes.func.isRequired,
   graphId: PropTypes.string.isRequired,
   singleExpand: PropTypes.string.isRequired,
+  tabsExpand: PropTypes.bool.isRequired,
 };
 
 export default Tab;

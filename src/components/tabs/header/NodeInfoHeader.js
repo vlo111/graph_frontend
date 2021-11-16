@@ -12,7 +12,7 @@ const getElement = (name) => document.querySelector(name);
 
 const NodeInfoHeader = ({
   node, history, setSingleExpand, singleExpand,
-  setTabsExpand, connectedNodes, title, tabs,
+  setTabsExpand, connectedNodes, title, tabs, tabsExpand,
 }) => {
   const closeNodeInfo = () => {
     getElement('.tab-wrapper').style.transform = 'scaleX(0)';
@@ -35,7 +35,7 @@ const NodeInfoHeader = ({
   };
 
   const expandTabs = () => {
-    setTabsExpand(true);
+    setTabsExpand(!tabsExpand);
   };
 
   return (
@@ -55,11 +55,13 @@ const NodeInfoHeader = ({
           </div>
         </div>
         <div className="tab-close">
+          {!singleExpand && (
           <Button
             icon={<ExpandSvg />}
             title="expand"
             onClick={expandTabs}
           />
+          )}
           <ExportNodeTabs
             node={node}
             tabs={tabs}
@@ -82,6 +84,7 @@ const NodeInfoHeader = ({
 NodeInfoHeader.propTypes = {
   node: PropTypes.object.isRequired,
   singleExpand: PropTypes.bool.isRequired,
+  tabsExpand: PropTypes.bool.isRequired,
   history: PropTypes.object.isRequired,
   connectedNodes: PropTypes.object.isRequired,
   setSingleExpand: PropTypes.func.isRequired,

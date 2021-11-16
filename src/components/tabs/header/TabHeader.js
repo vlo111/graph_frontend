@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const getElement = (name) => document.querySelector(name);
 
-const TabHeader = ({ mode, setMode }) => {
+const TabHeader = ({ mode, setMode, tabsExpand }) => {
   const usePrevious = (value) => {
     const ref = useRef();
     useEffect(() => {
@@ -48,21 +48,24 @@ const TabHeader = ({ mode, setMode }) => {
     <div className="tab-header">
       <button
         type="submit"
-        className={mode === 'general' ? 'tab-header-active' : 'tab-header-in-active'}
-        onClick={() => setMode('general')}
+        className={`general ${(mode === 'general' || tabsExpand) ? 'tab-header-active' : 'tab-header-in-active'}`}
+        onClick={() => {
+          if (tabsExpand) return;
+          setMode('general');
+        }}
       >
         General
       </button>
       <button
         type="submit"
-        className={mode === 'tabs' ? 'tab-header-active' : 'tab-header-in-active'}
+        className={`tab ${mode === 'tabs' ? 'tab-header-active' : 'tab-header-in-active'}`}
         onClick={() => setMode('tabs')}
       >
         Tabs
       </button>
       <button
         type="submit"
-        className={mode === 'comments' ? 'tab-header-active' : 'tab-header-in-active'}
+        className={`comment ${mode === 'comments' ? 'tab-header-active' : 'tab-header-in-active'}`}
         onClick={() => setMode('comments')}
       >
         Comments
@@ -74,6 +77,7 @@ const TabHeader = ({ mode, setMode }) => {
 TabHeader.propTypes = {
   mode: PropTypes.string.isRequired,
   setMode: PropTypes.func.isRequired,
+  tabsExpand: PropTypes.bool.isRequired,
 };
 
 export default TabHeader;

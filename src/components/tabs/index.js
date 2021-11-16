@@ -139,7 +139,7 @@ const Tabs = ({ history, editable }) => {
 
   return (
     <>
-      <div className="tab-wrapper">
+      <div className={`tab-wrapper ${tabsExpand ? 'tabs_expand' : ''}`}>
         <NodeInfoHeader
           singleExpand={singleExpand}
           title={title}
@@ -147,7 +147,11 @@ const Tabs = ({ history, editable }) => {
           node={node}
           history={history}
           setSingleExpand={setSingleExpand}
-          setTabsExpand={setTabsExpand}
+          setTabsExpand={(tab) => {
+            setMode('tabs');
+            setTabsExpand(tab);
+          }}
+          tabsExpand={tabsExpand}
           connectedNodes={connectedNodes}
         />
         <SwitchTab
@@ -166,9 +170,10 @@ const Tabs = ({ history, editable }) => {
           <TabHeader
             mode={mode}
             setMode={setMode}
+            tabsExpand={tabsExpand}
           />
           <div className="tab-container">
-            {mode === 'general'
+            {(mode === 'general' || tabsExpand)
             && (
             <General
               title={title}
@@ -183,6 +188,7 @@ const Tabs = ({ history, editable }) => {
             <Tab
               setSingleExpand={setSingleExpand}
               singleExpand={singleExpand}
+              tabsExpand={tabsExpand}
               node={node}
               graphId={graphId}
               customFields={nodeCustomFields}
