@@ -532,9 +532,7 @@ p {
     outline: none;
   }
 
-  &:hover {
-    box-shadow: 0 2px 9px rgba(2, 47, 119, 0.1);
-  }
+ 
 
   &:active {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
@@ -592,11 +590,6 @@ p {
   }
 
   &.accent {
-
-
-    &:hover {
-      box-shadow: 0 3px 6px rgba($color-accent, 0.4);
-    }
   }
 
   &.light {
@@ -963,7 +956,7 @@ p {
 
     text {
       font-family: $font-family;
-      dominant-baseline: central;
+      dominant-baseline:  mathematical;
       //fill: $color-dark;
       text-anchor: middle;
     }
@@ -1663,6 +1656,7 @@ p {
 
     &:hover {
       background-color: #f2f2f2;
+      color: #7166F8;
     }
 
     .icon {
@@ -4073,6 +4067,9 @@ body .gh__menu {
   border-radius: 0 0 5px 5px;
   box-shadow: #0D0905;
   padding: 5px 16px;
+  .dropdown-item.active, .dropdown-item:active{
+    background-color: white !important;
+  }
 }
 
 #labelTooltip {
@@ -7848,7 +7845,6 @@ img.preview-scaled {
  
 
       .node-item {
-        display: -webkit-inline-box;
         padding: 2px 12px 5px;
         border-radius: 50px;
         margin-bottom: 10px;
@@ -8223,7 +8219,7 @@ img.preview-scaled {
   .import-input label {
     top: 25px;
     display: flex;
-    align-items: center;
+    padding: 13px 15px 14px 11px;
   }
 
   label {
@@ -8247,11 +8243,12 @@ img.preview-scaled {
 
 .btn-classic {
   min-width: 125px;
-  height: 42px;
+  height: 44px;
   font-size: 20px;
   color: $color-white;
   cursor: pointer;
   border: 1px solid $color-main;
+  border-radius: 5px;
   background-color: $color-main;
 
   &:hover {
@@ -8284,7 +8281,7 @@ img.preview-scaled {
 
 .btn-delete {
   width: 125px;
-  height: 42px;
+  height: 44px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8491,7 +8488,7 @@ img.preview-scaled {
       border-radius: 50%;
       margin-top: -46px;
       margin-bottom: 20px;
-      z-index: 2;
+      z-index: 0;
       margin-left: 224px;
     }
 
@@ -8504,6 +8501,7 @@ img.preview-scaled {
         margin-top: 2px;
         margin-right: -1px;
         border-radius: 5px;
+        padding: 10px 16px 0 12px;
       }
 
       svg {
@@ -8586,6 +8584,7 @@ img.preview-scaled {
 
     .arrow-down, .arrow-top {
       right: 45px;
+      margin-top: 7px;
     }
 
     .number-input-container {
@@ -8741,7 +8740,6 @@ img.preview-scaled {
     height: 42px;
     margin-right: 10px;
     background: $color-white;
-    box-shadow: 0 4px 13px rgb(0 0 0 / 10%);
     width: 50px;
     transition: width ease 200ms, height ease 200ms, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
 
@@ -10100,7 +10098,7 @@ details[open] summary:after {
         // height: 74% !important;
       }
      .legends.open .dropdown{
-        width: 282px !important;
+        width: 276px !important;
         height: calc(100% - 250px) !important;
       }
     .nodes{
@@ -10127,7 +10125,14 @@ details[open] summary:after {
       }
 
  }
-
+ .viewIcon{
+  min-height: 21px; 
+  min-width: 18px;
+ }
+ .viewIconQuery{
+  min-width: 23px !important;
+  height: 23px !important;
+ }
 
 }
 
