@@ -17,13 +17,11 @@ const NodeInfoHeader = ({
   const closeNodeInfo = () => {
     getElement('.tab-wrapper').style.transform = 'scaleX(0)';
 
-    Utils.sleep(300).then(() => {
-      const queryObj = queryString.parse(window.location.search);
+    const queryObj = queryString.parse(window.location.search);
 
-      delete queryObj.info;
-      const query = queryString.stringify(queryObj);
-      history.replace(`?${query}`);
-    });
+    delete queryObj.info;
+    const query = queryString.stringify(queryObj);
+    history.replace(`?${query}`);
 
     // move autoplay right
     const right = '15px';

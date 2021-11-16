@@ -109,7 +109,6 @@ const Tab = ({
       body.className = body.className.replace('node_expand', '');
 
       tabElement.style.width = '450px';
-      getElement('.tab_list').style.right = '100%';
     };
 
     if (enable) {

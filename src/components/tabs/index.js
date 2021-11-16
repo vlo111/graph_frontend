@@ -77,8 +77,6 @@ const Tabs = ({ history, editable }) => {
   useEffect(() => {
     dispatch(getNodeCustomFieldsRequest(graphId, nodeId));
 
-    moveAutoPlay();
-
     if (activeTab !== '_description') updateTabWithFile();
   }, []);
 
@@ -135,6 +133,10 @@ const Tabs = ({ history, editable }) => {
     // dispatch(getNodeCommentsRequest({ graphId, nodeId: node.id }));
   }, [nodeIdMemo]);
 
+  useEffect(() => {
+    moveAutoPlay();
+  }, [mode]);
+
   return (
     <>
       <div className={`tab-wrapper ${tabsExpand ? 'tabs_expand' : ''}`}>
@@ -152,6 +154,8 @@ const Tabs = ({ history, editable }) => {
           tabsExpand={tabsExpand}
           connectedNodes={connectedNodes}
         />
+        {mode === 'tabs'
+        && (
         <SwitchTab
           mode={mode}
           moveAutoPlay={moveAutoPlay}
@@ -165,6 +169,7 @@ const Tabs = ({ history, editable }) => {
           nodeCustomFields={nodeCustomFields}
           setOpenAddTab={(tab) => setOpenAddTab(tab)}
         />
+        )}
         <div className="tab">
           <TabHeader
             mode={mode}

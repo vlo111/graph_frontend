@@ -16,7 +16,6 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      margin-top: 35px;
 
       button {
         border: none;
@@ -265,11 +264,12 @@
           overflow-x: hidden;
 
           &-nodata {
-            position: absolute;
             font-size: 14px;
             color: $color-tab-no-data;
-            top: 50%;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100% !important;
           }
 
           * {
@@ -322,11 +322,12 @@
             padding-right: 5px;
 
             .notComment {
-              position: absolute;
-              left: 150px;
               font-size: 14px;
-              color: #A3A3A3;
-              top: 40%;
+              color: $color-tab-no-data;
+              display: flex;
+              align-items: center;
+              height: 100%;
+              align-self: center;
             }
 
             &-item {
@@ -398,8 +399,8 @@
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
+    top: 56px;
     z-index: 5;
-    transform: scaleX(0);
 
     &-header {
       height: 100px;
@@ -512,7 +513,6 @@
   }
 
   .node-info {
-    position: fixed;
     right: 0;
     z-index: 9999999;
     width: 100%;
@@ -699,6 +699,10 @@
   .node-info-container {
     margin-top: 30px;
   }
+
+  .tab_list {
+    left: 0;
+  }
 }
 
 .tabs_expand {
@@ -738,7 +742,7 @@
 
   .tab_list {
     left: 400px;
-    top: 75px;
+    top: 130px;
 
     .tab_list-content {
       margin-bottom: 100px;
@@ -757,7 +761,7 @@
       width: calc(100% - 600px);
 
       &-description * {
-        width: calc(100% - 620px) !important;
+        width: calc(100% - 620px);
       }
     }
 
