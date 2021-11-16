@@ -5,13 +5,9 @@ import Sortable from './Sortable';
 import { updateNodesCustomFieldsRequest } from '../../../store/actions/nodes';
 
 const SwitchTab = ({
-  nodeCustomFields, setActiveTab, activeTab, moveAutoPlay, setOpenAddTab, node, editable, graphId, tabsExpand,
+  nodeCustomFields, setActiveTab, activeTab, setOpenAddTab, node, editable, graphId, tabsExpand,
 }) => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    moveAutoPlay();
-  });
 
   const handleOrderChange = (customFields) => {
     dispatch(updateNodesCustomFieldsRequest(graphId, [{
@@ -52,7 +48,6 @@ const SwitchTab = ({
           node={node}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-            // openAddTabModal={openFormModal}
           renderItem={(p) => (
             <>
               <div
@@ -73,12 +68,12 @@ const SwitchTab = ({
 SwitchTab.propTypes = {
   nodeCustomFields: PropTypes.object.isRequired,
   setActiveTab: PropTypes.func.isRequired,
-  moveAutoPlay: PropTypes.func.isRequired,
   node: PropTypes.object.isRequired,
   setOpenAddTab: PropTypes.func.isRequired,
   activeTab: PropTypes.object.isRequired,
   graphId: PropTypes.string.isRequired,
   editable: PropTypes.bool.isRequired,
+  tabsExpand: PropTypes.bool.isRequired,
 };
 
 export default SwitchTab;

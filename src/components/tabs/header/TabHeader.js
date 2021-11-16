@@ -1,48 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-const getElement = (name) => document.querySelector(name);
-
 const TabHeader = ({ mode, setMode, tabsExpand }) => {
-  const usePrevious = (value) => {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  };
-
-  const prevMode = usePrevious(mode);
-
-  const tabWrapperElem = getElement('.tab-wrapper');
-
-  if (tabWrapperElem) {
-    setTimeout(() => {
-      if (tabWrapperElem.style.transform === 'scaleX(0)') {
-        tabWrapperElem.style.transform = 'scaleX(1)';
-      } else {
-        tabWrapperElem.style.transform = 'scaleX(0)';
-      }
-    }, 50);
-  }
-
-  useEffect(() => {
-    const tabNamesElem = getElement('.tab_list');
-
-    if (mode === 'tabs') {
-      if (!tabNamesElem.style.transform || tabNamesElem.style.transform === 'scaleX(0)') {
-        tabNamesElem.style.transform = 'scaleX(1)';
-      } else {
-        tabNamesElem.style.transform = 'scaleX(0)';
-      }
-    }
-
-    if (prevMode === 'tabs') {
-      tabNamesElem.style.transform = 'scaleX(0)';
-      getElement('#autoPlay').style.right = '460px';
-      getElement('.graphControlPanel').style.right = '460px';
-    }
-  }, [mode]);
 
   return (
     <div className="tab-header">

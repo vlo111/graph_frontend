@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
+import memoizeOne from 'memoize-one';
 import Chart from '../../Chart';
 import { getCustomField, getSingleGraph } from '../../store/selectors/graphs';
 import { getNodeCustomFieldsRequest } from '../../store/actions/graphs';
@@ -18,7 +19,6 @@ import NodeInfoHeader from './header/NodeInfoHeader';
 import General from './content/General';
 import Tab from './content/Tab';
 import Comment from './content/Comment';
-import memoizeOne from "memoize-one";
 
 const getElement = (name) => document.querySelector(name);
 
@@ -77,19 +77,15 @@ const Tabs = ({ history, editable }) => {
   useEffect(() => {
     dispatch(getNodeCustomFieldsRequest(graphId, nodeId));
 
-    moveAutoPlay();
-
     if (activeTab !== '_description') updateTabWithFile();
   }, []);
 
   const { id: graphId, title } = singleGraph;
 
   const moveAutoPlay = () => {
-    const tab = getElement('.tab_list');
-    if (getElement('.tab-wrapper').style.transform === 'scaleX(0)') return;
     let left;
 
-    if (!tab.style.transform || tab.style.transform !== 'scaleX(1)') {
+    if (mode !== 'tabs') {
       left = '460px';
     } else left = '660px';
 
@@ -137,6 +133,10 @@ const Tabs = ({ history, editable }) => {
     // dispatch(getNodeCommentsRequest({ graphId, nodeId: node.id }));
   }, [nodeIdMemo]);
 
+  useEffect(() => {
+    moveAutoPlay();
+  }, [mode]);
+
   return (
     <>
       <div className={`tab-wrapper ${tabsExpand ? 'tabs_expand' : ''}`}>
@@ -154,6 +154,8 @@ const Tabs = ({ history, editable }) => {
           tabsExpand={tabsExpand}
           connectedNodes={connectedNodes}
         />
+        {mode === 'tabs'
+        && (
         <SwitchTab
           mode={mode}
           moveAutoPlay={moveAutoPlay}
@@ -167,6 +169,7 @@ const Tabs = ({ history, editable }) => {
           nodeCustomFields={nodeCustomFields}
           setOpenAddTab={(tab) => setOpenAddTab(tab)}
         />
+        )}
         <div className="tab">
           <TabHeader
             mode={mode}
