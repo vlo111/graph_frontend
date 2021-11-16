@@ -304,7 +304,6 @@ class AddNodeModal extends Component {
                 />
                 <Select
                   label="Node Status"
-                  portal
                   options={NODE_STATUS}
                   isDisabled={currentUserRole === 'edit' && addNodeParams.createdUser !== currentUserId}
                   value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
@@ -315,7 +314,6 @@ class AddNodeModal extends Component {
                   <>
                     <Select
                       label="Node Type"
-                      portal
                       options={NODE_TYPES}
                       value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
                       error={errors.nodeType}

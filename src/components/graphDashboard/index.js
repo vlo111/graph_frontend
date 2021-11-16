@@ -48,13 +48,13 @@ const Dashboard = ({ graph }) => {
       {userPermission && (
         <>       
           <Button
-            icon={<SaveSvg style={{ height: 23 }} />}
+            icon={<SaveSvg className="viewIconQuery " />}
             onClick={() => toggleGraphQuery(true)}
             title="Save query"
             className="save_query"
           />
           <Button
-            icon={<ExportSvg style={{ height: 23 }} />}
+            icon={<ExportSvg className="viewIcon "/>}
             onClick={() => exportGraphData(graph.id)}
             title="Export"
             className="export"
@@ -64,7 +64,7 @@ const Dashboard = ({ graph }) => {
             title="Save query"
             className={`${showGraphQuerySetting ? 'setting_queryBtn__active' : ''} setting_queryBtn btn-classic`}
           >
-            <Icon value={<SettingSvg style={{ marginTop: '-2.5px' }} />} />
+            <Icon value={<SettingSvg className="viewIconQuery " />} />
           </button>
         </>
       )}
