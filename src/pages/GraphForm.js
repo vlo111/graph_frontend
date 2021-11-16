@@ -111,7 +111,7 @@ class GraphForm extends Component {
           <DataImport />
           <FindNode />
           <NodeDescription />
-          <Tabs />
+          <Tabs editable />
           <AutoPlay />
           <Zoom />
           <LabelTooltip />
