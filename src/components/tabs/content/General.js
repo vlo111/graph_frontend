@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+import memoizeOne from 'memoize-one';
+import _ from 'lodash';
 import Button from '../../form/Button';
 import { ReactComponent as EditSvg } from '../../../assets/images/icons/edit.svg';
 import { ReactComponent as InfoSvg } from '../../../assets/images/icons/info.svg';
@@ -32,8 +34,6 @@ const General = ({
 
   const { linksPartial, labels } = singleGraph;
 
-  const titleStyle = { backgroundColor: '#F5F5FA' };
-
   /* @todo get document elements size
   * 56 graph header height
   * 58 - tab header user info
@@ -46,7 +46,7 @@ const General = ({
     height,
     overflow: 'auto',
   };
-  console.log(node);
+
   return (
     <div className="general">
       <div className="general-hider">
@@ -121,9 +121,7 @@ const General = ({
           </div>
           {node.location?.length && (
           <div className="general-footer-item general-footer-location">
-
             <span className="location-text">
-
               <details className="general-footer-node">
                 <summary>
                   <div>Location:</div>
@@ -136,20 +134,22 @@ const General = ({
                 </summary>
                 <div className="location-map"><MapsInfo node={node} /></div>
               </details>
-
             </span>
-
           </div>
           )}
-          <details className="general-footer-node">
-            <summary>
-              <div className="title">connection title</div>
-              <div className="node-name">connection name</div>
-            </summary>
-            <div className="connections">
-              <div>hovo</div>
-            </div>
-          </details>
+          <div className="general-footer-item general-footer-links">
+            {connectedNodes.map((nodeGroup) => (
+              <details className="general-footer-node">
+                <summary>
+                  <div className="title">{`${nodeGroup[0].linkType}:`}</div>
+                  <div className="node-name">{`${nodeGroup.length} ${nodeGroup.length > 1 ? 'connections' : 'connection'}`}</div>
+                </summary>
+                <div className="connections">
+                  <NodeOfConnection labels={labels} nodes={nodeGroup} links={linksPartial} nodeId={node.id} />
+                </div>
+              </details>
+            ))}
+          </div>
         </div>
         {/* {node.keywords && ( */}
         {/* <div className="general-footer-keywords"> */}

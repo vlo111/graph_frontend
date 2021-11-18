@@ -160,17 +160,6 @@
             a:hover {
               color: $color-main;
             }
-
-            &:before {
-              content: "";
-              position: absolute;
-              color: $color-tab-general-border;
-              border-left: 2px solid;
-              margin-top: 10px;
-              margin-left: 6px;
-              width: 100px;
-              height: 225px;
-            }
           }
 
           &-item {
@@ -203,21 +192,14 @@
                 margin-bottom: 10px;
               }
             }
-
-            &:before {
-              content: "";
-              position: absolute;
-              color: $color-tab-general-border;
-              border: 1px solid;
-              transform: rotate(90deg);
-              height: 10px;
-              margin-top: 6px;
-              margin-left: -8px;
-            }
           }
 
           &-location {
             flex-wrap: wrap;
+
+            .location-text {
+              width: 100%;
+            }
 
             .location-map {
               width: 290px;
@@ -227,15 +209,84 @@
             }
           }
 
+          &-links {
+            flex-wrap: wrap;
+            cursor: pointer;
+
+            .connectionDetails {
+              .connection-container {
+                overflow-x: hidden;
+                overflow-y: auto;
+                margin-top: 10px;
+
+                .item {
+                  margin-bottom: 20px;
+                  width: 100%;
+
+                  a {
+                    display: flex;
+                    color: $color-dark;
+                    text-decoration: none;
+                  }
+
+                  .left {
+                    margin-right: 20px;
+
+                    .node-type {
+                      background: #F07760;
+                      color: white;
+                      padding: 0 20px;
+                      height: 20px;
+                      font-size: 12px;
+                      line-height: 20px;
+                      border-radius: 30px;
+                    }
+                  }
+
+                  .right {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    line-height: 1;
+                    text-decoration: underline;
+
+                    .name {
+                      font-weight: bold;
+                      font-size: 14px;
+                      text-decoration-line: underline;
+                      color: $color-main;
+                    }
+
+                    .type {
+                      font-size: 14px;
+                      line-height: 2;
+                    }
+                  }
+                }
+
+                .list {
+                  display: flex;
+                  flex-wrap: wrap;
+                  max-height: 230px;
+                  overflow: auto;
+                }
+
+                .linkTypes {
+                  color: $color-passive;
+                  font-weight: 600;
+                  font-size: 16px;
+                }
+              }
+            }
+          }
+
           &-node {
             display: flex;
             width: 100%;
             justify-content: center;
             align-items: center;
-            padding: 5px 10px;
             margin-bottom: 10px;
-
-
+            height: fit-content;
 
             .title, .node-name {
               font-size: 14px;
@@ -244,7 +295,6 @@
             }
 
             .connections {
-              margin-top: 30px;
               max-height: 220px;
             }
           }
