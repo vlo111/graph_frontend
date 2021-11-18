@@ -3007,7 +3007,7 @@ p {
   .dropdown {
     border-radius: 3px;
     background-color: $color-white;
-    border: 1px solid $color-arrow-border;
+    box-shadow: 4px 0 25px $color-main-shadow;
     padding: 10px 10px 22px;
     width: 200px;
     position: fixed;
@@ -7560,7 +7560,7 @@ img.preview-scaled {
     top: 75px;
     position: fixed;
     width: 240px;
-    border: 1px solid $color-arrow-border;
+    box-shadow: 4px 0 25px $color-main-shadow;
 
     .ghFormField {
       width: auto;
@@ -7784,7 +7784,7 @@ img.preview-scaled {
     padding: 15px 16px 20px 16px;
     background-color: #FFFFFF;
     border-radius: 3px;
-    box-shadow: 0px 11px 20px rgb(0 0 0 / 25%);
+    box-shadow: 4px 0 25px $color-main-shadow;
 
     h4 {
       margin-left: 7px;
@@ -7986,6 +7986,7 @@ img.preview-scaled {
   .container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(13%, 1fr));
+    box-shadow: 4px 0 25px rgba(57, 57, 57, 0.1);
     max-width: 100%;
     gap: 10px;
     padding: 0;
@@ -9489,9 +9490,6 @@ details[open] summary:after {
 }
 
 .tabComment, .graphUsersInfo {
-  transition: all 0.6s ease-in-out 0.0s;
-  transform-origin: right top;
-  transform: scaleX(0);
   z-index: 0;
   position: absolute !important;
   right: 500px;
@@ -9503,7 +9501,7 @@ details[open] summary:after {
   top: 70px !important;
   margin-left: 280px;
   box-shadow: none !important;
-  border-radius: 0px !important;
+  border-radius: 0 !important;
   background-color: #ffffff !important;
   border: 1px solid #dbd9fd;
 
@@ -9676,12 +9674,16 @@ details[open] summary:after {
       inset: 30px auto auto -120px !important;
       min-width: 360px;
       margin-left: 115px !important;
+      border: none;
+      box-shadow: 4px 0 25px $color-main-shadow;
 
       .arrow {
-        margin: 0px;
-        position: absolute;
-        left: -115px !important;
-        transform: translate(290px, 0px) !important;
+        &:after {
+          content: none;
+        }
+        &:before {
+          content: none;
+        }
       }
     }
 

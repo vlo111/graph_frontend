@@ -13,7 +13,9 @@ const NodeOfConnection = ({
   const queryObj = queryString.parse(window.location.search);
 
   const openFolder = (e, d) => {
-    const label = labels.filter((p) => p.id === d.connected.labels[0])[0];
+    if(!labels) return;
+
+    const label = labels.filter((p) => p.id === d.connected?.labels[0])[0];
 
     if (label) {
       Chart.event.emit('folder.open', e, label, 'true');

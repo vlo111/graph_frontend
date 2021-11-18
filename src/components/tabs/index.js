@@ -86,8 +86,8 @@ const Tabs = ({ history, editable }) => {
     let left;
 
     if (mode !== 'tabs') {
-      left = '460px';
-    } else left = '660px';
+      left = '360px';
+    } else left = '460px';
 
     // move autoplay right
     getElement('#autoPlay').style.right = left;

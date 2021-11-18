@@ -55,7 +55,7 @@ const SwitchTab = ({
                 className={`tab_list-content-item ${activeTab === p.value.name ? 'tab_list-content-active' : ''}`}
                 onMouseDown={() => setActiveTab(p.value.name)}
               >
-                {p.value.name.length > 15 ? `${p.value.name.substring(0, 15)} ...` : p.value.name}
+                {p.value.name.length > 12 ? `${p.value.name.substring(0, 12)} ...` : p.value.name}
               </div>
             </>
           )}

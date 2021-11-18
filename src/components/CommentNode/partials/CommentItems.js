@@ -28,6 +28,7 @@ const CommentItem = ({ comment, isReply }) => {
     } else {
       setCompressComment(comment.text);
     }
+    window.scrollTo(0, document.body.scrollHeight);
   }, []);
 
   const expandText = (ev) => {
@@ -72,17 +73,14 @@ const CommentItem = ({ comment, isReply }) => {
   );
 };
 
-const CommentItems = ({ graph, node, closeModal }) => {
+const CommentItems = ({
+  graph, node, closeModal, graphComments,
+}) => {
   const dispatch = useDispatch();
-  const graphComments = useSelector(getNodeComments);
   const parent = useSelector(getNodeCommentParent);
 
   useEffect(() => {
     dispatch(getNodeCommentsRequest({ graphId: graph.id, nodeId: node.id }));
-  }, []);
-
-  useEffect(() => {
-    dispatch(getActionsCountRequest({ graphId: graph.id, nodeId: node.id }));
   }, []);
 
   /* @todo get document elements size
@@ -102,7 +100,6 @@ const CommentItems = ({ graph, node, closeModal }) => {
 
   return heightStyle ? (
     <div className="comment-content-wrapper" style={heightStyle}>
-      {!graphComments.length && <div className="notComment">you have no comment yet</div>}
       {graphComments.map((comment) => (
         <>
           <CommentItem comment={comment} />

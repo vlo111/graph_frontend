@@ -42,24 +42,25 @@ const NodeInfoHeader = ({
         <div className="node">
           <NodeIcon node={node} />
           <div className="name">
-            {(!singleExpand && !tabsExpand) ? (node.name.length > 15
-              ? `${node.name.substring(0, 15)}...`
+            {(!singleExpand && !tabsExpand) ? (node.name.length > 10
+              ? `${node.name.substring(0, 10)}...`
               : node.name) : node.name}
           </div>
           <div className="type">
-            {`Type: ${!singleExpand ? (node.type.length > 15
-              ? `${node.type.substring(0, 15)}...`
-              : node.type) : node.name}`}
+            {`Type: ${(!singleExpand && !tabsExpand) ? (node.type.length > 10
+              ? `${node.type.substring(0, 10)}...`
+              : node.type) : node.type}`}
           </div>
         </div>
         <div className="tab-close">
-          {!singleExpand && (
-          <Button
-            icon={<ExpandSvg />}
-            title="expand"
-            onClick={expandTabs}
-          />
-          )}
+          {!singleExpand ? (
+            <button
+              title="expand"
+              onClick={expandTabs}
+            >
+              <ExpandSvg />
+            </button>
+          ) : <div className="expand-empty" />}
           <ExportNodeTabs
             node={node}
             tabs={tabs}
@@ -68,11 +69,12 @@ const NodeInfoHeader = ({
             title={title}
             name="name"
           />
-          <Button
-            icon={<CloseSvg />}
+          <button
             className="clear"
             onClick={closeNodeInfo}
-          />
+          >
+            <CloseSvg />
+          </button>
         </div>
       </div>
     </div>

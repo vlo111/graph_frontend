@@ -21,7 +21,6 @@ class AccountDropDown extends Component {
     super(props);
     this.state = {
       showDropDown: false,
-      arrowStyle: '',
     };
   }
 

@@ -12,7 +12,7 @@ import GraphUsersInfo from '../../History/GraphUsersInfo';
 import NodeOfConnection from './NodeOfConnection';
 
 const General = ({
-  node, tabs, editable = true, connectedNodes
+  node, tabs, editable = true, connectedNodes,
 }) => {
   const dispatch = new useDispatch();
 
@@ -49,42 +49,46 @@ const General = ({
   return (
     <div className="general">
       <div className="general-hider">
-        <div className="general-hider-title">
-          <div className="general-hider-title-icons">
-            {editable && (
-            <>
-              <Button
-                icon={<InfoSvg />}
-                title="Info"
-                onClick={() => setShowNodeInfo(!showNodeInfo)}
-              />
-              <Button
-                icon={<EditSvg />}
-                title="edit"
-                onClick={updateNode}
-              />
-            </>
-            )}
-          </div>
+        <div className="general-hider-picture">
+          <NodeImage node={node} />
         </div>
         <div className="general-hider-caption">
-          <div className="general-hider-caption-picture">
-            <NodeImage node={node} />
-          </div>
           <div className="general-hider-caption-nodeInfo">
-            <div style={{ display: 'flex', flexWrap: 'wrap', height: '60px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <span className="name">{node.name}</span>
+              <div style={{ display: 'flex', width: '100%' }} />
               <span className="type">{node.type}</span>
             </div>
           </div>
         </div>
-        {node.keywords && (
-        <div className="general-hider-keywords">
-          {node.keywords.map((p) => (
-            <span>{`${p}  `}</span>
-          ))}
+        <div className="general-hider-icons">
+          {editable && (
+            <>
+              <button
+                title="info"
+                className="info"
+                onClick={() => setShowNodeInfo(!showNodeInfo)}
+              >
+                <InfoSvg />
+              </button>
+              <button
+                title="edit"
+                className="edit"
+                onClick={updateNode}
+              >
+                <EditSvg />
+              </button>
+            </>
+          )}
         </div>
-        )}
+
+        {/* {node.keywords && ( */}
+        {/* <div className="general-hider-keywords"> */}
+        {/*  {node.keywords.map((p) => ( */}
+        {/*    <span>{`${p}  `}</span> */}
+        {/*  ))} */}
+        {/* </div> */}
+        {/* )} */}
       </div>
       <div className="general-footer" style={contentStyle}>
         {node.link && (

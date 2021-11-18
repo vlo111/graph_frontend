@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Owner from './Owner';
 import Button from '../../form/Button';
-import Input from '../../form/Input';
 import Editor from '../../form/Editor/CustomEditor';
 
 import { getAccount } from '../../../store/selectors/account';
@@ -48,9 +47,14 @@ const AddComment = ({
         )}
         <Button
           onClick={() => {
-            text.trim() === ''
-              ? alert('Text cannot be blank.')
-              : dispatch(createNodeCommentRequest(
+            if (text.trim() === '') {
+              alert('Text cannot be blank.');
+            } else {
+              document.querySelector('.comment-content-wrapper')
+                .scrollTo(0, document.querySelector('.comment-content-wrapper')
+                  .scrollHeight);
+
+              dispatch(createNodeCommentRequest(
                 {
                   graphId: graph.id,
                   nodeId: node.id,
@@ -58,6 +62,7 @@ const AddComment = ({
                   parentId: parent.id,
                 },
               ));
+            }
             setText('');
             dispatch(setNodeCommentParent({}));
           }}

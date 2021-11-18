@@ -2,7 +2,7 @@
 
 .tab-wrapper {
   position: fixed;
-  width: 450px;
+  width: 350px;
   height: calc(100% - 56px);
   background: $color-white;
   right: 0;
@@ -22,6 +22,7 @@
         outline: none;
         width: 100%;
         height: 40px;
+        font-size: 14px;
 
         &:hover {
           background: #EEEEFE;
@@ -35,7 +36,7 @@
         &:after {
           content: "";
           display: block;
-          top: 35px;
+          top: 52px;
           height: 3px;
           background-color: $color-main;
           position: absolute;
@@ -53,28 +54,23 @@
       height: calc(100% - 40px);
 
       .general {
-        padding: 10px 20px;
+        padding: 15px 10px 0;
 
         &-hider {
+          display: flex;
+          gap: 10px;
           max-height: 260px;
+          height: 60px;
 
-          &-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            &-icons {
-              width: 100%;
-              display: flex;
-              justify-content: end;
-              align-items: center;
-            }
+          &-icons {
 
             button {
               width: 35px;
               display: flex;
               justify-content: center;
               align-items: center;
+              border: none;
+              background-color: white;
 
               &:hover {
                 path {
@@ -82,24 +78,28 @@
                 }
               }
             }
+
+            .info, .edit {
+              &:hover {
+                path {
+                  stroke: $color-main;
+                  fill: white;
+                }
+              }
+            }
+          }
+
+          &-picture {
+            img {
+              height: 40px;
+              width: 40px;
+              object-fit: cover;
+              border-radius: 50px;
+            }
           }
 
           &-caption {
-            display: flex;
-            height: 110px;
-            margin-top: 10px;
-
-            &-picture {
-              margin-right: 20px;
-              width: 110px;
-
-              img {
-                height: 110px;
-                width: 110px;
-                object-fit: cover;
-                border-radius: 3px;
-              }
-            }
+            width: 100%;
 
             &-nodeInfo {
               display: flex;
@@ -113,12 +113,13 @@
               .name {
                 font-weight: bold;
                 font-size: 16px;
+                line-height: 1.1;
                 color: $color-graph-name;
               }
 
               .type {
                 font-weight: bold;
-                font-size: 14px;
+                font-size: 12px;
                 color: $color-passive;
               }
 
@@ -141,23 +142,29 @@
             }
           }
 
-          &-keywords {
-            max-height: 100px;
-            overflow: auto;
-            margin: 5px 0 10px;
+          //&-keywords {
+          //  max-height: 100px;
+          //  overflow: auto;
+          //  margin: 5px 0 10px;
+          //
+          //  span {
+          //    display: inline-block;
+          //    padding: 0 20px;
+          //    height: 20px;
+          //    font-size: 11px;
+          //    line-height: 20px;
+          //    border-radius: 3px;
+          //    background-color: $color-tab-keywords;
+          //    color: $color-passive;
+          //    margin-right: 10px;
+          //    margin-bottom: 10px;
+          //  }
+          //}
 
-            span {
-              display: inline-block;
-              padding: 0 20px;
-              height: 20px;
-              font-size: 11px;
-              line-height: 20px;
-              border-radius: 3px;
-              background-color: $color-tab-keywords;
-              color: $color-passive;
-              margin-right: 10px;
-              margin-bottom: 10px;
-            }
+          &-title, &-caption, &-icons {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
           }
         }
 
@@ -211,7 +218,9 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 10px 20px;
+          padding: 10px 10px;
+          border-bottom: 1px solid $color-query-border;
+          height: 58px;
 
           &-text {
             font-size: 16px;
@@ -224,14 +233,18 @@
           &-icons {
             display: flex;
             justify-content: end;
-            align-items: center;
-            margin-top: -1px;
+            height: 40px;
+            width: 80px;
 
             button {
-              width: 35px;
               display: flex;
               justify-content: center;
               align-items: center;
+              background-color: white;
+              padding: 0;
+              height: 100%;
+              border: none;
+              margin: 0 6px;
 
               &:hover {
                 path {
@@ -240,18 +253,18 @@
               }
             }
 
-            .expand {
-              border-radius: 5px;
-              height: 29px;
-              width: 35px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
+            .delete, .edit {
+              &:hover {
+                path {
+                  stroke: $color-main;
+                  fill: white;
+                }
+              }
             }
 
             .add svg {
               transform: rotate(45deg);
-              width: 10px;
+              width: 14px;
             }
           }
         }
@@ -273,7 +286,7 @@
           }
 
           * {
-            width: 380px;
+            width: 310px;
             margin: 0 !important;
             padding: 0 !important;;
           }
@@ -289,7 +302,7 @@
           margin-left: 12.5px;
 
           .commentWrite {
-            width: 430px;
+            width: 330px;
             position: absolute;
             bottom: 25px;
           }
@@ -307,7 +320,7 @@
 
           .comment-modal__add-comment-buttons {
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             gap: 15px;
             margin-top: 5px;
           }
@@ -320,15 +333,6 @@
             gap: 5px;
             margin: 5px 0;
             padding-right: 5px;
-
-            .notComment {
-              font-size: 14px;
-              color: $color-tab-no-data;
-              display: flex;
-              align-items: center;
-              height: 100%;
-              align-self: center;
-            }
 
             &-item {
               background: $color-comment-bg;
@@ -369,6 +373,17 @@
               margin-top: -5px;
             }
           }
+
+          .notComment {
+            font-size: 14px;
+            color: $color-tab-no-data;
+            display: flex;
+            align-items: center;
+            align-self: center;
+            position: absolute;
+            height: calc(100% - 350px);
+            top: 90px;
+          }
         }
       }
     }
@@ -390,8 +405,8 @@
 
   .tab_list {
     position: fixed;
-    right: 450px;
-    width: 200px;
+    right: 350px;
+    width: 180px;
     background-color: $color-main;
     height: calc(100%);
     color: white;
@@ -444,7 +459,7 @@
         align-items: center;
         padding-left: 10px;
         padding-right: 15px;
-        width: 112.2%;
+        width: 114.5%;
         cursor: pointer;
         border-radius: 3px 0 0 3px;
         user-select: none;
@@ -516,12 +531,17 @@
     right: 0;
     z-index: 9999999;
     width: 100%;
+    height: 52px;
+    border: 1px solid $color-query-border;
+    border-left: none;
+    border-right: none;
 
     &-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 5px 10px;
+      height: 40px;
 
       .node {
         display: flex;
@@ -548,17 +568,24 @@
       .name {
         font-style: normal;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 12px;
         color: $color-graph-name;
       }
 
       .tab-close {
+        height: 100%;
+        justify-content: end;
+        display: flex;
+        width: 80px;
+
         .clear {
           cursor: pointer;
         }
 
-        .ghButton {
-          padding: 0 8px;
+        button {
+          border: none;
+          background-color: white;
+          margin: 0 6px;
 
           &:hover {
             path {
@@ -568,10 +595,14 @@
         }
 
         svg {
-          height: 11px;
+          height: 14px;
         }
       }
     }
+  }
+
+  .expand-empty {
+    width: 14px;
   }
 }
 
@@ -674,39 +705,21 @@
 }
 
 .node_expand {
-   #graphs-data-info,
+  #graphs-data-info,
   .edit, .back, .tab-header,
   .menu, #graph, .searchField, #mapsGraph {
     pointer-events: none;
     opacity: 0.7;
   }
 
-  #header-on-graph, #header-on-view-graph {
-    background-color: #fbfbfb;
-
-    .legendButton, .ghButton,
-    .dropdown-btn, .notify {
-      pointer-events: none;
-      background-color: #fbfbfb;
-    }
-  }
-
   .tab_content-description {
     * {
-      width: calc(100% - 15px) !important;
+      width: calc(100% - 10px) !important;
     }
   }
 
   .tab-header {
     visibility: hidden;
-  }
-
-  .tab-close {
-    margin-right: 15px;
-  }
-
-  .node-info-container {
-    margin-top: 30px;
   }
 
   .tab_list {
@@ -770,7 +783,7 @@
       width: calc(100% - 600px);
 
       &-description * {
-        width: calc(100% - 620px);
+        width: 100%;
       }
     }
 

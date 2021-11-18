@@ -313,7 +313,7 @@ class AddNodeModal extends Component {
                 {!editPartial ? (
                   <>
                     <Select
-                      label="Node Type"
+                      label="Shape"
                       options={NODE_TYPES}
                       value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
                       error={errors.nodeType}

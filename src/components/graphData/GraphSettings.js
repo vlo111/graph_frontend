@@ -143,26 +143,6 @@ class GraphSettings extends Component {
     this.setState({ showModalTemplet });
   }
 
-  componentDidMount() {
-    window.addEventListener('resize', this.resize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resize);
-  }
-
-  resize = () => {
-    const arrowElement = document.querySelector('.settingArrow');
-
-    if (!arrowElement) return;
-
-    const x = document.querySelector('.GraphNames .dropdown')?.getBoundingClientRect().x;
-
-    const width = document.querySelector('.GraphNames .dropdown')?.offsetWidth / 2;
-
-    arrowElement.style.left = `${(x + width) - 10}px`;
-  }
-
   render() {
     const { singleGraph } = this.props;
     const {
@@ -173,17 +153,7 @@ class GraphSettings extends Component {
     const canSave = nodes.length && requestData.title;
     this.initValues(singleGraph);
 
-    let arrowStyle = {};
-
     const settingModalElement = document.querySelector('.GraphNames .dropdown');
-
-    if (settingModalElement) {
-      arrowStyle = {
-        marginTop: '15px',
-        left: `${(settingModalElement.getBoundingClientRect().x
-        + (settingModalElement.offsetWidth / 2)) - 10}px`,
-      };
-    }
 
     return (
       <div className="GraphNames">
@@ -200,7 +170,6 @@ class GraphSettings extends Component {
         </button>
         {showDropDown ? (
           <Outside onClick={this.toggleDropDown} exclude=".GraphNames">
-            {settingModalElement && <div className="modal-arrow-top settingArrow" style={arrowStyle} />}
             <div className="dropdown">
               <div className="graphname">
                 <span title={singleGraph.title} className="graphNames">
