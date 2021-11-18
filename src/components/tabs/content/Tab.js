@@ -42,7 +42,7 @@ const Tab = ({
   const editElement = (
     <button
       title="edit"
-      className="edit"
+      className="tab-edit"
       onClick={() => setOpenAddTab(name)}
     >
       <EditSvg />
@@ -128,7 +128,7 @@ const Tab = ({
         <p className="tab_content-header-text">{name === '_description' ? 'Description' : name}</p>
         <div className="tab_content-header-icons">
           <>
-            {!tabsExpand ? (
+            {!tabsExpand && (
               <button
                 className="expand"
                 title="expand"
@@ -136,14 +136,14 @@ const Tab = ({
               >
                 {expand ? <NodeExpandTabSvg /> : <NodeShortenTabSvg />}
               </button>
-            ) : <div className="expand-empty" />}
+            )}
             {editable && editOrAdd}
             {editable && (
             <>
               {name !== '_description'
               && (
               <button
-                className="delete"
+                className="tab-delete"
                 title="Delete"
                 onClick={() => setShowConfirmModal(true)}
               >

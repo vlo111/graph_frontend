@@ -3459,7 +3459,7 @@ body .gh__menu {
       width: 91%;
       align-items: center;
       min-height: 70px;
-      border: 1px solid #D5D5D5;
+      border: 1px solid $color-tab-general-border;
       padding: 10px;
 
       .searchResultCheckbox {
@@ -7012,7 +7012,7 @@ img.preview-scaled {
     .item {
       &:hover {
         background: linear-gradient(0deg, rgba(136, 130, 209, 0.07), rgba(136, 130, 209, 0.07));
-        border: 1px solid #D5D5D5;
+        border: 1px solid $color-tab-general-border;
         box-sizing: border-box;
       }
     }

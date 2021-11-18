@@ -142,25 +142,6 @@
             }
           }
 
-          //&-keywords {
-          //  max-height: 100px;
-          //  overflow: auto;
-          //  margin: 5px 0 10px;
-          //
-          //  span {
-          //    display: inline-block;
-          //    padding: 0 20px;
-          //    height: 20px;
-          //    font-size: 11px;
-          //    line-height: 20px;
-          //    border-radius: 3px;
-          //    background-color: $color-tab-keywords;
-          //    color: $color-passive;
-          //    margin-right: 10px;
-          //    margin-bottom: 10px;
-          //  }
-          //}
-
           &-title, &-caption, &-icons {
             display: flex;
             justify-content: space-between;
@@ -170,6 +151,82 @@
 
         &-footer {
 
+          .items {
+            color: $color-passive;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+
+            a:hover {
+              color: $color-main;
+            }
+
+            &:before {
+              content: "";
+              position: absolute;
+              color: $color-tab-general-border;
+              border-left: 2px solid;
+              margin-top: 10px;
+              margin-left: 6px;
+              width: 100px;
+              height: 225px;
+            }
+          }
+
+          &-item {
+            z-index: 1;
+            background-color: white;
+            margin: 0 20px;
+            height: 100%;
+            font-size: 14px;
+            display: flex;
+
+            .item-text {
+              min-width: 50px;
+            }
+
+            &-keywords {
+              max-height: 100px;
+              overflow: auto;
+              margin: 5px 0 10px;
+
+              span {
+                display: inline-block;
+                padding: 0 20px;
+                height: 20px;
+                font-size: 11px;
+                line-height: 20px;
+                border-radius: 30px;
+                background-color: $color-tab-keywords;
+                color: $color-passive;
+                margin-right: 10px;
+                margin-bottom: 10px;
+              }
+            }
+
+            &:before {
+              content: "";
+              position: absolute;
+              color: $color-tab-general-border;
+              border: 1px solid;
+              transform: rotate(90deg);
+              height: 10px;
+              margin-top: 6px;
+              margin-left: -8px;
+            }
+          }
+
+          &-location {
+            flex-wrap: wrap;
+
+            .location-map {
+              width: 290px;
+              position: relative;
+              height: 150px;
+              margin-top: 10px;
+            }
+          }
+
           &-node {
             display: flex;
             width: 100%;
@@ -178,11 +235,7 @@
             padding: 5px 10px;
             margin-bottom: 10px;
 
-            summary {
-              background-color: $color-tab-bg;
-              margin: -5px -10px;
-              padding: 9px;
-            }
+
 
             .title, .node-name {
               font-size: 14px;
@@ -253,7 +306,7 @@
               }
             }
 
-            .delete, .edit {
+            .tab-delete, .tab-edit {
               &:hover {
                 path {
                   stroke: $color-main;
@@ -600,10 +653,6 @@
       }
     }
   }
-
-  .expand-empty {
-    width: 14px;
-  }
 }
 
 .ghModalOverlay .nodeTabsFormModal {
@@ -705,12 +754,6 @@
 }
 
 .node_expand {
-  #graphs-data-info,
-  .edit, .back, .tab-header,
-  .menu, #graph, .searchField, #mapsGraph {
-    pointer-events: none;
-    opacity: 0.7;
-  }
 
   .tab_content-description {
     * {

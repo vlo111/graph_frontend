@@ -53,14 +53,14 @@ const NodeInfoHeader = ({
           </div>
         </div>
         <div className="tab-close">
-          {!singleExpand ? (
+          {!singleExpand && (
             <button
               title="expand"
               onClick={expandTabs}
             >
               <ExpandSvg />
             </button>
-          ) : <div className="expand-empty" />}
+          )}
           <ExportNodeTabs
             node={node}
             tabs={tabs}

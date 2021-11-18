@@ -10,6 +10,7 @@ import NodeImage from './NodeImage';
 import { getSingleGraph } from '../../../store/selectors/graphs';
 import GraphUsersInfo from '../../History/GraphUsersInfo';
 import NodeOfConnection from './NodeOfConnection';
+import MapsInfo from '../../maps/MapsInfo';
 
 const General = ({
   node, tabs, editable = true, connectedNodes,
@@ -45,7 +46,7 @@ const General = ({
     height,
     overflow: 'auto',
   };
-
+  console.log(node);
   return (
     <div className="general">
       <div className="general-hider">
@@ -81,41 +82,107 @@ const General = ({
             </>
           )}
         </div>
+      </div>
+      <div className="general-footer" style={contentStyle}>
+        <div className="items">
+          <div className="general-footer-item">
+            <span className="item-text">Name: </span>
+            <span>{node.name}</span>
+          </div>
+          <div className="general-footer-item">
+            <span className="item-text">Label: </span>
+            <span>
+              {!node.keywords?.length ? 'there is not keyword'
+                : (
+                  <div className="general-footer-item-keywords">
+                    {node.keywords.map((p) => (
+                      <span>{`${p}  `}</span>
+                    ))}
+                  </div>
+                )}
+            </span>
+          </div>
+          <div className="general-footer-item">
+            <span className="item-text">Link: </span>
+            {node.link
+              ? (
+                <span>
+                  <a
+                    target="_blank"
+                    href={node.link}
+                    title={node.link}
+                    className="node-name"
+                    rel="noreferrer"
+                  >
+                    {node.link.length > 30 ? `${node.link.substring(0, 30)}...` : node.link}
+                  </a>
+                </span>
+              ) : 'there is not link'}
+          </div>
+          {node.location?.length && (
+          <div className="general-footer-item general-footer-location">
 
+            <span className="location-text">
+
+              <details className="general-footer-node">
+                <summary>
+                  <div>Location:</div>
+                  <span className="location-value">
+                    <div>
+                      {node.location[0].address.length > 25 ? `${node.location[0].address.substring(0, 25)}...`
+                        : node.location[0].address}
+                    </div>
+                  </span>
+                </summary>
+                <div className="location-map"><MapsInfo node={node} /></div>
+              </details>
+
+            </span>
+
+          </div>
+          )}
+          <details className="general-footer-node">
+            <summary>
+              <div className="title">connection title</div>
+              <div className="node-name">connection name</div>
+            </summary>
+            <div className="connections">
+              <div>hovo</div>
+            </div>
+          </details>
+        </div>
         {/* {node.keywords && ( */}
-        {/* <div className="general-hider-keywords"> */}
+        {/* <div className="general-footer-keywords"> */}
         {/*  {node.keywords.map((p) => ( */}
         {/*    <span>{`${p}  `}</span> */}
         {/*  ))} */}
         {/* </div> */}
         {/* )} */}
-      </div>
-      <div className="general-footer" style={contentStyle}>
-        {node.link && (
-        <div className="general-footer-node" style={titleStyle}>
-          <div className="title">Link:</div>
-          <a
-            target="_blank"
-            href={node.link}
-            title={node.link}
-            className="node-name"
-            rel="noreferrer"
-          >
-            {node.link.length > 25 ? `${node.link.substring(0, 22)}...` : node.link}
-          </a>
-        </div>
-        )}
-        {connectedNodes.map((nodeGroup) => (
-          <details className="general-footer-node">
-            <summary>
-              <div className="title">{`${nodeGroup[0].linkType}:`}</div>
-              <div className="node-name">{`${nodeGroup.length} ${nodeGroup.length > 1 ? 'connections' : 'connection'}`}</div>
-            </summary>
-            <div className="connections">
-              <NodeOfConnection labels={labels} nodes={nodeGroup} links={linksPartial} nodeId={node.id} />
-            </div>
-          </details>
-        ))}
+        {/* {node.link && ( */}
+        {/* <div className="general-footer-node" style={titleStyle}> */}
+        {/*  <div className="title">Link:</div> */}
+        {/*  <a */}
+        {/*    target="_blank" */}
+        {/*    href={node.link} */}
+        {/*    title={node.link} */}
+        {/*    className="node-name" */}
+        {/*    rel="noreferrer" */}
+        {/*  > */}
+        {/*    {node.link.length > 25 ? `${node.link.substring(0, 22)}...` : node.link} */}
+        {/*  </a> */}
+        {/* </div> */}
+        {/* )} */}
+        {/* {connectedNodes.map((nodeGroup) => ( */}
+        {/*  <details className="general-footer-node"> */}
+        {/*    <summary> */}
+        {/*      <div className="title">{`${nodeGroup[0].linkType}:`}</div> */}
+        {/*      <div className="node-name">{`${nodeGroup.length} ${nodeGroup.length > 1 ? 'connections' : 'connection'}`}</div> */}
+        {/*    </summary> */}
+        {/*    <div className="connections"> */}
+        {/*      <NodeOfConnection labels={labels} nodes={nodeGroup} links={linksPartial} nodeId={node.id} /> */}
+        {/*    </div> */}
+        {/*  </details> */}
+        {/* ))} */}
       </div>
       {showNodeInfo ? (
         <GraphUsersInfo
