@@ -74,7 +74,7 @@ const CommentItem = ({ comment, isReply }) => {
 };
 
 const CommentItems = ({
-  graph, node, closeModal, graphComments,
+  graph, node, closeModal, graphComments, tabsExpand,
 }) => {
   const dispatch = useDispatch();
   const parent = useSelector(getNodeCommentParent);
@@ -92,7 +92,9 @@ const CommentItems = ({
 
   const addCommentHeight = document.querySelector('.commentWrite')?.offsetHeight;
 
-  const height = window.innerHeight - addCommentHeight - 56 - 58 - 40 - 20;
+  let height = window.innerHeight - addCommentHeight - 56 - 58 - 40 - 20;
+
+  if(tabsExpand) height -= 40;
 
   const heightStyle = {
     height,
@@ -122,6 +124,7 @@ const CommentItems = ({
 
 CommentItems.propTypes = {
   graph: PropTypes.object.isRequired,
+  tabsExpand: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 

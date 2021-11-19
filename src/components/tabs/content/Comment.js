@@ -5,14 +5,21 @@ import AddComment from '../../CommentNode/partials/AddComment';
 import CommentItems from '../../CommentNode/partials/CommentItems';
 import { getNodeComments } from '../../../store/selectors/commentNodes';
 
-const Comment = ({ node, graph }) => {
+const Comment = ({ node, graph, tabsExpand }) => {
   const graphComments = useSelector(getNodeComments);
 
   return (
     <div className="comment">
       <div className="comment-content">
         {!graphComments.length ? <div className="notComment">zaza you have no comment yet</div>
-          : <CommentItems graph={graph} node={node} graphComments={graphComments} />}
+          : (
+            <CommentItems
+              graph={graph}
+              node={node}
+              graphComments={graphComments}
+              tabsExpand={tabsExpand}
+            />
+          )}
         <AddComment
           graph={graph}
           node={node}

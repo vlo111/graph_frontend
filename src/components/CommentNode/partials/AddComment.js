@@ -50,9 +50,12 @@ const AddComment = ({
             if (text.trim() === '') {
               alert('Text cannot be blank.');
             } else {
-              document.querySelector('.comment-content-wrapper')
-                .scrollTo(0, document.querySelector('.comment-content-wrapper')
+              const comment = document.querySelector('.comment-content-wrapper');
+
+              if (comment) {
+                comment.scrollTo(0, document.querySelector('.comment-content-wrapper')
                   .scrollHeight);
+              }
 
               dispatch(createNodeCommentRequest(
                 {

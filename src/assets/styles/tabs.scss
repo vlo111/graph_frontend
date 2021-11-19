@@ -79,7 +79,7 @@
               }
             }
 
-            .info, .edit {
+            .tabHistory, .edit {
               &:hover {
                 path {
                   stroke: $color-main;
@@ -200,9 +200,6 @@
                 padding-left: 10px;
 
                 .item {
-                  margin: 22px 0;
-                  width: 100%;
-
                   a {
                     display: flex;
                     color: $color-dark;
@@ -211,6 +208,7 @@
 
                   .left {
                     margin-right: 20px;
+                    width: 88%;
 
                     .node-type {
                       background: #F07760;
@@ -229,6 +227,7 @@
                     justify-content: center;
                     line-height: 1;
                     text-decoration: underline;
+                    width: 100%;
 
                     .name {
                       font-weight: bold;
@@ -244,13 +243,12 @@
                   }
                 }
 
-                .list {
-                  display: flex;
-                  flex-wrap: wrap;
-                  max-height: 230px;
+                .leftLine {
+                  padding: 10px 0 10px 15px;
+                  width: 100%;
 
-                  .leftLine {
-                    width: 100%;
+                  &:after {
+                    top: 15px;
                   }
                 }
 
@@ -270,10 +268,6 @@
               font-size: 14px;
               color: $color-passive;
               width: 100%;
-            }
-
-            .connections {
-              max-height: 220px;
             }
           }
 
@@ -427,11 +421,11 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
-            margin: 5px 0;
+            margin: 2px 0;
             padding-right: 5px;
 
             &-item {
-              background: $color-comment-bg;
+              background: #fbfbff;
               border-radius: 3px;
 
               .owner .settings button {
@@ -821,19 +815,23 @@
 
     .tab {
       position: fixed;
-      left: 50%;
-      width: 180px;
+      left: calc(50% + 1px);
+      width: 25%;
+      top: 108px;
+      height: 60px;
     }
 
     .comment {
       position: fixed;
-      left: calc(50% + 180px);
-      width: 180px;
+      left: 75%;
+      width: calc(25% - 1px);
+      height: 60px;
+      top: 108px;
     }
 
     &-active:after {
       width: 100%;
-      top: -30px !important;
+      top: -39px !important;
       position: relative;
     }
 
@@ -850,17 +848,11 @@
 
   .tab_list {
     left: 50%;
-    top: 148px;
+    top: 168px;
     border-left: 1px solid $color-query-border;
     border-right: 1px solid $color-query-border;
     background-color: white;
     color: $color-comment-text;
-
-    //.description_active {
-    //  background-color: white;
-    //  color: #7166F8;
-    //  border: none;
-    //}
 
     .tab_list-content {
       margin-bottom: 100px;
@@ -873,6 +865,11 @@
 
     .general {
       width: 50%;
+      padding: 0 0 0 10px;
+    }
+
+    .general-footer {
+      padding-left: 5px;
     }
 
     .tab_content {
@@ -885,15 +882,56 @@
 
     .comment {
       width: 50%;
+      border: 1px solid #f5f5fa;
 
       .commentWrite {
-        left: calc(50% - 10px);
+        left: calc(50% + 5px);
+        width: calc(50% - 10px);
       }
 
       .comment-content {
         margin-left: 0;
       }
     }
+
+    .tab_content-header {
+      margin-top: 50px;
+    }
+
+    .comment-content-wrapper {
+      margin: 65px 0;
+    }
+  }
+
+  .general-hider {
+    border: 1px solid #ebebeb;
+    margin-left: 10px;
+    padding: 10px;
+    margin-right: -1px;
+  }
+
+  .tab-header {
+    .general {
+      display: none;
+    }
+  }
+
+  .node-info-container {
+    margin-left: 25px;
+  }
+
+  .general-hider-icons {
+    align-items: center !important;
+  }
+
+  .node-info {
+    border: none;
+    border-top: 1px solid #EBEBEB;
+  }
+
+  .location-map {
+    height: 250px !important;
+    width: auto !important;
   }
 }
 

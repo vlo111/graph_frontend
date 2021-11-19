@@ -9,7 +9,7 @@ import ChartUtils from '../../../helpers/ChartUtils';
 import Button from '../../form/Button';
 
 const NodeOfConnection = ({
-  nodes, isExport, labels,
+  nodes, isExport, labels, tabsExpand,
 }) => {
   const queryObj = queryString.parse(window.location.search);
 
@@ -49,47 +49,46 @@ const NodeOfConnection = ({
       <div className="connection-container">
 
         {groupNode.map((d) => (
-          <details className="list leftLine">
-            <summary>
-              <span className="node-text">{`nodes ${d.nodes.length}`}</span>
-            </summary>
-            <>
-              {d.nodes.map((n) => (
-                <div className="item" key={d.nodeType}>
-                  {!isExport
-                    ? (
-                      <Link
-                        onClick={(ev) => openFolder(ev, d)}
-                        replace
-                        to={`?${queryString.stringify({ ...queryObj, info: n.id })}`}
-                      >
-                        <div className="left ">
-                          <div className="node-type">{n.type}</div>
+          <>
+            {d.nodes.map((n) => (
+              <div className="item leftLine" key={d.nodeType}>
+                {!isExport
+                  ? (
+                    <Link
+                      onClick={(ev) => openFolder(ev, d)}
+                      replace
+                      to={`?${queryString.stringify({ ...queryObj, info: n.id })}`}
+                    >
+                      <div className="left ">
+                        <div className="node-type">
+                          {!tabsExpand ? (n.type && n.type.length > 12
+                            ? `${n.type.substr(0, 12)}... `
+                            : n.type) : n.type}
                         </div>
-                        <div className="right">
-                          <span className="name">
-                            {n.name && n.name.length > 45
-                              ? `${n.name.substr(0, 45)}... `
-                              : n.name}
-                          </span>
-                        </div>
-                      </Link>
-                    )
-                    : (
-                      <Button className="resultBorder">
-                        <div className="left  ">
-                          <NodeIcon node={n} />
-                        </div>
-                        <div className="right connectedResult">
-                          <span className="name">{n.name}</span>
-                          <span className="type">{n.type}</span>
-                        </div>
-                      </Button>
-                    )}
-                </div>
-              ))}
-            </>
-          </details>
+                      </div>
+                      <div className="right">
+                        <span className="name">
+                          {!tabsExpand ? (n.name && n.name.length > 14
+                            ? `${n.name.substr(0, 14)}... `
+                            : n.name) : n.name}
+                        </span>
+                      </div>
+                    </Link>
+                  )
+                  : (
+                    <Button className="resultBorder">
+                      <div className="left  ">
+                        <NodeIcon node={n} />
+                      </div>
+                      <div className="right connectedResult">
+                        <span className="name">{n.name}</span>
+                        <span className="type">{n.type}</span>
+                      </div>
+                    </Button>
+                  )}
+              </div>
+            ))}
+          </>
         ))}
       </div>
     </div>

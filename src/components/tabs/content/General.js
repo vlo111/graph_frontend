@@ -15,7 +15,7 @@ import NodeOfConnection from './NodeOfConnection';
 import MapsInfo from '../../maps/MapsInfo';
 
 const General = ({
-  node, tabs, editable = true, connectedNodes,
+  node, tabs, editable = true, connectedNodes, tabsExpand,
 }) => {
   const dispatch = new useDispatch();
 
@@ -40,7 +40,9 @@ const General = ({
   * 60 - tab header
   *  */
 
-  const height = window.innerHeight - 56 - 58 - 60 - 100;
+  let height = window.innerHeight - 30 - 58 - 60 - 100;
+
+  if (tabsExpand) height += 50;
 
   const contentStyle = {
     height,
@@ -67,7 +69,7 @@ const General = ({
             <>
               <button
                 title="info"
-                className="info"
+                className="tabHistory"
                 onClick={() => setShowNodeInfo(!showNodeInfo)}
               >
                 <InfoSvg />
@@ -114,7 +116,8 @@ const General = ({
                     className="node-name"
                     rel="noreferrer"
                   >
-                    {node.link.length > 30 ? `${node.link.substring(0, 30)}...` : node.link}
+                    {!tabsExpand ? (node.link.length > 30 ? `${node.link.substring(0, 30)}...` : node.link)
+                      : node.link}
                   </a>
                 </span>
               ) : 'there is not link'}
@@ -127,7 +130,10 @@ const General = ({
                   <div>Location:</div>
                   <span className="location-value">
                     <div>
-                      {node.location[0].address.length > 25 ? `${node.location[0].address.substring(0, 25)}...`
+                      {!tabsExpand
+                        ? (node.location[0].address.length > 25
+                          ? `${node.location[0].address.substring(0, 25)}...`
+                          : node.location[0].address)
                         : node.location[0].address}
                     </div>
                   </span>
@@ -144,7 +150,13 @@ const General = ({
                 <div className="node-name">{`${nodeGroup.length} ${nodeGroup.length > 1 ? 'connections' : 'connection'}`}</div>
               </summary>
               <div className="connections">
-                <NodeOfConnection labels={labels} nodes={nodeGroup} links={linksPartial} nodeId={node.id} />
+                <NodeOfConnection
+                  labels={labels}
+                  nodes={nodeGroup}
+                  links={linksPartial}
+                  nodeId={node.id}
+                  tabsExpand={tabsExpand}
+                />
               </div>
             </details>
           ))}

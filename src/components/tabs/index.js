@@ -185,6 +185,7 @@ const Tabs = ({ history, editable }) => {
               node={node}
               tabs={nodeCustomFields}
               connectedNodes={connectedNodes}
+              tabsExpand={tabsExpand}
             />
             )}
             {mode === 'tabs'
@@ -203,7 +204,7 @@ const Tabs = ({ history, editable }) => {
             )}
             {mode === 'comments'
             && (
-            <Comment graph={singleGraph} node={node} />
+            <Comment graph={singleGraph} node={node} tabsExpand={tabsExpand} />
             )}
           </div>
         </div>
