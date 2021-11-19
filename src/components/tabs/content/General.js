@@ -122,7 +122,7 @@ const General = ({
                 </span>
               ) : 'there is not link'}
           </div>
-          {node.location?.length && (
+          {node.location?.length ? (
           <div className="general-footer-item general-footer-location leftLine">
             <span className="location-text">
               <details className="general-footer-node">
@@ -142,7 +142,7 @@ const General = ({
               </details>
             </span>
           </div>
-          )}
+          ) : null}
           {connectedNodes.map((nodeGroup) => (
             <details className="general-footer-item leftLine">
               <summary>
