@@ -11,7 +11,7 @@ const Comment = ({ node, graph, tabsExpand }) => {
   return (
     <div className="comment">
       <div className="comment-content">
-        {!graphComments.length ? <div className="notComment">zaza you have no comment yet</div>
+        {!graphComments.length ? <div className="notComment">you have no comment yet</div>
           : (
             <CommentItems
               graph={graph}
@@ -32,6 +32,7 @@ const Comment = ({ node, graph, tabsExpand }) => {
 Comment.propTypes = {
   node: PropTypes.object.isRequired,
   graph: PropTypes.object.isRequired,
+  tabsExpand: PropTypes.bool.isRequired,
 };
 
 export default Comment;
