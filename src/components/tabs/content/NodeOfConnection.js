@@ -47,12 +47,15 @@ const NodeOfConnection = ({
   return nodes.length ? (
     <div className="connectionDetails">
       <div className="connection-container">
-        <ul className="list">
-          {groupNode.map((d) => (
+
+        {groupNode.map((d) => (
+          <details className="list leftLine">
+            <summary>
+              <span className="node-text">{`nodes ${d.nodes.length}`}</span>
+            </summary>
             <>
-              <span>{`nodes ${d.nodes.length}`}</span>
               {d.nodes.map((n) => (
-                <li className="item" key={d.nodeType}>
+                <div className="item" key={d.nodeType}>
                   {!isExport
                     ? (
                       <Link
@@ -83,11 +86,53 @@ const NodeOfConnection = ({
                         </div>
                       </Button>
                     )}
-                </li>
+                </div>
               ))}
             </>
-          ))}
-        </ul>
+          </details>
+        ))}
+
+        {/* <ul className="list"> */}
+        {/*  {groupNode.map((d) => ( */}
+        {/*    <div className="leftLine"> */}
+        {/*      <span>{`nodes ${d.nodes.length}`}</span> */}
+        {/*      {d.nodes.map((n) => ( */}
+        {/*        <li className="item" key={d.nodeType}> */}
+        {/*          {!isExport */}
+        {/*            ? ( */}
+        {/*              <Link */}
+        {/*                onClick={(ev) => openFolder(ev, d)} */}
+        {/*                replace */}
+        {/*                to={`?${queryString.stringify({ ...queryObj, info: n.id })}`} */}
+        {/*              > */}
+        {/*                <div className="left "> */}
+        {/*                  <div className="node-type">{n.type}</div> */}
+        {/*                </div> */}
+        {/*                <div className="right"> */}
+        {/*                  <span className="name"> */}
+        {/*                    {n.name && n.name.length > 45 */}
+        {/*                      ? `${n.name.substr(0, 45)}... ` */}
+        {/*                      : n.name} */}
+        {/*                  </span> */}
+        {/*                </div> */}
+        {/*              </Link> */}
+        {/*            ) */}
+        {/*            : ( */}
+        {/*              <Button className="resultBorder"> */}
+        {/*                <div className="left  "> */}
+        {/*                  <NodeIcon node={n} /> */}
+        {/*                </div> */}
+        {/*                <div className="right connectedResult"> */}
+        {/*                  <span className="name">{n.name}</span> */}
+        {/*                  <span className="type">{n.type}</span> */}
+        {/*                </div> */}
+        {/*              </Button> */}
+        {/*            )} */}
+        {/*        </li> */}
+        {/*      ))} */}
+        {/*    </div> */}
+        {/*  ))} */}
+        {/* </ul> */}
       </div>
     </div>
   ) : null;

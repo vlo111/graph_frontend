@@ -36,11 +36,11 @@ const General = ({
 
   /* @todo get document elements size
   * 56 graph header height
-  * 58 - tab header user info
-  * 260 - tab header
+  * 60 - tab header user info
+  * 60 - tab header
   *  */
 
-  const height = window.innerHeight - 56 - 58 - 260;
+  const height = window.innerHeight - 56 - 58 - 60 - 100;
 
   const contentStyle = {
     height,
@@ -85,11 +85,11 @@ const General = ({
       </div>
       <div className="general-footer" style={contentStyle}>
         <div className="items">
-          <div className="general-footer-item">
+          <div className="general-footer-item leftLine">
             <span className="item-text">Name: </span>
             <span>{node.name}</span>
           </div>
-          <div className="general-footer-item">
+          <div className="general-footer-item leftLine">
             <span className="item-text">Label: </span>
             <span>
               {!node.keywords?.length ? 'there is not keyword'
@@ -102,7 +102,7 @@ const General = ({
                 )}
             </span>
           </div>
-          <div className="general-footer-item">
+          <div className="general-footer-item leftLine">
             <span className="item-text">Link: </span>
             {node.link
               ? (
@@ -120,7 +120,7 @@ const General = ({
               ) : 'there is not link'}
           </div>
           {node.location?.length && (
-          <div className="general-footer-item general-footer-location">
+          <div className="general-footer-item general-footer-location leftLine">
             <span className="location-text">
               <details className="general-footer-node">
                 <summary>
@@ -137,52 +137,18 @@ const General = ({
             </span>
           </div>
           )}
-          <div className="general-footer-item general-footer-links">
-            {connectedNodes.map((nodeGroup) => (
-              <details className="general-footer-node">
-                <summary>
-                  <div className="title">{`${nodeGroup[0].linkType}:`}</div>
-                  <div className="node-name">{`${nodeGroup.length} ${nodeGroup.length > 1 ? 'connections' : 'connection'}`}</div>
-                </summary>
-                <div className="connections">
-                  <NodeOfConnection labels={labels} nodes={nodeGroup} links={linksPartial} nodeId={node.id} />
-                </div>
-              </details>
-            ))}
-          </div>
+          {connectedNodes.map((nodeGroup) => (
+            <details className="general-footer-item leftLine">
+              <summary>
+                <div className="title">{`${nodeGroup[0].linkType}:`}</div>
+                <div className="node-name">{`${nodeGroup.length} ${nodeGroup.length > 1 ? 'connections' : 'connection'}`}</div>
+              </summary>
+              <div className="connections">
+                <NodeOfConnection labels={labels} nodes={nodeGroup} links={linksPartial} nodeId={node.id} />
+              </div>
+            </details>
+          ))}
         </div>
-        {/* {node.keywords && ( */}
-        {/* <div className="general-footer-keywords"> */}
-        {/*  {node.keywords.map((p) => ( */}
-        {/*    <span>{`${p}  `}</span> */}
-        {/*  ))} */}
-        {/* </div> */}
-        {/* )} */}
-        {/* {node.link && ( */}
-        {/* <div className="general-footer-node" style={titleStyle}> */}
-        {/*  <div className="title">Link:</div> */}
-        {/*  <a */}
-        {/*    target="_blank" */}
-        {/*    href={node.link} */}
-        {/*    title={node.link} */}
-        {/*    className="node-name" */}
-        {/*    rel="noreferrer" */}
-        {/*  > */}
-        {/*    {node.link.length > 25 ? `${node.link.substring(0, 22)}...` : node.link} */}
-        {/*  </a> */}
-        {/* </div> */}
-        {/* )} */}
-        {/* {connectedNodes.map((nodeGroup) => ( */}
-        {/*  <details className="general-footer-node"> */}
-        {/*    <summary> */}
-        {/*      <div className="title">{`${nodeGroup[0].linkType}:`}</div> */}
-        {/*      <div className="node-name">{`${nodeGroup.length} ${nodeGroup.length > 1 ? 'connections' : 'connection'}`}</div> */}
-        {/*    </summary> */}
-        {/*    <div className="connections"> */}
-        {/*      <NodeOfConnection labels={labels} nodes={nodeGroup} links={linksPartial} nodeId={node.id} /> */}
-        {/*    </div> */}
-        {/*  </details> */}
-        {/* ))} */}
       </div>
       {showNodeInfo ? (
         <GraphUsersInfo

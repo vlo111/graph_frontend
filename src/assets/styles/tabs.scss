@@ -155,7 +155,6 @@
             color: $color-passive;
             display: flex;
             flex-direction: column;
-            gap: 15px;
 
             a:hover {
               color: $color-main;
@@ -165,19 +164,19 @@
           &-item {
             z-index: 1;
             background-color: white;
-            margin: 0 20px;
             height: 100%;
             font-size: 14px;
             display: flex;
+            margin: 0 20px 0 10px;
 
             .item-text {
               min-width: 50px;
             }
 
             &-keywords {
-              max-height: 100px;
-              overflow: auto;
-              margin: 5px 0 10px;
+              max-height: 97px;
+              overflow: hidden;
+              margin-top: 5px;
 
               span {
                 display: inline-block;
@@ -192,35 +191,16 @@
                 margin-bottom: 10px;
               }
             }
-          }
-
-          &-location {
-            flex-wrap: wrap;
-
-            .location-text {
-              width: 100%;
-            }
-
-            .location-map {
-              width: 290px;
-              position: relative;
-              height: 150px;
-              margin-top: 10px;
-            }
-          }
-
-          &-links {
-            flex-wrap: wrap;
-            cursor: pointer;
 
             .connectionDetails {
               .connection-container {
                 overflow-x: hidden;
                 overflow-y: auto;
                 margin-top: 10px;
+                padding-left: 10px;
 
                 .item {
-                  margin-bottom: 20px;
+                  margin: 22px 0;
                   width: 100%;
 
                   a {
@@ -268,7 +248,14 @@
                   display: flex;
                   flex-wrap: wrap;
                   max-height: 230px;
-                  overflow: auto;
+
+                  .leftLine {
+                    width: 100%;
+                  }
+                }
+
+                .node-text {
+                  color: $color-main2;
                 }
 
                 .linkTypes {
@@ -278,15 +265,6 @@
                 }
               }
             }
-          }
-
-          &-node {
-            display: flex;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
-            height: fit-content;
 
             .title, .node-name {
               font-size: 14px;
@@ -296,6 +274,21 @@
 
             .connections {
               max-height: 220px;
+            }
+          }
+
+          &-location {
+            flex-wrap: wrap;
+
+            .location-text {
+              width: 100%;
+            }
+
+            .location-map {
+              width: 290px;
+              position: relative;
+              height: 150px;
+              margin-top: 10px;
             }
           }
 
@@ -824,18 +817,18 @@
   width: 100% !important;
 
   .tab-header {
-    width: 400px;
+    width: 50%;
 
     .tab {
       position: fixed;
-      left: 400px;
-      width: 200px;
+      left: 50%;
+      width: 180px;
     }
 
     .comment {
       position: fixed;
-      left: 600px;
-      width: 200px;
+      left: calc(50% + 180px);
+      width: 180px;
     }
 
     &-active:after {
@@ -856,8 +849,18 @@
   }
 
   .tab_list {
-    left: 400px;
-    top: 130px;
+    left: 50%;
+    top: 148px;
+    border-left: 1px solid $color-query-border;
+    border-right: 1px solid $color-query-border;
+    background-color: white;
+    color: $color-comment-text;
+
+    //.description_active {
+    //  background-color: white;
+    //  color: #7166F8;
+    //  border: none;
+    //}
 
     .tab_list-content {
       margin-bottom: 100px;
@@ -869,11 +872,11 @@
     justify-content: space-between;
 
     .general {
-      width: 400px;
+      width: 50%;
     }
 
     .tab_content {
-      width: calc(100% - 600px);
+      width: calc(50% - 180px);
 
       &-description * {
         width: 100%;
@@ -881,7 +884,7 @@
     }
 
     .comment {
-      width: calc(100% - 400px);
+      width: 50%;
 
       .commentWrite {
         left: calc(50% - 10px);
@@ -891,5 +894,24 @@
         margin-left: 0;
       }
     }
+  }
+}
+
+.leftLine {
+  border-left: 1px solid #D5D5D5;
+  position: relative;
+  padding-left: 15px;
+  padding-bottom: 15px;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid #D5D5D5;
+    background: inherit;
   }
 }
