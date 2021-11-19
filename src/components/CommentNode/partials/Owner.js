@@ -7,7 +7,7 @@ import { ReactComponent as ReplySvg } from '../../../assets/images/icons/reply.s
 import { ReactComponent as RemoveSvg } from '../../../assets/images/icons/trash.svg';
 
 const Owner = ({
-  user, date, edit, remove, comment,
+  user, date, edit, remove, comment,setCompressComment
 }) => {
   const ownerStyles = {
     logo: {
@@ -73,6 +73,7 @@ const Owner = ({
           icon={<RemoveSvg style={{ height: 17 }} />}
           onClick={() => {
             dispatch(deleteNodeComment(comment.id));
+            setCompressComment('');
           }}
           className="transparent remove"
           title="Remove"

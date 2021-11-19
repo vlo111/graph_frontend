@@ -61,6 +61,7 @@ const CommentItem = ({ comment, isReply }) => {
     <div className={`comment-content-wrapper-item ${isReply ? '--reply' : ''}`} key={`comment-${comment.id}`}>
       <div className="owner">
         <Owner
+          setCompressComment={setCompressComment}
           user={comment.user}
           date={moment.utc(comment.createdAt).format('DD.MM.YYYY')}
           comment={comment}
@@ -94,7 +95,7 @@ const CommentItems = ({
 
   let height = window.innerHeight - addCommentHeight - 56 - 58 - 40 - 20;
 
-  if(tabsExpand) height -= 40;
+  if (tabsExpand) height -= 40;
 
   const heightStyle = {
     height,
