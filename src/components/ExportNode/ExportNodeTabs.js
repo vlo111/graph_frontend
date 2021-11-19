@@ -8,15 +8,16 @@ import Button from '../form/Button';
 import { setLoading } from '../../store/actions/app';
 import Api from '../../Api';
 import { ReactComponent as ExportSvg } from '../../assets/images/icons/export.svg';
+import bgImage from '../../assets/images/no-img.png';
 
 class ExportNodeTabs extends Component {
   static propTypes = {
     setLoading: PropTypes.func.isRequired,
-    node: PropTypes.func.isRequired,
-    tabs: PropTypes.func.isRequired,
+    node: PropTypes.object.isRequired,
+    tabs: PropTypes.object.isRequired,
     image: PropTypes.func.isRequired,
-    nodeData: PropTypes.func.isRequired,
-    title: PropTypes.func.isRequired,
+    connectedNodes: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired,
   }
 
   decode = (str) => str.replace(/&lt;/g, '<')
@@ -29,13 +30,14 @@ class ExportNodeTabs extends Component {
     this.props.setLoading(true);
 
     const {
-      node, tabs, image, nodeData, title,
+      node, tabs, image, title, connectedNodes,
     } = this.props;
+
     const html = this.decode(renderToString(<ExportNode
       node={node}
+      connectedNodes={connectedNodes}
       tabs={tabs}
-      image={image}
-      nodeData={nodeData}
+      image={image || bgImage}
       title={title}
     />));
 
@@ -52,9 +54,7 @@ class ExportNodeTabs extends Component {
         className="b-navbar"
         to="/#"
         icon={<ExportSvg />}
-      >
-        Export
-      </Button>
+      />
     );
   }
 }

@@ -11,7 +11,6 @@ import Api from '../../Api';
 import { ReactComponent as SaveSvg } from '../../assets/images/icons/save.svg';
 import { ReactComponent as SettingSvg } from '../../assets/images/icons/setting.svg';
 import { ReactComponent as ExportSvg } from '../../assets/images/icons/export.svg';
-import { ReactComponent as LegendSvg } from '../../assets/images/icons/legend.svg';
 import Legend from '../Legend';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -43,29 +42,29 @@ const Dashboard = ({ graph }) => {
       graphId, nodesId, linksId, labelsId,
     });
   };
-  
+
   return (
     <div className="dashboards">
       {userPermission && (
-        <>      
+        <>
           <Button
-            icon={<SaveSvg style={{ height: 30 }} />}
+            icon={<SaveSvg className="viewIconQuery " />}
             onClick={() => toggleGraphQuery(true)}
             title="Save query"
             className="save_query"
           />
           <Button
-            icon={<ExportSvg style={{ height: 30 }} />}
+            icon={<ExportSvg className="viewIcon "/>}
             onClick={() => exportGraphData(graph.id)}
             title="Export"
             className="export"
           />
           <button
             onClick={() => toggleGraphQuerySetting(!showGraphQuerySetting)}
-            title="Save query"
+            title="Save list"
             className={`${showGraphQuerySetting ? 'setting_queryBtn__active' : ''} setting_queryBtn btn-classic`}
           >
-            <Icon value={<SettingSvg style={{ marginTop: '-2.5px' }} />} />
+            <Icon value={<SettingSvg className="viewIconQuery " />} />
           </button>
         </>
       )}
@@ -76,10 +75,10 @@ const Dashboard = ({ graph }) => {
       >
         Reset
       </Button>
-      <button className="legendView" >  
+      <button className="legendView" title="Legend" >
       <div className="LegendExplorer">
            <Legend />
-      </div>    
+      </div>
       </button>
       {showGraphQuery ? (
 

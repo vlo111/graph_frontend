@@ -271,7 +271,7 @@
     left: 20px;
     display: flex;
     position: relative;
-    color: #545454;
+    color: #545454 !important ;
     line-height: 40px;
     left: 190px;
     img {
@@ -350,7 +350,7 @@
   position: relative;
   top: 60px;
   height: 50%;
-  max-height: 400px;
+  max-height: 380px;
 }
 .shotcouts{
   height: 100%;
