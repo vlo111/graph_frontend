@@ -21,6 +21,8 @@ class GraphListItem extends Component {
         p.title = graph.title;
         p.description = graph.description;
         p.thumbnail = graph.thumbnail;
+        p.publicState = graph.publicState;
+        p.userImage = graph.userImage;
       }
     });
 

@@ -1,20 +1,22 @@
 import React, {
-  useState, useCallback,
+  useState, useCallback, useEffect,
 } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import Popover from '../form/Popover';
-import { deleteGraphRequest, getGraphsListRequest } from '../../store/actions/graphs';
+import { deleteGraphRequest, getGraphsListRequest, updateGraphRequest } from '../../store/actions/graphs';
 import { deleteGraphRequest as DeleteShareGraphRequest } from '../../store/actions/shareGraphs';
 import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellipsis.svg';
 import ShareModal from '../ShareModal';
-import EditGraphModal from '../chart/EditGraphModal'
-import { getId } from '../../store/selectors/account';;
+import EditGraphModal from '../chart/EditGraphModal';
+import { getId } from '../../store/selectors/account';
 
-const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
+const GraphListHeader = ({
+  graph, headerTools, updateGraph,
+}) => {
   const dispatch = useDispatch();
   const userId = useSelector(getId);
   // const [openEditModal, setOpenEditModal] = useState(false);
@@ -23,7 +25,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
   const history = useHistory();
   const { page = 1, s: searchParam } = queryString.parse(window.location.search);
   const notification = false;
-  
+
   async function deleteGraph(graphId) {
     //  select data from localStorage
     const order = JSON.parse(localStorage.getItem('/')) || 'newest';
@@ -42,7 +44,8 @@ const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
         history.push('/');
       }
     } catch (e) {
-  }
+      console.log(e);
+    }
   }
 
   const handleDeleteShareGraph = useCallback((shareGraphId) => {
@@ -62,7 +65,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
             showArrow
             triggerNode={<div className="ar-popover-trigger"><EllipsisVSvg /></div>}
             trigger="click"
-        >
+          >
             <div className="ar-popover-list">
               {headerTools === 'shared' ? (
                 <div
@@ -116,7 +119,7 @@ const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
         <EditGraphModal
           toggleModal={(value) => setOpenEditGraphModal(value)}
           graph={graph}
-          deleteGraph={(graphId) => deleteGraph(graphId)}
+          // deleteGraph={(graphId) => deleteGraph(graphId)}
           updateGraph={updateGraph}
         />
       )}
@@ -126,7 +129,8 @@ const GraphListHeader = ({ graph, headerTools, updateGraph}) => {
 
 GraphListHeader.propTypes = {
   graph: PropTypes.object.isRequired,
-  myAccount: PropTypes.object.isRequired,
+  updateGraph: PropTypes.func.isRequired,
+  headerTools: PropTypes.string.isRequired,
 };
 
 export default React.memo(GraphListHeader);
