@@ -98,7 +98,7 @@ const EditGraphModal = ({
         ...prevState,
         [path]: value,
       }));
-    }
+    };
   };
   const saveGraph = async (status) => {
     setLoading(true);
@@ -207,7 +207,6 @@ const EditGraphModal = ({
             <Button
               className="btn-classic"
               onClick={() => saveGraph(requestData.status)}
-              // onClick={saveGraph}
             >
               {' '}
               Save

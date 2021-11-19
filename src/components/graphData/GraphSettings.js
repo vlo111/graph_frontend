@@ -8,7 +8,7 @@ import EditGraphModal from '../chart/EditGraphModal';
 import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
 import Button from '../form/Button';
 import Input from '../form/Input';
-import SaveAsTampletModal from '../chart/SaveAsTampletModal';
+import SaveAsTampletModal from '../chart/SaveasTampletModal';
 import Api from '../../Api';
 import ChartUtils from '../../helpers/ChartUtils';
 import { setActiveButton, setLoading } from '../../store/actions/app';
@@ -75,7 +75,8 @@ const GraphSettings = ({ singleGraph, graphId }) => {
       graphId: singleGraph?.id,
     });
     setGraphList(result?.data?.graphs || []);
-  }, [graphId]);
+    Chart.undoManager.reset();
+  }, [graphId, isMenuOpen]);
 
   const saveGraph = async (status, forceCreate) => {
     const graphId = singleGraph.id;
@@ -158,7 +159,7 @@ const GraphSettings = ({ singleGraph, graphId }) => {
           </div>
           <div className="graphNameList">
             {graphList && graphList.map((graph) => (
-              <Link to={`/graphs/update/${graph.id}`}>
+              <Link to={`/graphs/update/${graph.id}`} onClick={() => setIsMenuOpen(false)}>
                 <div title={graph.title}>
                   {graph.title.length > 11 ? `${graph.title.substring(0, 11)}...` : graph.title}
                 </div>

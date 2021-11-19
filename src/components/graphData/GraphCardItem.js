@@ -43,7 +43,6 @@ class GraphCardItem extends Component {
         p.description = graph.description;
         p.thumbnail = graph.thumbnail;
         p.publicState = graph.publicState;
-        p.defaultImage = graph.defaultImage;
       }
       return p;
     });
