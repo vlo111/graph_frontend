@@ -174,9 +174,11 @@
             }
 
             &-keywords {
-              max-height: 97px;
-              overflow: hidden;
               margin-top: 5px;
+
+              .more-keywords {
+                background-color: inherit;
+              }
 
               span {
                 display: inline-block;
@@ -882,7 +884,7 @@
     }
 
     .description {
-      border: 1px solid;
+      border: 1px solid $color-tab-general-border;
       border-left: none;
       border-right: none;
       &:hover {

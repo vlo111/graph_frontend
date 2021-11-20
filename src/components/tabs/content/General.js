@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import memoizeOne from 'memoize-one';
-import _ from 'lodash';
-import Button from '../../form/Button';
 import { ReactComponent as EditSvg } from '../../../assets/images/icons/edit.svg';
 import { ReactComponent as InfoSvg } from '../../../assets/images/icons/info.svg';
 import CustomFields from '../../../helpers/CustomFields';
@@ -49,6 +46,17 @@ const General = ({
     overflow: 'auto',
   };
 
+  let keywords = [];
+
+  if (!tabsExpand) {
+    if (node.keywords.length > 6) {
+      keywords = node.keywords.slice();
+
+      keywords.splice(6, node.keywords.length - 6);
+    }
+  } else {
+    keywords = node.keywords;
+  }
   return (
     <div className="general">
       <div className="general-hider">
@@ -97,9 +105,22 @@ const General = ({
               {!node.keywords?.length ? 'there is not keyword'
                 : (
                   <div className="general-footer-item-keywords">
-                    {node.keywords.map((p) => (
-                      <span>{`${p}  `}</span>
-                    ))}
+                    <>
+                      {tabsExpand ? node.keywords.map((p) => (
+                        <span>{p}</span>
+                      ))
+                        : (
+                          <>
+                            {keywords.filter((k, index) => index < 6).map((p) => (
+                              <span>{p.length > 10 ? `${p.substring(0, 10)}...` : p}</span>
+                            ))}
+                            {(node.keywords.length > 6) && (
+                            <span className="more-keywords">{`more (${node.keywords.length - 6})`}</span>
+                            )}
+                          </>
+                        )}
+
+                    </>
                   </div>
                 )}
             </span>
@@ -123,25 +144,25 @@ const General = ({
               ) : 'there is not link'}
           </div>
           {node.location?.length ? (
-          <div className="general-footer-item general-footer-location leftLine">
-            <span className="location-text">
-              <details className="general-footer-node">
-                <summary>
-                  <div>Location:</div>
-                  <span className="location-value">
-                    <div>
-                      {!tabsExpand
-                        ? (node.location[0].address.length > 25
-                          ? `${node.location[0].address.substring(0, 25)}...`
-                          : node.location[0].address)
-                        : node.location[0].address}
-                    </div>
-                  </span>
-                </summary>
-                <div className="location-map"><MapsInfo node={node} /></div>
-              </details>
-            </span>
-          </div>
+            <div className="general-footer-item general-footer-location leftLine">
+              <span className="location-text">
+                <details className="general-footer-node">
+                  <summary>
+                    <div>Location:</div>
+                    <span className="location-value">
+                      <div>
+                        {!tabsExpand
+                          ? (node.location[0].address.length > 25
+                            ? `${node.location[0].address.substring(0, 25)}...`
+                            : node.location[0].address)
+                          : node.location[0].address}
+                      </div>
+                    </span>
+                  </summary>
+                  <div className="location-map"><MapsInfo node={node} /></div>
+                </details>
+              </span>
+            </div>
           ) : null}
           {connectedNodes.map((nodeGroup) => (
             <details className="general-footer-item leftLine">
@@ -174,9 +195,10 @@ const General = ({
 
 General.propTypes = {
   node: PropTypes.object.isRequired,
-  tabs: PropTypes.object.isRequired,
+  tabs: PropTypes.array.isRequired,
   connectedNodes: PropTypes.string.isRequired,
   editable: PropTypes.bool.isRequired,
+  tabsExpand: PropTypes.bool.isRequired,
 };
 
 export default General;

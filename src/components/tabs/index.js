@@ -62,6 +62,8 @@ const Tabs = ({ history, editable }) => {
 
   const [mode, setMode] = useState('general');
 
+  const [prevMode, setPrevMode] = useState('');
+
   const [activeTab, setActiveTab] = useState('_description');
 
   const [nodeIdMemo, setNodeIdMemo] = useState('');
@@ -148,7 +150,12 @@ const Tabs = ({ history, editable }) => {
           history={history}
           setSingleExpand={setSingleExpand}
           setTabsExpand={(tab) => {
-            setMode('tabs');
+            if (tab) {
+              setMode('tabs');
+              setPrevMode(mode);
+            } else {
+              setMode(prevMode);
+            }
             setTabsExpand(tab);
           }}
           tabsExpand={tabsExpand}

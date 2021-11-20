@@ -51,7 +51,7 @@ const NodeOfConnection = ({
         {groupNode.map((d) => (
           <>
             {d.nodes.map((n) => (
-              <div className="item leftLine" key={d.nodeType}>
+              <div className="item leftLine">
                 {!isExport
                   ? (
                     <Link
