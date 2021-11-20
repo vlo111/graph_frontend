@@ -908,7 +908,7 @@
 
       .general-hider {
         align-items: center;
-        height: 110px;
+        height: 113px;
         margin-left: 0;
 
         &-picture img {
@@ -953,8 +953,8 @@
       width: 50%;
 
       .commentWrite {
-        left: calc(50% + 5px);
-        width: calc(50% - 10px);
+        left: calc(50% + 80px);
+        width: calc(50% - 160px);
       }
 
       .comment-content {
