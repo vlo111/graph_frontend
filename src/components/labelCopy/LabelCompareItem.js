@@ -6,6 +6,7 @@ import NodeIcon from '../NodeIcon';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
 import Checkbox from '../form/Checkbox';
+import Utils from '../../helpers/Utils';
 
 class LabelCompareItem extends Component {
   constructor(props) {
@@ -42,9 +43,7 @@ class LabelCompareItem extends Component {
           <div>
             <div className="description">
               <span title={node.name} className="headerName">
-                {node.name && node.name.length > 13
-                  ? `${node.name.substr(0, 13)}... `
-                  : node.name}
+                {Utils.substr(node.name, 13)}
               </span>
               {node.createdAt ? (
                 <span className="createdAt">{moment(node.createdAt * 1000).format('DD/MM/YYYY hh:mm A')}</span>
@@ -54,9 +53,7 @@ class LabelCompareItem extends Component {
               {_.map(customFields, (val, key) => (
                 <Tooltip key={val.name} overlay={val.name} placement="top">
                   <span>
-                    {val.name && val.name.length > 10
-                      ? `${val.name.substr(0, 10)}... `
-                      : val.name}
+                    {Utils.substr(val.name, 10)}
                   </span>
                 </Tooltip>
               ))}

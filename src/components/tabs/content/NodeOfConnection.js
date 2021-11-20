@@ -7,6 +7,7 @@ import Chart from '../../../Chart';
 import NodeIcon from '../../NodeIcon';
 import ChartUtils from '../../../helpers/ChartUtils';
 import Button from '../../form/Button';
+import Utils from '../../../helpers/Utils';
 
 const NodeOfConnection = ({
   nodes, isExport, labels, tabsExpand,
@@ -61,16 +62,12 @@ const NodeOfConnection = ({
                     >
                       <div className="left ">
                         <div className="node-type">
-                          {!tabsExpand ? (n.type && n.type.length > 12
-                            ? `${n.type.substr(0, 12)}... `
-                            : n.type) : n.type}
+                          {!tabsExpand ? (Utils.substr(n.type, 12)) : n.type}
                         </div>
                       </div>
                       <div className="right">
                         <span className="name">
-                          {!tabsExpand ? (n.name && n.name.length > 14
-                            ? `${n.name.substr(0, 14)}... `
-                            : n.name) : n.name}
+                          {!tabsExpand ? (Utils.substr(n.name, 14)) : n.name}
                         </span>
                       </div>
                     </Link>

@@ -251,9 +251,7 @@ class FindNode extends Component {
                               title={node.name}
                               className="name"
                               dangerouslySetInnerHTML={{
-                                __html: this.formatHtml(node.name && node.name.length > 12
-                                  ? `${node.name.substr(0, 12)}... `
-                                  : node.name),
+                                __html: this.formatHtml(Utils.substr(node.name, 12)),
                               }}
                             />
                             <span
@@ -280,9 +278,7 @@ class FindNode extends Component {
                         className="findNodesTitle"
                         rel="noreferrer"
                       >
-                        {graph.title && graph.title.length > 12
-                          ? `${graph.title.substr(0, 12)}... `
-                          : graph.title}
+                        {Utils.substr(graph.title, 12)}
                       </a>
                       <div className="aboutNode">
                         <p>Created by</p>
@@ -292,9 +288,7 @@ class FindNode extends Component {
                           title={node.userName}
                           rel="noreferrer"
                         >
-                          {node.userName && node.userName.length > 12
-                            ? `${node.userName.substr(0, 12)}... `
-                            : node.userName}
+                          {Utils.substr(node.userName, 12)}
                         </a>
                         <p>
                           {'in '}

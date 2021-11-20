@@ -5,6 +5,7 @@ import Button from '../../form/Button';
 import { setNodeCommentParent, deleteNodeComment } from '../../../store/actions/commentNodes';
 import { ReactComponent as ReplySvg } from '../../../assets/images/icons/reply.svg';
 import { ReactComponent as RemoveSvg } from '../../../assets/images/icons/trash.svg';
+import Utils from '../../../helpers/Utils';
 
 const Owner = ({
   user, date, edit, remove, comment,
@@ -51,11 +52,7 @@ const Owner = ({
       />
       <span style={ownerStyles.user_info}>
         <span style={ownerStyles.user_name}>
-          {
-            userName && userName.length > 12
-              ? `${userName.substr(0, 12)}... `
-              : userName
-            }
+          {Utils.substr(userName, 12)}
         </span>
         <span style={ownerStyles.user_date}>{date}</span>
       </span>

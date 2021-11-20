@@ -381,6 +381,15 @@ class Utils {
     }, 0);
     return Math.round((count / secondLength) * 100);
   };
+
+  /** *
+   * cut out the text to the specified number
+   * @param value
+   * @param count
+   * @returns {string|*}
+   */
+  static substr = (value, count) => (value && value.length > count
+    ? `${value.substr(0, count)}... ` : value)
 }
 
 export default Utils;

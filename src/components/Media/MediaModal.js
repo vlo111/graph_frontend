@@ -352,9 +352,7 @@ class MediaModal extends Component {
                                 <div className="mediaInfo mediaDescription">
                                   <span className="mediaLeter">Description:</span>
                                   <span className="descriptionLeng">
-                                    {(document.description && document.description.length > 45
-                                      ? `${document.description.substr(0, 45)}... `
-                                      : document.description)}
+                                    {Utils.substr(document.description, 45)}
                                   </span>
                                 </div>
                               )}
@@ -431,9 +429,7 @@ class MediaModal extends Component {
                             />
                             <div className="ooo">
                               <span title={document.node.name} className="headerName">
-                                {document.node.name && document.node.name.length > 15
-                                  ? `${document.node.name.substr(0, 15)}... `
-                                  : document.node.name}
+                                {Utils.substr(document.node.name, 15)}
                               </span>
                               {document.type === 'Video' || document.type === 'Image'
                                 ? (

@@ -10,6 +10,7 @@ import Outside from './Outside';
 import ChartUtils from '../helpers/ChartUtils';
 import NodeIcon from './NodeIcon';
 import Button from './form/Button';
+import Utils from '../helpers/Utils';
 
 const MODAL_WIDTH = 300;
 
@@ -91,7 +92,7 @@ class NodeDescription extends Component {
       left = window.innerWidth - MODAL_WIDTH - 15;
     }
     let { result: description } = stripHtml(node.description);
-    description = description.length > 130 ? `${description.substr(0, 120)}... ` : description;
+    description = Utils.substr(description, 120);
 
     const nodeLinks = Chart.getNodeLinks(node.id, 'all');
     return (
