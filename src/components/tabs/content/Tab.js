@@ -96,10 +96,6 @@ const Tab = ({
   };
 
   useEffect(() => {
-    dispatch(getNodeCustomFieldsRequest(graphId, node.id));
-  }, []);
-
-  useEffect(() => {
     if (!expand) expandNode(true);
   }, [expand]);
 

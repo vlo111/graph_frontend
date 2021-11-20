@@ -97,6 +97,7 @@ NodeOfConnection.propTypes = {
   nodes: PropTypes.object.isRequired,
   labels: PropTypes.func.isRequired,
   isExport: PropTypes.func.isRequired,
+  tabsExpand: PropTypes.bool.isRequired,
 };
 
 export default NodeOfConnection;

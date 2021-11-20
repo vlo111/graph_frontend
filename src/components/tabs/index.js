@@ -19,6 +19,7 @@ import NodeInfoHeader from './header/NodeInfoHeader';
 import General from './content/General';
 import Tab from './content/Tab';
 import Comment from './content/Comment';
+import { getNodeCommentsRequest } from '../../store/actions/commentNodes';
 
 const getElement = (name) => document.querySelector(name);
 
@@ -76,13 +77,11 @@ const Tabs = ({ history, editable }) => {
 
   const { connectedNodes } = getGroupedConnections(node.id);
 
-  useEffect(() => {
-    dispatch(getNodeCustomFieldsRequest(graphId, nodeId));
+  const { id: graphId, title } = singleGraph;
 
+  useEffect(() => {
     if (activeTab !== '_description') updateTabWithFile();
   }, []);
-
-  const { id: graphId, title } = singleGraph;
 
   const moveAutoPlay = () => {
     let left;
