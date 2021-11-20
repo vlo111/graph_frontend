@@ -21,6 +21,7 @@ import { ReactComponent as NotifySvg } from '../assets/images/icons/notification
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
 import { ReactComponent as NotifyEmptySvg } from '../assets/images/icons/notificationComplete.svg';
+import Utils from '../helpers/Utils';
 
 class ToolBarHeader extends Component {
   static propTypes = {
@@ -148,7 +149,7 @@ class ToolBarHeader extends Component {
               ) : null}
               {!updateLocation && (
               <span className="graphNames">
-                {singleGraph.title?.length > 16 ? `${singleGraph.title.substring(0, 16)}...` : singleGraph.title}
+                {Utils.substr(singleGraph.title, 16)}
               </span>
               )}
             </li>

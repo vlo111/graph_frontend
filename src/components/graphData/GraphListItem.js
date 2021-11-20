@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip';
 import GraphListFooter from './GraphListFooter';
 import GraphDashboardSubMnus from './GraphListHeader';
+import Utils from '../../helpers/Utils';
 
 class GraphListItem extends Component {
   static propTypes = {
@@ -47,7 +48,7 @@ class GraphListItem extends Component {
               <Tooltip overlay={graph.title} placement="bottom" className="tooltipList">
                 <h3>
                   {' '}
-                  {graph.title.length > 30 ? `${graph.title.substring(0, 30)}...` : graph.title}
+                  {Utils.substr(graph.title, 30)}
                 </h3>
               </Tooltip>
               {(mode === 'card') ? (

@@ -10,6 +10,7 @@ import { getSingleGraph } from '../../../store/selectors/graphs';
 import GraphUsersInfo from '../../History/GraphUsersInfo';
 import NodeOfConnection from './NodeOfConnection';
 import MapsInfo from '../../maps/MapsInfo';
+import Utils from '../../../helpers/Utils';
 
 const General = ({
   node, tabs, editable = true, connectedNodes, tabsExpand,
@@ -112,7 +113,7 @@ const General = ({
                         : (
                           <>
                             {keywords.filter((k, index) => index < 6).map((p) => (
-                              <span>{p.length > 10 ? `${p.substring(0, 10)}...` : p}</span>
+                              <span>{Utils.substr(p, 10)}</span>
                             ))}
                             {(node.keywords.length > 6) && (
                             <span className="more-keywords">{`more (${node.keywords.length - 6})`}</span>
@@ -137,8 +138,7 @@ const General = ({
                     className="node-name"
                     rel="noreferrer"
                   >
-                    {!tabsExpand ? (node.link.length > 30 ? `${node.link.substring(0, 30)}...` : node.link)
-                      : node.link}
+                    {!tabsExpand ? Utils.substr(node.link, 30) : node.link}
                   </a>
                 </span>
               ) : 'there is not link'}
@@ -152,9 +152,7 @@ const General = ({
                     <span className="location-value">
                       <div>
                         {!tabsExpand
-                          ? (node.location[0].address.length > 25
-                            ? `${node.location[0].address.substring(0, 25)}...`
-                            : node.location[0].address)
+                          ? Utils.substr(node.location[0].address, 25)
                           : node.location[0].address}
                       </div>
                     </span>

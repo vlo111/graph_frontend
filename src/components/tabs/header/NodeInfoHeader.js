@@ -43,15 +43,11 @@ const NodeInfoHeader = ({
           {!tabsExpand && (
           <>
             <NodeIcon node={node} />
-            <div className="name">
-              {(!singleExpand && !tabsExpand) ? (node.name.length > 10
-                ? `${node.name.substring(0, 10)}...`
-                : node.name) : node.name}
+            <div className="name" title={node.name.length > 10 ? node.name : ''}>
+              {(!singleExpand && !tabsExpand) ? Utils.substr(node.name, 10) : node.name}
             </div>
-            <div className="type">
-              {`Type: ${(!singleExpand && !tabsExpand) ? (node.type.length > 10
-                ? `${node.type.substring(0, 10)}...`
-                : node.type) : node.type}`}
+            <div className="type" title={node.type.length > 10 ? node.type : ''}>
+              {`Type: ${(!singleExpand && !tabsExpand) ? Utils.substr(node.type, 10) : node.type}`}
             </div>
           </>
           )}

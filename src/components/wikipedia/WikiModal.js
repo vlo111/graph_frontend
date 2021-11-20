@@ -190,9 +190,7 @@ https://en.wikipedia.org/wiki/${name}
                       this.state.wikiSearchReturnValues[i].queryResultPageFullURL
                     }
                 >
-                  {this.state.wikiSearchReturnValues[i].queryResultPageFullURL.length > 50
-                    ? `${this.state.wikiSearchReturnValues[i].queryResultPageFullURL.substring(0, 50)}...`
-                    : this.state.wikiSearchReturnValues[i].queryResultPageFullURL}
+                  {Utils.substr(this.state.wikiSearchReturnValues[i].queryResultPageFullURL, 50)}
                 </a>
               </span>
               <p

@@ -18,9 +18,9 @@ import {
   getSingleNodeTabsViewCount,
 } from '../../store/selectors/graphsHistory';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Utils from '../../helpers/Utils';
 
 const GraphUsersInfo = ({ graph, closeModal }) => {
-
   const { info: nodeId } = queryString.parse(window.location.search);
   if (!nodeId) {
     return null;
@@ -164,12 +164,12 @@ const GraphUsersInfo = ({ graph, closeModal }) => {
                             </span>
                             <span className="item ">
                               <Tooltip overlay={history.name} placement="bottom" className="tooltipList">
-                                <span>{history.name.length > 18 ? `${history.name.substring(0, 18)}...` : history.name}</span>
+                                <span>{Utils.substr(history.name, 18)}</span>
                               </Tooltip>
                             </span>
                             <span className="item ">
                               <Tooltip overlay={history.type} placement="bottom" className="tooltipList">
-                                <span>{history.type.length > 18 ? `${history.type.substring(0, 18)}...` : history.type}</span>
+                                <span>{Utils.substr(history.type, 18)}</span>
                               </Tooltip>
                             </span>
                             <span className="item ">

@@ -19,6 +19,7 @@ import Input from '../form/Input';
 import { setLoading } from '../../store/actions/app';
 import { createGraphRequest } from '../../store/actions/graphs';
 import { GRAPH_STATUS } from '../../data/graph';
+import Utils from '../../helpers/Utils';
 
 const LIMIT = 3;
 const PAGE = 1;
@@ -161,7 +162,7 @@ class GraphSettings extends Component {
           <div className="graphNname1">
 
             <span title={singleGraph.title} className="graphNames">
-              {singleGraph.title?.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
+              {Utils.substr(singleGraph.title, 11)}
             </span>
             <span className="carret2">
               <i className="fa fa-sort-down" />
@@ -173,7 +174,7 @@ class GraphSettings extends Component {
             <div className="dropdown">
               <div className="graphname">
                 <span title={singleGraph.title} className="graphNames">
-                  {singleGraph.title.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
+                  {Utils.substr(singleGraph.title, 11)}
                 </span>
                 <Button icon={<EditSvg />} className="EditGraph" onClick={() => this.toggleModal(true)} />
               </div>
@@ -193,7 +194,7 @@ class GraphSettings extends Component {
                 {graphList.map((graph) => (
                   <Link to={`/graphs/update/${graph.id}`}>
                     <div title={graph.title}>
-                      {graph.title.length > 11 ? `${graph.title.substring(0, 11)}...` : graph.title}
+                      {Utils.substr(graph.title, 11)}
                     </div>
                   </Link>
                 ))}
