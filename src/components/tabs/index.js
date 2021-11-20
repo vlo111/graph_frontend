@@ -149,7 +149,9 @@ const Tabs = ({ history, editable }) => {
           setSingleExpand={setSingleExpand}
           setTabsExpand={(tab) => {
             if (tab) {
-              setMode('tabs');
+              if (mode === 'general') {
+                setMode('tabs');
+              }
               setPrevMode(mode);
             } else {
               setMode(prevMode);
