@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactComponent as EditSvg } from '../../../assets/images/icons/edit.svg';
-import { ReactComponent as InfoSvg } from '../../../assets/images/icons/info.svg';
+import { ReactComponent as InfoSvg } from '../../../assets/images/icons/history.svg';
 import CustomFields from '../../../helpers/CustomFields';
 import { toggleNodeModal } from '../../../store/actions/app';
 import NodeImage from './NodeImage';

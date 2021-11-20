@@ -19,7 +19,6 @@ import NodeInfoHeader from './header/NodeInfoHeader';
 import General from './content/General';
 import Tab from './content/Tab';
 import Comment from './content/Comment';
-import { getNodeCommentsRequest } from '../../store/actions/commentNodes';
 
 const getElement = (name) => document.querySelector(name);
 
