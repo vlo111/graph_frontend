@@ -309,7 +309,6 @@
           justify-content: space-between;
           align-items: center;
           padding: 10px 10px;
-          border-bottom: 1px solid $color-query-border;
           height: 58px;
 
           &-text {
@@ -815,23 +814,23 @@
 
     .tab {
       position: fixed;
-      left: calc(50% + 1px);
+      left: calc(50%);
       width: 25%;
       top: 108px;
-      height: 60px;
+      height: 40px;
     }
 
     .comment {
       position: fixed;
       left: 75%;
-      width: calc(25% - 1px);
-      height: 60px;
+      width: calc(25%);
+      height: 40px;
       top: 108px;
     }
 
     &-active:after {
       width: 100%;
-      top: -39px !important;
+      top: -29px !important;
       position: relative;
     }
 
@@ -848,14 +847,52 @@
 
   .tab_list {
     left: 50%;
-    top: 168px;
-    border-left: 1px solid $color-query-border;
+    top: 150px;
     border-right: 1px solid $color-query-border;
     background-color: white;
-    color: $color-comment-text;
+    color: #424242;
+
+    &-content {
+      &::-webkit-scrollbar {
+        background: #B9B4EF;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #5454E2;
+      }
+    }
 
     .tab_list-content {
       margin-bottom: 100px;
+    }
+
+    .tab_list-content-item {
+      &:hover {
+        background-color: #F6F5FF;
+      }
+    }
+
+    .tab_list-content-active {
+      color: #ffffff;
+      background-color: #7166F8;
+
+      &:hover {
+        color: #424242;
+      }
+    }
+
+    .description {
+      border: 1px solid;
+      border-left: none;
+      border-right: none;
+      &:hover {
+        background-color: #F6F5FF;
+      }
+    }
+
+    .tab_list-header {
+      height: 50px;
+      margin: 10px 0;
     }
   }
 
@@ -865,11 +902,41 @@
 
     .general {
       width: 50%;
-      padding: 0 0 0 10px;
-    }
+      padding: 0;
 
-    .general-footer {
-      padding-left: 5px;
+      .general-hider {
+        align-items: center;
+        height: 110px;
+        margin-left: 0;
+
+        &-picture img {
+          height: 65px;
+          width: 65px;
+        }
+
+        &-caption {
+
+          &-nodeInfo {
+
+            > div {
+              height: 65px;
+            }
+
+            .name {
+              font-size: 22px;
+            }
+
+            .type {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+
+      .general-footer {
+        padding-left: 5px;
+        border-right: 1px solid $color-tab-general-border;
+      }
     }
 
     .tab_content {
@@ -882,7 +949,6 @@
 
     .comment {
       width: 50%;
-      border: 1px solid #f5f5fa;
 
       .commentWrite {
         left: calc(50% + 5px);
@@ -899,16 +965,16 @@
     }
 
     .comment-content-wrapper {
-      margin: 65px 0;
+      margin: 65px 80px;
       align-self: center;
     }
   }
 
   .general-hider {
-    border: 1px solid #ebebeb;
+    border: 1px solid $color-tab-general-border;
+    border-left: 0;
     margin-left: 10px;
     padding: 10px;
-    margin-right: -1px;
   }
 
   .tab-header {
@@ -927,7 +993,7 @@
 
   .node-info {
     border: none;
-    border-top: 1px solid #EBEBEB;
+    border-top: 1px solid $color-tab-general-border;
   }
 
   .location-map {
@@ -937,7 +1003,7 @@
 }
 
 .leftLine {
-  border-left: 1px solid #D5D5D5;
+  border-left: 1px solid $color-tab-general-border;
   position: relative;
   padding-left: 15px;
   padding-bottom: 15px;
@@ -950,7 +1016,7 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    border: 1px solid #D5D5D5;
+    border: 1px solid $color-tab-general-border;
     background: inherit;
   }
 }

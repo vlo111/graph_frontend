@@ -11,64 +11,18 @@ import AddComment from './AddComment';
 
 const CommentItem = ({ comment, isReply }) => {
   const userId = useSelector(getId);
-  const [compressComment, setCompressComment] = useState('');
-
-  const moreBtn = '<button class="more-btn">more</button>';
-  const lessBtn = '<button class="less-btn">less</button>';
-
-  useEffect(() => {
-    const commentHtml = document.createElement('div');
-    commentHtml.innerHTML = comment.text;
-
-    if (commentHtml.innerText.length > 60) {
-      let commentText = controlLink(comment.text);
-
-      commentText += `... ${moreBtn}`;
-      setCompressComment(commentText);
-    } else {
-      setCompressComment(comment.text);
-    }
-    window.scrollTo(0, document.body.scrollHeight);
-  }, []);
-
-  const expandText = (ev) => {
-    const { target } = ev;
-
-    if (target.className === 'more-btn') {
-      setCompressComment(`${comment.text.substr(0, comment.text.length - 4)} ${lessBtn}`);
-    } else if (target.className === 'less-btn') {
-      setCompressComment(`${controlLink(comment.text).substr(0, 400)}... ${moreBtn}`);
-    }
-  };
-
-  const controlLink = (commentText) => {
-    let modifiedComment;
-
-    modifiedComment = commentText.substr(0, 400);
-
-    const link = modifiedComment.split('<a href');
-
-    const subComment = link[link.length - 1];
-
-    if (!subComment.includes('</a>')) {
-      modifiedComment = modifiedComment.replace(`<a href${subComment}`, '');
-    }
-
-    return modifiedComment;
-  };
 
   return (
     <div className={`comment-content-wrapper-item ${isReply ? '--reply' : ''}`} key={`comment-${comment.id}`}>
       <div className="owner">
         <Owner
-          setCompressComment={setCompressComment}
           user={comment.user}
           date={moment.utc(comment.createdAt).format('DD.MM.YYYY')}
           comment={comment}
           edit={!isReply}
           remove={userId === comment.user.id}
         />
-        <div className="comment-text" onClick={expandText} dangerouslySetInnerHTML={{ __html: compressComment || comment.text }} />
+        <div className="comment-text" dangerouslySetInnerHTML={{ __html: comment.text }} />
       </div>
     </div>
   );
@@ -77,12 +31,7 @@ const CommentItem = ({ comment, isReply }) => {
 const CommentItems = ({
   graph, node, closeModal, graphComments, tabsExpand,
 }) => {
-  const dispatch = useDispatch();
   const parent = useSelector(getNodeCommentParent);
-
-  useEffect(() => {
-    dispatch(getNodeCommentsRequest({ graphId: graph.id, nodeId: node.id }));
-  }, []);
 
   /* @todo get document elements size
   * 56 graph header height

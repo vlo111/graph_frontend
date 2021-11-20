@@ -7,12 +7,13 @@ import { ReactComponent as ReplySvg } from '../../../assets/images/icons/reply.s
 import { ReactComponent as RemoveSvg } from '../../../assets/images/icons/trash.svg';
 
 const Owner = ({
-  user, date, edit, remove, comment,setCompressComment
+  user, date, edit, remove, comment,
 }) => {
   const ownerStyles = {
     logo: {
       height: '30px',
       width: '30px',
+      marginRight: '5px',
     },
     user_info: {
       display: 'flex',
@@ -37,6 +38,8 @@ const Owner = ({
 
   const dispatch = useDispatch();
 
+  const userName = `${user.firstName} ${user.lastName}`;
+
   return (
     user && (
     <>
@@ -44,11 +47,15 @@ const Owner = ({
         style={ownerStyles.logo}
         className="avatar circle"
         src={user && user.avatar}
-        alt={`${user.firstName} ${user.lastName}`}
+        alt={userName}
       />
       <span style={ownerStyles.user_info}>
         <span style={ownerStyles.user_name}>
-          {`${user.firstName} ${user.lastName}`}
+          {
+            userName && userName.length > 12
+              ? `${userName.substr(0, 12)}... `
+              : userName
+            }
         </span>
         <span style={ownerStyles.user_date}>{date}</span>
       </span>
@@ -73,7 +80,6 @@ const Owner = ({
           icon={<RemoveSvg style={{ height: 17 }} />}
           onClick={() => {
             dispatch(deleteNodeComment(comment.id));
-            setCompressComment('');
           }}
           className="transparent remove"
           title="Remove"

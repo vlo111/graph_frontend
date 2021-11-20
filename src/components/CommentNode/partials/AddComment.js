@@ -50,11 +50,15 @@ const AddComment = ({
             if (text.trim() === '') {
               alert('Text cannot be blank.');
             } else {
-              const comment = document.querySelector('.comment-content-wrapper');
+              if (!isReply) {
+                const comment = document.querySelector('.comment-content-wrapper');
 
-              if (comment) {
-                comment.scrollTo(0, document.querySelector('.comment-content-wrapper')
-                  .scrollHeight);
+                if (comment) {
+                  setTimeout(() => {
+                    comment.scrollTo(0, document.querySelector('.comment-content-wrapper')
+                      .scrollHeight);
+                  }, 100);
+                }
               }
 
               dispatch(createNodeCommentRequest(

@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AddComment from '../../CommentNode/partials/AddComment';
 import CommentItems from '../../CommentNode/partials/CommentItems';
 import { getNodeComments } from '../../../store/selectors/commentNodes';
+import { getNodeCommentsRequest } from '../../../store/actions/commentNodes';
 
 const Comment = ({ node, graph, tabsExpand }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getNodeCommentsRequest({ graphId: graph.id, nodeId: node.id }));
+  }, []);
+
   const graphComments = useSelector(getNodeComments);
 
   return (
