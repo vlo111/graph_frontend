@@ -186,6 +186,7 @@ class AddLinkModal extends Component {
 
             <Select
               label="Relation Type"
+              containerClassName="relType"
               isSearchable
               portal
               placeholder=""

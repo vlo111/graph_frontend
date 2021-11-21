@@ -285,6 +285,7 @@ class AddNodeModal extends Component {
               />
             </div>
             <Input
+              containerClassName="nodeName"
               label="Node Name"
               value={nodeData.name}
               error={errors.name}
