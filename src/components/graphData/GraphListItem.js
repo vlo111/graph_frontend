@@ -20,15 +20,12 @@ class GraphListItem extends Component {
       if (p.id === graph.id) {
         p.title = graph.title;
         p.description = graph.description;
-        p.thumbnail = graph.thumbnail;
+        p.thumbnail = `${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`;
         p.publicState = graph.publicState;
-        p.userImage = graph.userImage;
       }
     });
 
-    this.setState({
-      graphs,
-    });
+    this.setState([graphs]);
   }
 
   render() {
@@ -39,7 +36,7 @@ class GraphListItem extends Component {
     return (
       graphs
         ? graphs.map((graph) => (
-          <article className="graphsItem">
+          <article className="graphsItem" key={graph.id}>
             <div className="public_context">
               {(headerTools === 'home' && graph.publicState) && (
                 <div className="public_icon">

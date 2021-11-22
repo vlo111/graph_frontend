@@ -62,7 +62,7 @@ const SaveAsTampletModal = ({
   );
 };
 SaveAsTampletModal.propTypes = {
-  toggleModal: PropTypes.bool.isRequired,
+  toggleModal: PropTypes.func.isRequired,
   saveGraph: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   requestData: PropTypes.func.isRequired,

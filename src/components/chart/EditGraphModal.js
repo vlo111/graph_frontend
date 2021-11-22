@@ -98,7 +98,7 @@ const EditGraphModal = ({
         ...prevState,
         [path]: value,
       }));
-    };
+    }
   };
   const saveGraph = async (status) => {
     setLoading(true);
@@ -221,7 +221,7 @@ const EditGraphModal = ({
 
 EditGraphModal.propTypes = {
   graph: PropTypes.any.isRequired,
-  toggleModal: PropTypes.object.isRequired,
+  toggleModal: PropTypes.func.isRequired,
   updateGraph: PropTypes.func.isRequired,
 };
 
