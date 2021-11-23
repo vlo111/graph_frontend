@@ -410,8 +410,8 @@ class Api {
     return api.put(`/nodes/update-positions/${graphId}`, { nodes });
   }
 
-  static updateNodeCustomFields(graphId, nodes) {
-    return api.put(`/nodes/update-fields/${graphId}`, { nodes });
+  static updateNodeCustomFields(graphId, tabs) {
+    return api.put(`/nodes/update-fields/${graphId}`, { tabs });
   }
 
   static uploadNodeIcon(graphId, nodeId, nodeIcon) {

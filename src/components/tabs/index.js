@@ -94,7 +94,7 @@ const Tabs = ({ history, editable }) => {
     getElement('.graphControlPanel').style.right = left;
   };
 
-  const updateTabWithFile = async (prevName) => {
+  const updateTabWithFile = async () => {
     for (let i = 0; i < nodeCustomFields.length; i++) {
       const tab = nodeCustomFields[i];
 
@@ -115,12 +115,10 @@ const Tabs = ({ history, editable }) => {
       }
     }
 
-    dispatch(updateNodesCustomFieldsRequest(graphId, [{
+    dispatch(updateNodesCustomFieldsRequest(graphId, {
       id: nodeId,
       customFields: nodeCustomFields,
-      fieldName: activeTab,
-      prevName,
-    }]));
+    }));
   };
 
   if (nodeId !== nodeIdMemo) {
@@ -221,8 +219,8 @@ const Tabs = ({ history, editable }) => {
           node={node}
           fieldName={openAddTab}
           customFields={nodeCustomFields}
-          onClose={(ev, prevName) => {
-            updateTabWithFile(prevName);
+          onClose={() => {
+            updateTabWithFile();
             setOpenAddTab(null);
           }}
           setActiveTab={(tabName) => setActiveTab(tabName)}

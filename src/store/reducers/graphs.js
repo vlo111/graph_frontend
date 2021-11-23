@@ -103,7 +103,7 @@ export default function reducer(state = initialState, action) {
         importData,
       };
     }
-    
+
 
 
     case GET_GRAPHS_SHAREGRAPHS_COUNT.SUCCESS: {
@@ -363,10 +363,10 @@ export default function reducer(state = initialState, action) {
       };
     }
     case UPDATE_NODES_CUSTOM_FIELDS.REQUEST: {
-      const { nodes } = action.payload;
+      const { tabs } = action.payload;
       return {
         ...state,
-        nodeCustomFields: nodes[0].customFields || [],
+        nodeCustomFields: tabs.customFields || {},
       };
     }
     case REMOVE_NODE_CUSTOM_FIELD_KEY: {
