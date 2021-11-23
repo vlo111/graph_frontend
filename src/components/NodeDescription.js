@@ -82,9 +82,9 @@ class NodeDescription extends Component {
     }
     const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
     let { show } = this.state;
-    const contexHeight = show === 'selectSquare' ? 295 : 217;
-    const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y;
-    const left = window.innerWidth - x < 70 ? window.innerWidth - 350 : x;
+    const contexHeight = show === 'selectSquare' ? 320 : 170;
+    const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y + 25 ;
+    const left = window.innerWidth - x < y  ? window.innerWidth - 320 : x +55;
 
     const nodeLinks = Chart.getNodeLinks(node.id, 'all');
     return (
