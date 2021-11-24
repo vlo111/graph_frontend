@@ -22,8 +22,12 @@ class ResetPassword extends Component {
     this.state = {
       requestData: {
         password: '',
+        passwordConfirm: '',
       },
-      errors: {},
+      errors: {
+        password: '',
+        passwordConfirm: '',
+      },
     };
   }
 
@@ -77,11 +81,11 @@ class ResetPassword extends Component {
                 placeholder="Confirm password"
                 value={requestData.passwordConfirm}
                 error={errors.passwordConfirm}
-                onChange={this.handleChange}
+                onChangeText={this.handleTextChange}
                 autoComplete="off"
               />
 
-              <Button disabled={requestData.password.length < 5} type="submit" className="submit" color="blue">
+            <Button disabled={requestData.password.length >= requestData.passwordConfirm.length  } type="submit" className="submit" color="blue">
                 Reset
               </Button>
             </form>
