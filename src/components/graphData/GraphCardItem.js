@@ -12,7 +12,7 @@ class GraphCardItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
     graphsList: PropTypes.array.isRequired,
-    headerTools: PropTypes.object.isRequired,
+    headerTools: PropTypes.string.isRequired,
     currentUserId: PropTypes.string.isRequired,
   }
 
@@ -35,18 +35,19 @@ class GraphCardItem extends Component {
     document.getElementsByClassName(`graph-card_${id}`)[0].style.display = 'none';
   }
 
-  updateGraph = (graph) => {
+  updateGraph = async (graph) => {
     let { graphs } = this.props;
     graphs = graphs.map((p) => {
       if (p.id === graph.id) {
         p.title = graph.title;
         p.description = graph.description;
-        p.thumbnail = graph.thumbnail;
+        p.thumbnail = `${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`;
+        p.publicState = graph.publicState;
       }
       return p;
     });
 
-    this.setState({ graphs });
+    this.setState([graphs]);
   }
 
   render() {
@@ -62,7 +63,7 @@ class GraphCardItem extends Component {
             </div>
           ) : null}
         {graphs.map((graph) => (
-          <article className="graphs">
+          <article className="graphs" key={graph.id}>
             <div className="top">
               <div className="infoContent">
                 <img

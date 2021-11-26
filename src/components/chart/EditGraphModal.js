@@ -1,316 +1,228 @@
-import React, { Component } from 'react';
-import _ from 'lodash';
-import Modal from 'react-modal';
-import { connect } from 'react-redux';
+import React, {
+  useState, useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import memoizeOne from 'memoize-one';
-import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import Switch from 'rc-switch';
+import Modal from 'react-modal';
+import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
+import queryString from 'query-string';
 import Button from '../form/Button';
-import Chart from '../../Chart';
 import Input from '../form/Input';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import ImageUploader from '../ImageUploader';
+import ChartUtils from '../../helpers/ChartUtils';
+import Api from '../../Api';
 import {
   getSingleGraphRequest,
-  updateGraphRequest,
   updateGraphThumbnailRequest,
+  updateGraphRequest,
   deleteGraphRequest,
   getGraphsListRequest,
 } from '../../store/actions/graphs';
 import {
   setLoading,
 } from '../../store/actions/app';
-import ChartUtils from '../../helpers/ChartUtils';
-import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-import 'rc-switch/assets/index.css';
-import ImageUploader from '../ImageUploader';
-import Api from '../../Api';
+import Chart from '../../Chart';
 
-class EditGraphModal extends Component {
-  static propTypes = {
-    getSingleGraphRequest: PropTypes.func.isRequired,
-    updateGraphThumbnailRequest: PropTypes.func.isRequired,
-    updateGraphRequest: PropTypes.func.isRequired,
-    match: PropTypes.object.isRequired,
-    graph: PropTypes.object.isRequired,
-    singleGraph: PropTypes.object.isRequired,
-    toggleModal: PropTypes.func.isRequired,
-    setLoading: PropTypes.func.isRequired,
-    deleteGraphRequest: PropTypes.func.isRequired,
-    deleteGraph: PropTypes.func.isRequired,
-    getGraphsListRequest: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-  }
+const EditGraphModal = ({
+  toggleModal, graph, updateGraph,
+}) => {
+  const { defaultImage } = graph.defaultImage;
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [requestData, setRequestData] = useState({
+    title: graph.title,
+    description: graph.description,
+    status: 'active',
+    publicState: graph.publicState || false,
+    userImage: graph.defaultImage || false,
+  });
+  const [image, setImage] = useState('');
 
-  initValues = memoizeOne((singleGraph) => {
-    const {
-      title, description, status, publicState, defaultImage,
-    } = singleGraph;
-    const { image } = this.state;
-    this.setState({
-      requestData: {
-        title,
-        description,
-        publicState,
-        status: status === 'template' ? 'active' : status,
-        userImage: defaultImage,
-      },
-      image: image || '',
-    });
-  })
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      requestData: {
-        title: '',
-        description: '',
-        status: 'active',
-        publicState: false,
-        disabled: false,
-        userImage: false,
-      },
-    };
-  }
-
-  async componentDidMount() {
-    const { match: { params: { graphId } }, singleGraph: { defaultImage, publicState }, singleGraph } = this.props;
+  useEffect(async () => {
+    const graphId = graph.id;
+    const { publicState } = graph.publicState;
     const svg = ChartUtils.getChartSvg();
     if (!defaultImage && graphId && !publicState) {
-      if (!(singleGraph?.nodesPartial?.length > 500)) {
-        await this.props.updateGraphThumbnailRequest(graphId, svg, 'small');
-        this.props.getSingleGraphRequest(graphId);
+      if (!(graph?.nodesPartial?.length > 500)) {
+        await updateGraphThumbnailRequest(graphId, svg, 'small');
+        getSingleGraphRequest(graphId);
       }
     }
+  }, [graph]);
+
+  async function deleteGraph(graphId) {
+    const { page = 1, s: searchParam } = queryString.parse(window.location.search);
+
+    //  select data from localStorage
+    const order = JSON.parse(localStorage.getItem('/')) || 'newest';
+    try {
+      if (graphId) {
+        await dispatch(deleteGraphRequest(graph.id));
+
+        await dispatch(getGraphsListRequest(page, { s: searchParam }));
+      } else if (window.confirm('Are you sure?')) {
+        await dispatch(deleteGraphRequest(graph.id));
+        toast.info('Successfully deleted');
+
+        await dispatch(getGraphsListRequest(page, { s: searchParam, filter: order }));
+        history.push('/');
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
-
-  handleChange = async (path, value) => {
-    let { singleGraph: { id: graphId }, graph } = this.props;
-    const { singleGraph } = this.props;
-    if (graphId === undefined) {
-      graphId = graph.id;
-    }
-    if (!graph && singleGraph) {
-      graph = singleGraph;
-    }
-    if (!graph) {
-      toast.error('Something went wrong');
-    }
-    if (!graph && singleGraph) {
-      graph = singleGraph;
-    }
-    if (!graph) {
-      toast.error('Something went wrong');
-    }
-    const { requestData } = this.state;
-
+  const handleChange = async (path, value) => {
     if (path === 'image') {
       if (value === '') {
         const svg = graph?.nodesPartial?.length < 500 ? ChartUtils.getChartSvg() : '';
-        _.set(requestData, 'userImage', false);
-        const savedImageRequest = await Api.updateGraphThumbnail(graphId, svg, 'small', 'tmp');
-        const image = `${savedImageRequest?.data?.thumbUrl}?t=${moment(graph.updatedAt).unix()}`;
-        this.setState({ [path]: image });
+        setRequestData((prevState) => ({
+          ...prevState,
+          userImage: false,
+        }));
+        const savedImageRequest = await Api.updateGraphThumbnail(graph.id, svg, 'small', 'tmp');
+        const images = `${savedImageRequest?.data?.thumbUrl}?t=${moment(graph.updatedAt).unix()}`;
+        setImage(images);
       } else {
-        this.setState({ [path]: value });
-        _.set(requestData, 'userImage', true);
+        setImage(value);
+        setRequestData((prevState) => ({
+          ...prevState,
+          [path]: value,
+        }));
       }
     } else {
-      _.set(requestData, path, value);
-      this.setState({ requestData });
+      setRequestData((prevState) => ({
+        ...prevState,
+        [path]: value,
+      }));
     }
-  }
-
-  onChange = (value) => {
-    const { requestData } = this.state;
-    _.set(requestData, 'publicState', value);
-    this.setState({ requestData });
-  }
-
-  saveGraph = async (status) => {
-    let { image } = this.state;
-    const { requestData } = this.state;
-    const { graph, location: { pathname } } = this.props;
-    let { singleGraph } = this.props;
-
-    if (graph) {
-      singleGraph = graph;
-    }
-    const { id: graphId } = singleGraph;
-
-    this.props.setLoading(true);
-    const labels = Chart.getLabels();
+  };
+  const saveGraph = async (status) => {
+    setLoading(true);
     const svg = ChartUtils.getChartSvg();
+    const labels = Chart.getLabels();
+    const { id: graphId } = graph;
 
     if (image) {
       let userEdited = true;
-      if (typeof (image) === 'string' && singleGraph?.nodesPartial?.length < 500) {
-        image = svg;
+      if (typeof (image) === 'string' && graph?.nodesPartial?.length < 500) {
+        setRequestData(svg);
         userEdited = false;
       } else if (typeof (image) !== 'object') {
         userEdited = false;
-        image = '';
+        setRequestData('');
       }
-      await this.props.updateGraphThumbnailRequest(graphId, image, 'medium', userEdited);
+      await dispatch(updateGraphThumbnailRequest(graphId, image, 'medium', userEdited));
     }
 
-    const { payload: { data } } = await this.props.updateGraphRequest(graphId, {
+    const { payload: { data } } = await dispatch(updateGraphRequest(graphId, {
       ...requestData,
       labels,
       status,
       svg,
-    });
-
+    }));
     const resGraphId = data.graphId;
-    if (singleGraph && resGraphId) {
+    if (graph) {
       toast.info('Successfully saved');
-      const { payload: { data: { graph: newGraph } } } = (await this.props.getSingleGraphRequest(resGraphId));
-      this.props.updateGraph && this.props.updateGraph(newGraph);
+      const { payload: { data: { graph: newGraph } } } = (await dispatch(getSingleGraphRequest(resGraphId)));
+      (updateGraph && updateGraph(newGraph));
     } else if (!resGraphId) {
       toast.error('Something went wrong. Please try again');
     }
-    if (pathname === '/') {
-      const page = 1;
-      const order = 'newest';
-      this.props.getGraphsListRequest(page, { filter: order });
-    }
+    setLoading(false);
+    toggleModal(false);
+  };
+  return (
+    <Modal
+      className="ghModal ghModalEdit"
+      overlayClassName="ghModalOverlay"
+      isOpen
+      onRequestClose={() => toggleModal(false)}
+    >
+      <Button
+        color="transparent"
+        className="close"
+        icon={<CloseSvg />}
+        onClick={() => toggleModal(false)}
+      />
+      <div className="form">
+        <div>
+          <ImageUploader
+            className="thumbnailSave"
+            value={image || `${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
+            onChange={(val) => handleChange('image', val)}
+            userImage={requestData.userImage}
+          />
 
-    this.props.setLoading(false);
-    this.props.toggleModal(false);
-  }
-
-  async deleteGraph(graphId) {
-    if (window.confirm('Are you sure?')) { // change this to confirmation modal
-      await this.props.deleteGraphRequest(graphId);
-
-      toast.info('Successfully deleted');
-
-      if (this.props.deleteGraph) {
-        this.props.deleteGraph(graphId);
-        this.props.toggleModal(false);
-      } else {
-        this.props.history.push('/');
-      }
-    }
-  }
-
-  render() {
-    const { requestData, disabled, image } = this.state;
-    let { singleGraph } = this.props;
-    const { graph } = this.props;
-
-    if (graph) {
-      singleGraph = graph;
-    }
-
-    const { id: graphId } = singleGraph;
-
-    this.initValues(singleGraph);
-    const { publicState } = singleGraph;
-    return (
-      <Modal
-        className="ghModal ghModalEdit"
-        overlayClassName="ghModalOverlay"
-        isOpen
-        onRequestClose={() => this.props.toggleModal(false)}
-      >
-        <Button
-          color="transparent"
-          className="close"
-          icon={<CloseSvg />}
-          onClick={() => this.props.toggleModal(false)}
-        />
-        <div className="form">
-          <div>
-            <ImageUploader
-              className="thumbnailSave"
-              value={image || `${singleGraph.thumbnail}?t=${moment(singleGraph.updatedAt).unix()}`}
-              onChange={(val) => this.handleChange('image', val)}
-              userImage={requestData.userImage}
-            />
-
-          </div>
-          <div className="impData">
-            <Input
-              className="graphInputName"
-              value={requestData.title}
-              onChangeText={(v) => this.handleChange('title', v)}
-            />
-            <label className="switchLabel">
-              <span className="switchPublic">Publish graph</span>
-              <div>
-                <Switch
-                  onChange={this.onChange}
-                  disabled={disabled}
-                  defaultChecked={publicState}
-                />
-              </div>
-            </label>
-            <div className="infoGraph">
-              <label>Owner</label>
-              <span className="item1">{`${singleGraph.user.firstName} ${singleGraph.user.lastName}`}</span>
+        </div>
+        <div className="impData">
+          <Input
+            className="graphInputName"
+            value={requestData.title}
+            onChangeText={(v) => handleChange('title', v)}
+          />
+          <label className="switchLabel">
+            <span className="switchPublic">Publish graph</span>
+            <div>
+              <Switch
+                checked={requestData.publicState}
+                onChange={(v) => handleChange('publicState', v)}
+              />
             </div>
-            <div className="infoGraph">
-              <label>Created</label>
-              <span className="item2">{moment(singleGraph.createdAt).format('YYYY.MM.DD')}</span>
-            </div>
-            <div className="infoGraph">
-              <label>Last modfied</label>
-              <span className="item3">{moment(singleGraph.updatedAt).format('YYYY.MM.DD hh:mm')}</span>
-            </div>
+          </label>
+          <div className="infoGraph">
+            <label>Owner</label>
+            <span className="item1">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
           </div>
-          <div className="textareaEdit">
-            <Input
-              placeholder="Description"
-              className="textarea"
-              value={requestData.description}
-              textArea
-              onChangeText={(v) => this.handleChange('description', v)}
-            />
+          <div className="infoGraph">
+            <label>Created</label>
+            <span className="item2">{moment(graph.createdAt).format('YYYY.MM.DD')}</span>
           </div>
-
-          <div className="buttonsSave">
-            <>
-              <Button
-                onClick={() => this.deleteGraph(graphId)}
-                className="btn-delete"
-              >
-                Delete
-              </Button>
-              <Button
-                className="btn-classic"
-                onClick={() => this.saveGraph(requestData.status)}
-              >
-                {' '}
-                Save
-                {' '}
-              </Button>
-            </>
+          <div className="infoGraph">
+            <label>Last modfied</label>
+            <span className="item3">{moment(graph.updatedAt).format('YYYY.MM.DD hh:mm')}</span>
           </div>
         </div>
-      </Modal>
-    );
-  }
-}
+        <div className="textareaEdit">
+          <Input
+            placeholder="Description"
+            className="textarea"
+            value={requestData.description}
+            textArea
+            onChangeText={(v) => handleChange('description', v)}
+          />
+        </div>
 
-const mapStateToProps = (state) => ({
-  singleGraph: state.graphs.singleGraph,
-});
-
-const mapDispatchToProps = {
-  updateGraphRequest,
-  updateGraphThumbnailRequest,
-  getSingleGraphRequest,
-  setLoading,
-  deleteGraphRequest,
-  getGraphsListRequest,
+        <div className="buttonsSave">
+          <>
+            <Button
+              onClick={() => deleteGraph(false)}
+              className="btn-delete"
+            >
+              Delete
+            </Button>
+            <Button
+              className="btn-classic"
+              onClick={() => saveGraph(requestData.status)}
+            >
+              {' '}
+              Save
+              {' '}
+            </Button>
+          </>
+        </div>
+      </div>
+    </Modal>
+  );
 };
 
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(EditGraphModal);
+EditGraphModal.propTypes = {
+  graph: PropTypes.any.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+  updateGraph: PropTypes.func.isRequired,
+};
 
-export default withRouter(Container);
+export default React.memo(EditGraphModal);

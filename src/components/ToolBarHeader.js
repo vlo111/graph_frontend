@@ -144,7 +144,7 @@ class ToolBarHeader extends Component {
             </li>
             <li>
               {updateLocation ? (
-                <GraphSettings />
+                <GraphSettings singleGraph={singleGraph} />
               ) : null}
               {!updateLocation && (
               <span className="graphNames">
