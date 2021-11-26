@@ -11,6 +11,7 @@ class ImageUploader extends Component {
     value: PropTypes.any.isRequired,
     email: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+    userImage: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
