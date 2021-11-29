@@ -22,8 +22,12 @@ class ResetPassword extends Component {
     this.state = {
       requestData: {
         password: '',
+        passwordConfirm: '',
       },
-      errors: {},
+      errors: {
+        password: '',
+        passwordConfirm: '',
+      },
     };
   }
 
@@ -37,7 +41,7 @@ class ResetPassword extends Component {
     ev.preventDefault();
     const { requestData } = this.state;
     const { token } = queryString.parse(window.location.search);
-    const { payload } = await this.props.resetPasswordRequest(token, requestData.password);
+    const { payload } = await this.props.resetPasswordRequest(token, requestData.password && requestData.passwordConfirm);
     const { data = {} } = payload;
     if (data.status !== 'ok') {
       toast.dismiss(this.toast);
@@ -76,12 +80,12 @@ class ResetPassword extends Component {
                 name="passwordConfirm"
                 placeholder="Confirm password"
                 value={requestData.passwordConfirm}
-                error={errors.passwordConfirm}
-                onChange={this.handleChange}
+                error={errors.password}
+                onChangeText={this.handleTextChange}
                 autoComplete="off"
               />
 
-              <Button disabled={requestData.password.length < 5} type="submit" className="submit" color="blue">
+              <Button type="submit" className="submit" color="blue">
                 Reset
               </Button>
             </form>

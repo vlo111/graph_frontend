@@ -4330,6 +4330,7 @@ body .gh__menu {
 
     .content {
       margin-left: 0;
+      display: flex;
     }
   }
 }
@@ -4742,7 +4743,7 @@ body .gh__menu {
   h3 {
     text-align: center;
     font: normal normal 600 36px/49px Open Sans;
-    background: -webkit-linear-gradient(#F07760, #7166F8);
+    background: linear-gradient(145.22deg, rgba(240, 119, 96, 0.62) -11.83%, rgba(113, 102, 248, 0.62) 114.34%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
