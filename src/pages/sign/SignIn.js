@@ -83,6 +83,7 @@ class Login extends Component {
                 <h4>Sign in </h4>
               </div>
               <Input
+                data-testid="email"
                 name="email"
                 placeholder="Email address"
                 value={requestData.email}
@@ -90,6 +91,7 @@ class Login extends Component {
                 autoComplete="off"
               />
               <PasswordInput
+                data-testid="password"
                 name="password"
                 placeholder="Password"
                 value={requestData.password}

@@ -2,9 +2,13 @@
   "name": "graphs",
   "version": "0.1.2",
   "private": true,
+  "jest": {
+    "transformIgnorePatterns": [
+      "src/node_modules/(?!@sapper)"
+    ]
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
-    "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
@@ -91,6 +95,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.15.1",
     "babel-eslint": "^10.1.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-plugin-import": "^2.20.2",
