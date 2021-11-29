@@ -1402,6 +1402,40 @@ p {
         .rc-switch {
           position: relative;
           left: 42px;
+          display: inline-block;
+          box-sizing: border-box;
+          width: 44px;
+          height: 22px;
+          line-height: 20px;
+          padding: 0;
+          vertical-align: middle;
+          border-radius: 20px 20px;
+          border: 1px solid #ccc;
+          background-color: #ccc;
+          cursor: pointer;
+          transition: all .3s cubic-bezier(.35,0,.25,1);
+
+          &::after{
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 2px;
+            top: 1px;
+            border-radius: 50% 50%;
+            background-color: #fff;
+            content: " ";
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgb(0 0 0 / 26%);
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            transition: left .3s cubic-bezier(.35,0,.25,1);
+            -webkit-animation-timing-function: cubic-bezier(.35,0,.25,1);
+            animation-timing-function: cubic-bezier(.35,0,.25,1);
+            -webkit-animation-duration: .3s;
+            animation-duration: .3s;
+            -webkit-animation-name: rcSwitchOff;
+            animation-name: rcSwitchOff;
+          }
         }
       }
 
@@ -4242,6 +4276,7 @@ body .gh__menu {
 
     .content {
       margin-left: 0;
+      display: flex;
     }
   }
 }
@@ -4469,13 +4504,15 @@ body .gh__menu {
     width: 15px;
     height: 15px;
     bottom: 10px;
-    left: calc(50% - 7.5px);
-    fill: $color-main2;
-    z-index: 2;
+    left: calc(50% - 7.5px); 
+    z-index: 2000;
     cursor: pointer;
     opacity: 0;
     transition: all 500ms;
     cursor: pointer;
+     path {
+      fill: red;
+     }
   }
 }
 
@@ -4652,7 +4689,7 @@ body .gh__menu {
   h3 {
     text-align: center;
     font: normal normal 600 36px/49px Open Sans;
-    background: -webkit-linear-gradient(#F07760, #7166F8);
+    background: linear-gradient(145.22deg, rgba(240, 119, 96, 0.62) -11.83%, rgba(113, 102, 248, 0.62) 114.34%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -7508,6 +7545,16 @@ img.preview-scaled {
     width: 240px;
     box-shadow: 4px 0 25px $color-main-shadow;
 
+    &:after {
+      content: " ";
+      position: absolute;
+      right: 110px;
+      top: -8px;
+      border-top: none;
+      border-right: 8px solid transparent;
+      border-left: 8px solid transparent;
+      border-bottom: 8px solid $color-white;
+    }
     .ghFormField {
       width: auto;
 
@@ -7653,8 +7700,11 @@ img.preview-scaled {
 }
 
 .rc-switch-checked {
-  border: 1px solid $color-main;
-  background-color: $color-main;
+  border: 1px solid $color-main !important;
+  background-color: $color-main !important;
+  &::after{
+    left: 22px !important;
+  }
 }
 
 .logoWrapper {
