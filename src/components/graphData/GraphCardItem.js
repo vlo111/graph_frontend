@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import GraphListFooter from './GraphListFooter';
 import GraphDashboardSubMnus from './GraphListHeader';
 import { ReactComponent as PlusSvg } from '../../assets/images/icons/plusGraph.svg';
+import Utils from '../../helpers/Utils';
 
 class GraphCardItem extends Component {
   static propTypes = {
@@ -89,14 +90,14 @@ class GraphCardItem extends Component {
               <Tooltip overlay={graph.title} placement="bottom">
                 <h3>
                   {' '}
-                  {graph.title.length > 23 ? `${graph.title.substring(0, 23)}...` : graph.title}
+                  {Utils.substr(graph.title, 23)}
                 </h3>
               </Tooltip>
               <div className="descriptionGraph">
                 <Tooltip overlay={graph.description} placement="bottom">
                   <span>
                     {' '}
-                    {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
+                    {Utils.substr(graph.description, 40)}
                   </span>
                 </Tooltip>
               </div>

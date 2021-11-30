@@ -62,6 +62,8 @@ const Tabs = ({ history, editable }) => {
 
   const [mode, setMode] = useState('general');
 
+  const [prevMode, setPrevMode] = useState('');
+
   const [activeTab, setActiveTab] = useState('_description');
 
   const [nodeIdMemo, setNodeIdMemo] = useState('');
@@ -74,20 +76,18 @@ const Tabs = ({ history, editable }) => {
 
   const { connectedNodes } = getGroupedConnections(node.id);
 
-  useEffect(() => {
-    dispatch(getNodeCustomFieldsRequest(graphId, nodeId));
+  const { id: graphId, title } = singleGraph;
 
+  useEffect(() => {
     if (activeTab !== '_description') updateTabWithFile();
   }, []);
-
-  const { id: graphId, title } = singleGraph;
 
   const moveAutoPlay = () => {
     let left;
 
     if (mode !== 'tabs') {
-      left = '460px';
-    } else left = '660px';
+      left = '360px';
+    } else left = '460px';
 
     // move autoplay right
     getElement('#autoPlay').style.right = left;
@@ -148,7 +148,14 @@ const Tabs = ({ history, editable }) => {
           history={history}
           setSingleExpand={setSingleExpand}
           setTabsExpand={(tab) => {
-            setMode('tabs');
+            if (tab) {
+              if (mode === 'general') {
+                setMode('tabs');
+              }
+              setPrevMode(mode);
+            } else {
+              setMode(prevMode);
+            }
             setTabsExpand(tab);
           }}
           tabsExpand={tabsExpand}
@@ -185,6 +192,7 @@ const Tabs = ({ history, editable }) => {
               node={node}
               tabs={nodeCustomFields}
               connectedNodes={connectedNodes}
+              tabsExpand={tabsExpand}
             />
             )}
             {mode === 'tabs'
@@ -203,7 +211,7 @@ const Tabs = ({ history, editable }) => {
             )}
             {mode === 'comments'
             && (
-            <Comment graph={singleGraph} node={node} />
+            <Comment graph={singleGraph} node={node} tabsExpand={tabsExpand} />
             )}
           </div>
         </div>

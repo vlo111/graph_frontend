@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`html elements displayed correctly should be match sign in button 1`] = `
+<button
+  className="ghButton submit orange alt"
+>
+  Sign In
+</button>
+`;
+
+exports[`html elements displayed correctly should be match sign in button 2`] = `
+<div
+  className="ghFormField ghInput"
+>
+  <input
+    placeholder="Email address"
+  />
+</div>
+`;
+
+exports[`html elements displayed correctly should be match sign in button 3`] = `
+<div
+  className="ghFormFieldPassword   ghFormField ghInput"
+>
+  <span
+    className="icon "
+  >
+    <svg
+      width={14}
+    >
+      eye.svg
+    </svg>
+  </span>
+  <input
+    placeholder="Password"
+    type="password"
+  />
+</div>
+`;
+
+exports[`html elements displayed correctly should be match sign in button 4`] = `
+<a
+  className="forgotPassword"
+>
+  Forgot password?
+</a>
+`;
+
+exports[`html elements displayed correctly should be match sign in button 5`] = `
+<svg
+  className="logo white"
+>
+  araks_logo.svg
+</svg>
+`;

@@ -17,7 +17,7 @@
     background-color: white;
     border-radius: 3px;
     font-size: 14px;
-    border: 1px solid $color-arrow-border;
+    box-shadow: 4px 0 25px $color-main-shadow;
     transform-origin: top center;
     margin-left: -100px;
 
@@ -202,9 +202,9 @@
         aspect-ratio: auto 32 / 32;
         width: 32px;
         border-radius: 50px;
-        border: 1px solid #FFFFFF;
+        border: 2px solid #FFFFFF;
         box-sizing: border-box;
-        filter: drop-shadow(2px 0px 6px rgba(0, 0, 0, 0.25));
+        box-shadow: 4px 0 25px #343a4024;
       }
     }
   }

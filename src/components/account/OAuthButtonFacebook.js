@@ -56,9 +56,8 @@ class OAuthButtonFacebook extends Component {
         <Helmet>
           <script async defer src="https://connect.facebook.net/en_US/sdk.js" crossOrigin="anonymous" />
         </Helmet>
-        <button type="button" className="button facebook" onClick={this.handleFacebookClick}>
+        <button data-testid="facebook" type="button" className="button facebook" onClick={this.handleFacebookClick}>
           <img src={fbImg} alt="Facebook" />
-          <span>Facebook</span>
         </button>
       </>
     );

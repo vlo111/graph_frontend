@@ -10,7 +10,6 @@ import { ReactComponent as NodeShortenTabSvg } from '../../../assets/images/icon
 import ModalConfirmation from '../../../helpers/ModalConfirmation';
 import { updateNodesCustomFieldsRequest } from '../../../store/actions/nodes';
 import { getNodeCustomFieldsRequest } from '../../../store/actions/graphs';
-import Utils from '../../../helpers/Utils';
 
 const getElement = (name) => document.querySelector(name);
 
@@ -41,20 +40,23 @@ const Tab = ({
   const noTab = <div className="tab_content-description-nodata">you have no data yet</div>;
 
   const editElement = (
-    <Button
-      icon={<EditSvg />}
-      title="Edit"
+    <button
+      title="edit"
+      className="tab-edit"
       onClick={() => setOpenAddTab(name)}
-    />
+    >
+      <EditSvg />
+    </button>
   );
 
   const addElement = (
-    <Button
-      icon={<CloseSvg />}
+    <button
       className="add"
       title="Add"
       onClick={() => setOpenAddTab(name)}
-    />
+    >
+      <CloseSvg />
+    </button>
   );
 
   const expandHandle = (ev) => {
@@ -94,10 +96,6 @@ const Tab = ({
   };
 
   useEffect(() => {
-    dispatch(getNodeCustomFieldsRequest(graphId, node.id));
-  }, []);
-
-  useEffect(() => {
     if (!expand) expandNode(true);
   }, [expand]);
 
@@ -107,15 +105,14 @@ const Tab = ({
 
     const enableEffect = () => {
       body.className = body.className.replace('node_expand', '');
-
-      tabElement.style.width = '450px';
+      tabElement.style.width = '350px';
     };
 
     if (enable) {
       enableEffect();
     } else if (!expand) {
       body.className += ' node_expand';
-      Utils.sleep(150).then(() => tabElement.style.width = 'calc(100% - 200px)');
+      tabElement.style.width = 'calc(100% - 180px)';
     } else {
       enableEffect();
     }
@@ -128,23 +125,26 @@ const Tab = ({
         <div className="tab_content-header-icons">
           <>
             {!tabsExpand && (
-            <Button
-              className="expand"
-              icon={expand ? <NodeExpandTabSvg /> : <NodeShortenTabSvg />}
-              title="expand"
-              onClick={expandHandle}
-            />
+              <button
+                className="expand"
+                title="expand"
+                onClick={expandHandle}
+              >
+                {expand ? <NodeExpandTabSvg /> : <NodeShortenTabSvg />}
+              </button>
             )}
             {editable && editOrAdd}
             {editable && (
             <>
               {name !== '_description'
               && (
-              <Button
-                icon={<DeleteSvg />}
+              <button
+                className="tab-delete"
                 title="Delete"
                 onClick={() => setShowConfirmModal(true)}
-              />
+              >
+                <DeleteSvg />
+              </button>
               )}
             </>
             )}

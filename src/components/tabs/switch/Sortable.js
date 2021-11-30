@@ -25,15 +25,16 @@ class Sortable extends Component {
 
       const { tabsExpand } = this.props;
 
-      /* @todo get document elements size
-        * 56 graph header height
-        * 55 description with margin
-        * 100 - add tab block
-        * 30 - tab header padding
-        * 20 - padding from button
+      /* @todo get document elements height
+        * 56  - graph header
+        * 50  - tab top
+        * 70  - add tab with margin
+        * 40  - switch tab
+        * 50 - description
+        * 20  - padding from button
       */
 
-      let height = window.innerHeight - 56 - 50 - 100 - 20;
+      let height = window.innerHeight - 56 - 50 - 70 - 40 - 50 - 20;
 
       if (tabsExpand) {
         height -= 30;

@@ -16,6 +16,7 @@ import Chart from '../../Chart';
 import { ReactComponent as DeleteSvg } from '../../assets/images/icons/delete.svg';
 import { ReactComponent as QuerySvg } from '../../assets/images/icons/query.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Utils from '../../helpers/Utils';
 
 const Queries = ({ graphId, closeModal }) => {
   const dispatch = useDispatch();
@@ -76,10 +77,7 @@ const Queries = ({ graphId, closeModal }) => {
                   onClick={() => showQueryData(item.id)}
                 />
                 <div title={item.title} className="name" onClick={() => showQueryData(item.id)}>
-                  {item.title && item.title.length > 16
-                    ? `${item.title.substr(0, 16)}... `
-                    : item.title}
-
+                  {Utils.substr(item.title, 16)}
                 </div>
               </div>
 

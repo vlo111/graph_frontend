@@ -1,6 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import _ from 'lodash';
+import Utils from '../../helpers/Utils';
 
 const MAX_SIZE = 3145728;
 
@@ -72,7 +73,7 @@ class FileUpload extends React.Component {
               title={file.name}
               key={file.name}
             >
-              {file.name.length > 10 ? `${file.name.substring(0, 10)}...` : file.name}
+              {Utils.substr(file.name, 10)}
             </p>
           ));
         }

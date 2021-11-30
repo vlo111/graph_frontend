@@ -40,25 +40,27 @@ const NodeInfoHeader = ({
     <div className="node-info">
       <div className="node-info-container">
         <div className="node">
-          <NodeIcon node={node} />
-          <div className="name">
-            {!singleExpand ? (node.name.length > 15
-              ? `${node.name.substring(0, 15)}...`
-              : node.name) : node.name}
-          </div>
-          <div className="type">
-            {`Type: ${!singleExpand ? (node.type.length > 15
-              ? `${node.type.substring(0, 15)}...`
-              : node.type) : node.name}`}
-          </div>
+          {!tabsExpand && (
+          <>
+            <NodeIcon node={node} />
+            <div className="name" title={node.name.length > 10 ? node.name : ''}>
+              {(!singleExpand && !tabsExpand) ? Utils.substr(node.name, 10) : node.name}
+            </div>
+            <div className="type" title={node.type.length > 10 ? node.type : ''}>
+              {`Type: ${(!singleExpand && !tabsExpand) ? Utils.substr(node.type, 10) : node.type}`}
+            </div>
+          </>
+          )}
+
         </div>
         <div className="tab-close">
           {!singleExpand && (
-          <Button
-            icon={<ExpandSvg />}
-            title="expand"
-            onClick={expandTabs}
-          />
+            <button
+              title="expand"
+              onClick={expandTabs}
+            >
+              <ExpandSvg />
+            </button>
           )}
           <ExportNodeTabs
             node={node}
@@ -68,11 +70,12 @@ const NodeInfoHeader = ({
             title={title}
             name="name"
           />
-          <Button
-            icon={<CloseSvg />}
+          <button
             className="clear"
             onClick={closeNodeInfo}
-          />
+          >
+            <CloseSvg />
+          </button>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import Sortable from './Sortable';
 import { updateNodesCustomFieldsRequest } from '../../../store/actions/nodes';
+import Utils from '../../../helpers/Utils';
 
 const SwitchTab = ({
   nodeCustomFields, setActiveTab, activeTab, setOpenAddTab, node, editable, graphId, tabsExpand,
@@ -55,7 +56,7 @@ const SwitchTab = ({
                 className={`tab_list-content-item ${activeTab === p.value.name ? 'tab_list-content-active' : ''}`}
                 onMouseDown={() => setActiveTab(p.value.name)}
               >
-                {p.value.name.length > 15 ? `${p.value.name.substring(0, 15)} ...` : p.value.name}
+                {Utils.substr(p.value.name, 12)}
               </div>
             </>
           )}

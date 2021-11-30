@@ -6,6 +6,7 @@ import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
 import NodeOfConnection from '../tabs/content/NodeOfConnection';
+import Utils from '../../helpers/Utils';
 
 class ExportNode extends Component {
   static propTypes = {
@@ -78,9 +79,7 @@ class ExportNode extends Component {
           </div>
           <div className="footer-link">
             <a title={node.link} target="_blank" href={node.link} rel="noreferrer">
-              {node.link && node.link.length > 45
-                ? `${node.link.substr(0, 45)}...`
-                : node.link}
+              {Utils.substr(node.link, 45)}
             </a>
           </div>
           {!_.isEmpty(tabs) ? (

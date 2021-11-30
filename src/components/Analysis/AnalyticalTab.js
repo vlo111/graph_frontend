@@ -8,6 +8,7 @@ import NodeIcon from '../NodeIcon';
 import Button from '../form/Button';
 
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Utils from '../../helpers/Utils';
 
 class AnalyticalTab extends Component {
     static propTypes = {
@@ -37,9 +38,7 @@ class AnalyticalTab extends Component {
               {nodes.map((p) => (
                 <div className="left">
                   <div className="shortest-node-title" title={p.name}>
-                    {p.name && p.name.length > 13
-                      ? `${p.name.substr(0, 13)}... `
-                      : p.name}
+                    {Utils.substr(p.name, 13)}
                   </div>
                   <NodeIcon node={p} />
                   {((counter + 1 < nodes.length) && ((counter += 1) % 3 !== 0)) && <hr className="shortest-link" />}
