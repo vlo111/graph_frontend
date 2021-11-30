@@ -2,39 +2,20 @@ import SignIn from '../../pages/sign/SignIn';
 import renderWithReduxNRouter from '../render';
 import '@testing-library/jest-dom/extend-expect';
 import { fireEvent } from '@testing-library/react';
+import renderer from 'react-test-renderer';
+import { ReactComponent as EyeSvg } from '../../assets/images/icons/eye.svg';
+import React from 'react';
+import {ReactComponent as LogoSvg} from "../../assets/images/araks_logo.svg";
 
 /**
  * Mock google api
  * Initial google api for get access token
  */
-beforeEach(() => {
-  // setup a DOM element as a render target
-  const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
-
-  const { gapi } = window;
-
-  // gapi.load('auth2', () => {
-  //   const auth = gapi.auth2.init({
-  //     client_id: REACT_APP_GOOGLE_CLIENT_ID,
-  //     cookiepolicy: 'single_host_origin',
-  //   });
-  //   auth.attachClickHandler({}, {}, (googleUser) => {
-  //     const { wc: { access_token: accessToken } } = googleUser;
-  //     if (!accessToken) {
-  //       // error
-  //       return;
-  //     }
-  //     this.props.oAuthRequest('google', { accessToken });
-  //   }, (error) => {
-  //     if (error.error !== 'popup_closed_by_user') {
-  //       // error ${error.error}
-  //     }
-  //   });
-  // });
-});
+// ------------
+// ------------
 
 /**
- * test sign in page
+ * test social media api in the page
  * check social media buttons
  */
 describe('check social media action', () => {
@@ -45,12 +26,77 @@ describe('check social media action', () => {
      * get token after click google from social media
      */
     fireEvent.click(getByTestId('google'));
-
   });
 });
 
 /**
- * test sign in page
+ * snapshots sign in elements
+ * check social media block
+ * check logo with form fields
+ */
+describe('html elements displayed correctly', () => {
+  it('should be match sign in button', () => {
+    /**
+     * match sign in button
+     * @type {*|{children: *, type: *, props: {}|{}}}
+     */
+    const signinBtn = renderer.create(
+      <button className="ghButton submit orange alt">Sign In</button>,
+    ).toJSON();
+    expect(signinBtn).toMatchSnapshot();
+
+    /**
+     * match email input
+     * @type {*|{children: *, type: *, props: {}|{}}}
+     */
+    const email = renderer.create(
+      <div className="ghFormField ghInput">
+        <input placeholder="Email address" />
+      </div>,
+    ).toJSON();
+    expect(email).toMatchSnapshot();
+
+    /**
+     * match password input
+     * @type {*|{children: *, type: *, props: {}|{}}}
+     */
+    const password = renderer.create(
+      <div className="ghFormFieldPassword   ghFormField ghInput">
+        <span className="icon ">
+          <EyeSvg
+            width={14}
+          />
+        </span>
+        <input placeholder="Password" type="password" />
+      </div>,
+    ).toJSON();
+
+    expect(password).toMatchSnapshot();
+
+    /**
+     * match forget password field
+     * @type {*|{children: *, type: *, props: {}|{}}}
+     */
+    const forget = renderer.create(
+      <a className="forgotPassword">Forgot password?</a>,
+    ).toJSON();
+
+    expect(forget).toMatchSnapshot();
+
+    /**
+     * match logo
+     * @type {*|{children: *, type: *, props: {}|{}}}
+     */
+    const logo = renderer.create(
+        <LogoSvg className="logo white" />,
+    ).toJSON();
+
+    expect(logo).toMatchSnapshot();
+  });
+});
+
+/**
+ * test elements exist in sign_in page
  * check text dom elements with buttons
  * check social media buttons
  */
