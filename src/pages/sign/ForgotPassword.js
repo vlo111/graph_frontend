@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
@@ -50,29 +51,26 @@ class ForgotPassword extends Component {
     this.setState({ loading: true });
 
     const { requestData } = this.state;
-
-    const validationErrors = {};
-    Object.keys(requestData).forEach((name) => {
-      const error = this.validate(name, requestData[name]);
-      if (error && error.length > 0) {
-        validationErrors[name] = error;
-      }
-    });
-    if (Object.keys(validationErrors).length > 0) {
-      this.setState({ errors: validationErrors });
-    }
-
     const { origin } = window.location;
-
     const { payload: { data } } = await this.props.forgotPasswordRequest(
       requestData.email,
       `${origin}/sign/reset-password`,
     );
-
     this.setState({ loading: false });
-
-    if (data.status === 'ok') {
-      this.props.history.replace(origin)
+    const validationErrors = {};
+    Object.keys(requestData).forEach((name, value) => {
+      const error = this.validate(name, value, requestData[name], requestData[value]);
+      if (error && error.length > 0) {
+        validationErrors[name] = error;
+      }
+      if (data.status === 'ok') {
+        this.props.history.replace(origin);
+      } if (data.status !== 'ok') {
+        validationErrors[value] = !error;
+      }
+    });
+    if (Object.keys(validationErrors).length > 0) {
+      this.setState({ errors: validationErrors });
     }
   };
 
