@@ -25,9 +25,7 @@ class ForgotPassword extends Component {
       requestData: {
         email: '',
       },
-      errors: {
-        email: '',
-      },
+      error: null,
     };
   }
 
@@ -51,28 +49,26 @@ class ForgotPassword extends Component {
     this.setState({ loading: true });
 
     const { requestData } = this.state;
-    const { origin } = window.location;
-    const { payload: { data } } = await this.props.forgotPasswordRequest(
-      requestData.email,
-      `${origin}/sign/reset-password`,
-    );
-    this.setState({ loading: false });
-    const validationErrors = {};
-    Object.keys(requestData).forEach((name, value) => {
-      const error = this.validate(name, value, requestData[name], requestData[value]);
-      if (error && error.length > 0) {
-        validationErrors[name] = error;
+    const error = this.validate('email', requestData.email);
+    if (error) {
+      this.setState({ error });
+    } else {
+      const { origin } = window.location;
+      const { payload: { data } } = await this.props.forgotPasswordRequest(
+        requestData.email,
+        `${origin}/sign/reset-password`,
+      );
+
+      if (data.status === 'error') {
+        this.setState({ error: data.message });
       }
       if (data.status === 'ok') {
         this.props.history.replace(origin);
-      } if (data.status !== 'ok') {
-        validationErrors[value] = !error;
       }
-    });
-    if (Object.keys(validationErrors).length > 0) {
-      this.setState({ errors: validationErrors });
     }
-  };
+
+    this.setState({ loading: false });
+  }
 
   validate = (name, value) => {
     switch (name) {
@@ -94,7 +90,7 @@ class ForgotPassword extends Component {
 
   render() {
     const { token } = this.props;
-    const { requestData, loading, errors } = this.state;
+    const { requestData, loading, error } = this.state;
     if (token) {
       return <Redirect to="/" />;
     }
@@ -119,14 +115,14 @@ class ForgotPassword extends Component {
               </div>
               <Input
                 className={`${
-                  errors.email ? 'border-error' : null
+                  error ? 'border-error' : null
                 }`}
                 name="email"
                 type="email"
                 placeholder="E-mail"
                 value={requestData.email}
                 onChange={this.handleChange}
-                error={errors.email}
+                error={error}
                 autoComplete="off"
               />
               <div className="row">
