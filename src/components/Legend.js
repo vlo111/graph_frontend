@@ -1,6 +1,10 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { setLegendButton } from '../store/actions/app';
 import ChartUtils from '../helpers/ChartUtils';
 import { ReactComponent as DownSvg } from '../assets/images/icons/down.svg';
@@ -8,7 +12,6 @@ import { ReactComponent as LegendSvg } from '../assets/images/icons/legend.svg';
 
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Utils from '../helpers/Utils';
-import _ from 'lodash'
 
 class Legend extends Component {
     static propTypes = {
@@ -35,7 +38,8 @@ class Legend extends Component {
     })
 
     render() {
-      const { showLegendButton, singleGraph: {nodesPartial, linksPartial  } } = this.props;
+      // eslint-disable-next-line react/prop-types
+      const { showLegendButton, singleGraph: { nodesPartial, linksPartial } } = this.props;
 
       const nodes = this.orderData([...new Map(nodesPartial?.map((node) => [node.type, node])).values()]);
 
@@ -45,6 +49,12 @@ class Legend extends Component {
         name: p.name,
         type: p.type,
       }));
+      const typeLinkData = linksPartial?.map((p) => ({
+        name: p.name,
+        type: p.type,
+      }));
+      const groupLinkTypes = _.groupBy(typeLinkData, 'type');
+
       const groupTypes = _.groupBy(typeData, 'type');
       const types = [];
       Object.keys(groupTypes).forEach((l) => {
@@ -52,28 +62,26 @@ class Legend extends Component {
         types.push({ type: currentType[0].type, count: currentType.length });
       });
 
-
       const listNodeItems = nodes.map((node) => (
         <li className="node-item" key={node.id} style={{ backgroundColor: ChartUtils.nodeColor(node) }}>
-          <a title={node.type}  href="#">{`${node.type}`}</a>
-          <a className="nodeCount">{`(${groupTypes[Object.keys(groupTypes).filter(p => p === node.type)].length})`}</a>
+          <a title={node.type} href="#">{`${node.type}`}</a>
+          <a className="nodeCount">{`(${groupTypes[Object.keys(groupTypes).filter((p) => p === node.type)].length})`}</a>
         </li>
-        
-      ));
 
+      ));
       const listLinkItems = links.map((link) => (
-        <li className="connection-item" key={link.id }  style={{ backgroundColor: link.color }}>
-          <a title={link.type} className="linkColor">{link.type}</a>
+        <li className="connection-item" key={link.id} style={{ backgroundColor: ChartUtils.linkColor(link) }}>
+          <a title={link.type} href="#">{`${link.type}`}</a>
+          <a className="nodeCount">{`(${groupLinkTypes[Object.keys(groupLinkTypes).filter((p) => p === link.type)].length})`}</a>
         </li>
       ));
-
 
       return (
         <div className={showLegendButton === 'close' ? 'legends' : 'legends open'}>
-         
+
           <button className="dropdown-btn legendButton" onClick={() => this.handleClick()}>
-              <LegendSvg  className="legendSvg"/>
-               <h6>  Legends</h6>
+            <LegendSvg className="legendSvg" />
+            <h6>  Legends</h6>
             <div className="carretNew">
               <DownSvg />
             </div>
@@ -86,16 +94,15 @@ class Legend extends Component {
                 {nodesPartial?.length}
                 )
               </h4>
-              <ul className="node-list"
-              >
-                {listNodeItems} 
+              <ul className="node-list">
+                {listNodeItems}
               </ul>
             </div>
-            <div class="borderLegends"></div>
+            <div className="borderLegends" />
             <div className="connections">
               <h4>
                 Connections (
-                {links.length}
+                {links?.length}
                 )
               </h4>
               <ul className="connection-list">

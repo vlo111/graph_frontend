@@ -10,6 +10,7 @@ import { resetPasswordRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Button from '../../components/form/Button';
 import PasswordInput from '../../components/form/PasswordInput';
+// import Validate from '../../helpers/Validate';
 
 class ResetPassword extends Component {
   static propTypes = {
@@ -31,11 +32,20 @@ class ResetPassword extends Component {
     };
   }
 
-  handleTextChange = (value, path) => {
-    const { requestData } = this.state;
-    _.set(requestData, path, value);
-    this.setState({ requestData });
-  }
+  handleTextChange = (e) => {
+    const { errors, requestData } = this.state;
+    _.set(requestData);
+    this.setState({
+      errors: {
+        ...errors,
+        [e.target.name]: this.validate(e.target.name, e.target.value),
+      },
+      requestData: {
+        ...requestData,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
 
   signIn = async (ev) => {
     ev.preventDefault();
@@ -51,6 +61,37 @@ class ResetPassword extends Component {
     }
     this.props.history.push('/');
   }
+
+  validate = (name, value) => {
+    const { requestData } = this.state;
+    switch (name) {
+      case 'password':
+        if (!value) {
+          return 'Password is required';
+        } if (value.length < 8 || value.length > 15) {
+          return 'Please fill at least 8 character';
+        } if (!value.match(/[a-z]/g)) {
+          return 'Please enter at least lower character.';
+        } if (!value.match(/[A-Z]/g)) {
+          return 'Please enter at least upper character.';
+        } if (!value.match(/[0-9]/g)) {
+          return 'Please enter at least one digit.';
+        }
+        return '';
+
+      case 'passwordConfirm':
+        if (!value) {
+          return 'Confirm password is required';
+        } if (value !== requestData.password) {
+          return 'Password and confirm password must be same';
+        }
+        return '';
+
+      default: {
+        return '';
+      }
+    }
+  };
 
   render() {
     const { token } = queryString.parse(window.location.search);
@@ -68,30 +109,45 @@ class ResetPassword extends Component {
         <div className="right">
           <div>
             <form onSubmit={this.signIn} id="login" className="authForm">
-              <h1>Reset Password</h1>
+              <div className="forgotPasswordText">
+                <h1>Reset Password </h1>
+              </div>
+
               <PasswordInput
-                placeholder="New password"
                 name="password"
+                className={`${
+                  errors.password ? 'border-error' : null
+                }`}
+                placeholder="Password"
                 value={requestData.password}
-                onChangeText={this.handleTextChange}
                 error={errors.password}
+                onChange={this.handleTextChange}
+                autoComplete="off"
+                showIcon={(!!requestData.password)}
               />
+
               <PasswordInput
                 name="passwordConfirm"
+                className={`${
+                  errors.passwordConfirm ? 'border-error' : null
+                }`}
                 placeholder="Confirm password"
                 value={requestData.passwordConfirm}
                 error={errors.password}
-                onChangeText={this.handleTextChange}
+                onChange={this.handleTextChange}
                 autoComplete="off"
+                showIcon={(!!requestData.passwordConfirm)}
               />
-
-              <Button type="submit" className="submit" color="blue">
+              <Button
+                color="blue"
+                className="submit"
+                type="submit"
+              >
                 Reset
               </Button>
             </form>
           </div>
         </div>
-
       </WrapperSign>
     );
   }
