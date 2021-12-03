@@ -143,7 +143,7 @@ class SignUp extends Component {
 
     return (
       <WrapperSign>
-        <div className="SignUpLeft signUp">
+        <div data-testid="sign-up" className="SignUpLeft signUp">
           <Link to="/" />
         </div>
         <div className="SignUpRight">
