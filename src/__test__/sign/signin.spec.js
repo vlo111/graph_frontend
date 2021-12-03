@@ -1,11 +1,20 @@
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import renderer from 'react-test-renderer';
+import { fireEvent } from '@testing-library/react';
 import SignIn from '../../pages/sign/SignIn';
 import renderWithReduxNRouter from '../render';
 import '@testing-library/jest-dom/extend-expect';
-import { fireEvent } from '@testing-library/react';
-import renderer from 'react-test-renderer';
 import { ReactComponent as EyeSvg } from '../../assets/images/icons/eye.svg';
-import React from 'react';
-import {ReactComponent as LogoSvg} from "../../assets/images/araks_logo.svg";
+import { ReactComponent as LogoSvg } from '../../assets/images/araks_logo.svg';
+
+const RouterComponent = () => (
+  <>
+    <Switch>
+      <Route path="/sign/sign-in" component={SignIn} />
+    </Switch>
+  </>
+);
 
 /**
  * Mock google api
@@ -20,7 +29,10 @@ import {ReactComponent as LogoSvg} from "../../assets/images/araks_logo.svg";
  */
 describe('check social media action', () => {
   it('check all logins social networks', () => {
-    const { getByTestId } = renderWithReduxNRouter(SignIn);
+    const { getByTestId } = renderWithReduxNRouter(<RouterComponent />,
+      {
+        route: '/sign/sign-in',
+      });
 
     /**
      * get token after click google from social media
@@ -88,7 +100,7 @@ describe('html elements displayed correctly', () => {
      * @type {*|{children: *, type: *, props: {}|{}}}
      */
     const logo = renderer.create(
-        <LogoSvg className="logo white" />,
+      <LogoSvg className="logo white" />,
     ).toJSON();
 
     expect(logo).toMatchSnapshot();
@@ -102,7 +114,10 @@ describe('html elements displayed correctly', () => {
  */
 describe('check sign in dom elements', () => {
   it('should be the text elements', () => {
-    const { getByText, getByTestId } = renderWithReduxNRouter(SignIn);
+    const { getByTestId, getByText } = renderWithReduxNRouter(<RouterComponent />,
+      {
+        route: '/sign/sign-in',
+      });
 
     /**
      * should be the forget password text
