@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
@@ -24,9 +25,7 @@ class ForgotPassword extends Component {
       requestData: {
         email: '',
       },
-      errors: {
-        email: '',
-      },
+      error: null,
     };
   }
 
@@ -50,31 +49,26 @@ class ForgotPassword extends Component {
     this.setState({ loading: true });
 
     const { requestData } = this.state;
+    const error = this.validate('email', requestData.email);
+    if (error) {
+      this.setState({ error });
+    } else {
+      const { origin } = window.location;
+      const { payload: { data } } = await this.props.forgotPasswordRequest(
+        requestData.email,
+        `${origin}/sign/reset-password`,
+      );
 
-    const validationErrors = {};
-    Object.keys(requestData).forEach((name) => {
-      const error = this.validate(name, requestData[name]);
-      if (error && error.length > 0) {
-        validationErrors[name] = error;
+      if (data.status === 'error') {
+        this.setState({ error: data.message });
       }
-    });
-    if (Object.keys(validationErrors).length > 0) {
-      this.setState({ errors: validationErrors });
+      if (data.status === 'ok') {
+        this.props.history.replace(origin);
+      }
     }
-
-    const { origin } = window.location;
-
-    const { payload: { data } } = await this.props.forgotPasswordRequest(
-      requestData.email,
-      `${origin}/sign/reset-password`,
-    );
 
     this.setState({ loading: false });
-
-    if (data.status === 'ok') {
-      this.props.history.replace(origin)
-    }
-  };
+  }
 
   validate = (name, value) => {
     switch (name) {
@@ -96,7 +90,7 @@ class ForgotPassword extends Component {
 
   render() {
     const { token } = this.props;
-    const { requestData, loading, errors } = this.state;
+    const { requestData, loading, error } = this.state;
     if (token) {
       return <Redirect to="/" />;
     }
@@ -121,14 +115,14 @@ class ForgotPassword extends Component {
               </div>
               <Input
                 className={`${
-                  errors.email ? 'border-error' : null
+                  error ? 'border-error' : null
                 }`}
                 name="email"
                 type="email"
                 placeholder="E-mail"
                 value={requestData.email}
                 onChange={this.handleChange}
-                error={errors.email}
+                error={error}
                 autoComplete="off"
               />
               <div className="row">
