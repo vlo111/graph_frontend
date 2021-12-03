@@ -1,9 +1,9 @@
 import { cleanup, render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import React from 'react';
+import { createMemoryHistory } from 'history';
 import store from '../store';
-import Index from '../pages';
 
 afterEach(cleanup);
 
@@ -12,20 +12,30 @@ afterEach(cleanup);
  * that deal with connected components.
  * we can provide the entire store that the component is rendered with
  * @param component
+ * @param route
+ * @param history
  */
 const renderWithRedux = (
-    component,
-) => ({
+  component, {
+    route = '/',
+    history = createMemoryHistory({ initialEntries: [route] }),
+  } = {},
+) => {
+  const Wrapper = ({ children }) => (
+    <Router history={history}>
+      {children}
+    </Router>
+  );
+
+  return {
     ...render(
-        <Provider store={store}>
-            <BrowserRouter>
-                <Switch>
-                    <Route path="/sign/sign-in" component={component} />
-                    <Route path="/" component={Index} />
-                </Switch>
-            </BrowserRouter>
-        </Provider>,
+      <Provider store={store}>
+        {component}
+      </Provider>,
+      { wrapper: Wrapper },
     ),
-});
+    history,
+  };
+};
 
 export default renderWithRedux;
