@@ -5,6 +5,7 @@ import Button from '../../form/Button';
 import { setNodeCommentParent, deleteNodeComment } from '../../../store/actions/commentNodes';
 import { ReactComponent as ReplySvg } from '../../../assets/images/icons/reply.svg';
 import { ReactComponent as RemoveSvg } from '../../../assets/images/icons/trash.svg';
+import Utils from '../../../helpers/Utils';
 
 const Owner = ({
   user, date, edit, remove, comment,
@@ -13,6 +14,7 @@ const Owner = ({
     logo: {
       height: '30px',
       width: '30px',
+      marginRight: '5px',
     },
     user_info: {
       display: 'flex',
@@ -37,6 +39,8 @@ const Owner = ({
 
   const dispatch = useDispatch();
 
+  const userName = `${user.firstName} ${user.lastName}`;
+
   return (
     user && (
     <>
@@ -44,11 +48,11 @@ const Owner = ({
         style={ownerStyles.logo}
         className="avatar circle"
         src={user && user.avatar}
-        alt={`${user.firstName} ${user.lastName}`}
+        alt={userName}
       />
       <span style={ownerStyles.user_info}>
         <span style={ownerStyles.user_name}>
-          {`${user.firstName} ${user.lastName}`}
+          {Utils.substr(userName, 12)}
         </span>
         <span style={ownerStyles.user_date}>{date}</span>
       </span>

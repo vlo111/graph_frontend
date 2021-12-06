@@ -1,4 +1,5 @@
 import React from 'react';
+import Utils from '../../helpers/Utils';
 
 const RADIAN = Math.PI / 180;
 
@@ -57,7 +58,7 @@ const renderCustomizedLabel = (props) => {
         fontSize="14px"
         xlinkTitle={type}
       >
-        {`${type.length > 5 ? `${type.substr(0, 6)}..` : type}, ${value}, ${parseFloat(percent * 100).toFixed(2)}%`}
+        {`${Utils.substr(type, 6)}, ${value}, ${parseFloat(percent * 100).toFixed(2)}%`}
       </text>
     </g>
   );

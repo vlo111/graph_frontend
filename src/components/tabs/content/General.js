@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '../../form/Button';
 import { ReactComponent as EditSvg } from '../../../assets/images/icons/edit.svg';
-import { ReactComponent as InfoSvg } from '../../../assets/images/icons/info.svg';
+import { ReactComponent as InfoSvg } from '../../../assets/images/icons/history.svg';
 import CustomFields from '../../../helpers/CustomFields';
 import { toggleNodeModal } from '../../../store/actions/app';
 import NodeImage from './NodeImage';
 import { getSingleGraph } from '../../../store/selectors/graphs';
 import GraphUsersInfo from '../../History/GraphUsersInfo';
 import NodeOfConnection from './NodeOfConnection';
+import MapsInfo from '../../maps/MapsInfo';
+import Utils from '../../../helpers/Utils';
 
 const General = ({
-  node, tabs, editable = true, connectedNodes
+  node, tabs, editable = true, connectedNodes, tabsExpand,
 }) => {
   const dispatch = new useDispatch();
 
@@ -31,87 +32,154 @@ const General = ({
 
   const { linksPartial, labels } = singleGraph;
 
-  const titleStyle = { backgroundColor: '#F5F5FA' };
-
   /* @todo get document elements size
   * 56 graph header height
-  * 58 - tab header user info
-  * 260 - tab header
+  * 60 - tab header user info
+  * 60 - tab header
   *  */
 
-  const height = window.innerHeight - 56 - 58 - 260;
+  let height = window.innerHeight - 30 - 58 - 60 - 100;
+
+  if (tabsExpand) height += 50;
 
   const contentStyle = {
     height,
     overflow: 'auto',
   };
 
+  let keywords = [];
+
+  if (!tabsExpand) {
+    if (node.keywords.length > 6) {
+      keywords = node.keywords.slice();
+
+      keywords.splice(6, node.keywords.length - 6);
+    }
+  } else {
+    keywords = node.keywords;
+  }
   return (
     <div className="general">
       <div className="general-hider">
-        <div className="general-hider-title">
-          <div className="general-hider-title-icons">
-            {editable && (
-            <>
-              <Button
-                icon={<InfoSvg />}
-                title="Info"
-                onClick={() => setShowNodeInfo(!showNodeInfo)}
-              />
-              <Button
-                icon={<EditSvg />}
-                title="edit"
-                onClick={updateNode}
-              />
-            </>
-            )}
-          </div>
+        <div className="general-hider-picture">
+          <NodeImage node={node} />
         </div>
         <div className="general-hider-caption">
-          <div className="general-hider-caption-picture">
-            <NodeImage node={node} />
-          </div>
           <div className="general-hider-caption-nodeInfo">
-            <div style={{ display: 'flex', flexWrap: 'wrap', height: '60px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <span className="name">{node.name}</span>
+              <div style={{ display: 'flex', width: '100%' }} />
               <span className="type">{node.type}</span>
             </div>
           </div>
         </div>
-        {node.keywords && (
-        <div className="general-hider-keywords">
-          {node.keywords.map((p) => (
-            <span>{`${p}  `}</span>
-          ))}
+        <div className="general-hider-icons">
+          {editable && (
+            <>
+              <button
+                title="info"
+                className="tabHistory"
+                onClick={() => setShowNodeInfo(!showNodeInfo)}
+              >
+                <InfoSvg />
+              </button>
+              <button
+                title="edit"
+                className="edit"
+                onClick={updateNode}
+              >
+                <EditSvg />
+              </button>
+            </>
+          )}
         </div>
-        )}
       </div>
       <div className="general-footer" style={contentStyle}>
-        {node.link && (
-        <div className="general-footer-node" style={titleStyle}>
-          <div className="title">Link:</div>
-          <a
-            target="_blank"
-            href={node.link}
-            title={node.link}
-            className="node-name"
-            rel="noreferrer"
-          >
-            {node.link.length > 25 ? `${node.link.substring(0, 22)}...` : node.link}
-          </a>
-        </div>
-        )}
-        {connectedNodes.map((nodeGroup) => (
-          <details className="general-footer-node">
-            <summary>
-              <div className="title">{`${nodeGroup[0].linkType}:`}</div>
-              <div className="node-name">{`${nodeGroup.length} ${nodeGroup.length > 1 ? 'connections' : 'connection'}`}</div>
-            </summary>
-            <div className="connections">
-              <NodeOfConnection labels={labels} nodes={nodeGroup} links={linksPartial} nodeId={node.id} />
+        <div className="items">
+          <div className="general-footer-item leftLine">
+            <span className="item-text">Name: </span>
+            <span>{node.name}</span>
+          </div>
+          <div className="general-footer-item leftLine">
+            <span className="item-text">Label: </span>
+            <span>
+              {!node.keywords?.length ? 'there is not keyword'
+                : (
+                  <div className="general-footer-item-keywords">
+                    <>
+                      {tabsExpand ? node.keywords.map((p) => (
+                        <span>{p}</span>
+                      ))
+                        : (
+                          <>
+                            {keywords.filter((k, index) => index < 6).map((p) => (
+                              <span>{Utils.substr(p, 10)}</span>
+                            ))}
+                            {(node.keywords.length > 6) && (
+                            <span className="more-keywords">{`more (${node.keywords.length - 6})`}</span>
+                            )}
+                          </>
+                        )}
+
+                    </>
+                  </div>
+                )}
+            </span>
+          </div>
+          <div className="general-footer-item leftLine">
+            <span className="item-text">Link: </span>
+            {node.link
+              ? (
+                <span>
+                  <a
+                    target="_blank"
+                    href={node.link}
+                    title={node.link}
+                    className="node-name"
+                    rel="noreferrer"
+                  >
+                    {!tabsExpand ? Utils.substr(node.link, 30) : node.link}
+                  </a>
+                </span>
+              ) : 'there is not link'}
+          </div>
+          {node.location?.length ? (
+            <div className="general-footer-item general-footer-location leftLine">
+              <span className="location-text">
+                <details className="general-footer-node">
+                  <summary>
+                    <div>Location:</div>
+                    <span className="location-value">
+                      <div>
+                        {!tabsExpand
+                          ? Utils.substr(node.location[0].address, 25)
+                          : node.location[0].address}
+                      </div>
+                    </span>
+                  </summary>
+                  <div className="location-map"><MapsInfo node={node} /></div>
+                </details>
+              </span>
             </div>
-          </details>
-        ))}
+          ) : null}
+          {connectedNodes.map((nodeGroup) => (
+            <details className="general-footer-item leftLine">
+              <summary>
+                <div className="title">{`${nodeGroup[0].linkType}:`}</div>
+                <div className="node-name">{`${nodeGroup.length} ${nodeGroup.length > 1 ? 'connections' : 'connection'}`}</div>
+              </summary>
+              <div className="connections">
+                <NodeOfConnection
+                  labels={labels}
+                  nodes={nodeGroup}
+                  links={linksPartial}
+                  nodeId={node.id}
+                  tabsExpand={tabsExpand}
+                />
+              </div>
+            </details>
+          ))}
+        </div>
       </div>
       {showNodeInfo ? (
         <GraphUsersInfo
@@ -125,9 +193,10 @@ const General = ({
 
 General.propTypes = {
   node: PropTypes.object.isRequired,
-  tabs: PropTypes.object.isRequired,
+  tabs: PropTypes.array.isRequired,
   connectedNodes: PropTypes.string.isRequired,
   editable: PropTypes.bool.isRequired,
+  tabsExpand: PropTypes.bool.isRequired,
 };
 
 export default General;

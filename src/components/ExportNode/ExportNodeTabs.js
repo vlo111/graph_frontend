@@ -48,13 +48,13 @@ class ExportNodeTabs extends Component {
 
   render() {
     return (
-      <Button
+      <button
         onClick={this.export}
         title="Export"
         className="b-navbar"
-        to="/#"
-        icon={<ExportSvg />}
-      />
+      >
+        <ExportSvg />
+      </button>
     );
   }
 }

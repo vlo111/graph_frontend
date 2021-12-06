@@ -10,6 +10,7 @@ import { searchGraphsListRequest } from '../../store/actions/shareGraphs';
 import GraphListFooter from '../../components/graphData/GraphListFooter';
 import GraphDashboardSubMnus from '../../components/graphData/GraphListHeader';
 import NotFound from '../../assets/images/NotFound.png';
+import Utils from '../../helpers/Utils';
 
 class SearchSharedGraphs extends Component {
   static propTypes = {
@@ -91,18 +92,14 @@ class SearchSharedGraphs extends Component {
                   <Tooltip overlay={shGraph.graph.title} placement="bottom">
                     <h3 className="sharGraphSearch">
                       {' '}
-                      {shGraph.graph.title.length > 25
-                        ? `${shGraph.graph.title.substring(0, 25)}...`
-                        : shGraph.graph.title}
+                      {Utils.substr(shGraph.graph.title, 25)}
                     </h3>
                   </Tooltip>
                   <div className="descriptionGraph">
                     <Tooltip overlay={shGraph.graph.description} placement="bottom">
                       <span>
                         {' '}
-                        {shGraph.graph.description.length > 40
-                          ? `${shGraph.graph.description.substring(0, 40)}...`
-                          : shGraph.graph.description}
+                        {Utils.substr(shGraph.graph.description, 40)}
                       </span>
                     </Tooltip>
                   </div>

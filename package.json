@@ -2,13 +2,23 @@
   "name": "graphs",
   "version": "0.1.2",
   "private": true,
+  "jest": {
+    "transformIgnorePatterns": [
+      "src/node_modules/(?!@sapper)"
+    ]
+  },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.2",
+    "@testing-library/jest-dom": "^5.15.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
     "bowser": "^2.11.0",
     "classnames": "^2.2.6",
     "d3": "^6.6.0",
     "fetch-timeout": "0.0.2",
     "google-maps-react": "^2.0.6",
+    "history": "^5.1.0",
     "jodit": "^3.4.29",
     "jodit-react": "^1.0.68",
     "js-file-download": "^0.4.12",
@@ -45,6 +55,7 @@
     "react-select": "^4.1.0",
     "react-sortable-hoc": "^2.0.0",
     "react-tabs": "^3.2.2",
+    "react-test-renderer": "^17.0.2",
     "react-toastify": "^6.1.0",
     "react-virtualized": "^9.22.3",
     "react-window": "^1.8.6",

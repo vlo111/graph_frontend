@@ -6,11 +6,12 @@ import { withRouter, Link } from 'react-router-dom';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
 import memoizeOne from 'memoize-one';
-import { getGraphsListRequest } from '../../store/actions/graphs';
 import Tooltip from 'rc-tooltip';
+import { getGraphsListRequest } from '../../store/actions/graphs';
 import GraphListFooter from '../../components/graphData/GraphListFooter';
 import GraphDashboardSubMnus from '../../components/graphData/GraphListHeader';
 import NotFound from '../../assets/images/NotFound.png';
+import Utils from '../../helpers/Utils';
 
 class SearchGraphs extends Component {
   static propTypes = {
@@ -24,10 +25,10 @@ class SearchGraphs extends Component {
     setLimit: false,
   }
 
-
   getGraphs = memoizeOne((page, searchParam) => {
     this.props.getGraphsListRequest(page, { s: searchParam });
   })
+
   showCardOver = (id) => {
     document.getElementsByClassName(`graph-card_${id}`)[0].style.display = 'flex';
   }
@@ -52,12 +53,14 @@ class SearchGraphs extends Component {
   }
 
   render() {
-    const { setLimit, graphsList, headerTools,graphsListStatus } = this.props;
+    const {
+      setLimit, graphsList, headerTools, graphsListStatus,
+    } = this.props;
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
     this.getGraphs(page, searchParam);
     return (
       <>
-        {graphsList && !isEmpty(graphsList) && graphsList.length  ? (
+        {graphsList && !isEmpty(graphsList) && graphsList.length ? (
           <>
             {graphsList.map((graph) => (
               <article key={graph.id} className="graphs">
@@ -82,18 +85,18 @@ class SearchGraphs extends Component {
                     <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={graph} />
                   </div>
                 </div>
-                <div> 
-                  <Tooltip overlay={graph.title} placement="bottom" >
+                <div>
+                  <Tooltip overlay={graph.title} placement="bottom">
                     <h3>
                       {' '}
-                      {graph.title.length > 23 ? `${graph.title.substring(0, 23)}...` : graph.title}
+                      {Utils.substr(graph.title, 23)}
                     </h3>
                   </Tooltip>
                   <div className="descriptionGraph">
-                    <Tooltip overlay={graph.description} placement="bottom" >
+                    <Tooltip overlay={graph.description} placement="bottom">
                       <span>
                         {' '}
-                        {graph.description.length > 40 ? `${graph.description.substring(0, 40)}...` : graph.description}
+                        {Utils.substr(graph.description, 40)}
                       </span>
                     </Tooltip>
                   </div>
@@ -119,10 +122,12 @@ class SearchGraphs extends Component {
               </article>
             ))}
           </>
-        ) : ((!setLimit && graphsListStatus !== 'request'&& <div className='not_graphfound'>
+        ) : ((!setLimit && graphsListStatus !== 'request' && (
+        <div className="not_graphfound">
           <img src={NotFound} />
           <h3>Not Found</h3>
-        </div>) || null)}
+        </div>
+        )) || null)}
       </>
     );
   }

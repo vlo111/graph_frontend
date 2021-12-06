@@ -4,6 +4,7 @@ import Input from './Input';
 import Icon from './Icon';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import { ReactComponent as SelectImg } from '../../assets/images/icons/upload.svg';
+import Utils from '../../helpers/Utils';
 
 class File extends Component {
   static propTypes = {
@@ -110,9 +111,7 @@ class File extends Component {
               placeholder="Select  your file"
               onFocus={this.handleInputFocus}
               onBlur={this.handleInputBlur}
-              value={fileName.length > 10
-                ? `${fileName.substr(0, 13)}... `
-                : fileName}
+              value={Utils.substr(fileName, 10)}
               title={fileName}
               disabled={localFile}
               onChangeText={this.handleTextChange}

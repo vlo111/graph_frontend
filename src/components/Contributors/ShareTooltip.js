@@ -159,15 +159,10 @@ const ShareTooltip = React.memo(({
   const subEditLimitCount = roles.edit.length - numberOfEditItems;
   const subViewLimitCount = roles.view.length - numberOfViewItems;
 
-  const arrowStyle = {
-    marginTop: '57px',
-    transform: 'translate(35px)',
-  };
-
   return (
 
     <>
-      <div className="modal-arrow-top" style={arrowStyle} />
+      <div className="modal-arrow-top" />
       <div className="contributors-container">
         <ul className={`list-style-none d-flex flex-wrap mb-n2 groups ${showMoreEdit ? ' scrollY' : ' '}`}>
           <span className="group-header">
