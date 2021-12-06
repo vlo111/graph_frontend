@@ -23,6 +23,6 @@ describe('', () => {
         route: '/sign/sign-up',
       });
 
-    expect(getByTestId('lola')).toBeInTheDocument();
+    expect(getByTestId('sign-up')).toBeInTheDocument();
   });
 });

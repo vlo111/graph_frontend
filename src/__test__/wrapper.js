@@ -1,8 +1,8 @@
 import { cleanup, render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
 import React from 'react';
-import { createMemoryHistory } from 'history';
+import { MemoryRouter } from 'react-router';
+import { mount } from 'enzyme';
 import store from '../store';
 
 afterEach(cleanup);
@@ -18,24 +18,18 @@ afterEach(cleanup);
 const renderWithRedux = (
   component, {
     route = '/',
-    history = createMemoryHistory({ initialEntries: [route] }),
+    initialEntries = [route],
   } = {},
 ) => {
-  const Wrapper = ({ children }) => (
+  const wrapper = (
     <Provider store={store}>
-      <Router history={history}>
-        {children}
-      </Router>
+      <MemoryRouter initialEntries={initialEntries}>
+        { component }
+      </MemoryRouter>
     </Provider>
   );
 
-  return {
-    ...render(
-      <>{ component }</>,
-      { wrapper: Wrapper },
-    ),
-    history,
-  };
+  return mount(wrapper);
 };
 
 export default renderWithRedux;
