@@ -92,9 +92,15 @@ main {
     max-height: 100%;
   }
 
-  &.homePage {
+  &.homePage  {
     background-size: cover;
     background: transparent radial-gradient(closest-side at 50% 50%, #F2F4FF 0%, #EFF1F9 19%, #F2F4FF 39%, #F2F2FF 67%, #F7F9FF 100%) no-repeat fixed top left;
+  }
+  &.accountPage{
+    background:#F5F5FF;
+  }
+  &.profile_Edit{
+    background:#F5F5FF;
   }
 }
 
@@ -4745,6 +4751,9 @@ body .gh__menu {
     background: -webkit-linear-gradient(#F07760, #7166F8);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+  .searchData__graph{
+    position:  relative !important;
   }
 }
 
