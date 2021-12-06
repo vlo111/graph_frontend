@@ -69,9 +69,7 @@ const Profile = React.memo((props) => {
             {frindsItemForSlide.length > 0 && (
               <div className="friends-requests row_">
                 <div className="colm-md-6 d-flex">
-                  {' '}
                   <span>Friend Requests </span>
-                  {' '}
                   <span style={{ width: '90px', height: '10px' }} />
                 </div>
                 <Carousel interval={null} indicators={frindsItemForSlide.length > 1} controls={frindsItemForSlide.length > 1}>
@@ -97,9 +95,7 @@ const Profile = React.memo((props) => {
 
                                     <Link to={`/profile/${friend.id}`}>
                                       <h6>
-                                        {' '}
                                         {`${friend.firstName} ${friend.lastName}`}
-                                        {' '}
                                       </h6>
                                     </Link>
 
@@ -141,9 +137,7 @@ const Profile = React.memo((props) => {
                           <div className="friendname text-size-16">
                             <Link to={`/profile/${friend.id}`}>
                               <h6>
-                                {' '}
                                 {`${friend.firstName} ${friend.lastName}`}
-                                {' '}
                               </h6>
                             </Link>
 
@@ -157,8 +151,6 @@ const Profile = React.memo((props) => {
                             className="unfriend"
                           >
                             <AddFriend user={friend} />
-                            {' '}
-
                           </div>
                         </div>
 

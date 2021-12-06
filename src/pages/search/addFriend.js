@@ -67,7 +67,6 @@ const AddFriend = React.memo(({ user }) => {
               icon={<SolidFriendsSvg />}
               onClick={() => dispatch(removeFriendRequest(matchUser.id))}
             >
-              {' '}
               <span>Unfriend </span>
             </Button>
           );

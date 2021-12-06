@@ -88,9 +88,7 @@ const ProfileMain = React.memo(({
                 <div>{profile.phone}</div>
               </div>
               <p className="text-size-16 account_description">
-                {' '}
                 {profile.bio}
-                {' '}
               </p>
             </div>
 
@@ -115,16 +113,14 @@ const ProfileMain = React.memo(({
 
           {!edit && (
           <div className="colm-sm-6 section2">
-            {currentUserId != userId && (
+            {currentUserId !== userId && (
             <AddFriend user={profile} />
             )}
             <div className="edit_profile">
               <div>User details</div>
               {currentUserId === profile.id && (
               <a className="accountedit user_prf_color1" href="/account">
-                {' '}
                 <i className="fa fa-pencil" />
-                {' '}
                 Edit Profile
               </a>
               )}
