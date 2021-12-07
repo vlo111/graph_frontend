@@ -58,7 +58,6 @@ class SignUp extends Component {
   signUp = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
-    console.log('kpav', requestData)
 
     this.setState({ loading: true });
 
