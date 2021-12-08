@@ -15,14 +15,15 @@ class Legend extends Component {
       setLegendButton: PropTypes.func.isRequired,
       getSingleGraphRequest: PropTypes.func.isRequired,
       singleGraph: PropTypes.string.isRequired,
+      graphId: PropTypes.string.isRequired,
 
     }
 
     handleClick = () => {
-      const { showLegendButton, singleGraph } = this.props;
+      const { showLegendButton, graphId } = this.props;
       if (showLegendButton !== 'show') {
         this.props.setLegendButton('show');
-        this.props.getSingleGraphRequest(singleGraph.id, { viewMode: true });
+        this.props.getSingleGraphRequest(graphId, { viewMode: true });
       } else this.props.setLegendButton('close');
     }
 
@@ -112,6 +113,7 @@ class Legend extends Component {
 const mapStateToProps = (state) => ({
   showLegendButton: state.app.legendButton,
   singleGraph: state.graphs.singleGraph,
+  graphId: state.graphs.singleGraph.id,
 });
 
 const mapDispatchToProps = {
