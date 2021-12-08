@@ -50,7 +50,7 @@ class ToolBarHeader extends Component {
     setTimeout(() => {
       if (notifyElement) {
         const dataCount = notifyElement.getAttribute('data-count');
-        if (dataCount === 0) {
+        if (dataCount == 0) {
           notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifyEmptySvg />);
         } else {
           notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifySvg />);
