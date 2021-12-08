@@ -6,9 +6,9 @@ import Profile from './Profile';
 class Account extends Component {
   render() {
     return (
-      <Wrapper>
+      <Wrapper className="profile_Edit">
         <Header />
-        <Profile/>
+        <Profile />
       </Wrapper>
     );
   }

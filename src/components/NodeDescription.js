@@ -107,7 +107,7 @@ class NodeDescription extends Component {
             </h4>
             <div className="description paragraph">
               {node.description ? (
-                <span dangerouslySetInnerHTML={{ __html: description }} />
+                <span dangerouslySetInnerHTML={{ __html: node.description }} />
               ) : null}
               {node.description.length > 130 ? (
                 <span className="link">more</span>

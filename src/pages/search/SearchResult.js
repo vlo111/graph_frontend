@@ -8,7 +8,7 @@ import SearchUsers from './SearchUsers';
 class SearchResult extends Component {
   render() {
     return (
-      <div className='graphsCard'>
+      <div className="graphsCard">
         <SearchGraphs setLimit />
         <SearchSharedGraphs setLimit />
         <SearchUsers setLimit />
