@@ -66,16 +66,18 @@ const GraphSettings = ({ singleGraph, graphId }) => {
   };
 
   useEffect(async () => {
-    setGraphList([]);
-    const result = await Api.getGraphsList(PAGE, {
-      onlyTitle: true,
-      s: search,
-      limit: search === '' ? LIMIT : undefined,
-      graphName: 'true',
-      graphId: singleGraph?.id,
-    });
-    setGraphList(result?.data?.graphs || []);
-    Chart.undoManager.reset();
+    if (isMenuOpen) {
+      setGraphList([]);
+      const result = await Api.getGraphsList(PAGE, {
+        onlyTitle: true,
+        s: search,
+        limit: search === '' ? LIMIT : undefined,
+        graphName: 'true',
+        graphId: singleGraph?.id,
+      });
+      setGraphList(result?.data?.graphs || []);
+      Chart.undoManager.reset();
+    }
   }, [graphId, isMenuOpen]);
 
   const saveGraph = async (status, forceCreate) => {

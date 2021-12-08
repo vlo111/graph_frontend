@@ -54,8 +54,10 @@ const AddFriend = React.memo(({ user }) => {
           }
           return (
             <Select
+              containerId="request_wrapper"
               options={selectOptions}
               onChange={(action) => selectAction(action, matchUser.id)}
+              placeholder="Request"
             />
           );
         case 'accepted':
@@ -65,7 +67,6 @@ const AddFriend = React.memo(({ user }) => {
               icon={<SolidFriendsSvg />}
               onClick={() => dispatch(removeFriendRequest(matchUser.id))}
             >
-              {' '}
               <span>Unfriend </span>
             </Button>
           );
@@ -101,7 +102,7 @@ const AddFriend = React.memo(({ user }) => {
         Add Friend
       </Button>
     );
-  }, [dispatch, selectAction, myFriends,id]);
+  }, [dispatch, selectAction, myFriends, id]);
 
   return loggedInUserId !== id ? getButtonClick : null;
 });
@@ -110,4 +111,4 @@ AddFriend.propTypes = {
   user: PropTypes.object.isRequired,
 };
 
-export default AddFriend;
+export default React.memo(AddFriend);

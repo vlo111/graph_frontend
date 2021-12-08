@@ -91,6 +91,7 @@ const EditGraphModal = ({
         setRequestData((prevState) => ({
           ...prevState,
           [path]: value,
+          userImage: true,
         }));
       }
     } else {
@@ -105,24 +106,26 @@ const EditGraphModal = ({
     const svg = ChartUtils.getChartSvg();
     const labels = Chart.getLabels();
     const { id: graphId } = graph;
-
+    let dataIamge = image;
     if (image) {
       let userEdited = true;
       if (typeof (image) === 'string' && graph?.nodesPartial?.length < 500) {
-        setRequestData(svg);
+        dataIamge = svg;
+        setImage(svg);
         userEdited = false;
       } else if (typeof (image) !== 'object') {
         userEdited = false;
-        setRequestData('');
+        dataIamge = '';
+        setImage('');
       }
-      await dispatch(updateGraphThumbnailRequest(graphId, image, 'medium', userEdited));
+      await dispatch(updateGraphThumbnailRequest(graphId, dataIamge, 'medium', userEdited));
     }
 
     const { payload: { data } } = await dispatch(updateGraphRequest(graphId, {
       ...requestData,
       labels,
       status,
-      svg,
+      image,
     }));
     const resGraphId = data.graphId;
     if (graph) {

@@ -58,7 +58,14 @@
   .text-size-16 {
     font-size: 16px;;
   }
-  
+.account_description{
+  color: #0D0905;
+  margin-top: 17px;
+  max-height: 200px;
+  overflow: scroll;
+  text-align: justify;
+  padding-right: 7px;
+  }
   .text-size-50 {
     font-size: 50px;;
   }
@@ -510,6 +517,88 @@
     }
   }
 
+#request_wrapper{
+   width: 120px !important;
+   margin: 0 !important;
+
+  .gh__control {
+    height: 40px !important;
+    border-radius: 5px;
+    background-color:$color-main;
+    color: $color-white !important;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding-right:10px !important;
+    font-size: 20px;
+    align-items: center;
+    border: none !important;
+
+    &:hover{
+    cursor:  pointer !important;
+    }
+
+    .css-tlfecz-indicatorContainer{
+      padding: 0 !important;
+    }
+    .ghSelectContent{
+      color: $color-white !important;
+    }
+    .css-1wa3eu0-placeholder{
+      color: $color-white;
+    }
+    .css-1gtu0rj-indicatorContainer{
+      padding: 0 !important;
+    }
+    .gh__indicator {
+      svg>path{
+        fill: $color-white !important;
+      }
+    }
+    .css-tlfecz-indicatorContainer{
+      padding: 0 !important;
+    }
+    .gh__clear-indicator,
+      .gh__dropdown-indicator {
+        padding-right: 0 !important;
+      }
+  }
+  .css-1pahdxg-control{
+    position: inherit !important;
+  }
+  .gh__menu{
+    height: 86px !important;
+    position: absolute;
+    top: 46px;
+    background:$color-white;
+    box-shadow: 0px 4px 33px rgb(0 0 0 / 25%);
+    z-index: 1;
+    border: none !important;
+
+     .gh__option {
+       font-size: 20px !important;
+       font-weight: 400 !important;
+       padding: 0px 10px 0px 10px !important;
+       margin-top: 6px !important;
+       height: 35px !important;
+      }
+      #react-select-3-option-0 {
+        color: $color-main !important;
+      }
+      #react-select-3-option-1 {
+       color:$color-main2 !important;
+      }
+      .css-1n7v3ny-option {
+        color: $color-main !important;
+      }
+      .css-yt9ioa-option {
+       color:$color-main2 !important;
+      }
+     .css-4ljt47-MenuList {
+        padding: 0 !important;
+     }
+  }
+}
     // edit page end
 
    
