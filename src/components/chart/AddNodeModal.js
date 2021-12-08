@@ -104,7 +104,7 @@ class AddNodeModal extends Component {
     } = this.state;
 
     const errors = {};
-    const nodes = [...Chart.getNodes()];
+    let nodes = [...Chart.getNodes()];
 
     const update = !_.isNull(index);
     [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update, graphNodes);
@@ -153,13 +153,17 @@ class AddNodeModal extends Component {
       }
 
       if (nodeData.color) {
-        ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
+        nodes = nodes.map((n) => {
+          if (n.type === nodeData.type) {
+            n.color = nodeData.color;
+          }
+          return n;
+        });
       }
 
       Chart.render({ nodes });
 
       this.closeExpand();
-      // this.props.setNodeCustomField(nodeData.type, nodeData.id, customField);
       this.props.toggleNodeModal();
     }
     this.setState({ errors, nodeData, loading: false });

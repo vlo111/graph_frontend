@@ -4504,7 +4504,7 @@ body .gh__menu {
     width: 15px;
     height: 15px;
     bottom: 10px;
-    left: calc(50% - 7.5px); 
+    left: calc(50% - 7.5px);
     z-index: 2000;
     cursor: pointer;
     opacity: 0;
@@ -9628,7 +9628,8 @@ details[open] summary:after {
 
   &:after {
     content: "";
-    top: 1px;
+    top: 56px;
+    left: 36px;
     border-width: 0 .5rem .5rem;
     position: absolute;
     display: block;
