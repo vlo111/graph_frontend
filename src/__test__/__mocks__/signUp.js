@@ -1,4 +1,4 @@
-import Api from '../Api';
+import Api from '../../Api';
 
 const user = async () => {
   const requestData = {

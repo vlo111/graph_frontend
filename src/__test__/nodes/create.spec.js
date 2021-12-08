@@ -8,8 +8,8 @@ import jwt from 'jsonwebtoken';
 import SignIn from '../../pages/sign/SignIn';
 import SignUp from '../../pages/sign/SignUp';
 import render from '../wrapper';
-import signUp from '../../__mocks__/signUp';
-import signIn from '../../__mocks__/signIn';
+import signUp from '../__mocks__/signUp';
+import signIn from '../__mocks__/signIn';
 import Index from '../../pages';
 import UserConfirmation from '../../pages/sign/UserConfirmation';
 
@@ -57,8 +57,6 @@ describe('create node', () => {
         route: `/sign/confirmation/${token}`,
       });
 
-    console.log(wrapper.debug())
-
     if (user) {
       /**
        * sign in with the same user
@@ -68,7 +66,6 @@ describe('create node', () => {
   });
 
   it('should be open add node modal mode from tool bar menu', () => {
-    console.log(wrapper.debug());
     // expect(wrapper.text().includes('You have no graph yet')).toBe(true);
   });
 
