@@ -8,7 +8,6 @@ import { ReactComponent as DownSvg } from '../assets/images/icons/down.svg';
 import { ReactComponent as LegendSvg } from '../assets/images/icons/legend.svg';
 import Button from './form/Button';
 import { getSingleGraphRequest } from '../store/actions/graphs';
-import Utils from '../helpers/Utils';
 
 class Legend extends Component {
     static propTypes = {
@@ -20,12 +19,10 @@ class Legend extends Component {
     }
 
     handleClick = () => {
-      const { showLegendButton } = this.props;
-
+      const { showLegendButton, singleGraph: { id } } = this.props;
       if (showLegendButton !== 'show') {
         this.props.setLegendButton('show');
-
-        this.props.getSingleGraphRequest(Utils.getGraphIdFormUrl());
+        this.props.getSingleGraphRequest(id, { viewMode: true });
       } else this.props.setLegendButton('close');
     }
 
