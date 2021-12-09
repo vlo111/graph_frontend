@@ -175,6 +175,8 @@
 
             &-keywords {
               margin-top: 5px;
+              max-height: 95px;
+              overflow: auto;
 
               .more-keywords {
                 background-color: inherit;
@@ -191,6 +193,19 @@
                 color: $color-passive;
                 margin-right: 10px;
                 margin-bottom: 10px;
+              }
+
+              &::-webkit-scrollbar {
+                width: 5px;
+                height: 5px;
+                background: #B9B4EF;
+                z-index: 0;
+              }
+
+              &::-webkit-scrollbar-thumb {
+                border-radius: 5px;
+                background: #5454E2;
+                z-index: 0;
               }
             }
 
