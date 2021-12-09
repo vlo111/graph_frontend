@@ -23,9 +23,9 @@ const renderWithRedux = (
 ) => {
   const wrapper = (
     <Provider store={store}>
-      <MemoryRouter initialEntries={initialEntries}>
-        { component }
-      </MemoryRouter>
+      {/* <MemoryRouter initialEntries={initialEntries}> */}
+      { component }
+      {/* </MemoryRouter> */}
     </Provider>
   );
 

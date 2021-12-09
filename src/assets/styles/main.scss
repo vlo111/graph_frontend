@@ -3915,6 +3915,7 @@ body .gh__menu {
   .containerModal {
     min-width: 340px;
     width: auto;
+    
 
     .mergeButton {
       display: flex;
@@ -6150,10 +6151,18 @@ img.preview-scaled {
 }
 
 .addNodeContainer {
+  overflow: auto;
+  margin-top: 60px;
+  width: 104%;
 
   .locMarker {
     width: 30px;
     cursor: pointer;
+  }
+  .addNodetitle{
+    position: absolute;
+    top: 0px;
+    width: 96%;
   }
 
   .showMore {
@@ -7726,8 +7735,8 @@ img.preview-scaled {
     color: $color-main2;
     font-weight: 600;
     position: absolute;
-    top: 43px;
-    left: 129px;
+    top: 30px;
+    left: 100px;
     display: none;
   }
 }

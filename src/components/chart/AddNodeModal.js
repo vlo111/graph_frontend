@@ -29,6 +29,9 @@ class AddNodeModal extends Component {
     currentUserId: PropTypes.string.isRequired,
     addNodeParams: PropTypes.object.isRequired,
     currentUserRole: PropTypes.string.isRequired,
+    updateNodesCustomFieldsRequest: PropTypes.string.isRequired,
+    graphId: PropTypes.string.isRequired,
+    graphNodes: PropTypes.string.isRequired,
   }
 
   initNodeData = memoizeOne((addNodeParams) => {
@@ -166,7 +169,7 @@ class AddNodeModal extends Component {
       this.closeExpand();
       this.props.toggleNodeModal();
     }
-    this.setState({ errors, nodeData, loading: false });
+    this.setState({ errors, nodeData });
   }
 
   handleChange = (path, item, editIndex) => {
@@ -267,8 +270,10 @@ class AddNodeModal extends Component {
         onRequestClose={this.closeModal}
       >
         <div className="addNodeContainer containerModal">
-          <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
-          <h2 className="add-node-text">{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
+          <div className="addNodetitle">
+            <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
+            <h2 className="add-node-text">{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
+          </div>
           <form
             className={`form ${imgUrl === 'error' ? '' : (nodeData.icon ? 'update-upload' : '')}`}
             onSubmit={this.saveNode}
@@ -375,7 +380,7 @@ class AddNodeModal extends Component {
                 <MapsLocationPicker
                   onClose={this.toggleMap}
                   value={editLocation != null
-                    ? nodeData.location.filter((p, index) => index === editLocation) : nodeData.location}
+                    ? nodeData.location.filter(() => index === editLocation) : nodeData.location}
                   onChange={(v, edit) => this.handleChange('location', v, edit)}
                   edit={Number.isInteger(editLocation) ? editLocation : null}
                 />
@@ -383,7 +388,7 @@ class AddNodeModal extends Component {
                 <div className="ghFormField locationExpandForm">
                   {_.isObject(nodeData?.location)
                       && nodeData.location
-                        .map((p, index) => (
+                        .map((p) => (
                           <div className="locForm">
                             <div className="locName">
                               <p title={p.address}>
@@ -436,6 +441,7 @@ class AddNodeModal extends Component {
                 </button>
               </div>
             </div>
+
             <div className="advanced right">
               <div className="show-more" onClick={this.toggleExpand}>
                 {!expand ? 'Show More' : 'Show Less'}

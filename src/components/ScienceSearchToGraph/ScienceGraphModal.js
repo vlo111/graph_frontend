@@ -10,11 +10,11 @@ import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import Chart from '../../Chart';
 import ChartUtils from '../../helpers/ChartUtils';
 import { ReactComponent as ApiImg } from '../../assets/images/icons/science.svg';
-
 import Api from '../../Api';
 import { ScienceCategories } from '../../data/scienceCategory';
 import Button from '../form/Button';
 import Checkbox from '../form/Checkbox';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 const {
   REACT_APP_ARXIV_URL,
@@ -27,6 +27,7 @@ class ScienceGraphModal extends Component {
   static propTypes = {
     currentUserId: PropTypes.number.isRequired,
     singleGraphId: PropTypes.number.isRequired,
+    setActiveButton: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -38,6 +39,7 @@ class ScienceGraphModal extends Component {
       getChecked: false,
       searchResults: null,
       checkedList: [],
+
     };
   }
 
@@ -124,7 +126,7 @@ class ScienceGraphModal extends Component {
       await arxivJsonData.feed.entry.map((article) => {
         const categoryAcronim = article.category[0].$.term.trim();
         const category = ScienceCategories.find(
-          (category) => category.acronym.trim() == categoryAcronim,
+          (category) => category.acronym.trim() === categoryAcronim,
         );
         const topics = category ? [category.fullName] : undefined;
         const url = `${article?.id[0]?.replace('abs', 'pdf')}.pdf`;
@@ -494,7 +496,7 @@ class ScienceGraphModal extends Component {
             tabIndex="0"
             className="scine scienceResultsList"
             onClick={(ev) => {
-              const items = document.getElementsByClassName('scienceResultsList');
+              const items = document.getElementsByClassName('scienceResultsList ');
 
               if (!checkedList.includes(index)) {
                 items[index].style.backgroundColor = '#e5e3f5';
@@ -608,6 +610,8 @@ class ScienceGraphModal extends Component {
           onRequestClose={this.close}
         >
           <div className="scienceModalsubBox">
+            <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.close} />
+
             <div className="scienceLogo">
               <ApiImg className="ApiImg" />
             </div>
