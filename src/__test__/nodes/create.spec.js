@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { fireEvent } from '@testing-library/react';
-import { shallow, configure } from 'enzyme';
+// import { fireEvent } from '@testing-library/react';
+import { configure } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import renderWithReduxNRouter from '../render';
+// import renderWithReduxNRouter from '../render';
 import GraphForm from '../../pages/GraphForm';
 import SignIn from '../../pages/sign/SignIn';
 import SignUp from '../../pages/sign/SignUp';

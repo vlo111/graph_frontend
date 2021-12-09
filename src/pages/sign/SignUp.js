@@ -58,7 +58,6 @@ class SignUp extends Component {
   signUp = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
-    console.log('kpav', requestData)
 
     this.setState({ loading: true });
 
@@ -161,6 +160,7 @@ class SignUp extends Component {
                 <h4>Get started now </h4>
               </div>
               <Input
+                data-testid="firstName"
                 name="firstName"
                 className={`${
                   errors.firstName ? 'border-error' : null
@@ -172,6 +172,7 @@ class SignUp extends Component {
                 autoComplete="off"
               />
               <Input
+                data-testid="lastName"
                 name="lastName"
                 className={`${
                   errors.lastName ? 'border-error' : null
@@ -184,7 +185,7 @@ class SignUp extends Component {
               />
 
               <Input
-                data-testid="em"
+                data-testid="email"
                 name="email"
                 className={`${
                   errors.email ? 'border-error' : null
@@ -198,6 +199,7 @@ class SignUp extends Component {
               />
 
               <PasswordInput
+                data-testid="password"
                 name="password"
                 className={`${
                   errors.password ? 'border-error' : null
@@ -211,6 +213,7 @@ class SignUp extends Component {
               />
 
               <PasswordInput
+                data-testid="passwordConfirn"
                 name="passwordConfirm"
                 className={`${
                   errors.passwordConfirm ? 'border-error' : null
@@ -227,7 +230,6 @@ class SignUp extends Component {
                 className="submit"
                 type="submit"
                 loading={loading}
-                data-testid="start"
               >
                 Start
               </Button>
