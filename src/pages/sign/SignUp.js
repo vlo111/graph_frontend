@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
 import { signUpRequest } from '../../store/actions/account';
@@ -12,8 +13,7 @@ import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
 import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
 import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
 import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
-import Validate from "../../helpers/Validate";
-import _ from "lodash";
+import Validate from '../../helpers/Validate';
 
 class SignUp extends Component {
   static propTypes = {
@@ -61,25 +61,25 @@ class SignUp extends Component {
 
     this.setState({ loading: true });
 
-    const errors = Validate.register(requestData)
+    const errors = Validate.register(requestData);
 
     if (_.isEmpty(errors)) {
-        const { payload } = await this.props.signUpRequest(requestData);
-        const { data = {} } = payload;
-        if (data.status === 'ok') {
-          this.props.history.push('/sign/sign-in');
-          return;
-        }
+      const { payload } = await this.props.signUpRequest(requestData);
+      const { data = {} } = payload;
+      if (data.status === 'ok') {
+        this.props.history.push('/sign/sign-in');
+        return;
+      }
 
-        this.setState({
-          errors: data.errors || { email: data.message },
-          loading: false,
-        });
+      this.setState({
+        errors: data.errors || { email: data.message },
+        loading: false,
+      });
     } else {
-        this.setState({
-          errors,
-          loading: false,
-        });
+      this.setState({
+        errors,
+        loading: false,
+      });
     }
   };
 
@@ -183,6 +183,7 @@ class SignUp extends Component {
               />
 
               <Input
+                data-testid="em"
                 name="email"
                 className={`${
                   errors.email ? 'border-error' : null
@@ -225,6 +226,7 @@ class SignUp extends Component {
                 className="submit"
                 type="submit"
                 loading={loading}
+                data-testid="start"
               >
                 Start
               </Button>
