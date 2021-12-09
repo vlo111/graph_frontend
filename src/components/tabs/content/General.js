@@ -47,17 +47,6 @@ const General = ({
     overflow: 'auto',
   };
 
-  let keywords = [];
-
-  if (!tabsExpand) {
-    if (node.keywords.length > 6) {
-      keywords = node.keywords.slice();
-
-      keywords.splice(6, node.keywords.length - 6);
-    }
-  } else {
-    keywords = node.keywords;
-  }
   return (
     <div className="general">
       <div className="general-hider">
@@ -103,24 +92,19 @@ const General = ({
           <div className="general-footer-item leftLine">
             <span className="item-text">Label: </span>
             <span>
-              {!node.keywords?.length ? 'there is not keyword'
+              {!node.keywords?.length ? 'there is no keyword'
                 : (
                   <div className="general-footer-item-keywords">
                     <>
                       {tabsExpand ? node.keywords.map((p) => (
                         <span>{p}</span>
-                      ))
-                        : (
-                          <>
-                            {keywords.filter((k, index) => index < 6).map((p) => (
-                              <span>{Utils.substr(p, 10)}</span>
-                            ))}
-                            {(node.keywords.length > 6) && (
-                            <span className="more-keywords">{`more (${node.keywords.length - 6})`}</span>
-                            )}
-                          </>
-                        )}
-
+                      )) : (
+                        <>
+                          {node.keywords.map((p) => (
+                            <span>{Utils.substr(p, 10)}</span>
+                          ))}
+                        </>
+                      )}
                     </>
                   </div>
                 )}
