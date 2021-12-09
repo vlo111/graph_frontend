@@ -377,7 +377,7 @@
           }
 
           * {
-            width: 310px;
+            min-width: 310px;
             margin: 0 !important;
             padding: 0 !important;;
           }
@@ -795,7 +795,15 @@
 
   .tab_content-description {
     * {
-      width: calc(100% - 10px) !important;
+      width: calc(100% - 10px);
+    }
+
+    iframe {
+      max-width: 600px;
+    }
+
+    img {
+      max-width: 600px;
     }
   }
 
