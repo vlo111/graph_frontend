@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { isNumber } from 'lodash';
@@ -6,8 +7,16 @@ import { setActiveButton, toggleNodeModal } from '../../store/actions/app';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import Utils from '../../helpers/Utils';
 import { ReactComponent as WikiSvg } from '../../assets/images/wikipedia.svg';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Button from '../form/Button';
 
 class WikiModal extends Component {
+  static propTypes = {
+    toggleNodeModal: PropTypes.string.isRequired,
+    setActiveButton: PropTypes.string.isRequired,
+
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +29,7 @@ class WikiModal extends Component {
 
   useWikiSearchEngine = (e) => {
     e.preventDefault();
-    if (this.state.WikiSearchTerms === undefined) {
+    if (this.state.wikiSearchTerms === undefined) {
       return 0;
     }
     this.setState({
@@ -78,7 +87,7 @@ class WikiModal extends Component {
     });
   };
 
-  openAddNewNode = async (ev) => {
+  openAddNewNode = async () => {
     const { getChecked } = this.state;
     if (getChecked === true) {
       return;
@@ -160,10 +169,9 @@ https://en.wikipedia.org/wiki/${name}
                 <input
                   style={{ display: 'none' }}
                   onChange={() => this.checkedWiki(i)}
-                  checked={isNaN(getChecked) ? getChecked : i === getChecked}
+                  checked={Number.isNaN(getChecked) ? getChecked : i === getChecked}
                   type="radio"
                   name="radio"
-                  name="layout"
                   id={i}
                   value="option1"
                 />
@@ -218,6 +226,8 @@ https://en.wikipedia.org/wiki/${name}
             <WikiSvg />
           </div>
           <div className="Wiki">
+            <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.close} />
+
             <form action="">
               <input
                 type="text"
@@ -234,20 +244,20 @@ https://en.wikipedia.org/wiki/${name}
           {wikiSearchReturnValues.length ? (
             <div className="wikibutton">
               {isNumber(getChecked) ? (
-                <button
+                <Button
                   onClick={(ev) => this.openAddNewNode(ev)}
                   className="wikiCreateNode btn-classic "
                 >
                   Create Node
-                </button>
+                </Button>
               ) : (
-                <button
+                <Button
                   onClick={(ev) => this.openAddNewNode(ev)}
                   className="wikiCreateNode btn-classic wikipediaDisabled"
                   disabled
                 >
                   Create Node
-                </button>
+                </Button>
               )}
             </div>
           ) : null}
