@@ -41,6 +41,7 @@ const EditGraphModal = ({
     userImage: graph.defaultImage || false,
   });
   const [image, setImage] = useState('');
+  const order = JSON.parse(localStorage.getItem('/')) || 'newest';
 
   useEffect(async () => {
     const graphId = graph.id;
@@ -58,7 +59,6 @@ const EditGraphModal = ({
     const { page = 1, s: searchParam } = queryString.parse(window.location.search);
 
     //  select data from localStorage
-    const order = JSON.parse(localStorage.getItem('/')) || 'newest';
     try {
       if (graphId) {
         await dispatch(deleteGraphRequest(graph.id));
@@ -75,7 +75,7 @@ const EditGraphModal = ({
       console.log(e);
     }
   }
-  const handleChange = async (path, value) => {
+  const handleChange = async (path, value, byUser) => {
     if (path === 'image') {
       if (value === '') {
         const svg = graph?.nodesPartial?.length < 500 ? ChartUtils.getChartSvg() : '';
@@ -83,7 +83,7 @@ const EditGraphModal = ({
           ...prevState,
           userImage: false,
         }));
-        const savedImageRequest = await Api.updateGraphThumbnail(graph.id, svg, 'small', 'tmp');
+        const savedImageRequest = await Api.updateGraphThumbnail(graph.id, svg, 'small', byUser);
         const images = `${savedImageRequest?.data?.thumbUrl}?t=${moment(graph.updatedAt).unix()}`;
         setImage(images);
       } else {
@@ -101,7 +101,7 @@ const EditGraphModal = ({
       }));
     }
   };
-  const saveGraph = async (status) => {
+  const saveGraph = async (status, page) => {
     setLoading(true);
     const svg = ChartUtils.getChartSvg();
     const labels = Chart.getLabels();
@@ -131,6 +131,7 @@ const EditGraphModal = ({
     if (graph) {
       toast.info('Successfully saved');
       const { payload: { data: { graph: newGraph } } } = (await dispatch(getSingleGraphRequest(resGraphId)));
+      await dispatch(getGraphsListRequest(page, { filter: order }));
       (updateGraph && updateGraph(newGraph));
     } else if (!resGraphId) {
       toast.error('Something went wrong. Please try again');
