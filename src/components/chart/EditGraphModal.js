@@ -101,7 +101,7 @@ const EditGraphModal = ({
       }));
     }
   };
-  const saveGraph = async (status, page) => {
+  const saveGraph = async (status) => {
     setLoading(true);
     const svg = ChartUtils.getChartSvg();
     const labels = Chart.getLabels();
@@ -131,7 +131,7 @@ const EditGraphModal = ({
     if (graph) {
       toast.info('Successfully saved');
       const { payload: { data: { graph: newGraph } } } = (await dispatch(getSingleGraphRequest(resGraphId)));
-      await dispatch(getGraphsListRequest(page, { filter: order }));
+      await dispatch(getGraphsListRequest(1, { filter: order }));
       (updateGraph && updateGraph(newGraph));
     } else if (!resGraphId) {
       toast.error('Something went wrong. Please try again');
