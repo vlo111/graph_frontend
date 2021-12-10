@@ -5,8 +5,6 @@ import {
 } from 'react-router-dom';
 import { configure } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import _ from 'lodash';
-import jwt from 'jsonwebtoken';
 import { createMemoryHistory } from 'history';
 import SignIn from '../../pages/sign/SignIn';
 import SignUp from '../../pages/sign/SignUp';
@@ -41,55 +39,81 @@ describe('create node', () => {
   let wrapper;
 
   beforeAll(async () => {
+    // create user with active status
+    const { user } = await signUp();
+
     wrapper = render(<RouterComponent />);
-
-    history.replace('/sign/sign-up');
-
-    wrapper.update();
-
-    console.log(wrapper.debug());
 
     const getFields = () => wrapper.find('input');
 
-    const onChangeEvent = (e, index) => e.simulate('change', event[index]);
-
-    expect(getFields().length).toBe(5);
-
     const event = [
-      { target: { name: 'firstName', value: 'testf' } },
-      { target: { name: 'lastName', value: 'testl' } },
-      { target: { name: 'email', value: 'test@email.com' } },
-      { target: { name: 'password', value: '111111aA' } },
-      { target: { name: 'passwordConfirm', value: '111111aA' } },
+      { target: { name: 'email', value: user.email } },
+      { target: { name: 'password', value: user.password } },
     ];
+
+    const onChangeEvent = (e, index) => e.simulate('change', event[index]);
 
     getFields().forEach((p, i) => {
       onChangeEvent(p, i);
     });
 
-    const send = wrapper.find('form');
+    const send = wrapper.find('.ghButton');
 
-    send.simulate('submit');
+    await send.simulate('submit');
 
-    history.replace('/sign/sign-in');
-
-    wrapper.update();
-
-    console.log(wrapper.debug());
-
-    console.log(wrapper.find('input').at(0).debug())
-
-    wrapper.find('input').at(0).simulate('change', { target: { name: 'emaill', value: 'test@email.com' } });
-
-    wrapper.find('input').at(1).simulate('change', { target: { name: 'passwordl', value: '111111aA' } });
+    // history.replace('/');
     //
-    // wrapper.find('.input_2').simulate('change', { target: { name: 'password', value: '111111aA' } });
+    // wrapper.update();
     //
-    wrapper.find('.submit').simulate('click');
+    // console.log(wrapper.debug());
 
-    wrapper.update();
+    // history.replace('/sign/sign-up');
+    //
+    // wrapper.update();
+    //
+    // console.log(wrapper.debug());
 
-    console.log(wrapper.debug());
+    // const getFields = () => wrapper.find('input');
+    //
+    // const onChangeEvent = (e, index) => e.simulate('change', event[index]);
+    //
+    // expect(getFields().length).toBe(5);
+    //
+    // const event = [
+    //   { target: { name: 'firstName', value: 'testf' } },
+    //   { target: { name: 'lastName', value: 'testl' } },
+    //   { target: { name: 'email', value: 'test@email.com' } },
+    //   { target: { name: 'password', value: '111111aA' } },
+    //   { target: { name: 'passwordConfirm', value: '111111aA' } },
+    // ];
+    //
+    // getFields().forEach((p, i) => {
+    //   onChangeEvent(p, i);
+    // });
+    //
+    // const send = wrapper.find('form');
+    //
+    // send.simulate('submit');
+    //
+    // history.replace('/sign/sign-in');
+    //
+    // wrapper.update();
+    //
+    // console.log(wrapper.debug());
+    //
+    // console.log(wrapper.find('input').at(0).debug())
+    //
+    // wrapper.find('input').at(0).simulate('change', { target: { name: 'emaill', value: 'test@email.com' } });
+    //
+    // wrapper.find('input').at(1).simulate('change', { target: { name: 'passwordl', value: '111111aA' } });
+    // //
+    // // wrapper.find('.input_2').simulate('change', { target: { name: 'password', value: '111111aA' } });
+    // //
+    // wrapper.find('.submit').simulate('click');
+    //
+    // wrapper.update();
+    //
+    // console.log(wrapper.debug());
 
     // const secretKey = 'wr4-)*&&zg23jk5vn)';
     //
