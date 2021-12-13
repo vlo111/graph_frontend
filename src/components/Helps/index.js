@@ -5,8 +5,6 @@ import {
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Button from '../form/Button';
 import 'react-tabs/style/react-tabs.css';
-import HelpSvg from '../../assets/images/Help.svg';
-import liinkSvg from '../../assets/images/liink.svg';
 import HelpLeftSvg from '../../assets/images/helpleft.svg';
 import Mapsgoogle from '../../assets/images/help/Map.png';
 import Wiki from '../../assets/images/help/Wiki.png';
@@ -96,7 +94,16 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <iframe width="1280" height="720" className="help_img" src="https://www.youtube.com/embed/kCe9OOKsVtc" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+            <iframe
+              width="1280"
+              height="720"
+              className="help_img"
+              src="https://www.youtube.com/embed/kCe9OOKsVtc"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
 
           <div>
@@ -149,7 +156,16 @@ export default (props) => {
         </TabPanel>
         <TabPanel>
           <div>
-            <iframe width="1280" height="720" className="help_img" src="https://www.youtube.com/embed/8aJt88yJ8eY" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+            <iframe
+              width="1280"
+              height="720"
+              className="help_img"
+              src="https://www.youtube.com/embed/8aJt88yJ8eY"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
           <div>
             <p>Create new nodes</p>
@@ -176,7 +192,7 @@ export default (props) => {
         </TabPanel>
         <TabPanel>
           {' '}
-          <img src={Mapsgoogle} className="help_img" />
+          <img src={Mapsgoogle} className="help_img" alt="Mapsgoogle" />
           <div>
             <p>Create node via Google map</p>
           </div>
@@ -212,7 +228,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Wiki} className="help_img" />
+            <img src={Wiki} className="help_img" alt="Wiki" />
           </div>
           <div>
             <p>Create node via Wikipedia</p>
@@ -246,7 +262,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Linkedin} className="help_img" />
+            <img src={Linkedin} className="help_img" alt="Linkedin" />
           </div>
           <div>
             <p>Create node via Linkedin</p>
@@ -282,7 +298,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={MinScince} className="help_img" />
+            <img src={MinScince} className="help_img" alt="MinScince" />
           </div>
           <div>
             <p>Create node by Science Mind </p>
@@ -294,21 +310,21 @@ export default (props) => {
                 Science Mind is a huge base of three famous scientific sites:
                 {' '}
               </span>
-              <a href="www.core.ac.uk">
+              <a href="https://core.ac.uk/" rel="noreferrer" target="_blank">
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 {' '}
                 www.core.ac.uk
               </a>
-              <a href="www.semanticscholar.org">
+              <a href="https://www.semanticscholar.org/" rel="noreferrer" target="_blank">
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 {' '}
                 www.semanticscholar.org
               </a>
-              <a href="www.arxiv.org">
+              <a href="https://arxiv.org/" rel="noreferrer" target="_blank">
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 {' '}
                 www.arxiv.org
               </a>
@@ -336,7 +352,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={FindNode} className="help_img" />
+            <img src={FindNode} className="help_img" alt="FindNode" />
           </div>
           <div>
             <p>Find node</p>
@@ -358,7 +374,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={LinkNode} className="help_img" />
+            <img src={LinkNode} className="help_img" alt="LinkNode" />
           </div>
           <div>
             <p>Link the nodes</p>
@@ -389,7 +405,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Label} className="help_img" />
+            <img src={Label} className="help_img" alt="Label" />
           </div>
           <div>
             <div>
@@ -468,7 +484,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Folder} className="help_img" />
+            <img src={Folder} className="help_img" alt="Folder" />
           </div>
           <div>
             <p>Folder</p>
@@ -526,7 +542,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Import} className="help_img" />
+            <img src={Import} className="help_img" alt="Import" />
           </div>
           <div>
             <p>Import a graph</p>
@@ -553,7 +569,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Export} className="help_img" />
+            <img src={Export} className="help_img" alt="Export" />
           </div>
           <div>
             <p>Export a graph</p>
@@ -566,15 +582,15 @@ export default (props) => {
                 {' '}
                 Here you can find all listed information about:
               </p>
-              <a href="www.core.ac.uk">
+              <a href="https://core.ac.uk/" rel="noreferrer" target="_blank">
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 {' '}
                 www.core.ac.uk
               </a>
-              <a href="www.semanticscholar.org">
+              <a href="https://www.semanticscholar.org/" rel="noreferrer" target="_blank">
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 {' '}
                 www.semanticscholar.org
               </a>
@@ -589,24 +605,24 @@ export default (props) => {
               {' '}
               <div className="export_help_text">
                 <a>
-                  <img src={HelpLeftSvg} />
+                  <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                   ZIP (use this format to fully backup the graph)
                 </a>
                 <a>
                   {' '}
-                  <img src={HelpLeftSvg} />
+                  <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                   {' '}
                   PNG
                 </a>
                 <a>
                   {' '}
-                  <img src={HelpLeftSvg} />
+                  <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                   {' '}
                   PDF
                 </a>
                 <a>
                   {' '}
-                  <img src={HelpLeftSvg} />
+                  <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                   {' '}
                   Excel (.xlsx)
                 </a>
@@ -618,7 +634,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Compare} className="help_img" />
+            <img src={Compare} className="help_img" alt="Compare" />
           </div>
           <div>
             <p>Compare and merge graphs</p>
@@ -659,7 +675,7 @@ export default (props) => {
           Compare nodes of a Label/Folder
           <div>
             {' '}
-            <img src={CompareNode} className="help_img" />
+            <img src={CompareNode} className="help_img" alt="CompareNode" />
           </div>
           <div>
             <p>
@@ -708,7 +724,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={ShareGraph} className="help_img" />
+            <img src={ShareGraph} className="help_img" alt="ShareGraph" />
           </div>
           <div>
             <p>Share a graph </p>
@@ -756,7 +772,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={SharelLAbelFolder} className="help_img" />
+            <img src={SharelLAbelFolder} className="help_img" alt="SharelLAbelFolder" />
           </div>
           <div>
             <p>Share a Label and Folder </p>
@@ -806,7 +822,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Search} className="help_img" />
+            <img src={Search} className="help_img" alt="Search" />
           </div>
           <div>
             <p>Search</p>
@@ -824,7 +840,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Filter} className="help_img" />
+            <img src={Filter} className="help_img" alt="Filter" />
           </div>
           <div>
             <p>Filter </p>
@@ -839,32 +855,32 @@ export default (props) => {
             <div className="helpMindText">
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Node types
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Node status
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Labels
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Label status,
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Node Connections values
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Node Keywords
               </a>
             </div>
@@ -873,7 +889,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Media} className="help_img" />
+            <img src={Media} className="help_img" alt="Media" />
           </div>
           <div>
             <p>Media</p>
@@ -894,22 +910,22 @@ export default (props) => {
             <div className="helpMindText">
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Node icon
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Show documents of tabs
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Show image of tabs
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Videos
               </a>
             </div>
@@ -918,7 +934,7 @@ export default (props) => {
         <TabPanel>
           <div>
             {' '}
-            <img src={Analyses} className="help_img" />
+            <img src={Analyses} className="help_img" alt="Analyses" />
           </div>
           <div>
             <p>Analysis</p>
@@ -936,22 +952,22 @@ export default (props) => {
             <div className="helpMindText">
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Node icon
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Show documents of tabs
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Show image of tabs
               </a>
               <a>
                 {' '}
-                <img src={HelpLeftSvg} />
+                <img src={HelpLeftSvg} alt="HelpLeftSvg" />
                 Videos
               </a>
             </div>
@@ -1089,6 +1105,13 @@ export default (props) => {
                   <div>
                     <span>Ctrl</span>
                     <span>V</span>
+                  </div>
+                </li>
+                <li>
+                  <span className="HelpCommand">Back</span>
+                  <div>
+                    <span>Ctrl</span>
+                    <span>Z</span>
                   </div>
                 </li>
               </ul>
