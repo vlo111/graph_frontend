@@ -17,7 +17,6 @@ import Notification from './Notification';
 import { KEY_CODES } from '../data/keyCodes';
 import ContributorsModal from './Contributors';
 import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
-import { ReactComponent as NotifySvg } from '../assets/images/icons/notification.svg';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
 import { ReactComponent as NotifyEmptySvg } from '../assets/images/icons/notificationComplete.svg';
@@ -47,16 +46,7 @@ class ToolBarHeader extends Component {
 
     const notifyElement = document.querySelector('.notification');
 
-    setTimeout(() => {
-      if (notifyElement) {
-        const dataCount = notifyElement.getAttribute('data-count');
-        if (dataCount === 0) {
-          notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifyEmptySvg />);
-        } else {
-          notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifySvg />);
-        }
-      }
-    }, 100);
+    notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifyEmptySvg />);
   }
 
   componentWillUnmount() {
