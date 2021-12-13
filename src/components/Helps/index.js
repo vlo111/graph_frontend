@@ -1107,13 +1107,6 @@ export default (props) => {
                     <span>V</span>
                   </div>
                 </li>
-                <li>
-                  <span className="HelpCommand">Back</span>
-                  <div>
-                    <span>Ctrl</span>
-                    <span>Z</span>
-                  </div>
-                </li>
               </ul>
             </div>
           </div>
