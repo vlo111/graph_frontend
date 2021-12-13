@@ -30,6 +30,8 @@ const NodeInfoHeader = ({
     getElement('.graphControlPanel').style.right = right;
 
     setSingleExpand(false);
+
+    document.body.className = document.body.className.replace('node_expand', '');
   };
 
   const expandTabs = () => {
