@@ -22,7 +22,7 @@ class Legend extends Component {
       const { showLegendButton, singleGraph: { id } } = this.props;
       if (showLegendButton !== 'show') {
         this.props.setLegendButton('show');
-        this.props.getSingleGraphRequest(id, { viewMode: true, rendering: false });
+        this.props.getSingleGraphRequest(id, { viewMode: true });
       } else this.props.setLegendButton('close');
     }
 
