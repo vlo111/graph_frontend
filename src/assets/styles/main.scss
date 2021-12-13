@@ -1724,7 +1724,7 @@ p {
   max-height: 100vh;
   height: 100vh;
   position: absolute;
-  z-index: 4;
+  z-index: 3;
   left: 202px;
   border-left: 1px solid $color-light-gray;
   padding-left: 4px;
@@ -3915,7 +3915,7 @@ body .gh__menu {
   .containerModal {
     min-width: 340px;
     width: auto;
-    
+
 
     .mergeButton {
       display: flex;
