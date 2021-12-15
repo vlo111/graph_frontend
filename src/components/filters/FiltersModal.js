@@ -26,6 +26,7 @@ class FiltersModal extends Component {
     getGraphInfoRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     userGraphs: PropTypes.array.isRequired,
+    history: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -103,7 +104,7 @@ class FiltersModal extends Component {
           <h3 className="title">Filter</h3>
           <div className="row resetAll">
             <div>
-              <button className="btn-classic alt resetButton" onClick={this.props.resetFilter}>RESET ALL</button>
+              <Button className="btn-classic alt resetButton" onClick={this.props.resetFilter}>RESET ALL</Button>
             </div>
             <span
               className="nodeCount"
