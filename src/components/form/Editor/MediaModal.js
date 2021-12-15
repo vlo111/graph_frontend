@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import Button from '../Button';
 import { ReactComponent as CloseSvg } from '../../../assets/images/icons/close.svg';
 import FileUpload from '../FileUpload';
-import Input from '../Input';
 
 class MediaModal extends Component {
   static propTypes = {
@@ -97,10 +96,10 @@ class MediaModal extends Component {
             <h2>Select media</h2>
             <FileUpload addFile={this.addFile} file={popUpData.file} />
             <div className="buttons">
-              <Button className="cancel transparent alt" onClick={this.closeInsertMedia}>
+              <Button className="cancel  btn-delete" onClick={this.closeInsertMedia}>
                 Back
               </Button>
-              <Button onClick={this.insertData} className="accent alt" type="submit">
+              <Button onClick={this.insertData} className="accent  btn-classic" type="submit">
                 Insert
               </Button>
             </div>

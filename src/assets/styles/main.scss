@@ -444,7 +444,7 @@ p {
     color: $color-border;
     border: 1px solid $color-border;
     border-radius: 5px;
-    padding: 0 0 0 15px;
+    padding: 0 15px 0 15px;
 
     &:focus {
       outline: none;
@@ -889,8 +889,8 @@ p {
 
     .closeIcon {
       cursor: pointer;
-      width: 30px;
-      height: 30px;
+      width: 50px;
+      height: 50px;
     }
 
     .folderResizeIcon {
@@ -1065,8 +1065,11 @@ p {
     background-color: rgba(0, 0, 0, 0.5);
   }
 
-  .content {
+ .content {
     user-select: none;
+    .warning{
+      background-color: #0062ff;
+    }
   }
 
   .buttons {
@@ -5476,6 +5479,8 @@ label.pull-left::before {
 
   .buttons, h2, .ghFileInput, .ghFormField {
     width: auto !important;
+    justify-content: center;
+
   }
   .inserCancel{
     margin: 0 auto;
