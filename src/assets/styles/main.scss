@@ -1727,7 +1727,7 @@ p {
   max-height: 100vh;
   height: 100vh;
   position: absolute;
-  z-index: 4;
+  z-index: 3;
   left: 202px;
   border-left: 1px solid $color-light-gray;
   padding-left: 4px;
@@ -3918,7 +3918,7 @@ body .gh__menu {
   .containerModal {
     min-width: 340px;
     width: auto;
-    
+
 
     .mergeButton {
       display: flex;
@@ -8079,7 +8079,7 @@ img.preview-scaled {
     color: $color-notification-text;
     text-shadow: none;
     top: 10px;
-    right: -1px;
+    right: -5px;
     padding: 0;
   }
 }
@@ -9600,6 +9600,7 @@ details[open] summary:after {
   flex-direction: column;
   min-height: 50px;
   overflow: hidden;
+  background-color: white;
 }
 
 .jodit-xpath {

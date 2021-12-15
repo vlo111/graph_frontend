@@ -101,6 +101,12 @@ class AddLinkModal extends Component {
         links = links.map((d) => {
           if (d.index === linkData.index) {
             d.sx = undefined;
+
+            if (d.type !== linkData.type) {
+              linkData.color = '';
+              d.color = ChartUtils.linkColor(linkData);
+            }
+
             return { ...linkData };
           }
           return d;
