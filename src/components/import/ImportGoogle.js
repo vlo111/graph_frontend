@@ -88,7 +88,7 @@ class ImportGoogle extends Component {
                 type="url"
                 name="google_sheets_url"
                 label="Google Sheets URL"
-                placeholder="Paste URL from your Google Sheets"
+                placeholder="Google Sheets URL"
               />
             </div>
             <div className="importButton">

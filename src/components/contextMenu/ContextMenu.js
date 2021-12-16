@@ -11,7 +11,7 @@ import ExpandNodeContextMenu from './ExpandNodeContextMenu';
 import QueryContextMenu from './QueryContextMenu';
 import MatchNodeContextMenu from './MatchNodeContextMenu';
 import LinkContextMenu from './LinkContextMenu';
-import TabContext from './TabContext';
+// import TabContext from './TabContext';
 import LabelContextMenu from './LabelContextMenu';
 import Icon from '../form/Icon';
 import LabelUtils from '../../helpers/LabelUtils';
@@ -24,6 +24,12 @@ import { KEY_CODES } from '../../data/keyCodes';
 class ContextMenu extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
+    match: PropTypes.func.isRequired,
+    expand: PropTypes.func.isRequired,
+    activeButton: PropTypes.func.isRequired,
+    singleGraphId: PropTypes.func.isRequired,
+    currentUserRole: PropTypes.func.isRequired,
+    location: PropTypes.func.isRequired,
   }
 
   static event = new EventEmitter();
@@ -168,7 +174,7 @@ class ContextMenu extends Component {
 
   render() {
     const {
-      x, y, params, deleteDataModal, element,
+      x, y, params, deleteDataModal,
     } = this.state;
     let { show } = this.state;
     const { activeButton, location: { pathname } } = this.props;
@@ -179,6 +185,10 @@ class ContextMenu extends Component {
         return null;
       }
     }
+    if (pathname.includes('filter')) {
+      return null;
+    }
+
     if (viewLocation && show === 'node') {
       show = 'expand';
     }
@@ -191,6 +201,9 @@ class ContextMenu extends Component {
     if (params.fieldName === '_location') {
       return null;
     }
+    // if (params.fieldName !== 'node') {
+    //   return undefined;
+    // }
     const contexHeight = show === 'selectSquare' ? 195 : 117;
 
     const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y;

@@ -217,6 +217,7 @@ class FindNode extends Component {
             <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
 
             <Input
+              placeholder="Enter Node name"
               label="Search"
               autoComplete="off"
               value={search}

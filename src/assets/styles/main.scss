@@ -444,7 +444,7 @@ p {
     color: $color-border;
     border: 1px solid $color-border;
     border-radius: 5px;
-    padding: 0 0 0 15px;
+    padding: 0 15px 0 15px;
 
     &:focus {
       outline: none;
@@ -889,8 +889,8 @@ p {
 
     .closeIcon {
       cursor: pointer;
-      width: 30px;
-      height: 30px;
+      width: 50px;
+      height: 50px;
     }
 
     .folderResizeIcon {
@@ -1065,8 +1065,11 @@ p {
     background-color: rgba(0, 0, 0, 0.5);
   }
 
-  .content {
+ .content {
     user-select: none;
+    .warning{
+      background-color: #0062ff;
+    }
   }
 
   .buttons {
@@ -2623,10 +2626,11 @@ p {
   }
 
   .close {
+    position: fixed !important;
+    top: 80px !important;
     background-color: transparent;
     box-shadow: none;
     margin-top: 0;
-    padding-left: 322px;
   }
 
   .ghModalFilters {
@@ -2634,21 +2638,19 @@ p {
     height: 100%;
     margin: 0;
     max-width: unset;
-    max-height: 100vh;
-    top: 70px;
+    max-height: 100%;
+    top: 56px;
     border-radius: 0;
-    overflow-y: auto;
-    padding-left: 10%;
-    padding-top: 7%;
+    overflow-y: hidden;
+    padding: 0px 0px 0px 20px;
     padding-bottom: 15%;
     box-shadow: 0 4px 36px rgba(0, 0, 0, 0.16);
 
     .filter-container {
       width: 100%;
-
-      .hideIsolated .filterCheckBox {
-        margin-left: 0;
-      }
+      position: relative;
+      overflow: scroll;
+      margin: 110px 0 5px;
 
       h3 {
         color: #7166F8;
@@ -2731,18 +2733,13 @@ p {
     .resetButton {
       height: 30px;
       font-size: 11px;
-      min-width: 80px;
+      margin-left: 30%;
+    }
+    .filterHeader{
+      position: fixed;
+      top: 50px;
     }
   }
-
-  .resetAll {
-    display: block;
-
-    div {
-      margin: 10px 0;
-    }
-  }
-
   .row {
     span, label {
       color: #8794A3;
@@ -4932,7 +4929,6 @@ body .gh__menu {
     padding: 7px 10px 7px 10px;
     border-radius: 15px;
     margin-bottom: -15px;
-    background: #C6E6FF 0% 0% no-repeat padding-box;
   }
 
   .exportDropDown {
@@ -5476,6 +5472,8 @@ label.pull-left::before {
 
   .buttons, h2, .ghFileInput, .ghFormField {
     width: auto !important;
+    justify-content: center;
+
   }
   .inserCancel{
     margin: 0 auto;
