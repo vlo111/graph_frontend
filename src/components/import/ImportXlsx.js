@@ -14,6 +14,7 @@ import ImportStep2 from './ImportStep2';
 class DataImportModal extends Component {
   static propTypes = {
     convertGraphRequest: PropTypes.func.isRequired,
+    showSelectHandler: PropTypes.func.isRequired,
   }
 
   // eslint-disable-next-line no-unused-vars

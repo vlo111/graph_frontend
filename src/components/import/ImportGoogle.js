@@ -4,6 +4,7 @@ import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import { withRouter } from 'react-router-dom';
 import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
@@ -60,6 +61,7 @@ class ImportGoogle extends Component {
     const { payload: { data } } = await this.props.convertGraphRequest('google-sheets', requestData);
     if (data.nodes?.length) {
       this.setState({ loading: false, step: 2 });
+      this.props.showSelectHandler(false);
     } else {
       this.toast = toast.error(data.errors?.url || 'something went wrong');
       this.setState({ loading: false });
@@ -70,6 +72,13 @@ class ImportGoogle extends Component {
     const { requestData } = this.state;
     _.set(requestData, path, value);
     this.setState({ requestData });
+  }
+
+  updateShowSelect = (param) => {
+    if (param) this.setState({ step: 1 });
+    else this.setState({ step: 2 });
+
+    this.props.showSelectHandler(param);
   }
 
   render() {
@@ -96,7 +105,7 @@ class ImportGoogle extends Component {
             </div>
           </>
         ) : null}
-        {step === 2 ? <ImportStep2 /> : null}
+        {step === 2 ? <ImportStep2 updateShowSelect={this.updateShowSelect} /> : null}
       </>
     );
   }
@@ -114,4 +123,4 @@ const Container = connect(
   mapDispatchToProps,
 )(ImportGoogle);
 
-export default Container;
+export default withRouter(Container);
