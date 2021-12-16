@@ -90,28 +90,30 @@ class FiltersModal extends Component {
         overlayClassName="ghModalOverlay ghModalFiltersOverlay"
         isOpen
       >
-        {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
-        <>
-          <Link
-            to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/view/${graphId}`}
-            replace
-          >
-            <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
-          </Link>
-        </>
-        )}
         <div className="filter-container">
-          <h3 className="title">Filter</h3>
-          <div className="row resetAll">
-            <div>
-              <Button className="btn-classic alt resetButton" onClick={this.props.resetFilter}>RESET ALL</Button>
+          <div className="filterHeader">
+            {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
+            <>
+              <Link
+                to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/view/${graphId}`}
+                replace
+              >
+                <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
+              </Link>
+            </>
+            )}
+            <h3 className="title">Filter</h3>
+            <div className="row resetAll">
+              <div>
+                <Button className="btn-classic alt resetButton" onClick={this.props.resetFilter}>RESET ALL</Button>
+              </div>
             </div>
-            <span
-              className="nodeCount"
-            >
-              {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${totalNodes}`}
-            </span>
           </div>
+          <span
+            className="nodeCount"
+          >
+            {`Showing ${hiddenNodes} ${hiddenNodes < 2 ? 'node' : 'nodes'} out of ${totalNodes}`}
+          </span>
 
           <IsolatedFilter />
 
