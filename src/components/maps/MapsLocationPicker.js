@@ -11,6 +11,7 @@ import withGoogleMap from '../../helpers/withGoogleMap';
 import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import MapsStyle from './MapsStyle';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class MapsLocationPicker extends Component {
   static propTypes = {
@@ -133,7 +134,9 @@ class MapsLocationPicker extends Component {
 
   render() {
     const { selected, initialCenter } = this.state;
-    const { google, value, edit } = this.props;
+    const {
+      google, value, edit,
+    } = this.props;
     this.initPosition(value);
     return (
       <Modal
@@ -186,6 +189,13 @@ class MapsLocationPicker extends Component {
               <MapsSearch google={google} onSelect={this.handleSearchSelect} />
             </Map>
             <Button className="selectLocation" onClick={this.handleSelect}>Select</Button>
+            <Button
+              color="transparent"
+              className="close selectLocationClose"
+              icon={<CloseSvg />}
+              onClick={this.props.onClose}
+            />
+
           </>
         ) : null}
       </Modal>
