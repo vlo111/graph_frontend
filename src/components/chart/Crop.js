@@ -92,8 +92,8 @@ class Crop extends Component {
         <div className="ReactCrop__drag-elements" />
         <div className="content">
           <div className="buttons">
-            <Button icon="fa-times" className="warning" onClick={this.cancel}>Cancel</Button>
-            <Button icon="fa-save" className="warning" onClick={this.crop}>Crop</Button>
+            <Button icon="fa-times" className="btn-delete" onClick={this.cancel}>Cancel</Button>
+            <Button icon="fa-save" className="btn-classic" onClick={this.crop}>Crop</Button>
           </div>
 
         </div>
