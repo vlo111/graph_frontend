@@ -204,7 +204,7 @@ class ContextMenu extends Component {
     // if (params.fieldName !== 'node') {
     //   return undefined;
     // }
-    const contexHeight = show === 'selectSquare' ? 195 : 117;
+    const contexHeight = show === 'selectSquare' ? 195 : 300;
 
     const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y;
 
