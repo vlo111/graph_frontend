@@ -104,10 +104,7 @@ export default function reducer(state = initialState, action) {
       };
     }
 
-
-
     case GET_GRAPHS_SHAREGRAPHS_COUNT.SUCCESS: {
-
       const { ...allGraghsCount } = action.payload.data;
       return {
         ...state,
@@ -210,18 +207,22 @@ export default function reducer(state = initialState, action) {
     }
     case GET_SINGLE_EMBED_GRAPH.SUCCESS:
     case GET_SINGLE_GRAPH.SUCCESS: {
-      const { graph: singleGraph, embedLabels, info } = action.payload.data;
+      const {
+        graph: singleGraph, embedLabels, info, rendering,
+      } = action.payload.data;
       const {
         nodes, links, labels, lastUid,
       } = singleGraph;
 
-      Chart.render({
-        nodes,
-        links: ChartUtils.cleanLinks(links, nodes),
-        labels,
-        embedLabels,
-        lastUid,
-      });
+      if (rendering === true) {
+        Chart.render({
+          nodes,
+          links: ChartUtils.cleanLinks(links, nodes),
+          labels,
+          embedLabels,
+          lastUid,
+        });
+      }
       Chart.loading(false);
       return {
         ...state,
@@ -363,10 +364,10 @@ export default function reducer(state = initialState, action) {
       };
     }
     case UPDATE_NODES_CUSTOM_FIELDS.REQUEST: {
-      const { tabs } = action.payload;
+      const { nodes } = action.payload;
       return {
         ...state,
-        nodeCustomFields: tabs.customFields || {},
+        nodeCustomFields: nodes[0].customFields || [],
       };
     }
     case REMOVE_NODE_CUSTOM_FIELD_KEY: {
@@ -508,13 +509,13 @@ export default function reducer(state = initialState, action) {
     }
     case UPDATE_GRAPH_QUERY.SUCCESS:
     case DELETE_GRAPH_QUERY.SUCCESS:
-      {
-        const { query } = action.payload.data;
-        return {
-          ...state,
-          query: { queryList: query },
-        };
-      }
+    {
+      const { query } = action.payload.data;
+      return {
+        ...state,
+        query: { queryList: query },
+      };
+    }
     default: {
       return state;
     }

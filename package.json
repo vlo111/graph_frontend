@@ -9,6 +9,7 @@
     "d3": "^6.6.0",
     "fetch-timeout": "0.0.2",
     "google-maps-react": "^2.0.6",
+    "history": "^5.1.0",
     "jodit": "^3.4.29",
     "jodit-react": "^1.0.68",
     "js-file-download": "^0.4.12",
@@ -64,7 +65,7 @@
     "start": "react-scripts start",
     "svg": "svgo -f src/assets/images/icons --config='{\"plugins\":[{\"removeViewBox\":false,\"removeAttrs\":{\"attrs\":\"data.*\"}},{\"removeNonInheritableGroupAttrs\":true},{\"collapseGroups\":true}]}'",
     "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build && node build.js",
-    "test": "react-scripts test",
+    "test": "cypress open",
     "eject": "react-scripts eject",
     "eslint": "./node_modules/.bin/eslint src/. --config .eslintrc.js"
   },
@@ -86,7 +87,10 @@
     ]
   },
   "devDependencies": {
+    "@cypress/react": "^5.10.3",
+    "@cypress/webpack-dev-server": "^1.7.0",
     "babel-eslint": "^10.1.0",
+    "cypress": "^9.0.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
