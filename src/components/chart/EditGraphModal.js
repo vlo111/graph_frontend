@@ -50,7 +50,7 @@ const EditGraphModal = ({
     if (!defaultImage && graphId && !publicState) {
       if (!(graph?.nodesPartial?.length > 500)) {
         await updateGraphThumbnailRequest(graphId, svg, 'small');
-        getSingleGraphRequest(graphId);
+        await getSingleGraphRequest(graphId);
       }
     }
   }, [graph]);

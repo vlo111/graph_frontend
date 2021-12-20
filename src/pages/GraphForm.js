@@ -54,6 +54,13 @@ class GraphForm extends Component {
     history: PropTypes.object.isRequired,
   }
 
+  constructor() {
+    super();
+    this.state = {
+      scaleStatus: false,
+    };
+  }
+
   getSingleGraph = memoizeOne((graphId) => {
     this.props.setActiveButton('create');
     if (graphId) {
@@ -80,10 +87,6 @@ class GraphForm extends Component {
     );
   }
 
-  componentDidUpdate() {
-    ChartUtils.autoScale();
-  }
-
   render() {
     const { activeButton, match: { params: { graphId } } } = this.props;
     const isTracker = this.getMouseMoveTracker();
@@ -92,6 +95,16 @@ class GraphForm extends Component {
     if (isPermission) {
       return (<Redirect to="/403" />);
     }
+
+    if (!this.state.scaleStatus) {
+      if (document.querySelector('.nodes')?.childElementCount) {
+        ChartUtils.autoScale();
+        this.setState({
+          scaleStatus: true,
+        });
+      }
+    }
+
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
         <>

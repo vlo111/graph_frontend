@@ -12,6 +12,8 @@ class ColorPicker extends Component {
     onChangeText: PropTypes.func.isRequired,
     containerClassName: PropTypes.string,
     value: PropTypes.string,
+    excludeClose: PropTypes.func.isRequired,
+    expand: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -82,7 +84,7 @@ class ColorPicker extends Component {
             <div
               className="ghColorPickerPopUp"
               onClick={this.handleColorClick}
-              style={{ left: x, top: y + 40 }}
+              style={{ left: x, top: y - 150 }}
             >
               <SketchPicker
                 width={230}
