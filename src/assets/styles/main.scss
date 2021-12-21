@@ -7896,8 +7896,9 @@ img.preview-scaled {
 
 #header {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
-  height: 56px;
+  grid-template-columns: 10% 20% 36% 20% 10%;
+  grid-gap: 1%;
+  height: 75px;
   background-color: #fff;
   position: fixed;
   width: 100%;
@@ -8885,9 +8886,20 @@ img.preview-scaled {
         font-size: 16px;
         line-height: 34px;
         color: #7166F8;
+        display: flex;
+        text-align: center;
+        justify-content: center;
 
         strong {
           text-decoration: underline !important;
+          margin-right: 20px !important;
+        }
+        p{
+        margin-left: 10px !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+        margin-left: 10 !important;
+        margin-bottom: 0 !important;
         }
       }
 
@@ -9016,6 +9028,19 @@ img.preview-scaled {
     top: 18px;
     position: absolute;
     left: 39%;
+
+    .graph-name-title{
+      display: flex;
+      align-items: center;
+    }
+
+    p{
+      font-size: 16px !important;
+      font-weight: bold !important;
+      margin-left: 10px !important;
+      margin-bottom: 0 !important;
+      font-size: 22px !important;
+    }
   }
 
   header {
