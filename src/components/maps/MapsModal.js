@@ -14,6 +14,8 @@ import Loading from '../Loading';
 import withGoogleMap from '../../helpers/withGoogleMap';
 import MapsContactCustomField from './MapsContactCustomField';
 import MapsStyle from './MapsStyle';
+import Button from '../form/Button';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class MapsModal extends Component {
   static propTypes = {
@@ -201,6 +203,12 @@ class MapsModal extends Component {
               <MapsSearch google={google} onSelect={this.handleSearchSelect} />
             </Map>
           ) : <Loading />}
+          <Button
+            color="transparent"
+            className="close selectLocationClose"
+            icon={<CloseSvg />}
+            onClick={this.close}
+          />
         </Modal>
         {markerDrag ? (
           <img
