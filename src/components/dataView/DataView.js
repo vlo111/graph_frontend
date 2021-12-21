@@ -240,7 +240,7 @@ class DataView extends Component {
           <div className="header">
             <div className="exportData">
               <div className="exportContent">
-                <Button onClick={this.closeExport} className="showExportButton" icon={<ExportSvg />} />
+                <Button onClick={this.closeExport} className="showExportButton" icon={<ExportSvg />} title="Export" />
                 {showExport ? (
                   <Outside onClick={(ev) => this.closeExport(ev)} exclude=".exportData">
                     <div className="exportDropDown">

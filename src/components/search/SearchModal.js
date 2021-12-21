@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
+import Button from '../form/Button';
 import { setActiveButton, toggleGraphMap } from '../../store/actions/app';
 import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -12,6 +13,7 @@ import Utils from '../../helpers/Utils';
 import { setActiveTab, getAllTabsRequest, getGraphNodesRequest } from '../../store/actions/graphs';
 import Chart from '../../Chart';
 import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 class SearchModal extends Component {
   static propTypes = {
@@ -375,6 +377,12 @@ class SearchModal extends Component {
         overlayClassName="ghModalOverlay"
         onRequestClose={this.closeModal}
       >
+        <Button
+          color="transparent"
+          className="close"
+          icon={<CloseSvg />}
+          onClick={() => this.closeModal(false)}
+        />
         <div className="searchField">
           <div className="searchText">Search</div>
           <div className="searchBox">
