@@ -333,7 +333,7 @@ class ToolBar extends Component {
             >
               <i className="fa fa-plus"> </i>
               <div className="sidebar_text">
-                Create Node
+                Create
                 <i className="fa fa-caret-right" />
               </div>
             </li>
@@ -410,7 +410,7 @@ class ToolBar extends Component {
               <div className="sidebar_text"> Find Node </div>
             </li>
 
-          {/* <li
+            {/* <li
 
            onMouseOver={() => this.handleOver('history')}
            onMouseLeave={this.handleLeave}
