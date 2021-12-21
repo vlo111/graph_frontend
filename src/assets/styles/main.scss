@@ -471,7 +471,7 @@ p {
   }
 
   .ghInput input {
-    padding-right: 120px;
+    // padding-right: 120px;
     text-overflow: ellipsis;
   }
 
@@ -2647,6 +2647,7 @@ p {
     padding: 0px 0px 0px 20px;
     padding-bottom: 15%;
     box-shadow: 0 4px 36px rgba(0, 0, 0, 0.16);
+   
 
     .filter-container {
       width: 100%;
