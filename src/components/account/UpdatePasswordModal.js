@@ -24,12 +24,12 @@ class UpdatePasswordModal extends Component {
       requestData: {
         oldPassword: '',
         password: '',
-        confirmPassword: '',
+        passwordConfirm: '',
       },
       errors: {
         oldPassword: '',
         password: '',
-        confirmPassword: '',
+        passwordConfirm: '',
       },
     };
   }
@@ -93,13 +93,13 @@ class UpdatePasswordModal extends Component {
             showIcon={(!!requestData.password)}
           />
           <PasswordInput
-            name="confirmPassword"
+            name="passwordConfirm"
             label="Confirm Password"
             type="password"
-            value={requestData.confirmPassword}
-            error={errors.confirmPassword}
+            value={requestData.passwordConfirm}
+            error={errors.passwordConfirm}
             onChangeText={this.handleChange}
-            showIcon={(!!requestData.confirmPassword)}
+            showIcon={(!!requestData.passwordConfirm)}
           />
           <div className="buttonsWrapper">
             <Button
