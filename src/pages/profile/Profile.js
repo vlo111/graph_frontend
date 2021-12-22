@@ -10,6 +10,10 @@ import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
 import UpdatePasswordModal from '../../components/account/UpdatePasswordModal';
 import UserInfo from './UserInfo';
+import fbImg from '../../assets/images/icons/fb.png';
+import linkedinImg from '../../assets/images/icons/linkedin.png';
+import twitterImg from '../../assets/images/icons/twitter-dark.png';
+import skype from '../../assets/images/icons/skype-dark.png';
 
 class Profile extends Component {
     static propTypes = {
@@ -164,7 +168,7 @@ class Profile extends Component {
                     <div className="rigt-input">
                       <div className="row">
                         <div className="social_icon_new">
-                          <i className="fa fa-facebook-square" />
+                          <img src={fbImg} alt="" />
                         </div>
                         <Input
                           name="facebook"
@@ -176,7 +180,6 @@ class Profile extends Component {
                         />
                       </div>
                       <div className="row">
-
                         <Input
                           name="twitter"
                           type="url "
@@ -186,12 +189,12 @@ class Profile extends Component {
                           pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:twitter\.com|tw(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
                         />
                         <div className="social_icon_new">
-                          <i className="fa fa-twitter" />
+                          <img src={twitterImg} alt="" />
                         </div>
                       </div>
                       <div className="row">
                         <div className="social_icon_new">
-                          <i className="fa fa-linkedin"> </i>
+                          <img src={linkedinImg} alt="" />
                         </div>
                         <Input
                           name="linkedin"
@@ -214,7 +217,7 @@ class Profile extends Component {
                           pattern="^(?:https?:\/\/)?(?:www\.|m\.|touch\.)?(?:skype\.com|sk(?:\.me|\.com))\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([^/?\s]*)(?:/|&|\?)?.*$"
                         />
                         <div className="social_icon_new">
-                          <i className="fa fa-skype" />
+                          <img src={skype} alt="" />
                         </div>
                       </div>
 
@@ -234,12 +237,13 @@ class Profile extends Component {
                                     </div>
                                 </div> */}
                   <div className="colm-xs-12 saveChange">
-                    <div className="d-flex justify-content-end ">
-                      <Button className="changePassword p-0" onClick={() => this.toggleChangePassword(!changePassword)}>
-                        Change Password
-                      </Button>
-                    </div>
-                    <Button className="save" type="submit">Save</Button>
+                    <Button
+                      className="changePassword p-0"
+                      onClick={() => this.toggleChangePassword(!changePassword)}
+                    >
+                      Change Password
+                    </Button>
+                    <Button className="btn-classic" type="submit">Save</Button>
                   </div>
                 </div>
 
