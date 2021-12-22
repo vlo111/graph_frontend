@@ -17,7 +17,7 @@ import { NODE_STATUS, NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
-import Checkbox from '../form/Checkbox'
+import Checkbox from '../form/Checkbox';
 
 let CHECKED = false;
 
@@ -60,6 +60,10 @@ class DataTableNodes extends Component {
     const nodes = this.props.allNodes.map((d) => {
       const changed = nodesChanged.find((c) => c.index === d.index);
       if (changed) {
+        if (changed.type !== d.type) {
+          changed.color = '';
+          changed.color = ChartUtils.nodeColor(changed);
+        }
         return changed;
       }
       return d;
@@ -113,7 +117,7 @@ class DataTableNodes extends Component {
         <thead>
           <tr>
             <th className={`${position} cell index`} width="60">
-              <div className='allTableCellChecked'>
+              <div className="allTableCellChecked">
                 <Checkbox
                   onChange={() => this.handleCheckBoxChange(isAllChecked)}
                   checked={isAllChecked}
