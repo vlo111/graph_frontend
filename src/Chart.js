@@ -721,7 +721,7 @@ class Chart {
         .force('y', d3.forceY(0.05))
         .force('x', d3.forceX(0.05));
     }
-    return null;
+    return true;
   }
 
   static handleZoom = (ev) => {
@@ -2018,7 +2018,7 @@ class Chart {
             if (nodes.length > 0 && (nodes.length === existNodes.length)) {
               return true;
             }
-            return true;
+            return false;
           }).map((l) => l.id);
 
         this.squareData.nodes = this.squareData.nodes.map((d) => d.id);
@@ -2400,10 +2400,6 @@ class Chart {
       });
 
     return defs;
-  }
-
-  static renderNodeIcon(scale) {
-
   }
 
   static renderNodeText(scale) {
