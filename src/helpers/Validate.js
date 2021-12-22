@@ -166,17 +166,18 @@ class Validate {
   }
 
   static register(data) {
-
-    const { firstName, lastName, email, password, passwordConfirm } = data;
+    const {
+      firstName, lastName, email, password, passwordConfirm,
+    } = data;
 
     const errors = {};
 
-    if(!firstName || firstName.trim() === '') {
-      errors.firstName = 'First name is required'
+    if (!firstName || firstName.trim() === '') {
+      errors.firstName = 'First name is required';
     }
 
-    if(!lastName || lastName.trim() === '') {
-      errors.lastName = 'last name is required'
+    if (!lastName || lastName.trim() === '') {
+      errors.lastName = 'last name is required';
     }
 
     if (!email) {
@@ -201,6 +202,38 @@ class Validate {
       errors.passwordConfirm = 'Confirm password is required';
     } else if (passwordConfirm !== password) {
       errors.passwordConfirm = 'Password and confirm password must be same';
+    }
+
+    return errors;
+  }
+
+  static changePassword(data) {
+    const {
+      password, confirmPassword, oldPassword,
+    } = data;
+
+    const errors = {};
+
+    if (!password) {
+      errors.password = 'Password is required';
+    } else if (password.length < 8) {
+      errors.password = 'Please fill at least 8 character';
+    } else if (!password.match(/[a-z]/g)) {
+      errors.password = 'Please enter at least lower character.';
+    } else if (!password.match(/[A-Z]/g)) {
+      errors.password = 'Please enter at least upper character.';
+    } else if (!password.match(/[0-9]/g)) {
+      errors.password = 'Please enter at least one digit.';
+    }
+
+    if (!oldPassword) {
+      errors.oldPassword = 'Password is required';
+    }
+
+    if (!confirmPassword) {
+      errors.confirmPassword = 'Confirm password is required';
+    } else if (confirmPassword !== password) {
+      errors.confirmPassword = 'Password and confirm password do not match';
     }
 
     return errors;

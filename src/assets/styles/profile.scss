@@ -1,9 +1,9 @@
 
   // user info 
   .profile.newVersion {
-    font-family: Roboto;
     padding:30px;
     max-width: initial;
+    height: 800px;
   }
   
   .colm-xs-12 {
@@ -76,6 +76,7 @@
   
   .user_prf_color1 {
     color:$color-main !important;
+    text-decoration: none !important;
   }
   
   .user_prf_color {
@@ -127,7 +128,7 @@
     }
     h1 {
       color: $color-graph-name;
-      font-size: 50px;
+      font-size: 48px;
       margin-top:27px;
       font-weight: bold;
     }
@@ -152,7 +153,7 @@
       padding: 0
     };
     div.text {
-      font-size: 26px;
+      font-size: 23px;
       word-break: break-all;
     }
   }
@@ -313,6 +314,7 @@
     .profileEdit {
       width: 100%;
       margin: 80px auto;
+      height: 800px;
         .ghInput textarea, .ghInput input {
           height: 40px;
           border: 1px solid #9F9F9F;
@@ -379,6 +381,11 @@
           border: none;  
           position: absolute;
           top:10px;
+
+          img{
+            width: 20px;
+            height: 20px;
+          }
         }
   
         .social_icon_new:nth-child(odd) {
@@ -434,21 +441,18 @@
           }
         }
   
-        .saveChange > div {
-          min-width:150px;
-          position: absolute;
-          justify-content: flex-end;
-          left:-18px;
-          padding-left: 25px;
-        }
-        .saveChange button.main {
-          color:$color-main;
-        }
-        .saveChange button.save {
-          background:$color-main;
-          position: absolute;
-          right: -32px;
-          color:white
+        .saveChange{
+          position: relative;
+          top: 100px;
+          display: flex;
+          justify-content: space-between;
+          text-align: center;
+          align-items: center;
+
+          .changePassword{
+            color: $color-main;
+            margin: 0;
+          }
         }
   
   }
@@ -466,6 +470,12 @@
    .ghFormFieldPassword {
       flex-direction: row;
       width:initial;
+
+      .error{
+        top: 38px !important;
+        left: 40% !important;
+        padding: 0 !important;
+      }
     }
 
    .ghModal label { 
@@ -479,15 +489,24 @@
   
     .ghInput input {
       width:270px;
+      padding-left: 15px;
     }
 
     .ghFormFieldPassword   .icon {
-      left:190px;
+      left: 93% ;
+      top: 5px;
+      right: 3px;
+      bottom: 5px;
+      cursor: pointer;
     }
 
-    .buttonsWrapper    .ghButton.accent {
-      background-color: #7166f8 !important;
-    }
+    .buttonsWrapper {
+      justify-content: flex-end !important;
+
+       .ghButton.accent {
+            background-color: #7166f8 !important;
+       }
+     }
 
     .ghModal .buttonsWrapper .cancel {
       position: absolute;

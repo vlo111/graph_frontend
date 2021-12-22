@@ -9,13 +9,13 @@ import Button from '../form/Button';
 import { updateMyAccountPasswordRequest } from '../../store/actions/account';
 import PasswordInput from '../form/PasswordInput';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
-
+import Validate from '../../helpers/Validate';
 
 class UpdatePasswordModal extends Component {
   static propTypes = {
     onClose: PropTypes.func.isRequired,
     updateMyAccountPasswordRequest: PropTypes.func.isRequired,
-    className: PropTypes.string,
+    className: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -26,7 +26,11 @@ class UpdatePasswordModal extends Component {
         password: '',
         confirmPassword: '',
       },
-      errors: {},
+      errors: {
+        oldPassword: '',
+        password: '',
+        confirmPassword: '',
+      },
     };
   }
 
@@ -39,15 +43,21 @@ class UpdatePasswordModal extends Component {
   handlePasswordChange = async (ev) => {
     ev.preventDefault();
     const { requestData } = this.state;
-
-    const { payload: { data } } = await this.props.updateMyAccountPasswordRequest(requestData);
-    if (data.status === 'ok') {
-      toast.info('Password successfully updated');
-      this.props.onClose();
-    } else if (data?.errors) {
-      this.setState({ errors: data.errors });
+    const errors = Validate.changePassword(requestData);
+    if (_.isEmpty(errors)) {
+      const { payload } = await this.props.updateMyAccountPasswordRequest(requestData);
+      const { data = {} } = payload;
+      if (data.status === 'ok') {
+        toast.info('Password successfully updated');
+        this.props.onClose();
+      }
+      this.setState({
+        errors: data.errors,
+      });
     } else {
-      toast.error('Something went wrong');
+      this.setState({
+        errors,
+      });
     }
   }
 
@@ -57,7 +67,7 @@ class UpdatePasswordModal extends Component {
     return (
       <Modal
         className="ghModal changePasswordModal"
-        overlayClassName={classNames('ghModalOverlay changePasswordModalOverlay',className)}
+        overlayClassName={classNames('ghModalOverlay changePasswordModalOverlay', className)}
         isOpen
         onRequestClose={this.props.onClose}
       >
@@ -70,6 +80,7 @@ class UpdatePasswordModal extends Component {
             value={requestData.oldPassword}
             error={errors.oldPassword}
             onChangeText={this.handleChange}
+            showIcon={(!!requestData.oldPassword)}
           />
           <PasswordInput
             name="password"
@@ -79,6 +90,7 @@ class UpdatePasswordModal extends Component {
             value={requestData.password}
             error={errors.password}
             onChangeText={this.handleChange}
+            showIcon={(!!requestData.password)}
           />
           <PasswordInput
             name="confirmPassword"
@@ -87,6 +99,7 @@ class UpdatePasswordModal extends Component {
             value={requestData.confirmPassword}
             error={errors.confirmPassword}
             onChangeText={this.handleChange}
+            showIcon={(!!requestData.confirmPassword)}
           />
           <div className="buttonsWrapper">
             <Button
@@ -94,9 +107,7 @@ class UpdatePasswordModal extends Component {
               className="cancel"
               onClick={this.props.onClose}
               icon={<CloseSvg />}
-            >
-              
-            </Button>
+            />
             <Button color="accent" type="submit">Save</Button>
           </div>
         </form>
