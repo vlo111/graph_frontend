@@ -12,7 +12,6 @@ import Utils from '../../helpers/Utils';
 class GraphCardItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
-    graphsList: PropTypes.array.isRequired,
     headerTools: PropTypes.string.isRequired,
     currentUserId: PropTypes.string.isRequired,
   }
@@ -126,7 +125,7 @@ class GraphCardItem extends Component {
               />
             </div>
             <GraphListFooter graph={graph} />
-            {(headerTools === 'home' && graph.publicState) && (
+            {((headerTools === 'home' || headerTools === 'template') && graph.publicState) && (
             <div className="public_icon">
               <i className="fa fa-globe" />
             </div>
@@ -139,7 +138,6 @@ class GraphCardItem extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  graphsList: state.graphs.graphsList || [],
   currentUserId: state.account.myAccount.id,
 });
 

@@ -36,7 +36,7 @@ const EditGraphModal = ({
   const [requestData, setRequestData] = useState({
     title: graph.title,
     description: graph.description,
-    status: 'active',
+    status: graph.status,
     publicState: graph.publicState || false,
     userImage: graph.defaultImage || false,
   });
@@ -131,7 +131,7 @@ const EditGraphModal = ({
     if (graph) {
       toast.info('Successfully saved');
       const { payload: { data: { graph: newGraph } } } = (await dispatch(getSingleGraphRequest(resGraphId)));
-      await dispatch(getGraphsListRequest(1, { filter: order }));
+      await dispatch(getGraphsListRequest(1, { filter: order, status: graph.status }));
       (updateGraph && updateGraph(newGraph));
     } else if (!resGraphId) {
       toast.error('Something went wrong. Please try again');
