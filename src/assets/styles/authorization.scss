@@ -33,7 +33,6 @@
       padding-left: 8px;
     }
 
-
     .icon {
       left: auto;
       right: 3px;
@@ -74,7 +73,6 @@
       .gh__control {
         border: 1px solid $color-light-gray;
         border-radius: 8px;
-
 
         .gh__indicator-separator {
           display: none;
@@ -161,7 +159,7 @@
 
     .error {
       position: absolute;
-      color: #FE5C4F;
+      color: #fe5c4f;
       font-size: 14px;
       padding: 0 8px;
       top: 40px;
@@ -348,12 +346,11 @@
 
     a {
       position: relative;
-    color: #a1a1a1;
-    left: -30%;
-    z-index: 100;
-    font-style: italic;
-    top: 10px;
-
+      color: #a1a1a1;
+      left: -30%;
+      z-index: 100;
+      font-style: italic;
+      top: 10px;
     }
 
     .ghFormField {
@@ -380,7 +377,6 @@
       font-size: 12px;
       position: relative;
       top: 25px;
-
     }
   }
 
@@ -578,7 +574,6 @@
     top: 50px !important;
   }
 
-
   .forgotPasswordLeft {
     width: 64.54%;
     height: 100vh;
@@ -632,7 +627,6 @@
     &:focus {
       outline: none;
     }
-
 
     &.alt {
       width: 181px;
@@ -1140,14 +1134,14 @@
     }
   }
 
-//// Reset Password
+  //// Reset Password
 
-.logoReset{
-  max-width: 150px !important;
+  .logoReset {
+    max-width: 150px !important;
     left: 85% !important;
-}
-.authForm {
-  display: flex;
+  }
+  .authForm {
+    display: flex;
     flex-direction: column;
     align-items: center;
     margin: auto;
@@ -1157,60 +1151,58 @@
     margin-left: 36%;
     top: 30%;
 
-
-  a {
-    color: $color-main;
-  }
-
-  .ghFormField {
-    width: 100%;
-  }
-
-  h1 {
-    font-weight: 700;
-    font-size: 53px;
-    margin: 12px;
-    color: #424242;
-  }
-
-  .hr {
-    margin-bottom: 32px;
-  }
-
-  .row {
-    display: flex;
-    align-items: center;
-
-    .forgotPasswordBack {
-      margin: 32px 38px 0 0;
+    a {
+      color: $color-main;
     }
 
-  }
-
-  .forgotPassword {
-    color: $color-dark;
-    font-size: 14px;
-    text-align: right;
-    align-self: flex-end;
-    padding: 0 10px;
-  }
-
-  .forgotPasswordText {
-    text-align: center;
-
-    h4 {
-      font-weight: 600;
-      font-size: 20px;
-      margin-top: 32px;
+    .ghFormField {
+      width: 100%;
     }
 
-    p {
-      font-weight: normal;
-      font-size: 16px;
-      margin: 32px 0;
+    h1 {
+      font-weight: 700;
+      font-size: 53px;
+      margin: 12px;
+      color: #424242;
+    }
+
+    .hr {
+      margin-bottom: 32px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+
+      .forgotPasswordBack {
+        margin: 32px 38px 0 0;
+      }
+    }
+
+    .forgotPassword {
+      color: $color-dark;
+      font-size: 14px;
+      text-align: right;
+      align-self: flex-end;
+      padding: 0 10px;
+    }
+
+    .forgotPasswordText {
+      text-align: center;
+
+      h4 {
+        font-weight: 600;
+        font-size: 20px;
+        margin-top: 32px;
+      }
+
+      p {
+        font-weight: normal;
+        font-size: 16px;
+        margin: 32px 0;
+      }
     }
   }
-}
 
   // Eyes Icon and Error
 
@@ -1243,10 +1235,7 @@
   }
   .border-error {
     border-color: red !important;
-}
-EyeSvg-invalid  {
-  color: red;
-}
+  }
 }
 
 .socialButtons span {
