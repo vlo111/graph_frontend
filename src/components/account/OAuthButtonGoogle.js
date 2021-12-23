@@ -26,7 +26,7 @@ class OAuthButtonGoogle extends Component {
         cookiepolicy: 'single_host_origin',
       });
       auth.attachClickHandler(this.button, {}, (googleUser) => {
-        const { wc: { access_token: accessToken } } = googleUser;
+        const { vc: { access_token: accessToken } } = googleUser;
         if (!accessToken) {
           toast.error('Something went wrong');
           return;

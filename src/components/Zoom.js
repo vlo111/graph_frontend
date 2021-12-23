@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { connect } from 'react-redux';
+import Tooltip from 'rc-tooltip';
 import PropTypes from 'prop-types';
 import Icon from './form/Icon';
 import Chart from '../Chart';
@@ -13,18 +14,19 @@ import { ReactComponent as ScaleSvg } from '../assets/images/icons/scale-to-full
 import { ReactComponent as MapSvg } from '../assets/images/icons/map-icon.svg';
 
 class Zoom extends Component {
+  static propTypes = {
+    showGraphMap: PropTypes.string.isRequired,
+    toggleGraphMap: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       showMap: false,
       zoom: 100,
       fullScreen: false,
-      scaleCount: 0,
+      // scaleCount: 0,
     };
-  }
-
-  static propTypes = {
-    activeButton: PropTypes.string.isRequired,
   }
 
   componentDidMount() {
@@ -148,7 +150,7 @@ class Zoom extends Component {
   }
 
   render() {
-    const { showMap, zoom, fullScreen } = this.state;
+    const { zoom, fullScreen } = this.state;
     const { showGraphMap } = this.props;
     return (
       <>
@@ -159,19 +161,49 @@ class Zoom extends Component {
             </div>
           ) : null}
           <div className="buttons">
-            <Icon
-              value={fullScreen ? <FullScreenCloseSvg /> : <FullScreenSvg />}
-              onClick={this.toggleFullScreen}
-              className="button"
-            />
-            <Icon value={<MapSvg />} onClick={this.toggleGraphMap} className="button map" />
-            <Icon value={<ScaleSvg />} onClick={this.autoScale} className="button" />
-            <Icon value="fa-minus" onClick={this.zoomOut} className="button plus" />
-            <Icon value="fa-plus" onClick={this.zoomIn} className="button minus" />
+            <Tooltip
+              overlay="Full screen"
+              placement="top"
+            >
+              <Icon
+                value={fullScreen ? <FullScreenCloseSvg /> : <FullScreenSvg />}
+                onClick={this.toggleFullScreen}
+                className="button"
+              />
+            </Tooltip>
+            <Tooltip
+              overlay="Map"
+              placement="top"
+            >
+              <Icon value={<MapSvg />} onClick={this.toggleGraphMap} className="button map" />
+            </Tooltip>
+            <Tooltip
+              overlay="Fit"
+              placement="top"
+            >
+              <Icon value={<ScaleSvg />} onClick={this.autoScale} className="button" />
+            </Tooltip>
+            <Tooltip
+              overlay="Zoom out"
+              placement="top"
+            >
+              <Icon value="fa-minus" onClick={this.zoomOut} className="button plus" />
+            </Tooltip>
+            <Tooltip
+              overlay="Zoom in"
+              placement="top"
+            >
+              <Icon value="fa-plus" onClick={this.zoomIn} className="button minus" />
+            </Tooltip>
 
-            <span className="zoomLevel" onClick={() => this.zoom()}>
-              {`${zoom}%`}
-            </span>
+            <Tooltip
+              overlay="Scale"
+              placement="top"
+            >
+              <span className="zoomLevel" onClick={() => this.zoom()}>
+                {`${zoom}%`}
+              </span>
+            </Tooltip>
           </div>
 
         </div>
@@ -181,7 +213,6 @@ class Zoom extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  activeButton: state.app.activeButton,
   showGraphMap: state.app.showGraphMap,
   singleGraph: state.graphs.singleGraph,
 });

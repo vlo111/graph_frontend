@@ -369,7 +369,7 @@ class SearchModal extends Component {
       }
       return false;
     });
-    let links = ChartUtils.cleanLinks(linksPartial, chosenNodes);
+    let links = ChartUtils.cleanLinks(linksPartial, nodes);
     if (keep) {
       links = links.concat(oldLinks);
     }

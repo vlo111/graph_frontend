@@ -11,8 +11,9 @@ import Utils from '../../helpers/Utils';
 class GraphListItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
-    graphsList: PropTypes.array.isRequired,
     currentUserId: PropTypes.string.isRequired,
+    headerTools: PropTypes.string.isRequired,
+    mode: PropTypes.string.isRequired,
   }
 
   updateGraph = (graph) => {
@@ -39,7 +40,7 @@ class GraphListItem extends Component {
         ? graphs.map((graph) => (
           <article className="graphsItem" key={graph.id}>
             <div className="public_context">
-              {(headerTools === 'home' && graph.publicState) && (
+              {((headerTools === 'home' || headerTools === 'template') && graph.publicState) && (
                 <div className="public_icon">
                   <i className="fa fa-globe" />
                 </div>
@@ -98,7 +99,6 @@ class GraphListItem extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  graphsList: state.graphs.graphsList || [],
   currentUserId: state.account.myAccount.id,
 });
 
