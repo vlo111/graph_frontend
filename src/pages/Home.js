@@ -22,37 +22,21 @@ class Home extends Component {
     mode: PropTypes.string.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = { windowWidth: window.innerWidth };
-  }
-
-  componentDidMount() {
-    const windowCheck = window.innerWidth;
-    this.setState({
-      windowWidth: windowCheck,
-    });
-  }
-
   getGraphsList = memoizeOne((page, s) => {
     const order = JSON.parse(localStorage.getItem('/')) || 'newest';
-    const windowWidthString = this.state.windowWidth;
+    const windowWidth = window.innerWidth;
     let limit = 0;
-    switch (true) {
-      case (windowWidthString <= 900):
-        limit = 14;
-        break;
-      case (windowWidthString <= 1490):
-        limit = 11;
-        break;
-      case (windowWidthString <= 1840):
-        limit = 15;
-        break;
-      case (windowWidthString <= 1920):
-        limit = 14;
-        break;
-      default:
+
+    if (windowWidth <= 900 || (windowWidth > 1840 && windowWidth <= 1920)) {
+      limit = 14;
+    } else if (windowWidth <= 1490) {
+      limit = 11;
+    } else if (windowWidth <= 1840) {
+      limit = 15;
+    } else {
+      limit = 16;
     }
+
     this.props.getGraphsListRequest(page, { s, filter: order, limit });
   })
 
