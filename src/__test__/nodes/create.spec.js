@@ -6,6 +6,9 @@ import {
 import { configure } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { createMemoryHistory } from 'history';
+import {
+  MemoryRouter,
+} from 'react-router';
 import SignIn from '../../pages/sign/SignIn';
 import SignUp from '../../pages/sign/SignUp';
 import render from '../wrapper';
@@ -20,14 +23,14 @@ const history = createMemoryHistory();
 
 const RouterComponent = () => (
   <>
-    <Router history={history}>
+    <MemoryRouter>
       <Switch>
         <Route path="/sign/sign-in" component={SignIn} />
         <Route path="/sign/sign-up" component={SignUp} />
         <Route path="/sign/confirmation/:token" component={UserConfirmation} />
         <Route path="/" component={Index} />
       </Switch>
-    </Router>
+    </MemoryRouter>
   </>
 );
 
@@ -40,15 +43,16 @@ describe('create node', () => {
 
   beforeAll(async () => {
     // create user with active status
-    const { user } = await signUp();
-
+    console.log('1')
     wrapper = render(<RouterComponent />);
 
     const getFields = () => wrapper.find('input');
-
+    //
+    // const { user } = await signUp();
+    //
     const event = [
-      { target: { name: 'email', value: user.email } },
-      { target: { name: 'password', value: user.password } },
+      { target: { name: 'email', value: 'fffawaf@test.com' } },
+      { target: { name: 'password', value: 'Test_test1' } },
     ];
 
     const onChangeEvent = (e, index) => e.simulate('change', event[index]);
@@ -58,14 +62,9 @@ describe('create node', () => {
     });
 
     const send = wrapper.find('.ghButton');
+    console.log('2')
 
-    await send.simulate('submit');
-
-    // history.replace('/');
-    //
-    // wrapper.update();
-    //
-    // console.log(wrapper.debug());
+    const val = await send.simulate('submit');
 
     // history.replace('/sign/sign-up');
     //
