@@ -9,7 +9,7 @@ import GraphListItem from '../components/graphData/GraphListItem';
 import { getShareGraphListRequest } from '../store/actions/share';
 import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
-import ChartUtils from '../helpers/ChartUtils';
+import ChartUtils from '../helpers/Utils';
 
 class Shared extends Component {
   static propTypes = {

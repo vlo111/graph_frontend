@@ -12,7 +12,7 @@ import GraphListItem from '../components/graphData/GraphListItem';
 import GraphCardItem from '../components/graphData/GraphCardItem';
 import { ReactComponent as PlusSvg } from '../assets/images/icons/plusGraph.svg';
 import Button from '../components/form/Button';
-import ChartUtils from '../helpers/ChartUtils';
+import ChartUtils from '../helpers/Utils';
 
 class Home extends Component {
   static propTypes = {

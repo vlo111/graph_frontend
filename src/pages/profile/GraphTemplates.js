@@ -10,7 +10,7 @@ import Pagination from '../../components/Pagination';
 import GraphCardItem from '../../components/graphData/GraphCardItem';
 import GraphListItem from '../../components/graphData/GraphListItem';
 import NoGraph from '../../components/NoGraph';
-import ChartUtils from '../../helpers/ChartUtils';
+import ChartUtils from '../../helpers/Utils';
 
 class Home extends Component {
   static propTypes = {

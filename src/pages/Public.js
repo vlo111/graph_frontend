@@ -10,7 +10,7 @@ import NoGraph from '../components/NoGraph';
 import GraphListItem from '../components/graphData/GraphListItem';
 import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
-import ChartUtils from '../helpers/ChartUtils';
+import ChartUtils from '../helpers/Utils';
 
 class Public extends Component {
   static propTypes = {
