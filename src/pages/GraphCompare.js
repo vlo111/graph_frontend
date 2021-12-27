@@ -29,17 +29,13 @@ class GraphCompare extends Component {
       const { payload: { data = {} } } = await this.props.getSingleGraphRequest(graphId, { full: true });
       this.setState({ selectedNodes1: _.cloneDeep(ChartUtils.objectAndProto(data.graph?.nodes || [])) });
     }
-    this.loadGraphs();
-    this.loadGraphs1();
   })
 
   getGraph2Request = memoizeOne(async (graph2Id) => {
-    if (graph2Id?.length > 0) {
+    if (graph2Id) {
       const { data = {} } = await Api.getSingleGraph(graph2Id, { full: true }).catch((e) => e);
       this.setState({ singleGraph2: data.graph || {}, selectedNodes2: _.cloneDeep(data.graph?.nodes || []) });
     }
-    this.loadGraphs();
-    this.loadGraphs1();
   })
 
   constructor(props) {
@@ -48,18 +44,12 @@ class GraphCompare extends Component {
       singleGraph2: {},
       selectedNodes1: [],
       selectedNodes2: [],
-      selectOptions: [],
-      defaultOptions: [],
-      defaultOptions2: [],
-      selectedValue: null,
     };
   }
 
   async componentDidMount() {
     this.props.setActiveButton('view');
     this.props.clearSingleGraph();
-    this.loadGraphs();
-    this.loadGraphs1();
   }
 
   loadGraphs = async (s) => {
@@ -67,8 +57,6 @@ class GraphCompare extends Component {
     const { data } = await Api.getGraphsList(1, {
       s,
       onlyTitle: 1,
-      limit: 10,
-      compare: 'true',
     });
     const graphs = data.graphs
       .filter((g) => g.id !== graphId && g.id !== graph2Id)
@@ -76,26 +64,6 @@ class GraphCompare extends Component {
         value: g.id,
         label: `${g.title} (${g.nodesCount})`,
       }));
-    this.setState({ defaultOptions: graphs });
-    // this.setState({ defaultOptions2: graphs });
-    return graphs;
-  }
-
-  loadGraphs1 = async (s) => {
-    const { match: { params: { graphId, graph2Id } } } = this.props;
-    const { data } = await Api.getGraphsList(1, {
-      s,
-      onlyTitle: 1,
-      limit: 10,
-      compare: 'true',
-    });
-    const graphs = data.graphs
-      .filter((g) => g.id !== graphId && g.id !== graph2Id)
-      .map((g) => ({
-        value: g.id,
-        label: `${g.title} (${g.nodesCount})`,
-      }));
-    this.setState({ defaultOptions2: graphs });
     return graphs;
   }
 
@@ -157,12 +125,8 @@ class GraphCompare extends Component {
     } = this.props;
     this.getGraph1Request(graphId);
     this.getGraph2Request(graph2Id);
-    let {
-      selectedNodes1, selectedNodes2,
-    } = this.state;
-    const {
-      singleGraph2, createGraphData, defaultOptions, defaultOptions2,
-    } = this.state;
+    let { selectedNodes1, selectedNodes2 } = this.state;
+    const { singleGraph2, createGraphData } = this.state;
     const graph1Nodes = _.differenceBy(singleGraph.nodes, singleGraph2.nodes, 'name');
     const graph2Nodes = _.differenceBy(singleGraph2.nodes, singleGraph.nodes, 'name');
 
@@ -174,7 +138,7 @@ class GraphCompare extends Component {
     return (
       <Wrapper className="graph-compare" showFooter={false}>
         <Header />
-        <h3 className="compareHeaderText">Compare Graphs</h3>
+        <h3 className="compareHeaderText">Compare Graph</h3>
         <div className="graph-compare-container">
           <div className="compareListWrapper compareContent">
             <ul className="compareList">
@@ -191,7 +155,6 @@ class GraphCompare extends Component {
                       }] : undefined}
                       onChange={(val) => this.handleGraphSelect(val, 1)}
                       loadOptions={this.loadGraphs}
-                      defaultOptions={defaultOptions}
                     />
                   </div>
                   <div style={{ width: '40%' }}>
@@ -203,8 +166,7 @@ class GraphCompare extends Component {
                         label: `${singleGraph2.title} (${singleGraph2.nodes?.length})`,
                       }] : undefined}
                       onChange={(val) => this.handleGraphSelect(val, 2)}
-                      loadOptions={this.loadGraphs1}
-                      defaultOptions={defaultOptions2}
+                      loadOptions={this.loadGraphs}
                     />
                   </div>
                 </div>
@@ -212,10 +174,7 @@ class GraphCompare extends Component {
             </ul>
             <GraphCompareList
               title={(
-                <span className="graph-name-title">
-                  Similar Nodes
-                  <p>{` (${graph1CompareNodes.length})`}</p>
-                </span>
+                <span className="graph-name-title">Similar Nodes</span>
               )}
               count={graph1CompareNodes.length}
               singleGraph1={{ ...singleGraph, nodes: graph1CompareNodes }}
@@ -230,7 +189,6 @@ class GraphCompare extends Component {
                 <span className="graph-name-title">
                   {'Nodes in '}
                   <strong>{singleGraph.title}</strong>
-                  {` (${graph1Nodes?.length})`}
                 </span>
                 )}
               count={graph1Nodes.length}
@@ -244,7 +202,6 @@ class GraphCompare extends Component {
                 <span className="graph-name-title">
                   {'Nodes in '}
                   <strong>{singleGraph2.title}</strong>
-                  {` (${graph2Nodes?.length})`}
                 </span>
                 )}
               count={graph2Nodes.length}
