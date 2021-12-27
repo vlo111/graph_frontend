@@ -10,6 +10,7 @@ import Pagination from '../../components/Pagination';
 import GraphCardItem from '../../components/graphData/GraphCardItem';
 import GraphListItem from '../../components/graphData/GraphListItem';
 import NoGraph from '../../components/NoGraph';
+import ChartUtils from '../../helpers/Utils';
 
 class Home extends Component {
   static propTypes = {
@@ -23,7 +24,10 @@ class Home extends Component {
   getGraphsList = memoizeOne((page = 1, s) => {
     const status = 'template';
     const order = JSON.parse(localStorage.getItem(`/${status}s`));
-    this.props.getGraphsListRequest(page, { s, filter: order, status });
+    const limit = ChartUtils.getGraphListItemsLimit();
+    this.props.getGraphsListRequest(page, {
+      s, filter: order, status, limit,
+    });
   })
 
   render() {
