@@ -23,7 +23,21 @@ class Home extends Component {
   getGraphsList = memoizeOne((page = 1, s) => {
     const status = 'template';
     const order = JSON.parse(localStorage.getItem(`/${status}s`));
-    this.props.getGraphsListRequest(page, { s, filter: order, status });
+    const windowWidth = window.innerWidth;
+    let limit = 0;
+
+    if (windowWidth <= 900 || (windowWidth > 1840 && windowWidth <= 1920)) {
+      limit = 15;
+    } else if (windowWidth <= 1490) {
+      limit = 12;
+    } else if (windowWidth <= 1840) {
+      limit = 16;
+    } else {
+      limit = 18;
+    }
+    this.props.getGraphsListRequest(page, {
+      s, filter: order, status, limit,
+    });
   })
 
   render() {

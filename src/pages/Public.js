@@ -22,7 +22,19 @@ class Public extends Component {
 
   getGraphsList = memoizeOne((page) => {
     const order = JSON.parse(localStorage.getItem('/public')) || 'newest';
-    this.props.getGraphsListRequest(page, { filter: order, publicGraph: 1 });
+    const windowWidth = window.innerWidth;
+    let limit = 0;
+
+    if (windowWidth <= 900 || (windowWidth > 1840 && windowWidth <= 1920)) {
+      limit = 15;
+    } else if (windowWidth <= 1490) {
+      limit = 12;
+    } else if (windowWidth <= 1840) {
+      limit = 16;
+    } else {
+      limit = 18;
+    }
+    this.props.getGraphsListRequest(page, { filter: order, publicGraph: 1, limit });
   })
 
   render() {
@@ -41,7 +53,7 @@ class Public extends Component {
           ) : mode === 'list'
             ? <GraphListItem graphs={graphsList} headerTools="public" /> : <GraphCardItem graphs={graphsList} headerTools="public" />}
         </div>
-        {graphsList.length > 5 ? <Pagination totalPages={totalPages} /> : null}
+        {graphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>
     );
   }
