@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { setLegendButton } from '../store/actions/app';
 import ChartUtils from '../helpers/ChartUtils';
-import { ReactComponent as DownSvg } from '../assets/images/icons/down.svg';
 import { ReactComponent as LegendSvg } from '../assets/images/icons/legend.svg';
 import Button from './form/Button';
 import { getSingleGraphRequest } from '../store/actions/graphs';
+import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 
 class Legend extends Component {
     static propTypes = {
@@ -69,36 +69,38 @@ class Legend extends Component {
           <p className="nodeCount">{`(${groupLinkTypes[Object.keys(groupLinkTypes).filter((p) => p === link.type)].length})`}</p>
         </li>
       ));
-
       return (
-        <div className={showLegendButton === 'close' ? 'legends' : 'legends open'}>
+        <div className={showLegendButton === 'close' ? 'legends' : 'legends open'} id="legends">
 
           <Button className="dropdown-btn legendButton" onClick={() => this.handleClick()}>
             <LegendSvg className="legendSvg" />
-            <h6>  Legends</h6>
-            <div className="carretNew">
-              <DownSvg />
-            </div>
           </Button>
 
           <div className="dropdown">
+            <Button
+              color="transparent"
+              className="close legendClose"
+              icon={<CloseSvg />}
+              onClick={() => this.handleClick()}
+            />
+            <h4>
+              Nodes (
+              {nodesPartial?.length}
+              )
+            </h4>
             <div className="nodes">
-              <h4>
-                Nodes (
-                {nodesPartial?.length}
-                )
-              </h4>
+
               <ul className="node-list">
                 {listNodeItems}
               </ul>
             </div>
             <div className="borderLegends" />
+            <h4>
+              Connections (
+              {links?.length}
+              )
+            </h4>
             <div className="connections">
-              <h4>
-                Connections (
-                {links?.length}
-                )
-              </h4>
               <ul className="connection-list">
                 {listLinkItems}
               </ul>
