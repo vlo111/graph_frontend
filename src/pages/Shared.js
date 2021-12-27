@@ -9,6 +9,7 @@ import GraphListItem from '../components/graphData/GraphListItem';
 import { getShareGraphListRequest } from '../store/actions/share';
 import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
+import ChartUtils from '../helpers/ChartUtils';
 
 class Shared extends Component {
   static propTypes = {
@@ -22,18 +23,7 @@ class Shared extends Component {
   componentDidMount() {
     const order = JSON.parse(localStorage.getItem('/shared')) || 'newest';
     const { page = 1, s } = queryString.parse(window.location.search);
-    const windowWidth = window.innerWidth;
-    let limit = 0;
-
-    if (windowWidth <= 900 || (windowWidth > 1840 && windowWidth <= 1920)) {
-      limit = 15;
-    } else if (windowWidth <= 1490) {
-      limit = 12;
-    } else if (windowWidth <= 1840) {
-      limit = 16;
-    } else {
-      limit = 18;
-    }
+    const limit = ChartUtils.graphsListLimit();
     this.props.getShareGraphListRequest(page, { s, filter: order, limit });
   }
 

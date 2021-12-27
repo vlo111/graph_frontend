@@ -1183,6 +1183,28 @@ class ChartUtils {
     const types = nodes.map((n) => n.type);
     return _.uniq(types);
   }
+
+  static graphsListLimit() {
+    const windowWidth = window.innerWidth;
+
+    const isHomePage = window.location.pathname === '/';
+
+    const isLargeScreen = windowWidth > 1840 && windowWidth <= 1920;
+
+    let limit = 0;
+
+    if (windowWidth <= 900 || isLargeScreen) {
+      limit = isHomePage ? 14 : 15;
+    } else if (windowWidth <= 1490) {
+      limit = isHomePage ? 11 : 12;
+    } else if (windowWidth <= 1840) {
+      limit = isHomePage ? 15 : 16;
+    } else {
+      limit = isHomePage ? 16 : 18;
+    }
+
+    return limit;
+  }
 }
 
 export default ChartUtils;

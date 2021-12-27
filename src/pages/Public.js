@@ -10,6 +10,7 @@ import NoGraph from '../components/NoGraph';
 import GraphListItem from '../components/graphData/GraphListItem';
 import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
+import ChartUtils from '../helpers/ChartUtils';
 
 class Public extends Component {
   static propTypes = {
@@ -22,18 +23,7 @@ class Public extends Component {
 
   getGraphsList = memoizeOne((page) => {
     const order = JSON.parse(localStorage.getItem('/public')) || 'newest';
-    const windowWidth = window.innerWidth;
-    let limit = 0;
-
-    if (windowWidth <= 900 || (windowWidth > 1840 && windowWidth <= 1920)) {
-      limit = 15;
-    } else if (windowWidth <= 1490) {
-      limit = 12;
-    } else if (windowWidth <= 1840) {
-      limit = 16;
-    } else {
-      limit = 18;
-    }
+    const limit = ChartUtils.graphsListLimit();
     this.props.getGraphsListRequest(page, { filter: order, publicGraph: 1, limit });
   })
 

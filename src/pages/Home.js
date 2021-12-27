@@ -12,6 +12,7 @@ import GraphListItem from '../components/graphData/GraphListItem';
 import GraphCardItem from '../components/graphData/GraphCardItem';
 import { ReactComponent as PlusSvg } from '../assets/images/icons/plusGraph.svg';
 import Button from '../components/form/Button';
+import ChartUtils from '../helpers/ChartUtils';
 
 class Home extends Component {
   static propTypes = {
@@ -24,19 +25,7 @@ class Home extends Component {
 
   getGraphsList = memoizeOne((page, s) => {
     const order = JSON.parse(localStorage.getItem('/')) || 'newest';
-    const windowWidth = window.innerWidth;
-    let limit = 0;
-
-    if (windowWidth <= 900 || (windowWidth > 1840 && windowWidth <= 1920)) {
-      limit = 14;
-    } else if (windowWidth <= 1490) {
-      limit = 11;
-    } else if (windowWidth <= 1840) {
-      limit = 15;
-    } else {
-      limit = 16;
-    }
-
+    const limit = ChartUtils.graphsListLimit();
     this.props.getGraphsListRequest(page, { s, filter: order, limit });
   })
 
