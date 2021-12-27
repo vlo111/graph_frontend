@@ -23,7 +23,7 @@ class Public extends Component {
 
   getGraphsList = memoizeOne((page) => {
     const order = JSON.parse(localStorage.getItem('/public')) || 'newest';
-    const limit = ChartUtils.graphsListLimit();
+    const limit = ChartUtils.getGraphListItemsLimit();
     this.props.getGraphsListRequest(page, { filter: order, publicGraph: 1, limit });
   })
 

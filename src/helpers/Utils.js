@@ -391,7 +391,7 @@ class Utils {
   static substr = (value, count) => (value && value.length > count
     ? `${value.substr(0, count)}... ` : value)
 
-  static graphsListLimit() {
+  static getGraphListItemsLimit() {
     const windowWidth = window.innerWidth;
 
     const isHomePage = window.location.pathname === '/';

@@ -24,7 +24,7 @@ class Home extends Component {
   getGraphsList = memoizeOne((page = 1, s) => {
     const status = 'template';
     const order = JSON.parse(localStorage.getItem(`/${status}s`));
-    const limit = ChartUtils.graphsListLimit();
+    const limit = ChartUtils.getGraphListItemsLimit();
     this.props.getGraphsListRequest(page, {
       s, filter: order, status, limit,
     });
