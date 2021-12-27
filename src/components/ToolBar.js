@@ -13,6 +13,7 @@ import AnalyseModal from './Analysis/AnalyseModal';
 import Outside from './Outside';
 import HelpsModal from './Helps';
 import Undo from './Undo';
+import SearchModal from './search/SearchModal';
 import { ReactComponent as Ellipse } from '../assets/images/Ellipse.svg';
 import { ReactComponent as FreeForm } from '../assets/images/freeform.svg';
 import { ReactComponent as Square } from '../assets/images/Square.svg';
@@ -211,10 +212,6 @@ class ToolBar extends Component {
     this.setState({
       openHelpsModal: false,
     });
-    // if (document.getElementById("graphs-data-info").style.display == "none")
-    // {
-    //   document.getElementById('graphs-data-info').style.display = 'flex';
-    // }
     setTimeout(() => {
       this.collapse();
     }, 20);
@@ -289,6 +286,9 @@ class ToolBar extends Component {
     const tab = document.getElementsByClassName('react-tabs')[0];
     const undo = document.getElementById('undoWrapper');
     const footer = document.getElementById('graphs-data-info');
+    const searchModal = document.getElementById('searchMenuNodes');
+
+
     let left;
 
     if (closedMenu) {
@@ -305,6 +305,9 @@ class ToolBar extends Component {
       left += undo.offsetWidth;
     }
     footer.style.left = `${left}px`;
+    if (searchModal) {
+      searchModal.style.left = `${left - 170}px`;
+    }
   }
 
   render() {
@@ -409,16 +412,6 @@ class ToolBar extends Component {
               <i className="fa fa-search-plus" />
               <div className="sidebar_text"> Find Node </div>
             </li>
-
-            {/* <li
-
-           onMouseOver={() => this.handleOver('history')}
-           onMouseLeave={this.handleLeave}
-           className={`${overMenu === 'history' ? 'collapse_over' : ''} collapse help_menu`}
-         >
-           <i class="fa fa-history"></i>
-           <div className="sidebar_text"> History </div>
-         </li> */}
             <li
               onClick={() => this.openHelpsModal()}
               onMouseOver={() => this.handleOver('help')}
@@ -523,6 +516,7 @@ class ToolBar extends Component {
           <AnalyseModal />
         </div>
         <Undo />
+        <SearchModal />
       </>
     );
   }

@@ -51,7 +51,9 @@ class SearchModal extends Component {
 
   closeModal = () => {
     this.props.toggleGraphMap(false);
-    this.props.setActiveButton('create');
+    this.props.setActiveButton('create ');
+
+    this.handleChange('');
   };
 
   /**
@@ -365,26 +367,33 @@ class SearchModal extends Component {
     _.set(tabsContentVisibility, idName, !isVisible);
   }
 
+  handleClick = (button) => {
+    this.props.setActiveButton(button);
+  }
+
   render() {
     const {
       nodes, tabs, search, docs, keywords, checkBoxValues,
     } = this.state;
+
     this.initTabs();
     return (
       <Modal
         isOpen
-        className="ghModal ghModalEditSearch editSearchNodes"
-        overlayClassName="ghModalOverlay"
+        className="ghModal ghModalEditSearch editSearchNodes ghModalSearch searchNodes searchMenuNodes"
+        overlayClassName=" searchOverlay "
+        id="searchMenuNodes"
         onRequestClose={this.closeModal}
       >
-        <Button
-          color="transparent"
-          className="close"
-          icon={<CloseSvg />}
-          onClick={() => this.closeModal(false)}
-        />
         <div className="searchField">
-          <div className="searchText">Search</div>
+          <Button
+            color="transparent"
+            className="close searchButtonClosed"
+            icon={<CloseSvg />}
+            onClick={() => this.closeModal()}
+            disabled={!search}
+          />
+          {' '}
           <div className="searchBox">
             <div className="searchBoxInside">
               <div className="searchFieldCheckBox">
@@ -398,7 +407,13 @@ class SearchModal extends Component {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path d="M15.313 0H0.692176C0.25364 0 0.00877185 0.463023 0.280353 0.779125L7.59077 9.25601C7.80002 9.49865 8.20294 9.49865 8.41442 9.25601L15.7248 0.779125C15.9964 0.463023 15.7516 0 15.313 0Z" fill="#7166F8" />
+                    <path
+                      d="M15.313 0H0.692176C0.25364
+                    0 0.00877185 0.463023 0.280353
+                    0.779125L7.59077 9.25601C7.80002
+                     9.49865 8.20294 9.49865 8.41442 9.25601L15.7248 0.779125C15.9964 0.463023 15.7516 0 15.313 0Z"
+                      fill="#7166F8"
+                    />
                   </svg>
 
                 </div>
@@ -424,12 +439,14 @@ class SearchModal extends Component {
                 value={search}
                 className="nodeSearch"
                 onChange={(e) => this.handleChange(e.target.value)}
-                autoFocus
+                onClick={() => this.handleClick('search')}
               />
             </div>
           </div>
         </div>
-        <ul className="list">
+        <ul
+          className="list"
+        >
           {nodes.map((d) => (
             <li
               className="item nodeItem"
@@ -454,6 +471,8 @@ class SearchModal extends Component {
                         __html: this.formatHtml(d.name),
                       }}
                     />
+                    <span className="typeText">Type:</span>
+
                     <span
                       className="type"
                       dangerouslySetInnerHTML={{
@@ -461,9 +480,9 @@ class SearchModal extends Component {
                       }}
                     />
                   </span>
-
                   {!d.name.toLowerCase().includes(search)
                   && !d.type.toLowerCase().includes(search) ? (
+
                     <span
                       className="keywords"
                       dangerouslySetInnerHTML={{
@@ -481,29 +500,24 @@ class SearchModal extends Component {
           {Object.keys(tabs)
             && Object.keys(tabs).map((item) => (
               <li
-                className="item"
+                className="item nodeItem"
                 key={tabs[item]?.node?.id}
                 onMouseOver={() => { this.findNodeInDom(tabs[item].node, false); }}
               >
                 <div tabIndex="0" role="button" className="ghButton tabButton">
                   <div className="header" onClick={() => this.findNodeInDom(tabs[item].node)}>
-                    <NodeIcon node={tabs[item].node} searchIcon />
-                    <span className="name">{tabs[item].node.name}</span>
-                  </div>
-                  <div className="right tabRight">
-                    {Object.keys(tabs[item]).map(
-                      (tab) => tabs[item][tab].nodeId && (
+                    <div className="right tabRight">
+                      {Object.keys(tabs[item]).map(
+                        (tab) => tabs[item][tab].nodeId && (
                         <div className="contentTabs">
                           <span className="row nodeTabs">
                             <div
                               className="contentWrapper"
-                              onClick={(e) => this.openTab(
-                                e,
-                                tabs[item].node,
-                                tabs[item][tab].tabName,
-                              )}
+                              onClick={(e) => this.openTab(e, tabs[item].node, tabs[item][tab].tabName)}
                             >
-                              <div className="tabNameLine">
+                              <div className="tabNameLine ">
+                                <NodeIcon node={tabs[item].node} searchIcon />
+                                <span className="name">{tabs[item].node.name}</span>
                                 <span className="nodeType">
                                   {' '}
                                   <span className="typeText">Type:</span>
@@ -518,14 +532,6 @@ class SearchModal extends Component {
                                   />
                                 </div>
                               </div>
-                              <span
-                                className="name"
-                                dangerouslySetInnerHTML={{
-                                  __html: this.formatHtml(
-                                    tabs[item][tab].tabName,
-                                  ),
-                                }}
-                              />
                               <div
                                 className="content"
                                 id={
@@ -558,8 +564,9 @@ class SearchModal extends Component {
                               />
                               ) : null}
                         </div>
-                      ),
-                    )}
+                        ),
+                      )}
+                    </div>
                   </div>
                 </div>
               </li>
@@ -567,7 +574,7 @@ class SearchModal extends Component {
 
           {keywords.map((d) => (
             <li
-              className="item"
+              className="item nodeItem"
               key={d.index}
               onMouseOver={() => { this.findNodeInDom(d, false); }}
             >
@@ -610,7 +617,7 @@ class SearchModal extends Component {
 
           {docs.map((d, index) => (
             <li
-              className="item"
+              className="item nodeItem"
               key={index}
               onMouseOver={() => { this.findNodeInDom(d, false); }}
             >

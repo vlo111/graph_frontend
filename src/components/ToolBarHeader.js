@@ -6,7 +6,6 @@ import ReactDOMServer from 'react-dom/server';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
-import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
 import { socketMousePositionTracker } from '../store/actions/socket';
 import AccountDropDown from './account/AccountDropDown';
 import Legend from './Legend';
@@ -26,7 +25,6 @@ class ToolBarHeader extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     socketMousePositionTracker: PropTypes.func.isRequired,
-    activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -97,15 +95,13 @@ class ToolBarHeader extends Component {
 
   render() {
     const {
-      activeButton, singleGraph, currentUserId, location: { pathname }, match: { params: { graphId } },
+      singleGraph, currentUserId, location: { pathname }, match: { params: { graphId } },
     } = this.props;
     const { mouseTracker, commentModal } = this.state;
     const singleGraphUser = singleGraph.user;
     this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId);
 
     const updateLocation = pathname.startsWith('/graphs/update/');
-    const filter = pathname.startsWith('/graphs/filter/');
-    const view = pathname.startsWith('/graphs/view/');
     return (
       <>
         <header id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
@@ -115,23 +111,6 @@ class ToolBarHeader extends Component {
                 <LogoSvg className="orange" />
                 <span className="autoSaveText">Saving...</span>
               </Link>
-            </li>
-            <li className="legend">
-              {updateLocation && <Legend /> }
-            </li>
-            <li>
-              { !filter && !view
-                && (
-                <div className="graphs">
-                  <Button
-                    icon={<SearchSvg />}
-                    className={activeButton === 'search' ? 'active' : undefined}
-                    onClick={() => this.handleClick('search')}
-                  >
-                    Search
-                  </Button>
-                </div>
-                )}
             </li>
             <li>
               {updateLocation ? (
@@ -192,6 +171,8 @@ class ToolBarHeader extends Component {
           graph={singleGraph}
         />
         )}
+        {updateLocation && <Legend />}
+
       </>
     );
   }
