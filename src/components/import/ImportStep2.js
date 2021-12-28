@@ -114,7 +114,7 @@ class ImportStep2 extends Component {
         ) : null}
         <div className="buttons prev-next">
           <button className="btn-delete" onClick={this.back}>
-            Prev
+            Back
           </button>
           <button className="btn-classic" onClick={this.import}>Import</button>
         </div>

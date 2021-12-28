@@ -81,7 +81,6 @@ button {
 }
 
 main {
-  // min-height: 100vh;
   display: flex;
   flex-direction: column;
 
@@ -359,33 +358,6 @@ p {
     }
   }
 
-  //&.ghIsSearchable {
-  //  .ghSelectContent {
-  //    .gh__control {
-  //      .gh__dropdown-indicator {
-  //        padding: 5px;
-  //
-  //        &:after {
-  //          width: 25px;
-  //          height: 25px;
-  //          content: '';
-  //          background-color: $color-light-gray;
-  //          border-radius: 4px;
-  //          background-image: url("../images/icons/search.svg");
-  //          background-size: 13px;
-  //          background-repeat: no-repeat;
-  //          background-position: center;
-  //        }
-  //
-  //        svg {
-  //          display: none;
-  //
-  //        }
-  //      }
-  //    }
-  //  }
-  //}
-
   .icon {
     position: absolute;
     bottom: 6px;
@@ -469,7 +441,6 @@ p {
   }
 
   .ghInput input {
-    padding-right: 120px;
     text-overflow: ellipsis;
   }
 
@@ -574,13 +545,6 @@ p {
     cursor: default;
   }
 
-  &.main {
-    //background-color: $color-main;
-
-    &:hover {
-      //box-shadow: 0 3px 6px rgba($color-main, 0.4);
-    }
-  }
 
   &.blue {
     color: $color-dark;
@@ -594,8 +558,6 @@ p {
     }
   }
 
-  &.accent {
-  }
 
   &.light {
     background-color: $color-light-blue;
@@ -878,7 +840,6 @@ p {
       font-family: "Open Sans", sans-serif;
       dominant-baseline: central;
       fill: #0d0905;
-      //text-anchor: middle;
     }
 
     .folderClose {
@@ -957,7 +918,6 @@ p {
     text {
       font-family: $font-family;
       dominant-baseline: mathematical;
-      //fill: $color-dark;
       text-anchor: middle;
     }
 
@@ -986,7 +946,6 @@ p {
 
     &.hidden {
       opacity: 0.2 !important;
-      //pointer-events: none;
 
       text {
         opacity: 0.4 !important;
@@ -1211,21 +1170,6 @@ p {
     }
   }
 
-  //.ghButton {
-  //  margin: 16px 0 0 0;
-  //  height: 44px;
-  //  flex-direction: column;
-  //  background-color: transparent;
-  //  color: $color-dark;
-  //  font-weight: 400;
-  //
-  //  justify-content: center;
-  //  align-items: center;
-  //
-  //  &.active {
-  //    opacity: 0.6;
-  //  }
-  //}
 }
 
 #offline {
@@ -2025,10 +1969,6 @@ p {
 
       &.keywords {
         .ghFormField {
-          //max-width: 100% !important;
-          //width: 100% !important;
-          //left: auto;
-          //right: 0;
 
           .gh__control {
             height: auto;
@@ -2376,7 +2316,6 @@ p {
   background: $color-white;
   border-radius: 24px;
   padding: 10px;
-  // border: 1px solid $color-light-gray;
   position: relative;
   top: 40px;
 
@@ -2621,6 +2560,7 @@ p {
     padding: 0px 0px 0px 20px;
     padding-bottom: 15%;
     box-shadow: 0 4px 36px rgba(0, 0, 0, 0.16);
+   
 
     .filter-container {
       width: 100%;
@@ -3221,8 +3161,6 @@ body .gh__menu {
 }
 
 .searchIcon {
-  height: 35px;
-  width: 35px;
   min-width: 35px;
 }
 
@@ -3317,7 +3255,7 @@ body .gh__menu {
           .contentWrapper {
             display: block;
             max-height: 300px;
-            padding-top: 1em;
+                padding-top: 10px;
             margin-bottom: 1em;
             overflow: scroll;
             box-shadow: 0px 4px 11px rgb(0 0 0 / 25%);
@@ -3328,18 +3266,10 @@ body .gh__menu {
 
             .tabNameLine {
               display: flex;
-              flex-direction: row;
-              align-items: center;
               justify-content: space-between;
-              padding-right: 5px;
 
               .nodeType {
                 margin: 0 21px;
-
-                .typeText {
-                  color: $color-border;
-                  font-weight: 800;
-                }
               }
 
               .toggleTabBox {
@@ -3348,7 +3278,6 @@ body .gh__menu {
             }
 
             .content {
-              max-height: 80%;
               padding: 11px;
               padding-top: 0px;
               display: none;
@@ -3358,7 +3287,7 @@ body .gh__menu {
               display: block;
               font-weight: 600;
               margin: 1em 0 0.5em 0;
-              padding-left: 21px;
+              padding-left: 10px;
             }
 
             .type,
@@ -3409,22 +3338,6 @@ body .gh__menu {
     }
 
     .header {
-      cursor: pointer;
-      align-items: center;
-      display: flex !important;
-      flex-direction: unset !important;
-
-      .nodeIcon {
-        border-radius: 50%;
-        width: 35px;
-        height: 35px;
-
-        img {
-          width: 35px;
-          height: 35px;
-        }
-      }
-
       .headerArea {
         margin-left: 18px;
         display: flex;
@@ -3455,16 +3368,11 @@ body .gh__menu {
     align-items: center;
     background: white;
 
-    .nodeItem {
-      height: 44px;
-    }
 
     .item {
-      display: flex;
       margin: 0.8em 0;
       width: 91%;
       align-items: center;
-      min-height: 70px;
       border: 1px solid $color-tab-general-border;
       padding: 10px;
 
@@ -3486,7 +3394,6 @@ body .gh__menu {
         .right {
           display: flex;
           flex-direction: column;
-          margin-left: 0.5em;
           width: calc(100% - 60px);
 
           .row {
@@ -3509,6 +3416,8 @@ body .gh__menu {
             margin-right: 10px;
             overflow: hidden;
             width: 100%;
+            margin-left: 10px;
+
           }
 
           .keywords {
@@ -3521,13 +3430,6 @@ body .gh__menu {
           }
         }
 
-        .name {
-          font-size: 15px;
-          max-width: 80%;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          margin-left: 1em;
-        }
 
         .type {
           max-width: calc(50% - 70px);
@@ -3847,7 +3749,6 @@ body .gh__menu {
       background-color: $color-accent;
       position: relative;
       z-index: 3;
-      //padding: 12px 25px;
 
       .icon {
         color: $color-white;
@@ -4061,17 +3962,6 @@ body .gh__menu {
     transition: 0.3s;
     font-size: 17px;
   }
-
-  //  .nav-pills .nav-link, .nav-pills .show>.nav-link text {
-  //   transform: matrix(0, -1, 1, 0, 0, 0);
-
-  //   text-align: left;
-  //   font: normal normal bold 16px/22px Open Sans;
-  //   letter-spacing: 0px;
-  //   color: #9BA6B4;
-  //   opacity: 1;
-
-  //  }
 }
 
 .graphListFooter {
@@ -4605,10 +4495,6 @@ body .gh__menu {
     opacity: 1;
     padding: 1.6em 1.6em;
     margin: 0.46em 0.2em 0.4em 1.1em;
-
-    // &:not(:last-child) {
-    //   border-bottom: 1px solid $color-main;
-    // }
   }
 
   &__graphInfo {
@@ -4681,7 +4567,6 @@ body .gh__menu {
   }
 
   &__user {
-    // display: flex;
     align-items: center;
     margin-bottom: 20px;
     color: #808080;
@@ -4701,9 +4586,6 @@ body .gh__menu {
     padding: 20px;
   }
 
-  // &__description {
-  //   margin-top: 25px;
-  // }
 
   &__user-details {
     position: relative;
@@ -4722,12 +4604,6 @@ body .gh__menu {
 
 .graphUsersInfoOverlay {
   .graphUsersInfo {
-    //padding: 30px 20px 20px;
-    //min-width: 900px;
-    //min-height: 350px;
-    //display: inline-flex;
-    //align-items: center;
-    //justify-content: center;
 
     .close {
       position: absolute;
@@ -4903,7 +4779,6 @@ body .gh__menu {
   }
 
   .exportDropDown {
-    /*visibility: hidden; */
     z-index: 4;
     position: absolute;
     margin-left: 5px;
@@ -6137,39 +6012,6 @@ img.preview-scaled {
     margin: 0 auto;
     cursor: pointer;
   }
-
-  //.locationExpandForm {
-  //  .locForm {
-  //    display: flex;
-  //    width: 100%;
-  //    height: 50px;
-  //    line-height: 50px;
-  //    margin-bottom: 10px;
-  //
-  //    .locName {
-  //      border-right: none;
-  //      border-top-left-radius: 3px;
-  //      border-bottom-left-radius: 3px;
-  //      flex: 80%;
-  //    }
-  //
-  //    .locEdit {
-  //      border-right: none;
-  //      flex: 10%;
-  //      text-align: center;
-  //      cursor: pointer;
-  //    }
-  //
-  //    .locDelete {
-  //      border-top-right-radius: 3px;
-  //      border-bottom-right-radius: 3px;
-  //      flex: 10%;
-  //      text-align: center;
-  //      cursor: pointer;
-  //    }
-  //  }
-  //}
-
   .expandButton {
     background-color: white;
     padding: 0;
@@ -6522,7 +6364,6 @@ img.preview-scaled {
     }
 
     .viewArea {
-      //fill: rgba($color-accent, 0.05);
       fill: rgba(0, 123, 255, 0.03);
       stroke: $color-accent;
       cursor: move;
@@ -6705,7 +6546,6 @@ img.preview-scaled {
   grid-template-columns: auto auto auto auto;
   grid-gap: 36%;
   position: relative;
-  // left: 40%;
 }
 
 .social-list > div {
@@ -6959,6 +6799,7 @@ img.preview-scaled {
       }
     }
   }
+  
 
   .searchItem {
     cursor: pointer;
@@ -6966,14 +6807,6 @@ img.preview-scaled {
 
   ul {
     margin-bottom: 0px;
-
-    .item {
-      &:hover {
-        background: linear-gradient(0deg, rgba(136, 130, 209, 0.07), rgba(136, 130, 209, 0.07));
-        border: 1px solid $color-tab-general-border;
-        box-sizing: border-box;
-      }
-    }
   }
 }
 
@@ -6997,10 +6830,6 @@ img.preview-scaled {
 
   .list {
     .tabButton {
-      display: grid !important;
-      grid-template-columns: 100%;
-      box-shadow: 0 2px 9px #022f771a;
-      cursor: unset;
 
       .right {
         flex-direction: unset !important;
@@ -7013,24 +6842,23 @@ img.preview-scaled {
           .contentWrapper {
             display: block;
             max-height: 300px;
-            padding-top: 1em;
             margin-bottom: 1em;
             overflow: scroll;
             box-shadow: 0px 4px 11px rgb(0 0 0 / 25%);
             border-radius: 3px;
-            background: #ffffff;
-            margin: 11px 9px 11px;
             width: 100%;
 
             .tabNameLine {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-              padding-right: 5px;
+              width: 385px;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
 
               .nodeType {
                 margin: 0 21px;
+                color:#717EA0;
+                width: 115px;
 
                 .typeText {
                   color: $color-border;
@@ -7053,7 +6881,7 @@ img.preview-scaled {
               display: block;
               font-weight: 600;
               margin: 1em 0 0.5em 0;
-              padding-left: 21px;
+              padding-left: 10px;
             }
 
             .type,
@@ -7106,7 +6934,6 @@ img.preview-scaled {
     .header {
       cursor: pointer;
       align-items: center;
-      display: flex !important;
       flex-direction: unset !important;
 
       .nodeIcon {
@@ -7151,12 +6978,7 @@ img.preview-scaled {
     flex-direction: column;
     align-items: center;
 
-    .nodeItem {
-      height: 44px;
-    }
-
     .item {
-      display: flex;
       margin: 0.8em 0;
       width: 91%;
       align-items: center;
@@ -7174,7 +6996,6 @@ img.preview-scaled {
         .right {
           display: flex;
           flex-direction: column;
-          margin-left: 0.5em;
           width: calc(100% - 60px);
 
           .row {
@@ -7193,7 +7014,7 @@ img.preview-scaled {
           }
 
           .name {
-            margin-right: 10px;
+            margin-right: 50px;
             overflow: hidden;
           }
 
@@ -7225,8 +7046,6 @@ img.preview-scaled {
 }
 
 .editSearchNodes {
-  min-height: 45%;
-  min-width: 62%;
   right: 3%;
 
   .searchField {
@@ -7245,7 +7064,6 @@ img.preview-scaled {
       flex-direction: row;
       width: 100%;
       justify-content: center;
-
       .searchBoxInside {
         border: 1px solid #7166f8;
         border-radius: 5px;
@@ -7442,9 +7260,6 @@ img.preview-scaled {
 
 .legendButton {
   display: flex;
-  .legendSvg {
-    display: none;
-  }
 }
 
 .GraphNames {
@@ -7469,7 +7284,6 @@ img.preview-scaled {
   }
 
   .dropdown-btn {
-    //position: absolute;
     z-index: 101;
     border: none;
     background-color: #ffffff;
@@ -7507,7 +7321,7 @@ img.preview-scaled {
     padding: 5px 22px 20px 22px;
     background-color: #ffffff;
     border-radius: 3px;
-    left: 45%;
+    left: 30%;
     top: 75px;
     position: fixed;
     width: 240px;
@@ -7712,16 +7526,16 @@ img.preview-scaled {
     }
 
     .dropdown {
+      z-index: 10;
       display: block;
       position: fixed;
       width: 235px;
       top: 70px;
-      height: calc(100% - 145px);
-    }
+      right: 11px;
+      height: 100%;    }
   }
 
   .dropdown-btn {
-    z-index: 101;
     border: none;
     background-color: #ffffff;
     color: $color-main;
@@ -7731,6 +7545,9 @@ img.preview-scaled {
     outline: none;
     border-radius: 3px;
     height: 45px;
+    position: absolute;
+    right: 10px;
+    top: 70px;
 
     .carretNew {
       margin-left: 7px;
@@ -7798,10 +7615,16 @@ img.preview-scaled {
     .nodes {
       overflow: scroll;
       height: auto;
+      height: 42%;
       max-height: 44%;
     }
     .nodeCount {
       margin-left: 2px;
+    }
+    .legendClose{
+      position: absolute;
+    margin-left: 66%;
+    top: 0px;
     }
   }
   .borderLegends {
@@ -7952,9 +7775,11 @@ img.preview-scaled {
 
   .container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(13%, 1fr));
-    box-shadow: 4px 0 25px rgba(57, 57, 57, 0.1);
+    grid-template-columns: 13% 43% 12% 12% 17%;
+    justify-content: space-between;
+    box-shadow: 4px 0 25px rgb(57 57 57 / 10%);
     max-width: 100%;
+    grid-gap: 10px;
     gap: 10px;
     padding: 0;
     height: 100%;
@@ -8066,10 +7891,6 @@ img.preview-scaled {
   .notification {
     box-shadow: none;
     background-color: $color-white;
-
-    //svg {
-    //  fill: $color-main;
-    //}
   }
 }
 
@@ -8241,7 +8062,6 @@ img.preview-scaled {
   color: #9f9f9f;
   background-color: $color-white;
   height: 36px !important;
-  // max-height: auto !important;
 }
 
 .jodit-status-bar {
@@ -9116,7 +8936,6 @@ img.preview-scaled {
 
   .scienceForm input,
   .scienceForm button {
-    // line-height: 3em;
     border-radius: 5px;
     border: none;
     padding: 0 20px;
@@ -9578,9 +9397,6 @@ details[open] summary:after {
 .jodit-xpath {
   display: flex;
   margin-left: calc(8px / -2);
-  // flex-direction: column;
-  // position: relative !important;
-  // top: -3px !important;
 }
 
 .icon-container img {
@@ -9629,17 +9445,6 @@ details[open] summary:after {
     border-style: solid;
     border-bottom-color: #fff;
   }
-
-  // &:before {
-  //   content: "";
-  //   position: absolute;
-  //   display: block;
-  //   border-color: transparent;
-  //   border-style: solid;
-  //   top: 0;
-  //   border-width: 0 .5rem .5rem;
-  //   border-bottom-color: rgba(0,0,0,.25);
-  // }
 }
 
 .rc-tooltip-placement-right .rc-tooltip-arrow {
@@ -10041,50 +9846,52 @@ details[open] summary:after {
       }
     }
   }
-  .LegendExplorer {
-    height: 45px;
-    position: fixed;
-    right: 259px;
-    .legends.open .dropdown {
-      top: 125px !important;
-      // height: 74% !important;
-    }
-    .legends.open .dropdown {
-      width: 276px !important;
-      height: calc(100% - 250px) !important;
-    }
-    .nodes {
-      margin-bottom: 15px;
-      overflow: scroll;
-      height: auto;
-      max-height: 44%;
-    }
-    .legends .dropdown-btn h6,
-    .carretNew {
-      display: none !important;
-    }
-    .legendSvg {
-      display: flex !important;
-      position: relative;
-      left: 2px !important;
-    }
-    .connections {
-      overflow: scroll;
-      height: auto;
-      max-height: 44%;
-    }
-    .nodeCount {
-      margin-left: 2px;
-    }
-  }
-  .viewIcon {
-    min-height: 21px;
-    min-width: 18px;
-  }
-  .viewIconQuery {
-    min-width: 23px !important;
-    height: 23px !important;
-  }
+ .LegendExplorer{
+  height: 45px;
+  position: fixed;
+  right: 250px;
+  top: 5px;
+    .legends.open .dropdown{
+        top: 125px !important;
+      }
+     .legends.open .dropdown{
+        width: 276px !important;
+        height: calc(100% - 250px) !important;
+        right: 30px;
+      }
+    .nodes{
+          margin-bottom: 15px;
+          overflow: scroll;
+          height: auto;
+          max-height: 44%;
+      }
+    .legends .dropdown-btn h6 , .carretNew{
+        display: none !important;
+      }
+    .legendSvg{
+        display: flex !important;
+        position: relative;
+        left: 2px !important;
+      }
+      .connections{
+        overflow: scroll;
+        height: auto;
+        max-height: 44%;
+      }
+      .nodeCount{
+        margin-left: 2px;
+      }
+
+ }
+ .viewIcon{
+  min-height: 21px;
+  min-width: 18px;
+ }
+ .viewIconQuery{
+  min-width: 23px !important;
+  height: 23px !important;
+ }
+
 }
 
 .createQueryModal {
