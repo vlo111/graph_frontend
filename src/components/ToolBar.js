@@ -516,7 +516,7 @@ class ToolBar extends Component {
           <AnalyseModal />
         </div>
         <Undo />
-        <SearchModal />
+        <SearchModal history={this.props.history} />
       </>
     );
   }
