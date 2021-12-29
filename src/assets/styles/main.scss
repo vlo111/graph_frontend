@@ -1520,6 +1520,15 @@ p {
     }
   }
 }
+.ghModalOverlay .ghModal {
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+  }
+}
+
 
 .buttons {
   display: flex;
