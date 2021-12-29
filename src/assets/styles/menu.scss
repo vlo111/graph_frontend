@@ -8,6 +8,7 @@
   text-align: center;
   justify-content: center;
   display: flex;
+  z-index: 10;
 
   .containerMenu {
     width: 200px;
@@ -170,5 +171,92 @@
         display: contents;
       }
     }
+   
+  }
+ 
+}
+.searchMenuNodes{
+  left: 190px;
+  width: 500px;
+  min-height: auto;
+  max-height: 91vh;
+
+  .searchField{
+    background-color: initial;
+  }
+  .searchFieldCheckBox{
+  background-color: white;
+  border-radius: 5px 0px 0px 5px;
+
+  }
+  .searchFieldCheckBoxList{
+    top: 37px !important;
+  }
+  .chooseSearchFields{
+    padding: 0 24px;
+  }
+  .list {
+    margin: 0px 25px 0px;
+    width: 90%;
+ 
+      .typeText{
+        color: #757575 !important;
+        font-weight: 800 !important;
+      }
+  }
+    .nodeSearch{
+      margin-right: auto !important;
+      border-radius: 0px 5px 5px 0px !important;
+      padding-left: 25px !important;
+
+    }
+    .close{
+      position: absolute;
+    left: 111px;
+    top: -4px;
+    }
+}
+
+
+
+.ghModalEditSearch .list .item .ghButton {
+.name{
+  font-size: 16px !important;
+  color: #7166F8;
+font-weight: 400;
+width: 40% !important;
+padding-left: 0 !important;
+}
+.type{
+  margin-left: 5px;
+  div{
+    width: 307px;
   }
 }
+.contentWrapper{
+  box-shadow: none !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+
+}
+.tabButton{
+  display: none !important;
+}
+.nodeIcon{
+  display: inline-flex;
+}
+.item{
+  margin-left: 0 !important;
+
+}
+}
+.searchButtonClosed:disabled,
+.searchButtonClosed[disabled]{
+  display: none;
+}
+#searchMenuNodes:focus-visible {
+  outline: none;
+}
+
+
+ 

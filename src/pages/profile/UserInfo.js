@@ -33,7 +33,7 @@ const ProfileMain = React.memo(({
   // check user is friend or not
   let isFriend = false;
   if (userId && userFriendsList.length) {
-    if (currentUserId == userId) {
+    if (currentUserId === userId) {
       isFriend = true;
     } else {
       for (const friend of myfriends) {
@@ -79,7 +79,7 @@ const ProfileMain = React.memo(({
                     email={profile.email}
                     onChange={(val) => handleChange(val || '', 'avatar')}
                   />
-                ) : <img src={profile.avatar} />}
+                ) : <img src={profile.avatar} alt="" />}
               </div>
               <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
               <div className="profile_address text-size-16">
@@ -120,7 +120,6 @@ const ProfileMain = React.memo(({
               <div>User details</div>
               {currentUserId === profile.id && (
               <a className="accountedit user_prf_color1" href="/account">
-                <i className="fa fa-pencil" />
                 Edit Profile
               </a>
               )}
@@ -149,23 +148,23 @@ const ProfileMain = React.memo(({
               <div className="social-img d-flex">
                 {profile.facebook && (
                 <a href={profile.facebook} target=" ">
-                  <img src={fcb_img} />
+                  <img src={fcb_img} alt="" />
                 </a>
                 )}
 
                 {profile.twitter && (
                 <a href={profile.twitter} target=" ">
-                  <img src={twit} />
+                  <img src={twit} alt="" />
                 </a>
                 )}
                 {profile.linkedin && (
                 <a href={profile.linkedin} target=" ">
-                  <img src={linkdein} />
+                  <img src={linkdein} alt="" />
                 </a>
                 )}
                 {profile.skype && (
                 <a href={profile.skype} target=" ">
-                  <img src={skype} />
+                  <img src={skype} alt="" />
                 </a>
                 )}
 

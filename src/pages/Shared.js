@@ -9,6 +9,7 @@ import GraphListItem from '../components/graphData/GraphListItem';
 import { getShareGraphListRequest } from '../store/actions/share';
 import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
+import ChartUtils from '../helpers/Utils';
 
 class Shared extends Component {
   static propTypes = {
@@ -22,7 +23,8 @@ class Shared extends Component {
   componentDidMount() {
     const order = JSON.parse(localStorage.getItem('/shared')) || 'newest';
     const { page = 1, s } = queryString.parse(window.location.search);
-    this.props.getShareGraphListRequest(page, { s, filter: order });
+    const limit = ChartUtils.getGraphListItemsLimit();
+    this.props.getShareGraphListRequest(page, { s, filter: order, limit });
   }
 
   render() {
@@ -62,4 +64,3 @@ const Container = connect(
 )(Shared);
 
 export default withRouter(Container);
-

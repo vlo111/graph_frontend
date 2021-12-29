@@ -32,6 +32,7 @@ import DataView from '../components/dataView/DataView';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import Dashboard from '../components/graphDashboard';
+import ChartUtils from '../helpers/ChartUtils';
 
 class GraphView extends Component {
   static propTypes = {
@@ -50,6 +51,13 @@ class GraphView extends Component {
   }
 
   preventReload = true;
+
+  constructor() {
+    super();
+    this.state = {
+      scaleStatus: false,
+    };
+  }
 
   getSingleRequest = memoizeOne(() => {
     const { match: { params: { graphId } } } = this.props;
@@ -125,6 +133,14 @@ class GraphView extends Component {
     const isPermission = this.getPermission();
     if (isPermission) {
       return (<Redirect to="/403" />);
+    }
+    if (!this.state.scaleStatus) {
+      if (document.querySelector('.nodes')?.childElementCount) {
+        ChartUtils.autoScale();
+        this.setState({
+          scaleStatus: true,
+        });
+      }
     }
     return (
       <Wrapper className="graphView" showFooter={false}>

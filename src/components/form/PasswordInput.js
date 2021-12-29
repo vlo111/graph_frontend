@@ -36,12 +36,12 @@ class PasswordInput extends Component {
         containerClassName={`ghFormFieldPassword ${containerClassName} `}
         type={show ? 'text' : 'password'}
         icon={showIcon ? (show ? (
-          <EyeSvg
+          <ViewSvg
             width={14}
             onClick={() => this.toggleShowPassword(false)}
           />
         ) : (
-          <ViewSvg
+          <EyeSvg
             width={14}
             onClick={() => this.toggleShowPassword(true)}
           />
