@@ -441,7 +441,7 @@ class SearchModal extends Component {
           </div>
         </div>
         <Outside
-          onClick={() => this.closeModal()}
+          onClick={() => this.handleChange()}
         >
           <ul
             className="list"
