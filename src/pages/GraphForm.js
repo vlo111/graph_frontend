@@ -37,6 +37,7 @@ import AddLinkedInModal from '../components/chart/AddLinkedInModal';
 import MapsModal from '../components/maps/MapsModal';
 import ScienceGraphModal from '../components/ScienceSearchToGraph/ScienceGraphModal';
 import WikiModal from '../components/wikipedia/WikiModal';
+import ChartUtils from '../helpers/ChartUtils';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -97,6 +98,7 @@ class GraphForm extends Component {
 
     if (!this.state.scaleStatus) {
       if (document.querySelector('.nodes')?.childElementCount) {
+        ChartUtils.autoScale();
         this.setState({
           scaleStatus: true,
         });
