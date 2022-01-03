@@ -51,9 +51,9 @@ class ToolBarHeader extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleClick = (button) => {
-    this.props.setActiveButton(button);
-  }
+  // handleClick = (button) => {
+  //   this.props.setActiveButton(button);
+  // }
 
   openCommentModal = (open) => {
     this.setState({ commentModal: open });
@@ -172,7 +172,6 @@ class ToolBarHeader extends Component {
         />
         )}
         {updateLocation && <Legend />}
-
       </>
     );
   }

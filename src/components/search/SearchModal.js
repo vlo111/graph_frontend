@@ -14,6 +14,7 @@ import { setActiveTab, getAllTabsRequest, getGraphNodesRequest } from '../../sto
 import Chart from '../../Chart';
 import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import Outside from '../Outside';
 
 class SearchModal extends Component {
   static propTypes = {
@@ -367,10 +368,6 @@ class SearchModal extends Component {
     _.set(tabsContentVisibility, idName, !isVisible);
   }
 
-  handleClick = (button) => {
-    this.props.setActiveButton(button);
-  }
-
   render() {
     const {
       nodes, tabs, search, docs, keywords, checkBoxValues,
@@ -383,7 +380,6 @@ class SearchModal extends Component {
         className="ghModal ghModalEditSearch editSearchNodes ghModalSearch searchNodes searchMenuNodes"
         overlayClassName=" searchOverlay "
         id="searchMenuNodes"
-        onRequestClose={this.closeModal}
       >
         <div className="searchField">
           <Button
@@ -435,52 +431,55 @@ class SearchModal extends Component {
                 </div>
               </div>
               <input
+                placeholder="Search"
                 autoComplete="off"
                 value={search}
                 className="nodeSearch"
                 onChange={(e) => this.handleChange(e.target.value)}
-                onClick={() => this.handleClick('search')}
               />
             </div>
           </div>
         </div>
-        <ul
-          className="list"
+        <Outside
+          onClick={() => this.handleChange()}
         >
-          {nodes.map((d) => (
-            <li
-              className="item nodeItem"
-              key={d.index}
-            >
-              <div
-                onMouseOver={() => { this.findNodeInDom(d, false); }}
-                tabIndex="0"
-                role="button"
-                className="ghButton searchItem"
-                onClick={(e) => this.openNode(e, d)}
+          <ul
+            className="list"
+          >
+            {nodes.map((d) => (
+              <li
+                className="item nodeItem"
+                key={d.index}
               >
-                <div className="left">
-                  <NodeIcon node={d} searchIcon />
-                </div>
-                <div className="right">
-                  <span className="row">
-                    <span
-                      className="name"
-                      title={d.name}
-                      dangerouslySetInnerHTML={{
-                        __html: this.formatHtml(d.name),
-                      }}
-                    />
-                    <span className="typeText">Type:</span>
+                <div
+                  onMouseOver={() => { this.findNodeInDom(d, false); }}
+                  tabIndex="0"
+                  role="button"
+                  className="ghButton searchItem"
+                  onClick={(e) => this.openNode(e, d)}
+                >
+                  <div className="left">
+                    <NodeIcon node={d} searchIcon />
+                  </div>
+                  <div className="right">
+                    <span className="row">
+                      <span
+                        className="name"
+                        title={d.name}
+                        dangerouslySetInnerHTML={{
+                          __html: this.formatHtml(d.name),
+                        }}
+                      />
+                      <span className="typeText">Type:</span>
 
-                    <span
-                      className="type"
-                      dangerouslySetInnerHTML={{
-                        __html: this.formatHtml(d.type),
-                      }}
-                    />
-                  </span>
-                  {!d.name.toLowerCase().includes(search)
+                      <span
+                        className="type"
+                        dangerouslySetInnerHTML={{
+                          __html: this.formatHtml(d.type),
+                        }}
+                      />
+                    </span>
+                    {!d.name.toLowerCase().includes(search)
                   && !d.type.toLowerCase().includes(search) ? (
 
                     <span
@@ -491,13 +490,13 @@ class SearchModal extends Component {
                           .join(', '),
                       }}
                     />
-                    ) : null}
+                      ) : null}
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
+              </li>
+            ))}
 
-          {Object.keys(tabs)
+            {Object.keys(tabs)
             && Object.keys(tabs).map((item) => (
               <li
                 className="item nodeItem"
@@ -572,81 +571,81 @@ class SearchModal extends Component {
               </li>
             ))}
 
-          {keywords.map((d) => (
-            <li
-              className="item nodeItem"
-              key={d.index}
-              onMouseOver={() => { this.findNodeInDom(d, false); }}
-            >
-              <div
-                tabIndex="0"
-                role="button"
-                className="ghButton searchItem"
-                onClick={(e) => this.openNode(e, d)}
+            {keywords.map((d) => (
+              <li
+                className="item nodeItem"
+                key={d.index}
+                onMouseOver={() => { this.findNodeInDom(d, false); }}
               >
-                <div className="left">
-                  <NodeIcon node={d} searchIcon />
-                </div>
-                <div className="right">
-                  <span className="row">
+                <div
+                  tabIndex="0"
+                  role="button"
+                  className="ghButton searchItem"
+                  onClick={(e) => this.openNode(e, d)}
+                >
+                  <div className="left">
+                    <NodeIcon node={d} searchIcon />
+                  </div>
+                  <div className="right">
+                    <span className="row">
+                      <span
+                        className="name"
+                        title={d.name}
+                        dangerouslySetInnerHTML={{
+                          __html: this.formatHtml(d.name),
+                        }}
+                      />
+                      <span
+                        className="type"
+                        dangerouslySetInnerHTML={{
+                          __html: this.formatHtml(d.type),
+                        }}
+                      />
+                    </span>
+
                     <span
-                      className="name"
-                      title={d.name}
+                      className="keywords"
                       dangerouslySetInnerHTML={{
-                        __html: this.formatHtml(d.name),
+                        __html: this.formatHtml(d.keywords.join(', ')),
                       }}
                     />
-                    <span
-                      className="type"
-                      dangerouslySetInnerHTML={{
-                        __html: this.formatHtml(d.type),
-                      }}
-                    />
-                  </span>
-
-                  <span
-                    className="keywords"
-                    dangerouslySetInnerHTML={{
-                      __html: this.formatHtml(d.keywords.join(', ')),
-                    }}
-                  />
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-
-          {docs.map((d, index) => (
-            <li
-              className="item nodeItem"
-              key={index}
-              onMouseOver={() => { this.findNodeInDom(d, false); }}
-            >
-              <div
-                tabIndex="0"
-                role="button"
-                className="ghButton searchItem"
-                onClick={(e) => this.openNodeByTag(e, d)}
+              </li>
+            ))}
+            {docs.map((d, index) => (
+              <li
+                className="item nodeItem"
+                key={index}
+                onMouseOver={() => { this.findNodeInDom(d, false); }}
               >
-                <div className="right">
-                  <span className="row">
-                    <span
-                      className="name"
-                      dangerouslySetInnerHTML={{
-                        __html: this.formatHtml(d.name),
-                      }}
-                    />
-                    <span
-                      className="type"
-                      dangerouslySetInnerHTML={{
-                        __html: this.formatHtml(d.type),
-                      }}
-                    />
-                  </span>
+                <div
+                  tabIndex="0"
+                  role="button"
+                  className="ghButton searchItem"
+                  onClick={(e) => this.openNodeByTag(e, d)}
+                >
+                  <div className="right">
+                    <span className="row">
+                      <span
+                        className="name"
+                        dangerouslySetInnerHTML={{
+                          __html: this.formatHtml(d.name),
+                        }}
+                      />
+                      <span
+                        className="type"
+                        dangerouslySetInnerHTML={{
+                          __html: this.formatHtml(d.type),
+                        }}
+                      />
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </Outside>
       </Modal>
     );
   }

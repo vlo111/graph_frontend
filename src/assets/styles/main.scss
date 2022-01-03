@@ -92,7 +92,6 @@ main {
   }
 
   &.homePage {
-    background-size: cover;
     background: transparent
       radial-gradient(closest-side at 50% 50%, #f2f4ff 0%, #eff1f9 19%, #f2f4ff 39%, #f2f2ff 67%, #f7f9ff 100%)
       no-repeat fixed top left;
@@ -294,9 +293,6 @@ p {
     .gh__control {
       border: 1px solid $color-light-gray;
       border-radius: 5px;
-
-      &:hover {
-      }
 
       .gh__indicator-separator {
         display: none;
@@ -655,9 +651,7 @@ p {
     width: 100%;
     height: 100%;
     display: none;
-    justify-content: flex-end;
-    padding-top: 73px;
-    padding-left: 15px;
+    padding-top: 73px 0 0 15px;
     z-index: 110;
     justify-content: center;
     align-items: center;
@@ -795,11 +789,6 @@ p {
 
       &.disappear {
         opacity: 0 !important;
-      }
-
-      &.unChecked {
-        opacity: 0.1 !important;
-        pointer-events: none;
       }
 
       &.unChecked {
@@ -1019,12 +1008,6 @@ p {
     background-color: rgba(0, 0, 0, 0.5);
   }
 
-  .content {
-    user-select: none;
-    .warning {
-      background-color: #0062ff;
-    }
-  }
 
   .buttons {
     justify-content: flex-start;
@@ -1065,7 +1048,6 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  display: none;
 
   .left {
     display: flex;
@@ -1202,7 +1184,8 @@ p {
 
 .Toastify {
   &__toast {
-    border-radius: 5px;
+    border-radius: 5px;     background-color: $color-main;
+
   }
 }
 
@@ -1537,6 +1520,15 @@ p {
     }
   }
 }
+.ghModalOverlay .ghModal {
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+  }
+}
+
 
 .buttons {
   display: flex;
@@ -1623,11 +1615,6 @@ p {
 
     &:last-child:after {
       content: none;
-    }
-
-    &:hover {
-      background-color: #f2f2f2;
-      color: $color-main;
     }
 
     .icon {
@@ -1725,7 +1712,6 @@ p {
         .icon {
           margin: 0;
           display: flex;
-          margin: auto;
         }
       }
     }
@@ -1851,10 +1837,6 @@ p {
           z-index: 3;
         }
 
-        span {
-          font: normal normal 600 14px/19px Open Sans;
-        }
-
         > * {
           padding: 5px;
           width: 100%;
@@ -1903,7 +1885,6 @@ p {
         &.name {
           span {
             padding: 20px 20px 0 25px;
-            font-family: "Open Sans";
             font-weight: 600;
           }
         }
@@ -2003,7 +1984,6 @@ p {
 
     .nodesMode span,
     .linksMode span {
-      font: normal normal 600 15px/19px Open Sans;
       color: #717ea0;
     }
 
@@ -2727,12 +2707,6 @@ p {
   }
 }
 
-.Toastify__toast {
-  &--info {
-    background-color: $color-main;
-  }
-}
-
 .graphFilter {
   width: 100%;
   margin-bottom: 15px;
@@ -3034,15 +3008,6 @@ p {
   }
 }
 
-.logoInfoText {
-  h4 {
-    font-size: 14px;
-    font-weight: normal;
-    text-align: center;
-    margin: 10px 0;
-  }
-}
-
 .socialLogin {
   display: flex;
   flex-direction: column;
@@ -3110,9 +3075,6 @@ body .gh__menu {
       width: 100%;
     }
 
-    &--is-selected {
-      background: #f1f0fe;
-    }
 
     &:hover {
       background: #f1f0fe;
@@ -3256,12 +3218,11 @@ body .gh__menu {
             display: block;
             max-height: 300px;
                 padding-top: 10px;
-            margin-bottom: 1em;
             overflow: scroll;
             box-shadow: 0px 4px 11px rgb(0 0 0 / 25%);
             border-radius: 3px;
             background: #ffffff;
-            margin: 11px 9px 11px;
+            margin: 11px 9px 1em 11px;
             width: 100%;
 
             .tabNameLine {
@@ -3344,7 +3305,6 @@ body .gh__menu {
       }
 
       .name {
-        font: normal normal 600 16px/22px Open Sans;
         letter-spacing: 0;
         font-weight: 400;
       }
@@ -3399,7 +3359,7 @@ body .gh__menu {
           .row {
             display: flex;
             flex-wrap: wrap;
-            margin: 0;
+            // margin: 0;
           }
 
           .nodeTabs {
@@ -3416,7 +3376,7 @@ body .gh__menu {
             margin-right: 10px;
             overflow: hidden;
             width: 100%;
-            margin-left: 10px;
+            margin-left: 20px;
 
           }
 
@@ -3426,7 +3386,7 @@ body .gh__menu {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            margin-left: 15px;
+            margin-left: 5px;
           }
         }
 
@@ -3762,15 +3722,6 @@ body .gh__menu {
   }
 }
 
-.ghModalOverlay .ghModal {
-  .close {
-    padding: 0;
-    position: absolute;
-    top: 15px;
-    right: 16px;
-  }
-}
-
 .ghModalOverlay .ghImportModal {
   max-width: 718px;
   display: block !important;
@@ -4026,12 +3977,6 @@ body .gh__menu {
     border-color: #ffffff;
     color: #000000;
   }
-
-  #dropdown-graphListHeader {
-    background-color: #ffffff;
-    border-color: #ffffff;
-    color: #000000;
-  }
 }
 
 .account {
@@ -4145,32 +4090,6 @@ body .gh__menu {
     }
   }
 }
-
-.homeWithUser {
-  width: 100% !important;
-  position: relative !important;
-  align-items: flex-start !important;
-  display: grid !important;
-  grid-template-columns: 350px 50px auto 100px;
-  grid-template-rows: auto 220px auto;
-
-  .tabsList {
-    display: flex;
-    flex-direction: row;
-    transform: rotate(270deg) translate(-99.3%, 0) !important;
-    transform-origin: top left;
-    margin: 0;
-    left: 0;
-    width: 510px;
-    position: relative !important;
-  }
-
-  .content {
-    margin-left: 0 !important;
-    padding: 2% 3.4%;
-  }
-}
-
 .homeWithUser {
   width: 100% !important;
   position: relative !important;
@@ -4361,13 +4280,11 @@ body .gh__menu {
     bottom: 3px;
     width: 15px;
     height: 15px;
-    bottom: 10px;
     left: calc(50% - 7.5px);
     z-index: 2000;
     cursor: pointer;
     opacity: 0;
     transition: all 500ms;
-    cursor: pointer;
     path {
       fill: red;
     }
@@ -6886,7 +6803,7 @@ img.preview-scaled {
 
             .type,
             .name {
-              jodit {
+              .jodit {
                 max-width: 190px;
                 max-height: 190px;
 
@@ -7000,7 +6917,7 @@ img.preview-scaled {
 
           .row {
             display: flex;
-            margin: 0;
+            // margin: 0;
           }
 
           .nodeTabs {
@@ -7014,7 +6931,7 @@ img.preview-scaled {
           }
 
           .name {
-            margin-right: 50px;
+            margin-right: 40px;
             overflow: hidden;
           }
 
@@ -7024,6 +6941,8 @@ img.preview-scaled {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: #757575 ;
+
           }
         }
 
