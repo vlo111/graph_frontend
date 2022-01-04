@@ -75,7 +75,8 @@ class NodeImage extends Component {
         x, y, clipPath, fill, transform, width, height,
       } = this.state;
       const iconSize = props.width !== 50;
-      if (node.nodeType !== 'infography' || !node.d) {
+      if ((node.nodeType !== 'infography' || !node.d)
+          || window.location.pathname.includes('/graphs/update/')) {
         return (
           <img
             src={node.icon ? ChartUtils.normalizeIcon(node.icon, iconSize) : bgImage}
