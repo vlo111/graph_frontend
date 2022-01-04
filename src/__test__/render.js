@@ -12,16 +12,16 @@ import app from './store/reducers/app';
 import graphs from './store/reducers/graphs';
 import notifications from './store/reducers/notifications';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = compose;
 
 export default (
   component,
   {
-    accountReducer,
+    account,
     store =
     createStore(combineReducers({
       app,
-      account: accountReducer,
+      account,
       graphs,
       notifications,
     }, composeEnhancers(applyMiddleware(thunkMiddleware, requestMiddleware)))),

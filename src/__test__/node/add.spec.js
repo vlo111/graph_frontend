@@ -3,10 +3,7 @@ import { screen } from '@testing-library/react';
 import render from '../render';
 import signUp from '../__mocks__/signUp';
 import RouterComponent from '../RouterComponent';
-import {
-  GET_MY_ACCOUNT, GET_USER_BY_TEXT, OAUTH, SIGN_IN, UPDATE_MY_ACCOUNT,
-} from '../store/actions/account';
-import Account from '../../helpers/Account';
+import account from '../store/reducers/account';
 
 describe('React Router', () => {
   let container;
@@ -25,79 +22,17 @@ describe('React Router', () => {
   //   expectToBeInputFieldOfTypeText(field(fieldName), type);
   // });
 
-  beforeEach(async () =>
-  {
-    // const { user, token } = await signUp();
+  beforeEach(async () => {
+    const { user } = await signUp();
 
-    const initialState = {
-      status: '',
-      token: '',
-      myAccount: {},
-      user: {},
-      findUser: {},
-      userSearch: [],
-    };
-
-    const accountReducer = (state = initialState, action) => {
-      switch (action.type) {
-        case SIGN_IN.REQUEST: {
-          Account.delete();
-          return state;
-        }
-        case OAUTH.SUCCESS:
-        case SIGN_IN.SUCCESS: {
-          const { token, user: myAccount } = action.payload.data;
-          Account.set(myAccount);
-          Account.setToken(token);
-          return {
-            ...state,
-            token,
-            myAccount,
-          };
-        }
-        case UPDATE_MY_ACCOUNT.SUCCESS:
-        case GET_MY_ACCOUNT.SUCCESS: {
-          const { user: myAccount } = action.payload.data;
-          Account.set(myAccount);
-          return {
-            ...state,
-            myAccount,
-          };
-        }
-        case GET_MY_ACCOUNT.FAIL: {
-          const { status } = action.payload;
-          if (status === 401 || status === 403) {
-            Account.delete();
-            window.location.reload();
-          }
-          return state;
-        }
-        case GET_USER_BY_TEXT.REQUEST:
-        case GET_USER_BY_TEXT.FAIL: {
-          return {
-            ...state,
-            userSearch: [],
-            status: 'request',
-          };
-        }
-        case GET_USER_BY_TEXT.SUCCESS: {
-          const { data } = action.payload.data;
-          return {
-            ...state,
-            userSearch: data,
-            status: 'success',
-          };
-        }
-        default: {
-          return state;
-        }
-      }
-    };
-
-    ({ container } = render(<RouterComponent />, {
-      accountReducer,
-      route: '/',
-    }));
+    try {
+      ({ container } = render(<RouterComponent />, {
+        account: account(user),
+        route: '/graphs/update/635005e2-1ecd-42b6-a189-9c765f2dac15',
+      }));
+    } catch (e) {
+      console.log('rrrrrrrr -- ', e);
+    }
   });
 
   // itRendersAsATextBox('email', 'text');
