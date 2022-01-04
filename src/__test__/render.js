@@ -1,41 +1,38 @@
-import { cleanup, render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
 import React from 'react';
+import { Provider } from 'react-redux';
+import {
+  applyMiddleware, combineReducers, compose, createStore,
+} from 'redux';
+import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import store from '../store';
+import { Router } from 'react-router-dom';
+import thunkMiddleware from 'redux-thunk';
+import { requestMiddleware } from './helpers/redux-request';
+import app from './store/reducers/app';
+import graphs from './store/reducers/graphs';
+import notifications from './store/reducers/notifications';
 
-afterEach(cleanup);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-/**
- * this is a handy function that we normally make available for all tests
- * that deal with connected components.
- * we can provide the entire store that the component is rendered with
- * @param component
- * @param route
- * @param history
- */
-const renderWithRedux = (
-  component, {
+export default (
+  component,
+  {
+    accountReducer,
+    store =
+    createStore(combineReducers({
+      app,
+      account: accountReducer,
+      graphs,
+      notifications,
+    }, composeEnhancers(applyMiddleware(thunkMiddleware, requestMiddleware)))),
     route = '/',
     history = createMemoryHistory({ initialEntries: [route] }),
   } = {},
-) => {
-  const Wrapper = ({ children }) => (
+) => ({
+  ...render(
     <Provider store={store}>
-      <Router history={history}>
-        {children}
-      </Router>
-    </Provider>
-  );
-
-  return {
-    ...render(
-      <>{ component }</>,
-      { wrapper: Wrapper },
-    ),
-    history,
-  };
-};
-
-export default renderWithRedux;
+      <Router history={history}>{ component }</Router>
+    </Provider>,
+  ),
+  store,
+});
