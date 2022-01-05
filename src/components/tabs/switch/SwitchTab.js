@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import Sortable from './Sortable';
@@ -9,7 +9,6 @@ const SwitchTab = ({
   nodeCustomFields, setActiveTab, activeTab, setOpenAddTab, node, editable, graphId, tabsExpand,
 }) => {
   const dispatch = useDispatch();
-
   const handleOrderChange = (customFields) => {
     dispatch(updateNodesCustomFieldsRequest(graphId, [{
       id: node.id,
