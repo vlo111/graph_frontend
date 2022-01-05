@@ -24,6 +24,7 @@ import {
   GET_GRAPH_INFO,
   ACTIVE_MOUSE_TRACKER,
   UPDATE_GRAPH_THUMBNAIL,
+  GET_NODES_LIST_DATA,
 } from '../actions/graphs';
 import CustomFields from '../../helpers/CustomFields';
 import Chart from '../../Chart';
@@ -508,12 +509,16 @@ export default function reducer(state = initialState, action) {
       };
     }
     case UPDATE_GRAPH_QUERY.SUCCESS:
-    case DELETE_GRAPH_QUERY.SUCCESS:
-    {
+    case DELETE_GRAPH_QUERY.SUCCESS: {
       const { query } = action.payload.data;
       return {
         ...state,
         query: { queryList: query },
+      };
+    }
+    case GET_NODES_LIST_DATA: {
+      return {
+        ...state,
       };
     }
     default: {

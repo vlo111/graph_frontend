@@ -207,7 +207,7 @@ class GraphView extends Component {
                   </>
                 )}
                 <ToolBarHeader graph={singleGraph} />
-                <SearchModal />
+                <SearchModal graphId={graphId} />
                 <Tabs editable={false} viewPermisson={viewPermisson} />
                 <LabelTooltip />
                 <Filters />

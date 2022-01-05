@@ -60,6 +60,11 @@ export const GET_NODES_LIST = define('GET_NODES_LIST');
 export function getGraphNodesRequest(page = 1, requestData = {}) {
   return GET_NODES_LIST.request(() => Api.getGraphNodes(page, requestData)).takeLatest();
 }
+export const GET_NODES_LIST_DATA = define('GET_NODES_LIST_DATA');
+
+export function getGraphNodesDataRequest(requestData = {}) {
+  return GET_NODES_LIST_DATA.request(() => Api.getGraphNodesData(requestData)).takeLatest();
+}
 
 export const GET_SINGLE_GRAPH = define('GET_SINGLE_GRAPH');
 
