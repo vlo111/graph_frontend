@@ -27,6 +27,7 @@ class DataTableLinks extends Component {
     allNodes: PropTypes.array.isRequired,
     allLinks: PropTypes.array.isRequired,
     toggleGrid: PropTypes.func.isRequired,
+    setLinksGrouped: PropTypes.func.isRequired,
   }
 
   initGridValues = memoizeOne((links) => {
@@ -85,6 +86,8 @@ class DataTableLinks extends Component {
       }
       return d;
     });
+
+    this.props.setLinksGrouped(links);
 
     Chart.render({ links });
   }
@@ -228,6 +231,29 @@ class DataTableLinks extends Component {
     if (props.cell.key === 'value') {
       defaultProps.type = 'number';
       defaultProps.min = '1';
+    }
+    if (props.cell.key === 'type') {
+      const types = _.uniqBy(Chart.getLinks().filter((d) => d.type)
+        .map((d) => ({
+          value: d.type,
+          label: d.type,
+        })), 'value');
+
+      return (
+        <Select
+          isSearchable
+          value={[
+            types.find((t) => t.value === props.value) || {
+              value: props.value,
+              label: props.value,
+            },
+          ]}
+          options={types}
+          menuIsOpen
+          isCreatable
+          onChange={(v) => props.onChange(v.value)}
+        />
+      );
     }
     return (
       <Input {...defaultProps} />
