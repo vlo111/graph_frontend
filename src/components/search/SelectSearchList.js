@@ -22,7 +22,7 @@ const SelectSearchList = ({ search, deleteSelectSearchItem }) => (
   </>
 );
 SelectSearchList.propTypes = {
-  search: PropTypes.array.isRequired,
+  search: PropTypes.object.isRequired,
   deleteSelectSearchItem: PropTypes.func.isRequired,
 };
 

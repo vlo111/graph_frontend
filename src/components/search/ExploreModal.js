@@ -129,7 +129,6 @@ const SearchModal = ({ graphId }) => {
   };
   const handleNodesCheckBoxChange = async (items, name) => {
     const checkItems = chosenNodes && chosenNodes.filter((n) => n.id === items.id);
-    console.log(items.id, 'items', checkItems);
     if (name) {
       const chosenCheckBox = document.getElementsByName(name)[0];
       chosenCheckBox.checked = !chosenCheckBox.checked;
