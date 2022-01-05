@@ -1,9 +1,8 @@
-import React, {
-  useEffect, useState, useCallback,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import Checkbox from '../form/Checkbox';
 import NodeIcon from '../NodeIcon';
 import Utils from '../../helpers/Utils';
@@ -114,16 +113,22 @@ const SearchModal = ({ graphId }) => {
       searchParameters: filterList,
       isOwner: publicState || currentUserId === userId,
     };
-    const {
-      payload: { data },
-    } = await dispatch(getGraphNodesDataRequest(argument));
-    const nodeListId = ChartUtils.getNodeIdListByObj(searchQueryList);
-    if (nodeListId) {
-      nodes = data.nodes ? data.nodes.filter((n) => nodeListId.includes(n.id)) : [];
-    } else {
-      nodes = data.nodes;
+    try {
+      const {
+        payload: { data },
+      } = await dispatch(getGraphNodesDataRequest(argument));
+      const nodeListId = ChartUtils.getNodeIdListByObj(searchQueryList);
+      if (nodeListId) {
+        nodes = data.nodes ? data.nodes.filter((n) => nodeListId.includes(n.id)) : [];
+      } else {
+        nodes = data.nodes;
+      }
+
+      setMatched(data.matched || {});
+    } catch (e) {
+      if (e.message === 'Operation canceled by the user.') return;
+      toast.error('Error accrued while searching');
     }
-    setMatched(data.matched || {});
     setResult(nodes || []);
     setIsLoading(false);
   };
@@ -280,7 +285,7 @@ const SearchModal = ({ graphId }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [handleClickOutside]);
+  }, []);
 
   const showNodeData = !!(matched.name === true || matched.keyword === true || matched.tab === true || matched.tag === true);
   const showTypeData = !!(matched.type === true);
