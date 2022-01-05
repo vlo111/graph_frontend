@@ -63,7 +63,6 @@ export function getGraphNodesRequest(page = 1, requestData = {}) {
 export const GET_NODES_LIST_DATA = define('GET_NODES_LIST_DATA');
 
 export function getGraphNodesDataRequest(requestData = {}) {
-  console.log(requestData, 'requestData');
   return GET_NODES_LIST_DATA.request(() => Api.getGraphNodesData(requestData)).takeLatest();
 }
 
