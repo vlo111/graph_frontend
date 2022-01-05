@@ -1704,14 +1704,21 @@ p {
       margin-top: 0;
 
       .ghButton {
-        background: #f2f5f7 0% 0% no-repeat padding-box;
+        background: #f2f5f7 0 0 no-repeat padding-box;
         width: 30px;
         height: 30px;
         padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         .icon {
           margin: 0;
           display: flex;
+
+          path {
+            fill: $color-passive;
+          }
         }
       }
     }

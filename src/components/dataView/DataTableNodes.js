@@ -55,8 +55,15 @@ class DataTableNodes extends Component {
       if (error) {
         toast.error(error);
       }
-      grid[d.row][d.col] = { ...grid[d.row][d.col], value };
+
+      if (d.cell.key === 'location') {
+        grid[d.row][d.col].orginalValue = value;
+        grid[d.row][d.col].value = Utils.substr(value.address, 28);
+      } else {
+        grid[d.row][d.col] = { ...grid[d.row][d.col], value };
+      }
     });
+    this.setState({ grid });
     const nodesChanged = Convert.gridDataToNode(grid);
     const links = this.props.allLinks;
     const nodes = this.props.allNodes.map((d) => {
