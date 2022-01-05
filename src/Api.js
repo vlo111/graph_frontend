@@ -146,6 +146,14 @@ class Api {
     });
   }
 
+  static getGraphNodesData(requestData = {}) {
+    const params = { ...requestData };
+    return api.get('/graphs/nodes-data', {
+      params,
+      cancelToken: this.#cancel('getGraphNodesData'),
+    });
+  }
+
   static getSingleGraph(graphId, params = {}) {
     return api.get(`/graphs/single/${graphId}`, {
       params,
