@@ -175,18 +175,9 @@ class AddNodeModal extends Component {
   handleChange = (path, item, editIndex) => {
     let value = item;
 
-    const { nodeData, errors, editLocation } = this.state;
+    const { nodeData, errors } = this.state;
 
-    if (path === 'location') {
-      if (nodeData.location) {
-        if (Number.isInteger(editIndex)) {
-          nodeData.location[editLocation] = value;
-        } else {
-          nodeData.location.push(value);
-        }
-      }
-      value = !nodeData.location ? [value] : nodeData.location;
-    } else if (path === 'type') {
+    if (path === 'type') {
       _.set(nodeData, path, value);
       _.unset(errors, path);
 
@@ -201,21 +192,7 @@ class AddNodeModal extends Component {
     _.unset(errors, path);
 
     this.setState({
-      nodeData, errors, editLocation: null,
-    });
-  }
-
-  deleteLocation = (lIndex) => {
-    const { nodeData } = this.state;
-    nodeData.location = nodeData.location.filter((p, index) => index !== lIndex);
-
-    this.setState({ nodeData });
-  }
-
-  editLocation = (index) => {
-    this.setState({
-      editLocation: index,
-      openMap: true,
+      nodeData, errors,
     });
   }
 
@@ -231,7 +208,6 @@ class AddNodeModal extends Component {
     const { openMap } = this.state;
     this.setState({
       openMap: !openMap,
-      editLocation: null,
     });
   }
 
@@ -252,7 +228,7 @@ class AddNodeModal extends Component {
 
   render() {
     const {
-      nodeData, errors, index, openMap, editLocation, expand, imgUrl,
+      nodeData, errors, index, openMap, expand, imgUrl,
     } = this.state;
     const { addNodeParams, currentUserRole, currentUserId } = this.props;
     const { editPartial } = addNodeParams;
@@ -261,7 +237,6 @@ class AddNodeModal extends Component {
     const groups = this.getTypes(nodes);
 
     Utils.orderGroup(groups, nodeData.type);
-
     return (
       <Modal
         className={expand ? 'ghModal expandAddNode' : 'ghModal'}
@@ -375,62 +350,30 @@ class AddNodeModal extends Component {
                     onChangeText={(v) => this.handleChange('manually_size', v)}
                   />
                 </div>
-                <div className="addLocation" onClick={this.openMap}>+ Add Location</div>
                 {openMap && (
                 <MapsLocationPicker
                   onClose={this.toggleMap}
-                  value={editLocation != null
-                    ? nodeData.location.filter(() => index === editLocation) : nodeData.location}
-                  onChange={(v, edit) => this.handleChange('location', v, edit)}
-                  edit={Number.isInteger(editLocation) ? editLocation : null}
+                  value={nodeData.location}
+                  onChange={(v) => this.handleChange('location', v)}
                 />
                 )}
                 <div className="ghFormField locationExpandForm">
-                  {_.isObject(nodeData?.location)
-                      && nodeData.location
-                        .map((p) => (
-                          <div className="locForm">
-                            <div className="locName">
-                              <p title={p.address}>
-                                {p.address
-                                    && p.address.length > (!expand ? 20 : 37)
-                                  ? `${p.address.substr(
-                                    0,
-                                    !expand ? 20 : 37,
-                                  )} ...`
-                                  : p.address}
-                              </p>
-                            </div>
-
-                            <Tooltip overlay={p.address} placement="top">
-                              <div className="locEdit">
-                                <span
-                                  title="edit"
-                                  onClick={() => this.editLocation(index)}
-                                >
-                                  <img
-                                    src={markerImg}
-                                    className="locMarker"
-                                    alt="marker"
-                                  />
-                                </span>
-                              </div>
-                            </Tooltip>
-
-                            <div className="locDelete">
-                              <span
-                                title="delete"
-                                onClick={() => this.deleteLocation(index)}
-                              >
-                                <CloseSvg
-                                  className="deletelocation"
-                                  alt="marker"
-                                />
-                              </span>
-                            </div>
-                          </div>
-                        ))
-                        .slice(!expand ? -2 : nodeData.location)}
+                  <div className="locForm">
+                    <div className="locEdit">
+                      <Tooltip overlay="Select location" placement="top">
+                        <span
+                          onClick={this.openMap}
+                        >
+                          <img
+                            src={markerImg}
+                            className="locMarker"
+                            alt="marker"
+                          />
+                          <p>{nodeData?.location?.address}</p>
+                        </span>
+                      </Tooltip>
+                    </div>
+                  </div>
                 </div>
               </>
             ) : null}

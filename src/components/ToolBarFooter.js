@@ -52,7 +52,7 @@ class ToolBarFooter extends Component {
   render() {
     const { totalNodes, totalLinks, totalLabels } = this.state;
     const { graphInfo, graphId, partOf } = this.props;
-    const showInMap = Chart.getNodes().some((d) => d?.location?.length > 0);
+    const showInMap = Chart.getNodes().some((d) => d?.location);
     const updateLocation = window.location.pathname.startsWith('/graphs/update');
 
     return (!graphId ? null
