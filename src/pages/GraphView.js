@@ -48,6 +48,7 @@ class GraphView extends Component {
     getGraphInfoRequest: PropTypes.func.isRequired,
     singleGraphStatus: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
+    currentUserId: PropTypes.string.isRequired,
   }
 
   preventReload = true;
@@ -91,9 +92,10 @@ class GraphView extends Component {
 
   render() {
     const {
-      singleGraph, singleGraphStatus, graphInfo, activeButton,
+      singleGraph, singleGraphStatus, graphInfo, activeButton, currentUserId,
       location: { pathname, search }, match: { params: { graphId = '' } },
     } = this.props;
+    const viewPermisson = ((singleGraph?.share?.role === 'view') || (currentUserId !== singleGraph?.userId));
     const preview = pathname.startsWith('/graphs/preview/');
     let shortestNodes = [];
     // let shortestLinks = [];
@@ -206,7 +208,7 @@ class GraphView extends Component {
                 )}
                 <ToolBarHeader graph={singleGraph} />
                 <SearchModal graphId={graphId} />
-                <Tabs editable={false} />
+                <Tabs editable={false} viewPermisson={viewPermisson} />
                 <LabelTooltip />
                 <Filters />
                 <AutoPlay />
@@ -237,6 +239,7 @@ const mapStateToProps = (state) => ({
   userGraphs: state.shareGraphs.userGraphs,
   graphInfo: state.graphs.graphInfo,
   singleGraphStatus: state.graphs.singleGraphStatus,
+  currentUserId: state.account.myAccount.id,
 });
 const mapDispatchToProps = {
   setActiveButton,
