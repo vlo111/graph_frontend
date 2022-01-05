@@ -35,8 +35,8 @@ describe('check social media action', () => {
       });
 
     /**
-         * get token after click google from social media
-         */
+     * get token after click google from social media
+     */
     fireEvent.click(getByTestId('google'));
   });
 });
@@ -49,18 +49,18 @@ describe('check social media action', () => {
 describe('html elements displayed correctly', () => {
   it('should be match sign in button', () => {
     /**
-         * match sign in button
-         * @type {*|{children: *, type: *, props: {}|{}}}
-         */
+     * match sign in button
+     * @type {*|{children: *, type: *, props: {}|{}}}
+     */
     const signinBtn = renderer.create(
       <button className="ghButton submit orange alt">Sign In</button>,
     ).toJSON();
     expect(signinBtn).toMatchSnapshot();
 
     /**
-         * match email input
-         * @type {*|{children: *, type: *, props: {}|{}}}
-         */
+     * match email input
+     * @type {*|{children: *, type: *, props: {}|{}}}
+     */
     const email = renderer.create(
       <div className="ghFormField ghInput">
         <input placeholder="Email address" />
@@ -69,9 +69,9 @@ describe('html elements displayed correctly', () => {
     expect(email).toMatchSnapshot();
 
     /**
-         * match password input
-         * @type {*|{children: *, type: *, props: {}|{}}}
-         */
+     * match password input
+     * @type {*|{children: *, type: *, props: {}|{}}}
+     */
     const password = renderer.create(
       <div className="ghFormFieldPassword   ghFormField ghInput">
         <span className="icon ">
@@ -86,9 +86,9 @@ describe('html elements displayed correctly', () => {
     expect(password).toMatchSnapshot();
 
     /**
-         * match forget password field
-         * @type {*|{children: *, type: *, props: {}|{}}}
-         */
+     * match forget password field
+     * @type {*|{children: *, type: *, props: {}|{}}}
+     */
     const forget = renderer.create(
       <a className="forgotPassword">Forgot password?</a>,
     ).toJSON();
@@ -96,9 +96,9 @@ describe('html elements displayed correctly', () => {
     expect(forget).toMatchSnapshot();
 
     /**
-         * match logo
-         * @type {*|{children: *, type: *, props: {}|{}}}
-         */
+     * match logo
+     * @type {*|{children: *, type: *, props: {}|{}}}
+     */
     const logo = renderer.create(
       <LogoSvg className="logo white" />,
     ).toJSON();
@@ -120,43 +120,43 @@ describe('check sign in dom elements', () => {
       });
 
     /**
-         * should be the forget password text
-         */
+     * should be the forget password text
+     */
     expect(getByText('Don\'t have an admin yet?')).toBeInTheDocument();
 
     /**
-         * should be sign in using social media header
-         */
+     * should be sign in using social media header
+     */
     expect(getByText('Sign in using')).toBeInTheDocument();
 
     /**
-         * should be email input field
-         */
+     * should be email input field
+     */
     expect(getByTestId('email')).toBeInTheDocument();
 
     /**
-         * should be password input field
-         */
+     * should be password input field
+     */
     expect(getByTestId('password')).toBeInTheDocument();
 
     /**
-         * should be facebook field
-         */
+     * should be facebook field
+     */
     expect(getByTestId('facebook')).toBeInTheDocument();
 
     /**
-         * should be linked In field
-         */
+     * should be linked In field
+     */
     expect(getByTestId('linkedin')).toBeInTheDocument();
 
     /**
-         * should be google field
-         */
+     * should be google field
+     */
     expect(getByTestId('google')).toBeInTheDocument();
 
     /**
-         * should be twitter field
-         */
+     * should be twitter field
+     */
     expect(getByTestId('twitter')).toBeInTheDocument();
   });
 });

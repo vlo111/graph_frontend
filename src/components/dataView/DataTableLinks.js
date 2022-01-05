@@ -38,7 +38,6 @@ class DataTableLinks extends Component {
           if (cell.key === 'source' || cell.key === 'target') {
             const node = ChartUtils.getNodeById(cell.value);
             if (node) {
-              cell.orginalValue = cell.value;
               cell.value = node.name;
             }
           }
@@ -57,23 +56,12 @@ class DataTableLinks extends Component {
 
   handleDataChange = (changes) => {
     const { grid } = this.state;
-
     changes.forEach((d) => {
       const [error, value] = Validate.link(d.cell.key, d.value);
       if (error) {
         toast.error(error);
       }
-
-      if (d.cell.key === 'source' || d.cell.key === 'target') {
-        const node = ChartUtils.getNodeById(d.value);
-
-        if (node) {
-          grid[d.row][d.col].orginalValue = value;
-          grid[d.row][d.col].value = node.name;
-        }
-      } else {
-        grid[d.row][d.col] = { ...grid[d.row][d.col], value };
-      }
+      grid[d.row][d.col] = { ...grid[d.row][d.col], value };
     });
     this.setState({ grid });
     const linksChanged = Convert.gridDataToLink(grid);
@@ -133,7 +121,6 @@ class DataTableLinks extends Component {
             <th className={`${position} cell value`} width="80"><span>Value</span></th>
             <th className={`${position} cell linkType`} width="100"><span>Link Type</span></th>
             <th className={`${position} cell direction`} width="90"><span>Direction</span></th>
-            <th className={`${position} cell status`} width="90"><span>Status</span></th>
           </tr>
         </thead>
         <tbody>

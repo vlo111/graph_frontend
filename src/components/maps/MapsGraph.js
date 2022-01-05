@@ -55,29 +55,22 @@ class MapsGraph extends Component {
 
   render() {
     const { activeNode } = this.state;
-    const { initLocation } = this.state;
+    let { initLocation } = this.state;
     const { google, location: { pathname } } = this.props;
-    // let nodes = Chart.getNodes().filter((d) => d.location).map((d) => {
-    //   d.locationObj = _.isObject(d?.location) && d?.location?.map((p) => ({ lat: p.location.lat, lng: p.location.lng }));
-    //   if (d?.location?.length > 0) {
-    //     initLocation = (d?.location?.map((p) => ({ lat: p.location.lat, lng: p.location.lng })));
-    //   }
-    //   return d;
-    // });
     let nodes = Chart.getNodes().filter((d) => d.location).map((d) => {
-      const { location } = d.location;
-
-      d.locationObj = location;
+      d.locationObj = _.isObject(d?.location) && d?.location?.map((p) => ({ lat: p.location.lat, lng: p.location.lng }));
+      if (d?.location?.length > 0) {
+        initLocation = (d?.location?.map((p) => ({ lat: p.location.lat, lng: p.location.lng })));
+      }
       return d;
     });
-
     const links = Chart.getLinks().map((d) => {
       const source = ChartUtils.getNodeById(d.source);
       const target = ChartUtils.getNodeById(d.target);
       if (source.location && target.location) {
         if (source.location.length && target.location.length) {
-          const locationObj1 = source.location.location;
-          const locationObj2 = target.location.location;
+          const locationObj1 = source.location[0].location;
+          const locationObj2 = target.location[0].location;
           d.locations = [locationObj1, locationObj2];
         }
       }
@@ -103,7 +96,7 @@ class MapsGraph extends Component {
           styles={MapsStyle.mapStyle}
           google={google}
           zoom={7}
-          initialCenter={initLocation}
+          initialCenter={initLocation[0]}
           streetViewControl={false}
           fullscreenControl={false}
           onClick={this.handleMapClick}
@@ -120,7 +113,7 @@ class MapsGraph extends Component {
             <Marker
               key={d.name}
               name={d.name}
-              position={d.locationObj}
+              position={d.locationObj[0]}
               title={d.name}
               onClick={(props, marker, ev) => this.handleMarkerClick(props, marker, ev, d)}
               icon={{

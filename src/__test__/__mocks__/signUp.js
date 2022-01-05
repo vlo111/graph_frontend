@@ -9,7 +9,7 @@ const user = async () => {
   const requestData = {
     firstName: 'FTest',
     lastName: 'LTest',
-    email: 'ffmiza@test.com',
+    email: 'ffff@test.com',
     password: 'Test_test1',
   };
 
