@@ -14,7 +14,7 @@ class Legend extends Component {
       showLegendButton: PropTypes.string.isRequired,
       setLegendButton: PropTypes.func.isRequired,
       getSingleGraphRequest: PropTypes.func.isRequired,
-      singleGraph: PropTypes.string.isRequired,
+      singleGraph: PropTypes.object.isRequired,
 
     }
 
