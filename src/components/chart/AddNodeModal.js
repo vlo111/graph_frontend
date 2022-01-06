@@ -29,7 +29,7 @@ class AddNodeModal extends Component {
     currentUserId: PropTypes.string.isRequired,
     addNodeParams: PropTypes.object.isRequired,
     currentUserRole: PropTypes.string.isRequired,
-    updateNodesCustomFieldsRequest: PropTypes.string.isRequired,
+    updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
     graphId: PropTypes.string.isRequired,
     graphNodes: PropTypes.string.isRequired,
   }
