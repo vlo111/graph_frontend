@@ -37,8 +37,8 @@ class AddNodeModal extends Component {
   initNodeData = memoizeOne((addNodeParams) => {
     const nodes = Chart.getNodes();
     const {
-      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, customField, scale, link,
-      d, infographyId, manually_size, customFields,
+      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, scale, link,
+      d, infographyId, manuallySize, customFields,
     } = _.cloneDeep(addNodeParams);
     const _type = type || _.last(nodes)?.type || '';
     this.setState({
@@ -57,11 +57,10 @@ class AddNodeModal extends Component {
         d,
         scale,
         infographyId,
-        manually_size: manually_size || 1,
+        manually_size: manuallySize || 1,
         customFields,
       },
       nodeId: addNodeParams.id,
-      customField,
       index,
       errors: {},
     });
@@ -194,10 +193,6 @@ class AddNodeModal extends Component {
     this.setState({
       nodeData, errors,
     });
-  }
-
-  handleCustomFieldsChange = (customField) => {
-    this.setState({ customField: { ...customField } });
   }
 
   openMap = () => {
