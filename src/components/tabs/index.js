@@ -237,7 +237,11 @@ const Tabs = ({ history, editable, viewPermisson }) => {
 Tabs.propTypes = {
   history: PropTypes.object.isRequired,
   editable: PropTypes.bool.isRequired,
-  viewPermisson: PropTypes.string.isRequired,
+  viewPermisson: PropTypes.string,
+};
+
+Tabs.defaultProps = {
+  viewPermisson: '',
 };
 
 export default withRouter(Tabs);
