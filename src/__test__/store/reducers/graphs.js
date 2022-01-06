@@ -63,7 +63,7 @@ const initialState = {
   query: [],
 };
 export default function reducer(state = initialState, action) {
-  switch ('action.type') {
+  switch (action.type) {
     case UPDATE_GRAPH.REQUEST:
     case UPDATE_GRAPH.FAIL: {
       return {
@@ -99,7 +99,6 @@ export default function reducer(state = initialState, action) {
         importData,
       };
     }
-
     case GET_GRAPHS_SHAREGRAPHS_COUNT.SUCCESS: {
       const { ...allGraghsCount } = action.payload.data;
       return {
@@ -107,7 +106,6 @@ export default function reducer(state = initialState, action) {
         allGraghsCount,
       };
     }
-
     case GET_GRAPHS_LIST.REQUEST: {
       return {
         ...state,
