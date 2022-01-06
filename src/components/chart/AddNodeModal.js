@@ -34,38 +34,6 @@ class AddNodeModal extends Component {
     graphNodes: PropTypes.array.isRequired,
   }
 
-  initNodeData = memoizeOne((addNodeParams) => {
-    const nodes = Chart.getNodes();
-    const {
-      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, scale, link,
-      d, infographyId, manuallySize, customFields,
-    } = _.cloneDeep(addNodeParams);
-    const _type = type || _.last(nodes)?.type || '';
-    this.setState({
-      nodeData: {
-        fx,
-        fy,
-        name: name || '',
-        link: link || '',
-        icon: icon || '',
-        status: status || 'approved',
-        nodeType: nodeType || 'circle',
-        type: _type,
-        keywords: keywords || [],
-        location,
-        color: ChartUtils.nodeColorObj[_type] || '',
-        d,
-        scale,
-        infographyId,
-        manually_size: manuallySize || 1,
-        customFields,
-      },
-      nodeId: addNodeParams.id,
-      index,
-      errors: {},
-    });
-  }, _.isEqual)
-
   getTypes = memoizeOne((nodes) => {
     const types = nodes.filter((d) => d.type)
       .map((d) => ({
@@ -90,6 +58,38 @@ class AddNodeModal extends Component {
       editLocation: null,
       expand: false,
     };
+  }
+
+  componentDidMount() {
+    const nodes = Chart.getNodes();
+    const {
+      fx, fy, name, icon, nodeType, status, type, keywords, location, index = null, scale, link,
+      d, infographyId, manuallySize, customFields,
+    } = _.cloneDeep(this.props.addNodeParams);
+    const _type = type || _.last(nodes)?.type || '';
+    this.setState({
+      nodeData: {
+        fx,
+        fy,
+        name: name || '',
+        link: link || '',
+        icon: icon || '',
+        status: status || 'approved',
+        nodeType: nodeType || 'circle',
+        type: _type,
+        keywords: keywords || [],
+        location,
+        color: ChartUtils.nodeColorObj[_type] || '',
+        d,
+        scale,
+        infographyId,
+        manually_size: manuallySize || 1,
+        customFields,
+      },
+      nodeId: this.props.addNodeParams.id,
+      index,
+      errors: {},
+    });
   }
 
   closeModal = () => {
@@ -227,7 +227,6 @@ class AddNodeModal extends Component {
     } = this.state;
     const { addNodeParams, currentUserRole, currentUserId } = this.props;
     const { editPartial } = addNodeParams;
-    this.initNodeData(addNodeParams);
     const nodes = Chart.getNodes();
     const groups = this.getTypes(nodes);
 
