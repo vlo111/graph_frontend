@@ -25,11 +25,15 @@ class ContextMenu extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
-    expand: PropTypes.func.isRequired,
+    expand: PropTypes.bool,
     activeButton: PropTypes.string.isRequired,
-    singleGraphId: PropTypes.func.isRequired,
+    singleGraphId: PropTypes.string.isRequired,
     currentUserRole: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    expand: false,
   }
 
   static event = new EventEmitter();
@@ -331,7 +335,7 @@ class ContextMenu extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   currentUserRole: state.graphs.singleGraph.currentUserRole || '',
-  singleGraphId: state.graphs.singleGraph.id,
+  singleGraphId: state.graphs.singleGraph.id || '',
 });
 const mapDispatchToProps = {
   setActiveButton,
