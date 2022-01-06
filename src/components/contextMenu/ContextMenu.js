@@ -24,12 +24,12 @@ import { KEY_CODES } from '../../data/keyCodes';
 class ContextMenu extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
-    match: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
     expand: PropTypes.func.isRequired,
-    activeButton: PropTypes.func.isRequired,
+    activeButton: PropTypes.string.isRequired,
     singleGraphId: PropTypes.func.isRequired,
-    currentUserRole: PropTypes.func.isRequired,
-    location: PropTypes.func.isRequired,
+    currentUserRole: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
   }
 
   static event = new EventEmitter();
