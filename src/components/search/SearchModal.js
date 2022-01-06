@@ -24,7 +24,7 @@ class SearchModal extends Component {
     getGraphNodesRequest: PropTypes.func.isRequired,
     setActiveTab: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    graphId: PropTypes.object.isRequired,
+    graphId: PropTypes.string.isRequired,
   };
 
   initTabs = memoizeOne(() => {
