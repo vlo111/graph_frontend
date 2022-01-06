@@ -31,7 +31,7 @@ class AddNodeModal extends Component {
     currentUserRole: PropTypes.string.isRequired,
     updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
     graphId: PropTypes.string.isRequired,
-    graphNodes: PropTypes.string.isRequired,
+    graphNodes: PropTypes.array.isRequired,
   }
 
   initNodeData = memoizeOne((addNodeParams) => {
