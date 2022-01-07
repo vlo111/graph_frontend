@@ -67,6 +67,11 @@ class Validate {
 
   static linkType(val, linkData) {
     let value = (val || '').trim();
+
+    if (!linkData) {
+      return ['', value];
+    }
+
     const { source, target, index } = linkData;
     const links = Chart.getLinks();
 

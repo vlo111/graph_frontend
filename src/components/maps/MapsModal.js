@@ -62,37 +62,6 @@ class MapsModal extends Component {
     }
   }
 
-  getPlaceInformation = (location) => new Promise((resolve) => {
-    this.geocoderService.geocode({ location }, (results) => {
-      const { place_id: placeId } = results[0] || {};
-      if (!placeId) {
-        resolve({ location });
-        return;
-      }
-      this.placesService.getDetails({
-        placeId,
-        fields: ['name', 'international_phone_number', 'types', 'formatted_address', 'website', 'photo'],
-      }, (place, status) => {
-        if (status !== 'OK') {
-          resolve({ location });
-          return;
-        }
-        const {
-          name, website, photos,
-          formatted_address: address,
-          international_phone_number: phone,
-          types,
-        } = place;
-        const photo = !_.isEqual(photos) ? photos[0].getUrl({ maxWidth: 250, maxHeight: 250 }) : null;
-        const type = _.lowerCase(types[0] || '');
-        const selected = {
-          location, website, name, photo, address, type, phone,
-        };
-        resolve(selected);
-      });
-    });
-  })
-
   handleMouseUp = async (ev) => {
     const { markerDrag } = this.state;
     let { selected } = this.state;
@@ -104,7 +73,7 @@ class MapsModal extends Component {
     this.close();
 
     if (!selected.name) {
-      selected = await this.getPlaceInformation(selected.location);
+      selected = await Utils.getPlaceInformation(selected.location, this.geocoderService, this.placesService);
     }
     const url = Utils.wikiContentUrlByName(selected.name);
     const wikiData = await Utils.getWikiContent(url);
@@ -117,7 +86,7 @@ class MapsModal extends Component {
       name: selected.name,
       icon: selected.photo,
       type: selected.type,
-      location: [selected],
+      location: selected,
       customFields: [{
         name: 'About',
         subtitle: '',

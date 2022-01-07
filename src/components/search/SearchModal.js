@@ -24,7 +24,7 @@ class SearchModal extends Component {
     getGraphNodesRequest: PropTypes.func.isRequired,
     setActiveTab: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    graphId: PropTypes.object.isRequired,
+    graphId: PropTypes.string.isRequired,
   };
 
   initTabs = memoizeOne(() => {
@@ -424,6 +424,7 @@ class SearchModal extends Component {
                     <div
                       onClick={this.handleCheckBoxChange}
                       className={`checkBox checkBox${field}`}
+                      key={Utils.generateUUID()}
                     >
                       {field}
                     </div>

@@ -39,14 +39,6 @@ class ToolBarHeader extends Component {
     };
   }
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-
-    const notifyElement = document.querySelector('.notification');
-
-    notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifyEmptySvg />);
-  }
-
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
