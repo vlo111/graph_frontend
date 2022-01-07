@@ -37,6 +37,15 @@ class DataTableNodes extends Component {
     if (!_.isEmpty(nodes)) {
       const grid = Convert.nodeDataToGrid(nodes);
 
+      grid.map((cells) => {
+        cells.forEach((cell) => {
+          if (cell.key === 'location' && cell.value?.address) {
+            cell.orginalValue = cell.value;
+            cell.value = Utils.substr(cell.value.address, 28);
+          }
+        });
+      });
+
       this.setState({ grid });
     }
   }, _.isEqual)
