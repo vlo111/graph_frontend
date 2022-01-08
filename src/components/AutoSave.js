@@ -262,7 +262,7 @@ class AutoSave extends Component {
     const createNodes = _.differenceBy(nodes, oldNodes, 'id');
     const updateNodes = [];
     const updateNodePositions = [];
-
+    const updateNodeCustomFields = [];
     nodes.forEach((node) => {
       const oldNode = oldNodes.find((n) => n.id === node.id);
       if (oldNode) {
@@ -286,6 +286,9 @@ class AutoSave extends Component {
             labels: node.labels,
           });
         }
+        // if ((oldNode.customFields && !_.isEqual(node.customFields, oldNode.customFields))) {
+        //   updateNodeCustomFields.push(node);
+        // }
       }
     });
     const deleteLinks = _.differenceBy(oldLinks, links, 'id');
@@ -328,6 +331,10 @@ class AutoSave extends Component {
       promise.push(this.props.updateGraphPositionsRequest(graphId, updateNodePositions, updateLabelPositions));
     } else if (createNodes.length) {
       promise.push(this.props.createNodesRequest(graphId, createNodes));
+    }
+
+    if (updateNodeCustomFields.length) {
+      promise.push(this.props.updateNodesCustomFieldsRequest(graphId, updateNodeCustomFields));
     }
 
     if (createLinks.length) {

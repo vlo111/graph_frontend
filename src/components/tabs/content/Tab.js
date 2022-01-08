@@ -86,10 +86,11 @@ const Tab = ({
   }
 
   const deleteTab = () => {
-    dispatch(updateNodesCustomFieldsRequest(graphId, {
+    dispatch(updateNodesCustomFieldsRequest(graphId, [{
       id: node.id,
       customFields: customFields.filter((f) => f.name !== name),
-    }));
+      name,
+    }]));
     setActiveTab('_description');
     setShowConfirmModal(false);
   };

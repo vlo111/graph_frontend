@@ -28,8 +28,8 @@ export function updateNodesPositionRequest(graphId, nodes) {
 
 export const UPDATE_NODES_CUSTOM_FIELDS = define('UPDATE_NODES_CUSTOM_FIELDS');
 
-export function updateNodesCustomFieldsRequest(graphId, tabs) {
-  return UPDATE_NODES_CUSTOM_FIELDS.request(() => Api.updateNodeCustomFields(graphId, tabs), { graphId, tabs });
+export function updateNodesCustomFieldsRequest(graphId, nodes) {
+  return UPDATE_NODES_CUSTOM_FIELDS.request(() => Api.updateNodeCustomFields(graphId, nodes), { graphId, nodes });
 }
 
 export const NODE_HISTORY = define('NODE_HISTORY');

@@ -10,10 +10,10 @@ const SwitchTab = ({
 }) => {
   const dispatch = useDispatch();
   const handleOrderChange = (customFields) => {
-    dispatch(updateNodesCustomFieldsRequest(graphId, {
+    dispatch(updateNodesCustomFieldsRequest(graphId, [{
       id: node.id,
       customFields,
-    }));
+    }]));
   };
 
   return (

@@ -266,7 +266,7 @@ class AddTabModal extends Component {
           }
 
           this.props.setActiveTab(tabData.name);
-          this.props.onClose();
+          this.props.onClose(data, fieldName || tabData.name);
         } else {
           this.setState({
             showSaveModal: false,

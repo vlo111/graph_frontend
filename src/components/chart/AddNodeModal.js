@@ -148,10 +148,10 @@ class AddNodeModal extends Component {
         nodes.push(nodeData);
 
         if (!_.isEmpty(nodeData.customFields)) {
-          this.props.updateNodesCustomFieldsRequest(graphId, {
+          this.props.updateNodesCustomFieldsRequest(graphId, [{
             id: nodeData.id,
             customFields: nodeData.customFields,
-          });
+          }]);
         }
       }
 
