@@ -3,7 +3,7 @@ import {
 } from '../actions/account';
 import Account from '../../helpers/Account';
 
-const initialState = {
+export const initialState = {
   status: '',
   token: Account.getToken(),
   myAccount: Account.get(),
@@ -28,7 +28,6 @@ export default function reducer(state = initialState, action) {
         myAccount,
       };
     }
-
     case UPDATE_MY_ACCOUNT.SUCCESS:
     case GET_MY_ACCOUNT.SUCCESS: {
       const { user: myAccount } = action.payload.data;

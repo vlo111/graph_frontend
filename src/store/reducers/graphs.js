@@ -36,7 +36,7 @@ import { GET_GRAPH_QUERY, UPDATE_GRAPH_QUERY, DELETE_GRAPH_QUERY } from '../acti
 
 const { REACT_APP_MAX_NODE_AND_LINK } = process.env;
 
-const initialState = {
+export const initialState = {
   importData: {},
   graphsList: [],
   graphNodes: [],
