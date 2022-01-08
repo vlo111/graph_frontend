@@ -1,6 +1,6 @@
 import reducer, { initialState } from '../../store/reducers/graphs';
 
-describe('graph reducer', () => {
+describe('redux reducer of graph', () => {
   it('convert graph request', () => {
     const action = {
       type: 'DELETE_GRAPH_QUERY_SUCCESS',

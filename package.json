@@ -64,6 +64,7 @@
     "react-window": "^1.8.6",
     "recharts": "^2.0.9",
     "redux": "^4.0.5",
+    "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "socket.io-client": "^2.3.1",
@@ -78,7 +79,7 @@
     "start": "react-scripts start",
     "svg": "svgo -f src/assets/images/icons --config='{\"plugins\":[{\"removeViewBox\":false,\"removeAttrs\":{\"attrs\":\"data.*\"}},{\"removeNonInheritableGroupAttrs\":true},{\"collapseGroups\":true}]}'",
     "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build && node build.js",
-    "test": "cypress open",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "./node_modules/.bin/eslint src/. --config .eslintrc.js"
   },

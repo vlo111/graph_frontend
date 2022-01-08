@@ -1,14 +1,17 @@
 import reducer, { initialState } from '../../store/reducers/account';
 
-describe('account reducer', () => {
-  it('sign in request', () => {
+/**
+ * Account reducer, redux store
+ * reducer updates from preliminary data
+ */
+describe('redux reducers of account', () => {
+  it('should be initial state sign in request', () => {
     const action = {
       type: 'SIGN_IN_REQUEST',
     };
 
     expect(reducer(initialState, action)).toEqual({
       ...initialState,
-      token: '',
     });
   });
 
