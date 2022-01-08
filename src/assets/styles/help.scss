@@ -265,6 +265,7 @@
     position: relative;
     color: #545454 !important ;
     line-height: 40px;
+    cursor: context-menu;
     img {
       position: relative;
       left: -15px;
@@ -314,10 +315,11 @@
 }
 .help-text ul li {
   display: flex;
-  margin-top: 18px;
+  margin-top: 13px;
   justify-content: space-between;
 }
 .help-text ul li div {
+  display: flex;
   width: 24%;
   text-align: justify;
 }

@@ -72,7 +72,7 @@ class Crop extends Component {
     links = links.filter((d) => nodeIds.includes(d.target) && nodeIds.includes(d.source));
     this.props.setGridIndexes('links', links.map((d) => d.index));
 
-    this.props.setActiveButton('data');
+    this.props.setActiveButton('dataexport');
     this.setState({ active: false });
   }
 
@@ -87,15 +87,13 @@ class Crop extends Component {
         crop={crop}
         onChange={this.handleCropChange}
         renderComponent={<div />}
-
       >
         <div className="ReactCrop__drag-elements" />
         <div className="content">
           <div className="buttons">
-            <Button icon="fa-times" className="btn-delete" onClick={this.cancel}>Cancel</Button>
-            <Button icon="fa-save" className="btn-classic" onClick={this.crop}>Crop</Button>
+            <Button icon="fa-times" onClick={this.cancel}>Cancel</Button>
+            <Button icon="fa-save" onClick={this.crop}>Crop</Button>
           </div>
-
         </div>
       </ReactCrop>
     );

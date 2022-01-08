@@ -30,7 +30,7 @@ export default (props) => {
   const handleClose = () => {
     props.closeModal();
   };
- 
+
   return (
     <Outside
       exclude=".help"
@@ -82,7 +82,7 @@ export default (props) => {
                 <h4 className="helpTitlePages">Analysis</h4>
               </Tab>
               <Tab>
-                <h4 className="helpTitlePages">Shotcuts</h4>
+                <h4 className="helpTitlePages">Hotkeys</h4>
               </Tab>
             </TabList>
           </div>
@@ -104,7 +104,6 @@ export default (props) => {
                 src="https://www.youtube.com/embed/kCe9OOKsVtc"
                 title="YouTube video player"
                 frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
             </div>

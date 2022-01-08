@@ -38,6 +38,7 @@ import MapsModal from '../components/maps/MapsModal';
 import ScienceGraphModal from '../components/ScienceSearchToGraph/ScienceGraphModal';
 import WikiModal from '../components/wikipedia/WikiModal';
 import ChartUtils from '../helpers/ChartUtils';
+import DataExport from '../components/dataView/DataExport';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -116,6 +117,7 @@ class GraphForm extends Component {
           <Crop />
           <AddNodeModal />
           {activeButton === 'data' && <DataView />}
+          {activeButton === 'dataexport' && <DataExport />}
           {activeButton === 'search' && <SearchModal history={this.props.history} />}
           {activeButton === 'media' && <MediaModal history={this.props.history} />}
           {activeButton === 'maps-view' && <MapsGraph />}
