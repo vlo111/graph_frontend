@@ -24,15 +24,10 @@ import {
   GET_GRAPH_INFO,
   ACTIVE_MOUSE_TRACKER,
   UPDATE_GRAPH_THUMBNAIL,
-  GET_NODES_LIST_DATA,
 } from '../actions/graphs';
-import CustomFields from '../../helpers/CustomFields';
-import Chart from '../../Chart';
-import ChartUtils from '../../helpers/ChartUtils';
-import { SOCKET_ACTIVE_MOUSE_TRACKER } from '../actions/socket';
-import { UPDATE_NODES_CUSTOM_FIELDS } from '../actions/nodes';
-import { ONLINE_USERS } from '../actions/app';
-import { GET_GRAPH_QUERY, UPDATE_GRAPH_QUERY, DELETE_GRAPH_QUERY } from '../actions/query';
+import CustomFields from '../../../helpers/CustomFields';
+import Chart from '../../../Chart';
+import ChartUtils from '../../../helpers/ChartUtils';
 
 const { REACT_APP_MAX_NODE_AND_LINK } = process.env;
 
@@ -104,7 +99,6 @@ export default function reducer(state = initialState, action) {
         importData,
       };
     }
-
     case GET_GRAPHS_SHAREGRAPHS_COUNT.SUCCESS: {
       const { ...allGraghsCount } = action.payload.data;
       return {
@@ -112,7 +106,6 @@ export default function reducer(state = initialState, action) {
         allGraghsCount,
       };
     }
-
     case GET_GRAPHS_LIST.REQUEST: {
       return {
         ...state,
@@ -233,7 +226,6 @@ export default function reducer(state = initialState, action) {
         singleGraphStatus: 'success',
       };
     }
-
     case GET_GRAPH_INFO.SUCCESS: {
       const { filter, info } = action.payload.data;
       return {
@@ -242,7 +234,6 @@ export default function reducer(state = initialState, action) {
         graphInfo: info,
       };
     }
-
     case GET_SINGLE_GRAPH.FAIL: {
       Chart.loading(false);
       return {
@@ -250,7 +241,6 @@ export default function reducer(state = initialState, action) {
         singleGraphStatus: 'fail',
       };
     }
-
     case GET_SINGLE_GRAPH_PREVIEW.SUCCESS: {
       const { graph: singleGraph } = action.payload.data;
       const { nodes, labels } = singleGraph;
@@ -364,13 +354,6 @@ export default function reducer(state = initialState, action) {
         nodeCustomFields,
       };
     }
-    case UPDATE_NODES_CUSTOM_FIELDS.REQUEST: {
-      const { nodes } = action.payload;
-      return {
-        ...state,
-        nodeCustomFields: nodes[0].customFields || [],
-      };
-    }
     case REMOVE_NODE_CUSTOM_FIELD_KEY: {
       const singleGraph = { ...state.singleGraph };
       const { type, key, nodeId } = action.payload;
@@ -466,16 +449,6 @@ export default function reducer(state = initialState, action) {
         graphTabsStatus: 'fail',
       };
     }
-    case ONLINE_USERS: {
-      const singleGraph = { ...state.singleGraph };
-      const { onlineUsers } = action.payload;
-      const online = onlineUsers && onlineUsers.filter((d) => d.activeGraphId === singleGraph?.id);
-      return {
-        ...state,
-        onlineUsers: online,
-      };
-    }
-
     case ACTIVE_MOUSE_TRACKER: {
       const { onlineUsers, singleGraph: { id } } = state;
       const { userId, tracker: mouseTracker } = action.payload;
@@ -484,41 +457,6 @@ export default function reducer(state = initialState, action) {
         ...state,
         trackers,
         mouseTracker,
-      };
-    }
-    case SOCKET_ACTIVE_MOUSE_TRACKER: {
-      const { mouseMoveTracker } = action.payload;
-      const { singleGraph: { id } } = state;
-      const trackers = mouseMoveTracker && mouseMoveTracker.filter((d) => d.graphId === id);
-      return {
-        ...state,
-        mouseMoveTracker: trackers,
-      };
-    }
-    case GET_GRAPH_QUERY.REQUEST: {
-      return {
-        ...state,
-        query: [],
-      };
-    }
-    case GET_GRAPH_QUERY.SUCCESS: {
-      const { query, total } = action.payload.data;
-      return {
-        ...state,
-        query: { queryList: query, total },
-      };
-    }
-    case UPDATE_GRAPH_QUERY.SUCCESS:
-    case DELETE_GRAPH_QUERY.SUCCESS: {
-      const { query } = action.payload.data;
-      return {
-        ...state,
-        query: { queryList: query },
-      };
-    }
-    case GET_NODES_LIST_DATA: {
-      return {
-        ...state,
       };
     }
     default: {

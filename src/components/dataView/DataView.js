@@ -46,11 +46,18 @@ class DataView extends Component {
       },
       exportType: 'png',
       showExport: false,
+      linksGrouped: {},
     };
   }
 
   async componentDidMount() {
     const { graphId, selectedGrid } = this.props;
+
+    let { links } = this.state;
+
+    const linksGrouped = _.groupBy(links, 'type');
+    delete linksGrouped.undefined;
+
     Chart.loading(true);
     const folders = Chart.getLabels().filter((l) => l.type === 'folder');
 
@@ -62,8 +69,8 @@ class DataView extends Component {
     foldersData = await Promise.all(foldersData);
 
     const nodes = this.mergeNodes(Chart.getNodes(), foldersData.map((d) => d.data.label.nodes).flat(1), selectedGrid);
-    const links = this.mergeLinks(Chart.getLinks(), foldersData.map((d) => d.data.label.links).flat(1), nodes, selectedGrid);
-    this.setState({ nodes, links });
+    links = this.mergeLinks(Chart.getLinks(), foldersData.map((d) => d.data.label.links).flat(1), nodes, selectedGrid);
+    this.setState({ nodes, links, linksGrouped });
 
     // this.checkAllGrids();
     Chart.resizeSvg();
@@ -214,13 +221,11 @@ class DataView extends Component {
 
   render() {
     const {
-      fullWidth, activeTab, exportType, showExport, nodes, links,
+      fullWidth, activeTab, exportType, showExport, nodes, links, linksGrouped,
     } = this.state;
 
     const { graphInfo } = this.props;
 
-    const linksGrouped = _.groupBy(links, 'type');
-    delete linksGrouped.undefined;
     const nodesGrouped = _.groupBy(nodes, 'type');
     delete nodesGrouped.undefined;
     let color = '';
@@ -289,6 +294,15 @@ class DataView extends Component {
                 allNodes={nodes}
                 allLinks={links}
                 links={linksGrouped[activeTab.type]}
+                setLinksGrouped={(value) => {
+                  const lGrouped = _.groupBy(value, 'type');
+                  delete lGrouped.undefined;
+
+                  this.setState({
+                    links: value,
+                    linksGrouped: lGrouped,
+                  });
+                }}
               />
             )}
           </div>

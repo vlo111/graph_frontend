@@ -27,6 +27,7 @@ class DataTableLinks extends Component {
     allNodes: PropTypes.array.isRequired,
     allLinks: PropTypes.array.isRequired,
     toggleGrid: PropTypes.func.isRequired,
+    setLinksGrouped: PropTypes.func.isRequired,
   }
 
   initGridValues = memoizeOne((links) => {
@@ -38,6 +39,7 @@ class DataTableLinks extends Component {
           if (cell.key === 'source' || cell.key === 'target') {
             const node = ChartUtils.getNodeById(cell.value);
             if (node) {
+              cell.orginalValue = cell.value;
               cell.value = node.name;
             }
           }
@@ -56,12 +58,23 @@ class DataTableLinks extends Component {
 
   handleDataChange = (changes) => {
     const { grid } = this.state;
+
     changes.forEach((d) => {
       const [error, value] = Validate.link(d.cell.key, d.value);
       if (error) {
         toast.error(error);
       }
-      grid[d.row][d.col] = { ...grid[d.row][d.col], value };
+
+      if (d.cell.key === 'source' || d.cell.key === 'target') {
+        const node = ChartUtils.getNodeById(d.value);
+
+        if (node) {
+          grid[d.row][d.col].orginalValue = value;
+          grid[d.row][d.col].value = node.name;
+        }
+      } else {
+        grid[d.row][d.col] = { ...grid[d.row][d.col], value };
+      }
     });
     this.setState({ grid });
     const linksChanged = Convert.gridDataToLink(grid);
@@ -73,6 +86,8 @@ class DataTableLinks extends Component {
       }
       return d;
     });
+
+    this.props.setLinksGrouped(links);
 
     Chart.render({ links });
   }
@@ -121,6 +136,7 @@ class DataTableLinks extends Component {
             <th className={`${position} cell value`} width="80"><span>Value</span></th>
             <th className={`${position} cell linkType`} width="100"><span>Link Type</span></th>
             <th className={`${position} cell direction`} width="90"><span>Direction</span></th>
+            <th className={`${position} cell status`} width="90"><span>Status</span></th>
           </tr>
         </thead>
         <tbody>
@@ -215,6 +231,29 @@ class DataTableLinks extends Component {
     if (props.cell.key === 'value') {
       defaultProps.type = 'number';
       defaultProps.min = '1';
+    }
+    if (props.cell.key === 'type') {
+      const types = _.uniqBy(Chart.getLinks().filter((d) => d.type)
+        .map((d) => ({
+          value: d.type,
+          label: d.type,
+        })), 'value');
+
+      return (
+        <Select
+          isSearchable
+          value={[
+            types.find((t) => t.value === props.value) || {
+              value: props.value,
+              label: props.value,
+            },
+          ]}
+          options={types}
+          menuIsOpen
+          isCreatable
+          onChange={(v) => props.onChange(v.value)}
+        />
+      );
     }
     return (
       <Input {...defaultProps} />

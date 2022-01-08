@@ -1710,14 +1710,21 @@ p {
       margin-top: 0;
 
       .ghButton {
-        background: #f2f5f7 0% 0% no-repeat padding-box;
+        background: #f2f5f7 0 0 no-repeat padding-box;
         width: 30px;
         height: 30px;
         padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         .icon {
           margin: 0;
           display: flex;
+
+          path {
+            fill: $color-passive;
+          }
         }
       }
     }
@@ -2534,7 +2541,7 @@ p {
     padding: 0px 0px 0px 20px;
     padding-bottom: 15%;
     box-shadow: 0 4px 36px rgba(0, 0, 0, 0.16);
-   
+
 
     .filter-container {
       width: 100%;
@@ -6694,7 +6701,6 @@ img.preview-scaled {
             background-color: white;
             z-index: 103;
             border-radius: 3px;
-            display: none;
             width: 7em;
             position: fixed;
             top: 115px;
@@ -6734,7 +6740,7 @@ img.preview-scaled {
       }
     }
   }
-  
+
 
   .searchItem {
     cursor: pointer;
@@ -8106,27 +8112,17 @@ img.preview-scaled {
             }
           }
 
-          .locEdit {
-            position: relative;
-            border-right: none;
-            flex: 10% 1;
-            text-align: center;
-            left: 5px;
-          }
+          .locEdit span {
+            display: flex;
+            align-items: center;
 
-          .locDelete {
-            width: 9px;
-            position: relative;
-            left: -29px;
-            top: -7px;
-
-            span {
+            p {
+              margin: 0;
               cursor: pointer;
-            }
-
-            svg {
-              width: 10px;
-              height: 10px;
+              text-overflow: ellipsis;
+              max-width: 230px;
+              overflow: hidden;
+              white-space: nowrap;
             }
           }
         }
