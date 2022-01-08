@@ -7,6 +7,7 @@ import Button from '../form/Button';
 import Chart from '../../Chart';
 import { setActiveButton, setGridIndexes } from '../../store/actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
+import 'react-image-crop/dist/ReactCrop.css';
 
 class Crop extends Component {
   static propTypes = {
@@ -86,11 +87,13 @@ class Crop extends Component {
         crop={crop}
         onChange={this.handleCropChange}
         renderComponent={<div />}
+
       >
+        <div className="ReactCrop__drag-elements" />
         <div className="content">
           <div className="buttons">
-            <Button icon="fa-times" className="warning" onClick={this.cancel}>Cancel</Button>
-            <Button icon="fa-save" onClick={this.crop}>Crop</Button>
+            <Button icon="fa-times" className="btn-delete" onClick={this.cancel}>Cancel</Button>
+            <Button icon="fa-save" className="btn-classic" onClick={this.crop}>Crop</Button>
           </div>
 
         </div>
@@ -99,7 +102,7 @@ class Crop extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = () => ({});
 const mapDispatchToProps = {
   setGridIndexes,
   setActiveButton,

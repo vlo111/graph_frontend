@@ -32,7 +32,7 @@
     display: flex;
 
     div {
-      margin-left: 10px;;
+      margin-left: 10px;
     }
 
     #autoPlay {
@@ -145,7 +145,6 @@
     .containerBarChart, .diag2, .localAnalyse, .pieChart {
       overflow: hidden;
       background: #fff;
-      // box-shadow: 0 6px 20px rgb(192 0 255 / 8%);
       display: block;
       border-radius: 3px;
     }
@@ -173,10 +172,6 @@
   
         .recharts-responsive-container {
           width: 80% !important;
-  
-          // .recharts-wrapper {
-          //   width:50%;
-          // }
         }
        
       }
@@ -248,9 +243,7 @@
     }
   }
   .pieChart .recharts-surface{
-    
-    // height: 335px!important;
-    padding: 20px 50px 2px 50px;
+        padding: 20px 50px 2px 50px;
     
   }
 }

@@ -29,6 +29,9 @@ class AddNodeModal extends Component {
     currentUserId: PropTypes.string.isRequired,
     addNodeParams: PropTypes.object.isRequired,
     currentUserRole: PropTypes.string.isRequired,
+    updateNodesCustomFieldsRequest: PropTypes.func.isRequired,
+    graphId: PropTypes.string.isRequired,
+    graphNodes: PropTypes.array.isRequired,
   }
 
   initNodeData = memoizeOne((addNodeParams) => {
@@ -104,7 +107,7 @@ class AddNodeModal extends Component {
     } = this.state;
 
     const errors = {};
-    const nodes = [...Chart.getNodes()];
+    let nodes = [...Chart.getNodes()];
 
     const update = !_.isNull(index);
     [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update, graphNodes);
@@ -153,33 +156,28 @@ class AddNodeModal extends Component {
       }
 
       if (nodeData.color) {
-        ChartUtils.setNodeTypeColor(nodeData.type, nodeData.color);
+        nodes = nodes.map((n) => {
+          if (n.type === nodeData.type) {
+            n.color = nodeData.color;
+          }
+          return n;
+        });
       }
 
       Chart.render({ nodes });
 
       this.closeExpand();
-      // this.props.setNodeCustomField(nodeData.type, nodeData.id, customField);
       this.props.toggleNodeModal();
     }
-    this.setState({ errors, nodeData, loading: false });
+    this.setState({ errors, nodeData });
   }
 
   handleChange = (path, item, editIndex) => {
     let value = item;
 
-    const { nodeData, errors, editLocation } = this.state;
+    const { nodeData, errors } = this.state;
 
-    if (path === 'location') {
-      if (nodeData.location) {
-        if (Number.isInteger(editIndex)) {
-          nodeData.location[editLocation] = value;
-        } else {
-          nodeData.location.push(value);
-        }
-      }
-      value = !nodeData.location ? [value] : nodeData.location;
-    } else if (path === 'type') {
+    if (path === 'type') {
       _.set(nodeData, path, value);
       _.unset(errors, path);
 
@@ -194,26 +192,8 @@ class AddNodeModal extends Component {
     _.unset(errors, path);
 
     this.setState({
-      nodeData, errors, editLocation: null,
+      nodeData, errors,
     });
-  }
-
-  deleteLocation = (lIndex) => {
-    const { nodeData } = this.state;
-    nodeData.location = nodeData.location.filter((p, index) => index !== lIndex);
-
-    this.setState({ nodeData });
-  }
-
-  editLocation = (index) => {
-    this.setState({
-      editLocation: index,
-      openMap: true,
-    });
-  }
-
-  handleCustomFieldsChange = (customField) => {
-    this.setState({ customField: { ...customField } });
   }
 
   openMap = () => {
@@ -224,7 +204,6 @@ class AddNodeModal extends Component {
     const { openMap } = this.state;
     this.setState({
       openMap: !openMap,
-      editLocation: null,
     });
   }
 
@@ -245,7 +224,7 @@ class AddNodeModal extends Component {
 
   render() {
     const {
-      nodeData, errors, index, openMap, editLocation, expand, imgUrl,
+      nodeData, errors, index, openMap, expand, imgUrl,
     } = this.state;
     const { addNodeParams, currentUserRole, currentUserId } = this.props;
     const { editPartial } = addNodeParams;
@@ -254,7 +233,6 @@ class AddNodeModal extends Component {
     const groups = this.getTypes(nodes);
 
     Utils.orderGroup(groups, nodeData.type);
-
     return (
       <Modal
         className={expand ? 'ghModal expandAddNode' : 'ghModal'}
@@ -263,8 +241,10 @@ class AddNodeModal extends Component {
         onRequestClose={this.closeModal}
       >
         <div className="addNodeContainer containerModal">
-          <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
-          <h2 className="add-node-text">{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
+          <div className="addNodetitle">
+            <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
+            <h2 className="add-node-text">{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
+          </div>
           <form
             className={`form ${imgUrl === 'error' ? '' : (nodeData.icon ? 'update-upload' : '')}`}
             onSubmit={this.saveNode}
@@ -366,62 +346,30 @@ class AddNodeModal extends Component {
                     onChangeText={(v) => this.handleChange('manually_size', v)}
                   />
                 </div>
-                <div className="addLocation" onClick={this.openMap}>+ Add Location</div>
                 {openMap && (
                 <MapsLocationPicker
                   onClose={this.toggleMap}
-                  value={editLocation != null
-                    ? nodeData.location.filter((p, index) => index === editLocation) : nodeData.location}
-                  onChange={(v, edit) => this.handleChange('location', v, edit)}
-                  edit={Number.isInteger(editLocation) ? editLocation : null}
+                  value={nodeData.location}
+                  onChange={(v) => this.handleChange('location', v)}
                 />
                 )}
                 <div className="ghFormField locationExpandForm">
-                  {_.isObject(nodeData?.location)
-                      && nodeData.location
-                        .map((p, index) => (
-                          <div className="locForm">
-                            <div className="locName">
-                              <p title={p.address}>
-                                {p.address
-                                    && p.address.length > (!expand ? 20 : 37)
-                                  ? `${p.address.substr(
-                                    0,
-                                    !expand ? 20 : 37,
-                                  )} ...`
-                                  : p.address}
-                              </p>
-                            </div>
-
-                            <Tooltip overlay={p.address} placement="top">
-                              <div className="locEdit">
-                                <span
-                                  title="edit"
-                                  onClick={() => this.editLocation(index)}
-                                >
-                                  <img
-                                    src={markerImg}
-                                    className="locMarker"
-                                    alt="marker"
-                                  />
-                                </span>
-                              </div>
-                            </Tooltip>
-
-                            <div className="locDelete">
-                              <span
-                                title="delete"
-                                onClick={() => this.deleteLocation(index)}
-                              >
-                                <CloseSvg
-                                  className="deletelocation"
-                                  alt="marker"
-                                />
-                              </span>
-                            </div>
-                          </div>
-                        ))
-                        .slice(!expand ? -2 : nodeData.location)}
+                  <div className="locForm">
+                    <div className="locEdit">
+                      <Tooltip overlay="Select location" placement="top">
+                        <span
+                          onClick={this.openMap}
+                        >
+                          <img
+                            src={markerImg}
+                            className="locMarker"
+                            alt="marker"
+                          />
+                          <p>{nodeData?.location?.address}</p>
+                        </span>
+                      </Tooltip>
+                    </div>
+                  </div>
                 </div>
               </>
             ) : null}
@@ -432,6 +380,7 @@ class AddNodeModal extends Component {
                 </button>
               </div>
             </div>
+
             <div className="advanced right">
               <div className="show-more" onClick={this.toggleExpand}>
                 {!expand ? 'Show More' : 'Show Less'}

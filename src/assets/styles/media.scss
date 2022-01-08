@@ -31,6 +31,18 @@
     cursor: pointer;
     color: blue;
   }
+  #header {
+    grid-template-columns: 17% 20% auto 5% 20%;
+
+    .signOut {
+      right: 2%;
+    }
+
+    .right-elements {
+      right: 30px;
+    }
+  }
+
 }
 
 @media screen and (max-width: 1600px) {
@@ -90,7 +102,7 @@
   }
   .homeWithUser .content .graphsList .graphsItem {
     grid-template-columns: 19% 34% 21% 19% 7% !important;
-}
+ }
   .ghModalMedia {
     left: 6% !important;
     width: 46% !important;
@@ -100,6 +112,21 @@
       width: 82% !important;
     }
   }
+  #header {
+    .signOut {
+      right: 1%;
+    }
+
+    .right-elements {
+      right: -48px;
+    }
+
+    .ghButton {
+      padding: 12px 14px;
+    }
+
+  }
+
 }
 
 @media screen and (max-width: 1200px){
@@ -544,7 +571,6 @@ margin-top: -5px;
 
 @media (min-width: 1200px) {
   .profile.newVersion,.profileEdit {
-    font-family: Roboto;
     margin: 80px auto;
     width:75%;
   }
@@ -581,7 +607,6 @@ margin-top: -5px;
 
 @media (min-width: 1400px) {
   .profile.newVersion,.profileEdit {
-    font-family: Roboto;
     margin: 80px auto;
     width:70%;
   }
@@ -597,6 +622,7 @@ margin-top: -5px;
   .profile.newVersion,.profileEdit {
     margin: 80px auto;
     width:60%;
+    height: 800px;
   }
 }
 @media (max-width: 10px) {

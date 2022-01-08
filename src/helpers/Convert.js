@@ -62,7 +62,7 @@ class Convert {
     return data.map((d) => {
       const obj = {};
       d.forEach((item) => {
-        obj[item.key] = item.value;
+        obj[item.key] = item.orginalValue ? item.orginalValue : item.value;
       });
       return obj;
     });

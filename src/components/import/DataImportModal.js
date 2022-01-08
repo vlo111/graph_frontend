@@ -81,7 +81,7 @@ class DataImportModal extends Component {
             )}
             {activeTab === 'zip' ? <ImportZip showSelectHandler={this.showSelectHandler} /> : null}
             {activeTab === 'xlsx' ? <ImportXlsx showSelectHandler={this.showSelectHandler} /> : null}
-            {activeTab === 'google' ? <ImportGoogle /> : null}
+            {activeTab === 'google' ? <ImportGoogle showSelectHandler={this.showSelectHandler} /> : null}
             {activeTab === 'linkedin' ? <ImportLinkedin /> : null}
           </div>
         </div>

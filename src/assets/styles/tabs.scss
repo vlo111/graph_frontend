@@ -7,7 +7,7 @@
   background: $color-white;
   right: 0;
   top: 56px;
-  z-index: 3;
+  z-index: 11;
 
   .tab {
     display: block;
@@ -175,6 +175,8 @@
 
             &-keywords {
               margin-top: 5px;
+              max-height: 95px;
+              overflow: auto;
 
               .more-keywords {
                 background-color: inherit;
@@ -191,6 +193,19 @@
                 color: $color-passive;
                 margin-right: 10px;
                 margin-bottom: 10px;
+              }
+
+              &::-webkit-scrollbar {
+                width: 5px;
+                height: 5px;
+                background: #B9B4EF;
+                z-index: 0;
+              }
+
+              &::-webkit-scrollbar-thumb {
+                border-radius: 5px;
+                background: #5454E2;
+                z-index: 0;
               }
             }
 
@@ -377,9 +392,9 @@
           }
 
           * {
-            width: 310px;
+            min-width: 310px;
             margin: 0 !important;
-            padding: 0 !important;;
+            padding: 0 !important;
           }
         }
       }
@@ -795,7 +810,15 @@
 
   .tab_content-description {
     * {
-      width: calc(100% - 10px) !important;
+      width: calc(100% - 10px);
+    }
+
+    iframe {
+      max-width: 600px;
+    }
+
+    img {
+      max-width: 600px;
     }
   }
 

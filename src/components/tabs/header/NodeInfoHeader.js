@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import NodeIcon from '../../NodeIcon';
@@ -12,7 +12,7 @@ const getElement = (name) => document.querySelector(name);
 
 const NodeInfoHeader = ({
   node, history, setSingleExpand, singleExpand,
-  setTabsExpand, connectedNodes, title, tabs, tabsExpand,
+  setTabsExpand, connectedNodes, title, tabs, tabsExpand, viewPermisson,
 }) => {
   const closeNodeInfo = () => {
     getElement('.tab-wrapper').style.transform = 'scaleX(0)';
@@ -30,6 +30,8 @@ const NodeInfoHeader = ({
     getElement('.graphControlPanel').style.right = right;
 
     setSingleExpand(false);
+
+    document.body.className = document.body.className.replace('node_expand', '');
   };
 
   const expandTabs = () => {
@@ -62,6 +64,8 @@ const NodeInfoHeader = ({
               <ExpandSvg />
             </button>
           )}
+          {!viewPermisson
+          && (
           <ExportNodeTabs
             node={node}
             tabs={tabs}
@@ -70,6 +74,7 @@ const NodeInfoHeader = ({
             title={title}
             name="name"
           />
+          )}
           <button
             className="clear"
             onClick={closeNodeInfo}
@@ -92,6 +97,7 @@ NodeInfoHeader.propTypes = {
   setTabsExpand: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   tabs: PropTypes.object.isRequired,
+  viewPermisson: PropTypes.string.isRequired,
 };
 
 export default NodeInfoHeader;

@@ -390,6 +390,68 @@ class Utils {
    */
   static substr = (value, count) => (value && value.length > count
     ? `${value.substr(0, count)}... ` : value)
+
+  static getGraphListItemsLimit() {
+    const windowWidth = window.innerWidth;
+
+    const isHomePage = window.location.pathname === '/';
+
+    const isLargeScreen = windowWidth > 1840 && windowWidth <= 1920;
+
+    let limit = 0;
+
+    if (windowWidth <= 900 || isLargeScreen) {
+      limit = isHomePage ? 14 : 15;
+    } else if (windowWidth <= 1490) {
+      limit = isHomePage ? 11 : 12;
+    } else if (windowWidth <= 1840) {
+      limit = isHomePage ? 15 : 16;
+    } else {
+      limit = isHomePage ? 16 : 18;
+    }
+
+    return limit;
+  }
+
+  /**
+   * Get google map address information from selected location
+   * Array location contains latitude and longitude
+   * PlacesService for get place details
+   * @param location
+   * @param geocoderService
+   * @param placesService
+   * @returns {Promise}
+   */
+  static getPlaceInformation = (location, geocoderService, placesService) => new Promise((resolve) => {
+    geocoderService.geocode({ location }, (results) => {
+      const { place_id: placeId } = results[0] || {};
+      if (!placeId) {
+        resolve({ location });
+        return;
+      }
+      placesService.getDetails({
+        placeId,
+        fields: ['name', 'international_phone_number', 'types', 'formatted_address', 'website', 'photo'],
+      }, (place, status) => {
+        if (status !== 'OK') {
+          resolve({ location });
+          return;
+        }
+        const {
+          name, website, photos,
+          formatted_address: address,
+          international_phone_number: phone,
+          types,
+        } = place;
+        const photo = !_.isEqual(photos) ? photos[0].getUrl({ maxWidth: 250, maxHeight: 250 }) : null;
+        const type = _.lowerCase(types[0] || '');
+        const selected = {
+          location, website, name, photo, address, type, phone,
+        };
+        resolve(selected);
+      });
+    });
+  })
 }
 
 export default Utils;

@@ -81,7 +81,6 @@
   color: #7166f8;
   font-weight: bold;
   text-align: justify;
-  line-height: 17px;
 
   &:hover {
     color: $color-main;
@@ -120,12 +119,6 @@
 .help-rightPart {
   margin: 0px 2px;
   padding: 15px;
-}
-
-.HelpCommand {
-  color: #424242;
-  font-size: 14px;
-  font-weight: 700;
 }
 
 .btn-close {
@@ -236,9 +229,8 @@
   top: 60px;
   color: #545454;
   font-size: 14px;
-  padding-bottom: 2px;
   -webkit-user-modify: read-write-plaintext-only;
-  padding: 10px;
+  padding:0 10px 2px 0;
   li {
     text-align: -webkit-left;
     font-size: 14px;
@@ -262,7 +254,7 @@
     color: #454545;
     font-size: 14px;
     top: 55px;
-    left: -73px;
+    left: -56px;
     font-weight: 700;
     position: relative;
   }
@@ -273,7 +265,6 @@
     position: relative;
     color: #545454 !important ;
     line-height: 40px;
-    left: 190px;
     img {
       position: relative;
       left: -15px;

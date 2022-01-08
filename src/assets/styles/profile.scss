@@ -1,9 +1,8 @@
-
   // user info 
   .profile.newVersion {
-    font-family: Roboto;
     padding:30px;
     max-width: initial;
+    height: 800px;
   }
   
   .colm-xs-12 {
@@ -17,13 +16,18 @@
     max-width: 100%;
   }
   
-  .colm-sm-6 , .colm-md-4, .colm-sm-6, .colm-12, .colm, .colm-md-6{
+.colm-sm-6,
+.colm-md-4,
+.colm-sm-6,
+.colm-12,
+.colm,
+.colm-md-6 {
     position: relative;
     width: 100%;
     padding-right: 15px;
     padding-left: 15px;
   }
-  
+
   .row_ {
     display: flex;
     flex-wrap: wrap; 
@@ -40,11 +44,11 @@
       user-select: none;
       background-color: transparent;
       border: 1px solid transparent;
-      border-radius: .25rem;
-  }
-  
+      border-radius: 0.25rem;
+}
+
   .btn-link {
-     color:$color-main;
+    color: $color-main;
   }
   
   .d-flex {
@@ -56,25 +60,32 @@
   }
   
   .text-size-16 {
-    font-size: 16px;;
+    font-size: 16px;
   }
-  
+  .account_description {
+    color: #0d0905;
+  margin-top: 17px;
+  max-height: 200px;
+  overflow: scroll;
+  text-align: justify;
+  padding-right: 7px;
+  }
   .text-size-50 {
-    font-size: 50px;;
+    font-size: 50px;
   }
   
   .w-100 {
-    width:100%;
+    width: 100%;
   }
   
   .user_prf_color1 {
-    color:$color-main !important;
+    color: $color-main !important;
+    text-decoration: none !important;
   }
   
   .user_prf_color {
-    color:$color-graph-name;
+    color: $color-graph-name;
   }
-  
   
   .text-b {
     font-weight: bold;
@@ -114,38 +125,37 @@
       margin: 0 auto;
   
       img {
-        width:100%;
+        width: 100%;
         border-radius: 50%;
       }
     }
     h1 {
       color: $color-graph-name;
-      font-size: 50px;
-      margin-top:27px;
+      font-size: 48px;
+      margin-top: 27px;
       font-weight: bold;
     }
     p {
       color: $color-dark;
-      margin-top:17px;
+      margin-top: 17px;
       margin-bottom: 80px;
     }
   }
   
-  
-  .profile_address> div {
+  .profile_address > div {
     font-size: 16px;
     margin-top: 17px;
     color: $color-graph-name;
-    padding-left:10px;
+    padding-left: 10px;
   }
   .profile_info {
     text-align: center;
     padding: 0;
     > div {
-      padding: 0
-    };
+      padding: 0;
+    }
     div.text {
-      font-size: 26px;
+      font-size: 23px;
       word-break: break-all;
     }
   }
@@ -156,24 +166,25 @@
     font-size: 25px;
   }
   
-  .user_address_info p, .edit_profile > div:last-child {
+  .user_address_info p,
+  .edit_profile > div:last-child {
     font-size: 20px;
     color: $color-border; 
-    margin-top:10px; 
+    margin-top: 10px; 
   }
   
   .edit_profile > div:first-child {
-    font-size:40px;  
-    color:$color-graph-name;  
+    font-size: 40px;  
+    color: $color-graph-name;  
   }
   .interest {
     display: flex;
-    font-size:20px;
+    font-size: 20px;
     flex-wrap: wrap;
-    margin-top:10px;
+    margin-top: 10px;
     div {
       background: $color-main;
-      color:white;
+      color: white;
       padding: 2px 18px;
       margin: 0px 10px 5px 0px;
     }
@@ -188,19 +199,19 @@
   }
   
   .friends-requests {
-    margin-top:90px;
-    > div.carousel.slide{
-      color:7166F8;
+    margin-top: 90px;
+    > div.carousel.slide {
+      color: #7166f8;
       font-size: 20px;
       margin-bottom: 35px;
     }
   
-    >div:first-child {
+    > div:first-child {
       color: $color-main;
       margin-bottom: 22px;
       font-size: 20px;
     }
-    .friend_box{
+    .friend_box {
       justify-content: space-between;
       align-items: center;
       width: 100%;
@@ -208,73 +219,72 @@
       margin-bottom: 20px;
       padding: 5px 15px;
       .ghButton {
-        color:white;
+        color: white;
         background: $color-main;
       }
     }
     .ghFormField {
       max-width: 151px;
-      margin : 0;
+      margin: 0;
     }
     .ghFormField .ghSelectContent .gh__control .gh__dropdown-indicator {
       padding: 0 15px 0 0;
     }
   }
   .img_box {
-    max-width:66px;
+    max-width: 66px;
     margin-right: 10px;
     img {
-      width:100%;
+      width: 100%;
       border-radius: 50%;
     }
   }
   
   .friend_box {
-    .friendname p, .friendname,h6 {
+    .friendname p,
+    .friendname,
+    h6 {
       color: #707070;
-      font-size:16px;
+      font-size: 16px;
     }
   
-    >div{
+    > div {
       display: flex;
       align-items: center;
     }
-  
   }
   
   .friends {
     margin-top: 90px;
   
     .img_box {
-      width:44px;
+      width: 44px;
       margin-right: 24px;
     }
   
-    >div:first-child {
+    > div:first-child {
       margin-bottom: 20px;
       font-size: 20px;
     }
-  
   
     .friend_box {
       margin-bottom: 16px !important;
       display: flex;
       align-items: flex-start;
       button.btn-link {
-        font-size:14px;
+        font-size: 14px;
         margin-left: 30px;
         background: none;
-  
       }
     }
-  
   }
   
   .carousel.slide {
-    width:100%;
+    width: 100%;
   }
   
-  .carousel-control-next-icon, .carousel-control-prev-icon {
+  .carousel-control-next-icon,
+  .carousel-control-prev-icon {
     width: 40px;
     height: 40px;
     display: inline-block;
@@ -291,7 +301,6 @@
   .carousel-item {
     flex-wrap: wrap;
     padding: 0 15px;
-
   }
   .btn-primary {
     color: #fff;
@@ -301,81 +310,86 @@
   
     // account end
   
-  
     // edit page
     .profileEdit {
       width: 100%;
       margin: 80px auto;
-        .ghInput textarea, .ghInput input {
-          height: 40px;
-          border: 1px solid #9F9F9F;
-        }
+      height: 800px;
+      .ghInput textarea,
+      .ghInput input {
+        height: 40px;
+        border: 1px solid #9f9f9f;
+      }
         .ghFormField {
           width: initial;
           max-width: 100%;
           flex-direction: row;
           justify-content: space-between;
-          margin: 15px 0;
-          
+          margin: 15px 0;    
         }
-        .imageUploader  {
+        .imageUploader {
             height: 100%;
         }
 
         .country-city {
           padding-left: 130px;
-          .ghFormField  {
-            display:flex;
-            flex-direction: column-reverse;
-            
+          .ghFormField {
+            display: flex;
+            flex-direction: column-reverse;        
           }
           .ghFormField.ghSelect {
-            margin-right:10px;
+            margin-right: 10px;
           }
-  
         }
 
         .section1 {
-          max-width:initial;
-          flex:initial;
-          padding:0;
+          max-width: initial;
+          flex: initial;
+          padding: 0;
         }
   
         form {
-          max-width:580px;
-          width:100%;
-          margin:60px auto;
+          max-width: 580px;
+          width: 100%;
+          margin: 60px auto;
         }
   
-        .ghFormField label, .ghFormField .label, .socialT {
+        .ghFormField label,
+        .ghFormField .label,
+        .socialT {
           display: flex;
           min-width: 100px;
           align-items: center;
-          color: #9F9F9F;
+          color: #9f9f9f;
           justify-content: flex-end;
           margin-right: 30px;
         }
   
         .socialT {
-          width:10px;
-          padding:0;
+          width: 10px;
+          padding: 0;
           font-size: 16px;
         }
   
         .ghInput textarea {
-          min-width:initial;
+          min-width: initial;
           padding: 5px 15px;
         }
         .social_icon_new { 
-          padding:0;
+          padding: 0;
           background: none;
           border: none;  
           position: absolute;
-          top:10px;
+          top: 10px;
+
+          img{
+            width: 20px;
+            height: 20px;
+          }
         }
   
         .social_icon_new:nth-child(odd) {
-          left:-40px;
+          left: -40px;
         }
         .social_icon_new:nth-child(even) {
           right: -40px;
@@ -383,14 +397,14 @@
       
         .rigt-input {
           justify-content: space-between;
-          margin-top:20px;
+          margin-top: 20px;
           grid-gap: 2%;
           grid-row-gap: 10%;
           width: calc(100% - 130px);
            margin-left: 130px;
           .ghFormField.ghInput {
-            width:100%;
-            margin:0;
+            width: 100%;
+            margin: 0;
           }
           div.row {
             position: relative;
@@ -400,50 +414,46 @@
         .socialright {
           width: 100%;
           font-size: 16px;
-          color: #9F9F9F;
+          color: #9f9f9f;
         }
   
         .interest-box {
           margin: 80px 0;
-          >div:first-child {
+          > div:first-child {
             min-width: 100px;
             color: $color-passive;
             font-size: 25px;
             margin-right: 30px;
             justify-content: flex-end;
           }
-          >div:last-child {
+          > div:last-child {
             max-width: 100%;
             width: 100%;
           }
   
-          .add{
-            color:#9F9F9F;
+          .add {
+            color: #9f9f9f;
             margin-bottom: 27px;
             padding-top: 7px;
           }
           .interest {
-            width:115%;
+            width: 115%;
           }
         }
   
-        .saveChange > div {
-          min-width:150px;
-          position: absolute;
-          justify-content: flex-end;
-          left:-18px;
-          padding-left: 25px;
+        .saveChange{
+          position: relative;
+          top: 100px;
+          display: flex;
+          justify-content: space-between;
+          text-align: center;
+          align-items: center;
+
+          .changePassword{
+            color: $color-main;
+            margin: 0;
+          }
         }
-        .saveChange button.main {
-          color:$color-main;
-        }
-        .saveChange button.save {
-          background:$color-main;
-          position: absolute;
-          right: -32px;
-          color:white
-        }
-  
   }
   
   .profileSettings.profileEdit .row {
@@ -455,15 +465,20 @@
   }
 
   .changePasswordProfile {
-
    .ghFormFieldPassword {
       flex-direction: row;
-      width:initial;
+      width: initial;
+
+      .error{
+        top: 38px !important;
+        left: 40% !important;
+        padding: 0 !important;
+      }
     }
 
    .ghModal label { 
       font-size: 16px;
-      min-width:150px;
+      min-width: 150px;
       display: flex;
       justify-content: flex-end;
       margin-right: 30px;
@@ -471,26 +486,33 @@
     }
   
     .ghInput input {
-      width:270px;
+      width: 270px;
+      padding-left: 15px;
     }
 
-    .ghFormFieldPassword   .icon {
-      left:190px;
+    .ghFormFieldPassword .icon {
+      left: 93% ;
+      top: 5px;
+      right: 3px;
+      bottom: 5px;
+      cursor: pointer;
     }
 
-    .buttonsWrapper    .ghButton.accent {
-      background-color: #7166f8 !important;
-    }
+    .buttonsWrapper {
+      justify-content: flex-end !important;
+
+       .ghButton.accent {
+            background-color: #7166f8 !important;
+       }
+     }
 
     .ghModal .buttonsWrapper .cancel {
       position: absolute;
       right: 0;
       top: 0;
     }
-  
   }
 
-  
   .friend-unfriend {
     position: relative;
     .unfriend {
@@ -501,15 +523,95 @@
       .ghButton2 {
         color: #7166f8;
         background: white;
-        background: #FFFFFF;
+        background: #ffffff;
         box-shadow: 0px 4px 10px rgb(0 0 0 / 25%);
         border-radius: 2px;
-        padding:10px 24px;
+        padding: 10px 24px;
         display: flex;
     }
     }
   }
 
-    // edit page end
+#request_wrapper {
+   width: 120px !important;
+   margin: 0 !important;
 
-   
+  .gh__control {
+    height: 40px !important;
+    border-radius: 5px;
+    background-color: $color-main;
+    color: $color-white !important;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding-right: 10px !important;
+    font-size: 20px;
+    align-items: center;
+    border: none !important;
+
+    &:hover {
+    cursor: pointer !important;
+    }
+
+    .css-tlfecz-indicatorContainer {
+      padding: 0 !important;
+    }
+    .ghSelectContent {
+      color: $color-white !important;
+    }
+    .css-1wa3eu0-placeholder {
+      color: $color-white;
+    }
+    .css-1gtu0rj-indicatorContainer {
+      padding: 0 !important;
+    }
+    .gh__indicator {
+      svg > path {
+        fill: $color-white !important;
+      }
+    }
+    .css-tlfecz-indicatorContainer {
+      padding: 0 !important;
+    }
+    .gh__clear-indicator,
+      .gh__dropdown-indicator {
+        padding-right: 0 !important;
+      }
+  }
+  .css-1pahdxg-control {
+    position: inherit !important;
+  }
+  .gh__menu {
+    height: 86px !important;
+    position: absolute;
+    top: 46px;
+    background: $color-white;
+    box-shadow: 0px 4px 33px rgb(0 0 0 / 25%);
+    z-index: 1;
+    border: none !important;
+
+     .gh__option {
+       font-size: 20px !important;
+       font-weight: 400 !important;
+       padding: 0px 10px 0px 10px !important;
+       margin-top: 6px !important;
+       height: 35px !important;
+      }
+      #react-select-3-option-0 {
+        color: $color-main !important;
+      }
+      #react-select-3-option-1 {
+       color: $color-main2 !important;
+      }
+      .css-1n7v3ny-option {
+        color: $color-main !important;
+      }
+      .css-yt9ioa-option {
+       color: $color-main2 !important;
+      }
+     .css-4ljt47-MenuList {
+        padding: 0 !important;
+     }
+  }
+}
+    // edit page end

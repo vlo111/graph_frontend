@@ -32,6 +32,7 @@ import DataView from '../components/dataView/DataView';
 import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import Dashboard from '../components/graphDashboard';
+import ChartUtils from '../helpers/ChartUtils';
 
 class GraphView extends Component {
   static propTypes = {
@@ -47,9 +48,17 @@ class GraphView extends Component {
     getGraphInfoRequest: PropTypes.func.isRequired,
     singleGraphStatus: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
+    currentUserId: PropTypes.string.isRequired,
   }
 
   preventReload = true;
+
+  constructor() {
+    super();
+    this.state = {
+      scaleStatus: false,
+    };
+  }
 
   getSingleRequest = memoizeOne(() => {
     const { match: { params: { graphId } } } = this.props;
@@ -83,9 +92,10 @@ class GraphView extends Component {
 
   render() {
     const {
-      singleGraph, singleGraphStatus, graphInfo, activeButton,
+      singleGraph, singleGraphStatus, graphInfo, activeButton, currentUserId,
       location: { pathname, search }, match: { params: { graphId = '' } },
     } = this.props;
+    const viewPermisson = ((singleGraph?.share?.role === 'view') || (currentUserId !== singleGraph?.userId));
     const preview = pathname.startsWith('/graphs/preview/');
     let shortestNodes = [];
     // let shortestLinks = [];
@@ -125,6 +135,14 @@ class GraphView extends Component {
     const isPermission = this.getPermission();
     if (isPermission) {
       return (<Redirect to="/403" />);
+    }
+    if (!this.state.scaleStatus) {
+      if (document.querySelector('.nodes')?.childElementCount) {
+        ChartUtils.autoScale();
+        this.setState({
+          scaleStatus: true,
+        });
+      }
     }
     return (
       <Wrapper className="graphView" showFooter={false}>
@@ -189,8 +207,8 @@ class GraphView extends Component {
                   </>
                 )}
                 <ToolBarHeader graph={singleGraph} />
-                <SearchModal />
-                <Tabs editable={false} />
+                <SearchModal graphId={graphId} />
+                <Tabs editable={false} viewPermisson={viewPermisson} />
                 <LabelTooltip />
                 <Filters />
                 <AutoPlay />
@@ -221,6 +239,7 @@ const mapStateToProps = (state) => ({
   userGraphs: state.shareGraphs.userGraphs,
   graphInfo: state.graphs.graphInfo,
   singleGraphStatus: state.graphs.singleGraphStatus,
+  currentUserId: state.account.myAccount.id,
 });
 const mapDispatchToProps = {
   setActiveButton,

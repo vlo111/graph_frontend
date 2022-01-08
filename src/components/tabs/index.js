@@ -45,7 +45,7 @@ const getGroupedConnections = memoizeOne((nodeId) => {
   };
 });
 
-const Tabs = ({ history, editable }) => {
+const Tabs = ({ history, editable, viewPermisson }) => {
   const { info: nodeId } = queryString.parse(window.location.search);
 
   const node = Chart.getNodes().find((n) => n.id === nodeId);
@@ -143,6 +143,7 @@ const Tabs = ({ history, editable }) => {
           title={title}
           tabs={nodeCustomFields}
           node={node}
+          viewPermisson={viewPermisson}
           history={history}
           setSingleExpand={setSingleExpand}
           setTabsExpand={(tab) => {
@@ -205,6 +206,7 @@ const Tabs = ({ history, editable }) => {
               name={activeTab}
               setOpenAddTab={(tab) => setOpenAddTab(tab)}
               setActiveTab={(tabName) => setActiveTab(tabName)}
+              editable={editable}
             />
             )}
             {mode === 'comments'
@@ -233,6 +235,11 @@ const Tabs = ({ history, editable }) => {
 Tabs.propTypes = {
   history: PropTypes.object.isRequired,
   editable: PropTypes.bool.isRequired,
+  viewPermisson: PropTypes.string,
+};
+
+Tabs.defaultProps = {
+  viewPermisson: '',
 };
 
 export default withRouter(Tabs);

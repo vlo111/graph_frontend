@@ -67,6 +67,11 @@ class Validate {
 
   static linkType(val, linkData) {
     let value = (val || '').trim();
+
+    if (!linkData) {
+      return ['', value];
+    }
+
     const { source, target, index } = linkData;
     const links = Chart.getLinks();
 
@@ -166,17 +171,18 @@ class Validate {
   }
 
   static register(data) {
+    const {
+      firstName, lastName, email, password, passwordConfirm,
+    } = data;
 
-    const { firstName, lastName, email, password, passwordConfirm } = data;
+    let errors = {};
 
-    const errors = {};
-
-    if(!firstName || firstName.trim() === '') {
-      errors.firstName = 'First name is required'
+    if (!firstName || firstName.trim() === '') {
+      errors.firstName = 'First name is required';
     }
 
-    if(!lastName || lastName.trim() === '') {
-      errors.lastName = 'last name is required'
+    if (!lastName || lastName.trim() === '') {
+      errors.lastName = 'last name is required';
     }
 
     if (!email) {
@@ -185,6 +191,28 @@ class Validate {
       errors.email = 'Enter a valid email address';
     }
 
+    errors = this.passwordValidation(errors, password, passwordConfirm);
+
+    return errors;
+  }
+
+  static changePassword(data) {
+    const {
+      password, passwordConfirm, oldPassword,
+    } = data;
+
+    let errors = {};
+
+    if (!oldPassword) {
+      errors.oldPassword = 'Password is required';
+    }
+
+    errors = this.passwordValidation(errors, password, passwordConfirm);
+
+    return errors;
+  }
+
+  static passwordValidation(errors, password, passwordConfirm) {
     if (!password) {
       errors.password = 'Password is required';
     } else if (password.length < 8) {

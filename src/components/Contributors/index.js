@@ -126,7 +126,7 @@ const ContributorsModal = React.memo(({ graphId, graphOwner }) => {
 });
 
 ContributorsModal.propTypes = {
-  graphId: PropTypes.number.isRequired,
+  graphId: PropTypes.string.isRequired,
   graphOwner: PropTypes.object.isRequired,
 
 };

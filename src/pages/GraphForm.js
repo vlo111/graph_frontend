@@ -37,6 +37,7 @@ import AddLinkedInModal from '../components/chart/AddLinkedInModal';
 import MapsModal from '../components/maps/MapsModal';
 import ScienceGraphModal from '../components/ScienceSearchToGraph/ScienceGraphModal';
 import WikiModal from '../components/wikipedia/WikiModal';
+import ChartUtils from '../helpers/ChartUtils';
 
 class GraphForm extends Component {
   static propTypes = {
@@ -51,6 +52,13 @@ class GraphForm extends Component {
     mouseMoveTracker: PropTypes.array.isRequired,
     currentUserRole: PropTypes.string.isRequired,
     history: PropTypes.object.isRequired,
+  }
+
+  constructor() {
+    super();
+    this.state = {
+      scaleStatus: false,
+    };
   }
 
   getSingleGraph = memoizeOne((graphId) => {
@@ -87,6 +95,16 @@ class GraphForm extends Component {
     if (isPermission) {
       return (<Redirect to="/403" />);
     }
+
+    if (!this.state.scaleStatus) {
+      if (document.querySelector('.nodes')?.childElementCount) {
+        ChartUtils.autoScale();
+        this.setState({
+          scaleStatus: true,
+        });
+      }
+    }
+
     return (
       <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
         <>

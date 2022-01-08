@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import Validate from '../../helpers/Validate';
@@ -13,9 +14,11 @@ import { createLabelsRequest } from '../../store/actions/labels';
 import { updateNodesPositionRequest } from '../../store/actions/nodes';
 import { setActiveButton } from '../../store/actions/app';
 
-import Utils from '../../helpers/Utils';
-
 class AddLabelModal extends Component {
+  static propTypes = {
+    setActiveButton: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -48,7 +51,7 @@ class AddLabelModal extends Component {
     this.setState({ show: true, labelData: { ...d } });
   }
 
-  handleFolderCrate = (ev, d) => {
+  handleFolderCrate = (ev) => {
     if (Chart.isAutoPosition) Chart.isAutoPosition = false;
 
     const { x, y } = ChartUtils.calcScaledPosition(ev.x, ev.y);
@@ -72,9 +75,9 @@ class AddLabelModal extends Component {
     let {
       squareData: {
         x, y, width, height,
-      }, originalEvent,
+      },
     } = d;
-    const links = Chart.getLinks();
+    // const links = Chart.getLinks();
     const labels = Chart.getLabels();
     // eslint-disable-next-line prefer-const
     // let { nodes} = await ChartUtils.getNodesWithFiles(
@@ -188,7 +191,7 @@ class AddLabelModal extends Component {
                 Cancel
               </Button>
               <Button className="ghButton accent  btn-classic" type="submit">
-                Add
+                Save
               </Button>
             </div>
           </form>

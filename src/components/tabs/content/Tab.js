@@ -112,6 +112,11 @@ const Tab = ({
     } else if (!expand) {
       body.className += ' node_expand';
       tabElement.style.width = 'calc(100% - 180px)';
+      const iframe = getElement('iframe');
+
+      if (iframe) {
+        iframe.style.width = '400px !important';
+      }
     } else {
       enableEffect();
     }

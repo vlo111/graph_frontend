@@ -10,7 +10,6 @@ import Outside from './Outside';
 import ChartUtils from '../helpers/ChartUtils';
 import NodeIcon from './NodeIcon';
 import Button from './form/Button';
-import Utils from '../helpers/Utils';
 
 const MODAL_WIDTH = 300;
 
@@ -82,22 +81,15 @@ class NodeDescription extends Component {
       return null;
     }
     const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
-
-    const { scale } = ChartUtils.calcScaledPosition();
-    const nodeWidth = ChartUtils.getRadiusList()[node.index] * 2;
-    const top = y + (nodeWidth * scale) + 5;
-    let left = x + (nodeWidth * scale) + 5;
-
-    if (left + MODAL_WIDTH > window.innerWidth) {
-      left = window.innerWidth - MODAL_WIDTH - 15;
-    }
-    let { result: description } = stripHtml(node.description);
-    description = Utils.substr(description, 120);
+    let { show } = this.state;
+    const contexHeight = show === 'selectSquare' ? 320 : 170;
+    const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y + 25 ;
+    const left = window.innerWidth - x < y  ? window.innerWidth - 320 : x +55;
 
     const nodeLinks = Chart.getNodeLinks(node.id, 'all');
     return (
       <Outside onClick={this.hideInfo}>
-        <div onMouseLeave={this.hideInfo} data-node-info={node.index} id="nodeDescription" style={{ top, left }}>
+        <div onMouseLeave={this.hideInfo} data-node-info={node.index} id="nodeDescription" style={{ left, top }}>
           <Icon className="close" value="fa-close" onClick={this.hideInfo} />
           <div className="left">
             <NodeIcon node={node} />
@@ -115,7 +107,7 @@ class NodeDescription extends Component {
             </h4>
             <div className="description paragraph">
               {node.description ? (
-                <span dangerouslySetInnerHTML={{ __html: description }} />
+                <span dangerouslySetInnerHTML={{ __html: node.description }} />
               ) : null}
               {node.description.length > 130 ? (
                 <span className="link">more</span>

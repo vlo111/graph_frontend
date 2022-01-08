@@ -10,6 +10,7 @@ import Pagination from '../../components/Pagination';
 import GraphCardItem from '../../components/graphData/GraphCardItem';
 import GraphListItem from '../../components/graphData/GraphListItem';
 import NoGraph from '../../components/NoGraph';
+import ChartUtils from '../../helpers/Utils';
 
 class Home extends Component {
   static propTypes = {
@@ -17,17 +18,18 @@ class Home extends Component {
     graphsList: PropTypes.array.isRequired,
     graphsListInfo: PropTypes.object.isRequired,
     graphsListStatus: PropTypes.string.isRequired,
-    headerTools: PropTypes.object.isRequired,
+    mode: PropTypes.string.isRequired,
   }
 
-  
   getGraphsList = memoizeOne((page = 1, s) => {
     const status = 'template';
     const order = JSON.parse(localStorage.getItem(`/${status}s`));
-    this.props.getGraphsListRequest(page, { s, filter: order, status });
+    const limit = ChartUtils.getGraphListItemsLimit();
+    this.props.getGraphsListRequest(page, {
+      s, filter: order, status, limit,
+    });
   })
-  
-  
+
   render() {
     const {
       graphsList, graphsListStatus, graphsListInfo: { totalPages }, mode,
@@ -45,7 +47,7 @@ class Home extends Component {
           ) : null}
           {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
             <NoGraph />
-          ) : mode === 'list' ? <GraphListItem graphs={graphsList} /> : <GraphCardItem graphs={graphsList} />}
+          ) : mode === 'list' ? <GraphListItem graphs={graphsList} headerTools="template" /> : <GraphCardItem graphs={graphsList} headerTools="template" />}
         </div>
         {graphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>

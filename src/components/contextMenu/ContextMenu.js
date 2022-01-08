@@ -11,7 +11,7 @@ import ExpandNodeContextMenu from './ExpandNodeContextMenu';
 import QueryContextMenu from './QueryContextMenu';
 import MatchNodeContextMenu from './MatchNodeContextMenu';
 import LinkContextMenu from './LinkContextMenu';
-import TabContext from './TabContext';
+// import TabContext from './TabContext';
 import LabelContextMenu from './LabelContextMenu';
 import Icon from '../form/Icon';
 import LabelUtils from '../../helpers/LabelUtils';
@@ -24,6 +24,16 @@ import { KEY_CODES } from '../../data/keyCodes';
 class ContextMenu extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
+    expand: PropTypes.bool,
+    activeButton: PropTypes.string.isRequired,
+    singleGraphId: PropTypes.string.isRequired,
+    currentUserRole: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    expand: false,
   }
 
   static event = new EventEmitter();
@@ -168,7 +178,7 @@ class ContextMenu extends Component {
 
   render() {
     const {
-      x, y, params, deleteDataModal, element,
+      x, y, params, deleteDataModal,
     } = this.state;
     let { show } = this.state;
     const { activeButton, location: { pathname } } = this.props;
@@ -179,6 +189,10 @@ class ContextMenu extends Component {
         return null;
       }
     }
+    if (pathname.includes('filter')) {
+      return null;
+    }
+
     if (viewLocation && show === 'node') {
       show = 'expand';
     }
@@ -191,7 +205,10 @@ class ContextMenu extends Component {
     if (params.fieldName === '_location') {
       return null;
     }
-    const contexHeight = show === 'selectSquare' ? 195 : 117;
+    // if (params.fieldName !== 'node') {
+    //   return undefined;
+    // }
+    const contexHeight = show === 'selectSquare' ? 195 : 300;
 
     const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y;
 
@@ -318,7 +335,7 @@ class ContextMenu extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   currentUserRole: state.graphs.singleGraph.currentUserRole || '',
-  singleGraphId: state.graphs.singleGraph.id,
+  singleGraphId: state.graphs.singleGraph.id || '',
 });
 const mapDispatchToProps = {
   setActiveButton,

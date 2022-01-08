@@ -17,7 +17,8 @@ import { NODE_STATUS, NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
-import Checkbox from '../form/Checkbox'
+import Checkbox from '../form/Checkbox';
+import Utils from '../../helpers/Utils';
 
 let CHECKED = false;
 
@@ -35,6 +36,16 @@ class DataTableNodes extends Component {
   initGridValues = memoizeOne((nodes) => {
     if (!_.isEmpty(nodes)) {
       const grid = Convert.nodeDataToGrid(nodes);
+
+      grid.map((cells) => {
+        cells.forEach((cell) => {
+          if (cell.key === 'location' && cell.value?.address) {
+            cell.orginalValue = cell.value;
+            cell.value = Utils.substr(cell.value.address, 28);
+          }
+        });
+      });
+
       this.setState({ grid });
     }
   }, _.isEqual)
@@ -53,13 +64,24 @@ class DataTableNodes extends Component {
       if (error) {
         toast.error(error);
       }
-      grid[d.row][d.col] = { ...grid[d.row][d.col], value };
+
+      if (d.cell.key === 'location') {
+        grid[d.row][d.col].orginalValue = value;
+        grid[d.row][d.col].value = Utils.substr(value.address, 28);
+      } else {
+        grid[d.row][d.col] = { ...grid[d.row][d.col], value };
+      }
     });
+    this.setState({ grid });
     const nodesChanged = Convert.gridDataToNode(grid);
     const links = this.props.allLinks;
     const nodes = this.props.allNodes.map((d) => {
       const changed = nodesChanged.find((c) => c.index === d.index);
       if (changed) {
+        if (changed.type !== d.type) {
+          changed.color = '';
+          changed.color = ChartUtils.nodeColor(changed);
+        }
         return changed;
       }
       return d;
@@ -113,7 +135,7 @@ class DataTableNodes extends Component {
         <thead>
           <tr>
             <th className={`${position} cell index`} width="60">
-              <div className='allTableCellChecked'>
+              <div className="allTableCellChecked">
                 <Checkbox
                   onChange={() => this.handleCheckBoxChange(isAllChecked)}
                   checked={isAllChecked}
@@ -150,6 +172,11 @@ class DataTableNodes extends Component {
       onContextMenu, onDoubleClick, onKeyUp, onMouseOver,
     } = props;
     let { onMouseDown } = props;
+
+    if (cell.key === 'location' && cell.value?.address) {
+      cell.orginalValue = cell.value;
+      cell.value = Utils.substr(cell.value.address, 28);
+    }
     if (['description', 'location'].includes(props.cell.key)) {
       this.onMouseDown = onMouseDown;
       onMouseDown = undefined;
@@ -263,7 +290,7 @@ class DataTableNodes extends Component {
             document.dispatchEvent(new Event('mousedown'));
             document.dispatchEvent(new Event('mouseup'));
           }}
-          value={props.value}
+          value={props.cell.orginalValue}
           onChange={props.onChange}
         />
       );

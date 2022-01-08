@@ -6,7 +6,6 @@ import ReactDOMServer from 'react-dom/server';
 import Button from './form/Button';
 import { setActiveButton } from '../store/actions/app';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
-import { ReactComponent as SearchSvg } from '../assets/images/icons/search.svg';
 import { socketMousePositionTracker } from '../store/actions/socket';
 import AccountDropDown from './account/AccountDropDown';
 import Legend from './Legend';
@@ -17,7 +16,6 @@ import Notification from './Notification';
 import { KEY_CODES } from '../data/keyCodes';
 import ContributorsModal from './Contributors';
 import { ReactComponent as CursorSvg } from '../assets/images/icons/cursor.svg';
-import { ReactComponent as NotifySvg } from '../assets/images/icons/notification.svg';
 import Chart from '../Chart';
 import ChartUtils from '../helpers/ChartUtils';
 import { ReactComponent as NotifyEmptySvg } from '../assets/images/icons/notificationComplete.svg';
@@ -27,7 +25,6 @@ class ToolBarHeader extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     socketMousePositionTracker: PropTypes.func.isRequired,
-    activeButton: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
     singleGraph: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -42,30 +39,13 @@ class ToolBarHeader extends Component {
     };
   }
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-
-    const notifyElement = document.querySelector('.notification');
-
-    setTimeout(() => {
-      if (notifyElement) {
-        const dataCount = notifyElement.getAttribute('data-count');
-        if (dataCount == 0) {
-          notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifyEmptySvg />);
-        } else {
-          notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifySvg />);
-        }
-      }
-    }, 100);
-  }
-
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleClick = (button) => {
-    this.props.setActiveButton(button);
-  }
+  // handleClick = (button) => {
+  //   this.props.setActiveButton(button);
+  // }
 
   openCommentModal = (open) => {
     this.setState({ commentModal: open });
@@ -107,15 +87,13 @@ class ToolBarHeader extends Component {
 
   render() {
     const {
-      activeButton, singleGraph, currentUserId, location: { pathname }, match: { params: { graphId } },
+      singleGraph, currentUserId, location: { pathname }, match: { params: { graphId } },
     } = this.props;
     const { mouseTracker, commentModal } = this.state;
     const singleGraphUser = singleGraph.user;
     this.props.socketMousePositionTracker(graphId, mouseTracker, currentUserId);
 
     const updateLocation = pathname.startsWith('/graphs/update/');
-    const filter = pathname.startsWith('/graphs/filter/');
-    const view = pathname.startsWith('/graphs/view/');
     return (
       <>
         <header id={!updateLocation ? 'header-on-view-graph' : 'header-on-graph'}>
@@ -126,26 +104,9 @@ class ToolBarHeader extends Component {
                 <span className="autoSaveText">Saving...</span>
               </Link>
             </li>
-            <li className="legend">
-              {updateLocation && <Legend /> }
-            </li>
-            <li>
-              { !filter && !view
-                && (
-                <div className="graphs">
-                  <Button
-                    icon={<SearchSvg />}
-                    className={activeButton === 'search' ? 'active' : undefined}
-                    onClick={() => this.handleClick('search')}
-                  >
-                    Search
-                  </Button>
-                </div>
-                )}
-            </li>
             <li>
               {updateLocation ? (
-                <GraphSettings />
+                <GraphSettings singleGraph={singleGraph} />
               ) : null}
               {!updateLocation && (
               <span className="graphNames">
@@ -202,6 +163,7 @@ class ToolBarHeader extends Component {
           graph={singleGraph}
         />
         )}
+        {updateLocation && <Legend />}
       </>
     );
   }
