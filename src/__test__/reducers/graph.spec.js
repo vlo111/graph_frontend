@@ -1,14 +1,21 @@
 import reducer, { initialState } from '../../store/reducers/graphs';
 
 describe('graph reducer', () => {
-  it('sign in request', () => {
+  it('convert graph request', () => {
     const action = {
-      type: 'SIGN_IN_REQUEST',
+      type: 'DELETE_GRAPH_QUERY_SUCCESS',
+      payload: {
+        data: {
+          query: {
+            query: 'queryString',
+          },
+        },
+      },
     };
 
     expect(reducer(initialState, action)).toEqual({
       ...initialState,
-      token: '',
+      query: { queryList: { query: 'queryString' } }
     });
   });
 });
