@@ -74,40 +74,24 @@ class AddNodeModal extends Component {
         label: d.type,
       }));
 
-    return _.uniqBy(types, 'value');
-  }, _.isEqual)
+  const closeModal = () => {
+    closeExpand();
+    setNodeData({});
+    dispatch(toggleNodeModal());
+  };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      nodeData: {
-        keywords: [],
-      },
-      imgUrl: '',
-      customField: null,
-      errors: {},
-      index: null,
-      openMap: false,
-      editLocation: null,
-      expand: false,
-    };
-  }
+  const closeExpand = () => {
+    setImgUrl('');
+    setExpand(false);
+  };
 
-  closeModal = () => {
-    this.closeExpand();
-    this.props.toggleNodeModal();
-  }
-
-  saveNode = async (ev) => {
+  const saveNode = async (ev) => {
     ev.preventDefault();
-    this.setState({ loading: true });
-    const { currentUserId, graphId, graphNodes } = this.props;
-    const {
-      nodeData, index, nodeId, imgUrl,
-    } = this.state;
 
-    const errors = {};
-    let nodes = [...Chart.getNodes()];
+    const graphId = graph.id;
+    const graphNodes = graph.nodesPartial;
+
+    let chartNodes = nodes;
 
     const update = !_.isNull(index);
     [errors.name, nodeData.name] = Validate.nodeName(nodeData.name, update, graphNodes);
