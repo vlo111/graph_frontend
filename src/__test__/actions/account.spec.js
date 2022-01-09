@@ -28,11 +28,11 @@ describe('redux action of account', () => {
     },
   ];
 
-  const mockValue = (value) => {
+  const mockAxiosValue = (value) => {
     axios.get.mockResolvedValueOnce(value);
   };
 
-  const dispatch = (type, action, payload) => {
+  const dispatchWithExpect = (type, action, payload) => {
     const store = mockStore();
 
     return store.dispatch(action(payload)).then(() => {
@@ -46,24 +46,24 @@ describe('redux action of account', () => {
       email: 'user@email.com',
     };
 
-    axios.get.mockResolvedValueOnce(users);
+    mockAxiosValue(users);
 
-    dispatch('GET_MY_ACCOUNT', getMyAccountRequest, users);
+    dispatchWithExpect('GET_MY_ACCOUNT', getMyAccountRequest, users);
   });
 
   it('get user by text', () => {
     const id = 'test_user_id';
 
-    mockValue(id);
+    mockAxiosValue(id);
 
-    dispatch('GET_USER_BY_TEXT', getUsersByTextRequest, id);
+    dispatchWithExpect('GET_USER_BY_TEXT', getUsersByTextRequest, id);
   });
 
   it('sign in OAuth request', () => {
     const data = { type: 'oAuth', params: { token: 'tests' } };
 
-    mockValue(data);
+    mockAxiosValue(data);
 
-    dispatch('OAUTH', oAuthRequest, data);
+    dispatchWithExpect('OAUTH', oAuthRequest, data);
   });
 });
