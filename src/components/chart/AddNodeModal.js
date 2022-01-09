@@ -184,8 +184,6 @@ const AddNodeModal = ({ ariaHideApp }) => {
     setErrors({ ...updateErrors });
   };
 
-  console.log('nodeData?.keywords', nodeData?.keywords);
-
   return (
     <Modal
       className={expand ? 'ghModal expandAddNode' : 'ghModal'}
@@ -200,6 +198,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
           <h2 className="add-node-text">{_.isNull(index) ? 'Add New Node' : 'Edit Node'}</h2>
         </div>
         <form
+          id="createNode"
           className={`form ${imgUrl === 'error' ? '' : (nodeData.icon ? 'update-upload' : '')}`}
           onSubmit={saveNode}
         >
@@ -336,6 +335,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
           </div>
 
           <div className="advanced right">
+            <input type="text" className="aaa"/>
             <div className="show-more" onClick={() => setExpand(!expand)}>
               {!expand ? 'Show More' : 'Show Less'}
             </div>
