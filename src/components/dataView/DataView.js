@@ -141,9 +141,9 @@ class DataView extends Component {
     this.setState({ fullWidth: !fullWidth });
   }
 
-  close = () => {
-    this.props.setActiveButton('create');
-  }
+ close = () => {
+   this.props.setActiveButton('create');
+ }
 
   setActiveTab = (group, type) => {
     this.setState({
@@ -249,6 +249,7 @@ class DataView extends Component {
                 {showExport ? (
                   <Outside onClick={(ev) => this.closeExport(ev)} exclude=".exportData">
                     <div className="exportDropDown">
+                      <Button icon={<CloseSvg />} onClick={(ev) => this.closeExport(ev)} className="exportdataclosed" />
                       <p>Export Data </p>
                       <Select
                         label="Type File"
