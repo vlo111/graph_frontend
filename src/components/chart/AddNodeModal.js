@@ -229,6 +229,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
           {expand ? (
             <>
               <Input
+                containerClassName="nodeLink"
                 label="Node Link"
                 value={nodeData.link}
                 error={errors.link}
@@ -238,6 +239,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
               />
               <Select
                 label="Node Status"
+                containerClassName="nodeStatus"
                 options={NODE_STATUS}
                 isDisabled={currentUserRole === 'edit' && addNodeParams.createdUser !== currentUserId}
                 value={NODE_STATUS.filter((t) => t.value === nodeData.status)}
@@ -248,6 +250,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
                 <>
                   <Select
                     label="Shape"
+                    containerClassName="nodeTypes"
                     options={NODE_TYPES}
                     value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
                     error={errors.nodeType}
@@ -255,6 +258,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
                   />
                   <ColorPicker
                     label="Select Color"
+                    containerClassName="colorPicker"
                     value={nodeData.color}
                     error={errors.color}
                     readOnly
@@ -266,6 +270,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
                   <div style={{ backgroundColor: nodeData.color }} className="color-preview" />
 
                   <FileInput
+                    containerClassName="fileUpload"
                     label="Past icon link or select"
                     accept=".png,.jpg,.gif,.svg"
                     value={nodeData.icon}
@@ -276,6 +281,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
                   />
 
                   <Select
+                    containerClassName="keywords"
                     isCreatable
                     isMulti
                     value={nodeData.keywords.map((v) => ({ value: v, label: v }))}
@@ -291,6 +297,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
               <div className="number-wrapper">
                 <Input
                   id="nodeSize"
+                  containerClassName="manualSize"
                   value={nodeData.manually_size}
                   error={errors.manually_size}
                   type="text"
@@ -335,7 +342,6 @@ const AddNodeModal = ({ ariaHideApp }) => {
           </div>
 
           <div className="advanced right">
-            <input type="text" className="aaa"/>
             <div className="show-more" onClick={() => setExpand(!expand)}>
               {!expand ? 'Show More' : 'Show Less'}
             </div>
