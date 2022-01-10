@@ -1011,7 +1011,13 @@ p {
 
   .buttons {
     justify-content: flex-start;
-    margin-left: 250px;
+   button{
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+   }
   }
 
   > div:first-child {
@@ -1650,7 +1656,7 @@ p {
   border-left: 1px solid $color-light-gray;
   padding-left: 4px;
   padding-top: 75px;
-
+  overflow: hidden;
   &.fullWidth {
     position: absolute;
     width: calc(100% - 202px);
@@ -1837,13 +1843,6 @@ p {
         position: sticky;
         top: 0;
         overflow: hidden;
-        z-index: 2;
-
-        &.index,
-        &.name {
-          z-index: 3;
-        }
-
         > * {
           padding: 5px;
           width: 100%;
@@ -1884,11 +1883,6 @@ p {
       }
 
       .cell {
-        &.index,
-        &.name {
-          z-index: 2;
-        }
-
         &.name {
           span {
             padding: 20px 20px 0 25px;
@@ -1988,7 +1982,7 @@ p {
     align-items: center;
     scroll-snap-type: x mandatory;
     user-select: none;
-
+    overflow: auto;
     .nodesMode span,
     .linksMode span {
       color: #717ea0;
@@ -2094,13 +2088,15 @@ p {
   position: fixed;
   z-index: 9999;
   max-width: 320px;
-  width: 320px;
+  width: 240px;
   background-color: white;
   border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 30%);
   padding: 15px;
-  display: flex;
+  text-align: -webkit-center;
   max-height: 500px;
+  overflow-wrap: break-word;
+
 
   .close {
     position: absolute;
@@ -2110,9 +2106,7 @@ p {
   }
 
   .left {
-    width: 50px;
-    min-width: 50px;
-
+    margin-left: 9%;
     img {
       width: 100%;
       height: 100%;
@@ -2127,8 +2121,11 @@ p {
   }
 
   .title {
-    font-weight: normal;
+    font-weight: 600;
     font-size: 17px;
+    color: #6356FF;
+    position: relative;
+    top: 10px;
   }
 
   a.title {
@@ -2136,10 +2133,12 @@ p {
   }
 
   .type {
-    font-weight: normal;
+    font-weight: 500;
     font-size: 14px;
-    color: $color-dark-blue;
-    padding-top: 5px;
+    color: #828282;
+    margin-top: 13px;
+    overflow-wrap: break-word;
+
   }
 
   .description {
@@ -4680,7 +4679,6 @@ body .gh__menu {
 
 .exportDropDown .ghFormField {
   position: relative !important;
-  background: #c6e6ff 0% 0% no-repeat padding-box !important;
 }
 
 .exportData {
@@ -4705,19 +4703,33 @@ body .gh__menu {
   .exportDropDown {
     z-index: 4;
     position: absolute;
-    margin-left: 5px;
-    width: 50%;
-    padding: 50px 40px 21px;
+    margin: 15px 0px 0px 0px;
+    width: 260px;
+    padding: 50px 30px 20px;
     border-radius: 12px;
-    background: #c6e6ff 0% 0% no-repeat padding-box;
-    box-shadow: 0px 6px 20px #0d090529;
-    border: 1px solid #abd6f780;
+    background: #ffffff;
+    box-shadow: 0px 4px 38px rgb(0 0 0 / 25%);
     opacity: 1;
-    border-top-left-radius: 0px 0px;
+    p{
+      font-size: 25px !important;
+      font-weight: 700;
+      color: #7166F8;
+      margin-left: 15%;
+    }
+    .exportdataclosed{
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    }
+    .icon{
+      width: 15px;
+      height: 25px;
+    }
   }
 
   .exportButton {
-    float: right;
+    display: flex;
+    justify-content: center;
     margin: 30px 0 10px;
   }
 
@@ -4731,20 +4743,31 @@ body .gh__menu {
   }
 
   .gh__control {
-    border-radius: 10px !important;
+    border-radius: 5px !important;
     height: 45px !important;
-    font: normal normal normal 18px/19px Open Sans !important;
+    border: 2px solid #7E75EF !important;
   }
+ .gh__single-value {
+    font-size: 16px !important;
+    color: #707070 !important;
+    font-weight: 400 !important;
+}
 
   label {
-    font: normal normal 600 15px/17px Open Sans;
-    padding-bottom: 15px;
+    font-size: 15px;
+    color: #A5A5A5;
+    margin-left: 5%;
+
   }
 
   .gh__single-value {
     color: #9ba6b4;
     font: normal normal normal 15px/19px Open Sans;
     letter-spacing: 0px;
+  }
+  .exportNodeData{
+    top: 30%;
+    left: 40%;
   }
 }
 

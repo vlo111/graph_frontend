@@ -81,10 +81,10 @@ class NodeDescription extends Component {
       return null;
     }
     const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
-    let { show } = this.state;
+    const { show } = this.state;
     const contexHeight = show === 'selectSquare' ? 320 : 170;
-    const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y + 25 ;
-    const left = window.innerWidth - x < y  ? window.innerWidth - 320 : x +55;
+    const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y + 25;
+    const left = window.innerWidth - x < y ? window.innerWidth - 320 : x + 55;
 
     const nodeLinks = Chart.getNodeLinks(node.id, 'all');
     return (
@@ -117,7 +117,9 @@ class NodeDescription extends Component {
               <strong>{'Connections: '}</strong>
               {nodeLinks.length}
             </p>
-            <Button onClick={this.showFullInfo}>more</Button>
+            <Button onClick={this.showFullInfo} className="btn-classic">More</Button>
+            {' '}
+
           </div>
         </div>
       </Outside>
