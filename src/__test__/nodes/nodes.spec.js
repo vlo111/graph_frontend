@@ -2,7 +2,7 @@ import React from 'react';
 import AddNodeModal from '../../components/chart/AddNodeModal';
 import renderWithRedux from '../render-redux';
 
-describe('component', () => {
+describe('node', () => {
   let wrapper;
 
   const Selector = Object.freeze({
@@ -68,17 +68,14 @@ describe('component', () => {
   it('fill in the fields to save', () => {
     expectShowMoreField();
 
-    const event = { target: { value: 'new value name' } };
+    const event = { target: { value: Selector.nodeName } };
 
     const nameInput = () => field(`${Selector.nodeName} > input`);
 
-    console.log(nameInput().text());
-    // expect(nameInput.text());
+    expect(nameInput().instance().value).toEqual('');
 
     nameInput().simulate('change', event);
 
-    wrapper.update();
-
-    console.log(field(`${Selector.nodeName} > input`).text());
+    expect(nameInput().instance().value).toMatch(Selector.nodeName);
   });
 });
