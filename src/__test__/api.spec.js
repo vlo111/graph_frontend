@@ -6,7 +6,19 @@ const { REACT_APP_API_URL } = process.env;
 
 jest.unmock('axios');
 
-describe('request create node', () => {
+/**
+ * Api requests realtime
+ * Create test user if doesn't exist with test/fake data in real db
+ * Sign in with created user data
+ * Add/delete test graph with title and description
+ * Create new node, should be in db, expect returned data and update
+ */
+describe('api request', () => {
+  const UserData = Object.freeze({
+    email: 'test@test.com',
+    password: 'testPassword1',
+  });
+
   const userRequestData = {
     firstName: 'testFirstName',
     lastName: 'testLastName',
@@ -43,8 +55,6 @@ describe('request create node', () => {
       'keyword1Test',
     ],
     color: '#fc0000',
-    createdUser: 'eeef8df6-cb92-4dfc-8a8c-25e8c1e09838',
-    updatedUser: 'eeef8df6-cb92-4dfc-8a8c-25e8c1e09838',
     labels: [],
     manually_size: 5,
     customFields: [],
@@ -57,12 +67,11 @@ describe('request create node', () => {
   let nodes = null;
   let errors = null;
 
-  const getData = (uri, formData) => axios.post(`${REACT_APP_API_URL}${uri}`, formData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  const getData = (uri, formData) => axios.post(`${REACT_APP_API_URL}${uri}`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const cleanUserForExpect = (user) => {
     delete user.id;
@@ -74,16 +83,19 @@ describe('request create node', () => {
   const cleanNodeForExpect = (node) => {
     delete node.createdAt;
     delete node.updatedAt;
+    delete node.createdUser;
+    delete node.updatedUser;
   };
+
+  const login = () => signIn(UserData.email, UserData.password);
 
   beforeEach(async () => {
     try {
-      ({
-        user, status, token,
-      } = await signIn('test@test.com', 'testPassword1'));
+      ({ user, status, token } = await login());
     } catch (e) {
       if (!user) {
         user = await signUp();
+        ({ user, status, token } = await login());
       }
     }
   });
@@ -121,6 +133,25 @@ describe('request create node', () => {
   });
 
   it('should be deleted node', async () => {
-    // await Api.deleteGraph(graphId);
+    ({ data: { status } } = await axios.delete(`${REACT_APP_API_URL}nodes/delete/${graphId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: { nodes },
+      }));
+
+    expect(status).toMatch('ok');
+  });
+
+  it('should be deleted graph', async () => {
+    ({ data: { status } } = await axios.delete(`${REACT_APP_API_URL}graphs/delete/${graphId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }));
+
+    expect(status).toMatch('ok');
   });
 });
