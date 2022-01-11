@@ -72,9 +72,6 @@ class Profile extends Component {
       } else {
         toast.error('Something went wrong');
       }
-      if (requestData.firstName && requestData.lastName && data.status === 'ok') {
-        window.location.href = `/profile/${myAccount.id}`;
-      }
     }
 
     toggleChangePassword = (changePassword) => {
