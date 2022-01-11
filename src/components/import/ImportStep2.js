@@ -98,25 +98,27 @@ class ImportStep2 extends Component {
     }
     return (
       <>
-        <div className="importST2Node">
-          <strong>Nodes: </strong>
-          {importData.nodes?.length || 0}
-        </div>
-        <div className="importST2Link">
-          <strong>Links: </strong>
-          {importData.links?.length || 0}
-        </div>
-        {importData.warnings?.length ? (
-          <div>
-            <span>Warnings: </span>
-            {importData.warnings?.length}
+        <div className="importResult">
+          <div className="importST2Node">
+            <strong>Nodes: </strong>
+            {importData.nodes?.length || 0}
           </div>
-        ) : null}
+          <div className="importST2Link">
+            <strong>Links: </strong>
+            {importData.links?.length || 0}
+          </div>
+          {importData.warnings?.length ? (
+            <div className="importWrong">
+              <span>Wrong: </span>
+              {importData.warnings?.length}
+            </div>
+          ) : null}
+        </div>
         <div className="buttons prev-next">
-          <button className="btn-delete" onClick={this.back}>
-            Back
-          </button>
-          <button className="btn-classic" onClick={this.import}>Import</button>
+          <Button className="btn-delete" onClick={this.back}>
+            Prev
+          </Button>
+          <Button className="btn-classic" onClick={this.import}>Import</Button>
         </div>
       </>
     );

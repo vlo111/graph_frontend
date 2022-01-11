@@ -3760,23 +3760,25 @@ body .gh__menu {
   }
 
   .ghButton {
-    margin: 20px 10px 0px;
     float: right;
   }
 
   h2 {
+    color: #7166F8;
     margin-bottom: 40px;
+    font-size: 25px;
+    font-weight: 700;
   }
 
   .close {
     padding: 0;
     position: absolute;
-    top: 15px;
-    right: 16px;
+    top: 0;
+    right: 6px;
 
     svg {
-      width: 11px;
-      height: 10px;
+      width: 21px;
+      height: 20px;
 
       path {
         fill: $color-gray;
@@ -3786,6 +3788,25 @@ body .gh__menu {
 
   .prev-next {
     gap: 15px;
+  }
+  .gh__single-value{
+    color:  #707070;
+  }
+  label{
+    display: none;
+  }
+  .importButton{
+    display: flex;
+    justify-content: center;
+  }
+  .ghFormField{
+    margin: 10px 0;
+  }
+  .import-input label {
+    top: 10px;
+  }
+  .InputLink{
+    padding: 0px 8px;
   }
 }
 
@@ -4642,15 +4663,22 @@ body .gh__menu {
   color: #fe794f;
   font-family: chaparral-pro, serif;
 }
+.importResult{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-around;
+    height: 50px;
 
-.importST2Node {
-  text-align: center;
+}
+.importST2Node strong {
+  color: #757575;
 }
 
-.importST2Link {
-  text-align: center;
-  margin-top: 25px;
-  margin-bottom: 30px;
+.importST2Link strong {
+ color: #757575;
+}
+.importWrong span{
+  color: #FF4825;
 }
 
 .importSelectLbl label {
