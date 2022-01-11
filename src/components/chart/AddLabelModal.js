@@ -16,7 +16,7 @@ import { setActiveButton } from '../../store/actions/app';
 
 class AddLabelModal extends Component {
   static propTypes = {
-    setActiveButton: PropTypes.string.isRequired,
+    setActiveButton: PropTypes.func.isRequired,
   };
 
   constructor(props) {

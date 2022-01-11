@@ -15,7 +15,7 @@ import { ReactComponent as MapSvg } from '../assets/images/icons/map-icon.svg';
 
 class Zoom extends Component {
   static propTypes = {
-    showGraphMap: PropTypes.string.isRequired,
+    showGraphMap: PropTypes.bool.isRequired,
     toggleGraphMap: PropTypes.func.isRequired,
   }
 

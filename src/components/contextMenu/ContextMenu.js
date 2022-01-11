@@ -24,12 +24,16 @@ import { KEY_CODES } from '../../data/keyCodes';
 class ContextMenu extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
-    match: PropTypes.func.isRequired,
-    expand: PropTypes.func.isRequired,
-    activeButton: PropTypes.func.isRequired,
-    singleGraphId: PropTypes.func.isRequired,
-    currentUserRole: PropTypes.func.isRequired,
-    location: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
+    expand: PropTypes.bool,
+    activeButton: PropTypes.string.isRequired,
+    singleGraphId: PropTypes.string.isRequired,
+    currentUserRole: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    expand: false,
   }
 
   static event = new EventEmitter();
@@ -275,7 +279,7 @@ class ContextMenu extends Component {
                     )}
                 </>
               ) : null}
-              {['chart'].includes(show) && !expand ? (
+              {['chart', 'label'].includes(show) && !expand ? (
                 <>
                   {/* <div className="ghButton notClose"> */}
                   {/*  <Icon value="fa-plus-square" /> */}
@@ -331,7 +335,7 @@ class ContextMenu extends Component {
 const mapStateToProps = (state) => ({
   activeButton: state.app.activeButton,
   currentUserRole: state.graphs.singleGraph.currentUserRole || '',
-  singleGraphId: state.graphs.singleGraph.id,
+  singleGraphId: state.graphs.singleGraph.id || '',
 });
 const mapDispatchToProps = {
   setActiveButton,
