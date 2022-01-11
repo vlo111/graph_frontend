@@ -19,7 +19,7 @@ class MapsInfo extends Component {
   }
 
   initLocation = memoizeOne((location) => {
-    const { lat, lng } = location.location;
+    const { lat, lng } = location;
     this.setState({ location: { lat, lng } });
   })
 

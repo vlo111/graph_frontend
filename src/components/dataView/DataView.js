@@ -250,7 +250,7 @@ class DataView extends Component {
                   <Outside onClick={(ev) => this.closeExport(ev)} exclude=".exportData">
                     <div className="exportDropDown">
                       <Button icon={<CloseSvg />} onClick={(ev) => this.closeExport(ev)} className="exportdataclosed" />
-                      <p>Export Data </p>
+                      <p>Save as </p>
                       <Select
                         label="Type File"
                         portal

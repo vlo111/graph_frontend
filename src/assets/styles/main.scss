@@ -3100,7 +3100,6 @@ body .gh__menu {
   justify-content: center;
   line-height: 0;
   border-radius: 50%;
-  padding-bottom: 5px;
   box-shadow: 0 0 0 0.5px $color-light-gray;
 
   img {
@@ -4669,16 +4668,16 @@ body .gh__menu {
     justify-content: space-around;
     height: 50px;
 
-}
-.importNode strong {
-  color: #757575;
-}
-
-.importLink strong {
- color: #757575;
-}
-.importWrong span{
-  color: #FF4825;
+    .importNode strong {
+      color: #757575;
+    }
+    
+    .importLink strong {
+     color: #757575;
+    }
+    .importWrong, span{
+      color: #FF4825;
+    }
 }
 
 .importSelectLbl label {
@@ -4742,7 +4741,7 @@ body .gh__menu {
       font-size: 25px !important;
       font-weight: 700;
       color: #7166F8;
-      margin-left: 15%;
+      margin-left: 26%;
     }
     .exportdataclosed{
     position: absolute;
@@ -6824,10 +6823,10 @@ img.preview-scaled {
 
             .tabNameLine {
               width: 385px;
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-between;
 
               .nodeType {
                 margin: 0 21px;
@@ -7956,10 +7955,6 @@ img.preview-scaled {
 
   .ghFileInput {
     top: 25px;
-
-    .clear {
-      margin-top: 30px;
-    }
   }
 }
 
@@ -9056,6 +9051,9 @@ img.preview-scaled {
     border-radius: 5px;
     margin-bottom: 30px;
     display: flex;
+  }
+  label{
+    width: 100%;
   }
 }
 
