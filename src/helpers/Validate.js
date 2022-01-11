@@ -216,11 +216,11 @@ class Validate {
     if (!password) {
       errors.password = 'Password is required';
     } else if (password.length < 8) {
-      errors.password = 'Please fill at least 8 character';
+      errors.password = 'Please enter at least 8 character';
     } else if (!password.match(/[a-z]/g)) {
-      errors.password = 'Please enter at least lower character.';
+      errors.password = 'Please enter at least one lowercase character';
     } else if (!password.match(/[A-Z]/g)) {
-      errors.password = 'Please enter at least upper character.';
+      errors.password = 'Please enter at least one uppercase character';
     } else if (!password.match(/[0-9]/g)) {
       errors.password = 'Please enter at least one digit.';
     }
@@ -228,7 +228,7 @@ class Validate {
     if (!passwordConfirm) {
       errors.passwordConfirm = 'Confirm password is required';
     } else if (passwordConfirm !== password) {
-      errors.passwordConfirm = 'Password and confirm password must be same';
+      errors.passwordConfirm = 'Password and confirm password do not match';
     }
 
     return errors;

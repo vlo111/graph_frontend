@@ -15,6 +15,7 @@ import AddFriend from '../search/addFriend';
 import Button from '../../components/form/Button';
 import { friendType } from '../../data/friend';
 import UserInfo from '../profile/UserInfo';
+import Popover from '../../components/form/Popover';
 
 const Profile = React.memo((props) => {
   const { userId } = props.match.params;
@@ -51,12 +52,6 @@ const Profile = React.memo((props) => {
     dispatch(getFriendsRequest(userId));
   }, [dispatch, getUserRequest, userId]);
 
-  const handleFriend = (e) => {
-    const el = e.target.nextElementSibling;
-    const typeStyle = el.style.display === 'none' || !el.style.display ? 'block' : 'none';
-    el.style.display = typeStyle;
-  };
-
   return (
     <Wrapper className="accountPage">
       <Header />
@@ -76,38 +71,38 @@ const Profile = React.memo((props) => {
                   {frindsItemForSlide.map((item, i) => (
                     <Carousel.Item key={i}>
                       {
-                          item.map((friendship, i) => {
-                            const { senderUser, receiverUser } = friendship;
-                            const userIsSender = senderUser.id === userId;
-                            const friend = !userIsSender ? friendship.senderUser : receiverUser;
-                            return (
-                              <div className="d-flex friend_box" key={i}>
-                                <div>
-                                  <div className="img_box">
-                                    <img
-                                      className="w-100"
-                                      src={friend.avatar}
-                                      alt="First slide"
-                                    />
-                                  </div>
-
-                                  <div>
-
-                                    <Link to={`/profile/${friend.id}`}>
-                                      <h6>
-                                        {`${friend.firstName} ${friend.lastName}`}
-                                      </h6>
-                                    </Link>
-
-                                    <p>{moment(friend.updatedAt).calendar()}</p>
-                                  </div>
-
+                        item.map((friendship, i) => {
+                          const { senderUser, receiverUser } = friendship;
+                          const userIsSender = senderUser.id === userId;
+                          const friend = !userIsSender ? friendship.senderUser : receiverUser;
+                          return (
+                            <div className="d-flex friend_box" key={i}>
+                              <div>
+                                <div className="img_box">
+                                  <img
+                                    className="w-100"
+                                    src={friend.avatar}
+                                    alt="First slide"
+                                  />
                                 </div>
-                                <AddFriend user={friend} />
+
+                                <div>
+
+                                  <Link to={`/profile/${friend.id}`}>
+                                    <h6>
+                                      {`${friend.firstName} ${friend.lastName}`}
+                                    </h6>
+                                  </Link>
+
+                                  <p>{moment(friend.updatedAt).calendar()}</p>
+                                </div>
+
                               </div>
-                            );
-                          })
-                        }
+                              <AddFriend user={friend} />
+                            </div>
+                          );
+                        })
+                      }
                     </Carousel.Item>
 
                   ))}
@@ -146,19 +141,27 @@ const Profile = React.memo((props) => {
 
                         </div>
                         <div className="friend-unfriend">
-                          <Button className="btn-link d-flex" type="submit" onClick={handleFriend}>Friend</Button>
-                          <div
-                            className="unfriend"
+                          <Popover
+                            triggerNode={(
+                              <Button className="btn-link d-flex" type="submit">Friend</Button>
+                                  )}
+                            trigger="click"
                           >
-                            <AddFriend user={friend} />
-                          </div>
+                            <div
+                              className="unfriend"
+                            >
+                              <div>
+                                <AddFriend user={friend} />
+                              </div>
+                            </div>
+                          </Popover>
                         </div>
 
                       </div>
 
                     );
                   })
-}
+                }
 
               </div>
 

@@ -13,7 +13,6 @@ import { EXPORT_TYPES } from '../../data/export';
 import { getGraphInfoRequest } from '../../store/actions/graphs';
 import Outside from '../Outside';
 
-
 class DataView extends Component {
   static propTypes = {
     setGridIndexes: PropTypes.func.isRequired,
@@ -21,6 +20,7 @@ class DataView extends Component {
     getGraphInfoRequest: PropTypes.func.isRequired,
     graphId: PropTypes.string.isRequired,
     selectedGrid: PropTypes.objectOf(PropTypes.array).isRequired,
+    setActiveButton: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -163,9 +163,20 @@ class DataView extends Component {
     console.log(data);
   }
 
+  closeExport = (ev) => {
+    const isSelectType = typeof (ev.target.className) === 'string'
+      ? !!ev.target.className?.includes('gh__option')
+      : true;
+
+    if (!isSelectType) {
+      const { showExport } = this.state;
+      this.setState({ showExport: !showExport });
+    }
+  }
+
   render() {
     const {
-      exportType, showExport, nodes, links,
+      exportType, nodes, links, showExport,
     } = this.state;
 
     const linksGrouped = _.groupBy(links, 'type');
@@ -174,29 +185,32 @@ class DataView extends Component {
     delete nodesGrouped.undefined;
 
     return (
-      <Outside onClick={this.close} exclude=".exportData">
-        <div className="exportData">
-          <div className="exportContent ">
-            <div className="exportDropDown  exportNodeData" exclude=".exportData">
-              <Button icon={<CloseSvg />} onClick={this.close} className="exportdataclosed" />
-
-              <p>Export Data </p>
-              <Select
-                label="Type File"
-                portal
-                options={EXPORT_TYPES}
-                value={EXPORT_TYPES.filter((t) => t.value === exportType)}
-                onChange={(v) => this.setState({ exportType: v.value })}
-              />
-              <div className="exportButton">
-                <Button onClick={this.handleExport} className=" btn-classic" type="submit">
-                  Export
-                </Button>
+      <>
+        {!showExport ? (
+          <Outside onClick={(ev) => this.closeExport(ev)}>
+            <div className="exportData">
+              <div className="exportContent ">
+                <div className="exportDropDown  exportNodeData " exclude=".exportData">
+                  <Button icon={<CloseSvg />} onClick={this.close} className="exportdataclosed" />
+                  <p>Save as </p>
+                  <Select
+                    label="Type File"
+                    portal
+                    options={EXPORT_TYPES}
+                    value={EXPORT_TYPES.filter((t) => t.value === exportType)}
+                    onChange={(v) => this.setState({ exportType: v.value })}
+                  />
+                  <div className="exportButton">
+                    <Button onClick={this.handleExport} className=" btn-classic" type="submit">
+                      Export
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </Outside>
+          </Outside>
+        ) : null}
+      </>
     );
   }
 }

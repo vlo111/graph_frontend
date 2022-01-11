@@ -424,7 +424,6 @@ class SearchModal extends Component {
                     <div
                       onClick={this.handleCheckBoxChange}
                       className={`checkBox checkBox${field}`}
-                      key={Utils.generateUUID()}
                     >
                       {field}
                     </div>
@@ -614,6 +613,7 @@ class SearchModal extends Component {
                 </div>
               </li>
             ))}
+
             {docs.map((d, index) => (
               <li
                 className="item nodeItem"

@@ -72,7 +72,6 @@ class DataImportModal extends Component {
             {nextStep && (
               <Select
                 containerClassName="importSelectLbl"
-                label="Choose import data"
                 portal
                 options={IMPORT_TYPES}
                 value={IMPORT_TYPES.filter((t) => t.value === activeTab)}
