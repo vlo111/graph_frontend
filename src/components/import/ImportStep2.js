@@ -99,11 +99,11 @@ class ImportStep2 extends Component {
     return (
       <>
         <div className="importResult">
-          <div className="importST2Node">
+          <div className="importNode">
             <strong>Nodes: </strong>
             {importData.nodes?.length || 0}
           </div>
-          <div className="importST2Link">
+          <div className="importLink">
             <strong>Links: </strong>
             {importData.links?.length || 0}
           </div>
