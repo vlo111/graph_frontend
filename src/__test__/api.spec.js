@@ -4,6 +4,8 @@ import signUp from './helpers/user/signUp';
 
 const { REACT_APP_API_URL } = process.env;
 
+jest.unmock('axios');
+
 describe('request create node', () => {
   const userRequestData = {
     firstName: 'testFirstName',
@@ -25,7 +27,7 @@ describe('request create node', () => {
   };
 
   const nodeRequestData = {
-    id: '1.00b2d777-03b4-407b-ae4b-ccef55c3169d',
+    id: '_uniq_1.00b2d777-03b4-407b-ae4b-ccef55c3169d',
     index: 0,
     fx: 536,
     fy: 468,
@@ -54,6 +56,13 @@ describe('request create node', () => {
   let graphId = null;
   let nodes = null;
   let errors = null;
+
+  const getData = (uri, formData) => axios.post(`${REACT_APP_API_URL}${uri}`, formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
   const cleanUserForExpect = (user) => {
     delete user.id;
@@ -88,12 +97,7 @@ describe('request create node', () => {
   });
 
   it('should be created graph', async () => {
-    ({ data: { status, graphId } } = await axios.post(`${REACT_APP_API_URL}graphs/create`, graphRequestData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }));
+    ({ data: { status, graphId } } = await getData('graphs/create', graphRequestData));
 
     expect(status).toMatch('ok');
 
@@ -101,13 +105,7 @@ describe('request create node', () => {
   });
 
   it('should be created node', async () => {
-    // ---
-    ({ data: { status, errors, nodes } } = await axios.post(`${REACT_APP_API_URL}nodes/create/${graphId}`, { nodes: [nodeRequestData] },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }));
+    ({ data: { status, errors, nodes } } = await getData(`nodes/create/${graphId}`, { nodes: [nodeRequestData] }));
 
     expect(Array.isArray(nodes)).toBe(true);
 
@@ -123,24 +121,6 @@ describe('request create node', () => {
   });
 
   it('should be deleted node', async () => {
-    // ---
-    ({ data: { status, errors, nodes } } = await axios.post(`${REACT_APP_API_URL}nodes/create/${graphId}`, { nodes: [nodeRequestData] },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }));
-
-    expect(Array.isArray(nodes)).toBe(true);
-
-    const node = nodes[0];
-
-    cleanNodeForExpect(node);
-
-    expect(status).toMatch('ok');
-
-    expect(errors).toEqual([]);
-
-    expect(node).toEqual(nodeRequestData);
+    // await Api.deleteGraph(graphId);
   });
 });
