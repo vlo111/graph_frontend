@@ -5,7 +5,9 @@
   "jest": {
     "transformIgnorePatterns": [
       "src/node_modules/(?!@sapper)"
-    ]
+    ],
+    "clearMocks": true,
+    "resetMocks": true
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",

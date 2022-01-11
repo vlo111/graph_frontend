@@ -142,7 +142,7 @@ class SignUp extends Component {
     const { requestData, errors, loading } = this.state;
 
     return (
-      <WrapperSign>
+      <main className="signPage">
         <div data-testid="sign-up" className="SignUpLeft signUp">
           <Link to="/" />
         </div>
@@ -243,7 +243,7 @@ class SignUp extends Component {
             </form>
           </div>
         </div>
-      </WrapperSign>
+      </main>
     );
   }
 }
