@@ -12,8 +12,7 @@ class ColorPicker extends Component {
     onChangeText: PropTypes.func.isRequired,
     containerClassName: PropTypes.string,
     value: PropTypes.string,
-    excludeClose: PropTypes.func.isRequired,
-    expand: PropTypes.func.isRequired,
+    expand: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
@@ -101,7 +100,7 @@ class ColorPicker extends Component {
 
   render() {
     const {
-      excludeClose, containerClassName, expand, ...props
+      containerClassName, expand, ...props
     } = this.props;
     const { target } = this.state;
     return (
