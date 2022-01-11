@@ -2,12 +2,17 @@
   .profile.newVersion {
     padding:30px;
     max-width: initial;
-    height: 800px;
+    // height: 800px;
   }
   
   .colm-xs-12 {
     flex: 0 0 100%;
     max-width: 100%;
+
+    .error{
+      top: 42px !important;
+      left: 123px !important;
+    }
   }
   
   .colm {
@@ -448,10 +453,16 @@
           justify-content: space-between;
           text-align: center;
           align-items: center;
+          width: 384px; left: 130px;
 
           .changePassword{
             color: $color-main;
             margin: 0;
+          }
+          .btn-classic{
+            position: relative;
+            left: -127px;
+            min-width: 100px !important;
           }
         }
   }
@@ -517,9 +528,8 @@
     position: relative;
     .unfriend {
       position: absolute;
-      top: 26px;
-      left: -53px;
-      display: none;
+      left: -61px;
+      top: -4px;
       .ghButton2 {
         color: #7166f8;
         background: white;
