@@ -5484,6 +5484,8 @@ img.preview-scaled {
       width: 100%;
       padding: 3% 7%;
       overflow: hidden;
+      height: 91vh;
+
 
       .graphCompareData {
         tbody {
@@ -5537,10 +5539,13 @@ img.preview-scaled {
       }
 
       .btn-classic {
-        margin: 30px auto 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    margin: 30px auto 0;
+    display: flex;
+    top: 87%;
+    left: 42%;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
       }
     }
   }
