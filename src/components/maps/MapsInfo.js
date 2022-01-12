@@ -18,8 +18,8 @@ class MapsInfo extends Component {
     node: PropTypes.object.isRequired,
   }
 
-  initLocation = memoizeOne((location) => {
-    const { lat, lng } = location;
+  initLocation = memoizeOne((data) => {
+    const { lat, lng } = data.location;
     this.setState({ location: { lat, lng } });
   })
 
@@ -85,6 +85,7 @@ class MapsInfo extends Component {
     if (!google || _.isEmpty(location)) {
       return null;
     }
+    console.log('node', node);
     return (
       <div data-field-name={!node.sourceId ? '_location' : undefined} className="contentWrapper previewWrapper mapWrapper">
         <div className="content">
