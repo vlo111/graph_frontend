@@ -3509,7 +3509,13 @@ body .gh__menu {
   }
 }
 .selectLocationClose {
-  top: 4px !important;
+  top: -2px !important;
+  opacity: 1;
+  .icon{
+    height: 25px;
+    width: 25px;
+    background: #FFF;
+  }
 }
 
 #mapsGraph {
