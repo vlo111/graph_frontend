@@ -1,4 +1,5 @@
 import reducer, { initialState } from '../../store/reducers/account';
+import { UserData } from '../helpers/data/user';
 
 /**
  * Account reducer, redux store
@@ -63,7 +64,7 @@ describe('redux reducers of account', () => {
           user: {
             id: 'test',
             firstName: 'f_test',
-            email: 'test@test.com',
+            email: UserData.email,
           },
         },
       },
@@ -71,7 +72,7 @@ describe('redux reducers of account', () => {
 
     expect(reducer(initialState, action)).toEqual({
       ...initialState,
-      myAccount: { id: 'test', firstName: 'f_test', email: 'test@test.com' },
+      myAccount: { id: 'test', firstName: 'f_test', email: UserData.email },
     });
   });
 
@@ -84,7 +85,7 @@ describe('redux reducers of account', () => {
             id: 'test',
             firstName: 'f_test',
             lastName: 'l_test',
-            email: 'test@test.com',
+            email: UserData.email,
           },
         },
       },

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import signIn from './helpers/user/signIn';
 import signUp from './helpers/user/signUp';
+import { UserData, userRequestData } from './helpers/data/user';
+import { nodeRequestData, graphRequestData } from './helpers/data/graphs';
 
 const { REACT_APP_API_URL } = process.env;
 
@@ -14,52 +16,6 @@ jest.unmock('axios');
  * Create new node, should be in db, expect returned data and update
  */
 describe('api request', () => {
-  const UserData = Object.freeze({
-    email: 'test@test.com',
-    password: 'testPassword1',
-  });
-
-  const userRequestData = {
-    firstName: 'testFirstName',
-    lastName: 'testLastName',
-    email: 'test@test.com',
-    website: null,
-    status: true,
-    bio: null,
-    facebook: null,
-    twitter: null,
-    linkedin: null,
-    skype: null,
-  };
-
-  const graphRequestData = {
-    title: 'graphTestName',
-    description: 'graph test description text',
-    status: 'active',
-  };
-
-  const nodeRequestData = {
-    id: '_uniq_1.00b2d777-03b4-407b-ae4b-ccef55c3169d',
-    index: 0,
-    fx: 536,
-    fy: 468,
-    name: 'nameTest',
-    type: 'typeTest',
-    status: 'approved',
-    nodeType: 'circle',
-    description: '',
-    icon: '',
-    link: '',
-    keywords: [
-      'keywordTest',
-      'keyword1Test',
-    ],
-    color: '#fc0000',
-    labels: [],
-    manually_size: 5,
-    customFields: [],
-  };
-
   let user = null;
   let status = '';
   let token = '';
@@ -73,11 +29,11 @@ describe('api request', () => {
     },
   });
 
-  const cleanUserForExpect = (user) => {
-    delete user.id;
-    delete user.avatar;
-    delete user.createdAt;
-    delete user.updatedAt;
+  const cleanUserForExpect = (data) => {
+    delete data.id;
+    delete data.avatar;
+    delete data.createdAt;
+    delete data.updatedAt;
   };
 
   const cleanNodeForExpect = (node) => {
@@ -89,7 +45,7 @@ describe('api request', () => {
 
   const login = () => signIn(UserData.email, UserData.password);
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     try {
       ({ user, status, token } = await login());
     } catch (e) {
