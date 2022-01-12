@@ -2,7 +2,11 @@ import React from 'react';
 import AddNodeModal from '../../components/chart/AddNodeModal';
 import renderWithRedux from '../render-redux';
 
-describe('node', () => {
+/**
+ * Render add node modal component
+ * Node data with validation
+ */
+describe('add/update node modal', () => {
   let wrapper;
 
   const Selector = Object.freeze({
