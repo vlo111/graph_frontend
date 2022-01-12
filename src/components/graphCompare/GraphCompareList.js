@@ -12,11 +12,11 @@ class GraphCompareList extends Component {
     static propTypes = {
       singleGraph1: PropTypes.object.isRequired,
       singleGraph2: PropTypes.object.isRequired,
-      selectedNodes1: PropTypes.object.isRequired,
-      selectedNodes2: PropTypes.object.isRequired,
+      selectedNodes1: PropTypes.array.isRequired,
+      selectedNodes2: PropTypes.array.isRequired,
       onChange: PropTypes.func.isRequired,
-      title: PropTypes.string.isRequired,
-      count: PropTypes.number.isRequired,
+      title: PropTypes.object.isRequired,
+      importGraph: PropTypes.object.isRequired,
       selected: PropTypes.array.isRequired,
     }
 
@@ -115,7 +115,7 @@ class GraphCompareList extends Component {
 
     render() {
       const {
-        singleGraph1, singleGraph2, title, selected, count, importGraph,
+        singleGraph1, singleGraph2, title, selected, importGraph,
       } = this.props;
       const { selectAllLeft, selectAllRight } = this.state;
 
@@ -221,7 +221,6 @@ class GraphCompareList extends Component {
                       && (
                       <span className="similar-nodes">
                         {title}
-                        {` (${count})`}
                       </span>
                       )}
                     </th>

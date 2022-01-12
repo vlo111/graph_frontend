@@ -5544,6 +5544,12 @@ img.preview-scaled {
     }
   }
 
+  
+  .gh__menu{
+    box-shadow: 0px 0px 4px rgb(0 0 0 / 25%) !important;
+    border: none !important;
+  }
+
   .pull-left {
     color: #3e97eb;
     font-size: 15px;
@@ -8623,7 +8629,7 @@ img.preview-scaled {
 
         strong {
           text-decoration: underline !important;
-          margin-right: 20px !important;
+          margin: 0px 15px 0px 14px!important;
         }
         p {
           margin-left: 10px !important;
@@ -8676,8 +8682,8 @@ img.preview-scaled {
   }
 
   .createNewGraphBtn {
-    width: 216px;
-    display: flex;
+    // width: 216px;
+    // display: flex;
     justify-content: center;
     align-items: center;
   }
@@ -8760,6 +8766,10 @@ img.preview-scaled {
     .graph-name-title {
       display: flex;
       align-items: center;
+
+      strong {
+        margin: 0px 15px 0px 14px!important;
+      }
     }
 
     p {
