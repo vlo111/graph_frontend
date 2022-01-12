@@ -85,7 +85,7 @@ class MapsInfo extends Component {
     if (!google || _.isEmpty(location)) {
       return null;
     }
-    console.log('node', node);
+
     return (
       <div data-field-name={!node.sourceId ? '_location' : undefined} className="contentWrapper previewWrapper mapWrapper">
         <div className="content">
