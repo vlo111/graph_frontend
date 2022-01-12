@@ -66,13 +66,11 @@ class Profile extends Component {
       const { payload: { data } } = await this.props.updateMyAccountRequest(requestData);
       if (data.status === 'ok') {
         toast.info('Successfully saved');
+        window.location.href = `/profile/${myAccount.id}`;
       } else if (data?.errors) {
         this.setState({ errors: data.errors });
       } else {
         toast.error('Something went wrong');
-      }
-      if (requestData.firstName && requestData.lastName) {
-        window.location.href = `/profile/${myAccount.id}`;
       }
     }
 
@@ -106,7 +104,7 @@ class Profile extends Component {
                   <div className="colm-xs-12">
                     <Input
                       name="lastName"
-                      label="Last"
+                      label="Last Name"
                       value={requestData.lastName}
                       error={errors.lastName}
                       onChangeText={this.handleChange}
@@ -118,7 +116,8 @@ class Profile extends Component {
                       label="Email"
                       value={requestData.email}
                       error={errors.email}
-                      onChangeText={this.handleChange}
+                      autocomplete="off"
+                      Focus={false}
                     />
                   </div>
                   {/* <div className="colm-xs-12">

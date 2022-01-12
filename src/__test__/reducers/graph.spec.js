@@ -15,7 +15,7 @@ describe('redux reducer of graph', () => {
 
     expect(reducer(initialState, action)).toEqual({
       ...initialState,
-      query: { queryList: { query: 'queryString' } }
+      query: { queryList: { query: 'queryString' } },
     });
   });
 });
