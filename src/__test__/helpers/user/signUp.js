@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import axios from 'axios';
 import Api from '../../../Api';
+import { UserData } from '../data/user';
 
 const { REACT_APP_API_URL } = process.env;
 
@@ -9,8 +10,8 @@ const user = async () => {
   const requestData = {
     firstName: 'testFirstName',
     lastName: 'testLastName',
-    email: 'test@test.com',
-    password: 'testPassword1',
+    email: UserData.email,
+    password: UserData.password,
   };
 
   const { data: { user: createdUser, status } } = await Api.singUp(requestData);

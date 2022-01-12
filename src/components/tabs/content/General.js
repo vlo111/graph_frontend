@@ -127,7 +127,7 @@ const General = ({
                 </span>
               ) : 'there is not link'}
           </div>
-          {node.location && (
+          {!Array.isArray(node.location) && node.location && (
             <div className="general-footer-item general-footer-location leftLine">
               <span className="location-text">
                 <details className="general-footer-node">
