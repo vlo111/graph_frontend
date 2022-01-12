@@ -2714,7 +2714,7 @@ p {
 }
 
 .graphFilter {
-  width: 100%;
+  width: 97%;
   margin-bottom: 15px;
   margin-top: 15px;
 
@@ -3803,6 +3803,7 @@ body .gh__menu {
   }
   .import-input label {
     top: 10px;
+    right: 8px;
   }
   .InputLink{
     padding: 0px 8px;
@@ -4702,6 +4703,26 @@ body .gh__menu {
     margin-left: 130px;
     top: 10px;
   }
+  .downloadTempletaAraks{
+    position: absolute;
+    top: -82px;
+    display: flex;
+    align-items: center;
+    left: -21px;
+    width: 300px;
+    color: #7166F8;
+    span{
+      font-size: 12px;
+    }
+    a{
+      font-weight: 700;
+      font-style: italic;
+    }
+    Button{
+      padding: 7px 5px 8px;
+
+    }
+  }
 }
 
 .exportDropDown .ghFormField {
@@ -4741,7 +4762,7 @@ body .gh__menu {
       font-size: 25px !important;
       font-weight: 700;
       color: #7166F8;
-      margin-left: 26%;
+      margin-left: 17%;
     }
     .exportdataclosed{
     position: absolute;
@@ -8180,7 +8201,7 @@ img.preview-scaled {
     }
 
     .ghFormField {
-      width: 100%;
+      width: 260px;
       margin: 15px 0;
 
       .limit {

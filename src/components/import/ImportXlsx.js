@@ -10,6 +10,8 @@ import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportStep2 from './ImportStep2';
+import templetaAraks from '../../assets/file/AraksTemplate.xlsx';
+
 
 class DataImportModal extends Component {
   static propTypes = {
@@ -93,6 +95,11 @@ class DataImportModal extends Component {
         {step === 1 ? (
           <>
             <div className="ghFormField importFile">
+              <div className="downloadTempletaAraks">
+                <span>If you don’t have any  templates You can </span>
+                <Button><a href={templetaAraks} download="AraksTemplate.xlsx">download</a></Button>
+                it
+              </div>
               <label className="importSelectFileLbl">Select file</label>
               <File
                 onChangeFile={(file) => this.handleChange('file', file)}
