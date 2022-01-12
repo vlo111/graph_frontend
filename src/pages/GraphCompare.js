@@ -30,17 +30,15 @@ class GraphCompare extends Component {
       const { payload: { data = {} } } = await this.props.getSingleGraphRequest(graphId, { full: true });
       this.setState({ selectedNodes1: _.cloneDeep(ChartUtils.objectAndProto(data.graph?.nodes || [])) });
     }
-    this.loadGraphs();
     this.loadGraphsAfter();
   })
 
   getGraph2Request = memoizeOne(async (graph2Id) => {
-    if (graph2Id?.length > 0) {
+    if (graph2Id) {
       const { data = {} } = await Api.getSingleGraph(graph2Id, { full: true }).catch((e) => e);
       this.setState({ singleGraph2: data.graph || {}, selectedNodes2: _.cloneDeep(data.graph?.nodes || []) });
     }
     this.loadGraphsAfter();
-    this.loadGraphs();
   })
 
   constructor(props) {
@@ -60,7 +58,7 @@ class GraphCompare extends Component {
     this.loadGraphs();
     setTimeout(() => {
       this.loadGraphsAfter();
-    }, 500);
+    }, 200);
   }
 
   loadGraphs = async (s) => {
