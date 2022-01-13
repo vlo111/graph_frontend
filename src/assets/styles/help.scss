@@ -319,9 +319,9 @@
   justify-content: space-between;
 }
 .help-text ul li div {
-  display: flex;
+  display: grid;
+  grid-template-columns: 50% 50%;
   width: 24%;
-  text-align: justify;
 }
 .help-text ul li div span {
   margin-left: 13px;
@@ -329,7 +329,7 @@
   font-size: 12px;
   font-weight: 700;
   border-radius: 3px;
-  padding: 5px 9px;
+  padding: 4px 6px;
   color: #757575;
 }
 .HelpCommand {
