@@ -43,6 +43,9 @@ export default (props) => {
             <TabList style={{ zIndex: 9999 }}>
               <h1>Help</h1>
               <Tab>
+                <h4 className="helpTitlePages">Video tutorial</h4>
+              </Tab>
+              <Tab>
                 <h4 className="helpTitlePages">Create graph</h4>
               </Tab>
               <h3 className="helpTitle">Create Node</h3>
@@ -95,6 +98,20 @@ export default (props) => {
             />
           </div>
           <div className="color-border" />
+          <TabPanel>
+            <div>
+              <iframe
+                width="1280"
+                height="720"
+                className="help_img"
+                src="https://www.youtube.com/embed/goi8Hbn6hfU"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </TabPanel>
           <TabPanel>
             <div>
               <iframe
