@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { withRouter } from 'react-router-dom';
 import File from '../form/File';
-import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportStep2 from './ImportStep2';
@@ -69,6 +68,7 @@ class DataImportModal extends Component {
     this.setState({ loading: true });
     const { payload: { data } } = await this.props.convertGraphRequest(convertType, requestData);
     if (data.nodes?.length) {
+      this.props.getNodesLocation(data.nodes);
       this.setState({ loading: false, step: 2 });
       this.props.showSelectHandler(false);
     } else {

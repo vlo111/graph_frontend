@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import isEmpty from 'lodash/isEmpty';
+import _ from 'lodash';
 import { getGraphInfoRequest } from '../store/actions/graphs';
 import { setActiveButton } from '../store/actions/app';
 import Chart from '../Chart';
-import Button from './form/Button';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
 import { ReactComponent as ShowMapSvg } from '../assets/images/icons/show-map.svg';
 
@@ -52,7 +51,7 @@ class ToolBarFooter extends Component {
   render() {
     const { totalNodes, totalLinks, totalLabels } = this.state;
     const { graphInfo, graphId, partOf } = this.props;
-    const showInMap = Chart.getNodes().some((d) => (!Array.isArray(d.location) && d?.location));
+    const showInMap = Chart.getNodes().some((d) => !_.isEmpty(d?.location));
     const updateLocation = window.location.pathname.startsWith('/graphs/update');
 
     return (!graphId ? null

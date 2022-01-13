@@ -11,6 +11,7 @@ import GraphUsersInfo from '../../History/GraphUsersInfo';
 import NodeOfConnection from './NodeOfConnection';
 import MapsInfo from '../../maps/MapsInfo';
 import Utils from '../../../helpers/Utils';
+import _ from "lodash";
 
 const General = ({
   node, tabs, editable = true, connectedNodes, tabsExpand,
@@ -127,7 +128,7 @@ const General = ({
                 </span>
               ) : 'there is not link'}
           </div>
-          {!Array.isArray(node.location) && node.location && (
+          {(node.location && !_.isEmpty(node.location)) && (
             <div className="general-footer-item general-footer-location leftLine">
               <span className="location-text">
                 <details className="general-footer-node">

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { setActiveButton } from '../../store/actions/app';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportXlsx from './ImportXlsx';
@@ -12,11 +13,14 @@ import ImportZip from './ImportZip';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Select from '../form/Select';
 import { IMPORT_TYPES } from '../../data/import';
+import withGoogleMap from '../../helpers/withGoogleMap';
+import Utils from '../../helpers/Utils';
 
 class DataImportModal extends Component {
   static propTypes = {
     setActiveButton: PropTypes.func.isRequired,
     activeButton: PropTypes.string.isRequired,
+    google: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -44,6 +48,40 @@ class DataImportModal extends Component {
       nextStep: param,
       initCurrentStep: param,
     });
+  }
+
+  /**
+   * @param {{maps:object, LatLng:function, Geocoder:function,}} google
+   * @param {{PlacesService:function,}} maps.places
+   * @param {{PlacesService:object,}} nodes
+   */
+  getNodesLocation = async (nodes) => {
+    const { google } = this.props;
+
+    const geocoderService = new google.maps.Geocoder();
+
+    const getLocations = nodes.map(async (node) => {
+      if (!_.isEmpty(node.location)) {
+        const { location } = node;
+
+        const map = new google.maps.Map(
+          document.createElement('div'),
+          {
+            center: new google.maps.LatLng(parseFloat(location.lat),
+              parseFloat(location.lng)),
+            zoom: 5,
+          },
+        );
+
+        const placesService = new google.maps.places.PlacesService(map);
+
+        node.location = await Utils.getPlaceInformation(location, geocoderService, placesService);
+      }
+
+      return node;
+    });
+
+    await Promise.resolve(getLocations);
   }
 
   render() {
@@ -78,8 +116,8 @@ class DataImportModal extends Component {
                 onChange={(v) => this.setActiveTab(v.value)}
               />
             )}
-            {activeTab === 'zip' ? <ImportZip showSelectHandler={this.showSelectHandler} /> : null}
-            {activeTab === 'xlsx' ? <ImportXlsx showSelectHandler={this.showSelectHandler} /> : null}
+            {activeTab === 'zip' ? <ImportZip getNodesLocation={this.getNodesLocation} showSelectHandler={this.showSelectHandler} /> : null}
+            {activeTab === 'xlsx' ? <ImportXlsx getNodesLocation={this.getNodesLocation} showSelectHandler={this.showSelectHandler} /> : null}
             {activeTab === 'google' ? <ImportGoogle showSelectHandler={this.showSelectHandler} /> : null}
             {activeTab === 'linkedin' ? <ImportLinkedin /> : null}
           </div>
@@ -99,6 +137,6 @@ const mapDispatchToProps = {
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DataImportModal);
+)(withGoogleMap(DataImportModal));
 
 export default Container;
