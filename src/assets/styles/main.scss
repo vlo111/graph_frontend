@@ -3137,13 +3137,15 @@ body .gh__menu {
   .findNodeList {
     .findNodesTitle {
       text-align: center;
-      color: #717ea0;
-      font-weight: bold;
+      color: #727272;
+      font-size: 16px;
+      font-weight: 700;
       width: 40%;
     }
 
     .item > .ghButton {
-      grid-template-columns: 35% 20% auto;
+      grid-template-columns: 30% 15% auto;
+      grid-gap: 10px;
       display: grid !important;
 
       &:hover {
@@ -3154,9 +3156,10 @@ body .gh__menu {
     }
 
     .leftPanel {
-      width: 30%;
+      width: 100%;
       display: flex;
       cursor: pointer;
+      align-items: center;
 
       .left {
         img {
@@ -3165,7 +3168,6 @@ body .gh__menu {
       }
 
       .right {
-        line-height: 50px;
         width: auto !important;
 
         .name {
@@ -3176,11 +3178,32 @@ body .gh__menu {
 
     .aboutNode {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+
 
       a {
-        color: #0095ff;
+        color: #7166F8;
+        font-size: 15px;
         margin: 0 10px;
-        font-weight: bold;
+        font-weight: 700;
+    
+      }
+      p{
+        position: relative;
+        top: 9px;
+        text-align: center;
+        color: #727272;
+        font-size: 14px;
+        font-weight: 500;
+        width: auto;
+        text-align: left;
+      }
+      .type{
+        text-align: center;
+        color: #707070 !important;
+        font-size: 15px;
+        font-weight: 600;
       }
     }
   }
