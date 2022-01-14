@@ -5,6 +5,7 @@ import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { withRouter } from 'react-router-dom';
+import Button from '../form/Button';
 import File from '../form/File';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
