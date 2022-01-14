@@ -9,10 +9,12 @@ import ShareTooltip from '../Contributors/ShareTooltip';
 import CommentModal from '../CommentModal';
 import EmbedButton from '../embed/EmbedButton';
 import LikeGraphs from '../likeGraphs';
-
+import Outside from '../Outside';
 import { ReactComponent as ShareSvg } from '../../assets/images/icons/shareGraph.svg';
 import { ReactComponent as CommentSvg } from '../../assets/images/icons/commentGraph.svg';
 import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/viewGraph.svg';
+import { ReactComponent as Description } from '../../assets/images/icons/description.svg';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 
 const TooltipContent = ({ graphId, graphOwner }) => (
   <Suspense fallback={<div>Loading...</div>}>
@@ -28,6 +30,7 @@ const GraphListFooter = ({ graph }) => {
   const actionsCount = actionsCountAll[graph.id];
   const dispatch = useDispatch();
   const [openCommentModal, setOpenCommentModal] = useState(false);
+  const [opendesc, setOpenDesc] = useState(false);
 
   useEffect(() => {
     if (graph.id) {
@@ -66,7 +69,33 @@ const GraphListFooter = ({ graph }) => {
           graph={graph}
         />
       )}
+      <Outside onClick={() => setOpenDesc(false)} />
+      {opendesc && (
+        <div
+          closeModal={() => setOpenDesc(false)}
+          className="descriptionGraph"
+        >
+          <div>
+            <Button
+              color="transparent"
+              className="close "
+              icon={<CloseSvg />}
+              onClick={() => setOpenDesc(false)}
+            />
+            <span>Description</span>
+          </div>
+          <div className="descriptionResult">
+            <p>{graph.description}</p>
+          </div>
+        </div>
+      )}
+      <Outside />
       <EmbedButton graph={graph} />
+      <Button
+        icon={<Description />}
+        className="transparent footer-icon description"
+        onClick={() => setOpenDesc(true)}
+      />
     </div>
   );
 };

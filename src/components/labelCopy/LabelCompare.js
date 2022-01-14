@@ -84,7 +84,7 @@ class LabelCompare extends Component {
             Select nodes you want to keep
           </h2>
           <h4 className="subtitle">
-            If you select both versions, the moved node will have a number added to its name.
+          If you select both nodes, the nodes will be merged
           </h4>
           <div className="graphCompareData">
             <table>
