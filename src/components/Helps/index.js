@@ -982,21 +982,21 @@ export default (props) => {
                     </div>
                   </li>
                   <li>
-                    <span className="HelpCommand">Pencile Label</span>
+                    <span className="HelpCommand">Pencil Label</span>
                     <div>
                       <span>Ctrl</span>
                       <span>L</span>
                     </div>
                   </li>
                   <li>
-                    <span className="HelpCommand">Pencile ellipse label</span>
+                    <span className="HelpCommand">Pencil Ellipse label</span>
                     <div>
                       <span>Ctrl</span>
                       <span>E</span>
                     </div>
                   </li>
                   <li>
-                    <span className="HelpCommand">Pencilesquare label</span>
+                    <span className="HelpCommand">Pencil Square label</span>
                     <div>
                       <span>Shift </span>
                       <span>E</span>
@@ -1012,12 +1012,14 @@ export default (props) => {
                   <li>
                     <span className="HelpCommand">To open selected node</span>
                     <div>
+                      <div />
                       <span>Enter</span>
                     </div>
                   </li>
                   <li>
                     <span className="HelpCommand">To escape selected item</span>
                     <div>
+                      <div />
                       <span>Esc</span>
                     </div>
                   </li>
@@ -1036,10 +1038,24 @@ export default (props) => {
                     </div>
                   </li>
                   <li>
-                    <span className="HelpCommand">Past</span>
+                    <span className="HelpCommand">Paste</span>
                     <div>
                       <span>Ctrl</span>
                       <span>V</span>
+                    </div>
+                  </li>
+                  <li>
+                    <span className="HelpCommand">Undo</span>
+                    <div>
+                      <span>Ctrl</span>
+                      <span>Z</span>
+                    </div>
+                  </li>
+                  <li>
+                    <span className="HelpCommand">Redo</span>
+                    <div>
+                      <span>Ctrl</span>
+                      <span>Y</span>
                     </div>
                   </li>
                 </ul>
