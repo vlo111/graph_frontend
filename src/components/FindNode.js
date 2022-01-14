@@ -255,10 +255,7 @@ class FindNode extends Component {
                                 __html: this.formatHtml(Utils.substr(node.name, 12)),
                               }}
                             />
-                            <span
-                              className="type"
-                              dangerouslySetInnerHTML={{ __html: this.formatHtml(node.type) }}
-                            />
+
                           </span>
 
                           {!node.name.toLowerCase().includes(search) && !node.type.toLowerCase().includes(search) ? (
@@ -295,6 +292,10 @@ class FindNode extends Component {
                           {'in '}
                           {moment(graph.updatedAt).calendar()}
                         </p>
+                        <span
+                          className="type"
+                          dangerouslySetInnerHTML={{ __html: this.formatHtml(node.type) }}
+                        />
                       </div>
                     </div>
                   </li>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
+import ChartUtils from '../../helpers/ChartUtils';
 import Outside from '../Outside';
 import AnalysisUtils from '../../helpers/AnalysisUtils';
 import AnalyseBarChart from './AnalyseBarChart';
@@ -46,11 +47,10 @@ class AnalyticalPage extends Component {
     Chart.event.on('node.click', this.handleNodeClick);
 
     const graphElement = document.getElementById('graph');
-
     if (graphElement) {
       graphElement.style.height = '100%';
-
-      graphElement.querySelector('svg').style.height = '100%';
+      graphElement.querySelector('svg').style.height = '100vh';
+      graphElement.querySelector('svg').style.width = '55%';
     }
   }
 
@@ -71,7 +71,7 @@ class AnalyticalPage extends Component {
     if (!(nodes && nodes.length && links && links.length)) {
       return <div />;
     }
-
+    ChartUtils.autoScale();
     const {
       min, max, mean, degreeDistribution,
     } = AnalysisUtils.degree(nodes, links);
