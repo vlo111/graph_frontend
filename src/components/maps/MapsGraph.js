@@ -53,8 +53,26 @@ class MapsGraph extends Component {
     this.props.history.replace(`?${query}`);
   }
 
+  onReady = () => {
+    const { google } = this.props;
+    const coordinate = [];
+
+    Chart.getNodes().filter((d) => d.location).forEach((d) => {
+      const { location } = d.location;
+      coordinate.push(new google.maps.LatLng(location.lat, location.lng));
+    });
+
+    const bounds = new google.maps.LatLngBounds();
+
+    for (let i = 0; i < coordinate.length; i++) {
+      bounds.extend(coordinate[i]);
+    }
+
+    this.setState({ bounds });
+  }
+
   render() {
-    const { activeNode } = this.state;
+    const { activeNode, bounds } = this.state;
     const { initLocation } = this.state;
     const { google, location: { pathname } } = this.props;
     // let nodes = Chart.getNodes().filter((d) => d.location).map((d) => {
@@ -107,6 +125,8 @@ class MapsGraph extends Component {
           streetViewControl={false}
           fullscreenControl={false}
           onClick={this.handleMapClick}
+          bounds={bounds}
+          onReady={this.onReady}
         >
           {links.map((d) => (
             <Polyline
