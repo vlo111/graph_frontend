@@ -304,6 +304,9 @@
 
 .help-text {
   padding: 20px 0;
+  height: 720px;
+  overflow-x:hidden;
+  overflow-y: scroll;
   ol {
     li {
       color: #545454;
@@ -314,14 +317,14 @@
   }
 }
 .help-text ul li {
-  display: flex;
   margin-top: 13px;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto auto 20px;
 }
 .help-text ul li div {
   display: grid;
-  grid-template-columns: 50% 50%;
-  width: 24%;
+  grid-template-columns: 1fr 1fr;
+  justify-self: end;
 }
 .help-text ul li div span {
   margin-left: 13px;
@@ -331,11 +334,14 @@
   border-radius: 3px;
   padding: 4px 6px;
   color: #757575;
+  width: 46px;
 }
 .HelpCommand {
   color: #424242;
   font-size: 14px;
   font-weight: 700;
+  display: grid;
+  justify-self: start;
 }
 .helpResultText{
   overflow-x: hidden;
