@@ -92,14 +92,6 @@ class GraphCardItem extends Component {
                   {Utils.substr(graph.title, 23)}
                 </h3>
               </Tooltip>
-              <div className="descriptionGraph">
-                <Tooltip overlay={graph.description} placement="bottom">
-                  <span>
-                    {' '}
-                    {Utils.substr(graph.description, 40)}
-                  </span>
-                </Tooltip>
-              </div>
             </div>
 
             <div

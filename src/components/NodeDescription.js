@@ -105,14 +105,6 @@ class NodeDescription extends Component {
             <h4 className="type">
               {node.type}
             </h4>
-            <div className="description paragraph">
-              {node.description ? (
-                <span dangerouslySetInnerHTML={{ __html: node.description }} />
-              ) : null}
-              {node.description.length > 130 ? (
-                <span className="link">more</span>
-              ) : null}
-            </div>
             <p className="connections">
               <strong>{'Connections: '}</strong>
               {nodeLinks.length}

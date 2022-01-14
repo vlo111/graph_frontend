@@ -399,23 +399,48 @@
     }
     div{ 
        h3 {
-         font-size: 20px;
-         line-height: 0;
-         color: $color-main ;
-         font-weight: 700;
-         margin-top: 19px;
+        font-size: 20px;
+        line-height: 0;
+        color: #7166F8;
+        font-weight: 700;
+        margin-top: 40px;
+        height: 46px;
          .grpahTitle{
           display: none !important;
         }
       } 
       .descriptionGraph{
-          margin-top: 20px;
-          min-height: 40px;
-          margin-bottom: 20px;
-          font-size: 14px;
-          color: $color-gray1;
-          max-width: 185px;
-          line-height: 20px;
+        position: absolute;
+        max-height: 50%;
+        width: 30%;
+        background: #FFFFFF;
+        box-shadow: 0px 0px 71px 2px rgb(136 130 209 / 42%);
+        border-radius: 12px;
+        padding: 0px 0px 17px 0px;
+        z-index: 11;
+        top: 24%;
+        left: 36%;
+        span{
+          color: #7166F8;
+          font-size: 25px;
+          font-weight: 600;
+          display: flex;
+          justify-content: center;
+          margin-top: 10px;
+        }
+        .icon{
+          position: absolute;
+          top: -6px;
+      
+        }
+        p{
+          padding: 5px 13px 0px 20px;
+          max-height: 243px;
+        }
+        .descriptionResult{
+         overflow: auto;
+         max-height: 390px;
+        }
       }
     }
     .graph-image{
