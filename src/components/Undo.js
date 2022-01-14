@@ -30,8 +30,10 @@ class Undo extends Component {
 
   handleKeyDown = (ev) => {
     ChartUtils.keyEvent(ev);
-    if (ev.chartEvent && ev.ctrlPress && ev.keyCode === KEY_CODES.undo_code && !ev.altKey) {
+    if (ev.chartEvent && ev.ctrlPress && (ev.keyCode === KEY_CODES.undo_code || ev.keyCode === KEY_CODES.redo_code) && !ev.altKey) {
       if (ev.shiftKey) {
+        Chart.undoManager.redo();
+      } else if (ev.keyCode === KEY_CODES.redo_code) {
         Chart.undoManager.redo();
       } else {
         Chart.undoManager.undo();

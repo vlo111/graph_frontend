@@ -108,7 +108,7 @@ class File extends Component {
             <Input
               className="InputLink"
               type="text"
-              placeholder="Select or past your file"
+              placeholder="Select or paste your file"
               onFocus={this.handleInputFocus}
               onBlur={this.handleInputBlur}
               value={Utils.substr(fileName, 10)}

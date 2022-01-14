@@ -10,6 +10,7 @@ export const KEY_CODES = {
   escape: 27, // key code for l
   copy_code: 67, // key code for l
   undo_code: 90, // key code for z
+  redo_code: 89, // key code for y
   create_code: 78, // key code for n
   search_code: 83, // key code for s
 };

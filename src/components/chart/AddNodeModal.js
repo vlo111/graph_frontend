@@ -85,6 +85,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
   const closeExpand = () => {
     setImgUrl('');
     setExpand(false);
+    setErrors({});
   };
 
   const saveNode = async (ev) => {
@@ -157,7 +158,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
       setNodeData({});
     }
 
-    setErrors(errors);
+    setErrors({ ...errors });
   };
 
   const handleChange = (path, item, editIndex) => {
