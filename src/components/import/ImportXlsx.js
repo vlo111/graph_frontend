@@ -5,16 +5,19 @@ import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { withRouter } from 'react-router-dom';
-import File from '../form/File';
 import Button from '../form/Button';
+import File from '../form/File';
 import Utils from '../../helpers/Utils';
 import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportStep2 from './ImportStep2';
+import templetaAraks from '../../assets/file/AraksTemplate.xlsx';
+
 
 class DataImportModal extends Component {
   static propTypes = {
     convertGraphRequest: PropTypes.func.isRequired,
     showSelectHandler: PropTypes.func.isRequired,
+    getNodesLocation: PropTypes.func.isRequired,
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -70,6 +73,8 @@ class DataImportModal extends Component {
     this.setState({ loading: true });
     const { payload: { data } } = await this.props.convertGraphRequest(convertType, requestData);
     if (data.nodes?.length) {
+      this.props.getNodesLocation(data.nodes);
+
       this.setState({ loading: false, step: 2 });
       this.props.showSelectHandler(false);
     } else {
@@ -93,6 +98,11 @@ class DataImportModal extends Component {
         {step === 1 ? (
           <>
             <div className="ghFormField importFile">
+              <div className="downloadTempletaAraks">
+                <span>If you don’t have any  templates You can </span>
+                <Button><a href={templetaAraks} download="AraksTemplate.xlsx">download</a></Button>
+                it
+              </div>
               <label className="importSelectFileLbl">Select file</label>
               <File
                 onChangeFile={(file) => this.handleChange('file', file)}

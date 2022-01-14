@@ -38,6 +38,12 @@ class DataView extends Component {
 
   async componentDidMount() {
     const { graphId, selectedGrid } = this.props;
+
+    let { links } = this.state;
+
+    const linksGrouped = _.groupBy(links, 'type');
+    delete linksGrouped.undefined;
+
     Chart.loading(true);
     const folders = Chart.getLabels().filter((l) => l.type === 'folder');
 
@@ -49,13 +55,25 @@ class DataView extends Component {
     foldersData = await Promise.all(foldersData);
 
     const nodes = this.mergeNodes(Chart.getNodes(), foldersData.map((d) => d.data.label.nodes).flat(1), selectedGrid);
-    const links = this.mergeLinks(Chart.getLinks(), foldersData.map((d) => d.data.label.links).flat(1), nodes, selectedGrid);
+    links = this.mergeLinks(Chart.getLinks(), foldersData.map((d) => d.data.label.links).flat(1), nodes, selectedGrid);
     this.setState({ nodes, links });
 
     // this.checkAllGrids();
     Chart.resizeSvg();
     this.props.getGraphInfoRequest(graphId);
     Chart.loading(false);
+  }
+
+  componentWillUnmount() {
+    this.unCheckAllGrids();
+    setTimeout(() => {
+      Chart.resizeSvg();
+    }, 100);
+  }
+
+  unCheckAllGrids = () => {
+    this.props.setGridIndexes('nodes', []);
+    this.props.setGridIndexes('links', []);
   }
 
   close = () => {
@@ -157,12 +175,6 @@ class DataView extends Component {
     }
   }
 
-  loadFolderNodes = async (folder) => {
-    const { graphId } = this.props;
-    const { data } = await Api.labelData(graphId, folder.id).catch((e) => e);
-    console.log(data);
-  }
-
   closeExport = (ev) => {
     const isSelectType = typeof (ev.target.className) === 'string'
       ? !!ev.target.className?.includes('gh__option')
@@ -192,7 +204,7 @@ class DataView extends Component {
               <div className="exportContent ">
                 <div className="exportDropDown  exportNodeData " exclude=".exportData">
                   <Button icon={<CloseSvg />} onClick={this.close} className="exportdataclosed" />
-                  <p>Save as </p>
+                  <p>Export data </p>
                   <Select
                     label="Type File"
                     portal

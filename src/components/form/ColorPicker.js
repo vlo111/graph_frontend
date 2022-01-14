@@ -83,7 +83,7 @@ class ColorPicker extends Component {
             <div
               className="ghColorPickerPopUp"
               onClick={this.handleColorClick}
-              style={{ left: x, top: y - 150 }}
+              style={{ left: x, top: y - 200 }}
             >
               <SketchPicker
                 width={230}
