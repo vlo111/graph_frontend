@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
@@ -8,10 +7,7 @@ import { forgotPasswordRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
-import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
-import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
-import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
-import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
+import Namak from '../../assets/images/rafiki.png';
 
 class ForgotPassword extends Component {
   static propTypes = {
@@ -97,26 +93,28 @@ class ForgotPassword extends Component {
 
     return (
       <WrapperSign>
-        <div className="forgotPasswordLeft forgotPassword" />
-        <div className="forgotPasswordRight">
-          <div>
+        {/* <div className="forgotPasswordLeft forgotPassword" /> */}
+        <div className="Signinright">
+          {/* <div>
             <Link to="/">
               <LogoSvg className="logo white" />
             </Link>
+          </div> */}
+          <div className="singIn_img">
+            <img src={Namak} alt="" />
           </div>
           <div>
             <form
               onSubmit={this.resetPassword}
               id="login"
-              className="forgotPasswordAuthform"
+              className="SigninAuthForm"
             >
-              <div className="forgotPasswordText">
+              {/* <div className="forgotPasswordText">
                 <h4>Forgot your password?</h4>
-              </div>
+              </div> */}
               <Input
-                className={`${
-                  error ? 'border-error' : null
-                }`}
+                className={`${error ? 'border-error' : null
+                  }`}
                 name="email"
                 type="email"
                 placeholder="E-mail"
@@ -135,24 +133,30 @@ class ForgotPassword extends Component {
                   Reset
                 </Button>
               </div>
-              <div>
+              {/* <div>
                 <p>Sign in using</p>
-              </div>
-              <div className="socialButtons">
+              </div> */}
+              {/* <div className="socialButtons">
                 <OAuthButtonFacebook />
                 <OAuthButtonGoogle />
                 <OAuthButtonLinkedin />
                 <OAuthButtonTwitter />
-              </div>
+              </div> */}
             </form>
-            <p className="switchForgotMode">
+            {/* <p className="switchForgotMode">
               <span> Don`t have an admin yet? </span>
               <Link to="/sign/sign-up" className="getstart">
                 <i>Get started</i>
               </Link>
-            </p>
+            </p> */}
+          </div>
+          <div className="SaytLogo">
+            <Link to="/">
+              <LogoSvg className="logo white" />
+            </Link>
           </div>
         </div>
+
       </WrapperSign>
     );
   }

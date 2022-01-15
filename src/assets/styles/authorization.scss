@@ -1,16 +1,19 @@
 .signPage {
-  flex-direction: inherit;
+  // flex-direction: inherit;
+  height: 100vh;
+  background-color: $color-tab-bg;
 
   .ghInput {
     textarea,
     input {
       width: 100%;
-      height: 40px;
+      height: 50px;
       border: 1px solid $color-light-gray;
       padding: 0 15px;
-      font-size: 15px;
+      font-size: 16px;
       color: #333333;
-      border-radius: 8px;
+      border-radius: 5px;
+      background-color: transparent !important;
 
       &:focus {
         outline: none;
@@ -34,9 +37,10 @@
     }
 
     .icon {
-      left: auto;
+      left: 93%;
       right: 3px;
-      bottom: 3px;
+      bottom: 5px;
+      top: 10px;
       cursor: pointer;
 
       svg {
@@ -146,7 +150,7 @@
     .icon {
       position: absolute;
       bottom: 6px;
-      left: 4px;
+      // left: 4px;
     }
 
     .limit {
@@ -166,31 +170,31 @@
     }
   }
 
-  .socialLogin {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 32px;
+  // .socialLogin {
+  //   // display: flex;
+  //   // flex-direction: column;
+  //   // margin-bottom: 32px;
 
-    h4 {
-      font-size: 16px;
-      font-weight: normal;
-      text-align: center;
-      margin: 32px 0;
-    }
-  }
+  //   h4 {
+  //     font-size: 16px;
+  //     font-weight: normal;
+  //     text-align: center;
+  //     margin: 32px 0;
+  //   }
+  // }
 
-  .social_icon {
-    padding: 5px 11px;
-    height: 35px;
-    width: 35px;
-    position: relative;
-    top: 32px;
-    border: 1px solid #e2e7eb;
-    background-color: #f3f7f9;
-    color: #6c757d;
-    left: -1%;
-    border-radius: 8px;
-  }
+  // .social_icon {
+  //   padding: 5px 11px;
+  //   height: 35px;
+  //   width: 35px;
+  //   position: relative;
+  //   top: 32px;
+  //   border: 1px solid #e2e7eb;
+  //   background-color: #f3f7f9;
+  //   color: #6c757d;
+  //   left: -1%;
+  //   border-radius: 8px;
+  // }
 
   .rigt-input {
     display: grid;
@@ -199,70 +203,70 @@
     grid-gap: 10%;
   }
 
-  .socialright {
-    width: 100%;
-    background-color: #f3f7f9;
-    height: 35px;
-    padding: 7px;
-  }
+  // .socialright {
+  //   width: 100%;
+  //   background-color: #f3f7f9;
+  //   height: 35px;
+  //   padding: 7px;
+  // }
 
-  .social-list {
-    margin: auto;
-    width: 60px;
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-gap: 36%;
-    position: relative;
-  }
+  // .social-list {
+  //   margin: auto;
+  //   width: 60px;
+  //   display: grid;
+  //   grid-template-columns: auto auto auto auto;
+  //   grid-gap: 36%;
+  //   position: relative;
+  // }
 
-  .social-list > div {
-    width: 32px;
-    line-height: center;
-    line-height: calc(2rem - 2px);
-    padding: 0px 7px;
-  }
+  // .social-list > div {
+  //   width: 32px;
+  //   line-height: center;
+  //   line-height: calc(2rem - 2px);
+  //   padding: 0px 7px;
+  // }
 
-  .social-list > .social-list-facebook {
-    border: 2px solid #6658dd;
-    border-radius: 50%;
-  }
+  // .social-list > .social-list-facebook {
+  //   border: 2px solid #6658dd;
+  //   border-radius: 50%;
+  // }
 
-  .fa-facebook-square {
-    color: #6658dd;
-  }
+  // .fa-facebook-square {
+  //   color: #6658dd;
+  // }
 
-  .social-list > .social-list-twitter {
-    border: 2px solid #4fc6e1;
-    border-radius: 50%;
-  }
+  // .social-list > .social-list-twitter {
+  //   border: 2px solid #4fc6e1;
+  //   border-radius: 50%;
+  // }
 
-  .fa-twitter {
-    color: #4fc6e1;
-  }
+  // .fa-twitter {
+  //   color: #4fc6e1;
+  // }
 
-  .social-list > .social-list-linkedin {
-    border: 2px solid #0a66c2;
-    border-radius: 50%;
-  }
+  // .social-list > .social-list-linkedin {
+  //   border: 2px solid #0a66c2;
+  //   border-radius: 50%;
+  // }
 
-  .fa-linkedin {
-    color: #0a66c2;
-  }
+  // .fa-linkedin {
+  //   color: #0a66c2;
+  // }
 
-  .social-list > .social-list-skype {
-    border: 2px solid #2962ff;
-    border-radius: 50%;
-    margin-left: 0 auto;
-  }
+  // .social-list > .social-list-skype {
+  //   border: 2px solid #2962ff;
+  //   border-radius: 50%;
+  //   margin-left: 0 auto;
+  // }
 
-  .fa-skype {
-    color: #2962ff;
-  }
+  // .fa-skype {
+  //   color: #2962ff;
+  // }
 
-  .accountedit {
-    color: #0d0905;
-    font-size: 16px;
-  }
+  // .accountedit {
+  //   color: #0d0905;
+  //   font-size: 16px;
+  // }
 
   .fa-pencil {
     color: #0d0905;
@@ -289,35 +293,55 @@
     flex-direction: inherit;
   }
 
-  .SigninLeft {
-    width: 56.54%;
-    height: 100vh;
-    max-width: 1081px;
+  // .SigninLeft {
+  //   width: 56.54%;
+  //   height: 100vh;
+  //   max-width: 1081px;
 
-    &.signIn {
-      background-image: url("../images/signIn.svg");
-      background-size: cover;
-      position: relative;
-      background-position-x: right;
-      z-index: 1;
-    }
+  //   &.signIn {
+  //     background-image: url("../images/signIn.svg");
+  //     background-size: cover;
+  //     position: relative;
+  //     background-position-x: right;
+  //     z-index: 1;
+  //   }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
+  //   img {
+  //     width: 100%;
+  //     height: 100%;
+  //     object-fit: cover;
+  //   }
+  // }
 
   .Signinright {
-    width: 43%;
-    display: flex;
+    // width: 43%;
+    display: grid;
     align-items: center;
-    flex-direction: column;
+    grid-template-columns:auto auto 300px;
+    height: 100%;
 
     .submit {
       margin-top: 62px;
     }
+    // newww
+    .singIn_img{
+      display: grid;
+      justify-self: center;
+      img{
+        max-height: 490px;
+      } 
+     }
+     .singIn_form{
+      max-width: 650px;
+      min-width: 320px;
+     }
+     .SaytLogo {
+      position: absolute;
+      left: 89%;
+      top: 3.78%;
+      z-index: 100;
+       }
+
   }
 
   .switchSignInMode {
@@ -339,7 +363,7 @@
     flex-direction: column;
     align-items: center;
     margin: auto;
-    max-width: 350px;
+    max-width: 500px;
     min-width: 320px;
     width: 100%;
     border-radius: 10px;
@@ -366,11 +390,11 @@
       align-items: center;
     }
 
-    .socialButtons {
-      position: relative;
-      top: 64px;
-      left: 5px;
-    }
+    // .socialButtons {
+    //   position: relative;
+    //   top: 64px;
+    //   left: 5px;
+    // }
 
     .errorRecovery {
       color: $color-error;
@@ -381,60 +405,60 @@
   }
 
   //  SignIn Pages Icon
-  .socialButtons {
-    position: relative;
-    top: 45px;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
+  // .socialButtons {
+  //   position: relative;
+  //   top: 45px;
+  //   display: flex;
+  //   flex-wrap: nowrap;
+  //   justify-content: center;
 
-    .button {
-      color: #ffffff;
-      border-radius: 8px;
-      margin: 5px 13.5px;
-      padding: 6px 7px 5px;
-      align-items: center;
-      outline: none;
-      border: none;
-      font-size: 14px;
-      // padding: 0px;
-      z-index: 1000;
-      cursor: pointer;
+  //   .button {
+  //     color: #ffffff;
+  //     border-radius: 8px;
+  //     margin: 5px 13.5px;
+  //     padding: 6px 7px 5px;
+  //     align-items: center;
+  //     outline: none;
+  //     border: none;
+  //     font-size: 14px;
+  //     // padding: 0px;
+  //     z-index: 1000;
+  //     cursor: pointer;
 
-      &:hover {
-        text-decoration: underline;
-      }
+  //     &:hover {
+  //       text-decoration: underline;
+  //     }
 
-      img {
-        width: 30px;
-        height: 30px;
-        object-fit: cover;
-        margin-right: 10px;
-        border-radius: 5px;
+  //     img {
+  //       width: 30px;
+  //       height: 30px;
+  //       object-fit: cover;
+  //       margin-right: 10px;
+  //       border-radius: 5px;
 
-        &.whiteBg {
-          background-color: white;
-          border-radius: 4px;
-        }
-      }
-    }
+  //       &.whiteBg {
+  //         background-color: white;
+  //         border-radius: 4px;
+  //       }
+  //     }
+  //   }
 
-    .facebook {
-      background-color: white;
-    }
+  //   .facebook {
+  //     background-color: white;
+  //   }
 
-    .twitter {
-      background-color: white;
-    }
+  //   .twitter {
+  //     background-color: white;
+  //   }
 
-    .google {
-      background-color: white;
-    }
+  //   .google {
+  //     background-color: white;
+  //   }
 
-    .linkedin {
-      background-color: white;
-    }
-  }
+  //   .linkedin {
+  //     background-color: white;
+  //   }
+  // }
 
   .paragraph,
   p {
@@ -462,26 +486,29 @@
     text-align: left;
   }
 
-  .socialLogin h4 {
-    position: relative;
-    top: 40px;
-    font-size: 45px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 54px;
-    letter-spacing: 0em;
-    text-align: left;
-    width: 150px;
-    color: #505050;
-  }
-
+  .socialLogin {
+  
+    .emaiL_input{
+      input{
+        border-radius: none !important;
+      }
+    }
+  
+   h4 {
+     position: relative;
+     top: 45px;
+     font-size: 33px;
+     font-style: normal;
+     font-weight:400;
+     line-height: 54px;
+     letter-spacing: 0em;
+     width: 150px;
+     color: #505050;
+    }
+ }
   .SigninAuthForm {
-    position: relative;
-    // top: 76px;
-    // width: 100%;
     color: #a1a1a1;
     font-size: 14px;
-    left: -10%;
   }
 
   // .switchSignInMode {
@@ -558,21 +585,21 @@
       align-items: center;
     }
 
-    .socialButtons {
-      position: relative;
-      top: 65px !important;
-    }
+    // .socialButtons {
+    //   position: relative;
+    //   top: 65px !important;
+    // }
   }
 
-  .switchForgotMode span {
-    position: relative;
-    top: 50px !important;
-  }
+  // .switchForgotMode span {
+  //   position: relative;
+  //   top: 50px !important;
+  // }
 
-  .switchForgotMode .getstart {
-    position: relative;
-    top: 50px !important;
-  }
+  // .switchForgotMode .getstart {
+  //   position: relative;
+  //   top: 50px !important;
+  // }
 
   .forgotPasswordLeft {
     width: 64.54%;
@@ -595,7 +622,7 @@
   }
 
   .forgotPasswordRight {
-    width: 37%;
+    // width: 37%;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -605,14 +632,14 @@
     }
   }
 
-  .switchForgotMode {
-    position: relative;
-    top: 220px;
-    color: #727272;
-    font-size: 20px;
-    font-weight: 500;
-    left: -30%;
-  }
+  // .switchForgotMode {
+  //   position: relative;
+  //   top: 220px;
+  //   color: #727272;
+  //   font-size: 20px;
+  //   font-weight: 500;
+  //   left: -30%;
+  // }
 
   //   Button
 
@@ -629,8 +656,8 @@
     }
 
     &.alt {
-      width: 181px;
-      height: 36px;
+      width: 185px;
+      height: 45px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -640,7 +667,7 @@
       border-radius: 5px;
       position: relative;
       z-index: 100;
-      background: linear-gradient(151.09deg, #f07760 -74.94%, #7166f8 146.83%);
+      background: $color-main;
     }
 
     &.alt:active:after {
@@ -675,7 +702,7 @@
       font-size: 16px;
 
       color: white;
-      background: linear-gradient(151.09deg, #f07760 -74.94%, #7166f8 146.83%);
+      background: $color-main;
     }
 
     &.accent {
@@ -734,14 +761,22 @@
   }
 
   .ghButton:hover {
-    color: white;
-    background: linear-gradient(151.09deg, #7166f8 -74.94%, #f07760 146.83%);
+    background-color: $color-white;
+    color: $color-main;
+    border-color: $color-main;
+    box-shadow: none;
+    border:1px solid $color-main;
   }
 
   .ghButton.orange:hover {
-    cursor: pointer;
-    background: linear-gradient(151.09deg, #7166f8 -74.94%, #f07760 146.83%);
+    // cursor: pointer;
+    // background: linear-gradient(151.09deg, #7166f8 -74.94%, #f07760 146.83%);
+    // box-shadow: none;
+    background-color: $color-white;
+    color: $color-main;
+    border-color: $color-main;
     box-shadow: none;
+    border-color: $color-main;
   }
 
   //  SignUp
@@ -845,211 +880,215 @@
       top: -50px !important;
     }
 
-    .socialButtons {
-      position: relative;
-      top: -20px !important;
-    }
+    // .socialButtons {
+    //   position: relative;
+    //   top: -20px !important;
+    // }
   }
 
   //  SignIn @media
-  @media (min-width: 1920px) {
-    .SigninAuthForm {
-      padding: 0;
-      margin: 160px 0;
-      left: 0;
-    }
-    .switchSignInMode {
-      position: relative;
-      top: 0;
-    }
-  }
-  @media (max-width: 1024px) {
-    .signIn {
-      background-image: none !important;
-    }
-    .Signinright {
-      position: absolute;
-      left: 29%;
-      top: 20px;
-      z-index: 100;
+  // @media (min-width: 1920px) {
+  //   .SigninAuthForm {
+  //     padding: 0;
+  //     margin: 160px 0;
+  //     left: 0;
+  //   }
+  //   .switchSignInMode {
+  //     position: relative;
+  //     top: 0;
+  //   }
+  // }
+  // @media (max-width: 1024px) {
+  //   .signIn {
+  //     background-image: none !important;
+  //   }
+  //   .Signinright {
+  //     // position: absolute;
+  //     // left: 29%;
+  //     // top: 20px;
+  //     // z-index: 100;
 
-      .SigninAuthForm {
-        padding: 0;
-        margin: -30px 0;
-        left: 0;
-      }
+  //     .SigninAuthForm {
+  //       padding: 0;
+  //       margin: -30px 0;
+  //       left: 0;
+  //     }
 
-      .switchSignInMode > span {
-        font-size: 20px;
-        font-weight: 400;
-      }
+  //     .switchSignInMode > span {
+  //       font-size: 20px;
+  //       font-weight: 400;
+  //     }
 
-      .getstart {
-        font-size: 24px;
-        font-weight: 700;
-      }
+  //     .getstart {
+  //       font-size: 24px;
+  //       font-weight: 700;
+  //     }
 
-      h1 {
-        position: relative;
-        top: 30px;
-        font-size: 22px;
-        font-weight: 400;
-      }
+  //     h1 {
+  //       position: relative;
+  //       top: 30px;
+  //       font-size: 22px;
+  //       font-weight: 400;
+  //     }
 
-      h4 {
-        position: relative;
-        left: 11%;
-        font-size: 28px;
-        font-weight: 700;
-      }
+  //     h4 {
+  //       position: relative;
+  //       left: 11%;
+  //       font-size: 28px;
+  //       font-weight: 700;
+  //     }
 
-      p {
-        font-size: 20px;
-        font-weight: 400;
-      }
+  //     p {
+  //       font-size: 20px;
+  //       font-weight: 400;
+  //     }
 
-      .logo {
-        position: inherit;
-      }
+  //     // .logo {
+  //     //   position: inherit;
+  //     // }
 
-      .switchSignInMode {
-        left: 0;
-      }
-    }
+  //     .switchSignInMode {
+  //       left: 0;
+  //     }
+  //     //newwwwww
+      
+      
 
-    @media (max-width: 680px) {
-      .Signinright {
-        padding: 20px 40px;
-        position: absolute;
-        left: 29%;
+  //   }
 
-        .switchSignInMode > span {
-          font-size: 14px;
-          font-weight: 400;
-        }
+  //   @media (max-width: 680px) {
+  //     .Signinright {
+  //       padding: 20px 40px;
+  //       position: absolute;
+  //       left: 29%;
 
-        .getstart {
-          font-size: 22px;
-          font-weight: 700;
-        }
+  //       .switchSignInMode > span {
+  //         font-size: 14px;
+  //         font-weight: 400;
+  //       }
 
-        h1 {
-          font-size: 22px;
-          font-weight: 400;
-        }
+  //       .getstart {
+  //         font-size: 22px;
+  //         font-weight: 700;
+  //       }
 
-        h4 {
-          position: relative;
-          left: 11%;
-          font-size: 30px;
-          font-weight: 700;
-        }
+  //       h1 {
+  //         font-size: 22px;
+  //         font-weight: 400;
+  //       }
 
-        p {
-          font-size: 23px;
-          font-weight: 400;
-        }
-      }
-    }
-  }
+  //       h4 {
+  //         position: relative;
+  //         left: 11%;
+  //         font-size: 30px;
+  //         font-weight: 700;
+  //       }
+
+  //       p {
+  //         font-size: 23px;
+  //         font-weight: 400;
+  //       }
+  //     }
+  //   }
+  // }
 
   //   ForgotPassword
-  @media (min-width: 1920px) {
-    .forgotPasswordAuthform {
-      padding: 0;
-      margin: 160px 0;
-      left: 0;
-    }
-    .switchForgotMode {
-      top: 60px;
-      left: -3%;
-    }
-  }
+  // @media (min-width: 1920px) {
+  //   .forgotPasswordAuthform {
+  //     padding: 0;
+  //     margin: 160px 0;
+  //     left: 0;
+  //   }
+  //   // .switchForgotMode {
+  //   //   top: 60px;
+  //   //   left: -3%;
+  //   // }
+  // }
 
-  @media (max-width: 1024px) {
-    .forgotPassword {
-      background-image: none !important;
-    }
-    .forgotPasswordRight {
-      position: absolute;
-      left: 29%;
-      top: 20px;
-      z-index: 100;
+  // @media (max-width: 1024px) {
+  //   .forgotPassword {
+  //     background-image: none !important;
+  //   }
+  //   .forgotPasswordRight {
+  //     position: absolute;
+  //     left: 29%;
+  //     top: 20px;
+  //     z-index: 100;
 
-      .switchForgotMode > span {
-        font-size: 16px;
-        font-weight: 400;
-      }
+  //     .switchForgotMode > span {
+  //       font-size: 16px;
+  //       font-weight: 400;
+  //     }
 
-      .forgotPasswordAuthform {
-        margin: -45px 0;
-        left: 0;
-      }
+  //     .forgotPasswordAuthform {
+  //       margin: -45px 0;
+  //       left: 0;
+  //     }
 
-      .getstart {
-        font-size: 19px;
-        font-weight: 700;
-      }
+  //     .getstart {
+  //       font-size: 19px;
+  //       font-weight: 700;
+  //     }
 
-      h1 {
-        font-size: 22px;
-        font-weight: 400;
-      }
+  //     h1 {
+  //       font-size: 22px;
+  //       font-weight: 400;
+  //     }
 
-      h4 {
-        font-size: 28px;
-        font-weight: 700;
-      }
+  //     h4 {
+  //       font-size: 28px;
+  //       font-weight: 700;
+  //     }
 
-      p {
-        font-size: 20px;
-        font-weight: 400;
-        z-index: 100;
-        margin-top: 50px;
-        left: 0;
-      }
+  //     p {
+  //       font-size: 20px;
+  //       font-weight: 400;
+  //       z-index: 100;
+  //       margin-top: 50px;
+  //       left: 0;
+  //     }
 
-      .logo {
-        z-index: 100;
-        position: inherit;
-      }
-    }
+  //     .logo {
+  //       z-index: 100;
+  //       position: inherit;
+  //     }
+  //   }
 
-    @media (max-width: 680px) {
-      .forgotPasswordRight {
-        padding: 20px 40px;
-        position: absolute;
-        left: 29%;
-        z-index: 100;
+  //   @media (max-width: 680px) {
+  //     .forgotPasswordRight {
+  //       padding: 20px 40px;
+  //       position: absolute;
+  //       left: 29%;
+  //       z-index: 100;
 
-        .switchForgotMode > span {
-          font-size: 17px;
-          font-weight: 400;
-        }
+  //       .switchForgotMode > span {
+  //         font-size: 17px;
+  //         font-weight: 400;
+  //       }
 
-        .getstart {
-          font-size: 20px;
-          font-weight: 700;
-        }
+  //       .getstart {
+  //         font-size: 20px;
+  //         font-weight: 700;
+  //       }
 
-        h1 {
-          font-size: 22px;
-          font-weight: 400;
-        }
+  //       h1 {
+  //         font-size: 22px;
+  //         font-weight: 400;
+  //       }
 
-        h4 {
-          font-size: 27px;
-          font-weight: 700;
-        }
+  //       h4 {
+  //         font-size: 27px;
+  //         font-weight: 700;
+  //       }
 
-        p {
-          margin-top: 50px;
-          font-size: 23px;
-          font-weight: 400;
-        }
-      }
-    }
-  }
+  //       p {
+  //         margin-top: 50px;
+  //         font-size: 23px;
+  //         font-weight: 400;
+  //       }
+  //     }
+  //   }
+  // }
 
   //  SignUP
 
@@ -1134,6 +1173,102 @@
     }
   }
 
+// new mwdia for singIn page
+
+@media (max-width: 1350px) {
+  .Signinright{
+    grid-template-columns: repeat(1,1fr);
+    .singIn_img img{
+      height: 400px;
+      position: relative;
+      top: 30px;
+    }
+    .singIn_form{
+      display: grid;
+      justify-self: center;
+      min-width: 500px;
+    }
+    .SaytLogo{
+      left: 88%;
+    }
+  }
+}
+@media (max-width: 1200px) {
+  .Signinright{
+    grid-template-columns: repeat(1,1fr);
+    .singIn_img img{
+      height: 350px;
+      position: relative;
+      top: 40px;
+    }
+    .singIn_form{
+      position: relative;
+      top: -60px;
+    }
+    .SaytLogo{
+      left:86%;
+    }
+
+  }
+}
+@media (max-width: 1024px) {
+  .Signinright{
+    grid-template-columns: repeat(1,1fr);
+    .singIn_img img{
+      height: 300px;
+      position: relative;
+      top: 40px;
+    }
+    .singIn_form{
+      position: relative;
+      top: -60px;
+    }
+    .SaytLogo{
+      left:83%;
+    }
+
+  }
+}
+@media (max-width: 860px) {
+  .Signinright{
+    grid-template-columns: repeat(1,1fr);
+    .singIn_img
+     {
+      display: none;
+    }
+    .singIn_form{
+      position: relative;
+      top: -80px;
+      order:2;
+    }
+    .SaytLogo{
+      position: inherit;
+      order:1;
+      justify-self: center;
+    }
+
+  }
+}
+@media (max-width: 640px) {
+  .Signinright{
+    grid-template-columns: repeat(1,1fr);
+    .singIn_img{
+        display: none;
+    }
+    .singIn_form{
+      position: relative;
+      top: -100px;
+      order:2;
+      min-width: 290px;
+    }
+    .SaytLogo{
+      // left:87%;
+    }
+
+  }
+}
+
+// new mwdia for singIn page
   //// Reset Password
 
   .logoReset {
@@ -1187,34 +1322,34 @@
       padding: 0 10px;
     }
 
-    .forgotPasswordText {
-      text-align: center;
+    // .forgotPasswordText {
+    //   text-align: center;
 
-      h4 {
-        font-weight: 600;
-        font-size: 20px;
-        margin-top: 32px;
-      }
+    //   h4 {
+    //     font-weight: 600;
+    //     font-size: 20px;
+    //     margin-top: 32px;
+    //   }
 
-      p {
-        font-weight: normal;
-        font-size: 16px;
-        margin: 32px 0;
-      }
-    }
+    //   p {
+    //     font-weight: normal;
+    //     font-size: 16px;
+    //     margin: 32px 0;
+    //   }
+    // }
   }
 
   // Eyes Icon and Error
 
-  .ghFormFieldPassword {
-    .icon {
-      left: 93%;
-      top: 5px;
-      right: 3px;
-      bottom: 5px;
-      cursor: pointer;
-    }
-  }
+  // .ghFormFieldPassword {
+  //   .icon {
+  //     left: 93%;
+  //     // top: 5px;
+  //     right: 3px;
+  //     bottom: 5px;
+  //     cursor: pointer;
+  //   }
+  // }
 
   .error {
     color: red;
@@ -1222,12 +1357,6 @@
     padding: 0 8px;
   }
 
-  .logo {
-    position: absolute;
-    left: 90%;
-    top: 3.78%;
-    z-index: 100;
-  }
   .border-error {
     border-color: red !important;
   }
