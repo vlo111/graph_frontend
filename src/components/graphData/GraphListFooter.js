@@ -73,7 +73,7 @@ const GraphListFooter = ({ graph }) => {
       {opendesc && (
         <div
           closeModal={() => setOpenDesc(false)}
-          className="descriptionGraph"
+          className="descriptionRezalt"
         >
           <div>
             <Button
