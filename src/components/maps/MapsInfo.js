@@ -101,7 +101,7 @@ class MapsInfo extends Component {
             <Marker
               title={node.name}
               name={node.name}
-              position={node.location.location}
+              position={location}
               onDragend={this.handleLocationChange}
               icon={{
                 url: markerImg,
