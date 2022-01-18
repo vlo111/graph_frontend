@@ -275,7 +275,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
                     label="Past icon link or select"
                     accept=".png,.jpg,.gif,.svg"
                     value={nodeData.icon}
-                    // onChangeImgPreview={(v) => setImgUrl(v)}
+                    onChangeImgPreview={(v) => setImgUrl(v)}
                     onChangeFile={(v, file) => handleChange('icon', file)}
                     preview={nodeData.icon}
                     previewError={imgUrl}
