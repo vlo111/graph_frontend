@@ -2502,6 +2502,16 @@ p {
       }
     }
   }
+.embedTab  {
+  .tab-wrapper{
+    top: 0;
+    height: 100%;
+  }
+  .comment, .b-navbar{
+    display: none;
+  }
+}
+  
 }
 
 .gh-jodit-popup {
@@ -7604,7 +7614,7 @@ img.preview-scaled {
       z-index: 10;
       display: block;
       position: fixed;
-      width: 235px;
+      width: 276px;
       top: 70px;
       right: 11px;
       height: 100%;    }
@@ -9927,7 +9937,7 @@ details[open] summary:after {
       }
      .legends.open .dropdown{
         width: 276px !important;
-        height: calc(100% - 250px) !important;
+        height: calc(100% - 126px) !important;
         right: 30px;
       }
     .nodes{
