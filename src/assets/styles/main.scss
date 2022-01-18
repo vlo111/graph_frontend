@@ -2316,7 +2316,7 @@ p {
     .icon{
       position: absolute;
       top: -6px;
-  
+
     }
     p{
       padding: 5px 13px 0px 20px;
@@ -3220,7 +3220,7 @@ body .gh__menu {
         font-size: 15px;
         margin: 0 10px;
         font-weight: 700;
-    
+
       }
       p{
         position: relative;
@@ -4740,7 +4740,7 @@ body .gh__menu {
     .importNode strong {
       color: #757575;
     }
-    
+
     .importLink strong {
      color: #757575;
     }
@@ -5638,7 +5638,7 @@ img.preview-scaled {
     }
   }
 
-  
+
   .gh__menu{
     box-shadow: 0px 0px 4px rgb(0 0 0 / 25%) !important;
     border: none !important;
@@ -8653,12 +8653,15 @@ img.preview-scaled {
 
   .input-check:checked + label {
     &:after {
-      content: "\2713";
+      content: "";
       position: absolute;
-      top: 0;
-      color: $color-main;
-      font-size: 15px;
-      left: 22%;
+      left: 7px;
+      top: 3px;
+      width: 6px;
+      height: 12px;
+      border: solid #0047ec;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
     }
   }
 }
