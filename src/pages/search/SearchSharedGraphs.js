@@ -95,14 +95,6 @@ class SearchSharedGraphs extends Component {
                       {Utils.substr(shGraph.graph.title, 25)}
                     </h3>
                   </Tooltip>
-                  <div className="descriptionGraph">
-                    <Tooltip overlay={shGraph.graph.description} placement="bottom">
-                      <span>
-                        {' '}
-                        {Utils.substr(shGraph.graph.description, 40)}
-                      </span>
-                    </Tooltip>
-                  </div>
                 </div>
 
                 <div
