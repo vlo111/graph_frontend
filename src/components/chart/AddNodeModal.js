@@ -55,9 +55,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
           label: d.type,
         }));
 
-      _.uniqBy(types, 'value');
-
-      setGetTypes(types);
+      setGetTypes(_.uniqBy(types, 'value'));
     }
     setNodeData({
       ...addNodeParams,
