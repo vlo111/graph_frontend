@@ -872,7 +872,7 @@ class Chart {
         readOnlyLabel = this.data.embedLabels.find((l) => l.label.id === datum.id);
       }
       this.node.each((d) => {
-        if (dragFolder.nodes.some((n) => n.id === d.id)) {
+        if (dragFolder.nodes.some((n) => n.id === d.id) || readOnlyLabel) {
           if (
             (!d.readOnly && !datum.readOnly)
             || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
