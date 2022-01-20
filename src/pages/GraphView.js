@@ -193,17 +193,20 @@ class GraphView extends Component {
 
                     {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
                       <Link to={`/graphs/update/${graphId}`}>
-                        <Tooltip overlay="Update">
+                        <Tooltip overlay="Edit">
                           <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
                         </Tooltip>
                       </Link>
                     )}
                     <NodeDescription />
+                    {!(pathname === `/graphs/filter/${graphId}`)
+                    && (
                     <Link to={pathname?.includes('filter') ? `/graphs/update/${graphId}` : '/'}>
                       <Tooltip overlay="Back">
                         <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
                       </Tooltip>
                     </Link>
+                    )}
                   </>
                 )}
                 <ToolBarHeader graph={singleGraph} />
