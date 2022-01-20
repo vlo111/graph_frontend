@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-// import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { ReactComponent as LogoSvg } from '../../assets/images/araks_logo.svg';
-import Amico from '../../assets/images/amico.png';
+import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
+import SigniniImage from '../../assets/images/signin_image.png';
 import { forgotPasswordRequest, signInRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
@@ -42,9 +41,9 @@ const Login = () => {
 
   return (
     <WrapperSign>
-      <div className="Signinright">
+      <div className="signin_page">
         <div className="singIn_img">
-          <img src={Amico} alt="" />
+          <img src={SigniniImage} alt="" />
         </div>
         <div className="singIn_form">
           <form onSubmit={signIn} id="login" className="SigninAuthForm ">

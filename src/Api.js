@@ -52,9 +52,6 @@ class Api {
     return api.post('/users/sign-in', { email, password });
   }
 
-  static singUp(data) {
-    return api.post('/users/sign-up', data);
-  }
 
   static forgotPassword(email, callback) {
     return api.post('/users/forgot-password', { email, callback });
@@ -297,8 +294,8 @@ class Api {
     return api.get('/share-graphs/user-graphs');
   }
 
-  static listNotifications() {
-    return api.get('/notifications/list');
+  static listNotifications(requestData) {
+    return api.get('/notifications/list', requestData);
   }
 
   static notificationsUpdate() {
