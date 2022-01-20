@@ -160,8 +160,8 @@
               border-radius: 5px;
           .ar-popover-trigger{
            cursor: pointer;
-          }  
-           
+           margin-top: -19px;
+          }    
          .buttonHidden{
           display: flex;
           
@@ -408,7 +408,7 @@
           display: none !important;
         }
       } 
-      .descriptionGraph{
+      .descriptionRezalt{
         position: absolute;
         max-height: 50%;
         width: 30%;
@@ -417,8 +417,8 @@
         border-radius: 12px;
         padding: 0px 0px 17px 0px;
         z-index: 11;
-        top: 24%;
-        left: 36%;
+        top: auto;
+        left: auto;
         span{
           color: #7166F8;
           font-size: 25px;

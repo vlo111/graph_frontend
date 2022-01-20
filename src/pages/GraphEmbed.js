@@ -35,7 +35,9 @@ class GraphEmbed extends Component {
         <div className="graphWrapper">
           <ReactChart />
         </div>
-        <Tabs editable={false} />
+        <div className="embedTab">
+          <Tabs editable={false} />
+        </div>
         <LabelTooltip />
         <Filters />
         <AutoPlay />
