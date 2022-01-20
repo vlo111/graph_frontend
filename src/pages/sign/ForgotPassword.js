@@ -1,22 +1,20 @@
-/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ReactComponent as LogoSvg } from '../../assets/images/araks_logo.svg';
+import { toast } from 'react-toastify';
+import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
 import { forgotPasswordRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
-import OAuthButtonFacebook from '../../components/account/OAuthButtonFacebook';
-import OAuthButtonGoogle from '../../components/account/OAuthButtonGoogle';
-import OAuthButtonLinkedin from '../../components/account/OAuthButtonLinkedin';
-import OAuthButtonTwitter from '../../components/account/OAuthButtonTwitter';
+import ForgtImage from '../../assets/images/forgot_image.png';
 
 class ForgotPassword extends Component {
   static propTypes = {
     forgotPasswordRequest: PropTypes.func.isRequired,
     token: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -58,15 +56,16 @@ class ForgotPassword extends Component {
         requestData.email,
         `${origin}/sign/reset-password`,
       );
-
       if (data.status === 'error') {
         this.setState({ error: data.message });
       }
       if (data.status === 'ok') {
-        this.props.history.replace(origin);
+        toast.info('Your password sented');
+        setTimeout(() => {
+          this.props.history.replace(origin);
+        }, 1200);
       }
     }
-
     this.setState({ loading: false });
   }
 
@@ -97,25 +96,18 @@ class ForgotPassword extends Component {
 
     return (
       <WrapperSign>
-        <div className="forgotPasswordLeft forgotPassword" />
-        <div className="forgotPasswordRight">
-          <div>
-            <Link to="/">
-              <LogoSvg className="logo white" />
-            </Link>
+        <div className="forgot_password">
+          <div className="forgot_img">
+            <img src={ForgtImage} alt="" />
           </div>
-          <div>
+          <div className="forgot_form">
             <form
               onSubmit={this.resetPassword}
               id="login"
-              className="forgotPasswordAuthform"
+              className="SigninAuthForm"
             >
-              <div className="forgotPasswordText">
-                <h4>Forgot your password?</h4>
-              </div>
               <Input
-                className={`${
-                  error ? 'border-error' : null
+                className={`${error ? 'border-error' : null
                 }`}
                 name="email"
                 type="email"
@@ -125,6 +117,7 @@ class ForgotPassword extends Component {
                 error={error}
                 autoComplete="off"
               />
+              <p>*In this mail we send your new password , which you can use just once</p>
               <div className="row">
                 <Button
                   type="submit"
@@ -132,27 +125,18 @@ class ForgotPassword extends Component {
                   color="blue"
                   loading={loading}
                 >
-                  Reset
+                  Send
                 </Button>
               </div>
-              <div>
-                <p>Sign in using</p>
-              </div>
-              <div className="socialButtons">
-                <OAuthButtonFacebook />
-                <OAuthButtonGoogle />
-                <OAuthButtonLinkedin />
-                <OAuthButtonTwitter />
-              </div>
             </form>
-            <p className="switchForgotMode">
-              <span> Don`t have an admin yet? </span>
-              <Link to="/sign/sign-up" className="getstart">
-                <i>Get started</i>
-              </Link>
-            </p>
+          </div>
+          <div className="SaytLogo">
+            <Link to="/">
+              <LogoSvg className="logo white" />
+            </Link>
           </div>
         </div>
+
       </WrapperSign>
     );
   }

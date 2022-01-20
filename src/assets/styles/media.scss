@@ -256,132 +256,6 @@
   }
 }
 
-@media only screen and (max-height: 900px) {
-
-  #Tab {
-    .nodeFullContent .nodeTabs .contentWrapper {
-
-      .no-tabs .no-tab-content {
-        .header {
-          .description {
-            font-size: 20px;
-          }
-
-          * {
-            margin-bottom: 0;
-            font-size: 20px;
-          }
-        }
-
-        .footer {
-          margin-top: 10px;
-
-          svg {
-            margin-bottom: 0;
-            width: 25px;
-          }
-
-          .create-tab {
-            font-size: 20px;
-            line-height: 25px;
-          }
-        }
-      }
-
-      .content {
-        height: 250px;
-      }
-    }
-
-    .connectionDetails {
-      margin-top: 0;
-
-      .row {
-        details {
-          margin: 10px 0;
-        }
-
-        .list .item {
-          margin-bottom: 15px;
-        }
-      }
-    }
-  }
-
-  .compareContent {
-
-    .graphCompareData {
-      max-height: 620px;
-    }
-
-    .compare-footer {
-      top: 604px !important;
-    }
-  }
-}
-@media screen and (max-height: 700px) {
-  .ghModalMedia {
-     top:80px !important;
-     max-height: 88% !important;
-
-    &#fullWidth{
-      top:80px !important;
-    }
-  }
-}
-@media (max-height: 750px) {
-  .menu {
-    overflow-y: scroll;
-    height: 91vh;
-
-}
-  .menu .containerMenu .collapse:hover{
-  overflow: hidden;
-  }
-  .helpName{
-    overflow-x: scroll;
-    width: 31%;
-  }
-  .helpResultText {
-    overflow: scroll;
-    position: relative;
-    top: 60px;
-    height: 50% ;
-    max-height: 235px !important;
-}
-.react-tabs{
-margin-top: -5px;
-}
-
-}
-@media (max-height:850px) {
-
-.help_img {
-  overflow: scroll;
-  height: auto;
-  max-height: 226px;
-}
-.helpResultText{
-  overflow: scroll;
-  position: relative;
-  top: 60px;
-  height: 50%;
-  max-height: 400px;
-
-}
-.shotcouts{
-  height: 100%;
-  max-height: 86% !important;
-}
-  .compareContent .compare-footer {
-    top: 500px!important;
-  }
-
-  .compareContent .compare-footer {
-    top: 500px!important;
-  }
-}
-
 @media (max-width: 768px) {
   .profile_desc .img {
     width:100px;
@@ -573,9 +447,10 @@ margin-top: -5px;
   .profile.newVersion,.profileEdit {
     margin: 80px auto;
     width:75%;
+    
   }
 
-
+  
   .friends-requests .friend_box:nth-child(odd) {
     padding: 0px 35px 0 0px;
   }
@@ -625,10 +500,145 @@ margin-top: -5px;
     height: 800px;
   }
 }
+
 @media (max-width: 10px) {
   .wikiModal .Wiki input {
 
     width:auto;
+  }
+}
+
+// media for height
+@media only screen and (max-height: 900px) {
+
+  #Tab {
+    .nodeFullContent .nodeTabs .contentWrapper {
+
+      .no-tabs .no-tab-content {
+        .header {
+          .description {
+            font-size: 20px;
+          }
+
+          * {
+            margin-bottom: 0;
+            font-size: 20px;
+          }
+        }
+
+        .footer {
+          margin-top: 10px;
+
+          svg {
+            margin-bottom: 0;
+            width: 25px;
+          }
+
+          .create-tab {
+            font-size: 20px;
+            line-height: 25px;
+          }
+        }
+      }
+
+      .content {
+        height: 250px;
+      }
+    }
+
+    .connectionDetails {
+      margin-top: 0;
+
+      .row {
+        details {
+          margin: 10px 0;
+        }
+
+        .list .item {
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+
+  .compareContent {
+
+    .graphCompareData {
+      max-height: 620px;
+    }
+
+    .compare-footer {
+      top: 604px !important;
+    }
+  }
+}
+@media screen and (max-height: 700px) {
+  .ghModalMedia {
+     top:80px !important;
+     max-height: 88% !important;
+
+    &#fullWidth{
+      top:80px !important;
+    }
+  }
+}
+@media (max-height: 750px) {
+  .menu {
+    overflow-y: scroll;
+    height: 91vh;
+
+}
+  .menu .containerMenu .collapse:hover{
+  overflow: hidden;
+  }
+  .helpName{
+    overflow-x: scroll;
+    width: 31%;
+  }
+  .helpResultText {
+    overflow: scroll;
+    position: relative;
+    top: 60px;
+    height: 50% ;
+    max-height: 235px !important;
+}
+.react-tabs{
+margin-top: -5px;
+}
+
+}
+@media (max-height: 899px) {
+  
+  .LegendExplorer .connections, .nodes{
+   
+    max-height: 40% !important;
+  }
+}
+@media (max-height:850px) {
+
+.help_img {
+  overflow: scroll;
+  height: auto;
+  max-height: 226px;
+}
+.helpResultText{
+  overflow: scroll;
+  position: relative;
+  top: 60px;
+  height: 50%;
+  max-height: 400px;
+
+}
+.shotcouts{
+  height: 100%;
+  max-height: 86% !important;
+}
+  .compareContent .compare-footer {
+    top: 500px!important;
+  }
+
+  .compareContent .compare-footer {
+    top: 500px!important;
   }
 }
 @media (max-height: 830px) {
@@ -641,10 +651,248 @@ margin-top: -5px;
     max-height: 40% !important;
   }
 }
-@media (max-height: 899px) {
-  
-  .LegendExplorer .connections, .nodes{
-   
-    max-height: 40% !important;
+
+
+// sigin forget
+
+@media (max-width: 1350px) {
+  .signPage{
+    .signin_page{
+    grid-template-columns: repeat(1,1fr);
+    .singIn_img img{
+      height: 400px;
+      position: relative;
+      top: 30px;
+    }
+    .singIn_form{
+      display: grid;
+      justify-self: center;
+      min-width: 500px;
+      position: relative;
+      top: -60px;
+    }
+    .SaytLogo{
+      right: 88%;
+    }
+    }
+    .forgot_password {
+    .forgot_img{
+      img{
+        height: 300px;
+      }
+     }
+    .SaytLogo {
+      right: 88%;
+     }
+
+    }
   }
+}
+@media (max-width: 1200px) {
+  .signPage{
+    .signin_page{
+    grid-template-columns: repeat(1,1fr);
+    .singIn_img img{
+      height: 350px;
+      position: relative;
+      top: 40px;
+    }
+    .singIn_form{
+      position: relative;
+      top: -60px;
+    }
+    .SaytLogo{
+      right:86%;
+    }
+
+    }
+    .forgot_password {
+    .forgot_img{
+      img{
+        height: 280px;
+      }
+     }
+    .SaytLogo {
+      right: 86%;
+     }
+
+    }
+ }
+}
+@media (max-width: 1024px) {
+  .signPage{
+     .signin_page{
+    grid-template-columns: repeat(1,1fr);
+    .singIn_img img{
+      height: 300px;
+      position: relative;
+      top: 40px;
+    }
+    .singIn_form{
+      position: relative;
+      top: -60px;
+    }
+    .SaytLogo{
+      right:83%;
+    }
+     }
+     .forgot_password {
+    .forgot_img{
+      img{
+        height: 270px;
+      }
+     }
+    .forgot_form{
+      .SigninAuthForm{
+        width: 400px;
+        .row{
+          .ghButton.alt{
+            width: 165px;
+          }
+        }
+        p{
+          left: 10px;
+        }
+      }
+      }
+    .SaytLogo {
+      right: 83%;
+    }
+
+     }
+     .authForm {
+       margin-left: 25%;
+
+       .ghInput{
+         height: 40px;
+       }
+       .ghFormFieldPassword .icon{
+         top: 6px;
+       }
+     }
+  }
+}
+@media (max-width: 860px) {
+  .signPage{
+    .signin_page{
+    grid-template-columns: repeat(1,1fr);
+    .singIn_img
+     {
+      display: none;
+    }
+    .singIn_form{
+      position: relative;
+      top: -190px;
+      order:2;
+      .ghInput input{
+        height: 45px;
+      }
+      .ghButton.alt{
+        width: 165px;
+        height: 40px;
+      }
+    }
+    .SaytLogo{
+      position: inherit;
+      order:1;
+      justify-self: center;
+    }
+
+    }
+    .forgot_password {
+    grid-template-rows: auto auto auto;
+    .forgot_img{
+      order: 2;
+      img{
+        height: 250px;
+      }
+     }
+    .forgot_form{
+      order: 3;
+      .SigninAuthForm{
+        width: 380px;
+      }
+     }
+    .SaytLogo {
+      position: inherit;
+      order:1;
+      justify-self: center;
+     }
+
+    }
+    .authForm {
+      margin-left: 20%;
+    }
+ }
+}
+@media (max-width: 640px) {
+  .signPage{
+    .ghFormFieldPassword .icon{
+      top:3px !important;
+     }
+    .signin_page{
+    grid-template-columns: repeat(1,1fr);
+    .singIn_img{
+        display: none;
+    }
+    .singIn_form{
+      position: relative;
+      order:2;
+      min-width: 280px;
+      top: -220px;
+      .ghInput input{
+        height: 36px;
+      }
+      .ghButton.alt{
+        width: 146px;
+        height: 36px;
+        margin-top: 35px;
+      }
+    }
+    }
+    .forgot_password {
+    .forgot_img{
+      position: relative;
+      top: -100px;
+      img{
+        height: 140px;
+        width: 230px;
+      }
+     }
+    .forgot_form{
+      bottom: 180px;
+      .SigninAuthForm{
+        width: 240px;
+        .ghFormField{
+          input{
+            height: 40px;
+            font-size: 14px;
+          }
+          .error{
+            font-size: 14px;
+          }
+        }
+        .row{
+          .ghButton.alt{
+            width: 146px;
+            height: 36px;
+            top: 40px;
+          }
+        }
+        p{
+          left: -15px;
+          font-size: 11px;
+          width: 270px;
+        }
+      }
+     }
+    }
+    .authForm {
+      margin-left: 13%;
+      min-width: auto;
+      h1{
+        font-size: 36px;
+      }
+    }
+ }
 }
