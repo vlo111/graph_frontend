@@ -17,6 +17,7 @@ import SearchModal from './search/SearchModal';
 import { ReactComponent as Ellipse } from '../assets/images/Ellipse.svg';
 import { ReactComponent as FreeForm } from '../assets/images/freeform.svg';
 import { ReactComponent as Square } from '../assets/images/Square.svg';
+import Cytoscape from "./Cytoscape";
 
 class ToolBar extends Component {
   static propTypes = {
@@ -119,6 +120,19 @@ class ToolBar extends Component {
     const { selected } = this.state;
 
     switch (button) {
+      case 'cytoscape': {
+        document.querySelector('#graphs-data-info').style.display = 'none';
+        document.querySelector('#legends').style.display = 'none';
+        document.querySelector('#autoPlay').style.display = 'none';
+        document.querySelector('.undoWrapper').style.display = 'none';
+        document.querySelector('.graphControlPanel').style.display = 'none';
+        document.querySelector('#searchMenuNodes').style.display = 'none';
+
+        document.querySelector('.nodeCreate').style.display = 'none';
+        document.querySelector('.nodeCreate').style.background = 'white';
+
+        break;
+      }
       case 'analytic': {
         await this.initialGraph(graphId);
 
@@ -288,7 +302,6 @@ class ToolBar extends Component {
     const footer = document.getElementById('graphs-data-info');
     const searchModal = document.getElementById('searchMenuNodes');
 
-
     let left;
 
     if (closedMenu) {
@@ -413,6 +426,15 @@ class ToolBar extends Component {
               <div className="sidebar_text"> Find Node </div>
             </li>
             <li
+              onClick={() => this.handleClick('cytoscape')}
+              onMouseOver={() => this.handleOver('cytoscape')}
+              onMouseLeave={this.handleLeave}
+              className={`${overMenu === 'cytoscape' ? 'collapse_over' : ''} collapse`}
+            >
+              <i className="fa fa-share-alt" />
+              <div className="sidebar_text"> Cytoscape </div>
+            </li>
+            <li
               onClick={() => this.openHelpsModal()}
               onMouseOver={() => this.handleOver('help')}
               onMouseLeave={this.handleLeave}
@@ -517,6 +539,9 @@ class ToolBar extends Component {
         </div>
         <Undo />
         <SearchModal history={this.props.history} />
+        {activeButton === 'cytoscape' && (
+          <Cytoscape nodes={singleGraph.nodesPartial} links={singleGraph.linksPartial} />
+        )}
       </>
     );
   }

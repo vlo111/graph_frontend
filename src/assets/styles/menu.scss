@@ -8,6 +8,7 @@
   text-align: center;
   justify-content: center;
   display: flex;
+  z-index: 2;
 
   .containerMenu {
     width: 200px;
@@ -170,9 +171,9 @@
         display: contents;
       }
     }
-   
+
   }
- 
+
 }
 .searchMenuNodes{
   left: 190px;
@@ -197,7 +198,7 @@
   .list {
     margin: 0px 25px 0px;
     width: 90%;
- 
+
       .typeText{
         color: #757575 !important;
         font-weight: 800 !important;
@@ -258,4 +259,3 @@ padding-left: 0 !important;
 }
 
 
- 

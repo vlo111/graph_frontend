@@ -270,7 +270,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
 
                   <FileInput
                     containerClassName="fileUpload"
-                    label="Past icon link or select"
+                    label="Paste icon link or select"
                     accept=".png,.jpg,.gif,.svg"
                     value={nodeData.icon}
                     onChangeImgPreview={(v) => setImgUrl(v)}
