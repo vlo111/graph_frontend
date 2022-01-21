@@ -19,10 +19,7 @@ class MapsInfo extends Component {
   }
 
   initLocation = memoizeOne((data) => {
-    console.log(data, 'lat, lng');
-
-    const { lat, lng } = data.location;
-    console.log(lat, lng, 'lat, lng');
+    const { lat, lng } = data;
     this.setState({ location: { lat, lng } });
   })
 
@@ -83,8 +80,7 @@ class MapsInfo extends Component {
 
   render() {
     const { edit, location } = this.state;
-    const { node, google } = this.props;
-    console.log(node, 'nodenodenode');
+    const { node, google } = this.props; 
     this.initLocation(node.location);
     if (!google || _.isEmpty(location)) {
       return null;
