@@ -1,47 +1,79 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import stripHtml from 'string-strip-html';
 import Button from '../form/Button';
 import Editor from '../form/Editor';
+import ModalConfirmation from '../../helpers/ModalConfirmation';
 
-class DataEditorDescription extends Component {
-  static propTypes = {
-    onClose: PropTypes.func.isRequired,
-    value: PropTypes.string,
-  }
+const DataEditorDescription = ({
+  onChangeText, buttons, value, onClose,
+}) => {
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const { result: description } = stripHtml(value || '');
 
-  static defaultProps = {
-    value: '',
-  }
+  const opendescModal = async () => {
+    setShowSaveModal(true);
+  };
 
-  closeModal = async (ev) => {
-    this.props.onClose(ev);
-    document.dispatchEvent(new Event('mousedown'));
-    document.dispatchEvent(new Event('mouseup'));
-  }
+  const closeModal = async () => {
+    onClose(value);
+    setShowSaveModal(false);
+    opendescModal(!showSaveModal);
+  };
 
-  render() {
-    const { onClose, onChangeText, ...props } = this.props;
-    const { result: description } = stripHtml(props.value || '');
-    return (
-      <>
-        <Modal
-          isOpen
-          className="ghModal ghTableModal"
-          overlayClassName="ghModalOverlay"
-          onRequestClose={this.closeModal}
-        >
-          <h3>Description</h3>
-          <Editor {...props} onChange={onChangeText} />
-          <Button onMouseDown={this.closeModal}>Save</Button>
-        </Modal>
-        <span className="value-viewer">
-          {description}
-        </span>
-      </>
-    );
-  }
-}
+  return (
+    <div>
+      <Modal
+        isOpen
+        overlayClassName="ghModalOverlay"
+        className="ghModal descriptionModal"
+      >
+        <h3>Description</h3>
+        <Editor buttons={buttons} onChange={onChangeText} value={value} />
+        <div className="description_buttons">
+          <Button onMouseDown={opendescModal} className="btn-delete">Cancel</Button>
+          <Button onMouseDown={closeModal} className="btn-classic">Add</Button>
+        </div>
+      </Modal>
+      <span className="value-viewer">
+        {description}
+      </span>
+      {showSaveModal && (
+      <ModalConfirmation
+        title="Are you sure ?"
+        yes="Add"
+        no="Cancel"
+        onCancel={() => setShowSaveModal(false)}
+        onAccept={() => {
+          closeModal(() => opendescModal(true));
+        }}
+      />
+      )}
+    </div>
+  );
+};
 
+DataEditorDescription.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  onChangeText: PropTypes.func.isRequired,
+  buttons: PropTypes.array,
+  value: PropTypes.string,
+
+};
+
+DataEditorDescription.defaultProps = {
+  value: '',
+  buttons: [
+    'bold',
+    'italic',
+    'underline',
+    'fontsize',
+    'font',
+    'align',
+    'brush',
+    'undo',
+    'redo',
+  ],
+};
 export default DataEditorDescription;
