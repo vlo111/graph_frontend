@@ -21,6 +21,7 @@ class SearchGraphs extends Component {
   handleChange = (s = '') => {
     if (!s) {
       this.setState({ text: '' });
+      this.props.history.replace('/');
       return;
     }
     this.setState({ text: s });
