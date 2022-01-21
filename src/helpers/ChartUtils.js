@@ -1179,8 +1179,8 @@ class ChartUtils {
     return chartNodesId[0];
   }
 
-  static getNodeTypeListByObj(nodes) {
-    const types = nodes.map((n) => n.type);
+  static getNodeTypeListByObj(nodes, search) { 
+    const types = nodes.filter((n) => n.type.toLowerCase().includes(search.toLowerCase())).map((n) => n.type);
     return _.uniq(types);
   }
 }
