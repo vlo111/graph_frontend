@@ -117,7 +117,7 @@ class ForgotPassword extends Component {
                 error={error}
                 autoComplete="off"
               />
-              <p>*In this mail we send your new password , which you can use just once</p>
+              <p>Please enter your email address and we’ll send you a link to reset your password</p>
               <div className="row">
                 <Button
                   type="submit"

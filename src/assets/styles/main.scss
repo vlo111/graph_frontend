@@ -7573,7 +7573,7 @@ img.preview-scaled {
 }
 
 .logoWrapper {
-  width: 60%;
+  width: 44%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7752,6 +7752,8 @@ img.preview-scaled {
   position: fixed;
   width: 100%;
   z-index: 6;
+  padding: 0px 15px 0px 15px;
+
 
   .ghFormField {
     margin: 0;
@@ -7840,7 +7842,7 @@ img.preview-scaled {
   .header-right-panel {
     grid-template-columns: repeat(auto-fill, minmax(33%, 1fr));
     display: grid;
-    width: 60%;
+    width: 65%;
     height: 100%;
 
     .commentHeader,
@@ -7857,7 +7859,7 @@ img.preview-scaled {
     align-items: center;
     justify-content: center;
   }
-
+  
   .container {
     display: grid;
     grid-template-columns: 13% 43% 12% 12% 17%;
@@ -9377,6 +9379,35 @@ details[open] summary:after {
       padding: 10px 10px 10px 61px;
     }
   }
+}
+
+//datshit description modal
+.descriptionModal{
+   width: 450px !important;
+   height: 360px !important;
+   padding: 19px !important;
+
+   .contentEditor{
+     width: 100% !important;
+     margin-top: 10px;
+     .jodit-container{
+       height: 150px !important;
+       min-height: 150px !important;
+     }
+
+     .jodit-toolbar-button{
+      margin: 5px 6px 7px 6px !important;
+     }
+   }
+   .description_buttons{
+     display: flex;
+     justify-content: space-between;
+     width: 100%;
+     margin-top: 75px;
+   }
+   h3{
+     color: $color-main;
+   }
 }
 
 .tabComment,
