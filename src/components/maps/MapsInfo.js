@@ -19,6 +19,8 @@ class MapsInfo extends Component {
   }
 
   initLocation = memoizeOne((data) => {
+    console.log(data.location, 'lat, lng');
+
     const { lat, lng } = data.location;
     console.log(lat, lng, 'lat, lng');
     this.setState({ location: { lat, lng } });
