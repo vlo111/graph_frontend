@@ -82,7 +82,7 @@ class NodeDescription extends Component {
     }
     const { x, y } = ChartUtils.getNodeDocumentPosition(node.index);
     const { show } = this.state;
-    const contexHeight = show === 'selectSquare' ? 320 : 170;
+    const contexHeight = show === 'selectSquare' ? 420 : 300;
     const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y + 25;
     const left = window.innerWidth - x < y ? window.innerWidth - 320 : x + 55;
 

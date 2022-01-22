@@ -5,7 +5,7 @@ import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
 import Tabs from '../components/tabs';
 import LabelTooltip from '../components/LabelTooltip';
-import Legend from '../components/Legend';
+import ChartUtils from '../helpers/ChartUtils';
 import AutoPlay from '../components/AutoPlay';
 import Zoom from '../components/Zoom';
 import Filters from '../components/filters/Filters';
@@ -27,9 +27,16 @@ class GraphEmbed extends Component {
     if (payload?.status === 404) {
       this.props.history.push('/404');
     }
+    const graphElement = document.getElementById('graph');
+    if (graphElement) {
+      graphElement.style.height = '100%';
+      graphElement.querySelector('svg').style.height = '100vh';
+      graphElement.querySelector('svg').style.width = '100%';
+    }
   }
 
   render() {
+    ChartUtils.autoScale();
     return (
       <Wrapper auth={false} className="graphView" showFooter={false}>
         <div className="graphWrapper">
