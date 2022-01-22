@@ -75,7 +75,13 @@ class DataImportModal extends Component {
 
         const placesService = new google.maps.places.PlacesService(map);
 
-        node.location = await Utils.getPlaceInformation(location, geocoderService, placesService);
+        const { address, location: { lat, lng } } = await Utils.getPlaceInformation(location, geocoderService, placesService);
+
+        node.location = {
+          address,
+          lat,
+          lng,
+        };
       }
 
       return node;

@@ -27,7 +27,7 @@ class MapsInfo extends Component {
     super(props);
     this.state = {
       edit: false,
-      location: {},
+      location: undefined,
     };
   }
 
@@ -80,7 +80,7 @@ class MapsInfo extends Component {
 
   render() {
     const { edit, location } = this.state;
-    const { node, google } = this.props; 
+    const { node, google } = this.props;
     this.initLocation(node.location);
     if (!google || _.isEmpty(location)) {
       return null;

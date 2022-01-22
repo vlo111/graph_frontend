@@ -54,21 +54,24 @@ class MapsGraph extends Component {
   }
 
   onReady = () => {
-    const { google } = this.props;
-    const coordinate = [];
+    try {
+      const { google } = this.props;
+      const coordinate = [];
 
-    Chart.getNodes().filter((d) => d.location).forEach((d) => {
-      const { location } = d.location;
-      coordinate.push(new google.maps.LatLng(location.lat, location.lng));
-    });
+      const nodes = Chart.getNodes();
 
-    const bounds = new google.maps.LatLngBounds();
+      nodes.filter((d) => d.location).forEach((d) => coordinate.push(new google.maps.LatLng(d.location.lat, d.location.lng)));
 
-    for (let i = 0; i < coordinate.length; i++) {
-      bounds.extend(coordinate[i]);
+      const bounds = new google.maps.LatLngBounds();
+
+      for (let i = 0; i < coordinate.length; i++) {
+        bounds.extend(coordinate[i]);
+      }
+
+      this.setState({ bounds });
+    } catch (e) {
+      console.log(e);
     }
-
-    this.setState({ bounds });
   }
 
   render() {
@@ -83,7 +86,7 @@ class MapsGraph extends Component {
     //   return d;
     // });
     let nodes = Chart.getNodes().filter((d) => d.location).map((d) => {
-      const { location } = d.location;
+      const { location } = d;
 
       d.locationObj = location;
       return d;
@@ -93,11 +96,9 @@ class MapsGraph extends Component {
       const source = ChartUtils.getNodeById(d.source);
       const target = ChartUtils.getNodeById(d.target);
       if (source.location && target.location) {
-        if (source.location.length && target.location.length) {
-          const locationObj1 = source.location.location;
-          const locationObj2 = target.location.location;
-          d.locations = [locationObj1, locationObj2];
-        }
+        const locationObj1 = source.location;
+        const locationObj2 = target.location;
+        d.locations = [locationObj1, locationObj2];
       }
       return d;
     }).filter((d) => d.locations);
@@ -106,6 +107,7 @@ class MapsGraph extends Component {
       return null;
     }
     const updateLocation = pathname.startsWith('/graphs/update/');
+
     return (
       <div
         id="mapsGraph"
