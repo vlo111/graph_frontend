@@ -77,11 +77,15 @@ class DataImportModal extends Component {
 
         const { address, location: { lat, lng } } = await Utils.getPlaceInformation(location, geocoderService, placesService);
 
-        node.location = {
-          address,
-          lat,
-          lng,
-        };
+        if (address) {
+          node.location = {
+            address,
+            lat,
+            lng,
+          };
+        } else {
+          node.location = undefined;
+        }
       }
 
       return node;
@@ -124,7 +128,7 @@ class DataImportModal extends Component {
             )}
             {activeTab === 'zip' ? <ImportZip getNodesLocation={this.getNodesLocation} showSelectHandler={this.showSelectHandler} /> : null}
             {activeTab === 'xlsx' ? <ImportXlsx getNodesLocation={this.getNodesLocation} showSelectHandler={this.showSelectHandler} /> : null}
-            {activeTab === 'google' ? <ImportGoogle showSelectHandler={this.showSelectHandler} /> : null}
+            {activeTab === 'google' ? <ImportGoogle getNodesLocation={this.getNodesLocation} showSelectHandler={this.showSelectHandler} /> : null}
             {activeTab === 'linkedin' ? <ImportLinkedin /> : null}
           </div>
         </div>
