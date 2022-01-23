@@ -44,7 +44,8 @@ class DataTableNodes extends Component {
               cell.orginalValue = cell.value;
               cell.value = Utils.substr(cell.value.address, 28);
             } else {
-              cell.value = '';
+              cell.orginalValue = undefined;
+              cell.value = undefined;
             }
           }
         });

@@ -1,105 +1,64 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { Link, Redirect } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import queryString from 'query-string';
-import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
-import { resetPasswordRequest } from '../../store/actions/account';
+import { toast } from 'react-toastify';
 import WrapperSign from '../../components/WrapperSign';
 import Button from '../../components/form/Button';
 import PasswordInput from '../../components/form/PasswordInput';
-// import Validate from '../../helpers/Validate';
+import Validate from '../../helpers/Validate';
+import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
+import { resetPasswordRequest } from '../../store/actions/account';
 
-class ResetPassword extends Component {
-  static propTypes = {
-    resetPasswordRequest: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
-  }
+const ResetPassword = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [requestData, setRequestData] = useState({
+    password: '',
+    passwordConfirm: '',
+  });
+  const [errors, setErrors] = useState({
+    password: '',
+    passwordConfirm: '',
+  });
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      requestData: {
-        password: '',
-        passwordConfirm: '',
-      },
-      errors: {
-        password: '',
-        passwordConfirm: '',
-      },
-    };
-  }
-
-  handleTextChange = (e) => {
-    const { errors, requestData } = this.state;
-    _.set(requestData);
-    this.setState({
-      errors: {
-        ...errors,
-        [e.target.name]: this.validate(e.target.name, e.target.value),
-      },
-      requestData: {
-        ...requestData,
-        [e.target.name]: e.target.value,
-      },
-    });
+  const handleChange = async (path, value) => {
+    setRequestData((prevState) => ({
+      ...prevState,
+      [path]: value,
+    }));
   };
 
-  signIn = async (ev) => {
+  const signIn = async (ev) => {
     ev.preventDefault();
-    const { requestData } = this.state;
     const { token } = queryString.parse(window.location.search);
-    const { payload } = await this.props.resetPasswordRequest(token, requestData.password && requestData.passwordConfirm);
-    const { data = {} } = payload;
-    if (data.status !== 'ok') {
-      toast.dismiss(this.toast);
-      this.setState({ errors: data.errors || {} });
-      this.toast = toast.error(data.message);
-      return;
-    }
-    this.props.history.push('/');
-  }
+    [errors.password, errors.passwordConfirm, errors.errors] = Validate.passwordValidation(requestData);
 
-  validate = (name, value) => {
-    const { requestData } = this.state;
-    switch (name) {
-      case 'password':
-        if (!value) {
-          return 'Password is required';
-        } if (value.length < 8 || value.length > 15) {
-          return 'Please fill at least 8 character';
-        } if (!value.match(/[a-z]/g)) {
-          return 'Please enter at least lower character.';
-        } if (!value.match(/[A-Z]/g)) {
-          return 'Please enter at least upper character.';
-        } if (!value.match(/[0-9]/g)) {
-          return 'Please enter at least one digit.';
+    if (errors.password.trim().length > 0 || errors.passwordConfirm.trim().length > 0) {
+      setErrors((prevState) => ({
+        ...prevState,
+      }));
+    } else {
+      try {
+        const { payload: { data } } = await dispatch(resetPasswordRequest(token, requestData.password && requestData.passwordConfirm));
+        if (data.status === 'ok') {
+          toast.info('Password successfully updated');
+          setTimeout(() => {
+            history.push('/');
+          }, 1200);
         }
-        return '';
-
-      case 'passwordConfirm':
-        if (!value) {
-          return 'Confirm password is required';
-        } if (value !== requestData.password) {
-          return 'Password and confirm password must be same';
-        }
-        return '';
-
-      default: {
-        return '';
+        toast.dismiss(toast);
+        toast.info(data.message);
+        setErrors((prevState) => ({
+          ...prevState,
+        }));
+      } catch (e) {
+        //
       }
     }
   };
-
-  render() {
-    const { token } = queryString.parse(window.location.search);
-    const { requestData, errors } = this.state;
-    if (!token) {
-      return (<Redirect to="/" />);
-    }
-    return (
+  return (
+    <div>
       <WrapperSign>
         <div className="left forgotPassword">
           <Link to="/">
@@ -108,7 +67,7 @@ class ResetPassword extends Component {
         </div>
         <div className="right">
           <div>
-            <form onSubmit={this.signIn} id="login" className="authForm">
+            <form onSubmit={signIn} id="login" className="authForm">
               <div className="forgotPasswordText">
                 <h1>Reset Password </h1>
               </div>
@@ -121,7 +80,7 @@ class ResetPassword extends Component {
                 placeholder="Password"
                 value={requestData.password}
                 error={errors.password}
-                onChange={this.handleTextChange}
+                onChangeText={(v) => handleChange('password', v)}
                 autoComplete="off"
                 showIcon={(!!requestData.password)}
               />
@@ -133,8 +92,8 @@ class ResetPassword extends Component {
                 }`}
                 placeholder="Confirm password"
                 value={requestData.passwordConfirm}
-                error={errors.password}
-                onChange={this.handleTextChange}
+                error={errors.passwordConfirm}
+                onChangeText={(v) => handleChange('passwordConfirm', v)}
                 autoComplete="off"
                 showIcon={(!!requestData.passwordConfirm)}
               />
@@ -149,19 +108,8 @@ class ResetPassword extends Component {
           </div>
         </div>
       </WrapperSign>
-    );
-  }
-}
-
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = {
-  resetPasswordRequest,
+    </div>
+  );
 };
 
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ResetPassword);
-
-export default Container;
+export default ResetPassword;
