@@ -81,7 +81,15 @@ class MapsInfo extends Component {
   render() {
     const { edit, location } = this.state;
     const { node, google } = this.props;
-    this.initLocation(node.location);
+
+    if (!location) {
+      this.initLocation(node.location);
+    } else if (!(node.location.lat === location?.lat
+          && node.location.lng === location?.lng)) {
+      this.initLocation(node.location);
+      return null;
+    }
+
     if (!google || _.isEmpty(location)) {
       return null;
     }
