@@ -85,12 +85,7 @@ class MapsGraph extends Component {
     //   }
     //   return d;
     // });
-    let nodes = Chart.getNodes().filter((d) => d.location).map((d) => {
-      const { location } = d;
-
-      d.locationObj = location;
-      return d;
-    });
+    let nodes = Chart.getNodes().filter((d) => d.location);
 
     const links = Chart.getLinks().map((d) => {
       const source = ChartUtils.getNodeById(d.source);
@@ -142,7 +137,7 @@ class MapsGraph extends Component {
             <Marker
               key={d.name}
               name={d.name}
-              position={d.locationObj}
+              position={d.location}
               title={d.name}
               onClick={(props, marker, ev) => this.handleMarkerClick(props, marker, ev, d)}
               icon={{
