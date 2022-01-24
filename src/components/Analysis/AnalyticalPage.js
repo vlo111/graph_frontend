@@ -71,7 +71,7 @@ class AnalyticalPage extends Component {
     if (!(nodes && nodes.length && links && links.length)) {
       return <div />;
     }
-    // ChartUtils.autoScale();
+    ChartUtils.autoScale();
     const {
       min, max, mean, degreeDistribution,
     } = AnalysisUtils.degree(nodes, links);
