@@ -16,6 +16,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [failedLoginAttempts, setFailedLoginAttempts] = useState(0);
   const [errors, setErrors] = useState('');
+  const [pases, setPases] = useState([]);
 
   const signIn = async (ev) => {
     ev.preventDefault();
@@ -30,7 +31,8 @@ const Login = () => {
     const { payload } = await dispatch(signInRequest(email, password));
     const { data = {} } = payload;
     if (data.status !== 'ok') {
-      setFailedLoginAttempts(failedLoginAttempts + 1);
+      setPases({ pasRep: password });
+      if (!(pases.pasRep === password)) { setFailedLoginAttempts(failedLoginAttempts + 1)}
       setErrors(errorMessage);
 
       if (failedLoginAttempts === 3) {
