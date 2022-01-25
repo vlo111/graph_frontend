@@ -122,6 +122,25 @@ const AddNodeModal = ({ ariaHideApp }) => {
         nodeData.icon = data.icon;
       }
 
+      if (nodeData.color) {
+        chartNodes = chartNodes.map((n) => {
+          if (n.type === nodeData.type) {
+            n.color = nodeData.color;
+          }
+          return n;
+        });
+      }
+
+      if (nodeData.location) {
+        const { location: { lat, lng }, address } = nodeData.location;
+
+        nodeData.location = {
+          lat,
+          lng,
+          address,
+        };
+      }
+
       if (update) {
         chartNodes[index] = { ...chartNodes[index], ...nodeData };
         nodeData.update = true;
@@ -137,15 +156,6 @@ const AddNodeModal = ({ ariaHideApp }) => {
             customFields: nodeData.customFields,
           }]));
         }
-      }
-
-      if (nodeData.color) {
-        chartNodes = chartNodes.map((n) => {
-          if (n.type === nodeData.type) {
-            n.color = nodeData.color;
-          }
-          return n;
-        });
       }
 
       Chart.render({ nodes: chartNodes });
@@ -270,7 +280,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
 
                   <FileInput
                     containerClassName="fileUpload"
-                    label="Past icon link or select"
+                    label="Paste icon link or select"
                     accept=".png,.jpg,.gif,.svg"
                     value={nodeData.icon}
                     onChangeImgPreview={(v) => setImgUrl(v)}
