@@ -14,10 +14,10 @@ const Cytoscape = ({ nodes, links }) => {
       // height: "60px",
       // width: "100px",
       shape: 'circle',
-      'border-color': 'white',
+      'border-color': 'data(color)',
       'border-opacity': '1',
-      'border-width': '3px',
-      'background-color': 'data(color)',
+      'border-width': '8px',
+      'background-color': 'white',
     },
   },
   {
