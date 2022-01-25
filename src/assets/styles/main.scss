@@ -1653,7 +1653,7 @@ p {
   max-height: 100vh;
   height: 100vh;
   position: absolute;
-  z-index: 3;
+  z-index: 2;
   left: 202px;
   border-left: 1px solid $color-light-gray;
   padding-left: 4px;
@@ -2512,6 +2512,10 @@ p {
   .comment, .b-navbar{
     display: none;
   }
+   .tab_list{
+     top: 0;
+   }
+
 }
 
 }
@@ -9958,6 +9962,9 @@ details[open] summary:after {
           height: 13px !important;
         }
       }
+    }
+    Button svg{
+      pointer-events: none;
     }
   }
  .LegendExplorer{
