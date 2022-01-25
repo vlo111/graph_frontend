@@ -52,10 +52,6 @@ class Api {
     return api.post('/users/sign-in', { email, password });
   }
 
-  static saveScript(graphs) {
-    return api.post('/users/saveScript', { graphs });
-  }
-
 
   static forgotPassword(email, callback) {
     return api.post('/users/forgot-password', { email, callback });
