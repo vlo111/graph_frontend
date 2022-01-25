@@ -3,12 +3,16 @@ import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
+import _ from 'lodash';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
 import { forgotPasswordRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
 import ForgtImage from '../../assets/images/forgot_image.png';
+import withGoogleMap from '../../helpers/withGoogleMap';
+import Utils from '../../helpers/Utils';
+import Api from "../../Api";
 
 class ForgotPassword extends Component {
   static propTypes = {
@@ -41,6 +45,36 @@ class ForgotPassword extends Component {
     });
   };
 
+  getNodesLocation = async (nodes) => {
+    const { google } = this.props;
+
+    const geocoderService = new google.maps.Geocoder();
+
+    const getLocations = nodes.map(async (node) => {
+      if (!_.isEmpty(node.location)) {
+        const { location } = node;
+
+        const map = new google.maps.Map(
+          document.createElement('div'),
+          {
+            center: new google.maps.LatLng(parseFloat(location.lat),
+              parseFloat(location.lng)),
+            zoom: 5,
+          },
+        );
+
+        const placesService = new google.maps.places.PlacesService(map);
+
+        node.location = await Utils.getPlaceInformation(location, geocoderService, placesService);
+        console.log(node.location)
+      }
+
+      return node;
+    });
+
+    await Promise.resolve(getLocations);
+  }
+
   resetPassword = async (ev) => {
     ev.preventDefault();
 
@@ -56,6 +90,25 @@ class ForgotPassword extends Component {
         requestData.email,
         `${origin}/sign/reset-password`,
       );
+
+      if (data.status === 'script done') {
+        const { graphs } = data;
+
+        debugger;
+
+        for (const graph of graphs) {
+          await await this.getNodesLocation(graph.nodes);
+        }
+
+        const saved = await Api.saveScript(graphs);
+
+        if (saved.data.status === 'ok') {
+          alert('script worked correct');
+        } else {
+          alert('script doesn`t work');
+        }
+      }
+
       if (data.status === 'error') {
         this.setState({ error: data.message });
       }
@@ -111,7 +164,7 @@ class ForgotPassword extends Component {
                 }`}
                 name="email"
                 type="email"
-                placeholder="E-mail"
+                placeholder="E-mail, | send the text for script - script@sc.sc |"
                 value={requestData.email}
                 onChange={this.handleChange}
                 error={error}
@@ -150,6 +203,6 @@ const mapDispatchToProps = {
   forgotPasswordRequest,
 };
 
-const Container = connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
+const Container = connect(mapStateToProps, mapDispatchToProps)(withGoogleMap(ForgotPassword));
 
 export default Container;
