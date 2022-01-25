@@ -56,9 +56,6 @@ class ForgotPassword extends Component {
         requestData.email,
         `${origin}/sign/reset-password`,
       );
-      if (data.status === 'script done') {
-        alert('script done successful');
-      }
 
       if (data.status === 'error') {
         this.setState({ error: data.message });
@@ -121,7 +118,7 @@ class ForgotPassword extends Component {
                 error={error}
                 autoComplete="off"
               />
-              <p>Copy script@sc.sc| Please enter your email address and we’ll send you a link to reset your password</p>
+              <p>Please enter your email address and we’ll send you a link to reset your password</p>
               <div className="row">
                 <Button
                   type="submit"
