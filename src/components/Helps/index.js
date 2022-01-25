@@ -25,6 +25,7 @@ import Filter from '../../assets/images/help/Filter.png';
 import Media from '../../assets/images/help/Media.png';
 import Analyses from '../../assets/images/help/Analyses.png';
 import Outside from '../Outside';
+import Modal from 'react-modal';
 
 export default (props) => {
   const handleClose = () => {
@@ -36,6 +37,11 @@ export default (props) => {
       exclude=".help"
       onClick={handleClose}
     >
+      <Modal
+        className=" ghModalHelps"
+        overlayClassName="ghModalOverlay"
+        isOpen
+      >
       <div className="help">
         <Tabs>
           <div className="triangle-right" />
@@ -1081,6 +1087,7 @@ export default (props) => {
           </TabPanel>
         </Tabs>
       </div>
+      </Modal>
     </Outside>
 
   );
