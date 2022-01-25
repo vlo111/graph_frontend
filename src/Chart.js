@@ -1924,9 +1924,9 @@ class Chart {
     let selectSquare;
 
     const showSelectedNodes = () => {
-      this.nodesWrapper.selectAll('.node :not(text) :not(.highlight)')
+      this.nodesWrapper.selectAll('.node :not(text)')
         .attr('filter', (n) => (this.squareData.selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
-      this.nodesWrapper.selectAll('.node :not(text) :not(.highlight)')
+      this.nodesWrapper.selectAll('.node :not(text)')
         .attr('class', (n) => (this.squareData.selectedNodes.includes(n.id) ? 'selectMultyNodes' : null));
     };
 
@@ -2384,8 +2384,8 @@ class Chart {
       })
       .attr('xlink:href', (d) => ChartUtils.normalizeIcon(d.icon, d.nodeType === 'infography'));
 
-    this.nodesWrapper.selectAll('.node > :not(text):not(defs):not(.highlight)')
-      .style('fill', (d) => {
+    this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
+      .attr('fill', (d) => {
         if (d.icon) {
           if (scale <= 0.25 && d.nodeType !== 'infography') {
             return ChartUtils.nodeColor(d);
@@ -2395,13 +2395,8 @@ class Chart {
           }
           return `url(#i${d.index})`;
         }
-      });
 
-    this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-      .attr('stroke', (d) => {
-        if (!d.icon) {
-          return ChartUtils.nodeColor(d);
-        }
+        return ChartUtils.nodeColor(d);
       });
 
     return defs;
@@ -3300,32 +3295,6 @@ class Chart {
     this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
 
     this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
-  }
-
-  /**
-   * item can be open or close
-   * open node highlight
-   * close remove node highlight
-   * second param is node index
-   * @param item
-   * @param index
-   */
-  static highlight(item, index) {
-    const nodes = Chart.nodesWrapper;
-
-    const node = nodes.select(`[data-i="${index}"]`);
-
-    if (item === 'open') {
-      nodes.selectAll('.node > .highlight').remove();
-
-      if (node.data()?.length) {
-        node.insert('circle', ':first-child')
-          .classed('highlight', true)
-          .attr('r', Chart.radiusList[index] + 8);
-      }
-    } else {
-      node.select('.highlight').remove();
-    }
   }
 }
 

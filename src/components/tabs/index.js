@@ -80,8 +80,6 @@ const Tabs = ({ history, editable, viewPermisson }) => {
 
   useEffect(() => {
     if (activeTab !== '_description') updateTabWithFile();
-
-    Chart.highlight('open', node.index);
   }, []);
 
   const moveAutoPlay = () => {
