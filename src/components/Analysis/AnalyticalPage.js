@@ -48,7 +48,7 @@ class AnalyticalPage extends Component {
 
     const graphElement = document.getElementById('graph');
     if (graphElement) {
-      graphElement.style.height = '100%';
+      graphElement.style.height = '10%';
       graphElement.querySelector('svg').style.height = '100vh';
       graphElement.querySelector('svg').style.width = '55%';
     }

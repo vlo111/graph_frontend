@@ -869,8 +869,12 @@ p {
     cursor: pointer;
 
     :not(text) {
-      stroke: $color-white;
+      fill: $color-white;
       stroke-width: 10;
+    }
+
+    .highlight {
+      stroke: white;
     }
 
     .nodeCut {
@@ -972,8 +976,6 @@ p {
       path,
       image,
       circle {
-        stroke-width: 2;
-        stroke: white;
         stroke-dasharray: 2;
         animation: dashAutoAnim 80s linear;
         animation-iteration-count: infinite;
@@ -1651,7 +1653,7 @@ p {
   max-height: 100vh;
   height: 100vh;
   position: absolute;
-  z-index: 3;
+  z-index: 2;
   left: 202px;
   border-left: 1px solid $color-light-gray;
   padding-left: 4px;
@@ -2510,8 +2512,12 @@ p {
   .comment, .b-navbar{
     display: none;
   }
+   .tab_list{
+     top: 0;
+   }
+
 }
-  
+
 }
 
 .gh-jodit-popup {
@@ -7859,7 +7865,7 @@ img.preview-scaled {
     align-items: center;
     justify-content: center;
   }
-  
+
   .container {
     display: grid;
     grid-template-columns: 13% 43% 12% 12% 17%;
@@ -9956,6 +9962,9 @@ details[open] summary:after {
           height: 13px !important;
         }
       }
+    }
+    Button svg{
+      pointer-events: none;
     }
   }
  .LegendExplorer{

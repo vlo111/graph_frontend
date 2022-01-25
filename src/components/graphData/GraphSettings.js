@@ -169,7 +169,14 @@ const GraphSettings = ({ singleGraph }) => {
         </div>
         <div className="graphNameList">
           {graphList && graphList.map((graph) => (
-            <Link to={`/graphs/update/${graph.id}`} onClick={() => setIsMenuOpen(false)}>
+            <Link
+              to={`/graphs/update/${graph.id}`}
+              onClick={() => {
+                setIsMenuOpen(false);
+                document.querySelector('#autoPlay').style.right = '15px';
+                document.querySelector('.graphControlPanel').style.right = '15px';
+              }}
+            >
               <div title={graph.title}>
                 {graph.title.length > 11 ? `${graph.title.substring(0, 11)}...` : graph.title}
               </div>
