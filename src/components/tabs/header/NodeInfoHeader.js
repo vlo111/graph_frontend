@@ -7,7 +7,6 @@ import Utils from '../../../helpers/Utils';
 import ExportNodeTabs from '../../ExportNode/ExportNodeTabs';
 import Button from '../../form/Button';
 import { ReactComponent as ExpandSvg } from '../../../assets/images/icons/expand.svg';
-import Chart from '../../../Chart';
 
 const getElement = (name) => document.querySelector(name);
 
@@ -16,8 +15,6 @@ const NodeInfoHeader = ({
   setTabsExpand, connectedNodes, title, tabs, tabsExpand, viewPermisson,
 }) => {
   const closeNodeInfo = () => {
-    Chart.highlight('close', node.index);
-
     getElement('.tab-wrapper').style.transform = 'scaleX(0)';
 
     const queryObj = queryString.parse(window.location.search);
