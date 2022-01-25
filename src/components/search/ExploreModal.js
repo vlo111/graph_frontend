@@ -37,7 +37,7 @@ const SearchModal = ({ graphId }) => {
     name: true,
     tab: true,
     tag: true,
-    keyword: true,
+    keywords: true,
   });
   const chartNodes = Chart.getNodes();
   const publicState = useSelector(getPublicState);
@@ -81,7 +81,7 @@ const SearchModal = ({ graphId }) => {
         name: !checkBoxAll,
         tab: !checkBoxAll,
         tag: !checkBoxAll,
-        keyword: !checkBoxAll,
+        keywords: !checkBoxAll,
       });
     }
 
