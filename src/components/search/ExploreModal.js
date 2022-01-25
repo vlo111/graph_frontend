@@ -433,7 +433,7 @@ const SearchModal = ({ graphId }) => {
                               __html: formatHtml(item.type),
                             }}
                           />
-                          {item.keywords.join(', ').toLowerCase().includes(search.toLowerCase()) ? (
+                          {item.keywords.join(',').toLowerCase().includes(search.toLowerCase()) ? (
                             <span
                               className="keywords"
                               dangerouslySetInnerHTML={{
