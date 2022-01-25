@@ -869,8 +869,12 @@ p {
     cursor: pointer;
 
     :not(text) {
-      stroke: $color-white;
+      fill: $color-white;
       stroke-width: 10;
+    }
+
+    .highlight {
+      stroke: white;
     }
 
     .nodeCut {
@@ -972,8 +976,6 @@ p {
       path,
       image,
       circle {
-        stroke-width: 2;
-        stroke: white;
         stroke-dasharray: 2;
         animation: dashAutoAnim 80s linear;
         animation-iteration-count: infinite;
@@ -2515,7 +2517,7 @@ p {
    }
 
 }
-  
+
 }
 
 .gh-jodit-popup {
@@ -7863,7 +7865,7 @@ img.preview-scaled {
     align-items: center;
     justify-content: center;
   }
-  
+
   .container {
     display: grid;
     grid-template-columns: 13% 43% 12% 12% 17%;

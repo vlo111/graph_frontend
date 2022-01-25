@@ -424,36 +424,32 @@ class Utils {
    */
   static getPlaceInformation = (location, geocoderService, placesService) => new Promise((resolve) => {
     geocoderService.geocode({ location }, (results) => {
-      if (results) {
-        const { place_id: placeId } = results[0] || {};
-        if (!placeId) {
+      const { place_id: placeId } = results[0] || {};
+      if (!placeId) {
+        resolve({ location });
+        return;
+      }
+      placesService.getDetails({
+        placeId,
+        fields: ['name', 'international_phone_number', 'types', 'formatted_address', 'website', 'photo'],
+      }, (place, status) => {
+        if (status !== 'OK') {
           resolve({ location });
           return;
         }
-        placesService.getDetails({
-          placeId,
-          fields: ['name', 'international_phone_number', 'types', 'formatted_address', 'website', 'photo'],
-        }, (place, status) => {
-          if (status !== 'OK') {
-            resolve({ location });
-            return;
-          }
-          const {
-            name, website, photos,
-            formatted_address: address,
-            international_phone_number: phone,
-            types,
-          } = place;
-          const photo = !_.isEqual(photos) ? photos[0].getUrl({ maxWidth: 250, maxHeight: 250 }) : null;
-          const type = _.lowerCase(types[0] || '');
-          const selected = {
-            location, website, name, photo, address, type, phone,
-          };
-          resolve(selected);
-        });
-      } else {
-        resolve({ location });
-      }
+        const {
+          name, website, photos,
+          formatted_address: address,
+          international_phone_number: phone,
+          types,
+        } = place;
+        const photo = !_.isEqual(photos) ? photos[0].getUrl({ maxWidth: 250, maxHeight: 250 }) : null;
+        const type = _.lowerCase(types[0] || '');
+        const selected = {
+          location, website, name, photo, address, type, phone,
+        };
+        resolve(selected);
+      });
     });
   })
 }
