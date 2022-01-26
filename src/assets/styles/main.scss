@@ -2513,6 +2513,9 @@ p {
    .tab_list{
      top: 0;
    }
+   .tab-wrapper .tab-header-active:after{
+     width: 50%;
+   }
 
 }
   
@@ -3437,7 +3440,6 @@ body .gh__menu {
           .row {
             display: flex;
             flex-wrap: wrap;
-            // margin: 0;
           }
 
           .nodeTabs {
@@ -7087,7 +7089,6 @@ img.preview-scaled {
 
           .row {
             display: flex;
-            // margin: 0;
           }
 
           .nodeTabs {
@@ -7748,9 +7749,9 @@ img.preview-scaled {
 }
 
 #header {
-  display: grid;
-  grid-template-columns: 10% 20% 36% 20% 10%;
-  grid-gap: 1%;
+  display: flex;
+  grid-template-columns: 10% 20% 30% 2% 5% auto;
+    grid-gap: 1%;
   height: 75px;
   background-color: #fff;
   position: fixed;
@@ -7833,7 +7834,42 @@ img.preview-scaled {
       min-width: 100%;
     }
   }
+ .headerHelp{
+    display: flex;
+  .ghButton .icon, svg{
+    height: 32px;
+    width: 35px;
+  }
+  .ghButton:active{
+    box-shadow: none;
+  }
+  
+ }
+
 }
+.helpHomePages .react-tabs{
+right: 0 !important;
+top: 5%;
+.triangle-right{
+  display: none;
+}
+ol {
+  list-style: none;
+}
+li span{
+  color: #7166f8;
+  font-weight: 700;
+}
+.helpsSubTitle{
+  padding-left: 20px;
+}
+.helpMaind{
+  margin-top: 70px;
+}
+.exploreTitle{
+  left: -20px;
+}
+ }
 
 #header-on-graph,
 #header-on-view-graph {
@@ -8795,8 +8831,6 @@ img.preview-scaled {
   }
 
   .createNewGraphBtn {
-    // width: 216px;
-    // display: flex;
     justify-content: center;
     align-items: center;
   }
