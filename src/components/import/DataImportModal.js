@@ -75,7 +75,17 @@ class DataImportModal extends Component {
 
         const placesService = new google.maps.places.PlacesService(map);
 
-        node.location = await Utils.getPlaceInformation(location, geocoderService, placesService);
+        const { address, location: { lat, lng } } = await Utils.getPlaceInformation(location, geocoderService, placesService);
+
+        if (address) {
+          node.location = {
+            address,
+            lat,
+            lng,
+          };
+        } else {
+          node.location = undefined;
+        }
       }
 
       return node;
@@ -118,7 +128,7 @@ class DataImportModal extends Component {
             )}
             {activeTab === 'zip' ? <ImportZip getNodesLocation={this.getNodesLocation} showSelectHandler={this.showSelectHandler} /> : null}
             {activeTab === 'xlsx' ? <ImportXlsx getNodesLocation={this.getNodesLocation} showSelectHandler={this.showSelectHandler} /> : null}
-            {activeTab === 'google' ? <ImportGoogle showSelectHandler={this.showSelectHandler} /> : null}
+            {activeTab === 'google' ? <ImportGoogle getNodesLocation={this.getNodesLocation} showSelectHandler={this.showSelectHandler} /> : null}
             {activeTab === 'linkedin' ? <ImportLinkedin /> : null}
           </div>
         </div>

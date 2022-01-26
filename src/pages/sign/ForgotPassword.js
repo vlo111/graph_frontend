@@ -56,6 +56,7 @@ class ForgotPassword extends Component {
         requestData.email,
         `${origin}/sign/reset-password`,
       );
+
       if (data.status === 'error') {
         this.setState({ error: data.message });
       }
