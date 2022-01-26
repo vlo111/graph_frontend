@@ -3,39 +3,62 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import PropTypes from 'prop-types';
 import AddNodeModal from './chart/AddNodeModal';
 import ChartUtils from '../helpers/ChartUtils';
+import queryString from "query-string";
 
-const Cytoscape = ({ nodes, links }) => {
-  const style = [{
-    selector: 'node',
-    css: {
-      content: 'data(label)',
-      // "text-valign": "center",
-      // "text-halign": "center",
-      // height: "60px",
-      // width: "100px",
-      shape: 'circle',
-      'border-color': 'data(color)',
-      'border-opacity': '1',
-      'border-width': '8px',
-      'background-color': 'white',
+const Cytoscape = ({ nodes, links, history }) => {
+  const style = [
+    {
+      selector: 'node.highlight',
+      style: {
+        'border-color': '#FFF',
+        'border-width': '2px',
+      },
     },
-  },
-  {
-    selector: 'edge',
-    style: {
-      'curve-style': 'haystack',
-      'haystack-radius': 0,
-      'width': 5,
-      'opacity': 0.5,
-      'line-color': '#a8eae5'
+    {
+      selector: 'node.semitransp',
+      style: { opacity: '0.5' },
     },
-    css: {
-      'curve-style': 'bezier',
-      'control-point-step-size': 40,
-      'target-arrow-shape': 'triangle',
-      'background-color': 'data(color)',
+    {
+      selector: 'edge.highlight',
+      style: { 'mid-target-arrow-color': '#FFF' },
     },
-  },
+    {
+      selector: 'edge.semitransp',
+      style: { opacity: '0.2' },
+    },
+
+    {
+      selector: 'node',
+      css: {
+        content: 'data(label)',
+        // "text-valign": "center",
+        // "text-halign": "center",
+        // height: "60px",
+        // width: "100px",
+        shape: 'circle',
+        'border-color': 'data(color)',
+        'border-opacity': '1',
+        'border-width': '8px',
+        'background-color': 'white',
+        cursor: 'pointer',
+      },
+    },
+    {
+      selector: 'edge',
+      style: {
+        'curve-style': 'haystack',
+        'haystack-radius': 0,
+        width: 5,
+        opacity: 0.5,
+        'line-color': '#a8eae5',
+      },
+      css: {
+        'curve-style': 'bezier',
+        'control-point-step-size': 40,
+        'target-arrow-shape': 'triangle',
+        'background-color': 'data(color)',
+      },
+    },
   ];
 
   const [nodeShape, setNodeShape] = useState('');
@@ -47,15 +70,15 @@ const Cytoscape = ({ nodes, links }) => {
 
   const cyClick = (evt) => {
     // runs many times
-    myCyRef.add({
-      group: 'nodes',
-      data: { weight: 75 },
-      position: {
-        x: evt.position.x,
-        y: evt.position.y,
-      },
-      style: { shape: nodeShape },
-    });
+    // myCyRef.add({
+    //   group: 'nodes',
+    //   data: { weight: 75 },
+    //   position: {
+    //     x: evt.position.x,
+    //     y: evt.position.y,
+    //   },
+    //   style: { shape: nodeShape },
+    // });
   };
 
   const elements = [
@@ -202,7 +225,7 @@ const Cytoscape = ({ nodes, links }) => {
           >
             Random
           </button>
-          <div style={{display: 'block'}}>
+          <div style={{ display: 'block' }}>
             <button
               style={{ padding: '5px', background: '#509ee2', border: '1px solid white' }}
               onClick={() => {
@@ -211,10 +234,10 @@ const Cytoscape = ({ nodes, links }) => {
             >
               Grid
             </button>
-            <button onClick={() => setRow(row + 1)} >+ 1 row</button>
+            <button onClick={() => setRow(row + 1)}>+ 1 row</button>
             <button onClick={() => setRow(row - 1)}>- 1 row</button>
 
-            <button onClick={() => setColumn(column + 1)} >+ 1 column</button>
+            <button onClick={() => setColumn(column + 1)}>+ 1 column</button>
             <button onClick={() => setColumn(column - 1)}>- 1 column</button>
           </div>
         </div>
@@ -230,30 +253,69 @@ const Cytoscape = ({ nodes, links }) => {
         cy={(cy) => {
           myCyRef = cy;
 
-          cy.on('click', (evt) => {
-            cyClick(evt);
-            console.log('Hello');
+          cy.on('tap', 'node', function(evt){
+            let node = evt.target;
+            console.log('tapped ' + node.id());
+            if (node.selected()) {
+              console.log('selected ' + node.id());
+
+              const queryObj = queryString.parse(window.location.search);
+              queryObj.info = node.id();
+              const query = queryString.stringify(queryObj);
+              history.replace(`?${query}`);
+            }
           });
 
-          cy.on('tap', 'node', (evt) => {
-            const node = evt.target;
-            // console.log("EVT", evt);
-            // console.log("TARGET", node.data());
-            // console.log("TARGET TYPE", typeof node[0]);
-            console.log('TARGET ID', node.id());
-          });
+          // cy.on('click', (evt) => {
+          //   cyClick(evt);
+          //   console.log('Hello');
+          // });
+
+          // cy.on('tap', 'node', (evt) => {
+          //   const node = evt.target;
+          //   // console.log("EVT", evt);
+          //   // console.log("TARGET", node.data());
+          //   // console.log("TARGET TYPE", typeof node[0]);
+          //   console.log('TARGET ID', node.id());
+          // });
 
           // REMOVING
-          cy.on('cxttap', 'node', (evt) => {
-            const tgt = evt.target || evt.cyTarget; // 3.x || 2.x
+          // cy.on('cxttap', 'node', (evt) => {
+          //   const tgt = evt.target || evt.cyTarget; // 3.x || 2.x
+          //
+          //   tgt.remove();
+          // });
+          //
+          // cy.on('cxttap', 'edge', (evt) => {
+          //   const tgt = evt.target || evt.cyTarget; // 3.x || 2.x
+          //
+          //   tgt.remove();
+          // });
 
-            tgt.remove();
+          // add new node
+          // cy.on('mouseover', 'node', function (evt) {
+          //   myCyRef.update()
+          //
+          //   document.body.style.cursor = 'pointer';
+          // } );
+          //
+          // cy.on('mouseout', 'node', function (evt) {
+          //   document.body.style.cursor = 'auto';
+          // });
+
+          cy.on('mouseover', 'node', (e) => {
+            document.body.style.cursor = 'pointer';
+
+            const sel = e.target;
+            cy.elements().difference(sel.outgoers()).not(sel).addClass('semitransp');
+            sel.addClass('highlight').outgoers().addClass('highlight');
           });
+          cy.on('mouseout', 'node', (e) => {
+            document.body.style.cursor = 'auto';
 
-          cy.on('cxttap', 'edge', (evt) => {
-            const tgt = evt.target || evt.cyTarget; // 3.x || 2.x
-
-            tgt.remove();
+            const sel = e.target;
+            cy.elements().removeClass('semitransp');
+            sel.removeClass('highlight').outgoers().removeClass('highlight');
           });
         }}
       />

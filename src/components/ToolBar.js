@@ -540,7 +540,7 @@ class ToolBar extends Component {
         <Undo />
         <SearchModal history={this.props.history} />
         {activeButton === 'cytoscape' && (
-          <Cytoscape nodes={singleGraph.nodesPartial} links={singleGraph.linksPartial} />
+          <Cytoscape history={this.props.history} nodes={singleGraph.nodesPartial} links={singleGraph.linksPartial} />
         )}
       </>
     );
