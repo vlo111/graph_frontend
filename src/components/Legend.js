@@ -93,9 +93,7 @@ class Legend extends Component {
               onClick={() => this.handleClick()}
             />
             <h4>
-              Nodes (
-              {nodesPartial?.length}
-              )
+              Nodes ({nodesPartial?.length})
             </h4>
             <div className="nodes">
 

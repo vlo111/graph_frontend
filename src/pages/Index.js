@@ -37,7 +37,7 @@ render() {
           // direction="horizontal"
           tabs={[
             { to: '/public', name: 'Public', component: <Public mode={mode} /> },
-            { to: '/', name: 'Home', component: <Home mode={mode} /> },
+            { to: '/', name: 'My Graphs', component: <Home mode={mode} /> },
             {
               to: '/search', name: 'Search', hidden: true, component: <Home />,
             },
