@@ -95,7 +95,7 @@ class FiltersModal extends Component {
             {(!userGraph || userGraph.role === 'admin' || userGraph.role === 'edit') && (
             <>
               <Link
-                to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/view/${graphId}`}
+                to={Utils.isInEmbed() ? `/graphs/embed/${graphId}/${token}` : `/graphs/update/${graphId}`}
                 replace
               >
                 <Button className="close" icon={<CloseIcon />} onClick={this.closeFilter} />
