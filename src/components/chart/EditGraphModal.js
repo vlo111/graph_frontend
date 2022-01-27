@@ -131,7 +131,12 @@ const EditGraphModal = ({
     if (graph) {
       toast.info('Successfully saved');
       const { payload: { data: { graph: newGraph } } } = (await dispatch(getSingleGraphRequest(resGraphId)));
-      await dispatch(getGraphsListRequest(1, { filter: order, status: graph.status }));
+      if (history.location.pathname === '/public') {
+        await dispatch(getGraphsListRequest(1, { filter: order, publicGraph: 1 }));
+      } else {
+        await dispatch(getGraphsListRequest(1, { filter: order, status: graph.status }));
+      }
+
       (updateGraph && updateGraph(newGraph));
     } else if (!resGraphId) {
       toast.error('Something went wrong. Please try again');

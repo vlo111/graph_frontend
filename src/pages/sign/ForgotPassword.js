@@ -57,10 +57,6 @@ class ForgotPassword extends Component {
         `${origin}/sign/reset-password`,
       );
 
-      if (data.status === 'script done') {
-        alert('script worked correct');
-      }
-
       if (data.status === 'error') {
         this.setState({ error: data.message });
       }
@@ -116,7 +112,7 @@ class ForgotPassword extends Component {
                 }`}
                 name="email"
                 type="email"
-                placeholder="E-mail, | send the text for script - script@sc.sc |"
+                placeholder="E-mail"
                 value={requestData.email}
                 onChange={this.handleChange}
                 error={error}

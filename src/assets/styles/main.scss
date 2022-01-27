@@ -905,10 +905,9 @@ p {
 
     &.emphasisIcon {
       :not(text) {
-        stroke-width: 8px !important;
-        stroke: #007bff !important;
-        stroke-dasharray: 0 !important;
-        filter: drop-shadow( 3px 8px 8px rgb(131 131 131 / 90%));
+        stroke-width: 4 !important;
+        stroke: yellow !important;
+        stroke-dasharray: 12 !important;
       }
     }
 
@@ -980,6 +979,8 @@ p {
       path,
       image,
       circle {
+        stroke-width: 2;
+        stroke: white;
         stroke-dasharray: 2;
         animation: dashAutoAnim 80s linear;
         animation-iteration-count: infinite;
@@ -1657,7 +1658,7 @@ p {
   max-height: 100vh;
   height: 100vh;
   position: absolute;
-  z-index: 3;
+  z-index: 2;
   left: 202px;
   border-left: 1px solid $color-light-gray;
   padding-left: 4px;
@@ -2516,6 +2517,13 @@ p {
   .comment, .b-navbar{
     display: none;
   }
+   .tab_list{
+     top: 0;
+   }
+   .tab-wrapper .tab-header-active:after{
+     width: 50%;
+   }
+
 }
 
 }
@@ -3439,7 +3447,6 @@ body .gh__menu {
           .row {
             display: flex;
             flex-wrap: wrap;
-            // margin: 0;
           }
 
           .nodeTabs {
@@ -7089,7 +7096,6 @@ img.preview-scaled {
 
           .row {
             display: flex;
-            // margin: 0;
           }
 
           .nodeTabs {
@@ -7750,9 +7756,9 @@ img.preview-scaled {
 }
 
 #header {
-  display: grid;
-  grid-template-columns: 10% 20% 36% 20% 10%;
-  grid-gap: 1%;
+  display: flex;
+  grid-template-columns: 10% 20% 30% 2% 5% auto;
+    grid-gap: 1%;
   height: 75px;
   background-color: #fff;
   position: fixed;
@@ -7835,7 +7841,42 @@ img.preview-scaled {
       min-width: 100%;
     }
   }
+ .headerHelp{
+    display: flex;
+  .ghButton .icon, svg{
+    height: 32px;
+    width: 35px;
+  }
+  .ghButton:active{
+    box-shadow: none;
+  }
+
+ }
+
 }
+.helpHomePages .react-tabs{
+right: 0 !important;
+top: 5%;
+.triangle-right{
+  display: none;
+}
+ol {
+  list-style: none;
+}
+li span{
+  color: #7166f8;
+  font-weight: 700;
+}
+.helpsSubTitle{
+  padding-left: 20px;
+}
+.helpMaind{
+  margin-top: 70px;
+}
+.exploreTitle{
+  left: -20px;
+}
+ }
 
 #header-on-graph,
 #header-on-view-graph {
@@ -8797,8 +8838,6 @@ img.preview-scaled {
   }
 
   .createNewGraphBtn {
-    // width: 216px;
-    // display: flex;
     justify-content: center;
     align-items: center;
   }
@@ -9963,6 +10002,9 @@ details[open] summary:after {
         }
       }
     }
+    Button svg{
+      pointer-events: none;
+    }
   }
  .LegendExplorer{
   height: 45px;
@@ -10080,8 +10122,4 @@ details[open] summary:after {
       flex: 30%;
     }
   }
-}
-
-.highlight {
-  background-color: red;
 }
