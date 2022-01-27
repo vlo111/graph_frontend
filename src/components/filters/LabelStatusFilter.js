@@ -74,7 +74,7 @@ class LabelStatusFilter extends Component {
               </span>
             </li>
             {labelsStatus.map((item) => (
-              <li key={item.status} className="item" style={{ color: ChartUtils.nodeColor(item) }}>
+              <li key={item.status} className="item">
                 <div className="filterCheckBox">
                   <Checkbox
                     id={this.statusName(item.status)}
