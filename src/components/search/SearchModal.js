@@ -44,7 +44,6 @@ class SearchModal extends Component {
   }
 
   closeModal = () => {
-    this.props.toggleGraphMap(false);
     this.props.setActiveButton('create');
 
     this.handleChange('');
@@ -60,7 +59,7 @@ class SearchModal extends Component {
       nodes: [], search, tabs: [], docs: [], keywords: [],
     });
     if (!search) {
-      return;
+      this.props.toggleGraphMap(false);
     }
     if (search.length > 1) {
       this.displaySearchResultList(search);
