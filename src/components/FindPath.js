@@ -58,12 +58,9 @@ class FindPath extends Component {
   showPath = (node) => {
     const { start } = this.props;
     const { nodes, links } = this.shortPath(start, node.id);
-    Chart.render({ nodes, links }, { ignoreAutoSave: true, isAutoPosition: true });
+    Chart.render({ nodes, links }, { ignoreAutoSave: true });
     this.closeModal();
-    ChartUtils.autoScaleTimeOut();
-    ChartUtils.autoScaleTimeOut(100);
-    ChartUtils.autoScaleTimeOut(200);
-    ChartUtils.startAutoPosition();
+    ChartUtils.autoScale();
   }
 
   shortPath = (start, end) => {

@@ -797,7 +797,10 @@ p {
       }
 
       &.emphasisConnection {
-        stroke: yellow !important;
+        stroke: rgb(28 107 217 / 70%) !important;
+        -webkit-filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
+        filter: drop-shadow( 3px 8px 8px rgb(131 131 131 / 90%));
+        stroke-width: 8px;
       }
     }
   }
@@ -902,9 +905,10 @@ p {
 
     &.emphasisIcon {
       :not(text) {
-        stroke-width: 4 !important;
-        stroke: yellow !important;
-        stroke-dasharray: 12 !important;
+        stroke-width: 8px !important;
+        stroke: #007bff !important;
+        stroke-dasharray: 0 !important;
+        filter: drop-shadow( 3px 8px 8px rgb(131 131 131 / 90%));
       }
     }
 
