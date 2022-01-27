@@ -92,7 +92,8 @@ class AnalyticalPage extends Component {
               <Button icon={<BackSvg style={{ height: 30 }} />} className="transparent edit" />
             </Tooltip>
           </Link>
-          <div className="container">
+
+          <div className="analyticContainer">
             <AnalysePieChart nodes={nodes} />
             <AnalyseBarChart degreeDistribution={degreeDistribution} />
             <div className="localAnalyse">
