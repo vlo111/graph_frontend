@@ -77,17 +77,6 @@ export function resetFilter() {
   };
 }
 
-export const SET_LEGEND_BUTTON = 'SET_LEGEND_BUTTON';
-
-export function setLegendButton(mode) {
-  return {
-    type: SET_LEGEND_BUTTON,
-    payload: {
-      mode,
-    },
-  };
-}
-
 export const ONLINE_USERS = 'ONLINE_USERS';
 
 export function getOnlineUsersRequest(data) {

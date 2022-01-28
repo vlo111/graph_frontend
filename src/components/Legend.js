@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { setLegendButton } from '../store/actions/app';
 import ChartUtils from '../helpers/ChartUtils';
 import { ReactComponent as LegendSvg } from '../assets/images/icons/legend.svg';
 import Button from './form/Button';
@@ -11,28 +10,39 @@ import { ReactComponent as CloseSvg } from '../assets/images/icons/close.svg';
 
 class Legend extends Component {
     static propTypes = {
-      showLegendButton: PropTypes.string.isRequired,
-      setLegendButton: PropTypes.func.isRequired,
       getSingleGraphRequest: PropTypes.func.isRequired,
       singleGraph: PropTypes.object.isRequired,
+    }
 
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        show: false,
+      };
     }
 
     handleClick = () => {
-      const { showLegendButton, singleGraph: { id } } = this.props;
-      if (showLegendButton !== 'show') {
-        this.props.setLegendButton('show');
+      const { show } = this.state;
+
+      const { singleGraph: { id } } = this.props;
+
+      if (show) {
+        const play = document.getElementById('autoPlay');
+        const panel = document.getElementById('graphControlPanel');
+        play.style.right = '29px';
+        panel.style.right = '29px';
+      } else {
         this.props.getSingleGraphRequest(id, { viewMode: true, rendering: false });
         const play = document.getElementById('autoPlay');
         const panel = document.getElementById('graphControlPanel');
         play.style.right = '310px';
         panel.style.right = '310px';
-      } else if (this.props.setLegendButton('close')) {
-        const play = document.getElementById('autoPlay');
-        const panel = document.getElementById('graphControlPanel');
-        play.style.right = '29px';
-        panel.style.right = '29px';
       }
+
+      this.setState({
+        show: !show,
+      })
     }
 
     orderData = (data) => data.sort((a, b) => {
@@ -42,7 +52,8 @@ class Legend extends Component {
     })
 
     render() {
-      const { showLegendButton, singleGraph: { nodesPartial, linksPartial } } = this.props;
+      const { show } = this.state;
+      const { singleGraph: { nodesPartial, linksPartial } } = this.props;
 
       const nodes = this.orderData([...new Map(nodesPartial?.map((node) => [node.type, node])).values()]);
 
@@ -79,7 +90,7 @@ class Legend extends Component {
         </li>
       ));
       return (
-        <div className={showLegendButton === 'close' ? 'legends' : 'legends open'} id="legends">
+        <div className={`legends ${show && 'open'}`} id="legends">
 
           <Button className="dropdown-btn legendButton" onClick={() => this.handleClick()}>
             <LegendSvg className="legendSvg" />
@@ -93,7 +104,9 @@ class Legend extends Component {
               onClick={() => this.handleClick()}
             />
             <h4>
-              Nodes ({nodesPartial?.length})
+              Nodes (
+              {nodesPartial?.length}
+              )
             </h4>
             <div className="nodes">
 
@@ -119,12 +132,10 @@ class Legend extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  showLegendButton: state.app.legendButton,
   singleGraph: state.graphs.singleGraph,
 });
 
 const mapDispatchToProps = {
-  setLegendButton,
   getSingleGraphRequest,
 };
 

@@ -797,9 +797,9 @@ p {
       }
 
       &.emphasisConnection {
-        stroke: rgb(28 107 217 / 70%) !important;
-        -webkit-filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
-        filter: drop-shadow( 3px 8px 8px rgb(131 131 131 / 90%));
+        stroke: #2196f3 !important;
+        -webkit-filter: drop-shadow( 3px 8px 8px rgb(178 196 211 / 90%));
+        filter: drop-shadow( 3px 8px 8px rgb(178 196 211 / 90%));
         stroke-width: 8px;
       }
     }
@@ -906,8 +906,9 @@ p {
     &.emphasisIcon {
       :not(text) {
         stroke-width: 4 !important;
-        stroke: yellow !important;
-        stroke-dasharray: 12 !important;
+        stroke: #2196f3 !important;
+        -webkit-filter: drop-shadow( 3px 8px 8px rgb(178 196 211 / 90%));
+        filter: drop-shadow( 3px 8px 8px rgb(178 196 211 / 90%));
       }
     }
 
@@ -8949,7 +8950,6 @@ li span{
 
   tbody {
     display: block;
-    height: 650px;
     overflow-x: hidden;
     overflow-y: auto;
 
