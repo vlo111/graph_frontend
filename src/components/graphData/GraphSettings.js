@@ -91,7 +91,7 @@ const GraphSettings = ({ singleGraph }) => {
       }
       Chart.undoManager.reset();
     }
-    ChartUtils.autoScale('graph');
+    ChartUtils.autoScale();
   }, [graphId, isMenuOpen]);
 
   const saveGraph = async (status, forceCreate) => {
