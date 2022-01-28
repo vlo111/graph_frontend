@@ -173,6 +173,10 @@ class DataView extends Component {
       default:
         this.download('png');
     }
+
+    Chart.node.attr('class', ChartUtils.setClass((d) => ({ unChecked: false })));
+    Chart.link.attr('class', ChartUtils.setClass((d) => ({ unChecked: false })));
+    this.props.setActiveButton('create');
   }
 
   closeExport = (ev) => {

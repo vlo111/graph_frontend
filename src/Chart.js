@@ -717,9 +717,11 @@ class Chart {
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -4000 : -5000)).distanceMin(50).distanceMax(500))
-        .force('y', d3.forceY(0.05))
-        .force('x', d3.forceX(0.05));
+        .force('charge', d3.forceManyBody()
+        .strength(-2000)
+        .distanceMin(1).distanceMax(2000))
+        .force('y', d3.forceY(0.5))
+        .force('x', d3.forceX(0.5));
     }
     return true;
   }

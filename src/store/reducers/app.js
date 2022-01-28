@@ -3,7 +3,7 @@ import {
   LOADING,
   NEW_NODE_MODAL, PREVIOUS_ACTIVE_BUTTON, RESET_FILTER,
   SET_ACTIVE_BUTTON, SET_FILTER, SET_GRID_INDEXES,
-  TOGGLE_GRID, SET_LEGEND_BUTTON, ONLINE_USERS, TOGGLE_GRAPH_MAP, TOGGLE_SEARCH,
+  TOGGLE_GRID, ONLINE_USERS, TOGGLE_GRAPH_MAP, TOGGLE_SEARCH,
   TOGGLE_DELETE_STATE, AUTO_SCALE,
 } from '../actions/app';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -21,7 +21,6 @@ const initialState = {
     nodes: [],
     links: [],
   },
-  legendButton: 'close',
   GraphNameButton: 'close',
   showGraphMap: false,
   showSearch: false,
@@ -109,15 +108,6 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         filters: _.cloneDeep(initialFilters),
-      };
-    }
-    case SET_LEGEND_BUTTON: {
-      if (state.legendButton === action.payload.mode) {
-        return state;
-      }
-      return {
-        ...state,
-        legendButton: action.payload.mode,
       };
     }
     case ONLINE_USERS: {
