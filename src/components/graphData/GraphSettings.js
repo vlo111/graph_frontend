@@ -77,16 +77,21 @@ const GraphSettings = ({ singleGraph }) => {
   useEffect(async () => {
     if (isMenuOpen) {
       setGraphList([]);
-      const result = await Api.getGraphsList(1, {
-        onlyTitle: true,
-        s: search,
-        limit: search === '' ? 3 : undefined,
-        graphName: 'true',
-        graphId,
-      });
-      setGraphList(result?.data?.graphs || []);
+      try {
+        const result = await Api.getGraphsList(1, {
+          onlyTitle: true,
+          s: search,
+          limit: search === '' ? 3 : undefined,
+          graphName: 'true',
+          graphId,
+        });
+        setGraphList(result?.data?.graphs || []);
+      } catch (e) {
+        console.log(e);
+      }
       Chart.undoManager.reset();
     }
+    ChartUtils.autoScale();
   }, [graphId, isMenuOpen]);
 
   const saveGraph = async (status, forceCreate) => {
