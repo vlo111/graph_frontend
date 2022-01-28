@@ -1,5 +1,6 @@
 import React, { useEffect, Suspense, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip/es';
 import { getActionsCount } from '../../store/selectors/graphs';
@@ -15,6 +16,7 @@ import { ReactComponent as CommentSvg } from '../../assets/images/icons/commentG
 import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/viewGraph.svg';
 import { ReactComponent as Description } from '../../assets/images/icons/description.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { getId } from '../../store/selectors/account';
 
 const TooltipContent = ({ graphId, graphOwner }) => (
   <Suspense fallback={<div>Loading...</div>}>
@@ -23,6 +25,7 @@ const TooltipContent = ({ graphId, graphOwner }) => (
 );
 TooltipContent.propTypes = {
   graphId: PropTypes.string.isRequired,
+  graphOwner: PropTypes.string.isRequired,
 };
 
 const GraphListFooter = ({ graph }) => {
@@ -31,6 +34,8 @@ const GraphListFooter = ({ graph }) => {
   const dispatch = useDispatch();
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [opendesc, setOpenDesc] = useState(false);
+  const history = useHistory();
+  const userId = useSelector(getId);
 
   useEffect(() => {
     if (graph.id) {
@@ -52,16 +57,20 @@ const GraphListFooter = ({ graph }) => {
       </Button>
       {actionsCount?.shares
         ? (
+          (((history.location.pathname !== '/public') || (userId === graph.userId))) && (
           <Tooltip overlay={<TooltipContent graphId={graph.id} graphOwner={graph.user} />} trigger={['click']} placement={['top']}>
             <Button icon={<ShareSvg />} className="transparent footer-icon">
               <span className="graphListFooter__count">{actionsCount?.shares}</span>
             </Button>
           </Tooltip>
+          )
         )
         : (
+          (((history.location.pathname !== '/public') || (userId === graph.userId))) && (
           <Button icon={<ShareSvg />} className="transparent footer-icon">
             <span className="graphListFooter__count">{actionsCount?.shares}</span>
           </Button>
+          )
         )}
       {openCommentModal && (
         <CommentModal
