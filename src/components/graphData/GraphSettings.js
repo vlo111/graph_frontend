@@ -85,8 +85,21 @@ const GraphSettings = ({ singleGraph }) => {
         graphId,
       });
       setGraphList(result?.data?.graphs || []);
+      try {
+        const result = await Api.getGraphsList(1, {
+          onlyTitle: true,
+          s: search,
+          limit: search === '' ? 3 : undefined,
+          graphName: 'true',
+          graphId,
+        });
+        setGraphList(result?.data?.graphs || []);
+      } catch (e) {
+        console.log(e);
+      }
       Chart.undoManager.reset();
     }
+    ChartUtils.autoScale();
   }, [graphId, isMenuOpen]);
 
   const saveGraph = async (status, forceCreate) => {
@@ -146,70 +159,70 @@ const GraphSettings = ({ singleGraph }) => {
         </div>
       </button>
       {isMenuOpen && (
-      <div ref={ref} className="dropdown">
-        <div className="graphname">
+        <div ref={ref} className="dropdown">
+          <div className="graphname">
           <span title={singleGraph.title} className="graphNames">
             {singleGraph.title.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
           </span>
-          <Button
-            icon={<EditSvg />}
-            className="EditGraph"
-            onClick={() => setOpenEditGraphModal(true)}
-          />
-        </div>
-        <div>
-          <Input
-            className="graphSearchName"
-            placeholder="Search"
-            icon="fa-search"
-            value={search}
-            onChange={(e) => handleSearch(e.target.value)}
-            autoComplete="off"
-          />
-        </div>
-        <div className="graphNameList">
-          {graphList && graphList.map((graph) => (
-            <Link
-              to={`/graphs/update/${graph.id}`}
-              onClick={() => {
-                setIsMenuOpen(false);
-                document.querySelector('#autoPlay').style.right = '15px';
-                document.querySelector('.graphControlPanel').style.right = '15px';
-              }}
-            >
-              <div title={graph.title}>
-                {graph.title.length > 11 ? `${graph.title.substring(0, 11)}...` : graph.title}
-              </div>
-            </Link>
-          ))}
-        </div>
-        <Button
-          className="btn-classic"
-          onClick={startGraph}
-          style={{ fontSize: 18 }}
-        >
-          New Graph
-        </Button>
-
-        {isTemplate ? (
-          <>
             <Button
-              className="accent alt"
-              onClick={() => saveGraph('active', true)}
-            >
-              Save as Graph
-            </Button>
-          </>
-        ) : (
+              icon={<EditSvg />}
+              className="EditGraph"
+              onClick={() => setOpenEditGraphModal(true)}
+            />
+          </div>
+          <div>
+            <Input
+              className="graphSearchName"
+              placeholder="Search"
+              icon="fa-search"
+              value={search}
+              onChange={(e) => handleSearch(e.target.value)}
+              autoComplete="off"
+            />
+          </div>
+          <div className="graphNameList">
+            {graphList && graphList.map((graph) => (
+              <Link
+                to={`/graphs/update/${graph.id}`}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  document.querySelector('#autoPlay').style.right = '15px';
+                  document.querySelector('.graphControlPanel').style.right = '15px';
+                }}
+              >
+                <div title={graph.title}>
+                  {graph.title.length > 11 ? `${graph.title.substring(0, 11)}...` : graph.title}
+                </div>
+              </Link>
+            ))}
+          </div>
           <Button
-            className="btn-delete"
-            onClick={() => setOpenSaveAsTempletModal(true)}
+            className="btn-classic"
+            onClick={startGraph}
+            style={{ fontSize: 18 }}
           >
-            Save as Template
+            New Graph
           </Button>
-        )}
 
-      </div>
+          {isTemplate ? (
+            <>
+              <Button
+                className="accent alt"
+                onClick={() => saveGraph('active', true)}
+              >
+                Save as Graph
+              </Button>
+            </>
+          ) : (
+            <Button
+              className="btn-delete"
+              onClick={() => setOpenSaveAsTempletModal(true)}
+            >
+              Save as Template
+            </Button>
+          )}
+
+        </div>
       )}
       {openEditGraphModal && (
         <EditGraphModal
