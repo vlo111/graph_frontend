@@ -287,7 +287,7 @@ const SearchModal = ({ graphId }) => {
     };
   }, []);
 
-  const showNodeData = !!(matched.name === true || matched.keyword === true || matched.tab === true || matched.tag === true);
+  const showNodeData = !!(matched.name === true || matched.keywords === true || matched.tab === true || matched.tag === true);
   const showTypeData = !!(matched.type === true);
   const types = ChartUtils.getNodeTypeListByObj(result, search);
   return (

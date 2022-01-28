@@ -32,7 +32,7 @@
     color: blue;
   }
   #header {
-    grid-template-columns: 17% 20% auto 5% 20%;
+    grid-template-columns: 10% 20% auto 4% auto 4% auto;
 
     .signOut {
       right: 2%;
@@ -52,11 +52,6 @@
     }
   }
 
-  .pieChart {
-    .recharts-surface {
-      // height: 250px !important;
-    }
-  }
   .homeWithUser{
     .content{
       .graphsList .graphsItem{
@@ -80,11 +75,6 @@
     }
   }
 
-  .pieChart {
-    .recharts-surface {
-      // height: 200px !important;
-    }
-  }
 }
 
 @media screen and (max-width: 1400px) {
@@ -95,11 +85,6 @@
     }
   }
 
-  .pieChart {
-    .recharts-surface {
-      // height: 180px !important;
-    }
-  }
   .homeWithUser .content .graphsList .graphsItem {
     grid-template-columns: 19% 34% 21% 19% 7% !important;
  }
@@ -276,7 +261,6 @@
 
   }
   .profile_info {
-    // width: 400px;
     margin:0 auto;
     margin-left: -36px;
     margin-right: -30px;
