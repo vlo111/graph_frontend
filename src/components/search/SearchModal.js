@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
-import memoizeOne from 'memoize-one';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
 import Button from '../form/Button';
@@ -10,7 +9,7 @@ import { setActiveButton, toggleGraphMap } from '../../store/actions/app';
 import NodeIcon from '../NodeIcon';
 import ChartUtils from '../../helpers/ChartUtils';
 import Utils from '../../helpers/Utils';
-import { setActiveTab, getAllTabsRequest, getGraphNodesRequest } from '../../store/actions/graphs';
+import { setActiveTab, getGraphNodesRequest } from '../../store/actions/graphs';
 import Chart from '../../Chart';
 import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
@@ -18,7 +17,6 @@ import Outside from '../Outside';
 
 class SearchModal extends Component {
   static propTypes = {
-    getAllTabsRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     toggleGraphMap: PropTypes.func.isRequired,
     getGraphNodesRequest: PropTypes.func.isRequired,
@@ -26,11 +24,6 @@ class SearchModal extends Component {
     history: PropTypes.object.isRequired,
     graphId: PropTypes.string.isRequired,
   };
-
-  initTabs = memoizeOne(() => {
-    const { graphId } = this.props;
-    this.props.getAllTabsRequest(graphId);
-  });
 
   constructor(props) {
     super(props);
@@ -371,8 +364,6 @@ class SearchModal extends Component {
     const {
       nodes, tabs, search, docs, keywords, checkBoxValues,
     } = this.state;
-
-    this.initTabs();
     return (
       <Modal
         isOpen
@@ -479,96 +470,96 @@ class SearchModal extends Component {
                       />
                     </span>
                     {!d.name.toLowerCase().includes(search)
-                  && !d.type.toLowerCase().includes(search) ? (
+                      && !d.type.toLowerCase().includes(search) ? (
 
-                    <span
-                      className="keywords"
-                      dangerouslySetInnerHTML={{
-                        __html: d.keywords
-                          .map((k) => this.formatHtml(k))
-                          .join(', '),
-                      }}
-                    />
-                      ) : null}
+                      <span
+                        className="keywords"
+                        dangerouslySetInnerHTML={{
+                          __html: d.keywords
+                            .map((k) => this.formatHtml(k))
+                            .join(', '),
+                        }}
+                      />
+                    ) : null}
                   </div>
                 </div>
               </li>
             ))}
 
             {Object.keys(tabs)
-            && Object.keys(tabs).map((item) => (
-              <li
-                className="item nodeItem"
-                key={tabs[item]?.node?.id}
-                onMouseOver={() => { this.findNodeInDom(tabs[item].node, false); }}
-              >
-                <div tabIndex="0" role="button" className="ghButton tabButton">
-                  <div className="header" onClick={() => this.findNodeInDom(tabs[item].node)}>
-                    <div className="right tabRight">
-                      {Object.keys(tabs[item]).map(
-                        (tab) => tabs[item][tab].nodeId && (
-                        <div className="contentTabs">
-                          <span className="row nodeTabs">
-                            <div
-                              className="contentWrapper"
-                              onClick={(e) => this.openTab(e, tabs[item].node, tabs[item][tab].tabName)}
-                            >
-                              <div className="tabNameLine ">
-                                <NodeIcon node={tabs[item].node} searchIcon />
-                                <span className="name">{tabs[item].node.name}</span>
-                                <span className="nodeType">
-                                  {' '}
-                                  <span className="typeText">Type:</span>
-                                  {' '}
-                                  {tabs[item].node.type}
-                                </span>
-                                <div className="toggleTabBox">
-                                  <DownSvg
-                                    onClick={(ev) => {
-                                      this.handleTabToggle(ev, tabs[item]?.node?.id, tabs[item][tab].tabName);
-                                    }}
-                                  />
+              && Object.keys(tabs).map((item) => (
+                <li
+                  className="item nodeItem"
+                  key={tabs[item]?.node?.id}
+                  onMouseOver={() => { this.findNodeInDom(tabs[item].node, false); }}
+                >
+                  <div tabIndex="0" role="button" className="ghButton tabButton">
+                    <div className="header" onClick={() => this.findNodeInDom(tabs[item].node)}>
+                      <div className="right tabRight">
+                        {Object.keys(tabs[item]).map(
+                          (tab) => tabs[item][tab].nodeId && (
+                            <div className="contentTabs">
+                              <span className="row nodeTabs">
+                                <div
+                                  className="contentWrapper"
+                                  onClick={(e) => this.openTab(e, tabs[item].node, tabs[item][tab].tabName)}
+                                >
+                                  <div className="tabNameLine ">
+                                    <NodeIcon node={tabs[item].node} searchIcon />
+                                    <span className="name">{tabs[item].node.name}</span>
+                                    <span className="nodeType">
+                                      {' '}
+                                      <span className="typeText">Type:</span>
+                                      {' '}
+                                      {tabs[item].node.type}
+                                    </span>
+                                    <div className="toggleTabBox">
+                                      <DownSvg
+                                        onClick={(ev) => {
+                                          this.handleTabToggle(ev, tabs[item]?.node?.id, tabs[item][tab].tabName);
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="content"
+                                    id={
+                                      `content_${tabs[item]?.node?.id
+                                        .replace('.', '_')
+                                      }_${tabs[item][tab].tabName
+                                        .replaceAll(' ', '_').replaceAll('  ', '_')}`
+                                    }
+                                  >
+                                    <span
+                                      className="type"
+                                      dangerouslySetInnerHTML={{
+                                        __html: this.formatHtml(
+                                          tabs[item][tab].tabContent,
+                                        ),
+                                      }}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div
-                                className="content"
-                                id={
-                                  `content_${tabs[item]?.node?.id
-                                    .replace('.', '_')
-                                  }_${tabs[item][tab].tabName
-                                    .replaceAll(' ', '_').replaceAll('  ', '_')}`
-                                }
-                              >
+                              </span>
+                              {!tabs[item][tab].tabName.toLowerCase().includes(search)
+                                && !tabs[item][tab].tabSearchValue.toLowerCase().includes(search) ? (
                                 <span
-                                  className="type"
+                                  className="keywords"
                                   dangerouslySetInnerHTML={{
-                                    __html: this.formatHtml(
-                                      tabs[item][tab].tabContent,
-                                    ),
+                                    __html: tabs[item][tab].keywords
+                                      ?.map((k) => this.formatHtml(k))
+                                      .join(', '),
                                   }}
                                 />
-                              </div>
-                            </div>
-                          </span>
-                            {!tabs[item][tab].tabName.toLowerCase().includes(search)
-                            && !tabs[item][tab].tabSearchValue.toLowerCase().includes(search) ? (
-                              <span
-                                className="keywords"
-                                dangerouslySetInnerHTML={{
-                                  __html: tabs[item][tab].keywords
-                                    ?.map((k) => this.formatHtml(k))
-                                    .join(', '),
-                                }}
-                              />
                               ) : null}
-                        </div>
-                        ),
-                      )}
+                            </div>
+                          ),
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </li>
-            ))}
+                </li>
+              ))}
 
             {keywords.map((d) => (
               <li
@@ -658,7 +649,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setActiveTab,
   setActiveButton,
-  getAllTabsRequest,
   getGraphNodesRequest,
   toggleGraphMap,
 };

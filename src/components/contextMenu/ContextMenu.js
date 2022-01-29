@@ -281,6 +281,18 @@ class ContextMenu extends Component {
               ) : null}
               {['chart', 'label'].includes(show) && !expand ? (
                 <>
+                  {showInMap ? (
+                    <Button
+                      icon="fa-globe"
+                      onClick={(ev) => this.handleClick(ev, 'active-button', { button: 'maps-view' })}
+                    >
+                      Show on map
+                    </Button>
+                  ) : null}
+                </>
+              ) : null}
+              {['chart'].includes(show) && !expand ? (
+                <>
                   {/* <div className="ghButton notClose"> */}
                   {/*  <Icon value="fa-plus-square" /> */}
                   {/*  Create */}
@@ -295,14 +307,6 @@ class ContextMenu extends Component {
                   {/*    </Button> */}
                   {/*  </div> */}
                   {/* </div> */}
-                  {showInMap ? (
-                    <Button
-                      icon="fa-globe"
-                      onClick={(ev) => this.handleClick(ev, 'active-button', { button: 'maps-view' })}
-                    >
-                      Show on map
-                    </Button>
-                  ) : null}
                   <Button icon="fa-crop" onClick={(ev) => this.handleClick(ev, 'crop')}>
                     Crop
                   </Button>

@@ -797,7 +797,10 @@ p {
       }
 
       &.emphasisConnection {
-        stroke: yellow !important;
+        stroke: #2196f3 !important;
+        -webkit-filter: drop-shadow( 3px 8px 8px rgb(178 196 211 / 90%));
+        filter: drop-shadow( 3px 8px 8px rgb(178 196 211 / 90%));
+        stroke-width: 8px;
       }
     }
   }
@@ -902,9 +905,10 @@ p {
 
     &.emphasisIcon {
       :not(text) {
-        stroke-width: 4 !important;
-        stroke: yellow !important;
-        stroke-dasharray: 12 !important;
+        stroke-width: 5 !important;
+        stroke: #2196f3 !important;
+        -webkit-filter: drop-shadow( 3px 8px 8px rgb(178 196 211 / 90%));
+        filter: drop-shadow( 3px 8px 8px rgb(178 196 211 / 90%));
       }
     }
 
@@ -4074,9 +4078,7 @@ body .gh__menu {
       }
     }
   }
-  .description{
-  margin-left: 24%;
-  }
+
 }
 
 .graphListHeader {
@@ -7847,7 +7849,7 @@ img.preview-scaled {
   .ghButton:active{
     box-shadow: none;
   }
-  
+
  }
 
 }
@@ -8951,7 +8953,6 @@ li span{
 
   tbody {
     display: block;
-    height: 650px;
     overflow-x: hidden;
     overflow-y: auto;
 

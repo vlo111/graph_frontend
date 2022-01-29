@@ -70,7 +70,6 @@ class NodesStatusFilter extends Component {
               <li
                 key={item.status}
                 className="item"
-                style={{ color: ChartUtils.nodeColor(item) }}
               >
                 <div className="filterCheckBox">
 
