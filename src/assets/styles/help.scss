@@ -1,6 +1,6 @@
 .ghModalHelps{
-    top: 6% !important;
-    position: fixed !important;
+    top: 6%;
+    position: fixed ;
     left: 200px;
      ol {
       list-style: none;
@@ -8,6 +8,7 @@
     li span{
       color: #7166f8;
       font-weight: 700;
+      padding: 5px;
     }
     .helpsSubTitle{
       padding-left: 20px;
@@ -51,6 +52,7 @@
   box-shadow: 4px 0px 31px rgb(119 113 183 / 22%);
   border-radius: 3px;
   position: fixed;
+  z-index: 2;
 }
 
 .react-tabs__tab-list {
@@ -111,10 +113,8 @@
 
 .react-tabs__tab-panel {
   padding: 0px 15px;
-
   display: none;
   width: 100%;
-
 }
 
 .react-tabs__tab-panel--selected {
@@ -132,7 +132,7 @@
 
 .color-border {
   border-left: 4px solid #edecff;
-  height: 777px;
+  height: 95%;
   margin-left: 15px;
   margin-top: 20px;
 }
@@ -198,7 +198,7 @@
   }
   p {
     position: relative;
-    top: 20px;
+    top: 10px;
     left: 10px;
   }
   .help_node_text {
@@ -249,7 +249,6 @@
 
 .help_label-text {
   position: relative;
-  top: 60px;
   color: #545454;
   font-size: 14px;
   -webkit-user-modify: read-write-plaintext-only;

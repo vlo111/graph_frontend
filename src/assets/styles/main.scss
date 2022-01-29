@@ -2692,7 +2692,8 @@ p {
     .resetButton {
       height: 30px;
       font-size: 11px;
-      margin-left: 30%;
+      left: 75%;
+
     }
     .filterHeader {
       position: fixed;
@@ -3418,7 +3419,7 @@ body .gh__menu {
 
     .item {
       margin: 0.8em 0;
-      width: 91%;
+      width: 100%;
       align-items: center;
       border: 1px solid $color-tab-general-border;
       padding: 10px;
@@ -4204,6 +4205,7 @@ body .gh__menu {
       margin-left: 0;
     }
   }
+  
 }
 .homeWithUser {
   width: 100% !important;
@@ -7851,9 +7853,10 @@ img.preview-scaled {
  }
 
 }
+
 .helpHomePages .react-tabs{
-right: 0 !important;
-top: 5%;
+right: 0 ;
+top: 5% ;
 .triangle-right{
   display: none;
 }
@@ -7863,6 +7866,7 @@ ol {
 li span{
   color: #7166f8;
   font-weight: 700;
+  padding: 5px;
 }
 .helpsSubTitle{
   padding-left: 20px;
@@ -7873,6 +7877,9 @@ li span{
 .exploreTitle{
   left: -20px;
 }
+ }
+ .helpsOutside{
+   display: none;
  }
 
 #header-on-graph,

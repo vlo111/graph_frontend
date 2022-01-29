@@ -252,7 +252,7 @@ class FindNode extends Component {
                               title={node.name}
                               className="name"
                               dangerouslySetInnerHTML={{
-                                __html: this.formatHtml(Utils.substr(node.name, 12)),
+                                __html: this.formatHtml(Utils.substr(node.name, 15)),
                               }}
                             />
 
@@ -294,7 +294,7 @@ class FindNode extends Component {
                         </p>
                         <span
                           className="type"
-                          dangerouslySetInnerHTML={{ __html: this.formatHtml(node.type) }}
+                          dangerouslySetInnerHTML={{ __html: this.formatHtml(node.type, 10) }}
                         />
                       </div>
                     </div>
