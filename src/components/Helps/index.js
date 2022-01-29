@@ -50,7 +50,7 @@ export default (props) => {
         overlayClassName="ghModalOverlay"
         isOpen
       >
-        <div className="help" id="myDIV">
+        <div className="help">
           <Tabs>
             <div className="triangle-right" />
             <div className="helpName">
