@@ -34,26 +34,23 @@ import Modal from 'react-modal';
 
 export default (props) => {
   const history = useHistory();
-  const homeHelp = (history.location.pathname === '/');
-
+  const path = history.location.pathname;
   React.useEffect(() => {
-    console.log(history.location.pathname === '/');
   }, []);
   const handleClose = () => {
     props.closeModal();
   };
-
   return (
     <Outside
       exclude=".help"
       onClick={handleClose}
     >
       <Modal
-        className={homeHelp ? 'helpHomePages' : 'ghModalHelps'}
+        className={path ? 'helpHomePages' : 'ghModalHelps'}
         overlayClassName="ghModalOverlay"
         isOpen
       >
-        <div className="help">
+        <div className="help" id="myDIV">
           <Tabs>
             <div className="triangle-right" />
             <div className="helpName">
@@ -63,10 +60,9 @@ export default (props) => {
                   <h4 className="helpTitlePages">Video tutorial</h4>
                 </Tab>
                 <h3 className="helpTitle">Graphs</h3>
-                <Tab>Create graph</Tab>
+                <Tab>Create and edit a graph</Tab>
                 <Tab>Import a graph</Tab>
                 <Tab>Export a graph</Tab>
-                <Tab>Create and edit a graph</Tab>
                 <Tab>Compare graphs </Tab>
                 <Tab>Compare Labels/Folders of different graphs</Tab>
                 <Tab>Share a graph </Tab>
@@ -88,9 +84,6 @@ export default (props) => {
                 </Tab>
                 <Tab>
                   <h4 className="helpTitlePages">Explore</h4>
-                </Tab>
-                <Tab>
-                  <h4 className="helpTitlePages">Share label and folder </h4>
                 </Tab>
                 <Tab>
                   <h4 className="helpTitlePages">Search</h4>
@@ -134,59 +127,128 @@ export default (props) => {
             </TabPanel>
             <TabPanel>
               <div>
-                <iframe
-                  width="1280"
-                  height="720"
-                  className="help_img"
-                  src="https://www.youtube.com/embed/kCe9OOKsVtc"
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allowFullScreen
-                />
-              </div>
-
-              <div>
-                <p>Create a graph</p>
+                <img src={GraphEdit} className="help_img" alt="" />
               </div>
               <div className="helpResultText">
                 <div className="help_text">
+                  <p className="marg_graph_text">• Create a graph</p>
                   <ol>
-                    <li>Start a graph</li>
-                    <li>Write the title of the graph</li>
-                    <li>Write a short description of what you are going to create</li>
-                    <li>Create</li>
-                    <li>Open graph options from the top</li>
                     <li>
-                      See the last 3 graphs you have working on, for quick access
-                      click on one of the graphs
+                      •	Go to
+
+                      <span>Home</span>
+
+                      page of your account
                     </li>
-                    <li>Search a graph by the name</li>
-                    <li>Create a new graph</li>
-                    <li>Save existing graph as a template</li>
-                    <li>Click on edit pen</li>
-                    <li>Upload a cover photo for your graph</li>
                     <li>
-                      View the owner’s name, creation date and the last modification
-                      date of the graph
+                      •	Click
+
+                      <span>+ Create a graph</span>
+
+                      or click
+
+                      <span>Create a graph</span>
+
+                      at the top of the page
                     </li>
-                    <li>Edit or add a description</li>
                     <li>
-                      Press save to fix the the modifications done in this window
+                      •	Type the
+
+                      <span>Name</span>
+
+                      of the graph
                     </li>
-                    <li>Press delete to remove the whole graph</li>
-                    <p className="help_graph_text">(close the graph)</p>
-                    <p className="help_graph_text">(click on ...)</p>
+                    <li>
+                      •	Type a short
+
+                      <span>Description</span>
+
+                    </li>
+                    <li>
+                      •	Click
+
+                      <span>Create</span>
+
+                      This large field is your canvas.
+
+                    </li>
+
                   </ol>
+                  <p className="help_node_text">
+                    Create a graph by
+
+                    <span> Select </span>
+
+                    tool.
+                    See
+
+                    <span> Select and Crop a graph </span>
+
+                    (active link)
+                  </p>
                 </div>
                 <div className="help_text">
+                  <p className="marg_graph_text">• Edit a graph </p>
                   <ol>
-                    <li>change the name of the graph</li>
                     <li>
-                      share the graph with other users (view details in the video «
-                      <b>Share a graph</b>
-                      »)
+                      •	At the top of the canvas click the
+
+                      <span>Name</span>
+
+                      of the opened graph and see the last 3 graphs you worked on. For quick access click one of them
+
                     </li>
-                    <li>delete the whole graph</li>
+                    <li>
+                      <span>•	Search</span>
+
+                      a graph by the name
+                    </li>
+                    <li>
+                      •	Create a
+
+                      <span>New Graph</span>
+                    </li>
+                    <li>
+                      •	Save existing graph as a
+
+                      <span>Template</span>
+                    </li>
+                    <li>
+                      •	Click
+                      <span>(Edit)</span>
+
+                      the current graph
+
+                    </li>
+                    <li>•	Upload a cover photo from your PC</li>
+                    <li>
+                      •	View the
+
+                      <span>Owner</span>
+
+                      name,
+                      the creation and the last modification dates
+
+                    </li>
+                    <li>
+                      •	Edit or add a
+
+                      <span>Description</span>
+                    </li>
+                    <li>
+                      •	Click
+
+                      <span>Save</span>
+
+                      modifications
+                    </li>
+                    <li>
+                      •	Click
+
+                      <span>Delete </span>
+                      the graph
+
+                    </li>
                   </ol>
                 </div>
               </div>
@@ -267,7 +329,7 @@ export default (props) => {
 
                       <span>Import</span>
                     </li>
-                    <p>	The program automatically creates a graph. </p>
+                    <p className="exploreTitle">	The program automatically creates a graph. </p>
 
                   </ol>
                 </div>
@@ -290,12 +352,11 @@ export default (props) => {
                   </p>
                   <li> Types and quantity of nodes</li>
                   <li> Types and quantity of links</li>
-
                 </div>
                 <div className="help_text">
                   <p className="marg_graph_text">
-                    You have can
-                    <span>Export()</span>
+                    You  can
+                    <span> Export </span>
                     the graph in the following forms:
                   </p>
                   <ol>
@@ -304,150 +365,23 @@ export default (props) => {
                     <li>•	PDF</li>
                     <li>•	Excel </li>
 
-                    <p>
+                    <p className="exploreTitle">
                       Export a part of a graph using the
-                      <span>Crop</span>
+                      <span> Crop </span>
                       tool. See
-                      <span>Select and Crop a graph (active link)</span>
+                      <span> Select and Crop a graph (active link)</span>
                     </p>
                   </ol>
                 </div>
               </div>
             </TabPanel>
-            <TabPanel>
-              <div>
-                <img src={GraphEdit} className="help_img" alt="" />
-              </div>
-              <div className="helpResultText">
-                <div className="help_text">
-                  <p className="marg_graph_text">• Create a graph</p>
-                  <ol>
-                    <li>
-                      •	Go to
 
-                      <span>Home</span>
-
-                      page of your account
-                    </li>
-                    <li>
-                      •	Click
-
-                      <span>+ Create a graph</span>
-
-                      or click
-
-                      <span>Create a graph</span>
-
-                      at the top of the page
-                    </li>
-                    <li>
-                      •	Type the
-
-                      <span>Name</span>
-
-                      of the graph
-                    </li>
-                    <li>
-                      •	Type a short
-
-                      <span>Description</span>
-
-                    </li>
-                    <li>
-                      •	Click
-
-                      <span>Create</span>
-
-                      This large field is your canvas.
-
-                    </li>
-
-                  </ol>
-                  <p className="help_node_text">
-                    Create a graph by
-
-                    <span>Select</span>
-
-                    tool.
-                    See
-
-                    <span>Select and Crop a graph</span>
-
-                    (active link)
-                  </p>
-                </div>
-                <div className="help_text">
-                  <p className="marg_graph_text">• Edit a graph </p>
-                  <ol>
-                    <li>
-                      •	At the top of the canvas click the
-
-                      <span>Name</span>
-
-                      of the opened graph and see the last 3 graphs you worked on. For quick access click one of them.
-
-                    </li>
-                    <li>
-                      <span>•	Search</span>
-
-                      a graph by the name
-                    </li>
-                    <li>
-                      •	Create a
-
-                      <span>New Graph</span>
-                    </li>
-                    <li>
-                      •	Save existing graph as a
-
-                      <span>Template.</span>
-                    </li>
-                    <li>
-                      •	Click
-                      <span>(Edit)</span>
-
-                      the current graph
-
-                    </li>
-                    <li>•	Upload a cover photo from your PC</li>
-                    <li>
-                      •	View the
-
-                      <span>Owner</span>
-
-                      name,
-                      the creation and the last modification dates
-
-                    </li>
-                    <li>
-                      •	Edit or add a
-
-                      <span>Description</span>
-                    </li>
-                    <li>
-                      •	Click
-
-                      <span>Save</span>
-
-                      modifications
-                    </li>
-                    <li>
-                      •	Click
-
-                      <span>Delete </span>
-                      the graph
-
-                    </li>
-                  </ol>
-                </div>
-              </div>
-            </TabPanel>
             <TabPanel>
               <div>
                 <img src={Compare} className="help_img" alt="" />
               </div>
               <div>
-                <p>Open a graph</p>
+                <p>Compare graphs</p>
               </div>
               <div className="helpResultText">
                 <div className="help_text">
@@ -455,18 +389,20 @@ export default (props) => {
                     You can compare two graphs and find similar nodes:
                   </p>
                   <ol>
-                    <li>•	On the Homepage click Compare graphs</li>
+                    <li>
+                      •	On the Homepage click
+                      {' '}
+                      <span>Compare graphs</span>
+                      {' '}
+                    </li>
                     <li>•	Select the 1st graph</li>
                     <li>
                       •	Select the 2nd graph
-                      The system will automatically compare the graphs and show all similar and different nodes.
 
                     </li>
                   </ol>
                   <p className="help_node_text">
-                    If you want marge these 2 graphs and make a new graph
-                    <br />
-                    with similar and different nodes
+                    * The system will automatically compare the graphs and show all similar and different nodes.
                   </p>
                 </div>
               </div>
@@ -501,11 +437,11 @@ export default (props) => {
                 </div>
                 <div className="help_text">
                   <ol>
-                    <li><span>•	Compare nodes,</span></li>
-                    <li><span>•	Merge nodes,</span></li>
-                    <li><span>•	Skip these nodes,</span></li>
-                    <li><span>•	Replace the nodes in the destination,</span></li>
-                    <li><span>•	Keep both.</span></li>
+                    <li><span>•	Compare nodes</span></li>
+                    <li><span>•	Merge nodes</span></li>
+                    <li><span>•	Skip these nodes</span></li>
+                    <li><span>•	Replace the nodes in the destination</span></li>
+                    <li><span>•	Keep both</span></li>
 
                   </ol>
                 </div>
@@ -523,7 +459,7 @@ export default (props) => {
                 <div className="help_text">
                   <ol>
 
-                    <p>Share a graph with Collaborators having Araks profiles. Search collaborators by username or email and work with them simultaneously on graphs.</p>
+                    <p className="exploreTitle">Share a graph with Collaborators having Araks profiles. Search collaborators by username or email and work with them simultaneously on graphs.</p>
                     <li>
                       •	On the
 
@@ -571,9 +507,9 @@ export default (props) => {
 
                       access can:
                     </li>
-                    <li>•	create nodes, links, labels, etc.,</li>
-                    <li>•	comment on the graphs and nodes,</li>
-                    <li>•	delete the shared graph only from their account, but not the main graph.</li>
+                    <li>•	create nodes, links, labels, etc.</li>
+                    <li>•	comment on the graphs and nodes</li>
+                    <li>•	delete the shared graph only from their account, but not the main graph</li>
                     <li>
                       •	Collaborators with
 
@@ -581,36 +517,36 @@ export default (props) => {
 
                       access can
                     </li>
-                    <li>•	create nodes, links, labels, etc.,</li>
-                    <li>•	comment on the graphs and nodes,</li>
+                    <li>•	create nodes, links, labels, etc.</li>
+                    <li>•	comment on the graphs and nodes</li>
                     <li>•	delete the graph </li>
-                    <li>•	share the graph.</li>
-                    <li>•	Press Save.</li>
+                    <li>•	share the graph</li>
+                    <li>•	Click Save</li>
 
                   </ol>
                 </div>
                 <div className="help_label-text">
                   <p>Collaborators with «View» access can</p>
-                  <li>View the graph,</li>
-                  <li>Write comments.</li>
+                  <li>View the graph</li>
+                  <li>Write comments</li>
 
                   <p>Collaborators with «Edit» access can</p>
-                  <li>create nodes, links, labels, etc.,</li>
-                  <li>comment on the graphs and nodes,</li>
+                  <li>create nodes, links, labels, etc.</li>
+                  <li>comment on the graphs and nodes</li>
                   <li>
                     delete the shared graph only from their account, but not the main
-                    graph.
+                    graph
                   </li>
                   <p>Collaborators with «Admin» access can</p>
-                  <li>Create nodes, links, labels, etc.,</li>
-                  <li>Comment on the graphs and nodes,</li>
+                  <li>Create nodes, links, labels, etc.</li>
+                  <li>Comment on the graphs and nodes</li>
                   <li>Delete the graph</li>
-                  <li>Share the graph.</li>
-                  <li>Press Save.</li>
+                  <li>Share the graph</li>
+                  <li>Click Save</li>
                   <li>View the collaborators you are sharing the graph with.</li>
                   <li>
                     Press on the blue cursor to see the cursors of collaborators,
-                    who is working on which part of the graph.
+                    who is working on which part of the graph
                   </li>
                 </div>
                 {/* <div className="help_text"> */}
@@ -723,9 +659,9 @@ export default (props) => {
                 <div className="help_text">
                   <ol>
                     <li>
-                      1. Right-click anywhere on canvas ➜
+                      1. Right-click anywhere on canvas
 
-                      <span>Create node</span>
+                      <span> ➜ Create node</span>
 
                       OR choose from the main menu
 
@@ -822,25 +758,23 @@ export default (props) => {
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Expand ( )</span>
+                      <span> Expand </span>
 
                       the window for working more comfortable
 
                     </li>
                     <li className="helpsSubTitle">
                       •	View the history of changes
-
-                      <span>( )</span>
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Export ( )</span>
+                      <span> Export </span>
 
                       the node in PDF form
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Edit ( )</span>
+                      <span> Edit </span>
 
                       the node
 
@@ -935,43 +869,39 @@ export default (props) => {
 
                       <span>General</span>
 
-                      information of the node,
+                      information of the node
 
                     </li>
                     <li className="helpsSubTitle">
                       •	Add more information in
 
-                      <span>Tabs,</span>
+                      <span>Tabs</span>
 
                     </li>
                     <li className="helpsSubTitle">
                       •	Type your
 
-                      <span>Comments,</span>
+                      <span>Comments</span>
 
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Expand ( )</span>
+                      <span> Expand </span>
 
                       the window for working more comfortable
 
                     </li>
                     <li className="helpsSubTitle">
                       •	View the history of changes
-
-                      <span>( )</span>
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Export ()</span>
+                      <span> Export </span>
 
-                      the node in PDF form,
+                      the node in PDF form
                     </li>
                     <li className="helpsSubTitle">
-                      •
-                      <span> ( )</span>
-                      Edit  the node
+                      • Edit  the node
 
                     </li>
 
@@ -993,7 +923,7 @@ export default (props) => {
                     <li>
                       1.	Click
 
-                      <spn>Create ➜ Node ➜ Use Wikipedia</spn>
+                      <spn> Create ➜ Node ➜ Use Wikipedia</spn>
 
                     </li>
                     <li>2.	Search any information</li>
@@ -1064,42 +994,40 @@ export default (props) => {
 
                       <span>General</span>
 
-                      information of the node,
+                      information of the node
 
                     </li>
                     <li className="helpsSubTitle">
                       •	Add more information in
 
-                      <span>Tabs,</span>
+                      <span>Tabs</span>
 
                     </li>
                     <li className="helpsSubTitle">
                       •	Type your
 
-                      <span>Comments,</span>
+                      <span>Comments</span>
 
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Expand ( )</span>
+                      <span> Expand </span>
 
                       the window for working more comfortable
 
                     </li>
                     <li className="helpsSubTitle">
                       •	View the history of changes
-
-                      <span>( )</span>
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Export()</span>
+                      <span> Export</span>
 
-                      the node in PDF form,
+                      the node in PDF form
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Edit ( )</span>
+                      <span> Edit </span>
 
                       the node
 
@@ -1187,42 +1115,40 @@ export default (props) => {
 
                       <span>General</span>
 
-                      information of the node,
+                      information of the node
 
                     </li>
                     <li className="helpsSubTitle">
                       •	Add more information in
 
-                      <span>Tabs,</span>
+                      <span>Tabs</span>
 
                     </li>
                     <li className="helpsSubTitle">
                       •	Type your
 
-                      <span>Comments,</span>
+                      <span>Comments</span>
 
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Expand ( )</span>
+                      <span> Expand </span>
 
                       the window for working more comfortable
 
                     </li>
                     <li className="helpsSubTitle">
                       •	View the history of changes
-
-                      <span>( )</span>
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Export()</span>
+                      <span> Export</span>
 
-                      the node in PDF form,
+                      the node in PDF form
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Edit ( )</span>
+                      <span> Edit </span>
 
                       the node
 
@@ -1242,7 +1168,7 @@ export default (props) => {
                 <div className="helpMindText">
                   <p>What is Mind Science? </p>
                   <span>
-                    Science Mind is a huge base of three famous scientific sites:
+                    Science Mind Science is a huge base of three famous scientific sites:
                   </span>
                   <a href="https://core.ac.uk/" rel="noreferrer" target="_blank">
                     <img src={HelpLeftSvg} alt="" />
@@ -1284,42 +1210,40 @@ export default (props) => {
 
                       <span>General</span>
 
-                      information of the node,
+                      information of the node
 
                     </li>
                     <li className="helpsSubTitle">
                       •	Add more information in
 
-                      <span>Tabs,</span>
+                      <span>Tabs</span>
 
                     </li>
                     <li className="helpsSubTitle">
                       •	Type your
 
-                      <span>Comments,</span>
+                      <span>Comments</span>
 
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Expand ( )</span>
+                      <span> Expand </span>
 
                       the window for working more comfortable
 
                     </li>
                     <li className="helpsSubTitle">
                       •	View the history of changes
-
-                      <span>( )</span>
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Export()</span>
+                      <span> Export</span>
 
-                      the node in PDF form,
+                      the node in PDF form
                     </li>
                     <li className="helpsSubTitle">
                       •
-                      <span> Edit ( )</span>
+                      <span> Edit </span>
 
                       the node
 
@@ -1361,7 +1285,7 @@ export default (props) => {
                     <ol>
 
                       <li>
-                        	Click
+                        Click
 
                         <span>Create ➜ Label ➜ Free form</span>
 
@@ -1378,7 +1302,7 @@ export default (props) => {
                       <li>	Draw a Label on existing nodes or anywhere on the canvas </li>
                       <li>	Type the Name of the Label</li>
                       <li>
-                        	Click
+                        Click
 
                         <span>Save</span>
                       </li>
@@ -1416,7 +1340,7 @@ export default (props) => {
                   </div>
                   <div className="help_label-text">
                     <p>
-                      	Collaborators with
+                      Collaborators with
 
                       <span>«View»</span>
 
@@ -1425,7 +1349,7 @@ export default (props) => {
                     <li>	view only shared Label</li>
                     <li>	write comments</li>
                     <p>
-                      	Collaborators with
+                      Collaborators with
 
                       <span>«Edit»</span>
 
@@ -1480,22 +1404,19 @@ export default (props) => {
                     <li>
                       •	Click
 
-                      <span />
-                      Create ➜Folder
+                      <span> Create ➜Folder </span>
                     </li>
                     <li>•	Click anywhere on the canvas</li>
                     <li>
                       •	Type the
-
-                      <span />
-                      Name of the Folder
+                      <span> Name </span>
+                      of the Folder
 
                     </li>
                     <li>
                       •	Press
 
-                      <span />
-                      Save
+                      <span> Save </span>
                     </li>
                     <li>•	Open your Folder by double-click</li>
                     <li>•	Move into the Folder existing nodes or create the new ones in</li>
@@ -1506,42 +1427,51 @@ export default (props) => {
                 <div className="help_label-text">
                   <p>
 
-                    <span />
-                    Right-click an opened Folder
+                    <span> Right-click an opened Folder </span>
                   </p>
                   <li>
 
-                    <span />
-                    	Edit the name of Folder
+                    <span> Edit </span>
+                    the name of Folder
+                  </li>
+                  <li>
+                    <span>Copy</span>
+                    {' '}
+                    and
+                    {' '}
+                    <span>Paste</span>
+                    {' '}
+                    the Folder anywhere on the canvas
                   </li>
                   <li>
 
-                    <span />
-                    	Copy and Paste the Folder anywhere on the canvas
-                  </li>
-                  <li>
-                    <span />
-                    	Lock/Unlock the Folder: Locked Folder is not shown to the
+                    <span>Lock/Unlock</span>
+                    {' '}
+                    the Folder: Locked Folder is not shown to the
                     Collaborators with shared access
                   </li>
                   <li>
-                    <span />
-                    	Share Folder with Collaborators having Araks profile.
+
+                    <span>Share</span>
+                    {' '}
+                    Folder with Collaborators having Araks profile.
                     Search collaborators by user name and work with them
                     simultaneously on shared Folder.
                   </li>
                   <p>
                     Collaborators with
 
-                    <span />
-                    «View» access can
+                    <span>«View» </span>
+                    {' '}
+                    access can
                   </p>
                   <li>view only shared Folder</li>
                   <p>
                     Collaborators with
 
-                    <span />
-                    «Edit» access can
+                    <span>«Edit»</span>
+                    {' '}
+                    access can
                   </p>
                   <li>	view only shared Folders</li>
                   <li>	create/edit nodes, links, labels only in shared Folder</li>
@@ -1550,8 +1480,9 @@ export default (props) => {
                   <p>
                     Collaborators with
 
-                    <span />
-                    «Edit inside» access can
+                    <span>«Edit inside»</span>
+                    {' '}
+                    access can
                   </p>
                   <li>	view shared Folders</li>
                   <li>	create/edit nodes, links, labels only in shared Folder</li>
@@ -1559,8 +1490,9 @@ export default (props) => {
                   <p>
                     Collaborators with
 
-                    <span />
-                    «Audit» access can
+                    <span>«Audit»</span>
+                    {' '}
+                    access can
 
                   </p>
                   <li>
@@ -1568,13 +1500,15 @@ export default (props) => {
                   </li>
                   <li>
 
-                    <span />
-                    	Create nodes in this Folder
+                    <span>Create nodes</span>
+                    {' '}
+                    Create nodes in this Folder
                   </li>
                   <li>
 
-                    <span />
-                    	Delete the Folder
+                    <span>Delete</span>
+                    {' '}
+                    the Folder
                   </li>
                 </div>
               </div>
@@ -1700,54 +1634,6 @@ export default (props) => {
             </TabPanel>
             <TabPanel>
               <div>
-                <img src={SharelLAbelFolder} className="help_img" alt="" />
-              </div>
-              <div>
-                <p>Share a Label and Folder </p>
-              </div>
-              <div className="helpResultText">
-                <div className="help_text">
-                  <ol>
-                    <li>Right-click on the Label/ Folder ➜ Share</li>
-                    <li>Search a user </li>
-                    <li>Give access to the graph</li>
-                  </ol>
-                </div>
-                <div className="help_label-text">
-                  <p>Collaborators with «View» access can</p>
-                  <li>View only shared Label</li>
-                  <li>Write comments.</li>
-
-                  <p>Collaborators with «Edit» access can</p>
-                  <li>View only shared Label</li>
-                  <li>Create/edit nodes, links only in shared Label</li>
-                  <li>Move nodes outside the label</li>
-
-                  <p>Collaborators with «Edit inside» access can</p>
-                  <li>View shared Label</li>
-                  <li>Create/edit nodes, links only in shared Label</li>
-
-                  <p>Collaborators with «Audit» access can</p>
-                  <li>
-                    View the shared Label, change the status of nodes and write
-                    comments
-                  </li>
-                  <li>Create node especially in this Label</li>
-                  <li>
-                    Paste append: paste all information you have copied. Paste
-                    embedded: Paste a label as a photo.
-                  </li>
-                  <li>Delete the Label</li>
-                  <li>
-                    Show on the Google Map if in the Label you have nodes mentioned on
-                    Google Map
-                  </li>
-                  <li>Undo the last action done in the Label.</li>
-                </div>
-              </div>
-            </TabPanel>
-            <TabPanel>
-              <div>
                 <img src={Search} className="help_img" alt="" />
               </div>
               <div>
@@ -1775,7 +1661,7 @@ export default (props) => {
                     <li>
                       •	Open a graph and click
 
-                      <span>Filter</span>
+                      <span> Filter </span>
 
                       in the main menu
                     </li>

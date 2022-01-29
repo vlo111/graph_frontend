@@ -229,7 +229,8 @@
 
                   .left {
                     margin-right: 20px;
-                    width: 88%;
+                    width: auto;
+                    max-width: 88%;
 
                     .node-type {
                       background: #F07760;

@@ -19,6 +19,7 @@ import Utils from '../../helpers/Utils';
 import Outside from '../Outside';
 import { ReactComponent as ArrowSvg } from '../../assets/images/icons/arrow.svg';
 import Checkbox from '../form/Checkbox';
+import Chart from '../../Chart';
 
 class MediaModal extends Component {
   static propTypes = {
@@ -119,11 +120,15 @@ class MediaModal extends Component {
   }
 
   openTab = (graphId, node, tabName) => {
-    ChartUtils.findNodeInDom(node);
-    this.closeModal();
-    if (tabName) {
+    const availableNodes = Chart.getNodes();
+    const isNodeAvailable = availableNodes.find((nd) => nd.id === node.id);
+    if (isNodeAvailable || tabName) {
+      ChartUtils.findNodeInDom(node);
       this.props.setActiveTab(tabName);
-      this.props.history.replace(`${graphId}?info=${node.id}`);
+      this.props.history.replace(
+        `${graphId || window.location.pathname}?info=${isNodeAvailable.id}`,
+      );
+      this.closeModal();
     }
   }
 

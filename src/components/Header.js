@@ -82,7 +82,7 @@ class Header extends Component {
           />
         </div>
         {showDropDown ? (
-          <div>
+          <div className="helpsOutside">
             <Helps closeModal={this.toggleDropDown} />
           </div>
         ) : null}
