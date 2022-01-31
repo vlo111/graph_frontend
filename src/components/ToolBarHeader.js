@@ -11,7 +11,7 @@ import AccountDropDown from './account/AccountDropDown';
 import Legend from './Legend';
 import GraphSettings from './graphData/GraphSettings';
 import { ReactComponent as CommentSvg } from '../assets/images/icons/commentGraph.svg';
-import CommentModal from './CommentModal/CommentModal';
+import CommentModal from './CommentModal';
 import Notification from './Notification';
 import { KEY_CODES } from '../data/keyCodes';
 import ContributorsModal from './Contributors';
