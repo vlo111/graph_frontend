@@ -342,10 +342,10 @@ class ChartUtils {
   /**
    * Fit data
    */
-  static autoScale() {
+  static autoScale(nodes) {
     const {
       width, height, min,
-    } = ChartUtils.getDimensions(false);
+    } = ChartUtils.getDimensions(nodes, false);
     if (width && Chart.svg) {
       Chart.event.removeListener('render', this.autoScale);
       const mode = Chart.activeButton;
@@ -1100,8 +1100,8 @@ class ChartUtils {
     return _.uniq(nodes).length;
   }
 
-  static getDimensions(windowWidth = true) {
-    const nodes = Chart.getNodes();
+  static getDimensions(node, windowWidth = true) {
+    const nodes = node || Chart.getNodes();
     const labels = Chart.getLabels();
     const arrX = [];
     const arrY = [];
@@ -1179,8 +1179,8 @@ class ChartUtils {
     return chartNodesId[0];
   }
 
-  static getNodeTypeListByObj(nodes) {
-    const types = nodes.map((n) => n.type);
+  static getNodeTypeListByObj(nodes, search) {
+    const types = nodes.filter((n) => n.type.toLowerCase().includes(search.toLowerCase())).map((n) => n.type);
     return _.uniq(types);
   }
 }

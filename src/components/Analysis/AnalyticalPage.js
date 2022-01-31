@@ -48,7 +48,7 @@ class AnalyticalPage extends Component {
 
     const graphElement = document.getElementById('graph');
     if (graphElement) {
-      graphElement.style.height = '100%';
+      graphElement.style.height = '10%';
       graphElement.querySelector('svg').style.height = '100vh';
       graphElement.querySelector('svg').style.width = '55%';
     }
@@ -92,7 +92,8 @@ class AnalyticalPage extends Component {
               <Button icon={<BackSvg style={{ height: 30 }} />} className="transparent edit" />
             </Tooltip>
           </Link>
-          <div className="container">
+
+          <div className="analyticContainer">
             <AnalysePieChart nodes={nodes} />
             <AnalyseBarChart degreeDistribution={degreeDistribution} />
             <div className="localAnalyse">

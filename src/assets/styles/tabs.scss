@@ -7,7 +7,7 @@
   background: $color-white;
   right: 0;
   top: 56px;
-  z-index: 11;
+  z-index: 3;
 
   .tab {
     display: block;
@@ -111,10 +111,14 @@
               }
 
               .name {
+                color: $color-graph-name;
                 font-weight: bold;
                 font-size: 16px;
                 line-height: 1.1;
-                color: $color-graph-name;
+                width: 205px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
 
               .type {
@@ -225,7 +229,8 @@
 
                   .left {
                     margin-right: 20px;
-                    width: 88%;
+                    width: auto;
+                    max-width: 88%;
 
                     .node-type {
                       background: #F07760;

@@ -6,9 +6,26 @@ import AccountDropDown from './account/AccountDropDown';
 import SearchGraphs from './search/SearchGraphs';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 import { ReactComponent as NotifySvg } from '../assets/images/icons/notification.svg';
+import { ReactComponent as HelpSvg } from '../assets/images/icons/help.svg';
 import { ReactComponent as NotifyEmptySvg } from '../assets/images/icons/notificationComplete.svg';
+import Button from './form/Button';
+import Helps from './Helps/index';
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showDropDown: false,
+
+    };
+  }
+
+  toggleDropDown = () => {
+    const { showDropDown } = this.state;
+
+    this.setState({ showDropDown: !showDropDown });
+  }
+
   startGraph = () => {
     window.location.href = '/graphs/create';
   }
@@ -19,11 +36,10 @@ class Header extends Component {
 
   componentDidMount() {
     const notifyElement = document.querySelector('.notification');
-
     setTimeout(() => {
       if (notifyElement) {
         const dataCount = notifyElement.getAttribute('data-count');
-        if (dataCount == 0) {
+        if (dataCount === 0) {
           notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifyEmptySvg />);
         } else {
           notifyElement.innerHTML = ReactDOMServer.renderToString(<NotifySvg />);
@@ -33,6 +49,7 @@ class Header extends Component {
   }
 
   render() {
+    const { showDropDown } = this.state;
     return (
       <header className="headerPanel" id="header">
         <div className="logo-graphs">
@@ -43,13 +60,13 @@ class Header extends Component {
         <SearchGraphs />
         <div className="start-graphs">
           <div className="buttonsWrapper">
-            <button className="btn-classic" onClick={this.startGraph}>
+            <Button className="btn-classic" onClick={this.startGraph}>
               Create a graph
-            </button>
+            </Button>
 
-            <button className="btn-classic__alt" onClick={this.compareGraph}>
+            <Button className="btn-classic__alt" onClick={this.compareGraph}>
               Compare graphs
-            </button>
+            </Button>
 
           </div>
         </div>
@@ -58,6 +75,17 @@ class Header extends Component {
             <Notification />
           </div>
         </div>
+        <div className="headerHelp">
+          <Button
+            icon={<HelpSvg />}
+            onClick={this.toggleDropDown}
+          />
+        </div>
+        {showDropDown ? (
+          <div className="helpsOutside">
+            <Helps closeModal={this.toggleDropDown} />
+          </div>
+        ) : null}
         <div className="signOut">
           <AccountDropDown />
         </div>

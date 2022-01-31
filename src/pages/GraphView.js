@@ -33,6 +33,7 @@ import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import Dashboard from '../components/graphDashboard';
 import ChartUtils from '../helpers/ChartUtils';
+import Cytoscape from '../components/Cytoscape';
 
 class GraphView extends Component {
   static propTypes = {
@@ -57,6 +58,7 @@ class GraphView extends Component {
     super();
     this.state = {
       scaleStatus: false,
+      graphMode: 'd3',
     };
   }
 
@@ -95,6 +97,7 @@ class GraphView extends Component {
       singleGraph, singleGraphStatus, graphInfo, activeButton, currentUserId,
       location: { pathname, search }, match: { params: { graphId = '' } },
     } = this.props;
+    const { graphMode } = this.state;
     const viewPermisson = ((singleGraph?.share?.role === 'view') || (currentUserId !== singleGraph?.userId));
     const preview = pathname.startsWith('/graphs/preview/');
     let shortestNodes = [];
@@ -149,6 +152,12 @@ class GraphView extends Component {
         <div className="graphWrapper">
           <ReactChart />
         </div>
+        {graphMode === 'cytoscape' && (
+          <Cytoscape
+            nodes={singleGraph.nodesPartial}
+            links={singleGraph.linksPartial}
+          />
+        )}
         <Prompt
           when={this.preventReload}
           message={this.handleRouteChange}
@@ -193,17 +202,12 @@ class GraphView extends Component {
 
                     {['admin', 'edit', 'edit_inside'].includes(singleGraph.currentUserRole) && (
                       <Link to={`/graphs/update/${graphId}`}>
-                        <Tooltip overlay="Update">
+                        <Tooltip overlay="Edit">
                           <Button icon={<EditSvg style={{ height: 30 }} />} className="transparent edit" />
                         </Tooltip>
                       </Link>
                     )}
                     <NodeDescription />
-                    <Link to={pathname?.includes('filter') ? `/graphs/update/${graphId}` : '/'}>
-                      <Tooltip overlay="Back">
-                        <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
-                      </Tooltip>
-                    </Link>
                   </>
                 )}
                 <ToolBarHeader graph={singleGraph} />
@@ -225,7 +229,15 @@ class GraphView extends Component {
                 <Zoom />
                 <Crop />
 
-                <ToolBarFooter partOf />
+                <ToolBarFooter
+                  partOf
+                  graphMode={graphMode}
+                  setGraphMode={(mode) => {
+                    this.setState({
+                      graphMode: mode,
+                    });
+                  }}
+                />
               </div>
             ))}
       </Wrapper>

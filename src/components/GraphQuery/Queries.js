@@ -60,7 +60,7 @@ const Queries = ({ graphId, closeModal }) => {
     : (
       <div className="query-modal">
         <div className="query-modal__title">
-          <p className="name">Query</p>
+          <p className="name">Fragment</p>
           <Button
             icon={<CloseSvg style={{ height: 30 }} />}
             onClick={() => closeModal()}

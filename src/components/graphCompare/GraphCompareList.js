@@ -125,6 +125,14 @@ class GraphCompareList extends Component {
 
       const isSimilar = singleGraph1 && singleGraph2;
 
+      const body = document.querySelector('.graphCompareData > table > tbody');
+
+      let height = '';
+
+      if(body) {
+        height = body.style.height = window.innerHeight - 150 - 180;
+      }
+
       const selectAllSimilar = (
         <tr>
           {singleGraph1 && (
@@ -233,7 +241,7 @@ class GraphCompareList extends Component {
                     )}
                   </tr>
                 </thead>
-                <tbody className={`${!isSimilar ? 'tableContent' : ''}`}>
+                <tbody height={`${height}px`} className={`${!isSimilar ? 'tableContent' : ''}`}>
                   {selectAllSimilar}
                   {singleGraph1List}
                   {isSimilar ? '' : singleGraph2List}

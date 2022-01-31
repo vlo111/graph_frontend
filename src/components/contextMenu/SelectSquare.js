@@ -29,7 +29,7 @@ class SelectSquare extends Component {
 
     links = links.filter((d) => squareData.nodes.includes(d.target) && squareData.nodes.includes(d.source));
     this.props.setGridIndexes('links', links.map((d) => d.index));
-    this.props.setActiveButton('data');
+    this.props.setActiveButton('dataexport');
   }
 
   createNewGraph = async () => {

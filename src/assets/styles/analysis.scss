@@ -1,10 +1,10 @@
 .analyticBottomPage {
-  width: 47%;
-   height: 100%; 
+  width: 44%;
+  height: 100%;
   position: fixed;
   z-index: 1;
   bottom: 0px;
-  left: 55%;
+  right: 0;
 
   .close {
     position: fixed;
@@ -47,118 +47,110 @@
     }
   }
 
-  .container {
+  .analyticContainer {
     display: grid;
     grid-template-rows: 35%  39%  26%;
     max-width: 100%;
-    height: 100%;
-    
+    overflow: hidden auto;
+    height: calc(100% - 0.1px);
+    background-color: white;
+
     .localAnalyse {
       padding-left: 20px;
-       padding-top: 24px; 
       line-height: 25px;
       display: grid !important;
       grid-template-columns: 33% 33% 33%;
-  
+
       .componentContainer {
         height: 230px;
-  
+
         .componentsData {
           overflow: auto;
           height: 200px;
         }
       }
-  
+
       h3 {
         font-weight: 600;
         color: #da9393;
         font-size: 15px;
         width: 100px;
       }
-  
+
       strong {
         color: #717EA0;
         font-weight: 600;
       }
     }
-  
+
     .localAnalyse > div {
       margin: 6px;
     }
-  
+
     .pieChart {
       padding-top: 20px;
       display: grid !important;
       grid-template-rows: 2% 90% 8%;
-  
+
       .headerPie {
         text-align: center;
         font-size: 15px;
         color: #717ea0;
       }
-  
+
       .piePanel {
         margin-top: -10px;
-       
+
       }
-  
+
       .footerPie {
         padding-left: 30px;
         display: flex;
         padding-top: 5px;
-  
+
         .dot {
           display: none;
           height: 15px;
           width: 15px;
           border-radius: 50%;
         }
-  
+
         .selectedText {
           font-size: 14px;
           margin-left: 5px;
           display: flex;
           margin-top: -4px;
-  
+
           > * {
             margin-right: 8px;
           }
-  
+
           p {
             font-weight: 600;
             color: #717ea0;
           }
-  
+
           span {
             font-style: italic;
           }
         }
       }
-  
+
       .recharts-pie-sector {
         cursor: pointer;
       }
     }
-  
-   
 
-    .containerBarChart, .diag2, .localAnalyse, .pieChart {
-      overflow: hidden;
-      background: #fff;
-      display: block;
-      border-radius: 3px;
-    }
-  
     .containerBarChart {
       display: grid;
-      grid-template-rows: 0% 87%;  
+      grid-template-rows: 0% 87%;
       .headerTextDegreeBlock, .bottomTextDegreeBlock, .leftTextDegreeBlock {
         position: relative;
       left: 64px;
-  
+
         h4 {
           font-size: 15px;
-          color: 
+          color:
           #7166F8;
         }
       }
@@ -169,31 +161,28 @@
       .barContainer {
         display: grid;
         grid-template-columns: 1% 99%;
-  
+
         .recharts-responsive-container {
           width: 80% !important;
         }
-       
+
       }
-  
+
       .headerTextDegreeBlock {
         margin-top: 11px;
       }
-  
+
       .leftTextDegreeBlock {
         position: static;
         padding-left: 30px;
         margin-top: 20px;
-  
+
         h4 {
           transform: translate(5px, 170px) rotate(
                           270deg
           );
         }
       }
-    }
-    .recharts-wrapper{
-      position: absolute !important;
     }
   }
 
@@ -244,7 +233,7 @@
   }
   .pieChart .recharts-surface{
         padding: 20px 50px 2px 50px;
-    
+
   }
 }
 .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl{
@@ -265,7 +254,7 @@
   transform-origin: left top;
   transform: scaleY(0);
 
-  
+
 
   .container {
     display: table-cell;

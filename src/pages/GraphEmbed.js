@@ -5,7 +5,8 @@ import Wrapper from '../components/Wrapper';
 import ReactChart from '../components/chart/ReactChart';
 import Tabs from '../components/tabs';
 import LabelTooltip from '../components/LabelTooltip';
-import Legend from '../components/Legend';
+import Chart from '../Chart';
+import ChartUtils from '../helpers/ChartUtils';
 import AutoPlay from '../components/AutoPlay';
 import Zoom from '../components/Zoom';
 import Filters from '../components/filters/Filters';
@@ -24,6 +25,7 @@ class GraphEmbed extends Component {
     const { match: { params: { graphId, token } } } = this.props;
     this.props.setActiveButton('view');
     const { payload } = await this.props.getSingleEmbedGraphRequest(graphId, token);
+    ChartUtils.autoScale('graph');
     if (payload?.status === 404) {
       this.props.history.push('/404');
     }
@@ -35,7 +37,9 @@ class GraphEmbed extends Component {
         <div className="graphWrapper">
           <ReactChart />
         </div>
-        <Tabs editable={false} />
+        <div className="embedTab">
+          <Tabs editable={false} />
+        </div>
         <LabelTooltip />
         <Filters />
         <AutoPlay />

@@ -717,9 +717,11 @@ class Chart {
       const { width, height } = graph.getBoundingClientRect();
       this.simulation = this.simulation
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('charge', d3.forceManyBody().strength((d, i) => (i % 2 === 0 ? -4000 : -5000)).distanceMin(50).distanceMax(500))
-        .force('y', d3.forceY(0.05))
-        .force('x', d3.forceX(0.05));
+        .force('charge', d3.forceManyBody()
+        .strength(-2000)
+        .distanceMin(1).distanceMax(2000))
+        .force('y', d3.forceY(0.5))
+        .force('x', d3.forceX(0.5));
     }
     return true;
   }
@@ -872,7 +874,7 @@ class Chart {
         readOnlyLabel = this.data.embedLabels.find((l) => l.label.id === datum.id);
       }
       this.node.each((d) => {
-        if (dragFolder.nodes.some((n) => n.id === d.id)) {
+        if (dragFolder.nodes.some((n) => n.id === d.id) || readOnlyLabel) {
           if (
             (!d.readOnly && !datum.readOnly)
             || (readOnlyLabel && readOnlyLabel.nodes.some((n) => n.id === d.id))
@@ -1924,9 +1926,9 @@ class Chart {
     let selectSquare;
 
     const showSelectedNodes = () => {
-      this.nodesWrapper.selectAll('.node :not(text)')
+      this.nodesWrapper.selectAll('.node :not(text) :not(.highlight)')
         .attr('filter', (n) => (this.squareData.selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
-      this.nodesWrapper.selectAll('.node :not(text)')
+      this.nodesWrapper.selectAll('.node :not(text) :not(.highlight)')
         .attr('class', (n) => (this.squareData.selectedNodes.includes(n.id) ? 'selectMultyNodes' : null));
     };
 
@@ -2384,8 +2386,8 @@ class Chart {
       })
       .attr('xlink:href', (d) => ChartUtils.normalizeIcon(d.icon, d.nodeType === 'infography'));
 
-    this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
-      .attr('fill', (d) => {
+    this.nodesWrapper.selectAll('.node > :not(text):not(defs):not(.highlight)')
+      .style('fill', (d) => {
         if (d.icon) {
           if (scale <= 0.25 && d.nodeType !== 'infography') {
             return ChartUtils.nodeColor(d);
@@ -2395,8 +2397,13 @@ class Chart {
           }
           return `url(#i${d.index})`;
         }
+      });
 
-        return ChartUtils.nodeColor(d);
+    this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
+      .attr('stroke', (d) => {
+        if (!d.icon) {
+          return ChartUtils.nodeColor(d);
+        }
       });
 
     return defs;
@@ -3295,6 +3302,32 @@ class Chart {
     this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
 
     this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
+  }
+
+  /**
+   * item can be open or close
+   * open node highlight
+   * close remove node highlight
+   * second param is node index
+   * @param item
+   * @param index
+   */
+  static highlight(item, index) {
+    const nodes = Chart.nodesWrapper;
+
+    const node = nodes.select(`[data-i="${index}"]`);
+
+    if (item === 'open') {
+      nodes.selectAll('.node > .highlight').remove();
+
+      if (node.data()?.length) {
+        node.insert('circle', ':first-child')
+          .classed('highlight', true)
+          .attr('r', Chart.radiusList[index] + 8);
+      }
+    } else {
+      node.select('.highlight').remove();
+    }
   }
 }
 

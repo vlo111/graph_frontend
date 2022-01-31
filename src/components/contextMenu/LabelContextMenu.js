@@ -11,16 +11,16 @@ class labelContextMenu extends Component {
     params: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
-    customFields: PropTypes.object.isRequired,
+    singleGraph: PropTypes.object.isRequired,
   }
 
-  handleCopyClick = async (ev) => {
+  handleCopyClick = async () => {
     const { params, match: { params: { graphId = '' } }, singleGraph } = this.props;
     await LabelUtils.copy(graphId, params.id, singleGraph);
     // this.props.onClick(ev, 'label.copy', { data, graphId });
   }
 
-  handleLockClick = (ev) => {
+  handleLockClick = () => {
     const { params: { id } } = this.props;
     const labels = Chart.getLabels().map((l) => {
       if (l.id === id) {
@@ -32,7 +32,8 @@ class labelContextMenu extends Component {
   }
 
   render() {
-    const { params: { status, sourceId } } = this.props;
+    const { params: { status, sourceId }, params } = this.props;
+    const labelNodes = Chart.getNodes().filter((n) => n.labels.includes(params.id));
     if (sourceId) {
       return null;
     }
@@ -43,7 +44,7 @@ class labelContextMenu extends Component {
           Edit
         </Button>
 
-        <Button icon="fa-copy" onClick={this.handleCopyClick}>
+        <Button icon="fa-copy" onClick={this.handleCopyClick} disabled={labelNodes.length === 0}>
           Copy
         </Button>
         <Button icon={status === 'lock' ? 'fa-unlock-alt' : 'fa-lock'} onClick={this.handleLockClick}>

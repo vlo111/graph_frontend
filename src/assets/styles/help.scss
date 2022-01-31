@@ -1,3 +1,25 @@
+.ghModalHelps{
+    top: 6%;
+    position: fixed ;
+    left: 200px;
+     ol {
+      list-style: none;
+    }
+    li span{
+      color: #7166f8;
+      font-weight: 700;
+      padding: 5px;
+    }
+    .helpsSubTitle{
+      padding-left: 20px;
+    }
+    .helpMaind{
+      margin-top: 70px;
+    }
+    .exploreTitle{
+      left: -20px;
+    }
+}
 
 .help_menu {
   color: #7166f8 !important;
@@ -30,6 +52,7 @@
   box-shadow: 4px 0px 31px rgb(119 113 183 / 22%);
   border-radius: 3px;
   position: fixed;
+  z-index: 2;
 }
 
 .react-tabs__tab-list {
@@ -90,10 +113,8 @@
 
 .react-tabs__tab-panel {
   padding: 0px 15px;
-
   display: none;
   width: 100%;
-
 }
 
 .react-tabs__tab-panel--selected {
@@ -111,7 +132,7 @@
 
 .color-border {
   border-left: 4px solid #edecff;
-  height: 777px;
+  height: 95%;
   margin-left: 15px;
   margin-top: 20px;
 }
@@ -150,19 +171,18 @@
 .help_text {
   outline: none;
   position: relative;
-  top: 60px;
   color: #545454;
   font-size: 14px;
   padding-bottom: 2px;
 
   ol {
-    padding: 25px;
+    padding: 0px 25px;
     li {
       text-align: -webkit-left;
       font-size: 14px;
       font-weight: 400;
       text-align-last: start;
-      line-height: 23px !important;
+      line-height: 25px !important;
       b {
         color: #7166f8 !important;
       }
@@ -178,18 +198,20 @@
   }
   p {
     position: relative;
-    top: 20px;
+    top: 10px;
     left: 10px;
   }
   .help_node_text {
     top: 0px;
     font-style: italic !important;
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: bold;
+    width: 90%;
+
   }
 
   .help_graph_text {
-    color: #545454;
+    color: red;
     font-size: 14px;
     font-weight: 400;
     top: 15px;
@@ -198,11 +220,12 @@
   .marg_graph_text {
     font-style: italic;
     top: 4px;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 400;
+    width: 95%;
   }
   .export_graph_text {
-    font-size: 12px;
+    font-size: 15px;
     font-style: italic;
     font-weight: 400;
     top: 90px;
@@ -226,7 +249,6 @@
 
 .help_label-text {
   position: relative;
-  top: 60px;
   color: #545454;
   font-size: 14px;
   -webkit-user-modify: read-write-plaintext-only;
@@ -279,8 +301,8 @@
 
 .helpTitle {
   color: #7166f8;
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: 600;
+  font-size: 15px;
   position: relative;
   top: 20px;
   display: flex;

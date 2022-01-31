@@ -1,77 +1,74 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import _ from 'lodash';
 import Button from '../form/Button';
-import { updateMyAccountPasswordRequest } from '../../store/actions/account';
 import PasswordInput from '../form/PasswordInput';
-import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Validate from '../../helpers/Validate';
+import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
+import { updateMyAccountPasswordRequest } from '../../store/actions/account';
 
-class UpdatePasswordModal extends Component {
-  static propTypes = {
-    onClose: PropTypes.func.isRequired,
-    updateMyAccountPasswordRequest: PropTypes.func.isRequired,
-    className: PropTypes.string.isRequired,
-  }
+const UpdatePasswordModal = ({ className, onClose }) => {
+  const dispatch = useDispatch();
+  const [requestData, setRequestData] = useState({
+    oldPassword: '',
+    password: '',
+    passwordConfirm: '',
+  });
+  const [errors, setErrors] = useState({
+    oldPassword: '',
+    password: '',
+    passwordConfirm: '',
+  });
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      requestData: {
-        oldPassword: '',
-        password: '',
-        passwordConfirm: '',
-      },
-      errors: {
-        oldPassword: '',
-        password: '',
-        passwordConfirm: '',
-      },
-    };
-  }
+  const handleChange = async (path, value) => {
+    setRequestData((prevState) => ({
+      ...prevState,
+      [path]: value,
+    }));
+  };
 
-  handleChange = (value, path) => {
-    const { requestData } = this.state;
-    _.set(requestData, path, value);
-    this.setState({ requestData, errors: {} });
-  }
-
-  handlePasswordChange = async (ev) => {
+  const handlePasswordChange = async (ev) => {
     ev.preventDefault();
-    const { requestData } = this.state;
-    const errors = Validate.changePassword(requestData);
-    if (_.isEmpty(errors)) {
-      const { payload } = await this.props.updateMyAccountPasswordRequest(requestData);
-      const { data = {} } = payload;
-      if (data.status === 'ok') {
-        toast.info('Password successfully updated');
-        this.props.onClose();
-      }
-      this.setState({
-        errors: data.errors,
-      });
+    [errors.password, errors.passwordConfirm, errors.oldPassword] = Validate.passwordValidation(requestData);
+    if ((errors.password.trim().length > 0
+     || errors.passwordConfirm.trim().length > 0
+     || errors.oldPassword.trim().length > 0)
+    ) {
+      setErrors((prevState) => ({
+        ...prevState,
+      }));
     } else {
-      this.setState({
-        errors,
-      });
+      try {
+        const { payload } = await dispatch(updateMyAccountPasswordRequest(requestData));
+        const { data = {} } = payload;
+        if (data.status === 'ok') {
+          toast.info('Password successfully updated');
+          onClose();
+        } else {
+          const { oldPassword } = data.errors;
+          errors.oldPassword = oldPassword;
+          setErrors((prevState) => ({
+            ...prevState,
+          }));
+        }
+      } catch (e) {
+      //
+      }
     }
-  }
+  };
 
-  render() {
-    const { requestData, errors } = this.state;
-    const { className } = this.props;
-    return (
+  return (
+    <div>
       <Modal
         className="ghModal changePasswordModal"
         overlayClassName={classNames('ghModalOverlay changePasswordModalOverlay', className)}
         isOpen
-        onRequestClose={this.props.onClose}
+        onRequestClose={onClose}
       >
-        <form onSubmit={this.handlePasswordChange}>
+        <form onSubmit={handlePasswordChange}>
           <h3>Change Password</h3>
           <PasswordInput
             name="oldPassword"
@@ -79,7 +76,7 @@ class UpdatePasswordModal extends Component {
             type="password"
             value={requestData.oldPassword}
             error={errors.oldPassword}
-            onChangeText={this.handleChange}
+            onChangeText={(v) => handleChange('oldPassword', v)}
             showIcon={(!!requestData.oldPassword)}
           />
           <PasswordInput
@@ -89,7 +86,7 @@ class UpdatePasswordModal extends Component {
             containerClassName="newPassword"
             value={requestData.password}
             error={errors.password}
-            onChangeText={this.handleChange}
+            onChangeText={(v) => handleChange('password', v)}
             showIcon={(!!requestData.password)}
           />
           <PasswordInput
@@ -98,33 +95,26 @@ class UpdatePasswordModal extends Component {
             type="password"
             value={requestData.passwordConfirm}
             error={errors.passwordConfirm}
-            onChangeText={this.handleChange}
+            onChangeText={(v) => handleChange('passwordConfirm', v)}
             showIcon={(!!requestData.passwordConfirm)}
           />
           <div className="buttonsWrapper">
             <Button
               color="transparent"
               className="cancel"
-              onClick={this.props.onClose}
+              onClick={onClose}
               icon={<CloseSvg />}
             />
             <Button color="accent" type="submit">Save</Button>
           </div>
         </form>
       </Modal>
-    );
-  }
-}
-
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = {
-  updateMyAccountPasswordRequest,
+    </div>
+  );
+};
+UpdatePasswordModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  className: PropTypes.string.isRequired,
 };
 
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(UpdatePasswordModal);
-
-export default Container;
+export default UpdatePasswordModal;

@@ -60,6 +60,7 @@ class ImportGoogle extends Component {
     this.setState({ loading: true });
     const { payload: { data } } = await this.props.convertGraphRequest('google-sheets', requestData);
     if (data.nodes?.length) {
+      this.props.getNodesLocation(data.nodes);
       this.setState({ loading: false, step: 2 });
       this.props.showSelectHandler(false);
     } else {

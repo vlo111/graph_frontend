@@ -196,42 +196,32 @@ class Validate {
     return errors;
   }
 
-  static changePassword(data) {
-    const {
-      password, passwordConfirm, oldPassword,
-    } = data;
+  static passwordValidation({ passwordConfirm: confirm, password: checkPassword, oldPassword: oldPass }) {
+    let password = '';
+    let passwordConfirm = '';
+    let oldPassword = '';
 
-    let errors = {};
-
-    if (!oldPassword) {
-      errors.oldPassword = 'Password is required';
+    if (!oldPass) {
+      oldPassword = 'Password is required';
+    }
+    if (!checkPassword) {
+      password = 'Password is required';
+    } else if (checkPassword.length < 8) {
+      password = 'Please enter at least 8 character';
+    } else if (!checkPassword.match(/[a-z]/g)) {
+      password = 'Please enter at least one lowercase character';
+    } else if (!checkPassword.match(/[A-Z]/g)) {
+      password = 'Please enter at least one uppercase character';
+    } else if (!checkPassword.match(/[0-9]/g)) {
+      password = 'Please enter at least one digit.';
+    }
+    if (!confirm) {
+      passwordConfirm = 'Confirm password is required';
+    } else if (confirm !== checkPassword) {
+      passwordConfirm = 'Password and confirm password do not match';
     }
 
-    errors = this.passwordValidation(errors, password, passwordConfirm);
-
-    return errors;
-  }
-
-  static passwordValidation(errors, password, passwordConfirm) {
-    if (!password) {
-      errors.password = 'Password is required';
-    } else if (password.length < 8) {
-      errors.password = 'Please enter at least 8 character';
-    } else if (!password.match(/[a-z]/g)) {
-      errors.password = 'Please enter at least one lowercase character';
-    } else if (!password.match(/[A-Z]/g)) {
-      errors.password = 'Please enter at least one uppercase character';
-    } else if (!password.match(/[0-9]/g)) {
-      errors.password = 'Please enter at least one digit.';
-    }
-
-    if (!passwordConfirm) {
-      errors.passwordConfirm = 'Confirm password is required';
-    } else if (passwordConfirm !== password) {
-      errors.passwordConfirm = 'Password and confirm password do not match';
-    }
-
-    return errors;
+    return [password, passwordConfirm, oldPassword];
   }
 }
 

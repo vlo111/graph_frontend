@@ -46,7 +46,7 @@ class MapsLocationPicker extends Component {
   setCurrentLocation = async () => {
     const { value } = this.props;
     if (_.isObject(value)) {
-      const { lat, lng } = value.location;
+      const { lat, lng } = value;
       this.setState({ initialCenter: { lat, lng } });
       return;
     }

@@ -44,7 +44,8 @@ class DataTableNodes extends Component {
               cell.orginalValue = cell.value;
               cell.value = Utils.substr(cell.value.address, 28);
             } else {
-              cell.value = '';
+              cell.orginalValue = undefined;
+              cell.value = undefined;
             }
           }
         });
@@ -70,8 +71,16 @@ class DataTableNodes extends Component {
       }
 
       if (d.cell.key === 'location') {
-        grid[d.row][d.col].orginalValue = value;
-        grid[d.row][d.col].value = Utils.substr(value.address, 28);
+        const { location: { lat, lng }, address } = value;
+
+        const location = {
+          lat,
+          lng,
+          address,
+        };
+
+        grid[d.row][d.col].orginalValue = location;
+        grid[d.row][d.col].value = Utils.substr(location.address, 28);
       } else {
         grid[d.row][d.col] = { ...grid[d.row][d.col], value };
       }

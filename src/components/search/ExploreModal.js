@@ -37,7 +37,7 @@ const SearchModal = ({ graphId }) => {
     name: true,
     tab: true,
     tag: true,
-    keyword: true,
+    keywords: true,
   });
   const chartNodes = Chart.getNodes();
   const publicState = useSelector(getPublicState);
@@ -81,7 +81,7 @@ const SearchModal = ({ graphId }) => {
         name: !checkBoxAll,
         tab: !checkBoxAll,
         tag: !checkBoxAll,
-        keyword: !checkBoxAll,
+        keywords: !checkBoxAll,
       });
     }
 
@@ -287,7 +287,7 @@ const SearchModal = ({ graphId }) => {
     };
   }, []);
 
-  const showNodeData = !!(matched.name === true || matched.keyword === true || matched.tab === true || matched.tag === true);
+  const showNodeData = !!(matched.name === true || matched.keywords === true || matched.tab === true || matched.tag === true);
   const showTypeData = !!(matched.type === true);
   const types = ChartUtils.getNodeTypeListByObj(result, search);
   return (
@@ -433,7 +433,7 @@ const SearchModal = ({ graphId }) => {
                               __html: formatHtml(item.type),
                             }}
                           />
-                          {item.keywords.join(', ').toLowerCase().includes(search.toLowerCase()) ? (
+                          {item.keywords.join(',').toLowerCase().includes(search.toLowerCase()) ? (
                             <span
                               className="keywords"
                               dangerouslySetInnerHTML={{

@@ -1,16 +1,18 @@
 .signPage {
-  flex-direction: inherit;
+  height: 100vh;
+  background-color: $color-tab-bg;
 
   .ghInput {
     textarea,
     input {
       width: 100%;
-      height: 40px;
+      height: 50px;
       border: 1px solid $color-light-gray;
       padding: 0 15px;
-      font-size: 15px;
+      font-size: 16px;
       color: #333333;
-      border-radius: 8px;
+      border-radius: 5px;
+      background-color: transparent !important;
 
       &:focus {
         outline: none;
@@ -32,11 +34,15 @@
       padding-right: 30px;
       padding-left: 8px;
     }
+    .error{
+      top: 53px !important;
+    }
 
     .icon {
-      left: auto;
+      left: 93%;
       right: 3px;
-      bottom: 3px;
+      bottom: 5px;
+      top: 10px;
       cursor: pointer;
 
       svg {
@@ -51,6 +57,7 @@
         }
       }
     }
+
   }
 
   .ghFormField {
@@ -146,7 +153,6 @@
     .icon {
       position: absolute;
       bottom: 6px;
-      left: 4px;
     }
 
     .limit {
@@ -166,107 +172,11 @@
     }
   }
 
-  .socialLogin {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 32px;
-
-    h4 {
-      font-size: 16px;
-      font-weight: normal;
-      text-align: center;
-      margin: 32px 0;
-    }
-  }
-
-  .social_icon {
-    padding: 5px 11px;
-    height: 35px;
-    width: 35px;
-    position: relative;
-    top: 32px;
-    border: 1px solid #e2e7eb;
-    background-color: #f3f7f9;
-    color: #6c757d;
-    left: -1%;
-    border-radius: 8px;
-  }
-
   .rigt-input {
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100%;
     grid-gap: 10%;
-  }
-
-  .socialright {
-    width: 100%;
-    background-color: #f3f7f9;
-    height: 35px;
-    padding: 7px;
-  }
-
-  .social-list {
-    margin: auto;
-    width: 60px;
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-gap: 36%;
-    position: relative;
-  }
-
-  .social-list > div {
-    width: 32px;
-    line-height: center;
-    line-height: calc(2rem - 2px);
-    padding: 0px 7px;
-  }
-
-  .social-list > .social-list-facebook {
-    border: 2px solid #6658dd;
-    border-radius: 50%;
-  }
-
-  .fa-facebook-square {
-    color: #6658dd;
-  }
-
-  .social-list > .social-list-twitter {
-    border: 2px solid #4fc6e1;
-    border-radius: 50%;
-  }
-
-  .fa-twitter {
-    color: #4fc6e1;
-  }
-
-  .social-list > .social-list-linkedin {
-    border: 2px solid #0a66c2;
-    border-radius: 50%;
-  }
-
-  .fa-linkedin {
-    color: #0a66c2;
-  }
-
-  .social-list > .social-list-skype {
-    border: 2px solid #2962ff;
-    border-radius: 50%;
-    margin-left: 0 auto;
-  }
-
-  .fa-skype {
-    color: #2962ff;
-  }
-
-  .accountedit {
-    color: #0d0905;
-    font-size: 16px;
-  }
-
-  .fa-pencil {
-    color: #0d0905;
-    padding: 3px;
   }
 
   .editrect > a {
@@ -284,156 +194,137 @@
     color: black;
   }
 
-  //  SignIn Pages
-  .signPage {
-    flex-direction: inherit;
-  }
+// signin_page page start 
 
-  .SigninLeft {
-    width: 56.54%;
-    height: 100vh;
-    max-width: 1081px;
-
-    &.signIn {
-      background-image: url("../images/signIn.svg");
-      background-size: cover;
-      position: relative;
-      background-position-x: right;
-      z-index: 1;
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
-  .Signinright {
-    width: 43%;
-    display: flex;
+  .signin_page {
+    display: grid;
     align-items: center;
-    flex-direction: column;
+    grid-template-columns:auto auto;
+    height: 100%;
 
     .submit {
       margin-top: 62px;
-    }
+       }
+    .singIn_img{
+      display: grid;
+      justify-self: center;
+      img{
+        max-height: 490px;
+      } 
+       }
+    .singIn_form{
+      max-width: 650px;
+      min-width: 320px;
+      .SigninAuthForm {
+        padding: 10px 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: auto;
+        max-width: 500px;
+        min-width: 320px;
+        width: 100%;
+        border-radius: 10px;
+
+        .forgotPassword{
+          width: 100%;
+          position: relative;
+          color: #a1a1a1;
+          z-index: 100;
+          font-style: italic;
+          top: -7px;
+        }
+    
+        .ghFormField {
+          width: 100%;
+        }
+    
+        .hr {
+          margin-bottom: 32px;
+        }
+    
+        .row {
+          display: flex;
+          align-items: center;
+        }
+    
+        .errorRecovery {
+          color: $color-error;
+          font-size: 12px;
+          position: relative;
+          top: 25px;
+        }
+        }
+       }
+    .SaytLogo {
+      position: absolute;
+      right: 89%;
+      top: 3.78%;
+      z-index: 100;
+       }
   }
 
-  .switchSignInMode {
-    font-size: 20px;
-    position: relative;
-    top: 170px;
-    left: 0%;
+ // forgot_password page start 
+  .forgot_password {
+      display: grid;
+      grid-template-rows: auto auto;
+      height: 90%;
+      align-items: center;
+
+      .forgot_img{
+        display: grid;
+        justify-self: center;
+      }
+
+      .forgot_form{
+        display: grid;
+        justify-self: center;
+        position: relative;
+        bottom: 90px;
+        .SigninAuthForm{
+          width: 500px;
+          .ghFormField{
+            width: 100%;
+            height: 46px;
+            .error{
+              top: 47px;
+              padding: 0 14px;
+            }
+          }
+          .row{
+            width: 100%;
+            justify-content: center;
+            margin: 0;
+            .ghButton.alt{
+              top: 50px;
+            }
+          }
+          p{
+            font-weight: 700;
+            font-size: 16px;
+            color: #7166F8;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            top: 15px;
+            text-align: center;
+            padding: 0 20px 0 20px;
+          }
+        }
+       }
+      .SaytLogo {
+        position: absolute;
+        right: 89%;
+        top: 3.78%;
+        z-index: 100;
+         }
+
   }
 
   main {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-  }
-
-  .SigninAuthForm {
-    padding: 10px 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto;
-    max-width: 350px;
-    min-width: 320px;
-    width: 100%;
-    border-radius: 10px;
-
-    a {
-      position: relative;
-      color: #a1a1a1;
-      left: -30%;
-      z-index: 100;
-      font-style: italic;
-      top: 10px;
-    }
-
-    .ghFormField {
-      width: 100%;
-    }
-
-    .hr {
-      margin-bottom: 32px;
-    }
-
-    .row {
-      display: flex;
-      align-items: center;
-    }
-
-    .socialButtons {
-      position: relative;
-      top: 64px;
-      left: 5px;
-    }
-
-    .errorRecovery {
-      color: $color-error;
-      font-size: 12px;
-      position: relative;
-      top: 25px;
-    }
-  }
-
-  //  SignIn Pages Icon
-  .socialButtons {
-    position: relative;
-    top: 45px;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-
-    .button {
-      color: #ffffff;
-      border-radius: 8px;
-      margin: 5px 13.5px;
-      padding: 6px 7px 5px;
-      align-items: center;
-      outline: none;
-      border: none;
-      font-size: 14px;
-      // padding: 0px;
-      z-index: 1000;
-      cursor: pointer;
-
-      &:hover {
-        text-decoration: underline;
-      }
-
-      img {
-        width: 30px;
-        height: 30px;
-        object-fit: cover;
-        margin-right: 10px;
-        border-radius: 5px;
-
-        &.whiteBg {
-          background-color: white;
-          border-radius: 4px;
-        }
-      }
-    }
-
-    .facebook {
-      background-color: white;
-    }
-
-    .twitter {
-      background-color: white;
-    }
-
-    .google {
-      background-color: white;
-    }
-
-    .linkedin {
-      background-color: white;
-    }
   }
 
   .paragraph,
@@ -449,8 +340,6 @@
     }
   }
 
-  //  SignIn Pages H1,H4,P,Span,Input,Path,Logo
-
   .SigninAuthForm > h1 {
     max-width: 1920px;
     color: #424242;
@@ -462,50 +351,29 @@
     text-align: left;
   }
 
-  .socialLogin h4 {
-    position: relative;
-    top: 40px;
-    font-size: 45px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 54px;
-    letter-spacing: 0em;
-    text-align: left;
-    width: 150px;
-    color: #505050;
-  }
-
+  .socialLogin {
+  
+    .emaiL_input{
+      input{
+        border-radius: none !important;
+      }
+    }
+  
+   h4 {
+     position: relative;
+     top: 45px;
+     font-size: 33px;
+     font-style: normal;
+     font-weight:400;
+     line-height: 54px;
+     letter-spacing: 0em;
+     width: 150px;
+     color: #505050;
+    }
+ }
   .SigninAuthForm {
-    position: relative;
-    // top: 76px;
-    // width: 100%;
     color: #a1a1a1;
     font-size: 14px;
-    left: -10%;
-  }
-
-  // .switchSignInMode {
-  //   font-size: 20px;
-  // }
-
-  .switchSignInMode > span {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 23px;
-    color: #727272;
-    position: relative;
-    top: -55px;
-    left: 0%;
-  }
-
-  .getstart {
-    color: #7166f8;
-    font-size: 20px;
-    font-weight: 700;
-    position: relative;
-    top: -55px;
-    left: 0;
   }
 
   svg {
@@ -514,108 +382,8 @@
     }
   }
 
-  // ForgotPassword
-
-  .forgotPasswordAuthform {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto;
-    max-width: 350px;
-    min-width: 320px;
-    width: 100%;
-    border-radius: 10px;
-    position: relative;
-    top: 160px;
-    left: -30%;
-
-    h4 {
-      position: relative;
-      top: -40px;
-      font-size: 45px;
-      font-weight: 700;
-      color: #505050;
-      width: 510px;
-    }
-
-    a {
-      position: relative;
-      top: 80px;
-      color: #a1a1a1;
-      left: -30%;
-    }
-
-    .ghFormField {
-      width: 100%;
-    }
-
-    .hr {
-      margin-bottom: 32px;
-    }
-
-    .row {
-      display: flex;
-      align-items: center;
-    }
-
-    .socialButtons {
-      position: relative;
-      top: 65px !important;
-    }
-  }
-
-  .switchForgotMode span {
-    position: relative;
-    top: 50px !important;
-  }
-
-  .switchForgotMode .getstart {
-    position: relative;
-    top: 50px !important;
-  }
-
-  .forgotPasswordLeft {
-    width: 64.54%;
-    height: 100vh;
-    max-width: 1081px;
-
-    &.forgotPassword {
-      background-image: url("../images/logo-scale.svg");
-      background-size: cover;
-      position: relative;
-      z-index: 1;
-      background-position: right;
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
-  .forgotPasswordRight {
-    width: 37%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
-    .submit {
-      margin-top: 40px;
-    }
-  }
-
-  .switchForgotMode {
-    position: relative;
-    top: 220px;
-    color: #727272;
-    font-size: 20px;
-    font-weight: 500;
-    left: -30%;
-  }
 
   //   Button
-
   .ghButton {
     border: none;
     color: $color-dark;
@@ -629,8 +397,8 @@
     }
 
     &.alt {
-      width: 181px;
-      height: 36px;
+      width: 185px;
+      height: 45px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -640,7 +408,7 @@
       border-radius: 5px;
       position: relative;
       z-index: 100;
-      background: linear-gradient(151.09deg, #f07760 -74.94%, #7166f8 146.83%);
+      background: $color-main;
     }
 
     &.alt:active:after {
@@ -675,7 +443,7 @@
       font-size: 16px;
 
       color: white;
-      background: linear-gradient(151.09deg, #f07760 -74.94%, #7166f8 146.83%);
+      background: $color-main;
     }
 
     &.accent {
@@ -734,411 +502,25 @@
   }
 
   .ghButton:hover {
-    color: white;
-    background: linear-gradient(151.09deg, #7166f8 -74.94%, #f07760 146.83%);
+    background-color: $color-white;
+    color: $color-main;
+    border-color: $color-main;
+    box-shadow: none;
+    border:1px solid $color-main;
   }
 
   .ghButton.orange:hover {
-    cursor: pointer;
-    background: linear-gradient(151.09deg, #7166f8 -74.94%, #f07760 146.83%);
+    background-color: $color-white;
+    color: $color-main;
+    border-color: $color-main;
     box-shadow: none;
+    border-color: $color-main;
   }
-
-  //  SignUp
-
-  .SignUpLeft {
-    width: 64.54%;
-    height: 100vh;
-    max-width: 1081px;
-
-    &.signUp {
-      background-image: url("../images/signUp.svg");
-      background-size: cover;
-      position: relative;
-      z-index: 1;
-      // background-position: center;
-      // background-position-x: right;
-      animation: mymove 0.5s;
-
-      @keyframes mymove {
-        0% {
-          left: -800px;
-          top: -600px;
-        }
-        50% {
-          transform: rotate(10deg);
-        }
-        100% {
-          left: 0;
-          top: 0;
-        }
-      }
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
-  .SignUpRight {
-    width: 50%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
-    .submit {
-      margin-top: 100px;
-    }
-  }
-
-  .SignUpAuthform {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto;
-    max-width: 350px;
-    min-width: 320px;
-    width: 100%;
-    border-radius: 10px;
-    position: relative;
-    top: 80px;
-    left: -10%;
-
-    h4 {
-      top: -22px;
-      position: relative;
-      font-size: 45px;
-      font-weight: 700;
-      width: 370px;
-      color: #505050;
-    }
-
-    a {
-      position: relative;
-      top: 80px;
-      color: #a1a1a1;
-      left: -30%;
-    }
-
-    .ghFormField {
-      width: 100%;
-    }
-
-    .hr {
-      margin-bottom: 32px;
-    }
-
-    .row {
-      display: flex;
-      align-items: center;
-    }
-
-    .submit {
-      position: relative;
-      top: -78px !important;
-    }
-
-    p {
-      position: relative;
-      top: -50px !important;
-    }
-
-    .socialButtons {
-      position: relative;
-      top: -20px !important;
-    }
-  }
-
-  //  SignIn @media
-  @media (min-width: 1920px) {
-    .SigninAuthForm {
-      padding: 0;
-      margin: 160px 0;
-      left: 0;
-    }
-    .switchSignInMode {
-      position: relative;
-      top: 0;
-    }
-  }
-  @media (max-width: 1024px) {
-    .signIn {
-      background-image: none !important;
-    }
-    .Signinright {
-      position: absolute;
-      left: 29%;
-      top: 20px;
-      z-index: 100;
-
-      .SigninAuthForm {
-        padding: 0;
-        margin: -30px 0;
-        left: 0;
-      }
-
-      .switchSignInMode > span {
-        font-size: 20px;
-        font-weight: 400;
-      }
-
-      .getstart {
-        font-size: 24px;
-        font-weight: 700;
-      }
-
-      h1 {
-        position: relative;
-        top: 30px;
-        font-size: 22px;
-        font-weight: 400;
-      }
-
-      h4 {
-        position: relative;
-        left: 11%;
-        font-size: 28px;
-        font-weight: 700;
-      }
-
-      p {
-        font-size: 20px;
-        font-weight: 400;
-      }
-
-      .logo {
-        position: inherit;
-      }
-
-      .switchSignInMode {
-        left: 0;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .Signinright {
-        padding: 20px 40px;
-        position: absolute;
-        left: 29%;
-
-        .switchSignInMode > span {
-          font-size: 14px;
-          font-weight: 400;
-        }
-
-        .getstart {
-          font-size: 22px;
-          font-weight: 700;
-        }
-
-        h1 {
-          font-size: 22px;
-          font-weight: 400;
-        }
-
-        h4 {
-          position: relative;
-          left: 11%;
-          font-size: 30px;
-          font-weight: 700;
-        }
-
-        p {
-          font-size: 23px;
-          font-weight: 400;
-        }
-      }
-    }
-  }
-
-  //   ForgotPassword
-  @media (min-width: 1920px) {
-    .forgotPasswordAuthform {
-      padding: 0;
-      margin: 160px 0;
-      left: 0;
-    }
-    .switchForgotMode {
-      top: 60px;
-      left: -3%;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    .forgotPassword {
-      background-image: none !important;
-    }
-    .forgotPasswordRight {
-      position: absolute;
-      left: 29%;
-      top: 20px;
-      z-index: 100;
-
-      .switchForgotMode > span {
-        font-size: 16px;
-        font-weight: 400;
-      }
-
-      .forgotPasswordAuthform {
-        margin: -45px 0;
-        left: 0;
-      }
-
-      .getstart {
-        font-size: 19px;
-        font-weight: 700;
-      }
-
-      h1 {
-        font-size: 22px;
-        font-weight: 400;
-      }
-
-      h4 {
-        font-size: 28px;
-        font-weight: 700;
-      }
-
-      p {
-        font-size: 20px;
-        font-weight: 400;
-        z-index: 100;
-        margin-top: 50px;
-        left: 0;
-      }
-
-      .logo {
-        z-index: 100;
-        position: inherit;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .forgotPasswordRight {
-        padding: 20px 40px;
-        position: absolute;
-        left: 29%;
-        z-index: 100;
-
-        .switchForgotMode > span {
-          font-size: 17px;
-          font-weight: 400;
-        }
-
-        .getstart {
-          font-size: 20px;
-          font-weight: 700;
-        }
-
-        h1 {
-          font-size: 22px;
-          font-weight: 400;
-        }
-
-        h4 {
-          font-size: 27px;
-          font-weight: 700;
-        }
-
-        p {
-          margin-top: 50px;
-          font-size: 23px;
-          font-weight: 400;
-        }
-      }
-    }
-  }
-
-  //  SignUP
-
-  @media (min-width: 1920px) {
-    .SignUpAuthform {
-      top: 160px;
-    }
-  }
-  @media (max-width: 1024px) {
-    .signUp {
-      background-image: none !important;
-    }
-    .SignUpRight {
-      position: absolute;
-      left: 25%;
-      margin: 20px 0px;
-      z-index: 100;
-
-      .SignUpAuthform {
-        position: relative;
-        top: 20px;
-        margin: -39px 0;
-        left: 0;
-      }
-
-      .getstart {
-        font-size: 24px;
-        font-weight: 700;
-      }
-
-      h1 {
-        position: relative;
-        font-size: 22px;
-        font-weight: 400;
-        top: 30px;
-      }
-
-      h4 {
-        font-size: 28px;
-        font-weight: 700;
-      }
-
-      p {
-        font-size: 20px;
-        font-weight: 400;
-      }
-
-      .logo {
-        position: inherit;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .SignUpRight {
-        padding: 20px 40px;
-        position: relative;
-        left: -25%;
-
-        .getstart {
-          font-size: 22px;
-          font-weight: 700;
-        }
-
-        h1 {
-          font-size: 22px;
-          font-weight: 400;
-          position: relative;
-          top: 30px;
-        }
-
-        h4 {
-          font-size: 27px;
-          font-weight: 700;
-        }
-
-        p {
-          position: relative;
-          font-size: 23px;
-          font-weight: 400;
-        }
-      }
-    }
-  }
-
-  //// Reset Password
-
+  
   .logoReset {
     max-width: 150px !important;
-    left: 85% !important;
+    top: 40px !important;
+    position: relative !important;
   }
   .authForm {
     display: flex;
@@ -1160,10 +542,12 @@
     }
 
     h1 {
-      font-weight: 700;
-      font-size: 53px;
-      margin: 12px;
-      color: #424242;
+      font-size: 40px;
+      position: relative;
+      font-size: 33px;
+      font-style: normal;
+      font-weight: 400;
+      color: #505050;
     }
 
     .hr {
@@ -1178,43 +562,12 @@
         margin: 32px 38px 0 0;
       }
     }
-
-    .forgotPassword {
-      color: $color-dark;
-      font-size: 14px;
-      text-align: right;
-      align-self: flex-end;
-      padding: 0 10px;
+    .ghButton.blue{
+      top: 40px;
     }
 
-    .forgotPasswordText {
-      text-align: center;
-
-      h4 {
-        font-weight: 600;
-        font-size: 20px;
-        margin-top: 32px;
-      }
-
-      p {
-        font-weight: normal;
-        font-size: 16px;
-        margin: 32px 0;
-      }
-    }
   }
 
-  // Eyes Icon and Error
-
-  .ghFormFieldPassword {
-    .icon {
-      left: 93%;
-      top: 5px;
-      right: 3px;
-      bottom: 5px;
-      cursor: pointer;
-    }
-  }
 
   .error {
     color: red;
@@ -1222,17 +575,7 @@
     padding: 0 8px;
   }
 
-  .logo {
-    position: absolute;
-    left: 90%;
-    top: 3.78%;
-    z-index: 100;
-  }
   .border-error {
     border-color: red !important;
   }
-}
-
-.socialButtons span {
-  display: none;
 }
