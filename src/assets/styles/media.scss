@@ -623,6 +623,13 @@
 margin-top: -5px;
 }
 
+
+}
+@media (max-height:910px) {
+  .react-tabs__tab-panel{
+    height: 90%;
+  }
+
 }
 @media (max-height: 899px) {
   

@@ -57,13 +57,10 @@ class FindPath extends Component {
 
   showPath = (node) => {
     const { start } = this.props;
-    const { nodes, links } = this.shortPath(start, node.id);
-    Chart.render({ nodes, links }, { ignoreAutoSave: true, isAutoPosition: true });
+    const { nodes, links, shortestNodes } = this.shortPath(start, node.id);
+    Chart.render({ nodes, links }, { ignoreAutoSave: true });
     this.closeModal();
-    ChartUtils.autoScaleTimeOut();
-    ChartUtils.autoScaleTimeOut(100);
-    ChartUtils.autoScaleTimeOut(200);
-    ChartUtils.startAutoPosition();
+    ChartUtils.autoScale(shortestNodes);
   }
 
   shortPath = (start, end) => {
@@ -101,7 +98,7 @@ class FindPath extends Component {
 
           nodes = nodes.filter((node, position) => nodes.findIndex((n) => n.id === node.id) === position);
           links = links.filter((link, position) => links.findIndex((n) => n.id === link.id) === position);
-          return { nodes, links };
+          return { nodes, links, shortestNodes: newNodes };
         }
       }
     }

@@ -58,18 +58,18 @@ const GraphListFooter = ({ graph }) => {
       {actionsCount?.shares
         ? (
           (((history.location.pathname !== '/public') || (userId === graph.userId))) && (
-          <Tooltip overlay={<TooltipContent graphId={graph.id} graphOwner={graph.user} />} trigger={['click']} placement={['top']}>
-            <Button icon={<ShareSvg />} className="transparent footer-icon">
-              <span className="graphListFooter__count">{actionsCount?.shares}</span>
-            </Button>
-          </Tooltip>
+            <Tooltip overlay={<TooltipContent graphId={graph.id} graphOwner={graph.user} />} trigger={['click']} placement={['top']}>
+              <Button icon={<ShareSvg />} className="transparent footer-icon">
+                <span className="graphListFooter__count">{actionsCount?.shares}</span>
+              </Button>
+            </Tooltip>
           )
         )
         : (
           (((history.location.pathname !== '/public') || (userId === graph.userId))) && (
-          <Button icon={<ShareSvg />} className="transparent footer-icon">
-            <span className="graphListFooter__count">{actionsCount?.shares}</span>
-          </Button>
+            <Button icon={<ShareSvg />} className="transparent footer-icon">
+              <span className="graphListFooter__count">{actionsCount?.shares}</span>
+            </Button>
           )
         )}
       {openCommentModal && (
