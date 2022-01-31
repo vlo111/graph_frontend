@@ -622,6 +622,9 @@
 .react-tabs{
 margin-top: -5px;
 }
+.homeWithUser .content .empty{
+  top: -10px;
+}
 
 
 }
@@ -636,6 +639,9 @@ margin-top: -5px;
   .LegendExplorer .connections, .nodes{
    
     max-height: 40% !important;
+  }
+  .homeWithUser .content .empty{
+    top: 60px;
   }
 }
 @media (max-height:850px) {
@@ -673,6 +679,9 @@ margin-top: -5px;
   .LegendExplorer .connections, .nodes{
    
     max-height: 40% !important;
+  }
+  .homeWithUser .content .empty{
+    top: 10px;
   }
 }
 
