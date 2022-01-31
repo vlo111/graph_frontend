@@ -102,7 +102,7 @@ class NodeContextMenu extends Component {
           Expand
           <Icon className="arrow" value="fa-angle-right" />
           <div className="contextmenu">
-            <Button onClick={() => this.expandType()}>{`All [${expands}]`}</Button>
+            <Button onClick={() => this.expandType()}>{`Oll [${expands}]`}</Button>
             <div className="border-bottom " />
             {_.map(expandsLink, (n, type) => (
               <Button onClick={() => this.expandType(type)}>
@@ -122,7 +122,7 @@ class NodeContextMenu extends Component {
           Find Path
         </Button>
         <Button icon={<EyeBallSvg />} title="Dismiss" onClick={() => this.hideData()}>
-          Dismiss
+          Dismiss 
         </Button>
         <Button icon={<EyeBallSvg />} title="Dismiss other nodes" onClick={() => this.hideData(true)}>
           Dismiss other nodes
