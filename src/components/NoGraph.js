@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import noGraphSvg from '../assets/images/icons/sad.svg';
+import noGraphSvg from '../assets/images/NotGraph.png';
 
 class NoGraph extends Component {
   static propTypes = {
