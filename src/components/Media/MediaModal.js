@@ -31,6 +31,7 @@ class MediaModal extends Component {
     singleGraph: PropTypes.object.isRequired,
     setActiveTab: PropTypes.func.isRequired,
     user: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   initTabs = memoizeOne(() => {
@@ -76,6 +77,7 @@ class MediaModal extends Component {
         this.setState({ loading: false });
       }
     }
+    this.props.history.push(`/graphs/update/${this.props.singleGraph.id}`);
   }
 
   closeModal = () => {
