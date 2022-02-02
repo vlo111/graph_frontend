@@ -4918,6 +4918,7 @@ label.pull-left::before {
   top: 10% !important;
   height: auto !important;
   max-height: 84% !important;
+  width: 800px !important;
 
   .Wiki {
     margin: 0 auto;
@@ -5076,10 +5077,11 @@ label.pull-left::before {
       margin-bottom: 10px !important;
       cursor: pointer;
       display: flex;
-      justify-content: center;
       align-items: center;
     }
-
+    label{
+      width: 90% !important;
+    }
     .wikiresaltselcted {
       padding: 0 10px;
     }
@@ -5170,7 +5172,6 @@ label.pull-left::before {
     margin: 0 auto;
     text-align: left;
     margin-bottom: 10px !important;
-    margin-left: 10px;
     border: 1px solid #dedede;
   }
 }
