@@ -102,7 +102,7 @@ class NodeContextMenu extends Component {
           Expand
           <Icon className="arrow" value="fa-angle-right" />
           <div className="contextmenu">
-            <Button onClick={() => this.expandType()}>{`Oll [${expands}]`}</Button>
+            <Button onClick={() => this.expandType()}>{`All [${expands}]`}</Button>
             <div className="border-bottom " />
             {_.map(expandsLink, (n, type) => (
               <Button onClick={() => this.expandType(type)}>
