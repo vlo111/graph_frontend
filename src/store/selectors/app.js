@@ -12,5 +12,5 @@ export const getMouseTracker = createSelector(
 );
 export const getActiveButton = createSelector(
   getApp,
-  (items) => items.ativeButton,
+  (items) => items.activeButton,
 );

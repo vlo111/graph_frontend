@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import Button from '../../form/Button';
 import { setNodeCommentParent, deleteNodeComment } from '../../../store/actions/commentNodes';
 import { ReactComponent as ReplySvg } from '../../../assets/images/icons/reply.svg';
-import { ReactComponent as RemoveSvg } from '../../../assets/images/icons/trash.svg';
+import { ReactComponent as RemoveSvg } from '../../../assets/images/icons/delete.svg';
 import Utils from '../../../helpers/Utils';
 
 const Owner = ({
