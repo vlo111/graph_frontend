@@ -471,8 +471,9 @@ class ScienceGraphModal extends Component {
     }
   };
 
-  handleCheckedButton = (param) => {
+  handleCheckedButton = (param, e) => {
     const { checkedList } = this.state;
+    e.preventDefault(false);
     if (checkedList.includes(param)) {
       this.setState({
         checkedList: checkedList.filter(
@@ -503,6 +504,7 @@ class ScienceGraphModal extends Component {
               } else {
                 items[index].style.backgroundColor = 'white';
               }
+              this.handleCheckedButton(index, ev);
             }}
             key={index}
           >
