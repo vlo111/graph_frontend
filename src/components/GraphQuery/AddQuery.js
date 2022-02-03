@@ -48,7 +48,7 @@ const AddQuery = ({ closeModal, graph }) => {
     await dispatch(getGraphQueryRequest(graph.id));
     closeModal();
   };
-  
+
   return (isEmpty(graph) ? null
     : (
       <Modal
@@ -60,7 +60,7 @@ const AddQuery = ({ closeModal, graph }) => {
       >
         <div className="query-modal">
           <div className="query-modal__title">
-            <h3 className="caption">Query</h3>
+            <h3 className="caption">Fragment</h3>
             <Button
               icon={<CloseSvg style={{ height: 30 }} />}
               onClick={() => closeModal()}
