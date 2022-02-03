@@ -69,6 +69,7 @@ class GraphCompare extends Component {
         onlyTitle: 1,
         limit: 10,
         filter: 'newest',
+        graphCompare: 'true',
       });
       const graphs = data.graphs
         .filter((g) => g.id !== graphId && g.id !== graph2Id)
@@ -90,6 +91,7 @@ class GraphCompare extends Component {
         onlyTitle: 1,
         limit: 10,
         filter: 'newest',
+        graphCompare: 'true',
       });
       const graphs = data.graphs
         .filter((g) => g.id !== graphId && g.id !== graph2Id)

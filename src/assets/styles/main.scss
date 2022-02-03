@@ -905,7 +905,7 @@ p {
 
     &.emphasisIcon {
       :not(text) {
-        stroke-width: 4 !important;
+        stroke-width: 5 !important;
         stroke: #2196f3 !important;
         -webkit-filter: drop-shadow( 3px 8px 8px rgb(178 196 211 / 90%));
         filter: drop-shadow( 3px 8px 8px rgb(178 196 211 / 90%));
@@ -2694,7 +2694,8 @@ p {
     .resetButton {
       height: 30px;
       font-size: 11px;
-      margin-left: 30%;
+      left: 75%;
+
     }
     .filterHeader {
       position: fixed;
@@ -3002,7 +3003,7 @@ p {
     width: 200px;
     position: fixed;
     left: 88%;
-    top: 75px;
+    top: 77px;
 
     ul {
       .item {
@@ -3420,7 +3421,7 @@ body .gh__menu {
 
     .item {
       margin: 0.8em 0;
-      width: 91%;
+      width: 100%;
       align-items: center;
       border: 1px solid $color-tab-general-border;
       padding: 10px;
@@ -4079,9 +4080,7 @@ body .gh__menu {
       }
     }
   }
-  .description{
-  margin-left: 24%;
-  }
+
 }
 
 .graphListHeader {
@@ -4208,6 +4207,7 @@ body .gh__menu {
       margin-left: 0;
     }
   }
+  
 }
 .homeWithUser {
   width: 100% !important;
@@ -4920,6 +4920,7 @@ label.pull-left::before {
   top: 10% !important;
   height: auto !important;
   max-height: 84% !important;
+  width: 800px !important;
 
   .Wiki {
     margin: 0 auto;
@@ -5078,10 +5079,11 @@ label.pull-left::before {
       margin-bottom: 10px !important;
       cursor: pointer;
       display: flex;
-      justify-content: center;
       align-items: center;
     }
-
+    label{
+      width: 90% !important;
+    }
     .wikiresaltselcted {
       padding: 0 10px;
     }
@@ -5172,7 +5174,6 @@ label.pull-left::before {
     margin: 0 auto;
     text-align: left;
     margin-bottom: 10px !important;
-    margin-left: 10px;
     border: 1px solid #dedede;
   }
 }
@@ -7361,6 +7362,7 @@ img.preview-scaled {
 }
 
 .GraphNames {
+  justify-self: end;
   * {
     padding: 0;
     margin: 0;
@@ -7419,7 +7421,7 @@ img.preview-scaled {
     padding: 5px 22px 20px 22px;
     background-color: #ffffff;
     border-radius: 3px;
-    left: 30%;
+    left: 42%;
     top: 75px;
     position: fixed;
     width: 240px;
@@ -7855,9 +7857,10 @@ img.preview-scaled {
  }
 
 }
+
 .helpHomePages .react-tabs{
-right: 0 !important;
-top: 5%;
+right: 0 ;
+top: 5% ;
 .triangle-right{
   display: none;
 }
@@ -7867,6 +7870,7 @@ ol {
 li span{
   color: #7166f8;
   font-weight: 700;
+  padding: 5px;
 }
 .helpsSubTitle{
   padding-left: 20px;
@@ -7877,6 +7881,9 @@ li span{
 .exploreTitle{
   left: -20px;
 }
+ }
+ .helpsOutside{
+   display: none;
  }
 
 #header-on-graph,
@@ -7905,17 +7912,14 @@ li span{
   .container > li {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
   }
 
   .container {
     display: grid;
-    grid-template-columns: 13% 43% 12% 12% 17%;
-    justify-content: space-between;
+    grid-template-columns: 13% 36% 19% 15% 17%;
     box-shadow: 4px 0 25px rgb(57 57 57 / 10%);
     max-width: 100%;
-    grid-gap: 10px;
-    gap: 10px;
     padding: 0;
     height: 100%;
 
@@ -7927,10 +7931,15 @@ li span{
       justify-content: end;
 
       .signOut {
-        width: 60%;
+        width: 38%;
         display: flex;
         align-items: center;
         justify-content: center;
+        #accountDropDown{
+          .dropdown{
+            top: 58px;
+          }
+        }
       }
     }
 
@@ -7966,11 +7975,11 @@ li span{
         padding-bottom: 5px;
       }
     }
-  }
+    }
 
-  .graphNames {
+   .graphNames {
     color: $color-main !important;
-  }
+   }
 }
 
 #header-on-view-graph {
@@ -8199,6 +8208,9 @@ li span{
   &__item-right {
     margin-top: -10px !important;
   }
+}
+.jodit-status-bar a.jodit-status-bar-link {
+  display: none !important;
 }
 
 .jodit-toolbar-editor-collection_mode_horizontal {
@@ -10123,3 +10135,5 @@ details[open] summary:after {
     }
   }
 }
+
+

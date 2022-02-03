@@ -297,7 +297,7 @@ class ToolBar extends Component {
   collapse = () => {
     const closedMenu = document.getElementsByClassName('closed_menu')[0];
     const menu = document.getElementsByClassName('menu')[0];
-    const tab = document.getElementsByClassName('react-tabs')[0];
+    // const tab = document.getElementsByClassName('react-tabs')[0];
     const undo = document.getElementById('undoWrapper');
     const footer = document.getElementById('graphs-data-info');
     const searchModal = document.getElementById('searchMenuNodes');
@@ -310,9 +310,9 @@ class ToolBar extends Component {
       left = menu.offsetWidth;
     }
 
-    if (tab) {
-      left += tab.offsetWidth + 15;
-    }
+    // if (tab) {
+    //   left += tab.offsetWidth + 15;
+    // }
     undo.style.left = `${left + 13}px`;
     if (undo) {
       left += undo.offsetWidth;
