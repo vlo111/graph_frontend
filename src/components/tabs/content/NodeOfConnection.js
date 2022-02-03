@@ -14,7 +14,9 @@ const NodeOfConnection = ({
 }) => {
   const queryObj = queryString.parse(window.location.search);
 
-  const openFolder = (e, d) => {
+  const openFolder = (e, d, node) => {
+    ChartUtils.findNodeInDom(node);
+
     if (!labels) return;
 
     const label = labels.filter((p) => p.id === d.connected?.labels[0])[0];
@@ -56,7 +58,7 @@ const NodeOfConnection = ({
                 {!isExport
                   ? (
                     <Link
-                      onClick={(ev) => openFolder(ev, d)}
+                      onClick={(ev) => openFolder(ev, d, n)}
                       replace
                       to={`?${queryString.stringify({ ...queryObj, info: n.id })}`}
                     >

@@ -10185,25 +10185,6 @@ details[open] summary:after {
       }
     }
 
-    .layout-btn {
-      background-color: white;
-      color: #727272;
-      height: 40px;
-      border: none;
-      box-shadow: 0 0 6px rgba(136, 130, 209, 0.22);
-      padding: 8px;
-      border-radius: 3px;
-      margin: 5px;
-      font-size: 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      svg {
-        margin-right: 5px;
-      }
-    }
-
     .gridWrapper {
       right: 40px;
       display: flex;
@@ -10263,6 +10244,32 @@ details[open] summary:after {
           stroke: $color-main;
         }
       }
+    }
+  }
+
+  .toolbar-cytoscape {
+    position: fixed;
+    right: 20px;
+    bottom: 10px;
+    width: 50px;
+  }
+
+  .layout-btn {
+    background-color: white;
+    color: #727272;
+    height: 40px;
+    border: none;
+    box-shadow: 0 0 6px rgba(136, 130, 209, 0.22);
+    padding: 8px;
+    border-radius: 3px;
+    margin: 5px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      margin-right: 5px;
     }
   }
 }

@@ -72,8 +72,6 @@ class ToolBarFooter extends Component {
 
     if (view === enriched) {
       document.querySelector('.cytoscapeBar').innerHTML = viewName;
-      Chart.render({ nodes: [], links: [], labels: [] });
-
       this.changeElementsDisplay(selector, 'none');
     } else {
       document.querySelector('.cytoscapeBar').innerHTML = enriched;

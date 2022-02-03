@@ -33,7 +33,7 @@ import { ReactComponent as UndoSvg } from '../assets/images/icons/undo.svg';
 import { ReactComponent as EditSvg } from '../assets/images/icons/edit.svg';
 import Dashboard from '../components/graphDashboard';
 import ChartUtils from '../helpers/ChartUtils';
-import Cytoscape from '../components/Cytoscape';
+import Cytoscape from '../components/cytoscape';
 
 class GraphView extends Component {
   static propTypes = {
