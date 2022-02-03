@@ -980,8 +980,6 @@ p {
       path,
       image,
       circle {
-        stroke-width: 2;
-        stroke: white;
         stroke-dasharray: 2;
         animation: dashAutoAnim 80s linear;
         animation-iteration-count: infinite;
