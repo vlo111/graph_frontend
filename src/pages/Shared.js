@@ -33,7 +33,7 @@ class Shared extends Component {
     } = this.props;
     return (
       <>
-        <div
+        {/* <div
           className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!shareGraphsList.length ? 'empty' : ''}`}
         >
           {shareGraphsListStatus !== 'request' && _.isEmpty(shareGraphsList) ? (
@@ -41,7 +41,7 @@ class Shared extends Component {
           ) : mode === 'list'
             ? <GraphListItem graphs={shareGraphsList} headerTools="shared" />
             : <GraphCardItem graphs={shareGraphsList} headerTools="shared" />}
-        </div>
+        </div> */}
         {shareGraphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>
     );

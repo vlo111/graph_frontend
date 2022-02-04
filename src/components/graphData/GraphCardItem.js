@@ -55,50 +55,40 @@ class GraphCardItem extends Component {
     if (!graphs?.length) return null;
     return (
       <>
-        {(headerTools === 'home' && graphs.length)
+        {/* {(headerTools === 'home' && graphs.length)
           ? (
             <div className="startGraph" onClick={this.startGraph}>
               <PlusSvg />
               <h3>Create a Graph</h3>
             </div>
-          ) : null}
+          ) : null} */}
         {graphs.map((graph) => (
           <article className="graphs" key={graph.id}>
             <div className="top">
               <div className="infoContent">
-                <img
+                {/* <img
                   className="avatar"
                   src={graph.user.avatar}
                   alt={graph.user.name}
-                />
+                /> */}
                 <div className="infoWrapper">
-                  <Link to={`/profile/${graph.user.id}`}>
+                  {/* <Link to={`/profile/${graph.user.id}`}>
                     <span className="author">{`${graph.user.firstName} ${graph.user.lastName}`}</span>
-                  </Link>
-                  <div className="info">
+                  </Link> */}
+                  {/* <div className="info">
                     <span>{moment(graph.updatedAt).format('YYYY.MM.DD HH:mm')}</span>
                     <span className="nodesCount">{` ${graph.nodesCount} nodes `}</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
-              <div className="sub-menus">
-                <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={graph} headerTools={headerTools} />
-              </div>
-            </div>
-            <div>
-              <Tooltip overlay={graph.title} placement="bottom">
-                <h3>
-                  {' '}
-                  {Utils.substr(graph.title, 23)}
-                </h3>
-              </Tooltip>
-            </div>
 
+            </div>
             <div
               onMouseOver={() => this.showCardOver(graph.id)}
               onMouseOut={() => this.hideCardOver(graph.id)}
               className="graph-image"
             >
+
               {(graph.userId !== currentUserId && headerTools === 'public') ? (
                 <div className={`buttonView graph-card_${graph.id}`}>
                   <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace>Preview</Link>
@@ -115,8 +105,22 @@ class GraphCardItem extends Component {
                 src={`${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
                 alt={graph.title}
               />
+              <div className="sub-menus">
+                <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={graph} headerTools={headerTools} />
+              </div>
             </div>
-            <GraphListFooter graph={graph} />
+            <div className="graphCardFutter">
+              <div>
+                <Tooltip overlay={graph.title} placement="bottom">
+                  <h3>
+                    {' '}
+                    {Utils.substr(graph.title, 18)}
+                  </h3>
+                </Tooltip>
+              </div>
+              <GraphListFooter graph={graph} />
+            </div>
+
             {((headerTools === 'home' || headerTools === 'template') && graph.publicState) && (
             <div className="public_icon">
               <i className="fa fa-globe" />

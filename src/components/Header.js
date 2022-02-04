@@ -6,7 +6,6 @@ import AccountDropDown from './account/AccountDropDown';
 import SearchGraphs from './search/SearchGraphs';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 import { ReactComponent as NotifySvg } from '../assets/images/icons/notification.svg';
-import { ReactComponent as HelpSvg } from '../assets/images/icons/help.svg';
 import { ReactComponent as NotifyEmptySvg } from '../assets/images/icons/notificationComplete.svg';
 import Button from './form/Button';
 import Helps from './Helps/index';
@@ -58,7 +57,7 @@ class Header extends Component {
           </Link>
         </div>
         <SearchGraphs />
-        <div className="start-graphs">
+        {/* <div className="start-graphs">
           <div className="buttonsWrapper">
             <Button className="btn-classic" onClick={this.startGraph}>
               Create a graph
@@ -69,26 +68,34 @@ class Header extends Component {
             </Button>
 
           </div>
-        </div>
-        <div className="notify_container">
+        </div> */}
+        {/* <div className="notify_container">
           <div className="notificationHeader">
             <Notification />
           </div>
-        </div>
-        <div className="headerHelp">
+        </div> */}
+        {/* <div className="headerHelp">
           <Button
             icon={<HelpSvg />}
             onClick={this.toggleDropDown}
           />
+        </div> */}
+        <div className="signOut">
+          <AccountDropDown />
+        </div>
+        <div className="headerHelp">
+          <Button
+            // icon={<HelpSvg />}
+            onClick={this.toggleDropDown}
+          >
+            ? Help
+          </Button>
         </div>
         {showDropDown ? (
           <div className="helpsOutside">
             <Helps closeModal={this.toggleDropDown} />
           </div>
         ) : null}
-        <div className="signOut">
-          <AccountDropDown />
-        </div>
       </header>
     );
   }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter, Link, Route } from 'react-router-dom';
 import Outside from '../Outside';
 import Icon from '../form/Icon';
-import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
+import Dropdown from '../../assets/images/whiteDownArrow.png';
 
 class AccountDropDown extends Component {
   static propTypes = {
@@ -40,7 +40,6 @@ class AccountDropDown extends Component {
         const settingModalElement = document.querySelector('#accountDropDown .dropdown');
 
         if (settingModalElement) {
-
           arrow.style.left = `${(settingModalElement.getBoundingClientRect().x
               + (settingModalElement.offsetWidth / 2)) + 20}px`;
         }
@@ -54,7 +53,7 @@ class AccountDropDown extends Component {
     const { showDropDown } = this.state;
     const {
       mini, myAccount: {
-        firstName, lastName, id, avatar,
+        firstName, lastName, id, avatar, email,
       }, match: { params: { graphId = '' } },
     } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
@@ -63,7 +62,8 @@ class AccountDropDown extends Component {
       <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
           <img src={avatar} className="avatar" alt={name} />
-          <DownSvg />
+          <div className="accounEamail">{email}</div>
+          <img src={Dropdown} alt="" />
         </div>
 
         {showDropDown ? (

@@ -38,7 +38,7 @@ class Home extends Component {
     this.getGraphsList(page, s);
     return (
       <>
-        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`}>
+        {/* <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`}>
           {s ? (
             <h2 className="searchResult">
               {'Search Result for: '}
@@ -48,7 +48,7 @@ class Home extends Component {
           {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
             <NoGraph />
           ) : mode === 'list' ? <GraphListItem graphs={graphsList} headerTools="template" /> : <GraphCardItem graphs={graphsList} headerTools="template" />}
-        </div>
+        </div> */}
         {graphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>
     );

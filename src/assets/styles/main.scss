@@ -92,9 +92,11 @@ main {
   }
 
   &.homePage {
-    background: transparent
-      radial-gradient(closest-side at 50% 50%, #f2f4ff 0%, #eff1f9 19%, #f2f4ff 39%, #f2f2ff 67%, #f7f9ff 100%)
-      no-repeat fixed top left;
+    // background: transparent
+    //   radial-gradient(closest-side at 50% 50%, #f2f4ff 0%, #eff1f9 19%, #f2f4ff 39%, #f2f2ff 67%, #f7f9ff 100%)
+    //   no-repeat fixed top left;
+    height: 98vh;
+    overflow: hidden;
   }
   &.accountPage {
     background: #f5f5ff;
@@ -2973,12 +2975,19 @@ p {
     display: flex;
     align-items: center;
     cursor: pointer;
-
+    width: 100%;
+    justify-content: space-between;
+    
+    .accounEamail{
+      color: $color-white;
+      font-size: 12px;
+      font-weight: 400;
+    }
     .avatar {
       display: flex;
       margin: -1px;
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
     }
 
     svg {
@@ -6304,7 +6313,7 @@ img.preview-scaled {
       }
 
       span {
-        color: $color-main;
+        color: #2FE6FF;
         font-weight: 700;
       }
     }
@@ -7757,22 +7766,42 @@ img.preview-scaled {
 }
 
 #header {
-  display: flex;
-  grid-template-columns: 10% 20% 30% 2% 5% auto;
-    grid-gap: 1%;
-  height: 75px;
-  background-color: #fff;
+  display: grid;
+  grid-template-columns: 10% 72% 14% auto;
+  height: 71px;
+  background-color:#333333;
   position: fixed;
   width: 100%;
   z-index: 6;
-  padding: 0px 15px 0px 15px;
+  padding: 20px 15px 20px 15px;
 
 
   .ghFormField {
     margin: 0;
   }
 
+  // .logo-graphs,
+  // .searchInputWrapper,
+  // .start-graphs,
+  // .notify_container,
+  // .signOut {
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   width: 100%;
+  // }
+
+  .signOut{
+    border-right: 1px solid #9E9E9E;
+    border-left: 1px solid #9E9E9E;
+    height: 30px;
+    padding: 0px 25px 0px 17px;
+    width: 210px;
+  }
+  
+
   .start-graphs {
+
     .buttonsWrapper {
       display: flex;
       justify-content: flex-start;
@@ -7795,38 +7824,35 @@ img.preview-scaled {
     }
 
     input {
-      height: 33px;
-      color: $color-graph-name !important;
-      border-radius: 3px;
-      border: 1px solid #b3adf5;
+      height: 30px;
+      color: $color-white !important;
+      border-radius: 0;
+      border: 1px solid $color-white;
+      width: 300px;
+      background-color: transparent;
+
+      &::placeholder{
+        color: $color-white;
+      }
     }
   }
 
-  .logo-graphs,
-  .searchInputWrapper,
-  .start-graphs,
-  .notify_container,
-  .signOut {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
+ 
 
   .searchInputWrapper {
     justify-content: flex-start;
   }
 
   .notify_container,
-  .signOut {
-    justify-content: flex-end;
-  }
+  // .signOut {
+  //   justify-content: flex-end;
+  // }
 
   #accountDropDown {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 42%;
+    width: 100%;
   }
 
   .logo-graphs {
@@ -7844,6 +7870,13 @@ img.preview-scaled {
   }
  .headerHelp{
     display: flex;
+  .ghButton{
+    padding: 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: $color-white;
+
+  }
   .ghButton .icon, svg{
     height: 32px;
     width: 35px;
@@ -7929,7 +7962,7 @@ li span{
       justify-content: end;
 
       .signOut {
-        width: 38%;
+        // width: 38%;
         display: flex;
         align-items: center;
         justify-content: center;
