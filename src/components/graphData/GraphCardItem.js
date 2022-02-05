@@ -6,21 +6,16 @@ import Tooltip from 'rc-tooltip';
 import { connect } from 'react-redux';
 import GraphListFooter from './GraphListFooter';
 import GraphDashboardSubMnus from './GraphListHeader';
-import { ReactComponent as PlusSvg } from '../../assets/images/icons/plusGraph.svg';
+// import { ReactComponent as PlusSvg } from '../../assets/images/icons/plusGraph.svg';
+import Button from '../form/Button';
 import Utils from '../../helpers/Utils';
+import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/viewGraph.svg';
 
 class GraphCardItem extends Component {
   static propTypes = {
     graphs: PropTypes.object.isRequired,
     headerTools: PropTypes.string.isRequired,
     currentUserId: PropTypes.string.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      graphs: [],
-    };
   }
 
   startGraph = () => {
@@ -88,26 +83,35 @@ class GraphCardItem extends Component {
               onMouseOut={() => this.hideCardOver(graph.id)}
               className="graph-image"
             >
-
-              {(graph.userId !== currentUserId && headerTools === 'public') ? (
-                <div className={`buttonView graph-card_${graph.id}`}>
-                  <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace>Preview</Link>
-                </div>
-              )
-                : (
-                  <div className={`buttonView graph-card_${graph.id}`}>
-                    {(graph?.share?.role !== 'view') && <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>}
-                    <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
+              <div className={`buttonView graph-card_${graph.id}`}>
+                <div className="hover_header">
+                  <Button icon={<ViewPassSvg />} className="view_icon">
+                    <span className="graphListFooter__count">{graph?.views || 0}</span>
+                  </Button>
+                  <div className="sub-menus">
+                    <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={graph} headerTools={headerTools} />
                   </div>
-                )}
+
+                </div>
+                {(graph.userId !== currentUserId && headerTools === 'public') ? (
+                  <div>
+                    <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace>Preview</Link>
+                  </div>
+                )
+                  : (
+                    <div>
+                      {(graph?.share?.role !== 'view') && <Link className="btn-edit view" to={`/graphs/update/${graph.id}`} replace> Edit </Link>}
+                      <Link className="btn-preview view" to={`/graphs/view/${graph.id}`} replace> Preview</Link>
+                    </div>
+                  )}
+              </div>
+
               <img
                 className="thumbnail"
                 src={`${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
                 alt={graph.title}
               />
-              <div className="sub-menus">
-                <GraphDashboardSubMnus updateGraph={this.updateGraph} graph={graph} headerTools={headerTools} />
-              </div>
+
             </div>
             <div className="graphCardFutter">
               <div>

@@ -4,7 +4,7 @@
      display: flex !important;
      width: 100% !important;
      align-items: inherit !important;
-     top: 71px !important;
+     top: 70px !important;
      height: 100% !important;
      background-color: #585858;
      overflow: hidden !important;
@@ -15,30 +15,52 @@
       position: relative;
   
       .filter-container {
-        padding: 9px 0 0 16px;
+        padding: 9px 0 0 17px;
         background-color: white;
-        width: 110px;
+        width: 90px;
         position: absolute;
-        top: 13px;
-        left: 223px;
+        top: 3px;
+        left: 236px;
         z-index: 90;
-        box-shadow: 0px 4px 33px rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 0px 4px rgb(0 0 0 / 20%);
         border-radius: 2px;
+
          p{
-           margin-bottom: 12px !important;
+           margin-bottom: 5px !important;
+           font-size: 12px;
+           font-weight: 400;
+           line-height: 16px;
            &:hover{
              cursor: pointer;
+             color: #2FE6FF;
            }
          }
+        .sortName{
+          margin-bottom: 12px;
+          p {
+            margin: 0 !important;
+          }
+        }
+        .sortNewest{
+          margin-bottom: 6px;
+          p{
+            margin: 0 !important;
+          }
+        }
         .sort-text {
           font-size: 12px;
           color: #C2C2C2;
           line-height: 12px;
+
+          &:hover{
+            color:#C2C2C2 ;
+            cursor: unset;
+          }
       
         }
   
         .ascending, .descending, .newest, .oldest {
-          color: $color-main !important;
+          color: #2FE6FF !important;
         }
       }
        }
@@ -378,8 +400,9 @@
      display: grid;
      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
      margin-top: 15px;
-     overflow-y: scroll;
-     height: 100%;
+    //  overflow-y: scroll;
+    //  height: 100%;
+    
 //  .startGraph{
 //    display: flex;
 //    justify-content: center;
@@ -458,11 +481,11 @@
     }
     .graphCardFutter{
         background: #EFEFEF;
-        height: 44px;
+        height: 48px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 9px 14px 7px 13px;
+        padding: 0px 6px 0px 6px;
       div{ 
         h3 {
          font-size: 12px;
@@ -507,19 +530,25 @@
           max-height: 390px;
          }
        }
-      }
+       }
       .graphListFooter{
-        justify-content: flex-start;
+        justify-content: space-between;
+        position: relative;
+        top: 5px;
        
         .ghButton {
           padding: 0 !important;
 
           .icon {
             color:#6C6C6C !important;
+            margin-right: 4px;
+            path{
+              fill: transparent;
+              stroke: #6C6C6C;
+            }
            }
          }
          .description{
-          margin-left: 21px;
           padding-right: 0 !important;
          }
          .footer-icon {
@@ -562,46 +591,46 @@
            opacity: 1;
          }
        } 
-       .sub-menus{
-        position: relative;
-        bottom: 123px;
-        z-index: 5;
-        display: flex;
-        justify-content: flex-end;
+      //  .sub-menus{
+      //   position: relative;
+      //   bottom: 123px;
+      //   z-index: 5;
+      //   display: flex;
+      //   justify-content: flex-end;
 
-        &:hover{
-          cursor: pointer;
-        }
-       .ar-popover-content.-arrow {
-         margin-top: -8px;
-         left: -33px;
-         z-index: 9;
-         padding: 5px 0 5px 0;
-         width: 53px!important;
-         height: 76px !important;
-         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-         background: #EFEFEF;
-         border-radius:0;
+      //   &:hover{
+      //     cursor: pointer;
+      //   }
+      //  .ar-popover-content.-arrow {
+      //    margin-top: -8px;
+      //    left: -33px;
+      //    z-index: 9;
+      //    padding: 5px 0 5px 0;
+      //    width: 53px!important;
+      //    height: 76px !important;
+      //    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+      //    background: #EFEFEF;
+      //    border-radius:0;
 
-         .child{
-             padding: 7px 0 7px 0 !important;
-             width: 100%;
-             margin: 0 !important;
-             text-align: center;
-             display: flex;
-             align-items: center;
+      //    .child{
+      //        padding: 7px 0 7px 0 !important;
+      //        width: 100%;
+      //        margin: 0 !important;
+      //        text-align: center;
+      //        display: flex;
+      //        align-items: center;
 
-             span{
-               font-size: 12px;
-               margin-left: 12px ;
-               line-height: 0.8;
-             }
-           }
-        }
-        svg{
-          margin-top:-12px;
-        }
-       }
+      //        span{
+      //          font-size: 12px;
+      //          margin-left: 12px ;
+      //          line-height: 0.8;
+      //        }
+      //      }
+      //   }
+      //   svg{
+      //     margin-top:-12px;
+      //   }
+      //  }
     }
     .buttonView{
          display: none;
@@ -653,7 +682,80 @@
         transition: 0.2s;
         cursor: pointer;
       }
-       }      
+       }  
+     .hover_header{
+       display: flex;
+       justify-content: space-between !important;
+       width: 100%;
+       text-align: center;
+       align-items: center;
+       position: relative;
+       bottom: 21px;
+        .view_icon{
+          background-color: transparent;
+          padding: 0;
+          padding-left: 5px;
+          font-size: 14px;
+
+          span{
+            color: $color-white;
+            margin-right: 3px !important;
+
+              svg{
+                font-size: 14px !important;
+                path{
+                  fill: $color-white !important;
+                  stroke: none !important ;
+                }
+              }
+          }
+         
+        }
+        .sub-menus{
+          position: relative;
+          // bottom: 123px;
+          display: flex;
+          justify-content: flex-end;
+          text-align: center;
+          align-items: center;
+
+          &:hover{
+            cursor: pointer;
+          }
+        .ar-popover-content.-arrow {
+          margin-top: -8px;
+          left: -14px;
+          z-index: 9;
+          padding: 5px 0 5px 0;
+          width: 70px !important;
+          height: 100px !important;
+          box-shadow: 0px 0px 4px rgb(0 0 0 / 20%);
+          background: #EFEFEF;
+          border-radius: 0;
+
+          .child{
+              padding: 7px 0 7px 0 !important;
+              width: 100%;
+              margin: 0 !important;
+              text-align: center;
+              display: flex;
+              align-items: center;
+
+              span{
+                font-size: 12px;
+                margin-left: 12px ;
+                line-height: 0.8;
+              }
+            }
+          }
+          svg{
+            path{
+              fill: $color-white;
+            }
+          }
+        }  
+     }  
+    
     }
 
     .public_icon{

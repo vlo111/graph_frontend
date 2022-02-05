@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Button from '../form/Button';
+// import Button from '../form/Button';
 import EmbedModal from './EmbedModal';
 
 class EmbedButton extends Component {
@@ -25,7 +25,9 @@ class EmbedButton extends Component {
     const { graph } = this.props;
     return (
       <>
-        <Button icon="fa-code" className="transparent footer-icon" onClick={() => this.toggleModal(true)} />
+        <div onClick={() => this.toggleModal(true)}>
+          Embed
+        </div>
         {showModal ? (
           <EmbedModal
             graph={graph}

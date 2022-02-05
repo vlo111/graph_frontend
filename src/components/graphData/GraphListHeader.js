@@ -13,6 +13,7 @@ import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellips
 import ShareModal from '../ShareModal';
 import EditGraphModal from '../chart/EditGraphModal';
 import { getId } from '../../store/selectors/account';
+import EmbedButton from '../embed/EmbedButton';
 
 const GraphListHeader = ({
   graph, headerTools, updateGraph,
@@ -93,6 +94,11 @@ const GraphListHeader = ({
                     <span>
                       Share
                     </span>
+                  </div>
+                  <div
+                    className="child "
+                  >
+                    <span><EmbedButton graph={graph} /></span>
                   </div>
                   <div
                     onClick={() => deleteGraph(false)}

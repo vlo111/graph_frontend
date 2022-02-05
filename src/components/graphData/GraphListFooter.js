@@ -8,12 +8,12 @@ import { getActionsCountRequest } from '../../store/actions/graphs';
 import Button from '../form/Button';
 import ShareTooltip from '../Contributors/ShareTooltip';
 import CommentModal from '../CommentModal';
-import EmbedButton from '../embed/EmbedButton';
+// import EmbedButton from '../embed/EmbedButton';
 import LikeGraphs from '../likeGraphs';
 import Outside from '../Outside';
 import { ReactComponent as ShareSvg } from '../../assets/images/icons/shareGraph.svg';
 import { ReactComponent as CommentSvg } from '../../assets/images/icons/commentGraph.svg';
-import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/viewGraph.svg';
+// import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/viewGraph.svg';
 import { ReactComponent as Description } from '../../assets/images/icons/description.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import { getId } from '../../store/selectors/account';
@@ -52,9 +52,9 @@ const GraphListFooter = ({ graph }) => {
       >
         <span className="graphListFooter__count">{actionsCount?.comments}</span>
       </Button>
-      <Button icon={<ViewPassSvg />} className="transparent footer-icon">
+      {/* <Button icon={<ViewPassSvg />} className="transparent footer-icon">
         <span className="graphListFooter__count">{graph?.views || 0}</span>
-      </Button>
+      </Button> */}
       {actionsCount?.shares
         ? (
           (((history.location.pathname !== '/public') || (userId === graph.userId))) && (
@@ -78,7 +78,7 @@ const GraphListFooter = ({ graph }) => {
           graph={graph}
         />
       )}
-      <Outside onClick={() => setOpenDesc(false)} />
+      {/* <Outside onClick={() => setOpenDesc(false)} /> */}
       {opendesc && (
         <div
           closeModal={() => setOpenDesc(false)}
@@ -98,8 +98,8 @@ const GraphListFooter = ({ graph }) => {
           </div>
         </div>
       )}
-      <Outside />
-      <EmbedButton graph={graph} />
+      {/* <Outside /> */}
+      {/* <EmbedButton graph={graph} /> */}
       <Button
         icon={<Description />}
         className="transparent footer-icon description"
