@@ -12,16 +12,6 @@ const Layout = ({
 }) => (
   <div className="layoutBar">
     <div className="layoutWrapper">
-      {/* <button */}
-      {/*  type="submit" */}
-      {/*  className={`layout-btn ${cLayout === 'local' ? 'selected-breadth' : ''}`} */}
-      {/*  onClick={() => { */}
-      {/*    setLayoutOption('local'); */}
-      {/*  }} */}
-      {/* > */}
-      {/*  <CircleSvg /> */}
-      {/*  Local */}
-      {/* </button> */}
       <button
         type="submit"
         className={`layout-btn ${cLayout === 'circle' ? 'selected_circle' : ''}`}

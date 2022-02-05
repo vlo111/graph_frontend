@@ -48,8 +48,6 @@ const getGroupedConnections = memoizeOne((nodeId) => {
 const Tabs = ({ history, editable, viewPermisson }) => {
   const { info: nodeId } = queryString.parse(window.location.search);
 
-  debugger;
-  const cha = Chart.getNodes();
   const node = Chart.getNodes().find((n) => n.id === nodeId);
 
   if (!nodeId || !node) {

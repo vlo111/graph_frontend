@@ -7,7 +7,7 @@ import { Style } from './Style';
 import ChartUtils from '../../helpers/ChartUtils';
 
 const Render = ({
-  nodes, edges, layout, history, fit,
+  nodes, edges, layout, history, setLayout,
 }) => {
   const cyRef = useRef();
 
@@ -30,12 +30,14 @@ const Render = ({
 
   useEffect(() => {
     if (cyRef.current) {
+      const cy = cyRef.current;
+
       // cy.on('click', (evt) => {
       //   cyClick(evt);
       //   console.log('Hello');
       // });
 
-      // cyRef.current.on('tap', 'node', (evt) => {
+      // cy.on('tap', 'node', (evt) => {
       //   const node = evt.target;
       //   // console.log("EVT", evt);
       //   // console.log("TARGET", node.data());
@@ -45,7 +47,7 @@ const Render = ({
 
       let tappedBefore;
       let tappedTimeout;
-      cyRef.current.on('tap', (event) => {
+      cy.on('tap', (event) => {
         const tappedNow = event.target;
         if (tappedTimeout && tappedBefore) {
           clearTimeout(tappedTimeout);
@@ -59,9 +61,11 @@ const Render = ({
         }
       });
 
-      cyRef.current.on('doubleTap', 'node', (event) => {
+      cy.on('doubleTap', 'node', (event) => {
         const node = event.target;
         if (node.selected()) {
+          setLayout('local');
+
           const queryObj = queryString.parse(window.location.search);
           queryObj.info = node.id();
           const query = queryString.stringify(queryObj);
@@ -93,7 +97,7 @@ const Render = ({
       //   document.body.style.cursor = 'auto';
       // });
 
-      cyRef.current.on('mouseover', 'node', (e) => {
+      cy.on('mouseover', 'node', (e) => {
         document.body.style.cursor = 'pointer';
 
         const sel = e.target;
@@ -101,7 +105,7 @@ const Render = ({
         sel.addClass('highlight');
       });
 
-      cyRef.current.on('mouseout', 'node', (e) => {
+      cy.on('mouseout', 'node', (e) => {
         document.body.style.cursor = 'auto';
 
         const sel = e.target;
@@ -123,19 +127,17 @@ const Render = ({
         nodes,
         edges,
       })}
-      style={{ position: 'absolute', width: '1900px', height: '900px' }}
+      style={{
+        position: 'absolute', width: window.innerWidth, height: window.innerHeight - 50, top: 50,
+      }}
       cy={(cy) => {
         cyRef.current = cy;
         let cyLayout;
 
         if (layout.name !== 'local') {
-          cyLayout = cyRef.current.layout(layout);
+          cyLayout = cy.layout(layout);
 
           cyLayout.run();
-        }
-
-        if (fit) {
-          cy.fit();
         }
       }}
     />
