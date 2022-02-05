@@ -69,11 +69,11 @@ class Header extends Component {
 
           </div>
         </div> */}
-        {/* <div className="notify_container">
+        <div className="notify_container">
           <div className="notificationHeader">
             <Notification />
           </div>
-        </div> */}
+        </div>
         {/* <div className="headerHelp">
           <Button
             icon={<HelpSvg />}
