@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ToastContainer, Slide as ToastSlide } from 'react-toastify';
 import GraphForm from './pages/GraphForm';
 import SignIn from './pages/sign/SignIn';
+import SignUp from './pages/sign/SignUp'
 import GraphView from './pages/GraphView';
 import SignOut from './pages/sign/SignOut';
 import GraphDrafts from './pages/profile/GraphDrafts';
@@ -69,6 +70,8 @@ class App extends Component {
             <Route path="/profile/:userId" exact component={Profile} />
 
             <Route path="/sign/sign-in" component={SignIn} />
+            <Route path="/sign/sign-up" component={SignUp} />
+
             <Route path="/sign/sign-out" component={SignOut} />
             <Route path="/sign/forgot-password" component={ForgotPassword} />
             <Route path="/sign/reset-password" component={ResetPassword} />

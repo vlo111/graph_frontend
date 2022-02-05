@@ -1,7 +1,6 @@
 .signPage {
   height: 100vh;
-  background-color: $color-tab-bg;
-
+  background-color: #FFFFFF;
   .ghInput {
     textarea,
     input {
@@ -16,7 +15,7 @@
 
       &:focus {
         outline: none;
-        border-color: $color-main;
+        border-color: #2FE6FF;
       }
     }
 
@@ -166,9 +165,10 @@
     .error {
       position: absolute;
       color: #fe5c4f;
-      font-size: 14px;
+      font-size: 12px;
       padding: 0 8px;
-      top: 40px;
+      top: 50px;
+      width: 300px;
     }
   }
 
@@ -199,8 +199,8 @@
   .signin_page {
     display: grid;
     align-items: center;
-    grid-template-columns:auto auto;
     height: 100%;
+    padding: 175px;
 
     .submit {
       margin-top: 62px;
@@ -213,8 +213,8 @@
       } 
        }
     .singIn_form{
-      max-width: 650px;
-      min-width: 320px;
+    position: relative;
+    top: -50px;
       .SigninAuthForm {
         padding: 10px 0px;
         display: flex;
@@ -233,6 +233,7 @@
           z-index: 100;
           font-style: italic;
           top: -7px;
+          padding-left: 15px;
         }
     
         .ghFormField {
@@ -256,20 +257,27 @@
         }
         }
        }
-    .SaytLogo {
-      position: absolute;
-      right: 89%;
-      top: 3.78%;
-      z-index: 100;
-       }
+       .switchSignInMode {
+        span{
+          color: #585858;
+          font-weight: 400;
+          font-size: 16px;
+        }
+        a{
+         color: #2FE6FF;
+         font-size: 16px;
+        }
+      }
+
   }
 
  // forgot_password page start 
   .forgot_password {
       display: grid;
       grid-template-rows: auto auto;
-      height: 90%;
+      height: 100%;
       align-items: center;
+      justify-content: center;
 
       .forgot_img{
         display: grid;
@@ -283,6 +291,8 @@
         bottom: 90px;
         .SigninAuthForm{
           width: 500px;
+          position: relative;
+          top: -80px;
           .ghFormField{
             width: 100%;
             height: 46px;
@@ -299,26 +309,8 @@
               top: 50px;
             }
           }
-          p{
-            font-weight: 700;
-            font-size: 16px;
-            color: #7166F8;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            top: 15px;
-            text-align: center;
-            padding: 0 20px 0 20px;
-          }
         }
        }
-      .SaytLogo {
-        position: absolute;
-        right: 89%;
-        top: 3.78%;
-        z-index: 100;
-         }
-
   }
 
   main {
@@ -360,15 +352,15 @@
     }
   
    h4 {
-     position: relative;
-     top: 45px;
-     font-size: 33px;
-     font-style: normal;
-     font-weight:400;
-     line-height: 54px;
-     letter-spacing: 0em;
-     width: 150px;
-     color: #505050;
+    position: relative;
+    top: 45px;
+    font-size: 29px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 54px;
+    letter-spacing: 0em;
+    width: 150px;
+    color: #585858;
     }
  }
   .SigninAuthForm {
@@ -397,8 +389,8 @@
     }
 
     &.alt {
-      width: 185px;
-      height: 45px;
+      width: 114px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -408,7 +400,7 @@
       border-radius: 5px;
       position: relative;
       z-index: 100;
-      background: $color-main;
+      background: #2FE6FF;
     }
 
     &.alt:active:after {
@@ -443,7 +435,7 @@
       font-size: 16px;
 
       color: white;
-      background: $color-main;
+      background:  #2FE6FF;
     }
 
     &.accent {
@@ -502,19 +494,19 @@
   }
 
   .ghButton:hover {
-    background-color: $color-white;
-    color: $color-main;
-    border-color: $color-main;
+    background-color: #ffffff;
+    color: #2FE6FF;
+    border-color: #2FE6FF;
     box-shadow: none;
-    border:1px solid $color-main;
+    border: 1px solid #2FE6FF;
   }
 
   .ghButton.orange:hover {
-    background-color: $color-white;
-    color: $color-main;
-    border-color: $color-main;
+    background-color: #ffffff;
+    color: #2FE6FF;
+    border-color: #2FE6FF;
     box-shadow: none;
-    border-color: $color-main;
+    border-color: #2FE6FF;
   }
   
   .logoReset {
@@ -578,4 +570,89 @@
   .border-error {
     border-color: red !important;
   }
+  .socialReset{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    h4{
+      font-size: 30px;
+      color: #424242;
+      font-weight: 700;
+    }
+  }
+  .forgotLogo{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 120px;
+  }
+}
+
+
+///////////Sign Up
+
+
+.SignUpLeft {
+  width: 64.54%;
+  height: 100vh;
+  max-width: 1081px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.SignUpRight {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex-direction: column;
+  margin: 0 auto;
+  justify-content: center;
+
+  .submit {
+    margin-top: 100px;
+  }
+}
+
+.SignUpAuthform {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+
+  h4 {
+    font-size: 29px;
+    font-weight: 700;
+    color: #585858;
+  }
+
+  .ghFormField {
+    width: 100%;
+  }
+
+  .hr {
+    margin-bottom: 32px;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+  }
+
+  .submit {
+    position: relative;
+    top: -78px !important;
+  }
+
+  .socialButtons {
+    position: relative;
+    top: -20px !important;
+  }
+ .signUpFullName{ display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 15px;
+ }
 }

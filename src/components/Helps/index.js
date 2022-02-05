@@ -19,7 +19,6 @@ import Import from '../../assets/images/help/ImportData.png';
 import Compare from '../../assets/images/help/Compare.png';
 import CompareNode from '../../assets/images/help/CompareNodes.png';
 import ShareGraph from '../../assets/images/help/ShareGraph.png';
-import SharelLAbelFolder from '../../assets/images/help/ShareLabelfolder.png';
 import Search from '../../assets/images/help/Search.png';
 import Filter from '../../assets/images/help/Filter.png';
 import Media from '../../assets/images/help/Media.png';
@@ -31,10 +30,13 @@ import { useHistory } from 'react-router-dom';
 
 import Outside from '../Outside';
 import Modal from 'react-modal';
+import Utils from '../../helpers/Utils';
 
 export default (props) => {
   const history = useHistory();
   const path = history.location.pathname;
+  const graphIdParam = Utils.getGraphIdFormUrl();
+  const homeHelp = !(path === `/graphs/update/${graphIdParam}`);
   React.useEffect(() => {
   }, []);
   const handleClose = () => {
@@ -46,7 +48,7 @@ export default (props) => {
       onClick={handleClose}
     >
       <Modal
-        className={path ? 'helpHomePages' : 'ghModalHelps'}
+        className={homeHelp ? 'helpHomePages' : 'ghModalHelps'}
         overlayClassName="ghModalOverlay"
         isOpen
       >

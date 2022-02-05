@@ -122,7 +122,7 @@ class NodeContextMenu extends Component {
           Find Path
         </Button>
         <Button icon={<EyeBallSvg />} title="Dismiss" onClick={() => this.hideData()}>
-          Dismiss
+          Dismiss 
         </Button>
         <Button icon={<EyeBallSvg />} title="Dismiss other nodes" onClick={() => this.hideData(true)}>
           Dismiss other nodes

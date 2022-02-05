@@ -704,9 +704,6 @@ margin-top: -5px;
       position: relative;
       top: -60px;
     }
-    .SaytLogo{
-      right: 88%;
-    }
     }
     .forgot_password {
     .forgot_img{
@@ -714,10 +711,6 @@ margin-top: -5px;
         height: 300px;
       }
      }
-    .SaytLogo {
-      right: 88%;
-     }
-
     }
   }
   #header-on-graph{
@@ -750,10 +743,6 @@ margin-top: -5px;
       position: relative;
       top: -60px;
     }
-    .SaytLogo{
-      right:86%;
-    }
-
     }
     .forgot_password {
     .forgot_img{
@@ -761,10 +750,6 @@ margin-top: -5px;
         height: 280px;
       }
      }
-    .SaytLogo {
-      right: 86%;
-     }
-
     }
  }
 }
@@ -781,9 +766,6 @@ margin-top: -5px;
       position: relative;
       top: -60px;
     }
-    .SaytLogo{
-      right:83%;
-    }
      }
      .forgot_password {
     .forgot_img{
@@ -794,20 +776,7 @@ margin-top: -5px;
     .forgot_form{
       .SigninAuthForm{
         width: 400px;
-        .row{
-          .ghButton.alt{
-            width: 165px;
-          }
-        }
-        p{
-          left: 10px;
-        }
-      }
-      }
-    .SaytLogo {
-      right: 83%;
-    }
-
+      }  }
      }
      .authForm {
        margin-left: 25%;
@@ -825,28 +794,15 @@ margin-top: -5px;
   .signPage{
     .signin_page{
     grid-template-columns: repeat(1,1fr);
-    .singIn_img
-     {
-      display: none;
-    }
+    padding: 160px 0px;
+
     .singIn_form{
       position: relative;
-      top: -190px;
       order:2;
       .ghInput input{
         height: 45px;
       }
-      .ghButton.alt{
-        width: 165px;
-        height: 40px;
-      }
     }
-    .SaytLogo{
-      position: inherit;
-      order:1;
-      justify-self: center;
-    }
-
     }
     .forgot_password {
     grid-template-rows: auto auto auto;
@@ -857,43 +813,36 @@ margin-top: -5px;
       }
      }
     .forgot_form{
-      order: 3;
       .SigninAuthForm{
         width: 380px;
+        top: 10px;
       }
      }
-    .SaytLogo {
-      position: inherit;
-      order:1;
-      justify-self: center;
-     }
-
     }
     .authForm {
       margin-left: 20%;
     }
  }
 }
-@media (max-width: 640px) {
+@media (max-width: 760px) {
   .signPage{
     .ghFormFieldPassword .icon{
       top:3px !important;
      }
     .signin_page{
     grid-template-columns: repeat(1,1fr);
-    .singIn_img{
-        display: none;
-    }
+    padding: 207px 0px;
+    position: relative;
+    top: -60px;
+
     .singIn_form{
       position: relative;
       order:2;
       min-width: 280px;
-      top: -220px;
       .ghInput input{
         height: 36px;
       }
       .ghButton.alt{
-        width: 146px;
         height: 36px;
         margin-top: 35px;
       }
@@ -903,13 +852,8 @@ margin-top: -5px;
     .forgot_img{
       position: relative;
       top: -100px;
-      img{
-        height: 140px;
-        width: 230px;
-      }
      }
     .forgot_form{
-      bottom: 180px;
       .SigninAuthForm{
         width: 240px;
         .ghFormField{
@@ -921,17 +865,8 @@ margin-top: -5px;
             font-size: 14px;
           }
         }
-        .row{
-          .ghButton.alt{
-            width: 146px;
-            height: 36px;
-            top: 40px;
-          }
-        }
-        p{
-          left: -15px;
-          font-size: 11px;
-          width: 270px;
+        h4{
+          font-size: 19px;
         }
       }
      }
@@ -944,4 +879,80 @@ margin-top: -5px;
       }
     }
  }
+}
+
+//  SignUP Media
+
+@media (min-width: 1920px) {
+  .SignUpAuthform {
+    top: 160px;
+  }
+}
+@media (max-width: 1024px) {
+  .signUp {
+    background-image: none !important;
+  }
+  .SignUpRight {
+    left: 25%;
+   
+
+    .SignUpAuthform {
+      position: relative;
+      top: 20px;
+      left: 0;
+      width: 360px;
+      .error{
+        font-size: 11px;
+        width: 200px;
+      }
+    }
+
+    .getstart {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    h1 {
+      position: relative;
+      font-size: 22px;
+      font-weight: 400;
+      top: 30px;
+    }
+
+    h4 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .logo {
+      position: inherit;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .SignUpRight {
+      .getstart {
+        font-size: 22px;
+        font-weight: 700;
+      }
+      h4 {
+        font-size: 27px;
+        font-weight: 700;
+      }
+
+     input{
+       width: 120px;
+     }
+    }
+  }
+}
+@media (min-width: 1920px) {
+.SigninAuthForm {
+  padding: 0;
+  margin: 160px 0;
+  left: 0;
+}
+.switchSignInMode {
+  position: relative;
+  top: 0;
+}
 }

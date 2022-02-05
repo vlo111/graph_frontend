@@ -205,9 +205,7 @@ class ContextMenu extends Component {
     if (params.fieldName === '_location') {
       return null;
     }
-    // if (params.fieldName !== 'node') {
-    //   return undefined;
-    // }
+
     const contexHeight = show === 'selectSquare' ? 195 : 300;
 
     const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y;
@@ -238,24 +236,24 @@ class ContextMenu extends Component {
                   <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
                     Create node
                   </Button>
+                  {showPast ? (
+                    <div className="ghButton notClose">
+                      <Icon value="fa-clipboard" />
+                      Paste
+                      <Icon className="arrow" value="fa-angle-right" />
+                      <div className="contextmenu">
+                        <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
+                          Append
+                        </Button>
+                        {pastData.type === 'label' ? (
+                          <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
+                            Past Embedded
+                          </Button>
+                        ) : null}
+                      </div>
+                    </div>
+                  ) : null}
                 </>
-              ) : null}
-              {showPast ? (
-                <div className="ghButton notClose">
-                  <Icon value="fa-clipboard" />
-                  Paste
-                  <Icon className="arrow" value="fa-angle-right" />
-                  <div className="contextmenu">
-                    <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
-                      Append
-                    </Button>
-                    {pastData.type === 'label' ? (
-                      <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
-                        Past Embedded
-                      </Button>
-                    ) : null}
-                  </div>
-                </div>
               ) : null}
 
               {['selectSquare'].includes(show) && !viewLocation ? (
