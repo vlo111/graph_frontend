@@ -25,7 +25,7 @@ const Cytoscape = ({ nodes, links, history }) => {
     refresh: 30,
     rows: row,
     columns: column,
-    fit: false,
+    fit: cLayout !== 'layout',
     padding: 100,
     boundingBox: undefined,
     animate: 'end',
