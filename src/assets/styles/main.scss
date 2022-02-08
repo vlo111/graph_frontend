@@ -92,11 +92,9 @@ main {
   }
 
   &.homePage {
-    // background: transparent
-    //   radial-gradient(closest-side at 50% 50%, #f2f4ff 0%, #eff1f9 19%, #f2f4ff 39%, #f2f2ff 67%, #f7f9ff 100%)
-    //   no-repeat fixed top left;
-    height: 98vh;
+    height: 100vh;
     overflow: hidden;
+    min-height: 100vh;
   }
   &.accountPage {
     background: #f5f5ff;
@@ -2303,39 +2301,6 @@ p {
       }
     }
   }
-  .descriptionRezalt{
-    position: absolute;
-    max-height: 50%;
-    width: 30%;
-    background: #FFFFFF;
-    box-shadow: 0px 0px 71px 2px rgb(136 130 209 / 42%);
-    border-radius: 12px;
-    padding: 0px 0px 17px 0px;
-    z-index: 11;
-    top: auto;
-    left: auto;
-    span{
-      color: #7166F8;
-      font-size: 25px;
-      font-weight: 600;
-      display: flex;
-      justify-content: center;
-      margin-top: 10px;
-    }
-    .icon{
-      position: absolute;
-      top: -6px;
-
-    }
-    p{
-      padding: 5px 13px 0px 20px;
-      max-height: 243px;
-    }
-    .descriptionResult{
-     overflow: auto;
-     max-height: 390px;
-    }
-  }
 }
 
 .pagination {
@@ -3004,32 +2969,47 @@ p {
   }
 
   .dropdown {
-    border-radius: 3px;
-    background-color: $color-white;
-    box-shadow: 4px 0 25px $color-main-shadow;
-    padding: 10px 10px 22px;
-    width: 200px;
-    position: fixed;
-    left: 88%;
-    top: 77px;
+     position: absolute;
+     width: 145px;
+     height: 122px;
+     right: 8%;
+     top: 75px;
+     background: #FFFFFF;
+     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 
     ul {
       .item {
-        padding: 8px 14px;
-
+        height: 40px;
         a {
-          color: $color-dark;
+          color: #898989;
+          font-weight: bold;
+          font-size: 14px;
+        }
+        &:hover {
+          background-color: #EFEFEF;
+        }
+
+      }
+      .nameSign {
+        font-weight: bold;
+        font-size: 14px;
+        color: #585858;
+        height: 42px;
+        padding-left: 10px;
+        padding-right: 0;
+
+        &:hover{
+          background-color: #EFEFEF;
         }
       }
-
-      .item a:hover {
-        color: $color-main;
+      a:hover{
         text-decoration: none;
       }
-
-      .nameSign {
-        font-weight: 700;
-        padding: 8px 14px;
+      li{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-right: 40px;
       }
     }
   }
@@ -4461,7 +4441,7 @@ body .gh__menu {
       font-weight: bold;
       font-size: 29px;
       line-height: 34px;
-      color: $color-main;
+      color: #585858;
       margin-bottom: 10px;
     }
 
@@ -4496,17 +4476,17 @@ body .gh__menu {
       touch-action: manipulation;
       outline: none;
       border: solid 1px;
-      border-color: $color-main;
+      border-color: #2FE6FF;
       user-select: none;
-      background-color: $color-main;
+      background-color: #2FE6FF;
       opacity: 1;
       padding: 0;
       margin-left: 12px;
 
       &:hover {
         background-color: $color-white;
-        color: $color-main;
-        border-color: $color-main;
+        color: #2FE6FF;
+        border-color: #2FE6FF;
       }
     }
   }
@@ -4577,22 +4557,6 @@ body .gh__menu {
   }
 }
 
-.friends-list {
-  padding: 2% 3.4%;
-  border-radius: 24px;
-  background-color: $color-white;
-
-  h3 {
-    text-align: center;
-    font: normal normal 600 36px/49px Open Sans;
-    background: linear-gradient(145.22deg, rgba(240, 119, 96, 0.62) -11.83%, rgba(113, 102, 248, 0.62) 114.34%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .searchData__graph {
-    position: relative !important;
-  }
-}
 
 .profile {
   max-width: 960px;
@@ -5747,69 +5711,6 @@ img.preview-scaled {
   }
 }
 
-.searchMediaContent {
-  .searchData__graph {
-    display: inline-block;
-    margin-left: 0;
-    width: 100%;
-
-    .documentContainer {
-      grid-template-columns: 50% 50%;
-    }
-  }
-
-  .tabDoc {
-    padding: 10px;
-
-    p {
-      margin-top: 10px;
-      cursor: pointer;
-    }
-  }
-
-  .searchDocumentContent {
-    display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
-    padding: 10px;
-  }
-
-  .createdBy {
-    text-align: right;
-    font-size: 12px;
-    margin-bottom: 15px;
-
-    a {
-      font-style: normal;
-    }
-  }
-
-  .nodeLink {
-    display: flex;
-    color: #0d0905;
-    text-decoration: none;
-    margin-bottom: 10px;
-    cursor: pointer;
-
-    .right {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .left {
-      margin-right: 20px;
-    }
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-
-  .searchData__graphInfo-details {
-    margin-left: auto;
-  }
-}
 
 .rc-tooltip-inner {
   background: $color-white;
@@ -7779,28 +7680,14 @@ img.preview-scaled {
 
   .ghFormField {
     margin: 0;
-  }
-
-  // .logo-graphs,
-  // .searchInputWrapper,
-  // .start-graphs,
-  // .notify_container,
-  // .signOut {
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-  //   width: 100%;
-  // }
-
+   }
   .signOut{
     border-right: 1px solid #9E9E9E;
     border-left: 1px solid #9E9E9E;
     height: 30px;
     padding: 0px 25px 0px 17px;
-    max-width: 230px;
-  }
-  
-
+    max-width: 250px;
+   }
   .start-graphs {
 
     .buttonsWrapper {
@@ -7816,8 +7703,7 @@ img.preview-scaled {
         font-size: 14px;
       }
     }
-  }
-
+   }
   .graphSearch {
     .icon {
       bottom: 4px !important;
@@ -7837,12 +7723,10 @@ img.preview-scaled {
         color: $color-white;
       }
     }
-  }
-
+   }
   .searchInputWrapper {
     justify-self: end;
-  }
-
+   }
   .notify_container{
     height: 30px;
     justify-self: center;
@@ -7850,15 +7734,22 @@ img.preview-scaled {
 
     .notification{
       padding: 0;
-    }
-  }
 
-  #accountDropDown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
+      &::after{
+        background-color: #2FE6FF !important;
+        border: none !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        top: -1px !important;
+        right: -14px !important;
+        width: 20px !important;
+        height: 20px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+      }
+    }
+   }
 
   .logo-graphs {
     justify-content: flex-start;
@@ -7870,8 +7761,8 @@ img.preview-scaled {
       height: 43px;
       width: 83px;
     }
-  }
- .headerHelp{
+   }
+  .headerHelp{
     height: 30px;
     justify-self: center;
   .ghButton{
@@ -7889,7 +7780,7 @@ img.preview-scaled {
     box-shadow: none;
   }
 
- }
+   }
 
 }
 
@@ -8026,18 +7917,6 @@ li span{
   top: 0;
 }
 
-// .notify_container {
-//   .notification.show-count::after {
-//     font-size: 14px;
-//     border-radius: 50px;
-//     background: $color-white;
-//     color: $color-notification-text;
-//     text-shadow: none;
-//     top: 10px;
-//     right: -5px;
-//     padding: 0;
-//   }
-// }
 
 .notificationHeader {
   .notification-container {
@@ -9638,22 +9517,6 @@ details[open] summary:after {
   }
 }
 
-.modal-arrow-top {
-  position: fixed;
-  z-index: 1000;
-
-  &:after {
-    content: "";
-    top: 56px;
-    left: 36px;
-    border-width: 0 0.5rem 0.5rem;
-    position: absolute;
-    display: block;
-    border-color: transparent;
-    border-style: solid;
-    border-bottom-color: #fff;
-  }
-}
 
 .rc-tooltip-placement-right .rc-tooltip-arrow {
   display: none;
@@ -9667,42 +9530,7 @@ details[open] summary:after {
   opacity: 10;
 }
 
-/// notification
 
-// .notify_container {
-//   .notificationHeader {
-//     #popover-contained {
-//       inset: 30px auto auto -120px !important;
-//       min-width: 360px;
-//       margin-left: 115px !important;
-//       border: none;
-//       box-shadow: 4px 0 25px $color-main-shadow;
-
-//       .arrow {
-//         &:after {
-//           content: none;
-//         }
-//         &:before {
-//           content: none;
-//         }
-//       }
-//     }
-
-//     .notification-info-panel {
-//       svg {
-//         fill: #e2e7eb;
-//         stroke: #fff;
-//         width: 45px;
-//         height: 45px;
-//         margin-left: 44%;
-//       }
-
-//       h5 {
-//         margin-left: 15%;
-//       }
-//     }
-//   }
-// }
 
 .popover-header {
   padding: 0.5rem 109px;

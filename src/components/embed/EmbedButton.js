@@ -7,6 +7,7 @@ import EmbedModal from './EmbedModal';
 class EmbedButton extends Component {
   static propTypes = {
     graph: PropTypes.object.isRequired,
+    outOver: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -22,7 +23,7 @@ class EmbedButton extends Component {
 
   render() {
     const { showModal } = this.state;
-    const { graph } = this.props;
+    const { graph, outOver } = this.props;
     return (
       <>
         <div onClick={() => this.toggleModal(true)}>
@@ -32,6 +33,7 @@ class EmbedButton extends Component {
           <EmbedModal
             graph={graph}
             onClose={() => this.toggleModal(false)}
+            outOver={outOver}
           />
         ) : null}
 

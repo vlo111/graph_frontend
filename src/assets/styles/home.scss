@@ -69,6 +69,9 @@
        margin: 0 !important;
        border-radius: 0 !important;
        background-color: #E5E5E5 !important;
+       border: none !important;
+       overflow: scroll;
+       padding: 0 !important;
 
         .graphsList .graphsItem{
          display: grid;
@@ -82,36 +85,6 @@
          border-radius: 5px !important;
          margin-bottom: 14px !important;
 
-         .top{
-           border:none !important;
-           padding: 0 !important;
-           justify-content: center !important;
-           .avatar{
-            margin-right: 10px !important;
-            border-radius: 50%;
-            width: 33px !important;
-            height: 33px !important;
-           }
-          //  .infoWrapper{
-          //    line-height: 19px !important;
-          //     .info{
-          //       margin: 0 !important;
-          //       font-size: 15px !important;
-          //       color: $color-gray1 !important;
-          //       font-weight: 400 !important;
-          //       width: 235px !important;
-          //       display: flex;
-          //       justify-content: space-between !important;
-          //       .nodesCount{
-          //         color: $color-main !important;
-          //       }
-          //     }
-          //     .author{
-          //      color: $color-gray1 !important;
-          //      font-weight: 700 !important;
-          //     }
-          // }
-            }
          .public_context{
             display: flex;
             align-items: center;
@@ -250,8 +223,15 @@
         }
 
        .homPageHeader{
-         display: flex;
-         flex-direction: column;
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          top: 70px;
+          z-index: 3;
+          background: #E5E5E5;
+          width: 100%;
+          padding: 3.6% 2% 1% 2.7%;
+
           .homPageButtons{
             display: flex;
             flex-direction: row;
@@ -270,7 +250,6 @@
   
              &:hover{
                cursor: pointer;
-              //  box-shadow: 0px 0px 62px 2px rgba(136, 130, 209, 0.33);
               background-color: $color-white;
               border: 1px solid #2FE6FF;
                h3 {
@@ -395,44 +374,22 @@
 
 // ====For card Design ======
 .graphsCard {
-     grid-gap: 30px 10px !important;
+     grid-gap: 25px 0px !important;
      margin: 0 auto;
      display: grid;
      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
      margin-top: 15px;
-    //  overflow-y: scroll;
-    //  height: 100%;
+     position: relative;
+     top: 127px;
+     padding: 0 2%;
     
-//  .startGraph{
-//    display: flex;
-//    justify-content: center;
-//    align-items: center;
-//    flex-direction: column;
-//    color: $color-main;
-//    background: #FFFFFF;
-//    box-shadow: 0px 0px 62px 2px rgba(136, 130, 209, 0.11);
-//    border-radius: 5px;
-//    width: 340px;
-//    height: 380px;
-//     &:hover{
-//       cursor: pointer;
-//       box-shadow: 0px 0px 62px 2px rgba(136, 130, 209, 0.33);
-//     }
-//    svg{
-//      margin-bottom: 40px;
-//    }
-//    h3{
-//      font-weight: normal;
-//      font-size: 25px;
-//      line-height: 29px;
-//    }
-//  }
  .graphs{
    width: 169px;
    height: 171px;
    background: #FFFFFF;
    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
    border-radius: 5px;
+   justify-self: center;
 
     .graphListHeader {
       display: flex; 
@@ -440,45 +397,7 @@
       align-items: center; 
       position: unset !important;
     }
-    .top{
-      display: flex;
-      justify-content: space-between;
-      .avatar{
-        width: 35px;
-        height: 35px;
-        margin-right: 10px;
-      }
 
-      // .infoWrapper{
-      //   line-height: 19px !important;
-      //    .info{
-      //     margin: 0 !important;
-      //     font-size: 16px !important;
-      //     color: $color-gray1 !important;
-      //     font-weight: 400 !important;
-      //     width: 230px !important;
-      //     display: flex;
-      //     justify-content: space-between !important;
-      //       .nodesCount{
-      //         color: $color-main;
-      //       }
-      //    }
-      //    .author{
-      //      color: $color-gray1 !important;
-      //      font-weight: 700 !important;
-      //      font-size: 16px !important;
-      //    }
-      //    a{
-      //      &:hover{
-      //        text-decoration: none !important;
-      //      }
-      //    }
-      // }
-      .infoContent{
-       display: flex;
-      }
-     
-    }
     .graphCardFutter{
         background: #EFEFEF;
         height: 48px;
@@ -486,7 +405,8 @@
         flex-direction: column;
         justify-content: center;
         padding: 0px 6px 0px 6px;
-      div{ 
+
+       div{ 
         h3 {
          font-size: 12px;
          color: #585858;
@@ -496,47 +416,14 @@
           .grpahTitle{
            display: none !important;
          }
-       } 
-       .descriptionRezalt{
-         position: absolute;
-         max-height: 50%;
-         width: 19%;
-         background: #FFFFFF;
-         box-shadow: 0px 0px 71px 2px rgb(136 130 209 / 42%);
-         border-radius: 12px;
-         padding: 0px 0px 17px 0px;
-         z-index: 11;
-         top: auto;
-         left: auto;
-         span{
-           color: #7166F8;
-           font-size: 25px;
-           font-weight: 600;
-           display: flex;
-           justify-content: center;
-           margin-top: 10px;
+        } 
          }
-         .icon{
-           position: absolute;
-           top: -6px;
-       
-         }
-         p{
-           padding: 5px 13px 0px 20px;
-           max-height: 243px;
-         }
-         .descriptionResult{
-          overflow: auto;
-          max-height: 390px;
-         }
-       }
-       }
-      .graphListFooter{
+       .graphListFooter{
         justify-content: space-between;
         position: relative;
         top: 5px;
        
-        .ghButton {
+         .ghButton {
           padding: 0 !important;
 
           .icon {
@@ -547,10 +434,10 @@
               stroke: #6C6C6C;
             }
            }
-         }
-         .description{
+          }
+          .description{
           padding-right: 0 !important;
-         }
+          }
          .footer-icon {
            font-size: 12px !important;
             path {
@@ -558,7 +445,43 @@
               stroke: none !important ;
             }
           }
-      }
+          .descriptionRezalt{
+              position: absolute;
+              top: -30px;
+              left: -38px;
+              width: 240px;
+              background: #FFFFFF;
+              border-radius: 3px;
+              z-index: 2;
+              box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+            .descriptionText{
+              display: flex;
+              width: 100%;
+              justify-content: space-between;
+
+                span{
+                  display: flex;
+                  justify-content: center;
+                  width: 100%;
+                  font-weight: bold;
+                  font-size: 20px;
+                  color: #585858;
+
+                  svg path{
+                    fill: #585858;
+                  }
+                }     
+            }
+            p{
+              padding: 6px 0px 0px 24px;
+              max-height: 243px;
+            }
+            .descriptionResult{
+             overflow: auto;
+             max-height: 130px;
+            }
+          }
+        }
     }
    
     .graph-image{
@@ -576,7 +499,6 @@
        }
       .thumbnail{
          border: 1px solid #d9d9d9;
-        //  border-radius: 5px;
          background-color: rgb(185, 172, 243);
          width: 100%;
          height: 100%;
@@ -591,46 +513,6 @@
            opacity: 1;
          }
        } 
-      //  .sub-menus{
-      //   position: relative;
-      //   bottom: 123px;
-      //   z-index: 5;
-      //   display: flex;
-      //   justify-content: flex-end;
-
-      //   &:hover{
-      //     cursor: pointer;
-      //   }
-      //  .ar-popover-content.-arrow {
-      //    margin-top: -8px;
-      //    left: -33px;
-      //    z-index: 9;
-      //    padding: 5px 0 5px 0;
-      //    width: 53px!important;
-      //    height: 76px !important;
-      //    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-      //    background: #EFEFEF;
-      //    border-radius:0;
-
-      //    .child{
-      //        padding: 7px 0 7px 0 !important;
-      //        width: 100%;
-      //        margin: 0 !important;
-      //        text-align: center;
-      //        display: flex;
-      //        align-items: center;
-
-      //        span{
-      //          font-size: 12px;
-      //          margin-left: 12px ;
-      //          line-height: 0.8;
-      //        }
-      //      }
-      //   }
-      //   svg{
-      //     margin-top:-12px;
-      //   }
-      //  }
     }
     .buttonView{
          display: none;
@@ -648,7 +530,6 @@
      .btn-edit  {
           border: none;
           background-color:  $color-white;
-          // border-radius: 5px;
           text-decoration: none;
           color: #585858;
           width: 72px;
@@ -667,7 +548,6 @@
      .btn-preview  {
          border: 1px solid $color-white;
          background: rgba(27, 27, 27, 0.43);
-        //  border-radius: 5px;
          text-decoration: none;
          color: $color-white;
          width: 72px;
@@ -713,7 +593,6 @@
         }
         .sub-menus{
           position: relative;
-          // bottom: 123px;
           display: flex;
           justify-content: flex-end;
           text-align: center;
@@ -760,8 +639,8 @@
 
     .public_icon{
       line-height: 0;
-      width: 35px;
-      height: 35px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       display: flex;
       justify-content: center;
@@ -769,71 +648,67 @@
       background: #FFFFFF;
       box-shadow: 0px 4px 12px rgb(0 0 0 / 25%);
       position: relative;
-      top: -220px;
-      z-index: 2;
-      left: 275px;
+      top: -54px;
+      z-index: 1;
+      left: 154px;
       
        i{
-         color:$color-main;
-         font-size: 23px;
+         color:#1CC5DC;
+         font-size: 16px;
          margin: auto;
        }
      }
  }
 }
 
-//  ====No graph======
+.graph_template_card , .graph_shared_card,
+.graph_public_card
+  {
+    top: 96px;
+  }
 
-.empty{
-  display: flex !important;
-  justify-content: center !important;
-  position: relative;
-  top: 100px;
-}
-.graphsList.empty{
-  min-height: auto !important;
-  margin: 0 !important;
-}
-// .no-graphs {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-//   height: 100%;
-//   .startGraph{
-//       box-shadow: none !important;
-//       margin-top: 50px !important;
-//       width: auto !important;
-//       height: auto !important;
-//       display: flex;
-//       justify-content: center;
-//       align-items: center;
-//       flex-direction: column;
-//      &:hover{
-//        cursor: pointer;
-//        box-shadow:none !important;
-//      }
-//      svg{
-//       margin-bottom: 20px;
-//     }
-//      h3{
-//       font-weight: normal;
-//       font-size: 25px;
-//       line-height: 29px;
-//       color: $color-main;
-//     }
-//   }
-//   .title {
-//     background: linear-gradient(145.22deg, #F07760 -11.83%, #7166F8 114.34%);
-//     -webkit-background-clip: text;
-//     -webkit-text-fill-color: transparent;
-//     font-size: 54px;
-//     line-height: 1.3;
-//     position: relative;
-//     top: 20px;
+//user Card
+.usersCard{
+     position: relative;
+     top: 100px;
+     padding: 2% 2%;
+     display: grid;
+     grid-template-columns: auto;
+     top: 90px;
 
-//     + .text {
-//       margin: 0 0 1rem;
-//     }
-//   }
-// }
+  .users{
+    width: 169px;
+    height: 170px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 4px rgb(0 0 0 / 20%);
+    .friend_image_content{
+      height: 123px;
+      background: #FFFFFF;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+
+      img{
+        height: 103px !important;
+        width: 103px !important;
+      }
+    }
+    .friend_buttons_content{
+      height: 47px;
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      display: flex;
+      a{
+        font-weight: bold;
+        font-size: 12px;
+        color: #585858;
+      }
+    }
+  }
+}
+

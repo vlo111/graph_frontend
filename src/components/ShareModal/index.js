@@ -15,7 +15,6 @@ import Button from '../form/Button';
 const ShareModal = React.memo(({ graph, closeModal }) => {
   const dispatch = useDispatch();
   const [select, setSelect] = useState([]);
-  const [sharedUsers, setShardUsers] = useState([]);
   const afterOpenModal = () => { };
 
   const changeStatus = () => {

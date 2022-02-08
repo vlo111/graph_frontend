@@ -8,12 +8,10 @@ import { getActionsCountRequest } from '../../store/actions/graphs';
 import Button from '../form/Button';
 import ShareTooltip from '../Contributors/ShareTooltip';
 import CommentModal from '../CommentModal';
-// import EmbedButton from '../embed/EmbedButton';
 import LikeGraphs from '../likeGraphs';
 import Outside from '../Outside';
 import { ReactComponent as ShareSvg } from '../../assets/images/icons/shareGraph.svg';
 import { ReactComponent as CommentSvg } from '../../assets/images/icons/commentGraph.svg';
-// import { ReactComponent as ViewPassSvg } from '../../assets/images/icons/viewGraph.svg';
 import { ReactComponent as Description } from '../../assets/images/icons/description.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import { getId } from '../../store/selectors/account';
@@ -52,9 +50,6 @@ const GraphListFooter = ({ graph }) => {
       >
         <span className="graphListFooter__count">{actionsCount?.comments}</span>
       </Button>
-      {/* <Button icon={<ViewPassSvg />} className="transparent footer-icon">
-        <span className="graphListFooter__count">{graph?.views || 0}</span>
-      </Button> */}
       {actionsCount?.shares
         ? (
           (((history.location.pathname !== '/public') || (userId === graph.userId))) && (
@@ -78,33 +73,31 @@ const GraphListFooter = ({ graph }) => {
           graph={graph}
         />
       )}
-      {/* <Outside onClick={() => setOpenDesc(false)} /> */}
-      {opendesc && (
-        <div
-          closeModal={() => setOpenDesc(false)}
-          className="descriptionRezalt"
-        >
-          <div>
-            <Button
-              color="transparent"
-              className="close "
-              icon={<CloseSvg />}
-              onClick={() => setOpenDesc(false)}
-            />
-            <span>Description</span>
-          </div>
-          <div className="descriptionResult">
-            <p>{graph.description}</p>
-          </div>
-        </div>
-      )}
-      {/* <Outside /> */}
-      {/* <EmbedButton graph={graph} /> */}
       <Button
         icon={<Description />}
         className="transparent footer-icon description"
         onClick={() => setOpenDesc(true)}
       />
+      {opendesc ? (
+        <Outside onClick={() => setOpenDesc(false)} exclude=".descriptionModal">
+          <div
+            className="descriptionRezalt"
+          >
+            <div className="descriptionText">
+              <span>Description</span>
+              <Button
+                color="transparent"
+                className="close "
+                icon={<CloseSvg />}
+                onClick={() => setOpenDesc(false)}
+              />
+            </div>
+            <div className="descriptionResult">
+              <p>{graph.description}</p>
+            </div>
+          </div>
+        </Outside>
+      ) : null}
     </div>
   );
 };

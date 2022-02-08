@@ -22,6 +22,14 @@
       }
     }
   }
+  #header{
+    grid-template-columns: 10% auto 6% 16% 5%;
+  }
+  .homePage .content{
+    .homPageHeader{
+     padding-top: 3.1%;
+    }
+  }
 
 }
 
@@ -40,17 +48,6 @@
     cursor: pointer;
     color: blue;
   }
-  // #header {
-  //   grid-template-columns: 10% 20% auto 4% auto 4% auto;
-
-  //   .signOut {
-  //     right: 2%;
-  //   }
-
-  //   .right-elements {
-  //     right: 30px;
-  //   }
-  // }
 
   #header-on-graph{
     .container{
@@ -99,6 +96,11 @@
       }
     }
   }
+  .homePage .content{
+    .homPageHeader{
+     padding-top: 3.2%;
+    }
+  }
 }
 
 @media screen and (max-width: 1500px) {
@@ -107,7 +109,12 @@
       width: 450px !important;
     }
   }
-
+  #header{
+    grid-template-columns: 11% auto 6% 18% 5%;
+  }
+  #accountDropDown .dropdown{
+    right: 10%;
+  }
 }
 
 @media screen and (max-width: 1400px) {
@@ -130,20 +137,14 @@
       width: 82% !important;
     }
   }
-  // #header {
-  //   .signOut {
-  //     right: 1%;
-  //   }
-
-  //   .right-elements {
-  //     right: -48px;
-  //   }
-
-  //   .ghButton {
-  //     padding: 12px 14px;
-  //   }
-
-  // }
+  #header{
+    grid-template-columns: 11% auto 6% 20% 5% !important;
+  }
+  .homePage .content{
+    .homPageHeader{
+     padding-top: 4%;
+    }
+  }
 
 }
 
@@ -170,6 +171,13 @@
 
     }
   }
+  #header{
+    grid-template-columns: 11% auto 6% 24% 5% !important;
+
+    .graphSearch input{
+      width: 270px;
+    }
+  }
 }
 
 @media screen and (max-width: 900px) {
@@ -184,24 +192,6 @@
     }
   }
 
-  #accountDropDown {
-    .accountInfo {
-      padding: 0;
-      .name {
-        display: none;
-      }
-    }
-
-    .dropdown {
-      position: absolute;
-      right: -25px;
-      top: 70px;
-      width: 200px;
-      left: auto;
-      padding: 0;
-      border-radius: 15px;
-    }
-  }
 
   .section2 .ghButton2, .section2 .ghSelect {
     position:initial;
@@ -467,7 +457,6 @@
     
   }
 
-  
   .friends-requests .friend_box:nth-child(odd) {
     padding: 0px 35px 0 0px;
   }
@@ -493,8 +482,6 @@
   .friends-requests > div:first-child {
     padding-left: 15px;
   }
-
-
 }
 
 @media (min-width: 1400px) {
@@ -515,6 +502,14 @@
     margin: 80px auto;
     width:60%;
     height: 800px;
+  }
+  .homePage .content{
+     .homPageHeader{
+      padding-top: 2.6%;
+     }
+     .graphsCard{
+      top: 140px;
+      }
   }
 }
 
@@ -723,9 +718,6 @@ margin-top: -5px;
       }
       .user .signOut{
         width: 63%;
-        #accountDropDown .dropdown{
-          left: 85%;
-        }
       }
     }
   }
@@ -789,6 +781,16 @@ margin-top: -5px;
        }
      }
   }
+  #header{
+    grid-template-columns: 10% auto 9% 30% 9% !important;
+
+    .graphSearch input{
+      width: 210px;
+    }
+  }
+  #accountDropDown .dropdown{
+    right: 18%;
+  }
 }
 @media (max-width: 860px) {
   .signPage{
@@ -823,6 +825,15 @@ margin-top: -5px;
       margin-left: 20%;
     }
  }
+ #header{
+  grid-template-columns: 10% auto 10% 32% 6% !important;
+  .graphSearch input{
+    width: 190px;
+  }
+}
+#accountDropDown .dropdown{
+  right: 16%;
+}
 }
 @media (max-width: 760px) {
   .signPage{
@@ -879,6 +890,12 @@ margin-top: -5px;
       }
     }
  }
+ #header{
+  grid-template-columns: 17% auto 9% 38% 7% !important;
+  .graphSearch input{
+    width: 165px;
+  }
+ }
 }
 
 //  SignUP Media
@@ -887,6 +904,18 @@ margin-top: -5px;
   .SignUpAuthform {
     top: 160px;
   }
+    #header {
+      grid-template-columns: 10% auto 6% 14% 4%;
+    }
+    .SigninAuthForm {
+      padding: 0;
+      margin: 160px 0;
+      left: 0;
+    }
+    .switchSignInMode {
+      position: relative;
+      top: 0;
+    }
 }
 @media (max-width: 1024px) {
   .signUp {
@@ -945,14 +974,4 @@ margin-top: -5px;
     }
   }
 }
-@media (min-width: 1920px) {
-.SigninAuthForm {
-  padding: 0;
-  margin: 160px 0;
-  left: 0;
-}
-.switchSignInMode {
-  position: relative;
-  top: 0;
-}
-}
+

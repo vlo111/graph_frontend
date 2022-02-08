@@ -2,17 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import { withRouter } from 'react-router-dom';
 import { getGraphsListRequest } from '../store/actions/graphs';
-import Pagination from '../components/Pagination';
-import NoGraph from '../components/NoGraph';
-import GraphListItem from '../components/graphData/GraphListItem';
 import GraphCardItem from '../components/graphData/GraphCardItem';
 import { ReactComponent as PlusSvg } from '../assets/images/icons/plusGraph.svg';
 import Button from '../components/form/Button';
-import ChartUtils from '../helpers/Utils';
 import Filter from '../assets/images/filter_Home.png';
 import { getShareGraphListRequest } from '../store/actions/share';
 import GraphOrder from '../components/graphData/GraphOrder';
@@ -21,15 +16,12 @@ class Home extends Component {
   static propTypes = {
     getGraphsListRequest: PropTypes.func.isRequired,
     graphsList: PropTypes.array.isRequired,
-    graphsListInfo: PropTypes.object.isRequired,
-    graphsListStatus: PropTypes.string.isRequired,
     mode: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
   }
 
   getGraphsList = memoizeOne((page, s) => {
     const order = JSON.parse(localStorage.getItem('/')) || 'newest';
-    const limit = ChartUtils.getGraphListItemsLimit();
     this.props.getGraphsListRequest(page, { s, filter: order });
   })
 
@@ -76,7 +68,7 @@ class Home extends Component {
 
   render() {
     const {
-      graphsList, graphsListStatus, graphsListInfo: { totalPages }, mode,
+      graphsList, mode,
     } = this.props;
     const { page = 1, s } = queryString.parse(window.location.search);
     const { showFilterModal } = this.state;
@@ -114,7 +106,6 @@ class Home extends Component {
           ) : null}
           <GraphCardItem graphs={graphsList} headerTools="home" />
         </div>
-        {/* {graphsList.length ? <Pagination totalPages={totalPages} /> : null} */}
       </>
     );
   }

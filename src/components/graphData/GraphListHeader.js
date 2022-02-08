@@ -7,7 +7,9 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import Popover from '../form/Popover';
-import { deleteGraphRequest, getGraphsListRequest, updateGraphRequest } from '../../store/actions/graphs';
+import {
+  deleteGraphRequest, getGraphsListRequest, getActionsCountRequest,
+} from '../../store/actions/graphs';
 import { deleteGraphRequest as DeleteShareGraphRequest } from '../../store/actions/shareGraphs';
 import { ReactComponent as EllipsisVSvg } from '../../assets/images/icons/ellipsis.svg';
 import ShareModal from '../ShareModal';
@@ -16,7 +18,7 @@ import { getId } from '../../store/selectors/account';
 import EmbedButton from '../embed/EmbedButton';
 
 const GraphListHeader = ({
-  graph, headerTools, updateGraph,
+  graph, headerTools, updateGraph, outOver,
 }) => {
   const dispatch = useDispatch();
   const userId = useSelector(getId);
@@ -26,6 +28,12 @@ const GraphListHeader = ({
   const history = useHistory();
   const { page = 1, s: searchParam } = queryString.parse(window.location.search);
   const notification = false;
+
+  useEffect(() => {
+    if (graph.id) {
+      dispatch(getActionsCountRequest(graph.id));
+    }
+  }, [dispatch, graph.id]);
 
   async function deleteGraph(graphId) {
     //  select data from localStorage
@@ -98,7 +106,15 @@ const GraphListHeader = ({
                   <div
                     className="child "
                   >
-                    <span><EmbedButton graph={graph} /></span>
+                    <span>
+                      <EmbedButton
+                        outOver={() => {
+                          outOver();
+                        }}
+                        graph={graph}
+                      />
+
+                    </span>
                   </div>
                   <div
                     onClick={() => deleteGraph(false)}
@@ -116,8 +132,12 @@ const GraphListHeader = ({
       </div>
       {openShareModal && (
         <ShareModal
-          closeModal={() => setOpenShareModal(false)}
+          closeModal={() => {
+            outOver();
+            setOpenShareModal(false);
+          }}
           graph={graph}
+          outOver={outOver}
           setButton
         />
       )}
@@ -125,7 +145,7 @@ const GraphListHeader = ({
         <EditGraphModal
           toggleModal={(value) => setOpenEditGraphModal(value)}
           graph={graph}
-          // deleteGraph={(graphId) => deleteGraph(graphId)}
+          outOver={outOver}
           updateGraph={updateGraph}
         />
       )}
@@ -137,6 +157,7 @@ GraphListHeader.propTypes = {
   graph: PropTypes.object.isRequired,
   updateGraph: PropTypes.func.isRequired,
   headerTools: PropTypes.string.isRequired,
+  outOver: PropTypes.func.isRequired,
 };
 
 export default React.memo(GraphListHeader);

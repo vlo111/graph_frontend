@@ -15,22 +15,7 @@ class Header extends Component {
     super(props);
     this.state = {
       showDropDown: false,
-
     };
-  }
-
-  toggleDropDown = () => {
-    const { showDropDown } = this.state;
-
-    this.setState({ showDropDown: !showDropDown });
-  }
-
-  startGraph = () => {
-    window.location.href = '/graphs/create';
-  }
-
-  compareGraph = () => {
-    window.location.href = '/graphs/compare';
   }
 
   componentDidMount() {
@@ -47,58 +32,52 @@ class Header extends Component {
     }, 100);
   }
 
-  render() {
+  toggleDropDown = () => {
     const { showDropDown } = this.state;
-    return (
-      <header className="headerPanel" id="header">
-        <div className="logo-graphs">
-          <Link to="/">
-            <LogoSvg />
-          </Link>
-        </div>
-        <SearchGraphs />
-        {/* <div className="start-graphs">
-          <div className="buttonsWrapper">
-            <Button className="btn-classic" onClick={this.startGraph}>
-              Create a graph
-            </Button>
-
-            <Button className="btn-classic__alt" onClick={this.compareGraph}>
-              Compare graphs
-            </Button>
-
-          </div>
-        </div> */}
-        <div className="notify_container">
-          <div className="notificationHeader">
-            <Notification />
-          </div>
-        </div>
-        {/* <div className="headerHelp">
-          <Button
-            icon={<HelpSvg />}
-            onClick={this.toggleDropDown}
-          />
-        </div> */}
-        <div className="signOut">
-          <AccountDropDown />
-        </div>
-        <div className="headerHelp">
-          <Button
-            // icon={<HelpSvg />}
-            onClick={this.toggleDropDown}
-          >
-            ? Help
-          </Button>
-        </div>
-        {showDropDown ? (
-          <div className="helpsOutside">
-            <Helps closeModal={this.toggleDropDown} />
-          </div>
-        ) : null}
-      </header>
-    );
+    this.setState({ showDropDown: !showDropDown });
   }
+
+  startGraph = () => {
+    window.location.href = '/graphs/create';
+  }
+
+    compareGraph = () => {
+      window.location.href = '/graphs/compare';
+    }
+
+    render() {
+      const { showDropDown } = this.state;
+      return (
+        <header className="headerPanel" id="header">
+          <div className="logo-graphs">
+            <Link to="/">
+              <LogoSvg />
+            </Link>
+          </div>
+          <SearchGraphs />
+          <div className="notify_container">
+            <div className="notificationHeader">
+              <Notification />
+            </div>
+          </div>
+          <div className="signOut">
+            <AccountDropDown />
+          </div>
+          <div className="headerHelp">
+            <Button
+              onClick={this.toggleDropDown}
+            >
+              ? Help
+            </Button>
+          </div>
+          {showDropDown ? (
+            <div className="helpsOutside">
+              <Helps closeModal={this.toggleDropDown} />
+            </div>
+          ) : null}
+        </header>
+      );
+    }
 }
 
 export default Header;
