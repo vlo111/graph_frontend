@@ -91,7 +91,7 @@ const General = ({
             <span>{node.name}</span>
           </div>
           <div className="general-footer-item leftLine">
-            <span className="item-text">Label: </span>
+            <span className="item-text">Keyword: </span>
             <span>
               {!node.keywords?.length ? 'there is no keyword'
                 : (

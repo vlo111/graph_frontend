@@ -50,7 +50,7 @@ const Dashboard = ({ graph }) => {
           <Button
             icon={<SaveSvg className="viewIconQuery " />}
             onClick={() => toggleGraphQuery(true)}
-            title="Save query"
+            title="Save fragment"
             className="save_query"
           />
           <Button

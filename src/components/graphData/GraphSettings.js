@@ -54,10 +54,6 @@ const GraphSettings = ({ singleGraph }) => {
     });
   }, [singleGraph]);
 
-  const startGraph = () => {
-    window.location.href = '/graphs/create';
-  };
-
   const handleSearch = async (value) => {
     setGraphList([]);
     setSearch(value);
@@ -77,14 +73,6 @@ const GraphSettings = ({ singleGraph }) => {
   useEffect(async () => {
     if (isMenuOpen) {
       setGraphList([]);
-      const result = await Api.getGraphsList(1, {
-        onlyTitle: true,
-        s: search,
-        limit: search === '' ? 3 : undefined,
-        graphName: 'true',
-        graphId,
-      });
-      setGraphList(result?.data?.graphs || []);
       try {
         const result = await Api.getGraphsList(1, {
           onlyTitle: true,
@@ -102,6 +90,9 @@ const GraphSettings = ({ singleGraph }) => {
     ChartUtils.autoScale();
   }, [graphId, isMenuOpen]);
 
+  const startGraph = () => {
+    window.location.href = '/graphs/create';
+  };
   const saveGraph = async (status, forceCreate) => {
     const labels = Chart.getLabels();
     const svg = ChartUtils.getChartSvg();
@@ -141,13 +132,14 @@ const GraphSettings = ({ singleGraph }) => {
       [path]: value,
     }));
   };
+  const handleOnClick = () => setIsMenuOpen(true);
 
   return (
     <div className="GraphNames">
       <button
         className="dropdown-btn"
         type="button"
-        onClick={() => setIsMenuOpen(true)}
+        onClick={handleOnClick}
       >
         <div className="graphNname">
           <span title={singleGraph.title} className="graphNames">
@@ -183,6 +175,7 @@ const GraphSettings = ({ singleGraph }) => {
           <div className="graphNameList">
             {graphList && graphList.map((graph) => (
               <Link
+                key={graph.id}
                 to={`/graphs/update/${graph.id}`}
                 onClick={() => {
                   setIsMenuOpen(false);

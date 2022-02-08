@@ -20,7 +20,7 @@ const Query = React.memo(({ closeModal, graph }) => {
         overlayClassName="ghModalOverlay  graphQueryOverlay"
       >
         <div className="query-modal__title">
-          <h3>Query</h3>
+          <h3>Fragment</h3>
           <Button
             icon={<CloseSvg style={{ height: 30 }} />}
             onClick={() => closeModal()}

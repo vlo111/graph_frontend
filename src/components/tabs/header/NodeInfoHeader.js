@@ -30,6 +30,9 @@ const NodeInfoHeader = ({
     const right = '15px';
 
     getElement('#autoPlay').style.right = right;
+    if (getElement('.layoutBar')) {
+      getElement('.layoutBar').style.right = right;
+    }
     getElement('.graphControlPanel').style.right = right;
 
     setSingleExpand(false);

@@ -288,7 +288,6 @@ class ToolBar extends Component {
     const footer = document.getElementById('graphs-data-info');
     const searchModal = document.getElementById('searchMenuNodes');
 
-
     let left;
 
     if (closedMenu) {
