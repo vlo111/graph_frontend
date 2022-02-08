@@ -93,6 +93,7 @@ const Tabs = ({ history, editable, viewPermisson }) => {
 
     // move autoplay right
     getElement('#autoPlay').style.right = left;
+    if (getElement('.layoutBar')) getElement('.layoutBar').style.right = '300px';
     getElement('.graphControlPanel').style.right = left;
   };
 

@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { getGraphInfoRequest } from '../store/actions/graphs';
 import { setActiveButton } from '../store/actions/app';
 import Chart from '../Chart';
 import { ReactComponent as InfoSvg } from '../assets/images/icons/info.svg';
 import { ReactComponent as ShowMapSvg } from '../assets/images/icons/show-map.svg';
+import { getSingleGraphRequest } from '../store/actions/graphs';
 
 class ToolBarFooter extends Component {
   static propTypes = {
-    getGraphInfoRequest: PropTypes.func.isRequired,
     graphInfo: PropTypes.object.isRequired,
+    getSingleGraphRequest: PropTypes.func.isRequired,
     setActiveButton: PropTypes.func.isRequired,
     graphId: PropTypes.string.isRequired,
+    setGraphMode: PropTypes.func.isRequired,
+    graphMode: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -48,9 +50,51 @@ class ToolBarFooter extends Component {
     this.props.setActiveButton(activeButton);
   }
 
+  changeElementsDisplay = (selector, param) => {
+    const elements = document.querySelectorAll(selector);
+
+    elements.forEach((elem) => {
+      elem.style.display = param;
+    });
+  };
+
+  switchGraphMode = () => {
+    const {
+      graphId, setGraphMode, graphMode, getSingleGraphRequest,
+    } = this.props;
+
+    Chart.loading(true);
+    const view = document.querySelector('.cytoscapeBar').innerHTML;
+    const viewName = 'Standard view';
+    const enriched = 'Enriched view';
+
+    const selector = '.beta, .dashboards, .searchField, #autoPlay, .graphControlPanel, .nodeCreate';
+
+    if (view === enriched) {
+      document.querySelector('.cytoscapeBar').innerHTML = viewName;
+      this.changeElementsDisplay(selector, 'none');
+    } else {
+      document.querySelector('.cytoscapeBar').innerHTML = enriched;
+
+      this.changeElementsDisplay(selector, 'flex');
+
+      getSingleGraphRequest(graphId, { viewMode: true });
+    }
+
+    setGraphMode(graphMode === 'cytoscape' ? 'd3' : 'cytoscape');
+
+    setTimeout(() => {
+      Chart.loading(false);
+    }, 200);
+  }
+
   render() {
-    const { totalNodes, totalLinks, totalLabels } = this.state;
-    const { graphInfo, graphId, partOf } = this.props;
+    const {
+      totalNodes, totalLinks, totalLabels,
+    } = this.state;
+    const {
+      graphInfo, graphId, partOf,
+    } = this.props;
     const showInMap = Chart.getNodes().some((d) => !_.isEmpty(d?.location));
     const updateLocation = window.location.pathname.startsWith('/graphs/update');
 
@@ -115,6 +159,19 @@ class ToolBarFooter extends Component {
                 <span>Show on map</span>
               </div>
             ) : null}
+            {
+              !updateLocation && (
+                <>
+                  <div
+                    onClick={this.switchGraphMode}
+                    className="cytoscapeBar"
+                  >
+                    Enriched view
+                  </div>
+                  <div className="beta">Beta</div>
+                </>
+              )
+            }
           </footer>
         </>
       )
@@ -128,7 +185,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  getGraphInfoRequest,
+  getSingleGraphRequest,
   setActiveButton,
 };
 
