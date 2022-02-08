@@ -104,6 +104,7 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
+
     if (ev.target.closest('.nodes')) {
       if (ev.target.classList.contains('selectMultyNodes')) {
         params = {
@@ -111,7 +112,15 @@ class ContextMenu extends Component {
         };
         element = 'selectNode';
       } else {
-        const index = +ev.target.parentNode.getAttribute('data-i');
+        const { parentElement } = ev.target;
+        let index;
+
+        if (parentElement.classList.value.includes('infography')) {
+          index = +ev.target.parentNode.getAttribute('data-i');
+        } else {
+          index = +ev.target.parentNode.parentNode.getAttribute('data-i');
+        }
+        ev.target.parentElement.classList.value.includes('infography');
         params = Chart.getNodes().find((d) => d.index === index);
         element = 'node';
       }

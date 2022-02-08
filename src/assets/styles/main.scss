@@ -871,13 +871,9 @@ p {
   .node {
     cursor: pointer;
 
-    :not(text) {
-      fill: $color-white;
-      stroke-width: 10;
-    }
-
-    .highlight {
-      stroke: white;
+    rect {
+      fill: #eeeeee;
+      stroke-width: 1px;
     }
 
     .nodeCut {
@@ -3169,17 +3165,6 @@ body .gh__menu {
   &.square {
     border-radius: 1px;
     border: 1px solid transparent;
-  }
-
-  &.triangle {
-    border-radius: 0;
-    position: relative;
-    clip-path: polygon(50% 0%, 0% 80%, 100% 80%);
-  }
-
-  &.hexagon {
-    border-radius: 0;
-    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
   }
 }
 
