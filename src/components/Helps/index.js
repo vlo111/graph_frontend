@@ -63,26 +63,26 @@ export default (props) => {
                 </Tab>
                 <h3 className="helpTitle">Graphs</h3>
                 <Tab>Create and edit a graph</Tab>
-                <Tab>Import a graph</Tab>
-                <Tab>Export a graph</Tab>
-                <Tab>Compare graphs </Tab>
+                <Tab>Import a Graph</Tab>
+                <Tab>Export a Graph</Tab>
+                <Tab>Compare Graphs </Tab>
                 <Tab>Compare Labels/Folders of different graphs</Tab>
-                <Tab>Share a graph </Tab>
-                <Tab>Select and Crop a graph</Tab>
+                <Tab>Share a Graph </Tab>
+                <Tab>Select and Crop a Graph</Tab>
                 <h3 className="helpTitle">Create Node</h3>
                 <Tab>
                   <li>New node</li>
                 </Tab>
-                <Tab>Create node via Google map</Tab>
-                <Tab>Create node via Wikipedia</Tab>
-                <Tab>Create node by Linkedin </Tab>
-                <Tab>Create node by Science Mind </Tab>
+                <Tab>Create Node via Google Map</Tab>
+                <Tab>Create Node via Wikipedia</Tab>
+                <Tab>Create Node by Linkedin </Tab>
+                <Tab>Create Node by Science Mind </Tab>
                 <Tab>Find Node</Tab>
                 <h3 className="helpTitle">Lables and Folders</h3>
                 <Tab> Create Label</Tab>
                 <Tab> Craete Folder</Tab>
                 <Tab>
-                  <h4 className="helpTitlePages">link the nodes</h4>
+                  <h4 className="helpTitlePages">link the Nodes</h4>
                 </Tab>
                 <Tab>
                   <h4 className="helpTitlePages">Explore</h4>
@@ -133,7 +133,7 @@ export default (props) => {
               </div>
               <div className="helpResultText">
                 <div className="help_text">
-                  <p className="marg_graph_text">• Create a graph</p>
+                  <p className="marg_graph_text">• Create a Graph</p>
                   <ol>
                     <li>
                       •	Go to
@@ -145,11 +145,11 @@ export default (props) => {
                     <li>
                       •	Click
 
-                      <span>+ Create a graph</span>
+                      <span>+ Create a Graph</span>
 
                       or click
 
-                      <span>Create a graph</span>
+                      <span>Create a Graph</span>
 
                       at the top of the page
                     </li>
@@ -313,7 +313,7 @@ export default (props) => {
 
                       <span>file type.</span>
 
-                      If you don’t have any template you can download it.
+                      Use the Template to import data
                     </li>
                     <li>
                       •
@@ -1671,12 +1671,12 @@ export default (props) => {
                   </ol>
                 </div>
                 <div className="helpMindText">
-                  <a>•	Node types</a>
-                  <a>•	Node status</a>
-                  <a>•	Link types</a>
+                  <a>•	Node Types</a>
+                  <a>•	Node Status</a>
+                  <a>•	Link Types</a>
                   <a>•	Labels</a>
-                  <a>•	Label status,</a>
-                  <a>•	Link value  </a>
+                  <a>•	Label Status,</a>
+                  <a>•	Link Value  </a>
                   <a>•	Node Keywords</a>
                   <a>•	Node Connections</a>
                 </div>

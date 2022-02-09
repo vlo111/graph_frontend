@@ -457,7 +457,7 @@ class ToolBar extends Component {
                     className={`${selected.includes('maps') ? 'selected' : ''}`}
                     onClick={() => this.handleClick('maps')}
                   >
-                    Use Map
+                    Use Google Map
                   </li>
                   <li
                     className={`${selected.includes('linkedIn') ? 'selected' : ''}`}
