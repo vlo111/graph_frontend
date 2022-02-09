@@ -50,18 +50,18 @@ const Dashboard = ({ graph }) => {
           <Button
             icon={<SaveSvg className="viewIconQuery " />}
             onClick={() => toggleGraphQuery(true)}
-            title="Save fragment"
+            title="Save Fragment"
             className="save_query"
           />
           <Button
-            icon={<ExportSvg className="viewIcon "/>}
+            icon={<ExportSvg className="viewIcon " />}
             onClick={() => exportGraphData(graph.id)}
             title="Export"
             className="export"
           />
           <button
             onClick={() => toggleGraphQuerySetting(!showGraphQuerySetting)}
-            title="Save list"
+            title="Fragment List"
             className={`${showGraphQuerySetting ? 'setting_queryBtn__active' : ''} setting_queryBtn btn-classic`}
           >
             <Icon value={<SettingSvg className="viewIconQuery " />} />

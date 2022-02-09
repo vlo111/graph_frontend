@@ -25,8 +25,8 @@ const GraphOrder = ({
           <p className="sort-text"> Sort by </p>
           <p className={localOrder === 'ascending' ? localOrder : ''} onClick={() => setFilter('ascending')}>A to Z</p>
           <p className={localOrder === 'descending' ? localOrder : ''} onClick={() => setFilter('descending')}>Z to A</p>
-          <p className={localOrder === 'newest' ? localOrder : ''} onClick={() => setFilter('newest')}>Newest first</p>
-          <p className={localOrder === 'oldest' ? localOrder : ''} onClick={() => setFilter('oldest')}>Oldest first</p>
+          <p className={localOrder === 'newest' ? localOrder : ''} onClick={() => setFilter('newest')}>Newest First</p>
+          <p className={localOrder === 'oldest' ? localOrder : ''} onClick={() => setFilter('oldest')}>Oldest First</p>
         </div>
       </Outside>
     </div>

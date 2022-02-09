@@ -128,7 +128,7 @@ class ToolBarHeader extends Component {
                 <div
                   className={`cursor-header ${mouseTracker ? 'activeMouseTracker' : 'mouseTracker'}`}
                   onClick={() => this.handleCursor(mouseTracker)}
-                  title={`${mouseTracker ? 'hide collaborators cursor' : 'show collaborators cursor'}`}
+                  title={`${mouseTracker ? 'Hide Collaborators Cursor' : 'Show Collaborators Cursor'}`}
                 >
                   <CursorSvg />
                 </div>

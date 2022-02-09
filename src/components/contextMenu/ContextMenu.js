@@ -234,7 +234,7 @@ class ContextMenu extends Component {
               {['label', 'chart'].includes(show) && !expand ? (
                 <>
                   <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
-                    Create node
+                    Create Node
                   </Button>
                   {showPast ? (
                     <div className="ghButton notClose">
@@ -259,7 +259,7 @@ class ContextMenu extends Component {
               {['selectSquare'].includes(show) && !viewLocation ? (
                 <>
                   <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
-                    Create a folder
+                    Create a Folder
                   </Button>
                 </>
               ) : null}
