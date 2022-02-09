@@ -55,7 +55,7 @@ const Login = () => {
             </div>
             <Input
               name="email"
-              placeholder="Email address"
+              placeholder="Email Address"
               value={email}
               onChangeText={(value) => setEmail(value)}
               autoComplete="off"

@@ -28,8 +28,8 @@ const GraphOrder = ({
             <p className={localOrder === 'descending' ? localOrder : ''} onClick={() => setFilter('descending')}>Z to A</p>
           </div>
           <div className="sortNewest">
-            <p className={localOrder === 'newest' ? localOrder : ''} onClick={() => setFilter('newest')}>Newest first</p>
-            <p className={localOrder === 'oldest' ? localOrder : ''} onClick={() => setFilter('oldest')}>Oldest first</p>
+            <p className={localOrder === 'newest' ? localOrder : ''} onClick={() => setFilter('newest')}>Newest First</p>
+            <p className={localOrder === 'oldest' ? localOrder : ''} onClick={() => setFilter('oldest')}>Oldest First</p>
           </div>
         </div>
       </Outside>

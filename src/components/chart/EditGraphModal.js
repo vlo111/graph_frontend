@@ -201,7 +201,7 @@ const EditGraphModal = ({
             <span className="item2">{moment(graph.createdAt).format('YYYY.MM.DD')}</span>
           </div>
           <div className="infoGraph">
-            <label>Last modfied</label>
+            <label>Last Modfied</label>
             <span className="item3">{moment(graph.updatedAt).format('YYYY.MM.DD hh:mm')}</span>
           </div>
         </div>

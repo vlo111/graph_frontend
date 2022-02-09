@@ -177,8 +177,8 @@ class AddLabelModal extends Component {
           <form className="form" onSubmit={this.addLabel}>
             <h2>
               {labelData.type === 'folder'
-                ? (edit ? 'Edit Folder' : 'Add new Folder')
-                : (edit ? 'Edit label' : 'Add new label')}
+                ? (edit ? 'Edit Folder' : 'Add New Folder')
+                : (edit ? 'Edit Label' : 'Add New label')}
             </h2>
             <Input
               value={labelData.name}
