@@ -104,7 +104,6 @@ class ContextMenu extends Component {
     const { x, y } = ev;
     let element;
     let params = {};
-
     if (ev.target.closest('.nodes')) {
       if (ev.target.classList.contains('selectMultyNodes')) {
         params = {

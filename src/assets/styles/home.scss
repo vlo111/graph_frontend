@@ -1,53 +1,79 @@
 
 // ===For list Design=====
 .homeWithUser {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    align-items: inherit !important;
-  
-    .filter {
+     display: flex !important;
+     width: 100% !important;
+     align-items: inherit !important;
+     top: 70px !important;
+     height: 100% !important;
+     background-color: #585858;
+     overflow: hidden !important;
+
+      .filter {
       display: flex;
-      justify-content: flex-end;
       width: 100%;
       position: relative;
   
       .filter-container {
-        padding: 9px 0 0 16px;
+        padding: 9px 0 0 17px;
         background-color: white;
-        width: 110px;
+        width: 90px;
         position: absolute;
-        top: 13px;
-        right: 75px;
+        top: 3px;
+        left: 236px;
         z-index: 90;
-        box-shadow: 0px 4px 33px rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 0px 4px rgb(0 0 0 / 20%);
         border-radius: 2px;
+
          p{
-           margin-bottom: 12px !important;
+           margin-bottom: 5px !important;
+           font-size: 12px;
+           font-weight: 400;
+           line-height: 16px;
            &:hover{
              cursor: pointer;
+             color: #2FE6FF;
            }
          }
+        .sortName{
+          margin-bottom: 12px;
+          p {
+            margin: 0 !important;
+          }
+        }
+        .sortNewest{
+          margin-bottom: 6px;
+          p{
+            margin: 0 !important;
+          }
+        }
         .sort-text {
           font-size: 12px;
           color: #C2C2C2;
           line-height: 12px;
+
+          &:hover{
+            color:#C2C2C2 ;
+            cursor: unset;
+          }
       
         }
   
         .ascending, .descending, .newest, .oldest {
-          color: $color-main !important;
+          color: #2FE6FF !important;
         }
       }
-    }
+       }
   
      .content {
-       margin-left: 0 !important;
+       margin: 0 !important;
        border-radius: 0 !important;
+       background-color: #E5E5E5 !important;
        border: none !important;
-       padding: 60px 50px !important;
-       min-height: 650px !important;
-       .graphsList .graphsItem{
+       overflow: scroll;
+       padding: 0 !important;
+
+        .graphsList .graphsItem{
          display: grid;
          grid-template-columns: 15% 37% 23% 21% 4%;
          padding: 12px 0 !important;
@@ -58,37 +84,8 @@
          box-shadow: 0px 4px 62px rgba(0, 0, 0, 0.1) !important;
          border-radius: 5px !important;
          margin-bottom: 14px !important;
-         .top{
-           border:none !important;
-           padding: 0 !important;
-           justify-content: center !important;
-           .avatar{
-            margin-right: 10px !important;
-            border-radius: 50%;
-            width: 33px !important;
-            height: 33px !important;
-           }
-           .infoWrapper{
-             line-height: 19px !important;
-              .info{
-                margin: 0 !important;
-                font-size: 15px !important;
-                color: $color-gray1 !important;
-                font-weight: 400 !important;
-                width: 235px !important;
-                display: flex;
-                justify-content: space-between !important;
-                .nodesCount{
-                  color: $color-main !important;
-                }
-              }
-              .author{
-               color: $color-gray1 !important;
-               font-weight: 700 !important;
-              }
-          }
-            }
-          .public_context{
+
+         .public_context{
             display: flex;
             align-items: center;
             h3{
@@ -117,7 +114,7 @@
                  margin: auto;
                }
              }
-          }
+            }
          .graphListFooter {    
               .ghButton{
                 padding: 0 !important;
@@ -132,11 +129,16 @@
             &:hover{
               cursor: pointer;
             }
+         
            .ar-popover-content.-arrow {
-             margin-top: -3px;
-             left: -93px;
-             z-index: 9;
-             padding: 5px 0 5px 0;
+               margin-top: -8px;
+               left: -39px;
+               z-index: 9;
+               padding: 5px 0 5px 0;
+               width: 53px !important;
+               height: 73px !important;
+               
+
              .child{
               padding: 7px 0 7px 0 !important;
               width: 100%;
@@ -144,7 +146,15 @@
               text-align: center;
               display: flex;
               align-items: center;
+              font-size: 12px;
+                 span{
+                   font-size: 12px;
+                 }
                }
+            }
+            .ar-popover-content{
+              width: 53px !important;
+              height: 73px !important;
             }
             svg{
               margin-top:-24px;
@@ -153,8 +163,9 @@
          .buttonHidden{
               display:none ;
             }
-        }
-          .graphsItem:hover{
+         }
+
+       .graphsItem:hover{
               background: linear-gradient(145.22deg, rgba(240, 119, 96, 0.42) -11.83%, rgba(113, 102, 248, 0.42) 114.34%), #FFFFFF;
               box-shadow: 0px 4px 62px rgba(0, 0, 0, 0.1);
               border-radius: 5px;
@@ -166,17 +177,19 @@
           display: flex;
           
           .btn-edit  {
-             border: none;
-             background-color: $color-main;
-             border-radius: 5px;
-             text-decoration: none;
-             color: $color-white;
-             width: 100px;
-             height: 33px;
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             margin-right: 20px;
+              border: none;
+              background-color: $color-main;
+              border-radius: 5px;
+              text-decoration: none;
+              color: $color-white;
+              width: 100px;
+              height: 33px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-right: 20px;
+              font-size: 12px;
+              font-weight: 400;
             &:hover {
               color: #7166f8;
               background-color: $color-white;
@@ -196,6 +209,8 @@
                display: flex;
                justify-content: center;
                align-items: center;
+               font-size: 12px;
+               font-weight: 400;
           
             &:hover {
               color: #7166f8;
@@ -204,30 +219,101 @@
               cursor: pointer;
             }
            }
-        }
           }
-         .graphListFooter {
-       .ghButton .icon {
-         color:$color-main !important;
         }
-        .footer-icon path {
-          fill:$color-main !important;
+
+       .homPageHeader{
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          top: 70px;
+          z-index: 3;
+          background: #E5E5E5;
+          width: 100%;
+          padding: 3.6% 2% 1% 2.7%;
+
+          .homPageButtons{
+            display: flex;
+            flex-direction: row;
+            width: 292px;;
+
+            .startGraph{
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              background: #2FE6FF;
+              width: 80px;
+              height: 30px;
+              padding: 7px 20px 6px;
+              border-radius: 0;
+              margin-right: 10px;
+  
+             &:hover{
+               cursor: pointer;
+              background-color: $color-white;
+              border: 1px solid #2FE6FF;
+               h3 {
+                 color:#2FE6FF;
+               }
+               svg path{
+                 fill:#2FE6FF;
+               }
+  
+             }
+            svg{
+              width: 11px;
+              height: 10px;
+  
+              path{
+              fill:$color-white;
+            }
+            }
+            h3{
+              font-size: 12px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 14px;
+              color: $color-white;
+              margin-bottom: 0;
+              }
+             }
+            .btn-classic__alt {
+              background: #ffffff;
+              color: #2FE6FF;
+              border: 1px solid #2FE6FF;
+              height: 30px;
+              width: 144px;
+              text-align: center;
+              display: flex;
+              justify-content: center;
+              font-size: 12px;
+              font-weight: 400;
+              padding: 5px 14px 6px;
+              border-radius: 0;
+              margin-right: 37px;
+
+              &:hover{
+                background-color: #2FE6FF;
+                color:$color-white;
+              }
+             }
+            .filterHome:hover{
+              cursor: pointer;
+            }
            }
-          }
-     }
-     .tabsList{
-      position: relative !important;
-      transform: none !important;
-      flex-direction: row-reverse !important;
-      padding-left: 93px !important;
-      top: 4px !important;
-      width: 100% !important;
-      .item{
-        margin-left:10px !important;
-        width: 120px !important;
-        height: 44px !important;
-        
-      } 
+        }
+
+       }
+
+      .tabsList{
+         position: relative !important;
+         transform: none !important;
+         flex-direction: column-reverse !important;
+         justify-content: flex-end !important;
+         width: 155px !important;
+         top: 45px !important;
+         height: 90%;
+
       .lastItem{
         margin-left: auto !important;
         display: flex;
@@ -252,205 +338,155 @@
           }
        }
       }
-      .item 
-      .ghButton{
-        background-color: transparent !important;
-        color: #9BA6B4;
-        padding: 0 !important;
+      .item {
+        height: 32px !important;
+        width: 100% !important;
         margin: 0 !important;
-        box-shadow: 0px 5px 12px #0d090514;
-        white-space: nowrap;
-        font-size: 12px !important;
-        font-weight: 400 !important;
-        margin-right: 11px !important;
-        border-radius: 5px !important;
-        width: 120px;
-        height: 44px;
-      }
-      i{
-        margin-right: 10px;
-        font-size: 20px;
-      }
-
-     .item.active .ghButton {
-      background: -webkit-linear-gradient(#F07760, #7166F8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-       font-weight: 700 !important;
-    }
-    .item.active{
-      background-color: white;
-      border-radius: 5px;
-    }
-
-    }
+        border-radius: 0 !important;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 14px;
+        padding-left: 15px;
+        display: flex;
+        align-items: center;
+          i{
+            margin-right: 6px;
+            font-size: 12px;
+          }
+          &:hover{
+            background-color: #6C6C6C;
+            cursor: pointer;
+          }
+       }
+      .active{
+        background-color: #1CC5DC !important;
+       }
+       }
   
-    .tab_card .cart-item, .list .list-item {
+     .tab_card .cart-item, .list .list-item {
      svg > path {
         fill: $color-main !important;
       }
-    }
+       }
   }
 
 
 // ====For card Design ======
 .graphsCard {
-    grid-gap: 30px 20px!important;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
- .startGraph{
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   flex-direction: column;
-   color: $color-main;
-   background: #FFFFFF;
-   box-shadow: 0px 0px 62px 2px rgba(136, 130, 209, 0.11);
-   border-radius: 5px;
-   width: 340px;
-   height: 380px;
-    &:hover{
-      cursor: pointer;
-      box-shadow: 0px 0px 62px 2px rgba(136, 130, 209, 0.33);
-    }
-   svg{
-     margin-bottom: 40px;
-   }
-   h3{
-     font-weight: normal;
-     font-size: 25px;
-     line-height: 29px;
-   }
- }
+     grid-gap: 25px 0px !important;
+     margin: 0 auto;
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+     margin-top: 15px;
+     position: relative;
+     top: 127px;
+     padding: 0 2%;
+    
  .graphs{
-   width: 340px;
-   height: 380px;
+   width: 169px;
+   height: 171px;
    background: #FFFFFF;
-   box-shadow: 0px 0px 62px 2px rgba(136, 130, 209, 0.22);
+   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
    border-radius: 5px;
-   padding: 20px;
+   justify-self: center;
+
     .graphListHeader {
       display: flex; 
       justify-content: flex-start; 
       align-items: center; 
       position: unset !important;
     }
-    .top{
-      display: flex;
-      justify-content: space-between;
-      .avatar{
-        width: 35px;
-        height: 35px;
-        margin-right: 10px;
-      }
-      .sub-menus{
-           &:hover{
-             cursor: pointer;
-           }
-          .ar-popover-content.-arrow {
-            margin-top: -8px;
-            left: -93px;
-            z-index: 9;
-            padding: 5px 0 5px 0;
-            .child{
-             padding: 7px 0 7px 0 !important;
-             width: 100%;
-             margin: 0 !important;
-             text-align: center;
-             display: flex;
-             align-items: center;
-              }
-           }
-           svg{
-             margin-top:-12px;
-           }
-      }
-      .infoWrapper{
-        line-height: 19px !important;
-         .info{
-          margin: 0 !important;
-          font-size: 16px !important;
-          color: $color-gray1 !important;
-          font-weight: 400 !important;
-          width: 230px !important;
-          display: flex;
-          justify-content: space-between !important;
-            .nodesCount{
-              color: $color-main;
+
+    .graphCardFutter{
+        background: #EFEFEF;
+        height: 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0px 6px 0px 6px;
+
+       div{ 
+        h3 {
+         font-size: 12px;
+         color: #585858;
+         font-weight: 700;
+         margin: 0 !important;
+
+          .grpahTitle{
+           display: none !important;
+         }
+        } 
+         }
+       .graphListFooter{
+        justify-content: space-between;
+        position: relative;
+        top: 5px;
+       
+         .ghButton {
+          padding: 0 !important;
+
+          .icon {
+            color:#6C6C6C !important;
+            margin-right: 4px;
+            path{
+              fill: transparent;
+              stroke: #6C6C6C;
             }
-         }
-         .author{
-           color: $color-gray1 !important;
-           font-weight: 700 !important;
-           font-size: 16px !important;
-         }
-         a{
-           &:hover{
-             text-decoration: none !important;
            }
-         }
-      }
-      .infoContent{
-       display: flex;
-      }
-     
+          }
+          .description{
+          padding-right: 0 !important;
+          }
+         .footer-icon {
+           font-size: 12px !important;
+            path {
+              fill:#6C6C6C !important;
+              stroke: none !important ;
+            }
+          }
+          .descriptionRezalt{
+              position: absolute;
+              top: -30px;
+              left: -38px;
+              width: 240px;
+              background: #FFFFFF;
+              border-radius: 3px;
+              z-index: 2;
+              box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+            .descriptionText{
+              display: flex;
+              width: 100%;
+              justify-content: space-between;
+
+                span{
+                  display: flex;
+                  justify-content: center;
+                  width: 100%;
+                  font-weight: bold;
+                  font-size: 20px;
+                  color: #585858;
+
+                  svg path{
+                    fill: #585858;
+                  }
+                }     
+            }
+            p{
+              padding: 6px 0px 0px 24px;
+              max-height: 243px;
+            }
+            .descriptionResult{
+             overflow: auto;
+             max-height: 130px;
+            }
+          }
+        }
     }
-    div{ 
-       h3 {
-        font-size: 20px;
-        line-height: 0;
-        color: #7166F8;
-        font-weight: 700;
-        margin-top: 40px;
-        height: 46px;
-         .grpahTitle{
-          display: none !important;
-        }
-      } 
-      .descriptionRezalt{
-        position: absolute;
-        max-height: 50%;
-        width: 19%;
-        background: #FFFFFF;
-        box-shadow: 0px 0px 71px 2px rgb(136 130 209 / 42%);
-        border-radius: 12px;
-        padding: 0px 0px 17px 0px;
-        z-index: 11;
-        top: auto;
-        left: auto;
-        span{
-          color: #7166F8;
-          font-size: 25px;
-          font-weight: 600;
-          display: flex;
-          justify-content: center;
-          margin-top: 10px;
-        }
-        .icon{
-          position: absolute;
-          top: -6px;
-      
-        }
-        p{
-          padding: 5px 13px 0px 20px;
-          max-height: 243px;
-        }
-        .descriptionResult{
-         overflow: auto;
-         max-height: 390px;
-        }
-      }
-    }
+   
     .graph-image{
+        height: 127px;
        &:hover{
-         background: linear-gradient(
-           145.22deg,
-           rgba(240, 119, 96, 0.42) -11.83%,
-           rgba(113, 102, 248, 0.42) 114.34%
-               );
-           opacity: 1;
-           border-radius: 5px;
        .thumbnail{
          background: linear-gradient(
            145.22deg,
@@ -460,92 +496,151 @@
            cursor: pointer;
         }
         
-      }
-    .thumbnail{
+       }
+      .thumbnail{
          border: 1px solid #d9d9d9;
-         border-radius: 5px;
          background-color: rgb(185, 172, 243);
          width: 100%;
-         height: 170px;
+         height: 100%;
          display: flex;
          justify-content: center;
          align-items: center;
          opacity: .9;
          object-fit: cover;
+         
 
          &:hover{
            opacity: 1;
          }
-     } 
+       } 
     }
     .buttonView{
          display: none;
          justify-content: center;
          align-items: center;
-         height: 170px ;
+         height: 127px ;
          position: absolute ;
-         width:300px ;
+         width: 169px;
          z-index: 1 ;
          flex-direction: column;
-         background: linear-gradient(144.3deg, rgba(241, 142, 122, 0.86) -34.1%, rgba(113, 102, 248, 0.86) 156.19%);
+         background: rgba(27, 27, 27, 0.43);
          cursor: pointer;
-         border-radius: 5px;
          opacity: 1;
 
      .btn-edit  {
           border: none;
-          background-color: $color-main;
-          border-radius: 5px;
+          background-color:  $color-white;
           text-decoration: none;
-          color: $color-white;
-          width: 100px;
-          height: 33px;
+          color: #585858;
+          width: 72px;
+          height: 23px;
           display: flex;
           justify-content: center;
           align-items: center;
           margin-bottom: 10px;
            &:hover {
-             color: #7166f8;
-             background-color: $color-white;
+             color: $color-white;
+             background-color: #585858;
              transition: 0.2s;
              cursor: pointer;
         }
        }
      .btn-preview  {
          border: 1px solid $color-white;
-         background-color: rgba(255, 255, 255, 0);
-         border-radius: 5px;
+         background: rgba(27, 27, 27, 0.43);
          text-decoration: none;
          color: $color-white;
-         width: 100px;
-         height: 33px;
+         width: 72px;
+          height: 23px;
          display: flex;
          justify-content: center;
          align-items: center;
     
       &:hover {
-        color: #7166f8;
+        color: #585858;
         background-color: $color-white;
         transition: 0.2s;
         cursor: pointer;
       }
-     }      
+       }  
+     .hover_header{
+       display: flex;
+       justify-content: space-between !important;
+       width: 100%;
+       text-align: center;
+       align-items: center;
+       position: relative;
+       bottom: 21px;
+        .view_icon{
+          background-color: transparent;
+          padding: 0;
+          padding-left: 5px;
+          font-size: 14px;
+
+          span{
+            color: $color-white;
+            margin-right: 3px !important;
+
+              svg{
+                font-size: 14px !important;
+                path{
+                  fill: $color-white !important;
+                  stroke: none !important ;
+                }
+              }
+          }
+         
+        }
+        .sub-menus{
+          position: relative;
+          display: flex;
+          justify-content: flex-end;
+          text-align: center;
+          align-items: center;
+
+          &:hover{
+            cursor: pointer;
+          }
+        .ar-popover-content.-arrow {
+          margin-top: -8px;
+          left: -14px;
+          z-index: 9;
+          padding: 5px 0 5px 0;
+          width: 70px !important;
+          height: 100px !important;
+          box-shadow: 0px 0px 4px rgb(0 0 0 / 20%);
+          background: #EFEFEF;
+          border-radius: 0;
+
+          .child{
+              padding: 7px 0 7px 0 !important;
+              width: 100%;
+              margin: 0 !important;
+              text-align: center;
+              display: flex;
+              align-items: center;
+
+              span{
+                font-size: 12px;
+                margin-left: 12px ;
+                line-height: 0.8;
+              }
+            }
+          }
+          svg{
+            path{
+              fill: $color-white;
+            }
+          }
+        }  
+     }  
+    
     }
-    .graphListFooter{
-      justify-content: flex-start;
-     
-      .ghButton {
-       padding: 18px 17px 2px 0px !important;
-       }
-       .description{
-        margin-left: auto;
-        padding-right: 0 !important;
-      }
-    }
+
     .public_icon{
       line-height: 0;
-      width: 35px;
-      height: 35px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       display: flex;
       justify-content: center;
@@ -553,71 +648,67 @@
       background: #FFFFFF;
       box-shadow: 0px 4px 12px rgb(0 0 0 / 25%);
       position: relative;
-      top: -220px;
-      z-index: 2;
-      left: 275px;
+      top: -54px;
+      z-index: 1;
+      left: 154px;
       
        i{
-         color:$color-main;
-         font-size: 23px;
+         color:#1CC5DC;
+         font-size: 16px;
          margin: auto;
        }
      }
  }
 }
 
-//  ====No graph======
+.graph_template_card , .graph_shared_card,
+.graph_public_card
+  {
+    top: 96px;
+  }
 
-.empty{
-  display: flex !important;
-  justify-content: center !important;
-  position: relative;
-  top: 100px;
-}
-.graphsList.empty{
-  min-height: auto !important;
-  margin: 0 !important;
-}
-.no-graphs {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  .startGraph{
-      box-shadow: none !important;
-      margin-top: 50px !important;
-      width: auto !important;
-      height: auto !important;
+//user Card
+.usersCard{
+     position: relative;
+     top: 100px;
+     padding: 2% 2%;
+     display: grid;
+     grid-template-columns: auto;
+     top: 90px;
+
+  .users{
+    width: 169px;
+    height: 170px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 4px rgb(0 0 0 / 20%);
+    .friend_image_content{
+      height: 123px;
+      background: #FFFFFF;
+      width: 100%;
       display: flex;
       justify-content: center;
+      text-align: center;
       align-items: center;
-      flex-direction: column;
-     &:hover{
-       cursor: pointer;
-       box-shadow:none !important;
-     }
-     svg{
-      margin-bottom: 20px;
-    }
-     h3{
-      font-weight: normal;
-      font-size: 25px;
-      line-height: 29px;
-      color: $color-main;
-    }
-  }
-  .title {
-    background: linear-gradient(145.22deg, #F07760 -11.83%, #7166F8 114.34%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 54px;
-    line-height: 1.3;
-    position: relative;
-    top: 20px;
 
-    + .text {
-      margin: 0 0 1rem;
+      img{
+        height: 103px !important;
+        width: 103px !important;
+      }
+    }
+    .friend_buttons_content{
+      height: 47px;
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      display: flex;
+      a{
+        font-weight: bold;
+        font-size: 12px;
+        color: #585858;
+      }
     }
   }
 }
+

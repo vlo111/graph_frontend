@@ -4,45 +4,33 @@ import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
-import NoGraph from '../components/NoGraph';
-import GraphListItem from '../components/graphData/GraphListItem';
 import { getShareGraphListRequest } from '../store/actions/share';
-import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
-import ChartUtils from '../helpers/Utils';
 
 class Shared extends Component {
   static propTypes = {
     shareGraphsList: PropTypes.array.isRequired,
-    shareGraphsListStatus: PropTypes.string.isRequired,
     getShareGraphListRequest: PropTypes.func.isRequired,
-    shareGraphsListInfo: PropTypes.object.isRequired,
-    mode: PropTypes.string.isRequired,
   }
 
   componentDidMount() {
     const order = JSON.parse(localStorage.getItem('/shared')) || 'newest';
     const { page = 1, s } = queryString.parse(window.location.search);
-    const limit = ChartUtils.getGraphListItemsLimit();
-    this.props.getShareGraphListRequest(page, { s, filter: order, limit });
+    this.props.getShareGraphListRequest(page, { s, filter: order });
   }
 
   render() {
     const {
-      shareGraphsListStatus, shareGraphsList, shareGraphsListInfo: { totalPages }, mode,
+      shareGraphsList,
     } = this.props;
     return (
       <>
-        <div
-          className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!shareGraphsList.length ? 'empty' : ''}`}
-        >
-          {shareGraphsListStatus !== 'request' && _.isEmpty(shareGraphsList) ? (
-            <NoGraph />
-          ) : mode === 'list'
-            ? <GraphListItem graphs={shareGraphsList} headerTools="shared" />
-            : <GraphCardItem graphs={shareGraphsList} headerTools="shared" />}
+        <div className="homPageHeader">
+          <div><p>Shared with me</p></div>
         </div>
-        {shareGraphsList.length ? <Pagination totalPages={totalPages} /> : null}
+        <div className="graphsCard graph_shared_card">
+          <GraphCardItem graphs={shareGraphsList} headerTools="home" />
+        </div>
       </>
     );
   }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Button from '../form/Button';
+// import Button from '../form/Button';
 import EmbedModal from './EmbedModal';
 
 class EmbedButton extends Component {
   static propTypes = {
     graph: PropTypes.object.isRequired,
+    outOver: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -22,14 +23,17 @@ class EmbedButton extends Component {
 
   render() {
     const { showModal } = this.state;
-    const { graph } = this.props;
+    const { graph, outOver } = this.props;
     return (
       <>
-        <Button icon="fa-code" className="transparent footer-icon" onClick={() => this.toggleModal(true)} />
+        <div onClick={() => this.toggleModal(true)}>
+          Embed
+        </div>
         {showModal ? (
           <EmbedModal
             graph={graph}
             onClose={() => this.toggleModal(false)}
+            outOver={outOver}
           />
         ) : null}
 

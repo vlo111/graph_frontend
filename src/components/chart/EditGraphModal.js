@@ -28,7 +28,7 @@ import {
 import Chart from '../../Chart';
 
 const EditGraphModal = ({
-  toggleModal, graph, updateGraph,
+  toggleModal, graph, updateGraph, outOver,
 }) => {
   const { defaultImage } = graph.defaultImage;
   const dispatch = useDispatch();
@@ -149,13 +149,23 @@ const EditGraphModal = ({
       className="ghModal ghModalEdit"
       overlayClassName="ghModalOverlay"
       isOpen
-      onRequestClose={() => toggleModal(false)}
+      onRequestClose={() => {
+        if (outOver) {
+          outOver();
+        }
+        toggleModal(false);
+      }}
     >
       <Button
         color="transparent"
         className="close"
         icon={<CloseSvg />}
-        onClick={() => toggleModal(false)}
+        onClick={() => {
+          if (outOver) {
+            outOver();
+          }
+          toggleModal(false);
+        }}
       />
       <div className="form">
         <div>
@@ -231,6 +241,7 @@ const EditGraphModal = ({
 EditGraphModal.propTypes = {
   graph: PropTypes.any.isRequired,
   toggleModal: PropTypes.func.isRequired,
+  outOver: PropTypes.func.isRequired,
   updateGraph: PropTypes.func.isRequired,
 };
 
