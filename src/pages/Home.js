@@ -53,7 +53,7 @@ class Home extends Component {
               <NoGraph />
               <Button className="startGraph" role="button" onClick={this.startGraph}>
                 <PlusSvg />
-                <h3>Create a graph</h3>
+                <h3>Create a Graph</h3>
               </Button>
             </div>
           ) : mode === 'list'

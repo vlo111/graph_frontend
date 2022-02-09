@@ -61,11 +61,11 @@ class Header extends Component {
         <div className="start-graphs">
           <div className="buttonsWrapper">
             <Button className="btn-classic" onClick={this.startGraph}>
-              Create a graph
+              Create a Graph
             </Button>
 
             <Button className="btn-classic__alt" onClick={this.compareGraph}>
-              Compare graphs
+              Compare Graphs
             </Button>
 
           </div>

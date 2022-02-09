@@ -174,7 +174,7 @@ const EditGraphModal = ({
             onChangeText={(v) => handleChange('title', v)}
           />
           <label className="switchLabel">
-            <span className="switchPublic">Publish graph</span>
+            <span className="switchPublic">Publish Graph</span>
             <div>
               <Switch
                 checked={requestData.publicState}
@@ -191,7 +191,7 @@ const EditGraphModal = ({
             <span className="item2">{moment(graph.createdAt).format('YYYY.MM.DD')}</span>
           </div>
           <div className="infoGraph">
-            <label>Last Modfied</label>
+            <label>Last Modified</label>
             <span className="item3">{moment(graph.updatedAt).format('YYYY.MM.DD hh:mm')}</span>
           </div>
         </div>

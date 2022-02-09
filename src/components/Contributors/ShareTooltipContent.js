@@ -28,13 +28,15 @@ const ShareTooltipContent = React.memo(({
         </Link>
         <div className="info">
           <div className="username"><Link to={`/profile/${user.id}`} target="_blank">{`${user.firstName} ${user.lastName}`}</Link></div>
+          {role !== 'Owner' ? (
+            <div className="role">
+              Shared:
+              {objectId ? (<a className="tooltipLabel" onClick={() => findLabelInDom(objectId)}>{name}</a>) : (type)}
+            </div>
+          ) : ''}
           <div className="role">
-            Shared  -
-            {objectId ? (<a className="tooltipLabel" onClick={() => findLabelInDom(objectId)}>{name}</a>) : (type)}
-          </div>
-          <div className="role">
-            Role  -
-            {role}
+            Role:
+            {` ${role[0].toUpperCase()}${role.slice(1)}`}
           </div>
         </div>
 
