@@ -98,11 +98,11 @@ class AnalyticalPage extends Component {
             <AnalyseBarChart degreeDistribution={degreeDistribution} />
             <div className="localAnalyse">
               <div>
-                <strong>Number of nodes</strong>
+                <strong>Number of Nodes</strong>
                 <h3>{nodes.length}</h3>
-                <strong>Number of links</strong>
+                <strong>Number of Links</strong>
                 <h3>{links.length}</h3>
-                <strong>Global clustering coefficient</strong>
+                <strong>Global Clustering Coefficient</strong>
                 <h3>{clusterCoefficient}</h3>
               </div>
               <div>

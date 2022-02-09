@@ -597,7 +597,7 @@ export default (props) => {
                     </li>
                     <li>
                       •
-                      <span> Create a Folder</span>
+                      <span> Create Folder</span>
 
                       with selected nodes and links
                     </li>
@@ -1398,7 +1398,7 @@ export default (props) => {
                 <img src={Folder} className="help_img" alt="" />
               </div>
               <div>
-                <p>Create a Folder</p>
+                <p>Create Folder</p>
               </div>
               <div className="helpResultText">
                 <div className="help_text">

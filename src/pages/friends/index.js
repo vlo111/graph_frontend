@@ -23,7 +23,7 @@ const Friends = React.memo(() => {
   return (
     <Wrapper>
       <div className="friends-list">
-        <h3>{ `Found ${friends.length} ${friends.length > 1 ? 'People' : 'Person'}`}</h3>
+        <h3>{ `Friends (${friends.length})`}</h3>
         {friends && friends.length ? (
           friends.map((friendship) => {
             const { senderUser } = friendship;
@@ -51,7 +51,7 @@ const Friends = React.memo(() => {
               </article>
             );
           })
-        ) : 'No Person Found'}
+        ) : ''}
       </div>
     </Wrapper>
   );

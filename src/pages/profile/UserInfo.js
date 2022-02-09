@@ -104,7 +104,7 @@ const ProfileMain = React.memo(({
               </div>
               <div className="colm">
                 <div className="number text-size-50">{allGraphsCount?.totalShareGraphs}</div>
-                <div className="text">Share Graphs</div>
+                <div className="text">Shared Graphs</div>
               </div>
             </div>
             )}

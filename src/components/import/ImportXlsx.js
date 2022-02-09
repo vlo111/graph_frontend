@@ -98,10 +98,9 @@ class DataImportModal extends Component {
           <>
             <div className="ghFormField importFile">
               <div className="downloadTempletaAraks">
-                <span>If you don’t have any  templates You can </span>
                 <span>
                   Use the
-                  <Button><a href={templetaAraks} download="AraksTemplate.xlsx"> download </a></Button>
+                  <Button><a href={templetaAraks} download="AraksTemplate.xlsx"> Template </a></Button>
                   to import data
                 </span>
               </div>

@@ -218,7 +218,7 @@ class SaveGraphModal extends Component {
               <span>{moment(singleGraph.createdAt).format('YYYY.MM.DD')}</span>
             </div>
             <div className="infoGraph">
-              <label>Last Modfied</label>
+              <label>Last Modified</label>
               <span>{moment(singleGraph.updatedAt).format('YYYY.MM.DD hh:mm')}</span>
             </div>
           </div>

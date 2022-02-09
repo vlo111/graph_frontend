@@ -259,7 +259,7 @@ class ContextMenu extends Component {
               {['selectSquare'].includes(show) && !viewLocation ? (
                 <>
                   <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
-                    Create a Folder
+                    Create Folder
                   </Button>
                 </>
               ) : null}
