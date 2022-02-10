@@ -87,8 +87,11 @@ const GraphSettings = ({ singleGraph }) => {
       }
       Chart.undoManager.reset();
     }
-    ChartUtils.autoScale();
   }, [graphId, isMenuOpen]);
+
+  useEffect(() => {
+    ChartUtils.autoScale();
+  }, [graphId]);
 
   const startGraph = () => {
     window.location.href = '/graphs/create';
@@ -153,9 +156,9 @@ const GraphSettings = ({ singleGraph }) => {
       {isMenuOpen && (
         <div ref={ref} className="dropdown">
           <div className="graphname">
-          <span title={singleGraph.title} className="graphNames">
-            {singleGraph.title.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
-          </span>
+            <span title={singleGraph.title} className="graphNames">
+              {singleGraph.title.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
+            </span>
             <Button
               icon={<EditSvg />}
               className="EditGraph"
