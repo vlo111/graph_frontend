@@ -4132,8 +4132,7 @@ body .gh__menu {
 
       &.active {
         .ghButton {
-          background-color: $color-main2;
-          color: $color-white;
+          color: $color-main;
         }
       }
     }
@@ -10129,4 +10128,7 @@ details[open] summary:after {
   }
 }
 
-
+// safari outline
+#searchMenuNodes:focus, details > summary:focus {
+  outline: none;
+}
