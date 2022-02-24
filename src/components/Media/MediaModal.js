@@ -31,6 +31,7 @@ class MediaModal extends Component {
     singleGraph: PropTypes.object.isRequired,
     setActiveTab: PropTypes.func.isRequired,
     user: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   initTabs = memoizeOne(() => {
@@ -76,6 +77,7 @@ class MediaModal extends Component {
         this.setState({ loading: false });
       }
     }
+    this.props.history.push(`/graphs/update/${this.props.singleGraph.id}`);
   }
 
   closeModal = () => {
@@ -275,7 +277,7 @@ class MediaModal extends Component {
             <Button className="reSize" color="transparent" icon={fullWidth ? <CompressScreen /> : <FullScreen />} onClick={this.toggleFullWidth} />
             <Button color="transparent" className="close" icon={<CloseSvg />} onClick={this.closeModal} />
           </div>
-          <h2>Media gallery</h2>
+          <h2>Media Gallery</h2>
           <div className="mediaHeader">
             <div className="showCheck" onClick={this.toggleDropDown}>
               <div>Show</div>
@@ -287,17 +289,17 @@ class MediaModal extends Component {
               <Outside onClick={this.toggleDropDown} exclude=".showCheck">
                 <div className="filterMedia">
                   <Checkbox
-                    label="Node icon"
+                    label="Node Icon"
                     checked={getCheckedNodes}
                     onChange={() => this.filterHandleChange('icon', !getCheckedNodes)}
                   />
                   <Checkbox
-                    label="Documents of tabs"
+                    label="Documents of Tabs"
                     checked={getCheckedDocs}
                     onChange={() => this.filterHandleChange('docs', !getCheckedDocs)}
                   />
                   <Checkbox
-                    label="Images of tabs"
+                    label="Images of Tabs"
                     checked={getCheckedImages}
                     onChange={() => this.filterHandleChange('Image', !getCheckedImages)}
                   />

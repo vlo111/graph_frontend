@@ -288,7 +288,6 @@ class ToolBar extends Component {
     const footer = document.getElementById('graphs-data-info');
     const searchModal = document.getElementById('searchMenuNodes');
 
-
     let left;
 
     if (closedMenu) {
@@ -458,7 +457,7 @@ class ToolBar extends Component {
                     className={`${selected.includes('maps') ? 'selected' : ''}`}
                     onClick={() => this.handleClick('maps')}
                   >
-                    Use Map
+                    Use Google Map
                   </li>
                   <li
                     className={`${selected.includes('linkedIn') ? 'selected' : ''}`}

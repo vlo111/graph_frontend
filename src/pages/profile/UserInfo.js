@@ -104,7 +104,7 @@ const ProfileMain = React.memo(({
               </div>
               <div className="colm">
                 <div className="number text-size-50">{allGraphsCount?.totalShareGraphs}</div>
-                <div className="text">Share Graphs</div>
+                <div className="text">Shared Graphs</div>
               </div>
             </div>
             )}
@@ -117,7 +117,7 @@ const ProfileMain = React.memo(({
             <AddFriend user={profile} />
             )}
             <div className="edit_profile">
-              <div>User details</div>
+              <div>User Details</div>
               {currentUserId === profile.id && (
               <a className="accountedit user_prf_color1" href="/account">
                 Edit Profile
@@ -126,7 +126,7 @@ const ProfileMain = React.memo(({
             </div>
             {currentUserId === profile.id && (
             <div className="user_address_info email">
-              <h1>Email address</h1>
+              <h1>Email Address</h1>
               <p className="user_prf_color1">{profile.email}</p>
             </div>
             )}

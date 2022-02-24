@@ -914,6 +914,21 @@ class ChartUtils {
         customFields.push(f);
       }
     });
+    // Description
+    const description1 = d1.description;
+    const description2 = d2.description;
+    if (description1 && !description2) {
+      d2.description = description1;
+    } else if (!description1 && description2) {
+      d2.description = description2;
+    } else if (description1 && description2) {
+      if (description1 !== description2) {
+        d2.description = `${description1}\n<hr />\n${description2}`;
+      } else {
+        d2.description = description2;
+      }
+    }
+    // End description
 
     const data = { ...d1, ...d2, customFields };
     for (const i in data) {

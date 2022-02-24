@@ -13,6 +13,15 @@
       left: 15% !important;
     }
   }
+  #header-on-graph{
+    .container{
+      .GraphNames{
+        .dropdown{
+          left: 40%;
+       }
+      }
+    }
+  }
 
 }
 
@@ -43,6 +52,17 @@
     }
   }
 
+  #header-on-graph{
+    .container{
+      grid-template-columns: 17% 41% 16% 14% 12%;
+      .GraphNames{
+        .dropdown{
+          left: 49%;
+       }
+      }
+    }
+  }
+
 }
 
 @media screen and (max-width: 1600px) {
@@ -64,6 +84,19 @@
 
     &#fullWidth {
       left: 17% !important;
+    }
+  }
+  #header-on-graph{
+    .container{
+      grid-template-columns: 18% 45% 12% 13% 12%;
+      .GraphNames{
+        .dropdown{
+          left: 53%;
+       }
+      }
+      .user .signOut{
+        width: 50%;
+      }
     }
   }
 }
@@ -589,6 +622,9 @@
 .react-tabs{
 margin-top: -5px;
 }
+.homeWithUser .content .empty{
+  top: -10px;
+}
 
 
 }
@@ -603,6 +639,9 @@ margin-top: -5px;
   .LegendExplorer .connections, .nodes{
    
     max-height: 40% !important;
+  }
+  .homeWithUser .content .empty{
+    top: 60px;
   }
 }
 @media (max-height:850px) {
@@ -641,6 +680,9 @@ margin-top: -5px;
    
     max-height: 40% !important;
   }
+  .homeWithUser .content .empty{
+    top: 10px;
+  }
 }
 
 
@@ -676,6 +718,22 @@ margin-top: -5px;
       right: 88%;
      }
 
+    }
+  }
+  #header-on-graph{
+    .container{
+      grid-template-columns: 18% 49% 11% 12% 10%;
+      .GraphNames{
+        .dropdown{
+          left: 55%;
+       }
+      }
+      .user .signOut{
+        width: 63%;
+        #accountDropDown .dropdown{
+          left: 85%;
+        }
+      }
     }
   }
 }
