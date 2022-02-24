@@ -11,7 +11,7 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Chart from '../../Chart';
 import FileInput from '../form/FileInput';
-import { NODE_STATUS, NODE_TYPES } from '../../data/node';
+import { NODE_STATUS } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import ChartUtils from '../../helpers/ChartUtils';
@@ -63,7 +63,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
       link: link || '',
       icon: icon || '',
       status: status || 'approved',
-      nodeType: nodeType || 'circle',
+      nodeType: nodeType || 'square',
       type: _type,
       keywords: keywords || [],
       color: ChartUtils.nodeColorObj[_type] || '',
@@ -129,6 +129,12 @@ const AddNodeModal = ({ ariaHideApp }) => {
           }
           return n;
         });
+      }
+
+      if (nodeData.icon) {
+        nodeData.nodeType = 'infography';
+      } else {
+        nodeData.nodeType = 'square';
       }
 
       if (nodeData.location) {
@@ -214,6 +220,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
           <div className="node-type">
             <Select
               label="Node Type"
+              limit={50}
               isCreatable
               value={[
                 getTypes.find((t) => t.value === nodeData.type) || {
@@ -229,6 +236,7 @@ const AddNodeModal = ({ ariaHideApp }) => {
           <Input
             containerClassName="nodeName"
             label="Node Name"
+            limit={50}
             value={nodeData.name}
             error={errors.name}
             autoFocus
@@ -257,14 +265,6 @@ const AddNodeModal = ({ ariaHideApp }) => {
               />
               {!editPartial ? (
                 <>
-                  <Select
-                    label="Shape"
-                    containerClassName="nodeTypes"
-                    options={NODE_TYPES}
-                    value={NODE_TYPES.filter((t) => t.value === nodeData.nodeType)}
-                    error={errors.nodeType}
-                    onChange={(v) => handleChange('nodeType', v?.value || '')}
-                  />
                   <ColorPicker
                     label="Select Color"
                     containerClassName="colorPicker"

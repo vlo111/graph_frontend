@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Tooltip from 'rc-tooltip/es';
-// import { getId } from '../../store/selectors/account';
 import { graphUsersRequest } from '../../store/actions/shareGraphs';
 import { getGraphUsers } from '../../store/selectors/shareGraphs';
 import { getOnlineUsersRequest } from '../../store/actions/app';
@@ -12,7 +11,6 @@ import ShareTooltipContent from './ShareTooltipContent';
 import ShareTooltip from './ShareTooltip';
 import Button from '../form/Button';
 import { ONLINE } from '../../data/graph';
-import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 
 const TooltipContent = ({
   user, role, type, isOwner, objectId,
@@ -116,7 +114,7 @@ const ContributorsModal = React.memo(({ graphId, graphOwner }) => {
           ))}
 
       </ul>
-      <Button className="transparent" icon={<DownSvg />} onClick={() => shareTooltip(showShareTooltip)} />
+      <Button className="transparent" icon={value="fa-chevron-down"} onClick={() => shareTooltip(showShareTooltip)} />
       {showShareTooltip ? (
         <ShareTooltip graphId={graphId} graphOwner={graphOwner} isOwner="true" closeModal={() => setShowShareTooltip(false)} />
       )

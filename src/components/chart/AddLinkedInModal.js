@@ -125,7 +125,7 @@ class AddLinkedInModal extends Component {
               accept=".pdf"
             />
             <div className="import-btn">
-              <Button onClick={this.convert}>Import</Button>
+              <Button onClick={this.convert} className="btn-classic">Import</Button>
             </div>
           </div>
         </Modal>

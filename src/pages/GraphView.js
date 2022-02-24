@@ -148,7 +148,7 @@ class GraphView extends Component {
       }
     }
     return (
-      <Wrapper className="graphView" showFooter={false}>
+      <Wrapper className="graphView graphViewHeader" showFooter={false}>
         <div className="graphWrapper">
           <ReactChart />
         </div>
@@ -208,6 +208,14 @@ class GraphView extends Component {
                       </Link>
                     )}
                     <NodeDescription />
+                    {!(pathname === `/graphs/filter/${graphId}`)
+                    && (
+                    <Link to={pathname?.includes('filter') ? `/graphs/update/${graphId}` : '/'}>
+                      <Tooltip overlay="Back">
+                        <Button icon={<UndoSvg style={{ height: 30 }} />} className="transparent back" />
+                      </Tooltip>
+                    </Link>
+                    )}
                   </>
                 )}
                 <ToolBarHeader graph={singleGraph} />

@@ -103,8 +103,7 @@
   z-index: 2;
   margin-bottom: 55px !important;
   display: flex;
-  border: 2px solid #B3ADF5 !important;
-  border-radius: 10px;
+  border: 1px solid #CFCFCF;
   height: 40px;
 
     .mediaSearch {
@@ -143,7 +142,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border-right: 2px solid #B3ADF5 !important;
+        border-right: 1px solid #CFCFCF !important;
         color: $color-passive;
         flex: 1 1;
 

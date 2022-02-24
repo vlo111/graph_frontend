@@ -22,8 +22,7 @@ const Friends = React.memo(() => {
 
   return (
     <Wrapper>
-      <div className="friends-list">
-        <h3>{ `Found ${friends.length} ${friends.length > 1 ? 'People' : 'Person'}`}</h3>
+      <>
         {friends && friends.length ? (
           friends.map((friendship) => {
             const { senderUser } = friendship;
@@ -31,28 +30,36 @@ const Friends = React.memo(() => {
             const friend = !userIsSender ? senderUser : friendship.receiverUser;
 
             return (
-              <article key={friend.id} className="searchData__graph">
-                <div className="searchData__graphInfo">
-                  <img
-                    className="avatar"
-                    src={friend.avatar}
-                    alt={friend.firstName}
-                  />
-                  <div className="searchData__graphInfo-details">
-                    <Link to={`/profile/${friend.id}`}>
-                      {`${friend.firstName} ${friend.lastName}`}
-                    </Link>
-                    <span className="description">
-                      {friend.email}
-                    </span>
+              <>
+                <div className="homPageHeader">
+                  <div><p>Friends</p></div>
+                </div>
+                <div key={friend.id} className="usersCard">
+                  <div className="users">
+                    <div className="friend_image_content">
+                      <img
+                        className="avatar"
+                        src={friend.avatar}
+                        alt={friend.firstName}
+                      />
+                    </div>
+                    <div className="friend_buttons_content">
+                      <Link to={`/profile/${friend.id}`}>
+                        {`${friend.firstName} ${friend.lastName}`}
+                      </Link>
+                      <AddButton user={friend} />
+                    </div>
                   </div>
                 </div>
-                <AddButton user={friend} />
-              </article>
+              </>
             );
           })
-        ) : 'No Person Found'}
-      </div>
+        ) : (
+          <div className="homPageHeader">
+            <div><p>Friends</p></div>
+          </div>
+        )}
+      </>
     </Wrapper>
   );
 });

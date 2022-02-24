@@ -2,17 +2,18 @@ import React, {
   useState, useEffect, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import EditGraphModal from '../chart/EditGraphModal';
-import { ReactComponent as EditSvg } from '../../assets/images/icons/edit.svg';
+import { ReactComponent as PlusSvg } from '../../assets/images/icons/plusGraph.svg';
 import Button from '../form/Button';
-import Input from '../form/Input';
+import ShareModal from '../ShareModal';
 import SaveAsTampletModal from '../chart/SaveasTampletModal';
 import Api from '../../Api';
 import ChartUtils from '../../helpers/ChartUtils';
 import { setActiveButton, setLoading } from '../../store/actions/app';
 import Chart from '../../Chart';
+import Icon from '../form/Icon';
 
 const GraphSettings = ({ singleGraph }) => {
   const [openEditGraphModal, setOpenEditGraphModal] = useState(false);
@@ -21,7 +22,9 @@ const GraphSettings = ({ singleGraph }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isTemplate = singleGraph.status === 'template';
   const graphId = singleGraph.id;
-  const [search, setSearch] = useState('');
+  const [openShareModal, setOpenShareModal] = useState(false);
+
+  const [search] = useState('');
   const [graphList, setGraphList] = useState([]);
   const [requestData, setRequestData] = useState({
     title: singleGraph.title,
@@ -54,37 +57,9 @@ const GraphSettings = ({ singleGraph }) => {
     });
   }, [singleGraph]);
 
-  const startGraph = () => {
-    window.location.href = '/graphs/create';
-  };
-
-  const handleSearch = async (value) => {
-    setGraphList([]);
-    setSearch(value);
-    if (!value) {
-      return;
-    }
-    const result = await Api.getGraphsList(1, {
-      onlyTitle: true,
-      s: search,
-      limit: search === '' ? 3 : undefined,
-      graphName: 'true',
-      graphId,
-    });
-    setGraphList(result?.data?.graphs || []);
-  };
-
   useEffect(async () => {
     if (isMenuOpen) {
       setGraphList([]);
-      const result = await Api.getGraphsList(1, {
-        onlyTitle: true,
-        s: search,
-        limit: search === '' ? 3 : undefined,
-        graphName: 'true',
-        graphId,
-      });
-      setGraphList(result?.data?.graphs || []);
       try {
         const result = await Api.getGraphsList(1, {
           onlyTitle: true,
@@ -99,8 +74,12 @@ const GraphSettings = ({ singleGraph }) => {
       }
       Chart.undoManager.reset();
     }
+    ChartUtils.autoScale();
   }, [graphId, isMenuOpen]);
 
+  const startGraph = () => {
+    window.location.href = '/graphs/create';
+  };
   const saveGraph = async (status, forceCreate) => {
     const labels = Chart.getLabels();
     const svg = ChartUtils.getChartSvg();
@@ -140,81 +119,61 @@ const GraphSettings = ({ singleGraph }) => {
       [path]: value,
     }));
   };
+  const handleOnClick = () => setIsMenuOpen(true);
 
   return (
     <div className="GraphNames">
       <button
         className="dropdown-btn"
         type="button"
-        onClick={() => setIsMenuOpen(true)}
+        onClick={handleOnClick}
       >
         <div className="graphNname">
           <span title={singleGraph.title} className="graphNames">
-            {singleGraph.title?.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
+            {/* {singleGraph.title?.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title} */}
+            <span>Document</span>
           </span>
           <span className="carret2">
-            <i className="fa fa-sort-down" />
+            <Icon value="fa-chevron-down" className="down" />
+
           </span>
         </div>
       </button>
       {isMenuOpen && (
         <div ref={ref} className="dropdown">
-          <div className="graphname">
-            <span title={singleGraph.title} className="graphNames">
-              {singleGraph.title.length > 11 ? `${singleGraph.title.substring(0, 11)}...` : singleGraph.title}
-            </span>
-            <Button
-              icon={<EditSvg />}
-              className="EditGraph"
-              onClick={() => setOpenEditGraphModal(true)}
-            />
-          </div>
-          <div>
-            <Input
-              className="graphSearchName"
-              placeholder="Search"
-              icon="fa-search"
-              value={search}
-              onChange={(e) => handleSearch(e.target.value)}
-              autoComplete="off"
-            />
-          </div>
-          <div className="graphNameList">
-            {graphList && graphList.map((graph) => (
-              <Link
-                to={`/graphs/update/${graph.id}`}
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  document.querySelector('#autoPlay').style.right = '15px';
-                  document.querySelector('.graphControlPanel').style.right = '15px';
-                }}
-              >
-                <div title={graph.title}>
-                  {graph.title.length > 11 ? `${graph.title.substring(0, 11)}...` : graph.title}
-                </div>
-              </Link>
-            ))}
-          </div>
           <Button
-            className="btn-classic"
+            className="graphSetingsName"
             onClick={startGraph}
-            style={{ fontSize: 18 }}
+            icon={<PlusSvg />}
           >
-            New Graph
+            New
+          </Button>
+          <Button
+            className="graphSetingsName"
+            onClick={() => setOpenEditGraphModal(true)}
+          >
+            {' '}
+            Edit
+          </Button>
+
+          <Button
+            className="graphSetingsName"
+            onClick={() => setOpenShareModal(true)}
+          >
+            Share
           </Button>
 
           {isTemplate ? (
-            <>
-              <Button
-                className="accent alt"
-                onClick={() => saveGraph('active', true)}
-              >
-                Save as Graph
-              </Button>
-            </>
+
+            <Button
+              className="btn-classic"
+              onClick={() => saveGraph('active', true)}
+            >
+              Save as Graph
+            </Button>
           ) : (
             <Button
-              className="btn-delete"
+              className="graphSetingsName"
               onClick={() => setOpenSaveAsTempletModal(true)}
             >
               Save as Template
@@ -222,6 +181,16 @@ const GraphSettings = ({ singleGraph }) => {
           )}
 
         </div>
+      )}
+      {openShareModal && (
+      <ShareModal
+        closeModal={() => {
+          setOpenShareModal(false);
+        }}
+        graph={graph}
+        setButton
+        graph={singleGraph}
+      />
       )}
       {openEditGraphModal && (
         <EditGraphModal

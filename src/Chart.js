@@ -718,8 +718,8 @@ class Chart {
       this.simulation = this.simulation
         .force('center', d3.forceCenter(width / 2, height / 2))
         .force('charge', d3.forceManyBody()
-        .strength(-2000)
-        .distanceMin(1).distanceMax(2000))
+          .strength(-2000)
+          .distanceMin(1).distanceMax(2000))
         .force('y', d3.forceY(0.5))
         .force('x', d3.forceX(0.5));
     }
@@ -746,7 +746,7 @@ class Chart {
 
     this.setAreaBoardZoom(transform);
     if (this.nodesPath) return;
-    this.renderNodeText(transform.k);
+    // this.renderNodeText(transform.k);
     this.renderIcons(transform.k);
     this.renderNodeStatusText(transform.k);
     this.renderNodeMatchText(transform.k);
@@ -1704,7 +1704,7 @@ class Chart {
         .join('g')
         .attr('class', (d) => {
           const [lx, ly, inFolder] = ChartUtils.getNodePositionInFolder(d);
-          return `node ${d.nodeType || 'circle'} ${d.new ? 'emphasisIcon' : ''} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
+          return `node ${d.nodeType || 'square'} ${d.new ? 'emphasisIcon' : ''} ${d.icon ? 'withIcon' : ''} ${inFolder ? 'hideInFolder' : ''} ${d.fake ? 'fakeNode' : ''} ${d.hidden === -1 ? 'disabled' : ''} ${d.deleted ? 'deleted' : ''}`;
         })
         .attr('data-i', (d) => d.index)
         .call(this.drag(this.simulation))
@@ -1715,39 +1715,10 @@ class Chart {
 
       this.nodesWrapper.selectAll('.node > *').remove();
 
-      this.nodesWrapper.selectAll('.node:not(.hexagon):not(.square):not(.triangle):not(.infography)')
-        .append('circle')
-        .attr('r', (d) => this.radiusList[d.index]);
-
-      this.nodesWrapper.selectAll('.square')
+      this.nodesWrapper.selectAll('.node:not(.infography)')
         .append('rect')
-        .attr('width', (d) => (this.radiusList[d.index] + (+d.manually_size || 1)) * 2)
-        .attr('height', (d) => (this.radiusList[d.index] + (+d.manually_size || 1)) * 2)
-        .attr('x', (d) => (this.radiusList[d.index] + (+d.manually_size || 1)) * -1)
-        .attr('y', (d) => (this.radiusList[d.index] + (+d.manually_size || 1)) * -1);
-
-      this.nodesWrapper.selectAll('.triangle')
-        .append('path')
-        .attr('d', (d) => {
-          const s = (this.radiusList[d.index] + (+d.manually_size || 1)) * 2.5;
-          return `M 0,${s * 0.8} L ${s / 2},0 L ${s},${s * 0.8} z`;
-        })
-        .attr('transform', (d) => {
-          const r = (this.radiusList[d.index] + (+d.manually_size || 1)) * -1 - 2;
-          return `translate(${r * 1.2}, ${r})`;
-        });
-
-      this.nodesWrapper.selectAll('.hexagon')
-        .append('polygon')
-        .attr('points', (d) => {
-          const s = this.radiusList[d.index] + (+d.manually_size || 1);
-          // eslint-disable-next-line max-len
-          return `${2.304 * s},${1.152 * s} ${1.728 * s},${2.1504 * s} ${0.576 * s},${2.1504 * s} ${0},${1.152 * s} ${0.576 * s},${0.1536 * s} ${1.728 * s},${0.1536 * s}`;
-        })
-        .attr('transform', (d) => {
-          const r = (this.radiusList[d.index] + (+d.manually_size || 1)) * -1.13;
-          return `translate(${r}, ${r})`;
-        });
+        .attr('rx', 5)
+        .attr('ry', 5);
 
       const infography = this.nodesWrapper.selectAll('.infography');
 
@@ -1798,7 +1769,7 @@ class Chart {
       }
 
       this.renderIcons();
-      this.renderLinkText();
+      this.renderLinkText(this.data.links);
       this.renderLinkStatusText();
       this.renderNodeText();
       this.renderNodeStatusText();
@@ -1926,9 +1897,9 @@ class Chart {
     let selectSquare;
 
     const showSelectedNodes = () => {
-      this.nodesWrapper.selectAll('.node :not(text) :not(.highlight)')
+      this.nodesWrapper.selectAll('.node :not(text)')
         .attr('filter', (n) => (this.squareData.selectedNodes.includes(n.id) ? 'url(#selectedNodeFilter)' : null));
-      this.nodesWrapper.selectAll('.node :not(text) :not(.highlight)')
+      this.nodesWrapper.selectAll('.node :not(text)')
         .attr('class', (n) => (this.squareData.selectedNodes.includes(n.id) ? 'selectMultyNodes' : null));
     };
 
@@ -2241,8 +2212,9 @@ class Chart {
     this.link.attr('d', (d) => {
       let arc = 0;
       let arcDirection = 0;
-      const [targetX, targetY] = ChartUtils.getNodePositionInFolder(d.target);
-      const [sourceX, sourceY] = ChartUtils.getNodePositionInFolder(d.source);
+      const { source, target } = d;
+      const [targetX, targetY] = ChartUtils.getNodePositionInFolder(target);
+      const [sourceX, sourceY] = ChartUtils.getNodePositionInFolder(source);
 
       if (d.curve) {
         return `M${sourceX},${sourceY} C${d.sx || 0},${d.sy || 0} ${`${d.tx || 0},${d.ty || 0} `}${targetX},${targetY}`;
@@ -2255,7 +2227,17 @@ class Chart {
         arcDirection = d.same.arcDirection;
       }
 
-      return `M${sourceX},${sourceY}A${arc},${arc} 0 0,${arcDirection} ${targetX},${targetY}`;
+      const [centerNodeSource, centerNodeTarget] = this.nodeCenter(source, target);
+
+      const [centerX, centerY] = ChartUtils.linkCenter(sourceX, targetX, centerNodeSource, centerNodeTarget);
+
+      const [sourceOffsetX, sourceOffsetY] = ChartUtils.nodeRadianseCoordinate(source.index, centerX, centerY);
+
+      const [targetOffsetX, targetOffsetY] = ChartUtils.nodeRadianseCoordinate(target.index, centerX, centerY);
+
+      return `M${sourceOffsetX},${sourceOffsetY}
+      A${arc},${arc} 0 0,${arcDirection} 
+      ${targetOffsetX},${targetOffsetY}`;
     });
     this.node
       .attr('transform', (d) => {
@@ -2277,18 +2259,7 @@ class Chart {
       .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
     this.directions
-      .attr('dx', (d) => {
-        let i = this.radiusList[d.target.index] - d.value;
-        if (d.target.nodeType === 'triangle') {
-          i += 5;
-        } else if (d.target.nodeType === 'hexagon') {
-          i += 5;
-        }
-        if (!d.target.icon) {
-          i += 4;
-        }
-        return i * -1;
-      });
+      .attr('dx', 0);
 
     this._dataNodes = null;
     this._dataLinks = null;
@@ -2306,11 +2277,6 @@ class Chart {
       .attr('dy', (d) => d.value * 1.8 + 1.55)
       .attr('dx', (d) => {
         let i = this.radiusList[d.target.index] - d.value;
-        if (d.target.nodeType === 'triangle') {
-          i += 5;
-        } else if (d.target.nodeType === 'hexagon') {
-          i += 5;
-        }
         if (!d.target.icon) {
           i += 4;
         }
@@ -2356,37 +2322,22 @@ class Chart {
       .append('image')
       .attr('preserveAspectRatio', (d) => (d.nodeType === 'infography' ? 'xMidYMid meet' : 'xMidYMid slice'))
       .attr('height', (d) => {
-        let i = 2;
-        if (d.nodeType === 'hexagon') {
-          i = 2.3;
-        } else if (d.nodeType === 'triangle') {
-          i = 3.1;
-        } else if (d.nodeType === 'infography') {
+        const i = 2;
+        if (d.nodeType === 'infography') {
           return 384;
         }
         return (this.radiusList[d.index] + (+d.manually_size || 1)) * i;
       })
       .attr('width', (d) => {
-        let i = 2;
-        if (d.nodeType === 'hexagon') {
-          i = 2.3;
-        } else if (d.nodeType === 'triangle') {
-          i = 3.1;
-        } else if (d.nodeType === 'infography') {
+        const i = 2;
+        if (d.nodeType === 'infography') {
           return 512;
         }
         return (this.radiusList[d.index] + (+d.manually_size || 1)) * i;
       })
-      .attr('transform', (d) => {
-        const r = (this.radiusList[d.index] + (+d.manually_size || 1)) * -1;
-        if (d.nodeType === 'triangle') {
-          return `translate(${r / 3.1}, 0)`;
-        }
-        return undefined;
-      })
       .attr('xlink:href', (d) => ChartUtils.normalizeIcon(d.icon, d.nodeType === 'infography'));
 
-    this.nodesWrapper.selectAll('.node > :not(text):not(defs):not(.highlight)')
+    this.nodesWrapper.selectAll('.node > :not(text):not(defs)')
       .style('fill', (d) => {
         if (d.icon) {
           if (scale <= 0.25 && d.nodeType !== 'infography') {
@@ -2409,7 +2360,8 @@ class Chart {
     return defs;
   }
 
-  static renderNodeText(scale) {
+  static renderNodeText(param) {
+    let scale = param;
     if (!scale && !this.wrapper.empty()) {
       // eslint-disable-next-line no-param-reassign
       scale = +this.wrapper.attr('data-scale') || 1;
@@ -2417,43 +2369,41 @@ class Chart {
 
     this.nodesWrapper.selectAll('.node text').remove();
 
-    this.nodesWrapper.selectAll('.node')
-      .filter((d) => {
-        if (scale >= 0.8) {
-          return true;
+    const text = this.nodesWrapper.selectAll('.node')
+      .append('text');
+
+    text.data().forEach((d) => {
+      const subNames = d.name.match(/.{1,30}/g);
+
+      const nodeText = this.nodesWrapper.selectAll('.node').filter((t) => t.index === d.index)
+        .append('text')
+        .attr('y', (d) => {
+          if (d.nodeType === 'infography') {
+            const { height = 384, min = [-384, -384] } = d.d ? ChartInfography.getPolygonSize(d.d) : {};
+            const cy = height / 2 + 20;
+            return cy;
+          }
+        });
+
+      subNames.forEach((s) => {
+        nodeText.append('tspan')
+          .style('fill', '#585858')
+          .attr('x', 0)
+          .attr('dy', '1.2em')
+          .text(s);
+
+        if (!param) {
+          const { width, height } = nodeText.node().getBoundingClientRect();
+
+          this.nodesWrapper.selectAll('.node:not(.infography) > rect')
+            .filter((f) => f.index === d.index)
+            .attr('x', -(width / scale) / 2 - 10)
+            .attr('y', 2)
+            .attr('width', (width / scale) + 20)
+            .attr('height', (height / scale) + 20);
         }
-        if (this.radiusList[d.index] < 11) {
-          return false;
-        }
-        return true;
-      })
-      .append('text')
-      .attr('y', (d) => {
-        let i = 11;
-        if (!d.icon) {
-          i += 4;
-        }
-        if (d.nodeType === 'hexagon') {
-          i += this.radiusList[d.index] / 5;
-        } else if (d.nodeType === 'triangle') {
-          i += this.radiusList[d.index] / 5;
-        } else if (d.nodeType === 'infography') {
-          const { height = 384, min = [-384, -384] } = d.d ? ChartInfography.getPolygonSize(d.d) : {};
-          const cy = height / 2 + 20;
-          return cy;
-        }
-        return this.radiusList[d.index] + i + (+d.manually_size || 1);
-      })
-      .attr('font-size', (d) => {
-        const s = d.nodeType === 'infography' ? _.get(d, 'scale[0]', 1) : 1;
-        return (13.5 + ((+Math.sqrt(this.radiusList[d.index]) || 1) + this.radiusList[d.index] - (d.icon ? 4.5 : 0)) / 4) * (1 / s);
-      })
-      .attr('fill', (d) =>
-        //   if (d.icon) {
-        //   return `url(#i${d.index})`;
-        // }
-        ChartUtils.nodeColor(d))
-      .text((d) => Utils.substr(d.name, 30));
+      });
+    });
   }
 
   static renderNodeStatusText(scale) {
@@ -2534,7 +2484,7 @@ class Chart {
       .data(linksData.filter((d) => d.hidden !== 1))
       .join('text')
       .attr('text-anchor', 'middle')
-      .attr('fill', ChartUtils.linkColor)
+      .attr('fill', '#585858')
       .attr('dy', (d) => (ChartUtils.linkTextLeft(d) ? 17 + (d.value || 1) / 2 : (5 + (d.value || 1) / 2) * -1))
       .attr('transform', (d) => (ChartUtils.linkTextLeft(d) ? 'rotate(180)' : undefined));
 
@@ -2638,7 +2588,7 @@ class Chart {
         this.node.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
         this.link.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
         this.directions.attr('class', ChartUtils.setClass(() => ({ hidden: false })));
-        this.renderLinkText();
+        this.renderLinkText(this.data.links);
         this.renderLinkStatusText();
       }
     });
@@ -2825,7 +2775,7 @@ class Chart {
         name: d.name || '',
         type: d.type || '',
         status: d.status || 'approved',
-        nodeType: d.nodeType || 'circle',
+        nodeType: d.nodeType || 'square',
         description: d.description || '',
         icon: d.icon || '',
         link: d.link || '',
@@ -3317,17 +3267,29 @@ class Chart {
 
     const node = nodes.select(`[data-i="${index}"]`);
 
-    if (item === 'open') {
-      nodes.selectAll('.node > .highlight').remove();
+    const rect = node.select('rect');
 
-      if (node.data()?.length) {
-        node.insert('circle', ':first-child')
-          .classed('highlight', true)
-          .attr('r', Chart.radiusList[index] + 8);
-      }
+    if (item === 'open') {
+      nodes.selectAll('rect').style('stroke-width', '1px');
+
+      rect.style('stroke-width', '3px');
     } else {
-      node.select('.highlight').remove();
+      rect.style('stroke-width', '1px');
     }
+  }
+
+  static nodeCenter(source, target) {
+    const nodeSource = this.node.filter((n) => n.index === source.index);
+    const nodeTarget = this.node.filter((n) => n.index === target.index);
+
+    const heightSource = nodeSource.node().getBBox().height;
+
+    const heightTarget = nodeTarget.node().getBBox().height;
+
+    const centerNodeSource = source.y + (heightSource / 2);
+    const centerNodeTarget = target.y + (heightTarget / 2);
+
+    return [centerNodeSource, centerNodeTarget];
   }
 }
 

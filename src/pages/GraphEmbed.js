@@ -25,7 +25,7 @@ class GraphEmbed extends Component {
     const { match: { params: { graphId, token } } } = this.props;
     this.props.setActiveButton('view');
     const { payload } = await this.props.getSingleEmbedGraphRequest(graphId, token);
-    ChartUtils.autoScale('graph');
+    ChartUtils.autoScale();
     if (payload?.status === 404) {
       this.props.history.push('/404');
     }

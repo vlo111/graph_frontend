@@ -6,12 +6,10 @@ import memoizeOne from 'memoize-one';
 import { setActiveButton } from '../store/actions/app';
 import { getSingleGraphRequest } from '../store/actions/graphs';
 import Utils from '../helpers/Utils';
-import ShareModal from './ShareModal';
 import ChartUtils from '../helpers/ChartUtils';
 import { KEY_CODES } from '../data/keyCodes';
 import AnalyseModal from './Analysis/AnalyseModal';
 import Outside from './Outside';
-import HelpsModal from './Helps';
 import Undo from './Undo';
 import SearchModal from './search/SearchModal';
 import { ReactComponent as Ellipse } from '../assets/images/Ellipse.svg';
@@ -24,7 +22,6 @@ class ToolBar extends Component {
     getSingleGraphRequest: PropTypes.func.isRequired,
     singleGraph: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
-    activeButton: PropTypes.string.isRequired,
     history: PropTypes.object.isRequired,
   };
 
@@ -41,7 +38,6 @@ class ToolBar extends Component {
       createNewPopup: false,
       showAddNode: false,
       showAddLabel: false,
-      openHelpsModal: false,
 
     };
   }
@@ -191,31 +187,6 @@ class ToolBar extends Component {
       });
     }
   }
-  // Help click open
-
-  openHelpsModal = () => {
-    const { openHelpsModal } = this.state;
-    this.setState({
-      openHelpsModal: !openHelpsModal,
-    });
-
-    setTimeout(() => {
-      this.collapse();
-    }, 20);
-  }
-
-  closeModal = () => {
-    this.props.setActiveButton('create');
-  };
-
-  closeHelpModal = () => {
-    this.setState({
-      openHelpsModal: false,
-    });
-    setTimeout(() => {
-      this.collapse();
-    }, 20);
-  }
 
   toggleShowModal = () => {
     const { showMenu } = this.state;
@@ -283,11 +254,8 @@ class ToolBar extends Component {
   collapse = () => {
     const closedMenu = document.getElementsByClassName('closed_menu')[0];
     const menu = document.getElementsByClassName('menu')[0];
-    // const tab = document.getElementsByClassName('react-tabs')[0];
     const undo = document.getElementById('undoWrapper');
     const footer = document.getElementById('graphs-data-info');
-    const searchModal = document.getElementById('searchMenuNodes');
-
 
     let left;
 
@@ -296,28 +264,17 @@ class ToolBar extends Component {
     } else {
       left = menu.offsetWidth;
     }
-
-    // if (tab) {
-    //   left += tab.offsetWidth + 15;
-    // }
     undo.style.left = `${left + 13}px`;
     if (undo) {
       left += undo.offsetWidth;
     }
     footer.style.left = `${left}px`;
-    if (searchModal) {
-      searchModal.style.left = `${left - 170}px`;
-    }
   }
 
   render() {
-    const {
-      activeButton,
-      singleGraph,
-    } = this.props;
 
     const {
-      showMenu, overMenu, createNewPopup, showAddNode, showAddLabel, selected, openHelpsModal,
+      showMenu, overMenu, createNewPopup, showAddNode, showAddLabel, selected,
     } = this.state;
 
     return (
@@ -348,15 +305,6 @@ class ToolBar extends Component {
             >
               <i className="fa fa-picture-o"> </i>
               <div className="sidebar_text"> Media </div>
-            </li>
-            <li
-              onClick={() => this.handleClick('Share')}
-              onMouseOver={() => this.handleOver('share')}
-              onMouseLeave={this.handleLeave}
-              className={`${overMenu === 'share' ? 'collapse_over' : ''} collapse`}
-            >
-              <i className="fa fa-share-alt"> </i>
-              <div className="sidebar_text"> Share </div>
             </li>
             <li
               onClick={() => this.handleClick('data')}
@@ -412,15 +360,6 @@ class ToolBar extends Component {
               <i className="fa fa-search-plus" />
               <div className="sidebar_text"> Find Node </div>
             </li>
-            <li
-              onClick={() => this.openHelpsModal()}
-              onMouseOver={() => this.handleOver('help')}
-              onMouseLeave={this.handleLeave}
-              className={`${overMenu === 'help' ? 'collapse_over' : ''} collapse help_menu `}
-            >
-              <i className="fa fa-question-circle" />
-              <div className="sidebar_text"> Help </div>
-            </li>
 
           </ul>
           {createNewPopup ? (
@@ -458,7 +397,7 @@ class ToolBar extends Component {
                     className={`${selected.includes('maps') ? 'selected' : ''}`}
                     onClick={() => this.handleClick('maps')}
                   >
-                    Use Map
+                    Use Google Map
                   </li>
                   <li
                     className={`${selected.includes('linkedIn') ? 'selected' : ''}`}
@@ -507,12 +446,6 @@ class ToolBar extends Component {
               )}
             </Outside>
           ) : <></>}
-          {activeButton === 'Share' && (
-            <ShareModal closeModal={this.closeModal} graph={singleGraph} />
-          )}
-          {openHelpsModal && (
-            <HelpsModal closeModal={this.closeHelpModal} />
-          )}
           <AnalyseModal />
         </div>
         <Undo />

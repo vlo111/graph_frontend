@@ -4,10 +4,6 @@ import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import Button from './form/Button';
-import { ReactComponent as CardDesign } from '../assets/images/icons/cardDesign.svg';
-import { ReactComponent as ListDesign } from '../assets/images/icons/listDesign.svg';
-import { ReactComponent as Filter } from '../assets/images/icons/filterGraph.svg';
 import { getGraphsListRequest } from '../store/actions/graphs';
 import { getShareGraphListRequest } from '../store/actions/share';
 import GraphOrder from './graphData/GraphOrder';
@@ -25,17 +21,17 @@ class PageTabs extends Component {
     getShareGraphListRequest: PropTypes.func.isRequired,
   }
 
+  static defaultProps = {
+    handleRouteChange: undefined,
+    direction: 'vertical',
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       selected: 'tab_card',
       showFilterModal: false,
     };
-  }
-
-  static defaultProps = {
-    handleRouteChange: undefined,
-    direction: 'vertical',
   }
 
   setActiveTab = (tab) => {
@@ -96,25 +92,12 @@ class PageTabs extends Component {
     return (
       <div id="verticalTabs" className={`${direction} ${!isHome ? className : 'homeWithUser'}`} {...props}>
         <ul className={`tabsList ${selected}`}>
-          <li className="lastItem">
-            <div className="cart-item" onClick={() => this.onChange('tab_card')}>
-              <CardDesign />
-            </div>
-            <div className="list-item" onClick={() => this.onChange('list')}>
-              <ListDesign />
-            </div>
-            <div onClick={() => this.openFilter(!showFilterModal)} className="filter">
-              <Filter />
-            </div>
-          </li>
           {list.filter((t) => !t.hidden).map((t) => (
-            <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`}>
-              <Button onClick={() => this.setActiveTab(t)}>
-                { t.name === 'Public'
-                  ? <i className="fa fa-globe" />
-                  : null}
-                {t.name}
-              </Button>
+            <li key={t.name} className={`item ${t.to === location.pathname ? 'active' : ''}`} onClick={() => this.setActiveTab(t)}>
+              { t.name === 'Public'
+                ? <i className="fa fa-globe" />
+                : null}
+              {t.name}
             </li>
           ))}
         </ul>

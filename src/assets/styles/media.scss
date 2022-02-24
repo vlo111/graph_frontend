@@ -13,6 +13,22 @@
       left: 15% !important;
     }
   }
+  #header{
+    grid-template-columns: 10% auto 6% 16% 5%;
+  }
+  .homePage .content{
+    .homPageHeader{
+     padding-top: 3.1%;
+    }
+  }
+  #header{
+    grid-template-columns: 10% auto 6% 16% 5%;
+  }
+  .homePage .content{
+    .homPageHeader{
+     padding-top: 3.1%;
+    }
+  }
 
 }
 
@@ -31,18 +47,6 @@
     cursor: pointer;
     color: blue;
   }
-  #header {
-    grid-template-columns: 10% 20% auto 4% auto 4% auto;
-
-    .signOut {
-      right: 2%;
-    }
-
-    .right-elements {
-      right: 30px;
-    }
-  }
-
 }
 
 @media screen and (max-width: 1600px) {
@@ -66,6 +70,18 @@
       left: 17% !important;
     }
   }
+  #header-on-graph{
+    .container{
+      .user .signOut{
+        width: 50%;
+      }
+    }
+  }
+  .homePage .content{
+    .homPageHeader{
+     padding-top: 3.2%;
+    }
+  }
 }
 
 @media screen and (max-width: 1500px) {
@@ -74,7 +90,12 @@
       width: 450px !important;
     }
   }
-
+  #header{
+    grid-template-columns: 11% auto 6% 18% 5%;
+  }
+  #accountDropDown .dropdown{
+    right: 10%;
+  }
 }
 
 @media screen and (max-width: 1400px) {
@@ -97,24 +118,18 @@
       width: 82% !important;
     }
   }
-  #header {
-    .signOut {
-      right: 1%;
+  #header{
+    grid-template-columns: 11% auto 6% 20% 5% !important;
+  }
+  .homePage .content{
+    .homPageHeader{
+     padding-top: 4%;
     }
-
-    .right-elements {
-      right: -48px;
-    }
-
-    .ghButton {
-      padding: 12px 14px;
-    }
-
   }
 
 }
 
-@media screen and (max-width: 1200px){
+@media screen and (max-width: 1600px){
   .homeWithUser{
     .content{
       .graphsList .graphsItem{
@@ -127,7 +142,7 @@
   }
 }
   .searchNodes {
-    right: -11%;
+    left: 106px;
   }
   .ghModalMedia {
     .mediaHeader{
@@ -137,8 +152,19 @@
 
     }
   }
-}
+  #header{
+    grid-template-columns: 11% auto 6% 24% 5% !important;
 
+    .graphSearch input{
+      width: 270px;
+    }
+  }
+}
+@media screen and (max-width: 1400px){
+  #header-on-graph .container, #header-on-view-graph .container{
+    grid-template-columns: auto 40% auto auto auto auto auto;
+  }
+}
 @media screen and (max-width: 900px) {
   .ghModalSearch {
     width: 40% ;
@@ -151,24 +177,6 @@
     }
   }
 
-  #accountDropDown {
-    .accountInfo {
-      padding: 0;
-      .name {
-        display: none;
-      }
-    }
-
-    .dropdown {
-      position: absolute;
-      right: -25px;
-      top: 70px;
-      width: 200px;
-      left: auto;
-      padding: 0;
-      border-radius: 15px;
-    }
-  }
 
   .section2 .ghButton2, .section2 .ghSelect {
     position:initial;
@@ -460,8 +468,6 @@
   .friends-requests > div:first-child {
     padding-left: 15px;
   }
-
-
 }
 
 @media (min-width: 1400px) {
@@ -482,6 +488,14 @@
     margin: 80px auto;
     width:60%;
     height: 800px;
+  }
+  .homePage .content{
+     .homPageHeader{
+      padding-top: 2.6%;
+     }
+     .graphsCard{
+      top: 140px;
+      }
   }
 }
 
@@ -589,6 +603,9 @@
 .react-tabs{
 margin-top: -5px;
 }
+.homeWithUser .content .empty{
+  top: -10px;
+}
 
 
 }
@@ -603,6 +620,9 @@ margin-top: -5px;
   .LegendExplorer .connections, .nodes{
    
     max-height: 40% !important;
+  }
+  .homeWithUser .content .empty{
+    top: 60px;
   }
 }
 @media (max-height:850px) {
@@ -641,6 +661,9 @@ margin-top: -5px;
    
     max-height: 40% !important;
   }
+  .homeWithUser .content .empty{
+    top: 10px;
+  }
 }
 
 
@@ -662,9 +685,6 @@ margin-top: -5px;
       position: relative;
       top: -60px;
     }
-    .SaytLogo{
-      right: 88%;
-    }
     }
     .forgot_password {
     .forgot_img{
@@ -672,10 +692,13 @@ margin-top: -5px;
         height: 300px;
       }
      }
-    .SaytLogo {
-      right: 88%;
-     }
-
+    }
+  }
+  #header-on-graph{
+    .container{
+      .user .signOut{
+        width: 63%;
+      }
     }
   }
 }
@@ -692,10 +715,6 @@ margin-top: -5px;
       position: relative;
       top: -60px;
     }
-    .SaytLogo{
-      right:86%;
-    }
-
     }
     .forgot_password {
     .forgot_img{
@@ -703,10 +722,6 @@ margin-top: -5px;
         height: 280px;
       }
      }
-    .SaytLogo {
-      right: 86%;
-     }
-
     }
  }
 }
@@ -723,9 +738,6 @@ margin-top: -5px;
       position: relative;
       top: -60px;
     }
-    .SaytLogo{
-      right:83%;
-    }
      }
      .forgot_password {
     .forgot_img{
@@ -736,20 +748,7 @@ margin-top: -5px;
     .forgot_form{
       .SigninAuthForm{
         width: 400px;
-        .row{
-          .ghButton.alt{
-            width: 165px;
-          }
-        }
-        p{
-          left: 10px;
-        }
-      }
-      }
-    .SaytLogo {
-      right: 83%;
-    }
-
+      }  }
      }
      .authForm {
        margin-left: 25%;
@@ -762,33 +761,30 @@ margin-top: -5px;
        }
      }
   }
+  #header{
+    grid-template-columns: 10% auto 9% 30% 9% !important;
+
+    .graphSearch input{
+      width: 210px;
+    }
+  }
+  #accountDropDown .dropdown{
+    right: 18%;
+  }
 }
 @media (max-width: 860px) {
   .signPage{
     .signin_page{
     grid-template-columns: repeat(1,1fr);
-    .singIn_img
-     {
-      display: none;
-    }
+    padding: 160px 0px;
+
     .singIn_form{
       position: relative;
-      top: -190px;
       order:2;
       .ghInput input{
         height: 45px;
       }
-      .ghButton.alt{
-        width: 165px;
-        height: 40px;
-      }
     }
-    .SaytLogo{
-      position: inherit;
-      order:1;
-      justify-self: center;
-    }
-
     }
     .forgot_password {
     grid-template-rows: auto auto auto;
@@ -799,43 +795,45 @@ margin-top: -5px;
       }
      }
     .forgot_form{
-      order: 3;
       .SigninAuthForm{
         width: 380px;
+        top: 10px;
       }
      }
-    .SaytLogo {
-      position: inherit;
-      order:1;
-      justify-self: center;
-     }
-
     }
     .authForm {
       margin-left: 20%;
     }
  }
+ #header{
+  grid-template-columns: 10% auto 10% 32% 6% !important;
+  .graphSearch input{
+    width: 190px;
+  }
 }
-@media (max-width: 640px) {
+#accountDropDown .dropdown{
+  right: 16%;
+}
+}
+@media (max-width: 760px) {
   .signPage{
     .ghFormFieldPassword .icon{
       top:3px !important;
      }
     .signin_page{
     grid-template-columns: repeat(1,1fr);
-    .singIn_img{
-        display: none;
-    }
+    padding: 207px 0px;
+    position: relative;
+    top: -60px;
+
     .singIn_form{
       position: relative;
       order:2;
       min-width: 280px;
-      top: -220px;
       .ghInput input{
         height: 36px;
       }
       .ghButton.alt{
-        width: 146px;
         height: 36px;
         margin-top: 35px;
       }
@@ -845,13 +843,8 @@ margin-top: -5px;
     .forgot_img{
       position: relative;
       top: -100px;
-      img{
-        height: 140px;
-        width: 230px;
-      }
      }
     .forgot_form{
-      bottom: 180px;
       .SigninAuthForm{
         width: 240px;
         .ghFormField{
@@ -863,17 +856,8 @@ margin-top: -5px;
             font-size: 14px;
           }
         }
-        .row{
-          .ghButton.alt{
-            width: 146px;
-            height: 36px;
-            top: 40px;
-          }
-        }
-        p{
-          left: -15px;
-          font-size: 11px;
-          width: 270px;
+        h4{
+          font-size: 19px;
         }
       }
      }
@@ -886,4 +870,88 @@ margin-top: -5px;
       }
     }
  }
+ #header{
+  grid-template-columns: 15% auto 9% 37% 7% !important;
+  .graphSearch input{
+    width: 165px;
+  }
+ }
 }
+
+//  SignUP Media
+
+@media (min-width: 1920px) {
+  .SignUpAuthform {
+    top: 160px;
+  }
+    #header {
+      grid-template-columns: 10% auto 6% 14% 4%;
+    }
+    .SigninAuthForm {
+      padding: 0;
+      margin: 160px 0;
+      left: 0;
+    }
+    .switchSignInMode {
+      position: relative;
+      top: 0;
+    }
+}
+@media (max-width: 1024px) {
+  .signUp {
+    background-image: none !important;
+  }
+  .SignUpRight {
+    left: 25%;
+   
+
+    .SignUpAuthform {
+      position: relative;
+      top: 20px;
+      left: 0;
+      width: 360px;
+      .error{
+        font-size: 11px;
+        width: 200px;
+      }
+    }
+
+    .getstart {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    h1 {
+      position: relative;
+      font-size: 22px;
+      font-weight: 400;
+      top: 30px;
+    }
+
+    h4 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .logo {
+      position: inherit;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .SignUpRight {
+      .getstart {
+        font-size: 22px;
+        font-weight: 700;
+      }
+      h4 {
+        font-size: 27px;
+        font-weight: 700;
+      }
+
+     input{
+       width: 120px;
+     }
+    }
+  }
+}
+

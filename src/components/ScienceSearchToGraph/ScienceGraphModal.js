@@ -19,8 +19,6 @@ import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg'
 const {
   REACT_APP_ARXIV_URL,
   REACT_APP_CORE_URL,
-  REACT_APP_ARTICLE_URL,
-  REACT_APP_AUTHOR_URL,
 } = Api;
 
 class ScienceGraphModal extends Component {
@@ -330,9 +328,7 @@ class ScienceGraphModal extends Component {
   createNode = (nodes, name, url, type, contentData = false) => {
     const { currentUserId } = this.props;
     const updatedAt = moment().unix();
-    const icon = contentData.author
-      ? REACT_APP_ARTICLE_URL
-      : REACT_APP_AUTHOR_URL;
+
     const keywords = contentData.topics ? contentData.topics : [];
     const arxivHref = url != undefined
       ? `
@@ -366,7 +362,7 @@ class ScienceGraphModal extends Component {
       color: '',
       fx: -189.21749877929688 + Math.random() * 150,
       fy: -61.72186279296875 + Math.random() * 150,
-      icon,
+      icon: undefined,
       id: ChartUtils.uniqueId(nodes),
       keywords,
       labels: [],
@@ -471,8 +467,9 @@ class ScienceGraphModal extends Component {
     }
   };
 
-  handleCheckedButton = (param) => {
+  handleCheckedButton = (param, e) => {
     const { checkedList } = this.state;
+    e.preventDefault(false);
     if (checkedList.includes(param)) {
       this.setState({
         checkedList: checkedList.filter(
@@ -503,6 +500,7 @@ class ScienceGraphModal extends Component {
               } else {
                 items[index].style.backgroundColor = 'white';
               }
+              this.handleCheckedButton(index, ev);
             }}
             key={index}
           >

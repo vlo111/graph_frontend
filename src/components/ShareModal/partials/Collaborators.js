@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip/es';
 import { GRAPH_SHARE_TYPES } from '../../../data/graph';
 import Select from '../../form/Select';
-import { listGraphRequest, updateGraphRequest, deleteGraphRequest } from '../../../store/actions/shareGraphs';
+import {
+  listGraphRequest, updateGraphRequest, deleteGraphRequest,
+} from '../../../store/actions/shareGraphs';
 import { shareGraphs } from '../../../store/selectors/shareGraphs';
 import { getId } from '../../../store/selectors/account';
 import Button from '../../form/Button';
@@ -31,7 +33,7 @@ const Collaborators = ({ select, graph }) => {
 
   return shareGraphsList ? shareGraphsList.map(
     (item) => (item.userId !== userId ? (
-      <div className="share-modal__collaborators" key={item.user.email}>
+      <div className="share-modal__collaborators" key={item.user.email} >
         <div className="share-modal__search--selected">
           <img
             className="avatar circle share-modal__owner-logo"
