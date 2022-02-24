@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, Route } from 'react-router-dom';
 import Outside from '../Outside';
 import Icon from '../form/Icon';
-import Dropdown from '../../assets/images/whiteDownArrow.png';
-import Utils from '../../helpers/Utils';
+import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 
 class AccountDropDown extends Component {
   static propTypes = {
@@ -25,6 +24,12 @@ class AccountDropDown extends Component {
     };
   }
 
+  toggleDropDown = () => {
+    const { showDropDown } = this.state;
+
+    this.setState({ showDropDown: !showDropDown });
+  }
+
   componentDidUpdate() {
     const { showDropDown } = this.state;
 
@@ -35,6 +40,7 @@ class AccountDropDown extends Component {
         const settingModalElement = document.querySelector('#accountDropDown .dropdown');
 
         if (settingModalElement) {
+
           arrow.style.left = `${(settingModalElement.getBoundingClientRect().x
               + (settingModalElement.offsetWidth / 2)) + 20}px`;
         }
@@ -44,18 +50,12 @@ class AccountDropDown extends Component {
     }
   }
 
-  toggleDropDown = () => {
-    const { showDropDown } = this.state;
-
-    this.setState({ showDropDown: !showDropDown });
-  }
-
   render() {
     const { showDropDown } = this.state;
     const {
       mini, myAccount: {
         firstName, lastName, id, avatar,
-      },
+      }, match: { params: { graphId = '' } },
     } = this.props;
     const name = [firstName, lastName].map((n) => n).join(' ');
 
@@ -63,12 +63,12 @@ class AccountDropDown extends Component {
       <div id="accountDropDown" className={mini ? 'mini' : undefined}>
         <div className="accountInfo" onClick={this.toggleDropDown}>
           <img src={avatar} className="avatar" alt={name} />
-          <div className="accounEamail">{name}</div>
-          <img src={Dropdown} alt="" />
+          <DownSvg />
         </div>
 
         {showDropDown ? (
           <>
+            <div className="modal-arrow-top accountArrow" style={{ top: '67px' }} />
             <Outside onClick={this.toggleDropDown} exclude="#accountDropDown">
               <div className="dropdown">
                 <ul>
@@ -76,7 +76,7 @@ class AccountDropDown extends Component {
                     {mini ? (
                       <Icon value="fa-chevron-down" className="down" />
                     ) : (
-                      <span className="name">{Utils.substr(name, 12)}</span>
+                      <span className="name">{name}</span>
                     )}
                   </li>
                   <li className="item">

@@ -47,7 +47,20 @@ const NodeInfoHeader = ({
   return (
     <div className="node-info">
       <div className="node-info-container">
-        <div className="node" />
+        <div className="node">
+          {!tabsExpand && (
+          <>
+            <NodeIcon node={node} />
+            <div className="name" title={node.name.length > 10 ? node.name : ''}>
+              {(!singleExpand && !tabsExpand) ? Utils.substr(node.name, 10) : node.name}
+            </div>
+            <div className="type" title={node.type.length > 10 ? node.type : ''}>
+              {`Type: ${(!singleExpand && !tabsExpand) ? Utils.substr(node.type, 10) : node.type}`}
+            </div>
+          </>
+          )}
+
+        </div>
         <div className="tab-close">
           {!singleExpand && (
             <button

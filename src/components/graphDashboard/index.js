@@ -50,18 +50,18 @@ const Dashboard = ({ graph }) => {
           <Button
             icon={<SaveSvg className="viewIconQuery " />}
             onClick={() => toggleGraphQuery(true)}
-            title="Save Fragment"
+            title="Save query"
             className="save_query"
           />
           <Button
-            icon={<ExportSvg className="viewIcon " />}
+            icon={<ExportSvg className="viewIcon "/>}
             onClick={() => exportGraphData(graph.id)}
             title="Export"
             className="export"
           />
           <button
             onClick={() => toggleGraphQuerySetting(!showGraphQuerySetting)}
-            title="Fragment List"
+            title="Save list"
             className={`${showGraphQuerySetting ? 'setting_queryBtn__active' : ''} setting_queryBtn btn-classic`}
           >
             <Icon value={<SettingSvg className="viewIconQuery " />} />
@@ -75,10 +75,10 @@ const Dashboard = ({ graph }) => {
       >
         Reset
       </Button>
-      <button className="legendView" title="Legend">
-        <div className="LegendExplorer">
-          <Legend />
-        </div>
+      <button className="legendView" title="Legend" >
+      <div className="LegendExplorer">
+           <Legend />
+      </div>
       </button>
       {showGraphQuery ? (
 

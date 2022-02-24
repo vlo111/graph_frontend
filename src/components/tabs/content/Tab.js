@@ -55,7 +55,7 @@ const Tab = ({
       title="Add"
       onClick={() => setOpenAddTab(name)}
     >
-      <EditSvg />
+      <CloseSvg />
     </button>
   );
 
@@ -140,18 +140,18 @@ const Tab = ({
             )}
             {editable && editOrAdd}
             {editable && (
-              <>
-                {name !== '_description'
-                  && (
-                    <button
-                      className="tab-delete"
-                      title="Delete"
-                      onClick={() => setShowConfirmModal(true)}
-                    >
-                      <DeleteSvg />
-                    </button>
-                  )}
-              </>
+            <>
+              {name !== '_description'
+              && (
+              <button
+                className="tab-delete"
+                title="Delete"
+                onClick={() => setShowConfirmModal(true)}
+              >
+                <DeleteSvg />
+              </button>
+              )}
+            </>
             )}
           </>
         </div>
@@ -161,15 +161,15 @@ const Tab = ({
         {tab}
       </div>
       {showConfirmModal
-        && (
-          <ModalConfirmation
-            description="Do you want to delete this tab?"
-            yes="Delete"
-            no="Cancel"
-            onCancel={() => setShowConfirmModal(false)}
-            onAccept={deleteTab}
-          />
-        )}
+      && (
+      <ModalConfirmation
+        description="Do you want to delete this tab?"
+        yes="Delete"
+        no="Cancel"
+        onCancel={() => setShowConfirmModal(false)}
+        onAccept={deleteTab}
+      />
+      )}
     </div>
   );
 };

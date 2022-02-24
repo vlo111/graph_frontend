@@ -6,6 +6,7 @@ import AccountDropDown from './account/AccountDropDown';
 import SearchGraphs from './search/SearchGraphs';
 import { ReactComponent as LogoSvg } from '../assets/images/logo.svg';
 import { ReactComponent as NotifySvg } from '../assets/images/icons/notification.svg';
+import { ReactComponent as HelpSvg } from '../assets/images/icons/help.svg';
 import { ReactComponent as NotifyEmptySvg } from '../assets/images/icons/notificationComplete.svg';
 import Button from './form/Button';
 import Helps from './Helps/index';
@@ -15,7 +16,22 @@ class Header extends Component {
     super(props);
     this.state = {
       showDropDown: false,
+
     };
+  }
+
+  toggleDropDown = () => {
+    const { showDropDown } = this.state;
+
+    this.setState({ showDropDown: !showDropDown });
+  }
+
+  startGraph = () => {
+    window.location.href = '/graphs/create';
+  }
+
+  compareGraph = () => {
+    window.location.href = '/graphs/compare';
   }
 
   componentDidMount() {
@@ -32,52 +48,50 @@ class Header extends Component {
     }, 100);
   }
 
-  toggleDropDown = () => {
+  render() {
     const { showDropDown } = this.state;
-    this.setState({ showDropDown: !showDropDown });
-  }
-
-  startGraph = () => {
-    window.location.href = '/graphs/create';
-  }
-
-    compareGraph = () => {
-      window.location.href = '/graphs/compare';
-    }
-
-    render() {
-      const { showDropDown } = this.state;
-      return (
-        <header className="headerPanel" id="header">
-          <div className="logo-graphs">
-            <Link to="/">
-              <LogoSvg />
-            </Link>
-          </div>
-          <SearchGraphs />
-          <div className="notify_container">
-            <div className="notificationHeader">
-              <Notification />
-            </div>
-          </div>
-          <div className="signOut">
-            <AccountDropDown />
-          </div>
-          <div className="headerHelp">
-            <Button
-              onClick={this.toggleDropDown}
-            >
-              ? Help
+    return (
+      <header className="headerPanel" id="header">
+        <div className="logo-graphs">
+          <Link to="/">
+            <LogoSvg />
+          </Link>
+        </div>
+        <SearchGraphs />
+        <div className="start-graphs">
+          <div className="buttonsWrapper">
+            <Button className="btn-classic" onClick={this.startGraph}>
+              Create a graph
             </Button>
+
+            <Button className="btn-classic__alt" onClick={this.compareGraph}>
+              Compare graphs
+            </Button>
+
           </div>
-          {showDropDown ? (
-            <div className="helpsOutside">
-              <Helps closeModal={this.toggleDropDown} />
-            </div>
-          ) : null}
-        </header>
-      );
-    }
+        </div>
+        <div className="notify_container">
+          <div className="notificationHeader">
+            <Notification />
+          </div>
+        </div>
+        <div className="headerHelp">
+          <Button
+            icon={<HelpSvg />}
+            onClick={this.toggleDropDown}
+          />
+        </div>
+        {showDropDown ? (
+          <div className="helpsOutside">
+            <Helps closeModal={this.toggleDropDown} />
+          </div>
+        ) : null}
+        <div className="signOut">
+          <AccountDropDown />
+        </div>
+      </header>
+    );
+  }
 }
 
 export default Header;

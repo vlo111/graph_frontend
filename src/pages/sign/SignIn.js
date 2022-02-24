@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ReactComponent as LogoSvg } from '../../assets/images/logo.svg';
+import SigniniImage from '../../assets/images/signin_image.png';
 import { forgotPasswordRequest, signInRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
@@ -31,7 +32,7 @@ const Login = () => {
     const { data = {} } = payload;
     if (data.status !== 'ok') {
       setPases({ pasRep: password });
-      if (!(pases.pasRep === password)) { setFailedLoginAttempts(failedLoginAttempts + 1); }
+      if (!(pases.pasRep === password)) { setFailedLoginAttempts(failedLoginAttempts + 1)}
       setErrors(errorMessage);
 
       if (failedLoginAttempts === 3) {
@@ -44,9 +45,7 @@ const Login = () => {
     <WrapperSign>
       <div className="signin_page">
         <div className="singIn_img">
-          <Link to="/">
-            <LogoSvg />
-          </Link>
+          <img src={SigniniImage} alt="" />
         </div>
         <div className="singIn_form">
           <form onSubmit={signIn} id="login" className="SigninAuthForm ">
@@ -55,7 +54,7 @@ const Login = () => {
             </div>
             <Input
               name="email"
-              placeholder="Email Address"
+              placeholder="Email address"
               value={email}
               onChangeText={(value) => setEmail(value)}
               autoComplete="off"
@@ -87,13 +86,13 @@ const Login = () => {
             >
               Sign In
             </Button>
-            <p className="switchSignInMode">
-              <span> Don't have an admin yet? </span>
-              <Link to="/sign/sign-up" className="getstart">
-                <a href=" ">Get started</a>
-              </Link>
-            </p>
+
           </form>
+        </div>
+        <div className="SaytLogo">
+          <Link to="/">
+            <LogoSvg className="logo white" />
+          </Link>
         </div>
       </div>
     </WrapperSign>

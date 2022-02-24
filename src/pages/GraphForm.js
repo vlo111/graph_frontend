@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Redirect, useHistory, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import memoizeOne from 'memoize-one';
+import { Redirect } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import ToolBar from '../components/ToolBar';
 import ReactChart from '../components/chart/ReactChart';
@@ -11,10 +12,6 @@ import ContextMenu from '../components/contextMenu/ContextMenu';
 import DataView from '../components/dataView/DataView';
 import DataImport from '../components/import/DataImportModal';
 import NodeDescription from '../components/NodeDescription';
-import { getActiveButton } from '../store/selectors/app';
-import { getMouseMoveTracker, getSingleGraphStatus } from '../store/selectors/graphs';
-import { getId } from '../store/selectors/account';
-import { socketSetActiveGraph } from '../store/actions/socket';
 import { setActiveButton } from '../store/actions/app';
 import { clearSingleGraph, getSingleGraphRequest } from '../store/actions/graphs';
 import AddLinkModal from '../components/chart/AddLinkModal';
@@ -28,6 +25,7 @@ import LabelTooltip from '../components/LabelTooltip';
 import ToolBarHeader from '../components/ToolBarHeader';
 import ToolBarFooter from '../components/ToolBarFooter';
 import CreateGraphModal from '../components/CreateGraphModal';
+import { socketSetActiveGraph } from '../store/actions/socket';
 import AutoSave from '../components/AutoSave';
 import LabelShare from '../components/share/LabelShare';
 import MediaModal from '../components/Media/MediaModal';
@@ -42,96 +40,131 @@ import WikiModal from '../components/wikipedia/WikiModal';
 import ChartUtils from '../helpers/ChartUtils';
 import DataExport from '../components/dataView/DataExport';
 
-const GraphForm = () => {
-  const dispatch = useDispatch();
-  const { graphId } = useParams();
-  const history = useHistory();
-  // useState
-  const [scaleStatus, setScaleStatus] = useState(false);
-  const [permission, setPermission] = useState('');
-  // useSelector
-  const activeButton = useSelector(getActiveButton);
-  const mouseMoveTracker = useSelector(getMouseMoveTracker);
-  const currentUserId = useSelector(getId);
-  const singleGraphStatus = useSelector(getSingleGraphStatus);
+class GraphForm extends Component {
+  static propTypes = {
+    getSingleGraphRequest: PropTypes.func.isRequired,
+    setActiveButton: PropTypes.func.isRequired,
+    clearSingleGraph: PropTypes.func.isRequired,
+    socketSetActiveGraph: PropTypes.func.isRequired,
+    activeButton: PropTypes.string.isRequired,
+    singleGraphStatus: PropTypes.string.isRequired,
+    match: PropTypes.object.isRequired,
+    currentUserId: PropTypes.string.isRequired,
+    mouseMoveTracker: PropTypes.array.isRequired,
+    currentUserRole: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
+  }
 
-  useEffect(() => {
-    setTimeout(async () => {
-      dispatch(setActiveButton('create'));
-      if (graphId) {
-        const { payload: { data } } = await dispatch(getSingleGraphRequest(graphId));
-        setPermission(data.graph.currentUserRole);
-      } else {
-        await dispatch(clearSingleGraph());
-      }
-      await dispatch(socketSetActiveGraph(graphId || null));
-    }, 500);
-  }, [graphId]);
+  constructor() {
+    super();
+    this.state = {
+      scaleStatus: false,
+    };
+  }
 
-  const getMouseMoveTrackers = async () => mouseMoveTracker && mouseMoveTracker.some(
-    (m) => m.userId !== currentUserId && m.tracker === true,
-  );
-  if (!scaleStatus) {
-    if (document.querySelector('.nodes')?.childElementCount) {
-      ChartUtils.autoScale();
-      setScaleStatus(true);
+  getSingleGraph = memoizeOne((graphId) => {
+    this.props.setActiveButton('create');
+    if (graphId) {
+      this.props.getSingleGraphRequest(graphId);
+    } else {
+      this.props.clearSingleGraph();
     }
+    this.props.socketSetActiveGraph(graphId || null);
+  })
+
+  getMouseMoveTracker = () => {
+    const { mouseMoveTracker, currentUserId } = this.props;
+    return mouseMoveTracker && mouseMoveTracker.some(
+      (m) => m.userId !== currentUserId && m.tracker === true,
+    );
   }
-  const getPermission = () => (singleGraphStatus === 'fail'
-    || (singleGraphStatus === 'success'
-      && permission && !['admin', 'edit', 'edit_inside'].includes(permission))
-  );
-  const isPermission = getPermission();
-  if (permission === '') {
-    <></>;
+
+  getPermission = () => {
+    const { singleGraphStatus, currentUserRole } = this.props;
+
+    return (singleGraphStatus === 'fail'
+      || (singleGraphStatus === 'success'
+        && currentUserRole && !['admin', 'edit', 'edit_inside'].includes(currentUserRole))
+    );
   }
-  if (isPermission) {
-    return (<Redirect to="/403" />);
+
+  render() {
+    const { activeButton, match: { params: { graphId } } } = this.props;
+    const isTracker = this.getMouseMoveTracker();
+    this.getSingleGraph(graphId);
+    const isPermission = this.getPermission();
+    if (isPermission) {
+      return (<Redirect to="/403" />);
+    }
+
+    if (!this.state.scaleStatus) {
+      if (document.querySelector('.nodes')?.childElementCount) {
+        ChartUtils.autoScale();
+        this.setState({
+          scaleStatus: true,
+        });
+      }
+    }
+
+    return (
+      <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
+        <>
+          <div className="graphWrapper">
+            <ReactChart />
+          </div>
+          <ToolBarHeader />
+          <ToolBar />
+          <Crop />
+          <AddNodeModal />
+          {activeButton === 'data' && <DataView />}
+          {activeButton === 'dataexport' && <DataExport />}
+          {activeButton === 'search' && <SearchModal history={this.props.history} />}
+          {activeButton === 'media' && <MediaModal history={this.props.history} />}
+          {activeButton === 'maps-view' && <MapsGraph />}
+          {activeButton === 'maps' && <MapsModal />}
+          {activeButton === 'sciGraph' && <ScienceGraphModal />}
+          {activeButton === 'wikipedia' && <WikiModal />}
+          <AddLinkModal />
+          <AddLabelModal />
+          <AddLinkedInModal />
+          <ContextMenu />
+          <DataImport />
+          <FindNode />
+          <NodeDescription />
+          <Tabs editable />
+          <AutoPlay />
+          <Zoom />
+          <LabelTooltip />
+          <CreateGraphModal />
+          <LabelShare />
+          <LabelCopy />
+          <AutoSave />
+          <ExitMode />
+          <ToolBarFooter />
+          {isTracker && <MousePosition graphId={graphId} />}
+        </>
+      </Wrapper>
+    );
   }
-  const isTracker = getMouseMoveTrackers();
-  return (
-    <Wrapper className="graphsPage" showHeader={false} showFooter={false}>
-      <>
-        <div className="graphWrapper">
-          <ReactChart />
-        </div>
-        <ToolBarHeader />
-        <ToolBar />
-        <Crop />
-        <AddNodeModal />
-        {activeButton === 'data' && <DataView />}
-        {activeButton === 'dataexport' && <DataExport />}
-        {activeButton === 'search' && <SearchModal history={history} />}
-        {activeButton === 'media' && <MediaModal history={history} />}
-        {activeButton === 'maps-view' && <MapsGraph />}
-        {activeButton === 'maps' && <MapsModal />}
-        {activeButton === 'sciGraph' && <ScienceGraphModal />}
-        {activeButton === 'wikipedia' && <WikiModal />}
-        <AddLinkModal />
-        <AddLabelModal />
-        <AddLinkedInModal />
-        <ContextMenu />
-        <DataImport />
-        <FindNode />
-        <NodeDescription />
-        <Tabs editable />
-        <AutoPlay />
-        <Zoom />
-        <LabelTooltip />
-        <CreateGraphModal />
-        <LabelShare />
-        <LabelCopy />
-        <AutoSave />
-        <ExitMode />
-        <ToolBarFooter />
-        {isTracker && <MousePosition graphId={graphId} />}
-      </>
-    </Wrapper>
-  );
+}
+
+const mapStateToProps = (state) => ({
+  activeButton: state.app.activeButton,
+  singleGraphLabels: state.graphs.singleGraph.labels || [],
+  mouseMoveTracker: state.graphs.mouseMoveTracker,
+  currentUserId: state.account.myAccount.id,
+  singleGraphStatus: state.graphs.singleGraphStatus,
+  currentUserRole: state.graphs.singleGraph.currentUserRole || '',
+});
+const mapDispatchToProps = {
+  setActiveButton,
+  getSingleGraphRequest,
+  socketSetActiveGraph,
+  clearSingleGraph,
 };
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(GraphForm);
 
-GraphForm.propTypes = {
-
-};
-
-export default GraphForm;
+export default Container;

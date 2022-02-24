@@ -1,3 +1,18 @@
+import React from 'react';
+import { ReactComponent as RectangleSvg } from '../assets/images/icons/rectangle.svg';
+import { ReactComponent as ImageSvg } from '../assets/images/icons/image.svg';
+import { ReactComponent as TriangleSvg } from '../assets/images/icons/triangle.svg';
+import { ReactComponent as HexagonSvg } from '../assets/images/icons/hexagon.svg';
+import { ReactComponent as EllipseSvg } from '../assets/images/icons/node-ellipse.svg';
+
+export const NODE_TYPES = [
+  { value: 'square', label: 'Square', icon: <RectangleSvg /> },
+  { value: 'circle', label: 'Circle', icon: <EllipseSvg /> },
+  { value: 'triangle', label: 'Triangle', icon: <TriangleSvg /> },
+  { value: 'hexagon', label: 'Hexagon', icon: <HexagonSvg /> },
+  { value: 'infography', label: ' Image', icon: <ImageSvg /> },
+];
+
 export const NODE_STATUS = [
   { value: 'approved', label: 'Approved' },
   { value: 'draft', label: 'Draft' },

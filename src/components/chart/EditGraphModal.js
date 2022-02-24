@@ -28,7 +28,7 @@ import {
 import Chart from '../../Chart';
 
 const EditGraphModal = ({
-  toggleModal, graph, updateGraph, outOver,
+  toggleModal, graph, updateGraph,
 }) => {
   const { defaultImage } = graph.defaultImage;
   const dispatch = useDispatch();
@@ -149,40 +149,30 @@ const EditGraphModal = ({
       className="ghModal ghModalEdit"
       overlayClassName="ghModalOverlay"
       isOpen
-      onRequestClose={() => {
-        if (outOver) {
-          outOver();
-        }
-        toggleModal(false);
-      }}
+      onRequestClose={() => toggleModal(false)}
     >
       <Button
         color="transparent"
         className="close"
         icon={<CloseSvg />}
-        onClick={() => {
-          if (outOver) {
-            outOver();
-          }
-          toggleModal(false);
-        }}
+        onClick={() => toggleModal(false)}
       />
       <div className="form">
-        <div className="uploaderImageEdit">
+        <div>
           <ImageUploader
             className="thumbnailSave"
             value={image || `${graph.thumbnail}?t=${moment(graph.updatedAt).unix()}`}
             onChange={(val) => handleChange('image', val)}
             userImage={requestData.userImage}
           />
+
         </div>
-        <div className="graphInputName">
+        <div className="impData">
           <Input
+            className="graphInputName"
             value={requestData.title}
             onChangeText={(v) => handleChange('title', v)}
           />
-        </div>
-        <div className="impData">
           <label className="switchLabel">
             <span className="switchPublic">Publish graph</span>
             <div>
@@ -201,7 +191,7 @@ const EditGraphModal = ({
             <span className="item2">{moment(graph.createdAt).format('YYYY.MM.DD')}</span>
           </div>
           <div className="infoGraph">
-            <label>Last Modfied</label>
+            <label>Last modfied</label>
             <span className="item3">{moment(graph.updatedAt).format('YYYY.MM.DD hh:mm')}</span>
           </div>
         </div>
@@ -214,6 +204,7 @@ const EditGraphModal = ({
             onChangeText={(v) => handleChange('description', v)}
           />
         </div>
+
         <div className="buttonsSave">
           <>
             <Button
@@ -240,7 +231,6 @@ const EditGraphModal = ({
 EditGraphModal.propTypes = {
   graph: PropTypes.any.isRequired,
   toggleModal: PropTypes.func.isRequired,
-  outOver: PropTypes.func.isRequired,
   updateGraph: PropTypes.func.isRequired,
 };
 

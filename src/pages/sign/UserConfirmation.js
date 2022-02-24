@@ -12,10 +12,11 @@ function UserConfirmation(props) {
 
     if (aipStatus === 'ok') {
       setStatus(status);
-      props.history.replace('/');
-    } else {
-      props.history.replace('/');
+      // props.history.replace('/');
     }
+    // else {
+    //   props.history.replace('/');
+    // }
   });
   return (
     status === 'ok' ? (
@@ -28,7 +29,7 @@ function UserConfirmation(props) {
 
 UserConfirmation.propTypes = {
   match: PropTypes.any.isRequired,
-  history: PropTypes.string.isRequired,
+  // history: PropTypes.string.isRequired,
 };
 
 export default UserConfirmation;

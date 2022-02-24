@@ -1,13 +1,13 @@
 .menu {
   position: fixed;
   width: 200px;
+  box-shadow: 4px 0 31px rgba(119, 113, 183, 0.22);
   background: #ffffff;
-  height: 92%;
-  top: 80px;
+  height: 100%;
+  top: 56px;
   text-align: center;
   justify-content: center;
   display: flex;
-  background-color: #F9F9F9;
 
   .containerMenu {
     width: 200px;
@@ -20,6 +20,7 @@
       cursor: pointer;
       color: #727272;
       align-items: center;
+      box-shadow: 0 0 6px 2px rgb(136 130 209 / 22%);
       border-radius: 3px;
       height: 40px;
 
@@ -35,20 +36,19 @@
       }
 
       &:hover {
-        background-color: #EFEFEF;
-        color: #585858;
+        background-color: #ffffff;
+        color: #7166F8;
+        box-shadow: 0 0 6px 2px rgb(136 130 209 / 37%);
         border: none;
       }
 
       .sidebar_text {
-        font-weight: 400;
-        font-size: 14px;
+        font-weight: normal;
       }
     }
 
     .collapse_over {
-      color: white;
-      background: #1CC5DC;
+      color: #7166F8;
     }
   }
 
@@ -74,20 +74,22 @@
       height: 40px;
 
       &:hover {
-        background: #EFEFEF;
-        color: #585858;
+        background: rgba(113, 102, 248, 0.1);
+        color: #7E75EF;
        .lablMenu{
-        color: #2FE6FF;
-         circle, path {
-         stroke: #585858;
+        stroke:  #7E75EF;
+        stroke: #7E75EF;
+    stroke-width: .4;
+         circle {
+         stroke: #7E75EF;
          }
        }
       }
     }
 
     .selected {
-      color: white;
-      background: #1CC5DC;
+      background: rgba(113, 102, 248, 0.1);
+      color: #7E75EF;
     }
 
     i {
@@ -173,26 +175,27 @@
 
 }
 .searchMenuNodes{
-    left: 174px;
-    width: 500px;
-    min-height: auto;
-    max-height: 91vh;
-    top: 48px !important;
+  left: 190px;
+  width: 500px;
+  min-height: auto;
+  max-height: 91vh;
 
   .searchField{
     background-color: initial;
   }
   .searchFieldCheckBox{
   background-color: white;
+  border-radius: 5px 0px 0px 5px;
+
   }
   .searchFieldCheckBoxList{
-    top: 25px !important;
+    top: 37px !important;
   }
   .chooseSearchFields{
     padding: 0 24px;
   }
   .list {
-    margin: 1px 25px 0px;
+    margin: 0px 25px 0px;
     width: 90%;
 
       .typeText{
@@ -202,20 +205,14 @@
   }
     .nodeSearch{
       margin-right: auto !important;
+      border-radius: 0px 5px 5px 0px !important;
       padding-left: 25px !important;
 
     }
     .close{
       position: absolute;
-    left: 100px;
-    top: -11px;
-    }
-    .searchBoxInside{
-      border: none !important;
-    }
-    .chooseSearchFields{
-      color: #1CC5DC !important;
-      font-size: 12px;
+    left: 111px;
+    top: -4px;
     }
 }
 
@@ -224,7 +221,7 @@
 .ghModalEditSearch .list .item .ghButton {
 .name{
   font-size: 16px !important;
-  color: #1CC5DC;
+  color: #7166F8;
 font-weight: 400;
 width: 40% !important;
 padding-left: 0 !important;

@@ -23,14 +23,10 @@ const GraphOrder = ({
       <Outside onClick={toggleDropDown} exclude=".filter">
         <div className="filter-container">
           <p className="sort-text"> Sort by </p>
-          <div className="sortName">
-            <p className={localOrder === 'ascending' ? localOrder : ''} onClick={() => setFilter('ascending')}>A to Z</p>
-            <p className={localOrder === 'descending' ? localOrder : ''} onClick={() => setFilter('descending')}>Z to A</p>
-          </div>
-          <div className="sortNewest">
-            <p className={localOrder === 'newest' ? localOrder : ''} onClick={() => setFilter('newest')}>Newest First</p>
-            <p className={localOrder === 'oldest' ? localOrder : ''} onClick={() => setFilter('oldest')}>Oldest First</p>
-          </div>
+          <p className={localOrder === 'ascending' ? localOrder : ''} onClick={() => setFilter('ascending')}>A to Z</p>
+          <p className={localOrder === 'descending' ? localOrder : ''} onClick={() => setFilter('descending')}>Z to A</p>
+          <p className={localOrder === 'newest' ? localOrder : ''} onClick={() => setFilter('newest')}>Newest first</p>
+          <p className={localOrder === 'oldest' ? localOrder : ''} onClick={() => setFilter('oldest')}>Oldest first</p>
         </div>
       </Outside>
     </div>

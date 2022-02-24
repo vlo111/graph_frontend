@@ -3,10 +3,10 @@
 .tab-wrapper {
   position: fixed;
   width: 350px;
-  height: calc(100% - 67px);
+  height: calc(100% - 56px);
   background: $color-white;
   right: 0;
-  top: 67px;
+  top: 56px;
   z-index: 3;
 
   .tab {
@@ -31,14 +31,14 @@
 
       &-active {
         background-color: white;
-        color: #2FE6FF;
+        color: $color-main;
 
         &:after {
           content: "";
           display: block;
-          top: 90px;
+          top: 52px;
           height: 3px;
-          background-color: #2FE6FF;
+          background-color: $color-main;
           position: absolute;
           width: 33.4%;
         }
@@ -46,7 +46,6 @@
 
       &-in-active {
         background-color: $color-tab-bg;
-        color: #727272;
       }
     }
 
@@ -95,6 +94,7 @@
               height: 40px;
               width: 40px;
               object-fit: cover;
+              border-radius: 50px;
             }
           }
 
@@ -193,8 +193,8 @@
                 font-size: 11px;
                 line-height: 20px;
                 border-radius: 30px;
-                background: #1CC5DC;
-                color: white;
+                background-color: $color-tab-keywords;
+                color: $color-passive;
                 margin-right: 10px;
                 margin-bottom: 10px;
               }
@@ -233,7 +233,7 @@
                     max-width: 88%;
 
                     .node-type {
-                      background: #1CC5DC;
+                      background: #F07760;
                       color: white;
                       padding: 0 20px;
                       height: 20px;
@@ -252,11 +252,10 @@
                     width: 100%;
 
                     .name {
-                      font-weight: 700;
-                      font-size: 12px;
+                      font-weight: bold;
+                      font-size: 14px;
                       text-decoration-line: underline;
-                      color: #585858;
-                  
+                      color: $color-main;
                     }
 
                     .type {
@@ -311,7 +310,7 @@
 
           summary {
             .node-name {
-              color: #1CC5DC;
+              color: $color-main2;
             }
 
             &::after {
@@ -335,10 +334,10 @@
           height: 58px;
 
           &-text {
-            font-size: 14px;
-            font-weight: 400;
+            font-size: 16px;
+            font-weight: bold;
             line-height: 19px;
-            color: #585858;
+            color: $color-main;
             margin: 0;
           }
 
@@ -375,6 +374,7 @@
             }
 
             .add svg {
+              transform: rotate(45deg);
               width: 14px;
             }
           }
@@ -400,8 +400,6 @@
             min-width: 310px;
             margin: 0 !important;
             padding: 0 !important;
-            color: #3A3A3A;
-            font-size: 12px;
           }
         }
       }
@@ -520,16 +518,15 @@
     position: fixed;
     right: 350px;
     width: 180px;
-    background-color: white;
+    background-color: $color-main;
     height: calc(100%);
     color: white;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
-    top: 67px;
+    top: 56px;
     z-index: 5;
-    border: 1px solid #EFEFEF;
 
     &-header {
       height: 100px;
@@ -542,21 +539,10 @@
         font-weight: bold;
         font-size: 16px;
         margin-bottom: 5px;
-        color: #424242;
       }
 
       &-add {
-         cursor: pointer;
-         color: #424242;
-         color: white;
-         width: 175px;
-         display: flex;
-         justify-content: center;
-         position: relative;
-         top: 11px;
-         height: 43px;
-         background: #1CC5DC;
-         align-items: center;
+        cursor: pointer;
       }
     }
 
@@ -573,17 +559,14 @@
 
       :not(.tab_list-content-active) {
         &:hover {
-          background: #EFEFEF;
-          width: 100%;
-          display: flex;
-          justify-content: center;
+          background-color: $color-tab-name-hover;
         }
       }
 
       &-item {
         display: flex;
         min-height: 40px;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         padding-left: 10px;
         padding-right: 15px;
@@ -591,18 +574,17 @@
         cursor: pointer;
         border-radius: 3px 0 0 3px;
         user-select: none;
-        color: #424242;
       }
 
       &-active {
         background-color: $color-white;
-        color: #424242
+        color: $color-main;
       }
 
       &::-webkit-scrollbar {
         width: 5px;
         height: 5px;
-        background: #1CC5DC;
+        background: #5454E2;
         z-index: 0;
       }
 
@@ -614,24 +596,25 @@
     }
 
     .description {
-      border: 1px solid #424242;
+      border: 1px solid;
+      border-left: none;
+      border-right: none;
       height: 50px;
       justify-content: center;
       display: flex;
       align-items: center;
       cursor: pointer;
       width: 100%;
-      color: #424242;
 
       &:hover {
-        background: #1CC5DC;
+        background-color: $color-tab-name-hover;
       }
     }
 
     .description_active {
       background-color: $color-white;
-      color: #424242;
-      border: 1px solid #EFEFEF;
+      color: $color-main;
+      border: none;
 
       &:hover {
         background-color: white;
@@ -670,6 +653,36 @@
       align-items: center;
       margin: 5px 10px;
       height: 40px;
+
+      .node {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        .nodeIcon {
+          width: 25px;
+          height: 25px;
+          font-size: 12px;
+          padding-bottom: 0;
+          min-width: auto;
+        }
+      }
+
+      .type {
+        font-weight: bold;
+        font-size: 12px;
+        color: $color-passive;
+        margin-left: 15px;
+      }
+
+      .name {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 12px;
+        color: $color-graph-name;
+      }
+
       .tab-close {
         height: 100%;
         justify-content: end;
@@ -1000,9 +1013,9 @@
     }
   }
 
-  // .node-info-container {
-  //   margin-left: 25px;
-  // }
+  .node-info-container {
+    margin-left: 25px;
+  }
 
   .general-hider-icons {
     align-items: center !important;

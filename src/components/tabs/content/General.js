@@ -91,9 +91,9 @@ const General = ({
             <span>{node.name}</span>
           </div>
           <div className="general-footer-item leftLine">
-            <span className="item-text">Keyword: </span>
+            <span className="item-text">Label: </span>
             <span>
-              {!node.keywords?.length ? 'there is no keyword'
+              {!node.keywords?.length ? 'there is not keyword'
                 : (
                   <div className="general-footer-item-keywords">
                     <>
@@ -126,7 +126,7 @@ const General = ({
                     {!tabsExpand ? Utils.substr(node.link, 30) : node.link}
                   </a>
                 </span>
-              ) : 'there is no link'}
+              ) : 'there is not link'}
           </div>
           {node.location && (
             <div className="general-footer-item general-footer-location leftLine">

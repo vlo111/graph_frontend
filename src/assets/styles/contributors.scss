@@ -1,6 +1,4 @@
 .contributors-container-list {
-  top: -12px;
-  position: relative;
   display: flex;
 
   .list-style-none .item:nth-of-type(1) {
@@ -13,7 +11,7 @@
     box-sizing: border-box;
     position: fixed;
     z-index: 200;
-    top: 80px;
+    top: 75px;
     width: 280px;
     padding: 5px 0;
     background-color: white;
@@ -144,7 +142,7 @@
         margin: 3px 0;
         min-height: 50px;
         padding: 5px 0;
-        border-bottom: 1px solid #1CC5DC;
+        border-bottom: 1px solid $color-main;
         width: 100%;
         flex-flow: row wrap;
 
@@ -182,9 +180,9 @@
       min-width: 0;
 
       img {
-        height: 25px;
-        aspect-ratio: auto 32/32;
-        width: 25px;
+        height: 32px;
+        aspect-ratio: auto 32 / 32;
+        width: 32px;
         border-radius: 50px;
         border: 2px solid #FFFFFF;
         box-sizing: border-box;
@@ -197,10 +195,10 @@
     height: 12px;
     border-radius: 50%;
     border: 1px solid white;
-    bottom: 0px;
-    margin-left: 18px;
+    bottom: 8px;
+    margin-left: 4px;
     position: absolute;
-    background-color: #59A635;
+    background-color: $color-green-online;
   }
 
   .status-in-graph {

@@ -151,10 +151,10 @@ https://en.wikipedia.org/wiki/${name}
       wikiSearchResults.push(
         <label key={i}>
           <div
-            className="wikiSearchItmes wikiSearch"
+            className="anna1 wikiSearch"
             tabIndex="0"
             onFocus={() => {
-              const items = document.getElementsByClassName('wikiSearchItmes');
+              const items = document.getElementsByClassName('anna1');
 
               Array.from(items).forEach((el) => {
                 el.style.backgroundColor = 'white';

@@ -14,7 +14,6 @@ import Chart from '../../Chart';
 import { ReactComponent as DownSvg } from '../../assets/images/icons/down.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/icons/close.svg';
 import Outside from '../Outside';
-import Icon from '../form/Icon';
 
 class SearchModal extends Component {
   static propTypes = {
@@ -315,7 +314,7 @@ class SearchModal extends Component {
       const allCheckElements = Array.from(document.getElementsByClassName('checkBox'));
 
       allCheckElements.forEach((element) => {
-        element.style.color = value ? '#1CC5DC' : '#BEBEBE';
+        element.style.color = value ? '#7166F8' : '#BEBEBE';
       });
       // this.setState({ checkBoxAll: value });
       for (const key in checkBoxValues) {
@@ -326,7 +325,7 @@ class SearchModal extends Component {
       const value = !checkBoxValues[name];
       _.set(checkBoxValues, name, value);
       this.setState({ checkBoxValues });
-      target.style.color = value ? '#1CC5DC' : '#BEBEBE';
+      target.style.color = value ? '#7166F8' : '#BEBEBE';
       const checkBoxFields = Object.values(checkBoxValues).filter((el) => el === value);
       if (checkBoxFields.length === 4) {
         // this.setState({ checkBoxAll: value });
@@ -386,7 +385,22 @@ class SearchModal extends Component {
               <div className="searchFieldCheckBox">
                 <div className="chooseSearchFields">
                   Filters
-                  <Icon value="fa-chevron-down" className="down" />
+                  <svg
+                    className="dropDownSvg"
+                    width="16"
+                    height="10"
+                    viewBox="0 0 16 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M15.313 0H0.692176C0.25364
+                    0 0.00877185 0.463023 0.280353
+                    0.779125L7.59077 9.25601C7.80002
+                     9.49865 8.20294 9.49865 8.41442 9.25601L15.7248 0.779125C15.9964 0.463023 15.7516 0 15.313 0Z"
+                      fill="#7166F8"
+                    />
+                  </svg>
 
                 </div>
                 <div className="searchFieldCheckBoxList">
@@ -458,15 +472,15 @@ class SearchModal extends Component {
                     {!d.name.toLowerCase().includes(search)
                       && !d.type.toLowerCase().includes(search) ? (
 
-                        <span
-                          className="keywords"
-                          dangerouslySetInnerHTML={{
-                            __html: d.keywords
-                              .map((k) => this.formatHtml(k))
-                              .join(', '),
-                          }}
-                        />
-                      ) : null}
+                      <span
+                        className="keywords"
+                        dangerouslySetInnerHTML={{
+                          __html: d.keywords
+                            .map((k) => this.formatHtml(k))
+                            .join(', '),
+                        }}
+                      />
+                    ) : null}
                   </div>
                 </div>
               </li>
@@ -529,15 +543,15 @@ class SearchModal extends Component {
                               </span>
                               {!tabs[item][tab].tabName.toLowerCase().includes(search)
                                 && !tabs[item][tab].tabSearchValue.toLowerCase().includes(search) ? (
-                                  <span
-                                    className="keywords"
-                                    dangerouslySetInnerHTML={{
-                                      __html: tabs[item][tab].keywords
-                                        ?.map((k) => this.formatHtml(k))
-                                        .join(', '),
-                                    }}
-                                  />
-                                ) : null}
+                                <span
+                                  className="keywords"
+                                  dangerouslySetInnerHTML={{
+                                    __html: tabs[item][tab].keywords
+                                      ?.map((k) => this.formatHtml(k))
+                                      .join(', '),
+                                  }}
+                                />
+                              ) : null}
                             </div>
                           ),
                         )}

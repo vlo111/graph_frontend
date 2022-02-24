@@ -12,6 +12,7 @@ import { convertGraphRequest } from '../../store/actions/graphs';
 import ImportStep2 from './ImportStep2';
 import templetaAraks from '../../assets/file/AraksTemplate.xlsx';
 
+
 class DataImportModal extends Component {
   static propTypes = {
     convertGraphRequest: PropTypes.func.isRequired,
@@ -98,11 +99,9 @@ class DataImportModal extends Component {
           <>
             <div className="ghFormField importFile">
               <div className="downloadTempletaAraks">
-                <span>
-                  Use the
-                  <Button><a href={templetaAraks} download="AraksTemplate.xlsx"> Template </a></Button>
-                  to import data
-                </span>
+                <span>If you don’t have any  templates You can </span>
+                <Button><a href={templetaAraks} download="AraksTemplate.xlsx">download</a></Button>
+                it
               </div>
               <label className="importSelectFileLbl">Select file</label>
               <File

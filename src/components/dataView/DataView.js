@@ -320,7 +320,7 @@ class DataView extends Component {
                   onClick={() => this.setActiveTab('nodes', type)}
                 >
                   {type || '__empty__'}
-                  <sub>{`(${n.length})`}</sub>
+                  <sub>{`[${n.length}]`}</sub>
                 </Button>
               ))}
             </div>
@@ -337,7 +337,7 @@ class DataView extends Component {
                   onClick={() => this.setActiveTab('links', type)}
                 >
                   {type || '__empty__'}
-                  <sub>{`(${n.length})`}</sub>
+                  <sub>{`[${n.length}]`}</sub>
                 </Button>
               ))}
             </div>

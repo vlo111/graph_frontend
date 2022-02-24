@@ -9,7 +9,6 @@ class EmbedModal extends Component {
   static propTypes = {
     graph: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
-    outOver: PropTypes.func.isRequired,
   }
 
   handleFocus = (ev) => {
@@ -26,17 +25,13 @@ class EmbedModal extends Component {
   }
 
   render() {
-    const { graph, outOver } = this.props;
-
+    const { graph } = this.props;
     return (
       <Modal
         className="ghModal embedModal"
         overlayClassName="ghModalOverlay"
         isOpen
-        onRequestClose={() => {
-          outOver();
-          this.props.onClose(false);
-        }}
+        onRequestClose={this.props.onClose}
       >
         <div className="graphEmbed">
           <h2>Copy embed code</h2>

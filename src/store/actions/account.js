@@ -9,10 +9,6 @@ export function signInRequest(email, password) {
 
 export const SIGN_UP = define('SIGN_UP');
 
-export function signUpRequest(requestData) {
-  return SIGN_UP.request(() => Api.singUp(requestData));
-}
-
 export const GET_MY_ACCOUNT = define('GET_MY_ACCOUNT');
 
 export function getMyAccountRequest() {

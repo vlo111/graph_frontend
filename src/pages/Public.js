@@ -6,33 +6,44 @@ import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
 import { getGraphsListRequest } from '../store/actions/graphs';
+import NoGraph from '../components/NoGraph';
+import GraphListItem from '../components/graphData/GraphListItem';
+import Pagination from '../components/Pagination';
 import GraphCardItem from '../components/graphData/GraphCardItem';
+import ChartUtils from '../helpers/Utils';
 
 class Public extends Component {
   static propTypes = {
     getGraphsListRequest: PropTypes.func.isRequired,
     graphsList: PropTypes.array.isRequired,
+    graphsListInfo: PropTypes.object.isRequired,
+    graphsListStatus: PropTypes.string.isRequired,
+    mode: PropTypes.string.isRequired,
   }
 
   getGraphsList = memoizeOne((page) => {
     const order = JSON.parse(localStorage.getItem('/public')) || 'newest';
-    this.props.getGraphsListRequest(page, { filter: order, publicGraph: 1 });
+    const limit = ChartUtils.getGraphListItemsLimit();
+    this.props.getGraphsListRequest(page, { filter: order, publicGraph: 1, limit });
   })
 
   render() {
     const {
-      graphsList,
+      graphsList, graphsListStatus, graphsListInfo: { totalPages }, mode,
     } = this.props;
     const { page = 1 } = queryString.parse(window.location.search);
     this.getGraphsList(page);
     return (
       <>
-        <div className="homPageHeader">
-          <div><p>Public Graphs</p></div>
+        <div className={`${mode === 'tab_card' ? 'graphsCard' : 'graphsList'} ${!graphsList.length ? 'empty' : ''}`}>
+          {graphsListStatus !== 'request' && _.isEmpty(graphsList) ? (
+            <div className="no-graphs">
+              <NoGraph />
+            </div>
+          ) : mode === 'list'
+            ? <GraphListItem graphs={graphsList} headerTools="public" /> : <GraphCardItem graphs={graphsList} headerTools="public" />}
         </div>
-        <div className="graphsCard graph_public_card">
-          <GraphCardItem graphs={graphsList} headerTools="public" />
-        </div>
+        {graphsList.length ? <Pagination totalPages={totalPages} /> : null}
       </>
     );
   }

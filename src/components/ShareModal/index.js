@@ -27,7 +27,6 @@ const ShareModal = React.memo(({ graph, closeModal }) => {
   return (isEmpty(graph) ? null
     : (
       <Modal
-        className="ghModalShareGraph"
         isOpen
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
@@ -47,8 +46,8 @@ const ShareModal = React.memo(({ graph, closeModal }) => {
           />
         </div>
         <Owner user={graph.user} />
-        <Search select={select} setSelect={setSelect} user={graph.user} singleGraph={graph} closeModal={closeModal} />
         {select && <Collaborators graph={graph} select={select} />}
+        <Search select={select} setSelect={setSelect} user={graph.user} singleGraph={graph} closeModal={closeModal} />
       </Modal>
     )
   );

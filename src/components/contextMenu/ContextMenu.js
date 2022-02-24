@@ -111,15 +111,7 @@ class ContextMenu extends Component {
         };
         element = 'selectNode';
       } else {
-        const { parentElement } = ev.target;
-        let index;
-
-        if (parentElement.classList.value.includes('infography')) {
-          index = +ev.target.parentNode.getAttribute('data-i');
-        } else {
-          index = +ev.target.parentNode.parentNode.getAttribute('data-i');
-        }
-        ev.target.parentElement.classList.value.includes('infography');
+        const index = +ev.target.parentNode.getAttribute('data-i');
         params = Chart.getNodes().find((d) => d.index === index);
         element = 'node';
       }
@@ -213,7 +205,9 @@ class ContextMenu extends Component {
     if (params.fieldName === '_location') {
       return null;
     }
-
+    // if (params.fieldName !== 'node') {
+    //   return undefined;
+    // }
     const contexHeight = show === 'selectSquare' ? 195 : 300;
 
     const top = window.innerHeight - y < contexHeight ? window.innerHeight - contexHeight : y;
@@ -242,32 +236,32 @@ class ContextMenu extends Component {
               {['label', 'chart'].includes(show) && !expand ? (
                 <>
                   <Button icon="fa-circle-o" onClick={(ev) => this.handleClick(ev, 'node.create')}>
-                    Create Node
+                    Create node
                   </Button>
-                  {showPast ? (
-                    <div className="ghButton notClose">
-                      <Icon value="fa-clipboard" />
-                      Paste
-                      <Icon className="arrow" value="fa-angle-right" />
-                      <div className="contextmenu">
-                        <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
-                          Append
-                        </Button>
-                        {pastData.type === 'label' ? (
-                          <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
-                            Past Embedded
-                          </Button>
-                        ) : null}
-                      </div>
-                    </div>
-                  ) : null}
                 </>
+              ) : null}
+              {showPast ? (
+                <div className="ghButton notClose">
+                  <Icon value="fa-clipboard" />
+                  Paste
+                  <Icon className="arrow" value="fa-angle-right" />
+                  <div className="contextmenu">
+                    <Button onClick={(ev) => this.handleClick(ev, 'label.append')}>
+                      Append
+                    </Button>
+                    {pastData.type === 'label' ? (
+                      <Button onClick={(ev) => this.handleClick(ev, 'label.embed')}>
+                        Past Embedded
+                      </Button>
+                    ) : null}
+                  </div>
+                </div>
               ) : null}
 
               {['selectSquare'].includes(show) && !viewLocation ? (
                 <>
                   <Button icon="fa-folder-open" onClick={(ev) => this.handleClick(ev, 'folder.selectSquare')}>
-                    Create a Folder
+                    Create a folder
                   </Button>
                 </>
               ) : null}

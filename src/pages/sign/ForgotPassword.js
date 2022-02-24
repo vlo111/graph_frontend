@@ -8,6 +8,7 @@ import { forgotPasswordRequest } from '../../store/actions/account';
 import WrapperSign from '../../components/WrapperSign';
 import Input from '../../components/form/Input';
 import Button from '../../components/form/Button';
+import ForgtImage from '../../assets/images/forgot_image.png';
 
 class ForgotPassword extends Component {
   static propTypes = {
@@ -97,10 +98,8 @@ class ForgotPassword extends Component {
     return (
       <WrapperSign>
         <div className="forgot_password">
-          <div className="forgotLogo">
-            <Link to="/">
-              <LogoSvg className="logo white" />
-            </Link>
+          <div className="forgot_img">
+            <img src={ForgtImage} alt="" />
           </div>
           <div className="forgot_form">
             <form
@@ -108,9 +107,6 @@ class ForgotPassword extends Component {
               id="login"
               className="SigninAuthForm"
             >
-              <div className="socialReset">
-                <h4>Forgot your password? </h4>
-              </div>
               <Input
                 className={`${error ? 'border-error' : null
                 }`}
@@ -122,6 +118,7 @@ class ForgotPassword extends Component {
                 error={error}
                 autoComplete="off"
               />
+              <p>Please enter your email address and we’ll send you a link to reset your password</p>
               <div className="row">
                 <Button
                   type="submit"
@@ -133,6 +130,11 @@ class ForgotPassword extends Component {
                 </Button>
               </div>
             </form>
+          </div>
+          <div className="SaytLogo">
+            <Link to="/">
+              <LogoSvg className="logo white" />
+            </Link>
           </div>
         </div>
 

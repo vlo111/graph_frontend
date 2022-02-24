@@ -13,7 +13,7 @@ import FileInput from '../form/FileInput';
 import DataEditorDescription from './DataEditorDescription';
 import Convert from '../../helpers/Convert';
 import Select from '../form/Select';
-import { NODE_STATUS } from '../../data/node';
+import { NODE_STATUS, NODE_TYPES } from '../../data/node';
 import Validate from '../../helpers/Validate';
 import ChartUtils from '../../helpers/ChartUtils';
 import MapsLocationPicker from '../maps/MapsLocationPicker';
@@ -305,6 +305,16 @@ class DataTableNodes extends Component {
           }}
           value={props.cell.orginalValue}
           onChange={props.onChange}
+        />
+      );
+    }
+    if (props.cell.key === 'nodeType') {
+      return (
+        <Select
+          menuIsOpen
+          options={NODE_TYPES}
+          value={NODE_TYPES.find((t) => t.value === props.value)}
+          onChange={(v) => props.onChange(v?.value || '')}
         />
       );
     }

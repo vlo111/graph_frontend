@@ -117,7 +117,7 @@ const ProfileMain = React.memo(({
             <AddFriend user={profile} />
             )}
             <div className="edit_profile">
-              <div>User Details</div>
+              <div>User details</div>
               {currentUserId === profile.id && (
               <a className="accountedit user_prf_color1" href="/account">
                 Edit Profile
@@ -126,7 +126,7 @@ const ProfileMain = React.memo(({
             </div>
             {currentUserId === profile.id && (
             <div className="user_address_info email">
-              <h1>Email Address</h1>
+              <h1>Email address</h1>
               <p className="user_prf_color1">{profile.email}</p>
             </div>
             )}

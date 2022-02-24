@@ -41,7 +41,7 @@ class QueryContextMenu extends Component {
     return (
       <div className="ghButton notClose">
         <Icon value={<QuerySvg />} />
-        Fragment
+        Query
         <span className="connections">
           <span className="connection-item">
             <span className="indicator" />
